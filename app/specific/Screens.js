@@ -445,8 +445,6 @@ function Screens_addFocus(forceScroll) {
         return;
     }
 
-    inUseObj.addrow(forceScroll);
-
     //Load more as the data is getting used
     if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
         Screens_loadDataRequestStart();
@@ -454,6 +452,7 @@ function Screens_addFocus(forceScroll) {
         inUseObj.loadDataSuccess();
     }
 
+    inUseObj.addrow(forceScroll, inUseObj.posY);
     if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
     lazyLoadInstance.update();
 }
@@ -462,51 +461,73 @@ function Screens_ThumbNotNull(thumbnail) {
     return document.getElementById(thumbnail) !== null;
 }
 
-function Screens_addrow(forceScroll) {
-    if (inUseObj.currY < inUseObj.posY) { // down
-        if (inUseObj.posY > 1) {
-            if ((inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
-                document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[inUseObj.posY + 1]);
-                if (Screens_ThumbNotNull(inUseObj.ids[12] + (inUseObj.posY - 2)))
-                    document.getElementById(inUseObj.ids[12] + (inUseObj.posY - 2)).remove();
-            }
-        }
-    } else if (inUseObj.currY > inUseObj.posY) { // up
-        if (inUseObj.posY) {
+function Screens_addrow(forceScroll, y) {
+    if (inUseObj.currY < y) { // down
+        inUseObj.currY = inUseObj.posY;
+        if (y > 1) Screens_addrowDown(y);
+    } else if (inUseObj.currY > y) { // Up
+        inUseObj.currY = inUseObj.posY;
+        if (y > 0 && (inUseObj.Cells.length) > (y + 2)) {
             var doc = document.getElementById(inUseObj.table);
-            doc.insertBefore(inUseObj.Cells[inUseObj.posY - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (inUseObj.posY + 2)))
-                document.getElementById(inUseObj.ids[12] + (inUseObj.posY + 2)).remove();
+            doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 3)))
+                document.getElementById(inUseObj.ids[12] + (y + 3)).remove();
         }
     }
 
     Screens_addrowEnd(forceScroll);
 }
 
-function Screens_addrowChannel(forceScroll) {
-    if (inUseObj.currY < inUseObj.posY) { // down
-        if (inUseObj.posY > 2) {
-            if ((inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
-                document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[inUseObj.posY + 1]);
-                if (Screens_ThumbNotNull(inUseObj.ids[12] + (inUseObj.posY - 3)))
-                    document.getElementById(inUseObj.ids[12] + (inUseObj.posY - 3)).remove();
-            }
-        }
-    } else if (inUseObj.currY > inUseObj.posY) { // Up
-        if (inUseObj.posY > 1) {
+function Screens_addrowDown(y) {
+    if (inUseObj.Cells[y + 2]) {
+        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
+        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2)))
+            document.getElementById(inUseObj.ids[12] + (y - 2)).remove();
+    } else if (inUseObj.loadingData) {
+        //Technically we will not get here because
+        //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
+        //but this works, the issue is related to slow to load more content
+        //Only happens if scroll too fast
+        window.setTimeout(function() {
+            Screens_addrowDown(y);
+        }, 10);
+    }
+}
+
+function Screens_addrowChannel(forceScroll, y) {
+    if (inUseObj.currY < y) { // down
+        inUseObj.currY = inUseObj.posY;
+        if (y > 2) Screens_addrowChannelDown(y);
+    } else if (inUseObj.currY > y) { // Up
+        inUseObj.currY = inUseObj.posY;
+        if (y > 1 && (inUseObj.Cells.length) > (y + 3)) {
             var doc = document.getElementById(inUseObj.table);
-            doc.insertBefore(inUseObj.Cells[inUseObj.posY - 2], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (inUseObj.posY + 2)))
-                document.getElementById(inUseObj.ids[12] + (inUseObj.posY + 2)).remove();
+            doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 3)))
+                document.getElementById(inUseObj.ids[12] + (y + 3)).remove();
         }
     }
 
     Screens_addrowEnd(forceScroll);
+}
+
+function Screens_addrowChannelDown(y) {
+    if (inUseObj.Cells[y + 2]) {
+        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
+        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3)))
+            document.getElementById(inUseObj.ids[12] + (y - 3)).remove();
+    } else if (inUseObj.loadingData) {
+        //Technically we will not get here because
+        //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
+        //but this works, the issue is related to slow to load more content
+        //Only happens if scroll too fast
+        window.setTimeout(function() {
+            Screens_addrowChannelDown(y);
+        }, 10);
+    }
 }
 
 function Screens_addrowEnd(forceScroll) {
-    inUseObj.currY = inUseObj.posY;
-
     Main_AddClass(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX, Main_classThumb);
     Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
@@ -514,11 +535,13 @@ function Screens_addrowEnd(forceScroll) {
 }
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
-    if ((y < 2 && Main_YchangeAddFocus(y)) || forceScroll) {
-
-        if (!y) Main_ScrollTable(idArray[10], screen.height * 0.07);
-        else if (Main_ThumbNull((y + 1), 0, idArray[0])) Main_ScrollTable(idArray[10],
-            (document.getElementById(idArray[8] + (y - 1) + '_' + x).offsetTop * -1) - 8);
+    if (Main_YchangeAddFocus(y) || forceScroll) {
+        if (y > 0) {
+            if (Main_ThumbNull((y + 1), 0, idArray[0])) {
+                Main_ScrollTable(idArray[10],
+                    (document.getElementById(idArray[0] + (y - 1) + '_' + x).offsetTop * -1) - 8);
+            } else Main_handleKeyUp();
+        } else Main_ScrollTable(idArray[10], screen.height * 0.07);
 
     } else Main_handleKeyUp();
 }
@@ -636,9 +659,11 @@ function Screens_handleKeyDown(event) {
             } else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
         case KEY_RIGHT:
+            //Prevent scroll too fast out of inUseObj.Cells.length
+            //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
             if (inUseObj.dataEnded ||
                 inUseObj.posX < (inUseObj.ColoumnsCount - 1) ||
-                (inUseObj.Cells.length - 1) >= (inUseObj.posY + 2)) Screens_KeyLeftRight(1, 0);
+                (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3)) Screens_KeyLeftRight(1, 0);
             else Screens_addFocus(true);
             break;
         case KEY_UP:
@@ -649,7 +674,10 @@ function Screens_handleKeyDown(event) {
             else Screens_KeyUpDown(-1);
             break;
         case KEY_DOWN:
-            if (inUseObj.dataEnded || (inUseObj.Cells.length - 1) >= (inUseObj.posY + 2)) Screens_KeyUpDown(1);
+            //Prevent scroll too fast out of inUseObj.Cells.length
+            //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
+            if (inUseObj.dataEnded ||
+                (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3)) Screens_KeyUpDown(1);
             else Screens_addFocus(true);
             break;
         case KEY_PLAY:

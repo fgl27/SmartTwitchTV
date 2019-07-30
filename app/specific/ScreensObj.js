@@ -53,6 +53,7 @@ var Base_obj = {
     loadingDataTimeout: 3500,
     MaxOffset: 0,
     offset: 0,
+    visiblerows: 4,
     status: false,
     emptyContent: false,
     itemsCountCheck: false,
@@ -107,7 +108,6 @@ var Base_obj = {
 
 var Base_Vod_obj = {
     ThumbSize: 32.65,
-    visiblerows: 3,
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
@@ -450,7 +450,6 @@ function ScreensObj_InitUserVod() {
 
 var Base_Live_obj = {
     ThumbSize: 32.65,
-    visiblerows: 3,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
@@ -487,6 +486,7 @@ var Base_Live_obj = {
         }
     },
 };
+
 
 function ScreensObj_InitLive() {
     Live = Screens_assign({
@@ -810,7 +810,6 @@ var Base_Clip_obj = {
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
     cursor: null,
-    visiblerows: 3,
     object: 'clips',
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
@@ -987,7 +986,6 @@ function ScreensObj_InitAGameClip() {
 var Base_Game_obj = {
     HeaderQuatity: 2,
     ThumbSize: 19.35,
-    visiblerows: 3,
     ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ItemsLimit: Main_ItemsLimitGame,
     ColoumnsCount: Main_ColoumnsCountGame,
@@ -1135,7 +1133,6 @@ function ScreensObj_InitSearchGames() {
 
 var Base_Channel_obj = {
     ThumbSize: 16,
-    visiblerows: 4,
     ItemsLimit: Main_ItemsLimitChannel,
     ColoumnsCount: Main_ColoumnsCountChannel,
     addFocus: Screens_addFocusChannel,
@@ -1211,8 +1208,8 @@ function ScreensObj_InitUserChannels() {
 
     UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
     UserChannels.set_ThumbSize();
-
     UserChannels.addrow = Screens_addrowChannel;
+    UserChannels.visiblerows = 5;
 }
 
 function ScreensObj_InitSearchChannels() {
@@ -1265,8 +1262,8 @@ function ScreensObj_InitSearchChannels() {
 
     SearchChannels = Screens_assign(SearchChannels, Base_Channel_obj);
     SearchChannels.set_ThumbSize();
-
     SearchChannels.addrow = Screens_addrowChannel;
+    SearchChannels.visiblerows = 5;
 }
 
 function ScreensObj_TopLableAgameInit() {
