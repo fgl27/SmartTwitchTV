@@ -518,7 +518,7 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
 
         if (!y) Main_ScrollTable(idArray[10], screen.height * 0.07);
         else if (Main_ThumbNull((y + 1), 0, idArray[0])) Main_ScrollTable(idArray[10],
-            (document.getElementById(idArray[8] + (y - 1) + '_' + x).offsetTop * -1) - 10);
+            (document.getElementById(idArray[8] + (y - 1) + '_' + x).offsetTop * -1) - 8);
 
     } else Main_handleKeyUp();
 }
