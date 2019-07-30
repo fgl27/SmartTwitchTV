@@ -201,9 +201,7 @@ function Main_loadTranslations(language) {
 }
 
 function Main_initWindows() {
-    lazyLoadInstance = new LazyLoad({
-        elements_selector: ".lazy"
-    });
+    lazyLoadInstance = new LazyLoad();
 
     Screens_InitScreens();
     Main_SetStringsMain(true);
