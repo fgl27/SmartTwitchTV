@@ -85,6 +85,7 @@ function Screens_init() {
 
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     Main_ShowElement(inUseObj.ids[10]);
+
     if (inUseObj.status) {
         Main_YRst(inUseObj.posY);
         Screens_addFocus(true);
@@ -243,7 +244,7 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
     Main_td.setAttribute(Main_DataAttribute, game_name);
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + thumbnail +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
         idArray[3] + id + '" class="stream_channel">' + game_name + '</div>' +
@@ -273,7 +274,7 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
         playing
     ]));
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + thumbnail +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
@@ -298,7 +299,7 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] + Main_randomimg +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
@@ -322,7 +323,7 @@ function Screens_createCellChannel(row_id, coloumn_id, idArray, valuesArray) {
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div><img id="' + idArray[1] +
-        id + '" alt="" class="stream_img"src="' + valuesArray[2] +
+        id + '" alt="" class="lazy stream_img" data-src="' + valuesArray[2] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text2">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] + '</div></div></div>';
@@ -340,7 +341,7 @@ function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
         (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><div><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 14px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
@@ -454,6 +455,7 @@ function Screens_addFocus(forceScroll) {
     }
 
     if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+    lazyLoadInstance.update();
 }
 
 function Screens_ThumbNotNull(thumbnail) {
