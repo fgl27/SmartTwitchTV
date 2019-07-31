@@ -1030,7 +1030,17 @@ function PlayVod_handleKeyDown(e) {
                 Play_KeyReturn(true);
                 break;
             case KEY_PLAY:
+                if (!Play_isEndDialogVisible() && Play_isNotplaying()) {
+                     Play_KeyPause(2);
+                     if (!Main_values.Play_ChatForceDisable) Chat_Play(Chat_Id);
+                }
+                break;
             case KEY_PAUSE:
+                if (!Play_isEndDialogVisible() && !Play_isNotplaying()) {
+                     Play_KeyPause(2);
+                     if (!Main_values.Play_ChatForceDisable) Chat_Pause();
+                }
+                break;
             case KEY_PLAYPAUSE:
                 if (!Main_values.Play_ChatForceDisable) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
