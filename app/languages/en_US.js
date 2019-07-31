@@ -4,7 +4,7 @@ function en_USLang() {
     Main_IsDayFirst = false;
 
     // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
-    document.getElementById("side_panel").style.width = "25%";
+    //document.getElementById("side_panel").style.width = "25%";
 
     //Below are variables to translate
     STR_REFRESH = "Refresh";
