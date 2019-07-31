@@ -171,12 +171,6 @@
 .icon-squares:before {
   content: "\4a";
 }
-.icon-resize-up:before {
-  content: "\4d";
-}
-.icon-resize-down:before {
-  content: "\4e";
-}
 .icon-chat-stop:before {
   content: "\4b";
 }
@@ -191,4 +185,16 @@
 }
 .icon-chat-font:before {
   content: "\52";
+}
+.icon-chat-delay:before {
+  content: "\4c";
+}
+.icon-resize-up:before {
+  content: "\53";
+}
+.icon-resize-down:before {
+  content: "\54";
+}
+.icon-buffer:before {
+  content: "\55";
 }
