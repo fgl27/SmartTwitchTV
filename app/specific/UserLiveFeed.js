@@ -34,7 +34,7 @@ function UserLiveFeed_StartLoad() {
         Main_empty('user_feed_scroll');
         Main_HideElement('side_panel_feed_thumb');
         Sidepannel_PosFeed = 0;
-        Main_empty('side_panel_feed_scroll');
+        Main_empty('side_panel_holder');
         UserLiveFeed_status = false;
         document.getElementById('user_feed_scroll').style.left = "2.5px";
         Main_ShowElement('dialog_loading_feed');
@@ -193,7 +193,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
     if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
 
     var stream, id, doc = document.getElementById("user_feed_scroll"),
-        docside = document.getElementById("side_panel_feed_scroll");
+        docside = document.getElementById("side_panel_holder");
 
     for (var i = 0; i < response_items; i++) {
         stream = response.streams[i];
@@ -270,21 +270,17 @@ function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
     Main_td.setAttribute('side_panel_data', JSON.stringify(data));
     Main_td.className = 'side_panel_feed';
 
-    Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id + '">' +
-        '<img id="' + UserLiveFeed_side_ids[1] + id +
-        '" style="vertical-align: middle; display: inline-block; width: 16%;" alt="" src="' + IMG_404_LOGO_TEMP +
-        '" onload="this.onload=null;this.src=\'' + valuesArray[0] + '\'"' +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'"><div id="' +
-        UserLiveFeed_side_ids[2] + id + '" class="side_panel_feed_text"><div id="' +
-        UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] + '</div><div id="' +
-        UserLiveFeed_side_ids[4] + id +
-        '" style="width: 74%; display: inline-block; font-size: 110%; font-family: \'Roboto-Bold\'; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[2] +
-        '</div><div style="width:25%; float: right; text-align: right; vertical-align: middle; display: inline-block"><div  style="text-align: center;" ><i class="icon-' +
+    Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
+        '" class="side_panel_div"><div style="width: 100%;"><div id="' +
+        UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] +
+        '</div><div class="side_panel_iner_div1"><img class="side_panel_channel_img" src="' + valuesArray[0] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
+        '\'"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
+        '" class="side_panel_new_title">' + valuesArray[2] + '</div><div id="' +
+        UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + valuesArray[3] +
+        '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
         (!jsondata[2] ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 80%; "></i><div style="font-size: 85%;">' + valuesArray[4] + '</div></div></div><div id="' +
-        UserLiveFeed_side_ids[5] + id +
-        '" style="font-size: 90%; overflow: hidden;  white-space: nowrap; text-overflow: ellipsis;">' + valuesArray[3] +
-        '</div></div></div>';
+        ' font-size: 55%; "></i><div style="font-size: 60%;">' + valuesArray[4] + '</div></div></div></div></div></div>';
 
     return Main_td;
 }
