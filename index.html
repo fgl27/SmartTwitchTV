@@ -601,20 +601,14 @@
 
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
         div.side_panel_feed {
-            padding-bottom: 1%;
-            font-size: 150%;
-            font-family: 'Roboto-Bold';
-            text-align: left;
-            width: 80%;
-            margin-left: 15%;
-            word-wrap: break-word;
-            overflow: hidden;
+            width: 100%;
+            padding: 1%;
         }
 
         div.side_panel_feed_top {
             margin-top: 1%;
             margin-bottom: 1%;
-            margin-left: 15%;
+            margin-left: 5%;
             vertical-align: middle;
             display: inline-block;
             width: 84%;
@@ -622,12 +616,6 @@
             word-wrap: break-word;
             overflow: hidden;
             color: #FFFFFF;
-        }
-
-        div.side_panel_feed_scroll {
-            height: 90%;
-            position: absolute;
-            overflow: hidden;
         }
 
         div.side_panel_feed_text {
@@ -641,10 +629,6 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-        }
-
-        div.side_panel_feed_text_focus {
-            color: #FFFFFF;
         }
 
         div.side_panel_feed_thumb_text {
@@ -1219,6 +1203,55 @@
             transform: scale(1);
             transform-origin: 0 0;
         }
+
+        div.side_panel_div {
+            width: 99%;
+            height: 0;
+            position: relative;
+            border-radius: 4px;
+            padding-bottom: 16.1%;
+            background-repeat: no-repeat;
+            color: #7B7B7B;
+        }
+
+        div.side_panel_iner_div1,
+        div.side_panel_iner_div2,
+        div.side_panel_iner_div3 {
+            width: 16%;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        div.side_panel_iner_div2 {
+            width: 63%;
+        }
+
+        img.side_panel_channel_img {
+            height: 90%;
+            position: absolute;
+            top: 0;
+            border-radius: 4px;
+        }
+
+        div.side_panel_new_title,
+        div.side_panel_new_game {
+            width: 100%;
+            text-align: left;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-family: 'Roboto-Bold';
+            font-size: 75%;
+        }
+
+        div.side_panel_new_game {
+            font-family: 'Roboto';
+            font-size: 65%;
+        }
+
+        div.side_panel_feed_text_focus {
+            color: #FFFFFF;
+        }
     </style>
     <!-- jsstart this is here so release_maker can work don't remove-->
     <script src="app/languages/0_Strings.js" defer></script>
@@ -1565,25 +1598,33 @@
             </div>
         </div>
         <div id="side_panel" class="side_panel side_panel_hide" style="margin-left: -31.5%;">
-            <div id="side_panel_feed_holder">
-                <div id="side_panel_feed_1" class="side_panel_feed_top">
-                    <div class="side_panel_icons">
-                        <i class="icon icon-arrow-circle-left"></i>
-                    </div>&nbsp;
-                    <span id="side_panel_feed_settings"></span>
-                </div>
-                <div id="side_panel_feed_2" class="side_panel_feed_top">
-                    <div class="side_panel_icons">
-                        <i class="icon icon-arrow-circle-right"></i>
-                    </div>&nbsp;
-                    <span id="side_panel_feed_refresh"></span>
-                </div>
-                <div id="side_panel_feed">
-                    <div id="side_panel_feed_scroll" class="side_panel_feed_scroll">
+            <div id="side_panel_new" style="width: 100%; position: absolute;">
+                <div id="side_panel_feed_holder" style="width: 94%; margin-left: 5%;">
+                    <div id="side_panel_row_0">
+                        <div id="side_panel_cell0_0" style="width: 100%; display: inline-block; padding: 1%;">
+                            <div id="side_panel_thumbdiv0_0" class="side_panel_div">
+                                <div id="side_panel_feed_1" class="side_panel_feed_top">
+                                    <div class="side_panel_icons">
+                                        <i class="icon icon-arrow-circle-left"></i>
+                                    </div>&nbsp;
+                                    <span id="side_panel_feed_settings"></span>
+                                </div>
+                                <div id="side_panel_feed_2" class="side_panel_feed_top">
+                                    <div class="side_panel_icons">
+                                        <i class="icon icon-arrow-circle-right"></i>
+                                    </div>&nbsp;
+                                    <span id="side_panel_feed_refresh"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
-                    <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 350%;"></i>
+                    <div id="side_panel_new_row_1" style="overflow: hidden;">
+                        <div id="side_panel_holder" style="margin-top: calc(-18.1% *0);">
+                        </div>
+                    </div>
+                    <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
+                        <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 350%;"></i>
+                    </div>
                 </div>
             </div>
             <div id="side_panel_etc" class="hide">

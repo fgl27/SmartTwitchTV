@@ -14,7 +14,7 @@ function Sidepannel_RemoveFocusEtc() {
 }
 
 function Sidepannel_AddFocusFeed() {
-    Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
+    Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
     Sidepannel_Scroll();
     Sidepannel_UpdateThumb();
 }
@@ -24,7 +24,7 @@ function Sidepannel_isShowing() {
 }
 
 function Sidepannel_RemoveFocusFeed() {
-    Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
+    Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
 }
 
 function Sidepannel_UpdateThumb() {
@@ -43,6 +43,7 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_views', info[6]);
 
     if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing()) Main_ShowElement('side_panel_feed_thumb');
+    console.log('Sidepannel_UpdateThumb');
 }
 
 function Sidepannel_PreloadImgs() {
@@ -56,7 +57,7 @@ function Sidepannel_PreloadImgs() {
 }
 
 function Sidepannel_GetSize() {
-    return document.getElementById('side_panel_feed_scroll').getElementsByClassName('side_panel_feed').length;
+    return document.getElementById('side_panel_holder').getElementsByClassName('side_panel_feed').length;
 }
 
 function Sidepannel_KeyEnter() {
@@ -129,7 +130,7 @@ function Sidepannel_ShowFeed() {
     if (hasuser) {
         if (Main_isElementShowing('side_panel_feed_holder')) {
             document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
-            if (document.getElementById(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed) !== null) {
+            if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
                 Sidepannel_PreloadImgs();
                 Sidepannel_AddFocusFeed();
             }
@@ -154,9 +155,11 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_Scroll() {
-    document.getElementById('side_panel_feed_scroll').scrollTop =
-        document.getElementById(UserLiveFeed_side_ids[8] +
-            (Sidepannel_PosFeed > 5 ? (Sidepannel_PosFeed - 5) : 0)).offsetTop;
+    if (Sidepannel_PosFeed > 5) {
+        if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 5))
+            document.getElementById('side_panel_holder').style.marginTop = 'calc(-18.1% *' + (Sidepannel_PosFeed - 5) + ')';
+    } else
+        document.getElementById('side_panel_holder').style.marginTop = 'calc(-18.1% *0)';
 }
 
 function Sidepannel_handleKeyDown(event) {
