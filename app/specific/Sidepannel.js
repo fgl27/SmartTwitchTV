@@ -17,6 +17,7 @@ function Sidepannel_AddFocusFeed() {
     Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
     Sidepannel_Scroll();
     Sidepannel_UpdateThumb();
+    lazyLoadInstance.update();
 }
 
 function Sidepannel_isShowing() {
