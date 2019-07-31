@@ -230,7 +230,7 @@ function Play_Start() {
     Play_LoadLogoSucess = false;
     PlayClip_HasVOD = true;
     //reset channel logo to prevent another channel logo
-    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO);
+    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO_TEMP);
     if (Main_values.Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
     else Main_textContent("stream_info_name", Main_values.Play_selectedChannelDisplayname);
 
