@@ -1,6 +1,6 @@
-// more keys at http://developer.samsung.com/tv/develop/guides/user-interaction/remote-control/
-var KEY_PAUSE = 51;
-var KEY_PLAY = 52;
+//https://developer.android.com/reference/android/view/KeyEvent
+var KEY_PAUSE = 127;
+var KEY_PLAY = 126;
 var KEY_PLAYPAUSE = 179;
 
 var KEY_LEFT = 37;
@@ -19,8 +19,3 @@ var KEY_KEYBOARD_BACKSPACE = 8; // http://developer.samsung.com/tv/develop/guide
 var KEY_KEYBOARD_DONE = 13;
 var KEY_KEYBOARD_SPACE = 32;
 var KEY_KEYBOARD_DELETE_ALL = 46;
-
-//var eup = {};
-//eup.keyCode = KEY_PG_DOWN;
-//var edown = {};
-//edown.keyCode = KEY_PG_UP;

@@ -600,9 +600,19 @@ function PlayClip_handleKeyDown(e) {
                 }
                 break;
             case KEY_PLAY:
+                if (!Play_isEndDialogVisible() && Play_isNotplaying()) {
+                     Play_KeyPause(2);
+                     if (!Main_values.Play_ChatForceDisable) Chat_Play(Chat_Id);
+                }
+                break;
             case KEY_PAUSE:
+                if (!Play_isEndDialogVisible() && !Play_isNotplaying()) {
+                     Play_KeyPause(2);
+                     if (!Main_values.Play_ChatForceDisable) Chat_Pause();
+                }
+                break;
             case KEY_PLAYPAUSE:
-                if (PlayClip_HasVOD && Main_values.Play_ChatForceDisable) {
+                if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
                     else Chat_Pause();
                 }

@@ -1665,7 +1665,11 @@ function Play_handleKeyDown(e) {
                 Play_KeyReturn(false);
                 break;
             case KEY_PLAY:
+                if (!Play_isEndDialogVisible() && Play_isNotplaying()) Play_KeyPause(1);
+                break;
             case KEY_PAUSE:
+                if (!Play_isEndDialogVisible() && !Play_isNotplaying()) Play_KeyPause(1);
+                break;
             case KEY_PLAYPAUSE:
                 if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                 break;
