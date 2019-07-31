@@ -96,9 +96,9 @@ public class PlayerActivity extends Activity {
     private ImageView spinner;
     private Animation rotation;
 
-    public WebView mwebview;
-    public boolean onCreateReady;
-    public boolean alredystarted;
+    private WebView mwebview;
+    private boolean onCreateReady;
+    private boolean alredystarted;
     private boolean loadingcanshow;
     public int mwhocall = 1;
     private int heightDefault = 0;
@@ -327,8 +327,8 @@ public class PlayerActivity extends Activity {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        60000, //DEFAULT_MIN_BUFFER_MS
-                        120000, //DEFAULT_MAX_BUFFER_MS
+                        BUFFER_SIZE[mwhocall], //DEFAULT_MIN_BUFFER_MS
+                        Math.min(BUFFER_SIZE[mwhocall] + 2000, 15000), //DEFAULT_MAX_BUFFER_MS
                         BUFFER_SIZE[mwhocall], //DEFAULT_BUFFER_FOR_PLAYBACK_MS
                         BUFFER_SIZE[mwhocall] //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
@@ -351,12 +351,12 @@ public class PlayerActivity extends Activity {
         return false;
     }
 
-    protected void clearResumePosition() {
+    private void clearResumePosition() {
         //mResumeWindow = C.INDEX_UNSET;
         mResumePosition = C.TIME_UNSET;
     }
 
-    protected void updateResumePosition() {
+    private void updateResumePosition() {
         if (player == null) {
             return;
         }
@@ -551,7 +551,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetBuffer(int whocall, int value) {
-            BUFFER_SIZE[whocall] = value;
+            BUFFER_SIZE[whocall] = Math.min(value, 15000);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -581,7 +581,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public Player.EventListener PlayerEvent() {
+    private Player.EventListener PlayerEvent() {
         return new Player.EventListener() {
 
             @Override
