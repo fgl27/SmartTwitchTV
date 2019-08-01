@@ -49,7 +49,10 @@ function PlayClip_Start() {
     Main_replaceClassEmoji('stream_info_title');
 
     Main_values.Play_isHost = false;
+    document.getElementById('controls_' + Play_controlsOpenVod).style.display = '';
+    document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
     Play_CurrentSpeed = 3;
+    Play_IconsResetFocus();
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Main_textContent("stream_live_time", '');
@@ -76,7 +79,6 @@ function PlayClip_Start() {
     PlayClip_UpdateNext();
     Play_EndSet(3);
     Play_IsWarning = false;
-    Play_IconsResetFocus();
 
     if (AddUser_UserIsSet()) {
         AddCode_PlayRequest = true;

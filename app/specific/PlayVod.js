@@ -66,7 +66,10 @@ function PlayVod_Start() {
 
     //past broadcast
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
+    //Chat delay
+    document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
     Play_CurrentSpeed = 3;
+    Play_IconsResetFocus();
 
     PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
