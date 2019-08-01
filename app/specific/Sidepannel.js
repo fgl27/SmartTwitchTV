@@ -156,12 +156,12 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_Scroll() {
-    var value = '1%';//default
-    if (Sidepannel_PosFeed > 5) {//Start scrolling in the middle
+    var value = '1%'; //default
+    if (Sidepannel_PosFeed > 5) { //Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 5))
             value = 'calc(-18.1% *' + (Sidepannel_PosFeed - 5) + ')';
-        else if (((Sidepannel_GetSize() - 5) - 6) > 0)//if we are in the 5 left
-           value = 'calc(-18.1% *' + ((Sidepannel_GetSize() - 5) - 6) + ')';
+        else if (((Sidepannel_GetSize() - 5) - 6) > 0) //if we are in the 5 left
+            value = 'calc(-18.1% *' + ((Sidepannel_GetSize() - 5) - 6) + ')';
     }
 
     document.getElementById('side_panel_holder').style.marginTop = value;
