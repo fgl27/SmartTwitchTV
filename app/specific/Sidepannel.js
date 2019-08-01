@@ -156,11 +156,15 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_Scroll() {
-    if (Sidepannel_PosFeed > 5) {
+    var value = '1%';//default
+    if (Sidepannel_PosFeed > 5) {//Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 5))
-            document.getElementById('side_panel_holder').style.marginTop = 'calc(-18.1% *' + (Sidepannel_PosFeed - 5) + ')';
-    } else
-        document.getElementById('side_panel_holder').style.marginTop = '1%';
+            value = 'calc(-18.1% *' + (Sidepannel_PosFeed - 5) + ')';
+        else if (((Sidepannel_GetSize() - 5) - 6) > 0)//if we are in the 5 left
+           value = 'calc(-18.1% *' + ((Sidepannel_GetSize() - 5) - 6) + ')';
+    }
+
+    document.getElementById('side_panel_holder').style.marginTop = value;
 }
 
 function Sidepannel_handleKeyDown(event) {
