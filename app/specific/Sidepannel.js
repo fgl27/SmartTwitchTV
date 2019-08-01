@@ -77,10 +77,12 @@ function Sidepannel_KeyEnter() {
         document.body.removeEventListener("keydown", Sidepannel_Callback, false);
         document.body.addEventListener("keydown", Screens_handleKeyControls);
         Main_showAboutDialog();
+        Sidepannel_Isscreen = false;
     } else if (Sidepannel_Pos === 3) {
         document.body.removeEventListener("keydown", Sidepannel_Callback, false);
         document.body.addEventListener("keydown", Screens_handleKeyControls);
         Main_showControlsDialog();
+        Sidepannel_Isscreen = false;
     } else if (Sidepannel_Pos === 4) Main_showExitDialog(Sidepannel_Callback);
     else if (Sidepannel_Pos === 5) Sidepannel_Go(Main_Live);
     else if (Sidepannel_Pos === 6) Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);

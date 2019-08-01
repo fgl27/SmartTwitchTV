@@ -80,6 +80,7 @@ var Base_obj = {
             if (!CenterLables) Main_CenterLablesStart(Screens_handleKeyDown);
         }
         Sidepannel_RestoreScreen();
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
     },
     concatenate: function(responseText) {
         if (this.data) {
