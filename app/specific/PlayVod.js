@@ -941,14 +941,7 @@ function PlayVod_handleKeyDown(e) {
                         UserLiveFeed_FeedAddFocus();
                     }
                 } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
-                    if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
-                        Play_showChat();
-                        Play_ChatEnable = true;
-                    } else {
-                        Play_hideChat();
-                        Play_ChatEnable = false;
-                    }
-                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
+                    Play_controls[Play_controlsChat].enterKey(2);
                 } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
@@ -1031,14 +1024,14 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_PLAY:
                 if (!Play_isEndDialogVisible() && Play_isNotplaying()) {
-                     Play_KeyPause(2);
-                     if (!Main_values.Play_ChatForceDisable) Chat_Play(Chat_Id);
+                    Play_KeyPause(2);
+                    if (!Main_values.Play_ChatForceDisable) Chat_Play(Chat_Id);
                 }
                 break;
             case KEY_PAUSE:
                 if (!Play_isEndDialogVisible() && !Play_isNotplaying()) {
-                     Play_KeyPause(2);
-                     if (!Main_values.Play_ChatForceDisable) Chat_Pause();
+                    Play_KeyPause(2);
+                    if (!Main_values.Play_ChatForceDisable) Chat_Pause();
                 }
                 break;
             case KEY_PLAYPAUSE:
@@ -1047,6 +1040,19 @@ function PlayVod_handleKeyDown(e) {
                     else Chat_Pause();
                 }
                 if (!Play_isEndDialogVisible()) Play_KeyPause(2);
+                break;
+            case KEY_REFRESH:
+                Play_controls[Play_controlsChat].enterKey(2);
+                break;
+            case KEY_PG_UP:
+                Play_Panelcounter = Play_controlsChatPos;
+                Play_BottomUpDown(2, 1);
+                Play_Panelcounter = Play_controlsDefault;
+                break;
+            case KEY_PG_DOWN:
+                Play_Panelcounter = Play_controlsChatPos;
+                Play_BottomUpDown(2, -1);
+                Play_Panelcounter = Play_controlsDefault;
                 break;
             default:
                 break;
