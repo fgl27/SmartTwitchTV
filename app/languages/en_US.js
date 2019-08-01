@@ -84,7 +84,7 @@ function en_USLang() {
     STR_SOURCE = "Source";
     STR_VERSION = "Version: ";
     STR_TWITCH_TV = "SmartTV Twitch";
-    STR_CLOSE_THIS = "Press back key to close this.";
+    STR_CLOSE_THIS = "Press back or enter key to close this.";
     STR_PLAYER = "Player Related:";
     STR_CHAT = "Chat Related:";
     STR_GENERAL = "General Related:";
