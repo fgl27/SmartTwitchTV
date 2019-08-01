@@ -777,8 +777,10 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
     }
 
     PlayVod_jumpTime();
+    Play_ProgresBarrElm.style.transition = 'none';
     Play_ProgresBarrElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
     PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
+    Play_ProgresBarrElm.style.transition = '';
 
     PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
 }
