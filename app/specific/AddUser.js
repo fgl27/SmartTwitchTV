@@ -10,6 +10,7 @@ var AddUser_keyBoardOn = false;
 
 function AddUser_init() {
     Main_values.Main_Go = Main_addUser;
+    Main_CounterDialogRst();
     Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_HideWarningDialog();
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
