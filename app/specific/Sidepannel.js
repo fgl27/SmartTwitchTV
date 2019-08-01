@@ -160,7 +160,7 @@ function Sidepannel_Scroll() {
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 5))
             document.getElementById('side_panel_holder').style.marginTop = 'calc(-18.1% *' + (Sidepannel_PosFeed - 5) + ')';
     } else
-        document.getElementById('side_panel_holder').style.marginTop = 'calc(-18.1% *0)';
+        document.getElementById('side_panel_holder').style.marginTop = '1%';
 }
 
 function Sidepannel_handleKeyDown(event) {
