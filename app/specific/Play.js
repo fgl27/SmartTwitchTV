@@ -68,6 +68,7 @@ var Play_EndTextID = null;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
 var Play_watching_time = 0;
+var Play_ChatDelayPosition = 0;
 //var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
 var Play_isLive = true;
@@ -155,6 +156,7 @@ function Play_PreStart() {
     Play_ChatEnable = Main_getItemBool('ChatEnable', false);
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
     Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
+    Play_ChatDelayPosition = Main_getItemInt('Play_ChatDelayPosition', 0);
 
     Play_SetQuality();
 
@@ -1700,7 +1702,8 @@ var Play_controlsChatPos = 9;
 var Play_controlsChatSize = 10;
 var Play_controlsChatBright = 11;
 var Play_controlsChatFont = 12;
-var Play_controlsChatForceDis = 13;
+var Play_controlsChatDelay = 13;
+var Play_controlsChatForceDis = 14;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2046,6 +2049,37 @@ function Play_MakeControls() {
         setLable: function() {
             Main_textContent('controls_name_' + this.position,
                 this.values[this.defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
+    Play_controls[Play_controlsChatDelay] = { //chat delay
+        icons: "chat-delay",
+        string: STR_CHAT_DELAY,
+        values: [STR_DISABLE, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+            20, 25, 30, 45, 60, 90, 120, 150, 180
+        ],
+        defaultValue: Play_ChatDelayPosition,
+        opacity: 0,
+        isChat: false,
+        updown: function(adder) {
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0)
+                this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1))
+                this.defaultValue = (this.values.length - 1);
+
+            Play_ChatDelayPosition = this.defaultValue;
+
+            Main_setItem('Play_ChatDelayPosition', Play_ChatDelayPosition);
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + (this.defaultValue > 0 ? STR_SECONDS : ''));
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);

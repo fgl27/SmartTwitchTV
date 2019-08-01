@@ -238,6 +238,13 @@ function ChatLive_loadChatRequest() {
                 ChatLive_loaded = true;
                 var div = '&nbsp;<span class="message">' + STR_BR + STR_LOADING_CHAT +
                     Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + '</span>';
+
+                if (Play_ChatDelayPosition) {
+                    div += '&nbsp;<span class="message">' + STR_BR + STR_BR + STR_CHAT_DELAY + ' ' +
+                        Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
+                        STR_SECONDS + '</span>';
+                }
+
                 ChatLive_LineAdd(div);
                 break;
             case "PRIVMSG":
@@ -315,6 +322,14 @@ function ChatLive_loadChatSuccess(message) {
     div += '<span class="message">' + ChatLive_extraMessageTokenize(emoticonize(mmessage, emotes)) + '</span>';
 
     ChatLive_LineAdd(div);
+
+    if (!Play_ChatDelayPosition) ChatLive_LineAdd(div);
+    else {
+        var id = ChatLive_Id;
+        window.setTimeout(function() {
+            if (id === ChatLive_Id) ChatLive_LineAdd(div);
+        }, Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000);
+    }
 }
 
 function ChatLive_extraMessageTokenize(tokenizedMessage) {
