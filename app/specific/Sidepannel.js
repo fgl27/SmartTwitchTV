@@ -43,7 +43,6 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_views', info[6]);
 
     if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing()) Main_ShowElement('side_panel_feed_thumb');
-    console.log('Sidepannel_UpdateThumb');
 }
 
 function Sidepannel_PreloadImgs() {
