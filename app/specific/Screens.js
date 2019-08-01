@@ -430,7 +430,6 @@ function Screens_loadDataSuccessFinish() {
 }
 
 function Screens_handleKeyControls(event) {
-console.log('Screens_handleKeyControls');
     switch (event.keyCode) {
         case KEY_ENTER:
         case KEY_RETURN:
@@ -663,7 +662,6 @@ function Screens_KeyLeftRight(y, x) {
 }
 
 function Screens_handleKeyDown(event) {
-console.log('Screens_handleKeyDown');
     if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
