@@ -240,9 +240,12 @@ function ChatLive_loadChatRequest() {
                     Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + '</span>';
 
                 if (Play_ChatDelayPosition) {
+                    var stringSec = STR_SECOND;
+                    if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
+
                     div += '&nbsp;<span class="message">' + STR_BR + STR_BR + STR_CHAT_DELAY + ' ' +
                         Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
-                        STR_SECONDS + '</span>';
+                        stringSec + '</span>';
                 }
 
                 ChatLive_LineAdd(div);
