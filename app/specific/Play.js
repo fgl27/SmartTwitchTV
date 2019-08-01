@@ -237,7 +237,10 @@ function Play_Start() {
 
     //past broadcast
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
+    //Chat delay
+    document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
     Play_CurrentSpeed = 3;
+    Play_IconsResetFocus();
 
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
