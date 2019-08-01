@@ -243,6 +243,7 @@ function en_USLang() {
     STR_CHAT_VIDEO_MODE = "Video mode";
     STR_CHAT_SIDE_FULL = "Full screen";
     STR_CHAT_SIDE = "Smaller screen and chat";
+    STR_CHAT_DELAY = "Chat delay";
     STR_SPEED = "Speed";
     STR_QUALITY = "Quality";
     STR_NORMAL = "Normal";
