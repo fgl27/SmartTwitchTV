@@ -248,7 +248,7 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
         idArray[3] + id + '" class="stream_channel">' + game_name + '</div>' +
-        (views !== '' ? '<div id="' + idArray[4] + id + '"class="stream_info" style="width: 100%; display: inline-block;">' + views + '</div>' : '') +
+        (views !== '' ? '<div id="' + idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + views + '</div>' : '') +
         '</div></div>';
 
     return Main_td;
