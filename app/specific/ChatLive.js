@@ -324,14 +324,12 @@ function ChatLive_loadChatSuccess(message) {
 
     div += '<span class="message">' + ChatLive_extraMessageTokenize(emoticonize(mmessage, emotes)) + '</span>';
 
-    ChatLive_LineAdd(div);
-
     if (!Play_ChatDelayPosition) ChatLive_LineAdd(div);
     else {
         var id = ChatLive_Id;
         window.setTimeout(function() {
             if (id === ChatLive_Id) ChatLive_LineAdd(div);
-        }, Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000);
+        }, (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000));
     }
 }
 
