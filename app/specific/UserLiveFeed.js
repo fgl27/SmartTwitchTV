@@ -281,7 +281,7 @@ function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
         UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + valuesArray[3] +
         '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
         (!jsondata[2] ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 55%; "></i><div style="font-size: 65%;">' + valuesArray[4] + '</div></div></div></div></div></div>';
+        ' font-size: 55%; "></i><div style="font-size: 58%;">' + valuesArray[4] + '</div></div></div></div></div></div>';
 
     return Main_td;
 }
