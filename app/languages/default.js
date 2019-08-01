@@ -1,7 +1,7 @@
 // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
 var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
 var STR_BR = "<br>";
-var STR_DOT = '<i class="icon-circle" style="font-size: 50%; vertical-align: middle; font-family: \'Roboto-Bold\';"></i>' + "  ";
+var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
 var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
 var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
@@ -64,7 +64,7 @@ function DefaultLang() {
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
     STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 + STR_BR +
-        (Main_IsNotBrowser ? '' : STR_BR + '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-family: \'Roboto-Bold\';">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
+        (Main_IsNotBrowser ? '' : STR_BR + '<div class="class_bold" style="display: inline-block; color: #FF0000; font-size: 110%;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
         STR_BR +
         STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
         STR_ABOUT_EMAIL + STR_BR +
@@ -88,7 +88,7 @@ function DefaultLang() {
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
 
     STR_OAUTH_EXPLAIN = STR_OAUTH_EXPLAIN1 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN2.replace('link_link', '<div style="display: inline-block; color: #FF0000; font-size: 110%; font-family: \'Roboto-Bold\';">http://tiny.cc/twitchkeycode</div>') + STR_BR +
+        STR_DOT + STR_OAUTH_EXPLAIN2.replace('link_link', '<div class="class_bold" style="display: inline-block; color: #FF0000; font-size: 110%;">http://tiny.cc/twitchkeycode</div>') + STR_BR +
         STR_DOT + STR_OAUTH_EXPLAIN3 + STR_BR +
         STR_DOT + STR_OAUTH_EXPLAIN4 + STR_BR +
         STR_DOT + STR_OAUTH_EXPLAIN5 + STR_BR +
