@@ -15,6 +15,7 @@ var STR_ABOUT_INFO_0 = '';
 var STR_CONTROLS_PLAY_0 = '';
 var STR_OAUTH_EXPLAIN = '';
 var STR_SPACE = '&nbsp;';
+var STR_PAYPAL;
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
 function DefaultLang() {
@@ -26,6 +27,7 @@ function DefaultLang() {
     STR_SWITCH_USER = STR_SWITCH_USER + STR_KEY_UP_DOWN;
     STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE;
     STR_GOBACK = STR_GOBACK_START + STR_TWICE;
+    STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div style="vertical-align: middle; display: inline-block;">' + STR_PAYPAL_SUMMARY + '</div></div>';
 
     STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
         STR_DIV_MIDLE_LEFT +
@@ -66,7 +68,7 @@ function DefaultLang() {
         STR_BR +
         STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
         STR_ABOUT_EMAIL + STR_BR +
-        STR_BR +
+        STR_PAYPAL +
         STR_ABOUT_INFO_4 + STR_BR +
         STR_ABOUT_INFO_5 + STR_BR +
         STR_BR +
