@@ -634,7 +634,7 @@ function Screens_KeyLeftRight(y, x) {
     if (inUseObj.HasSwitches && inUseObj.posY === -1) {
         inUseObj.posY = -1;
         Screens_removeFocusFallow();
-        inUseObj.posX++;
+        inUseObj.posX += (!x ? 1 : -1);
         Screens_addFocusFallow();
     } else if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
         Screens_ChangeFocus(0, (inUseObj.posX + y));
