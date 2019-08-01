@@ -2059,7 +2059,7 @@ function Play_MakeControls() {
         icons: "chat-delay",
         string: STR_CHAT_DELAY,
         values: [STR_DISABLE, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-            20, 25, 30, 45, 60, 90, 120, 150, 180
+            20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
         ],
         defaultValue: Play_ChatDelayPosition,
         opacity: 0,
@@ -2079,7 +2079,12 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + (this.defaultValue > 0 ? STR_SECONDS : ''));
+            var stringSec = '';
+
+            if (this.defaultValue > 1) stringSec = STR_SECONDS;
+            else if (this.defaultValue > 0) stringSec = STR_SECOND;
+
+            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + stringSec);
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);

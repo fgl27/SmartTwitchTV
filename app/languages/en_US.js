@@ -215,7 +215,8 @@ function en_USLang() {
     STR_BRIGHTNESS = "Brightness ";
     STR_FORBIDDEN = "Forbidden content, this Live content must be for Prime only subscribers or restrained to the official Twitch app";
     STR_JUMPING_STEP = "Jump step ";
-    STR_SECONDS = " seconds";
+    STR_SECOND = " second";
+    STR_SECONDS = STR_SECOND + "s";
     STR_MINUTES = " minutes";
     STR_CLOCK_OFFSET = "Clock offset";
     STR_APP_LANG = "Application language";
