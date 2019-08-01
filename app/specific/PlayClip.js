@@ -49,7 +49,7 @@ function PlayClip_Start() {
     Main_replaceClassEmoji('stream_info_title');
 
     Main_values.Play_isHost = false;
-    document.getElementById('controls_' + Play_controlsOpenVod).style.display = '';
+    PlayClip_SetOpenVod();
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
@@ -65,7 +65,6 @@ function PlayClip_Start() {
     } else Chat_NoVod();
     Main_innerHTML('pause_button', '<div style="transform: translateY(10%);"><i class="pause_button3d icon-pause"></i> </div>');
     Main_ShowElement('progress_bar_div');
-    PlayClip_SetOpenVod();
     Main_ShowElement('controls_holder');
 
     PlayClip_PlayerCheckCounter = 0;
@@ -434,7 +433,7 @@ function PlayClip_setHidePanel() {
 }
 
 function PlayClip_SetOpenVod() {
-    document.getElementById('controls_' + Play_controlsQuality).style.display = PlayClip_HasVOD ? 'inline-block' : 'none';
+    document.getElementById('controls_' + Play_controlsOpenVod).style.display = PlayClip_HasVOD ? 'inline-block' : 'none';
 }
 
 function PlayClip_OpenVod() {
