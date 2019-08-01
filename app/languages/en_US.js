@@ -7,6 +7,7 @@ function en_USLang() {
     //document.getElementById("side_panel").style.width = "25%";
 
     //Below are variables to translate
+    STR_KEY_UP_DOWN = " (PG Up/Down)";
     STR_REFRESH = "Refresh";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
@@ -94,7 +95,7 @@ function en_USLang() {
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
     STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it closes";
-    STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right";
+    STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right or" + STR_KEY_UP_DOWN;
     STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search";
     STR_CONTROLS_MAIN_11 = "After writing the search text press the Enter key on the virtual keyboard then choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
@@ -123,8 +124,8 @@ function en_USLang() {
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
     STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Enter key to confirm the change";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
-    STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right";
-    STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left";
+    STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right or key 2";
+    STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or " + STR_KEY_UP_DOWN;
     STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down";
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: Change in side panel settings";
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): Press Pause\\Play button twice or change the video quality to the same will reset and re-sync the chat";
@@ -168,11 +169,10 @@ function en_USLang() {
     STR_PLACEHOLDER_PRESS_UP = "Press Up to ";
     STR_FALLOW_GAMES = "Followed Games";
     STR_USER_GAMES_CHANGE = "Change between";
-    STR_GUIDE = " Back key then Enter";
+    STR_GUIDE = " Back key then Enter or key 2";
     STR_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     STR_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     STR_STARTED = "Started ";
-    STR_KEY_UP_DOWN = " (PG Up/Down)";
     STR_VIDEOS = "Videos";
     STR_VIDEO = " Video";
     STR_REPLAY = "Replay";
