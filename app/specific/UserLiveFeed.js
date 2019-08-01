@@ -273,14 +273,15 @@ function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
     Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
         '" class="side_panel_div"><div style="width: 100%;"><div id="' +
         UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] +
-        '</div><div class="side_panel_iner_div1"><img class="side_panel_channel_img" src="' + valuesArray[0] +
+        '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
+        '" class="side_panel_channel_img" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
         '\'"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
         '" class="side_panel_new_title">' + valuesArray[2] + '</div><div id="' +
         UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + valuesArray[3] +
         '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
         (!jsondata[2] ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 55%; "></i><div style="font-size: 60%;">' + valuesArray[4] + '</div></div></div></div></div></div>';
+        ' font-size: 55%; "></i><div style="font-size: 65%;">' + valuesArray[4] + '</div></div></div></div></div></div>';
 
     return Main_td;
 }
