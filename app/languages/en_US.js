@@ -255,4 +255,5 @@ function en_USLang() {
     STR_VERY_HIGH = "Very high";
     STR_THUMB_RESOLUTION = "Thumbnails quality";
     STR_THUMB_RESOLUTION_SUMARRY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
+    STR_PAYPAL_SUMMARY = "Donations use above Email.";
 }
