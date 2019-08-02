@@ -438,9 +438,9 @@ function Play_loadDataRequest() {
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = 'http://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
+        theUrl = 'http://usher.twitch.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&player=twitchweb&type=any&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
+            '&player=twitchweb&type=any&playlist_include_framerate=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
     }
 
