@@ -532,20 +532,24 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void play(boolean play) {
-            if (player != null) player.setPlayWhenReady(play);
+            myHandler.post(() -> {
+                if (PlayerActivity.player != null) PlayerActivity.player.setPlayWhenReady(play);
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getPlaybackState() {
-            if (player != null) return player.getPlayWhenReady();
+            if (PlayerActivity.player != null) return PlayerActivity.player.getPlayWhenReady();
             return false;
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void setPlaybackSpeed(float value) {
-            if (player != null) player.setPlaybackParameters(new PlaybackParameters(value, 1.0f));
+            myHandler.post(() -> {
+                if (PlayerActivity.player != null) PlayerActivity.player.setPlaybackParameters(new PlaybackParameters(value, 1.0f));
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -576,7 +580,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getVideoQuality() {
-            if (player != null) return mgetVideoQuality(player);
+            if (PlayerActivity.player != null) return mgetVideoQuality(PlayerActivity.player);
             else return null;
         }
     }
@@ -596,13 +600,14 @@ public class PlayerActivity extends Activity {
                             break;
                         case Player.STATE_READY:
                             hideLoading();
-                            if (player != null)
-                                mwebview.loadUrl("javascript:Play_UpdateDuration(" +
-                                        mwhocall + "," + player.getDuration() + ")");
+                            if (player != null) {
+                                myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
+                                        mwhocall + "," + player.getDuration() + ")"));
+                            }
                             break;
                         case Player.STATE_ENDED:
                             hideLoading();
-                            mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+                            myHandler.post(() -> mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")"));
                             break;
                         default:
                             break;
