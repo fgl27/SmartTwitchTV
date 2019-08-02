@@ -5,8 +5,6 @@ package com.fgl27.twitch;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.media.MediaCodecInfo;
-import android.media.MediaCodecList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,14 +25,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.fgl27.twitch.helpers.HVTHandler;
-import com.fgl27.twitch.helpers.ResponseUtils;
-import com.fgl27.twitch.helpers.Streams;
+import com.fgl27.twitch.helpers.Tools;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -43,7 +38,6 @@ import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
-import com.google.android.exoplayer2.source.BehindLiveWindowException;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
@@ -52,33 +46,13 @@ import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.UnsupportedCharsetException;
 
 public class PlayerActivity extends Activity {
     private static final String TAG = PlayerActivity.class.getName();
 
-    private static final String CLIENTIDHEADER = "Client-ID";
-    private static final String CLIENTID = "5seja5ptej058mxqy7gh5tcudjqtm9";
-
-    private static final String ACCEPTHEADER = "Accept";
-    private static final String TWITHCV5JSON = "application/vnd.twitchtv.v5+json";
-
-    private static final String AUTHORIZATION = "Authorization";
-
     public static int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
-    private static final String[] codecNames = {"avc", "vp9", "mp4a"};
 
     private PlayerView simpleExoPlayerView;
     public static SimpleExoPlayer player;
@@ -151,7 +125,7 @@ public class PlayerActivity extends Activity {
                     this,
                     new DefaultRenderersFactory(this),
                     trackSelector,
-                    getLoadControl());
+                    Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
             simpleExoPlayerView.setPlayer(player);
 
@@ -241,7 +215,7 @@ public class PlayerActivity extends Activity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (player == null && shouldAutoPlay && mwebview != null && alredystarted) {
             mwebview.loadUrl("javascript:Play_CheckResume()");
@@ -270,7 +244,7 @@ public class PlayerActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         releasePlayer();
     }
@@ -317,39 +291,6 @@ public class PlayerActivity extends Activity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * Increase player's min/max buffer sizes
-     *
-     * @return load control
-     */
-    private DefaultLoadControl getLoadControl() {
-        return new DefaultLoadControl.Builder()
-                .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
-                .setBufferDurationsMs(
-                        BUFFER_SIZE[mwhocall], //DEFAULT_MIN_BUFFER_MS
-                        Math.min(BUFFER_SIZE[mwhocall] + 2000, 15000), //DEFAULT_MAX_BUFFER_MS
-                        BUFFER_SIZE[mwhocall], //DEFAULT_BUFFER_FOR_PLAYBACK_MS
-                        BUFFER_SIZE[mwhocall] //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
-                )
-                .setTargetBufferBytes(C.LENGTH_UNSET)
-                .setPrioritizeTimeOverSizeThresholds(true)
-                .createDefaultLoadControl();
-    }
-
-    private static boolean isBehindLiveWindow(ExoPlaybackException e) {
-        if (e.type != ExoPlaybackException.TYPE_SOURCE) {
-            return false;
-        }
-        Throwable cause = e.getSourceException();
-        while (cause != null) {
-            if (cause instanceof BehindLiveWindowException) {
-                return true;
-            }
-            cause = cause.getCause();
-        }
-        return false;
     }
 
     private void clearResumePosition() {
@@ -527,13 +468,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-            return readUrl(urlString, timeout, HeaderQuantity, access_token, false);
+            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, false);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
-            return readUrl(urlString, timeout, HeaderQuantity, access_token, post);
+            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, post);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -587,7 +528,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean misCodecSupported() {
-            return isCodecSupported("vp9");
+            return Tools.isCodecSupported("vp9");
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -596,7 +537,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    if (PlayerActivity.player != null) value = mgetVideoQuality(PlayerActivity.player);
+                    if (PlayerActivity.player != null) value = Tools.mgetVideoQuality(PlayerActivity.player);
                     else value = null;
                 }
             });
@@ -663,108 +604,11 @@ public class PlayerActivity extends Activity {
                     Toast.makeText(PlayerActivity.this, errorString, Toast.LENGTH_SHORT).show();
                 }
 
-                if (isBehindLiveWindow(e)) clearResumePosition();
+                if (Tools.isBehindLiveWindow(e)) clearResumePosition();
                 else updateResumePosition();
 
                 initializePlayer();
             }
         };
-    }
-
-    //TODO try a asynchronous one
-    //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
-    //use default js XMLHttpRequest
-    public String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
-        try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
-
-            //Default header for all actions
-            if (HeaderQuantity > 0) urlConnection.setRequestProperty(CLIENTIDHEADER, CLIENTID);
-            //Header TWITHCV5 to load all screens and some stream info
-            if (HeaderQuantity > 1) urlConnection.setRequestProperty(ACCEPTHEADER, TWITHCV5JSON);
-            //Header to access User VOD screen
-            if (HeaderQuantity > 2) urlConnection.setRequestProperty(AUTHORIZATION, access_token);
-
-            urlConnection.setConnectTimeout(timeout);
-
-            if (post) {
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoOutput(true);
-            }
-
-            int status = urlConnection.getResponseCode();
-
-            if (status != -1) {
-                if (status == 401 || status == 403 || status == 404) return JsonObToString(status, "expired_or_offline");
-
-                //TODO findout what is crashing when the status is 401 or 403
-                // probably null mresponseCharset resolved bellow
-
-                final Charset mresponseCharset;
-                mresponseCharset = responseCharset(urlConnection.getContentType());
-
-                if (mresponseCharset != null) {
-                    byte[] responseBytes = Streams.readFully(urlConnection.getInputStream());
-                    return JsonObToString(status, new String(responseBytes, mresponseCharset));
-                } else return JsonObToString(status, "fail");
-            } else {
-                return null;
-            }
-        } catch (IOException e) {
-            Log.w(TAG, "IOException ", e);
-            return null;
-        }
-    }
-
-    public boolean isCodecSupported(String name) {
-        for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos())
-            if (codec.getName().contains(name) && !codec.getName().contains("google"))
-                return true;
-
-        return false;
-    }
-
-    public Charset responseCharset(String getContentType) {
-        try {
-            return ResponseUtils.responseCharset(getContentType);
-        } catch (UnsupportedCharsetException e) {
-            Log.i(TAG, "Unsupported response charset", e);
-            return null;
-        } catch (IllegalCharsetNameException e) {
-            Log.i(TAG, "Illegal response charset", e);
-            return null;
-        }
-    }
-
-    public String JsonObToString(int status, String responseText) {
-        JSONObject ob = new JSONObject();
-        try {
-            ob.put("status", status);
-            ob.put("responseText", responseText);
-            return ob.toString();
-        } catch (JSONException e) {
-            Log.w(TAG, "JSONException ", e);
-            return null;
-        }
-    }
-
-    public String mgetVideoQuality(SimpleExoPlayer player) {
-        Format format = player.getVideoFormat();
-
-        if (format == null) {
-            return null;
-        }
-
-        return format.height + "p," + (format.frameRate == Format.NO_VALUE ? "," : Math.round(format.frameRate) + ",") + format.bitrate + "," +  mgetCodec(format.codecs);
-    }
-
-    public String mgetCodec(String codec) {
-        for (String codecName : codecNames) {
-            if (codec.contains(codecName)) {
-                return codecName;
-            }
-        }
-
-        return codec;
     }
 }
