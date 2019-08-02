@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.fgl27.twitch.helpers.HVTHandler;
 import com.fgl27.twitch.helpers.ResponseUtils;
 import com.fgl27.twitch.helpers.Streams;
 import com.google.android.exoplayer2.C;
@@ -507,8 +508,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public long gettime() {
-            if (PlayerActivity.player != null) return PlayerActivity.player.getCurrentPosition();
-            return 0;
+            HVTHandler.RunnableResult<Long> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Long>() {
+                @Override
+                public void run() {
+                    if (PlayerActivity.player != null) value = PlayerActivity.player.getCurrentPosition();
+                    else value = 0L;
+                }
+            });
+            return result.get();
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -540,8 +547,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getPlaybackState() {
-            if (PlayerActivity.player != null) return PlayerActivity.player.getPlayWhenReady();
-            return false;
+            HVTHandler.RunnableResult<Boolean> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Boolean>() {
+                @Override
+                public void run() {
+                    if (PlayerActivity.player != null) value = PlayerActivity.player.getPlayWhenReady();
+                    else value = false;
+                }
+            });
+            return result.get();
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -580,8 +593,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getVideoQuality() {
-            if (PlayerActivity.player != null) return mgetVideoQuality(PlayerActivity.player);
-            else return null;
+            HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
+                @Override
+                public void run() {
+                    if (PlayerActivity.player != null) value = mgetVideoQuality(PlayerActivity.player);
+                    else value = null;
+                }
+            });
+            return result.get();
         }
     }
 
