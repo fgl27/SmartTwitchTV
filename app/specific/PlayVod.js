@@ -293,9 +293,10 @@ function PlayVod_loadDataRequest() {
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = 'http://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
-            '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
-            '&player=twitchweb&type=any&playlist_include_framerate=true&allow_source=true' +
+        theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
+            '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' +
+             PlayVod_tokenResponse.sig +
+            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
         if (Main_IsNotBrowser) {
             try {
