@@ -977,6 +977,10 @@ function Main_updateclock() {
     }
 }
 
+function Main_RandomInt() {
+    return parseInt(Math.random() * 1000000000);
+}
+
 function Main_updateUserFeed() {
     if (AddUser_UserIsSet()) {
         window.setTimeout(function() {
