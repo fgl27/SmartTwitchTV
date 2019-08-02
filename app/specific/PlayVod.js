@@ -293,10 +293,10 @@ function PlayVod_loadDataRequest() {
             (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
                 AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
     } else {
-        theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
+        theUrl = 'http://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' + PlayVod_tokenResponse.sig +
-            '&playlist_include_framerate=true&reassignments_supported=true&allow_source=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '');
+            '&player=twitchweb&type=any&playlist_include_framerate=true&allow_source=true' +
+            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
         if (Main_IsNotBrowser) {
             try {
                 Android.SetAuto(theUrl);
