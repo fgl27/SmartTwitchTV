@@ -2133,6 +2133,7 @@ function Play_IconsRemoveFocus() {
     document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
 }
 
+
 function Play_ForceHidePannel() {
     var doc = document.getElementById("scene_channel_panel");
     doc.style.transition = 'none';
