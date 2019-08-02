@@ -209,7 +209,7 @@ function ChatLive_loadChat() {
 
 function ChatLive_loadChatRequest() {
 
-    ChatLive_socket = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
+    ChatLive_socket = new ReconnectingWebSocket('ws://irc-ws.chat.twitch.tv', 'irc', {
         reconnectInterval: 3000
     });
 
