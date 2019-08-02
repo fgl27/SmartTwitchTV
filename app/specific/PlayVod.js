@@ -207,9 +207,8 @@ function PlayVod_updateVodInfoPannel(response) {
     ChannelVod_DurationSeconds = parseInt(response.length);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
-    Play_ProgresBarrElm.style.transition = 'none';
+    PlayVod_currentTime = Main_values.vodOffset * 1000;
     PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
-    PlayVod_ResetTransition();
 
     Main_values.Main_selectedChannelDisplayname = response.channel.display_name;
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
@@ -553,9 +552,7 @@ function PlayVod_hidePanel() {
     PlayVod_addToJump = 0;
     Play_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
-    Play_ProgresBarrElm.style.transition = 'none';
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
-    PlayVod_ResetTransition();
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_quality = PlayVod_qualityPlaying;
@@ -697,12 +694,6 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
     if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
 }
 
-function PlayVod_ResetTransition() {
-    window.setTimeout(function() {
-        Play_ProgresBarrElm.style.transition = '';
-    }, 1000);
-}
-
 function PlayVod_jump() {
     Play_clearPause();
     if (!Play_isEndDialogVisible()) {
@@ -746,7 +737,6 @@ function PlayVod_SizeClear() {
     PlayVod_jumpCount = 0;
     PlayVod_StepsCount = 0;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
-    PlayVod_ResetTransition();
 }
 
 function PlayVod_jumpSteps(duration_seconds) {
@@ -793,6 +783,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
     Play_ProgresBarrElm.style.transition = 'none';
     Play_ProgresBarrElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
     PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
+    Play_ProgresBarrElm.style.transition = '';
 
     PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
 }
@@ -887,9 +878,7 @@ function PlayVod_DialogPressed(fromStart) {
         if (!fromStart) {
             Main_values.vodOffset = PlayVod_VodIds['#' + Main_values.ChannelVod_vodId];
             PlayVod_currentTime = Main_values.vodOffset * 1000;
-            Play_ProgresBarrElm.style.transition = 'none';
             PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
-            PlayVod_ResetTransition();
             PlayVod_PosStart();
         } else {
             delete PlayVod_VodIds['#' + Main_values.ChannelVod_vodId];
