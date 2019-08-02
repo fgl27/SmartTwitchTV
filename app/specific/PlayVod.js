@@ -295,7 +295,7 @@ function PlayVod_loadDataRequest() {
     } else {
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' +
-             PlayVod_tokenResponse.sig +
+            PlayVod_tokenResponse.sig +
             '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
         if (Main_IsNotBrowser) {
