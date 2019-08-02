@@ -351,7 +351,7 @@ function AddCode_RequestCheckSub() {
     var xmlHttp;
     if (Main_IsNotBrowser) {
 
-        xmlHttp = Android.mreadUrl(theUrl, AddCode_loadingDataTimeout, 3, AddUser_UsernameArray[Main_values.Users_Position].access_token);
+        xmlHttp = Android.mreadUrl(theUrl, AddCode_loadingDataTimeout, 3, 'OAuth ' + AddUser_UsernameArray[Main_values.Users_Position].access_token);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
