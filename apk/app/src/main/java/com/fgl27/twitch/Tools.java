@@ -1,9 +1,10 @@
 //copied https://github.com/yuliskov/SmartYouTubeTV
 
-package com.fgl27.twitch.helpers;
+package com.fgl27.twitch;
 
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.exoplayer2.C;
@@ -11,7 +12,14 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.Extractor;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 
 import org.json.JSONException;
@@ -31,7 +39,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public final class Tools {
+public class Tools {
 
     private static final String TAG = Tools.class.getName();
 
@@ -245,5 +253,18 @@ public final class Tools {
             cause = cause.getCause();
         }
         return false;
+    }
+
+    public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int mwhocall) {
+        if (mwhocall < 3) return new HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(uri);
+        else return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
+    }
+
+    //https://exoplayer.dev/shrinking.html
+    private static class Mp4ExtractorsFactory implements ExtractorsFactory {
+        @Override
+        public Extractor[] createExtractors() {
+            return new Extractor[]{new Mp4Extractor()};
+        }
     }
 }

@@ -24,8 +24,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fgl27.twitch.helpers.HVTHandler;
-import com.fgl27.twitch.helpers.Tools;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -33,16 +31,9 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.Extractor;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.source.dash.DashMediaSource;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
-import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -51,31 +42,34 @@ import com.google.android.exoplayer2.util.Util;
 
 public class PlayerActivity extends Activity {
     private static final String TAG = PlayerActivity.class.getName();
-
     public static int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
 
     private PlayerView simpleExoPlayerView;
-    public static SimpleExoPlayer player;
-    private DataSource.Factory dataSourceFactory;
+    public SimpleExoPlayer player;
+    public DataSource.Factory dataSourceFactory;
 
     private DefaultTrackSelector trackSelector;
+    private DefaultTrackSelector.Parameters trackSelectorParameters;
     private boolean shouldAutoPlay;
+    public long mResumePosition;
+    public boolean seeking;
+    public int mwhocall = 1;
 
-    //private int mResumeWindow;
-    private long mResumePosition;
+    private Uri uri;
+    private MediaSource mediaurireset;
 
-    public static String url;
     private MediaSource mediaSourceAuto = null;
-    private MediaSource TempmediaSourceAuto;
+    public MediaSource TempmediaSourceAuto;
 
+    private boolean loadingcanshow;
     private ImageView spinner;
     private Animation rotation;
 
-    private WebView mwebview;
+    public WebView mwebview;
+
     private boolean onCreateReady;
     private boolean alredystarted;
-    private boolean loadingcanshow;
-    public int mwhocall = 1;
+
     private int heightDefault = 0;
     private int mwidthDefault = 0;
     private int heightChat = 0;
@@ -89,7 +83,6 @@ public class PlayerActivity extends Activity {
         if (!onCreateReady) {
             onCreateReady = true;
             setContentView(R.layout.activity_player);
-            url = "file:///android_asset/temp.mp4";
 
             myHandler = new Handler(Looper.getMainLooper());
 
@@ -97,10 +90,13 @@ public class PlayerActivity extends Activity {
                     new DefaultDataSourceFactory(
                             this, Util.getUserAgent(this, this.getString(R.string.app_name)));
 
+            trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
+
+            mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
+
             spinner = findViewById(R.id.spinner);
             rotation = AnimationUtils.loadAnimation(this, R.anim.rotation);
-
-            hideLoading();
+            spinner.startAnimation(rotation);
 
             simpleExoPlayerView = findViewById(R.id.player_view);
             shouldAutoPlay = false;
@@ -117,9 +113,8 @@ public class PlayerActivity extends Activity {
         if (shouldAutoPlay) {
             showLoading(true);
 
-
             trackSelector = new DefaultTrackSelector();
-            trackSelector.setParameters(new DefaultTrackSelector.ParametersBuilder().build());
+            trackSelector.setParameters(trackSelectorParameters);
 
             player = ExoPlayerFactory.newSimpleInstance(
                     this,
@@ -132,19 +127,17 @@ public class PlayerActivity extends Activity {
             player.addListener(PlayerEvent());
             player.setPlayWhenReady(true);
 
-            //We are sekking from js or the updateResumePosition() saved the postion onStop
-            if (mResumePosition > 0 && mwhocall > 1) {
-                player.seekTo(mResumePosition);
-            }
+            seeking = (mResumePosition > 0) && (mwhocall > 1);
+            if (seeking) player.seekTo(mResumePosition);
 
-            player.prepare(mediaSourceAuto != null ? mediaSourceAuto : buildMediaSource(Uri.parse(url)), false, true);
+            player.prepare(mediaSourceAuto != null ? mediaSourceAuto : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall), !seeking, true);
         } else {
-            //Reset player background to a empty black screen
+            //Reset player background to a empty black screen and reset all states
             player = ExoPlayerFactory.newSimpleInstance(this);
             simpleExoPlayerView.setPlayer(player);
 
             player.setPlayWhenReady(false);
-            player.prepare(buildMediaSource(Uri.parse(url)), false, true);
+            player.prepare(mediaurireset, true, true);
 
             releasePlayer();
             clearResumePosition();
@@ -152,14 +145,21 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position, boolean mshouldAutoPlay) {
-
+    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position) {
         mediaSourceAuto = mediaSource;
-        PlayerActivity.url = videoAddress;
-        shouldAutoPlay = mshouldAutoPlay;
+        uri = Uri.parse(videoAddress);
+        shouldAutoPlay = true;
         mwhocall = whocall;
-        //We are sekking from js
-        if (position > 0) mResumePosition = position;
+        mResumePosition = position > 0 ? position : 0;
+
+        initializePlayer();
+    }
+
+    private void PreresetPlayer(int whocall) {
+        mediaSourceAuto = null;
+        shouldAutoPlay = false;
+        mwhocall = whocall;
+        mResumePosition = 0;
 
         initializePlayer();
     }
@@ -294,7 +294,6 @@ public class PlayerActivity extends Activity {
     }
 
     private void clearResumePosition() {
-        //mResumeWindow = C.INDEX_UNSET;
         mResumePosition = C.TIME_UNSET;
     }
 
@@ -303,33 +302,7 @@ public class PlayerActivity extends Activity {
             return;
         }
 
-        //mResumeWindow = player.getCurrentWindowIndex();
         mResumePosition = player.isCurrentWindowSeekable() ? Math.max(0, player.getCurrentPosition()) : C.TIME_UNSET;
-    }
-
-    private MediaSource buildMediaSource(Uri uri) {
-        @C.ContentType int type = Util.inferContentType(uri);
-        switch (type) {
-            case C.TYPE_HLS:
-                return new HlsMediaSource.Factory(dataSourceFactory)
-                        .setAllowChunklessPreparation(true).createMediaSource(uri);
-            case C.TYPE_OTHER:
-                return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
-            case C.TYPE_DASH:
-                return new DashMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
-            case C.TYPE_SS:
-                return new SsMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
-            default:
-                throw new IllegalStateException("Unsupported type: " + type);
-        }
-    }
-
-    //https://exoplayer.dev/shrinking.html
-    private class Mp4ExtractorsFactory implements ExtractorsFactory {
-        @Override
-        public Extractor[] createExtractors() {
-            return new Extractor[]{new Mp4Extractor()};
-        }
     }
 
     private void initializeWebview() {
@@ -412,32 +385,32 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1, true));
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position, true));
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetAuto(String url) {
             //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            TempmediaSourceAuto = buildMediaSource(Uri.parse(url));
+            myHandler.post(() -> TempmediaSourceAuto = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(TempmediaSourceAuto, "", whocall, position, true));
+            myHandler.post(() -> PreinitializePlayer(TempmediaSourceAuto, "", whocall, position));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int whocall) {
-            myHandler.post(() -> PreinitializePlayer(null, "file:///android_asset/temp.mp4", mwhocall, -1, false));
+            myHandler.post(() -> PreresetPlayer(whocall));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -452,7 +425,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<Long> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Long>() {
                 @Override
                 public void run() {
-                    if (PlayerActivity.player != null) value = PlayerActivity.player.getCurrentPosition();
+                    if (player != null) value = player.getCurrentPosition();
                     else value = 0L;
                 }
             });
@@ -481,7 +454,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void play(boolean play) {
             myHandler.post(() -> {
-                if (PlayerActivity.player != null) PlayerActivity.player.setPlayWhenReady(play);
+                if (player != null) player.setPlayWhenReady(play);
             });
         }
 
@@ -491,7 +464,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<Boolean> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Boolean>() {
                 @Override
                 public void run() {
-                    if (PlayerActivity.player != null) value = PlayerActivity.player.getPlayWhenReady();
+                    if (player != null) value = player.getPlayWhenReady();
                     else value = false;
                 }
             });
@@ -502,7 +475,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void setPlaybackSpeed(float value) {
             myHandler.post(() -> {
-                if (PlayerActivity.player != null) PlayerActivity.player.setPlaybackParameters(new PlaybackParameters(value, 1.0f));
+                if (player != null) player.setPlaybackParameters(new PlaybackParameters(value, 1.0f));
             });
         }
 
@@ -537,7 +510,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    if (PlayerActivity.player != null) value = Tools.mgetVideoQuality(PlayerActivity.player);
+                    if (player != null) value = Tools.mgetVideoQuality(player);
                     else value = null;
                 }
             });
@@ -552,29 +525,32 @@ public class PlayerActivity extends Activity {
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 if (playWhenReady) {
                     switch (playbackState) {
-                        case Player.STATE_IDLE:
-                            break;
                         case Player.STATE_BUFFERING:
-                            loadingcanshow = true;
-                            showLoading(false);
+                            myHandler.post(() -> {
+                                loadingcanshow = true;
+                                showLoading(false);
+                            });
                             break;
                         case Player.STATE_READY:
-                            hideLoading();
-                            if (player != null) {
-                                myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
-                                        mwhocall + "," + player.getDuration() + ")"));
-                            }
+                            myHandler.post(() -> {
+                                hideLoading();
+                                if (player != null) {
+                                    myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
+                                            mwhocall + "," + player.getDuration() + ")"));
+                                }
+                            });
                             break;
                         case Player.STATE_ENDED:
-                            hideLoading();
-                            myHandler.post(() -> mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")"));
+                            myHandler.post(() -> {
+                                hideLoading();
+                                mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+                            });
                             break;
+                        //case Player.STATE_IDLE:
                         default:
                             break;
                     }
-                } else {
-                    hideLoading();
-                }
+                } else myHandler.post(() -> hideLoading());
             }
 
             @Override

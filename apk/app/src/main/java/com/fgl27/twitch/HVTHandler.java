@@ -1,5 +1,5 @@
 // https://raw.githubusercontent.com/Petrakeas/HVTHandler/master/HVTHandler.java
-package com.fgl27.twitch.helpers;
+package com.fgl27.twitch;
 
 import android.os.Handler;
 import android.os.Looper;
