@@ -44,19 +44,21 @@ public final class Tools {
     private static final String TWITHCV5JSON = "application/vnd.twitchtv.v5+json";
     private static final String AUTHORIZATION = "Authorization";
 
+    private static String[][] HEADERS = {{CLIENTIDHEADER, CLIENTID},
+            {ACCEPTHEADER, TWITHCV5JSON},
+            {AUTHORIZATION, null}};
+
     //TODO try a asynchronous one
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
     public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
+            HEADERS[2][1] = access_token;
+            Log.d(TAG, "HEADERS " + HEADERS[2][1]);
 
-            //Default header for all actions
-            if (HeaderQuantity > 0) urlConnection.setRequestProperty(CLIENTIDHEADER, CLIENTID);
-            //Header TWITHCV5 to load all screens and some stream info
-            if (HeaderQuantity > 1) urlConnection.setRequestProperty(ACCEPTHEADER, TWITHCV5JSON);
-            //Header to access User VOD screen
-            if (HeaderQuantity > 2) urlConnection.setRequestProperty(AUTHORIZATION, access_token);
+            for (int i = 0; i < HeaderQuantity; i++)
+                urlConnection.setRequestProperty(HEADERS[i][0], HEADERS[i][1]);
 
             urlConnection.setConnectTimeout(timeout);
 
@@ -182,6 +184,7 @@ public final class Tools {
     }
 
     private static String JsonObToString(int status, String responseText) {
+        Log.d(TAG, "status " + status + " responseText " + responseText);
         JSONObject ob = new JSONObject();
         try {
             ob.put("status", status);
