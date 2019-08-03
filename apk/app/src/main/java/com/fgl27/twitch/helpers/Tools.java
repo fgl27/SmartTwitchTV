@@ -33,8 +33,11 @@ import java.util.Map;
 
 public final class Tools {
 
-    private static final String[] codecNames = {"avc", "vp9", "mp4a"};
     private static final String TAG = Tools.class.getName();
+
+    private static final String[] codecNames = {"avc", "vp9", "mp4a"};
+
+    //Same values as in the js counterpart
     private static final String CLIENTIDHEADER = "Client-ID";
     private static final String CLIENTID = "5seja5ptej058mxqy7gh5tcudjqtm9";
     private static final String ACCEPTHEADER = "Accept";
