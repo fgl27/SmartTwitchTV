@@ -1301,17 +1301,22 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
     }
 }
 
+var Main_Headers = [
+    [Main_clientIdHeader, Main_clientId],
+    [Main_AcceptHeader, Main_TwithcV5Json],
+    [Main_Authorization, null]
+];
+
 function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", (useProxy ? proxyurl : '') + theUrl, true);
     xmlHttp.timeout = Timeout;
 
-    if (HeaderQuatity > 0) xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    //Header TWITHCV5 to load all screens and some stream info
-    if (HeaderQuatity > 1) xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    //Header to access User VOD screen
-    if (HeaderQuatity > 2) xmlHttp.setRequestHeader(Main_Authorization, access_token);
+    Main_Headers[2][1] = access_token;
+
+    for (var i = 0; i < HeaderQuatity; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.ontimeout = function() {};
 
@@ -1331,54 +1336,53 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 }
 
 //Duplicated (BasehttpPost === BasehttpGet minus the post part ) as the android side may not be there and is not needed yet
-function BasehttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) { // jshint ignore:line
-    if (Main_IsNotBrowser) BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
-    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy);
-}
+//function BasehttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) { // jshint ignore:line
+//    if (Main_IsNotBrowser) BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+//    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy);
+//}
 
-function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-    var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token, true);
+//function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+//    var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token, true);
 
-    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-    else {
-        calbackError();
-        return;
-    }
+//    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+//    else {
+//        calbackError();
+//        return;
+//    }
 
-    if (xmlHttp.status === 200) {
-        callbackSucess(xmlHttp.responseText);
-    } else {
-        calbackError();
-    }
-}
+//    if (xmlHttp.status === 200) {
+//        callbackSucess(xmlHttp.responseText);
+//    } else {
+//        calbackError();
+//    }
+//}
 
-function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) {
-    var xmlHttp = new XMLHttpRequest();
+//function BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) {
+//    var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("POST", (useProxy ? proxyurl : '') + theUrl, true);
-    xmlHttp.timeout = Timeout;
+//    xmlHttp.open("POST", (useProxy ? proxyurl : '') + theUrl, true);
+//    xmlHttp.timeout = Timeout;
 
-    if (HeaderQuatity > 0) xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    //Header TWITHCV5 to load all screens and some stream info
-    if (HeaderQuatity > 1) xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    //Header to access User VOD screen
-    if (HeaderQuatity > 2) xmlHttp.setRequestHeader(Main_Authorization, access_token);
+//    Main_Headers[2][1] = access_token;
 
-    xmlHttp.ontimeout = function() {};
+//    for (var i = 0; i < HeaderQuatity; i++)
+//       xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText);
-                return;
-            } else {
-                calbackError();
-            }
-        }
-    };
+//    xmlHttp.ontimeout = function() {};
 
-    xmlHttp.send(null);
-}
+//    xmlHttp.onreadystatechange = function() {
+//        if (xmlHttp.readyState === 4) {
+//            if (xmlHttp.status === 200) {
+//                callbackSucess(xmlHttp.responseText);
+//                return;
+//            } else {
+//                calbackError();
+//            }
+//        }
+//    };
+
+//    xmlHttp.send(null);
+//}
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
 var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
