@@ -426,6 +426,7 @@ public class PlayerActivity extends Activity {
         public void SetAuto(String url) {
             //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
             TempmediaSourceAuto = buildMediaSource(Uri.parse(url));
+            Log.d(TAG, "SetAuto url = " + url);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -468,13 +469,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, false);
+            return Tools.prerun(urlString, timeout, HeaderQuantity, access_token, false);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
-            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, post);
+            return Tools.prerun(urlString, timeout, HeaderQuantity, access_token, post);
         }
 
         @SuppressWarnings("unused")//called by JS
