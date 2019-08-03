@@ -38,9 +38,12 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
             if (xmlHttp.status === 200) {
                 AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc);
             } else {
-                if (JSON.parse(xmlHttp.responseText).message.indexOf('Invalid refresh token') !== -1) {
-                    AddCode_requestTokensFailRunning(position);
-                    if (callbackFuncNOK) callbackFuncNOK();
+                var response = JSON.parse(xmlHttp.responseText);
+                if (response.message) {
+                    if (response.message.indexOf('Invalid refresh token') !== -1) {
+                        AddCode_requestTokensFailRunning(position);
+                        if (callbackFuncNOK) callbackFuncNOK();
+                    } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
                 } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
             }
         }
@@ -235,10 +238,13 @@ function AddCode_RequestCheckFallowOK() {
 }
 
 function AddCode_RequestCheckFallowNOK(response) {
-    if ((JSON.parse(response).error + '').indexOf('Not Found') !== -1) {
-        AddCode_IsFallowing = false;
-        if (AddCode_PlayRequest) Play_setFallow();
-        else ChannelContent_setFallow();
+    response = JSON.parse(response);
+    if (response.error) {
+        if ((response.error + '').indexOf('Not Found') !== -1) {
+            AddCode_IsFallowing = false;
+            if (AddCode_PlayRequest) Play_setFallow();
+            else ChannelContent_setFallow();
+        } else AddCode_RequestCheckFallowError();
     } else AddCode_RequestCheckFallowError();
 }
 
@@ -359,23 +365,7 @@ function AddCode_RequestCheckSub() {
             return;
         }
 
-        if (xmlHttp.status === 200) {
-            AddCode_IsSub = true;
-            PlayVod_isSub();
-        } else if (xmlHttp.status === 422) {
-            AddCode_IsSub = false;
-            PlayVod_NotSub();
-        } else if (xmlHttp.status === 404) {
-            if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
-                AddCode_IsSub = false;
-                PlayVod_NotSub();
-                return;
-            } else AddCode_RequestCheckSubError();
-        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) {
-            AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
-        } else {
-            AddCode_RequestCheckSubError();
-        }
+        AddCode_RequestCheckSubreadyState(xmlHttp);
 
     } else {
 
@@ -389,28 +379,30 @@ function AddCode_RequestCheckSub() {
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) { //success yes user is a SUB
-                    AddCode_IsSub = true;
-                    PlayVod_isSub();
-                } else if (xmlHttp.status === 422) { //channel does not have a subscription program
-                    AddCode_IsSub = false;
-                    PlayVod_NotSub();
-                } else if (xmlHttp.status === 404) { //success no user is not a sub
-                    if ((JSON.parse(xmlHttp.responseText).error + '').indexOf('Not Found') !== -1) {
-                        AddCode_IsSub = false;
-                        PlayVod_NotSub();
-                        return;
-                    } else AddCode_RequestCheckSubError();
-                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                    AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
-                } else { // internet error
-                    AddCode_RequestCheckSubError();
-                }
-            }
+            if (xmlHttp.readyState === 4) AddCode_RequestCheckSubreadyState(xmlHttp);
         };
 
         xmlHttp.send(null);
+    }
+}
+
+function AddCode_RequestCheckSubreadyState(xmlHttp) {
+    if (xmlHttp.status === 200) { //success yes user is a SUB
+        AddCode_IsSub = true;
+        PlayVod_isSub();
+    } else if (xmlHttp.status === 422) { //channel does not have a subscription program
+        AddCode_RequestCheckSubfail();
+    } else if (xmlHttp.status === 404) { //success no user is not a sub
+        var response = JSON.parse(xmlHttp.responseText);
+        if (response.error) {
+            if ((response.error + '').indexOf('Not Found') !== -1) {
+                AddCode_RequestCheckSubfail();
+            } else AddCode_RequestCheckSubError();
+        } else AddCode_RequestCheckSubError();
+    } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+        AddCode_refreshTokens(Main_values.Users_Position, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
+    } else { // internet error
+        AddCode_RequestCheckSubError();
     }
 }
 
