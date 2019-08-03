@@ -55,7 +55,6 @@ public final class Tools {
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
             HEADERS[2][1] = access_token;
-            Log.d(TAG, "HEADERS " + HEADERS[2][1]);
 
             for (int i = 0; i < HeaderQuantity; i++)
                 urlConnection.setRequestProperty(HEADERS[i][0], HEADERS[i][1]);
@@ -184,7 +183,6 @@ public final class Tools {
     }
 
     private static String JsonObToString(int status, String responseText) {
-        Log.d(TAG, "status " + status + " responseText " + responseText);
         JSONObject ob = new JSONObject();
         try {
             ob.put("status", status);
