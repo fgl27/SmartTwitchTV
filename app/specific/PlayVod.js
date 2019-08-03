@@ -566,7 +566,7 @@ function PlayVod_showPanel(autoHide) {
     Play_CleanHideExit();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(function() {
-          PlayVod_RefreshProgressBarr(autoHide);
+        PlayVod_RefreshProgressBarr(autoHide);
     }, 1000);
 
     if (autoHide) {
