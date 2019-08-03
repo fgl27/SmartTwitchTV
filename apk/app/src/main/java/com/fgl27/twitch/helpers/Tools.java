@@ -30,16 +30,56 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public final class Tools {
 
-    private static final String[] codecNames = {"avc", "vp9", "mp4a"};
     private static final String TAG = Tools.class.getName();
+
+    private static final String[] codecNames = {"avc", "vp9", "mp4a"};
+
+    //Same values as in the js counterpart
     private static final String CLIENTIDHEADER = "Client-ID";
     private static final String CLIENTID = "5seja5ptej058mxqy7gh5tcudjqtm9";
     private static final String ACCEPTHEADER = "Accept";
     private static final String TWITHCV5JSON = "application/vnd.twitchtv.v5+json";
     private static final String AUTHORIZATION = "Authorization";
+
+    public static String prerun(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
+        try {
+            return run(urlString, timeout, HeaderQuantity, access_token, post);
+        } catch (IOException e) {
+            Log.w(TAG, "prerun IOException ", e);
+            return null;
+        }
+    }
+
+    private static String run(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) throws IOException {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(urlString)
+                .build();
+
+        //Default header for all actions
+        if (HeaderQuantity > 0) request = request.newBuilder().addHeader(CLIENTIDHEADER, CLIENTID).build();
+        //Header TWITHCV5 to load all screens and some stream info
+        if (HeaderQuantity > 1) request = request.newBuilder().addHeader(ACCEPTHEADER, TWITHCV5JSON).build();
+        //Header to access User VOD screen
+        if (HeaderQuantity > 2) request = request.newBuilder().addHeader(AUTHORIZATION, access_token).build();
+
+        if (post) request = request.newBuilder().method("POST", null).build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return JsonObToString(response.code(), response.body().string());
+        }
+    }
 
     //TODO try a asynchronous one
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
@@ -86,7 +126,7 @@ public final class Tools {
         }
     }
 
-    public static byte[] readFully(InputStream in ) throws IOException {
+    private static byte[] readFully(InputStream in ) throws IOException {
         try {
             return readFullyNoClose( in );
         } finally {
@@ -115,7 +155,7 @@ public final class Tools {
      * @throws IllegalCharsetNameException if the response specified charset is illegal.
      * @throws UnsupportedCharsetException if the response specified charset is unsupported.
      */
-    public static Charset responseCharset(String contentTypeHeader)
+    private static Charset responseCharset(String contentTypeHeader)
             throws IllegalCharsetNameException, UnsupportedCharsetException {
         Charset responseCharset = StandardCharsets.UTF_8;
         if (contentTypeHeader != null) {
