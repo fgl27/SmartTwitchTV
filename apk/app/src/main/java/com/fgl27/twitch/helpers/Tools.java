@@ -68,16 +68,14 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                if (status == 401 || status == 403 || status == 404) return JsonObToString(status, "expired_or_offline");
-
-                //TODO findout what is crashing when the status is 401 or 403
-                // probably null mresponseCharset resolved bellow
-
-                final Charset mresponseCharset;
-                mresponseCharset = mresponseCharset(urlConnection.getContentType());
+                final Charset mresponseCharset = mresponseCharset(urlConnection.getContentType());
 
                 if (mresponseCharset != null) {
-                    byte[] responseBytes = readFully(urlConnection.getInputStream());
+                    byte[] responseBytes;
+
+                    if (status != HttpURLConnection.HTTP_OK) responseBytes = readFully(urlConnection.getErrorStream());
+                    else responseBytes = readFully(urlConnection.getInputStream());
+
                     return JsonObToString(status, new String(responseBytes, mresponseCharset));
                 } else return JsonObToString(status, "fail");
             } else {
@@ -89,7 +87,7 @@ public final class Tools {
         }
     }
 
-    public static byte[] readFully(InputStream in ) throws IOException {
+    private static byte[] readFully(InputStream in ) throws IOException {
         try {
             return readFullyNoClose( in );
         } finally {
@@ -118,7 +116,7 @@ public final class Tools {
      * @throws IllegalCharsetNameException if the response specified charset is illegal.
      * @throws UnsupportedCharsetException if the response specified charset is unsupported.
      */
-    public static Charset responseCharset(String contentTypeHeader)
+    private static Charset responseCharset(String contentTypeHeader)
             throws IllegalCharsetNameException, UnsupportedCharsetException {
         Charset responseCharset = StandardCharsets.UTF_8;
         if (contentTypeHeader != null) {
