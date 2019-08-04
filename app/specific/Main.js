@@ -62,6 +62,7 @@ var Main_values = {
     "Chat_font_size": 3,
     "ChatBackground": 10,
     "IsRerun": false,
+    "Main_selectedChannelPartner": false,
 };
 
 var Main_LastClickFinish = true;
@@ -846,7 +847,6 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Main_values.ChannelVod_vodId = ChannelClip_playUrl[7];
     ChannelVod_vodOffset = parseInt(ChannelClip_playUrl[8]);
 
-    //ChannelVod_vodOffset = ChannelVod_vodOffset + (ChannelVod_vodOffset > 85 ? -85 : 0);
     ChannelClip_title = ChannelClip_playUrl[9];
     ChannelClip_language = ChannelClip_playUrl[10];
     ChannelClip_game = ChannelClip_playUrl[11];
@@ -876,6 +876,10 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     Main_values.Play_gameSelected = Main_values.ChannelVod_vodId[3];
 
     if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
+
+    Main_values.Main_selectedChannel_id = Main_values.ChannelVod_vodId[6];
+    Main_values.Main_selectedChannelLogo = Main_values.ChannelVod_vodId[7];
+    Main_values.Main_selectedChannelPartner = Main_values.ChannelVod_vodId[8];
 
     Main_values.Main_selectedChannel = Main_values.ChannelVod_vodId[4];
     Play_IncrementView = Main_values.ChannelVod_vodId[5];

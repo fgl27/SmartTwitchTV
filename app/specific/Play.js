@@ -225,8 +225,6 @@ function Play_Start() {
     PlayClip_HasVOD = true;
     //reset channel logo to prevent another channel logo
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO_TEMP);
-    if (Main_values.Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
-    else Main_textContent("stream_info_name", Main_values.Play_selectedChannelDisplayname);
 
     //past broadcast
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
@@ -336,18 +334,23 @@ function Play_updateStreamInfoStart() {
     BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, false);
 }
 
-function Play_partnerIcon(name, partner) {
-    var div = '<div style="display: inline-block; width: auto%;"> ' + name + STR_SPACE + STR_SPACE + '</div>' + 
-    (partner ? '<img style="display: inline-block; width: 2%; vertical-align: middle;" alt="" src="' +
-     IMG_PARTNER + '">' : "") + STR_SPACE + STR_SPACE + '<div style="border-radius: 2px; display: inline-block; width: auto%; background: #' + (Main_values.IsRerun ? "FFFFFF; color: #000000;" : "E21212;") + ' font-size: 75%; text-shadow: none;">' + STR_SPACE + STR_SPACE +
-     (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>' ;
+function Play_partnerIcon(name, partner, islive) {
+    var div = '<div style="display: inline-block; width: auto%;"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
+        (partner ? ('<img style="display: inline-block; width: 2%; vertical-align: middle;" alt="" src="' +
+            IMG_PARTNER + '">' + STR_SPACE + STR_SPACE) : "");
+
+    if (islive) {
+        div += '<div style="border-radius: 2px; display: inline-block; width: auto%; background: #' + (Main_values.IsRerun ? "FFFFFF; color: #000000;" : "E21212;") + ' font-size: 75%; text-shadow: none;">' +
+            STR_SPACE + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>'
+    }
+
     Main_innerHTML("stream_info_name", div);
 }
 
 function Play_updateStreamInfoStartValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
-        Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner);
+        Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner, true);
 
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
         Main_innerHTML("stream_live_icon", (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase());

@@ -259,8 +259,8 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
         '<div id="' + UserLiveFeed_ids[3] + id +
         '" class="stream_channel" style="width: 66%; display: inline-block;"><i class="icon-' +
         (!data[2] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE +
-         valuesArray[1] + '</div>' + '<div id="' + UserLiveFeed_ids[5] + id +
-         '"class="stream_info">' + valuesArray[2] + '</div>' + '</div></div>';
+        valuesArray[1] + '</div>' + '<div id="' + UserLiveFeed_ids[5] + id +
+        '"class="stream_info">' + valuesArray[2] + '</div>' + '</div></div>';
 
     return Main_td;
 }
