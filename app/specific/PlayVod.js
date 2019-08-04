@@ -174,7 +174,8 @@ function PlayVod_updateVodInfoPannel(response) {
     //TODO add a warning about muted segments
     //if (response.muted_segments) console.log(response.muted_segments);
 
-    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, response.channel.partner);
+    Main_values.Main_selectedChannelPartner = response.channel.partner;
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner);
 
     Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING + response.game : "") +
