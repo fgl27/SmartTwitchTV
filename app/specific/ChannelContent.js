@@ -144,6 +144,7 @@ function ChannelContent_GetStreamerInfo() {
 }
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
+    console.log(responseText);
     var channel = JSON.parse(responseText);
     ChannelContent_offline_image = channel.video_banner;
     ChannelContent_offline_image = ChannelContent_offline_image ? ChannelContent_offline_image.replace("1920x1080", Main_VideoSize) : ChannelContent_offline_image;
@@ -152,6 +153,8 @@ function ChannelContent_GetStreamerInfoSuccess(responseText) {
     ChannelContent_selectedChannelFallower = channel.followers;
     ChannelContent_description = channel.description;
     Main_values.Main_selectedChannelLogo = channel.logo;
+    Main_values.Main_selectedChannelPartner = channel.partner;
+
     ChannelContent_loadDataSuccess();
     return;
 }
@@ -298,13 +301,16 @@ function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbna
 }
 
 function ChannelContent_setFallow() {
+    var partnerIcon = Main_values.Main_selectedChannelDisplayname + STR_SPACE + STR_SPACE +
+    (Main_values.Main_selectedChannelPartner ? '<img style="display: inline-block; width: 3%; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' + STR_SPACE + STR_SPACE : "");
+
     if (AddCode_IsFallowing) {
         Main_innerHTML("schannel_cont_heart", '<i class="icon-heart" style="color: #00b300; font-size: 600%; text-shadow: #FFFFFF 0 0 10px, #FFFFFF 0 0 10px, #FFFFFF 0 0 8px;"></i>');
-        Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOWING);
+        Main_innerHTML(ChannelContent_ids[3] + "1_0", partnerIcon + STR_FALLOWING);
     } else {
         Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 600%; text-shadow: #000000 0 0 10px, #000000 0 0 10px, #000000 0 0 8px;"></i>');
-        if (AddUser_UserIsSet()) Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_FALLOW);
-        else Main_textContent(ChannelContent_ids[3] + "1_0", Main_values.Main_selectedChannelDisplayname + STR_CANT_FALLOW);
+        if (AddUser_UserIsSet()) Main_innerHTML(ChannelContent_ids[3] + "1_0", partnerIcon + STR_FALLOW);
+        else Main_innerHTML(ChannelContent_ids[3] + "1_0", partnerIcon + STR_CANT_FALLOW);
     }
 }
 

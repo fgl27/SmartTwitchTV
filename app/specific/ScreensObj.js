@@ -83,6 +83,7 @@ var Base_obj = {
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     },
     concatenate: function(responseText) {
+    console.log(responseText);
         if (this.data) {
             responseText = JSON.parse(responseText);
 
@@ -1156,7 +1157,7 @@ var Base_Channel_obj = {
                 this.row_id,
                 this.coloumn_id,
                 this.ids,
-                [cell.name, cell._id, cell.logo, cell.display_name]));
+                [cell.name, cell._id, cell.logo, cell.display_name, cell.partner]));
 
             this.coloumn_id++;
         }
