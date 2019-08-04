@@ -174,7 +174,7 @@ var Base_Vod_obj = {
             this.row.appendChild(Screens_createCellVod(
                 this.row_id,
                 this.coloumn_id,
-                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
+                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url, cell.channel._id, cell.channel.logo, cell.channel.partner], this.ids,
                 [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
                     cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
                     twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
@@ -322,7 +322,7 @@ function ScreensObj_InitChannelVod() {
             this.row.appendChild(Screens_createCellVod(
                 this.row_id,
                 this.coloumn_id,
-                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url], this.ids,
+                [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url, cell.channel._id, cell.channel.logo, cell.channel.partner], this.ids,
                 [thumbnail.replace("{width}x{height}", Main_VideoSize),
                     cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
                     twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,

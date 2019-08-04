@@ -85,9 +85,7 @@ function PlayVod_Start() {
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
-        PlayVod_PrepareLoad();
-        PlayVod_updateStreamerInfo();
-        Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
+        PlayVod_updateStreamerInfoValues();
         Main_innerHTML("stream_info_title", '');
         Main_innerHTML("stream_info_game", ChannelVod_views + ' [' + (ChannelVod_language).toUpperCase() + ']');
         Main_textContent("stream_live_icon", ChannelVod_createdAt);
@@ -143,41 +141,18 @@ function PlayVod_PrepareLoad() {
     PlayVod_loadingInfoDataTimeout = 10000;
 }
 
-function PlayVod_updateStreamerInfo() {
-    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(Main_values.Main_selectedChannel);
-    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayVod_updateStreamerInfoValues, PlayVod_updateStreamerInfoError, false);
-}
-
-function PlayVod_updateStreamerInfoValues(musers) {
-    musers = JSON.parse(musers).users[0];
-    if (musers !== undefined) {
-        Main_values.Main_selectedChannelLogo = musers.logo;
-        Main_values.Main_selectedChannel_id = musers._id;
-
-        //The chat init will happens after user click on vod dialog
-        if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
-
-        if (AddUser_UserIsSet()) {
-            AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-            AddCode_PlayRequest = true;
-            AddCode_CheckFallow();
-        } else Play_hideFallow();
-    } else {
-        Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
-        Main_values.Main_selectedChannel_id = '';
-    }
+function PlayVod_updateStreamerInfoValues() {
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner);
 
-}
+    //The chat init will happens after user click on vod dialog
+    if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
 
-function PlayVod_updateStreamerInfoError() {
-    PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
-        PlayVod_loadingInfoDataTimeout += 500;
-        window.setTimeout(function() {
-            if (PlayVod_isOn) PlayVod_updateStreamerInfo();
-        }, 750);
-    } else PlayVod_updateStreamInfId = window.setTimeout(PlayVod_updateStreamerInfo, 2500);
+    if (AddUser_UserIsSet()) {
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+        AddCode_PlayRequest = true;
+        AddCode_CheckFallow();
+    } else Play_hideFallow();
 }
 
 function PlayVod_updateVodInfo() {
@@ -199,6 +174,8 @@ function PlayVod_updateVodInfoPannel(response) {
     //TODO add a warning about muted segments
     //if (response.muted_segments) console.log(response.muted_segments);
 
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, response.channel.partner);
+
     Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING + response.game : "") +
         ' ' + Main_addCommas(response.views) + STR_VIEWS + ' [' + (response.channel.broadcaster_language).toUpperCase() + ']');
@@ -211,7 +188,7 @@ function PlayVod_updateVodInfoPannel(response) {
     PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
 
     Main_values.Main_selectedChannelDisplayname = response.channel.display_name;
-    Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
+    //Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
 
     Main_values.Main_selectedChannelLogo = response.channel.logo;
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
