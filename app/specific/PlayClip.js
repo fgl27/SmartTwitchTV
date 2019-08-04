@@ -33,6 +33,7 @@ var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
 var PlayClip_EnterPos = 0;
 var PlayClip_All = false;
 var PlayClip_All_Forced = true;
+var PlayClip_loadingtreamerInfoTry = 0;
 //Variable initialization end
 
 function PlayClip_Start() {
@@ -93,6 +94,24 @@ function PlayClip_Start() {
 
     PlayClip_loadData();
     document.body.removeEventListener("keyup", Main_handleKeyUp);
+
+    PlayClip_loadingtreamerInfoTry = 0;
+    PlayClip_GetStreamerInfo();
+}
+
+function PlayClip_GetStreamerInfo() {
+    var theUrl = 'https://api.twitch.tv/kraken/channels/' + Main_values.Main_selectedChannel_id;
+
+    BasehttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
+}
+
+function PlayClip_GetStreamerInfoSuccessError() {
+    PlayClip_loadingtreamerInfoTry++;
+    if (PlayClip_loadingtreamerInfoTry < PlayClip_loadingDataTryMax) PlayClip_GetStreamerInfo();
+}
+
+function PlayClip_GetStreamerInfoSuccess(response) {
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, JSON.parse(response).partner);
 }
 
 function PlayClip_loadData() {
