@@ -198,3 +198,9 @@
 .icon-buffer:before {
   content: "\55";
 }
+.icon-sound-off:before {
+  content: "\4d";
+}
+.icon-sound:before {
+  content: "\4e";
+}
