@@ -327,8 +327,8 @@ function Screens_createCellChannel(row_id, coloumn_id, idArray, valuesArray) {
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_text2">' +
         '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] +
-        (valuesArray[4] ? STR_SPACE + STR_SPACE + '<img style="display: inline-block; width: 5%; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "")+
-         '</div></div></div>';
+        (valuesArray[4] ? STR_SPACE + STR_SPACE + '<img style="display: inline-block; width: 5%; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "") +
+        '</div></div></div>';
 
     return Main_td;
 }
