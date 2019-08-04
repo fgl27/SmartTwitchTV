@@ -218,15 +218,8 @@ function Play_SetChatFont() {
 function Play_Start() {
     Play_showBufferDialog();
 
-    var icon = 'circle';
-    var color = 'red';
-    if (Main_values.IsRerun) {
-        color = '#FFFFFF';
-        icon = 'refresh';
-    }
+    Main_innerHTML("stream_live_icon", (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase());
 
-    Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-' +
-        icon + '" style="color: ' + color + '; font-size: 90%; vertical-align: middle;"></i></div><div style="display: inline-block">' + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase() + '</div>');
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     PlayClip_HasVOD = true;
@@ -343,22 +336,22 @@ function Play_updateStreamInfoStart() {
     BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, false);
 }
 
+function Play_partnerIcon(name, partner) {
+    var div = '<div style="display: inline-block; width: auto%;"> ' + name + STR_SPACE + STR_SPACE + '</div>' + 
+    (partner ? '<img style="display: inline-block; width: 2%; vertical-align: middle;" alt="" src="' +
+     IMG_PARTNER + '">' : "") + STR_SPACE + STR_SPACE + '<div style="border-radius: 2px; display: inline-block; width: auto%; background: #' + (Main_values.IsRerun ? "FFFFFF; color: #000000;" : "E21212;") + ' font-size: 75%; text-shadow: none;">' + STR_SPACE + STR_SPACE +
+     (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>' ;
+    Main_innerHTML("stream_info_name", div);
+}
+
 function Play_updateStreamInfoStartValues(response) {
+console.log(response);
     response = JSON.parse(response);
     if (response.stream !== null) {
-        if (Play_isHost) Main_textContent("stream_info_name", Main_values.Play_DisplaynameHost);
-        else Main_textContent("stream_info_name", Main_values.Play_selectedChannelDisplayname);
+        Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner);
 
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
-        var icon = 'circle';
-        var color = 'red';
-        if (Main_values.IsRerun) {
-            color = '#FFFFFF';
-            icon = 'refresh';
-        }
-
-        Main_innerHTML("stream_live_icon", '<div style="vertical-align: middle; display: inline-block"><i class="icon-' +
-            icon + '" style="color: ' + color + '; font-size: 90%; vertical-align: middle;"></i></div><div style="display: inline-block">' + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase() + '</div>');
+        Main_innerHTML("stream_live_icon", (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase());
 
         Main_values.Play_selectedChannel_id = response.stream.channel._id;
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
