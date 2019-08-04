@@ -345,7 +345,6 @@ function Play_partnerIcon(name, partner) {
 }
 
 function Play_updateStreamInfoStartValues(response) {
-console.log(response);
     response = JSON.parse(response);
     if (response.stream !== null) {
         Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner);
