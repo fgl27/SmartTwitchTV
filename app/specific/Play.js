@@ -341,7 +341,7 @@ function Play_partnerIcon(name, partner, islive) {
 
     if (islive) {
         div += '<div style="border-radius: 2px; display: inline-block; width: auto%; background: #' + (Main_values.IsRerun ? "FFFFFF; color: #000000;" : "E21212;") + ' font-size: 75%; text-shadow: none;">' +
-            STR_SPACE + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>'
+            STR_SPACE + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
     }
 
     Main_innerHTML("stream_info_name", div);
