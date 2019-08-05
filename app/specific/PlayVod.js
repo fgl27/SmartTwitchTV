@@ -376,7 +376,7 @@ function PlayVod_qualityChanged() {
     window.clearInterval(PlayVod_streamCheckId);
     PlayVod_qualityIndex = 0;
     PlayVod_playingUrl = PlayVod_qualities[0].url;
-    if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";
+    if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = STR_SOURCE;
     for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
         if (PlayVod_qualities[i].id === PlayVod_quality) {
             PlayVod_qualityIndex = i;
