@@ -166,11 +166,12 @@ function Play_PreStart() {
 }
 
 function Play_SetQuality() {
-    Play_quality = Settings_Obj_values('default_quality');
+    Play_quality = Settings_Obj_values('default_quality').replace(STR_SOURCE, "source");
     Play_qualityPlaying = Play_quality;
     PlayVod_quality = Play_quality;
     PlayVod_qualityPlaying = PlayVod_quality;
-
+    console.log(Play_quality);
+    console.log(Play_qualityPlaying);
 }
 
 var Play_isFullScreenold = true;
@@ -537,7 +538,7 @@ function Play_loadDataSuccessFake() {
             'url': ''
         },
         {
-            'id': '1080p60 | Source',
+            'id': '1080p60 | source',
             'band': '| 10.00Mbps',
             'codec': ' | avc',
             'url': 'https://fake'
@@ -626,16 +627,13 @@ function Play_qualityChanged() {
     window.clearInterval(Play_streamCheckId);
     Play_qualityIndex = 0;
     Play_playingUrl = Play_qualities[0].url;
-    if (Play_quality.indexOf("source") !== -1) Play_quality = STR_SOURCE;
+    if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
 
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
-        if (Play_qualities[i].id === Play_quality) {
+        if (Play_qualities[i].id.indexOf(Play_quality) !== -1) {
             Play_qualityIndex = i;
             Play_playingUrl = Play_qualities[i].url;
             break;
-        } else if (Play_qualities[i].id.indexOf(Play_quality) !== -1) { //make shore to set a value before break out
-            Play_qualityIndex = i;
-            Play_playingUrl = Play_qualities[i].url;
         }
     }
 
