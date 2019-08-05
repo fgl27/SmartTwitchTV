@@ -376,13 +376,10 @@ function PlayVod_qualityChanged() {
     window.clearInterval(PlayVod_streamCheckId);
     PlayVod_qualityIndex = 0;
     PlayVod_playingUrl = PlayVod_qualities[0].url;
-    if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = STR_SOURCE;
+    if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";
+
     for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
-        if (PlayVod_qualities[i].id === PlayVod_quality) {
-            PlayVod_qualityIndex = i;
-            PlayVod_playingUrl = PlayVod_qualities[i].url;
-            break;
-        } else if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) { //make shore to set a value before break out
+        if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) {
             PlayVod_qualityIndex = i;
             PlayVod_playingUrl = PlayVod_qualities[i].url;
         }
