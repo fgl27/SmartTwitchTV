@@ -87,7 +87,7 @@ if [ $BAPP == 1 ]; then
 	if [ "$1" != 1 ]; then
 		./gradlew assembleDebug 2>&1 --warning-mode all | tee build_log.txt
 	else
-		./gradlew build 2>&1 --warning-mode all | tee build_log.txt
+		./gradlew build -x test 2>&1 --warning-mode all | tee build_log.txt
 	fi;
 fi;
 
