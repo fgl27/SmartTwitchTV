@@ -38,13 +38,21 @@ function Sidepannel_UpdateThumb() {
     };
     Sidepannel_UpdateThumbDoc.src = info[2] + Main_randomimg;
 
-    Main_innerHTML('feed_thum_name', '<i class="icon-' + (info[8] ? 'refresh' : 'circle') + ' live_icon" style="color: ' + (info[8] ? '#FFFFFF' : 'red') + ';"></i> ' + info[3]);
+    Main_innerHTML('feed_thum_name', Sidepannel_partnerIcon(info[3], info[9], info[8]));
     Main_innerHTML('feed_thum_quality', info[7]);
     Main_innerHTML('feed_thum_title', twemoji.parse(info[4]));
     Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
     Main_innerHTML('feed_thum_views', info[6]);
 
     if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing()) Main_ShowElement('side_panel_feed_thumb');
+}
+
+function Sidepannel_partnerIcon(name, partner, isrerun) {
+    return '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
+        (partner ? ('<img class="partnericon_img" alt="" src="' +
+            IMG_PARTNER + '">' + STR_SPACE + STR_SPACE) : "") + '<div class="partnericon_text" style="background: #' +
+        (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE + STR_SPACE +
+        (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
 }
 
 function Sidepannel_PreloadImgs() {

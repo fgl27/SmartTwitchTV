@@ -335,12 +335,13 @@ function Play_updateStreamInfoStart() {
 }
 
 function Play_partnerIcon(name, partner, islive) {
-    var div = '<div style="display: inline-block; width: auto%;"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
-        (partner ? ('<img style="display: inline-block; width: 1.5ch; vertical-align: middle;" alt="" src="' +
+    var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
+        (partner ? ('<img class="partnericon_img" alt="" src="' +
             IMG_PARTNER + '">' + STR_SPACE + STR_SPACE) : "");
 
     if (islive) {
-        div += '<div style="border-radius: 2px; display: inline-block; width: auto%; background: #' + (Main_values.IsRerun ? "FFFFFF; color: #000000;" : "E21212;") + ' font-size: 60%; text-shadow: none;">' +
+        div += '<div class="partnericon_text" style="background: #' +
+            (Main_values.IsRerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
             STR_SPACE + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
     }
 
