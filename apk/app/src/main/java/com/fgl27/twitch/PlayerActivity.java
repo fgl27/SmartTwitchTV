@@ -90,7 +90,7 @@ public class PlayerActivity extends Activity {
                     new DefaultDataSourceFactory(
                             this, Util.getUserAgent(this, this.getString(R.string.app_name)));
 
-            trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
+            trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder(this).build();
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
 
@@ -113,7 +113,7 @@ public class PlayerActivity extends Activity {
         if (shouldAutoPlay) {
             showLoading(true);
 
-            trackSelector = new DefaultTrackSelector();
+            trackSelector = new DefaultTrackSelector(this);
             trackSelector.setParameters(trackSelectorParameters);
 
             player = ExoPlayerFactory.newSimpleInstance(
@@ -555,30 +555,30 @@ public class PlayerActivity extends Activity {
 
             @Override
             public void onPlayerError(ExoPlaybackException e) {
-                String errorString = null;
+//                String errorString = null;
 
-                if (e.type == ExoPlaybackException.TYPE_RENDERER) {
-                    Exception cause = e.getRendererException();
-                    if (cause instanceof DecoderInitializationException) {
-                        // Special case for decoder initialization failures.
-                        DecoderInitializationException decoderInitializationException = (DecoderInitializationException) cause;
-                        if (decoderInitializationException.decoderName == null) {
-                            if (decoderInitializationException.getCause() instanceof DecoderQueryException) {
-                                errorString = getString(R.string.error_querying_decoders);
-                            } else if (decoderInitializationException.secureDecoderRequired) {
-                                errorString = getString(R.string.error_no_secure_decoder, decoderInitializationException.mimeType);
-                            } else {
-                                errorString = getString(R.string.error_no_decoder, decoderInitializationException.mimeType);
-                            }
-                        } else {
-                            errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
-                        }
-                    }
-                }
+//                if (e.type == ExoPlaybackException.TYPE_RENDERER) {
+//                    Exception cause = e.getRendererException();
+//                    if (cause instanceof DecoderInitializationException) {
+//                        // Special case for decoder initialization failures.
+//                        DecoderInitializationException decoderInitializationException = (DecoderInitializationException) cause;
+//                        if (decoderInitializationException.decoderName == null) {
+//                            if (decoderInitializationException.getCause() instanceof DecoderQueryException) {
+//                                errorString = getString(R.string.error_querying_decoders);
+//                            } else if (decoderInitializationException.secureDecoderRequired) {
+//                                errorString = getString(R.string.error_no_secure_decoder, decoderInitializationException.mimeType);
+//                            } else {
+//                                errorString = getString(R.string.error_no_decoder, decoderInitializationException.mimeType);
+//                            }
+//                        } else {
+//                            errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
+//                        }
+//                    }
+//                }
 
-                if (errorString != null) {
-                    Toast.makeText(PlayerActivity.this, errorString, Toast.LENGTH_SHORT).show();
-                }
+//                if (errorString != null) {
+//                    Toast.makeText(PlayerActivity.this, errorString, Toast.LENGTH_SHORT).show();
+//                }
 
                 if (Tools.isBehindLiveWindow(e)) clearResumePosition();
                 else updateResumePosition();
