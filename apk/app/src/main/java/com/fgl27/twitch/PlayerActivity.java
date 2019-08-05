@@ -31,8 +31,6 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
-import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -90,7 +88,7 @@ public class PlayerActivity extends Activity {
                     new DefaultDataSourceFactory(
                             this, Util.getUserAgent(this, this.getString(R.string.app_name)));
 
-            trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder(this).build();
+            trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(this);
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
 
@@ -122,10 +120,10 @@ public class PlayerActivity extends Activity {
                     trackSelector,
                     Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
-            simpleExoPlayerView.setPlayer(player);
-
-            player.addListener(PlayerEvent());
+            player.addListener(new PlayerEventListener());
             player.setPlayWhenReady(true);
+
+            simpleExoPlayerView.setPlayer(player);
 
             seeking = (mResumePosition > 0) && (mwhocall > 1);
             if (seeking) player.seekTo(mResumePosition);
@@ -518,73 +516,36 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private Player.EventListener PlayerEvent() {
-        return new Player.EventListener() {
+    private class PlayerEventListener implements Player.EventListener {
 
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        @Override
+        public void onPlayerStateChanged(boolean playWhenReady, @Player.State int playbackState) {
+            myHandler.post(() -> {
                 if (playWhenReady) {
-                    switch (playbackState) {
-                        case Player.STATE_BUFFERING:
-                            myHandler.post(() -> {
-                                loadingcanshow = true;
-                                showLoading(false);
-                            });
-                            break;
-                        case Player.STATE_READY:
-                            myHandler.post(() -> {
-                                hideLoading();
-                                if (player != null) {
-                                    myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
-                                            mwhocall + "," + player.getDuration() + ")"));
-                                }
-                            });
-                            break;
-                        case Player.STATE_ENDED:
-                            myHandler.post(() -> {
-                                hideLoading();
-                                mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
-                            });
-                            break;
-                        //case Player.STATE_IDLE:
-                        default:
-                            break;
+                    if (playbackState == Player.STATE_ENDED) {
+                        hideLoading();
+                        mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+                    } else if (playbackState == Player.STATE_BUFFERING) {
+                        loadingcanshow = true;
+                        showLoading(false);
+                    } else if (playbackState == Player.STATE_READY) {
+                        hideLoading();
+                        if (player != null) {
+                            myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
+                                    mwhocall + "," + player.getDuration() + ")"));
+                        }
                     }
-                } else myHandler.post(() -> hideLoading());
-            }
+                } else  hideLoading();
+            });
+        }
 
-            @Override
-            public void onPlayerError(ExoPlaybackException e) {
-//                String errorString = null;
+        @Override
+        public void onPlayerError(ExoPlaybackException e) {
+            if (Tools.isBehindLiveWindow(e)) clearResumePosition();
+            else updateResumePosition();
 
-//                if (e.type == ExoPlaybackException.TYPE_RENDERER) {
-//                    Exception cause = e.getRendererException();
-//                    if (cause instanceof DecoderInitializationException) {
-//                        // Special case for decoder initialization failures.
-//                        DecoderInitializationException decoderInitializationException = (DecoderInitializationException) cause;
-//                        if (decoderInitializationException.decoderName == null) {
-//                            if (decoderInitializationException.getCause() instanceof DecoderQueryException) {
-//                                errorString = getString(R.string.error_querying_decoders);
-//                            } else if (decoderInitializationException.secureDecoderRequired) {
-//                                errorString = getString(R.string.error_no_secure_decoder, decoderInitializationException.mimeType);
-//                            } else {
-//                                errorString = getString(R.string.error_no_decoder, decoderInitializationException.mimeType);
-//                            }
-//                        } else {
-//                            errorString = getString(R.string.error_instantiating_decoder, decoderInitializationException.decoderName);
-//                        }
-//                    }
-//                }
+            initializePlayer();
+        }
 
-//                if (errorString != null) {
-//                    Toast.makeText(PlayerActivity.this, errorString, Toast.LENGTH_SHORT).show();
-//                }
-
-                if (Tools.isBehindLiveWindow(e)) clearResumePosition();
-                else updateResumePosition();
-
-                initializePlayer();
-            }
-        };
     }
 }

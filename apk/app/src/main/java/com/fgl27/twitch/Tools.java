@@ -231,10 +231,10 @@ public class Tools {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        buffer, //DEFAULT_MIN_BUFFER_MS
-                        Math.min(buffer + 2000, 15000), //DEFAULT_MAX_BUFFER_MS
+                        buffer + 2500, //DEFAULT_MIN_BUFFER_MS
+                        buffer + 5000, //DEFAULT_MAX_BUFFER_MS
                         buffer, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
-                        buffer //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                        buffer + 2500 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .setTargetBufferBytes(C.LENGTH_UNSET)
                 .createDefaultLoadControl();
