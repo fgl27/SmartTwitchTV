@@ -626,7 +626,7 @@ function Play_qualityChanged() {
     window.clearInterval(Play_streamCheckId);
     Play_qualityIndex = 0;
     Play_playingUrl = Play_qualities[0].url;
-    if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
+    if (Play_quality.indexOf("source") !== -1) Play_quality = STR_SOURCE;
 
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
         if (Play_qualities[i].id === Play_quality) {
