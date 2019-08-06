@@ -237,6 +237,7 @@ public class Tools {
                         buffer + 2500 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .setTargetBufferBytes(C.LENGTH_UNSET)
+                .setPrioritizeTimeOverSizeThresholds(true)
                 .createDefaultLoadControl();
     }
 
