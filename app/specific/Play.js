@@ -170,8 +170,6 @@ function Play_SetQuality() {
     Play_qualityPlaying = Play_quality;
     PlayVod_quality = Play_quality;
     PlayVod_qualityPlaying = PlayVod_quality;
-    console.log(Play_quality);
-    console.log(Play_qualityPlaying);
 }
 
 var Play_isFullScreenold = true;
@@ -1058,7 +1056,7 @@ function Play_KeyPause(PlayVodClip) {
         Play_clearPause();
         Play_HideBufferDialog();
 
-        Main_innerHTML('pause_button', '<div style="transform: translateY(10%);"><i class="pause_button3d icon-pause"></i> </div>');
+        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
 
         if (PlayVodClip === 1) {
             if (Play_isPanelShown()) Play_hidePanel();
@@ -1085,7 +1083,7 @@ function Play_KeyPause(PlayVodClip) {
         window.clearInterval(PlayVod_streamCheckId);
         window.clearInterval(PlayClip_streamCheckId);
 
-        Main_innerHTML('pause_button', '<div style="transform: translateY(10%);"><i class="pause_button3d icon-play-1"></i> </div>');
+        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i> </div>');
 
         if (Main_IsNotBrowser) Android.play(false);
     }

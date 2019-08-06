@@ -987,7 +987,7 @@
         .next_button,
         .pause_button {
             display: inline-block;
-            width: 5%;
+            width: auto;
             padding-top: 5px;
             padding-bottom: 5px;
             text-align: center;
@@ -995,9 +995,15 @@
             border: 2px solid rgba(0, 0, 0, 0);
         }
 
+        .next_button {
+            padding-left: 7px;
+            padding-right: 7px;
+            max-width: 96%;
+            background-color: rgba(0, 0, 0, 0.25);
+        }
+
         .pause_button {
-            padding-top: 10px;
-            padding-bottom: 10px;
+            height: auto;
         }
 
         .controls_button_holder {
@@ -1040,15 +1046,7 @@
         .pause_button3d {
             color: #FFFFFF;
             font-size: 120%;
-        }
-
-        .next_button {
-            padding-left: 7px;
-            padding-right: 7px;
-            width: auto;
-            max-width: 96%;
-            background-color: rgba(0, 0, 0, 0.25);
-            transform: translateY(9%);
+            vertical-align: middle;
         }
 
         .next_text {
@@ -1056,6 +1054,7 @@
             width: auto;
             max-width: 90%;
             font-size: 100%;
+            vertical-align: middle;
         }
 
         .pause_next_div {
@@ -1070,6 +1069,7 @@
             height: 40px;
             text-align: center;
             border-radius: 15px;
+            margin-bottom: 1ch;
             border: 2px solid rgba(0, 0, 0, 0);
         }
 
@@ -1527,10 +1527,12 @@
                             <i class="pause_button3d icon-back"></i>
                         </div>
                     </div>
-                    <div id="pause_button" class="pause_button">
-                        <div style="transform: translateY(10%);">
+                    <div style="width: 4%; display: inline-block; text-align: center;">
+                    <div id="pause_button" class="pause_button" style="width: 94%; padding-top: 7.5px; padding-bottom: 7.5px;">
+                        <div >
                             <i class="pause_button3d icon-pause"></i>
                         </div>
+                    </div>
                     </div>
                     <div style="width: 44%; display: inline-block; text-align: left;">
                         <div id="next_button" class="next_button" style="opacity: 0;">
