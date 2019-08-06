@@ -200,9 +200,7 @@ function Play_SetFullScreen(isfull) {
     }
 
     //TODO remove the try some day after the app update has be live for some time
-    try {
-        Android.mupdatesize(!Play_isFullScreen);
-    } catch (e) {}
+    Android.mupdatesize(!Play_isFullScreen);
 
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
 }
@@ -451,11 +449,7 @@ function Play_loadDataRequest() {
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
             if (Play_isOn) {
-                if (!state) {
-                    try {
-                        Android.SetAuto(theUrl);
-                    } catch (e) {}
-                }
+                if (!state) Android.SetAuto(theUrl);
                 Play_loadDataSuccess(xmlHttp.responseText);
             }
         } else if (xmlHttp.status === 403) { //forbidden access
@@ -642,13 +636,8 @@ function Play_qualityChanged() {
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        if (Play_quality.indexOf("Auto") !== -1) {
-            try {
-                Android.StartAuto(1, 1);
-            } catch (e) {
-                Android.startVideo(Play_playingUrl, 1);
-            }
-        } else Android.startVideo(Play_playingUrl, 1);
+        if (Play_quality.indexOf("Auto") !== -1) Android.StartAuto(1, 1);
+        else Android.startVideo(Play_playingUrl, 1);
     }
 
     Play_onPlayer();
@@ -945,16 +934,9 @@ function Play_RefreshWatchingtime() {
         (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
 
     if (Play_qualityPlaying.indexOf("Auto") !== -1) {
-        try {
-            var value = null;
-            try {
-                value = Android.getVideoQuality();
-            } catch (e) {}
-            if (value !== null) Play_getVideoQuality(value);
-            else Play_SetHtmlQuality('stream_quality', true);
-        } catch (e) {
-            Play_SetHtmlQuality('stream_quality', true);
-        }
+        var value = Android.getVideoQuality();
+        if (value !== null) Play_getVideoQuality(value);
+        else Play_SetHtmlQuality('stream_quality', true);
     }
 }
 
@@ -1790,9 +1772,7 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
             Play_CurrentSpeed = this.defaultValue;
-            try {
-                Android.setPlaybackSpeed(this.values[this.defaultValue]);
-            } catch (e) {}
+            Android.setPlaybackSpeed(this.values[this.defaultValue]);
         },
         updown: function(adder) {
             this.defaultValue += adder;

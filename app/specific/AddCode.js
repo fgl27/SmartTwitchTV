@@ -168,12 +168,7 @@ function AddCode_CheckOauthTokenSucess(response) {
         Main_values.Main_Go = Main_Users;
         Main_SaveValues();
         Main_showWarningDialog(STR_USER_CODE_OK);
-        if (Main_IsNotBrowser) {
-            //TODO remove the try after android app update has be releaased for some time
-            try {
-                Android.clearCookie();
-            } catch (e) {}
-        }
+        if (Main_IsNotBrowser) Android.clearCookie();
         window.setTimeout(function() {
             window.location = AddCode_redirect_uri;
         }, 3000);

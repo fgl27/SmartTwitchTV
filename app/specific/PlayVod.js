@@ -226,9 +226,8 @@ function PlayVod_Resume() {
             Play_ResumeAfterOnlineCounter = 0;
 
             //Get the time from android as it can save it more reliably
-            try {
-                Main_values.vodOffset = Android.getsavedtime() / 1000;
-            } catch (e) {}
+            Main_values.vodOffset = Android.getsavedtime() / 1000;
+
             if (navigator.onLine) PlayVod_ResumeAfterOnline();
             else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
 
@@ -263,6 +262,8 @@ function PlayVod_loadData() {
     PlayVod_loadDataRequest();
 }
 
+var PlayVod_autoUrl;
+
 function PlayVod_loadDataRequest() {
     var theUrl;
 
@@ -276,11 +277,7 @@ function PlayVod_loadDataRequest() {
             PlayVod_tokenResponse.sig +
             '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
-        if (Main_IsNotBrowser) {
-            try {
-                Android.SetAuto(theUrl);
-            } catch (e) {}
-        }
+        PlayVod_autoUrl = theUrl;
     }
 
     BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, false);
@@ -330,6 +327,7 @@ function PlayVod_loadDataSuccess(responseText) {
         PlayVod_playlistResponse = responseText;
         PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
         PlayVod_state = Play_STATE_PLAYING;
+        if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
         if (PlayVod_isOn) PlayVod_qualityChanged();
     }
 }
@@ -419,15 +417,8 @@ function PlayVod_onPlayer() {
 
 function PlayVod_onPlayerStartPlay(time) {
     if (PlayVod_isOn) {
-        if (PlayVod_quality.indexOf("Auto") !== -1) {
-            try {
-                Android.StartAuto(2, PlayVod_replay ? -1 : time);
-            } catch (e) {
-                Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
-            }
-
-        } else
-            Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
+        if (PlayVod_quality.indexOf("Auto") !== -1) Android.StartAuto(2, PlayVod_replay ? -1 : time);
+        else Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
     }
 }
 
@@ -560,17 +551,10 @@ function PlayVod_RefreshProgressBarr(show) {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
 
     if (PlayVod_qualityPlaying.indexOf("Auto") !== -1 && show) {
-        try {
-            var value = null;
-            try {
-                value = Android.getVideoQuality();
-            } catch (e) {}
-            if (value !== null) Play_getVideoQuality(value);
-            else PlayVod_SetHtmlQuality('stream_quality', true);
-        } catch (e) {
-            PlayVod_SetHtmlQuality('stream_quality', true);
+        var value = Android.getVideoQuality();
 
-        }
+        if (value !== null) Play_getVideoQuality(value);
+        else PlayVod_SetHtmlQuality('stream_quality', true);
     }
 }
 
@@ -682,16 +666,11 @@ function PlayVod_jump() {
 
         if (PlayVod_isOn) {
             if (Main_IsNotBrowser) {
-                if (PlayVod_quality.indexOf("Auto") !== -1) {
-                    try {
-                        Android.StartAuto(2,
-                            (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
-                    } catch (e) {
-                        Android.startVideoOffset(PlayVod_playingUrl, 2,
-                            (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
-                    }
-                } else Android.startVideoOffset(PlayVod_playingUrl, 2,
+                if (PlayVod_quality.indexOf("Auto") !== -1) Android.StartAuto(2,
                     (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+                else Android.startVideoOffset(PlayVod_playingUrl, 2,
+                    (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+
                 Chat_offset = PlayVod_TimeToJump;
             }
 
