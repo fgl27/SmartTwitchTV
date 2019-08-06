@@ -35,7 +35,8 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 public class PlayerActivity extends Activity {
@@ -85,11 +86,13 @@ public class PlayerActivity extends Activity {
             myHandler = new Handler(Looper.getMainLooper());
 
             dataSourceFactory =
-                    new DefaultDataSourceFactory(
-                            this, Util.getUserAgent(this, this.getString(R.string.app_name)));
+                    new DefaultHttpDataSourceFactory(
+                            Util.getUserAgent(this, this.getString(R.string.app_name)),
+                            DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+                            DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+                            true);
 
             trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
-
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
 
@@ -129,7 +132,10 @@ public class PlayerActivity extends Activity {
             seeking = (mResumePosition > 0) && (mwhocall > 1);
             if (seeking) player.seekTo(mResumePosition);
 
-            player.prepare(mediaSourceAuto != null ? mediaSourceAuto : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall), !seeking, true);
+            player.prepare(
+                    mediaSourceAuto != null ? mediaSourceAuto : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
+                    !seeking,
+                    true);
         } else {
             //Reset player background to a empty black screen and reset all states
             player = ExoPlayerFactory.newSimpleInstance(this);
