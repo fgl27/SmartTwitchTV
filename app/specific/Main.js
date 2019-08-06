@@ -165,14 +165,7 @@ function Main_loadTranslations(language) {
         }
         Main_showLoadDialog();
 
-        if (Main_IsNotBrowser) {
-            //TODO remove the try some day after the app update has be live for some time
-            try {
-                Main_vp9supported = Android.misCodecSupported();
-            } catch (e) {
-                Main_vp9supported = false;
-            }
-        }
+        if (Main_IsNotBrowser) Main_vp9supported = Android.misCodecSupported();
 
         Settings_SetDefautls();
         en_USLang();
