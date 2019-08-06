@@ -133,10 +133,10 @@ function PlayClip_loadDataError() {
         PlayClip_loadingDataTimeout += 250;
         PlayClip_loadDataRequest();
     } else {
-            if (Main_IsNotBrowser) {
-                    Play_HideBufferDialog();
-        Play_PlayEndStart(3);
-            } else PlayClip_loadDataSuccessFake();
+        if (Main_IsNotBrowser) {
+            Play_HideBufferDialog();
+            Play_PlayEndStart(3);
+        } else PlayClip_loadDataSuccessFake();
     }
 }
 
