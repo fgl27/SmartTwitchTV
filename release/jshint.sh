@@ -30,6 +30,10 @@ NC='\033[1m'
 # add js folders here
 js_folders=("app/languages/" "app/general/" "app/specific/" "app/thirdparty/");
 
+if [ "$1" == 2 ]; then
+	js_folders=("apk/app/src/main/assets/app/languages/" "apk/app/src/main/assets/app/general/" "apk/app/src/main/assets/app/specific/" "apk/app/src/main/assets/app/thirdparty/");
+fi;
+
 # no changes needed to be done bellow this line
 mainfolder="$(dirname ""$(dirname "$0")"")";
 
