@@ -232,9 +232,9 @@ public class Tools {
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
                         buffer + 2500, //DEFAULT_MIN_BUFFER_MS
-                        buffer + 5000, //DEFAULT_MAX_BUFFER_MS
+                        100000, //DEFAULT_MAX_BUFFER_MS
                         buffer, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
-                        buffer + 2500 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                        buffer //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .setTargetBufferBytes(C.LENGTH_UNSET)
                 .setPrioritizeTimeOverSizeThresholds(true)
