@@ -64,7 +64,7 @@ function PlayClip_Start() {
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();
     } else Chat_NoVod();
-    Main_innerHTML('pause_button', '<div style="transform: translateY(10%);"><i class="pause_button3d icon-pause"></i> </div>');
+    Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
     Main_ShowElement('progress_bar_div');
     Main_ShowElement('controls_holder');
 
@@ -133,9 +133,25 @@ function PlayClip_loadDataError() {
         PlayClip_loadingDataTimeout += 250;
         PlayClip_loadDataRequest();
     } else {
-        Play_HideBufferDialog();
+            if (Main_IsNotBrowser) {
+                    Play_HideBufferDialog();
         Play_PlayEndStart(3);
+            } else PlayClip_loadDataSuccessFake();
     }
+}
+
+function PlayClip_loadDataSuccessFake() {
+    PlayClip_qualities = [{
+            'id': 'Auto',
+            'url': ''
+        },
+        {
+            'id': '1080p60 | source | mp4',
+            'url': 'https://fake'
+        },
+    ];
+    PlayClip_state = PlayClip_STATE_PLAYING;
+    PlayClip_qualityChanged();
 }
 
 function PlayClip_QualityGenerate(response) {
