@@ -56,7 +56,7 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:leanback-v17:' + versions.supportLib
-    implementation project(':exoplayer-library-core')
-    implementation project(':exoplayer-library-ui')
-    implementation project(':exoplayer-library-hls')
+    implementation 'com.google.android.exoplayer:exoplayer-core:' + versions.exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer-hls:' + versions.exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer-ui:' + versions.exoplayer
 }
