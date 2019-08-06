@@ -92,7 +92,7 @@ public class PlayerActivity extends Activity {
                             DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                             true);
 
-            trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
+            trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(this);
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
 
@@ -115,7 +115,7 @@ public class PlayerActivity extends Activity {
         if (shouldAutoPlay) {
             showLoading(true);
 
-            trackSelector = new DefaultTrackSelector();
+            trackSelector = new DefaultTrackSelector(this);
             trackSelector.setParameters(trackSelectorParameters);
 
             player = ExoPlayerFactory.newSimpleInstance(
@@ -526,7 +526,7 @@ public class PlayerActivity extends Activity {
     private class PlayerEventListener implements Player.EventListener {
 
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        public void onPlayerStateChanged(boolean playWhenReady, @Player.State int playbackState) {
             myHandler.post(() -> {
                 if (playWhenReady) {
                     if (playbackState == Player.STATE_ENDED) {
