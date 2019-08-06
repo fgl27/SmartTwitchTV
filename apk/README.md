@@ -14,11 +14,13 @@ Download
 
 ``` bash
 $ git clone git://github.com/fgl27/SmartTwitchTV.git
+$ git clone git://github.com/fgl27/ExoPlayer.git
 $ cd SmartTwitchTV/apk
 $ ./gradlew assembleDebug
 ```
 
-**Android Studio build is also supported**, but I personalty prefer build using a Linux terminal, if you can't do that and the app doesn't build on Studio [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose).
+**Make sure SmartTwitchTV and ExoPlayer repo are cloned to the same folder**
+**Android Studio build is supported**, but I personalty prefer build using a Linux terminal, if you can't do that and the app doesn't build on Studio [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose).
 
 Project Dependencies
 ==============
