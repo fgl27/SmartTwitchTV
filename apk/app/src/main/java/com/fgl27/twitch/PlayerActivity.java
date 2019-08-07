@@ -40,39 +40,44 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 public class PlayerActivity extends Activity {
-    private static final String TAG = PlayerActivity.class.getName();
-    public static int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
+    public static final String TAG = PlayerActivity.class.getName();
+    public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
 
-    private PlayerView simpleExoPlayerView;
-    public SimpleExoPlayer player;
+    public PlayerView[] simpleExoPlayerView = new PlayerView[2];
+    public SimpleExoPlayer[] player = new SimpleExoPlayer[2];
     public DataSource.Factory dataSourceFactory;
 
-    private DefaultTrackSelector trackSelector;
-    private DefaultTrackSelector.Parameters trackSelectorParameters;
-    private boolean shouldAutoPlay;
+    public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[2];
+    public DefaultTrackSelector.Parameters trackSelectorParameters;
+    public boolean shouldAutoPlay;
     public long mResumePosition;
     public boolean seeking;
     public int mwhocall = 1;
 
-    private Uri uri;
-    private MediaSource mediaurireset;
+    public Uri uri;
+    public MediaSource mediaurireset;
 
-    private MediaSource mediaSourceAuto = null;
-    public MediaSource TempmediaSourceAuto;
+    public MediaSource mediaSourceAuto = null;
+    public MediaSource mediaSourceAuto1 = null;
+    public MediaSource mediaSourceAuto0;
 
-    private boolean loadingcanshow;
-    private ImageView spinner;
-    private Animation rotation;
+    public boolean loadingcanshow;
+    public ImageView spinner;
+    public Animation rotation;
 
     public WebView mwebview;
 
     private boolean onCreateReady;
     private boolean alredystarted;
+    public boolean PicturePicture;
 
-    private int heightDefault = 0;
-    private int mwidthDefault = 0;
-    private int heightChat = 0;
-    private int mwidthChat = 0;
+    public int heightDefault = 0;
+    public int mwidthDefault = 0;
+    public int heightChat = 0;
+    public int mwidthChat = 0;
+
+    public int mainPlayer = 0;
+    private int playerDivider = 3;
 
     public Handler myHandler;
 
@@ -92,7 +97,7 @@ public class PlayerActivity extends Activity {
                             DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                             true);
 
-            trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(this);
+            trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
 
@@ -100,54 +105,99 @@ public class PlayerActivity extends Activity {
             rotation = AnimationUtils.loadAnimation(this, R.anim.rotation);
             spinner.startAnimation(rotation);
 
-            simpleExoPlayerView = findViewById(R.id.player_view);
+            simpleExoPlayerView[0] = findViewById(R.id.player_view);
+            simpleExoPlayerView[1] = findViewById(R.id.player_view2);
+
+            simpleExoPlayerView[1].setVisibility(View.GONE);
+
             shouldAutoPlay = false;
 
             initializeWebview();
         }
     }
 
-    private void initializePlayer() {
-        if (player != null) {
-            player.setPlayWhenReady(shouldAutoPlay);
-            releasePlayer();
+    private void initializePlayer(int position) {
+        Toast.makeText(this, "initializePlayer position " + position, Toast.LENGTH_SHORT).show();
+        if (player[position] != null) {
+            player[position].setPlayWhenReady(shouldAutoPlay);
+            releasePlayer(position);
         }
         if (shouldAutoPlay) {
+            simpleExoPlayerView[position].setVisibility(View.VISIBLE);
             showLoading(true);
 
-            trackSelector = new DefaultTrackSelector(this);
-            trackSelector.setParameters(trackSelectorParameters);
+            trackSelector[position] = new DefaultTrackSelector();
+            trackSelector[position].setParameters(trackSelectorParameters);
 
-            player = ExoPlayerFactory.newSimpleInstance(
+            player[position] = ExoPlayerFactory.newSimpleInstance(
                     this,
                     new DefaultRenderersFactory(this),
-                    trackSelector,
+                    trackSelector[position],
                     Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
-            player.addListener(new PlayerEventListener());
-            player.setPlayWhenReady(true);
+            player[position].addListener(new PlayerEventListener(position));
 
-            simpleExoPlayerView.setPlayer(player);
+            player[position].setPlayWhenReady(true);
+
+            if (mainPlayer != position) {
+                if (heightDefault == 0) {
+                    heightDefault = simpleExoPlayerView[0].getHeight();
+                    mwidthDefault = simpleExoPlayerView[0].getWidth();
+
+                    heightChat = (int) (heightDefault * 0.75);
+                    mwidthChat = (int) (mwidthDefault * 0.75);
+                }
+
+                player[position].setVolume(0f);
+                simpleExoPlayerView[position].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), Gravity.END | Gravity.BOTTOM));
+                simpleExoPlayerView[position].setVisibility(View.GONE);
+                simpleExoPlayerView[position].setVisibility(View.VISIBLE);
+            }
+
+            simpleExoPlayerView[position].setPlayer(player[position]);
 
             seeking = (mResumePosition > 0) && (mwhocall > 1);
-            if (seeking) player.seekTo(mResumePosition);
+            if (seeking) player[position].seekTo(mResumePosition);
 
-            player.prepare(
+            player[position].prepare(
                     mediaSourceAuto != null ? mediaSourceAuto : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
                     !seeking,
                     true);
+            if (mainPlayer == 0 && player[1] != null) {
+                simpleExoPlayerView[1].setVisibility(View.GONE);
+                simpleExoPlayerView[1].setVisibility(View.VISIBLE);
+            }
         } else {
             //Reset player background to a empty black screen and reset all states
-            player = ExoPlayerFactory.newSimpleInstance(this);
-            simpleExoPlayerView.setPlayer(player);
+            player[position] = ExoPlayerFactory.newSimpleInstance(this);
+            simpleExoPlayerView[position].setPlayer(player[position]);
 
-            player.setPlayWhenReady(false);
-            player.prepare(mediaurireset, true, true);
+            player[position].setPlayWhenReady(false);
+            player[position].prepare(mediaurireset, true, true);
 
-            releasePlayer();
+            releasePlayer(position);
             clearResumePosition();
             hideLoading();
+            simpleExoPlayerView[position].setVisibility(View.GONE);
         }
+    }
+
+    private void ClearPlayer(int position) {
+        if (player[position] != null) {
+            player[position].setPlayWhenReady(shouldAutoPlay);
+            releasePlayer(position);
+        }
+
+        //Reset player background to a empty black screen and reset all states
+        player[position] = ExoPlayerFactory.newSimpleInstance(this);
+        simpleExoPlayerView[position].setPlayer(player[position]);
+
+        player[position].setPlayWhenReady(false);
+        player[position].prepare(mediaurireset, true, true);
+
+        releasePlayer(position);
+        simpleExoPlayerView[position].setVisibility(View.GONE);
+        hideLoading();
     }
 
     private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position) {
@@ -157,24 +207,38 @@ public class PlayerActivity extends Activity {
         mwhocall = whocall;
         mResumePosition = position > 0 ? position : 0;
 
-        initializePlayer();
+        initializePlayer(mainPlayer);
     }
 
-    private void PreresetPlayer(int whocall) {
+    private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
+        mediaSourceAuto = mediaSource;
+        uri = Uri.parse(videoAddress);
+        shouldAutoPlay = true;
+        mwhocall = 1;
+        mResumePosition = 0;
+
+        initializePlayer(mainPlayer == 0 ? 1 : 0);
+        PicturePicture = true;
+    }
+
+    private void PreResetPlayer(int whocall, int position) {
+        if (mainPlayer == 1) SwitchPlayer(false);
+        PicturePicture = false;
+
         mediaSourceAuto = null;
         shouldAutoPlay = false;
         mwhocall = whocall;
         mResumePosition = 0;
 
-        initializePlayer();
+        initializePlayer(position);
     }
 
-    private void releasePlayer() {
-        if (player != null) {
-            shouldAutoPlay = player.getPlayWhenReady();
-            player.release();
-            player = null;
-            trackSelector = null;
+    private void releasePlayer(int position) {
+        if (player[position] != null) {
+            shouldAutoPlay = player[position].getPlayWhenReady();
+            player[position].release();
+            player[position] = null;
+            trackSelector[position] = null;
         }
         hideLoading();
     }
@@ -187,17 +251,49 @@ public class PlayerActivity extends Activity {
 
     private void updatesize(boolean sizechat) {
         if (heightDefault == 0) {
-            heightDefault = simpleExoPlayerView.getHeight();
-            mwidthDefault = simpleExoPlayerView.getWidth();
+            simpleExoPlayerView[0].setVisibility(View.VISIBLE);
+            heightDefault = simpleExoPlayerView[0].getHeight();
+            mwidthDefault = simpleExoPlayerView[0].getWidth();
 
             heightChat = (int) (heightDefault * 0.75);
             mwidthChat = (int) (mwidthDefault * 0.75);
         }
 
         if (sizechat)
-            simpleExoPlayerView.setLayoutParams(new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL));
+            simpleExoPlayerView[0].setLayoutParams(new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL));
         else
-            simpleExoPlayerView.setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP));
+            simpleExoPlayerView[0].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP));
+    }
+
+    private void SwitchPlayer(boolean show) {
+        if (heightDefault == 0) {
+            simpleExoPlayerView[0].setVisibility(View.VISIBLE);
+            heightDefault = simpleExoPlayerView[0].getHeight();
+            mwidthDefault = simpleExoPlayerView[0].getWidth();
+
+            heightChat = (int) (heightDefault * 0.75);
+            mwidthChat = (int) (mwidthDefault * 0.75);
+        }
+        int main = 0;
+        int main2 = 0;
+
+        if (mainPlayer == 0) {
+            mainPlayer = 1;
+            main2 = 1;
+        } else {
+            mainPlayer = 0;
+            main = 1;
+        }
+        simpleExoPlayerView[main].setVisibility(View.GONE);
+
+        simpleExoPlayerView[main2].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.START | Gravity.TOP));
+        simpleExoPlayerView[main].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), Gravity.END | Gravity.BOTTOM));
+
+        if (player[main2] != null) player[main2].setVolume(1f);
+        if (player[main] != null) player[main].setVolume(0f);
+
+
+        if (show) simpleExoPlayerView[main].setVisibility(View.VISIBLE);
     }
 
     private void showLoading(boolean runnow) {
@@ -238,8 +334,10 @@ public class PlayerActivity extends Activity {
     @Override
     public void onStop() {
         super.onStop();
-        updateResumePosition();
-        releasePlayer();
+        updateResumePosition(0);
+        updateResumePosition(1);
+        releasePlayer(0);
+        releasePlayer(1);
     }
 
     //This function is called when TV wakes up
@@ -251,7 +349,8 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        releasePlayer();
+        releasePlayer(0);
+        releasePlayer(1);
     }
 
     private void closeThis() {
@@ -302,12 +401,12 @@ public class PlayerActivity extends Activity {
         mResumePosition = C.TIME_UNSET;
     }
 
-    private void updateResumePosition() {
-        if (player == null) {
+    private void updateResumePosition(int position) {
+        if (player[position] == null) {
             return;
         }
 
-        mResumePosition = player.isCurrentWindowSeekable() ? Math.max(0, player.getCurrentPosition()) : C.TIME_UNSET;
+        mResumePosition = player[position].isCurrentWindowSeekable() ? Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
     }
 
     private void initializeWebview() {
@@ -327,9 +426,9 @@ public class PlayerActivity extends Activity {
         mwebview.clearHistory();
 
         //To load page from assets
-        //mwebview.loadUrl("file:///android_asset/index.html");
+        mwebview.loadUrl("file:///android_asset/index.html");
         //To load page from githubio
-        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+        //mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
 
         mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
 
@@ -403,19 +502,51 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetAuto(String url) {
             //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            myHandler.post(() -> TempmediaSourceAuto = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
+            myHandler.post(() -> mediaSourceAuto0 = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetAuto2(String url) {
+            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
+            myHandler.post(() -> mediaSourceAuto1 = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mClearSmallPlayer() {
+            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
+            myHandler.post(() -> ClearPlayer(mainPlayer == 0 ? 1 : 0));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mSwitchPlayer() {
+            myHandler.post(() -> SwitchPlayer(true));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void initializePlayer2(String url) {
+            myHandler.post(() -> PreinitializePlayer2(null, url));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void initializePlayer2Auto() {
+            myHandler.post(() -> PreinitializePlayer2(mediaSourceAuto1, ""));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(TempmediaSourceAuto, "", whocall, position));
+            myHandler.post(() -> PreinitializePlayer(mainPlayer == 0 ? mediaSourceAuto0 : mediaSourceAuto1, "", whocall, position));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int whocall) {
-            myHandler.post(() -> PreresetPlayer(whocall));
+            myHandler.post(() -> PreResetPlayer(whocall, mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -430,7 +561,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<Long> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Long>() {
                 @Override
                 public void run() {
-                    if (player != null) value = player.getCurrentPosition();
+                    if (player[mainPlayer] != null) value = player[mainPlayer].getCurrentPosition();
                     else value = 0L;
                 }
             });
@@ -459,7 +590,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void play(boolean play) {
             myHandler.post(() -> {
-                if (player != null) player.setPlayWhenReady(play);
+                if (player[mainPlayer] != null) player[mainPlayer].setPlayWhenReady(play);
             });
         }
 
@@ -469,7 +600,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<Boolean> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Boolean>() {
                 @Override
                 public void run() {
-                    if (player != null) value = player.getPlayWhenReady();
+                    if (player[mainPlayer] != null) value = player[mainPlayer].getPlayWhenReady();
                     else value = false;
                 }
             });
@@ -480,7 +611,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void setPlaybackSpeed(float value) {
             myHandler.post(() -> {
-                if (player != null) player.setPlaybackParameters(new PlaybackParameters(value, 1.0f));
+                if (player[mainPlayer] != null) player[mainPlayer].setPlaybackParameters(new PlaybackParameters(value, 1.0f));
             });
         }
 
@@ -515,7 +646,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    if (player != null) value = Tools.mgetVideoQuality(player);
+                    if (player[mainPlayer] != null) value = Tools.mgetVideoQuality(player[mainPlayer]);
                     else value = null;
                 }
             });
@@ -525,21 +656,30 @@ public class PlayerActivity extends Activity {
 
     private class PlayerEventListener implements Player.EventListener {
 
+        private int position;
+
+        private PlayerEventListener(int mposition) {
+            position = mposition;
+        }
+
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, @Player.State int playbackState) {
+        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             myHandler.post(() -> {
                 if (playWhenReady) {
                     if (playbackState == Player.STATE_ENDED) {
                         hideLoading();
-                        mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+                        if (PicturePicture && mainPlayer == position){
+                            SwitchPlayer(false);
+                            PicturePicture = false;
+                        } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         loadingcanshow = true;
                         showLoading(false);
                     } else if (playbackState == Player.STATE_READY) {
                         hideLoading();
-                        if (player != null) {
+                        if (player[position] != null && mwhocall > 1) {
                             myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
-                                    mwhocall + "," + player.getDuration() + ")"));
+                                    mwhocall + "," + player[position].getDuration() + ")"));
                         }
                     }
                 } else  hideLoading();
@@ -549,9 +689,9 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerError(ExoPlaybackException e) {
             if (Tools.isBehindLiveWindow(e)) clearResumePosition();
-            else updateResumePosition();
+            else updateResumePosition(position);
 
-            initializePlayer();
+            initializePlayer(position);
         }
 
     }
