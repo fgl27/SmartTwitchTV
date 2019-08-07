@@ -84,6 +84,7 @@ public class PlayerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
             onCreateReady = true;
             setContentView(R.layout.activity_player);
@@ -116,13 +117,15 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    // The main player initialization function
     private void initializePlayer(int position) {
         Toast.makeText(this, "initializePlayer position " + position, Toast.LENGTH_SHORT).show();
-        if (player[position] != null) {
-            player[position].setPlayWhenReady(shouldAutoPlay);
-            releasePlayer(position);
-        }
+        // always release before starting for performance check ClearPlayer
         if (shouldAutoPlay) {
+            if (player[position] != null) {
+                player[position].setPlayWhenReady(true);
+                releasePlayer(position);
+            }
             simpleExoPlayerView[position].setVisibility(View.VISIBLE);
             showLoading(true);
 
@@ -163,25 +166,20 @@ public class PlayerActivity extends Activity {
                     mediaSourceAuto != null ? mediaSourceAuto : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
                     !seeking,
                     true);
+
             if (mainPlayer == 0 && player[1] != null) {
                 simpleExoPlayerView[1].setVisibility(View.GONE);
                 simpleExoPlayerView[1].setVisibility(View.VISIBLE);
             }
         } else {
-            //Reset player background to a empty black screen and reset all states
-            player[position] = ExoPlayerFactory.newSimpleInstance(this);
-            simpleExoPlayerView[position].setPlayer(player[position]);
-
-            player[position].setPlayWhenReady(false);
-            player[position].prepare(mediaurireset, true, true);
-
-            releasePlayer(position);
+            ClearPlayer(position);
             clearResumePosition();
-            hideLoading();
-            simpleExoPlayerView[position].setVisibility(View.GONE);
         }
     }
 
+    // For some reason the player can lag a device when stated without releasing it first
+    // So here we do more then what seems necessary by releasing, starting and releasing again
+    // But on longer test this gives the best performance
     private void ClearPlayer(int position) {
         if (player[position] != null) {
             player[position].setPlayWhenReady(shouldAutoPlay);
@@ -200,6 +198,8 @@ public class PlayerActivity extends Activity {
         hideLoading();
     }
 
+    //The main PreinitializePlayer used for when we first start the player or to play clips/vods
+    //Also used to change the main player that is the big screen
     private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position) {
         mediaSourceAuto = mediaSource;
         uri = Uri.parse(videoAddress);
@@ -210,6 +210,7 @@ public class PlayerActivity extends Activity {
         initializePlayer(mainPlayer);
     }
 
+    //The way to start the Picture in Picture small window
     private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
         mediaSourceAuto = mediaSource;
         uri = Uri.parse(videoAddress);
@@ -221,6 +222,7 @@ public class PlayerActivity extends Activity {
         PicturePicture = true;
     }
 
+    //Stop the player called from js
     private void PreResetPlayer(int whocall, int position) {
         if (mainPlayer == 1) SwitchPlayer(false);
         PicturePicture = false;
@@ -233,6 +235,7 @@ public class PlayerActivity extends Activity {
         initializePlayer(position);
     }
 
+    //Main release function
     private void releasePlayer(int position) {
         if (player[position] != null) {
             shouldAutoPlay = player[position].getPlayWhenReady();
@@ -243,12 +246,45 @@ public class PlayerActivity extends Activity {
         hideLoading();
     }
 
+    //Basic player position setting, for resume playback 
+    private void clearResumePosition() {
+        mResumePosition = C.TIME_UNSET;
+    }
+
+    private void updateResumePosition(int position) {
+        if (player[position] == null) return;
+
+        mResumePosition = player[position].isCurrentWindowSeekable() ?
+                Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
+    }
+
+    //Basic animation for loading functions
     private void hideLoading() {
         loadingcanshow = false;
         spinner.setVisibility(View.GONE);
         spinner.clearAnimation();
     }
 
+    private void showLoading(boolean runnow) {
+        if (runnow) showLoading();
+        else {
+            //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
+            myHandler.postDelayed(() -> {
+                if (loadingcanshow) showLoading();
+            }, 650);
+        }
+    }
+
+    private void showLoading() {
+        if (spinner.getVisibility() != View.VISIBLE) {
+            // The duration of the spin is 1s, reset every show to use the spin as a performance counter
+            // to know how much time takes to load
+            spinner.startAnimation(rotation);
+            spinner.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //Used in side-by-side mode chat plus video
     private void updatesize(boolean sizechat) {
         if (heightDefault == 0) {
             simpleExoPlayerView[0].setVisibility(View.VISIBLE);
@@ -265,6 +301,7 @@ public class PlayerActivity extends Activity {
             simpleExoPlayerView[0].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP));
     }
 
+    //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer(boolean show) {
         if (heightDefault == 0) {
             simpleExoPlayerView[0].setVisibility(View.VISIBLE);
@@ -296,25 +333,6 @@ public class PlayerActivity extends Activity {
         if (show) simpleExoPlayerView[main].setVisibility(View.VISIBLE);
     }
 
-    private void showLoading(boolean runnow) {
-        if (runnow) showLoading();
-        else {
-            //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
-            myHandler.postDelayed(() -> {
-                if (loadingcanshow) showLoading();
-            }, 650);
-        }
-    }
-
-    private void showLoading() {
-        if (spinner.getVisibility() != View.VISIBLE) {
-            // The duration of the spin is 1s, reset every show to use the spin as a performance counter
-            // to know how much time takes to load
-            spinner.startAnimation(rotation);
-            spinner.setVisibility(View.VISIBLE);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -336,8 +354,8 @@ public class PlayerActivity extends Activity {
         super.onStop();
         updateResumePosition(0);
         updateResumePosition(1);
-        releasePlayer(0);
-        releasePlayer(1);
+        ClearPlayer(0);
+        ClearPlayer(1);
     }
 
     //This function is called when TV wakes up
@@ -349,19 +367,22 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        releasePlayer(0);
-        releasePlayer(1);
+        ClearPlayer(0);
+        ClearPlayer(1);
     }
 
+    //Close the app
     private void closeThis() {
         finishAndRemoveTask();
     }
 
+    //Minimize the app
     private void minimizeThis() {
         this.moveTaskToBack(true);
     }
 
     //https://android-developers.googleblog.com/2009/12/back-and-other-hard-keys-three-stories.html
+    //Use back key to kill the app
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -397,18 +418,7 @@ public class PlayerActivity extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-    private void clearResumePosition() {
-        mResumePosition = C.TIME_UNSET;
-    }
-
-    private void updateResumePosition(int position) {
-        if (player[position] == null) {
-            return;
-        }
-
-        mResumePosition = player[position].isCurrentWindowSeekable() ? Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
-    }
-
+    // A web app that loads all thumbnails content and interact with the player
     private void initializeWebview() {
         mwebview = findViewById(R.id.WebView);
         mwebview.setBackgroundColor(Color.TRANSPARENT);
@@ -654,6 +664,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    // Basic EventListener for exoplayer
     private class PlayerEventListener implements Player.EventListener {
 
         private int position;
