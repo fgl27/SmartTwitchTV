@@ -9,15 +9,24 @@
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_view"
-        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:use_controller="false"
         />
 
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/player_view2"
+        android:focusableInTouchMode="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:use_controller="false"
+        android:layout_gravity="bottom|end"
+        />
+
     <WebView
         android:id="@+id/WebView"
-        android:focusable="true"
+        android:focusable="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
