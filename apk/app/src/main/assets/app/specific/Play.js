@@ -295,7 +295,6 @@ function Play_Resume() {
         }
     } else {
         Play_watching_time = new Date().getTime();
-        PlayExtra_PicturePicture = false;
         Play_isOn = true;
         Play_clearPause();
         if (Play_isOn) {
@@ -318,6 +317,7 @@ function Play_ResumeAfterOnline() {
         window.clearInterval(Play_ResumeAfterOnlineId);
         Play_state = Play_STATE_LOADING_TOKEN;
         Play_loadData();
+        if (PlayExtra_PicturePicture) PlayExtra_Resume();
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -630,7 +630,7 @@ function Play_qualityChanged() {
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        if (Play_quality.indexOf("Auto") !== -1) Android.StartAuto(1, 1);
+        if (Play_quality.indexOf("Auto") !== -1 || PlayExtra_PicturePicture) Android.StartAuto(1, 1);
         else Android.startVideo(Play_playingUrl, 1);
     }
 
@@ -672,7 +672,7 @@ function Play_loadChat() {
 function Play_PlayerCheck(mwhocall) { // jshint ignore:line
     if (mwhocall === 1) {
 
-        if (Play_qualityPlaying.indexOf("Auto") === -1) Play_qualityChanged();
+        if (Play_qualityPlaying.indexOf("Auto") !== -1) Play_qualityChanged();
         else if (navigator.onLine && (Play_qualityIndex < Play_getQualitiesCount() - 1)) {
             Play_qualityIndex++;
             Play_qualityDisplay();
@@ -681,7 +681,7 @@ function Play_PlayerCheck(mwhocall) { // jshint ignore:line
 
     } else if (mwhocall === 2) {
 
-        if (PlayVod_quality.indexOf("Auto") === -1) PlayVod_qualityChanged();
+        if (PlayVod_quality.indexOf("Auto") !== -1) PlayVod_qualityChanged();
         else if (navigator.onLine && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
             PlayVod_qualityIndex++;
             PlayVod_qualityDisplay();
@@ -753,7 +753,16 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream() {
-    if (Main_IsNotBrowser) Android.stopVideo(1);
+    if (Main_IsNotBrowser) {
+        //we are updating the main player via live feed
+        if (PlayExtra_PicturePicture) Android.mClearBigPlayer();
+        else {
+            //We are closing the player on error or on end
+            Android.mClearSmallPlayer();
+            Android.stopVideo(1);
+        }
+    }
+
     Play_isOn = false;
     UserLiveFeed_Hide();
     Chat_Clear();
@@ -1428,6 +1437,7 @@ function Play_KeyReturn(is_vod) {
             if (PlayExtra_PicturePicture) {
                 if (Main_IsNotBrowser) Android.mClearSmallPlayer();
                 PlayExtra_PicturePicture = false;
+                PlayExtra_selectedChannel = '';
                 Play_CleanHideExit();
             } else {
                 Play_CleanHideExit();
@@ -1452,12 +1462,16 @@ function Play_handleKeyUp(e) {
         if (!PlayExtra_clear) {
             var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
             if (doc === null) UserLiveFeed_ResetFeedId();
-            else if (Main_values.Play_selectedChannel !== JSON.parse(doc.getAttribute(Main_DataAttribute))[0]) {
-                Play_PreshutdownStream();
-                Main_values.Play_isHost = false;
-                Play_UserLiveFeedPressed = true;
-                Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
-            } else UserLiveFeed_ResetFeedId();
+            else {
+                var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
+                if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
+                    console.log('KEY_ENTER Main_OpenLiveStream');
+                    Play_PreshutdownStream();
+                    Main_values.Play_isHost = false;
+                    Play_UserLiveFeedPressed = true;
+                    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                } else UserLiveFeed_ResetFeedId();
+            }
         }
     }
 }
@@ -1492,7 +1506,8 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos--;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
+                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
+                    !PlayExtra_PicturePicture) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
                     Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
@@ -1582,7 +1597,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (PlayExtra_PicturePicture) {
                     PlayExtra_SwitchPlayer();
-                    Android.mSwitchPlayer();
+                    if (Main_IsNotBrowser) Android.mSwitchPlayer();
                 } else Play_showPanel();
                 break;
             case KEY_ENTER:

@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
-
+    
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_view"
         android:focusableInTouchMode="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:use_controller="false"
-        />
+        app:use_controller="false">
+
+        <ImageView
+            android:contentDescription="@string/app_name"
+            android:id="@+id/spinner1"
+            android:focusable="false"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/spin"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_view2"
@@ -21,8 +33,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:use_controller="false"
-        android:layout_gravity="bottom|end"
-        />
+        android:layout_gravity="bottom|end">
+
+        <ImageView
+            android:contentDescription="@string/app_name"
+            android:id="@+id/spinner2"
+            android:focusable="false"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/spin"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
     <WebView
         android:id="@+id/WebView"
@@ -32,11 +55,10 @@
 
     <ImageView
         android:contentDescription="@string/app_name"
-        android:id="@+id/spinner"
+        android:id="@+id/spinnermain"
         android:focusable="false"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/spin"
-        android:layout_gravity="center"/>
-
+        android:layout_gravity="center" />
 </FrameLayout>
