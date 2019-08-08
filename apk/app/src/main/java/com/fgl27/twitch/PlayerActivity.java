@@ -77,6 +77,9 @@ public class PlayerActivity extends Activity {
     public boolean[] loadingcanshow = new boolean[2];
     public ImageView[] spinner = new ImageView[2];
     public ImageView spinnermain;
+    public float density;
+    public int densitysmall;
+    public int densitybig;
 
     public Animation rotation;
 
@@ -354,6 +357,9 @@ public class PlayerActivity extends Activity {
         mwidthChat = (int) (mwidthDefault * 0.75);
 
         if (isvisible) simpleExoPlayerView[0].setVisibility(View.GONE);
+        density = this.getResources().getDisplayMetrics().density;
+        densitysmall = Math.round(35 * density);
+        densitybig = Math.round(50 * density);
     }
 
     //Used in side-by-side mode chat plus video
@@ -381,17 +387,24 @@ public class PlayerActivity extends Activity {
             main = 1;
         }
 
+        //change trackSelector to limit video bandwidth
         if (trackSelector[main2] != null) trackSelector[main2].setParameters(trackSelectorParameters);
         if (trackSelector[main] != null) trackSelector[main].setParameters(trackSelectorParametersSmall);
 
+        //Set proper video size
         simpleExoPlayerView[main2].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.START | Gravity.TOP));
         UpdadeSizePosSmall(main);
 
+        //Set proper video loading icon size
+        spinner[main].setLayoutParams(new FrameLayout.LayoutParams(densitysmall, densitysmall, Gravity.CENTER));
+        spinner[main2].setLayoutParams(new FrameLayout.LayoutParams(densitybig, densitybig, Gravity.CENTER));
+
+        //Set proper video volume, muted to small
         if (player[main2] != null) player[main2].setVolume(1f);
         if (player[main] != null) player[main].setVolume(0f);
 
-        ResetViews(main, main2);
         //Reset the view so it show on top
+        ResetViews(main, main2);
         simpleExoPlayerView[main].setVisibility(View.GONE);
         if (show) simpleExoPlayerView[main].setVisibility(View.VISIBLE);
     }
