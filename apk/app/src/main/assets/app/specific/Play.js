@@ -286,6 +286,7 @@ function Play_Resume() {
         }
     } else {
         Play_watching_time = new Date().getTime();
+        PlayExtra_PicturePicture = false;
         Play_isOn = true;
         Play_clearPause();
         if (Play_isOn) {
@@ -987,8 +988,6 @@ function Play_KeyPause(PlayVodClip) {
          else if (PlayVodClip === 3) PlayClip_hidePanel();
         }
 
-        //For some reason Android.play(true); can freeze the app as if the function never returns even it be a void
-        //Let it at the bottom and technically all works
         if (Main_IsNotBrowser) {
             Android.play(true);
         }
