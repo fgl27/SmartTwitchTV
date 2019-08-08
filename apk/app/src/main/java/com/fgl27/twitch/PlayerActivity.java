@@ -129,7 +129,9 @@ public class PlayerActivity extends Activity {
                 player[position].setPlayWhenReady(true);
                 releasePlayer(position);
             }
-            simpleExoPlayerView[position].setVisibility(View.VISIBLE);
+            if (simpleExoPlayerView[0].getVisibility() != View.VISIBLE)
+                simpleExoPlayerView[0].setVisibility(View.VISIBLE);
+
             showLoading(true);
 
             trackSelector[position] = new DefaultTrackSelector();
@@ -146,13 +148,7 @@ public class PlayerActivity extends Activity {
             player[position].setPlayWhenReady(true);
 
             if (mainPlayer != position) {
-                if (heightDefault == 0) {
-                    heightDefault = simpleExoPlayerView[0].getHeight();
-                    mwidthDefault = simpleExoPlayerView[0].getWidth();
-
-                    heightChat = (int) (heightDefault * 0.75);
-                    mwidthChat = (int) (mwidthDefault * 0.75);
-                }
+                if (heightDefault == 0) SetheightDefault();
 
                 player[position].setVolume(0f);
                 simpleExoPlayerView[position].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), Gravity.END | Gravity.BOTTOM));
@@ -288,16 +284,23 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    private void SetheightDefault() {
+        //Make it visible for calculation
+        boolean isvisible = simpleExoPlayerView[0].getVisibility() != View.VISIBLE;
+        if (isvisible) simpleExoPlayerView[0].setVisibility(View.VISIBLE);
+
+        heightDefault = simpleExoPlayerView[0].getHeight();
+        mwidthDefault = simpleExoPlayerView[0].getWidth();
+
+        heightChat = (int) (heightDefault * 0.75);
+        mwidthChat = (int) (mwidthDefault * 0.75);
+
+        if (isvisible) simpleExoPlayerView[0].setVisibility(View.GONE);
+    }
+
     //Used in side-by-side mode chat plus video
     private void updatesize(boolean sizechat) {
-        if (heightDefault == 0) {
-            simpleExoPlayerView[0].setVisibility(View.VISIBLE);
-            heightDefault = simpleExoPlayerView[0].getHeight();
-            mwidthDefault = simpleExoPlayerView[0].getWidth();
-
-            heightChat = (int) (heightDefault * 0.75);
-            mwidthChat = (int) (mwidthDefault * 0.75);
-        }
+        if (heightDefault == 0) SetheightDefault();
 
         if (sizechat)
             simpleExoPlayerView[0].setLayoutParams(new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL));
@@ -307,14 +310,8 @@ public class PlayerActivity extends Activity {
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer(boolean show) {
-        if (heightDefault == 0) {
-            simpleExoPlayerView[0].setVisibility(View.VISIBLE);
-            heightDefault = simpleExoPlayerView[0].getHeight();
-            mwidthDefault = simpleExoPlayerView[0].getWidth();
+        if (heightDefault == 0) SetheightDefault();
 
-            heightChat = (int) (heightDefault * 0.75);
-            mwidthChat = (int) (mwidthDefault * 0.75);
-        }
         int main = 0;
         int main2 = 0;
 
@@ -332,7 +329,6 @@ public class PlayerActivity extends Activity {
 
         if (player[main2] != null) player[main2].setVolume(1f);
         if (player[main] != null) player[main].setVolume(0f);
-
 
         if (show) simpleExoPlayerView[main].setVisibility(View.VISIBLE);
     }
@@ -691,7 +687,7 @@ public class PlayerActivity extends Activity {
                         loadingcanshow = true;
                         showLoading(false);
 
-                        //If buffer for twice as BUFFER_SIZE do something as player froze
+                        //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
                         PlayerCheckHandler.postDelayed(() -> {
                             //First try only restart the player second ask js to check if there is a lower resolution
                             PlayerCheckCounter++;
