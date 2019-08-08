@@ -126,7 +126,6 @@ public class PlayerActivity extends Activity {
             // Bitrates bigger then 8Mbs on two simultaneous video playback can slowdown for eg a S905X too much
             trackSelectorParametersSmall = trackSelector[0].getParameters()
                     .buildUpon()
-                    .setMaxVideoSize(1281, 721)
                     .setMaxVideoBitrate(3000000)
                     .build();
 
@@ -152,6 +151,7 @@ public class PlayerActivity extends Activity {
 
     // The main player initialization function
     private void initializePlayer(int position) {
+        //Toast.makeText(this, "position " + position + " mainPlayer " + mainPlayer, Toast.LENGTH_SHORT).show();
         // always release before starting for performance check ClearPlayer
         if (player[position] != null) {
             player[position].setPlayWhenReady(shouldAutoPlay);
@@ -162,8 +162,6 @@ public class PlayerActivity extends Activity {
             simpleExoPlayerView[position].setVisibility(View.VISIBLE);
 
         boolean isSmall = (mainPlayer != position);
-
-        showLoading(true, isSmall ? 1 : 0);
 
         trackSelector[position] = new DefaultTrackSelector();
         trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
@@ -187,6 +185,8 @@ public class PlayerActivity extends Activity {
             simpleExoPlayerView[position].setVisibility(View.GONE);
             simpleExoPlayerView[position].setVisibility(View.VISIBLE);
         }
+
+        showLoading(position);
 
         player[position].addListener(new PlayerEventListener(position));
 
@@ -390,9 +390,38 @@ public class PlayerActivity extends Activity {
         if (player[main2] != null) player[main2].setVolume(1f);
         if (player[main] != null) player[main].setVolume(0f);
 
+        ResetViews(main, main2);
         //Reset the view so it show on top
         simpleExoPlayerView[main].setVisibility(View.GONE);
         if (show) simpleExoPlayerView[main].setVisibility(View.VISIBLE);
+    }
+
+    // Is necessary to bring the small player to the front of the big using bringToFront
+    // and reset it view by Visibility(GONE then VISIBLE) to have the player properly display the same all the time
+    public void ResetViews(int front, int back) {
+        simpleExoPlayerView[back].bringToFront();
+        simpleExoPlayerView[back].invalidate();
+        simpleExoPlayerView[front].invalidate();
+        mwebview.invalidate();
+        spinnermain.invalidate();
+
+        simpleExoPlayerView[front].bringToFront();
+        simpleExoPlayerView[front].invalidate();
+        simpleExoPlayerView[back].invalidate();
+        mwebview.invalidate();
+        spinnermain.invalidate();
+
+        mwebview.bringToFront();
+        mwebview.invalidate();
+        simpleExoPlayerView[front].invalidate();
+        simpleExoPlayerView[back].invalidate();
+        spinnermain.invalidate();
+
+        spinnermain.bringToFront();
+        spinnermain.invalidate();
+        simpleExoPlayerView[front].invalidate();
+        simpleExoPlayerView[back].invalidate();
+        mwebview.invalidate();
     }
 
     public void UpdadeSizePosSmall(int pos) {
@@ -796,7 +825,7 @@ public class PlayerActivity extends Activity {
                     if (playbackState == Player.STATE_ENDED) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
-                        hideLoading(mainPlayer != position ? 1 : 0);
+                        hideLoading(position);
                         if (PicturePicture) {
                             PicturePicture = false;
                             ClearPlayer(position);
@@ -806,7 +835,7 @@ public class PlayerActivity extends Activity {
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         hideLoadingMain();
                         loadingcanshow[position == 0 ? 1 : 0] = true;
-                        showLoading(false, mainPlayer != position ? 1 : 0);
+                        showLoading(false, position);
 
                         //Use the player buffer as a player check state to prevent be buffering for ever
                         //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
@@ -838,7 +867,7 @@ public class PlayerActivity extends Activity {
                             if (!player[otherplayer].getPlayWhenReady()) player[otherplayer].setPlayWhenReady(true);
                         }
 
-                        hideLoading(mainPlayer != position ? 1 : 0);
+                        hideLoading(position);
                         if (player[position] != null && mwhocall > 1) {
                             myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
                                     mwhocall + "," + player[position].getDuration() + ")"));
@@ -846,7 +875,7 @@ public class PlayerActivity extends Activity {
                     }
                 } else  {
                     hideLoadingMain();
-                    hideLoading(mainPlayer != position ? 1 : 0);
+                    hideLoading(position);
                 }
             });
         }
@@ -860,4 +889,4 @@ public class PlayerActivity extends Activity {
         }
 
     }
-}
+}	

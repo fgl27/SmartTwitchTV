@@ -70,7 +70,7 @@ function PlayExtra_KeyEnter() {
                 Play_quality = "Auto";
                 Play_qualityPlaying = Play_quality;
             }
-            PlayExtra_Resume()
+            PlayExtra_Resume();
         } else UserLiveFeed_ResetFeedId();
     }
 }
