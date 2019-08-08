@@ -80,6 +80,8 @@ public class PlayerActivity extends Activity {
     private int playerDivider = 3;
 
     public Handler myHandler;
+    public Handler PlayerCheckHandler;
+    public int PlayerCheckCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class PlayerActivity extends Activity {
             setContentView(R.layout.activity_player);
 
             myHandler = new Handler(Looper.getMainLooper());
+            PlayerCheckHandler = new Handler(Looper.getMainLooper());
 
             dataSourceFactory =
                     new DefaultHttpDataSourceFactory(
@@ -260,6 +263,7 @@ public class PlayerActivity extends Activity {
 
     //Basic animation for loading functions
     private void hideLoading() {
+
         loadingcanshow = false;
         spinner.setVisibility(View.GONE);
         spinner.clearAnimation();
@@ -524,19 +528,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mClearSmallPlayer() {
-            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            myHandler.post(() -> ClearPlayer(mainPlayer == 0 ? 1 : 0));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void mSwitchPlayer() {
-            myHandler.post(() -> SwitchPlayer(true));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public void initializePlayer2(String url) {
             myHandler.post(() -> PreinitializePlayer2(null, url));
         }
@@ -557,6 +548,19 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void stopVideo(int whocall) {
             myHandler.post(() -> PreResetPlayer(whocall, mainPlayer));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mClearSmallPlayer() {
+            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
+            myHandler.post(() -> ClearPlayer(mainPlayer == 0 ? 1 : 0));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mSwitchPlayer() {
+            myHandler.post(() -> SwitchPlayer(true));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -686,7 +690,19 @@ public class PlayerActivity extends Activity {
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         loadingcanshow = true;
                         showLoading(false);
+
+                        //If buffer for twice as BUFFER_SIZE do something as player froze
+                        PlayerCheckHandler.postDelayed(() -> {
+                            //First try only restart the player second ask js to check if there is a lower resolution
+                            PlayerCheckCounter++;
+                            if (PlayerCheckCounter > 1) mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
+                            else initializePlayer(position);
+
+                        }, BUFFER_SIZE[mwhocall] * 2);
+
                     } else if (playbackState == Player.STATE_READY) {
+                        PlayerCheckCounter = 0;
+                        PlayerCheckHandler.removeCallbacksAndMessages(null);
                         hideLoading();
                         if (player[position] != null && mwhocall > 1) {
                             myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +

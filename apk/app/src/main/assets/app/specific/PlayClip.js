@@ -1,7 +1,4 @@
 //Variable initialization
-var PlayClip_PlayerTime = 0;
-var PlayClip_streamCheckId = null;
-var PlayClip_PlayerCheckCount = 0;
 var PlayClip_IsJumping = false;
 var PlayClip_jumpCount = 0;
 var PlayClip_TimeToJump = 0;
@@ -19,9 +16,7 @@ var PlayClip_currentTime = 0;
 var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
 var PlayClip_HasVOD = false;
-var PlayClip_PlayerCheckCounter = 0;
 var PlayClip_PlayerCheckQualityChanged = false;
-var PlayClip_PlayerCheckRun = false;
 var PlayClip_Buffer = 2000;
 
 var PlayClip_jumpTimers = [0, 5];
@@ -68,10 +63,6 @@ function PlayClip_Start() {
     Main_ShowElement('progress_bar_div');
     Main_ShowElement('controls_holder');
 
-    PlayClip_PlayerCheckCounter = 0;
-    PlayClip_PlayerCheckCount = 0;
-    window.clearInterval(PlayClip_streamCheckId);
-    PlayClip_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayClip_state = 0;
     PlayClip_currentTime = 0;
@@ -184,7 +175,6 @@ function PlayClip_FrameRate(value) {
 }
 
 function PlayClip_qualityChanged() {
-    window.clearInterval(PlayClip_streamCheckId);
     PlayClip_qualityIndex = 0;
     PlayClip_playingUrl = PlayClip_qualities[0].url;
     if (PlayClip_quality.indexOf("source") !== -1) PlayClip_quality = "source";
@@ -213,14 +203,6 @@ function PlayClip_qualityChanged() {
 function PlayClip_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
-
-    if (Main_IsNotBrowser) {
-        PlayClip_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 1 + ((PlayClip_Buffer / 1000) * 2);
-        PlayClip_PlayerCheckQualityChanged = false;
-        window.clearInterval(PlayClip_streamCheckId);
-        PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
-    }
 }
 
 function PlayClip_UpdateDuration(duration) {
@@ -231,59 +213,6 @@ function PlayClip_UpdateDuration(duration) {
 
 function PlayClip_Resume() {
     if (document.hidden) PlayClip_shutdownStream();
-}
-
-function PlayClip_PlayerCheck() {
-    if (Main_IsNotBrowser) PlayClip_currentTime = Android.gettime();
-
-    //The player can bug and not stop playing when it ends after a video has be pause
-    if ((PlayClip_currentTime / 1000) > PlayClip_DurationSeconds) {
-        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
-        if (Main_IsNotBrowser) Android.play(false);
-        Play_PannelEndStart(3);
-    }
-
-    if (PlayClip_isOn && PlayClip_PlayerTime === PlayClip_currentTime && !Play_isNotplaying()) {
-        PlayClip_PlayerCheckCount++;
-        if (PlayClip_PlayerCheckCount > Play_PlayerCheckTimer) {
-
-            //Don't change the first time only retry
-            if (PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) PlayClip_qualityIndex++;
-            else if (!PlayClip_PlayerCheckQualityChanged && PlayClip_PlayerCheckRun) PlayClip_PlayerCheckCounter++;
-
-            if (!navigator.onLine) Play_EndStart(false, 3);
-            else if (PlayClip_PlayerCheckCounter > 1) Play_CheckConnection(PlayClip_PlayerCheckCounter, 3, PlayClip_DropOneQuality);
-            else {
-                PlayClip_qualityDisplay();
-                PlayClip_qualityChanged();
-                PlayClip_PlayerCheckRun = true;
-            }
-
-        } // else we try for too long let the listener onerror catch it
-    } else {
-        PlayClip_PlayerCheckCounter = 0;
-        PlayClip_PlayerCheckCount = 0;
-        PlayClip_PlayerCheckRun = false;
-
-    }
-
-    PlayClip_PlayerTime = PlayClip_currentTime;
-}
-
-function PlayClip_DropOneQuality(ConnectionDrop) {
-
-    if (!ConnectionDrop) {
-        if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) PlayClip_qualityIndex++;
-        else {
-            Play_EndStart(false, 3);
-            return;
-        }
-    }
-
-    PlayClip_PlayerCheckCounter = 0;
-    PlayClip_qualityDisplay();
-    PlayClip_qualityChanged();
-    PlayClip_PlayerCheckRun = true;
 }
 
 function PlayClip_shutdownStream() {
@@ -298,7 +227,6 @@ function PlayClip_shutdownStream() {
 function PlayClip_PreshutdownStream() {
     PlayClip_hidePanel();
     PlayClip_qualities = [];
-    window.clearInterval(PlayClip_streamCheckId);
     if (Main_IsNotBrowser) Android.stopVideo(3);
     PlayClip_isOn = false;
     Chat_Clear();
