@@ -47,13 +47,6 @@ var Play_ResumeAfterOnlineCounter = 0;
 var Play_ResumeAfterOnlineId;
 var Play_isOn = false;
 var Play_ChatBackgroundID = null;
-var Play_qualitiesFound = false;
-var Play_PlayerTime = 0;
-var Play_streamCheckId = null;
-var Play_PlayerCheckCount = 0;
-var Play_PlayerCheckCounter = 0;
-var Play_PlayerCheckQualityChanged = false;
-var Play_PlayerCheckRun = false;
 var Play_Playing = false;
 var Play_IsWarning = false;
 var Play_LoadLogoSucess = false;
@@ -72,8 +65,6 @@ var Play_ChatDelayPosition = 0;
 var Play_TargetHost = '';
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
-var Play_PlayerCheckTimer = 7;
-var Play_PlayerCheckInterval = 1000;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_IncrementView = '';
@@ -245,7 +236,7 @@ function Play_Start() {
     Main_ShowElement('controls_holder');
 
     Play_currentTime = 0;
-    Play_watching_time = 0;
+    Play_watching_time = new Date().getTime();
     Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
 
@@ -256,14 +247,9 @@ function Play_Start() {
     Play_EndSet(1);
     Play_PlayerPanelOffset = -5;
     Play_updateStreamInfoErrorTry = 0;
-    Play_PlayerCheckCounter = 0;
-    Play_PlayerCheckCount = 0;
-    window.clearInterval(Play_streamCheckId);
-    Play_PlayerCheckRun = false;
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_isLive = true;
-    Play_qualitiesFound = 0;
     Play_tokenResponse = 0;
     Play_playingTry = 0;
     Play_isOn = true;
@@ -283,10 +269,7 @@ function Play_Warn(text) { // jshint ignore:line
 function Play_CheckResume() { // jshint ignore:line
     if (Play_isOn) Play_Resume();
     if (PlayVod_isOn) PlayVod_Resume();
-    if (PlayClip_isOn) {
-        PlayClip_shutdownStream();
-        window.clearInterval(PlayClip_streamCheckId);
-    }
+    if (PlayClip_isOn) PlayClip_shutdownStream();
 }
 
 function Play_Resume() {
@@ -302,6 +285,7 @@ function Play_Resume() {
             window.clearInterval(Play_streamInfoTimerId);
         }
     } else {
+        Play_watching_time = new Date().getTime();
         Play_isOn = true;
         Play_clearPause();
         if (Play_isOn) {
@@ -617,7 +601,6 @@ function Play_extractStreamDeclarations(input) {
 }
 
 function Play_qualityChanged() {
-    window.clearInterval(Play_streamCheckId);
     Play_qualityIndex = 0;
     Play_playingUrl = Play_qualities[0].url;
     if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
@@ -664,14 +647,6 @@ function Play_onPlayer() {
     Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
     Play_loadChat();
-
-    if (Main_IsNotBrowser) {
-        Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 1 + ((Play_Buffer / 1000) * 2);
-        Play_PlayerCheckQualityChanged = false;
-        window.clearInterval(Play_streamCheckId);
-        //Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
-    }
 }
 
 function Play_loadChat() {
@@ -683,74 +658,41 @@ function Play_loadChat() {
     ChatLive_Init();
 }
 
-function Play_PlayerCheck() {
-    var updatetime = !Play_isNotplaying();
-    if (Main_IsNotBrowser) Play_currentTime = Android.gettime();
-    if (Play_isOn && Play_PlayerTime === Play_currentTime && updatetime) {
-        Play_PlayerCheckCount++;
-        if (Play_PlayerCheckCount > Play_PlayerCheckTimer) {
+//called by android PlayerActivity
+function Play_PlayerCheck(mwhocall) { // jshint ignore:line
+    if (mwhocall === 1) {
 
-            //Don't change the first time only retry, and don't change if in Auto mode
-            if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun &&
-                (Play_qualityIndex < Play_getQualitiesCount() - 1) && (Play_qualityPlaying.indexOf("Auto") === -1))
-                Play_qualityIndex++;
-            else if (!Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_PlayerCheckCounter++;
+        if (Play_qualityPlaying.indexOf("Auto") === -1) Play_qualityChanged();
+        else if (navigator.onLine && (Play_qualityIndex < Play_getQualitiesCount() - 1)) {
+            Play_qualityIndex++;
+            Play_qualityDisplay();
+            Play_qualityChanged();
+        } else Play_EndStart(false, 1);
 
-            if (!navigator.onLine) Play_EndStart(false, 1);
-            else if (Play_PlayerCheckCounter > 1) Play_CheckConnection(Play_PlayerCheckCounter, 1, Play_DropOneQuality);
-            else {
-                Play_qualityDisplay();
-                Play_qualityChanged();
-                Play_PlayerCheckRun = true;
-            }
+    } else if (mwhocall === 2) {
 
-        }
-    } else {
-        Play_PlayerCheckCounter = 0;
-        Play_PlayerCheckCount = 0;
-        Play_PlayerCheckRun = false;
+        if (PlayVod_quality.indexOf("Auto") === -1) PlayVod_qualityChanged();
+        else if (navigator.onLine && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
+            PlayVod_qualityIndex++;
+            PlayVod_qualityDisplay();
+            PlayVod_qualityChanged();
+        } else Play_EndStart(false, 2);
+
+    } else if (mwhocall === 3) {
+
+        if (navigator.onLine && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
+            PlayClip_qualityIndex++;
+            PlayClip_qualityDisplay();
+            PlayClip_qualityChanged();
+        } else Play_EndStart(false, 3);
+
     }
-    Play_PlayerTime = Play_currentTime;
-    if (updatetime) Play_watching_time++;
-}
-
-function Play_DropOneQuality(ConnectionDrop) {
-
-    if (!ConnectionDrop) {
-        if (Play_qualityIndex < Play_getQualitiesCount() - 1) Play_qualityIndex++;
-        else {
-            Play_CheckHostStart();
-            return;
-        }
-    }
-
-    Play_PlayerCheckCounter = 0;
-    Play_qualityDisplay();
-    Play_qualityChanged();
-    Play_PlayerCheckRun = true;
 }
 
 function Play_EndStart(hosting, PlayVodClip) {
     Main_values.Play_isHost = hosting;
     Play_EndSet(PlayVodClip);
     Play_PlayEndStart(PlayVodClip);
-}
-
-// Check if connection with twitch server is OK if not for 15s drop one quality
-function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.timeout = 1000;
-    xmlHttp.open("GET", 'https://static-cdn.jtvnw.net/jtv-static/404_preview-10x10.png?' + Math.random(), true);
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                DropOneQuality(counter > 2);
-            } else if (counter > 12) Play_EndStart(false, PlayVodClip);
-        }
-    };
-
-    xmlHttp.send(null);
 }
 
 function Play_isNotplaying() {
@@ -836,7 +778,6 @@ function Play_ClearPlay() {
     document.removeEventListener('visibilitychange', Play_Resume);
     ChatLive_Clear();
     window.clearInterval(Play_streamInfoTimerId);
-    window.clearInterval(Play_streamCheckId);
     Play_IsWarning = false;
 }
 
@@ -914,7 +855,6 @@ function Play_hidePanel() {
 
 function Play_showPanel() {
     PlayVod_IconsBottonResetFocus();
-    //Play_IconsResetFocus();
     Play_qualityIndexReset();
     Play_qualityDisplay();
     PlayExtra_ResetSpeed();
@@ -930,7 +870,7 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_watching_time));
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time) ));
     Main_textContent("stream_live_time", STR_SINCE +
         (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
 
@@ -1041,18 +981,10 @@ function Play_KeyPause(PlayVodClip) {
 
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
 
-        if (PlayVodClip === 1) {
-            if (Play_isPanelShown()) Play_hidePanel();
-            window.clearInterval(Play_streamCheckId);
-            Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
-        } else if (PlayVodClip === 2) {
-            if (Play_isPanelShown()) PlayVod_hidePanel();
-            window.clearInterval(PlayVod_streamCheckId);
-            PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
-        } else if (PlayVodClip === 3) {
-            if (Play_isPanelShown()) PlayClip_hidePanel();
-            window.clearInterval(PlayClip_streamCheckId);
-            PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+       if (Play_isPanelShown()){
+        if (PlayVodClip === 1)      Play_hidePanel();
+        else if (PlayVodClip === 2) PlayVod_hidePanel();
+         else if (PlayVodClip === 3) PlayClip_hidePanel();
         }
 
         //For some reason Android.play(true); can freeze the app as if the function never returns even it be a void
@@ -1062,9 +994,6 @@ function Play_KeyPause(PlayVodClip) {
         }
     } else {
         Play_HideBufferDialog();
-        window.clearInterval(Play_streamCheckId);
-        window.clearInterval(PlayVod_streamCheckId);
-        window.clearInterval(PlayClip_streamCheckId);
 
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i> </div>');
 
@@ -1190,7 +1119,6 @@ function Play_EndDialogPressed(PlayVodClip) {
                 }, 2000);
             } else {
                 PlayVod_replay = true;
-                PlayVod_PlayerCheckQualityChanged = false;
                 PlayVod_qualityChanged();
                 Play_clearPause();
                 PlayVod_currentTime = 0;
@@ -1382,7 +1310,6 @@ function Play_qualityIndexReset() {
 //called by android PlayerActivity
 function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
     if (PlayVodClip === 1) { //live
-        window.clearInterval(Play_streamCheckId);
         Play_CheckHostStart();
     } else {
         Play_PlayEndStart(PlayVodClip);
@@ -1390,10 +1317,6 @@ function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
 }
 
 function Play_PlayEndStart(PlayVodClip) {
-    window.clearInterval(Play_streamCheckId);
-    window.clearInterval(PlayClip_streamCheckId);
-    window.clearInterval(PlayVod_streamCheckId);
-
     Play_PrepareshowEndDialog(PlayVodClip);
     Play_EndTextCounter = (!Play_EndSettingsCounter ? -2 : Play_EndSettingsCounter);
 
@@ -1408,7 +1331,6 @@ function Play_CheckHostStart() {
     Play_loadingDataTimeout = 2000;
     ChatLive_Clear();
     window.clearInterval(Play_streamInfoTimerId);
-    window.clearInterval(Play_streamCheckId);
     if (Main_values.Play_selectedChannel_id !== '') Play_loadDataCheckHost();
     else Play_CheckId();
 }
@@ -1829,7 +1751,6 @@ function Play_MakeControls() {
                 Play_qualityChanged();
                 Play_hidePanel();
             } else if (PlayVodClip === 2) {
-                PlayVod_PlayerCheckQualityChanged = false;
                 PlayVod_qualityChanged();
                 PlayVod_hidePanel();
             } else if (PlayVodClip === 3) {

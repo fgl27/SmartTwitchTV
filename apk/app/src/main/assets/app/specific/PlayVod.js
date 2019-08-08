@@ -22,13 +22,6 @@ var PlayVod_loadingInfoDataTry = 0;
 var PlayVod_loadingInfoDataTryMax = 5;
 var PlayVod_loadingInfoDataTimeout = 10000;
 
-var PlayVod_PlayerTime = 0;
-var PlayVod_streamCheckId = null;
-var PlayVod_PlayerCheckCount = 0;
-var PlayVod_PlayerCheckQualityChanged = false;
-var PlayVod_PlayerCheckCounter = 0;
-var PlayVod_PlayerCheckRun = false;
-
 var Play_jumping = false;
 var PlayVod_SizeClearID;
 var PlayVod_updateStreamInfId;
@@ -114,10 +107,6 @@ function PlayVod_PosStart() {
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
     new Image().src = Play_IncrementView;
 
-    PlayVod_PlayerCheckCounter = 0;
-    PlayVod_PlayerCheckCount = 0;
-    window.clearInterval(PlayVod_streamCheckId);
-    PlayVod_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
@@ -215,7 +204,6 @@ function PlayVod_Resume() {
             PlayVod_SaveOffset();
             PlayVod_SaveVodIds();
             Play_ClearPlayer();
-            window.clearInterval(PlayVod_streamCheckId);
             window.clearInterval(PlayVod_SaveOffsetId);
         }
     } else {
@@ -371,7 +359,6 @@ function PlayVod_isSub() {
 }
 
 function PlayVod_qualityChanged() {
-    window.clearInterval(PlayVod_streamCheckId);
     PlayVod_qualityIndex = 0;
     PlayVod_playingUrl = PlayVod_qualities[0].url;
     if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";
@@ -405,14 +392,6 @@ function PlayVod_onPlayer() {
     PlayVod_replay = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
-
-    if (Main_IsNotBrowser) {
-        PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 3 + ((PlayVod_Buffer / 1000) * 2);
-        PlayVod_PlayerCheckQualityChanged = false;
-        window.clearInterval(PlayVod_streamCheckId);
-        PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
-    }
 }
 
 function PlayVod_onPlayerStartPlay(time) {
@@ -426,59 +405,6 @@ function PlayVod_UpdateDuration(duration) {
     ChannelVod_DurationSeconds = duration / 1000;
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
     PlayVod_RefreshProgressBarr();
-}
-
-function PlayVod_PlayerCheck() {
-    if (Main_IsNotBrowser) PlayVod_currentTime = Android.gettime();
-
-    //The player can bug and not stop playing when it ends after a video has be pause
-    if ((PlayVod_currentTime / 1000) > ChannelVod_DurationSeconds) {
-        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
-        if (Main_IsNotBrowser) Android.play(false);
-        Play_PannelEndStart(2);
-    }
-
-    if (PlayVod_isOn && PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
-        PlayVod_PlayerCheckCount++;
-        if (PlayVod_PlayerCheckCount > Play_PlayerCheckTimer) {
-
-            //Don't change the first time only retry, and don't change if in Auto mode
-            if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun &&
-                (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) && (PlayVod_quality.indexOf("Auto") === -1))
-                PlayVod_qualityIndex++;
-            else if (!PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_PlayerCheckCounter++;
-
-            if (!navigator.onLine) Play_EndStart(false, 2);
-            else if (PlayVod_PlayerCheckCounter > 1) Play_CheckConnection(PlayVod_PlayerCheckCounter, 2, PlayVod_DropOneQuality);
-            else {
-                PlayVod_qualityDisplay();
-                PlayVod_qualityChanged();
-                PlayVod_PlayerCheckRun = true;
-            }
-
-        } // else we try for too long let the listener onerror catch it
-    } else {
-        PlayVod_PlayerCheckCounter = 0;
-        PlayVod_PlayerCheckCount = 0;
-        PlayVod_PlayerCheckRun = false;
-    }
-
-    PlayVod_PlayerTime = PlayVod_currentTime;
-}
-
-function PlayVod_DropOneQuality(ConnectionDrop) {
-    if (!ConnectionDrop) {
-        if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) PlayVod_qualityIndex++;
-        else {
-            Play_EndStart(false, 2);
-            return;
-        }
-    }
-
-    PlayVod_PlayerCheckCounter = 0;
-    PlayVod_qualityDisplay();
-    PlayVod_qualityChanged();
-    PlayVod_PlayerCheckRun = true;
 }
 
 function PlayVod_shutdownStream() {
@@ -509,7 +435,6 @@ function PlayVod_ClearVod() {
     document.removeEventListener('visibilitychange', PlayVod_Resume);
     Main_values.vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimerId);
-    window.clearInterval(PlayVod_streamCheckId);
     ChannelVod_DurationSeconds = 0;
 }
 
@@ -660,9 +585,6 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 function PlayVod_jump() {
     Play_clearPause();
     if (!Play_isEndDialogVisible()) {
-
-        PlayVod_PlayerCheckQualityChanged = false;
-        PlayClip_PlayerCheckQualityChanged = false;
 
         if (PlayVod_isOn) {
             if (Main_IsNotBrowser) {
