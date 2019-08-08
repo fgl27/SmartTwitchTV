@@ -35,40 +35,50 @@ function PlayExtra_ResetSpeed() {
 }
 
 function PlayExtra_KeyEnter() {
-    if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+    console.log('PlayExtra_KeyEnter');
     PlayExtra_clear = true;
-    PlayExtra_PicturePicture = true;
-    UserLiveFeed_Hide();
 
     var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
     if (doc === null) UserLiveFeed_ResetFeedId();
-    else if (Main_values.Play_selectedChannel !== JSON.parse(doc.getAttribute(Main_DataAttribute))[0]) {
-        Main_values.Play_isHost = false;
-        Play_UserLiveFeedPressed = true;
+    else {
+        var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
+        if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
+            if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+            PlayExtra_PicturePicture = true;
+            UserLiveFeed_Hide();
 
-        PlayExtra_selectedChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute));
-        PlayExtra_selectedChannel_id = PlayExtra_selectedChannel[1];
-        PlayExtra_IsRerun = PlayExtra_selectedChannel[2];
-        PlayExtra_selectedChannel = PlayExtra_selectedChannel[0];
-        PlayExtra_isHost = false;
-        PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
+            Main_values.Play_isHost = false;
+            Play_UserLiveFeedPressed = true;
 
-        PlayExtra_DisplaynameHost = Main_values.Play_DisplaynameHost;
+            PlayExtra_selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            PlayExtra_selectedChannel_id = PlayExtra_selectedChannel[1];
+            PlayExtra_IsRerun = PlayExtra_selectedChannel[2];
+            PlayExtra_selectedChannel = PlayExtra_selectedChannel[0];
+            PlayExtra_isHost = false;
+            PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
 
-        var playing = document.getElementById(UserLiveFeed_ids[5] + Play_FeedPos).textContent;
-        PlayExtra_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
+            PlayExtra_DisplaynameHost = Main_values.Play_DisplaynameHost;
 
-        PlayExtra_state = Play_STATE_LOADING_TOKEN;
-        PlayExtra_loadingDataTry = 0;
-        if (Main_IsNotBrowser) {
-            if (Play_quality.indexOf("Auto") === -1) Android.StartAutoPlay(1, 1, false);
-            else Android.play(false);
-            Play_quality = "Auto";
-            Play_qualityPlaying = Play_quality;
-        }
-        Play_showBufferDialog();
-        PlayExtra_loadDataRequest();
-    } else UserLiveFeed_ResetFeedId();
+            var playing = document.getElementById(UserLiveFeed_ids[5] + Play_FeedPos).textContent;
+            PlayExtra_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
+
+            if (Main_IsNotBrowser) {
+                //Not on auto mode for change to auto before start picture in picture
+                if (Play_quality.indexOf("Auto") === -1) Android.StartAutoPlay(1, 1, false);
+                else Android.play(false);
+
+                Play_quality = "Auto";
+                Play_qualityPlaying = Play_quality;
+            }
+            PlayExtra_Resume()
+        } else UserLiveFeed_ResetFeedId();
+    }
+}
+
+function PlayExtra_Resume() {
+    PlayExtra_state = Play_STATE_LOADING_TOKEN;
+    PlayExtra_loadingDataTry = 0;
+    PlayExtra_loadDataRequest();
 }
 
 function PlayExtra_SwitchPlayerStoreOld() {
@@ -122,6 +132,7 @@ function PlayExtra_SwitchPlayer() {
     Play_quality = PlayExtra_quality;
 
     PlayExtra_SwitchPlayerResStoreOld();
+    Main_SaveValues();
 }
 
 function PlayExtra_loadDataSuccess(responseText) {
@@ -159,8 +170,10 @@ function PlayExtra_qualityChanged() {
     if (Main_isDebug) console.log('PlayExtra_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        if (PlayExtra_quality.indexOf("Auto") !== -1) Android.initializePlayer2Auto();
-        else Android.initializePlayer2(PlayExtra_playingUrl);
+        console.log('PlayExtra_qualityChanged');
+        //if (PlayExtra_quality.indexOf("Auto") !== -1) Android.initializePlayer2Auto();
+        //else Android.initializePlayer2(PlayExtra_playingUrl);
+        Android.initializePlayer2Auto();
     }
 }
 
@@ -235,9 +248,10 @@ function PlayExtra_loadDataError() {
 
 function PlayExtra_loadDataFail(Reason) {
     PlayExtra_PicturePicture = false;
+    PlayExtra_selectedChannel = '';
     if (Main_IsNotBrowser) {
-          Android.play(true);
-          Android.mClearSmallPlayer();
+        Android.play(true);
+        Android.mClearSmallPlayer();
     }
     Play_HideBufferDialog();
     Play_showWarningDialog(Reason);

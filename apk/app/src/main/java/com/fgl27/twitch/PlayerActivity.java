@@ -71,12 +71,13 @@ public class PlayerActivity extends Activity {
     public Uri uri;
     public MediaSource mediaurireset;
 
-    public MediaSource mediaSourceAuto = null;
-    public MediaSource mediaSourceAuto1 = null;
-    public MediaSource mediaSourceAuto0;
+    public MediaSource[] mediaSourceAuto =  new MediaSource[2];
+    public MediaSource[] mediaSourcesAuto = new MediaSource[2];
 
-    public boolean loadingcanshow;
-    public ImageView spinner;
+    public boolean[] loadingcanshow = new boolean[2];
+    public ImageView[] spinner = new ImageView[2];
+    public ImageView spinnermain;
+
     public Animation rotation;
 
     public WebView mwebview;
@@ -94,7 +95,7 @@ public class PlayerActivity extends Activity {
     public int playerDivider = 3;
 
     public Handler myHandler;
-    public Handler PlayerCheckHandler;
+    public Handler[] PlayerCheckHandler = new Handler[2];
     public int PlayerCheckCounter = 0;
 
     @Override
@@ -106,7 +107,8 @@ public class PlayerActivity extends Activity {
             setContentView(R.layout.activity_player);
 
             myHandler = new Handler(Looper.getMainLooper());
-            PlayerCheckHandler = new Handler(Looper.getMainLooper());
+            PlayerCheckHandler[0] = new Handler(Looper.getMainLooper());
+            PlayerCheckHandler[1] = new Handler(Looper.getMainLooper());
 
             dataSourceFactory =
                     new DefaultHttpDataSourceFactory(
@@ -125,14 +127,17 @@ public class PlayerActivity extends Activity {
             trackSelectorParametersSmall = trackSelector[0].getParameters()
                     .buildUpon()
                     .setMaxVideoSize(1281, 721)
-                    .setMaxVideoBitrate(3500000)
+                    .setMaxVideoBitrate(3000000)
                     .build();
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
 
-            spinner = findViewById(R.id.spinner);
+            spinnermain = findViewById(R.id.spinnermain);
             rotation = AnimationUtils.loadAnimation(this, R.anim.rotation);
-            spinner.startAnimation(rotation);
+            spinnermain.startAnimation(rotation);
+
+            spinner[0] = findViewById(R.id.spinner1);
+            spinner[1] = findViewById(R.id.spinner2);
 
             simpleExoPlayerView[0] = findViewById(R.id.player_view);
             simpleExoPlayerView[1] = findViewById(R.id.player_view2);
@@ -152,14 +157,16 @@ public class PlayerActivity extends Activity {
             player[position].setPlayWhenReady(shouldAutoPlay);
             releasePlayer(position);
         }
-        if (simpleExoPlayerView[0].getVisibility() != View.VISIBLE)
-            simpleExoPlayerView[0].setVisibility(View.VISIBLE);
 
-        showLoading(true);
+        if (simpleExoPlayerView[position].getVisibility() != View.VISIBLE)
+            simpleExoPlayerView[position].setVisibility(View.VISIBLE);
 
-        boolean isPosition = (mainPlayer != position);
+        boolean isSmall = (mainPlayer != position);
+
+        showLoading(true, isSmall ? 1 : 0);
+
         trackSelector[position] = new DefaultTrackSelector();
-        trackSelector[position].setParameters(isPosition ? trackSelectorParametersSmall : trackSelectorParameters);
+        trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
 
         player[position] = ExoPlayerFactory.newSimpleInstance(
                 this,
@@ -167,7 +174,7 @@ public class PlayerActivity extends Activity {
                 trackSelector[position],
                 Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
-        if (isPosition) {
+        if (isSmall) {
             if (heightDefault == 0) SetheightDefault();
 
             player[position].setVolume(0f);
@@ -191,17 +198,20 @@ public class PlayerActivity extends Activity {
         if (seeking) player[position].seekTo(mResumePosition);
 
         player[position].prepare(
-                mediaSourceAuto != null ? mediaSourceAuto : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
+                mediaSourceAuto[position] != null ? mediaSourceAuto[position] : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
                 !seeking,
                 true);
 
-        if (mainPlayer == 0 && player[1] != null) {
-            simpleExoPlayerView[1].setVisibility(View.GONE);
-            simpleExoPlayerView[1].setVisibility(View.VISIBLE);
+        if (!isSmall) {
+            //Reset small player view so it shows
+            int tempPos = position == 0 ? 1 : 0;
+            if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.GONE);
+            if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.VISIBLE);
         }
     }
 
     // For some reason the player can lag a device when stated without releasing it first
+    // It seems that the app keeps working on the player somehow in the background on the already released player
     // So here we do more then what seems necessary by releasing, starting and releasing again
     // But on longer test this gives the best performance
     private void ClearPlayer(int position) {
@@ -219,13 +229,14 @@ public class PlayerActivity extends Activity {
 
         releasePlayer(position);
         simpleExoPlayerView[position].setVisibility(View.GONE);
-        hideLoading();
+        hideLoading(mainPlayer != position ? 1 : 0);
     }
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
     //Also used to change the main player that is the big screen
     private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position, boolean mshouldAutoPlay) {
-        mediaSourceAuto = mediaSource;
+
+        mediaSourceAuto[mainPlayer] = mediaSource;
         uri = Uri.parse(videoAddress);
         shouldAutoPlay = mshouldAutoPlay;
         mwhocall = whocall;
@@ -236,7 +247,8 @@ public class PlayerActivity extends Activity {
 
     //The way to start the Picture in Picture small window
     private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
-        mediaSourceAuto = mediaSource;
+
+        mediaSourceAuto[mainPlayer == 0 ? 1 : 0] = mediaSource;
         uri = Uri.parse(videoAddress);
         shouldAutoPlay = true;
         mwhocall = 1;
@@ -246,14 +258,18 @@ public class PlayerActivity extends Activity {
         PicturePicture = true;
     }
 
-    //Stop the player called from js
+    //Stop the player called from js, clear it all
     private void PreResetPlayer(int whocall, int position) {
+
         if (mainPlayer == 1) SwitchPlayer(false);
         PicturePicture = false;
 
-        mediaSourceAuto = null;
-        mediaSourceAuto0 = null;
-        mediaSourceAuto1 = null;
+        PlayerCheckHandler[0].removeCallbacksAndMessages(null);
+        PlayerCheckHandler[1].removeCallbacksAndMessages(null);
+        mediaSourceAuto[0] = null;
+        mediaSourceAuto[1] = null;
+        mediaSourcesAuto[0] = null;
+        mediaSourcesAuto[1] = null;
         shouldAutoPlay = false;
         mwhocall = whocall;
         mResumePosition = 0;
@@ -270,7 +286,7 @@ public class PlayerActivity extends Activity {
             player[position] = null;
             trackSelector[position] = null;
         }
-        hideLoading();
+        hideLoading(mainPlayer != position ? 1 : 0);
     }
 
     //Basic player position setting, for resume playback 
@@ -286,29 +302,43 @@ public class PlayerActivity extends Activity {
     }
 
     //Basic animation for loading functions
-    private void hideLoading() {
-
-        loadingcanshow = false;
-        spinner.setVisibility(View.GONE);
-        spinner.clearAnimation();
+    private void hideLoadingMain() {
+        spinnermain.setVisibility(View.GONE);
+        spinnermain.clearAnimation();
     }
 
-    private void showLoading(boolean runnow) {
-        if (runnow) showLoading();
+    private void showLoadingMain() {
+        if (spinnermain.getVisibility() != View.VISIBLE) {
+            // The duration of the spin is 1s, reset every show to use the spin as a performance counter
+            // to know how much time takes to load
+            spinnermain.startAnimation(rotation);
+            spinnermain.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //Basic animation for loading functions
+    private void hideLoading(int position) {
+        loadingcanshow[position] = false;
+        spinner[position].setVisibility(View.GONE);
+        spinner[position].clearAnimation();
+    }
+
+    private void showLoading(boolean runnow, int position) {
+        if (runnow) showLoading(position);
         else {
             //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
             myHandler.postDelayed(() -> {
-                if (loadingcanshow) showLoading();
+                if (loadingcanshow[position]) showLoading(position);
             }, 650);
         }
     }
 
-    private void showLoading() {
-        if (spinner.getVisibility() != View.VISIBLE) {
+    private void showLoading(int position) {
+        if (spinner[position].getVisibility() != View.VISIBLE) {
             // The duration of the spin is 1s, reset every show to use the spin as a performance counter
             // to know how much time takes to load
-            spinner.startAnimation(rotation);
-            spinner.setVisibility(View.VISIBLE);
+            spinner[position].startAnimation(rotation);
+            spinner[position].setVisibility(View.VISIBLE);
         }
     }
 
@@ -388,6 +418,8 @@ public class PlayerActivity extends Activity {
     @Override
     public void onStop() {
         super.onStop();
+        PlayerCheckHandler[0].removeCallbacksAndMessages(null);
+        PlayerCheckHandler[1].removeCallbacksAndMessages(null);
         updateResumePosition(0);
         updateResumePosition(1);
         ClearPlayer(0);
@@ -503,8 +535,8 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mshowLoading(boolean show) {
             myHandler.post(() -> {
-                if (show) showLoading(true);
-                else hideLoading();
+                if (show) showLoadingMain();
+                else hideLoadingMain();
             });
         }
 
@@ -546,20 +578,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetAuto(String url) {
-            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            myHandler.post(() -> mediaSourceAuto0 = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetAuto2(String url) {
-            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            myHandler.post(() -> mediaSourceAuto1 = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public void initializePlayer2(String url) {
             myHandler.post(() -> PreinitializePlayer2(null, url));
         }
@@ -567,25 +585,46 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void initializePlayer2Auto() {
-            myHandler.post(() -> PreinitializePlayer2(mediaSourceAuto1, ""));
+            myHandler.post(() -> PreinitializePlayer2(mainPlayer == 0 ? mediaSourcesAuto[1] : mediaSourcesAuto[0], ""));
+
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetAuto(String url) {
+            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
+            myHandler.post(() -> mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetAuto2(String url) {
+            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
+            myHandler.post(() -> mediaSourcesAuto[mainPlayer == 0 ? 1 : 0] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(mainPlayer == 0 ? mediaSourceAuto0 : mediaSourceAuto1, "", whocall, position, true));
+            myHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position, true));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAutoPlay(int whocall, long position, boolean play) {
-            myHandler.post(() -> PreinitializePlayer(mainPlayer == 0 ? mediaSourceAuto0 : mediaSourceAuto1, "", whocall, position, play));
+            myHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position, play));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int whocall) {
             myHandler.post(() -> PreResetPlayer(whocall, mainPlayer));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mClearBigPlayer() {
+            myHandler.post(() -> ClearPlayer(mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -755,42 +794,60 @@ public class PlayerActivity extends Activity {
             myHandler.post(() -> {
                 if (playWhenReady) {
                     if (playbackState == Player.STATE_ENDED) {
-                        hideLoading();
-                        if (PicturePicture && mainPlayer == position){
-                            SwitchPlayer(false);
-                            PicturePicture = false;
-                        } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
-                    } else if (playbackState == Player.STATE_BUFFERING) {
-                        loadingcanshow = true;
-                        showLoading(false);
+                        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
+                        hideLoading(mainPlayer != position ? 1 : 0);
+                        if (PicturePicture) {
+                            PicturePicture = false;
+                            ClearPlayer(position);
+                            if (mainPlayer != position) SwitchPlayer(false);
+                        } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+
+                    } else if (playbackState == Player.STATE_BUFFERING) {
+                        hideLoadingMain();
+                        loadingcanshow[position == 0 ? 1 : 0] = true;
+                        showLoading(false, mainPlayer != position ? 1 : 0);
+
+                        //Use the player buffer as a player check state to prevent be buffering for ever
                         //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
-                        PlayerCheckHandler.postDelayed(() -> {
+                        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                        PlayerCheckHandler[position].postDelayed(() -> {
                             //First try only restart the player second ask js to check if there is a lower resolution
                             PlayerCheckCounter++;
-                            if (PlayerCheckCounter > 1) mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
+
+                            if (PlayerCheckCounter < 3 && (mainPlayer != position || mediaSourceAuto[position] != null)) {
+                                //this is small screen  or is in auto mode just restart it
+                                updateResumePosition(position);
+                                initializePlayer(position);
+                            } else if (PlayerCheckCounter > 3) mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");// treys > 3 Give up internet is probably down or something related
+                            else if (PlayerCheckCounter > 1) mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");//Use js to check if is possible to drop quality
                             else {
                                 updateResumePosition(position);
                                 initializePlayer(position);
                             }
 
-                        }, BUFFER_SIZE[mwhocall] * 2);
+                        }, (BUFFER_SIZE[mwhocall] * 2));
 
                     } else if (playbackState == Player.STATE_READY) {
+                        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                        PlayerCheckCounter = 0;
+
+                        //If other not playing just play it so they stay close to sync
                         int otherplayer = position == 0 ? 1 : 0;
-                        if (player[otherplayer] != null){
+                        if (player[otherplayer] != null) {
                             if (!player[otherplayer].getPlayWhenReady()) player[otherplayer].setPlayWhenReady(true);
                         }
 
-                        PlayerCheckCounter = 0;
-                        PlayerCheckHandler.removeCallbacksAndMessages(null);
-                        hideLoading();
+                        hideLoading(mainPlayer != position ? 1 : 0);
                         if (player[position] != null && mwhocall > 1) {
                             myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
                                     mwhocall + "," + player[position].getDuration() + ")"));
                         }
                     }
-                } else  hideLoading();
+                } else  {
+                    hideLoadingMain();
+                    hideLoading(mainPlayer != position ? 1 : 0);
+                }
             });
         }
 
