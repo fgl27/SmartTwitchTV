@@ -48,7 +48,6 @@ public class PlayerActivity extends Activity {
     public DataSource.Factory dataSourceFactory;
 
     public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[2];
-    public DefaultTrackSelector TemptrackSelector;
 
     public DefaultTrackSelector.Parameters trackSelectorParameters;
     public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
@@ -80,7 +79,7 @@ public class PlayerActivity extends Activity {
     public int mwidthChat = 0;
 
     public int mainPlayer = 0;
-    private int playerDivider = 3;
+    public int playerDivider = 3;
 
     public Handler myHandler;
     public Handler PlayerCheckHandler;
@@ -113,7 +112,8 @@ public class PlayerActivity extends Activity {
             // Bitrates bigger then 8Mbs on two simultaneous video playback can slowdown for eg a S905X too much
             trackSelectorParametersSmall = trackSelector[0].getParameters()
                     .buildUpon()
-                    .setMaxVideoBitrate(3000000)
+                    .setMaxVideoSize(1281, 721)
+                    .setMaxVideoBitrate(3500000)
                     .build();
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
@@ -136,61 +136,56 @@ public class PlayerActivity extends Activity {
     // The main player initialization function
     private void initializePlayer(int position) {
         // always release before starting for performance check ClearPlayer
-        if (shouldAutoPlay) {
-            if (player[position] != null) {
-                player[position].setPlayWhenReady(true);
-                releasePlayer(position);
-            }
-            if (simpleExoPlayerView[0].getVisibility() != View.VISIBLE)
-                simpleExoPlayerView[0].setVisibility(View.VISIBLE);
+        if (player[position] != null) {
+            player[position].setPlayWhenReady(shouldAutoPlay);
+            releasePlayer(position);
+        }
+        if (simpleExoPlayerView[0].getVisibility() != View.VISIBLE)
+            simpleExoPlayerView[0].setVisibility(View.VISIBLE);
 
-            showLoading(true);
+        showLoading(true);
 
-            boolean isPosition = (mainPlayer != position);
-            trackSelector[position] = new DefaultTrackSelector();
-            trackSelector[position].setParameters(isPosition ? trackSelectorParametersSmall : trackSelectorParameters);
+        boolean isPosition = (mainPlayer != position);
+        trackSelector[position] = new DefaultTrackSelector();
+        trackSelector[position].setParameters(isPosition ? trackSelectorParametersSmall : trackSelectorParameters);
 
-            player[position] = ExoPlayerFactory.newSimpleInstance(
-                    this,
-                    new DefaultRenderersFactory(this),
-                    trackSelector[position],
-                    Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
+        player[position] = ExoPlayerFactory.newSimpleInstance(
+                this,
+                new DefaultRenderersFactory(this),
+                trackSelector[position],
+                Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
-            if (isPosition) {
-                if (heightDefault == 0) SetheightDefault();
+        if (isPosition) {
+            if (heightDefault == 0) SetheightDefault();
 
-                player[position].setVolume(0f);
+            player[position].setVolume(0f);
 
-                simpleExoPlayerView[position].setLayoutParams(
-                        new FrameLayout.LayoutParams((mwidthDefault / playerDivider),
-                                (heightDefault / playerDivider),
-                                Gravity.END | Gravity.BOTTOM));
+            simpleExoPlayerView[position].setLayoutParams(
+                    new FrameLayout.LayoutParams((mwidthDefault / playerDivider),
+                            (heightDefault / playerDivider),
+                            Gravity.END | Gravity.BOTTOM));
 
-                simpleExoPlayerView[position].setVisibility(View.GONE);
-                simpleExoPlayerView[position].setVisibility(View.VISIBLE);
-            }
+            simpleExoPlayerView[position].setVisibility(View.GONE);
+            simpleExoPlayerView[position].setVisibility(View.VISIBLE);
+        }
 
-            player[position].addListener(new PlayerEventListener(position));
+        player[position].addListener(new PlayerEventListener(position));
 
-            player[position].setPlayWhenReady(true);
+        player[position].setPlayWhenReady(true);
 
-            simpleExoPlayerView[position].setPlayer(player[position]);
+        simpleExoPlayerView[position].setPlayer(player[position]);
 
-            seeking = (mResumePosition > 0) && (mwhocall > 1);
-            if (seeking) player[position].seekTo(mResumePosition);
+        seeking = (mResumePosition > 0) && (mwhocall > 1);
+        if (seeking) player[position].seekTo(mResumePosition);
 
-            player[position].prepare(
-                    mediaSourceAuto != null ? mediaSourceAuto : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
-                    !seeking,
-                    true);
+        player[position].prepare(
+                mediaSourceAuto != null ? mediaSourceAuto : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
+                !seeking,
+                true);
 
-            if (mainPlayer == 0 && player[1] != null) {
-                simpleExoPlayerView[1].setVisibility(View.GONE);
-                simpleExoPlayerView[1].setVisibility(View.VISIBLE);
-            }
-        } else {
-            ClearPlayer(position);
-            clearResumePosition();
+        if (mainPlayer == 0 && player[1] != null) {
+            simpleExoPlayerView[1].setVisibility(View.GONE);
+            simpleExoPlayerView[1].setVisibility(View.VISIBLE);
         }
     }
 
@@ -217,10 +212,10 @@ public class PlayerActivity extends Activity {
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
     //Also used to change the main player that is the big screen
-    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position) {
+    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position, boolean mshouldAutoPlay) {
         mediaSourceAuto = mediaSource;
         uri = Uri.parse(videoAddress);
-        shouldAutoPlay = true;
+        shouldAutoPlay = mshouldAutoPlay;
         mwhocall = whocall;
         mResumePosition = position > 0 ? position : 0;
 
@@ -245,11 +240,14 @@ public class PlayerActivity extends Activity {
         PicturePicture = false;
 
         mediaSourceAuto = null;
+        mediaSourceAuto0 = null;
+        mediaSourceAuto1 = null;
         shouldAutoPlay = false;
         mwhocall = whocall;
         mResumePosition = 0;
 
-        initializePlayer(position);
+        ClearPlayer(position);
+        clearResumePosition();
     }
 
     //Main release function
@@ -342,8 +340,8 @@ public class PlayerActivity extends Activity {
         }
         simpleExoPlayerView[main].setVisibility(View.GONE);
 
-        trackSelector[main2].setParameters(trackSelectorParameters);
-        trackSelector[main].setParameters(trackSelectorParametersSmall);
+        if (trackSelector[main2] != null) trackSelector[main2].setParameters(trackSelectorParameters);
+        if (trackSelector[main] != null) trackSelector[main].setParameters(trackSelectorParametersSmall);
 
         simpleExoPlayerView[main2].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.START | Gravity.TOP));
         simpleExoPlayerView[main].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), Gravity.END | Gravity.BOTTOM));
@@ -520,13 +518,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1));
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1, true));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position));
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position, true));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -558,7 +556,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(mainPlayer == 0 ? mediaSourceAuto0 : mediaSourceAuto1, "", whocall, position));
+            myHandler.post(() -> PreinitializePlayer(mainPlayer == 0 ? mediaSourceAuto0 : mediaSourceAuto1, "", whocall, position, true));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartAutoPlay(int whocall, long position, boolean play) {
+            myHandler.post(() -> PreinitializePlayer(mainPlayer == 0 ? mediaSourceAuto0 : mediaSourceAuto1, "", whocall, position, play));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -577,7 +581,15 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayer() {
-            myHandler.post(() -> SwitchPlayer(true));
+            myHandler.post(() -> {
+                if (player[0] != null) player[0].setPlayWhenReady(false);
+                if (player[1] != null) player[1].setPlayWhenReady(false);
+
+                SwitchPlayer(true);
+
+                if (player[0] != null) player[0].setPlayWhenReady(true);
+                if (player[1] != null) player[1].setPlayWhenReady(true);
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -713,11 +725,19 @@ public class PlayerActivity extends Activity {
                             //First try only restart the player second ask js to check if there is a lower resolution
                             PlayerCheckCounter++;
                             if (PlayerCheckCounter > 1) mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
-                            else initializePlayer(position);
+                            else {
+                                updateResumePosition(position);
+                                initializePlayer(position);
+                            }
 
                         }, BUFFER_SIZE[mwhocall] * 2);
 
                     } else if (playbackState == Player.STATE_READY) {
+                        int otherplayer = position == 0 ? 1 : 0;
+                        if (player[otherplayer] != null){
+                            if (!player[otherplayer].getPlayWhenReady()) player[otherplayer].setPlayWhenReady(true);
+                        }
+
                         PlayerCheckCounter = 0;
                         PlayerCheckHandler.removeCallbacksAndMessages(null);
                         hideLoading();

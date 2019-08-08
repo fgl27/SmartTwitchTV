@@ -43,7 +43,6 @@ function PlayExtra_KeyEnter() {
     var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
     if (doc === null) UserLiveFeed_ResetFeedId();
     else if (Main_values.Play_selectedChannel !== JSON.parse(doc.getAttribute(Main_DataAttribute))[0]) {
-        Play_showBufferDialog();
         Main_values.Play_isHost = false;
         Play_UserLiveFeedPressed = true;
 
@@ -61,6 +60,13 @@ function PlayExtra_KeyEnter() {
 
         PlayExtra_state = Play_STATE_LOADING_TOKEN;
         PlayExtra_loadingDataTry = 0;
+        if (Main_IsNotBrowser) {
+            if (Play_quality.indexOf("Auto") === -1) Android.StartAutoPlay(1, 1, false);
+            else Android.play(false);
+            Play_quality = "Auto";
+            Play_qualityPlaying = Play_quality;
+        }
+        Play_showBufferDialog();
         PlayExtra_loadDataRequest();
     } else UserLiveFeed_ResetFeedId();
 }
@@ -229,7 +235,10 @@ function PlayExtra_loadDataError() {
 
 function PlayExtra_loadDataFail(Reason) {
     PlayExtra_PicturePicture = false;
-    if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+    if (Main_IsNotBrowser) {
+          Android.play(true);
+          Android.mClearSmallPlayer();
+    }
     Play_HideBufferDialog();
     Play_showWarningDialog(Reason);
     window.setTimeout(function() {
