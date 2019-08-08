@@ -48,7 +48,10 @@ public class PlayerActivity extends Activity {
     public DataSource.Factory dataSourceFactory;
 
     public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[2];
+    public DefaultTrackSelector TemptrackSelector;
+
     public DefaultTrackSelector.Parameters trackSelectorParameters;
+    public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
     public boolean shouldAutoPlay;
     public long mResumePosition;
     public boolean seeking;
@@ -103,6 +106,16 @@ public class PlayerActivity extends Activity {
 
             trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
 
+            trackSelector[0] = new DefaultTrackSelector();
+            trackSelector[0].setParameters(trackSelectorParameters);
+
+            //Prevent small window causing lag to the device
+            // Bitrates bigger then 8Mbs on two simultaneous video playback can slowdown for eg a S905X too much
+            trackSelectorParametersSmall = trackSelector[0].getParameters()
+                    .buildUpon()
+                    .setMaxVideoBitrate(3000000)
+                    .build();
+
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
 
             spinner = findViewById(R.id.spinner);
@@ -122,7 +135,6 @@ public class PlayerActivity extends Activity {
 
     // The main player initialization function
     private void initializePlayer(int position) {
-        Toast.makeText(this, "initializePlayer position " + position, Toast.LENGTH_SHORT).show();
         // always release before starting for performance check ClearPlayer
         if (shouldAutoPlay) {
             if (player[position] != null) {
@@ -134,8 +146,9 @@ public class PlayerActivity extends Activity {
 
             showLoading(true);
 
+            boolean isPosition = (mainPlayer != position);
             trackSelector[position] = new DefaultTrackSelector();
-            trackSelector[position].setParameters(trackSelectorParameters);
+            trackSelector[position].setParameters(isPosition ? trackSelectorParametersSmall : trackSelectorParameters);
 
             player[position] = ExoPlayerFactory.newSimpleInstance(
                     this,
@@ -143,18 +156,23 @@ public class PlayerActivity extends Activity {
                     trackSelector[position],
                     Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
-            player[position].addListener(new PlayerEventListener(position));
-
-            player[position].setPlayWhenReady(true);
-
-            if (mainPlayer != position) {
+            if (isPosition) {
                 if (heightDefault == 0) SetheightDefault();
 
                 player[position].setVolume(0f);
-                simpleExoPlayerView[position].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), Gravity.END | Gravity.BOTTOM));
+
+                simpleExoPlayerView[position].setLayoutParams(
+                        new FrameLayout.LayoutParams((mwidthDefault / playerDivider),
+                                (heightDefault / playerDivider),
+                                Gravity.END | Gravity.BOTTOM));
+
                 simpleExoPlayerView[position].setVisibility(View.GONE);
                 simpleExoPlayerView[position].setVisibility(View.VISIBLE);
             }
+
+            player[position].addListener(new PlayerEventListener(position));
+
+            player[position].setPlayWhenReady(true);
 
             simpleExoPlayerView[position].setPlayer(player[position]);
 
@@ -323,6 +341,9 @@ public class PlayerActivity extends Activity {
             main = 1;
         }
         simpleExoPlayerView[main].setVisibility(View.GONE);
+
+        trackSelector[main2].setParameters(trackSelectorParameters);
+        trackSelector[main].setParameters(trackSelectorParametersSmall);
 
         simpleExoPlayerView[main2].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.START | Gravity.TOP));
         simpleExoPlayerView[main].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), Gravity.END | Gravity.BOTTOM));
