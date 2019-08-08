@@ -41,7 +41,19 @@ import com.google.android.exoplayer2.util.Util;
 
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
+    public static final int[] positions = {
+            Gravity.END | Gravity.BOTTOM,
+            Gravity.END | Gravity.CENTER,
+            Gravity.END | Gravity.TOP,
+            Gravity.CENTER | Gravity.TOP,
+            Gravity.START | Gravity.TOP,
+            Gravity.START | Gravity.CENTER,
+            Gravity.START | Gravity.BOTTOM,
+            Gravity.CENTER | Gravity.BOTTOM};
+
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
+
+    public int DefaultPositions = 0;
 
     public PlayerView[] simpleExoPlayerView = new PlayerView[2];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[2];
@@ -163,7 +175,7 @@ public class PlayerActivity extends Activity {
             simpleExoPlayerView[position].setLayoutParams(
                     new FrameLayout.LayoutParams((mwidthDefault / playerDivider),
                             (heightDefault / playerDivider),
-                            Gravity.END | Gravity.BOTTOM));
+                            positions[DefaultPositions]));
 
             simpleExoPlayerView[position].setVisibility(View.GONE);
             simpleExoPlayerView[position].setVisibility(View.VISIBLE);
@@ -338,18 +350,23 @@ public class PlayerActivity extends Activity {
             mainPlayer = 0;
             main = 1;
         }
-        simpleExoPlayerView[main].setVisibility(View.GONE);
 
         if (trackSelector[main2] != null) trackSelector[main2].setParameters(trackSelectorParameters);
         if (trackSelector[main] != null) trackSelector[main].setParameters(trackSelectorParametersSmall);
 
         simpleExoPlayerView[main2].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.START | Gravity.TOP));
-        simpleExoPlayerView[main].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), Gravity.END | Gravity.BOTTOM));
+        UpdadeSizePosSmall(main);
 
         if (player[main2] != null) player[main2].setVolume(1f);
         if (player[main] != null) player[main].setVolume(0f);
 
+        //Reset the view so it show on top
+        simpleExoPlayerView[main].setVisibility(View.GONE);
         if (show) simpleExoPlayerView[main].setVisibility(View.VISIBLE);
+    }
+
+    public void UpdadeSizePosSmall(int pos) {
+        simpleExoPlayerView[pos].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]));
     }
 
     @Override
@@ -594,6 +611,32 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void mSwitchPlayerPosition(int position) {
+            DefaultPositions = position;
+            myHandler.post(() -> UpdadeSizePosSmall(mainPlayer == 0 ? 1 : 0));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mSetPlayerPosition(int position) {
+            DefaultPositions = position;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mSwitchPlayerSize(int position) {
+            playerDivider = position;
+            myHandler.post(() -> UpdadeSizePosSmall(mainPlayer == 0 ? 1 : 0));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mSetPlayerSize(int position) {
+            playerDivider = position;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public long getsavedtime() {
             return mResumePosition;
         }
@@ -633,7 +676,8 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void play(boolean play) {
             myHandler.post(() -> {
-                if (player[mainPlayer] != null) player[mainPlayer].setPlayWhenReady(play);
+                if (player[0] != null) player[0].setPlayWhenReady(play);
+                if (player[1] != null) player[1].setPlayWhenReady(play);
             });
         }
 
