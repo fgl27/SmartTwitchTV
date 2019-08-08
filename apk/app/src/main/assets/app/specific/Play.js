@@ -16,6 +16,8 @@ var Play_FeedOldUserName = '';
 var Play_FeedPos = 0;
 var Play_Buffer = 2000;
 var Play_CurrentSpeed = 3;
+var Play_PicturePicturePos = 0;
+var Play_PicturePictureSize = 3;
 
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
@@ -147,6 +149,13 @@ function Play_PreStart() {
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
     Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
     Play_ChatDelayPosition = Main_getItemInt('Play_ChatDelayPosition', 0);
+    Play_PicturePicturePos = Main_getItemInt('Play_PicturePicturePos', 0);
+    Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 3);
+
+    try {
+        Android.mSetPlayerPosition(Play_PicturePicturePos);
+        Android.mSetPlayerSize(Play_PicturePictureSize);
+    } catch (e) {}
 
     Play_SetQuality();
 
@@ -871,7 +880,7 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time) ));
+    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
     Main_textContent("stream_live_time", STR_SINCE +
         (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
 
@@ -982,10 +991,10 @@ function Play_KeyPause(PlayVodClip) {
 
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
 
-       if (Play_isPanelShown()){
-        if (PlayVodClip === 1)      Play_hidePanel();
-        else if (PlayVodClip === 2) PlayVod_hidePanel();
-         else if (PlayVodClip === 3) PlayClip_hidePanel();
+        if (Play_isPanelShown()) {
+            if (PlayVodClip === 1) Play_hidePanel();
+            else if (PlayVodClip === 2) PlayVod_hidePanel();
+            else if (PlayVodClip === 3) PlayClip_hidePanel();
         }
 
         if (Main_IsNotBrowser) {
@@ -1498,6 +1507,11 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter--;
                     if (Play_Endcounter < (Main_values.Play_isHost ? 1 : 2)) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
+                } else if (PlayExtra_PicturePicture) {
+                    Play_PicturePicturePos++;
+                    if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
+                    Android.mSwitchPlayerPosition(Play_PicturePicturePos);
+                    Main_setItem('Play_PicturePicturePos', Play_PicturePicturePos);
                 } else {
                     Play_showPanel();
                 }
@@ -1509,7 +1523,8 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos++;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
+                    !PlayExtra_PicturePicture) {
                     Play_controls[Play_controlsChat].enterKey(1);
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
@@ -1521,6 +1536,11 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter++;
                     if (Play_Endcounter > 3) Play_Endcounter = (Main_values.Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
+                } else if (PlayExtra_PicturePicture) {
+                    Play_PicturePictureSize++;
+                    if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
+                    Android.mSwitchPlayerSize(Play_PicturePictureSize);
+                    Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                 } else {
                     Play_showPanel();
                 }
@@ -1548,7 +1568,7 @@ function Play_handleKeyDown(e) {
                     } else Play_BottomUpDown(1, -1);
                     Play_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
-                else if (Play_isFullScreen && Play_isChatShown()) {
+                else if (Play_isFullScreen && Play_isChatShown() && !PlayExtra_PicturePicture) {
                     Play_ChatSizeValue++;
                     if (Play_ChatSizeValue > 3) {
                         Play_ChatSizeValue = 0;
