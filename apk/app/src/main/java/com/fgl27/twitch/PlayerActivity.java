@@ -63,7 +63,6 @@ public class PlayerActivity extends Activity {
 
     public DefaultTrackSelector.Parameters trackSelectorParameters;
     public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
-    public boolean shouldAutoPlay;
     public long mResumePosition;
     public boolean seeking;
     public int mwhocall = 1;
@@ -77,9 +76,10 @@ public class PlayerActivity extends Activity {
     public boolean[] loadingcanshow = new boolean[2];
     public ImageView[] spinner = new ImageView[2];
     public ImageView spinnermain;
-    public float density;
-    public FrameLayout.LayoutParams IconSizeSmall;
-    public FrameLayout.LayoutParams IconSizeBig;
+    //Not used as when we change video size the animation can became odd looking
+    //public float density;
+    //public FrameLayout.LayoutParams IconSizeSmall;
+    //public FrameLayout.LayoutParams IconSizeBig;
     public FrameLayout.LayoutParams PlayerViewDefaultSize;
     public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
 
@@ -88,7 +88,6 @@ public class PlayerActivity extends Activity {
     public WebView mwebview;
 
     private boolean onCreateReady;
-    private boolean alredystarted;
     public boolean PicturePicture;
 
     public int heightDefault = 0;
@@ -146,22 +145,20 @@ public class PlayerActivity extends Activity {
 
             simpleExoPlayerView[1].setVisibility(View.GONE);
 
-            shouldAutoPlay = false;
-
             initializeWebview();
         }
     }
 
     // The main player initialization function
     private void initializePlayer(int position) {
-        showLoading(position);
-
         //Toast.makeText(this, "position " + position + " mainPlayer " + mainPlayer, Toast.LENGTH_SHORT).show();
         // always release before starting for performance check ClearPlayer
         if (player[position] != null) {
-            player[position].setPlayWhenReady(shouldAutoPlay);
+            player[position].setPlayWhenReady(false);
             releasePlayer(position);
         }
+
+        showLoading(position);
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
@@ -198,7 +195,7 @@ public class PlayerActivity extends Activity {
             int tempPos = position == 0 ? 1 : 0;
             if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.GONE);
             if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.VISIBLE);
-        } else player[position].setVolume(0f);
+        } else player[position].setVolume(0f);//small is default no volume
     }
 
     // For some reason the player can lag a device when stated without releasing it first
@@ -207,7 +204,7 @@ public class PlayerActivity extends Activity {
     // But on longer test this gives the best performance
     private void ClearPlayer(int position) {
         if (player[position] != null) {
-            player[position].setPlayWhenReady(shouldAutoPlay);
+            player[position].setPlayWhenReady(false);
             releasePlayer(position);
         }
 
@@ -227,11 +224,10 @@ public class PlayerActivity extends Activity {
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
     //Also used to change the main player that is the big screen
-    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position, boolean mshouldAutoPlay) {
+    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position) {
 
         mediaSourceAuto[mainPlayer] = mediaSource;
         uri = Uri.parse(videoAddress);
-        shouldAutoPlay = mshouldAutoPlay;
         mwhocall = whocall;
         mResumePosition = position > 0 ? position : 0;
 
@@ -241,13 +237,12 @@ public class PlayerActivity extends Activity {
     //The way to start the Picture in Picture small window
     private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
 
-        mediaSourceAuto[mainPlayer == 0 ? 1 : 0] = mediaSource;
+        mediaSourceAuto[mainPlayer ^ 1] = mediaSource;
         uri = Uri.parse(videoAddress);
-        shouldAutoPlay = true;
         mwhocall = 1;
         mResumePosition = 0;
 
-        initializePlayer(mainPlayer == 0 ? 1 : 0);
+        initializePlayer(mainPlayer ^ 1);
         PicturePicture = true;
     }
 
@@ -263,7 +258,6 @@ public class PlayerActivity extends Activity {
         mediaSourceAuto[1] = null;
         mediaSourcesAuto[0] = null;
         mediaSourcesAuto[1] = null;
-        shouldAutoPlay = false;
         mwhocall = whocall;
         mResumePosition = 0;
 
@@ -274,7 +268,6 @@ public class PlayerActivity extends Activity {
     //Main release function
     private void releasePlayer(int position) {
         if (player[position] != null) {
-            shouldAutoPlay = player[position].getPlayWhenReady();
             player[position].release();
             player[position] = null;
             trackSelector[position] = null;
@@ -344,9 +337,9 @@ public class PlayerActivity extends Activity {
         mwidthChat = (int) (mwidthDefault * 0.75);
 
         if (isvisible) simpleExoPlayerView[0].setVisibility(View.GONE);
-        density = this.getResources().getDisplayMetrics().density;
-        IconSizeSmall = new FrameLayout.LayoutParams(Math.round(35 * density), Math.round(35 * density), Gravity.CENTER);
-        IconSizeBig = new FrameLayout.LayoutParams(Math.round(50 * density), Math.round(50 * density), Gravity.CENTER);
+        //density = this.getResources().getDisplayMetrics().density;
+        //IconSizeSmall = new FrameLayout.LayoutParams(Math.round(35 * density), Math.round(35 * density), Gravity.CENTER);
+        //IconSizeBig = new FrameLayout.LayoutParams(Math.round(50 * density), Math.round(50 * density), Gravity.CENTER);
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
         PlayerViewDefaultSizeChat = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
 
@@ -361,42 +354,37 @@ public class PlayerActivity extends Activity {
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer(boolean show) {
-        int main = 0;
-        int main2 = 0;
-
-        if (mainPlayer == 0) {
-            mainPlayer = 1;
-            main2 = 1;
-        } else {
-            mainPlayer = 0;
-            main = 1;
-        }
+        int WillBeMain = mainPlayer ^ 1;//shift 0 to 1 and vice versa
 
         //change trackSelector to limit video bandwidth
-        if (trackSelector[main2] != null) trackSelector[main2].setParameters(trackSelectorParameters);
-        if (trackSelector[main] != null) trackSelector[main].setParameters(trackSelectorParametersSmall);
+        if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
+        if (trackSelector[mainPlayer] != null) trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
 
         //Set proper video size
-        simpleExoPlayerView[main2].setLayoutParams(PlayerViewDefaultSize);
-        UpdadeSizePosSmall(main);
+        simpleExoPlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
+        UpdadeSizePosSmall(mainPlayer);
 
         //Set proper video loading icon size
-        //spinner[main].setLayoutParams(IconSizeSmall);
-        //spinner[main2].setLayoutParams(IconSizeBig);
+        //spinner[mainPlayer].setLayoutParams(IconSizeSmall);
+        //spinner[WillBeMain].setLayoutParams(IconSizeBig);
 
         //Set proper video volume, muted to small
-        if (player[main2] != null) player[main2].setVolume(1f);
-        if (player[main] != null) player[main].setVolume(0f);
+        if (player[WillBeMain] != null) player[WillBeMain].setVolume(1f);
+        if (player[mainPlayer] != null) player[mainPlayer].setVolume(0f);
 
         //Reset the view so it show on top
-        ResetViews(main, main2);
-        simpleExoPlayerView[main].setVisibility(View.GONE);
-        if (show) simpleExoPlayerView[main].setVisibility(View.VISIBLE);
+        ResetViews(mainPlayer, WillBeMain);
+
+        simpleExoPlayerView[mainPlayer].setVisibility(View.GONE);
+        if (show) simpleExoPlayerView[mainPlayer].setVisibility(View.VISIBLE);
+
+        mainPlayer = WillBeMain;
     }
 
     // Is necessary to bring the small player to the front of the big using bringToFront
     // and reset it view by Visibility(GONE then VISIBLE) to have the player properly display the same all the time
     public void ResetViews(int front, int back) {
+        //TODO make this a for
         simpleExoPlayerView[back].bringToFront();
         simpleExoPlayerView[back].invalidate();
         simpleExoPlayerView[front].invalidate();
@@ -429,10 +417,6 @@ public class PlayerActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        if (player == null && shouldAutoPlay && mwebview != null && alredystarted) {
-            mwebview.loadUrl("javascript:Play_CheckResume()");
-        }
-        alredystarted = true;
     }
 
     //This function is called when overview key is pressed
@@ -462,6 +446,7 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
         ClearPlayer(0);
         ClearPlayer(1);
     }
@@ -594,13 +579,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1, true));
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position, true));
+            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -613,7 +598,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void initializePlayer2Auto() {
             myHandler.post(() -> PreinitializePlayer2(mainPlayer == 0 ? mediaSourcesAuto[1] : mediaSourcesAuto[0], ""));
-
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -627,19 +611,13 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetAuto2(String url) {
             //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            myHandler.post(() -> mediaSourcesAuto[mainPlayer == 0 ? 1 : 0] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
+            myHandler.post(() -> mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position, true));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void StartAutoPlay(int whocall, long position, boolean play) {
-            myHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position, play));
+            myHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -658,7 +636,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mClearSmallPlayer() {
             //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            myHandler.post(() -> ClearPlayer(mainPlayer == 0 ? 1 : 0));
+            myHandler.post(() -> ClearPlayer(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -679,7 +657,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerPosition(int position) {
             DefaultPositions = position;
-            myHandler.post(() -> UpdadeSizePosSmall(mainPlayer == 0 ? 1 : 0));
+            myHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -692,7 +670,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerSize(int position) {
             playerDivider = position;
-            myHandler.post(() -> UpdadeSizePosSmall(mainPlayer == 0 ? 1 : 0));
+            myHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -812,9 +790,11 @@ public class PlayerActivity extends Activity {
     private class PlayerEventListener implements Player.EventListener {
 
         private int position;
+        private int delayms;
 
         private PlayerEventListener(int mposition) {
             position = mposition;
+            delayms = (BUFFER_SIZE[mwhocall] * 2) + (mwhocall == 2 ? 3000 : 1000);
         }
 
         @Override
@@ -823,6 +803,7 @@ public class PlayerActivity extends Activity {
                 if (playWhenReady) {
                     if (playbackState == Player.STATE_ENDED) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                        player[position].setPlayWhenReady(false);
 
                         hideLoadingMain();
                         hideLoading(position);
@@ -848,11 +829,13 @@ public class PlayerActivity extends Activity {
                             //First try only restart the player second ask js to check if there is a lower resolution
                             PlayerCheckCounter[position]++;
                             Toast.makeText(PlayerActivity.this, "PlayerCheckCounter " + PlayerCheckCounter[position], Toast.LENGTH_SHORT).show();
-                            if (PlayerCheckCounter[position] < 3 && (mainPlayer != position || mediaSourceAuto[position] != null)) {
+                            //Pause to things run smother and prevent odd behavior during the checks
+                            player[position].setPlayWhenReady(false);
+                            if (PlayerCheckCounter[position] < 4 && (mainPlayer != position || mediaSourceAuto[position] != null)) {
                                 //this is small screen  or is in auto mode just restart it
                                 updateResumePosition(position);
                                 initializePlayer(position);
-                            } else if (PlayerCheckCounter[position] == 3){
+                            } else if (PlayerCheckCounter[position] > 3){
 
                                 // treys == 3 Give up internet is probably down or something related
 
@@ -872,7 +855,7 @@ public class PlayerActivity extends Activity {
                                 initializePlayer(position);
                             }
 
-                        }, (BUFFER_SIZE[mwhocall] * 2));
+                        }, delayms);
                     } else if (playbackState == Player.STATE_READY) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         PlayerCheckCounter[position] = 0;
