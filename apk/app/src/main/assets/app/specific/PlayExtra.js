@@ -43,7 +43,12 @@ function PlayExtra_KeyEnter() {
     else {
         var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
         if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
-            if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+            if (Main_IsNotBrowser) {
+                Android.play(true);
+                try {
+                    Android.mClearSmallPlayer();
+                } catch (e) {}
+            }
             PlayExtra_PicturePicture = true;
             UserLiveFeed_Hide();
 
@@ -152,17 +157,17 @@ function PlayExtra_loadDataSuccess(responseText) {
 }
 
 function PlayExtra_SetPanel() {
-        document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
-        Play_IconsResetFocus();
+    document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
+    Play_IconsResetFocus();
 }
 
 function PlayExtra_UnSetPanel() {
-        document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
-        document.getElementById('controls_' + Play_controlsQuality).style.display = '';
-        document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-        Play_IconsResetFocus();
+    document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
+    document.getElementById('controls_' + Play_controlsQuality).style.display = '';
+    document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
+    Play_IconsResetFocus();
 }
 
 
@@ -171,26 +176,28 @@ function PlayExtra_UnSetPanel() {
 //}
 
 function PlayExtra_qualityChanged() {
-//    PlayExtra_qualityIndex = 0;
-//    PlayExtra_playingUrl = PlayExtra_qualities[0].url;
-//    if (Play_quality.indexOf("source") !== -1) PlayExtra_quality = "source";
+    //    PlayExtra_qualityIndex = 0;
+    //    PlayExtra_playingUrl = PlayExtra_qualities[0].url;
+    //    if (Play_quality.indexOf("source") !== -1) PlayExtra_quality = "source";
 
-//    for (var i = 0; i < PlayExtra_getQualitiesCount(); i++) {
-//        if (PlayExtra_qualities[i].id.indexOf(PlayExtra_quality) !== -1) {
-//            PlayExtra_qualityIndex = i;
-//            PlayExtra_playingUrl = PlayExtra_qualities[i].url;
-//            break;
-//        }
-//    }
+    //    for (var i = 0; i < PlayExtra_getQualitiesCount(); i++) {
+    //        if (PlayExtra_qualities[i].id.indexOf(PlayExtra_quality) !== -1) {
+    //            PlayExtra_qualityIndex = i;
+    //            PlayExtra_playingUrl = PlayExtra_qualities[i].url;
+    //            break;
+    //        }
+    //    }
 
-//    PlayExtra_qualityPlaying = PlayExtra_quality;
+    //    PlayExtra_qualityPlaying = PlayExtra_quality;
 
     if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
 
     if (Main_IsNotBrowser && Play_isOn) {
         //if (PlayExtra_quality.indexOf("Auto") !== -1) Android.initializePlayer2Auto();
         //else Android.initializePlayer2(PlayExtra_playingUrl);
-        Android.initializePlayer2Auto();
+        try {
+            Android.initializePlayer2Auto();
+        } catch (e) {}
     }
 }
 
@@ -268,7 +275,9 @@ function PlayExtra_loadDataFail(Reason) {
     PlayExtra_selectedChannel = '';
     if (Main_IsNotBrowser) {
         Android.play(true);
-        Android.mClearSmallPlayer();
+        try {
+            Android.mClearSmallPlayer();
+        } catch (e) {}
     }
     Play_HideBufferDialog();
     Play_showWarningDialog(Reason);

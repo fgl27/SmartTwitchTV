@@ -691,7 +691,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetMainPlayerBandwidth(int band) {
-            mainPlayerBandwidth = band;
+            mainPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
             myHandler.post(() -> trackSelectorParameters = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBandwidth)
@@ -701,7 +701,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetSmallPlayerBandwidth(int band) {
-            smallPlayerBandwidth = band;
+            smallPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
             myHandler.post(() -> trackSelectorParametersSmall = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(smallPlayerBandwidth)

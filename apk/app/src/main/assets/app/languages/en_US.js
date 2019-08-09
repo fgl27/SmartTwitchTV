@@ -265,4 +265,9 @@ function en_USLang() {
     STR_PLAYER_AUTO_BIG = "Main window";
     STR_PLAYER_AUTO_SMALLS = "Small window";
     STR_PLAYER_AUTO_ALL = "Both windows";
+    STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
+    STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
+    STR_PLAYER_BITRATE_SUMARRY = "The maximum video allowed bitrate for the auto quality, this is most to prevent lag or slowdowns when playing in picture and picture mode as that mode used Auto quality only, but also can be used to limit the Main window bitrate when using Auto quality and prevent the player from trying bitrate bigger then what yours internet supports, some devices will slowdown too much if the main and small window bitrate is too high, the recommended is 3Mbps for small and unlimited for main.";
+    STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
+    STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
 }
