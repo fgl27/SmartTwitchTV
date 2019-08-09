@@ -934,7 +934,8 @@ function Play_RefreshWatchingtime() {
 
     if (Play_qualityPlaying.indexOf("Auto") !== -1) {
         var value = Android.getVideoQuality();
-        if (value !== null) Play_getVideoQuality(value);
+
+        if (value !== null && value !== undefined) Play_getVideoQuality(value);
         else Play_SetHtmlQuality('stream_quality', true);
     }
 }
