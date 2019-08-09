@@ -1328,6 +1328,8 @@ function Play_qualityIndexReset() {
 //called by android PlayerActivity
 function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
     if (PlayVodClip === 1) { //live
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
         Play_CheckHostStart();
     } else {
         Play_PlayEndStart(PlayVodClip);
