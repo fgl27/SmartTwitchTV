@@ -47,6 +47,7 @@ function PlayClip_Start() {
     Main_values.Play_isHost = false;
     PlayClip_SetOpenVod();
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
+    PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
 

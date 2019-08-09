@@ -230,6 +230,7 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     //Chat delay
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
+    PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
 
@@ -1441,6 +1442,7 @@ function Play_KeyReturn(is_vod) {
                 if (Main_IsNotBrowser) Android.mClearSmallPlayer();
                 PlayExtra_PicturePicture = false;
                 PlayExtra_selectedChannel = '';
+                PlayExtra_UnSetPanel();
                 Play_CleanHideExit();
             } else {
                 Play_CleanHideExit();
@@ -1661,14 +1663,15 @@ var Play_controlsOpenVod = 3;
 var Play_controlsFallow = 4;
 var Play_controlsSpeed = 5;
 var Play_controlsQuality = 6;
-var Play_controlsChat = 7;
-var Play_controlsChatSide = 8;
-var Play_controlsChatPos = 9;
-var Play_controlsChatSize = 10;
-var Play_controlsChatBright = 11;
-var Play_controlsChatFont = 12;
-var Play_controlsChatDelay = 13;
-var Play_controlsChatForceDis = 14;
+var Play_controlsQualityMini = 7;
+var Play_controlsChat = 8;
+var Play_controlsChatSide = 9;
+var Play_controlsChatForceDis = 10;
+var Play_controlsChatPos = 11;
+var Play_controlsChatSize = 12;
+var Play_controlsChatBright = 13;
+var Play_controlsChatFont = 14;
+var Play_controlsChatDelay = 15;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -1834,6 +1837,38 @@ function Play_MakeControls() {
         },
     };
 
+    Play_controls[Play_controlsQualityMini] = { //quality for picture in picture
+        icons: "videocamera",
+        string: STR_QUALITY,
+        values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG],
+        defaultValue: 1,
+        opacity: 0,
+        enterKey: function() {
+
+            if (this.defaultValue) Play_qualityChanged();
+            else PlayExtra_qualityChanged();
+
+            Play_hidePanel();
+        },
+        updown: function(adder) {
+
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+
+    };
+
     Play_controls[Play_controlsChat] = { //chat enable disable
         icons: "chat",
         string: STR_CHAT,
@@ -1857,6 +1892,28 @@ function Play_MakeControls() {
             if (!Play_isFullScreen) string = STR_CHAT_SIDE;
 
             Main_textContent('extra_button_' + this.position, '(' + string + ')');
+        },
+    };
+
+
+    Play_controls[Play_controlsChatForceDis] = { //force disable chat
+        icons: "chat-stop",
+        string: STR_F_DISABLE_CHAT,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+            Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+
+            if (PlayVodClip === 1) ChatLive_Init();
+            else Chat_Init();
+
+            this.setLable();
+            Main_SaveValues();
+        },
+        setLable: function() {
+            Main_textContent('extra_button_' + this.position, '(' +
+                (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
         },
     };
 
@@ -2048,27 +2105,6 @@ function Play_MakeControls() {
             Play_BottomArrows(this.position);
         },
     };
-
-    Play_controls[Play_controlsChatForceDis] = { //force disable chat
-        icons: "chat-stop",
-        string: STR_F_DISABLE_CHAT,
-        values: null,
-        defaultValue: null,
-        opacity: 0,
-        enterKey: function(PlayVodClip) {
-            Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-
-            if (PlayVodClip === 1) ChatLive_Init();
-            else Chat_Init();
-
-            this.setLable();
-            Main_SaveValues();
-        },
-        setLable: function() {
-            Main_textContent('extra_button_' + this.position, '(' +
-                (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
-        },
-    };
 }
 
 function Play_IconsAddFocus() {
@@ -2134,9 +2170,9 @@ function Play_BottomLeftRigt(PlayVodClip, adder) {
 }
 
 function Play_BottomArrows(position) {
-    if (Play_controls[position].defaultValue === 1) {
-        document.getElementById("control_arrow_up_" + position).style.opacity = "1";
-        document.getElementById("control_arrow_down" + position).style.opacity = "1";
+    if (Play_controls[position].values.length === 1) {
+        document.getElementById("control_arrow_up_" + position).style.opacity = "0";
+        document.getElementById("control_arrow_down" + position).style.opacity = "0";
     } else if (!Play_controls[position].defaultValue) {
         document.getElementById("control_arrow_up_" + position).style.opacity = "1";
         document.getElementById("control_arrow_down" + position).style.opacity = "0.2";
