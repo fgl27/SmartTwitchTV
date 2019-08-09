@@ -132,7 +132,6 @@ function PlayVod_PosStart() {
     PlayVod_WasSubChekd = false;
     PlayVod_loadData();
     Play_EndSet(2);
-    document.body.removeEventListener("keyup", Main_handleKeyUp);
 }
 
 function PlayVod_PrepareLoad() {
