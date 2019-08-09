@@ -224,7 +224,7 @@ public class PlayerActivity extends Activity {
 
         releasePlayer(position);
         simpleExoPlayerView[position].setVisibility(View.GONE);
-        hideLoading(mainPlayer != position ? 1 : 0);
+        hideLoading(position);
     }
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
@@ -281,7 +281,7 @@ public class PlayerActivity extends Activity {
             player[position] = null;
             trackSelector[position] = null;
         }
-        hideLoading(mainPlayer != position ? 1 : 0);
+        hideLoading(position);
     }
 
     //Basic player position setting, for resume playback 
@@ -842,7 +842,7 @@ public class PlayerActivity extends Activity {
                         Check = false;
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         hideLoadingMain();
-                        loadingcanshow[position == 0 ? 1 : 0] = true;
+                        loadingcanshow[position] = true;
                         showLoadingDelay(position);
 
                         //Use the player buffer as a player check state to prevent be buffering for ever
@@ -850,6 +850,12 @@ public class PlayerActivity extends Activity {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         if (Check) {
                             PlayerCheckHandler[position].postDelayed(() -> {
+                                //Player was released or is on pause
+                                if (player[position] == null || !player[position].getPlayWhenReady()) {
+                                    Check = false;
+                                    return;
+                                }
+
                                 //First try only restart the player second ask js to check if there is a lower resolution
                                 PlayerCheckCounter++;
 
