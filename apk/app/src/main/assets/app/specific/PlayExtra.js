@@ -6,8 +6,8 @@ var PlayExtra_selectedChannelDisplayname = '';
 var PlayExtra_loadingDataTry = 0;
 var PlayExtra_state = Play_STATE_LOADING_TOKEN;
 var PlayExtra_qualities;
-var PlayExtra_qualityIndex = 0;
-var PlayExtra_playingUrl = '';
+//var PlayExtra_qualityIndex = 0;
+//var PlayExtra_playingUrl = '';
 var PlayExtra_quality = "Auto";
 var PlayExtra_qualityPlaying = PlayExtra_quality;
 var PlayExtra_selectedChannel_id = 0;
@@ -144,33 +144,50 @@ function PlayExtra_loadDataSuccess(responseText) {
     } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) {
         PlayExtra_qualities = Play_extractQualities(responseText);
         PlayExtra_state = Play_STATE_PLAYING;
+        PlayExtra_SetPanel();
+        if (!Play_isFullScreen) Play_controls[Play_controlsChatSide].enterKey();
+
         if (Play_isOn) PlayExtra_qualityChanged();
     }
 }
 
-function PlayExtra_getQualitiesCount() {
-    return PlayExtra_qualities.length;
+function PlayExtra_SetPanel() {
+        document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
+        document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
+        document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
+        Play_IconsResetFocus();
 }
 
+function PlayExtra_UnSetPanel() {
+        document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
+        document.getElementById('controls_' + Play_controlsQuality).style.display = '';
+        document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
+        Play_IconsResetFocus();
+}
+
+
+//function PlayExtra_getQualitiesCount() {
+//    return PlayExtra_qualities.length;
+//}
+
 function PlayExtra_qualityChanged() {
-    PlayExtra_qualityIndex = 0;
-    PlayExtra_playingUrl = PlayExtra_qualities[0].url;
-    if (Play_quality.indexOf("source") !== -1) PlayExtra_quality = "source";
+//    PlayExtra_qualityIndex = 0;
+//    PlayExtra_playingUrl = PlayExtra_qualities[0].url;
+//    if (Play_quality.indexOf("source") !== -1) PlayExtra_quality = "source";
 
-    for (var i = 0; i < PlayExtra_getQualitiesCount(); i++) {
-        if (PlayExtra_qualities[i].id.indexOf(PlayExtra_quality) !== -1) {
-            PlayExtra_qualityIndex = i;
-            PlayExtra_playingUrl = PlayExtra_qualities[i].url;
-            break;
-        }
-    }
+//    for (var i = 0; i < PlayExtra_getQualitiesCount(); i++) {
+//        if (PlayExtra_qualities[i].id.indexOf(PlayExtra_quality) !== -1) {
+//            PlayExtra_qualityIndex = i;
+//            PlayExtra_playingUrl = PlayExtra_qualities[i].url;
+//            break;
+//        }
+//    }
 
-    PlayExtra_qualityPlaying = PlayExtra_quality;
+//    PlayExtra_qualityPlaying = PlayExtra_quality;
 
-    if (Main_isDebug) console.log('PlayExtra_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
+    if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        console.log('PlayExtra_qualityChanged');
         //if (PlayExtra_quality.indexOf("Auto") !== -1) Android.initializePlayer2Auto();
         //else Android.initializePlayer2(PlayExtra_playingUrl);
         Android.initializePlayer2Auto();
