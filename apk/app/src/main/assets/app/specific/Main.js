@@ -251,10 +251,13 @@ function Main_SetStringsMain(isStarting) {
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
-    Main_innerHTML('label_update', '<div class="strokedextramini" style="vertical-align: middle; display: inline-block;"><i class="icon-arrow-up" style="color: #FF0000; font-size: 115%; "></i></div><div class="strokedextramini" style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
+    Main_innerHTML('label_update', '<div class="strokedeline" style="vertical-align: middle; display: inline-block;"><i class="icon-arrow-up" style="color: #FF0000; font-size: 115%; "></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
 
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-    Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_UP);
+    //Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_UP + STR_PP);
+
+    Main_innerHTML('icon_feed_refresh', '<div class="strokedeline" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_REFRESH + ':' + STR_UP + STR_SPACE + STR_SPACE + '</div><div class="strokedeline" style="vertical-align: middle; display: inline-block;"><i class="icon-squares" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_PP + '</div>');
+
 
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
@@ -317,7 +320,7 @@ function Main_SetStringsSecondary() {
 }
 
 function Main_IconLoad(lable, icon, string) {
-    Main_innerHTML(lable, '<div class="strokedextramini" style="vertical-align: middle; display: inline-block;"><i class="' + icon + '" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedextramini" style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
+    Main_innerHTML(lable, '<div class="strokedeline" style="vertical-align: middle; display: inline-block;"><i class="' + icon + '" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
 }
 
 function Main_HideElement(element) {

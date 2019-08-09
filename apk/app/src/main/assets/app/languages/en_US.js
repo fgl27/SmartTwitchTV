@@ -270,4 +270,6 @@ function en_USLang() {
     STR_PLAYER_BITRATE_SUMARRY = "The maximum video allowed bitrate for the auto quality, this is most to prevent lag or slowdowns when playing in picture and picture mode as that mode used Auto quality only, but also can be used to limit the Main window bitrate when using Auto quality and prevent the player from trying bitrate bigger then what yours internet supports, some devices will slowdown too much if the main and small window bitrate is too high, the recommended is 3Mbps for small and unlimited for main.";
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
+    STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short loading call when changing video source, to prevent this set both values the same at the cost of possible app slowdowns if the bitrate values are too high.";
+    STR_PP = 'Hold enter to start "Picture in Picture Mode" then use D-Pad to move, resize or change videos';
 }
