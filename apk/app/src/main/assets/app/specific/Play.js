@@ -1879,6 +1879,9 @@ function Play_MakeControls() {
             } catch (e) {}
 
             Play_hidePanel();
+            this.defaultValue = 2;
+            this.bottomArrows();
+            this.setLable();
         },
         updown: function(adder) {
 

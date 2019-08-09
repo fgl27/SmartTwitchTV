@@ -202,7 +202,7 @@ function Settings_SetSettings() {
     Settings_value[key].values = Settings_value.bitrate_main.values;
     Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
 
-    div += Settings_DivOptionNoSummary(key, STR_PLAYER_BITRATE_SMALL);
+    div += Settings_DivOptionWithSummary(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
     Settings_SetBitRate(0);
 
     // Player buffer title/summary
@@ -285,7 +285,7 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_PLAYER_BITRATE_MAIN);
     Settings_value[key].values[0] = STR_DISABLE;
     key = "bitrate_min";
-    Main_textContent(key + '_name', STR_PLAYER_BITRATE_SMALL);
+    Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
     Settings_value[key].values[0] = STR_DISABLE;
 
     // Player buffer title/summary

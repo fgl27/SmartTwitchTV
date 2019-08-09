@@ -85,6 +85,7 @@ public class PlayerActivity extends Activity {
     //public FrameLayout.LayoutParams IconSizeBig;
     public FrameLayout.LayoutParams PlayerViewDefaultSize;
     public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
+    public FrameLayout.LayoutParams PlayerViewSmallSize;
 
     public Animation rotation;
 
@@ -351,7 +352,8 @@ public class PlayerActivity extends Activity {
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
         PlayerViewDefaultSizeChat = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
 
-        UpdadeSizePosSmall(1);
+        PlayerViewSmallSize = new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]);
+        simpleExoPlayerView[1].setLayoutParams(PlayerViewSmallSize);
     }
 
     //Used in side-by-side mode chat plus video
@@ -364,29 +366,29 @@ public class PlayerActivity extends Activity {
     private void SwitchPlayer(boolean show) {
         int WillBeMain = mainPlayer ^ 1;//shift 0 to 1 and vice versa
 
-        //change trackSelector to limit video bandwidth
-        if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
-        if (trackSelector[mainPlayer] != null) trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
-
-        //Set proper video size
+        //Set new video sizes
         simpleExoPlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
-        UpdadeSizePosSmall(mainPlayer);
+        simpleExoPlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize);
 
-        //Set proper video loading icon size
-        //spinner[mainPlayer].setLayoutParams(IconSizeSmall);
-        //spinner[WillBeMain].setLayoutParams(IconSizeBig);
+        simpleExoPlayerView[mainPlayer].setVisibility(View.GONE);
+        if (show) simpleExoPlayerView[mainPlayer].setVisibility(View.VISIBLE);
+
+        //Reset the view so it show on top
+        ResetViews(mainPlayer, WillBeMain);
 
         //Set proper video volume, muted to small
         if (player[WillBeMain] != null) player[WillBeMain].setVolume(1f);
         if (player[mainPlayer] != null) player[mainPlayer].setVolume(0f);
 
-        //Reset the view so it show on top
-        ResetViews(mainPlayer, WillBeMain);
-
-        simpleExoPlayerView[mainPlayer].setVisibility(View.GONE);
-        if (show) simpleExoPlayerView[mainPlayer].setVisibility(View.VISIBLE);
+        //change trackSelector to limit video bandwidth
+        if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
+        if (trackSelector[mainPlayer] != null) trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
 
         mainPlayer = WillBeMain;
+
+        //Set proper video loading icon size
+        //spinner[mainPlayer].setLayoutParams(IconSizeSmall);
+        //spinner[WillBeMain].setLayoutParams(IconSizeBig);
     }
 
     // Is necessary to bring the small player to the front of the big using bringToFront
@@ -419,7 +421,8 @@ public class PlayerActivity extends Activity {
     }
 
     public void UpdadeSizePosSmall(int pos) {
-        simpleExoPlayerView[pos].setLayoutParams(new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]));
+        PlayerViewSmallSize = new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]);
+        simpleExoPlayerView[pos].setLayoutParams(PlayerViewSmallSize);
     }
 
     @Override
@@ -650,15 +653,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayer() {
-            myHandler.post(() -> {
-                if (player[0] != null) player[0].setPlayWhenReady(false);
-                if (player[1] != null) player[1].setPlayWhenReady(false);
-
-                SwitchPlayer(true);
-
-                if (player[0] != null) player[0].setPlayWhenReady(true);
-                if (player[1] != null) player[1].setPlayWhenReady(true);
-            });
+            myHandler.post(() -> SwitchPlayer(true));
         }
 
         @SuppressWarnings("unused")//called by JS
