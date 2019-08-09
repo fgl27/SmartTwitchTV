@@ -155,7 +155,6 @@ function ChannelContent_GetStreamerInfoSuccess(responseText) {
     Main_values.Main_selectedChannelPartner = channel.partner;
 
     ChannelContent_loadDataSuccess();
-    return;
 }
 
 function ChannelContent_GetStreamerInfoError() {

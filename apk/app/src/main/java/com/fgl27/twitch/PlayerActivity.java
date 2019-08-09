@@ -78,8 +78,10 @@ public class PlayerActivity extends Activity {
     public ImageView[] spinner = new ImageView[2];
     public ImageView spinnermain;
     public float density;
-    public int densitysmall;
-    public int densitybig;
+    public FrameLayout.LayoutParams IconSizeSmall;
+    public FrameLayout.LayoutParams IconSizeBigg;
+    public FrameLayout.LayoutParams PlayerViewDefaultSize;
+    public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
 
     public Animation rotation;
 
@@ -179,11 +181,7 @@ public class PlayerActivity extends Activity {
             if (heightDefault == 0) SetheightDefault();
 
             player[position].setVolume(0f);
-
-            simpleExoPlayerView[position].setLayoutParams(
-                    new FrameLayout.LayoutParams((mwidthDefault / playerDivider),
-                            (heightDefault / playerDivider),
-                            positions[DefaultPositions]));
+            UpdadeSizePosSmall(position);
 
             simpleExoPlayerView[position].setVisibility(View.GONE);
             simpleExoPlayerView[position].setVisibility(View.VISIBLE);
@@ -358,18 +356,18 @@ public class PlayerActivity extends Activity {
 
         if (isvisible) simpleExoPlayerView[0].setVisibility(View.GONE);
         density = this.getResources().getDisplayMetrics().density;
-        densitysmall = Math.round(35 * density);
-        densitybig = Math.round(50 * density);
+        IconSizeSmall = new FrameLayout.LayoutParams(Math.round(35 * density), Math.round(35 * density), Gravity.CENTER);
+        IconSizeBigg = new FrameLayout.LayoutParams(Math.round(50 * density), Math.round(50 * density), Gravity.CENTER);
+        PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
+        PlayerViewDefaultSizeChat = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
     }
 
     //Used in side-by-side mode chat plus video
-    private void updatesize(boolean sizechat) {
+    private void updateVidesizeChat(boolean sizechat) {
         if (heightDefault == 0) SetheightDefault();
 
-        if (sizechat)
-            simpleExoPlayerView[0].setLayoutParams(new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL));
-        else
-            simpleExoPlayerView[0].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP));
+        if (sizechat)simpleExoPlayerView[0].setLayoutParams(PlayerViewDefaultSizeChat);
+        else simpleExoPlayerView[0].setLayoutParams(PlayerViewDefaultSize);
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
@@ -392,12 +390,12 @@ public class PlayerActivity extends Activity {
         if (trackSelector[main] != null) trackSelector[main].setParameters(trackSelectorParametersSmall);
 
         //Set proper video size
-        simpleExoPlayerView[main2].setLayoutParams(new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.START | Gravity.TOP));
+        simpleExoPlayerView[main2].setLayoutParams(PlayerViewDefaultSize);
         UpdadeSizePosSmall(main);
 
         //Set proper video loading icon size
-        spinner[main].setLayoutParams(new FrameLayout.LayoutParams(densitysmall, densitysmall, Gravity.CENTER));
-        spinner[main2].setLayoutParams(new FrameLayout.LayoutParams(densitybig, densitybig, Gravity.CENTER));
+        spinner[main].setLayoutParams(IconSizeSmall);
+        spinner[main2].setLayoutParams(IconSizeBigg);
 
         //Set proper video volume, muted to small
         if (player[main2] != null) player[main2].setVolume(1f);
@@ -603,7 +601,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mupdatesize(boolean sizechat) {
-            myHandler.post(() -> updatesize(sizechat));
+            myHandler.post(() -> updateVidesizeChat(sizechat));
         }
 
         @SuppressWarnings("unused")//called by JS
