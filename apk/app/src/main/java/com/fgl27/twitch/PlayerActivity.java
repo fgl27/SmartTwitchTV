@@ -101,6 +101,7 @@ public class PlayerActivity extends Activity {
 
     public Handler myHandler;
     public Handler[] PlayerCheckHandler = new Handler[2];
+    public int[] PlayerCheckCounter = new int[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +154,8 @@ public class PlayerActivity extends Activity {
 
     // The main player initialization function
     private void initializePlayer(int position) {
+        showLoading(position);
+
         //Toast.makeText(this, "position " + position + " mainPlayer " + mainPlayer, Toast.LENGTH_SHORT).show();
         // always release before starting for performance check ClearPlayer
         if (player[position] != null) {
@@ -176,13 +179,6 @@ public class PlayerActivity extends Activity {
                 trackSelector[position],
                 Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
-        if (isSmall) {
-            if (heightDefault == 0) SetheightDefault();
-            player[position].setVolume(0f);
-        }
-
-        showLoading(position);
-
         player[position].addListener(new PlayerEventListener(position));
 
         player[position].setPlayWhenReady(true);
@@ -202,7 +198,7 @@ public class PlayerActivity extends Activity {
             int tempPos = position == 0 ? 1 : 0;
             if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.GONE);
             if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.VISIBLE);
-        }
+        } else player[position].setVolume(0f);
     }
 
     // For some reason the player can lag a device when stated without releasing it first
@@ -214,6 +210,8 @@ public class PlayerActivity extends Activity {
             player[position].setPlayWhenReady(shouldAutoPlay);
             releasePlayer(position);
         }
+
+        PlayerCheckCounter[position] = 0;
 
         //Reset player background to a empty black screen and reset all states
         player[position] = ExoPlayerFactory.newSimpleInstance(this);
@@ -357,16 +355,12 @@ public class PlayerActivity extends Activity {
 
     //Used in side-by-side mode chat plus video
     private void updateVidesizeChat(boolean sizechat) {
-        if (heightDefault == 0) SetheightDefault();
-
         if (sizechat)simpleExoPlayerView[0].setLayoutParams(PlayerViewDefaultSizeChat);
         else simpleExoPlayerView[0].setLayoutParams(PlayerViewDefaultSize);
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer(boolean show) {
-        if (heightDefault == 0) SetheightDefault();
-
         int main = 0;
         int main2 = 0;
 
@@ -387,8 +381,8 @@ public class PlayerActivity extends Activity {
         UpdadeSizePosSmall(main);
 
         //Set proper video loading icon size
-        spinner[main].setLayoutParams(IconSizeSmall);
-        spinner[main2].setLayoutParams(IconSizeBig);
+        //spinner[main].setLayoutParams(IconSizeSmall);
+        //spinner[main2].setLayoutParams(IconSizeBig);
 
         //Set proper video volume, muted to small
         if (player[main2] != null) player[main2].setVolume(1f);
@@ -705,6 +699,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetPlayerSize(int position) {
             playerDivider = position;
+            myHandler.post(PlayerActivity.this::SetheightDefault);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -817,13 +812,9 @@ public class PlayerActivity extends Activity {
     private class PlayerEventListener implements Player.EventListener {
 
         private int position;
-        private int PlayerCheckCounter;
-        private boolean Check;
 
         private PlayerEventListener(int mposition) {
             position = mposition;
-            PlayerCheckCounter = 0;
-            Check = true;
         }
 
         @Override
@@ -833,13 +824,15 @@ public class PlayerActivity extends Activity {
                     if (playbackState == Player.STATE_ENDED) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
+                        hideLoadingMain();
                         hideLoading(position);
+
                         if (PicturePicture) {
                             PicturePicture = false;
                             ClearPlayer(position);
-                            if (mainPlayer != position) SwitchPlayer(false);
+                            if (mainPlayer == position) SwitchPlayer(false);
                         } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
-                        Check = false;
+
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         hideLoadingMain();
                         loadingcanshow[position] = true;
@@ -848,38 +841,41 @@ public class PlayerActivity extends Activity {
                         //Use the player buffer as a player check state to prevent be buffering for ever
                         //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                        if (Check) {
-                            PlayerCheckHandler[position].postDelayed(() -> {
-                                //Player was released or is on pause
-                                if (player[position] == null || !player[position].getPlayWhenReady()) {
-                                    Check = false;
-                                    return;
-                                }
+                        PlayerCheckHandler[position].postDelayed(() -> {
+                            //Player was released or is on pause
+                            if (player[position] == null || !player[position].getPlayWhenReady()) return;
 
-                                //First try only restart the player second ask js to check if there is a lower resolution
-                                PlayerCheckCounter++;
+                            //First try only restart the player second ask js to check if there is a lower resolution
+                            PlayerCheckCounter[position]++;
+                            Toast.makeText(PlayerActivity.this, "PlayerCheckCounter " + PlayerCheckCounter[position], Toast.LENGTH_SHORT).show();
+                            if (PlayerCheckCounter[position] < 3 && (mainPlayer != position || mediaSourceAuto[position] != null)) {
+                                //this is small screen  or is in auto mode just restart it
+                                updateResumePosition(position);
+                                initializePlayer(position);
+                            } else if (PlayerCheckCounter[position] == 3){
 
-                                if (PlayerCheckCounter < 3 && (mainPlayer != position || mediaSourceAuto[position] != null)) {
-                                    //this is small screen  or is in auto mode just restart it
-                                    updateResumePosition(position);
-                                    initializePlayer(position);
-                                } else if (PlayerCheckCounter > 3){
-                                    // treys > 3 Give up internet is probably down or something related
-                                    Check = false;
-                                    mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
-                                } else if (PlayerCheckCounter > 1) //Use js to check if is possible to drop quality
-                                    mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
-                                else {
-                                    updateResumePosition(position);
-                                    initializePlayer(position);
-                                }
+                                // treys == 3 Give up internet is probably down or something related
 
-                            }, (BUFFER_SIZE[mwhocall] * 2) + 1000);
-                        }
+                                hideLoadingMain();
+                                hideLoading(position);
 
+                                if (PicturePicture) {
+                                    PicturePicture = false;
+                                    ClearPlayer(position);
+                                    if (mainPlayer == position) SwitchPlayer(false);
+                                } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+
+                            } else if (PlayerCheckCounter[position] > 1) //Use js to check if is possible to drop quality
+                                mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
+                            else {
+                                updateResumePosition(position);
+                                initializePlayer(position);
+                            }
+
+                        }, (BUFFER_SIZE[mwhocall] * 2));
                     } else if (playbackState == Player.STATE_READY) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                        PlayerCheckCounter = 0;
+                        PlayerCheckCounter[position] = 0;
 
                         //If other not playing just play it so they stay close to sync
                         int otherplayer = position == 0 ? 1 : 0;
@@ -909,4 +905,4 @@ public class PlayerActivity extends Activity {
         }
 
     }
-}	
+}
