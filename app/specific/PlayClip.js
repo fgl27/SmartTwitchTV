@@ -93,7 +93,6 @@ function PlayClip_Start() {
     PlayClip_isOn = true;
 
     PlayClip_loadData();
-    document.body.removeEventListener("keyup", Main_handleKeyUp);
 
     PlayClip_loadingtreamerInfoTry = 0;
     PlayClip_GetStreamerInfo();
