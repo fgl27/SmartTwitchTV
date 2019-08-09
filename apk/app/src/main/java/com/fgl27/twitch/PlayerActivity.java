@@ -79,7 +79,7 @@ public class PlayerActivity extends Activity {
     public ImageView spinnermain;
     public float density;
     public FrameLayout.LayoutParams IconSizeSmall;
-    public FrameLayout.LayoutParams IconSizeBigg;
+    public FrameLayout.LayoutParams IconSizeBig;
     public FrameLayout.LayoutParams PlayerViewDefaultSize;
     public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
 
@@ -101,7 +101,6 @@ public class PlayerActivity extends Activity {
 
     public Handler myHandler;
     public Handler[] PlayerCheckHandler = new Handler[2];
-    public int PlayerCheckCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +123,10 @@ public class PlayerActivity extends Activity {
 
             trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
 
-            trackSelector[0] = new DefaultTrackSelector();
-            trackSelector[0].setParameters(trackSelectorParameters);
-
-            //Prevent small window causing lag to the device
-            // Bitrates bigger then 8Mbs on two simultaneous video playback can slowdown for eg a S905X too much
-            trackSelectorParametersSmall = trackSelector[0].getParameters()
+            // Prevent small window causing lag to the device
+            // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
+            // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
+            trackSelectorParametersSmall = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(3000000)
                     .build();
@@ -163,6 +160,8 @@ public class PlayerActivity extends Activity {
             releasePlayer(position);
         }
 
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+
         if (simpleExoPlayerView[position].getVisibility() != View.VISIBLE)
             simpleExoPlayerView[position].setVisibility(View.VISIBLE);
 
@@ -179,12 +178,7 @@ public class PlayerActivity extends Activity {
 
         if (isSmall) {
             if (heightDefault == 0) SetheightDefault();
-
             player[position].setVolume(0f);
-            UpdadeSizePosSmall(position);
-
-            simpleExoPlayerView[position].setVisibility(View.GONE);
-            simpleExoPlayerView[position].setVisibility(View.VISIBLE);
         }
 
         showLoading(position);
@@ -204,7 +198,7 @@ public class PlayerActivity extends Activity {
                 true);
 
         if (!isSmall) {
-            //Reset small player view so it shows
+            //Reset small player view so it shows after big one has started
             int tempPos = position == 0 ? 1 : 0;
             if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.GONE);
             if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.VISIBLE);
@@ -311,27 +305,24 @@ public class PlayerActivity extends Activity {
     private void showLoadingMain() {
         if (spinnermain.getVisibility() != View.VISIBLE) {
             // The duration of the spin is 1s, reset every show to use the spin as a performance counter
-            // to know how much time takes to load
+            // to know how much time something takes to load
             spinnermain.startAnimation(rotation);
             spinnermain.setVisibility(View.VISIBLE);
         }
     }
 
-    //Basic animation for loading functions
+    //Basic animation for loading playback functions
     private void hideLoading(int position) {
         loadingcanshow[position] = false;
         spinner[position].setVisibility(View.GONE);
         spinner[position].clearAnimation();
     }
 
-    private void showLoading(boolean runnow, int position) {
-        if (runnow) showLoading(position);
-        else {
-            //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED
-            myHandler.postDelayed(() -> {
-                if (loadingcanshow[position]) showLoading(position);
-            }, 650);
-        }
+    private void showLoadingDelay(int position) {
+        //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED because of STATE_BUFFERING
+        myHandler.postDelayed(() -> {
+            if (loadingcanshow[position]) showLoading(position);
+        }, 500);
     }
 
     private void showLoading(int position) {
@@ -357,9 +348,11 @@ public class PlayerActivity extends Activity {
         if (isvisible) simpleExoPlayerView[0].setVisibility(View.GONE);
         density = this.getResources().getDisplayMetrics().density;
         IconSizeSmall = new FrameLayout.LayoutParams(Math.round(35 * density), Math.round(35 * density), Gravity.CENTER);
-        IconSizeBigg = new FrameLayout.LayoutParams(Math.round(50 * density), Math.round(50 * density), Gravity.CENTER);
+        IconSizeBig = new FrameLayout.LayoutParams(Math.round(50 * density), Math.round(50 * density), Gravity.CENTER);
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
         PlayerViewDefaultSizeChat = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
+
+        UpdadeSizePosSmall(1);
     }
 
     //Used in side-by-side mode chat plus video
@@ -395,7 +388,7 @@ public class PlayerActivity extends Activity {
 
         //Set proper video loading icon size
         spinner[main].setLayoutParams(IconSizeSmall);
-        spinner[main2].setLayoutParams(IconSizeBigg);
+        spinner[main2].setLayoutParams(IconSizeBig);
 
         //Set proper video volume, muted to small
         if (player[main2] != null) player[main2].setVolume(1f);
@@ -824,9 +817,13 @@ public class PlayerActivity extends Activity {
     private class PlayerEventListener implements Player.EventListener {
 
         private int position;
+        private int PlayerCheckCounter;
+        private boolean Check;
 
         private PlayerEventListener(int mposition) {
             position = mposition;
+            PlayerCheckCounter = 0;
+            Check = true;
         }
 
         @Override
@@ -842,31 +839,37 @@ public class PlayerActivity extends Activity {
                             ClearPlayer(position);
                             if (mainPlayer != position) SwitchPlayer(false);
                         } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
-
+                        Check = false;
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         hideLoadingMain();
                         loadingcanshow[position == 0 ? 1 : 0] = true;
-                        showLoading(false, position);
+                        showLoadingDelay(position);
 
                         //Use the player buffer as a player check state to prevent be buffering for ever
                         //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                        PlayerCheckHandler[position].postDelayed(() -> {
-                            //First try only restart the player second ask js to check if there is a lower resolution
-                            PlayerCheckCounter++;
+                        if (Check) {
+                            PlayerCheckHandler[position].postDelayed(() -> {
+                                //First try only restart the player second ask js to check if there is a lower resolution
+                                PlayerCheckCounter++;
 
-                            if (PlayerCheckCounter < 3 && (mainPlayer != position || mediaSourceAuto[position] != null)) {
-                                //this is small screen  or is in auto mode just restart it
-                                updateResumePosition(position);
-                                initializePlayer(position);
-                            } else if (PlayerCheckCounter > 3) mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");// treys > 3 Give up internet is probably down or something related
-                            else if (PlayerCheckCounter > 1) mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");//Use js to check if is possible to drop quality
-                            else {
-                                updateResumePosition(position);
-                                initializePlayer(position);
-                            }
+                                if (PlayerCheckCounter < 3 && (mainPlayer != position || mediaSourceAuto[position] != null)) {
+                                    //this is small screen  or is in auto mode just restart it
+                                    updateResumePosition(position);
+                                    initializePlayer(position);
+                                } else if (PlayerCheckCounter > 3){
+                                    // treys > 3 Give up internet is probably down or something related
+                                    Check = false;
+                                    mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+                                } else if (PlayerCheckCounter > 1) //Use js to check if is possible to drop quality
+                                    mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
+                                else {
+                                    updateResumePosition(position);
+                                    initializePlayer(position);
+                                }
 
-                        }, (BUFFER_SIZE[mwhocall] * 2));
+                            }, (BUFFER_SIZE[mwhocall] * 2) + 1000);
+                        }
 
                     } else if (playbackState == Player.STATE_READY) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
