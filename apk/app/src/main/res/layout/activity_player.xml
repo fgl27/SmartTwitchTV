@@ -19,8 +19,8 @@
             android:contentDescription="@string/app_name"
             android:id="@+id/spinner1"
             android:focusable="false"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@drawable/spin"
             android:layout_gravity="center"
             android:visibility="gone" />
@@ -39,8 +39,8 @@
             android:contentDescription="@string/app_name"
             android:id="@+id/spinner2"
             android:focusable="false"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:src="@drawable/spin"
             android:layout_gravity="center"
             android:visibility="gone" />
@@ -57,8 +57,8 @@
         android:contentDescription="@string/app_name"
         android:id="@+id/spinnermain"
         android:focusable="false"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/spin"
         android:layout_gravity="center" />
 </FrameLayout>
