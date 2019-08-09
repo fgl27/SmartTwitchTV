@@ -511,7 +511,6 @@ function Main_ThumbNull(y, x, thumbnail) {
 function Main_ReStartScreens() {
     Main_updateclock();
     Main_SwitchScreen();
-    document.body.addEventListener("keyup", Main_handleKeyUp, false);
 }
 
 function Main_SetTopOpacity() {
