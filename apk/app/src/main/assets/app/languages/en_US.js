@@ -261,6 +261,8 @@ function en_USLang() {
     STR_THUMB_RESOLUTION_SUMARRY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
     STR_PAYPAL_SUMMARY = "Donations use above Email.";
     STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load stream info";
-    STR_PLAYER_AUTO_BIG = "Auto Refresh Main window";
-    STR_PLAYER_AUTO_SMALLS = "Auto Refresh Small window";
+    STR_PLAYER_RESYNC = "Player Sync";
+    STR_PLAYER_AUTO_BIG = "Main window";
+    STR_PLAYER_AUTO_SMALLS = "Small window";
+    STR_PLAYER_AUTO_ALL = "Both windows";
 }

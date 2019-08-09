@@ -1101,8 +1101,11 @@ function Play_EndText(PlayVodClip) {
             Play_CleanHideExit();
             Play_hideChat();
 
-            if (PlayVodClip === 1) Play_shutdownStream();
-            else if (PlayVodClip === 2) PlayVod_shutdownStream();
+            if (PlayVodClip === 1) {
+                PlayExtra_PicturePicture = false;
+                PlayExtra_selectedChannel = '';
+                Play_shutdownStream();
+            } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
                 if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
@@ -1227,6 +1230,8 @@ function Play_OpenChannel(PlayVodClip) {
     Main_values.Main_Go = Main_ChannelContent;
 
     if (PlayVodClip === 1) {
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
         Main_values.Main_selectedChannel_id = Main_values.Play_selectedChannel_id;
         Main_values.Main_selectedChannel = Main_values.Play_selectedChannel;
         Main_values.Main_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname;
@@ -1240,6 +1245,8 @@ function Play_OpenChannel(PlayVodClip) {
 //TODO improve this
 function Play_OpenSearch(PlayVodClip) {
     if (PlayVodClip === 1) {
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
         Play_hideChat();
         Play_PreshutdownStream();
     } else if (PlayVodClip === 2) PlayVod_PreshutdownStream();
@@ -1276,7 +1283,11 @@ function Play_OpenGame(PlayVodClip) {
 
     Main_values.Main_gameSelected = Main_values.Play_gameSelected;
     Play_hideChat();
-    if (PlayVodClip === 1) Play_shutdownStream();
+    if (PlayVodClip === 1) {
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
+        Play_shutdownStream();
+    }
     else if (PlayVodClip === 2) PlayVod_shutdownStream();
     else if (PlayVodClip === 3) PlayClip_shutdownStream();
 }
@@ -1494,6 +1505,8 @@ function Play_handleKeyDown(e) {
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
                     Play_hideChat();
+                    PlayExtra_PicturePicture = false;
+                    PlayExtra_selectedChannel = '';
                     Play_shutdownStream();
                 } else {
                     Play_showExitDialog();
@@ -1839,9 +1852,9 @@ function Play_MakeControls() {
 
     Play_controls[Play_controlsQualityMini] = { //quality for picture in picture
         icons: "videocamera",
-        string: STR_QUALITY,
-        values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG],
-        defaultValue: 1,
+        string: STR_PLAYER_RESYNC,
+        values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
+        defaultValue: 2,
         opacity: 0,
         enterKey: function() {
 
