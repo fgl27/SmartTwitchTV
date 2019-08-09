@@ -63,6 +63,9 @@ public class PlayerActivity extends Activity {
 
     public DefaultTrackSelector.Parameters trackSelectorParameters;
     public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
+    public int mainPlayerBandwidth = Integer.MAX_VALUE;
+    public int smallPlayerBandwidth = 3000000;
+
     public long mResumePosition;
     public boolean seeking;
     public int mwhocall = 1;
@@ -128,7 +131,12 @@ public class PlayerActivity extends Activity {
             // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
             trackSelectorParametersSmall = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(3000000)
+                    .setMaxVideoBitrate(smallPlayerBandwidth)
+                    .build();
+
+            trackSelectorParameters = trackSelectorParameters
+                    .buildUpon()
+                    .setMaxVideoBitrate(mainPlayerBandwidth)
                     .build();
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
@@ -678,6 +686,26 @@ public class PlayerActivity extends Activity {
         public void mSetPlayerSize(int position) {
             playerDivider = position;
             myHandler.post(PlayerActivity.this::SetheightDefault);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetMainPlayerBandwidth(int band) {
+            mainPlayerBandwidth = band;
+            myHandler.post(() -> trackSelectorParameters = trackSelectorParameters
+                    .buildUpon()
+                    .setMaxVideoBitrate(mainPlayerBandwidth)
+                    .build());
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetSmallPlayerBandwidth(int band) {
+            smallPlayerBandwidth = band;
+            myHandler.post(() -> trackSelectorParametersSmall = trackSelectorParameters
+                    .buildUpon()
+                    .setMaxVideoBitrate(smallPlayerBandwidth)
+                    .build());
         }
 
         @SuppressWarnings("unused")//called by JS
