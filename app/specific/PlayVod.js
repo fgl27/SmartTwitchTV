@@ -552,7 +552,7 @@ function PlayVod_RefreshProgressBarr(show) {
     if (PlayVod_qualityPlaying.indexOf("Auto") !== -1 && show) {
         var value = Android.getVideoQuality();
 
-        if (value !== null) Play_getVideoQuality(value);
+        if (value !== null && value !== undefined) Play_getVideoQuality(value);
         else PlayVod_SetHtmlQuality('stream_quality', true);
     }
 }
