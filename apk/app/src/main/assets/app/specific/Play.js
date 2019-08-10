@@ -18,7 +18,7 @@ var Play_Buffer = 2000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 0;
 var Play_PicturePictureSize = 3;
-
+var Play_controlsAudioPos = 1;
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
 var Play_STATE_PLAYING = 2;
@@ -151,6 +151,7 @@ function Play_PreStart() {
     Play_ChatDelayPosition = Main_getItemInt('Play_ChatDelayPosition', 0);
     Play_PicturePicturePos = Main_getItemInt('Play_PicturePicturePos', 0);
     Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 3);
+    Play_controlsAudioPos = Main_getItemInt('Play_controlsAudioPos', 1);
 
     try {
         Android.mSetPlayerPosition(Play_PicturePicturePos);
@@ -232,6 +233,7 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
+
     Play_IconsResetFocus();
 
     PlayClip_HideShowNext(0, 0);
@@ -880,6 +882,7 @@ function Play_showPanel() {
     Play_qualityIndexReset();
     Play_qualityDisplay();
     PlayExtra_ResetSpeed();
+    PlayExtra_ResetAudio();
     if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality', true);
     Play_RefreshWatchingtime();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
@@ -1689,14 +1692,15 @@ var Play_controlsFallow = 4;
 var Play_controlsSpeed = 5;
 var Play_controlsQuality = 6;
 var Play_controlsQualityMini = 7;
-var Play_controlsChat = 8;
-var Play_controlsChatSide = 9;
-var Play_controlsChatForceDis = 10;
-var Play_controlsChatPos = 11;
-var Play_controlsChatSize = 12;
-var Play_controlsChatBright = 13;
-var Play_controlsChatFont = 14;
-var Play_controlsChatDelay = 15;
+var Play_controlsAudio = 8;
+var Play_controlsChat = 9;
+var Play_controlsChatSide = 10;
+var Play_controlsChatForceDis = 11;
+var Play_controlsChatPos = 12;
+var Play_controlsChatSize = 13;
+var Play_controlsChatBright = 14;
+var Play_controlsChatFont = 15;
+var Play_controlsChatDelay = 16;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -1900,6 +1904,44 @@ function Play_MakeControls() {
             Play_BottomArrows(this.position);
         },
 
+    };
+
+    Play_controls[Play_controlsAudio] = { //speed
+        icons: "sound",
+        string: STR_AUDIO_SOURCE,
+        values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
+        defaultValue: Play_controlsAudioPos,
+        opacity: 0,
+        enterKey: function() {
+
+            try {
+                Android.mSwitchPlayerAudio(this.defaultValue);
+            } catch (e) {}
+
+            Play_hidePanel();
+            Play_controlsAudioPos = this.defaultValue;
+
+            Main_setItem('Play_controlsAudioPos', Play_controlsAudioPos);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        updown: function(adder) {
+
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
     };
 
     Play_controls[Play_controlsChat] = { //chat enable disable
@@ -2247,10 +2289,4 @@ function Play_SetControls() {
 
 function Play_SetControlsArrows(key) {
     return '<div id="controls_arrows_' + key + '" style="font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' + key + '" class="up"></div><div id="control_arrow_down' + key + '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key + '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
-}
-
-function PlayExtra_ResetSpeed() {
-    Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
-    Play_controls[Play_controlsSpeed].bottomArrows();
-    Play_controls[Play_controlsSpeed].setLable();
 }

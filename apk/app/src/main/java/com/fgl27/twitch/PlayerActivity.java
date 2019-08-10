@@ -101,6 +101,7 @@ public class PlayerActivity extends Activity {
 
     public int mainPlayer = 0;
     public int playerDivider = 3;
+    public int AudioSource = 1;
 
     public Handler myHandler;
     public Handler[] PlayerCheckHandler = new Handler[2];
@@ -204,7 +205,8 @@ public class PlayerActivity extends Activity {
             int tempPos = position == 0 ? 1 : 0;
             if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.GONE);
             if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.VISIBLE);
-        } else player[position].setVolume(0f);//small is default no volume
+        }
+        SwitchPlayerAudio(AudioSource);
     }
 
     // For some reason the player can lag a device when stated without releasing it first
@@ -218,6 +220,8 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerCheckCounter[position] = 0;
+
+        if (mainPlayer != position) SwitchPlayerAudio(1);
 
         //Reset player background to a empty black screen and reset all states
         player[position] = ExoPlayerFactory.newSimpleInstance(this);
@@ -260,6 +264,7 @@ public class PlayerActivity extends Activity {
 
         if (mainPlayer == 1) SwitchPlayer(false);
         PicturePicture = false;
+        AudioSource = 1;
 
         PlayerCheckHandler[0].removeCallbacksAndMessages(null);
         PlayerCheckHandler[1].removeCallbacksAndMessages(null);
@@ -376,15 +381,14 @@ public class PlayerActivity extends Activity {
         //Reset the view so it show on top
         ResetViews(mainPlayer, WillBeMain);
 
-        //Set proper video volume, muted to small
-        if (player[WillBeMain] != null) player[WillBeMain].setVolume(1f);
-        if (player[mainPlayer] != null) player[mainPlayer].setVolume(0f);
-
         //change trackSelector to limit video bandwidth
         if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
         if (trackSelector[mainPlayer] != null) trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
 
         mainPlayer = WillBeMain;
+
+        //Set proper video volume, muted to small
+        SwitchPlayerAudio(AudioSource);
 
         //Set proper video loading icon size
         //spinner[mainPlayer].setLayoutParams(IconSizeSmall);
@@ -418,6 +422,20 @@ public class PlayerActivity extends Activity {
         simpleExoPlayerView[front].invalidate();
         simpleExoPlayerView[back].invalidate();
         mwebview.invalidate();
+    }
+
+    public void SwitchPlayerAudio(int pos) {
+        AudioSource = pos;
+        if (pos == 2) {//both
+            if (player[0] != null) player[0].setVolume(1f);
+            if (player[1] != null) player[1].setVolume(1f);
+        } else if (pos == 1) {//Main
+            if (player[mainPlayer] != null) player[mainPlayer].setVolume(1f);
+            if (player[mainPlayer ^ 1] != null) player[mainPlayer ^ 1].setVolume(0f);
+        } else {//Small
+            if (player[mainPlayer] != null) player[mainPlayer].setVolume(0f);
+            if (player[mainPlayer ^ 1] != null) player[mainPlayer ^ 1].setVolume(1f);
+        }
     }
 
     public void UpdadeSizePosSmall(int pos) {
@@ -457,7 +475,6 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
         ClearPlayer(0);
         ClearPlayer(1);
     }
@@ -685,6 +702,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void mSwitchPlayerAudio(int position) {
+            myHandler.post(() -> SwitchPlayerAudio(position));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void SetMainPlayerBandwidth(int band) {
             mainPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
             myHandler.post(() -> trackSelectorParameters = trackSelectorParameters
@@ -809,6 +832,17 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    public void PlayerEventListenerClear(int position) {
+        hideLoadingMain();
+        hideLoading(position);
+        if (PicturePicture) {
+            PicturePicture = false;
+            ClearPlayer(position);
+            AudioSource = 1;
+            if (mainPlayer == position) SwitchPlayer(false);
+        } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+    }
+
     // Basic EventListener for exoplayer
     private class PlayerEventListener implements Player.EventListener {
 
@@ -828,15 +862,7 @@ public class PlayerActivity extends Activity {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         player[position].setPlayWhenReady(false);
 
-                        hideLoadingMain();
-                        hideLoading(position);
-
-                        if (PicturePicture) {
-                            PicturePicture = false;
-                            ClearPlayer(position);
-                            if (mainPlayer == position) SwitchPlayer(false);
-                        } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
-
+                        PlayerEventListenerClear(position);
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         hideLoadingMain();
                         loadingcanshow[position] = true;
@@ -851,26 +877,17 @@ public class PlayerActivity extends Activity {
 
                             //First try only restart the player second ask js to check if there is a lower resolution
                             PlayerCheckCounter[position]++;
-                            Toast.makeText(PlayerActivity.this, "PlayerCheckCounter " + PlayerCheckCounter[position], Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(PlayerActivity.this, "PlayerCheckCounter " + PlayerCheckCounter[position], Toast.LENGTH_SHORT).show();
                             //Pause to things run smother and prevent odd behavior during the checks
                             player[position].setPlayWhenReady(false);
-                            if (PlayerCheckCounter[position] < 4 && (mainPlayer != position || mediaSourceAuto[position] != null)) {
+                            if (PlayerCheckCounter[position] < 4 &&
+                                    (mainPlayer != position || mediaSourceAuto[position] != null)) {
                                 //this is small screen  or is in auto mode just restart it
                                 updateResumePosition(position);
                                 initializePlayer(position);
                             } else if (PlayerCheckCounter[position] > 3){
-
                                 // treys == 3 Give up internet is probably down or something related
-
-                                hideLoadingMain();
-                                hideLoading(position);
-
-                                if (PicturePicture) {
-                                    PicturePicture = false;
-                                    ClearPlayer(position);
-                                    if (mainPlayer == position) SwitchPlayer(false);
-                                } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
-
+                                PlayerEventListenerClear(position);
                             } else if (PlayerCheckCounter[position] > 1) //Use js to check if is possible to drop quality
                                 mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
                             else {

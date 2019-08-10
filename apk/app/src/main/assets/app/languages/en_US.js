@@ -272,4 +272,5 @@ function en_USLang() {
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
     STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short loading call when changing video source, to prevent this set both values the same at the cost of possible app slowdowns if the bitrate values are too high.";
     STR_PP = 'Hold enter to start "Picture in Picture Mode" then use D-Pad to move, resize or change videos';
+    STR_AUDIO_SOURCE = "Audio source";
 }
