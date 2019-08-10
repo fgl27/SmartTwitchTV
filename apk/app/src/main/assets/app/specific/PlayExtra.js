@@ -34,6 +34,13 @@ function PlayExtra_ResetSpeed() {
     Play_controls[Play_controlsSpeed].setLable();
 }
 
+function PlayExtra_ResetAudio() {
+    //After setting we only reset this if the app is close/re opened
+    Play_controls[Play_controlsAudio].defaultValue = Play_controlsAudioPos;
+    Play_controls[Play_controlsAudio].bottomArrows();
+    Play_controls[Play_controlsAudio].setLable();
+}
+
 function PlayExtra_KeyEnter() {
     console.log('PlayExtra_KeyEnter');
     PlayExtra_clear = true;
@@ -49,6 +56,7 @@ function PlayExtra_KeyEnter() {
                     Android.mClearSmallPlayer();
                 } catch (e) {}
             }
+
             PlayExtra_PicturePicture = true;
             UserLiveFeed_Hide();
 
@@ -81,6 +89,10 @@ function PlayExtra_KeyEnter() {
 }
 
 function PlayExtra_Resume() {
+    // restart audio source position when first re-start PlayExtra_PicturePicture
+    try {
+        Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+    } catch (e) {}
     PlayExtra_state = Play_STATE_LOADING_TOKEN;
     PlayExtra_loadingDataTry = 0;
     PlayExtra_loadDataRequest();
@@ -159,6 +171,7 @@ function PlayExtra_loadDataSuccess(responseText) {
 function PlayExtra_SetPanel() {
     document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsAudio).style.display = '';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
     Play_IconsResetFocus();
 }
@@ -166,6 +179,7 @@ function PlayExtra_SetPanel() {
 function PlayExtra_UnSetPanel() {
     document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
     document.getElementById('controls_' + Play_controlsQuality).style.display = '';
+    document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
     Play_IconsResetFocus();
 }
