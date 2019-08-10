@@ -8,44 +8,53 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/player_view"
+    <FrameLayout
+        android:id="@+id/videoholder"
         android:focusableInTouchMode="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:use_controller="false">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:contentDescription="@string/app_name"
-            android:id="@+id/spinner1"
-            android:focusable="false"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/spin"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view"
+            android:focusableInTouchMode="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:use_controller="false"
+            app:surface_type="texture_view">
 
-    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+            <ImageView
+                android:contentDescription="@string/app_name"
+                android:id="@+id/spinner1"
+                android:focusable="false"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/spin"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/player_view2"
-        android:focusableInTouchMode="false"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:use_controller="false"
-        android:layout_gravity="bottom|end">
+        </com.google.android.exoplayer2.ui.PlayerView>
 
-        <ImageView
-            android:contentDescription="@string/app_name"
-            android:id="@+id/spinner2"
-            android:focusable="false"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:src="@drawable/spin"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view2"
+            android:focusableInTouchMode="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:use_controller="false"
+            app:surface_type="texture_view"
+            android:layout_gravity="bottom|end">
 
-    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+            <ImageView
+                android:contentDescription="@string/app_name"
+                android:id="@+id/spinner2"
+                android:focusable="false"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/spin"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </com.google.android.exoplayer2.ui.PlayerView>
+    </FrameLayout>
 
     <WebView
         android:id="@+id/WebView"

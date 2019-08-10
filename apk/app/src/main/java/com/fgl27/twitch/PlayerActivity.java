@@ -55,7 +55,7 @@ public class PlayerActivity extends Activity {
 
     public int DefaultPositions = 0;
 
-    public PlayerView[] simpleExoPlayerView = new PlayerView[2];
+    public PlayerView[] PlayerView = new PlayerView[2];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[2];
     public DataSource.Factory dataSourceFactory;
 
@@ -79,13 +79,11 @@ public class PlayerActivity extends Activity {
     public boolean[] loadingcanshow = new boolean[2];
     public ImageView[] spinner = new ImageView[2];
     public ImageView spinnermain;
-    //Not used as when we change video size the animation can became odd looking
-    //public float density;
-    //public FrameLayout.LayoutParams IconSizeSmall;
-    //public FrameLayout.LayoutParams IconSizeBig;
+
     public FrameLayout.LayoutParams PlayerViewDefaultSize;
     public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
     public FrameLayout.LayoutParams PlayerViewSmallSize;
+    public FrameLayout VideoHolder;
 
     public Animation rotation;
 
@@ -143,6 +141,8 @@ public class PlayerActivity extends Activity {
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"), dataSourceFactory, 3);
 
+            VideoHolder = findViewById(R.id.videoholder);
+
             spinnermain = findViewById(R.id.spinnermain);
             rotation = AnimationUtils.loadAnimation(this, R.anim.rotation);
             spinnermain.startAnimation(rotation);
@@ -150,10 +150,10 @@ public class PlayerActivity extends Activity {
             spinner[0] = findViewById(R.id.spinner1);
             spinner[1] = findViewById(R.id.spinner2);
 
-            simpleExoPlayerView[0] = findViewById(R.id.player_view);
-            simpleExoPlayerView[1] = findViewById(R.id.player_view2);
+            PlayerView[0] = findViewById(R.id.player_view);
+            PlayerView[1] = findViewById(R.id.player_view2);
 
-            simpleExoPlayerView[1].setVisibility(View.GONE);
+            PlayerView[1].setVisibility(View.GONE);
 
             initializeWebview();
         }
@@ -172,8 +172,8 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
-        if (simpleExoPlayerView[position].getVisibility() != View.VISIBLE)
-            simpleExoPlayerView[position].setVisibility(View.VISIBLE);
+        if (PlayerView[position].getVisibility() != View.VISIBLE)
+            PlayerView[position].setVisibility(View.VISIBLE);
 
         boolean isSmall = (mainPlayer != position);
 
@@ -190,7 +190,7 @@ public class PlayerActivity extends Activity {
 
         player[position].setPlayWhenReady(true);
 
-        simpleExoPlayerView[position].setPlayer(player[position]);
+        PlayerView[position].setPlayer(player[position]);
 
         seeking = (mResumePosition > 0) && (mwhocall > 1);
         if (seeking) player[position].seekTo(mResumePosition);
@@ -200,12 +200,6 @@ public class PlayerActivity extends Activity {
                 !seeking,
                 true);
 
-        if (!isSmall) {
-            //Reset small player view so it shows after big one has started
-            int tempPos = position == 0 ? 1 : 0;
-            if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.GONE);
-            if (player[tempPos] != null) simpleExoPlayerView[tempPos].setVisibility(View.VISIBLE);
-        }
         SwitchPlayerAudio(AudioSource);
     }
 
@@ -225,13 +219,13 @@ public class PlayerActivity extends Activity {
 
         //Reset player background to a empty black screen and reset all states
         player[position] = ExoPlayerFactory.newSimpleInstance(this);
-        simpleExoPlayerView[position].setPlayer(player[position]);
+        PlayerView[position].setPlayer(player[position]);
 
         player[position].setPlayWhenReady(false);
         player[position].prepare(mediaurireset, true, true);
 
         releasePlayer(position);
-        simpleExoPlayerView[position].setVisibility(View.GONE);
+        PlayerView[position].setVisibility(View.GONE);
         hideLoading(position);
     }
 
@@ -341,30 +335,28 @@ public class PlayerActivity extends Activity {
 
     private void SetheightDefault() {
         //Make it visible for calculation
-        boolean isvisible = simpleExoPlayerView[0].getVisibility() != View.VISIBLE;
-        if (isvisible) simpleExoPlayerView[0].setVisibility(View.VISIBLE);
+        boolean isvisible = PlayerView[0].getVisibility() != View.VISIBLE;
+        if (isvisible) PlayerView[0].setVisibility(View.VISIBLE);
 
-        heightDefault = simpleExoPlayerView[0].getHeight();
-        mwidthDefault = simpleExoPlayerView[0].getWidth();
+        heightDefault = PlayerView[0].getHeight();
+        mwidthDefault = PlayerView[0].getWidth();
 
         heightChat = (int) (heightDefault * 0.75);
         mwidthChat = (int) (mwidthDefault * 0.75);
 
-        if (isvisible) simpleExoPlayerView[0].setVisibility(View.GONE);
-        //density = this.getResources().getDisplayMetrics().density;
-        //IconSizeSmall = new FrameLayout.LayoutParams(Math.round(35 * density), Math.round(35 * density), Gravity.CENTER);
-        //IconSizeBig = new FrameLayout.LayoutParams(Math.round(50 * density), Math.round(50 * density), Gravity.CENTER);
+        if (isvisible) PlayerView[0].setVisibility(View.GONE);
+
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
         PlayerViewDefaultSizeChat = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
 
         PlayerViewSmallSize = new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]);
-        simpleExoPlayerView[1].setLayoutParams(PlayerViewSmallSize);
+        PlayerView[1].setLayoutParams(PlayerViewSmallSize);
     }
 
     //Used in side-by-side mode chat plus video
     private void updateVidesizeChat(boolean sizechat) {
-        if (sizechat)simpleExoPlayerView[0].setLayoutParams(PlayerViewDefaultSizeChat);
-        else simpleExoPlayerView[0].setLayoutParams(PlayerViewDefaultSize);
+        if (sizechat)PlayerView[0].setLayoutParams(PlayerViewDefaultSizeChat);
+        else PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
@@ -372,14 +364,10 @@ public class PlayerActivity extends Activity {
         int WillBeMain = mainPlayer ^ 1;//shift 0 to 1 and vice versa
 
         //Set new video sizes
-        simpleExoPlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
-        simpleExoPlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize);
+        PlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
+        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize);
 
-        simpleExoPlayerView[mainPlayer].setVisibility(View.GONE);
-        if (show) simpleExoPlayerView[mainPlayer].setVisibility(View.VISIBLE);
-
-        //Reset the view so it show on top
-        ResetViews(mainPlayer, WillBeMain);
+        VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
 
         //change trackSelector to limit video bandwidth
         if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
@@ -389,39 +377,6 @@ public class PlayerActivity extends Activity {
 
         //Set proper video volume, muted to small
         SwitchPlayerAudio(AudioSource);
-
-        //Set proper video loading icon size
-        //spinner[mainPlayer].setLayoutParams(IconSizeSmall);
-        //spinner[WillBeMain].setLayoutParams(IconSizeBig);
-    }
-
-    // Is necessary to bring the small player to the front of the big using bringToFront
-    // and reset it view by Visibility(GONE then VISIBLE) to have the player properly display the same all the time
-    public void ResetViews(int front, int back) {
-        //TODO make this a for
-        simpleExoPlayerView[back].bringToFront();
-        simpleExoPlayerView[back].invalidate();
-        simpleExoPlayerView[front].invalidate();
-        mwebview.invalidate();
-        spinnermain.invalidate();
-
-        simpleExoPlayerView[front].bringToFront();
-        simpleExoPlayerView[front].invalidate();
-        simpleExoPlayerView[back].invalidate();
-        mwebview.invalidate();
-        spinnermain.invalidate();
-
-        mwebview.bringToFront();
-        mwebview.invalidate();
-        simpleExoPlayerView[front].invalidate();
-        simpleExoPlayerView[back].invalidate();
-        spinnermain.invalidate();
-
-        spinnermain.bringToFront();
-        spinnermain.invalidate();
-        simpleExoPlayerView[front].invalidate();
-        simpleExoPlayerView[back].invalidate();
-        mwebview.invalidate();
     }
 
     public void SwitchPlayerAudio(int pos) {
@@ -440,7 +395,7 @@ public class PlayerActivity extends Activity {
 
     public void UpdadeSizePosSmall(int pos) {
         PlayerViewSmallSize = new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]);
-        simpleExoPlayerView[pos].setLayoutParams(PlayerViewSmallSize);
+        PlayerView[pos].setLayoutParams(PlayerViewSmallSize);
     }
 
     @Override
