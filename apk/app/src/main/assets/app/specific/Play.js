@@ -231,7 +231,7 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     //Chat delay
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
-    PlayExtra_UnSetPanel();
+    if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
 
     Play_IconsResetFocus();
@@ -1454,7 +1454,6 @@ function Play_KeyReturn(is_vod) {
             Play_exitMain();
         } else if (Play_ExitDialogVisible()) {
             if (PlayExtra_PicturePicture) {
-
                 try {
                     if (Main_IsNotBrowser) Android.mClearSmallPlayer();
                 } catch (e) {}
