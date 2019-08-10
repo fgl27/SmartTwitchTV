@@ -20,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:use_controller="false"
-            app:surface_type="texture_view"
             app:show_buffering="always"/>
 
         <com.google.android.exoplayer2.ui.PlayerView
@@ -30,7 +29,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom|end"
             app:use_controller="false"
-            app:surface_type="texture_view"
             app:show_buffering="always"/>
     </FrameLayout>
 

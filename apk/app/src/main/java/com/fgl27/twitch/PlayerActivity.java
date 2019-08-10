@@ -195,6 +195,13 @@ public class PlayerActivity extends Activity {
                 true);
 
         SwitchPlayerAudio(AudioSource);
+
+        if (!isSmall) {
+            //Reset small player view so it shows after big one has started
+            int tempPos = position == 0 ? 1 : 0;
+            if (player[tempPos] != null) PlayerView[tempPos].setVisibility(View.GONE);
+            if (player[tempPos] != null) PlayerView[tempPos].setVisibility(View.VISIBLE);
+        }
     }
 
     // For some reason the player can lag a device when stated without releasing it first
@@ -250,7 +257,7 @@ public class PlayerActivity extends Activity {
     //Stop the player called from js, clear it all
     private void PreResetPlayer(int whocall, int position) {
 
-        if (mainPlayer == 1) SwitchPlayer();
+        if (mainPlayer == 1) SwitchPlayer(false);
         PicturePicture = false;
         AudioSource = 1;
 
@@ -329,7 +336,7 @@ public class PlayerActivity extends Activity {
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
-    private void SwitchPlayer() {
+    private void SwitchPlayer(boolean show) {
         int WillBeMain = mainPlayer ^ 1;//shift 0 to 1 and vice versa
 
         //Set new video sizes
@@ -337,6 +344,9 @@ public class PlayerActivity extends Activity {
         PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize);
 
         VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
+
+        PlayerView[mainPlayer].setVisibility(View.GONE);
+        if (show) PlayerView[mainPlayer].setVisibility(View.VISIBLE);
 
         //change trackSelector to limit video bandwidth
         if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
@@ -594,7 +604,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayer() {
-            myHandler.post(PlayerActivity.this::SwitchPlayer);
+            myHandler.post(() -> SwitchPlayer(true));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -763,7 +773,7 @@ public class PlayerActivity extends Activity {
             PicturePicture = false;
             ClearPlayer(position);
             AudioSource = 1;
-            if (mainPlayer == position) SwitchPlayer();
+            if (mainPlayer == position) SwitchPlayer(false);
         } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
     }
 
