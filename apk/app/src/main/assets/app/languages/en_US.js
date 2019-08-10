@@ -98,8 +98,7 @@ function en_USLang() {
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
     STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it closes";
     STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right or" + STR_KEY_UP_DOWN;
-    STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search";
-    STR_CONTROLS_MAIN_11 = "After writing the search text press the Enter key on the virtual keyboard then choose a search option";
+    STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
     STR_ABOUT_INFO_1 = "This is a SmartTV Twitch client developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
     STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
@@ -124,13 +123,13 @@ function en_USLang() {
     STR_CONTROLS_PLAY_2 = "Close the video: press back key twice";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol";
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
-    STR_CONTROLS_PLAY_5 = "Change video quality: Open information panel, , navigate using use Directional pad (left/right), then use Directional pad (up/down) to choose the new quality after press Enter key to confirm the change";
+    STR_CONTROLS_PLAY_5 = "Change video quality: use the player bottom controls Quality";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
     STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right" + STR_GUIDE_EXTRA;
     STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or " + STR_KEY_UP_DOWN;
     STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down";
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: Change in side panel settings";
-    STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): Press Pause\\Play button twice or change the video quality to the same will reset and re-sync the chat";
+    STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
     STR_F_DISABLE_CHAT = "Chat force disable";
@@ -271,6 +270,17 @@ function en_USLang() {
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
     STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short loading call when changing video source, to prevent this set both values the same at the cost of possible app slowdowns if the bitrate values are too high.";
-    STR_PP = 'Hold enter to start "Picture in Picture Mode" then use D-Pad to move, resize or change videos';
+    STR_PICTURE_LIVE_FEED = 'Hold enter to start "Picture in Picture Mode" then use D-Pad to move, resize or change videos';
     STR_AUDIO_SOURCE = "Audio source";
+    STR_PICTURE_PICTURE = "Picture in Picture (Live streams only):";
+    STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter to start";
+    STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter to start above a stream in live feed";
+    STR_PICTURE_CONTROLS3 = "Change big window content: simple click above a stream in live feed";
+    STR_PICTURE_CONTROLS4 = "Change content between windows: D-pad down big becomes small and vice versa";
+    STR_PICTURE_CONTROLS5 = "Change small window position: D-pad left";
+    STR_PICTURE_CONTROLS6 = "Change small window size: D-pad right";
+    STR_PICTURE_CONTROLS7 = "Change audio source: use the player bottom controls Audio source";
+    STR_PICTURE_CONTROLS8 = "Sync playback: use the player bottom controls Player Sync";
+    STR_PICTURE_CONTROLS9 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
+    STR_PICTURE_CONTROLS10 = "Close small window: back key twice";
 }
