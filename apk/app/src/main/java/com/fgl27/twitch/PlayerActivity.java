@@ -156,20 +156,21 @@ public class PlayerActivity extends Activity {
 
     // The main player initialization function
     private void initializePlayer(int position) {
-        hideLoadingMain();
-        //Toast.makeText(this, "position " + position + " mainPlayer " + mainPlayer, Toast.LENGTH_SHORT).show();
         // always release before starting for performance check ClearPlayer
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
             releasePlayer(position);
         }
+        boolean isSmall = (mainPlayer != position);
+
+        //Show main buffer if this call is in the main player as this is needed fro when we are fast/back forwarding
+        //On small player it will show its own loading
+        if (!isSmall) showLoading(2);
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         if (PlayerView[position].getVisibility() != View.VISIBLE)
             PlayerView[position].setVisibility(View.VISIBLE);
-
-        boolean isSmall = (mainPlayer != position);
 
         trackSelector[position] = new DefaultTrackSelector();
         trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
@@ -185,7 +186,6 @@ public class PlayerActivity extends Activity {
         player[position].setPlayWhenReady(true);
 
         PlayerView[position].setPlayer(player[position]);
-        showLoading(position);
 
         seeking = (mResumePosition > 0) && (mwhocall > 1);
         if (seeking) player[position].seekTo(mResumePosition);
@@ -199,10 +199,11 @@ public class PlayerActivity extends Activity {
 
         if (!isSmall) {
             //Reset small player view so it shows after big one has started
-            int tempPos = position == 0 ? 1 : 0;
-
-            PlayerView[tempPos].getVideoSurfaceView().setVisibility(View.INVISIBLE);
-            PlayerView[tempPos].getVideoSurfaceView().setVisibility(View.VISIBLE);
+            int tempPos = position ^ 1;
+            if (player[tempPos] != null) {
+                PlayerView[tempPos].getVideoSurfaceView().setVisibility(View.INVISIBLE);
+                PlayerView[tempPos].getVideoSurfaceView().setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -230,7 +231,6 @@ public class PlayerActivity extends Activity {
 
         releasePlayer(position);
         PlayerView[position].setVisibility(View.GONE);
-        hideLoading(position);
     }
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
@@ -284,7 +284,6 @@ public class PlayerActivity extends Activity {
             player[position] = null;
             trackSelector[position] = null;
         }
-        hideLoading(position);
     }
 
     //Basic player position setting, for resume playback 
@@ -297,11 +296,6 @@ public class PlayerActivity extends Activity {
 
         mResumePosition = player[position].isCurrentWindowSeekable() ?
                 Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
-    }
-
-    //Basic animation for loading functions
-    private void hideLoadingMain() {
-        loadingView[2].setVisibility(View.GONE);
     }
 
     private void showLoading(int position) {
@@ -513,7 +507,7 @@ public class PlayerActivity extends Activity {
         public void mshowLoading(boolean show) {
             myHandler.post(() -> {
                 if (show) showLoading(2);
-                else hideLoadingMain();
+                else hideLoading(2);
             });
         }
 
@@ -770,7 +764,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerEventListenerClear(int position) {
-        hideLoadingMain();
+        hideLoading(2);
         hideLoading(position);
         if (PicturePicture) {
             PicturePicture = false;
@@ -801,7 +795,7 @@ public class PlayerActivity extends Activity {
 
                         PlayerEventListenerClear(position);
                     } else if (playbackState == Player.STATE_BUFFERING) {
-                        hideLoadingMain();
+                        hideLoading(2);
 
                         //Use the player buffer as a player check state to prevent be buffering for ever
                         //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
@@ -836,20 +830,18 @@ public class PlayerActivity extends Activity {
                         PlayerCheckCounter[position] = 0;
 
                         //If other not playing just play it so they stay close to sync
-                        int otherplayer = position == 0 ? 1 : 0;
+                        int otherplayer = position ^ 1;
                         if (player[otherplayer] != null) {
                             if (!player[otherplayer].getPlayWhenReady()) player[otherplayer].setPlayWhenReady(true);
                         }
 
-                        hideLoading(position);
                         if (player[position] != null && mwhocall > 1) {
                             myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
                                     mwhocall + "," + player[position].getDuration() + ")"));
                         }
                     }
                 } else  {
-                    hideLoadingMain();
-                    hideLoading(position);
+                    hideLoading(2);
                 }
             });
         }
