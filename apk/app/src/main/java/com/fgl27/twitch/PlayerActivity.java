@@ -185,6 +185,7 @@ public class PlayerActivity extends Activity {
         player[position].setPlayWhenReady(true);
 
         PlayerView[position].setPlayer(player[position]);
+        showLoading(position);
 
         seeking = (mResumePosition > 0) && (mwhocall > 1);
         if (seeking) player[position].seekTo(mResumePosition);
@@ -199,10 +200,12 @@ public class PlayerActivity extends Activity {
         if (!isSmall) {
             //Reset small player view so it shows after big one has started
             int tempPos = position == 0 ? 1 : 0;
-            if (player[tempPos] != null) PlayerView[tempPos].setVisibility(View.GONE);
-            if (player[tempPos] != null) PlayerView[tempPos].setVisibility(View.VISIBLE);
+
+            PlayerView[tempPos].getVideoSurfaceView().setVisibility(View.INVISIBLE);
+            PlayerView[tempPos].getVideoSurfaceView().setVisibility(View.VISIBLE);
         }
     }
+
 
     // For some reason the player can lag a device when stated without releasing it first
     // It seems that the app keeps working on the player somehow in the background on the already released player
@@ -257,7 +260,7 @@ public class PlayerActivity extends Activity {
     //Stop the player called from js, clear it all
     private void PreResetPlayer(int whocall, int position) {
 
-        if (mainPlayer == 1) SwitchPlayer(false);
+        if (mainPlayer == 1) SwitchPlayer();
         PicturePicture = false;
         AudioSource = 1;
 
@@ -301,8 +304,8 @@ public class PlayerActivity extends Activity {
         loadingView[2].setVisibility(View.GONE);
     }
 
-    private void showLoadingMain() {
-        if (loadingView[2].getVisibility() != View.VISIBLE) loadingView[2].setVisibility(View.VISIBLE);
+    private void showLoading(int position) {
+        if (loadingView[position].getVisibility() != View.VISIBLE) loadingView[position].setVisibility(View.VISIBLE);
     }
 
     private void hideLoading(int position) {
@@ -311,8 +314,8 @@ public class PlayerActivity extends Activity {
 
     private void SetheightDefault() {
         //Make it visible for calculation
-        boolean isvisible = PlayerView[0].getVisibility() != View.VISIBLE;
-        if (isvisible) PlayerView[0].setVisibility(View.VISIBLE);
+        boolean isNvisible = PlayerView[0].getVisibility() != View.VISIBLE;
+        if (isNvisible) PlayerView[0].setVisibility(View.VISIBLE);
 
         heightDefault = PlayerView[0].getHeight();
         mwidthDefault = PlayerView[0].getWidth();
@@ -320,7 +323,7 @@ public class PlayerActivity extends Activity {
         heightChat = (int) (heightDefault * 0.75);
         mwidthChat = (int) (mwidthDefault * 0.75);
 
-        if (isvisible) PlayerView[0].setVisibility(View.GONE);
+        if (isNvisible) PlayerView[0].setVisibility(View.GONE);
 
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
         PlayerViewDefaultSizeChat = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
@@ -336,7 +339,7 @@ public class PlayerActivity extends Activity {
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
-    private void SwitchPlayer(boolean show) {
+    private void SwitchPlayer() {
         int WillBeMain = mainPlayer ^ 1;//shift 0 to 1 and vice versa
 
         //Set new video sizes
@@ -345,8 +348,8 @@ public class PlayerActivity extends Activity {
 
         VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
 
-        PlayerView[mainPlayer].setVisibility(View.GONE);
-        if (show) PlayerView[mainPlayer].setVisibility(View.VISIBLE);
+        PlayerView[mainPlayer].getVideoSurfaceView().setVisibility(View.INVISIBLE);
+        PlayerView[mainPlayer].getVideoSurfaceView().setVisibility(View.VISIBLE);
 
         //change trackSelector to limit video bandwidth
         if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
@@ -509,7 +512,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mshowLoading(boolean show) {
             myHandler.post(() -> {
-                if (show) showLoadingMain();
+                if (show) showLoading(2);
                 else hideLoadingMain();
             });
         }
@@ -604,7 +607,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayer() {
-            myHandler.post(() -> SwitchPlayer(true));
+            myHandler.post(PlayerActivity.this::SwitchPlayer);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -773,7 +776,7 @@ public class PlayerActivity extends Activity {
             PicturePicture = false;
             ClearPlayer(position);
             AudioSource = 1;
-            if (mainPlayer == position) SwitchPlayer(false);
+            if (mainPlayer == position) SwitchPlayer();
         } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
     }
 
