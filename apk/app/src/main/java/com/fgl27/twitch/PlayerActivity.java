@@ -4,6 +4,7 @@ package com.fgl27.twitch;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,15 +14,13 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
@@ -76,16 +75,10 @@ public class PlayerActivity extends Activity {
     public MediaSource[] mediaSourceAuto =  new MediaSource[2];
     public MediaSource[] mediaSourcesAuto = new MediaSource[2];
 
-    public boolean[] loadingcanshow = new boolean[2];
-    public ImageView[] spinner = new ImageView[2];
-    public ImageView spinnermain;
-
     public FrameLayout.LayoutParams PlayerViewDefaultSize;
     public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
     public FrameLayout.LayoutParams PlayerViewSmallSize;
     public FrameLayout VideoHolder;
-
-    public Animation rotation;
 
     public WebView mwebview;
 
@@ -104,6 +97,8 @@ public class PlayerActivity extends Activity {
     public Handler myHandler;
     public Handler[] PlayerCheckHandler = new Handler[2];
     public int[] PlayerCheckCounter = new int[2];
+
+    private ProgressBar[] loadingView = new ProgressBar[3];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,17 +138,17 @@ public class PlayerActivity extends Activity {
 
             VideoHolder = findViewById(R.id.videoholder);
 
-            spinnermain = findViewById(R.id.spinnermain);
-            rotation = AnimationUtils.loadAnimation(this, R.anim.rotation);
-            spinnermain.startAnimation(rotation);
-
-            spinner[0] = findViewById(R.id.spinner1);
-            spinner[1] = findViewById(R.id.spinner2);
+            loadingView[2] = findViewById(R.id.loading);
 
             PlayerView[0] = findViewById(R.id.player_view);
             PlayerView[1] = findViewById(R.id.player_view2);
-
             PlayerView[1].setVisibility(View.GONE);
+
+            loadingView[0] = PlayerView[0].findViewById(R.id.exo_buffering);
+            loadingView[0].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
+
+            loadingView[1] = PlayerView[1].findViewById(R.id.exo_buffering);
+            loadingView[1].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
 
             initializeWebview();
         }
@@ -161,14 +156,13 @@ public class PlayerActivity extends Activity {
 
     // The main player initialization function
     private void initializePlayer(int position) {
+        hideLoadingMain();
         //Toast.makeText(this, "position " + position + " mainPlayer " + mainPlayer, Toast.LENGTH_SHORT).show();
         // always release before starting for performance check ClearPlayer
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
             releasePlayer(position);
         }
-
-        showLoading(position);
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
@@ -256,7 +250,7 @@ public class PlayerActivity extends Activity {
     //Stop the player called from js, clear it all
     private void PreResetPlayer(int whocall, int position) {
 
-        if (mainPlayer == 1) SwitchPlayer(false);
+        if (mainPlayer == 1) SwitchPlayer();
         PicturePicture = false;
         AudioSource = 1;
 
@@ -297,40 +291,15 @@ public class PlayerActivity extends Activity {
 
     //Basic animation for loading functions
     private void hideLoadingMain() {
-        spinnermain.setVisibility(View.GONE);
-        spinnermain.clearAnimation();
+        loadingView[2].setVisibility(View.GONE);
     }
 
     private void showLoadingMain() {
-        if (spinnermain.getVisibility() != View.VISIBLE) {
-            // The duration of the spin is 1s, reset every show to use the spin as a performance counter
-            // to know how much time something takes to load
-            spinnermain.startAnimation(rotation);
-            spinnermain.setVisibility(View.VISIBLE);
-        }
+        if (loadingView[2].getVisibility() != View.VISIBLE) loadingView[2].setVisibility(View.VISIBLE);
     }
 
-    //Basic animation for loading playback functions
     private void hideLoading(int position) {
-        loadingcanshow[position] = false;
-        spinner[position].setVisibility(View.GONE);
-        spinner[position].clearAnimation();
-    }
-
-    private void showLoadingDelay(int position) {
-        //Add a delay to prevent "short blink" ladings, can happen sporadic or right before STATE_ENDED because of STATE_BUFFERING
-        myHandler.postDelayed(() -> {
-            if (loadingcanshow[position]) showLoading(position);
-        }, 500);
-    }
-
-    private void showLoading(int position) {
-        if (spinner[position].getVisibility() != View.VISIBLE) {
-            // The duration of the spin is 1s, reset every show to use the spin as a performance counter
-            // to know how much time takes to load
-            spinner[position].startAnimation(rotation);
-            spinner[position].setVisibility(View.VISIBLE);
-        }
+        loadingView[position].setVisibility(View.GONE);
     }
 
     private void SetheightDefault() {
@@ -360,7 +329,7 @@ public class PlayerActivity extends Activity {
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
-    private void SwitchPlayer(boolean show) {
+    private void SwitchPlayer() {
         int WillBeMain = mainPlayer ^ 1;//shift 0 to 1 and vice versa
 
         //Set new video sizes
@@ -625,7 +594,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayer() {
-            myHandler.post(() -> SwitchPlayer(true));
+            myHandler.post(PlayerActivity.this::SwitchPlayer);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -794,7 +763,7 @@ public class PlayerActivity extends Activity {
             PicturePicture = false;
             ClearPlayer(position);
             AudioSource = 1;
-            if (mainPlayer == position) SwitchPlayer(false);
+            if (mainPlayer == position) SwitchPlayer();
         } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
     }
 
@@ -820,8 +789,6 @@ public class PlayerActivity extends Activity {
                         PlayerEventListenerClear(position);
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         hideLoadingMain();
-                        loadingcanshow[position] = true;
-                        showLoadingDelay(position);
 
                         //Use the player buffer as a player check state to prevent be buffering for ever
                         //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
