@@ -30,6 +30,7 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -98,7 +99,16 @@ public class PlayerActivity extends Activity {
     public Handler[] PlayerCheckHandler = new Handler[2];
     public int[] PlayerCheckCounter = new int[2];
 
+
     private ProgressBar[] loadingView = new ProgressBar[3];
+
+    public int[] droppedFrames = new int[2];
+    public long[] conSpeed = new long[2];
+    public long[] netActivity = new long[2];
+
+    public int droppedFramesTotal = 0;
+    public long conSpeedAVG = 0L;
+    public long netActivityAVG = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +175,7 @@ public class PlayerActivity extends Activity {
 
         //Show main buffer if this call is in the main player as this is needed fro when we are fast/back forwarding
         //On small player it will show its own loading
-        if (!isSmall) showLoading(2);
+        if (!isSmall) showLoading();
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
@@ -182,6 +192,7 @@ public class PlayerActivity extends Activity {
                 Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
         player[position].addListener(new PlayerEventListener(position));
+        player[position].addAnalyticsListener(new AnalyticsEventListener(position));
 
         player[position].setPlayWhenReady(true);
 
@@ -283,6 +294,9 @@ public class PlayerActivity extends Activity {
             player[position].release();
             player[position] = null;
             trackSelector[position] = null;
+            droppedFrames[position] = 0;
+            conSpeed[position] = 0L;
+            netActivity[position] = 0L;
         }
     }
 
@@ -298,8 +312,8 @@ public class PlayerActivity extends Activity {
                 Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
     }
 
-    private void showLoading(int position) {
-        if (loadingView[position].getVisibility() != View.VISIBLE) loadingView[position].setVisibility(View.VISIBLE);
+    private void showLoading() {
+        if (loadingView[2].getVisibility() != View.VISIBLE) loadingView[2].setVisibility(View.VISIBLE);
     }
 
     private void hideLoading(int position) {
@@ -506,7 +520,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mshowLoading(boolean show) {
             myHandler.post(() -> {
-                if (show) showLoading(2);
+                if (show) showLoading();
                 else hideLoading(2);
             });
         }
@@ -761,6 +775,22 @@ public class PlayerActivity extends Activity {
             });
             return result.get();
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getVideoStatus() {
+            HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
+                @Override
+                public void run() {
+                    value = droppedFrames[mainPlayer] + "," + droppedFramesTotal + "," +
+                            conSpeed[mainPlayer] + "," + conSpeedAVG + "," + netActivity[mainPlayer] +
+                            "," + netActivityAVG + ",";
+                    if (player[mainPlayer] != null) value += player[mainPlayer].getTotalBufferedDuration() + "";
+                    else value += "0";
+                }
+            });
+            return result.get();
+        }
     }
 
     public void PlayerEventListenerClear(int position) {
@@ -854,5 +884,30 @@ public class PlayerActivity extends Activity {
             initializePlayer(position);
         }
 
+    }
+    private class AnalyticsEventListener implements AnalyticsListener {
+
+        private int position;
+
+        private AnalyticsEventListener(int mposition) {
+            position = mposition;
+        }
+
+        @Override
+        public final void onDroppedVideoFrames(EventTime eventTime, int count, long elapsedMs) {
+            droppedFrames[position] += count;
+            droppedFramesTotal += count;
+            if (droppedFramesTotal < 0) droppedFramesTotal = 0;
+        }
+
+        @Override
+        public void onBandwidthEstimate(EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
+            conSpeed[position] = bitrateEstimate;
+            //netActivity[position] = (totalBytesLoaded * 8000) / totalLoadTimeMs;
+            netActivity[position] = totalBytesLoaded * 4;//convert to bit but for some reason we use 4 instead of 8
+
+            if (bitrateEstimate > 0) conSpeedAVG = (conSpeedAVG + bitrateEstimate) / 2;
+            if (netActivity[position] > 0) netActivityAVG = (netActivityAVG + netActivity[position]) / 2;
+        }
     }
 }
