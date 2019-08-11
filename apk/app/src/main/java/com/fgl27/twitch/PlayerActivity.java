@@ -792,6 +792,7 @@ public class PlayerActivity extends Activity {
                             netActivity[mainPlayer],
                             String.format(Locale.US, "%.02f", (netcounter > 0 ? (netActivityAVG / netcounter) : 0)));
 
+                    netActivity[mainPlayer] = 0L;
                     if (player[mainPlayer] != null)
                         value += String.format(Locale.US, "%d", player[mainPlayer].getTotalBufferedDuration());
                     else value += "0";
