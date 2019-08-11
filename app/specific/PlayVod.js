@@ -508,18 +508,20 @@ function PlayVod_showPanel(autoHide) {
 function PlayVod_RefreshProgressBarr(show) {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
 
-    if (PlayVod_qualityPlaying.indexOf("Auto") !== -1 && show) {
-        var value = Android.getVideoQuality();
+    if (!Play_Status_Always_On) {
+        if (PlayVod_qualityPlaying.indexOf("Auto") !== -1 && show) {
+            var value = Android.getVideoQuality();
 
-        if (value !== null && value !== undefined) Play_getVideoQuality(value);
-        else PlayVod_SetHtmlQuality('stream_quality');
+            if (value !== null && value !== undefined) Play_getVideoQuality(value);
+            else PlayVod_SetHtmlQuality('stream_quality');
+        }
+
+        if (Main_IsNotBrowser) {
+            try {
+                Play_Status(Android.getVideoStatus());
+            } catch (e) {}
+        } else Play_StatusFake();
     }
-
-    if (Main_IsNotBrowser) {
-        try {
-            Play_Status(Android.getVideoStatus());
-        } catch (e) {}
-    } else Play_StatusFake();
 }
 
 function PlayVod_IconsBottonResetFocus() {
