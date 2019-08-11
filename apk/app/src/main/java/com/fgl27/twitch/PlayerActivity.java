@@ -297,7 +297,6 @@ public class PlayerActivity extends Activity {
             player[position] = null;
             trackSelector[position] = null;
             droppedFrames[position] = 0;
-            conSpeed[position] = 0L;
             netActivity[position] = 0L;
         }
     }
