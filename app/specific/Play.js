@@ -247,7 +247,7 @@ function Play_Start() {
 
     Play_currentTime = 0;
     Play_watching_time = new Date().getTime();
-    Main_textContent("stream_watching_time", " | " + STR_WATCHING + Play_timeS(0));
+    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
 
     Main_textContent("stream_live_time", Play_created);
@@ -981,7 +981,7 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    Main_textContent("stream_watching_time", " | " +
+    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + 
         STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
 
     Main_innerHTML("stream_live_time", STR_SINCE +

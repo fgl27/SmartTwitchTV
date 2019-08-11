@@ -39,7 +39,7 @@ function PlayClip_Start() {
     Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game);
     Main_textContent("stream_live_viewers", ChannelClip_views);
-    Main_textContent("stream_watching_time", " | " + ChannelClip_createdAt);
+    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + ChannelClip_createdAt);
     Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
