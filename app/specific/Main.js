@@ -111,9 +111,9 @@ var Main_TwithcV5Json = 'application/vnd.twitchtv.v5+json';
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
-var Main_stringVersion = '1.0';
-var Main_stringVersion_Min = '.45';
-var Main_minversion = '080619';
+var Main_stringVersion = '2.0';
+var Main_stringVersion_Min = '.46';
+var Main_minversion = '081119';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsNotBrowserVersion = '';
 var Main_ClockOffset = 0;
