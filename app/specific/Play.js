@@ -364,7 +364,7 @@ function Play_updateStreamInfoStartValues(response) {
         var playing = (Main_values.Play_gameSelected !== "" ? STR_PLAYING + Main_values.Play_gameSelected : "");
         Main_textContent("stream_info_game", playing);
 
-        Main_textContent("stream_live_viewers", STR_FOR + Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+        Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
         Main_values.Play_selectedChannelLogo = response.stream.channel.logo;
         Play_LoadLogoSucess = true;
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Play_selectedChannelLogo);
@@ -399,7 +399,7 @@ function Play_updateStreamInfoValues(response) {
         Main_values.Play_gameSelected = response.stream.game;
         Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected);
 
-        Main_textContent("stream_live_viewers", STR_FOR + Main_addCommas(response.stream.viewers) +
+        Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(response.stream.viewers) +
             ' ' + STR_VIEWER);
 
         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
