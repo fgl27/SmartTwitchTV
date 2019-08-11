@@ -85,7 +85,7 @@ function PlayVod_Start() {
         Main_innerHTML("stream_info_game", '');
         //todo fix this
         Main_textContent("stream_live_viewers", ChannelVod_views);
-        Main_textContent("stream_watching_time", " | " + ChannelVod_createdAt);
+    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + ChannelVod_createdAt);
 
         Main_replaceClassEmoji('stream_info_game');
     }
@@ -176,7 +176,7 @@ function PlayVod_updateVodInfoPannel(response) {
         response.game : ""));
     Main_textContent("stream_live_viewers", Main_addCommas(response.views) + STR_VIEWS);
 
-    Main_textContent("stream_watching_time", " | " + STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
+    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
 
     ChannelVod_DurationSeconds = parseInt(response.length);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
