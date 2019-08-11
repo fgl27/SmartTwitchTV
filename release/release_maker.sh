@@ -212,7 +212,7 @@ cd release/ || exit
 # Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
 if [ "$canuglifyjs" == 1 ]; then
 	echo -e "${bldblu}	uglifyjs  master.js";
-	uglifyjs master.js -c -m reserved=['Play_PannelEndStart','Play_CheckResume','Play_UpdateDuration'],toplevel -o master.js;
+	uglifyjs master.js -c -m reserved=['Play_PannelEndStart','Play_CheckResume','Play_PlayerCheck','Play_UpdateDuration'],toplevel -o master.js;
 fi;
 
 echo -e "\\n${bldgrn}Compression done\\n";
