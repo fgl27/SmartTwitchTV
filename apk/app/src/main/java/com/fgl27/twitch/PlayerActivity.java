@@ -112,6 +112,9 @@ public class PlayerActivity extends Activity {
     public long netcounter = 0L;
     public long speedcounter = 0L;
 
+    private boolean alredystarted;
+    private boolean shouldCallJavaCheck;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +164,8 @@ public class PlayerActivity extends Activity {
 
             loadingView[1] = PlayerView[1].findViewById(R.id.exo_buffering);
             loadingView[1].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
+
+            shouldCallJavaCheck = false;
 
             initializeWebview();
         }
@@ -252,6 +257,7 @@ public class PlayerActivity extends Activity {
 
         mediaSourceAuto[mainPlayer] = mediaSource;
         uri = Uri.parse(videoAddress);
+        shouldCallJavaCheck = true;
         mwhocall = whocall;
         mResumePosition = position > 0 ? position : 0;
 
@@ -264,6 +270,7 @@ public class PlayerActivity extends Activity {
         mediaSourceAuto[mainPlayer ^ 1] = mediaSource;
         uri = Uri.parse(videoAddress);
         mwhocall = 1;
+        shouldCallJavaCheck = true;
         mResumePosition = 0;
 
         initializePlayer(mainPlayer ^ 1);
@@ -275,6 +282,7 @@ public class PlayerActivity extends Activity {
 
         if (mainPlayer == 1) SwitchPlayer();
         PicturePicture = false;
+        shouldCallJavaCheck = false;
         AudioSource = 1;
 
         PlayerCheckHandler[0].removeCallbacksAndMessages(null);
@@ -392,12 +400,11 @@ public class PlayerActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    //This function is called when overview key is pressed
-    @Override
-    public void onPause() {
-        super.onPause();
+        //The app was close but shouldCallJavaCheck is true that means the TV enter standby so call java here
+        if (player[mainPlayer] == null && shouldCallJavaCheck && mwebview != null && alredystarted) {
+            mwebview.loadUrl("javascript:Play_CheckResume()");
+        }
+        alredystarted = true;
     }
 
     //This function is called when home key is pressed
@@ -410,12 +417,6 @@ public class PlayerActivity extends Activity {
         updateResumePosition(1);
         ClearPlayer(0);
         ClearPlayer(1);
-    }
-
-    //This function is called when TV wakes up
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
