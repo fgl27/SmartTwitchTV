@@ -938,7 +938,7 @@ function Play_Status(value) {
 
     Main_innerHTML("stream_status", "Net Speed: " + Play_getMbps(value[2]) + " (" +
      Play_getMbps(value[3]) + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
-     Play_getMbps(value[5]) + " Avg) Mbps" + STR_BR +
+     Play_getMbps(value[5]) + " Avg) Mb" + STR_BR +
      "Drooped frames: " + value[0] + " (" + value[1] + " Total day)" + STR_BR + 
      " Buffer health: " + (value[6] > 0 ? (value[6] / 1000).toFixed(2) : 0) + " s");
 }
