@@ -343,8 +343,8 @@ public class PlayerActivity extends Activity {
 
     //Used in side-by-side mode chat plus video
     private void updateVidesizeChat(boolean sizechat) {
-        if (sizechat)PlayerView[0].setLayoutParams(PlayerViewDefaultSizeChat);
-        else PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
+        if (sizechat)PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizeChat);
+        else PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
@@ -357,8 +357,6 @@ public class PlayerActivity extends Activity {
 
         VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
 
-        //PlayerView[mainPlayer].getVideoSurfaceView().setVisibility(View.INVISIBLE);
-        //PlayerView[mainPlayer].getVideoSurfaceView().setVisibility(View.VISIBLE);
         PlayerView[mainPlayer].setVisibility(View.GONE);
         PlayerView[mainPlayer].setVisibility(View.VISIBLE);
 
