@@ -99,7 +99,6 @@ public class PlayerActivity extends Activity {
     public Handler[] PlayerCheckHandler = new Handler[2];
     public int[] PlayerCheckCounter = new int[2];
 
-
     private ProgressBar[] loadingView = new ProgressBar[3];
 
     public int[] droppedFrames = new int[2];
@@ -212,8 +211,8 @@ public class PlayerActivity extends Activity {
             //Reset small player view so it shows after big one has started
             int tempPos = position ^ 1;
             if (player[tempPos] != null) {
-                PlayerView[tempPos].getVideoSurfaceView().setVisibility(View.INVISIBLE);
-                PlayerView[tempPos].getVideoSurfaceView().setVisibility(View.VISIBLE);
+                PlayerView[tempPos].setVisibility(View.GONE);
+                PlayerView[tempPos].setVisibility(View.VISIBLE);
             }
         }
     }
@@ -356,8 +355,10 @@ public class PlayerActivity extends Activity {
 
         VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
 
-        PlayerView[mainPlayer].getVideoSurfaceView().setVisibility(View.INVISIBLE);
-        PlayerView[mainPlayer].getVideoSurfaceView().setVisibility(View.VISIBLE);
+        //PlayerView[mainPlayer].getVideoSurfaceView().setVisibility(View.INVISIBLE);
+        //PlayerView[mainPlayer].getVideoSurfaceView().setVisibility(View.VISIBLE);
+        PlayerView[mainPlayer].setVisibility(View.GONE);
+        PlayerView[mainPlayer].setVisibility(View.VISIBLE);
 
         //change trackSelector to limit video bandwidth
         if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
@@ -903,9 +904,7 @@ public class PlayerActivity extends Activity {
         @Override
         public void onBandwidthEstimate(EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
             conSpeed[position] = bitrateEstimate;
-            //netActivity[position] = (totalBytesLoaded * 8000) / totalLoadTimeMs;
-            netActivity[position] = totalBytesLoaded * 4;//convert to bit but for some reason we use 4 instead of 8
-
+            netActivity[position] = totalBytesLoaded * 8;
             if (bitrateEstimate > 0) conSpeedAVG = (conSpeedAVG + bitrateEstimate) / 2;
             if (netActivity[position] > 0) netActivityAVG = (netActivityAVG + netActivity[position]) / 2;
         }
