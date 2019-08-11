@@ -283,4 +283,5 @@ function en_USLang() {
     STR_PICTURE_CONTROLS8 = "Sync playback: use the player bottom controls Player Sync";
     STR_PICTURE_CONTROLS9 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
     STR_PICTURE_CONTROLS10 = "Close small window: back key twice";
+    STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
 }

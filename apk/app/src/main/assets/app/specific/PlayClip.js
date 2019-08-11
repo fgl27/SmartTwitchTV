@@ -52,6 +52,8 @@ function PlayClip_Start() {
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
 
+    Play_ShowPanelStatus(3);
+
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Main_textContent("stream_live_time", '');
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
@@ -214,6 +216,7 @@ function PlayClip_UpdateDuration(duration) {
 
 function PlayClip_Resume() {
     //return;
+    window.clearInterval(Play_ShowPanelStatusId);
     if (document.hidden) PlayClip_shutdownStream();
 }
 
@@ -303,13 +306,10 @@ function PlayClip_PlayPreviously() {
 }
 
 function PlayClip_PlayNextPreviously() {
-    var doc = document.getElementById("scene_channel_panel");
-    doc.style.transition = 'none';
-    doc.style.opacity = "0";
+    Play_ForceHidePannel();
     Main_ready(function() {
         PlayClip_PreshutdownStream();
         Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
-        doc.style.transition = '';
     });
 }
 
@@ -320,7 +320,7 @@ function PlayClip_hidePanel() {
     PlayVod_addToJump = 0;
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
-    document.getElementById("scene_channel_panel").style.opacity = "0";
+    Play_ForceHidePannel();
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
@@ -337,7 +337,7 @@ function PlayClip_showPanel() {
     PlayClip_qualityIndexReset();
     PlayExtra_ResetSpeed();
     PlayClip_qualityDisplay();
-    document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_ForceShowPannel();
     Play_clearHidePanel();
     PlayClip_setHidePanel();
 }
@@ -346,9 +346,9 @@ function PlayClip_RefreshProgressBarr() {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 
     if (Main_IsNotBrowser) {
-    try {
-         Play_Status(Android.getVideoStatus());
-    } catch (e) {}
+        try {
+            Play_Status(Android.getVideoStatus());
+        } catch (e) {}
     } else Play_StatusFake();
 }
 
