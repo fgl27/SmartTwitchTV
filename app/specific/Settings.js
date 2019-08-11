@@ -9,6 +9,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "keep_panel_info_visible": { //clip_auto_play_next
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "buffer_live": { //buffer_live
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 4
@@ -24,6 +28,14 @@ var Settings_value = {
     "end_dialog_counter": { //end_dialog_counter
         "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 4
+    },
+    "bitrate_main": { //bitrate_main
+        "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
+        "defaultValue": 1
+    },
+    "bitrate_min": { //bitrate_min
+        "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
+        "defaultValue": 18
     },
     "videos_animation": { //videos_animation
         "values": ["no", "yes"],
@@ -159,6 +171,19 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
+    key = "keep_panel_info_visible";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionNoSummary(key, STR_KEEP_INFO_VISIBLE);
+
+    // end_dialog_counter
+    key = "end_dialog_counter";
+    Settings_value_keys.push(key);
+    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+
+    div += Settings_DivOptionWithSummary(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+
     //Player restore playback
     key = "default_quality";
     Settings_value_keys.push(key);
@@ -166,12 +191,29 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionWithSummary(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
 
-    // Chat size
-    key = "end_dialog_counter";
-    Settings_value_keys.push(key);
-    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+    // Player buffer title/summary
+    div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
+        '<div id="setting_title_bandwidth_summary" class="settings_summary">' + STR_PLAYER_BITRATE_SUMARRY + '</div>';
 
-    div += Settings_DivOptionWithSummary(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+    // Player buffer live
+    key = "bitrate_main";
+    Settings_value_keys.push(key);
+
+    for (var i = 1; i < Settings_value[key].values.length; i++) {
+        Settings_value[key].values[i] = Settings_value[key].values[i] + " Mbps";
+    }
+    Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+
+    div += Settings_DivOptionNoSummary(key, STR_PLAYER_BITRATE_MAIN);
+
+    // Player buffer vod
+    key = "bitrate_min";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = Settings_value.bitrate_main.values;
+    Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+
+    div += Settings_DivOptionWithSummary(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
+    Settings_SetBitRate(0);
 
     // Player buffer title/summary
     div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
@@ -246,6 +288,17 @@ function Settings_SetStrings() {
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
 
     // Player buffer title/summary
+    Main_textContent('setting_title_bandwidth', STR_PLAYER_BITRATE);
+    Main_textContent('setting_title_bandwidth_summary', STR_PLAYER_BITRATE_SUMARRY);
+
+    key = "bitrate_main";
+    Main_textContent(key + '_name', STR_PLAYER_BITRATE_MAIN);
+    Settings_value[key].values[0] = STR_DISABLE;
+    key = "bitrate_min";
+    Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
+    Settings_value[key].values[0] = STR_DISABLE;
+
+    // Player buffer title/summary
     Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
     Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
@@ -285,6 +338,10 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
     Settings_value[key].values = [STR_NO, STR_YES];
 
+    key = "keep_panel_info_visible";
+    Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
     for (key in Settings_value)
         if (Settings_value.hasOwnProperty(key))
             Main_textContent(key, Settings_Obj_values(key));
@@ -303,6 +360,7 @@ function Settings_SetDefautls() {
     Main_SetThumb();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
 }
 
@@ -371,6 +429,7 @@ function Settings_SetDefault(position) {
 
     if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "buffer_live") Settings_SetBuffers(1);
     else if (position === "buffer_vod") Settings_SetBuffers(2);
     else if (position === "buffer_clip") Settings_SetBuffers(3);
@@ -380,7 +439,44 @@ function Settings_SetDefault(position) {
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
+    } else if (position === "bitrate_main") Settings_SetBitRate(1);
+    else if (position === "bitrate_min") Settings_SetBitRate(2);
+}
+
+function Settings_SetBitRate(whocall) {
+    if (Main_IsNotBrowser) {
+        if (!whocall) {
+            Settings_SetBitRateMain();
+            Settings_SetBitRateMin();
+        } else if (whocall === 1) Settings_SetBitRateMain();
+        else if (whocall === 2) Settings_SetBitRateMin();
     }
+}
+
+function Settings_SetBitRateMain() {
+    var value;
+
+    if (Settings_Obj_default("bitrate_main") > 0)
+        value = parseInt(Settings_Obj_values("bitrate_main").split(" ")[0] * 1000000);
+    else value = 0;
+
+    try {
+        Android.SetMainPlayerBandwidth(value);
+    } catch (e) {}
+    console.log('main value ' + value);
+}
+
+function Settings_SetBitRateMin() {
+    var value;
+
+    if (Settings_Obj_default("bitrate_min") > 0)
+        value = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
+    else value = 0;
+
+    try {
+        Android.SetSmallPlayerBandwidth(value);
+    } catch (e) {}
+    console.log('min value ' + value);
 }
 
 function Settings_SetBuffers(whocall) {
