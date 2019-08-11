@@ -344,7 +344,7 @@ function Play_partnerIcon(name, partner, islive, lang) {
             STR_SPACE + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
     }
 
-    div += '<div class="partnericon_text" ">' + STR_SPACE + STR_SPACE + lang + '</div>';
+    div += '<div class="lang_text" ">' + STR_SPACE + STR_SPACE + lang + '</div>';
 
     Main_innerHTML("stream_info_name", div);
 }
