@@ -23,6 +23,7 @@ var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
 var Play_STATE_PLAYING = 2;
 var Play_state = 0;
+var Play_Status_Always_On = false;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
@@ -229,6 +230,8 @@ function Play_Start() {
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
 
+    Play_ShowPanelStatus(1);
+
     Play_IconsResetFocus();
 
     PlayClip_HideShowNext(0, 0);
@@ -306,6 +309,11 @@ function Play_Resume() {
             if (navigator.onLine) Play_ResumeAfterOnline();
             else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
             Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 60000);
+            window.clearInterval(Play_ShowPanelStatusId);
+
+            Play_ShowPanelStatusId = window.setInterval(function() {
+                Play_UpdateStatus(1);
+            }, 1000);
         }
     }
 }
@@ -392,7 +400,7 @@ function Play_updateStreamInfoValues(response) {
         Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected);
 
         Main_textContent("stream_live_viewers", STR_FOR + Main_addCommas(response.stream.viewers) +
-         ' ' + STR_VIEWER);
+            ' ' + STR_VIEWER);
 
         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
             response.stream.channel.logo);
@@ -669,7 +677,7 @@ function Play_SetHtmlQuality(element) {
 
     quality_string += Play_quality.indexOf('Auto') === -1 ? Play_qualities[Play_qualityIndex].band + Play_qualities[Play_qualityIndex].codec : "";
 
-     Main_innerHTML(element, quality_string);
+    Main_innerHTML(element, quality_string);
 }
 
 function Play_onPlayer() {
@@ -801,6 +809,7 @@ function Play_exitMain() {
 }
 
 function Play_ClearPlayer() {
+    window.clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
     Play_clearPause();
     Play_HideWarningDialog();
@@ -889,9 +898,69 @@ function Play_isPanelShown() {
 function Play_hidePanel() {
     //return;//return;
     Play_clearHidePanel();
-    document.getElementById("scene_channel_panel").style.opacity = "0";
+    Play_ForceHidePannel();
     Play_quality = Play_qualityPlaying;
     window.clearInterval(PlayVod_RefreshProgressBarrID);
+}
+
+function Play_ForceShowPannel() {
+    document.getElementById("scene_channel_panel").style.opacity = "1";
+    if (!Play_Status_Always_On) Main_ShowElement('playsideinfo');
+    else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+}
+
+function Play_ForceHidePannel() {
+    document.getElementById("scene_channel_panel").style.opacity = "0";
+    if (!Play_Status_Always_On) Main_HideElement('playsideinfo');
+    else Main_AddClass('playsideinfo', 'playsideinfofocus');
+}
+
+var Play_ShowPanelStatusId;
+
+function Play_ShowPanelStatus(mwhocall) {
+    if (Play_Status_Always_On) {
+
+        window.clearInterval(Play_ShowPanelStatusId);
+
+        Play_ShowPanelStatusId = window.setInterval(function() {
+            Play_UpdateStatus(mwhocall);
+        }, 1000);
+
+        Main_ShowElement('playsideinfo');
+        Main_AddClass('playsideinfo', 'playsideinfofocus');
+    } else {
+        Main_HideElement('playsideinfo');
+        Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+        window.clearInterval(Play_ShowPanelStatusId);
+    }
+}
+//tdo cleac 
+function Play_UpdateStatus(mwhocall) {
+    if (Main_IsNotBrowser) {
+        var value = null;
+
+        if (mwhocall === 1) {
+
+            if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality');
+            else {
+                value = Android.getVideoQuality();
+                if (value !== null && value !== undefined) Play_getVideoQuality(value);
+            }
+
+        } else if (mwhocall === 2) {
+
+            if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality');
+            else {
+                value = Android.getVideoQuality();
+                if (value !== null && value !== undefined) Play_getVideoQuality(value);
+            }
+
+        }
+
+        try {
+            Play_Status(Android.getVideoStatus());
+        } catch (e) {}
+    } else Play_StatusFake();
 }
 
 function Play_showPanel() {
@@ -906,14 +975,14 @@ function Play_showPanel() {
     PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
     Play_clock();
     Play_CleanHideExit();
-    document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_ForceShowPannel();
     Play_clearHidePanel();
     Play_setHidePanel();
 }
 
 function Play_RefreshWatchingtime() {
     Main_textContent("stream_watching_time", " | " +
-     STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
+        STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
 
     Main_innerHTML("stream_live_time", STR_SINCE +
         (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
@@ -926,29 +995,43 @@ function Play_RefreshWatchingtime() {
     }
 
     if (Main_IsNotBrowser) {
-    try {
-         Play_Status(Android.getVideoStatus());
-    } catch (e) {}
+        try {
+            Play_Status(Android.getVideoStatus());
+        } catch (e) {}
     } else Play_StatusFake();
 }
 
 function Play_StatusFake() {
     Main_innerHTML("stream_status", "Net Speed:&nbsp;&nbsp;&nbsp;90.00 (90.00 Avg) Mbps" + STR_BR +
-     "Net Activity: 20.00 (20.00 Avg) Mb" + STR_BR + "Drooped frames: 100 (100 Today)" + STR_BR + 
-     " Buffer health: 22.22 s");
+        "Net Activity: 20.00 (20.00 Avg) Mb" + STR_BR + "Drooped frames: 100 (100 Today)" + STR_BR +
+        " Buffer health: 22.22 s");
 }
+
+var Play_StatusNetActOld = 0;
 
 function Play_Status(value) {
     value = value.split(',');
 
+    //didn't change no activity on this run
+    if (Play_StatusNetActOld === value[4]) value[4] = 0;
+    else Play_StatusNetActOld = value[4];
+
     Main_innerHTML("stream_status", "Net Speed:" + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
-     " (" + Play_getMbps(value[3]) + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
-     Play_getMbps(value[5]) + " Avg) Mb" + STR_BR + "Drooped frames: " + value[0] + " (" + value[1] + " Today)" +
-      STR_BR + " Buffer health: " + (value[6] > 0 ? (value[6] / 1000).toFixed(2) : 0) + " s");
+        " (" + Play_getMbps(value[3]) + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
+        Play_getMbps(value[5]) + " Avg) Mb" + STR_BR + "Drooped frames: " + value[0] + " (" + value[1] + " Today)" +
+        STR_BR + " Buffer health: " + Play_getBuffer(value[6]));
 }
 
 function Play_getMbps(value) {
-    return (parseInt(value) / 1000000).toFixed(2);
+    value = (parseInt(value) / 1000000).toFixed(2);
+
+    return (parseInt(value) < 10 ? (STR_SPACE + STR_SPACE + value) : value);
+}
+
+function Play_getBuffer(value) {
+    value = (value > 0 ? (value / 1000).toFixed(2) : 0);
+
+    return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
 }
 
 function Play_getVideoQuality(value) {
@@ -2239,10 +2322,6 @@ function Play_IconsRemoveFocus() {
     document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "0";
     //in case chat is disable and the warning is showing because some chat option was selected
     document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
-}
-
-function Play_ForceHidePannel() {
-    document.getElementById("scene_channel_panel").style.opacity = "0";
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {

@@ -601,13 +601,22 @@
         }
 
         div.playsideinfo {
+            z-index: 100;
             position: absolute;
-            top: 2.5%;
+            top: 1.5%;
             right: 0;
             width: 34.5ch;
+            height: 10.5ch;
             color: #FFFFFF;
             font-size: 95%;
+            padding: 1%;
             text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        div.playsideinfofocus {
+            border-radius: 15px;
+
+            background-color: rgba(0, 0, 0, 0.60);
         }
 
         div.playclock {
@@ -626,8 +635,7 @@
             padding-top: 2%;
             display: inline-block;
             width: 62.5%;
-            line-height: 2.2ch
-            font-size: 90%;
+            line-height: 2.2ch font-size: 90%;
             color: #FFFFFF;
             word-wrap: break-word;
             text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
@@ -1507,10 +1515,6 @@
         </div>
         <div id="scene_channel_panel" class="screen_size scene_channel_panel">
             <div class="playerinfo">
-                <div class="playsideinfo">
-                    <div id="stream_quality" class="playsideinfostatus"></div>
-                    <div id="stream_status" class="playsideinfostatus"></div>
-                </div>
                 <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 9.5%;" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
                 <div id="stream_clock" class="playclock"></div>
                 <div class="playmaininfo">
@@ -1568,6 +1572,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="playsideinfo" class="playsideinfo hide">
+            <div id="stream_quality" class="playsideinfostatus"></div>
+            <div id="stream_status" class="playsideinfostatus"></div>
         </div>
         <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 50%; z-index: 2;">
             <div id="dialog_vod_start" class="dialogs hide" style="z-index:3; font-size: 150%; height: 75%; margin-top: 25%;">

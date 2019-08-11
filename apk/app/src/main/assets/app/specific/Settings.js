@@ -9,6 +9,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "keep_panel_info_visible": { //clip_auto_play_next
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "buffer_live": { //buffer_live
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 4
@@ -166,6 +170,12 @@ function Settings_SetSettings() {
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
+
+    key = "keep_panel_info_visible";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionNoSummary(key, STR_KEEP_INFO_VISIBLE);
 
     // end_dialog_counter
     key = "end_dialog_counter";
@@ -328,6 +338,10 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
     Settings_value[key].values = [STR_NO, STR_YES];
 
+    key = "keep_panel_info_visible";
+    Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
     for (key in Settings_value)
         if (Settings_value.hasOwnProperty(key))
             Main_textContent(key, Settings_Obj_values(key));
@@ -346,6 +360,7 @@ function Settings_SetDefautls() {
     Main_SetThumb();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
 }
 
@@ -414,6 +429,7 @@ function Settings_SetDefault(position) {
 
     if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "buffer_live") Settings_SetBuffers(1);
     else if (position === "buffer_vod") Settings_SetBuffers(2);
     else if (position === "buffer_clip") Settings_SetBuffers(3);

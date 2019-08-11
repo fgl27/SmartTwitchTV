@@ -64,6 +64,8 @@ function PlayVod_Start() {
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
 
+    Play_ShowPanelStatus(2);
+
     PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
@@ -167,11 +169,11 @@ function PlayVod_updateVodInfoPannel(response) {
 
     Main_values.Main_selectedChannelPartner = response.channel.partner;
     Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false,
-    '[' + (response.channel.broadcaster_language).toUpperCase() + ']');
+        '[' + (response.channel.broadcaster_language).toUpperCase() + ']');
 
     Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +
-     response.game : ""));
+        response.game : ""));
     Main_textContent("stream_live_viewers", Main_addCommas(response.views) + STR_VIEWS);
 
     Main_textContent("stream_watching_time", " | " + STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
@@ -226,6 +228,11 @@ function PlayVod_Resume() {
 
             Play_EndSet(2);
             PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+
+            window.clearInterval(Play_ShowPanelStatusId);
+            Play_ShowPanelStatusId = window.setInterval(function() {
+                Play_UpdateStatus(2);
+            }, 1000);
         }
     }
 }
@@ -309,10 +316,22 @@ function PlayVod_loadDataSuccessFake() {
             'url': ''
         },
         {
-            'id': '1080p60 | source',
+            'id': '1080p60 | source ',
             'band': '| 10.00Mbps',
             'codec': ' | avc',
-            'url': 'https://fake'
+            'url': 'https://souce'
+        },
+        {
+            'id': '720p60',
+            'band': ' | 5.00Mbps',
+            'codec': ' | avc',
+            'url': 'https://720p60'
+        },
+        {
+            'id': '720p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+            'url': 'https://720'
         },
     ];
     PlayVod_state = Play_STATE_PLAYING;
@@ -457,7 +476,7 @@ function PlayVod_hidePanel() {
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;
     Play_clearHidePanel();
-    document.getElementById("scene_channel_panel").style.opacity = "0";
+    Play_ForceHidePannel();
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
@@ -483,7 +502,7 @@ function PlayVod_showPanel(autoHide) {
         PlayExtra_ResetSpeed();
         PlayVod_setHidePanel();
     }
-    document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_ForceShowPannel();
 }
 
 function PlayVod_RefreshProgressBarr(show) {
@@ -497,9 +516,9 @@ function PlayVod_RefreshProgressBarr(show) {
     }
 
     if (Main_IsNotBrowser) {
-    try {
-         Play_Status(Android.getVideoStatus());
-    } catch (e) {}
+        try {
+            Play_Status(Android.getVideoStatus());
+        } catch (e) {}
     } else Play_StatusFake();
 }
 
