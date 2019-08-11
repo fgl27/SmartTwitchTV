@@ -79,8 +79,10 @@ function PlayVod_Start() {
         PlayVod_updateVodInfo();
     } else {
         PlayVod_updateStreamerInfoValues();
-        Main_innerHTML("stream_info_title", '');
-        Main_innerHTML("stream_info_game", ChannelVod_views + ' [' + (ChannelVod_language).toUpperCase() + ']');
+        Main_innerHTML("stream_info_title", ChannelVod_title);
+        Main_innerHTML("stream_info_game", '');
+        //todo fix this
+        Main_textContent("stream_live_viewers", ChannelVod_views);
         Main_textContent("stream_watching_time", " | " + ChannelVod_createdAt);
 
         Main_replaceClassEmoji('stream_info_game');
@@ -132,7 +134,7 @@ function PlayVod_PrepareLoad() {
 
 function PlayVod_updateStreamerInfoValues() {
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner);
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false, ' [' + (ChannelVod_language).toUpperCase() + ']');
 
     //The chat init will happens after user click on vod dialog
     if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
@@ -164,11 +166,14 @@ function PlayVod_updateVodInfoPannel(response) {
     //if (response.muted_segments) console.log(response.muted_segments);
 
     Main_values.Main_selectedChannelPartner = response.channel.partner;
-    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner);
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false,
+    '[' + (response.channel.broadcaster_language).toUpperCase() + ']');
 
     Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
-    Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING + response.game : "") +
-        ' ' + Main_addCommas(response.views) + STR_VIEWS + ' [' + (response.channel.broadcaster_language).toUpperCase() + ']');
+    Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +
+     response.game : ""));
+    Main_textContent("stream_live_viewers", Main_addCommas(response.views) + STR_VIEWS);
+
     Main_textContent("stream_watching_time", " | " + STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
 
     ChannelVod_DurationSeconds = parseInt(response.length);
@@ -447,7 +452,7 @@ function PlayVod_ClearVod() {
 }
 
 function PlayVod_hidePanel() {
-    //return;
+    //return;//return;
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;

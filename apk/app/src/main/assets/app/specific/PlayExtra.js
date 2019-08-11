@@ -82,6 +82,8 @@ function PlayExtra_KeyEnter() {
 
                 Play_quality = "Auto";
                 Play_qualityPlaying = Play_quality;
+                PlayExtra_quality = "Auto";
+                PlayExtra_qualityPlaying = PlayExtra_quality;
             }
             PlayExtra_Resume();
         } else UserLiveFeed_ResetFeedId();

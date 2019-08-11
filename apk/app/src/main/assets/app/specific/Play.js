@@ -171,9 +171,6 @@ function Play_SetQuality() {
 
     PlayVod_quality = Play_quality;
     PlayVod_qualityPlaying = Play_quality;
-
-    PlayExtra_quality = Play_quality;
-    PlayExtra_qualityPlaying = Play_quality;
 }
 
 var Play_isFullScreenold = true;
@@ -250,7 +247,7 @@ function Play_Start() {
     Main_textContent("stream_watching_time", " | " + STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
 
-    Main_textContent("stream_live_time", STR_SINCE + Play_created);
+    Main_textContent("stream_live_time", Play_created);
     Main_HideElement('progress_bar_div');
 
     Play_UserLiveFeedPressed = false;
@@ -328,16 +325,18 @@ function Play_updateStreamInfoStart() {
     BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, false);
 }
 
-function Play_partnerIcon(name, partner, islive) {
+function Play_partnerIcon(name, partner, islive, lang) {
     var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
         (partner ? ('<img class="partnericon_img" alt="" src="' +
-            IMG_PARTNER + '">' + STR_SPACE + STR_SPACE) : "");
+            IMG_PARTNER + '">') : "");
 
     if (islive) {
-        div += '<div class="partnericon_text" style="background: #' +
+        div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #' +
             (Main_values.IsRerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
             STR_SPACE + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
     }
+
+    div += '<div class="partnericon_text" ">' + STR_SPACE + STR_SPACE + lang + '</div>';
 
     Main_innerHTML("stream_info_name", div);
 }
@@ -345,16 +344,19 @@ function Play_partnerIcon(name, partner, islive) {
 function Play_updateStreamInfoStartValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
-        Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner, true);
-
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
 
         Main_values.Play_selectedChannel_id = response.stream.channel._id;
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
         Main_values.Play_gameSelected = response.stream.game;
         Play_Lang = ' [' + (response.stream.channel.broadcaster_language).toUpperCase() + ']';
-        var playing = (Main_values.Play_gameSelected !== "" ? STR_PLAYING + Main_values.Play_gameSelected + STR_FOR : "");
-        Main_textContent("stream_info_game", playing + Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
+
+        Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner, true, Play_Lang);
+
+        var playing = (Main_values.Play_gameSelected !== "" ? STR_PLAYING + Main_values.Play_gameSelected : "");
+        Main_textContent("stream_info_game", playing);
+
+        Main_textContent("stream_live_viewers", STR_FOR + Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
         Main_values.Play_selectedChannelLogo = response.stream.channel.logo;
         Play_LoadLogoSucess = true;
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Play_selectedChannelLogo);
@@ -387,8 +389,11 @@ function Play_updateStreamInfoValues(response) {
     if (response.stream !== null) {
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
         Main_values.Play_gameSelected = response.stream.game;
-        Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected + STR_FOR +
-            Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
+        Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected);
+
+        Main_textContent("stream_live_viewers", STR_FOR + Main_addCommas(response.stream.viewers) +
+         ' ' + STR_VIEWER);
+
         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
             response.stream.channel.logo);
     }
@@ -526,7 +531,7 @@ function Play_loadDataSuccessFake() {
             'url': ''
         },
         {
-            'id': '1080p60 | source',
+            'id': '1080p60 | source ',
             'band': '| 10.00Mbps',
             'codec': ' | avc',
             'url': 'https://souce'
@@ -882,7 +887,7 @@ function Play_isPanelShown() {
 }
 
 function Play_hidePanel() {
-    //return;
+    //return;//return;
     Play_clearHidePanel();
     document.getElementById("scene_channel_panel").style.opacity = "0";
     Play_quality = Play_qualityPlaying;
@@ -910,7 +915,7 @@ function Play_RefreshWatchingtime() {
     Main_textContent("stream_watching_time", " | " +
      STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
 
-    Main_innerHTML("stream_live_time", STR_SPACE + STR_SINCE +
+    Main_innerHTML("stream_live_time", STR_SINCE +
         (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
 
     if (Play_qualityPlaying.indexOf("Auto") !== -1 && Main_IsNotBrowser) {
@@ -928,19 +933,18 @@ function Play_RefreshWatchingtime() {
 }
 
 function Play_StatusFake() {
-    Main_innerHTML("stream_status", "Net Speed: 90.00 (90.00 Avg) Mbps" + STR_BR +
-     "Net Activity: 20.00 (20.00 Avg) Mbps" + STR_BR + "Drooped frames: 100 (100 Total day)" + STR_BR + 
+    Main_innerHTML("stream_status", "Net Speed:&nbsp;&nbsp;&nbsp;90.00 (90.00 Avg) Mbps" + STR_BR +
+     "Net Activity: 20.00 (20.00 Avg) Mb" + STR_BR + "Drooped frames: 100 (100 Today)" + STR_BR + 
      " Buffer health: 22.22 s");
 }
 
 function Play_Status(value) {
     value = value.split(',');
 
-    Main_innerHTML("stream_status", "Net Speed: " + Play_getMbps(value[2]) + " (" +
-     Play_getMbps(value[3]) + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
-     Play_getMbps(value[5]) + " Avg) Mb" + STR_BR +
-     "Drooped frames: " + value[0] + " (" + value[1] + " Total day)" + STR_BR + 
-     " Buffer health: " + (value[6] > 0 ? (value[6] / 1000).toFixed(2) : 0) + " s");
+    Main_innerHTML("stream_status", "Net Speed:" + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
+     " (" + Play_getMbps(value[3]) + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
+     Play_getMbps(value[5]) + " Avg) Mb" + STR_BR + "Drooped frames: " + value[0] + " (" + value[1] + " Today)" +
+      STR_BR + " Buffer health: " + (value[6] > 0 ? (value[6] / 1000).toFixed(2) : 0) + " s");
 }
 
 function Play_getMbps(value) {

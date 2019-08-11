@@ -14,6 +14,7 @@ var ChannelVod_language = '';
 var ChannelVod_createdAt = '';
 var ChannelVod_views = '';
 var ChannelVod_Duration = '';
+var ChannelVod_title = '';
 
 var Vod_DoAnimateThumb = 1;
 
@@ -176,9 +177,12 @@ var Base_Vod_obj = {
                 this.coloumn_id,
                 [cell._id, cell.length, cell.channel.broadcaster_language, cell.game, cell.channel.name, cell.increment_view_count_url, cell.channel._id, cell.channel.logo, cell.channel.partner], this.ids,
                 [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
-                    cell.channel.display_name, STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
-                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""), Main_addCommas(cell.views) + STR_VIEWS,
-                    Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
+                    cell.channel.display_name,
+                    STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
+                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""),
+                    Main_addCommas(cell.views) + STR_VIEWS,
+                    Main_videoqualitylang(cell.resolutions.chunked.slice(-4),
+                    (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language),
                     STR_DURATION + Play_timeS(cell.length), cell.animated_preview_url
                 ]));
 
