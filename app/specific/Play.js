@@ -981,7 +981,7 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + 
+    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE +
         STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
 
     Main_innerHTML("stream_live_time", STR_SINCE +

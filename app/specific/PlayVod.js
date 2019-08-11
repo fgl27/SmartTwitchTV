@@ -85,7 +85,7 @@ function PlayVod_Start() {
         Main_innerHTML("stream_info_game", '');
         //todo fix this
         Main_textContent("stream_live_viewers", ChannelVod_views);
-    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + ChannelVod_createdAt);
+        Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + ChannelVod_createdAt);
 
         Main_replaceClassEmoji('stream_info_game');
     }
