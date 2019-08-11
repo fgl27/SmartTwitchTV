@@ -1017,8 +1017,8 @@ function Play_Status(value) {
     else Play_StatusNetActOld = value[4];
 
     Main_innerHTML("stream_status", "Net Speed:" + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
-        " (" + Play_getMbps(value[3]) + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
-        Play_getMbps(value[5]) + " Avg) Mb" + STR_BR + "Drooped frames: " + value[0] + " (" + value[1] + " Today)" +
+        " (" + value[3] + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
+        value[5] + " Avg) Mb" + STR_BR + "Drooped frames: " + value[0] + " (" + value[1] + " Today)" +
         STR_BR + " Buffer health: " + Play_getBuffer(value[6]));
 }
 

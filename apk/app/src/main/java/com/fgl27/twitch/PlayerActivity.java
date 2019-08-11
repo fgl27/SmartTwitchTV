@@ -38,6 +38,8 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.Locale;
+
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
     public static final int[] positions = {
@@ -104,9 +106,11 @@ public class PlayerActivity extends Activity {
     public long[] conSpeed = new long[2];
     public long[] netActivity = new long[2];
 
-    public int droppedFramesTotal = 0;
-    public long conSpeedAVG = 0L;
-    public long netActivityAVG = 0L;
+    public long droppedFramesTotal = 0L;
+    public float conSpeedAVG = 0f;
+    public float netActivityAVG = 0f;
+    public long netcounter = 0L;
+    public long speedcounter = 0L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -782,10 +786,16 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    value = droppedFrames[mainPlayer] + "," + droppedFramesTotal + "," +
-                            conSpeed[mainPlayer] + "," + conSpeedAVG + "," + netActivity[mainPlayer] +
-                            "," + netActivityAVG + ",";
-                    if (player[mainPlayer] != null) value += player[mainPlayer].getTotalBufferedDuration() + "";
+                    value = String.format(Locale.US, "%d,%d,%d,%s,%d,%s,",
+                            droppedFrames[mainPlayer],
+                            droppedFramesTotal,
+                            conSpeed[mainPlayer],
+                            String.format(Locale.US, "%.02f", (speedcounter > 0 ? (conSpeedAVG / speedcounter) : 0)),
+                            netActivity[mainPlayer],
+                            String.format(Locale.US, "%.02f", (netcounter > 0 ? (netActivityAVG / netcounter) : 0)));
+
+                    if (player[mainPlayer] != null)
+                        value += String.format(Locale.US, "%d", player[mainPlayer].getTotalBufferedDuration());
                     else value += "0";
                 }
             });
@@ -897,15 +907,20 @@ public class PlayerActivity extends Activity {
         public final void onDroppedVideoFrames(EventTime eventTime, int count, long elapsedMs) {
             droppedFrames[position] += count;
             droppedFramesTotal += count;
-            if (droppedFramesTotal < 0) droppedFramesTotal = 0;
         }
 
         @Override
         public void onBandwidthEstimate(EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
             conSpeed[position] = bitrateEstimate;
             netActivity[position] = totalBytesLoaded * 8;
-            if (bitrateEstimate > 0) conSpeedAVG = (conSpeedAVG + bitrateEstimate) / 2;
-            if (netActivity[position] > 0) netActivityAVG = (netActivityAVG + netActivity[position]) / 2;
+            if (bitrateEstimate > 0) {
+                speedcounter++;
+                conSpeedAVG += ((float) bitrateEstimate / 1000000);
+            }
+            if (netActivity[position] > 0) {
+                netcounter++;
+                netActivityAVG += ((float) netActivity[position] / 1000000);
+            }
         }
     }
 }
