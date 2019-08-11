@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:focusable="true"
@@ -7,27 +8,42 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/player_view"
-        android:focusable="false"
+    <FrameLayout
+        android:id="@+id/videoholder"
+        android:focusableInTouchMode="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:use_controller="false"
-        />
+        android:layout_height="match_parent">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view"
+            android:focusableInTouchMode="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:use_controller="false"
+            app:show_buffering="always"/>
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view2"
+            android:focusableInTouchMode="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|end"
+            app:use_controller="false"
+            app:show_buffering="always"/>
+    </FrameLayout>
 
     <WebView
         android:id="@+id/WebView"
-        android:focusable="true"
+        android:focusable="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageView
-        android:contentDescription="@string/app_name"
-        android:id="@+id/spinner"
-        android:focusable="false"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/spin"
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@android:color/white"
         android:layout_gravity="center"/>
 
 </FrameLayout>

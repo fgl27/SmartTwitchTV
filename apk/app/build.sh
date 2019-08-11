@@ -130,6 +130,7 @@ else
 	if [ "$1" == 1 ]; then
 		echo -e "\n${GREEN}App saved at $OUT_FOLDER"/"$APP_FINAL_NAME${NC}";
 	else
+		rm "$FOLDER"/app/build/outputs/apk/debug/output.json
 		echo -e "\n${GREEN}App saved at "$FOLDER"/app/build/outputs/apk/debug/app-debug.apk";
 	fi;
 fi;
