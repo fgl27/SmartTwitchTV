@@ -884,8 +884,8 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
 
     ChannelVod_createdAt = document.getElementById(idsArray[4] + id).textContent;
     ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
-    ChannelVod_views = document.getElementById(idsArray[11] + id).innerHTML +
-        ' ' + document.getElementById(idsArray[6] + id).textContent;
+    ChannelVod_title = document.getElementById(idsArray[11] + id).innerHTML;
+    ChannelVod_views = document.getElementById(idsArray[6] + id).textContent;
 
     Main_openVod();
 }

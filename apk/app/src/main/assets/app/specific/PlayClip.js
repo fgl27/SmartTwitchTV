@@ -37,7 +37,8 @@ function PlayClip_Start() {
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
     Main_innerHTML("stream_info_title", ChannelClip_title);
-    Main_innerHTML("stream_info_game", ChannelClip_game + ' ' + ChannelClip_views + ' ' + ChannelClip_language);
+    Main_innerHTML("stream_info_game", ChannelClip_game);
+    Main_textContent("stream_live_viewers", ChannelClip_views);
     Main_textContent("stream_watching_time", " | " + ChannelClip_createdAt);
     Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
@@ -103,7 +104,7 @@ function PlayClip_GetStreamerInfoSuccessError() {
 
 function PlayClip_GetStreamerInfoSuccess(response) {
     Main_values.Main_selectedChannelPartner = JSON.parse(response).partner;
-    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner);
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false, ChannelClip_language);
 }
 
 function PlayClip_loadData() {
@@ -212,6 +213,7 @@ function PlayClip_UpdateDuration(duration) {
 }
 
 function PlayClip_Resume() {
+    //return;
     if (document.hidden) PlayClip_shutdownStream();
 }
 
@@ -312,7 +314,7 @@ function PlayClip_PlayNextPreviously() {
 }
 
 function PlayClip_hidePanel() {
-    //return;
+    //return;//return;
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;
