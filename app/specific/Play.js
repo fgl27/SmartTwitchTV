@@ -1009,8 +1009,6 @@ function Play_StatusFake() {
         " Buffer health: 22.22 s");
 }
 
-var Play_StatusNetActOld = 0;
-
 function Play_Status(value) {
     value = value.split(',');
 
