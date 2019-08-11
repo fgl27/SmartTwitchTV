@@ -529,7 +529,19 @@ function Play_loadDataSuccessFake() {
             'id': '1080p60 | source',
             'band': '| 10.00Mbps',
             'codec': ' | avc',
-            'url': 'https://fake'
+            'url': 'https://souce'
+        },
+        {
+            'id': '720p60',
+            'band': ' | 5.00Mbps',
+            'codec': ' | avc',
+            'url': 'https://720p60'
+        },
+        {
+            'id': '720p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+            'url': 'https://720'
         },
     ];
     Play_state = Play_STATE_PLAYING;
@@ -616,10 +628,13 @@ function Play_qualityChanged() {
     if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
 
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
-        if (Play_qualities[i].id.indexOf(Play_quality) !== -1) {
+        if (Play_qualities[i].id === Play_quality) {
             Play_qualityIndex = i;
             Play_playingUrl = Play_qualities[i].url;
             break;
+        } else if (Play_qualities[i].id.indexOf(Play_quality) !== -1) { //make shore to set a value before break out
+            Play_qualityIndex = i;
+            Play_playingUrl = Play_qualities[i].url;
         }
     }
 
