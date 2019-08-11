@@ -16,15 +16,17 @@ var Play_FeedOldUserName = '';
 var Play_FeedPos = 0;
 var Play_Buffer = 2000;
 var Play_CurrentSpeed = 3;
-
+var Play_PicturePicturePos = 0;
+var Play_PicturePictureSize = 3;
+var Play_controlsAudioPos = 1;
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_LOADING_PLAYLIST = 1;
 var Play_STATE_PLAYING = 2;
 var Play_state = 0;
+var Play_Status_Always_On = false;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
-var Play_playlistResponse = 0;
 var Play_playingTry = 0;
 
 var Play_playingUrl = '';
@@ -48,13 +50,6 @@ var Play_ResumeAfterOnlineCounter = 0;
 var Play_ResumeAfterOnlineId;
 var Play_isOn = false;
 var Play_ChatBackgroundID = null;
-var Play_qualitiesFound = false;
-var Play_PlayerTime = 0;
-var Play_streamCheckId = null;
-var Play_PlayerCheckCount = 0;
-var Play_PlayerCheckCounter = 0;
-var Play_PlayerCheckQualityChanged = false;
-var Play_PlayerCheckRun = false;
 var Play_Playing = false;
 var Play_IsWarning = false;
 var Play_LoadLogoSucess = false;
@@ -73,8 +68,6 @@ var Play_ChatDelayPosition = 0;
 var Play_TargetHost = '';
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
-var Play_PlayerCheckTimer = 7;
-var Play_PlayerCheckInterval = 1000;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_IncrementView = '';
@@ -157,6 +150,14 @@ function Play_PreStart() {
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
     Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
     Play_ChatDelayPosition = Main_getItemInt('Play_ChatDelayPosition', 0);
+    Play_PicturePicturePos = Main_getItemInt('Play_PicturePicturePos', 0);
+    Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 3);
+    Play_controlsAudioPos = Main_getItemInt('Play_controlsAudioPos', 1);
+
+    try {
+        Android.mSetPlayerPosition(Play_PicturePicturePos);
+        Android.mSetPlayerSize(Play_PicturePictureSize);
+    } catch (e) {}
 
     Play_SetQuality();
 
@@ -168,8 +169,9 @@ function Play_PreStart() {
 function Play_SetQuality() {
     Play_quality = Settings_Obj_values('default_quality').replace(STR_SOURCE, "source");
     Play_qualityPlaying = Play_quality;
+
     PlayVod_quality = Play_quality;
-    PlayVod_qualityPlaying = PlayVod_quality;
+    PlayVod_qualityPlaying = Play_quality;
 }
 
 var Play_isFullScreenold = true;
@@ -215,8 +217,6 @@ function Play_SetChatFont() {
 function Play_Start() {
     Play_showBufferDialog();
 
-    Main_innerHTML("stream_live_icon", (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase());
-
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     PlayClip_HasVOD = true;
@@ -227,7 +227,11 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     //Chat delay
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
+    if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
+
+    Play_ShowPanelStatus(1);
+
     Play_IconsResetFocus();
 
     PlayClip_HideShowNext(0, 0);
@@ -242,27 +246,21 @@ function Play_Start() {
     Main_ShowElement('controls_holder');
 
     Play_currentTime = 0;
-    Play_watching_time = 0;
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(0));
+    Play_watching_time = new Date().getTime();
+    Main_textContent("stream_watching_time", " | " + STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
 
-    Main_textContent("stream_live_time", STR_SINCE + Play_created);
+    Main_textContent("stream_live_time", Play_created);
     Main_HideElement('progress_bar_div');
 
     Play_UserLiveFeedPressed = false;
     Play_EndSet(1);
     Play_PlayerPanelOffset = -5;
     Play_updateStreamInfoErrorTry = 0;
-    Play_PlayerCheckCounter = 0;
-    Play_PlayerCheckCount = 0;
-    window.clearInterval(Play_streamCheckId);
-    Play_PlayerCheckRun = false;
     Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_isLive = true;
-    Play_qualitiesFound = 0;
     Play_tokenResponse = 0;
-    Play_playlistResponse = 0;
     Play_playingTry = 0;
     Play_isOn = true;
     Play_Playing = false;
@@ -270,6 +268,7 @@ function Play_Start() {
     document.addEventListener('visibilitychange', Play_Resume, false);
     Play_updateStreamInfoStart();
     Play_loadData();
+    document.body.removeEventListener("keyup", Main_handleKeyUp);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 60000);
 }
 
@@ -280,10 +279,7 @@ function Play_Warn(text) { // jshint ignore:line
 function Play_CheckResume() { // jshint ignore:line
     if (Play_isOn) Play_Resume();
     if (PlayVod_isOn) PlayVod_Resume();
-    if (PlayClip_isOn) {
-        PlayClip_shutdownStream();
-        window.clearInterval(PlayClip_streamCheckId);
-    }
+    if (PlayClip_isOn) PlayClip_shutdownStream();
 }
 
 function Play_Resume() {
@@ -299,6 +295,7 @@ function Play_Resume() {
             window.clearInterval(Play_streamInfoTimerId);
         }
     } else {
+        Play_watching_time = new Date().getTime();
         Play_isOn = true;
         Play_clearPause();
         if (Play_isOn) {
@@ -312,6 +309,11 @@ function Play_Resume() {
             if (navigator.onLine) Play_ResumeAfterOnline();
             else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
             Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 60000);
+            window.clearInterval(Play_ShowPanelStatusId);
+
+            Play_ShowPanelStatusId = window.setInterval(function() {
+                Play_UpdateStatus(1);
+            }, 1000);
         }
     }
 }
@@ -321,6 +323,7 @@ function Play_ResumeAfterOnline() {
         window.clearInterval(Play_ResumeAfterOnlineId);
         Play_state = Play_STATE_LOADING_TOKEN;
         Play_loadData();
+        if (PlayExtra_PicturePicture) PlayExtra_Resume();
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -330,16 +333,18 @@ function Play_updateStreamInfoStart() {
     BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, false);
 }
 
-function Play_partnerIcon(name, partner, islive) {
+function Play_partnerIcon(name, partner, islive, lang) {
     var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
         (partner ? ('<img class="partnericon_img" alt="" src="' +
-            IMG_PARTNER + '">' + STR_SPACE + STR_SPACE) : "");
+            IMG_PARTNER + '">') : "");
 
     if (islive) {
-        div += '<div class="partnericon_text" style="background: #' +
+        div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #' +
             (Main_values.IsRerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
             STR_SPACE + STR_SPACE + (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
     }
+
+    div += '<div class="lang_text" ">' + STR_SPACE + STR_SPACE + lang + '</div>';
 
     Main_innerHTML("stream_info_name", div);
 }
@@ -347,17 +352,19 @@ function Play_partnerIcon(name, partner, islive) {
 function Play_updateStreamInfoStartValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
-        Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner, true);
-
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
-        Main_innerHTML("stream_live_icon", (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase());
 
         Main_values.Play_selectedChannel_id = response.stream.channel._id;
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
         Main_values.Play_gameSelected = response.stream.game;
         Play_Lang = ' [' + (response.stream.channel.broadcaster_language).toUpperCase() + ']';
-        var playing = (Main_values.Play_gameSelected !== "" ? STR_PLAYING + Main_values.Play_gameSelected + STR_FOR : "");
-        Main_textContent("stream_info_game", playing + Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
+
+        Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner, true, Play_Lang);
+
+        var playing = (Main_values.Play_gameSelected !== "" ? STR_PLAYING + Main_values.Play_gameSelected : "");
+        Main_textContent("stream_info_game", playing);
+
+        Main_textContent("stream_live_viewers", STR_FOR + Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
         Main_values.Play_selectedChannelLogo = response.stream.channel.logo;
         Play_LoadLogoSucess = true;
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Play_selectedChannelLogo);
@@ -390,8 +397,11 @@ function Play_updateStreamInfoValues(response) {
     if (response.stream !== null) {
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
         Main_values.Play_gameSelected = response.stream.game;
-        Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected + STR_FOR +
-            Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER + Play_Lang);
+        Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected);
+
+        Main_textContent("stream_live_viewers", STR_FOR + Main_addCommas(response.stream.viewers) +
+            ' ' + STR_VIEWER);
+
         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
             response.stream.channel.logo);
     }
@@ -529,10 +539,22 @@ function Play_loadDataSuccessFake() {
             'url': ''
         },
         {
-            'id': '1080p60 | source',
+            'id': '1080p60 | source ',
             'band': '| 10.00Mbps',
             'codec': ' | avc',
-            'url': 'https://fake'
+            'url': 'https://souce'
+        },
+        {
+            'id': '720p60',
+            'band': ' | 5.00Mbps',
+            'codec': ' | avc',
+            'url': 'https://720p60'
+        },
+        {
+            'id': '720p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+            'url': 'https://720'
         },
     ];
     Play_state = Play_STATE_PLAYING;
@@ -545,8 +567,7 @@ function Play_loadDataSuccess(responseText) {
         Play_state = Play_STATE_LOADING_PLAYLIST;
         Play_loadData();
     } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
-        Play_playlistResponse = responseText;
-        Play_qualities = Play_extractQualities(Play_playlistResponse);
+        Play_qualities = Play_extractQualities(responseText);
         Play_state = Play_STATE_PLAYING;
         if (Play_isOn) Play_qualityChanged();
     }
@@ -615,27 +636,29 @@ function Play_extractStreamDeclarations(input) {
 }
 
 function Play_qualityChanged() {
-    window.clearInterval(Play_streamCheckId);
     Play_qualityIndex = 0;
     Play_playingUrl = Play_qualities[0].url;
     if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
 
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
-        if (Play_qualities[i].id.indexOf(Play_quality) !== -1) {
+        if (Play_qualities[i].id === Play_quality) {
             Play_qualityIndex = i;
             Play_playingUrl = Play_qualities[i].url;
             break;
+        } else if (Play_qualities[i].id.indexOf(Play_quality) !== -1) { //make shore to set a value before break out
+            Play_qualityIndex = i;
+            Play_playingUrl = Play_qualities[i].url;
         }
     }
 
     Play_qualityPlaying = Play_quality;
-    Play_SetHtmlQuality('stream_quality', true);
+    Play_SetHtmlQuality('stream_quality');
 
     Play_state = Play_STATE_PLAYING;
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        if (Play_quality.indexOf("Auto") !== -1) Android.StartAuto(1, 1);
+        if (Play_quality.indexOf("Auto") !== -1 || PlayExtra_PicturePicture) Android.StartAuto(1, 0);
         else Android.startVideo(Play_playingUrl, 1);
     }
 
@@ -654,7 +677,7 @@ function Play_SetHtmlQuality(element) {
 
     quality_string += Play_quality.indexOf('Auto') === -1 ? Play_qualities[Play_qualityIndex].band + Play_qualities[Play_qualityIndex].codec : "";
 
-    Main_textContent(element, quality_string);
+    Main_innerHTML(element, quality_string);
 }
 
 function Play_onPlayer() {
@@ -662,14 +685,6 @@ function Play_onPlayer() {
     Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
     Play_loadChat();
-
-    if (Main_IsNotBrowser) {
-        Play_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 1 + ((Play_Buffer / 1000) * 2);
-        Play_PlayerCheckQualityChanged = false;
-        window.clearInterval(Play_streamCheckId);
-        Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
-    }
 }
 
 function Play_loadChat() {
@@ -681,74 +696,41 @@ function Play_loadChat() {
     ChatLive_Init();
 }
 
-function Play_PlayerCheck() {
-    var updatetime = !Play_isNotplaying();
-    if (Main_IsNotBrowser) Play_currentTime = Android.gettime();
-    if (Play_isOn && Play_PlayerTime === Play_currentTime && updatetime) {
-        Play_PlayerCheckCount++;
-        if (Play_PlayerCheckCount > Play_PlayerCheckTimer) {
+//called by android PlayerActivity
+function Play_PlayerCheck(mwhocall) { // jshint ignore:line
+    if (mwhocall === 1) {
 
-            //Don't change the first time only retry, and don't change if in Auto mode
-            if (Play_PlayerCheckQualityChanged && Play_PlayerCheckRun &&
-                (Play_qualityIndex < Play_getQualitiesCount() - 1) && (Play_qualityPlaying.indexOf("Auto") === -1))
-                Play_qualityIndex++;
-            else if (!Play_PlayerCheckQualityChanged && Play_PlayerCheckRun) Play_PlayerCheckCounter++;
+        if (Play_qualityPlaying.indexOf("Auto") !== -1) Play_qualityChanged();
+        else if (navigator.onLine && (Play_qualityIndex < Play_getQualitiesCount() - 1)) {
+            Play_qualityIndex++;
+            Play_qualityDisplay();
+            Play_qualityChanged();
+        } else Play_EndStart(false, 1);
 
-            if (!navigator.onLine) Play_EndStart(false, 1);
-            else if (Play_PlayerCheckCounter > 1) Play_CheckConnection(Play_PlayerCheckCounter, 1, Play_DropOneQuality);
-            else {
-                Play_qualityDisplay();
-                Play_qualityChanged();
-                Play_PlayerCheckRun = true;
-            }
+    } else if (mwhocall === 2) {
 
-        }
-    } else {
-        Play_PlayerCheckCounter = 0;
-        Play_PlayerCheckCount = 0;
-        Play_PlayerCheckRun = false;
+        if (PlayVod_quality.indexOf("Auto") !== -1) PlayVod_qualityChanged();
+        else if (navigator.onLine && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
+            PlayVod_qualityIndex++;
+            PlayVod_qualityDisplay();
+            PlayVod_qualityChanged();
+        } else Play_EndStart(false, 2);
+
+    } else if (mwhocall === 3) {
+
+        if (navigator.onLine && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
+            PlayClip_qualityIndex++;
+            PlayClip_qualityDisplay();
+            PlayClip_qualityChanged();
+        } else Play_EndStart(false, 3);
+
     }
-    Play_PlayerTime = Play_currentTime;
-    if (updatetime) Play_watching_time++;
-}
-
-function Play_DropOneQuality(ConnectionDrop) {
-
-    if (!ConnectionDrop) {
-        if (Play_qualityIndex < Play_getQualitiesCount() - 1) Play_qualityIndex++;
-        else {
-            Play_CheckHostStart();
-            return;
-        }
-    }
-
-    Play_PlayerCheckCounter = 0;
-    Play_qualityDisplay();
-    Play_qualityChanged();
-    Play_PlayerCheckRun = true;
 }
 
 function Play_EndStart(hosting, PlayVodClip) {
     Main_values.Play_isHost = hosting;
     Play_EndSet(PlayVodClip);
     Play_PlayEndStart(PlayVodClip);
-}
-
-// Check if connection with twitch server is OK if not for 15s drop one quality
-function Play_CheckConnection(counter, PlayVodClip, DropOneQuality) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.timeout = 1000;
-    xmlHttp.open("GET", 'https://static-cdn.jtvnw.net/jtv-static/404_preview-10x10.png?' + Math.random(), true);
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                DropOneQuality(counter > 2);
-            } else if (counter > 12) Play_EndStart(false, PlayVodClip);
-        }
-    };
-
-    xmlHttp.send(null);
 }
 
 function Play_isNotplaying() {
@@ -799,7 +781,18 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream() {
-    if (Main_IsNotBrowser) Android.stopVideo(1);
+    if (Main_IsNotBrowser) {
+        //we are updating the main player via live feed
+        try {
+            if (PlayExtra_PicturePicture) Android.mClearBigPlayer();
+            else {
+                //We are closing the player on error or on end
+                Android.mClearSmallPlayer();
+                Android.stopVideo(1);
+            }
+        } catch (e) {}
+    }
+
     Play_isOn = false;
     UserLiveFeed_Hide();
     Chat_Clear();
@@ -816,6 +809,7 @@ function Play_exitMain() {
 }
 
 function Play_ClearPlayer() {
+    window.clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
     Play_clearPause();
     Play_HideWarningDialog();
@@ -834,7 +828,6 @@ function Play_ClearPlay() {
     document.removeEventListener('visibilitychange', Play_Resume);
     ChatLive_Clear();
     window.clearInterval(Play_streamInfoTimerId);
-    window.clearInterval(Play_streamCheckId);
     Play_IsWarning = false;
 }
 
@@ -903,48 +896,149 @@ function Play_isPanelShown() {
 }
 
 function Play_hidePanel() {
-    //return;
+    //return;//return;
     Play_clearHidePanel();
-    document.getElementById("scene_channel_panel").style.opacity = "0";
+    Play_ForceHidePannel();
     Play_quality = Play_qualityPlaying;
     window.clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
+function Play_ForceShowPannel() {
+    document.getElementById("scene_channel_panel").style.opacity = "1";
+    if (!Play_Status_Always_On) Main_ShowElement('playsideinfo');
+    else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+}
+
+function Play_ForceHidePannel() {
+    document.getElementById("scene_channel_panel").style.opacity = "0";
+    if (!Play_Status_Always_On) Main_HideElement('playsideinfo');
+    else Main_AddClass('playsideinfo', 'playsideinfofocus');
+}
+
+var Play_ShowPanelStatusId;
+
+function Play_ShowPanelStatus(mwhocall) {
+    if (Play_Status_Always_On) {
+
+        window.clearInterval(Play_ShowPanelStatusId);
+
+        Play_ShowPanelStatusId = window.setInterval(function() {
+            Play_UpdateStatus(mwhocall);
+        }, 1000);
+
+        Main_ShowElement('playsideinfo');
+        Main_AddClass('playsideinfo', 'playsideinfofocus');
+    } else {
+        Main_HideElement('playsideinfo');
+        Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+        window.clearInterval(Play_ShowPanelStatusId);
+    }
+}
+//tdo cleac 
+function Play_UpdateStatus(mwhocall) {
+    if (Main_IsNotBrowser) {
+        var value = null;
+
+        if (mwhocall === 1) {
+
+            if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality');
+            else {
+                value = Android.getVideoQuality();
+                if (value !== null && value !== undefined) Play_getVideoQuality(value);
+            }
+
+        } else if (mwhocall === 2) {
+
+            if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality');
+            else {
+                value = Android.getVideoQuality();
+                if (value !== null && value !== undefined) Play_getVideoQuality(value);
+            }
+
+        }
+
+        try {
+            Play_Status(Android.getVideoStatus());
+        } catch (e) {}
+    } else Play_StatusFake();
+}
+
 function Play_showPanel() {
     PlayVod_IconsBottonResetFocus();
-    //Play_IconsResetFocus();
     Play_qualityIndexReset();
     Play_qualityDisplay();
-    Play_ResetSpeed();
-    if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality', true);
+    PlayExtra_ResetSpeed();
+    PlayExtra_ResetAudio();
+    if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
     Play_clock();
     Play_CleanHideExit();
-    document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_ForceShowPannel();
     Play_clearHidePanel();
     Play_setHidePanel();
 }
 
 function Play_RefreshWatchingtime() {
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(Play_watching_time));
-    Main_textContent("stream_live_time", STR_SINCE +
+    Main_textContent("stream_watching_time", " | " +
+        STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
+
+    Main_innerHTML("stream_live_time", STR_SINCE +
         (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
 
-    if (Play_qualityPlaying.indexOf("Auto") !== -1) {
+    if (Play_qualityPlaying.indexOf("Auto") !== -1 && Main_IsNotBrowser) {
         var value = Android.getVideoQuality();
 
         if (value !== null && value !== undefined) Play_getVideoQuality(value);
-        else Play_SetHtmlQuality('stream_quality', true);
+        else Play_SetHtmlQuality('stream_quality');
     }
+
+    if (Main_IsNotBrowser) {
+        try {
+            Play_Status(Android.getVideoStatus());
+        } catch (e) {}
+    } else Play_StatusFake();
+}
+
+function Play_StatusFake() {
+    Main_innerHTML("stream_status", "Net Speed:&nbsp;&nbsp;&nbsp;90.00 (90.00 Avg) Mbps" + STR_BR +
+        "Net Activity: 20.00 (20.00 Avg) Mb" + STR_BR + "Drooped frames: 100 (100 Today)" + STR_BR +
+        " Buffer health: 22.22 s");
+}
+
+var Play_StatusNetActOld = 0;
+
+function Play_Status(value) {
+    value = value.split(',');
+
+    //didn't change no activity on this run
+    if (Play_StatusNetActOld === value[4]) value[4] = 0;
+    else Play_StatusNetActOld = value[4];
+
+    Main_innerHTML("stream_status", "Net Speed:" + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
+        " (" + value[3] + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
+        value[5] + " Avg) Mb" + STR_BR + "Drooped frames: " + value[0] + " (" + value[1] + " Today)" +
+        STR_BR + " Buffer health: " + Play_getBuffer(value[6]));
+}
+
+function Play_getMbps(value) {
+    value = (parseInt(value) / 1000000).toFixed(2);
+
+    return (parseInt(value) < 10 ? (STR_SPACE + STR_SPACE + value) : value);
+}
+
+function Play_getBuffer(value) {
+    value = (value > 0 ? (value / 1000).toFixed(2) : 0);
+
+    return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
 }
 
 function Play_getVideoQuality(value) {
     value = value.split(',');
 
     for (var i = 0; i < value.length; i++) {
-        value[i] = (value[i] !== null && value[i] !== 'null') ? value[i] : '';
+        value[i] = (value[i] !== null && value[i] !== 'null' && value[i] !== undefined) ? value[i] : '';
     }
 
     Main_innerHTML("stream_quality", value[0] + value[1] + " | Auto" + Play_extractBand(value[2]) + " | " + value[3]);
@@ -1040,30 +1134,17 @@ function Play_KeyPause(PlayVodClip) {
 
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
 
-        if (PlayVodClip === 1) {
-            if (Play_isPanelShown()) Play_hidePanel();
-            window.clearInterval(Play_streamCheckId);
-            Play_streamCheckId = window.setInterval(Play_PlayerCheck, Play_PlayerCheckInterval);
-        } else if (PlayVodClip === 2) {
-            if (Play_isPanelShown()) PlayVod_hidePanel();
-            window.clearInterval(PlayVod_streamCheckId);
-            PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
-        } else if (PlayVodClip === 3) {
-            if (Play_isPanelShown()) PlayClip_hidePanel();
-            window.clearInterval(PlayClip_streamCheckId);
-            PlayClip_streamCheckId = window.setInterval(PlayClip_PlayerCheck, Play_PlayerCheckInterval);
+        if (Play_isPanelShown()) {
+            if (PlayVodClip === 1) Play_hidePanel();
+            else if (PlayVodClip === 2) PlayVod_hidePanel();
+            else if (PlayVodClip === 3) PlayClip_hidePanel();
         }
 
-        //For some reason Android.play(true); can freeze the app as if the function never returns even it be a void
-        //Let it at the bottom and technically all works
         if (Main_IsNotBrowser) {
             Android.play(true);
         }
     } else {
         Play_HideBufferDialog();
-        window.clearInterval(Play_streamCheckId);
-        window.clearInterval(PlayVod_streamCheckId);
-        window.clearInterval(PlayClip_streamCheckId);
 
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i> </div>');
 
@@ -1152,8 +1233,11 @@ function Play_EndText(PlayVodClip) {
             Play_CleanHideExit();
             Play_hideChat();
 
-            if (PlayVodClip === 1) Play_shutdownStream();
-            else if (PlayVodClip === 2) PlayVod_shutdownStream();
+            if (PlayVodClip === 1) {
+                PlayExtra_PicturePicture = false;
+                PlayExtra_selectedChannel = '';
+                Play_shutdownStream();
+            } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
                 if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
@@ -1189,7 +1273,6 @@ function Play_EndDialogPressed(PlayVodClip) {
                 }, 2000);
             } else {
                 PlayVod_replay = true;
-                PlayVod_PlayerCheckQualityChanged = false;
                 PlayVod_qualityChanged();
                 Play_clearPause();
                 PlayVod_currentTime = 0;
@@ -1279,6 +1362,8 @@ function Play_OpenChannel(PlayVodClip) {
     Main_values.Main_Go = Main_ChannelContent;
 
     if (PlayVodClip === 1) {
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
         Main_values.Main_selectedChannel_id = Main_values.Play_selectedChannel_id;
         Main_values.Main_selectedChannel = Main_values.Play_selectedChannel;
         Main_values.Main_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname;
@@ -1292,6 +1377,8 @@ function Play_OpenChannel(PlayVodClip) {
 //TODO improve this
 function Play_OpenSearch(PlayVodClip) {
     if (PlayVodClip === 1) {
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
         Play_hideChat();
         Play_PreshutdownStream();
     } else if (PlayVodClip === 2) PlayVod_PreshutdownStream();
@@ -1302,6 +1389,7 @@ function Play_OpenSearch(PlayVodClip) {
     Main_ShowElement('scene1');
     Main_HideElement('scene2');
     Main_updateclock();
+    document.body.addEventListener("keyup", Main_handleKeyUp, false);
     Main_OpenSearch();
 }
 
@@ -1327,8 +1415,11 @@ function Play_OpenGame(PlayVodClip) {
 
     Main_values.Main_gameSelected = Main_values.Play_gameSelected;
     Play_hideChat();
-    if (PlayVodClip === 1) Play_shutdownStream();
-    else if (PlayVodClip === 2) PlayVod_shutdownStream();
+    if (PlayVodClip === 1) {
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
+        Play_shutdownStream();
+    } else if (PlayVodClip === 2) PlayVod_shutdownStream();
     else if (PlayVodClip === 3) PlayClip_shutdownStream();
 }
 
@@ -1380,7 +1471,8 @@ function Play_qualityIndexReset() {
 //called by android PlayerActivity
 function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
     if (PlayVodClip === 1) { //live
-        window.clearInterval(Play_streamCheckId);
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
         Play_CheckHostStart();
     } else {
         Play_PlayEndStart(PlayVodClip);
@@ -1388,10 +1480,6 @@ function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
 }
 
 function Play_PlayEndStart(PlayVodClip) {
-    window.clearInterval(Play_streamCheckId);
-    window.clearInterval(PlayClip_streamCheckId);
-    window.clearInterval(PlayVod_streamCheckId);
-
     Play_PrepareshowEndDialog(PlayVodClip);
     Play_EndTextCounter = (!Play_EndSettingsCounter ? -2 : Play_EndSettingsCounter);
 
@@ -1406,7 +1494,6 @@ function Play_CheckHostStart() {
     Play_loadingDataTimeout = 2000;
     ChatLive_Clear();
     window.clearInterval(Play_streamInfoTimerId);
-    window.clearInterval(Play_streamCheckId);
     if (Main_values.Play_selectedChannel_id !== '') Play_loadDataCheckHost();
     else Play_CheckId();
 }
@@ -1493,17 +1580,55 @@ function Play_KeyReturn(is_vod) {
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
         } else if (Play_ExitDialogVisible()) {
-            Play_CleanHideExit();
-            Play_hideChat();
-            if (is_vod) PlayVod_shutdownStream();
-            else Play_shutdownStream();
+            if (PlayExtra_PicturePicture) {
+                try {
+                    if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+                } catch (e) {}
+                PlayExtra_PicturePicture = false;
+                PlayExtra_selectedChannel = '';
+                PlayExtra_UnSetPanel();
+                Play_CleanHideExit();
+            } else {
+                Play_CleanHideExit();
+                Play_hideChat();
+                if (is_vod) PlayVod_shutdownStream();
+                else Play_shutdownStream();
+            }
         } else if (Play_WarningDialogVisible()) {
             Play_HideWarningDialog();
             Play_showExitDialog();
         } else {
+            Main_textContent("play_dialog_exit_text", PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN);
             Play_showExitDialog();
         }
     }
+}
+
+function Play_handleKeyUp(e) {
+    console.log('Play_handleKeyUp');
+    if (e.keyCode === KEY_ENTER) {
+        Play_handleKeyUpClear();
+        if (!PlayExtra_clear) {
+            var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+            if (doc === null) UserLiveFeed_ResetFeedId();
+            else {
+                var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
+                if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
+                    console.log('KEY_ENTER Main_OpenLiveStream');
+                    Play_PreshutdownStream();
+                    Main_values.Play_isHost = false;
+                    Play_UserLiveFeedPressed = true;
+                    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                } else UserLiveFeed_ResetFeedId();
+            }
+        }
+    }
+}
+
+function Play_handleKeyUpClear() {
+    window.clearTimeout(PlayExtra_KeyEnterID);
+    document.body.removeEventListener("keyup", Play_handleKeyUp);
+    document.body.addEventListener("keydown", Play_handleKeyDown, false);
 }
 
 function Play_handleKeyDown(e) {
@@ -1513,6 +1638,8 @@ function Play_handleKeyDown(e) {
                 if (Play_ExitDialogVisible()) {
                     Play_CleanHideExit();
                     Play_hideChat();
+                    PlayExtra_PicturePicture = false;
+                    PlayExtra_selectedChannel = '';
                     Play_shutdownStream();
                 } else {
                     Play_showExitDialog();
@@ -1530,7 +1657,8 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos--;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
+                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
+                    !PlayExtra_PicturePicture) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
                     Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
@@ -1545,6 +1673,14 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter--;
                     if (Play_Endcounter < (Main_values.Play_isHost ? 1 : 2)) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
+                } else if (PlayExtra_PicturePicture) {
+                    Play_PicturePicturePos++;
+                    if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
+
+                    try {
+                        Android.mSwitchPlayerPosition(Play_PicturePicturePos);
+                    } catch (e) {}
+                    Main_setItem('Play_PicturePicturePos', Play_PicturePicturePos);
                 } else {
                     Play_showPanel();
                 }
@@ -1556,7 +1692,8 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos++;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
+                    !PlayExtra_PicturePicture) {
                     Play_controls[Play_controlsChat].enterKey(1);
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
@@ -1568,6 +1705,13 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter++;
                     if (Play_Endcounter > 3) Play_Endcounter = (Main_values.Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
+                } else if (PlayExtra_PicturePicture) {
+                    Play_PicturePictureSize++;
+                    if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
+                    try {
+                        Android.mSwitchPlayerSize(Play_PicturePictureSize);
+                    } catch (e) {}
+                    Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                 } else {
                     Play_showPanel();
                 }
@@ -1595,7 +1739,7 @@ function Play_handleKeyDown(e) {
                     } else Play_BottomUpDown(1, -1);
                     Play_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
-                else if (Play_isFullScreen && Play_isChatShown()) {
+                else if (Play_isFullScreen && Play_isChatShown() && !PlayExtra_PicturePicture) {
                     Play_ChatSizeValue++;
                     if (Play_ChatSizeValue > 3) {
                         Play_ChatSizeValue = 0;
@@ -1607,28 +1751,28 @@ function Play_handleKeyDown(e) {
                     Play_controls[Play_controlsChatSize].bottomArrows();
                     Play_controls[Play_controlsChatSize].setLable();
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
-                else {
-                    Play_showPanel();
-                }
+                else if (PlayExtra_PicturePicture) {
+                    PlayExtra_SwitchPlayer();
+
+                    try {
+                        if (Main_IsNotBrowser) Android.mSwitchPlayer();
+                    } catch (e) {}
+                } else Play_showPanel();
                 break;
             case KEY_ENTER:
                 if (Play_isEndDialogVisible()) Play_EndDialogPressed(1);
                 else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 1) {
-                        if (!Main_values.Play_ChatForceDisable && Play_isNotplaying()) Play_loadChat();
                         if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
-                    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-                    if (doc === null) UserLiveFeed_ResetFeedId();
-                    else if (Main_values.Play_selectedChannel !== JSON.parse(doc.getAttribute(Main_DataAttribute))[0]) {
-                        Play_PreshutdownStream();
-                        Main_values.Play_isHost = false;
-                        Play_UserLiveFeedPressed = true;
-                        Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
-                    } else UserLiveFeed_ResetFeedId();
+                    document.body.removeEventListener("keydown", Play_handleKeyDown, false);
+                    document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                    PlayExtra_clear = false;
+                    UserLiveFeed_ResetFeedId();
+                    PlayExtra_KeyEnterID = window.setTimeout(PlayExtra_KeyEnter, 1000);
                 } else Play_showPanel();
                 break;
             case KEY_RETURN:
@@ -1672,14 +1816,16 @@ var Play_controlsOpenVod = 3;
 var Play_controlsFallow = 4;
 var Play_controlsSpeed = 5;
 var Play_controlsQuality = 6;
-var Play_controlsChat = 7;
-var Play_controlsChatSide = 8;
-var Play_controlsChatPos = 9;
-var Play_controlsChatSize = 10;
-var Play_controlsChatBright = 11;
-var Play_controlsChatFont = 12;
-var Play_controlsChatDelay = 13;
-var Play_controlsChatForceDis = 14;
+var Play_controlsQualityMini = 7;
+var Play_controlsAudio = 8;
+var Play_controlsChat = 9;
+var Play_controlsChatSide = 10;
+var Play_controlsChatForceDis = 11;
+var Play_controlsChatPos = 12;
+var Play_controlsChatSize = 13;
+var Play_controlsChatBright = 14;
+var Play_controlsChatFont = 15;
+var Play_controlsChatDelay = 16;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -1695,7 +1841,6 @@ function Play_MakeControls() {
         enterKey: function(PlayVodClip) {
             Play_ForceHidePannel();
             Play_OpenSearch(PlayVodClip);
-            Play_ForceHidePannelReset();
         },
     };
 
@@ -1708,7 +1853,6 @@ function Play_MakeControls() {
         enterKey: function(PlayVodClip) {
             Play_ForceHidePannel();
             Play_OpenChannel(PlayVodClip);
-            Play_ForceHidePannelReset();
         },
     };
 
@@ -1721,7 +1865,6 @@ function Play_MakeControls() {
         enterKey: function(PlayVodClip) {
             Play_ForceHidePannel();
             Play_OpenGame(PlayVodClip);
-            Play_ForceHidePannelReset();
         },
     };
 
@@ -1734,7 +1877,6 @@ function Play_MakeControls() {
         enterKey: function() {
             Play_ForceHidePannel();
             PlayClip_OpenVod();
-            Play_ForceHidePannelReset();
         },
     };
 
@@ -1803,7 +1945,6 @@ function Play_MakeControls() {
                 Play_qualityChanged();
                 Play_hidePanel();
             } else if (PlayVodClip === 2) {
-                PlayVod_PlayerCheckQualityChanged = false;
                 PlayVod_qualityChanged();
                 PlayVod_hidePanel();
             } else if (PlayVodClip === 3) {
@@ -1850,6 +1991,84 @@ function Play_MakeControls() {
         },
     };
 
+    Play_controls[Play_controlsQualityMini] = { //quality for picture in picture
+        icons: "videocamera",
+        string: STR_PLAYER_RESYNC,
+        values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
+        defaultValue: 2,
+        opacity: 0,
+        enterKey: function() {
+
+            try {
+                if (this.defaultValue === 2) {
+                    Android.StartAuto(1, 0);
+                    Android.initializePlayer2Auto();
+                } else if (this.defaultValue) Android.StartAuto(1, 0);
+                else Android.initializePlayer2Auto();
+            } catch (e) {}
+
+            Play_hidePanel();
+            this.defaultValue = 2;
+            this.bottomArrows();
+            this.setLable();
+        },
+        updown: function(adder) {
+
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+
+    };
+
+    Play_controls[Play_controlsAudio] = { //speed
+        icons: "sound",
+        string: STR_AUDIO_SOURCE,
+        values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
+        defaultValue: Play_controlsAudioPos,
+        opacity: 0,
+        enterKey: function() {
+
+            try {
+                Android.mSwitchPlayerAudio(this.defaultValue);
+            } catch (e) {}
+
+            Play_hidePanel();
+            Play_controlsAudioPos = this.defaultValue;
+
+            Main_setItem('Play_controlsAudioPos', Play_controlsAudioPos);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        updown: function(adder) {
+
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
     Play_controls[Play_controlsChat] = { //chat enable disable
         icons: "chat",
         string: STR_CHAT,
@@ -1873,6 +2092,28 @@ function Play_MakeControls() {
             if (!Play_isFullScreen) string = STR_CHAT_SIDE;
 
             Main_textContent('extra_button_' + this.position, '(' + string + ')');
+        },
+    };
+
+
+    Play_controls[Play_controlsChatForceDis] = { //force disable chat
+        icons: "chat-stop",
+        string: STR_F_DISABLE_CHAT,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+            Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+
+            if (PlayVodClip === 1) ChatLive_Init();
+            else Chat_Init();
+
+            this.setLable();
+            Main_SaveValues();
+        },
+        setLable: function() {
+            Main_textContent('extra_button_' + this.position, '(' +
+                (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
         },
     };
 
@@ -2064,27 +2305,6 @@ function Play_MakeControls() {
             Play_BottomArrows(this.position);
         },
     };
-
-    Play_controls[Play_controlsChatForceDis] = { //force disable chat
-        icons: "chat-stop",
-        string: STR_F_DISABLE_CHAT,
-        values: null,
-        defaultValue: null,
-        opacity: 0,
-        enterKey: function(PlayVodClip) {
-            Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-
-            if (PlayVodClip === 1) ChatLive_Init();
-            else Chat_Init();
-
-            this.setLable();
-            Main_SaveValues();
-        },
-        setLable: function() {
-            Main_textContent('extra_button_' + this.position, '(' +
-                (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
-        },
-    };
 }
 
 function Play_IconsAddFocus() {
@@ -2102,17 +2322,6 @@ function Play_IconsRemoveFocus() {
     document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "0";
     //in case chat is disable and the warning is showing because some chat option was selected
     document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
-}
-
-
-function Play_ForceHidePannel() {
-    var doc = document.getElementById("scene_channel_panel");
-    doc.style.transition = 'none';
-    doc.style.opacity = "0";
-}
-
-function Play_ForceHidePannelReset() {
-    document.getElementById("scene_channel_panel").style.transition = '';
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {
@@ -2157,9 +2366,9 @@ function Play_BottomLeftRigt(PlayVodClip, adder) {
 }
 
 function Play_BottomArrows(position) {
-    if (Play_controls[position].defaultValue === 1) {
-        document.getElementById("control_arrow_up_" + position).style.opacity = "1";
-        document.getElementById("control_arrow_down" + position).style.opacity = "1";
+    if (Play_controls[position].values.length === 1) {
+        document.getElementById("control_arrow_up_" + position).style.opacity = "0";
+        document.getElementById("control_arrow_down" + position).style.opacity = "0";
     } else if (!Play_controls[position].defaultValue) {
         document.getElementById("control_arrow_up_" + position).style.opacity = "1";
         document.getElementById("control_arrow_down" + position).style.opacity = "0.2";
@@ -2201,10 +2410,4 @@ function Play_SetControls() {
 
 function Play_SetControlsArrows(key) {
     return '<div id="controls_arrows_' + key + '" style="font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' + key + '" class="up"></div><div id="control_arrow_down' + key + '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key + '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
-}
-
-function Play_ResetSpeed() {
-    Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
-    Play_controls[Play_controlsSpeed].bottomArrows();
-    Play_controls[Play_controlsSpeed].setLable();
 }

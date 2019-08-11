@@ -73,27 +73,6 @@
                 -2px 6px 0 #000000;
         }
 
-        .pause_button3d {
-            text-shadow: -2px 0 0 #000000,
-                1px -1px 0 #000000,
-                1px 1px 0 #000000,
-                0 1px 0 #000000,
-                -1px 0 0 #000000,
-                -1px 1px 0 #000000,
-                0 -1px 0 #000000,
-                0 0.75px 0 #777777,
-                0 1.5px 0 #666666,
-                0 2.25px 0 #555555,
-                0 4px 0 #000000,
-                0 5px 0 #000000,
-                2px 2px 0 #000000,
-                2px 3px 0 #000000,
-                -2px 2px 0 #000000,
-                -2px 3px 0 #000000,
-                -1px 4px 0 #000000,
-                1px 4px 0 #000000;
-        }
-
         div.icon_center_label,
         div.side_panel_text {
             text-shadow: -2px 0 0 #000000,
@@ -372,6 +351,28 @@
             text-shadow: #000000 0 0 3.6px, #000000 0 0 3.6px, #000000 0 0 2.5px;
         }
 
+        div.stream_channel_fallow_game,
+        .pause_button3d {
+            text-shadow: -2px 0 0 #000000,
+                1px -1px 0 #000000,
+                1px 1px 0 #000000,
+                0 1px 0 #000000,
+                -1px 0 0 #000000,
+                -1px 1px 0 #000000,
+                0 -1px 0 #000000,
+                0 0.75px 0 #777777,
+                0 1.5px 0 #666666,
+                0 2.25px 0 #555555,
+                0 4px 0 #000000,
+                0 5px 0 #000000,
+                2px 2px 0 #000000,
+                2px 3px 0 #000000,
+                -2px 2px 0 #000000,
+                -2px 3px 0 #000000,
+                -1px 4px 0 #000000,
+                1px 4px 0 #000000;
+        }
+
         .stream_info {
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -394,7 +395,6 @@
             font-size: 75%;
         }
 
-        div.stream_channel_fallow_game,
         .strokicon {
             text-shadow:
                 -0.6px 0 0 #000000,
@@ -564,8 +564,10 @@
 
 
         div.controls_text {
-            font-size: 85%;
+            font-size: 70%;
             font-family: 'Roboto-Bold';
+            margin-top: 0;
+            margin-bottom: 0;
         }
 
         div.up,
@@ -586,26 +588,63 @@
             position: fixed;
             z-index: 2;
             opacity: 0;
-            transition: 0.4s;
+        }
+
+        div.playsideinfostatus,
+        div.playsideinfotext {
+            word-wrap: break-word;
+            line-height: 2.2ch
         }
 
         div.playsideinfotext {
-            word-wrap: break-word;
+            display: inline-block;
         }
 
         div.playsideinfo {
+            z-index: 100;
             position: absolute;
             top: 1.5%;
             right: 0;
-            width: 32ch;
+            width: 34.5ch;
+            height: 10.5ch;
             color: #FFFFFF;
-            font-size: 83%;
-            text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
+            font-size: 95%;
+            padding: 1%;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        div.playsideinfofocus {
+            border-radius: 15px;
+
+            background-color: rgba(0, 0, 0, 0.60);
+        }
+
+        div.playclock {
+            position: absolute;
+            text-align: center;
+            top: 0.75%;
+            width: 100%;
+            color: #FFFFFF;
+            font-size: 100%;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        div.playmaininfo {
+            vertical-align: top;
+            padding-left: 1%;
+            padding-top: 2%;
+            display: inline-block;
+            width: 62.5%;
+            line-height: 2.2ch;
+            font-size: 90%;
+            color: #FFFFFF;
+            word-wrap: break-word;
+            text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
         }
 
         div.playerinfo {
             width: 100%;
-            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.055));
+            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.25));
         }
 
         div.partnericon_div {
@@ -619,12 +658,19 @@
             vertical-align: middle;
         }
 
+        div.lang_text,
         div.partnericon_text {
-            border-radius: 2px;
             display: inline-block;
             width: auto;
-            font-size: 60%;
+            font-size: 70%;
+            font-family: 'Roboto';
+        }
+
+        div.partnericon_text {
+            border-radius: 2px;
             text-shadow: none;
+            font-size: 60%;
+            font-family: 'Roboto-Bold';
         }
 
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
@@ -650,18 +696,6 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-        }
-
-        div.playmaininfo {
-            vertical-align: top;
-            padding-left: 1%;
-            padding-top: 1.5%;
-            display: inline-block;
-            width: 64%;
-            font-size: 90%;
-            color: #FFFFFF;
-            word-wrap: break-word;
-            text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
         }
 
         div.side_panel_feed_thumb {
@@ -762,6 +796,10 @@
 
         .strokedeline {
             text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        .strokedelinebig {
+            text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px 1.5px 0 #000;
         }
 
         .strokedextramini {
@@ -991,7 +1029,7 @@
             padding-top: 5px;
             padding-bottom: 5px;
             text-align: center;
-            border-radius: 15px;
+            border-radius: 10px;
             border: 2px solid rgba(0, 0, 0, 0);
         }
 
@@ -1068,7 +1106,7 @@
             margin-left: 2.5%;
             height: 40px;
             text-align: center;
-            border-radius: 15px;
+            border-radius: 10px;
             margin-bottom: 0.5ch;
             border: 2px solid rgba(0, 0, 0, 0);
         }
@@ -1286,6 +1324,7 @@
     <script src="app/general/TVKeyValue.js" defer></script>
     <script src="app/general/img64.js" defer></script>
     <script src="app/specific/Play.js" defer></script>
+    <script src="app/specific/PlayExtra.js" defer></script>
     <script src="app/specific/PlayClip.js" defer></script>
     <script src="app/specific/PlayVod.js" defer></script>
     <script src="app/specific/AddUser.js" defer></script>
@@ -1358,7 +1397,7 @@
         <div id="dialog_about" class="about_dialogs hide" style="width: 95%; margin-left: 2.5%;">
             <div id="dialog_about_text" class="about_text"></div>
         </div>
-        <div id="dialog_controls" class="about_dialogs hide" style="width: 80%; margin-left: 10%;">
+        <div id="dialog_controls" class="about_dialogs hide" style="width: 85%; margin-left: 7.5%;">
             <div id="dialog_controls_text" class="controls_text"></div>
         </div>
         <div id="dialog_counter" style="position: fixed; z-index:101; width: 100%; bottom: 0;">
@@ -1484,19 +1523,15 @@
         </div>
         <div id="scene_channel_panel" class="screen_size scene_channel_panel">
             <div class="playerinfo">
-                <div class="playsideinfo">
-                    <div id="stream_clock" class="playsideinfotext"></div>
-                    <div id="stream_live_icon" class="playsideinfotext" style="display: inline-block; margin-right: 5px;">
-                    </div>
-                    <div id="stream_live_time" class="playsideinfotext" style="display: inline-block"></div>
-                    <div id="stream_watching_time" class="playsideinfotext"></div>
-                    <div id="stream_quality" class="playsideinfotext"></div>
-                </div>
-                <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+                <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 9.5%;" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+                <div id="stream_clock" class="playclock"></div>
                 <div class="playmaininfo">
                     <div id="stream_info_name" class="class_bold" style="font-size: 160%;"></div>
                     <div id="stream_info_title"></div>
                     <div id="stream_info_game"></div>
+                    <div id="stream_live_time" style="display: inline-block; width:auto;"></div>
+                    <div id="stream_live_viewers" style="display: inline-block; width:auto;"></div>
+                    <div id="stream_watching_time" class="playsideinfotext"></div>
                 </div>
             </div>
             <div id="controls_holder" class="controls_holder">
@@ -1545,6 +1580,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="playsideinfo" class="playsideinfo hide">
+            <div id="stream_quality" class="playsideinfostatus"></div>
+            <div id="stream_status" class="playsideinfostatus"></div>
         </div>
         <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 50%; z-index: 2;">
             <div id="dialog_vod_start" class="dialogs hide" style="z-index:3; font-size: 150%; height: 75%; margin-top: 25%;">
@@ -1598,10 +1637,10 @@
                 <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 527%;"></i>
             </div>
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 21%;">
-                <div id="play_dialog_exit_text" class="strokedeline" style="font-size: 250%;"></div>
+                <div id="play_dialog_exit_text" class="strokedelinebig" style="font-size: 200%;"></div>
             </div>
             <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 16%;">
-                <div id="dialog_warning_play_text" class="strokedeline" style="font-size: 250%;"></div>
+                <div id="dialog_warning_play_text" class="strokedelinebig" style="font-size: 200%;"></div>
             </div>
         </div>
     </div>

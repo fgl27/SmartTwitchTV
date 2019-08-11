@@ -22,13 +22,6 @@ var PlayVod_loadingInfoDataTry = 0;
 var PlayVod_loadingInfoDataTryMax = 5;
 var PlayVod_loadingInfoDataTimeout = 10000;
 
-var PlayVod_PlayerTime = 0;
-var PlayVod_streamCheckId = null;
-var PlayVod_PlayerCheckCount = 0;
-var PlayVod_PlayerCheckQualityChanged = false;
-var PlayVod_PlayerCheckCounter = 0;
-var PlayVod_PlayerCheckRun = false;
-
 var Play_jumping = false;
 var PlayVod_SizeClearID;
 var PlayVod_updateStreamInfId;
@@ -57,7 +50,6 @@ function PlayVod_Start() {
     Play_HideEndDialog();
     PlayVod_currentTime = 0;
     Main_textContent("stream_live_time", '');
-    Main_textContent("stream_watching_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = STR_PAST_BROA + '.';
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
@@ -68,8 +60,11 @@ function PlayVod_Start() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     //Chat delay
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
+    PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
+
+    Play_ShowPanelStatus(2);
 
     PlayVod_StepsCount = 0;
     Play_DefaultjumpTimers = PlayVod_jumpTimers;
@@ -86,9 +81,11 @@ function PlayVod_Start() {
         PlayVod_updateVodInfo();
     } else {
         PlayVod_updateStreamerInfoValues();
-        Main_innerHTML("stream_info_title", '');
-        Main_innerHTML("stream_info_game", ChannelVod_views + ' [' + (ChannelVod_language).toUpperCase() + ']');
-        Main_textContent("stream_live_icon", ChannelVod_createdAt);
+        Main_innerHTML("stream_info_title", ChannelVod_title);
+        Main_innerHTML("stream_info_game", '');
+        //todo fix this
+        Main_textContent("stream_live_viewers", ChannelVod_views);
+        Main_textContent("stream_watching_time", " | " + ChannelVod_createdAt);
 
         Main_replaceClassEmoji('stream_info_game');
     }
@@ -114,10 +111,6 @@ function PlayVod_PosStart() {
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
     new Image().src = Play_IncrementView;
 
-    PlayVod_PlayerCheckCounter = 0;
-    PlayVod_PlayerCheckCount = 0;
-    window.clearInterval(PlayVod_streamCheckId);
-    PlayVod_PlayerCheckRun = false;
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
     Play_IsWarning = false;
@@ -132,6 +125,7 @@ function PlayVod_PosStart() {
     PlayVod_WasSubChekd = false;
     PlayVod_loadData();
     Play_EndSet(2);
+    document.body.removeEventListener("keyup", Main_handleKeyUp);
 }
 
 function PlayVod_PrepareLoad() {
@@ -142,7 +136,7 @@ function PlayVod_PrepareLoad() {
 
 function PlayVod_updateStreamerInfoValues() {
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner);
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false, ' [' + (ChannelVod_language).toUpperCase() + ']');
 
     //The chat init will happens after user click on vod dialog
     if (!PlayVod_VodIds['#' + Main_values.ChannelVod_vodId]) Chat_Init();
@@ -174,12 +168,15 @@ function PlayVod_updateVodInfoPannel(response) {
     //if (response.muted_segments) console.log(response.muted_segments);
 
     Main_values.Main_selectedChannelPartner = response.channel.partner;
-    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner);
+    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false,
+        '[' + (response.channel.broadcaster_language).toUpperCase() + ']');
 
     Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
-    Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING + response.game : "") +
-        ' ' + Main_addCommas(response.views) + STR_VIEWS + ' [' + (response.channel.broadcaster_language).toUpperCase() + ']');
-    Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
+    Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +
+        response.game : ""));
+    Main_textContent("stream_live_viewers", Main_addCommas(response.views) + STR_VIEWS);
+
+    Main_textContent("stream_watching_time", " | " + STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
 
     ChannelVod_DurationSeconds = parseInt(response.length);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
@@ -214,7 +211,6 @@ function PlayVod_Resume() {
             PlayVod_SaveOffset();
             PlayVod_SaveVodIds();
             Play_ClearPlayer();
-            window.clearInterval(PlayVod_streamCheckId);
             window.clearInterval(PlayVod_SaveOffsetId);
         }
     } else {
@@ -232,6 +228,11 @@ function PlayVod_Resume() {
 
             Play_EndSet(2);
             PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+
+            window.clearInterval(Play_ShowPanelStatusId);
+            Play_ShowPanelStatusId = window.setInterval(function() {
+                Play_UpdateStatus(2);
+            }, 1000);
         }
     }
 }
@@ -309,10 +310,30 @@ function PlayVod_loadDataError() {
 //Browsers crash trying to get the streams link
 function PlayVod_loadDataSuccessFake() {
     PlayVod_qualities = [{
-        'id': '1080p60(Source)',
-        'band': '(10.00Mbps)',
-        'url': 'http://fake'
-    }];
+            'id': 'Auto',
+            'band': 0,
+            'codec': 'avc',
+            'url': ''
+        },
+        {
+            'id': '1080p60 | source ',
+            'band': '| 10.00Mbps',
+            'codec': ' | avc',
+            'url': 'https://souce'
+        },
+        {
+            'id': '720p60',
+            'band': ' | 5.00Mbps',
+            'codec': ' | avc',
+            'url': 'https://720p60'
+        },
+        {
+            'id': '720p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+            'url': 'https://720'
+        },
+    ];
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_qualityChanged();
 }
@@ -370,7 +391,6 @@ function PlayVod_isSub() {
 }
 
 function PlayVod_qualityChanged() {
-    window.clearInterval(PlayVod_streamCheckId);
     PlayVod_qualityIndex = 0;
     PlayVod_playingUrl = PlayVod_qualities[0].url;
     if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";
@@ -383,7 +403,7 @@ function PlayVod_qualityChanged() {
     }
 
     PlayVod_qualityPlaying = PlayVod_quality;
-    PlayVod_SetHtmlQuality('stream_quality', true);
+    PlayVod_SetHtmlQuality('stream_quality');
     PlayVod_onPlayer();
 }
 
@@ -404,14 +424,6 @@ function PlayVod_onPlayer() {
     PlayVod_replay = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
-
-    if (Main_IsNotBrowser) {
-        PlayVod_PlayerCheckCount = 0;
-        Play_PlayerCheckTimer = 3 + ((PlayVod_Buffer / 1000) * 2);
-        PlayVod_PlayerCheckQualityChanged = false;
-        window.clearInterval(PlayVod_streamCheckId);
-        PlayVod_streamCheckId = window.setInterval(PlayVod_PlayerCheck, Play_PlayerCheckInterval);
-    }
 }
 
 function PlayVod_onPlayerStartPlay(time) {
@@ -425,59 +437,6 @@ function PlayVod_UpdateDuration(duration) {
     ChannelVod_DurationSeconds = duration / 1000;
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
     PlayVod_RefreshProgressBarr();
-}
-
-function PlayVod_PlayerCheck() {
-    if (Main_IsNotBrowser) PlayVod_currentTime = Android.gettime();
-
-    //The player can bug and not stop playing when it ends after a video has be pause
-    if ((PlayVod_currentTime / 1000) > ChannelVod_DurationSeconds) {
-        //Make sure playWhenReady is false to avoid false calls on java onPlayerStateChanged
-        if (Main_IsNotBrowser) Android.play(false);
-        Play_PannelEndStart(2);
-    }
-
-    if (PlayVod_isOn && PlayVod_PlayerTime === PlayVod_currentTime && !Play_isNotplaying()) {
-        PlayVod_PlayerCheckCount++;
-        if (PlayVod_PlayerCheckCount > Play_PlayerCheckTimer) {
-
-            //Don't change the first time only retry, and don't change if in Auto mode
-            if (PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun &&
-                (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) && (PlayVod_quality.indexOf("Auto") === -1))
-                PlayVod_qualityIndex++;
-            else if (!PlayVod_PlayerCheckQualityChanged && PlayVod_PlayerCheckRun) PlayVod_PlayerCheckCounter++;
-
-            if (!navigator.onLine) Play_EndStart(false, 2);
-            else if (PlayVod_PlayerCheckCounter > 1) Play_CheckConnection(PlayVod_PlayerCheckCounter, 2, PlayVod_DropOneQuality);
-            else {
-                PlayVod_qualityDisplay();
-                PlayVod_qualityChanged();
-                PlayVod_PlayerCheckRun = true;
-            }
-
-        } // else we try for too long let the listener onerror catch it
-    } else {
-        PlayVod_PlayerCheckCounter = 0;
-        PlayVod_PlayerCheckCount = 0;
-        PlayVod_PlayerCheckRun = false;
-    }
-
-    PlayVod_PlayerTime = PlayVod_currentTime;
-}
-
-function PlayVod_DropOneQuality(ConnectionDrop) {
-    if (!ConnectionDrop) {
-        if (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1) PlayVod_qualityIndex++;
-        else {
-            Play_EndStart(false, 2);
-            return;
-        }
-    }
-
-    PlayVod_PlayerCheckCounter = 0;
-    PlayVod_qualityDisplay();
-    PlayVod_qualityChanged();
-    PlayVod_PlayerCheckRun = true;
 }
 
 function PlayVod_shutdownStream() {
@@ -508,16 +467,16 @@ function PlayVod_ClearVod() {
     document.removeEventListener('visibilitychange', PlayVod_Resume);
     Main_values.vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimerId);
-    window.clearInterval(PlayVod_streamCheckId);
     ChannelVod_DurationSeconds = 0;
 }
 
 function PlayVod_hidePanel() {
+    //return;//return;
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;
     Play_clearHidePanel();
-    document.getElementById("scene_channel_panel").style.opacity = "0";
+    Play_ForceHidePannel();
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
@@ -538,12 +497,12 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_IconsBottonResetFocus();
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
-        if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality', true);
+        if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality');
         Play_clearHidePanel();
-        Play_ResetSpeed();
+        PlayExtra_ResetSpeed();
         PlayVod_setHidePanel();
     }
-    document.getElementById("scene_channel_panel").style.opacity = "1";
+    Play_ForceShowPannel();
 }
 
 function PlayVod_RefreshProgressBarr(show) {
@@ -553,8 +512,14 @@ function PlayVod_RefreshProgressBarr(show) {
         var value = Android.getVideoQuality();
 
         if (value !== null && value !== undefined) Play_getVideoQuality(value);
-        else PlayVod_SetHtmlQuality('stream_quality', true);
+        else PlayVod_SetHtmlQuality('stream_quality');
     }
+
+    if (Main_IsNotBrowser) {
+        try {
+            Play_Status(Android.getVideoStatus());
+        } catch (e) {}
+    } else Play_StatusFake();
 }
 
 function PlayVod_IconsBottonResetFocus() {
@@ -659,9 +624,6 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 function PlayVod_jump() {
     Play_clearPause();
     if (!Play_isEndDialogVisible()) {
-
-        PlayVod_PlayerCheckQualityChanged = false;
-        PlayClip_PlayerCheckQualityChanged = false;
 
         if (PlayVod_isOn) {
             if (Main_IsNotBrowser) {
