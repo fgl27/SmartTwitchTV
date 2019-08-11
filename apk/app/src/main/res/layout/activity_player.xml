@@ -27,7 +27,7 @@
             android:focusableInTouchMode="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="bottom|end"
+            android:layout_gravity="bottom|right"
             app:use_controller="false"
             app:show_buffering="always"/>
     </FrameLayout>
