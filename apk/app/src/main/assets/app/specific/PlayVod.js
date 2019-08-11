@@ -50,7 +50,6 @@ function PlayVod_Start() {
     Play_HideEndDialog();
     PlayVod_currentTime = 0;
     Main_textContent("stream_live_time", '');
-    Main_textContent("stream_watching_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = STR_PAST_BROA + '.';
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
@@ -82,7 +81,7 @@ function PlayVod_Start() {
         PlayVod_updateStreamerInfoValues();
         Main_innerHTML("stream_info_title", '');
         Main_innerHTML("stream_info_game", ChannelVod_views + ' [' + (ChannelVod_language).toUpperCase() + ']');
-        Main_textContent("stream_live_icon", ChannelVod_createdAt);
+        Main_textContent("stream_watching_time", " | " + ChannelVod_createdAt);
 
         Main_replaceClassEmoji('stream_info_game');
     }
@@ -170,7 +169,7 @@ function PlayVod_updateVodInfoPannel(response) {
     Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING + response.game : "") +
         ' ' + Main_addCommas(response.views) + STR_VIEWS + ' [' + (response.channel.broadcaster_language).toUpperCase() + ']');
-    Main_textContent("stream_live_icon", STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
+    Main_textContent("stream_watching_time", " | " + STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
 
     ChannelVod_DurationSeconds = parseInt(response.length);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
@@ -299,10 +298,18 @@ function PlayVod_loadDataError() {
 //Browsers crash trying to get the streams link
 function PlayVod_loadDataSuccessFake() {
     PlayVod_qualities = [{
-        'id': '1080p60(Source)',
-        'band': '(10.00Mbps)',
-        'url': 'http://fake'
-    }];
+            'id': 'Auto',
+            'band': 0,
+            'codec': 'avc',
+            'url': ''
+        },
+        {
+            'id': '1080p60 | source',
+            'band': '| 10.00Mbps',
+            'codec': ' | avc',
+            'url': 'https://fake'
+        },
+    ];
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_qualityChanged();
 }
@@ -372,7 +379,7 @@ function PlayVod_qualityChanged() {
     }
 
     PlayVod_qualityPlaying = PlayVod_quality;
-    PlayVod_SetHtmlQuality('stream_quality', true);
+    PlayVod_SetHtmlQuality('stream_quality');
     PlayVod_onPlayer();
 }
 
@@ -440,6 +447,7 @@ function PlayVod_ClearVod() {
 }
 
 function PlayVod_hidePanel() {
+    //return;
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_addToJump = 0;
@@ -465,7 +473,7 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_IconsBottonResetFocus();
         PlayVod_qualityIndexReset();
         PlayVod_qualityDisplay();
-        if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality', true);
+        if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality');
         Play_clearHidePanel();
         PlayExtra_ResetSpeed();
         PlayVod_setHidePanel();
@@ -480,8 +488,14 @@ function PlayVod_RefreshProgressBarr(show) {
         var value = Android.getVideoQuality();
 
         if (value !== null && value !== undefined) Play_getVideoQuality(value);
-        else PlayVod_SetHtmlQuality('stream_quality', true);
+        else PlayVod_SetHtmlQuality('stream_quality');
     }
+
+    if (Main_IsNotBrowser) {
+    try {
+         Play_Status(Android.getVideoStatus());
+    } catch (e) {}
+    } else Play_StatusFake();
 }
 
 function PlayVod_IconsBottonResetFocus() {

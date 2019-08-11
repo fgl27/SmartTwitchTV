@@ -38,7 +38,7 @@ function PlayClip_Start() {
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
     Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game + ' ' + ChannelClip_views + ' ' + ChannelClip_language);
-    Main_textContent("stream_live_icon", ChannelClip_createdAt);
+    Main_textContent("stream_watching_time", " | " + ChannelClip_createdAt);
     Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
@@ -53,7 +53,6 @@ function PlayClip_Start() {
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Main_textContent("stream_live_time", '');
-    Main_textContent("stream_watching_time", '');
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP + '.';
     if (PlayClip_HasVOD) {
@@ -343,6 +342,12 @@ function PlayClip_showPanel() {
 
 function PlayClip_RefreshProgressBarr() {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
+
+    if (Main_IsNotBrowser) {
+    try {
+         Play_Status(Android.getVideoStatus());
+    } catch (e) {}
+    } else Play_StatusFake();
 }
 
 function PlayClip_qualityIndexReset() {

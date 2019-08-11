@@ -219,8 +219,6 @@ function Play_SetChatFont() {
 function Play_Start() {
     Play_showBufferDialog();
 
-    Main_innerHTML("stream_live_icon", (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase());
-
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     PlayClip_HasVOD = true;
@@ -249,7 +247,7 @@ function Play_Start() {
 
     Play_currentTime = 0;
     Play_watching_time = new Date().getTime();
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeS(0));
+    Main_textContent("stream_watching_time", " | " + STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
 
     Main_textContent("stream_live_time", STR_SINCE + Play_created);
@@ -350,7 +348,6 @@ function Play_updateStreamInfoStartValues(response) {
         Play_partnerIcon(Play_isHost ? Main_values.Play_DisplaynameHost : Main_values.Play_selectedChannelDisplayname, response.stream.channel.partner, true);
 
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
-        Main_innerHTML("stream_live_icon", (Main_values.IsRerun ? STR_NOT_LIVE : STR_LIVE).toUpperCase());
 
         Main_values.Play_selectedChannel_id = response.stream.channel._id;
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
@@ -627,7 +624,7 @@ function Play_qualityChanged() {
     }
 
     Play_qualityPlaying = Play_quality;
-    Play_SetHtmlQuality('stream_quality', true);
+    Play_SetHtmlQuality('stream_quality');
 
     Play_state = Play_STATE_PLAYING;
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
@@ -652,7 +649,7 @@ function Play_SetHtmlQuality(element) {
 
     quality_string += Play_quality.indexOf('Auto') === -1 ? Play_qualities[Play_qualityIndex].band + Play_qualities[Play_qualityIndex].codec : "";
 
-    Main_textContent(element, quality_string);
+     Main_innerHTML(element, quality_string);
 }
 
 function Play_onPlayer() {
@@ -883,7 +880,7 @@ function Play_showPanel() {
     Play_qualityDisplay();
     PlayExtra_ResetSpeed();
     PlayExtra_ResetAudio();
-    if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality', true);
+    if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
@@ -895,23 +892,51 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    Main_textContent("stream_watching_time", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
-    Main_textContent("stream_live_time", STR_SINCE +
+    Main_textContent("stream_watching_time", " | " +
+     STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
+
+    Main_innerHTML("stream_live_time", STR_SPACE + STR_SINCE +
         (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
 
     if (Play_qualityPlaying.indexOf("Auto") !== -1 && Main_IsNotBrowser) {
         var value = Android.getVideoQuality();
 
         if (value !== null && value !== undefined) Play_getVideoQuality(value);
-        else Play_SetHtmlQuality('stream_quality', true);
+        else Play_SetHtmlQuality('stream_quality');
     }
+
+    if (Main_IsNotBrowser) {
+    try {
+         Play_Status(Android.getVideoStatus());
+    } catch (e) {}
+    } else Play_StatusFake();
+}
+
+function Play_StatusFake() {
+    Main_innerHTML("stream_status", "Net Speed: 90.00 (90.00 Avg) Mbps" + STR_BR +
+     "Net Activity: 20.00 (20.00 Avg) Mbps" + STR_BR + "Drooped frames: 100 (100 Total day)" + STR_BR + 
+     " Buffer health: 22.22 s");
+}
+
+function Play_Status(value) {
+    value = value.split(',');
+
+    Main_innerHTML("stream_status", "Net Speed: " + Play_getMbps(value[2]) + " (" +
+     Play_getMbps(value[3]) + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
+     Play_getMbps(value[5]) + " Avg) Mbps" + STR_BR +
+     "Drooped frames: " + value[0] + " (" + value[1] + " Total day)" + STR_BR + 
+     " Buffer health: " + (value[6] > 0 ? (value[6] / 1000).toFixed(2) : 0) + " s");
+}
+
+function Play_getMbps(value) {
+    return (parseInt(value) / 1000000).toFixed(2);
 }
 
 function Play_getVideoQuality(value) {
     value = value.split(',');
 
     for (var i = 0; i < value.length; i++) {
-        value[i] = (value[i] !== null && value[i] !== 'null') ? value[i] : '';
+        value[i] = (value[i] !== null && value[i] !== 'null' && value[i] !== undefined) ? value[i] : '';
     }
 
     Main_innerHTML("stream_quality", value[0] + value[1] + " | Auto" + Play_extractBand(value[2]) + " | " + value[3]);

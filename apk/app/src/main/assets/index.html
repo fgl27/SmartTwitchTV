@@ -592,21 +592,38 @@
 
         div.playsideinfotext {
             word-wrap: break-word;
+            display: inline-block;
+        }
+
+        div.playsideinfostatus {
+            word-wrap: break-word;
         }
 
         div.playsideinfo {
             position: absolute;
             top: 1.5%;
             right: 0;
-            width: 32ch;
+            width: 36.5ch;
             color: #FFFFFF;
             font-size: 83%;
-            text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        div.playmaininfo {
+            vertical-align: top;
+            padding-left: 1%;
+            padding-top: 1.5%;
+            display: inline-block;
+            width: 62%;
+            font-size: 90%;
+            color: #FFFFFF;
+            word-wrap: break-word;
+            text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
         }
 
         div.playerinfo {
             width: 100%;
-            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.055));
+            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.15));
         }
 
         div.partnericon_div {
@@ -651,18 +668,6 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-        }
-
-        div.playmaininfo {
-            vertical-align: top;
-            padding-left: 1%;
-            padding-top: 1.5%;
-            display: inline-block;
-            width: 64%;
-            font-size: 90%;
-            color: #FFFFFF;
-            word-wrap: break-word;
-            text-shadow: #000000 0 0 7.2px, #000000 0 0 7.2px, #000000 0 0 5.5px;
         }
 
         div.side_panel_feed_thumb {
@@ -1492,15 +1497,16 @@
             <div class="playerinfo">
                 <div class="playsideinfo">
                     <div id="stream_clock" class="playsideinfotext"></div>
-                    <div id="stream_live_icon" class="playsideinfotext" style="display: inline-block; margin-right: 5px;">
-                    </div>
-                    <div id="stream_live_time" class="playsideinfotext" style="display: inline-block"></div>
                     <div id="stream_watching_time" class="playsideinfotext"></div>
-                    <div id="stream_quality" class="playsideinfotext"></div>
+                    <div style="width: 100%; text-align: left;">
+                        <div id="stream_quality" class="playsideinfostatus"></div>
+                        <div id="stream_status" class="playsideinfostatus"></div>
+                    </div>
                 </div>
-                <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 8%;" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+                <img id="stream_info_icon" style="border-radius: 2px; padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 9%;" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
                 <div class="playmaininfo">
-                    <div id="stream_info_name" class="class_bold" style="font-size: 160%;"></div>
+                    <div id="stream_info_name" class="class_bold" style="font-size: 160%; width:auto; display: inline-block;"></div>
+                    <div id="stream_live_time" style="display: inline-block; width:auto; width:auto;"></div>
                     <div id="stream_info_title"></div>
                     <div id="stream_info_game"></div>
                 </div>
