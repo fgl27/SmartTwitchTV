@@ -987,18 +987,20 @@ function Play_RefreshWatchingtime() {
     Main_innerHTML("stream_live_time", STR_SINCE +
         (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
 
-    if (Play_qualityPlaying.indexOf("Auto") !== -1 && Main_IsNotBrowser) {
-        var value = Android.getVideoQuality();
+    if (!Play_Status_Always_On) {
+        if (Play_qualityPlaying.indexOf("Auto") !== -1 && Main_IsNotBrowser) {
+            var value = Android.getVideoQuality();
 
-        if (value !== null && value !== undefined) Play_getVideoQuality(value);
-        else Play_SetHtmlQuality('stream_quality');
+            if (value !== null && value !== undefined) Play_getVideoQuality(value);
+            else Play_SetHtmlQuality('stream_quality');
+        }
+
+        if (Main_IsNotBrowser) {
+            try {
+                Play_Status(Android.getVideoStatus());
+            } catch (e) {}
+        } else Play_StatusFake();
     }
-
-    if (Main_IsNotBrowser) {
-        try {
-            Play_Status(Android.getVideoStatus());
-        } catch (e) {}
-    } else Play_StatusFake();
 }
 
 function Play_StatusFake() {

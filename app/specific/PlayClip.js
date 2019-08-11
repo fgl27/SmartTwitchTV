@@ -345,11 +345,13 @@ function PlayClip_showPanel() {
 function PlayClip_RefreshProgressBarr() {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 
-    if (Main_IsNotBrowser) {
-        try {
-            Play_Status(Android.getVideoStatus());
-        } catch (e) {}
-    } else Play_StatusFake();
+    if (!Play_Status_Always_On) {
+        if (Main_IsNotBrowser) {
+            try {
+                Play_Status(Android.getVideoStatus());
+            } catch (e) {}
+        } else Play_StatusFake();
+    }
 }
 
 function PlayClip_qualityIndexReset() {
