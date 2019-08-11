@@ -43,13 +43,13 @@ import java.util.Locale;
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
     public static final int[] positions = {
-            Gravity.END | Gravity.BOTTOM,
-            Gravity.END | Gravity.CENTER,
-            Gravity.END | Gravity.TOP,
+            Gravity.RIGHT | Gravity.BOTTOM,
+            Gravity.RIGHT | Gravity.CENTER,
+            Gravity.RIGHT | Gravity.TOP,
             Gravity.CENTER | Gravity.TOP,
-            Gravity.START | Gravity.TOP,
-            Gravity.START | Gravity.CENTER,
-            Gravity.START | Gravity.BOTTOM,
+            Gravity.LEFT | Gravity.TOP,
+            Gravity.LEFT | Gravity.CENTER,
+            Gravity.LEFT | Gravity.BOTTOM,
             Gravity.CENTER | Gravity.BOTTOM};
 
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips

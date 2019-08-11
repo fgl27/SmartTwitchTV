@@ -104,16 +104,16 @@ else
 	fi;
 	echo "$(./gradlew -q gradleUpdates | sed '/jacoco/d')" >> build_log.txt
 
-	ISSUES=$(grep issues build_log.txt | grep release)
-	if [ -n "$ISSUES" ]; then
-		NOISSUES=0;
-		contains "$ISSUES" ": 1 issues" && NOISSUES=1;
-		if [ $NOISSUES == 0 ]; then
-			echo -e "\n${CYAN}Lint issues:\n${NC}";
-			echo -e "${RED}$ISSUES${NC}";
-			sensible-browser "$FOLDER"/app/build/reports/lint-results.html
-		fi;
-	fi;
+#	ISSUES=$(grep issues build_log.txt | grep release)
+#	if [ -n "$ISSUES" ]; then
+#		NOISSUES=0;
+#		contains "$ISSUES" ": 1 issues" && NOISSUES=1;
+#		if [ $NOISSUES == 0 ]; then
+#			echo -e "\n${CYAN}Lint issues:\n${NC}";
+#			echo -e "${RED}$ISSUES${NC}";
+#			
+#		fi;
+#	fi;
 
 	DEPRECATION=$(grep deprecation build_log.txt)
 	if [ -n "$DEPRECATION" ]; then
@@ -128,6 +128,7 @@ else
 	fi;
 
 	if [ "$1" == 1 ]; then
+		sensible-browser "$FOLDER"/app/build/reports/lint-results.html
 		echo -e "\n${GREEN}App saved at $OUT_FOLDER"/"$APP_FINAL_NAME${NC}";
 	else
 		rm "$FOLDER"/app/build/outputs/apk/debug/output.json
