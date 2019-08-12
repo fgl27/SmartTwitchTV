@@ -859,6 +859,7 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlayerError(ExoPlaybackException e) {
+            PlayerCheckHandler[position].removeCallbacksAndMessages(null);
             PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
         }
     }
@@ -875,12 +876,12 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
-        PlayerCheckCounter[position]++;
-
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
         //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
         player[position].setPlayWhenReady(false);
         showLoading();
 
+        PlayerCheckCounter[position]++;
         if (PlayerCheckCounter[position] < 4 &&
                 (mainPlayer != position || mediaSourceAuto[position] != null)) {
 
