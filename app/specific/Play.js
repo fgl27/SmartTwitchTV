@@ -373,7 +373,6 @@ function Play_updateStreamInfoStartValues(response) {
     if (response.stream !== null) {
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
 
-        Main_values.Play_selectedChannel_id = response.stream.channel._id;
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
         Main_values.Play_gameSelected = response.stream.game;
         Play_Lang = ' [' + (response.stream.channel.broadcaster_language).toUpperCase() + ']';
@@ -1510,31 +1509,7 @@ function Play_CheckHostStart() {
     Play_loadingDataTimeout = 2000;
     ChatLive_Clear();
     window.clearInterval(Play_streamInfoTimerId);
-    if (Main_values.Play_selectedChannel_id !== '') Play_loadDataCheckHost();
-    else Play_CheckId();
-}
-
-function Play_CheckId() {
-    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + Main_values.Play_selectedChannel;
-    BasexmlHttpGet(theUrl, Play_loadingDataTimeout, 2, null, Play_CheckIdValue, Play_CheckIdError, false);
-}
-
-function Play_CheckIdValue(musers) {
-    musers = JSON.parse(musers).users[0];
-    if (musers !== undefined) {
-        Main_values.Play_selectedChannel_id = musers._id;
-        Play_loadingDataTry = 0;
-        Play_loadingDataTimeout = 2000;
-        Play_loadDataCheckHost();
-    } else Play_PlayEndStart(1);
-}
-
-function Play_CheckIdError() {
-    Play_loadingDataTry++;
-    if (Play_loadingDataTry < Play_loadingDataTryMax) {
-        Play_loadingDataTimeout += 250;
-        Play_CheckId();
-    } else Play_EndStart(false, 1);
+    Play_loadDataCheckHost();
 }
 
 function Play_loadDataCheckHost() {
