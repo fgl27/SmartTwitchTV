@@ -76,8 +76,6 @@ function PlayVod_Start() {
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
 
-    isPlay_CheckResumeForced = false;
-
     if (Main_values.vodOffset) { // this is a vod coming from a clip or from restore playback
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
@@ -302,7 +300,6 @@ function PlayVod_loadDataError() {
             PlayVod_loadDataRequest();
         } else {
             if (Main_IsNotBrowser) {
-                isPlay_CheckResumeForced = false;
                 Play_HideBufferDialog();
                 Play_PlayEndStart(2);
             } else PlayVod_loadDataSuccessFake();
@@ -316,7 +313,7 @@ function PlayVod_loadDataSuccessFake() {
             'id': 'Auto',
             'band': 0,
             'codec': 'avc',
-            'url': ''
+            'url': 'https://auto'
         },
         {
             'id': '1080p60 | source ',
@@ -350,7 +347,6 @@ function PlayVod_loadDataSuccess(responseText) {
         PlayVod_playlistResponse = responseText;
         PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
         PlayVod_state = Play_STATE_PLAYING;
-        isPlay_CheckResumeForced = false;
         if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
         if (PlayVod_isOn) PlayVod_qualityChanged();
     }
@@ -632,10 +628,10 @@ function PlayVod_jump() {
 
         if (PlayVod_isOn) {
             if (Main_IsNotBrowser) {
-                if (PlayVod_quality.indexOf("Auto") !== -1) {
-                    Main_values.vodOffset = (PlayVod_TimeToJump > 0) ? PlayVod_TimeToJump : -1;
-                    PlayVod_ResumeAfterOnline(true);
-                } else Android.startVideoOffset(PlayVod_playingUrl, 2,
+
+                if (PlayVod_quality.indexOf("Auto") !== -1) Android.StartAuto(2,
+                    (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
+                else Android.startVideoOffset(PlayVod_playingUrl, 2,
                     (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
 
                 Chat_offset = PlayVod_TimeToJump;
@@ -812,7 +808,7 @@ function PlayVod_DialogPressed(fromStart) {
 }
 
 function PlayVod_handleKeyDown(e) {
-    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown() && !isPlay_CheckResumeForced) {
+    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
         switch (e.keyCode) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {

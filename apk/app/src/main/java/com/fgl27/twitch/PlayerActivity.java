@@ -74,8 +74,12 @@ public class PlayerActivity extends Activity {
     public Uri uri;
     public MediaSource mediaurireset;
 
-    public MediaSource[] mediaSourceAuto =  new MediaSource[2];
+    //The mediaSources stored to be used when changing from auto to source 720 etc etc
     public MediaSource[] mediaSourcesAuto = new MediaSource[2];
+    public long[] expires = new long[2];
+
+    //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
+    public MediaSource[] mediaSourcePlaying =  new MediaSource[2];
 
     public FrameLayout.LayoutParams PlayerViewDefaultSize;
     public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
@@ -209,7 +213,7 @@ public class PlayerActivity extends Activity {
         if (seeking) player[position].seekTo(mResumePosition);
 
         player[position].prepare(
-                mediaSourceAuto[position] != null ? mediaSourceAuto[position] : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
+                mediaSourcePlaying[position] != null ? mediaSourcePlaying[position] : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
                 !seeking,
                 true);
 
@@ -253,13 +257,13 @@ public class PlayerActivity extends Activity {
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
     //Also used to change the main player that is the big screen
-    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long position) {
+    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int whocall, long resumeposition) {
 
-        mediaSourceAuto[mainPlayer] = mediaSource;
+        mediaSourcePlaying[mainPlayer] = mediaSource;
         uri = Uri.parse(videoAddress);
         shouldCallJavaCheck = true;
         mwhocall = whocall;
-        mResumePosition = position > 0 ? position : 0;
+        mResumePosition = resumeposition > 0 ? resumeposition : 0;
 
         initializePlayer(mainPlayer);
     }
@@ -267,7 +271,7 @@ public class PlayerActivity extends Activity {
     //The way to start the Picture in Picture small window
     private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
 
-        mediaSourceAuto[mainPlayer ^ 1] = mediaSource;
+        mediaSourcePlaying[mainPlayer ^ 1] = mediaSource;
         uri = Uri.parse(videoAddress);
         mwhocall = 1;
         shouldCallJavaCheck = true;
@@ -287,8 +291,8 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckHandler[0].removeCallbacksAndMessages(null);
         PlayerCheckHandler[1].removeCallbacksAndMessages(null);
-        mediaSourceAuto[0] = null;
-        mediaSourceAuto[1] = null;
+        mediaSourcePlaying[0] = null;
+        mediaSourcePlaying[1] = null;
         mediaSourcesAuto[0] = null;
         mediaSourcesAuto[1] = null;
         mwhocall = whocall;
@@ -576,21 +580,53 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void initializePlayer2Auto() {
-            myHandler.post(() -> PreinitializePlayer2(mainPlayer == 0 ? mediaSourcesAuto[1] : mediaSourcesAuto[0], ""));
+            myHandler.post(() -> PreinitializePlayer2(mediaSourcesAuto[mainPlayer ^ 1], ""));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetAuto(String url) {
-            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            myHandler.post(() -> mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
+            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
+            //For some reason maybe a twitch bug the vod expires in 20 hours not min
+            myHandler.post(() -> {
+                expires[mainPlayer] = System.currentTimeMillis() + 18000;
+                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void ResStartAuto(String url, int whocall, long position) {
+            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
+            //For some reason maybe a twitch bug the vod expires in 20 hours not min
+            myHandler.post(() -> {
+                expires[mainPlayer] = System.currentTimeMillis() + 18000;
+                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1);
+                PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void ResStartAuto2(String url) {
+            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
+            //For some reason maybe a twitch bug the vod expires in 20 hours not min
+            myHandler.post(() -> {
+                expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
+                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1);
+                PreinitializePlayer2(mediaSourcesAuto[mainPlayer ^ 1], "");
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetAuto2(String url) {
-            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
-            myHandler.post(() -> mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1));
+            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
+            //For some reason maybe a twitch bug the vod expires in 20 hours not min
+            myHandler.post(() -> {
+                expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
+                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1);
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -614,7 +650,6 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mClearSmallPlayer() {
-            //The token expires in 15 min so we need to set the mediaSource in case we use it in the future
             myHandler.post(() -> ClearPlayer(mainPlayer ^ 1));
         }
 
@@ -824,7 +859,6 @@ public class PlayerActivity extends Activity {
                     if (playbackState == Player.STATE_ENDED) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         player[position].setPlayWhenReady(false);
-
                         PlayerEventListenerClear(position);
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         hideLoading(2);
@@ -883,16 +917,20 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[position]++;
         if (PlayerCheckCounter[position] < 4 &&
-                (mainPlayer != position || mediaSourceAuto[position] != null)) {
+                (mainPlayer != position || mediaSourcePlaying[position] != null)) {
 
-            Log.d(TAG,  "PlayerEventListenerCheckCounter if");
-            //this is small screen  or is in auto mode just restart it
+            //this is small screen  or is in auto mode check before restart it
             if (mclearResumePosition || mwhocall == 1) clearResumePosition();
             else updateResumePosition(position);
 
-            //ask java to reset the qualities as it only last for about 30 to 35 min
-            //Reset they is as fast as initializePlayer(position)
-            mwebview.loadUrl("javascript:Play_CheckResumeForced(" + mwhocall + "," + (mainPlayer != position) + ")");
+            if (mwhocall == 1) {
+                //ask java to reset the qualities only if time expired
+                if (expires[position] < System.currentTimeMillis()) {
+                    mediaSourcePlaying[position] = mediaSourcesAuto[position];
+                    initializePlayer(position);
+                } else mwebview.loadUrl("javascript:Play_CheckResumeForced(" + (mainPlayer != position) + ")");
+
+            } else initializePlayer(position);
 
         } else if (PlayerCheckCounter[position] > 3) {
 
@@ -905,7 +943,7 @@ public class PlayerActivity extends Activity {
             mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
 
         } else {
-            //First try only restart the player
+            //First try and not auto mode only restart the player
             if (mclearResumePosition || mwhocall == 1) clearResumePosition();
             else updateResumePosition(position);
 

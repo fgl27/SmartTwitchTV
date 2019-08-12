@@ -27,6 +27,7 @@ var PlayExtra_gameSelected_Old;
 var PlayExtra_qualities_Old;
 var PlayExtra_qualityPlaying_Old;
 var PlayExtra_quality_Old;
+var PlayExtra_RefreshAutoTry = 0;
 
 function PlayExtra_ResetSpeed() {
     Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
@@ -299,4 +300,61 @@ function PlayExtra_loadDataFail(Reason) {
     window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 2500);
+}
+
+
+function PlayExtra_RefreshAutoRequest(UseAndroid) {
+    var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_' +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
+            AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
+
+    var xmlHttp;
+    if (UseAndroid) {
+
+        xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
+
+        if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
+        else PlayExtra_RefreshAutoError(UseAndroid);
+
+    } else {
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = 3000;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid);
+        };
+
+        xmlHttp.send(null);
+    }
+}
+
+function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
+    if (xmlHttp.status === 200) {
+        PlayExtra_RefreshAutoTry = 0;
+        Play_tokenResponse = JSON.parse(xmlHttp.responseText);
+
+        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
+            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
+            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
+            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+        if (UseAndroid) {
+            try {
+                Android.ResStartAuto2(theUrl);
+            } catch (e) {}
+        } else Android.SetAuto2(theUrl);
+
+    } else PlayExtra_RefreshAutoError(UseAndroid);
+}
+
+function PlayExtra_RefreshAutoError(UseAndroid) {
+    if (Play_isOn) {
+        PlayExtra_RefreshAutoTry++;
+        if (PlayExtra_RefreshAutoTry < 5) PlayExtra_RefreshAutoRequest(UseAndroid);
+        else if (UseAndroid) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+    }
 }
