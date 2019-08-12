@@ -317,8 +317,12 @@ public class PlayerActivity extends Activity {
     private void updateResumePosition(int position) {
         if (player[position] == null) return;
 
-        mResumePosition = player[position].isCurrentWindowSeekable() ?
-                Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
+        // If PlayerCheckCounter > 1 we alredy have restarted the player so the value of getCurrentPosition
+        // is already gone and we alredy saved the correct mResumePosition
+        if (PlayerCheckCounter[position] < 2) {
+            mResumePosition = player[position].isCurrentWindowSeekable() ?
+                    Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
+        }
     }
 
     private void showLoading() {
@@ -802,17 +806,6 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void PlayerEventListenerClear(int position) {
-        hideLoading(2);
-        hideLoading(position);
-        if (PicturePicture) {
-            PicturePicture = false;
-            ClearPlayer(position);
-            AudioSource = 1;
-            if (mainPlayer == position) SwitchPlayer();
-        } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
-    }
-
     // Basic EventListener for exoplayer
     private class PlayerEventListener implements Player.EventListener {
 
@@ -843,26 +836,8 @@ public class PlayerActivity extends Activity {
                             //Player was released or is on pause
                             if (player[position] == null || !player[position].getPlayWhenReady()) return;
 
-                            //First try only restart the player second ask js to check if there is a lower resolution
                             PlayerCheckCounter[position]++;
-                            //Toast.makeText(PlayerActivity.this, "PlayerCheckCounter " + PlayerCheckCounter[position], Toast.LENGTH_SHORT).show();
-                            //Pause to things run smother and prevent odd behavior during the checks
-                            player[position].setPlayWhenReady(false);
-                            if (PlayerCheckCounter[position] < 4 &&
-                                    (mainPlayer != position || mediaSourceAuto[position] != null)) {
-                                //this is small screen  or is in auto mode just restart it
-                                updateResumePosition(position);
-                                initializePlayer(position);
-                            } else if (PlayerCheckCounter[position] > 3){
-                                // treys == 3 Give up internet is probably down or something related
-                                PlayerEventListenerClear(position);
-                            } else if (PlayerCheckCounter[position] > 1) //Use js to check if is possible to drop quality
-                                mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
-                            else {
-                                updateResumePosition(position);
-                                initializePlayer(position);
-                            }
-
+                            PlayerEventListenerCheckCounter(position, false);
                         }, delayms);
                     } else if (playbackState == Player.STATE_READY) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
@@ -879,21 +854,54 @@ public class PlayerActivity extends Activity {
                                     mwhocall + "," + player[position].getDuration() + ")"));
                         }
                     }
-                } else  {
-                    hideLoading(2);
-                }
+                } else hideLoading(2);
             });
         }
 
         @Override
         public void onPlayerError(ExoPlaybackException e) {
-            if (Tools.isBehindLiveWindow(e)) clearResumePosition();
+            PlayerCheckCounter[position]++;
+            PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
+        }
+    }
+
+    public void PlayerEventListenerClear(int position) {
+        hideLoading(2);
+        hideLoading(position);
+        if (PicturePicture) {
+            PicturePicture = false;
+            ClearPlayer(position);
+            AudioSource = 1;
+            if (mainPlayer == position) SwitchPlayer();
+        } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+    }
+
+    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
+        //Pause to things run smother and prevent odd behavior during the checks
+        player[position].setPlayWhenReady(false);
+
+        if (PlayerCheckCounter[position] < 4 &&
+                (mainPlayer != position || mediaSourceAuto[position] != null)) {
+            //this is small screen  or is in auto mode just restart it
+            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
+            else updateResumePosition(position);
+
+            initializePlayer(position);
+        } else if (PlayerCheckCounter[position] > 3){
+            // treys == 3 Give up internet is probably down or something related
+            PlayerEventListenerClear(position);
+        } else if (PlayerCheckCounter[position] > 1) {
+            // Second if not in auto mode js to check if is possible to drop quality
+            mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
+        } else {
+            //First try only restart the player
+            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
             else updateResumePosition(position);
 
             initializePlayer(position);
         }
-
     }
+
     private class AnalyticsEventListener implements AnalyticsListener {
 
         private int position;

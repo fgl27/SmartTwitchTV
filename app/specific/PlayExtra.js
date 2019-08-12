@@ -42,7 +42,6 @@ function PlayExtra_ResetAudio() {
 }
 
 function PlayExtra_KeyEnter() {
-    console.log('PlayExtra_KeyEnter');
     PlayExtra_clear = true;
 
     var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
