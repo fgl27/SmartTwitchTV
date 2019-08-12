@@ -212,7 +212,11 @@ public class Tools {
             return null;
         }
 
-        return format.height + "p," + (format.frameRate == Format.NO_VALUE ? "," : Math.round(format.frameRate) + ",") + format.bitrate + "," +  mgetCodec(format.codecs);
+        return String.format(Locale.US, "%s,%s,%d,%s",
+                format.height + "p",
+                (format.frameRate == Format.NO_VALUE ? "" : String.format(Locale.US, "%d",  Math.round(format.frameRate))),
+                format.bitrate,
+                mgetCodec(format.codecs));
     }
 
     private static String mgetCodec(String codec) {
