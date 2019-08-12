@@ -302,7 +302,6 @@ function PlayExtra_loadDataFail(Reason) {
     }, 2500);
 }
 
-
 function PlayExtra_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_' +
         (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
