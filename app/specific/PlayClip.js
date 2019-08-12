@@ -194,6 +194,7 @@ function PlayClip_qualityChanged() {
 
     PlayClip_state = PlayClip_STATE_PLAYING;
 
+    PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
     PlayClip_qualityPlaying = PlayClip_quality;
     PlayClip_SetHtmlQuality('stream_quality');
     PlayClip_onPlayer();
@@ -232,12 +233,12 @@ function PlayClip_shutdownStream() {
 
 function PlayClip_PreshutdownStream() {
     PlayClip_hidePanel();
-    PlayClip_qualities = [];
     if (Main_IsNotBrowser) Android.stopVideo(3);
     PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
     UserLiveFeed_Hide();
+    PlayClip_qualities = [];
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
     document.removeEventListener('visibilitychange', PlayClip_Resume);
     ChannelVod_vodOffset = 0;

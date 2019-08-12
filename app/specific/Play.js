@@ -631,6 +631,18 @@ function Play_loadDataSuccessFake() {
             'codec': ' | avc',
             'url': 'https://720'
         },
+        {
+            'id': '480p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+            'url': 'https://480'
+        },
+        {
+            'id': '320p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+            'url': 'https://320'
+        },
     ];
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
@@ -711,8 +723,8 @@ function Play_extractStreamDeclarations(input) {
 }
 
 function Play_qualityChanged() {
-    Play_qualityIndex = 0;
-    Play_playingUrl = Play_qualities[0].url;
+    Play_qualityIndex = 1;
+    Play_playingUrl = Play_qualities[1].url;
 
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
         if (Play_qualities[i].id === Play_quality) {
@@ -725,7 +737,9 @@ function Play_qualityChanged() {
         }
     }
 
-    Play_qualityPlaying = Play_qualities[Play_qualityIndex].id;
+    Play_quality = Play_qualities[Play_qualityIndex].id;
+    Play_qualityPlaying = Play_quality;
+
     Play_SetHtmlQuality('stream_quality');
 
     Play_state = Play_STATE_PLAYING;
@@ -889,9 +903,18 @@ function Play_ClearPlayer() {
     Play_HideEndDialog();
     Play_IncrementView = '';
 
-    if (Play_qualityIndex === (Play_getQualitiesCount() - 1)) Play_qualityPlaying = Play_qualities[0].id;
-    if (PlayVod_qualityIndex === (PlayVod_getQualitiesCount() - 1)) PlayVod_qualityPlaying = PlayVod_qualities[0].id;
-    if (PlayClip_qualityIndex === (PlayClip_getQualitiesCount() - 1)) PlayClip_qualityPlaying = PlayClip_qualities[0].id;
+    if (Play_qualityIndex === (Play_getQualitiesCount() - 1)) {
+        Play_quality = Play_qualities[1].id;
+        Play_qualityPlaying = Play_quality;
+    }
+    if (PlayVod_qualityIndex === (PlayVod_getQualitiesCount() - 1)) {
+        PlayVod_quality = PlayVod_qualities[1].id;
+        PlayVod_qualityPlaying = PlayVod_quality;
+    }
+    if (PlayClip_qualityIndex === (PlayClip_getQualitiesCount() - 1)) {
+        PlayClip_quality = PlayClip_qualities[0].id;
+        PlayClip_qualityPlaying = PlayClip_quality;
+    }
 
 }
 
