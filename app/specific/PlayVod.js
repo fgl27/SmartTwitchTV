@@ -333,6 +333,18 @@ function PlayVod_loadDataSuccessFake() {
             'codec': ' | avc',
             'url': 'https://720'
         },
+        {
+            'id': '480p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+            'url': 'https://480'
+        },
+        {
+            'id': '320p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+            'url': 'https://320'
+        },
     ];
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_qualityChanged();
@@ -391,17 +403,23 @@ function PlayVod_isSub() {
 }
 
 function PlayVod_qualityChanged() {
-    PlayVod_qualityIndex = 0;
-    PlayVod_playingUrl = PlayVod_qualities[0].url;
+    PlayVod_qualityIndex = 1;
+    PlayVod_playingUrl = PlayVod_qualities[1].url;
 
     for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
-        if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) {
+        if (PlayVod_qualities[i].id === PlayVod_quality) {
+            PlayVod_qualityIndex = i;
+            PlayVod_playingUrl = PlayVod_qualities[i].url;
+            break;
+        } else if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) { //make shore to set a value before break out
             PlayVod_qualityIndex = i;
             PlayVod_playingUrl = PlayVod_qualities[i].url;
         }
     }
 
-    PlayVod_qualityPlaying = PlayVod_qualities[PlayVod_qualityIndex].id;
+    PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
+    PlayVod_qualityPlaying = PlayVod_quality;
+
     PlayVod_SetHtmlQuality('stream_quality');
     PlayVod_onPlayer();
 }
@@ -440,8 +458,8 @@ function PlayVod_UpdateDuration(duration) {
 
 function PlayVod_shutdownStream() {
     if (PlayVod_isOn) {
-        PlayVod_qualities = [];
         PlayVod_PreshutdownStream(true);
+        PlayVod_qualities = [];
         Play_exitMain();
     }
 }
