@@ -129,22 +129,13 @@ var lazyLoadInstance;
 Main_Start();
 
 function Main_Start() {
-    Main_isDebug = Main_getItemBool('Main_isDebug', false);
-    if (Main_isDebug && Main_isReleased) Main_Debug();
-    else if (document.readyState === "loading") {
+    if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function() {
             Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
         });
     } else { // `DOMContentLoaded` already fired
         Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
     }
-}
-
-function Main_Debug() { // jshint ignore:line
-    console.log("Debug mod start");
-    var script = document.createElement('script');
-    script.src = "https://fgl27.github.io/SmartTwitchTV/release/githubio/js/masterdebug.js";
-    document.head.appendChild(script);
 }
 
 function Main_loadTranslations(language) {
