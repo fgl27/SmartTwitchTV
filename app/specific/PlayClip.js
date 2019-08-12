@@ -72,6 +72,7 @@ function PlayClip_Start() {
     PlayClip_qualityIndex = 2;
     PlayClip_UpdateNext();
     Play_EndSet(3);
+    UserLiveFeed_Unset();
     Play_IsWarning = false;
 
     if (AddUser_UserIsSet()) {
