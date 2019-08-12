@@ -68,11 +68,14 @@ public class Tools {
                 urlConnection.setRequestProperty(HEADERS[i][0], HEADERS[i][1]);
 
             urlConnection.setConnectTimeout(timeout);
+            urlConnection.setReadTimeout(timeout);
 
             if (post) {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);
             }
+
+            urlConnection.connect();
 
             int status = urlConnection.getResponseCode();
 
