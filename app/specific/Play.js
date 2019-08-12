@@ -712,6 +712,7 @@ function Play_PlayerCheck(mwhocall) { // jshint ignore:line
         if (PlayVod_quality.indexOf("Auto") !== -1) PlayVod_qualityChanged();
         else if (navigator.onLine && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
             PlayVod_qualityIndex++;
+            Main_values.vodOffset = Android.getsavedtime() / 1000;
             PlayVod_qualityDisplay();
             PlayVod_qualityChanged();
         } else Play_EndStart(false, 2);
@@ -1601,7 +1602,6 @@ function Play_KeyReturn(is_vod) {
 }
 
 function Play_handleKeyUp(e) {
-    console.log('Play_handleKeyUp');
     if (e.keyCode === KEY_ENTER) {
         Play_handleKeyUpClear();
         if (!PlayExtra_clear) {
@@ -1609,8 +1609,8 @@ function Play_handleKeyUp(e) {
             if (doc === null) UserLiveFeed_ResetFeedId();
             else {
                 var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
-                if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
-                    console.log('KEY_ENTER Main_OpenLiveStream');
+                if (Main_values.Play_selectedChannel !== selectedChannel &&
+                    PlayExtra_selectedChannel !== selectedChannel) {
                     Play_PreshutdownStream();
                     Main_values.Play_isHost = false;
                     Play_UserLiveFeedPressed = true;
