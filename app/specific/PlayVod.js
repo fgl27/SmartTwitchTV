@@ -63,7 +63,7 @@ function PlayVod_Start() {
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
-
+    UserLiveFeed_Unset();
     Play_ShowPanelStatus(2);
 
     PlayVod_StepsCount = 0;

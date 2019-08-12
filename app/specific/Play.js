@@ -231,6 +231,7 @@ function Play_Start() {
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     isPlay_CheckResumeForced = false;
+    UserLiveFeed_SetFeedPicText();
 
     Play_ShowPanelStatus(1);
 
