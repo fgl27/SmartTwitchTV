@@ -814,7 +814,7 @@ public class PlayerActivity extends Activity {
 
         private PlayerEventListener(int mposition) {
             position = mposition;
-            delayms = (BUFFER_SIZE[mwhocall] * 2) + (mwhocall == 2 ? 3000 : 1000);
+            delayms = (BUFFER_SIZE[mwhocall] * 2) + (mwhocall == 2 ? 5000 : 3000);
         }
 
         @Override
@@ -836,7 +836,6 @@ public class PlayerActivity extends Activity {
                             //Player was released or is on pause
                             if (player[position] == null || !player[position].getPlayWhenReady()) return;
 
-                            PlayerCheckCounter[position]++;
                             PlayerEventListenerCheckCounter(position, false);
                         }, delayms);
                     } else if (playbackState == Player.STATE_READY) {
@@ -860,7 +859,6 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlayerError(ExoPlaybackException e) {
-            PlayerCheckCounter[position]++;
             PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
         }
     }
@@ -877,22 +875,34 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
-        //Pause to things run smother and prevent odd behavior during the checks
+        PlayerCheckCounter[position]++;
+
+        //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
         player[position].setPlayWhenReady(false);
+        showLoading();
 
         if (PlayerCheckCounter[position] < 4 &&
                 (mainPlayer != position || mediaSourceAuto[position] != null)) {
+
+            Log.d(TAG,  "PlayerEventListenerCheckCounter if");
             //this is small screen  or is in auto mode just restart it
             if (mclearResumePosition || mwhocall == 1) clearResumePosition();
             else updateResumePosition(position);
 
-            initializePlayer(position);
-        } else if (PlayerCheckCounter[position] > 3){
-            // treys == 3 Give up internet is probably down or something related
+            //ask java to reset the qualities as it only last for about 30 to 35 min
+            //Reset they is as fast as initializePlayer(position)
+            mwebview.loadUrl("javascript:Play_CheckResumeForced(" + mwhocall + "," + (mainPlayer != position) + ")");
+
+        } else if (PlayerCheckCounter[position] > 3) {
+
+            // try == 3 Give up internet is probably down or something related
             PlayerEventListenerClear(position);
+
         } else if (PlayerCheckCounter[position] > 1) {
-            // Second if not in auto mode js to check if is possible to drop quality
+
+            // Second if not in auto mode use js to check if is possible to drop quality
             mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
+
         } else {
             //First try only restart the player
             if (mclearResumePosition || mwhocall == 1) clearResumePosition();

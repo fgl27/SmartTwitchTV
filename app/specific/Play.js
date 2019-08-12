@@ -24,6 +24,7 @@ var Play_STATE_LOADING_PLAYLIST = 1;
 var Play_STATE_PLAYING = 2;
 var Play_state = 0;
 var Play_Status_Always_On = false;
+var isPlay_CheckResumeForced = false;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
@@ -229,6 +230,7 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
+    isPlay_CheckResumeForced = false;
 
     Play_ShowPanelStatus(1);
 
@@ -278,8 +280,24 @@ function Play_Warn(text) { // jshint ignore:line
 
 function Play_CheckResume() { // jshint ignore:line
     if (Play_isOn) Play_Resume();
-    if (PlayVod_isOn) PlayVod_Resume();
-    if (PlayClip_isOn) PlayClip_shutdownStream();
+    else if (PlayVod_isOn) PlayVod_Resume();
+    else if (PlayClip_isOn) PlayClip_shutdownStream();
+}
+
+function Play_CheckResumeForced(mwhocall, isPicturePicture) { // jshint ignore:line
+    isPlay_CheckResumeForced = true;
+    if (mwhocall === 1) {
+        if (isPicturePicture) PlayExtra_Resume();
+        else {
+            Play_state = Play_STATE_LOADING_TOKEN;
+            Play_loadData();
+        }
+    } else {
+        Main_values.vodOffset = Android.getsavedtime() / 1000;
+        window.clearInterval(Play_ResumeAfterOnlineId);
+        PlayVod_state = Play_STATE_LOADING_TOKEN;
+        PlayVod_loadData();
+    }
 }
 
 function Play_Resume() {
@@ -318,8 +336,8 @@ function Play_Resume() {
     }
 }
 
-function Play_ResumeAfterOnline() {
-    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+function Play_ResumeAfterOnline(forced) {
+    if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
         Play_state = Play_STATE_LOADING_TOKEN;
         Play_loadData();
@@ -569,6 +587,7 @@ function Play_loadDataSuccess(responseText) {
     } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
         Play_qualities = Play_extractQualities(responseText);
         Play_state = Play_STATE_PLAYING;
+        isPlay_CheckResumeForced = false;
         if (Play_isOn) Play_qualityChanged();
     }
 }
@@ -638,7 +657,6 @@ function Play_extractStreamDeclarations(input) {
 function Play_qualityChanged() {
     Play_qualityIndex = 0;
     Play_playingUrl = Play_qualities[0].url;
-    if (Play_quality.indexOf("source") !== -1) Play_quality = "source";
 
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
         if (Play_qualities[i].id === Play_quality) {
@@ -651,7 +669,7 @@ function Play_qualityChanged() {
         }
     }
 
-    Play_qualityPlaying = Play_quality;
+    Play_qualityPlaying = Play_qualities[Play_qualityIndex].id;
     Play_SetHtmlQuality('stream_quality');
 
     Play_state = Play_STATE_PLAYING;
@@ -700,8 +718,7 @@ function Play_loadChat() {
 function Play_PlayerCheck(mwhocall) { // jshint ignore:line
     if (mwhocall === 1) {
 
-        if (Play_qualityPlaying.indexOf("Auto") !== -1) Play_qualityChanged();
-        else if (navigator.onLine && (Play_qualityIndex < Play_getQualitiesCount() - 1)) {
+        if (navigator.onLine && (Play_qualityIndex < Play_getQualitiesCount() - 1)) {
             Play_qualityIndex++;
             Play_qualityDisplay();
             Play_qualityChanged();
@@ -709,8 +726,7 @@ function Play_PlayerCheck(mwhocall) { // jshint ignore:line
 
     } else if (mwhocall === 2) {
 
-        if (PlayVod_quality.indexOf("Auto") !== -1) PlayVod_qualityChanged();
-        else if (navigator.onLine && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
+        if (navigator.onLine && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
             PlayVod_qualityIndex++;
             Main_values.vodOffset = Android.getsavedtime() / 1000;
             PlayVod_qualityDisplay();
@@ -816,6 +832,7 @@ function Play_ClearPlayer() {
     Play_HideWarningDialog();
     Play_HideEndDialog();
     Play_IncrementView = '';
+    isPlay_CheckResumeForced = false;
 
     if (Play_qualityIndex === (Play_getQualitiesCount() - 1)) Play_qualityPlaying = Play_qualities[0].id;
     if (PlayVod_qualityIndex === (PlayVod_getQualitiesCount() - 1)) PlayVod_qualityPlaying = PlayVod_qualities[0].id;
@@ -1486,6 +1503,7 @@ function Play_PlayEndStart(PlayVodClip) {
 
 function Play_CheckHostStart() {
     Play_showBufferDialog();
+    isPlay_CheckResumeForced = false;
     Play_state = -1;
     Play_loadingDataTry = 0;
     Play_loadingDataTimeout = 2000;
@@ -1628,7 +1646,7 @@ function Play_handleKeyUpClear() {
 }
 
 function Play_handleKeyDown(e) {
-    if (Play_state !== Play_STATE_PLAYING) {
+    if (Play_state !== Play_STATE_PLAYING && !isPlay_CheckResumeForced) {
         switch (e.keyCode) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
@@ -1938,10 +1956,26 @@ function Play_MakeControls() {
         enterKey: function(PlayVodClip) {
 
             if (PlayVodClip === 1) {
-                Play_qualityChanged();
+
+                if (Play_qualities[Play_qualityIndex].id.indexOf("Auto") !== -1) {
+                    Play_showBufferDialog();
+                    Play_quality = "Auto";
+                    Play_qualityPlaying = Play_quality;
+                    Play_SetHtmlQuality('stream_quality');
+                    Play_ResumeAfterOnline(true);
+                } else Play_qualityChanged();
+
                 Play_hidePanel();
             } else if (PlayVodClip === 2) {
-                PlayVod_qualityChanged();
+
+                if (PlayVod_qualities[PlayVod_qualityIndex].id.indexOf("Auto") !== -1) {
+                    Play_showBufferDialog();
+                    PlayVod_quality = 'Auto';
+                    PlayVod_qualityPlaying = PlayVod_quality;
+                    PlayVod_SetHtmlQuality('stream_quality');
+                    PlayVod_ResumeAfterOnline(true);
+                } else PlayVod_qualityChanged();
+
                 PlayVod_hidePanel();
             } else if (PlayVodClip === 3) {
                 PlayClip_PlayerCheckQualityChanged = false;
@@ -1995,13 +2029,12 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
 
-            try {
-                if (this.defaultValue === 2) {
-                    Android.StartAuto(1, 0);
-                    Android.initializePlayer2Auto();
-                } else if (this.defaultValue) Android.StartAuto(1, 0);
-                else Android.initializePlayer2Auto();
-            } catch (e) {}
+            if (this.defaultValue === 2) {
+                Play_ResumeAfterOnline(true);
+            } else if (this.defaultValue) {
+                Play_state = Play_STATE_LOADING_TOKEN;
+                Play_loadData();
+            } else PlayExtra_Resume();
 
             Play_hidePanel();
             this.defaultValue = 2;

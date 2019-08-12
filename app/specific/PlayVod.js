@@ -76,6 +76,8 @@ function PlayVod_Start() {
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
 
+    isPlay_CheckResumeForced = false;
+
     if (Main_values.vodOffset) { // this is a vod coming from a clip or from restore playback
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
@@ -237,8 +239,8 @@ function PlayVod_Resume() {
     }
 }
 
-function PlayVod_ResumeAfterOnline() {
-    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+function PlayVod_ResumeAfterOnline(forced) {
+    if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
         PlayVod_state = Play_STATE_LOADING_TOKEN;
         PlayVod_loadData();
@@ -300,6 +302,7 @@ function PlayVod_loadDataError() {
             PlayVod_loadDataRequest();
         } else {
             if (Main_IsNotBrowser) {
+                isPlay_CheckResumeForced = false;
                 Play_HideBufferDialog();
                 Play_PlayEndStart(2);
             } else PlayVod_loadDataSuccessFake();
@@ -347,6 +350,7 @@ function PlayVod_loadDataSuccess(responseText) {
         PlayVod_playlistResponse = responseText;
         PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
         PlayVod_state = Play_STATE_PLAYING;
+        isPlay_CheckResumeForced = false;
         if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
         if (PlayVod_isOn) PlayVod_qualityChanged();
     }
@@ -393,7 +397,6 @@ function PlayVod_isSub() {
 function PlayVod_qualityChanged() {
     PlayVod_qualityIndex = 0;
     PlayVod_playingUrl = PlayVod_qualities[0].url;
-    if (PlayVod_quality.indexOf("source") !== -1) PlayVod_quality = "source";
 
     for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
         if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) {
@@ -402,7 +405,7 @@ function PlayVod_qualityChanged() {
         }
     }
 
-    PlayVod_qualityPlaying = PlayVod_quality;
+    PlayVod_qualityPlaying = PlayVod_qualities[PlayVod_qualityIndex].id;
     PlayVod_SetHtmlQuality('stream_quality');
     PlayVod_onPlayer();
 }
@@ -629,9 +632,10 @@ function PlayVod_jump() {
 
         if (PlayVod_isOn) {
             if (Main_IsNotBrowser) {
-                if (PlayVod_quality.indexOf("Auto") !== -1) Android.StartAuto(2,
-                    (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
-                else Android.startVideoOffset(PlayVod_playingUrl, 2,
+                if (PlayVod_quality.indexOf("Auto") !== -1) {
+                    Main_values.vodOffset = (PlayVod_TimeToJump > 0) ? PlayVod_TimeToJump : -1;
+                    PlayVod_ResumeAfterOnline(true);
+                } else Android.startVideoOffset(PlayVod_playingUrl, 2,
                     (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
 
                 Chat_offset = PlayVod_TimeToJump;
@@ -808,7 +812,7 @@ function PlayVod_DialogPressed(fromStart) {
 }
 
 function PlayVod_handleKeyDown(e) {
-    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
+    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown() && !isPlay_CheckResumeForced) {
         switch (e.keyCode) {
             case KEY_RETURN:
                 if (Play_ExitDialogVisible()) {
