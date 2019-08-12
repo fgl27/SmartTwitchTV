@@ -8,7 +8,7 @@ function en_USLang() {
 
     //Below are variables to translate
     STR_KEY_UP_DOWN = " (PG Up/Down)";
-    STR_GUIDE_EXTRA = "or key 2";
+    STR_GUIDE_EXTRA = STR_SPACE + "or key 2";
     STR_REFRESH = "Refresh";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
@@ -53,7 +53,7 @@ function en_USLang() {
     STR_VIEWS = " Views";
     STR_VIEWER = " Viewers";
     STR_EXIT_AGAIN = "Click again to exit!";
-    STR_EXIT_AGAIN_PICTURE = "Click again to hide Picture in Picture!";
+    STR_EXIT_AGAIN_PICTURE = "Click again to exit Picture in Picture!";
     STR_EXIT_MESSAGE = "Do you want to exit SmartTV Twitch?";
     STR_EXIT = "Exit";
     STR_CLOSE = "Close";
@@ -96,7 +96,7 @@ function en_USLang() {
     STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter to start playing";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
-    STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it closes";
+    STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it auto force close";
     STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right or" + STR_KEY_UP_DOWN;
     STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
@@ -119,16 +119,17 @@ function en_USLang() {
     STR_ABOUT_INFO_16 = "Google: Leanback v17 (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
     STR_ABOUT_INFO_17 = "Google: ExoPlayer (https://github.com/google/ExoPlayer)";
 
+    STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
     STR_CONTROLS_PLAY_2 = "Close the video: press back key twice";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol";
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
     STR_CONTROLS_PLAY_5 = "Change video quality: use the player bottom controls Quality";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
-    STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right" + STR_GUIDE_EXTRA;
-    STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or " + STR_KEY_UP_DOWN;
-    STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down";
-    STR_CONTROLS_PLAY_10 = "Change Chat background brightness: Change in side panel settings";
+    STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right" + STR_GUIDE_EXTRA + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or " + STR_KEY_UP_DOWN + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down" + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
@@ -260,7 +261,7 @@ function en_USLang() {
     STR_THUMB_RESOLUTION_SUMARRY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
     STR_PAYPAL_SUMMARY = "Donations use above Email.";
     STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load second stream info";
-    STR_PLAYER_RESYNC = "Player Sync";
+    STR_PLAYER_RESYNC = "Player Auto Sync";
     STR_PLAYER_AUTO_BIG = "Main window";
     STR_PLAYER_AUTO_SMALLS = "Small window";
     STR_PLAYER_AUTO_ALL = "Both windows";
@@ -272,16 +273,17 @@ function en_USLang() {
     STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short loading call when changing video source, to prevent this set both values the same at the cost of possible app slowdowns if the bitrate values are too high, the best indicative for detecting too high bitrate for picture in picture is the player Drooped frames value if you are constantly drooping the bitrate is too high, other indicative is the constantly buffering of the stream.";
     STR_PICTURE_LIVE_FEED = 'Hold enter to start "Picture in Picture Mode" then use D-Pad to move, resize or change videos';
     STR_AUDIO_SOURCE = "Audio source";
-    STR_PICTURE_PICTURE = "Picture in Picture (Live streams only):";
+    STR_PICTURE_PICTURE = "Picture in Picture (For Live streams only, add a user to use it):";
     STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter to start";
-    STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter to start above a stream in live feed";
+    STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter above a stream in live feed";
     STR_PICTURE_CONTROLS3 = "Change big window content: simple click above a stream in live feed";
     STR_PICTURE_CONTROLS4 = "Change content between windows: D-pad down big becomes small and vice versa";
     STR_PICTURE_CONTROLS5 = "Change small window position: D-pad left";
     STR_PICTURE_CONTROLS6 = "Change small window size: D-pad right";
     STR_PICTURE_CONTROLS7 = "Change audio source: use the player bottom controls Audio source";
-    STR_PICTURE_CONTROLS8 = "Sync playback: use the player bottom controls Player Sync";
-    STR_PICTURE_CONTROLS9 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
-    STR_PICTURE_CONTROLS10 = "Close small window: back key twice";
+    STR_PICTURE_CONTROLS8 = "Auto Sync playback: use the player bottom controls Player Sync";
+    STR_PICTURE_CONTROLS9 = "Manually Sync playback: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa";
+    STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
+    STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
 }
