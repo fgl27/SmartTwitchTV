@@ -165,6 +165,7 @@ function Play_PreStart() {
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
+    Play_SetAudioIcon();
 }
 
 function Play_SetQuality() {
@@ -199,24 +200,35 @@ function Play_SetFullScreen(isfull) {
         Play_ChatSizeValue = 3;
         Play_ChatPositionConvert(true);
         Play_ChatSize(false);
-        if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
+        if (Chat_div[0]) Chat_div[0].scrollTop = Chat_div[0].scrollHeight;
     }
 
-    //TODO remove the try some day after the app update has be live for some time
-    Android.mupdatesize(!Play_isFullScreen);
+    if (PlayExtra_PicturePicture) {
+        if (Main_IsNotBrowser) Android.mupdatesizePP(!Play_isFullScreen);
+        if (!Play_isFullScreen) {
+            ChatLive_Init(1);
+            PlayExtra_ShowChat();
+        } else {
+            ChatLive_Clear(1);
+            PlayExtra_HideChat();
+        }
+    } else if (Main_IsNotBrowser) Android.mupdatesize(!Play_isFullScreen);
 
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
 }
 
 function Play_SetChatFont() {
-    for (var i = 0; i < Play_ChatFontObj.length; i++)
+    for (var i = 0; i < Play_ChatFontObj.length; i++) {
         Main_RemoveClass('chat_inner_container', Play_ChatFontObj[i]);
+        Main_RemoveClass('chat_inner_container2', Play_ChatFontObj[i]);
+    }
 
     Main_AddClass('chat_inner_container', Play_ChatFontObj[Main_values.Chat_font_size]);
+    Main_AddClass('chat_inner_container2', Play_ChatFontObj[Main_values.Chat_font_size]);
 }
 
 function Play_Start() {
-    Play_showBufferDialog();
+    if (Play_isFullScreen) Play_showBufferDialog();
 
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
@@ -251,6 +263,7 @@ function Play_Start() {
     Play_currentTime = 0;
     Play_watching_time = new Date().getTime();
     Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + STR_WATCHING + Play_timeS(0));
+    Main_textContent('chat_container_name_text', Main_values.Play_selectedChannelDisplayname);
     Play_created = Play_timeMs(0);
 
     Main_textContent("stream_live_time", Play_created);
@@ -358,7 +371,8 @@ function Play_Resume() {
         } else {
             Play_ClearPlayer();
             Play_Playing = false;
-            ChatLive_Clear();
+            ChatLive_Clear(0);
+            ChatLive_Clear(1);
             window.clearInterval(Play_streamInfoTimerId);
         }
     } else {
@@ -781,7 +795,7 @@ function Play_loadChat() {
         return;
     }
 
-    ChatLive_Init();
+    ChatLive_Init(0);
 }
 
 //called by android PlayerActivity
@@ -876,15 +890,16 @@ function Play_PreshutdownStream() {
                 //We are closing the player on error or on end
                 Android.mClearSmallPlayer();
                 Android.stopVideo(1);
+                Chat_Clear();
+                Play_ClearPlay();
             }
         } catch (e) {}
     }
 
     Play_isOn = false;
     UserLiveFeed_Hide();
-    Chat_Clear();
     Play_ClearPlayer();
-    Play_ClearPlay();
+
     Main_values.Play_selectedChannel_id = '';
 }
 
@@ -922,7 +937,7 @@ function Play_ClearPlay() {
     Play_Playing = false;
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.removeEventListener('visibilitychange', Play_Resume);
-    ChatLive_Clear();
+    ChatLive_Clear(0);
     window.clearInterval(Play_streamInfoTimerId);
     Play_IsWarning = false;
 }
@@ -1171,7 +1186,7 @@ function Play_ChatSize(showDialog) {
     Play_chat_container.style.height = Play_ChatSizeVal[Play_ChatSizeValue].containerHeight + '%';
     document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue].dialogTop + '%';
     Play_ChatPosition();
-    ChatLive_ChatFixPosition();
+    ChatLive_ChatFixPosition(0);
 
     if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue].percentage);
 
@@ -1204,7 +1219,6 @@ function Play_ChatPosition() {
     Play_chat_container.style.left =
         Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
 
-    //if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
     Main_setItem('ChatPositionsValue', Play_ChatPositions);
 }
 
@@ -1385,7 +1399,7 @@ function Play_EndDialogPressed(PlayVodClip) {
                 if (PlayClip_HasVOD) {
                     PlayVod_currentTime = 0;
                     Chat_offset = ChannelVod_vodOffset;
-                    Chat_Init();
+                    Chat_Init(0);
                 } else Chat_NoVod();
             }
         }
@@ -1465,7 +1479,6 @@ function Play_OpenChannel(PlayVodClip) {
     else if (PlayVodClip === 3) PlayClip_shutdownStream();
 }
 
-//TODO improve this
 function Play_OpenSearch(PlayVodClip) {
     if (PlayVodClip === 1) {
         PlayExtra_PicturePicture = false;
@@ -1528,7 +1541,6 @@ function Play_FallowUnfallow() {
     }
 }
 
-//TODO improve this position base
 function Play_qualityDisplay() {
     if (Play_getQualitiesCount() === 1) {
         document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "0";
@@ -1583,7 +1595,8 @@ function Play_CheckHostStart() {
     Play_state = -1;
     Play_loadingDataTry = 0;
     Play_loadingDataTimeout = 2000;
-    ChatLive_Clear();
+    ChatLive_Clear(0);
+    ChatLive_Clear(1);
     window.clearInterval(Play_streamInfoTimerId);
     Play_loadDataCheckHost();
 }
@@ -1648,9 +1661,15 @@ function Play_KeyReturn(is_vod) {
             Play_exitMain();
         } else if (Play_ExitDialogVisible()) {
             if (PlayExtra_PicturePicture) {
-                try {
-                    if (Main_IsNotBrowser) Android.mClearSmallPlayer();
-                } catch (e) {}
+                if (Main_IsNotBrowser) {
+                    try {
+                        Android.mClearSmallPlayer();
+                        if (!Play_isFullScreen) {
+                            Play_isFullScreen = !Play_isFullScreen;
+                            Play_SetFullScreen(Play_isFullScreen);
+                        }
+                    } catch (e) {}
+                }
                 PlayExtra_PicturePicture = false;
                 PlayExtra_selectedChannel = '';
                 PlayExtra_UnSetPanel();
@@ -1739,7 +1758,7 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter--;
                     if (Play_Endcounter < (Main_values.Play_isHost ? 1 : 2)) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
-                } else if (PlayExtra_PicturePicture) {
+                } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePicturePos++;
                     if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
 
@@ -1771,7 +1790,7 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter++;
                     if (Play_Endcounter > 3) Play_Endcounter = (Main_values.Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
-                } else if (PlayExtra_PicturePicture) {
+                } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePictureSize++;
                     if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
                     try {
@@ -1818,11 +1837,18 @@ function Play_handleKeyDown(e) {
                     Play_controls[Play_controlsChatSize].setLable();
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (PlayExtra_PicturePicture) {
-                    PlayExtra_SwitchPlayer();
+                    if (Play_isFullScreen) {
+                        try {
+                            if (Main_IsNotBrowser) Android.mSwitchPlayer();
+                        } catch (e) {}
+                        PlayExtra_SwitchPlayer();
+                    } else {
+                        Play_controls[Play_controlsAudio].defaultValue++;
 
-                    try {
-                        if (Main_IsNotBrowser) Android.mSwitchPlayer();
-                    } catch (e) {}
+                        if (Play_controls[Play_controlsAudio].defaultValue > (Play_controls[Play_controlsAudio].values.length - 1)) Play_controls[Play_controlsAudio].defaultValue = 0;
+
+                        Play_controls[Play_controlsAudio].enterKey();
+                    }
                 } else Play_showPanel();
                 break;
             case KEY_ENTER:
@@ -2127,6 +2153,7 @@ function Play_MakeControls() {
 
             this.bottomArrows();
             this.setLable();
+            Play_SetAudioIcon();
         },
         updown: function(adder) {
 
@@ -2166,31 +2193,9 @@ function Play_MakeControls() {
         },
         setLable: function() {
             var string = (Play_isChatShown() ? STR_YES : STR_NO);
-            if (!Play_isFullScreen) string = STR_CHAT_SIDE;
+            if (!Play_isFullScreen) string = Play_isFullScreen ? STR_CHAT_SIDE : STR_CHAT_5050;
 
             Main_textContent('extra_button_' + this.position, '(' + string + ')');
-        },
-    };
-
-
-    Play_controls[Play_controlsChatForceDis] = { //force disable chat
-        icons: "chat-stop",
-        string: STR_F_DISABLE_CHAT,
-        values: null,
-        defaultValue: null,
-        opacity: 0,
-        enterKey: function(PlayVodClip) {
-            Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
-
-            if (PlayVodClip === 1) ChatLive_Init();
-            else Chat_Init();
-
-            this.setLable();
-            Main_SaveValues();
-        },
-        setLable: function() {
-            Main_textContent('extra_button_' + this.position, '(' +
-                (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
         },
     };
 
@@ -2208,13 +2213,42 @@ function Play_MakeControls() {
             this.setIcon();
         },
         setLable: function() {
-            Main_textContent('extra_button_' + this.position, '(' + (Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE) + ')');
+            var title = Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE;
+            if (PlayExtra_PicturePicture) title = Play_isFullScreen ? STR_CHAT_PP_SIDE_FULL : STR_CHAT_5050;
+
+            Main_textContent('extra_button_' + this.position, '(' + title + ')');
 
             Play_controls[Play_controlsChat].setLable();
         },
         setIcon: function() {
+            var icon = (Play_isFullScreen ? "resize-down" : "resize-up");
+            if (PlayExtra_PicturePicture) icon = 'pp';
+
             Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
-                (Play_isFullScreen ? "resize-down" : "resize-up") + '" ></i>');
+                icon + '" ></i>');
+        },
+    };
+
+    Play_controls[Play_controlsChatForceDis] = { //force disable chat
+        icons: "chat-stop",
+        string: STR_F_DISABLE_CHAT,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+            Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
+
+            if (PlayVodClip === 1) {
+                ChatLive_Init(0);
+                if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLive_Init(1);
+            } else Chat_Init(0);
+
+            this.setLable();
+            Main_SaveValues();
+        },
+        setLable: function() {
+            Main_textContent('extra_button_' + this.position, '(' +
+                (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
         },
     };
 
@@ -2382,6 +2416,19 @@ function Play_MakeControls() {
             Play_BottomArrows(this.position);
         },
     };
+}
+
+function Play_SetAudioIcon() {
+    if (Play_controlsAudioPos === 2) {
+        Main_innerHTML("chat_container_sound_icon", '<i class="icon-sound strokicon" ></i>');
+        Main_innerHTML("chat_container2_sound_icon", '<i class="icon-sound strokicon" ></i>');
+    } else if (Play_controlsAudioPos === 1) {
+        Main_innerHTML("chat_container_sound_icon", '<i class="icon-sound strokicon" ></i>');
+        Main_innerHTML("chat_container2_sound_icon", '<i class="icon-sound-off strokicon" ></i>');
+    } else {
+        Main_innerHTML("chat_container_sound_icon", '<i class="icon-sound-off strokicon" ></i>');
+        Main_innerHTML("chat_container2_sound_icon", '<i class="icon-sound strokicon" ></i>');
+    }
 }
 
 function Play_IconsAddFocus() {

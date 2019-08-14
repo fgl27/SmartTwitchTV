@@ -245,7 +245,9 @@ function en_USLang() {
     STR_CHAT_POS = "Chat position";
     STR_CHAT_VIDEO_MODE = "Video mode";
     STR_CHAT_SIDE_FULL = "Full screen";
+    STR_CHAT_PP_SIDE_FULL = "Big plus small screen";
     STR_CHAT_SIDE = "Smaller screen and chat";
+    STR_CHAT_5050 = "50/50 and chats";
     STR_CHAT_DELAY = "Chat delay";
     STR_SPEED = "Speed";
     STR_QUALITY = "Quality";
@@ -273,7 +275,7 @@ function en_USLang() {
     STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short loading call when changing video source, to prevent this set both values the same at the cost of possible app slowdowns if the bitrate values are too high, the best indicative for detecting too high bitrate for picture in picture is the player Drooped frames value if you are constantly drooping the bitrate is too high, other indicative is the constantly buffering of the stream.";
     STR_PICTURE_LIVE_FEED = 'Hold enter to start "Picture in Picture Mode" then use D-Pad to move, resize or change videos';
     STR_AUDIO_SOURCE = "Audio source";
-    STR_PICTURE_PICTURE = "Picture in Picture (For Live streams only, add a user to use it):";
+    STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";
     STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter to start";
     STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter above a stream in live feed";
     STR_PICTURE_CONTROLS3 = "Change big window content: simple click above a stream in live feed";
@@ -285,5 +287,6 @@ function en_USLang() {
     STR_PICTURE_CONTROLS9 = "Manually Sync playback: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa";
     STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
     STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
+    STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If already in picture in picture mode use bottom controls Video Mode or when in video mode smaller screen plus chat hold key enter to start from live feed";
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
 }

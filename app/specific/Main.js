@@ -717,7 +717,6 @@ function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
 }
 
 function Main_checkVersion() {
-    //TODO remove the try after android app update has be releaased for some time
     if (Main_IsNotBrowser) {
         Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion;
         if (Main_needUpdate(Main_IsNotBrowserVersion)) Main_ShowElement('label_update');
