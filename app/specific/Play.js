@@ -775,7 +775,7 @@ function Play_onPlayer() {
 }
 
 function Play_SetHtmlQuality(element) {
-    if (!Play_qualities[Play_qualityIndex].hasOwnProperty('id')) return;
+    if (!Play_qualities[Play_qualityIndex] || !Play_qualities[Play_qualityIndex].hasOwnProperty('id')) return;
 
     Play_quality = Play_qualities[Play_qualityIndex].id;
 
