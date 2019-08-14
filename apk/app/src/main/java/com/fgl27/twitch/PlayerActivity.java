@@ -84,6 +84,8 @@ public class PlayerActivity extends Activity {
     public FrameLayout.LayoutParams PlayerViewDefaultSize;
     public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
     public FrameLayout.LayoutParams PlayerViewSmallSize;
+    public FrameLayout.LayoutParams PlayerViewDefaultSizePP;
+    public FrameLayout.LayoutParams PlayerViewDefaultSizeChatPP;
     public FrameLayout VideoHolder;
 
     public WebView mwebview;
@@ -118,6 +120,7 @@ public class PlayerActivity extends Activity {
 
     private boolean alredystarted;
     private boolean shouldCallJavaCheck;
+    public boolean IsIN5050 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +189,7 @@ public class PlayerActivity extends Activity {
 
         //Show main buffer if this call is in the main player as this is needed fro when we are fast/back forwarding
         //On small player it will show its own loading
-        if (!isSmall) showLoading();
+        if (!isSmall && !IsIN5050) showLoading();
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
@@ -228,7 +231,6 @@ public class PlayerActivity extends Activity {
             }
         }
     }
-
 
     // For some reason the player can lag a device when stated without releasing it first
     // It seems that the app keeps working on the player somehow in the background on the already released player
@@ -283,7 +285,7 @@ public class PlayerActivity extends Activity {
 
     //Stop the player called from js, clear it all
     private void PreResetPlayer(int whocall, int position) {
-
+        if (IsIN5050) updateVidesizeChatPP(false);
         if (mainPlayer == 1) SwitchPlayer();
         PicturePicture = false;
         shouldCallJavaCheck = false;
@@ -353,14 +355,30 @@ public class PlayerActivity extends Activity {
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
         PlayerViewDefaultSizeChat = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
 
+        PlayerViewDefaultSizePP = new FrameLayout.LayoutParams((mwidthDefault / 2), (heightDefault / 2), positions[3]);
+        PlayerViewDefaultSizeChatPP = new FrameLayout.LayoutParams((mwidthDefault / 2), (heightDefault / 2), positions[7]);
+
         PlayerViewSmallSize = new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]);
         PlayerView[1].setLayoutParams(PlayerViewSmallSize);
     }
 
     //Used in side-by-side mode chat plus video
     private void updateVidesizeChat(boolean sizechat) {
-        if (sizechat)PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizeChat);
+        if (sizechat) PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizeChat);
         else PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
+    }
+
+    //Used in 50/50 mode two videos on the center plus two chat one on it side
+    private void updateVidesizeChatPP(boolean sizechat) {
+        if (sizechat) {
+            IsIN5050 = true;
+            PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizePP);
+            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewDefaultSizeChatPP);
+        } else {
+            IsIN5050 = false;
+            PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
+            UpdadeSizePosSmall(mainPlayer ^ 1);
+        }
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
@@ -557,6 +575,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mupdatesize(boolean sizechat) {
             myHandler.post(() -> updateVidesizeChat(sizechat));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mupdatesizePP(boolean sizechat) {
+            myHandler.post(() -> updateVidesizeChatPP(sizechat));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -905,7 +929,10 @@ public class PlayerActivity extends Activity {
             PicturePicture = false;
             ClearPlayer(position);
             AudioSource = 1;
-            if (mainPlayer == position) SwitchPlayer();
+            if (mainPlayer == position) {
+                SwitchPlayer();
+                mwebview.loadUrl("javascript:PlayExtra_End()");
+            }
         } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
     }
 

@@ -5,11 +5,11 @@ function extraEmoticonize(message, emote) {
 }
 
 function extraEmoteTemplate(emote) {
-    return '<img class="emoticon" alt="" src="' + emote['3x'] + '"/>';
+    return '<img class="emoticon" alt="" src="' + emote['2x'] + '"/>';
 }
 
 function emoteTemplate(id) {
-    return '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0"/>';
+    return '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/2.0"/>';
 }
 
 

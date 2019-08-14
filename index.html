@@ -861,6 +861,47 @@
             overflow: hidden;
         }
 
+        div.chat_container_name,
+        div.chat_container2_name {
+            z-index: 2;
+            border-radius: 10px;
+            left: 0.2%;
+            bottom: 0.2%;
+            position: fixed;
+            width: 24.25%;
+            height: 3%;
+            background-color: #000;
+            overflow: hidden;
+            border: 2px solid #FFFFFF;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 90%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        div.chat_container_name {
+            top: 0.2%;
+            left: 75.2%;
+        }
+
+        div.chat_container2_name_text {
+            display: inline-block;
+        }
+
+        div.chat_container2 {
+            z-index: 2;
+            border-radius: 2px;
+            left: 0.2%;
+            top: 0.2%;
+            position: fixed;
+            width: 24.7%;
+            height: 96.5%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
         div.topbar {
             z-index: 99;
             position: fixed;
@@ -1046,7 +1087,7 @@
 
         .controls_button_holder {
             display: inline-block;
-            width: 6.75%;
+            width: 6.25%;
         }
 
         .controls_button {
@@ -1185,7 +1226,7 @@
             line-height: 20px;
         }
 
-        #chat_box {
+        .chat_box {
             background-color: transparent;
             font-size: 13px;
             position: absolute;
@@ -1514,12 +1555,35 @@
     <div id="scene2" class="screen_size hide">
         <div id="chat_container" class="chat_container hide">
             <div id="chat_inner_container" class="chat_size_default">
-                <div id="chat_box"></div>
+                <div id="chat_box" class="chat_box"></div>
                 <div id="play_chat_dialog" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
                     <div id="play_chat_dialog_text" class="strokedeline" style="display: inline-block; font-size: 225%; color: #FFFFFF;">
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="chat_container2" class="chat_container2 hide">
+            <div id="chat_inner_container2" class="chat_size_default">
+                <div id="chat_box2" class="chat_box"></div>
+            </div>
+        </div>
+        <div id="chat_container2_name" class="chat_container2_name hide">
+            <div id="chat_container2_sound_icon" class="chat_container2_name_text">
+                <i class="icon-sound-off strokicon"></i>
+            </div>
+            <div id="chat_container2_name_text" class="strokedeline chat_container2_name_text"></div>
+            <div class="chat_container2_name_text">
+                <i class="icon-next strokicon"></i>
+            </div>
+        </div>
+        <div id="chat_container_name" class="chat_container_name hide">
+            <div class="chat_container2_name_text">
+                <i class="icon-back strokicon"></i>
+            </div>
+            <div id="chat_container_sound_icon" class="chat_container2_name_text">
+                <i class="icon-sound strokicon"></i>
+            </div>
+            <div id="chat_container_name_text" class="strokedeline chat_container2_name_text"></div>
         </div>
         <div id="scene_channel_panel" class="screen_size scene_channel_panel">
             <div class="playerinfo">

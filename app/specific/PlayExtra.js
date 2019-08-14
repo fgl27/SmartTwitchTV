@@ -70,6 +70,8 @@ function PlayExtra_KeyEnter() {
             PlayExtra_isHost = false;
             PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
 
+            Main_textContent('chat_container2_name_text', PlayExtra_selectedChannelDisplayname);
+
             PlayExtra_DisplaynameHost = Main_values.Play_DisplaynameHost;
 
             var playing = document.getElementById(UserLiveFeed_ids[5] + Play_FeedPos).textContent;
@@ -78,7 +80,7 @@ function PlayExtra_KeyEnter() {
             if (Main_IsNotBrowser) {
                 //Not on auto mode for change to auto before start picture in picture
                 if (Play_quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
-                Android.play(false);
+                //Android.play(false);
 
                 Play_quality = "Auto";
                 Play_qualityPlaying = Play_quality;
@@ -91,10 +93,11 @@ function PlayExtra_KeyEnter() {
 }
 
 function PlayExtra_Resume() {
-    // restart audio source position when first re-start PlayExtra_PicturePicture
+    // restart audio source position to where ther user has left it
     try {
         Android.mSwitchPlayerAudio(Play_controlsAudioPos);
     } catch (e) {}
+    Play_SetAudioIcon();
     PlayExtra_state = Play_STATE_LOADING_TOKEN;
     PlayExtra_loadingDataTry = 0;
     PlayExtra_loadDataRequest();
@@ -152,6 +155,33 @@ function PlayExtra_SwitchPlayer() {
 
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
+
+    Main_textContent('chat_container2_name_text', PlayExtra_selectedChannelDisplayname);
+    Main_textContent('chat_container_name_text', Main_values.Play_selectedChannelDisplayname);
+}
+
+function PlayExtra_ShowChat() {
+    Main_ShowElement('chat_container2');
+    Main_ShowElement('chat_container_name');
+    Main_ShowElement('chat_container2_name');
+}
+
+function PlayExtra_HideChat() {
+    Main_HideElement('chat_container2');
+    Main_HideElement('chat_container_name');
+    Main_HideElement('chat_container2_name');
+}
+
+function PlayExtra_End() { // jshint ignore:line
+    PlayExtra_SwitchPlayer();
+    PlayExtra_PicturePicture = false;
+    ChatLive_Clear(1);
+    PlayExtra_HideChat();
+    Play_showWarningDialog(PlayExtra_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+    window.setTimeout(function() {
+        Play_HideWarningDialog();
+    }, 2500);
+    PlayExtra_selectedChannel = '';
 }
 
 function PlayExtra_loadDataSuccess(responseText) {
@@ -164,14 +194,19 @@ function PlayExtra_loadDataSuccess(responseText) {
         PlayExtra_qualities = Play_extractQualities(responseText);
         PlayExtra_state = Play_STATE_PLAYING;
         PlayExtra_SetPanel();
-        if (!Play_isFullScreen) Play_controls[Play_controlsChatSide].enterKey();
-
         if (Play_isOn) PlayExtra_qualityChanged();
+
+        if (!Play_isFullScreen) {
+            Android.mupdatesizePP(!Play_isFullScreen);
+            ChatLive_Init(1);
+            PlayExtra_ShowChat();
+        }
     }
 }
 
 function PlayExtra_SetPanel() {
-    document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
+    Play_controls[Play_controlsChatSide].setLable();
+    Play_controls[Play_controlsChatSide].setIcon();
     document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
     document.getElementById('controls_' + Play_controlsAudio).style.display = '';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
@@ -179,7 +214,8 @@ function PlayExtra_SetPanel() {
 }
 
 function PlayExtra_UnSetPanel() {
-    document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
+    Play_controls[Play_controlsChatSide].setLable();
+    Play_controls[Play_controlsChatSide].setIcon();
     document.getElementById('controls_' + Play_controlsQuality).style.display = '';
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
@@ -289,11 +325,15 @@ function PlayExtra_loadDataError() {
 function PlayExtra_loadDataFail(Reason) {
     PlayExtra_PicturePicture = false;
     PlayExtra_selectedChannel = '';
+    ChatLive_Clear(1);
+    Main_HideElement('chat_container2');
     if (Main_IsNotBrowser) {
         Android.play(true);
         try {
             Android.mClearSmallPlayer();
         } catch (e) {}
+
+        if (!Play_isFullScreen) Android.mupdatesize(!Play_isFullScreen);
     }
     Play_HideBufferDialog();
     Play_showWarningDialog(Reason);
