@@ -16,12 +16,15 @@ var Chat_div = [];
 var Chat_Position = 0;
 var Chat_hasEnded = false;
 var Chat_Id = 0;
+var Chat_CleanMax = 60;
 var Chat_loadBadgesChannelId;
 //Variable initialization end
 
 function Chat_Preinit() {
     Chat_div[0] = document.getElementById('chat_box');
     Chat_div[1] = document.getElementById('chat_box2');
+    ChatLive_LineAddCounter[0] = 0;
+    ChatLive_LineAddCounter[1] = 0;
     Chat_loadBadgesGlobal();
 }
 
@@ -381,11 +384,10 @@ function Chat_SingleLine(Line) {
 function Chat_Clean(chat_number) {
     //delete old lines out of view
     var linesToDelete = Chat_div[chat_number].getElementsByClassName("chat_line");
-    if ((linesToDelete.length - 100) > 0) {
-        for (var i = 0; i < (linesToDelete.length - 100); i++) {
-            linesToDelete[0].parentNode.removeChild(linesToDelete[0]);
+    if ((linesToDelete.length - Chat_CleanMax) > 0) {
+        for (var i = 0; i < (linesToDelete.length - Chat_CleanMax); i++) {
+            Chat_div[chat_number].removeChild(linesToDelete[0]);
         }
     }
-    ChatLive_ChatFixPosition(0);
-    ChatLive_ChatFixPosition(1);
+    ChatLive_ChatFixPosition(chat_number);
 }

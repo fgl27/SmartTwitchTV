@@ -355,7 +355,7 @@ function ChatLive_LineAdd(message, chat_number) {
 
     ChatLive_ChatFixPosition(chat_number);
     ChatLive_LineAddCounter[chat_number]++;
-    if (ChatLive_LineAddCounter[chat_number] > 100) {
+    if (ChatLive_LineAddCounter[chat_number] > Chat_CleanMax) {
         ChatLive_LineAddCounter[chat_number] = 0;
         Chat_Clean(chat_number);
     }
