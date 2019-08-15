@@ -172,11 +172,21 @@ function PlayExtra_HideChat() {
     Main_HideElement('chat_container2_name');
 }
 
-function PlayExtra_End() { // jshint ignore:line
-    PlayExtra_SwitchPlayer();
+function PlayExtra_End(doSwitch) { // jshint ignore:line
+    //Some player ended switch and warn
+    if (doSwitch) PlayExtra_SwitchPlayer();
+
+    //If in 50/50 fix postion
+    if (!Play_isFullScreen) {
+        Play_isFullScreen = !Play_isFullScreen;
+        Play_SetFullScreen(Play_isFullScreen);
+    } else if (doSwitch) Android.mSwitchPlayer(); // else if doSwitch switch small to big
+
     PlayExtra_PicturePicture = false;
     ChatLive_Clear(1);
     PlayExtra_HideChat();
+    PlayExtra_UnSetPanel();
+
     Play_showWarningDialog(PlayExtra_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
     window.setTimeout(function() {
         Play_HideWarningDialog();
