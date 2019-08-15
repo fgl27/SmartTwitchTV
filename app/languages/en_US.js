@@ -282,7 +282,7 @@ function en_USLang() {
     STR_PICTURE_CONTROLS4 = "Change content between windows: D-pad down big becomes small and vice versa";
     STR_PICTURE_CONTROLS5 = "Change small window position: D-pad left";
     STR_PICTURE_CONTROLS6 = "Change small window size: D-pad right";
-    STR_PICTURE_CONTROLS7 = "Change audio source: use the player bottom controls Audio source";
+    STR_PICTURE_CONTROLS7 = "Change audio source: use the player bottom controls Audio source, if in 50/50 mode use d-pad down";
     STR_PICTURE_CONTROLS8 = "Auto Sync playback: use the player bottom controls Player Sync";
     STR_PICTURE_CONTROLS9 = "Manually Sync playback: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa";
     STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
