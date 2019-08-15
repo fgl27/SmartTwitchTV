@@ -81,7 +81,7 @@ var Play_UserLiveFeedPressed = false;
 var Play_ChatPositionVal = [{
     "top": 51.8, // Bottom/right 0
     "left": 75.1,
-    "sizeOffset": [31, 16, 0, -25.2, 0]// top - sizeOffset is the defaul top for it chat position
+    "sizeOffset": [31, 16, 0, -25.2, 0] // top - sizeOffset is the defaul top for it chat position
 }, {
     "top": 33, // Middle/right 1
     "left": 75.1,
