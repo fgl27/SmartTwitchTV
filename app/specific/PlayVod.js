@@ -930,15 +930,7 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if (Play_isFullScreen && Play_isChatShown()) {
-                    Play_ChatSizeValue++;
-                    if (Play_ChatSizeValue > 3) {
-                        Play_ChatSizeValue = 0;
-                        Play_ChatPositionConvert(false);
-                    } else if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(true);
-                    Play_ChatSize(true);
-                    Play_controls[Play_controlsChatSize].defaultValue = Play_ChatSizeValue;
-                    Play_controls[Play_controlsChatSize].bottomArrows();
-                    Play_controls[Play_controlsChatSize].setLable();
+                    Play_KeyChatSizeChage();
                 } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
                 break;
             case KEY_ENTER:

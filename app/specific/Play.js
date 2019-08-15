@@ -1830,17 +1830,7 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if (Play_isFullScreen && Play_isChatShown() && !PlayExtra_PicturePicture) {
-                    Play_ChatSizeValue++;
-                    if (Play_ChatSizeValue > Play_MaxChatSizeValue) {
-                        Play_ChatSizeValue = 0;
-                        Play_ChatPositionConvert(false);
-                    } else if (Play_ChatSizeValue === Play_MaxChatSizeValue) Play_ChatPositionConvert(true);
-
-                    Play_ChatSize(true);
-
-                    Play_controls[Play_controlsChatSize].defaultValue = Play_ChatSizeValue;
-                    Play_controls[Play_controlsChatSize].bottomArrows();
-                    Play_controls[Play_controlsChatSize].setLable();
+                    Play_KeyChatSizeChage();
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (PlayExtra_PicturePicture) {
                     if (Play_isFullScreen) {
@@ -2455,6 +2445,18 @@ function Play_IconsRemoveFocus() {
     document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "0";
     //in case chat is disable and the warning is showing because some chat option was selected
     document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
+}
+
+function Play_KeyChatSizeChage() {
+    Play_ChatSizeValue++;
+    if (Play_ChatSizeValue > Play_MaxChatSizeValue) {
+        Play_ChatSizeValue = 0;
+        Play_ChatPositionConvert(false);
+    } else if (Play_ChatSizeValue === Play_MaxChatSizeValue) Play_ChatPositionConvert(true);
+    Play_ChatSize(true);
+    Play_controls[Play_controlsChatSize].defaultValue = Play_ChatSizeValue;
+    Play_controls[Play_controlsChatSize].bottomArrows();
+    Play_controls[Play_controlsChatSize].setLable();
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {
