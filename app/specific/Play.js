@@ -202,7 +202,7 @@ function Play_SetFullScreen(isfull) {
         Play_ChatPositions = 0;
         Play_showChat();
         Play_ChatEnable = true;
-        Play_ChatSizeValue = 3;
+        Play_ChatSizeValue = Play_MaxChatSizeValue;
         Play_ChatPositionConvert(true);
         Play_ChatSize(false);
         if (Chat_div[0]) Chat_div[0].scrollTop = Chat_div[0].scrollHeight;
