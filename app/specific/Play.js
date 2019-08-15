@@ -4,6 +4,7 @@ var Play_ChatPositionConvertBefore = Play_ChatPositions;
 var Play_PlayerPanelOffset = -5;
 var Play_ChatBackground = 0.55;
 var Play_ChatSizeValue = 2;
+var Play_MaxChatSizeValue = 4;
 var Play_PanelHideID = null;
 var Play_quality = "Auto";
 var Play_qualityPlaying = Play_quality;
@@ -80,35 +81,35 @@ var Play_UserLiveFeedPressed = false;
 var Play_ChatPositionVal = [{
     "top": 51.8, // Bottom/right 0
     "left": 75.1,
-    "sizeOffset": [31, 16, 0, 0]
+    "sizeOffset": [31, 16, 0, -25.2, 0]// top - sizeOffset is the defaul top for it chat position
 }, {
     "top": 33, // Middle/right 1
     "left": 75.1,
-    "sizeOffset": [12.5, 0, -6.25, 0]
+    "sizeOffset": [12.5, 0, -6.25, -19.5, 0]
 }, {
     "top": 0.2, // Top/right 2
     "left": 75.1,
-    "sizeOffset": [0, 0, 0, 0]
+    "sizeOffset": [0, 0, 0, 0, 0]
 }, {
     "top": 0.2, // Top/center 3
     "left": 38.3,
-    "sizeOffset": [0, 0, 0, 0]
+    "sizeOffset": [0, 0, 0, 0, 0]
 }, {
     "top": 0.2, // Top/left 4
     "left": 0.2,
-    "sizeOffset": [0, 0, 0, 0]
+    "sizeOffset": [0, 0, 0, 0, 0]
 }, {
     "top": 33, // Middle/left 5
     "left": 0.2,
-    "sizeOffset": [12.5, 0, -6.25, 0]
+    "sizeOffset": [12.5, 0, -6.25, -19.5, 0]
 }, {
     "top": 51.8, // Bottom/left 6
     "left": 0.2,
-    "sizeOffset": [31, 16, 0, 0]
+    "sizeOffset": [31, 16, 0, -25.2, 0]
 }, {
     "top": 51.8, // Bottom/center 7
     "left": 38.3,
-    "sizeOffset": [31, 16, 0, 0]
+    "sizeOffset": [31, 16, 0, -25.2, 0]
 }];
 
 //Conversion between chat at 100% and bellow 50%
@@ -131,6 +132,10 @@ var Play_ChatSizeVal = [{
     "containerHeight": 48, // 50%
     "percentage": '50%',
     "dialogTop": 50
+}, {
+    "containerHeight": 73, // 75%
+    "percentage": '75%',
+    "dialogTop": 75
 }, {
     "containerHeight": 99.6, // 100%
     "percentage": '100%',
@@ -1182,7 +1187,7 @@ function Play_getQualitiesCount() {
 }
 
 function Play_ChatSize(showDialog) {
-    if (Play_ChatSizeValue > 3) Play_ChatSizeValue = 3;
+    if (Play_ChatSizeValue > Play_MaxChatSizeValue) Play_ChatSizeValue = Play_MaxChatSizeValue;
     Play_chat_container.style.height = Play_ChatSizeVal[Play_ChatSizeValue].containerHeight + '%';
     document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue].dialogTop + '%';
     Play_ChatPosition();
@@ -1209,7 +1214,7 @@ function Play_ChatPositionConvert(up) {
 }
 
 function Play_ChatPosition() {
-    var bool = (Play_ChatSizeValue === 3);
+    var bool = (Play_ChatSizeValue === Play_MaxChatSizeValue);
 
     if (Play_ChatPositions < 0) Play_ChatPositions = (bool ? 2 : 7);
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
@@ -1826,10 +1831,11 @@ function Play_handleKeyDown(e) {
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if (Play_isFullScreen && Play_isChatShown() && !PlayExtra_PicturePicture) {
                     Play_ChatSizeValue++;
-                    if (Play_ChatSizeValue > 3) {
+                    if (Play_ChatSizeValue > Play_MaxChatSizeValue) {
                         Play_ChatSizeValue = 0;
                         Play_ChatPositionConvert(false);
-                    } else if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(true);
+                    } else if (Play_ChatSizeValue === Play_MaxChatSizeValue) Play_ChatPositionConvert(true);
+
                     Play_ChatSize(true);
 
                     Play_controls[Play_controlsChatSize].defaultValue = Play_ChatSizeValue;
@@ -2283,25 +2289,28 @@ function Play_MakeControls() {
     Play_controls[Play_controlsChatSize] = { //chat size
         icons: "chat-size",
         string: STR_CHAT_SIZE,
-        values: ["12.5%", "25%", "50%", "100%"],
+        values: ["12.5%", "25%", "50%", "75%", "100%"],
         defaultValue: Play_ChatSizeValue,
         opacity: 0,
         isChat: true,
         updown: function(adder) {
             if (!Play_isChatShown() || !Play_isFullScreen) return;
+
             this.defaultValue += adder;
+
             if (this.defaultValue < 0)
                 this.defaultValue = 0;
             else if (this.defaultValue > (this.values.length - 1)) {
                 this.defaultValue = (this.values.length - 1);
                 return;
             }
+
             this.bottomArrows();
             Play_ChatSizeValue = this.defaultValue;
 
-            if (Play_ChatSizeValue === 2 && adder === -1) {
+            if (Play_ChatSizeValue === (Play_MaxChatSizeValue - 1) && adder === -1) {
                 Play_ChatPositionConvert(false);
-            } else if (Play_ChatSizeValue === 3) Play_ChatPositionConvert(true);
+            } else if (Play_ChatSizeValue === Play_MaxChatSizeValue) Play_ChatPositionConvert(true);
 
             Play_ChatSize(true);
 
