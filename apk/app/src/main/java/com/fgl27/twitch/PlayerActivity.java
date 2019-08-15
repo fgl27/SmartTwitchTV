@@ -929,10 +929,9 @@ public class PlayerActivity extends Activity {
             PicturePicture = false;
             ClearPlayer(position);
             AudioSource = 1;
-            if (mainPlayer == position) {
-                SwitchPlayer();
-                mwebview.loadUrl("javascript:PlayExtra_End()");
-            }
+
+            mwebview.loadUrl("javascript:PlayExtra_End(" + (mainPlayer == position) + ")");
+
         } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
     }
 
