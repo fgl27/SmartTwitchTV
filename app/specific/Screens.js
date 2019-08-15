@@ -276,13 +276,13 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div style="line-height: 11px;"><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
         display_name + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + language +
         '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
         title_game[0] + STR_BR + playing + '</div><div id="' + idArray[6] + id +
-        '"class="stream_info">' + views + STR_VIEWS + '</div><div  style="line-height: 9px;"><div id="' +
+        '"class="stream_info">' + views + STR_VIEWS + '</div><div  style="line-height: 10px;"><div id="' +
         idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
         created_at[0] + created_at[1] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' +
@@ -301,7 +301,7 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div style="line-height: 11px;"><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
         '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' + (data[2] ? '#FFFFFF' : valuesArray[1].indexOf(STR_USER_HOSTING) !== -1 ? '#FED000' : 'red') +
         ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
@@ -345,13 +345,13 @@ function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
         '><div><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div style="line-height: 11px;"><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
         '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
         valuesArray[3] + '</div><div id="' + idArray[6] + id +
-        '"class="stream_info">' + valuesArray[4] + '</div><div style="line-height: 9px;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
+        '"class="stream_info">' + valuesArray[4] + '</div><div style="line-height: 10px;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
         valuesArray[2] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' +
         valuesArray[6] + '</div></div></div></div>';
