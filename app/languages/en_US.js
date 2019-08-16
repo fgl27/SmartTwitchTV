@@ -209,7 +209,7 @@ function en_USLang() {
     STR_DISABLE = "Disable";
     STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
-    STR_RESTORE_PLAYBACK_SUMARRY = "When changing apps, the app might get closed by the system for more memory. In this case the app saves what it was playing and restores the playback when reopened";
+    STR_RESTORE_PLAYBACK_SUMARRY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user, the app then can restore what was previously playing on next start";
     STR_CHAT_FONT = "Chat font size";
     STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
     STR_SIDE_PANEL = "Side panel: D-pad left or Back key twice";
