@@ -396,11 +396,7 @@ function Play_Resume() {
             if (navigator.onLine) Play_ResumeAfterOnline();
             else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
             Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
-            window.clearInterval(Play_ShowPanelStatusId);
-
-            Play_ShowPanelStatusId = window.setInterval(function() {
-                Play_UpdateStatus(1);
-            }, 1000);
+            Play_ShowPanelStatus(1);
         }
     }
 }
@@ -1034,9 +1030,8 @@ function Play_ForceHidePannel() {
 var Play_ShowPanelStatusId;
 
 function Play_ShowPanelStatus(mwhocall) {
+    window.clearInterval(Play_ShowPanelStatusId);
     if (Play_Status_Always_On) {
-
-        window.clearInterval(Play_ShowPanelStatusId);
 
         Play_ShowPanelStatusId = window.setInterval(function() {
             Play_UpdateStatus(mwhocall);
@@ -1047,7 +1042,6 @@ function Play_ShowPanelStatus(mwhocall) {
     } else {
         Main_HideElement('playsideinfo');
         Main_RemoveClass('playsideinfo', 'playsideinfofocus');
-        window.clearInterval(Play_ShowPanelStatusId);
     }
 }
 //tdo cleac 
