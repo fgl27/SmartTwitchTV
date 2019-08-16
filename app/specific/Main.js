@@ -1078,14 +1078,12 @@ function Main_CenterLables(event) {
             break;
         case KEY_PG_UP:
         case KEY_RIGHT:
-            console.log('KEY_RIGHT');
             if (Main_ForbidenScreens()) break;
             Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
             Main_values.Main_CenterLablesVectorPos++;
             if (Main_values.Main_CenterLablesVectorPos > 5) Main_values.Main_CenterLablesVectorPos = 0;
             Main_CenterLablesChange();
             Main_CenterLablesExit();
-            console.log('KEY_RIGHT end');
             break;
         case KEY_PG_DOWN:
         case KEY_LEFT:
