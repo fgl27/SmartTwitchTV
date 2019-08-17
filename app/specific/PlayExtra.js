@@ -235,6 +235,7 @@ function PlayExtra_loadDataSuccess(responseText) {
         PlayExtra_state = Play_STATE_PLAYING;
         PlayExtra_SetPanel();
         if (Play_isOn) PlayExtra_qualityChanged();
+        PlayExtra_Save_selectedChannel_id_Old = null;
 
         if (!Play_isFullScreen) {
             Android.mupdatesizePP(!Play_isFullScreen);
