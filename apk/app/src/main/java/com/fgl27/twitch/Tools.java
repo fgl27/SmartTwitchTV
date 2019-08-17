@@ -56,7 +56,6 @@ public final class Tools {
             {ACCEPTHEADER, TWITHCV5JSON},
             {AUTHORIZATION, null}};
 
-    //TODO try a asynchronous one
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
     public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {

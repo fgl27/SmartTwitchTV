@@ -23,10 +23,11 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -66,6 +67,8 @@ public class PlayerActivity extends Activity {
     public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
     public int mainPlayerBandwidth = Integer.MAX_VALUE;
     public int smallPlayerBandwidth = 3000000;
+
+    private LoadControl[] loadControl = new LoadControl[4];
 
     public long mResumePosition;
     public int mwhocall = 1;
@@ -138,7 +141,7 @@ public class PlayerActivity extends Activity {
                             this,
                             Util.getUserAgent(this, this.getString(R.string.app_name)));
 
-            trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
+            trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(this);
 
             // Prevent small window causing lag to the device
             // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
@@ -191,22 +194,20 @@ public class PlayerActivity extends Activity {
         if (PlayerView[position].getVisibility() != View.VISIBLE)
             PlayerView[position].setVisibility(View.VISIBLE);
 
-        // always release before starting for performance check ClearPlayer
         if (player[position] == null) {
-            trackSelector[position] = new DefaultTrackSelector();
+            trackSelector[position] = new DefaultTrackSelector(this);
             trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
 
-            player[position] = ExoPlayerFactory.newSimpleInstance(
-                    this,
-                    new DefaultRenderersFactory(this),
-                    trackSelector[position],
-                    Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
+            player[position] = new SimpleExoPlayer.Builder(this)
+                    .setTrackSelector(trackSelector[position])
+                    .setLoadControl(loadControl[mwhocall])
+                    .build();
 
             player[position].addListener(new PlayerEventListener(position));
             player[position].addAnalyticsListener(new AnalyticsEventListener(position));
 
             PlayerView[position].setPlayer(player[position]);
-        } else trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
+        }
 
         if (seeking) player[position].seekTo(mResumePosition);
 
@@ -245,7 +246,8 @@ public class PlayerActivity extends Activity {
         if (mainPlayer != position) SwitchPlayerAudio(1);
 
         //Reset player background to a empty black screen and reset all states
-        player[position] = ExoPlayerFactory.newSimpleInstance(this);
+        player[position] = new SimpleExoPlayer.Builder(this).build();
+
         PlayerView[position].setPlayer(player[position]);
 
         player[position].setPlayWhenReady(false);
@@ -802,6 +804,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetBuffer(int whocall, int value) {
             BUFFER_SIZE[whocall] = Math.min(value, 15000);
+            loadControl[whocall] = Tools.getLoadControl(BUFFER_SIZE[whocall]);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -872,7 +875,7 @@ public class PlayerActivity extends Activity {
         }
 
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        public void onPlayerStateChanged(boolean playWhenReady, @Player.State int playbackState) {
             myHandler.post(() -> {
                 if (playWhenReady) {
                     if (playbackState == Player.STATE_ENDED) {
@@ -911,7 +914,7 @@ public class PlayerActivity extends Activity {
         }
 
         @Override
-        public void onPlayerError(ExoPlaybackException e) {
+        public void onPlayerError(@NonNull ExoPlaybackException e) {
             myHandler.post(() -> {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
@@ -988,13 +991,13 @@ public class PlayerActivity extends Activity {
         }
 
         @Override
-        public final void onDroppedVideoFrames(EventTime eventTime, int count, long elapsedMs) {
+        public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
             droppedFrames[position] += count;
             droppedFramesTotal += count;
         }
 
         @Override
-        public void onBandwidthEstimate(EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
+        public void onBandwidthEstimate(@NonNull EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
             conSpeed[position] = bitrateEstimate;
             netActivity[position] = totalBytesLoaded * 8;
             if (bitrateEstimate > 0) {
