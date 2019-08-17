@@ -7,7 +7,7 @@ import android.os.Looper;
 /**
  * A helper class that provides more ways to post a runnable than {@link android.os.Handler}.
  */
-public class HVTHandler  {
+public final class HVTHandler {
 
     private static class NotifyRunnable implements Runnable {
         private final Runnable mRunnable;

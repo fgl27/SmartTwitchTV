@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class Tools {
+public final class Tools {
 
     private static final String TAG = Tools.class.getName();
 
