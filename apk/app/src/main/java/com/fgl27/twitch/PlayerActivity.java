@@ -206,7 +206,7 @@ public class PlayerActivity extends Activity {
             player[position].addAnalyticsListener(new AnalyticsEventListener(position));
 
             PlayerView[position].setPlayer(player[position]);
-        }
+        } else trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
 
         if (seeking) player[position].seekTo(mResumePosition);
 
