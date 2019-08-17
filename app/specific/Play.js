@@ -36,6 +36,15 @@ var Play_qualities = [];
 var Play_qualityIndex = 0;
 var Play_ChatEnable = false;
 var Play_exitID = null;
+var Play_AutoUrl = '';
+
+var Play_selectedChannel_id_Old = null;
+var Play_IsRerun_Old;
+var Play_selectedChannel_Old;
+var Play_isHost_Old;
+var Play_DisplaynameHost_Old;
+var Play_selectedChannelDisplayname_Old;
+var Play_gameSelected_Old;
 
 var Play_pauseEndID = null;
 var Play_pauseStartID = null;
@@ -286,10 +295,15 @@ function Play_Start() {
     Play_isOn = true;
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
+
+    document.removeEventListener('visibilitychange', Play_Resume);
     document.addEventListener('visibilitychange', Play_Resume, false);
+
     Play_updateStreamInfoStart();
     Play_loadData();
     document.body.removeEventListener("keyup", Main_handleKeyUp);
+
+    window.clearInterval(Play_streamInfoTimerId);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
 }
 
@@ -395,6 +409,8 @@ function Play_Resume() {
             Play_ResumeAfterOnlineCounter = 0;
             if (navigator.onLine) Play_ResumeAfterOnline();
             else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
+
+            window.clearInterval(Play_streamInfoTimerId);
             Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
             Play_ShowPanelStatus(1);
         }
@@ -548,13 +564,15 @@ function Play_loadDataRequest() {
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
             if (Play_isOn) {
-                if (!state) Android.SetAuto(theUrl);
+                if (!state) Play_AutoUrl = theUrl;
                 Play_loadDataSuccess(xmlHttp.responseText);
             }
         } else if (xmlHttp.status === 403) { //forbidden access
-            Play_ForbiddenLive();
+            if (Play_selectedChannel_id_Old === null) Play_ForbiddenLive();
+            else Play_RestorePlayData();
         } else if (xmlHttp.status === 404) { //off line
-            Play_CheckHostStart();
+            if (Play_selectedChannel_id_Old === null) Play_CheckHostStart();
+            else Play_RestorePlayData();
         } else {
             Play_loadDataError();
         }
@@ -606,8 +624,10 @@ function Play_loadDataError() {
             if (Play_RestoreFromResume) window.setTimeout(Play_loadDataRequest, 500);
             else Play_loadDataRequest();
         } else {
-            if (Main_IsNotBrowser) Play_CheckHostStart();
-            else Play_loadDataSuccessFake();
+            if (Main_IsNotBrowser) {
+                if (Play_selectedChannel_id_Old === null) Play_CheckHostStart();
+                else Play_RestorePlayData();
+            } else Play_loadDataSuccessFake();
         }
     }
 }
@@ -671,6 +691,8 @@ function Play_loadDataSuccess(responseText) {
     } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
         Play_qualities = Play_extractQualities(responseText);
         Play_state = Play_STATE_PLAYING;
+        if (Main_IsNotBrowser) Android.SetAuto(Play_AutoUrl);
+        Play_selectedChannel_id_Old = null;
         if (Play_isOn) Play_qualityChanged();
     }
 }
@@ -875,30 +897,25 @@ function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
 
 function Play_shutdownStream() {
     if (Play_isOn) {
-        Play_PreshutdownStream();
+        Play_PreshutdownStream(true);
         Play_qualities = [];
         Main_values.Play_WasPlaying = 0;
         Play_exitMain();
     }
 }
 
-function Play_PreshutdownStream() {
+function Play_PreshutdownStream(closePlayer) {
     if (Main_IsNotBrowser) {
-        //we are updating the main player via live feed
-        try {
-            if (PlayExtra_PicturePicture) Android.mClearBigPlayer();
-            else {
-                //We are closing the player on error or on end
-                Android.mClearSmallPlayer();
-                Android.stopVideo(1);
-                Chat_Clear();
-                Play_ClearPlay();
-            }
-        } catch (e) {}
+        if (closePlayer) {
+            //We are closing the player on error or on end
+            Android.mClearSmallPlayer();
+            Android.stopVideo(1);
+        }
     }
 
-    Play_isOn = false;
+    if (closePlayer) Play_isOn = false;
     UserLiveFeed_Hide();
+    Play_ClearPlay(closePlayer);
     Play_ClearPlayer();
 
     Main_values.Play_selectedChannel_id = '';
@@ -934,11 +951,11 @@ function Play_ClearPlayer() {
 
 }
 
-function Play_ClearPlay() {
+function Play_ClearPlay(clearChat) {
     Play_Playing = false;
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.removeEventListener('visibilitychange', Play_Resume);
-    ChatLive_Clear(0);
+    if (clearChat) ChatLive_Clear(0);
     window.clearInterval(Play_streamInfoTimerId);
     Play_IsWarning = false;
 }
@@ -1245,9 +1262,7 @@ function Play_KeyPause(PlayVodClip) {
             else if (PlayVodClip === 3) PlayClip_hidePanel();
         }
 
-        if (Main_IsNotBrowser) {
-            Android.play(true);
-        }
+        if (Main_IsNotBrowser) Android.play(true);
     } else {
         Play_HideBufferDialog();
 
@@ -1392,7 +1407,7 @@ function Play_EndDialogPressed(PlayVodClip) {
                     Play_HideWarningDialog();
                 }, 2000);
             } else {
-                PlayClip_replay = true;
+                PlayClip_replayOrNext = true;
                 PlayClip_qualityChanged();
                 Play_clearPause();
                 if (PlayClip_HasVOD) {
@@ -1408,7 +1423,9 @@ function Play_EndDialogPressed(PlayVodClip) {
             Main_values.Play_selectedChannel = Play_TargetHost.target_login;
             Main_values.Play_selectedChannelDisplayname = Play_TargetHost.target_display_name;
             Main_values.Play_DisplaynameHost = Main_values.Play_DisplaynameHost + Main_values.Play_selectedChannelDisplayname;
-            Play_PreshutdownStream();
+            Android.play(false);
+            Play_PreshutdownStream(false);
+
             document.body.addEventListener("keydown", Play_handleKeyDown, false);
 
             Main_values.Play_selectedChannel_id = Play_TargetHost.target_id;
@@ -1483,7 +1500,7 @@ function Play_OpenSearch(PlayVodClip) {
         PlayExtra_PicturePicture = false;
         PlayExtra_selectedChannel = '';
         Play_hideChat();
-        Play_PreshutdownStream();
+        Play_PreshutdownStream(true);
     } else if (PlayVodClip === 2) PlayVod_PreshutdownStream();
     else if (PlayVodClip === 3) PlayClip_PreshutdownStream();
 
@@ -1699,7 +1716,9 @@ function Play_handleKeyUp(e) {
                 var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
                 if (Main_values.Play_selectedChannel !== selectedChannel &&
                     PlayExtra_selectedChannel !== selectedChannel) {
-                    Play_PreshutdownStream();
+                    Play_SavePlayData();
+                    Play_PreshutdownStream(false);
+
                     Main_values.Play_isHost = false;
                     Play_UserLiveFeedPressed = true;
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
@@ -1707,6 +1726,39 @@ function Play_handleKeyUp(e) {
             }
         }
     }
+}
+
+function Play_SavePlayData() {
+    Play_selectedChannel_id_Old = Main_values.Play_selectedChannel_id;
+    Play_IsRerun_Old = Main_values.IsRerun;
+    Play_selectedChannel_Old = Main_values.Play_selectedChannel;
+    Play_isHost_Old = Play_isHost;
+    Play_DisplaynameHost_Old = Main_values.Play_DisplaynameHost;
+    Play_selectedChannelDisplayname_Old = Main_values.Play_selectedChannelDisplayname;
+    Play_gameSelected_Old = Main_values.Play_gameSelected;
+}
+
+function Play_RestorePlayData() {
+    Play_HideBufferDialog();
+    Play_state = Play_STATE_PLAYING;
+
+    Play_showWarningDialog(Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+    window.setTimeout(function() {
+        Play_HideWarningDialog();
+    }, 2000);
+
+    Main_values.Play_selectedChannel_id = Play_selectedChannel_id_Old;
+    Play_selectedChannel_id_Old = null;
+
+    Main_values.IsRerun = Play_IsRerun_Old;
+    Main_values.Play_selectedChannel = Play_selectedChannel_Old;
+    Play_isHost = Play_isHost_Old;
+    Main_values.Play_DisplaynameHost = Play_DisplaynameHost_Old;
+    Main_values.Play_selectedChannelDisplayname = Play_selectedChannelDisplayname_Old;
+    Main_values.Play_gameSelected = Play_gameSelected_Old;
+
+    Main_SaveValues();
+    Play_updateStreamInfoStart();
 }
 
 function Play_handleKeyUpClear() {

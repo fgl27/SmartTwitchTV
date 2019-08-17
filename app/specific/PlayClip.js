@@ -11,7 +11,7 @@ var PlayClip_qualityPlaying = PlayClip_quality;
 var PlayClip_qualityIndex = 0;
 var PlayClip_qualities = [];
 var PlayClip_playingUrl = '';
-var PlayClip_replay = false;
+var PlayClip_replayOrNext = false;
 var PlayClip_currentTime = 0;
 var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
@@ -203,8 +203,8 @@ function PlayClip_qualityChanged() {
 function PlayClip_onPlayer() {
     if (Main_isDebug) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
     if (Main_IsNotBrowser && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
-        PlayClip_replay ? -1 : Android.gettime());
-    PlayClip_replay = false;
+        PlayClip_replayOrNext ? -1 : Android.gettime());
+    PlayClip_replayOrNext = false;
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
@@ -225,16 +225,19 @@ function PlayClip_Resume() {
 function PlayClip_shutdownStream() {
     if (PlayClip_isOn) {
         PlayClip_All = false;
-        PlayClip_PreshutdownStream();
+        PlayClip_PreshutdownStream(true);
         Play_CleanHideExit();
         Play_exitMain();
     }
 }
 
-function PlayClip_PreshutdownStream() {
+function PlayClip_PreshutdownStream(closePlayer) {
     PlayClip_hidePanel();
-    if (Main_IsNotBrowser) Android.stopVideo(3);
-    PlayClip_isOn = false;
+    if (Main_IsNotBrowser) {
+        if (closePlayer) Android.stopVideo(3);
+        else Android.play(false);
+    }
+    if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
     UserLiveFeed_Hide();
@@ -310,7 +313,8 @@ function PlayClip_PlayPreviously() {
 function PlayClip_PlayNextPreviously() {
     Play_ForceHidePannel();
     Main_ready(function() {
-        PlayClip_PreshutdownStream();
+        PlayClip_replayOrNext = true;
+        PlayClip_PreshutdownStream(false);
         Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
     });
 }
@@ -412,7 +416,7 @@ function PlayClip_SetOpenVod() {
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
         Main_values.vodOffset = ChannelVod_vodOffset;
-        PlayClip_PreshutdownStream();
+        PlayClip_PreshutdownStream(true);
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
         Play_IconsResetFocus();
         Main_ready(PlayVod_Start);
@@ -545,7 +549,7 @@ function PlayClip_handleKeyDown(e) {
                     else Play_BottomOptionsPressed(3);
                     PlayClip_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
-                    PlayClip_PreshutdownStream();
+                    PlayClip_PreshutdownStream(true);
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
                 } else PlayClip_showPanel();
                 break;

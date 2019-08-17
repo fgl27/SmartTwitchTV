@@ -193,14 +193,16 @@ function UserLiveFeed_loadDataSuccess(responseText) {
     if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
 
     var stream, id, doc = document.getElementById("user_feed_scroll"),
-        docside = document.getElementById("side_panel_holder");
+        docside = document.getElementById("side_panel_holder"),
+        i = 0;
 
-    for (var i = 0; i < response_items; i++) {
+    for (i; i < response_items; i++) {
         stream = response.streams[i];
         id = stream.channel._id;
         if (!UserLiveFeed_idObject[id]) {
             UserLiveFeed_idObject[id] = 1;
             if (UserLiveFeed_LastPos !== null && UserLiveFeed_LastPos === stream.channel.name) Play_FeedPos = i;
+
             doc.appendChild(UserLiveFeed_CreatFeed(i,
                 [stream.channel.name, id, Main_is_rerun(stream.stream_type)],
                 [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
@@ -209,6 +211,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                 ]));
 
             if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name) Sidepannel_PosFeed = i;
+
             docside.appendChild(UserLiveFeed_CreatSideFeed(i,
                 [stream.channel.name, id, Main_is_rerun(stream.stream_type)],
                 [stream.channel.name, id, stream.preview.template.replace("{width}x{height}", Main_SidePannelSize),
@@ -226,6 +229,13 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                 ]));
         }
     }
+
+    //    doc.appendChild(UserLiveFeed_CreatFeed(i++,
+    //        ['ashlynn', 35618666, false],
+    //        ["https://static-cdn.jtvnw.net/ttv-static/404_preview-640x360.jpg",
+    //            'ashlynn',
+    //            'test'
+    //        ]));
 
     UserLiveFeed_loadDataSuccessFinish();
 }

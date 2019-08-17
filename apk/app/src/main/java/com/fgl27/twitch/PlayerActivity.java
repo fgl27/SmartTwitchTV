@@ -179,39 +179,35 @@ public class PlayerActivity extends Activity {
 
     // The main player initialization function
     private void initializePlayer(int position) {
-        // always release before starting for performance check ClearPlayer
-        if (player[position] != null) {
-            player[position].setPlayWhenReady(false);
-            releasePlayer(position);
-        }
         boolean isSmall = (mainPlayer != position);
+        boolean seeking = (mResumePosition > 0) && (mwhocall > 1);
+
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         //Show main buffer if this call is in the main player as this is needed fro when we are fast/back forwarding
         //On small player it will show its own loading
         if (!isSmall && !IsIN5050) showLoading();
 
-        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-
         if (PlayerView[position].getVisibility() != View.VISIBLE)
             PlayerView[position].setVisibility(View.VISIBLE);
 
-        trackSelector[position] = new DefaultTrackSelector();
-        trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
+        // always release before starting for performance check ClearPlayer
+        if (player[position] == null) {
+            trackSelector[position] = new DefaultTrackSelector();
+            trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
 
-        player[position] = ExoPlayerFactory.newSimpleInstance(
-                this,
-                new DefaultRenderersFactory(this),
-                trackSelector[position],
-                Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
+            player[position] = ExoPlayerFactory.newSimpleInstance(
+                    this,
+                    new DefaultRenderersFactory(this),
+                    trackSelector[position],
+                    Tools.getLoadControl(BUFFER_SIZE[mwhocall]));
 
-        player[position].addListener(new PlayerEventListener(position));
-        player[position].addAnalyticsListener(new AnalyticsEventListener(position));
+            player[position].addListener(new PlayerEventListener(position));
+            player[position].addAnalyticsListener(new AnalyticsEventListener(position));
 
-        player[position].setPlayWhenReady(true);
+            PlayerView[position].setPlayer(player[position]);
+        }
 
-        PlayerView[position].setPlayer(player[position]);
-
-        boolean seeking = (mResumePosition > 0) && (mwhocall > 1);
         if (seeking) player[position].seekTo(mResumePosition);
 
         player[position].prepare(
@@ -219,6 +215,7 @@ public class PlayerActivity extends Activity {
                 !seeking,
                 true);
 
+        player[position].setPlayWhenReady(true);
         SwitchPlayerAudio(AudioSource);
 
         if (!isSmall) {
@@ -236,6 +233,8 @@ public class PlayerActivity extends Activity {
     // So here we do more then what seems necessary by releasing, starting and releasing again
     // But on longer test this gives the best performance
     private void ClearPlayer(int position) {
+        PlayerView[position].setVisibility(View.GONE);
+
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
             releasePlayer(position);
@@ -253,7 +252,6 @@ public class PlayerActivity extends Activity {
         player[position].prepare(mediaurireset, true, true);
 
         releasePlayer(position);
-        PlayerView[position].setVisibility(View.GONE);
     }
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
@@ -271,10 +269,8 @@ public class PlayerActivity extends Activity {
 
     //The way to start the Picture in Picture small window
     private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
-
         mediaSourcePlaying[mainPlayer ^ 1] = mediaSource;
         uri = Uri.parse(videoAddress);
-        mwhocall = 1;
         shouldCallJavaCheck = true;
         mResumePosition = 0;
 
@@ -927,11 +923,16 @@ public class PlayerActivity extends Activity {
         hideLoading(2);
         hideLoading(position);
         if (PicturePicture) {
+            boolean mswitch = (mainPlayer == position);
+
             PicturePicture = false;
+
+            if (mswitch) SwitchPlayer();
+
             ClearPlayer(position);
             AudioSource = 1;
 
-            mwebview.loadUrl("javascript:PlayExtra_End(" + (mainPlayer == position) + ")");
+            mwebview.loadUrl("javascript:PlayExtra_End(" + mswitch + ")");
 
         } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
     }

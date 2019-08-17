@@ -29,6 +29,14 @@ var PlayExtra_qualityPlaying_Old;
 var PlayExtra_quality_Old;
 var PlayExtra_RefreshAutoTry = 0;
 
+var PlayExtra_Save_selectedChannel_id_Old = null;
+var PlayExtra_Save_IsRerun_Old = null;
+var PlayExtra_Save_selectedChannel_Old = null;
+var PlayExtra_Save_DisplaynameHost_Old = null;
+var PlayExtra_Save_selectedChannelDisplayname_Old = null;
+var PlayExtra_Save_gameSelected_Old = null;
+var PlayExtra_WasPicturePicture = false;
+
 function PlayExtra_ResetSpeed() {
     Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
     Play_controls[Play_controlsSpeed].bottomArrows();
@@ -42,6 +50,31 @@ function PlayExtra_ResetAudio() {
     Play_controls[Play_controlsAudio].setLable();
 }
 
+function PlayExtra_SavePlayData() {
+    PlayExtra_Save_selectedChannel_id_Old = PlayExtra_selectedChannel_id;
+    PlayExtra_Save_IsRerun_Old = PlayExtra_IsRerun;
+    PlayExtra_Save_selectedChannel_Old = PlayExtra_selectedChannel;
+    PlayExtra_Save_DisplaynameHost_Old = PlayExtra_DisplaynameHost;
+    PlayExtra_Save_selectedChannelDisplayname_Old = PlayExtra_selectedChannelDisplayname;
+    PlayExtra_Save_gameSelected_Old = PlayExtra_gameSelected;
+}
+
+function PlayExtra_RestorePlayData() {
+    Play_showWarningDialog(PlayExtra_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+    window.setTimeout(function() {
+        Play_HideWarningDialog();
+    }, 2000);
+
+    PlayExtra_selectedChannel_id = PlayExtra_Save_selectedChannel_id_Old;
+    PlayExtra_Save_selectedChannel_id_Old = null;
+
+    PlayExtra_IsRerun = PlayExtra_Save_IsRerun_Old;
+    PlayExtra_selectedChannel = PlayExtra_Save_selectedChannel_Old;
+    PlayExtra_DisplaynameHost = PlayExtra_Save_DisplaynameHost_Old;
+    PlayExtra_selectedChannelDisplayname = PlayExtra_Save_selectedChannelDisplayname_Old;
+    PlayExtra_gameSelected = PlayExtra_Save_gameSelected_Old;
+}
+
 function PlayExtra_KeyEnter() {
     PlayExtra_clear = true;
 
@@ -50,12 +83,10 @@ function PlayExtra_KeyEnter() {
     else {
         var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
         if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
-            if (Main_IsNotBrowser) {
-                Android.play(true);
-                try {
-                    Android.mClearSmallPlayer();
-                } catch (e) {}
-            }
+            PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
+
+            if (PlayExtra_WasPicturePicture) PlayExtra_SavePlayData();
+            else PlayExtra_Save_selectedChannel_id_Old = null;
 
             PlayExtra_PicturePicture = true;
             UserLiveFeed_Hide();
@@ -80,7 +111,6 @@ function PlayExtra_KeyEnter() {
             if (Main_IsNotBrowser) {
                 //Not on auto mode for change to auto before start picture in picture
                 if (Play_quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
-                //Android.play(false);
 
                 Play_quality = "Auto";
                 Play_qualityPlaying = Play_quality;
@@ -180,7 +210,7 @@ function PlayExtra_End(doSwitch) { // jshint ignore:line
     if (!Play_isFullScreen) {
         Play_isFullScreen = !Play_isFullScreen;
         Play_SetFullScreen(Play_isFullScreen);
-    } else if (doSwitch) Android.mSwitchPlayer(); // else if doSwitch switch small to big
+    } // else if (doSwitch) Android.mSwitchPlayer(); // else if doSwitch switch small to big
 
     PlayExtra_PicturePicture = false;
     ChatLive_Clear(1);
@@ -232,31 +262,10 @@ function PlayExtra_UnSetPanel() {
     Play_IconsResetFocus();
 }
 
-
-//function PlayExtra_getQualitiesCount() {
-//    return PlayExtra_qualities.length;
-//}
-
 function PlayExtra_qualityChanged() {
-    //    PlayExtra_qualityIndex = 0;
-    //    PlayExtra_playingUrl = PlayExtra_qualities[0].url;
-    //    if (Play_quality.indexOf("source") !== -1) PlayExtra_quality = "source";
-
-    //    for (var i = 0; i < PlayExtra_getQualitiesCount(); i++) {
-    //        if (PlayExtra_qualities[i].id.indexOf(PlayExtra_quality) !== -1) {
-    //            PlayExtra_qualityIndex = i;
-    //            PlayExtra_playingUrl = PlayExtra_qualities[i].url;
-    //            break;
-    //        }
-    //    }
-
-    //    PlayExtra_qualityPlaying = PlayExtra_quality;
-
     if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        //if (PlayExtra_quality.indexOf("Auto") !== -1) Android.initializePlayer2Auto();
-        //else Android.initializePlayer2(PlayExtra_playingUrl);
         try {
             Android.initializePlayer2Auto();
         } catch (e) {}
@@ -333,23 +342,20 @@ function PlayExtra_loadDataError() {
 }
 
 function PlayExtra_loadDataFail(Reason) {
-    PlayExtra_PicturePicture = false;
-    PlayExtra_selectedChannel = '';
-    ChatLive_Clear(1);
-    Main_HideElement('chat_container2');
-    if (Main_IsNotBrowser) {
-        Android.play(true);
-        try {
-            Android.mClearSmallPlayer();
-        } catch (e) {}
+    if (PlayExtra_Save_selectedChannel_id_Old === null) {
 
-        if (!Play_isFullScreen) Android.mupdatesize(!Play_isFullScreen);
-    }
-    Play_HideBufferDialog();
-    Play_showWarningDialog(Reason);
-    window.setTimeout(function() {
-        Play_HideWarningDialog();
-    }, 2500);
+        PlayExtra_PicturePicture = false;
+        PlayExtra_selectedChannel = '';
+        ChatLive_Clear(1);
+        Main_HideElement('chat_container2');
+        if (Main_IsNotBrowser && !Play_isFullScreen) Android.mupdatesize(!Play_isFullScreen);
+
+        Play_HideBufferDialog();
+        Play_showWarningDialog(Reason);
+        window.setTimeout(function() {
+            Play_HideWarningDialog();
+        }, 2500);
+    } else PlayExtra_RestorePlayData();
 }
 
 function PlayExtra_RefreshAutoRequest(UseAndroid) {

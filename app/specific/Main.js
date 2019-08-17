@@ -806,11 +806,11 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
 }
 
 function Main_openStream() {
+    document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
     Main_HideElement('scene1');
     Main_ShowElement('scene2');
     Play_hidePanel();
-    Play_hideChat();
     Play_HideEndDialog();
     if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedFindPos();
     Main_ready(Play_Start);
