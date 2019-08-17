@@ -42,7 +42,7 @@ import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
-    public static final int[] positions = {
+    private static final int[] positions = {
             Gravity.RIGHT | Gravity.BOTTOM,
             Gravity.RIGHT | Gravity.CENTER,
             Gravity.RIGHT | Gravity.TOP,
@@ -68,11 +68,10 @@ public class PlayerActivity extends Activity {
     public int smallPlayerBandwidth = 3000000;
 
     public long mResumePosition;
-    public boolean seeking;
     public int mwhocall = 1;
 
-    public Uri uri;
-    public MediaSource mediaurireset;
+    private Uri uri;
+    private MediaSource mediaurireset;
 
     //The mediaSources stored to be used when changing from auto to source 720 etc etc
     public MediaSource[] mediaSourcesAuto = new MediaSource[2];
@@ -81,12 +80,12 @@ public class PlayerActivity extends Activity {
     //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
     public MediaSource[] mediaSourcePlaying =  new MediaSource[2];
 
-    public FrameLayout.LayoutParams PlayerViewDefaultSize;
-    public FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
-    public FrameLayout.LayoutParams PlayerViewSmallSize;
-    public FrameLayout.LayoutParams PlayerViewDefaultSizePP;
-    public FrameLayout.LayoutParams PlayerViewDefaultSizeChatPP;
-    public FrameLayout VideoHolder;
+    private FrameLayout.LayoutParams PlayerViewDefaultSize;
+    private FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
+    private FrameLayout.LayoutParams PlayerViewSmallSize;
+    private FrameLayout.LayoutParams PlayerViewDefaultSizePP;
+    private FrameLayout.LayoutParams PlayerViewDefaultSizeChatPP;
+    private FrameLayout VideoHolder;
 
     public WebView mwebview;
 
@@ -212,7 +211,7 @@ public class PlayerActivity extends Activity {
 
         PlayerView[position].setPlayer(player[position]);
 
-        seeking = (mResumePosition > 0) && (mwhocall > 1);
+        boolean seeking = (mResumePosition > 0) && (mwhocall > 1);
         if (seeking) player[position].seekTo(mResumePosition);
 
         player[position].prepare(
@@ -917,8 +916,10 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlayerError(ExoPlaybackException e) {
-            PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
+            myHandler.post(() -> {
+                PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
+            });
         }
     }
 
