@@ -15,7 +15,7 @@ var Settings_value = {
     },
     "buffer_live": { //buffer_live
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 3
+        "defaultValue": 5
     },
     "buffer_vod": { //buffer_vod
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
@@ -23,7 +23,7 @@ var Settings_value = {
     },
     "buffer_clip": { //buffer_clip
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 6
+        "defaultValue": 5
     },
     "end_dialog_counter": { //end_dialog_counter
         "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
