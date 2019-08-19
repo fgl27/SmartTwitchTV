@@ -501,7 +501,7 @@ var Base_Live_obj = {
                 [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
                     cell.channel.display_name,
                     cell.channel.status, cell.game,
-                    STR_SINCE + Play_streamLiveAt(cell.created_at) + ' ' + STR_FOR + Main_addCommas(cell.viewers) +
+                    STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE + STR_FOR + Main_addCommas(cell.viewers) +
                     STR_SPACE + STR_VIEWER,
                     Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
                 ]));
@@ -713,7 +713,7 @@ function ScreensObj_InitUserHost() {
 
             this.itemsCount++;
             this.idObject[cell.target._id + '' + cell._id] = 1;
-
+            //TODO improve streamer name on thumbnail
             this.row.appendChild(Screens_createCellLive(
                 this.row_id,
                 this.coloumn_id,
@@ -721,7 +721,7 @@ function ScreensObj_InitUserHost() {
                 [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
                     cell.target.title, cell.target.meta_game,
-                    STR_FOR.charAt(1).toUpperCase() + STR_FOR.slice(2) +
+                    STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
                     Main_addCommas(cell.target.viewers) + STR_SPACE + STR_VIEWER, ''
                 ]));
 
@@ -1049,7 +1049,7 @@ var Base_Game_obj = {
                 this.ids,
                 game.box.template.replace("{width}x{height}", Main_GameSize),
                 game.name,
-                hasLive ? Main_addCommas(cell.channels) + ' ' + STR_CHANNELS + STR_FOR +
+                hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_SPACE + STR_FOR +
                 Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : ''));
 
             this.coloumn_id++;
