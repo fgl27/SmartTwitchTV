@@ -830,7 +830,7 @@ function PlayVod_handleKeyDown(e) {
     if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
         switch (e.keyCode) {
             case KEY_RETURN:
-                if (Play_ExitDialogVisible()) {
+                if (Play_ExitDialogVisible() || Play_SingleClickExit) {
                     Play_CleanHideExit();
                     PlayVod_shutdownStream();
                 } else {

@@ -26,6 +26,7 @@ var Play_STATE_PLAYING = 2;
 var Play_state = 0;
 var Play_Status_Always_On = false;
 var Play_RefreshAutoTry = 0;
+var Play_SingleClickExit = 0;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
@@ -1663,7 +1664,7 @@ function Play_setFallow() {
 }
 
 function Play_KeyReturn(is_vod) {
-    if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
+    if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) {
         Play_EndTextClear();
         Play_showExitDialog();
     } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
@@ -1675,7 +1676,7 @@ function Play_KeyReturn(is_vod) {
             Play_HideVodDialog();
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
-        } else if (Play_ExitDialogVisible()) {
+        } else if (Play_ExitDialogVisible() || Play_SingleClickExit) {
             if (PlayExtra_PicturePicture) {
                 if (Main_IsNotBrowser) {
                     try {
@@ -1771,7 +1772,7 @@ function Play_handleKeyDown(e) {
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
             case KEY_RETURN:
-                if (Play_ExitDialogVisible()) {
+                if (Play_ExitDialogVisible() || Play_SingleClickExit) {
                     Play_CleanHideExit();
                     Play_hideChat();
                     PlayExtra_PicturePicture = false;
