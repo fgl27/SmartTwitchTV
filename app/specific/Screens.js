@@ -281,7 +281,7 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, valuesArray) {
 function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) {
 
     var id = Screens_createCellBase(row_id, coloumn_id),
-    ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
+        ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
 
     Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
