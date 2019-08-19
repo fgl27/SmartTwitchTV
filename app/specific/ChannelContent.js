@@ -195,7 +195,7 @@ function ChannelContent_loadDataSuccess() {
             row.appendChild(ChannelContent_createCell('0_' + coloumn_id, stream.channel.name, stream.channel._id, stream.preview.template,
                 twemoji.parse(stream.channel.status), stream.game,
                 hosting + stream.channel.display_name,
-                STR_SINCE + Play_streamLiveAt(stream.created_at) + ' ' + STR_FOR +
+                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_SPACE + STR_FOR +
                 Main_addCommas(stream.viewers) + STR_SPACE + STR_VIEWER,
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language),
                 Main_is_rerun(stream.stream_type)));
