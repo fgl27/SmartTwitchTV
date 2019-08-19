@@ -832,13 +832,11 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
 
     ChannelClip_title = ChannelClip_playUrl[9];
     ChannelClip_language = ChannelClip_playUrl[10];
-    ChannelClip_game = ChannelClip_playUrl[11];
+    ChannelClip_game = (ChannelClip_playUrl[2] !== "" ? STR_PLAYING + ChannelClip_playUrl[2] : "");
+    ChannelClip_createdAt = ChannelClip_playUrl[11];
+    ChannelClip_views = ChannelClip_playUrl[12];
 
     ChannelClip_playUrl = ChannelClip_playUrl[0];
-
-
-    ChannelClip_createdAt = document.getElementById(idsArray[4] + id).textContent;
-    ChannelClip_views = document.getElementById(idsArray[6] + id).textContent;
 
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
     Main_HideElement('scene1');
@@ -855,25 +853,28 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values.ChannelVod_vodId = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
-    ChannelVod_DurationSeconds = parseInt(Main_values.ChannelVod_vodId[1]);
-    ChannelVod_language = Main_values.ChannelVod_vodId[2];
-    Main_values.Play_gameSelected = Main_values.ChannelVod_vodId[3];
+
+    ChannelVod_DurationSeconds = parseInt(Main_values.ChannelVod_vodId[6]);
+    ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
+
+    ChannelVod_language = Main_values.ChannelVod_vodId[9];
+    Main_values.Play_gameSelected = Main_values.ChannelVod_vodId[10];
 
     if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
 
-    Main_values.Main_selectedChannel_id = Main_values.ChannelVod_vodId[6];
-    Main_values.Main_selectedChannelLogo = Main_values.ChannelVod_vodId[7];
-    Main_values.Main_selectedChannelPartner = Main_values.ChannelVod_vodId[8];
+    Main_values.Main_selectedChannelDisplayname = Main_values.ChannelVod_vodId[1];
+    ChannelVod_createdAt = Main_values.ChannelVod_vodId[2];
+    ChannelVod_title = Main_values.ChannelVod_vodId[3];
+    ChannelVod_views = Main_values.ChannelVod_vodId[4];
 
-    Main_values.Main_selectedChannel = Main_values.ChannelVod_vodId[4];
-    Play_IncrementView = Main_values.ChannelVod_vodId[5];
-    Main_values.ChannelVod_vodId = Main_values.ChannelVod_vodId[0].substr(1);
-    Main_values.Main_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+    Main_values.Main_selectedChannel_id = Main_values.ChannelVod_vodId[13];
+    Main_values.Main_selectedChannelLogo = Main_values.ChannelVod_vodId[14];
+    Main_values.Main_selectedChannelPartner = Main_values.ChannelVod_vodId[15];
 
-    ChannelVod_createdAt = document.getElementById(idsArray[4] + id).textContent;
-    ChannelVod_Duration = document.getElementById(idsArray[5] + id).textContent;
-    ChannelVod_title = document.getElementById(idsArray[11] + id).innerHTML;
-    ChannelVod_views = document.getElementById(idsArray[6] + id).textContent;
+    Main_values.Main_selectedChannel = Main_values.ChannelVod_vodId[11];
+    Play_IncrementView = Main_values.ChannelVod_vodId[12];
+
+    Main_values.ChannelVod_vodId = Main_values.ChannelVod_vodId[8].substr(1);
 
     Main_openVod();
 }

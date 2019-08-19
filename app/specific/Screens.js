@@ -254,39 +254,26 @@ function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_nam
     return Main_td;
 }
 
-//TODO Reduce the number of vars here please
-function Screens_createCellClip(row_id, coloumn_id, idArray, thumbnail, display_name, created_at, title_game, views, language, duration, video_id, name, logo, streamer_id, vod_id, vod_offset) {
+function Screens_createCellClip(row_id, coloumn_id, idArray, valuesArray) {
 
     var id = Screens_createCellBase(row_id, coloumn_id);
-    var playing = (title_game[2] !== "" ? title_game[1] + title_game[2] : "");
+    var playing = (valuesArray[2] !== "" ? STR_PLAYING + valuesArray[2] : "");
     Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify([video_id,
-        duration,
-        title_game[2],
-        name,
-        display_name,
-        logo,
-        streamer_id,
-        vod_id,
-        vod_offset,
-        title_game[0],
-        language,
-        playing
-    ]));
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
+
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + thumbnail +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[13] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
-        display_name + '</div><div id="' + idArray[7] + id +
-        '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + language +
-        '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
-        title_game[0] + STR_BR + playing + '</div><div id="' + idArray[6] + id +
-        '"class="stream_info">' + views + STR_VIEWS + '</div><div  style="line-height: 10px;"><div id="' +
-        idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
-        created_at[0] + created_at[1] + '</div><div id="' + idArray[5] + id +
-        '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' +
-        STR_DURATION + Play_timeS(duration) + '</div></div></div></div>';
+        valuesArray[4] + '</div><div id="' + idArray[7] + id +
+        '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[10] + '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
+        valuesArray[9] + STR_BR + playing + '</div><div style="line-height: 10px;"><div id="' + idArray[6] + id +
+        '"class="stream_info" style="width: auto; display: inline-block;">' + valuesArray[11] + ',' + STR_SPACE +
+        valuesArray[12] + '</div><div id="' + idArray[5] + id +
+        '"class="stream_info" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
+        Play_timeS(valuesArray[1]) + '</div></div></div></div></div>';
 
     return Main_td;
 }
@@ -333,12 +320,12 @@ function Screens_createCellChannel(row_id, coloumn_id, idArray, valuesArray) {
     return Main_td;
 }
 
-function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
+function Screens_createCellVod(row_id, coloumn_id, idArray, valuesArray) {
 
     var id = Screens_createCellBase(row_id, coloumn_id);
 
     Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
         (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
@@ -350,11 +337,10 @@ function Screens_createCellVod(row_id, coloumn_id, data, idArray, valuesArray) {
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
         '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
-        valuesArray[3] + '</div><div id="' + idArray[6] + id +
-        '"class="stream_info">' + valuesArray[4] + '</div><div style="line-height: 10px;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: 59%; display: inline-block;">' +
-        valuesArray[2] + '</div><div id="' + idArray[5] + id +
-        '"class="stream_info" style="width: 39%; display: inline-block; float: right; text-align: right;">' +
-        valuesArray[6] + '</div></div></div></div>';
+        valuesArray[3] + '</div><div style="line-height: 10px;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: auto; display: inline-block;">' +
+        valuesArray[2] + ',' + STR_SPACE + valuesArray[4] + '</div><div id="' + idArray[5] + id +
+        '"class="stream_info" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
+        Play_timeS(valuesArray[6]) + '</div></div></div></div>';
 
     return Main_td;
 }

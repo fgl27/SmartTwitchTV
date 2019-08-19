@@ -82,12 +82,11 @@ function PlayVod_Start() {
     } else {
         PlayVod_updateStreamerInfoValues();
         Main_innerHTML("stream_info_title", ChannelVod_title);
-        Main_innerHTML("stream_info_game", '');
-        //todo fix this
-        Main_textContent("stream_live_viewers", ChannelVod_views);
-        Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + ChannelVod_createdAt);
+        Main_innerHTML("stream_live_time", ChannelVod_createdAt + ',' + STR_SPACE + ChannelVod_views);
+        Main_textContent("stream_live_viewers", '');
+        Main_textContent("stream_watching_time", '');
 
-        Main_replaceClassEmoji('stream_info_game');
+        Main_replaceClassEmoji('stream_info_title');
     }
 
     if (PlayVod_VodIds['#' + Main_values.ChannelVod_vodId] && !Main_values.vodOffset) {
@@ -174,9 +173,10 @@ function PlayVod_updateVodInfoPannel(response) {
     Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +
         response.game : ""));
-    Main_textContent("stream_live_viewers", Main_addCommas(response.views) + STR_VIEWS);
 
-    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + STR_STREAM_ON + Main_videoCreatedAt(response.created_at));
+    Main_innerHTML("stream_live_time", STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE + Main_addCommas(response.views) + STR_VIEWS);
+    Main_textContent("stream_live_viewers", '');
+    Main_textContent("stream_watching_time", '');
 
     ChannelVod_DurationSeconds = parseInt(response.length);
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));

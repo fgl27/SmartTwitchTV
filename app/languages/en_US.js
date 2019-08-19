@@ -26,7 +26,7 @@ function en_USLang() {
     STR_LIVE = "Live";
     STR_GAMES = "Games";
     STR_PLAYING = "Playing ";
-    STR_FOR = " for ";
+    STR_FOR = "for ";
     STR_WATCHING = "Watch time ";
     STR_SINCE = "Since ";
     STR_AGAME = "A Game";
@@ -51,7 +51,7 @@ function en_USLang() {
     STR_STREAM_ON = "Streamed ";
     STR_DURATION = "Duration ";
     STR_VIEWS = " Views";
-    STR_VIEWER = " Viewers";
+    STR_VIEWER = "Viewers";
     STR_EXIT_AGAIN = "Click again to exit!";
     STR_EXIT_AGAIN_PICTURE = "Click again to exit Picture in Picture!";
     STR_EXIT_MESSAGE = "Do you want to exit SmartTV Twitch?";

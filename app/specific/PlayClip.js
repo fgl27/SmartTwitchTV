@@ -37,8 +37,11 @@ function PlayClip_Start() {
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
     Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game);
-    Main_textContent("stream_live_viewers", ChannelClip_views);
-    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + ChannelClip_createdAt);
+
+    Main_innerHTML("stream_live_time", ChannelClip_createdAt + ',' + STR_SPACE + ChannelClip_views);
+    Main_textContent("stream_live_viewers", '');
+    Main_textContent("stream_watching_time", '');
+
     Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
@@ -54,7 +57,6 @@ function PlayClip_Start() {
     Play_ShowPanelStatus(3);
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
-    Main_textContent("stream_live_time", '');
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP + '.';
     if (PlayClip_HasVOD) {
