@@ -238,8 +238,10 @@ function ChannelContent_loadDataSuccess() {
 //TODO revise this functions there is too many
 function ChannelContent_createCell(id, channel_name, channel_id, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, rerun) {
 
-    var icon = 'circle';
-    var color = (ChannelContent_TargetId !== undefined ? '#FED000' : 'red');
+    var icon = 'circle',
+        ishosting = ChannelContent_TargetId !== undefined,
+        color = ishosting ? '#FED000' : 'red';
+
     if (rerun) {
         color = '#FFFFFF';
         icon = 'refresh';
@@ -254,10 +256,10 @@ function ChannelContent_createCell(id, channel_name, channel_id, preview_thumbna
         '<img id="' + ChannelContent_ids[1] + id + '" alt="" class="stream_img"src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
+        '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
         '<i class="icon-' + icon + ' live_icon" style="color: ' + color + ';"></i> ' + channel_display_name + '</div>' +
-        '<div id="' + ChannelContent_ids[7] + id + '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
-        quality + '</div>' +
+        '<div id="' + ChannelContent_ids[7] + id + '"class="stream_info" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
+        (ishosting ? '' : quality) + '</div>' +
         '<div id="' + ChannelContent_ids[4] + id + '"class="stream_info">' + stream_title + '</div>' +
         '<div id="' + ChannelContent_ids[5] + id + '"class="stream_info">' +
         (stream_game !== "" ? STR_PLAYING + stream_game : "") + '</div>' +
