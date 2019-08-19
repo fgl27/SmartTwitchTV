@@ -280,7 +280,8 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, valuesArray) {
 
 function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) {
 
-    var id = Screens_createCellBase(row_id, coloumn_id);
+    var id = Screens_createCellBase(row_id, coloumn_id),
+    ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
 
     Main_td.setAttribute('id', idArray[8] + id);
     Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
@@ -289,10 +290,11 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
-        idArray[3] + id + '" class="stream_channel" style="width: 66%; display: inline-block;">' +
-        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' + (data[2] ? '#FFFFFF' : valuesArray[1].indexOf(STR_USER_HOSTING) !== -1 ? '#FED000' : 'red') +
+        idArray[3] + id + '" class="stream_channel" style="width: ' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
+        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' +
+        (data[2] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
         ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
-        '"class="stream_info" style="width:33%; float: right; text-align: right; display: inline-block;">' +
+        '"class="stream_info" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +

@@ -713,7 +713,7 @@ function ScreensObj_InitUserHost() {
 
             this.itemsCount++;
             this.idObject[cell.target._id + '' + cell._id] = 1;
-            //TODO improve streamer name on thumbnail
+
             this.row.appendChild(Screens_createCellLive(
                 this.row_id,
                 this.coloumn_id,
