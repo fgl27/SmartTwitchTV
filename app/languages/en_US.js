@@ -289,4 +289,6 @@ function en_USLang() {
     STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
     STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If already in picture in picture mode use bottom controls Video Mode or when in video mode smaller screen plus chat hold key enter to start from live feed";
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
+    STR_SINGLE_EXIT = "Single return key press";
+    STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key return click";
 }

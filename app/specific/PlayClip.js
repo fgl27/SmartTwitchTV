@@ -437,7 +437,7 @@ function PlayClip_handleKeyDown(e) {
     if (PlayClip_state !== PlayClip_STATE_PLAYING) {
         switch (e.keyCode) {
             case KEY_RETURN:
-                if (Play_ExitDialogVisible()) {
+                if (Play_ExitDialogVisible() || Play_SingleClickExit) {
                     Play_CleanHideExit();
                     PlayClip_shutdownStream();
                 } else {
@@ -559,7 +559,7 @@ function PlayClip_handleKeyDown(e) {
                 if (Play_isPanelShown()) PlayClip_hidePanel();
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else {
-                    if (Play_ExitDialogVisible()) {
+                    if (Play_ExitDialogVisible() || Play_SingleClickExit) {
                         Play_CleanHideExit();
                         PlayClip_shutdownStream();
                     } else {
