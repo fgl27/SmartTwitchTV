@@ -366,7 +366,6 @@ function Chat_Disable() {
 }
 
 function Chat_SingleLine(Line) {
-    console.log('Chat_SingleLine');
     var div = '&nbsp;';
     div += '<span class="message">';
     div += STR_BR + STR_BR + STR_BR + STR_BR + STR_BR + STR_BR;

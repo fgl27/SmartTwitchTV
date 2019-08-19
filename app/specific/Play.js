@@ -276,7 +276,7 @@ function Play_Start() {
 
     Play_currentTime = 0;
     Play_watching_time = new Date().getTime();
-    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE + STR_WATCHING + Play_timeS(0));
+    Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_WATCHING + Play_timeS(0));
     Main_textContent('chat_container_name_text', Main_values.Play_selectedChannelDisplayname);
     Play_created = Play_timeMs(0);
 
@@ -462,7 +462,7 @@ function Play_updateStreamInfoStartValues(response) {
         var playing = (Main_values.Play_gameSelected !== "" ? STR_PLAYING + Main_values.Play_gameSelected : "");
         Main_textContent("stream_info_game", playing);
 
-        Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(response.stream.viewers) + ' ' + STR_VIEWER);
+        Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(response.stream.viewers) + STR_SPACE + STR_VIEWER);
         Main_values.Play_selectedChannelLogo = response.stream.channel.logo;
         Play_LoadLogoSucess = true;
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Play_selectedChannelLogo);
@@ -506,7 +506,7 @@ function Play_updateStreamInfoValues(response) {
         Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected);
 
         Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(response.stream.viewers) +
-            ' ' + STR_VIEWER);
+            STR_SPACE + STR_VIEWER);
 
         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
             response.stream.channel.logo);
@@ -1108,7 +1108,7 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    Main_innerHTML("stream_watching_time", STR_SPACE + "|" + STR_SPACE +
+    Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_SPACE +
         STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
 
     Main_innerHTML("stream_live_time", STR_SINCE +
