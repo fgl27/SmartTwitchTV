@@ -290,7 +290,7 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
-        idArray[3] + id + '" class="stream_channel" style="width: ' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
+        idArray[3] + id + '" class="stream_channel" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
         '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' +
         (data[2] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
         ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
