@@ -170,10 +170,8 @@ function Play_PreStart() {
     Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 3);
     Play_controlsAudioPos = Main_getItemInt('Play_controlsAudioPos', 1);
 
-    try {
-        Android.mSetPlayerPosition(Play_PicturePicturePos);
-        Android.mSetPlayerSize(Play_PicturePictureSize);
-    } catch (e) {}
+    Android.mSetPlayerPosition(Play_PicturePicturePos);
+    Android.mSetPlayerSize(Play_PicturePictureSize);
 
     Play_SetQuality();
 
@@ -365,11 +363,8 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
             '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
-        if (UseAndroid) {
-            try {
-                Android.ResStartAuto(theUrl, 1, 0);
-            } catch (e) {}
-        } else Android.SetAuto(theUrl);
+        if (UseAndroid) Android.ResStartAuto(theUrl, 1, 0);
+        else Android.SetAuto(theUrl);
 
     } else Play_RefreshAutoError(UseAndroid);
 }
@@ -569,11 +564,13 @@ function Play_loadDataRequest() {
                 Play_loadDataSuccess(xmlHttp.responseText);
             }
         } else if (xmlHttp.status === 403) { //forbidden access
-            if (Play_selectedChannel_id_Old === null) Play_ForbiddenLive();
-            else Play_RestorePlayData();
+            if (Play_selectedChannel_id_Old !== null) Play_RestorePlayData();
+            else if (!PlayExtra_PicturePicture) Play_ForbiddenLive();
+            else Play_CloseBigAndSwich();
         } else if (xmlHttp.status === 404) { //off line
-            if (Play_selectedChannel_id_Old === null) Play_CheckHostStart();
-            else Play_RestorePlayData();
+            if (Play_selectedChannel_id_Old !== null) Play_RestorePlayData();
+            else if (!PlayExtra_PicturePicture) Play_CheckHostStart();
+            else Play_CloseBigAndSwich();
         } else {
             Play_loadDataError();
         }
@@ -626,8 +623,11 @@ function Play_loadDataError() {
             else Play_loadDataRequest();
         } else {
             if (Main_IsNotBrowser) {
-                if (Play_selectedChannel_id_Old === null) Play_CheckHostStart();
-                else Play_RestorePlayData();
+
+                if (Play_selectedChannel_id_Old !== null) Play_RestorePlayData();
+                else if (!PlayExtra_PicturePicture) Play_CheckHostStart();
+                else Play_CloseBigAndSwich();
+
             } else Play_loadDataSuccessFake();
         }
     }
@@ -1085,9 +1085,7 @@ function Play_UpdateStatus(mwhocall) {
 
         }
 
-        try {
-            Play_Status(Android.getVideoStatus());
-        } catch (e) {}
+        Play_Status(Android.getVideoStatus());
     } else Play_StatusFake();
 }
 
@@ -1123,11 +1121,8 @@ function Play_RefreshWatchingtime() {
             else Play_SetHtmlQuality('stream_quality');
         }
 
-        if (Main_IsNotBrowser) {
-            try {
-                Play_Status(Android.getVideoStatus());
-            } catch (e) {}
-        } else Play_StatusFake();
+        if (Main_IsNotBrowser) Play_Status(Android.getVideoStatus());
+        else Play_StatusFake();
     }
 }
 
@@ -1677,21 +1672,8 @@ function Play_KeyReturn(is_vod) {
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
         } else if (Play_ExitDialogVisible() || Play_SingleClickExit) {
-            if (PlayExtra_PicturePicture) {
-                if (Main_IsNotBrowser) {
-                    try {
-                        Android.mClearSmallPlayer();
-                        if (!Play_isFullScreen) {
-                            Play_isFullScreen = !Play_isFullScreen;
-                            Play_SetFullScreen(Play_isFullScreen);
-                        }
-                    } catch (e) {}
-                }
-                PlayExtra_PicturePicture = false;
-                PlayExtra_selectedChannel = '';
-                PlayExtra_UnSetPanel();
-                Play_CleanHideExit();
-            } else {
+            if (PlayExtra_PicturePicture) Play_CloseSmall();
+            else {
                 Play_CleanHideExit();
                 Play_hideChat();
                 if (is_vod) PlayVod_shutdownStream();
@@ -1705,6 +1687,35 @@ function Play_KeyReturn(is_vod) {
             Play_showExitDialog();
         }
     }
+}
+
+function Play_CloseBigAndSwich() {
+    if (!Play_isFullScreen) {
+        Play_isFullScreen = !Play_isFullScreen;
+        Play_SetFullScreen(Play_isFullScreen);
+    }
+    if (Main_IsNotBrowser) Android.mSwitchPlayer();
+    PlayExtra_SwitchPlayer();
+    if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+
+    PlayExtra_PicturePicture = false;
+    PlayExtra_selectedChannel = '';
+    PlayExtra_UnSetPanel();
+    Play_CleanHideExit();
+}
+
+function Play_CloseSmall() {
+    if (Main_IsNotBrowser) {
+        Android.mClearSmallPlayer();
+        if (!Play_isFullScreen) {
+            Play_isFullScreen = !Play_isFullScreen;
+            Play_SetFullScreen(Play_isFullScreen);
+        }
+    }
+    PlayExtra_PicturePicture = false;
+    PlayExtra_selectedChannel = '';
+    PlayExtra_UnSetPanel();
+    Play_CleanHideExit();
 }
 
 function Play_handleKeyUp(e) {
@@ -1814,9 +1825,7 @@ function Play_handleKeyDown(e) {
                     Play_PicturePicturePos++;
                     if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
 
-                    try {
-                        Android.mSwitchPlayerPosition(Play_PicturePicturePos);
-                    } catch (e) {}
+                    Android.mSwitchPlayerPosition(Play_PicturePicturePos);
                     Main_setItem('Play_PicturePicturePos', Play_PicturePicturePos);
                 } else {
                     Play_showPanel();
@@ -1845,9 +1854,7 @@ function Play_handleKeyDown(e) {
                 } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePictureSize++;
                     if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
-                    try {
-                        Android.mSwitchPlayerSize(Play_PicturePictureSize);
-                    } catch (e) {}
+                    Android.mSwitchPlayerSize(Play_PicturePictureSize);
                     Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                 } else {
                     Play_showPanel();
@@ -1881,9 +1888,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isEndDialogVisible()) Play_EndTextClear();
                 else if (PlayExtra_PicturePicture) {
                     if (Play_isFullScreen) {
-                        try {
-                            if (Main_IsNotBrowser) Android.mSwitchPlayer();
-                        } catch (e) {}
+                        if (Main_IsNotBrowser) Android.mSwitchPlayer();
                         PlayExtra_SwitchPlayer();
                     } else {
                         Play_controls[Play_controlsAudio].defaultValue++;
@@ -2145,13 +2150,11 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
 
-            try {
-                if (this.defaultValue === 2) {
-                    Android.StartAuto(1, 0);
-                    Android.initializePlayer2Auto();
-                } else if (this.defaultValue) Android.StartAuto(1, 0);
-                else Android.initializePlayer2Auto();
-            } catch (e) {}
+            if (this.defaultValue === 2) {
+                Android.StartAuto(1, 0);
+                Android.initializePlayer2Auto();
+            } else if (this.defaultValue) Android.StartAuto(1, 0);
+            else Android.initializePlayer2Auto();
 
             Play_hidePanel();
             this.defaultValue = 2;
@@ -2185,9 +2188,7 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
 
-            try {
-                Android.mSwitchPlayerAudio(this.defaultValue);
-            } catch (e) {}
+            Android.mSwitchPlayerAudio(this.defaultValue);
 
             Play_hidePanel();
             Play_controlsAudioPos = this.defaultValue;

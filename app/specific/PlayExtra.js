@@ -124,9 +124,7 @@ function PlayExtra_KeyEnter() {
 
 function PlayExtra_Resume() {
     // restart audio source position to where ther user has left it
-    try {
-        Android.mSwitchPlayerAudio(Play_controlsAudioPos);
-    } catch (e) {}
+    Android.mSwitchPlayerAudio(Play_controlsAudioPos);
     Play_SetAudioIcon();
     PlayExtra_state = Play_STATE_LOADING_TOKEN;
     PlayExtra_loadingDataTry = 0;
@@ -266,11 +264,7 @@ function PlayExtra_UnSetPanel() {
 function PlayExtra_qualityChanged() {
     if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
 
-    if (Main_IsNotBrowser && Play_isOn) {
-        try {
-            Android.initializePlayer2Auto();
-        } catch (e) {}
-    }
+    if (Main_IsNotBrowser && Play_isOn) Android.initializePlayer2Auto();
 }
 
 function PlayExtra_loadDataRequest() {
@@ -318,11 +312,7 @@ function PlayExtra_loadDataSuccessreadyState(xmlHttp, state, theUrl) {
     if (xmlHttp.status === 200) {
         Play_loadingDataTry = 0;
 
-        if (Play_isOn && !state) {
-            try {
-                Android.SetAuto2(theUrl);
-            } catch (e) {}
-        }
+        if (Play_isOn && !state) Android.SetAuto2(theUrl);
 
         PlayExtra_loadDataSuccess(xmlHttp.responseText);
     } else if (xmlHttp.status === 403) { //forbidden access
@@ -398,11 +388,8 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
             '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
-        if (UseAndroid) {
-            try {
-                Android.ResStartAuto2(theUrl);
-            } catch (e) {}
-        } else Android.SetAuto2(theUrl);
+        if (UseAndroid) Android.ResStartAuto2(theUrl);
+        else Android.SetAuto2(theUrl);
 
     } else PlayExtra_RefreshAutoError(UseAndroid);
 }
