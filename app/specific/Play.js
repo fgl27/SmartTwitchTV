@@ -170,8 +170,10 @@ function Play_PreStart() {
     Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 3);
     Play_controlsAudioPos = Main_getItemInt('Play_controlsAudioPos', 1);
 
-    Android.mSetPlayerPosition(Play_PicturePicturePos);
-    Android.mSetPlayerSize(Play_PicturePictureSize);
+    if (Main_IsNotBrowser) {
+        Android.mSetPlayerPosition(Play_PicturePicturePos);
+        Android.mSetPlayerSize(Play_PicturePictureSize);
+    }
 
     Play_SetQuality();
 
