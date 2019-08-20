@@ -419,8 +419,8 @@ function Play_ResumeAfterOnline(forced) {
     if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
         Play_state = Play_STATE_LOADING_TOKEN;
-        Play_loadData();
         if (PlayExtra_PicturePicture) PlayExtra_Resume();
+        Play_loadData();
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -1692,6 +1692,9 @@ function Play_KeyReturn(is_vod) {
 }
 
 function Play_CloseBigAndSwich() {
+    Play_HideBufferDialog();
+    Play_state = Play_STATE_PLAYING;
+
     if (!Play_isFullScreen) {
         Play_isFullScreen = !Play_isFullScreen;
         Play_SetFullScreen(Play_isFullScreen);
