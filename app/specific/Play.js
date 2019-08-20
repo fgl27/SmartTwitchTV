@@ -1694,6 +1694,12 @@ function Play_CloseBigAndSwich() {
         Play_isFullScreen = !Play_isFullScreen;
         Play_SetFullScreen(Play_isFullScreen);
     }
+
+    Play_showWarningDialog(Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+    window.setTimeout(function() {
+        Play_HideWarningDialog();
+    }, 2500);
+
     if (Main_IsNotBrowser) Android.mSwitchPlayer();
     PlayExtra_SwitchPlayer();
     if (Main_IsNotBrowser) Android.mClearSmallPlayer();
