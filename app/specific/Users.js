@@ -80,37 +80,41 @@ function Users_loadData() {
         row = document.createElement('tr');
 
         //live
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_LIVE_CHANNELS, 'play', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_LIVE_CHANNELS, 'play', color));
 
         //host
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_LIVE_HOSTS, 'users', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_LIVE_HOSTS, 'users', color));
 
         //games
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
             'gamepad', color));
 
         //videos
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_VIDEOS, 'movie-play', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_VIDEOS, 'movie-play', color));
 
         //channels
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_USER_CHANNEL, 'filmstrip', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_CHANNEL, 'filmstrip', color));
+
+        //my channels
+        coloumn_id++;
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_MY_CHANNEL, 'user', color));
 
         //add or make one
         coloumn_id++;
-        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_USER_ADD, 'user-plus', color));
-        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_USER_MAKE_ONE, 'arrow-up', color));
+        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_ADD, 'user-plus', color));
+        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_MAKE_ONE, 'arrow-up', color));
 
         //remove user
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, STR_USER_REMOVE, 'user-times', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_REMOVE, 'user-times', color));
 
         //add key
         coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, Main_values.Main_selectedChannelDisplayname, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key', color));
+        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key', color));
 
         doc.appendChild(row);
     }
@@ -118,10 +122,9 @@ function Users_loadData() {
     Users_loadDataSuccessFinish();
 }
 
-function Users_createChannelCell(id, user_name, stream_type, icons, color) {
+function Users_createChannelCell(id, stream_type, icons, color) {
     Main_td = document.createElement('td');
     Main_td.setAttribute('id', Users_ids[4] + id);
-    Main_td.setAttribute(Main_DataAttribute, user_name);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><div id="' + Users_ids[1] + id +
         '" class="stream_user_icon" style="color: #' + color + ';"><i class="icon-' + icons + '"></i></div></div>' +
@@ -179,13 +182,13 @@ function Users_keyEnter() {
         return;
     }
 
-    if (Users_cursorX === 7 && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+    if (Users_cursorX === 8 && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
         Main_showWarningDialog(STR_USER_CODE_OK);
         window.setTimeout(Main_HideWarningDialog, 1500);
         return;
     }
 
-    if (Users_cursorX !== 6 && Users_cursorX !== 7) {
+    if (Users_cursorX !== 7 && Users_cursorX !== 8) {
         Main_HideElement(Users_ids[5]);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
         document.getElementById("screens_holder").style.top = "0";
@@ -208,12 +211,25 @@ function Users_keyEnter() {
             inUseObj = UserChannels;
             Screens_init();
         } else if (Users_cursorX === 5) {
+            console.log(AddUser_UsernameArray[Main_values.Users_Position]);
+            Main_values.Main_selectedChannel_id = AddUser_UsernameArray[Main_values.Users_Position].id;
+            Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[Main_values.Users_Position].display_name ? AddUser_UsernameArray[Main_values.Users_Position].display_name : AddUser_UsernameArray[Main_values.Users_Position].name;
+            Main_values.Main_selectedChannel = AddUser_UsernameArray[Main_values.Users_Position].name;
+
+            Main_values.Main_BeforeChannel = Main_Users;
+            Main_values.Main_Go = Main_ChannelContent;
+            Main_values.Main_BeforeChannelisSet = true;
+            AddCode_IsFallowing = false;
+            ChannelContent_UserChannels = false;
+            Main_SwitchScreen();
+
+        } else if (Users_cursorX === 6) {
             if (!Users_cursorY) {
                 Main_values.Main_Before = Main_Users;
                 AddUser_init();
             } else AddUser_UserMakeOne(Users_cursorY);
-        } else if (Users_cursorX === 6) Users_showRemoveDialog();
-        else if (Users_cursorX === 7 && !AddUser_UsernameArray[Main_values.Users_Position].access_token)
+        } else if (Users_cursorX === 7) Users_showRemoveDialog();
+        else if (Users_cursorX === 8 && !AddUser_UsernameArray[Main_values.Users_Position].access_token)
             Users_showRemoveDialog();
     });
 }
@@ -228,8 +244,8 @@ function Users_setRemoveDialog() {
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
-    if (Users_cursorX === 6) Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
-    else if (Users_cursorX === 7) Main_innerHTML("main_dialog_remove", STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
+    if (Users_cursorX === 7) Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
+    else if (Users_cursorX === 8) Main_innerHTML("main_dialog_remove", STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
     Main_ShowElement('main_remove_dialog');
 }
 
@@ -356,7 +372,7 @@ function Users_handleKeyDown(event) {
         case KEY_ENTER:
             if (Users_isRemoveDialogShown()) {
                 var temp_RemoveCursor;
-                if ((Users_cursorX === 6)) {
+                if ((Users_cursorX === 7)) {
                     // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
                     temp_RemoveCursor = Users_RemoveCursor;
                     Users_HideRemoveDialog();

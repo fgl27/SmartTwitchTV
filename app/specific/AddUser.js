@@ -178,6 +178,7 @@ function AddUser_SaveNewUser(responseText) {
     AddUser_UsernameArray.push({
         'name': AddUser_Username.name,
         'id': AddUser_Username._id,
+        'display_name': AddUser_Username.display_name,
         'access_token': 0,
         'refresh_token': 0
     });

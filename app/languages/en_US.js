@@ -291,4 +291,5 @@ function en_USLang() {
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
     STR_SINGLE_EXIT = "Single return key press";
     STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key return click";
+    STR_USER_MY_CHANNEL = "My Channel";
 }
