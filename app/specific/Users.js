@@ -211,7 +211,7 @@ function Users_keyEnter() {
             inUseObj = UserChannels;
             Screens_init();
         } else if (Users_cursorX === 5) {
-            console.log(AddUser_UsernameArray[Main_values.Users_Position]);
+
             Main_values.Main_selectedChannel_id = AddUser_UsernameArray[Main_values.Users_Position].id;
             Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[Main_values.Users_Position].display_name ? AddUser_UsernameArray[Main_values.Users_Position].display_name : AddUser_UsernameArray[Main_values.Users_Position].name;
             Main_values.Main_selectedChannel = AddUser_UsernameArray[Main_values.Users_Position].name;
