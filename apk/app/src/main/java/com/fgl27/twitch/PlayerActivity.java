@@ -81,7 +81,7 @@ public class PlayerActivity extends Activity {
     public long[] expires = new long[2];
 
     //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
-    public MediaSource[] mediaSourcePlaying =  new MediaSource[2];
+    public MediaSource[] mediaSourcePlaying = new MediaSource[2];
 
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
     private FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
@@ -329,7 +329,8 @@ public class PlayerActivity extends Activity {
     }
 
     private void showLoading() {
-        if (loadingView[2].getVisibility() != View.VISIBLE) loadingView[2].setVisibility(View.VISIBLE);
+        if (loadingView[2].getVisibility() != View.VISIBLE)
+            loadingView[2].setVisibility(View.VISIBLE);
     }
 
     private void hideLoading(int position) {
@@ -392,8 +393,10 @@ public class PlayerActivity extends Activity {
         PlayerView[mainPlayer].setVisibility(View.VISIBLE);
 
         //change trackSelector to limit video bandwidth
-        if (trackSelector[WillBeMain] != null) trackSelector[WillBeMain].setParameters(trackSelectorParameters);
-        if (trackSelector[mainPlayer] != null) trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
+        if (trackSelector[WillBeMain] != null)
+            trackSelector[WillBeMain].setParameters(trackSelectorParameters);
+        if (trackSelector[mainPlayer] != null)
+            trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
 
         mainPlayer = WillBeMain;
 
@@ -796,7 +799,8 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void setPlaybackSpeed(float value) {
             myHandler.post(() -> {
-                if (player[mainPlayer] != null) player[mainPlayer].setPlaybackParameters(new PlaybackParameters(value, 1.0f));
+                if (player[mainPlayer] != null)
+                    player[mainPlayer].setPlaybackParameters(new PlaybackParameters(value, 1.0f));
             });
         }
 
@@ -832,7 +836,8 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    if (player[mainPlayer] != null) value = Tools.mgetVideoQuality(player[mainPlayer]);
+                    if (player[mainPlayer] != null)
+                        value = Tools.mgetVideoQuality(player[mainPlayer]);
                     else value = null;
                 }
             });
@@ -890,7 +895,8 @@ public class PlayerActivity extends Activity {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         PlayerCheckHandler[position].postDelayed(() -> {
                             //Player was released or is on pause
-                            if (player[position] == null || !player[position].getPlayWhenReady()) return;
+                            if (player[position] == null || !player[position].getPlayWhenReady())
+                                return;
 
                             PlayerEventListenerCheckCounter(position, false);
                         }, delayms);
@@ -901,7 +907,8 @@ public class PlayerActivity extends Activity {
                         //If other not playing just play it so they stay close to sync
                         int otherplayer = position ^ 1;
                         if (player[otherplayer] != null) {
-                            if (!player[otherplayer].getPlayWhenReady()) player[otherplayer].setPlayWhenReady(true);
+                            if (!player[otherplayer].getPlayWhenReady())
+                                player[otherplayer].setPlayWhenReady(true);
                         }
 
                         if (player[position] != null && mwhocall > 1) {
@@ -959,7 +966,8 @@ public class PlayerActivity extends Activity {
                 if (expires[position] < System.currentTimeMillis()) {
                     mediaSourcePlaying[position] = mediaSourcesAuto[position];
                     initializePlayer(position);
-                } else mwebview.loadUrl("javascript:Play_CheckResumeForced(" + (mainPlayer != position) + ")");
+                } else
+                    mwebview.loadUrl("javascript:Play_CheckResumeForced(" + (mainPlayer != position) + ")");
 
             } else initializePlayer(position);
 
