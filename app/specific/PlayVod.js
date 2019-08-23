@@ -251,7 +251,7 @@ function PlayVod_SaveOffset() {
     //Prevent setting it to 0 before it was used
     if (!Main_values.vodOffset) {
         Main_values.vodOffset = Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0;
-        Main_SaveValues();
+        if (Main_values.vodOffset > 0) Main_SaveValues();
         Main_values.vodOffset = 0;
     }
 }
