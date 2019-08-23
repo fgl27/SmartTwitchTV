@@ -654,6 +654,10 @@ function PlayVod_jump() {
                     (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
 
                 Chat_offset = PlayVod_TimeToJump;
+
+                Main_values.vodOffset = PlayVod_TimeToJump;
+                Main_SaveValues();
+                Main_values.vodOffset = 0;
             }
 
         } else {
