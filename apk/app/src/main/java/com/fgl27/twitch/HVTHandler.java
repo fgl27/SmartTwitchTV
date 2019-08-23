@@ -13,7 +13,7 @@ public final class HVTHandler {
         private final Runnable mRunnable;
         private boolean mFinished = false;
 
-        private  NotifyRunnable(final Runnable r) {
+        private NotifyRunnable(final Runnable r) {
             mRunnable = r;
         }
 
@@ -34,11 +34,11 @@ public final class HVTHandler {
     /**
      * Posts a runnable on a handler's thread and returns a RunnableResult object that can be used to
      * get a return value.
-     *
+     * <p>
      * You should set the return value by setting {@link RunnableValue#value} in the
      * {@link RunnableValue#run()} method. You can retrieve it on the calling thread using
      * {@link RunnableResult#get()}.
-     *
+     * <p>
      * The handler may be on the same or a different thread than the one calling this method.
      *
      * @return a RunnableResult instance that can be used to retrieve the return value
@@ -56,7 +56,7 @@ public final class HVTHandler {
 
     /**
      * A runnable that also has a variable that can be used to return a value.
-     *
+     * <p>
      * In your {@link #run()} implementation you should set the return value to {@link #value}.
      *
      * @param <T> the type of the return value.
@@ -71,10 +71,12 @@ public final class HVTHandler {
     public static class RunnableResult<T> {
         private final RunnableValue<T> mRunnable;
         private final NotifyRunnable mNotifyRunnable;
+
         private RunnableResult(final RunnableValue<T> r, final NotifyRunnable notifyRunnable) {
             mRunnable = r;
             mNotifyRunnable = notifyRunnable;
         }
+
         /**
          * Get the return value. Blocks until the runnable has finished running.
          */

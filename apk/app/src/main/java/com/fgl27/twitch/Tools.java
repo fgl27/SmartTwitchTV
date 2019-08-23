@@ -84,7 +84,8 @@ public final class Tools {
                 if (mresponseCharset != null) {
                     byte[] responseBytes;
 
-                    if (status != HttpURLConnection.HTTP_OK) responseBytes = readFully(urlConnection.getErrorStream());
+                    if (status != HttpURLConnection.HTTP_OK)
+                        responseBytes = readFully(urlConnection.getErrorStream());
                     else responseBytes = readFully(urlConnection.getInputStream());
 
                     return JsonObToString(status, new String(responseBytes, mresponseCharset));
@@ -98,11 +99,11 @@ public final class Tools {
         }
     }
 
-    private static byte[] readFully(InputStream in ) throws IOException {
+    private static byte[] readFully(InputStream in) throws IOException {
         try {
-            return readFullyNoClose( in );
+            return readFullyNoClose(in);
         } finally {
-            in .close();
+            in.close();
         }
     }
 
@@ -112,7 +113,7 @@ public final class Tools {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int count;
-        while ((count = in .read(buffer)) != -1) {
+        while ((count = in.read(buffer)) != -1) {
             bytes.write(buffer, 0, count);
         }
         return bytes.toByteArray();
@@ -131,7 +132,7 @@ public final class Tools {
             throws IllegalCharsetNameException, UnsupportedCharsetException {
         Charset responseCharset = StandardCharsets.UTF_8;
         if (contentTypeHeader != null) {
-            Map < String, String > contentTypeParams = parseContentTypeParameters(contentTypeHeader);
+            Map<String, String> contentTypeParams = parseContentTypeParameters(contentTypeHeader);
             String charsetParameter = contentTypeParams.get("charset");
             if (charsetParameter != null) {
                 responseCharset = Charset.forName(charsetParameter);
@@ -139,19 +140,20 @@ public final class Tools {
         }
         return responseCharset;
     }
+
     /**
      * Parse content-type parameters. The format of this header is roughly :
      * {@code type/subtype; param1=value1; param2=value2 ...} where each of the
      * parameters are optional. Parsing is lenient, malformed parameters are ignored.
-     *
+     * <p>
      * Parameter keys & values are trimmed of whitespace and keys are converted to
      * lower case.
      */
-    private static Map < String, String > parseContentTypeParameters(String contentTypeHeader) {
-        Map < String, String > parameters = Collections.emptyMap();
+    private static Map<String, String> parseContentTypeParameters(String contentTypeHeader) {
+        Map<String, String> parameters = Collections.emptyMap();
         String[] fields = contentTypeHeader.split(";");
         if (fields.length > 1) {
-            parameters = new HashMap < > ();
+            parameters = new HashMap<>();
             // Ignore the first element in the array (the type/subtype).
             for (int i = 1; i < fields.length; ++i) {
                 final String parameter = fields[i];
@@ -213,7 +215,7 @@ public final class Tools {
 
         return String.format(Locale.US, "%s,%s,%d,%s",
                 format.height + "p",
-                (format.frameRate == Format.NO_VALUE ? "" : String.format(Locale.US, "%d",  Math.round(format.frameRate))),
+                (format.frameRate == Format.NO_VALUE ? "" : String.format(Locale.US, "%d", Math.round(format.frameRate))),
                 format.bitrate,
                 mgetCodec(format.codecs));
     }
@@ -262,8 +264,10 @@ public final class Tools {
     }
 
     public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int mwhocall) {
-        if (mwhocall < 3) return new HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(uri);
-        else return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
+        if (mwhocall < 3)
+            return new HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(uri);
+        else
+            return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
     }
 
     //https://exoplayer.dev/shrinking.html
