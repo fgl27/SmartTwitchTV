@@ -33,6 +33,14 @@ var PlayClip_loadingtreamerInfoTry = 0;
 function PlayClip_Start() {
     Play_showBufferDialog();
     Play_HideEndDialog();
+
+    PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
+    Chat_title = STR_CLIP + '.';
+    if (PlayClip_HasVOD) {
+        Chat_offset = ChannelVod_vodOffset;
+        Chat_Init();
+    } else Chat_NoVod();
+
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
     Main_innerHTML("stream_info_title", ChannelClip_title);
@@ -57,12 +65,7 @@ function PlayClip_Start() {
     Play_ShowPanelStatus(3);
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
-    PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
-    Chat_title = STR_CLIP + '.';
-    if (PlayClip_HasVOD) {
-        Chat_offset = ChannelVod_vodOffset;
-        Chat_Init();
-    } else Chat_NoVod();
+
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
     Main_ShowElement('progress_bar_div');
     Main_ShowElement('controls_holder');
