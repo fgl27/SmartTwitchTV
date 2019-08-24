@@ -23,7 +23,7 @@ var Settings_value = {
     },
     "live_notification_time": { //live notification
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        "defaultValue": 3
+        "defaultValue": 4
     },
     "buffer_live": { //buffer_live
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
@@ -570,7 +570,7 @@ function Settings_SetClock() {
 function Settings_ScrollTable() {
     var doc = document.getElementById('settings_scroll');
 
-    doc.scrollTop = (Settings_cursorY > 7) ? doc.scrollHeight : 0;
+    doc.scrollTop = (Settings_cursorY > 8) ? doc.scrollHeight : 0;
 }
 
 function Settings_handleKeyDown(event) {
