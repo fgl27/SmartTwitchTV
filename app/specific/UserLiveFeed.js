@@ -12,6 +12,13 @@ var UserLiveFeed_LastPos = null;
 var UserSidePannel_LastPos = null;
 var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
+
+var UserLiveFeed_CheckNotifycation = false;
+var UserLiveFeed_WasLiveidObject = {};
+var UserLiveFeed_NotifyLiveidObject = [];
+var UserLiveFeed_Notify = true;
+var UserLiveFeed_NotifyTimeout = 3000;
+
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
 var UserLiveFeed_side_ids = ['usf_thumbdiv', 'usf_img', 'usf_infodiv', 'usf_displayname', 'usf_streamtitle', 'usf_streamgame', 'usf_viwers', 'usf_quality', 'usf_cell', 'ulempty_', 'user_live_scroll'];
@@ -196,10 +203,26 @@ function UserLiveFeed_loadDataSuccess(responseText) {
         docside = document.getElementById("side_panel_holder"),
         i = 0;
 
+    if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[Main_values.Users_Position].name]) {
+        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[Main_values.Users_Position].name] = {};
+        UserLiveFeed_CheckNotifycation = false;
+    }
+
     for (i; i < response_items; i++) {
         stream = response.streams[i];
         id = stream.channel._id;
         if (!UserLiveFeed_idObject[id]) {
+
+            //Check if was live if not notificate
+            if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[Main_values.Users_Position].name][id]) {
+                UserLiveFeed_NotifyLiveidObject.push({
+                    name: stream.channel.display_name,
+                    logo: stream.channel.logo,
+                    game: stream.game,
+                    rerun: Main_is_rerun(stream.stream_type),
+                });
+            }
+
             UserLiveFeed_idObject[id] = 1;
             if (UserLiveFeed_LastPos !== null && UserLiveFeed_LastPos === stream.channel.name) Play_FeedPos = i;
 
@@ -230,6 +253,8 @@ function UserLiveFeed_loadDataSuccess(responseText) {
         }
     }
 
+    UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[Main_values.Users_Position].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject));
+
     //    doc.appendChild(UserLiveFeed_CreatFeed(i++,
     //        ['ashlynn', 35618666, false],
     //        ["https://static-cdn.jtvnw.net/ttv-static/404_preview-640x360.jpg",
@@ -249,7 +274,50 @@ function UserLiveFeed_loadDataSuccessFinish() {
         UserLiveFeed_FeedAddFocus();
         Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed();
+
+        //The app just started or user change don't nottify
+        if (UserLiveFeed_CheckNotifycation) UserLiveFeed_LiveNotification();
+        else {
+            UserLiveFeed_NotifyLiveidObject = [];
+            UserLiveFeed_CheckNotifycation = true;
+        }
     });
+}
+
+function UserLiveFeed_LiveNotification() {
+    if (!UserLiveFeed_Notify || !UserLiveFeed_NotifyLiveidObject.length) {
+        UserLiveFeed_NotifyLiveidObject = [];
+        return;
+    }
+
+    UserLiveFeed_LiveNotificationShow(0);
+}
+
+function UserLiveFeed_LiveNotificationShow(position) {
+
+    Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
+
+    Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
+    document.getElementById('user_feed_notify_img').src = UserLiveFeed_NotifyLiveidObject[position].logo;
+
+    Main_ready(function() {
+        Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
+
+        window.setTimeout(function() {
+            UserLiveFeed_LiveNotificationHide(position);
+        }, UserLiveFeed_NotifyTimeout);
+
+    });
+}
+
+function UserLiveFeed_LiveNotificationHide(position) {
+    Main_AddClass('user_feed_notify', 'user_feed_notify_hide');
+
+    if (position < (UserLiveFeed_NotifyLiveidObject.length - 1)) {
+        window.setTimeout(function() {
+            UserLiveFeed_LiveNotificationShow(position + 1);
+        }, 750);
+    } else UserLiveFeed_NotifyLiveidObject = [];
 }
 
 function UserLiveFeed_GetSize() {

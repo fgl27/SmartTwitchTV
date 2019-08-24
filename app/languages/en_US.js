@@ -292,4 +292,7 @@ function en_USLang() {
     STR_SINGLE_EXIT = "Single return key press";
     STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key return click";
     STR_USER_MY_CHANNEL = "My Channel";
+    STR_NOW_LIVE = "Now Live";
+    STR_NOW_LIVE_SHOW = "Show Now Live notification";
+    STR_NOW_DURATION = "Now Live notification duration in seconds";
 }

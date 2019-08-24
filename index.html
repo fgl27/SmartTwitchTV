@@ -431,6 +431,23 @@
             font-size: 100%
         }
 
+        div.user_feed_notify {
+            z-index: 3;
+            position: absolute;
+            top: 0.9%;
+            right: 0.9%;
+            width: 27vw;
+            height: 9vh;
+            background: #000;
+            border-radius: 4px;
+            box-shadow: rgb(0, 0, 0) 0px 0px 0px 2px, rgb(255, 255, 255) 0px 0px 0px 4px;
+            transition: 0.65s;
+        }
+
+        div.user_feed_notify_hide {
+            margin-top: -20%;
+        }
+
         div.user_feed {
             z-index: 3;
             position: absolute;
@@ -705,7 +722,7 @@
             position: absolute;
             width: 60vw;
             height: 80vh;
-            top: 10%;
+            top: 12%;
             left: 32%;
             background-color: #000000;
         }
@@ -1333,6 +1350,14 @@
             width: 17%;
         }
 
+        img.notify_img {
+            height: 95%;
+            position: absolute;
+            top: 0;
+            top: 11%;
+            border-radius: 4px;
+        }
+
         img.side_panel_channel_img {
             height: 90%;
             position: absolute;
@@ -1711,6 +1736,18 @@
         </div>
     </div>
     <div id="scenefeed" class="screen_size">
+        <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide" style="margin-top: -20%;">
+            <div id="user_feed_notify_content" class="side_panel_div side_panel_feed_text_focus">
+                <div id="user_feed_notify_main" class="class_bold" style="text-align: center;"></div>
+                <div style="width: 90%; margin-left: 5%;">
+                    <div id="user_feed_notify_img_holder" class="side_panel_iner_div1"></div>
+                    <div style="display: inline-block; width: 75%; padding-left: 4%;">
+                        <div id="user_feed_notify_name" class="side_panel_new_title"></div>
+                        <div id="user_feed_notify_game" class="side_panel_new_game"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="user_feed" class="user_feed user_feed_hide">
             <div id="icon_feed_refresh" class="dialogs_feed" style="bottom: 22vh; text-align: left; margin-left: 1%;">
             </div>

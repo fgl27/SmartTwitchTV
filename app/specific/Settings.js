@@ -17,6 +17,14 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "live_notification": { //buffer_live
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "live_notification_time": { //live notification
+        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "defaultValue": 3
+    },
     "buffer_live": { //buffer_live
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 5
@@ -165,6 +173,17 @@ function Settings_SetSettings() {
     Settings_value[key].values = [STR_NO, STR_YES];
 
     div += Settings_DivOptionNoSummary(key, STR_AUTO_PLAY_NEXT);
+
+    key = "live_notification";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionNoSummary(key, STR_NOW_LIVE_SHOW);
+
+    key = "live_notification_time";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionNoSummary(key, STR_NOW_DURATION);
 
     // Clock offset
     key = "clock_offset";
@@ -348,6 +367,13 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
     Settings_value[key].values = [STR_NO, STR_YES];
 
+    key = "live_notification";
+    Main_textContent(key + '_name', STR_NOW_LIVE_SHOW);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    key = "live_notification_time";
+    Main_textContent(key + '_name', STR_NOW_DURATION);
+
     key = "keep_panel_info_visible";
     Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
     Settings_value[key].values = [STR_NO, STR_YES];
@@ -374,6 +400,8 @@ function Settings_SetDefautls() {
     Main_SetThumb();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    UserLiveFeed_Notify = Settings_Obj_default("live_notification");
+    UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
     Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -444,6 +472,8 @@ function Settings_SetDefault(position) {
 
     if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    else if (position === "live_notification") UserLiveFeed_Notify = Settings_Obj_default("live_notification");
+    else if (position === "live_notification_time") UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
     else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     else if (position === "buffer_live") Settings_SetBuffers(1);

@@ -208,6 +208,7 @@ function Main_initWindows() {
         Screens_InitSecondaryScreens();
 
         document.getElementById("side_panel").style.marginLeft = '';
+        document.getElementById("user_feed_notify").style.marginTop = '';
 
         Main_checkVersion();
 
@@ -280,6 +281,7 @@ function Main_SetStringsSecondary() {
 
     Main_textContent('side_panel_feed_settings', STR_SIDE_PANEL_SETTINGS);
     Main_textContent('side_panel_feed_refresh', STR_REFRESH);
+    Main_textContent('user_feed_notify_main', STR_NOW_LIVE);
 
     Main_textContent('side_panel_live', STR_LIVE);
     Main_textContent('side_panel_user', STR_USER);
