@@ -1,5 +1,7 @@
 //https://developer.tizen.org/community/tip-tech/using-css3-units-support-low-and-high-density-screens
 
+var BodyfontSize;
+
 function calculateFontSize() {
     // Initial sizes.
     var initialFontSize = 29,
@@ -8,7 +10,6 @@ function calculateFontSize() {
 
         currentHeight,
         scaleFactor,
-        fontSize,
         scaledWidth,
         scaledHeight,
         container;
@@ -18,7 +19,7 @@ function calculateFontSize() {
 
     // Calculate scale factor and scaled font size.
     scaleFactor = currentHeight / initialHeight;
-    fontSize = initialFontSize * scaleFactor;
+    BodyfontSize = initialFontSize * scaleFactor;
 
     // Calculate scaled container size.
     scaledHeight = currentHeight;
@@ -28,8 +29,8 @@ function calculateFontSize() {
     container = document.getElementById('body_container');
     container.style.width = scaledWidth + 'px';
     container.style.height = scaledHeight + 'px';
-    document.body.style.fontSize = fontSize + 'px';
-};
+    document.body.style.fontSize = BodyfontSize + 'px';
+}
 
 window.addEventListener('resize', calculateFontSize, false);
 window.addEventListener('load', calculateFontSize, false);
