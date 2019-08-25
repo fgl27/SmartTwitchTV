@@ -422,7 +422,7 @@ function Main_Scrollbar(y, coloumns, total) {
             Main_values.Main_Go === Main_UserVod || Main_values.Main_Go === Main_Vod ||
             Main_values.Main_Go === Main_Clip || Main_values.Main_Go === Main_ChannelClip);
         var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (needExtraSpace ? 1.8 : 1)));
-        Main_ScrollbarElement.style.top = (nextPositon / 20) + "em";
+        Main_ScrollbarElement.style.top = (nextPositon / BodyfontSize) + "em";
 
         if (Main_ScrollbarIsHide) {
             Main_ScrollbarIsHide = false;
@@ -430,7 +430,7 @@ function Main_Scrollbar(y, coloumns, total) {
         }
     } else {
         Main_ScrollbarElement.style.backgroundColor = "#000000";
-        Main_ScrollbarElement.style.top = (screen_size / 20) + "em";
+        Main_ScrollbarElement.style.top = (screen_size / BodyfontSize) + "em";
         Main_ScrollbarIsHide = true;
     }
 }
@@ -891,7 +891,12 @@ function Main_openVod() {
 }
 
 function Main_ScrollTable(id, position) {
-    document.getElementById(id).style.top = position + "px";
+    document.getElementById(id).style.top = position ? (position / BodyfontSize) + "em" : "";
+    window.setTimeout(Main_handleKeyUp, 10);
+}
+
+function Main_ScrollTableCalc(id, position, percentage) {
+    document.getElementById(id).style.top = 'calc(' + percentage + '% + ' + (position / BodyfontSize) + 'em)';
     window.setTimeout(Main_handleKeyUp, 10);
 }
 

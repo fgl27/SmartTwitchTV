@@ -555,7 +555,7 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
                     (document.getElementById(idArray[0] + (y - 1) + '_' + x).offsetTop * -1) +
                     (inUseObj.HasSwitches ? 1 : 0));
             } else Main_handleKeyUp();
-        } else Main_ScrollTable(idArray[10], screen.height * 0.06);
+        } else Main_ScrollTable(idArray[10], 0);
 
     } else Main_handleKeyUp();
 }
@@ -565,10 +565,9 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
 
         if (y > 1) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
-                Main_ScrollTable(idArray[10],
-                    (document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1) + (screen.height * 0.42));
+                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 42);
             } else Main_handleKeyUp();
-        } else Main_ScrollTable(idArray[10], screen.height * 0.06);
+        } else Main_ScrollTable(idArray[10], 0);
 
     } else Main_handleKeyUp();
 }
@@ -576,16 +575,12 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
 function Screens_addFocusGame(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
-        if (inUseObj.posY < (inUseObj.Cells.length - 1) || forceScroll) {
-            Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
-                (document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1) + screen.height * 0.025);
-        }
+        if (inUseObj.posY < (inUseObj.Cells.length - 1) || forceScroll)
+            Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1, 2.5);
 
     } else if ((inUseObj.Cells.length - 1) === y && (Main_ThumbNull(y - 1, x, idArray[0]))) {
-
-        Main_ScrollTable((idArray[10] ? idArray[10] : idArray[7]),
-            (document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1) + screen.height * 0.025);
-    } else Main_handleKeyUp();
+        Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1, 2.5);
+    } else Main_ScrollTable(idArray[10], 0);
 }
 
 function Screens_ChangeFocus(y, x) {

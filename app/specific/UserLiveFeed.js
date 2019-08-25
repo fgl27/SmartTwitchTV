@@ -440,7 +440,7 @@ function UserLiveFeed_FeedGetPos() {
 
 function UserLiveFeed_FeedSetPos() {
     var position = UserLiveFeed_FeedGetPos();
-    if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
+    if (position) document.getElementById('user_feed_scroll').style.left = (position / BodyfontSize) + "em";
 }
 
 function UserLiveFeed_ThumbNull(y, thumbnail) {

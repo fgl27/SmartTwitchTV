@@ -26,7 +26,7 @@ function Users_init() {
     }
     Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_Users;
-    document.getElementById("screens_holder").style.top = ((screen.height / 100) * 7) + "";
+    document.getElementById("screens_holder").style.top = "";
     Main_HideWarningDialog();
     Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", Users_handleKeyDown, false);
@@ -159,9 +159,8 @@ function Users_addFocus() {
         if (Users_cursorY > 1) {
 
             if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0]))
-                Main_ScrollTable(Users_ids[5], (document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).offsetTop * -1) + (screen.height * 0.57));
-
-        } else Main_ScrollTable(Users_ids[5], ((screen.height / 100) * 7));
+                Main_ScrollTableCalc(Users_ids[5], (document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).offsetTop * -1), 57);
+        } else Main_ScrollTable(Users_ids[5], 0);
 
     } else Main_handleKeyUp();
     if (Main_CenterLablesInUse) Users_removeFocus();
