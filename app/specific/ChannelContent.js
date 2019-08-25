@@ -179,12 +179,20 @@ function ChannelContent_loadDataSuccess() {
         coloumn_id = 0,
         doc = document.getElementById("stream_table_channel_content");
 
-    Main_td = document.createElement('tr');
+    Main_td = document.createElement('td');
+    Main_td.className = 'stream_cell';
+    row.appendChild(Main_td);
+
+    Main_td = document.createElement('td');
     Main_td.className = 'follower_banner';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
         ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner" src="' + ChannelContent_profile_banner +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'"></div>';
-    doc.appendChild(Main_td);
+    row.appendChild(Main_td);
+
+    doc.appendChild(row);
+
+    row = document.createElement('tr');
 
     if (ChannelContent_responseText !== null) {
         var response = JSON.parse(ChannelContent_responseText);
