@@ -12,7 +12,11 @@ function calculateFontSize() {
         scaleFactor,
         scaledWidth,
         scaledHeight,
-        container;
+        container,
+        elements,
+        i,
+        j,
+        classes = ['screen_holder', 'screen_size', 'screen_holder_games'];
 
     // Get current client/screen height.
     currentHeight = window.innerHeight;
@@ -29,7 +33,28 @@ function calculateFontSize() {
     container = document.getElementById('body_container');
     container.style.width = scaledWidth + 'px';
     container.style.height = scaledHeight + 'px';
+
+    document.body.style.width = scaledWidth + 'px';
+    document.body.style.height = scaledHeight + 'px';
     document.body.style.fontSize = BodyfontSize + 'px';
+
+    for (j = 0; j < classes.length; j++) {
+        elements = document.getElementsByClassName(classes[j]);
+
+        for (i = 0; i < elements.length; i++) {
+            elements[i].style.width = scaledWidth + 'px';
+            elements[i].style.height = scaledHeight + 'px';
+        }
+    }
+
+    document.getElementById('topbar').style.width = scaledWidth + 'px';
+
+    elements = document.getElementsByClassName('dialogs');
+    for (i = 0; i < elements.length; i++) {
+        elements[i].style.width = scaledWidth + 'px';
+        elements[i].style.height = scaledHeight + 'px';
+    }
+
 }
 
 window.addEventListener('resize', calculateFontSize, false);

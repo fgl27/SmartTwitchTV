@@ -109,8 +109,8 @@
         div.screens {
             position: fixed;
             background-color: rgba(0, 0, 0, 0);
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
             letter-spacing: 0.075ch;
             font-kerning: none;
@@ -130,7 +130,7 @@
 
         div.screen_holder,
         div.screen_holder_games {
-            width: 100vw;
+            width: 100%;
             position: fixed;
             top: 6%;
         }
@@ -172,7 +172,7 @@
 
         div.icon_top_label {
             width: auto;
-            height: 1.75vh;
+            height: 1.75%;
             text-align: left;
             color: #FFFFFF;
             font-size: 60%;
@@ -269,14 +269,14 @@
             width: 100%;
             color: #FFFFFF;
             text-align: center;
-            font-size: 9vw;
+            font-size: 500%;
         }
 
         div.stream_channel_content_icon {
             width: 100%;
             color: #FFFFFF;
             text-align: center;
-            font-size: 12vw;
+            font-size: 800%;
             padding-top: 4%;
         }
 
@@ -401,7 +401,7 @@
         }
 
         div.stream_channel_info {
-            width: 63vw;
+            width: 63%;
             margin: 0;
             position: absolute;
             bottom: 1em;
@@ -426,8 +426,8 @@
             position: absolute;
             top: 0.9%;
             right: 0.9%;
-            width: 27vw;
-            height: 9vh;
+            width: 27%;
+            height: 9%;
             background: #000;
             border-radius: 0.2em;
             box-shadow: #FFFFFF 0 0 0 0.125em;
@@ -442,8 +442,8 @@
             z-index: 3;
             position: absolute;
             bottom: 0.1%;
-            height: 26vh;
-            width: 100vw;
+            height: 26%;
+            width: 100%;
             overflow: hidden;
         }
 
@@ -453,7 +453,7 @@
 
         div.user_feed_scroll {
             position: absolute;
-            width: 100vw;
+            width: 100%;
             bottom: 0;
             height: auto;
             white-space: nowrap;
@@ -527,14 +527,14 @@
         }
 
         .follower_banner {
-            width: 97vw;
-            height: 26vh;
+            height: 26%;
         }
 
         img.stream_img_banner {
             height: 26vh;
             display: block;
-            margin: auto;
+            margin-left: 50%;
+            transform: translateX(-50%);
         }
 
         div.about_text_title {
@@ -707,8 +707,8 @@
             border-radius: 0.2em;
             box-shadow: 0 0 0 0.175em #000000, 0 0 0 0.325em #FFFFFF;
             position: absolute;
-            width: 60vw;
-            height: 78vh;
+            width: 60%;
+            height: 78%;
             top: 12%;
             left: 32%;
             background-color: #000000;
@@ -860,7 +860,7 @@
             border-radius: 0.1em;
             left: 75.3%;
             top: 51.5%;
-            position: fixed;
+            position: absolute;
             width: 24.7%;
             height: 48%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -873,7 +873,7 @@
             border-radius: 0.5em;
             left: 0.2%;
             bottom: 0.2%;
-            position: fixed;
+            position: absolute;
             width: 24.25%;
             height: 3%;
             background-color: #000;
@@ -894,6 +894,7 @@
 
         div.chat_container2_name_text {
             display: inline-block;
+            padding-top: 1%;
         }
 
         div.chat_container2 {
@@ -901,7 +902,7 @@
             border-radius: 0.1em;
             left: 0.2%;
             top: 0.2%;
-            position: fixed;
+            position: absolute;
             width: 24.7%;
             height: 96.5%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -930,7 +931,7 @@
         div.top_clock {
             position: absolute;
             right: 1%;
-            top: 0.5vw;
+            top: 0.5%;
         }
 
         .hide {
@@ -1108,7 +1109,7 @@
         }
 
         .extra_button_text {
-            width: 100vw;
+            width: 100%;
             height: 1.5ch;
             position: relative;
             left: 50%;
@@ -1214,13 +1215,13 @@
         }
 
         .chat_line {
-            margin-left: 3px;
-            margin-right: 3px;
-            padding-top: 2px;
-            padding-bottom: 3px;
-            line-height: 16px;
+            margin-left: 0.15em;
+            margin-right: 0.15em;
+            padding-top: 0.1em;
+            padding-bottom: 0.15em;
+            line-height: 0.8em;
             color: #FFFFFF;
-            font-size: 18px !important;
+            font-size: 0.9em !important;
             font-family: 'Roboto-Bold';
         }
 
@@ -1228,18 +1229,18 @@
         .message {
             /*word-break: break-all;*/
             word-wrap: break-word;
-            margin-bottom: 3.5px;
-            line-height: 20px;
+            margin-bottom: 0.175em;
+            line-height: 1em;
         }
 
         .chat_box {
             background-color: transparent;
-            font-size: 13px;
+            font-size: 0.65em;
             position: absolute;
-            border-radius: 4px;
-            width: calc(100% - 10px);
-            height: calc(100% - 10px);
-            margin: 5px;
+            border-radius: 0.2em;
+            width: calc(100% - 0.05em);
+            height: calc(100% - 0.05em);
+            margin: 0.25em;
             overflow: hidden;
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
@@ -1250,58 +1251,58 @@
             background-repeat: no-repeat;
             background-size: contain;
             vertical-align: bottom;
-            height: 20px;
-            min-width: 20px;
-            margin-right: 5px;
+            height: 1em;
+            min-width: 1em;
+            margin-right: 0.25em;
             overflow: hidden;
         }
 
         .emoticon {
-            margin-bottom: -7px;
-            height: 30px;
-            min-width: 30px;
+            margin-bottom: -0.35em;
+            height: 1.5em;
+            min-width: 1.5em;
         }
 
         .emoji {
-            width: 11px;
+            width: 0.55em;
             height: auto;
-            margin-right: 2px;
-            margin-left: 2px;
-            margin-bottom: -1px;
+            margin-right: 0.1em;
+            margin-left: 0.1em;
+            margin-bottom: -0.05em;
         }
 
         .chat_extra_small {
-            width: 200%;
-            height: 200%;
-            transform: scale(0.5);
+            width: 115%;
+            height: 115%;
+            transform: scale(0.869);
             transform-origin: 0 0;
         }
 
         .chat_size_small {
-            width: 160%;
-            height: 160%;
-            transform: scale(0.625);
+            width: 100%;
+            height: 100%;
+            transform: scale(1);
             transform-origin: 0 0;
         }
 
         .chat_size_default {
-            width: 140%;
-            height: 140%;
-            transform: scale(0.714285);
+            width: 75%;
+            height: 75%;
+            transform: scale(1.3333);
             transform-origin: 0 0;
         }
 
         .chat_size_biger {
-            width: 120%;
-            height: 120%;
-            transform: scale(0.8333);
+            width: 60%;
+            height: 60%;
+            transform: scale(1.66667);
             transform-origin: 0 0;
         }
 
         .chat_size_bigest {
-            width: 100%;
-            height: 100%;
-            transform: scale(1);
+            width: 50%;
+            height: 50%;
+            transform: scale(2);
             transform-origin: 0 0;
         }
 
@@ -1430,7 +1431,7 @@
             <div id="scrollbar_size" class="scroll_size">
                 <div id="scrollbar" class="scroll"></div>
             </div>
-            <div id="dialog_loading" class="screen_size dialogs hide" style="z-index:98; margin-top: 24%; overflow: visible;">
+            <div id="dialog_loading" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
                 <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 527%;"></i>
             </div>
             <div id="main_remove_dialog" class="dialog_exit hide" style="width: 75%; margin-left: 12.5%;">
@@ -1573,7 +1574,7 @@
                 <div id="chat_inner_container" class="chat_size_default">
                     <div id="chat_box" class="chat_box"></div>
                     <div id="play_chat_dialog" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
-                        <div id="play_chat_dialog_text" class="strokedeline" style="display: inline-block; font-size: 225%; color: #FFFFFF;">
+                        <div id="play_chat_dialog_text" class="strokedeline" style="display: inline-block; font-size: 100%; color: #FFFFFF;">
                         </div>
                     </div>
                 </div>
@@ -1713,7 +1714,7 @@
                         <div id="dialog_end_game_text" class="strokedeline"></div>
                     </div>
                 </div>
-                <div id="dialog_loading_play" class="screen_size dialogs hide" style="z-index:98; margin-top: 24%; overflow: visible;">
+                <div id="dialog_loading_play" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
                     <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 527%;"></i>
                 </div>
                 <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 21%;">
@@ -1738,7 +1739,7 @@
                 </div>
             </div>
             <div id="user_feed" class="user_feed user_feed_hide">
-                <div id="icon_feed_refresh" class="dialogs_feed" style="bottom: 22vh; text-align: left; margin-left: 1%;">
+                <div id="icon_feed_refresh" class="dialogs_feed" style="bottom: 22%; text-align: left; margin-left: 1%;">
                 </div>
                 <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 2.5%; overflow: visible;">
                     <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 350%;"></i>
