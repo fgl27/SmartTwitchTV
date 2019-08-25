@@ -247,7 +247,7 @@ function Play_SetChatFont() {
 }
 
 function Play_Start() {
-    if (Play_isFullScreen) Play_showBufferDialog();
+    if (Play_isFullScreen || !Main_IsNotBrowser) Play_showBufferDialog();
 
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
@@ -973,6 +973,7 @@ function Play_hideFallow() {
 }
 
 function Play_showBufferDialog() {
+    console.log('dialog_loading_play');
     if (Main_IsNotBrowser) Android.mshowLoading(true);
     else Main_ShowElement('dialog_loading_play');
 }
