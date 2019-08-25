@@ -1,12 +1,12 @@
 //https://developer.tizen.org/community/tip-tech/using-css3-units-support-low-and-high-density-screens
-// Initial sizes.
-var initialFontSize = 29,
-    initialWidth = 1920,
-    initialHeight = 1080,
-    calculateFontSize;
 
-calculateFontSize = function() {
-    var currentHeight,
+function calculateFontSize() {
+    // Initial sizes.
+    var initialFontSize = 29,
+        initialWidth = 1920,
+        initialHeight = 1080,
+
+        currentHeight,
         scaleFactor,
         fontSize,
         scaledWidth,
