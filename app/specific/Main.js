@@ -814,7 +814,6 @@ function Main_openStream() {
     Main_ShowElement('scene2');
     Play_hidePanel();
     Play_HideEndDialog();
-    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedSetPos();
     Main_ready(Play_Start);
 }
 
@@ -847,7 +846,6 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedSetPos();
     Main_ready(PlayClip_Start);
 }
 
@@ -889,7 +887,6 @@ function Main_openVod() {
     Play_hideChat();
     Play_clearPause();
     Play_CleanHideExit();
-    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedSetPos();
     Main_ready(PlayVod_Start);
 }
 
