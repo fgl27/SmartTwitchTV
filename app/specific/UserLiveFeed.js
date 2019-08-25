@@ -43,7 +43,7 @@ function UserLiveFeed_StartLoad() {
         Sidepannel_PosFeed = 0;
         Main_empty('side_panel_holder');
         UserLiveFeed_status = false;
-        document.getElementById('user_feed_scroll').style.left = "2.5px";
+        document.getElementById('user_feed_scroll').style.left = "0.125em";
         Main_ShowElement('dialog_loading_feed');
         Main_ShowElement('dialog_loading_side_feed');
         UserLiveFeed_loadChannelOffsset = 0;
@@ -423,7 +423,7 @@ function UserLiveFeed_FeedAddFocus() {
     else return;
 
     if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedSetPos();
-    else if (Main_isElementShowing('scene2')) UserLiveFeed_FeedFindPos();
+    else if (Main_isElementShowing('scene2')) UserLiveFeed_FeedSetPos();
 }
 
 function UserLiveFeed_FeedGetPos() {
@@ -441,12 +441,6 @@ function UserLiveFeed_FeedGetPos() {
 
 function UserLiveFeed_FeedSetPos() {
     var position = UserLiveFeed_FeedGetPos();
-
-    if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
-}
-
-function UserLiveFeed_FeedFindPos() {
-    var position = UserLiveFeed_FeedSetPos();
     if (position) document.getElementById('user_feed_scroll').style.left = position + "px";
 }
 

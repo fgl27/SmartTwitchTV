@@ -264,12 +264,12 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, valuesArray) {
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[13] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
         valuesArray[4] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[10] + '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
-        valuesArray[9] + STR_BR + playing + '</div><div style="line-height: 10px;"><div id="' + idArray[6] + id +
+        valuesArray[9] + STR_BR + playing + '</div><div style="line-height: 1.3ch;"><div id="' + idArray[6] + id +
         '"class="stream_info" style="width: auto; display: inline-block;">' + valuesArray[11] + ',' + STR_SPACE +
         valuesArray[12] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
@@ -289,7 +289,7 @@ function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) 
     Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
         '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' +
         (data[2] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
@@ -334,12 +334,12 @@ function Screens_createCellVod(row_id, coloumn_id, idArray, valuesArray) {
         '><div><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div style="line-height: 12px;"><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
         '</div></div><div id="' + idArray[11] + id + '"class="stream_info">' +
-        valuesArray[3] + '</div><div style="line-height: 10px;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: auto; display: inline-block;">' +
+        valuesArray[3] + '</div><div style="line-height: 1.3ch;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: auto; display: inline-block;">' +
         valuesArray[2] + ',' + STR_SPACE + valuesArray[4] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
         Play_timeS(valuesArray[6]) + '</div></div></div></div>';
@@ -552,10 +552,10 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
         if (y > 0) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
                 Main_ScrollTable(idArray[10],
-                    (document.getElementById(idArray[0] + (y - 1) + '_' + x).offsetTop * -1) - 8 +
+                    (document.getElementById(idArray[0] + (y - 1) + '_' + x).offsetTop * -1) +
                     (inUseObj.HasSwitches ? 1 : 0));
             } else Main_handleKeyUp();
-        } else Main_ScrollTable(idArray[10], screen.height * 0.07);
+        } else Main_ScrollTable(idArray[10], screen.height * 0.06);
 
     } else Main_handleKeyUp();
 }
@@ -566,9 +566,9 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
         if (y > 1) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
                 Main_ScrollTable(idArray[10],
-                    (document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1) + (screen.height * 0.41));
+                    (document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1) + (screen.height * 0.42));
             } else Main_handleKeyUp();
-        } else Main_ScrollTable(idArray[10], screen.height * 0.07);
+        } else Main_ScrollTable(idArray[10], screen.height * 0.06);
 
     } else Main_handleKeyUp();
 }

@@ -15,7 +15,7 @@ function Sidepannel_RemoveFocusEtc() {
 
 function Sidepannel_AddFocusFeed() {
     Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
-    document.getElementById(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed).style.boxShadow = "0 0 0 2px #000000, 0 0 0 4px #FFFFFF";
+    document.getElementById(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed).style.boxShadow = "0 0 0 0.1em #000000, 0 0 0 0.2em #FFFFFF";
     Sidepannel_Scroll();
     Sidepannel_UpdateThumb();
 }
