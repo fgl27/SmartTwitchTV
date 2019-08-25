@@ -21,6 +21,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "global_font_offset": { //live notification
+        "values": [-3, -2, -1, 0, 1, 2, 3],
+        "defaultValue": 4
+    },
     "live_notification_time": { //live notification
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         "defaultValue": 4
@@ -154,6 +158,11 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionWithSummary(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
 
+    key = "global_font_offset";
+    Settings_value_keys.push(key);
+
+    div += Settings_DivOptionWithSummary(key, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
+
     //Player restore playback
     key = "restor_playback";
     Settings_value_keys.push(key);
@@ -194,17 +203,17 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    key = "single_click_exit";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    div += Settings_DivOptionWithSummary(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
-
     key = "keep_panel_info_visible";
     Settings_value_keys.push(key);
     Settings_value[key].values = [STR_NO, STR_YES];
 
     div += Settings_DivOptionNoSummary(key, STR_KEEP_INFO_VISIBLE);
+
+    key = "single_click_exit";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionWithSummary(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
     // end_dialog_counter
     key = "end_dialog_counter";
@@ -348,6 +357,9 @@ function Settings_SetStrings() {
     Settings_DivOptionChangeLang(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
     Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
+    key = "global_font_offset";
+    Settings_DivOptionChangeLang(key, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
+
     //Player restore
     key = "default_quality";
     Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
@@ -482,6 +494,7 @@ function Settings_SetDefault(position) {
     else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     else if (position === "default_quality") Play_SetQuality();
     else if (position === "thumb_quality") Main_SetThumb();
+    else if (position === "global_font_offset") calculateFontSize();
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
@@ -509,7 +522,6 @@ function Settings_SetBitRateMain() {
     try {
         Android.SetMainPlayerBandwidth(value);
     } catch (e) {}
-    console.log('main value ' + value);
 }
 
 function Settings_SetBitRateMin() {
@@ -522,7 +534,6 @@ function Settings_SetBitRateMin() {
     try {
         Android.SetSmallPlayerBandwidth(value);
     } catch (e) {}
-    console.log('min value ' + value);
 }
 
 function Settings_SetBuffers(whocall) {
@@ -570,7 +581,7 @@ function Settings_SetClock() {
 function Settings_ScrollTable() {
     var doc = document.getElementById('settings_scroll');
 
-    doc.scrollTop = (Settings_cursorY > 8) ? doc.scrollHeight : 0;
+    doc.scrollTop = (Settings_cursorY > 9) ? doc.scrollHeight : 0;
 }
 
 function Settings_handleKeyDown(event) {
