@@ -422,8 +422,7 @@ function UserLiveFeed_FeedAddFocus() {
         Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
     else return;
 
-    if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedSetPos();
-    else if (Main_isElementShowing('scene2')) UserLiveFeed_FeedSetPos();
+    UserLiveFeed_FeedSetPos();
 }
 
 function UserLiveFeed_FeedGetPos() {
