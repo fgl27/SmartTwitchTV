@@ -6,7 +6,7 @@ var BodyfontSize;
 
 function calculateFontSize() {
     // Initial sizes.
-    var initialFontSize = 29,
+    var initialFontSize = 29 + Settings_value.global_font_offset.values[Main_getItemInt('global_font_offset', Settings_value.global_font_offset.defaultValue) - 1],
         initialWidth = 1920,
         initialHeight = 1080,
 
@@ -36,8 +36,11 @@ function calculateFontSize() {
     for (var i = 0; i < classes.length; i++)
         setWidthHeight(document.getElementsByClassName(classes[i]), scaledWidth, currentHeight);
 
-    //Top bar only need width changes as Height is not base on screen size
+    //Some only need width changes as Height is not base on screen size
     document.getElementById('topbar').style.width = scaledWidth + 'px';
+
+    document.getElementById('settings_holder').style.width = scaledWidth + 'px';
+    document.getElementById('settings_holder').style.height = (currentHeight * 0.915) + 'px';
 }
 
 function setWidthHeight(elementsArray, Width, Height) {
