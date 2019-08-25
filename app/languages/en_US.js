@@ -295,6 +295,6 @@ function en_USLang() {
     STR_NOW_LIVE = "Now Live";
     STR_NOW_LIVE_SHOW = "Show Now Live notification";
     STR_NOW_DURATION = "Now Live notification duration in seconds";
-    STR_GLOBAL_FONT = "Global app font size";
+    STR_GLOBAL_FONT = "Global app font size offset";
     STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited";
 }
