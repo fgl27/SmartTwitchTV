@@ -274,7 +274,7 @@ function ChannelContent_createChannelCell(id, user_name, stream_type, icons) {
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><div id="' +
         ChannelContent_ids[1] + id +
-        '" class="stream_channel_content_icon"><i class="icon-' + icons + '"></i></div></div>' +
+        '" class="stream_channel_content_icon"><i class="icon-' + icons + ' channel_content_3d"></i></div></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="text-align: center">' + stream_type +
         '</div></div>';
@@ -305,10 +305,10 @@ function ChannelContent_setFallow() {
         (Main_values.Main_selectedChannelPartner ? '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' + STR_SPACE + STR_SPACE : "");
 
     if (AddCode_IsFallowing) {
-        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart" style="color: #00b300; font-size: 600%; text-shadow: #FFFFFF 0 0 0.5em, #FFFFFF 0 0 0.5em, #FFFFFF 0 0 0.4em;"></i>');
+        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart channel_content_3d" style="color: #00b300; font-size: 600%;"></i>');
         Main_innerHTML(ChannelContent_ids[3] + "1_0", partnerIcon + STR_FALLOWING);
     } else {
-        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 600%; text-shadow: #000000 0 0 0.5em, #000000 0 0 0.5em, #000000 0 0 0.4em;"></i>');
+        Main_innerHTML("schannel_cont_heart", '<i class="icon-heart-o channel_content_3d" style="color: #FFFFFF; font-size: 600%;"></i>');
         if (AddUser_UserIsSet()) Main_innerHTML(ChannelContent_ids[3] + "1_0", partnerIcon + STR_FALLOW);
         else Main_innerHTML(ChannelContent_ids[3] + "1_0", partnerIcon + STR_CANT_FALLOW);
     }
