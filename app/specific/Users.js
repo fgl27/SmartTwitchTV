@@ -26,7 +26,7 @@ function Users_init() {
     }
     Main_values.Main_CenterLablesVectorPos = 1;
     Main_values.Main_Go = Main_Users;
-    document.getElementById("screens_holder").style.top = ((screen.height / 100) * 7) + "px";
+    document.getElementById("screens_holder").style.top = ((screen.height / 2000) * 7) + "em";
     Main_HideWarningDialog();
     Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", Users_handleKeyDown, false);

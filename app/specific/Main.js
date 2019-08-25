@@ -422,7 +422,7 @@ function Main_Scrollbar(y, coloumns, total) {
             Main_values.Main_Go === Main_UserVod || Main_values.Main_Go === Main_Vod ||
             Main_values.Main_Go === Main_Clip || Main_values.Main_Go === Main_ChannelClip);
         var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (needExtraSpace ? 1.8 : 1)));
-        Main_ScrollbarElement.style.top = nextPositon + "px";
+        Main_ScrollbarElement.style.top = (nextPositon / 20) + "em";
 
         if (Main_ScrollbarIsHide) {
             Main_ScrollbarIsHide = false;
@@ -430,7 +430,7 @@ function Main_Scrollbar(y, coloumns, total) {
         }
     } else {
         Main_ScrollbarElement.style.backgroundColor = "#000000";
-        Main_ScrollbarElement.style.top = screen_size + "px";
+        Main_ScrollbarElement.style.top = (screen_size / 20) + "em";
         Main_ScrollbarIsHide = true;
     }
 }
@@ -709,7 +709,7 @@ function Main_cleanTopLabel() {
 }
 
 function Main_UnderCenter(text) {
-    return '<div style="font-size: 30%; position: fixed; line-height: 0; text-shadow: #000000 0 0 5.7px, #000000 0 0 5.7px, #000000 0 0 4px">' + text + '</div>';
+    return '<div style="font-size: 30%; position: fixed; line-height: 0; text-shadow: #000000 0 0 0.285em, #000000 0 0 0.285em, #000000 0 0 0.2em">' + text + '</div>';
 }
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
@@ -814,7 +814,7 @@ function Main_openStream() {
     Main_ShowElement('scene2');
     Play_hidePanel();
     Play_HideEndDialog();
-    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedFindPos();
+    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedSetPos();
     Main_ready(Play_Start);
 }
 
@@ -847,7 +847,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedFindPos();
+    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedSetPos();
     Main_ready(PlayClip_Start);
 }
 
@@ -889,7 +889,7 @@ function Main_openVod() {
     Play_hideChat();
     Play_clearPause();
     Play_CleanHideExit();
-    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedFindPos();
+    if (AddUser_UserIsSet() && !UserLiveFeed_loadingData && UserLiveFeed_status) UserLiveFeed_FeedSetPos();
     Main_ready(PlayVod_Start);
 }
 

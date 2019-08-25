@@ -66,7 +66,7 @@ var Base_obj = {
     loadDataSuccess: Screens_loadDataSuccess,
     addrow: Screens_addrow,
     set_ThumbSize: function() {
-        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 3px;';
+        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 0.15em;';
     },
     key_exit: function(CenterLables) {
         if (Main_isControlsDialogShown()) Main_HideControlsDialog();
