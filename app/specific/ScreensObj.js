@@ -66,7 +66,7 @@ var Base_obj = {
     loadDataSuccess: Screens_loadDataSuccess,
     addrow: Screens_addrow,
     set_ThumbSize: function() {
-        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 0.15em;';
+        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 0.3%;';
     },
     key_exit: function(CenterLables) {
         if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -155,12 +155,12 @@ var Base_Vod_obj = {
             this.onload = null;
             Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
             // background-size: 612px from  div.offsetWidth
-            div.style.backgroundSize = "612px";
+            div.style.backgroundSize = div.offsetWidth + "px";
             var frame = 0;
             screen.AnimateThumbId = window.setInterval(function() {
                 // 10 = quantity of frames in the preview img, 344 img height from the div.offsetHeight
                 // But this img real height is 180 thus the quality is affected, higher resolution aren't available
-                div.style.backgroundPosition = "0px " + ((++frame % 10) * (-344)) + "px";
+                div.style.backgroundPosition = "0px " + ((++frame % 10) * (-div.offsetHeight)) + "px";
             }, 650);
         };
 

@@ -157,8 +157,8 @@
         div.scroll {
             width: 0.5%;
             height: 4.6%;
-            border: 0.125rem solid #000000;
-            border-radius: 0.3rem;
+            border: 0.125em solid #000000;
+            border-radius: 0.3em;
             background-color: #000000;
             position: absolute;
             right: 0.2%;
@@ -241,7 +241,6 @@
         }
 
         div.stream_thumbnail_clip {
-            width: 99%;
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 56.25%;
             background-repeat: no-repeat;
@@ -252,7 +251,6 @@
         }
 
         div.stream_thumbnail_channel {
-            width: 99%;
             padding-bottom: 100%;
             background-repeat: no-repeat;
         }
@@ -269,7 +267,7 @@
             width: 100%;
             color: #FFFFFF;
             text-align: center;
-            font-size: 500%;
+            font-size: 100%;
         }
 
         div.stream_channel_content_icon {
@@ -805,15 +803,10 @@
         }
 
         .strokedelinebig {
-            text-shadow: -0.075em -0.075em 0 #000, 0.075em -0.075em 0 #000, -0.075em 0.075em 0 #000, 0.075em 0.075em 0 #000;
+            text-shadow: -0.0175em -0.0175em 0 #000, 0.0175em -0.0175em 0 #000, -0.0175em 0.0175em 0 #000, 0.0175em 0.0175em 0 #000;
         }
 
-        .strokedextramini {
-            color: #FFFFFF;
-            text-shadow: #000000 0 0 0.285em, #000000 0 0 0.285em, #000000 0 0 0.2em;
-        }
-
-        .strokedextraminired {
+        .red_text {
             color: #FF2121;
         }
 
@@ -830,7 +823,7 @@
         }
 
         div.streams_div {
-            margin-left: 0.95em;
+            margin-left: 0.5em;
             width: 98%;
         }
 
@@ -1307,7 +1300,7 @@
         }
 
         div.side_panel_div {
-            width: 99%;
+            width: 100%;
             height: 0;
             position: relative;
             border-radius: 0.2em;
@@ -1431,7 +1424,7 @@
             <div id="scrollbar" class="scroll"></div>
         </div>
         <div id="dialog_loading" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
-            <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 350%;"></i>
+            <i class="icon icon-circle-o-notch fa fa-spin strokedelinebig" style="font-size: 350%;"></i>
         </div>
         <div id="main_remove_dialog" class="dialog_exit hide" style="width: 75%; margin-left: 12.5%;">
             <div id="main_dialog_remove" class="exit_text"></div>
@@ -1518,12 +1511,12 @@
                     <input id="user_input" class="input_class" type="text" placeholder="" />
                 </div>
             </div>
-            <div id="oauth_scroll" class="screen_holder hide">
+            <!-- <div id="oauth_scroll" class="screen_holder hide">
                 <div id="oauth" class="input_text_box" style="margin-top: 0;">
                     <div id="oauth_text" class="strokedextramini class_bold" style="font-size: 100%;"></div>
                     <input id="oauth_input" class="input_class" type="text" placeholder="" />
                 </div>
-            </div>
+            </div>Input screens-->
             <div id="search_scroll" class="screen_holder hide">
                 <div id="search" class="input_text_box" style="margin-top: 10%;">
                     <input id="search_input" class="input_class" type="text" placeholder="" />
@@ -1618,19 +1611,19 @@
             </div>
             <div id="progress_pause_holder" class="progress_pause_holder">
                 <div id="progress_bar_div" class="progress_bar_div">
-                    <div id="progress_bar_jump_to" class="progress_bar_jump strokedextramini" style="transform: translateY(-25%);"></div>
+                    <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline" style="transform: translateY(-25%);"></div>
                     <div>
                         <div style="width: 100%; position: relative; transform: translateY(-50%);">
-                            <div id="progress_bar_current_time" class="progress_bar_timer strokedextramini"></div>
+                            <div id="progress_bar_current_time" class="progress_bar_timer strokedeline"></div>
                             <div id="progress_bar" class="progress_bar_holder">
                                 <div class="progress_bar">
                                     <div id="inner_progress_bar" class="inner_progress_bar"></div>
                                 </div>
                             </div>
-                            <div id="progress_bar_duration" class="progress_bar_timer strokedextramini"></div>
+                            <div id="progress_bar_duration" class="progress_bar_timer strokedeline"></div>
                         </div>
                     </div>
-                    <div id="progress_bar_steps" class="progress_bar_jump strokedextramini" style="position: relative; top: 35%; transform: translateY(-110%);"></div>
+                    <div id="progress_bar_steps" class="progress_bar_jump strokedeline" style="position: relative; top: 35%; transform: translateY(-110%);"></div>
                 </div>
                 <div id="pause_next_div" class="pause_next_div">
                     <div style="width: 44%; display: inline-block; text-align: right;">
@@ -1714,7 +1707,7 @@
                 </div>
             </div>
             <div id="dialog_loading_play" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
-                <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 350%;"></i>
+                <i class="icon icon-circle-o-notch fa fa-spin strokedelinebig" style="font-size: 350%;"></i>
             </div>
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 21%;">
                 <div id="play_dialog_exit_text" class="strokedelinebig" style="font-size: 200%;"></div>
@@ -1741,7 +1734,7 @@
             <div id="icon_feed_refresh" class="dialogs_feed" style="bottom: 22%; text-align: left; margin-left: 1%;">
             </div>
             <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 2.5%; overflow: visible;">
-                <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 350%;"></i>
+                <i class="icon icon-circle-o-notch fa fa-spin strokedelinebig" style="font-size: 350%;"></i>
             </div>
             <div id="user_feed_scroll" class="user_feed_scroll">
             </div>
@@ -1760,7 +1753,7 @@
             <div id="side_panel_new" style="width: 100%; position: absolute;">
                 <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
                     <div id="dialog_loading_side_feed" class="side_panel_dialog hide" style="overflow: visible;">
-                        <i class="icon icon-circle-o-notch fa fa-spin strokedextramini" style="font-size: 250%;"></i>
+                        <i class="icon icon-circle-o-notch fa fa-spin strokedelinebig" style="font-size: 250%;"></i>
                     </div>
                     <div id="side_panel_row_0">
                         <div id="side_panel_cell0_0" style="width: 100%; display: inline-block; padding: 1%;">

@@ -288,7 +288,7 @@ function Settings_DivOptionNoSummary(key, string) {
     return '<div id="' + key + '_div" class="settings_div"><div id="' +
         key + '_name" class="settings_name">' + string + '</div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
+        '<div id="' + key + '" class="strokedeline settings_value">' + Settings_Obj_values(key) + '</div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
 }
 
@@ -296,7 +296,7 @@ function Settings_DivOptionWithSummary(key, string_title, string_summary) {
     return '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' +
         string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div></div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedextramini settings_value">' + Settings_Obj_values(key) + '</div>' +
+        '<div id="' + key + '" class="strokedeline settings_value">' + Settings_Obj_values(key) + '</div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
 }
 
