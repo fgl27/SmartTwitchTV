@@ -154,12 +154,10 @@ var Base_Vod_obj = {
         this.Vod_newImg.onload = function() {
             this.onload = null;
             Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
-            // background-size: 612px from  div.offsetWidth
             div.style.backgroundSize = div.offsetWidth + "px";
             var frame = 0;
             screen.AnimateThumbId = window.setInterval(function() {
-                // 10 = quantity of frames in the preview img, 344 img height from the div.offsetHeight
-                // But this img real height is 180 thus the quality is affected, higher resolution aren't available
+                // 10 = quantity of frames in the preview img
                 div.style.backgroundPosition = "0px " + ((++frame % 10) * (-div.offsetHeight)) + "px";
             }, 650);
         };
