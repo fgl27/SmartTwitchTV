@@ -127,7 +127,7 @@ function Users_createChannelCell(id, stream_type, icons, color) {
     Main_td.setAttribute('id', Users_ids[4] + id);
     Main_td.className = 'stream_cell';
     Main_td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><div id="' + Users_ids[1] + id +
-        '" class="stream_user_icon" style="color: #' + color + ';"><i class="icon-' + icons + '"></i></div></div>' +
+        '" class="stream_user_icon" style="color: #' + color + ';"><i class="icon-' + icons + '" style="font-size: 5em;"></i></div></div>' +
         '<div id="' + Users_ids[2] + id + '" class="stream_text">' +
         '<div id="' + Users_ids[3] + id + '" class="stream_channel" style="text-align: center;">' + stream_type + '</div></div>';
 
