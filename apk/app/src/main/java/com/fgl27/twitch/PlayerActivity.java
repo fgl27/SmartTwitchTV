@@ -170,9 +170,11 @@ public class PlayerActivity extends Activity {
 
             loadingView[0] = PlayerView[0].findViewById(R.id.exo_buffering);
             loadingView[0].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
+            loadingView[0].setBackgroundResource(R.drawable.shadow);
 
             loadingView[1] = PlayerView[1].findViewById(R.id.exo_buffering);
             loadingView[1].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
+            loadingView[1].setBackgroundResource(R.drawable.shadow);
 
             shouldCallJavaCheck = false;
 

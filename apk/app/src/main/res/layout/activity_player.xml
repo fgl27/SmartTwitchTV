@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:indeterminateTint="@android:color/white"
+        android:background="@drawable/shadow"
         android:layout_gravity="center"/>
 
 </FrameLayout>
