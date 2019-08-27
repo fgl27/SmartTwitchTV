@@ -503,23 +503,20 @@ public class PlayerActivity extends Activity {
     private void initializeWebview() {
         mwebview = findViewById(R.id.WebView);
         mwebview.setBackgroundColor(Color.TRANSPARENT);
+
         WebSettings websettings = mwebview.getSettings();
+
         websettings.setJavaScriptEnabled(true);
         websettings.setDomStorageEnabled(true);
-
         websettings.setAllowFileAccess(true);
         websettings.setAllowContentAccess(true);
         websettings.setAllowFileAccessFromFileURLs(true);
         websettings.setAllowUniversalAccessFromFileURLs(true);
+        websettings.setUseWideViewPort(true);
         websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         mwebview.clearCache(true);
         mwebview.clearHistory();
-
-        //To load page from assets
-        //mwebview.loadUrl("file:///android_asset/index.html");
-        //To load page from githubio
-        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
 
         mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
 
@@ -531,6 +528,12 @@ public class PlayerActivity extends Activity {
                         sourceID);
             }
         });
+
+        //To load page from assets
+        //mwebview.loadUrl("file:///android_asset/index.html");
+        //To load page from githubio
+        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+
         mwebview.requestFocus();
     }
 
