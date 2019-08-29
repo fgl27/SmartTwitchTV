@@ -316,7 +316,7 @@ function UserLiveFeed_LiveNotificationHide(position) {
     if (position < (UserLiveFeed_NotifyLiveidObject.length - 1)) {
         window.setTimeout(function() {
             UserLiveFeed_LiveNotificationShow(position + 1);
-        }, 900);
+        }, 800);
     } else UserLiveFeed_NotifyLiveidObject = [];
 }
 
