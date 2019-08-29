@@ -510,10 +510,10 @@ function Main_ReStartScreens() {
 function Main_SetTopOpacity() {
     var elem, i = 0;
     for (i; i < Main_OpacityDivs.length; i++) {
-        if (i < 2) document.getElementById(Main_OpacityDivs[i]).style.opacity = '0.5';
+        if (i < 2) document.getElementById(Main_OpacityDivs[i]).style.opacity = '0.35';
         else {
             elem = document.getElementById(Main_OpacityDivs[i]);
-            if (elem.className.indexOf('icon_center_focus') === -1) elem.style.opacity = '0.5';
+            if (elem.className.indexOf('icon_center_focus') === -1) elem.style.opacity = '0.35';
         }
     }
     Main_AddClass('topbar', 'topbar_dim');

@@ -15,7 +15,7 @@ function Sidepannel_RemoveFocusEtc() {
 
 function Sidepannel_AddFocusFeed() {
     Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
-    document.getElementById(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed).style.boxShadow = "0 0 0 0.1em #000000, 0 0 0 0.2em #FFFFFF";
+    Main_AddClass(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed, 'side_panel_feed_img_focus');
     Sidepannel_Scroll();
     Sidepannel_UpdateThumb();
 }
@@ -26,7 +26,7 @@ function Sidepannel_isShowing() {
 
 function Sidepannel_RemoveFocusFeed() {
     Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
-    document.getElementById(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed).style.boxShadow = "";
+    Main_RemoveClass(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed, 'side_panel_feed_img_focus');
 }
 
 function Sidepannel_UpdateThumb() {
@@ -44,7 +44,8 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
     Main_innerHTML('feed_thum_views', info[6]);
 
-    if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing()) Main_ShowElement('side_panel_feed_thumb');
+    if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing())
+        Main_ShowElement('side_panel_feed_thumb');
 }
 
 function Sidepannel_partnerIcon(name, partner, isrerun) {
