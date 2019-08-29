@@ -14,6 +14,11 @@ Download
 
 [Google Play](https://play.google.com/store/apps/details?id=com.fgl27.twitch)
 
+Contributing instructions
+==============
+
+Any Help is welcome as today this repo is maintain by one single developer, if you can help by developing push a PR, if you can't but have ideas on how to improve this share it via a [email](mailto:fglfgl27@gmail.com) or [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
+
 About this fork
 ===============
 
@@ -26,6 +31,7 @@ So I start this new repo keep the original name and commit history, work a long 
 
 Project Web Dependencies
 ==============
+
 * [Nightdev KapChat - KapChat captures (kaptures ![kapa](https://static-cdn.jtvnw.net/emoticons/v1/25/1.0)) Twitch chat directly into OBS or XSplit.](https://www.nightdev.com/kapchat/)
 * [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
 * [LazyLoad - A a fast, lightweight and flexible script that speeds up your web application by loading your content images, videos and iframes only as they enter the viewport](https://github.com/verlok/lazyload)
@@ -36,7 +42,7 @@ Project Web Dependencies
 * [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
 * [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
 
-[Project Android Dependencies](https://github.com/fgl27/SmartTwitchTV/tree/master/apk#project-dependencies)
+[Project Android Dependencies](https://github.com/fgl27/SmartTwitchTV/tree/master/apk#project-apk-dependencies)
 ==============
 
 ## [How the application looks](https://github.com/fgl27/SmartTwitchTV/tree/master/screenshot)
@@ -58,8 +64,17 @@ That key will be used to access twitch content for that account, when accessing 
 
 It of the permission has a reason:
 
-**Manage your followed channels:** fallow or unfallow streamers or games for that user.<br>
-**View your email address:** Email will not be read, this permission has other uses, it allows to access user live channels in a faster way, the app can load user live without this but it can be really lag if you fallow too many streamers. Let twitch know you are watching a stream/video (allows you to received a free sub in a random gifted sub for example) and show some target content as in featuring screen you will see the order in relation to yours twitch fallow content.<br>
-**View your paid subscriptions:** Allows to access subscribed only past broadcast and highlight (vod) for the user that you have added the key, as some streamers block those content for subscribers only this is needed.<br>
+**Manage your followed channels:**
+
+* fallow or unfallow streamers or games for that user.<br>
+
+**View your email address:**
+
+* Email will not be read, this permission has other uses, it allows to access user live channels in a faster way, the app can load user live without this but it can be really lag if you fallow too many streamers. 
+* Let twitch know you are watching a stream/video (allows you to received a free sub in a random gifted sub for example) and show some target content as in featuring screen you will see the order in relation to yours twitch fallow content.<br>
+
+**View your paid subscriptions:**
+
+* Allows to access subscribed only past broadcast and highlight (vod) for the user that you have added the key, as some streamers block those content for subscribers only this is needed.<br>
 
 ## In doubt [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
