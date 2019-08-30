@@ -179,16 +179,16 @@ function ChannelContent_loadDataSuccess() {
         coloumn_id = 0,
         doc = document.getElementById("stream_table_channel_content");
 
-    Main_td = document.createElement('td');
-    Main_td.className = 'stream_cell';
-    row.appendChild(Main_td);
+    var td = document.createElement('td');
+    td.className = 'stream_cell';
+    row.appendChild(td);
 
-    Main_td = document.createElement('td');
-    Main_td.className = 'follower_banner';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
+    td = document.createElement('td');
+    td.className = 'follower_banner';
+    td.innerHTML = '<div id="' + ChannelContent_ids[0] + 'x_0" class="follower_banner"><img id="' +
         ChannelContent_ids[1] + 'x_0" alt="" class="stream_img_banner" src="' + ChannelContent_profile_banner +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'"></div>';
-    row.appendChild(Main_td);
+    row.appendChild(td);
 
     doc.appendChild(row);
 
@@ -219,7 +219,7 @@ function ChannelContent_loadDataSuccess() {
 
     if (coloumn_id < 2) {
         coloumn_id++;
-        row.appendChild(Main_createEmptyCell(ChannelContent_ids[9] + '0_' + coloumn_id));
+        row.appendChild(ChannelContent_createEmptyCell(ChannelContent_ids[9] + '0_' + coloumn_id));
     }
 
     doc.appendChild(row);
@@ -229,18 +229,27 @@ function ChannelContent_loadDataSuccess() {
     row.appendChild(ChannelContent_createFallow('1_0',
         Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelLogo));
 
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', 'stream_cell_x_x');
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] +
+    td = document.createElement('td');
+    td.setAttribute('id', 'stream_cell_x_x');
+    td.className = 'stream_cell';
+    td.innerHTML = '<div id="' + ChannelContent_ids[0] +
         'x_x" class="stream_thumbnail_video" ><div id="' +
         ChannelContent_ids[4] + 'x_x" class="stream_channel_info">' +
         twemoji.parse(ChannelContent_description) + '</div></div>';
-    row.appendChild(Main_td);
+    row.appendChild(td);
 
     doc.appendChild(row);
 
     ChannelContent_loadDataSuccessFinish();
+}
+
+
+function ChannelContent_createEmptyCell(id) {
+    var td = document.createElement('td');
+    td.setAttribute('id', id);
+    td.className = 'stream_cell';
+
+    return td;
 }
 
 //TODO revise this functions there is too many
@@ -255,12 +264,12 @@ function ChannelContent_createCell(id, channel_name, channel_id, preview_thumbna
         icon = 'refresh';
     }
 
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', ChannelContent_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify([channel_name, channel_id, rerun]));
+    var td = document.createElement('td');
+    td.setAttribute('id', ChannelContent_ids[8] + id);
+    td.setAttribute(Main_DataAttribute, JSON.stringify([channel_name, channel_id, rerun]));
 
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
+    td.className = 'stream_cell';
+    td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" >' +
         '<img id="' + ChannelContent_ids[1] + id + '" alt="" class="stream_img"src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
@@ -273,28 +282,28 @@ function ChannelContent_createCell(id, channel_name, channel_id, preview_thumbna
         (stream_game !== "" ? STR_PLAYING + stream_game : "") + '</div>' +
         '<div id="' + ChannelContent_ids[6] + id + '"class="stream_info">' + viwers + '</div>' + '</div>';
 
-    return Main_td;
+    return td;
 }
 
 function ChannelContent_createChannelCell(id, user_name, stream_type, icons) {
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', 'channel_' + id);
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><div id="' +
+    var td = document.createElement('td');
+    td.setAttribute('id', 'channel_' + id);
+    td.className = 'stream_cell';
+    td.innerHTML = '<div id="' + ChannelContent_ids[0] + id + '" class="stream_thumbnail_video" ><div id="' +
         ChannelContent_ids[1] + id +
         '" class="stream_channel_content_icon"><i class="icon-' + icons + ' strokicon"></i></div></div>' +
         '<div id="' + ChannelContent_ids[2] + id + '" class="stream_text">' +
         '<div id="' + ChannelContent_ids[3] + id + '" class="stream_channel" style="text-align: center">' + stream_type +
         '</div></div>';
 
-    return Main_td;
+    return td;
 }
 
 function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbnail) {
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', 'fallow_' + id);
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + ChannelContent_ids[0] + id +
+    var td = document.createElement('td');
+    td.setAttribute('id', 'fallow_' + id);
+    td.className = 'stream_cell';
+    td.innerHTML = '<div id="' + ChannelContent_ids[0] + id +
         '" class="stream_thumbnail_video" ><div id="schannel_cont_heart" style="position: absolute; top: 5%; left: 6%;"></div><img id="' +
         ChannelContent_ids[1] + id + '" alt="" class="stream_img_fallow"src="' + preview_thumbnail +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'"></div>' +
@@ -305,7 +314,7 @@ function ChannelContent_createFallow(id, user_name, stream_type, preview_thumbna
         '<div id="' + ChannelContent_ids[6] + id + '"class="stream_info" >' + Main_addCommas(ChannelContent_selectedChannelFallower) +
         STR_FALLOWERS + '</div></div>';
 
-    return Main_td;
+    return td;
 }
 
 function ChannelContent_setFallow() {

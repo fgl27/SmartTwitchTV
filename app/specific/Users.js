@@ -63,19 +63,20 @@ function Users_StartLoad() {
 
 function Users_loadData() {
     var row, coloumn_id, tbody = document.createElement('tbody'),
-        color, doc = document.getElementById("stream_table_user");
+        color, doc = document.getElementById("stream_table_user"),
+        tr;
 
     for (var x = 0; x < AddUser_UsernameArray.length; x++) {
         coloumn_id = 0;
         color = ((x % 2) ? 'B5B5B5' : 'FFFFFF');
 
-        Main_td = document.createElement('tr');
-        Main_td.className = 'follower_header';
-        Main_td.innerHTML = '<div class="follower_header">' + (!x ? STR_USER_NUMBER_ONE : '') +
+        tr = document.createElement('tr');
+        tr.className = 'follower_header';
+        tr.innerHTML = '<div class="follower_header">' + (!x ? STR_USER_NUMBER_ONE : '') +
             AddUser_UsernameArray[x].name + STR_CONTENT + '</div>';
 
         doc.appendChild(tbody);
-        doc.appendChild(Main_td);
+        doc.appendChild(tr);
 
         row = document.createElement('tr');
 
@@ -123,15 +124,15 @@ function Users_loadData() {
 }
 
 function Users_createChannelCell(id, stream_type, icons, color) {
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', Users_ids[4] + id);
-    Main_td.className = 'stream_cell';
-    Main_td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><div id="' + Users_ids[1] + id +
+    var td = document.createElement('td');
+    td.setAttribute('id', Users_ids[4] + id);
+    td.className = 'stream_cell';
+    td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><div id="' + Users_ids[1] + id +
         '" class="stream_user_icon" style="color: #' + color + ';"><i class="icon-' + icons + '" style="font-size: 5em;"></i></div></div>' +
         '<div id="' + Users_ids[2] + id + '" class="stream_text">' +
         '<div id="' + Users_ids[3] + id + '" class="stream_channel" style="text-align: center;">' + stream_type + '</div></div>';
 
-    return Main_td;
+    return td;
 }
 
 function Users_loadDataSuccessFinish() {
