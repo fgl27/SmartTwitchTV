@@ -72,7 +72,6 @@ var Main_newUsercode = 0;
 var Main_ExitCursor = 0;
 var Main_ExitDialogID = null;
 var Main_ScrollbarIsHide = true;
-var Main_td = '';
 var Main_IsDayFirst = false;
 var Main_ScrollbarElement;
 var Main_SearchInput;
@@ -750,14 +749,6 @@ function Main_YchangeAddFocus(y) {
 
     Main_cursorYAddFocus = y;
     return position;
-}
-
-function Main_createEmptyCell(id) {
-    Main_td = document.createElement('td');
-    Main_td.setAttribute('id', id);
-    Main_td.className = 'stream_cell';
-
-    return Main_td;
 }
 
 //"handleKeyUp, keyClickDelay, keyClickDelayStart and Main_CantClick" are here to prevent races during click and hold
