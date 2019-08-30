@@ -357,11 +357,8 @@ function PlayClip_RefreshProgressBarr() {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 
     if (!Play_Status_Always_On) {
-        if (Main_IsNotBrowser) {
-            try {
-                Play_Status(Android.getVideoStatus());
-            } catch (e) {}
-        } else Play_StatusFake();
+        if (Main_IsNotBrowser) Play_Status(Android.getVideoStatus());
+        else Play_StatusFake();
     }
 }
 
