@@ -1022,7 +1022,7 @@ var Base_Game_obj = {
                     this.ids,
                     [game.box.template.replace("{width}x{height}", Main_GameSize),
                         game.name,
-                        hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_SPACE + STR_FOR +
+                        hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
                         Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : ''
                     ]));
 
