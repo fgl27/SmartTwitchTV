@@ -164,8 +164,10 @@ function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
         //Check and refresh all tokens at start
-        for (var i = 0; i < AddUser_UsernameArray.length; i++)
+        for (var i = 0; i < AddUser_UsernameArray.length; i++) {
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
+            if (!AddUser_UsernameArray[i].logo) AddUser_UpdateUser(i, 0);
+        }
     }
 }
 
@@ -173,14 +175,54 @@ function AddUser_UserIsSet() {
     return AddUser_UsernameArray.length > 0;
 }
 
+function AddUser_UpdateUser(position, tryes) {
+    var theUrl = 'https://api.twitch.tv/kraken/users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name);
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+
+    for (var i = 0; i < 2; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) AddUser_UpdateUsertSuccess(xmlHttp.responseText, position);
+            else AddUser_UpdateUserError(position, tryes);
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function AddUser_UpdateUsertSuccess(response, position) {
+    var user = JSON.parse(response);
+    if (user._total) {
+        Main_AddUserInput.value = '';
+        document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+        user = user.users[0];
+        AddUser_UsernameArray[position].display_name = user.display_name;
+        AddUser_UsernameArray[position].logo = user.logo;
+    }
+    AddUser_SaveUserArray();
+}
+
+function AddUser_UpdateUserError(position, tryes) {
+    tryes++;
+    if (tryes < AddUser_loadingDataTryMax) AddUser_UpdateUser(position, tryes);
+}
+
 function AddUser_SaveNewUser(responseText) {
     AddUser_Username = JSON.parse(responseText).users[0];
     AddUser_UsernameArray.push({
-        'name': AddUser_Username.name,
-        'id': AddUser_Username._id,
-        'display_name': AddUser_Username.display_name,
-        'access_token': 0,
-        'refresh_token': 0
+        name: AddUser_Username.name,
+        id: AddUser_Username._id,
+        display_name: AddUser_Username.display_name,
+        logo: AddUser_Username.logo,
+        access_token: 0,
+        refresh_token: 0
     });
 
     AddUser_SaveUserArray();
