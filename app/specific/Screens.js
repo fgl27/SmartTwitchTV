@@ -226,42 +226,52 @@ function Screens_loadDataSuccess() {
     Screens_loadDataSuccessFinish();
 }
 
-function Screens_createCellBase(row_id, coloumn_id) {
+function Screens_createCell(id_attribute, Data_content, html_content) {
+    var div = document.createElement('div');
 
-    var id = row_id + '_' + coloumn_id;
+    div.setAttribute('id', id_attribute);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
+    div.style.cssText = inUseObj.ThumbCssText;
+    div.innerHTML = html_content;
 
-    Main_td = document.createElement('div');
-    Main_td.style.cssText = inUseObj.ThumbCssText;
-
-    return id;
+    return div;
 }
 
-function Screens_createCellGame(row_id, coloumn_id, idArray, thumbnail, game_name, views) {
-
-    var id = Screens_createCellBase(row_id, coloumn_id);
-
-    Main_td.setAttribute('id', idArray[5] + id);
-    Main_td.setAttribute(Main_DataAttribute, game_name);
-
-    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
-        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + thumbnail +
+function Screens_createCellGame(id, idArray, valuesArray) {
+    return Screens_createCell(
+        idArray[5] + id,
+        valuesArray[1],
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
-        idArray[3] + id + '" class="stream_channel">' + game_name + '</div>' +
-        (views !== '' ? '<div id="' + idArray[4] + id + '"class="stream_info_games" style="width: 100%; display: inline-block;">' + views + '</div>' : '') +
-        '</div></div>';
-
-    return Main_td;
+        idArray[3] + id + '" class="stream_channel">' + valuesArray[1] + '</div>' +
+        (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
+            '"class="stream_info_games" style="width: 100%; display: inline-block;">' + valuesArray[2] +
+            '</div>' : '') + '</div></div>');
 }
 
-function Screens_createCellClip(row_id, coloumn_id, idArray, valuesArray) {
+function Screens_createCellChannel(id, idArray, valuesArray) {
+    return Screens_createCell(
+        idArray[8] + id,
+        valuesArray,
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div><img id="' + idArray[1] +
+        id + '" alt="" class="lazy stream_img" data-src="' + valuesArray[2] +
+        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
+        '<div id="' + idArray[2] + id + '" class="stream_text2">' +
+        '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] +
+        (valuesArray[4] ? STR_SPACE + STR_SPACE +
+            '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' +
+            IMG_PARTNER + '">' : "") + '</div></div></div>');
+}
 
-    var id = Screens_createCellBase(row_id, coloumn_id);
+function Screens_createCellClip(id, idArray, valuesArray) {
     var playing = (valuesArray[2] !== "" ? STR_PLAYING + valuesArray[2] : "");
-    Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
 
-    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
+    return Screens_createCell(
+        idArray[8] + id,
+        valuesArray,
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[13] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 1.6ch;"><div id="' +
@@ -273,63 +283,14 @@ function Screens_createCellClip(row_id, coloumn_id, idArray, valuesArray) {
         '"class="stream_info" style="width: auto; display: inline-block;">' + valuesArray[11] + ',' + STR_SPACE +
         valuesArray[12] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(valuesArray[1]) + '</div></div></div></div></div>';
-
-    return Main_td;
+        Play_timeS(valuesArray[1]) + '</div></div></div></div></div>');
 }
 
-function Screens_createCellLive(row_id, coloumn_id, data, idArray, valuesArray) {
-
-    var id = Screens_createCellBase(row_id, coloumn_id),
-        ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
-
-    Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
-
-    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
-        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
-        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[3] + id + '" class="stream_channel" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
-        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' +
-        (data[2] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
-        ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
-        '"class="stream_info" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[5] + '</div></div>' +
-        '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-        '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div></div></div>';
-
-    return Main_td;
-}
-
-
-function Screens_createCellChannel(row_id, coloumn_id, idArray, valuesArray) {
-
-    var id = Screens_createCellBase(row_id, coloumn_id);
-
-    Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
-
-    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div><img id="' + idArray[1] +
-        id + '" alt="" class="lazy stream_img" data-src="' + valuesArray[2] +
-        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
-        '<div id="' + idArray[2] + id + '" class="stream_text2">' +
-        '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] +
-        (valuesArray[4] ? STR_SPACE + STR_SPACE + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "") +
-        '</div></div></div>';
-
-    return Main_td;
-}
-
-function Screens_createCellVod(row_id, coloumn_id, idArray, valuesArray) {
-
-    var id = Screens_createCellBase(row_id, coloumn_id);
-
-    Main_td.setAttribute('id', idArray[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
-
-    Main_td.innerHTML = '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
+function Screens_createCellVod(id, idArray, valuesArray) {
+    return Screens_createCell(
+        idArray[8] + id,
+        valuesArray,
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
         (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
         '><div><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
@@ -342,9 +303,28 @@ function Screens_createCellVod(row_id, coloumn_id, idArray, valuesArray) {
         valuesArray[3] + '</div><div style="line-height: 1.3ch;"><div id="' + idArray[4] + id + '"class="stream_info" style="width: auto; display: inline-block;">' +
         valuesArray[2] + ',' + STR_SPACE + valuesArray[4] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(valuesArray[6]) + '</div></div></div></div>';
+        Play_timeS(valuesArray[6]) + '</div></div></div></div>');
+}
 
-    return Main_td;
+function Screens_createCellLive(id, data, idArray, valuesArray) {
+    var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
+
+    return Screens_createCell(
+        idArray[8] + id,
+        data,
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
+        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
+        idArray[2] + id + '" class="stream_text2"><div style="line-height: 1.6ch;"><div id="' +
+        idArray[3] + id + '" class="stream_channel" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
+        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' +
+        (data[2] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
+        ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
+        '"class="stream_info" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + '</div></div>' +
+        '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
+        '<div id="' + idArray[5] + id + '"class="stream_info">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
+        '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div></div></div>');
 }
 
 function Screens_loadDataSuccessFinish() {
