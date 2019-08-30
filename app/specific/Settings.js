@@ -114,7 +114,7 @@ function Settings_init() {
     document.getElementById('top_bar_vod').style.display = 'none';
     document.getElementById('top_bar_clip').style.display = 'none';
     Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_ShowElement('settings_scroll');
+    Main_ShowElement('settings_holder');
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);
     Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
@@ -133,7 +133,7 @@ function Settings_exit() {
     document.getElementById('top_bar_clip').style.display = 'inline-block';
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_HideElement('settings_scroll');
+    Main_HideElement('settings_holder');
 }
 
 // The order in Settings_SetSettings is the display order
