@@ -325,12 +325,12 @@ function UserLiveFeed_GetSize() {
 }
 
 function UserLiveFeed_CreatFeed(id, data, valuesArray) {
-    Main_td = document.createElement('div');
-    Main_td.setAttribute('id', UserLiveFeed_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    var div = document.createElement('div');
+    div.setAttribute('id', UserLiveFeed_ids[8] + id);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
-    Main_td.className = 'user_feed_thumb';
-    Main_td.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
+    div.className = 'user_feed_thumb';
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
         '<div><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
         Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + UserLiveFeed_ids[2] + id + '" class="stream_text2">' +
@@ -340,18 +340,18 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
         valuesArray[1] + '</div>' + '<div id="' + UserLiveFeed_ids[5] + id +
         '"class="stream_info">' + valuesArray[2] + '</div>' + '</div></div>';
 
-    return Main_td;
+    return div;
 }
 
 function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
 
-    Main_td = document.createElement('div');
-    Main_td.setAttribute('id', UserLiveFeed_side_ids[8] + id);
-    Main_td.setAttribute(Main_DataAttribute, JSON.stringify(jsondata));
-    Main_td.setAttribute('side_panel_data', JSON.stringify(data));
-    Main_td.className = 'side_panel_feed';
+    var div = document.createElement('div');
+    div.setAttribute('id', UserLiveFeed_side_ids[8] + id);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(jsondata));
+    div.setAttribute('side_panel_data', JSON.stringify(data));
+    div.className = 'side_panel_feed';
 
-    Main_td.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
+    div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
         '" class="side_panel_div"><div style="width: 100%;"><div id="' +
         UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] +
         '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
@@ -364,7 +364,7 @@ function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
         (!jsondata[2] ? 'circle" style="color: red;' : 'refresh" style="') +
         ' font-size: 55%; "></i><div style="font-size: 58%;">' + valuesArray[4] + '</div></div></div></div></div></div>';
 
-    return Main_td;
+    return div;
 }
 
 function UserLiveFeed_isFeedShow() {
