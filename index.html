@@ -105,7 +105,7 @@
         }
 
         div.screen_size,
-        div.scroll_size,
+        div.scrollbar_holder,
         div.screens {
             position: fixed;
             background-color: rgba(0, 0, 0, 0);
@@ -116,11 +116,11 @@
             font-kerning: none;
         }
 
-        div.scroll_size {
-            position: fixed;
+        div.scrollbar_holder {
+            position: absolute;
             z-index: 298;
-            width: 1%;
-            padding-left: 99%;
+            width: 2%;
+            right: 0;
         }
 
         div.screens {
@@ -155,13 +155,13 @@
         }
 
         div.scroll {
-            width: 0.5%;
+            width: 25%;
             height: 4.6%;
             border: 0.125em solid #000000;
             border-radius: 0.3em;
             background-color: #000000;
             position: absolute;
-            right: 0.2%;
+            right: 25%;
             top: 9.25%;
         }
 
@@ -1423,7 +1423,7 @@
                 <div id="top_bar_clip" class="icon_center_label"></div>
             </div>
         </div>
-        <div id="scrollbar_size" class="scroll_size">
+        <div id="scrollbar_holder" class="scrollbar_holder">
             <div id="scrollbar" class="scroll"></div>
         </div>
         <div id="dialog_loading" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
@@ -1486,8 +1486,8 @@
             <div id="user_scroll" class="screen_holder hide">
                 <table id="stream_table_user" class="streams_tables"></table>
             </div>
-            <div id="settings_holder" class="settings_holder">
-                <div id="settings_scroll" class="screen_holder_settings hide">
+            <div id="settings_holder" class="settings_holder hide">
+                <div id="settings_scroll" class="screen_holder_settings">
                     <div id="settings_main" class="settings_main">
                         <!-- Settings_SetSettings()-->
                     </div>
