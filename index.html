@@ -721,6 +721,56 @@
             position: absolute;
         }
 
+        div.side_panel_fix,
+        div.side_panel_movel {
+            position: absolute;
+            background-color: #FF0;
+            height: 100%;
+            width: 4%;
+            overflow: hidden;
+        }
+
+        div.side_panel_movel {
+            border-right: 0.135em solid;
+            border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
+            background-color: #F00;
+        }
+
+        div.side_panel_fix_top_bottom {
+            background-color: #FFF;
+            height: 31%;
+        }
+
+        div.side_panel_fix_center {
+            background-color: #F0F;
+            height: 38%;
+        }
+
+        div.side_panel_new_icons_top,
+        div.side_panel_new_icons {
+            width: 100%;
+            height: 15%;
+            position: relative;
+            padding-top: 10%;
+            color: #7B7B7B;
+            font-size: 150%;
+            text-align: center;
+            background: #F00;
+        }
+
+        div.side_panel_new_icons_top {
+            padding-top: 0;
+            height: 50%;
+        }
+
+        div.side_panel_new_icons_top_iner {
+            padding-top: 75%;
+        }
+
+        img.side_panel_new_img {
+            width: 80%;
+        }
+
         div.side_panel {
             position: absolute;
             border-radius: 0.75em;
@@ -1731,6 +1781,45 @@
                         <div id="user_feed_notify_game" class="side_panel_new_game"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="side_panel_movel" class="side_panel_movel">
+        </div>
+        <div id="side_panel_fix" class="side_panel_fix">
+            <div id="side_panel_fix_top" class="side_panel_fix_top_bottom">
+                <div id="side_panel_new_0" class="side_panel_new_icons_top">
+                    <div class="side_panel_new_icons_top_iner">
+                        <img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="https://static-cdn.jtvnw.net/jtv_user_pictures/ed72b641-83ea-4ee6-81fd-aa195759c512-profile_image-300x300.png">
+                    </div>
+                </div>
+
+                <div id="side_panel_new_1" class="side_panel_new_icons_top">
+                    <div class="side_panel_new_icons_top_iner">
+                        <i class="icon icon-search"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="side_panel_fix_center" class="side_panel_fix_center">
+                <div id="side_panel_new_2" class="side_panel_new_icons">
+                    <i class="icon icon-play"></i>
+                </div>
+                <div id="side_panel_new_3" class="side_panel_new_icons">
+                    <i class="icon icon-users"></i>
+                </div>
+                <div id="side_panel_new_4" class="side_panel_new_icons">
+                    <i class="icon icon-star"></i>
+                </div>
+                <div id="side_panel_new_5" class="side_panel_new_icons">
+                    <i class="icon icon-gamepad"></i>
+                </div>
+                <div id="side_panel_new_6" class="side_panel_new_icons">
+                    <i class="icon icon-movie-play"></i>
+                </div>
+                <div id="side_panel_new_7" class="side_panel_new_icons">
+                    <i class="icon icon-movie"></i>
+                </div>
+            </div>
+            <div id="side_panel_fix_bottom" class="side_panel_fix_top_bottom">
             </div>
         </div>
         <div id="user_feed" class="user_feed user_feed_hide">
