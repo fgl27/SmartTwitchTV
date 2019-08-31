@@ -175,7 +175,7 @@ function AddUser_RestoreUsers() {
 
 function AddUser_UpdateSidepanel() {
     Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + AddUser_UsernameArray[0].logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
-    document.getElementById('side_panel_movel').style.width = (18 + (AddUser_UsernameArray[0].display_name.length > 8 ? AddUser_UsernameArray[0].display_name.length - 8 : 0)) + "ch";
+    document.getElementById('side_panel_movel').style.width = (19 + (AddUser_UsernameArray[0].display_name.length > 8 ? AddUser_UsernameArray[0].display_name.length - 8 : 0)) + "ch";
     Main_innerHTML('side_panel_movel_new_0', STR_SPACE + AddUser_UsernameArray[0].display_name);
 }
 
