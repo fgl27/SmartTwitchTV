@@ -724,7 +724,7 @@
         div.side_panel_fix,
         div.side_panel_movel {
             position: absolute;
-            background-color: #FF0;
+            background-color: rgba(0, 0, 0, 0);
             height: 100%;
             width: 4%;
             overflow: hidden;
@@ -733,29 +733,52 @@
         div.side_panel_movel {
             border-right: 0.135em solid;
             border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
-            background-color: #F00;
+            background-color: rgba(0, 0, 0, 0.82);
+            width: 16%;
         }
 
         div.side_panel_fix_top_bottom {
-            background-color: #FFF;
             height: 31%;
         }
 
+        div.side_panel_movel_bottom_holder {
+            height: 50%;
+            padding-top: 18%;
+            padding-left: 6%;
+            color: #FFFFFF;
+            font-size: 110%;
+            text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
+        }
+
+        div.side_panel_movel_bottom_text {
+            height: 25%;
+            width: 94%;
+        }
+
         div.side_panel_fix_center {
-            background-color: #F0F;
             height: 38%;
         }
 
         div.side_panel_new_icons_top,
+        div.side_panel_new_icons_text_holder,
         div.side_panel_new_icons {
             width: 100%;
-            height: 15%;
+            height: 16.667%;
             position: relative;
-            padding-top: 10%;
-            color: #7B7B7B;
+            color: #FFFFFF;
             font-size: 150%;
             text-align: center;
-            background: #F00;
+            text-shadow: -0.02em -0.02em 0 #000, 0.02em -0.02em 0 #000, -0.02em 0.02em 0 #000, 0.02em 0.02em 0 #000;
+        }
+
+        div.side_panel_new_icons_text_holder {
+            padding-left: 25%;
+            width: 70%;
+            text-align: left;
+        }
+
+        div.side_panel_new_icons_text {
+            background: rgba(255, 255, 255, 0.5);
         }
 
         div.side_panel_new_icons_top {
@@ -765,6 +788,13 @@
 
         div.side_panel_new_icons_top_iner {
             padding-top: 75%;
+        }
+
+        div.side_panel_movel_iner {
+            padding-top: 20%;
+            padding-left: 25%;
+            text-align: left;
+            width: 70%;
         }
 
         img.side_panel_new_img {
@@ -1784,6 +1814,78 @@
             </div>
         </div>
         <div id="side_panel_movel" class="side_panel_movel">
+            <div id="side_panel_movel_top" class="side_panel_fix_top_bottom">
+                <div class="side_panel_new_icons_top">
+                    <div class="side_panel_movel_iner">
+                        <div id="side_panel_movel_new_0" class="side_panel_new_icons_text">
+                            &nbsp;fglfgl27
+                        </div>
+                    </div>
+                </div>
+                <div class="side_panel_new_icons_top">
+                    <div class="side_panel_movel_iner">
+                        <div id="side_panel_movel_new_1" class="side_panel_new_icons_text">
+                            &nbsp;Search
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="side_panel_movel_center" class="side_panel_fix_center">
+                <div class="side_panel_new_icons_text_holder">
+                    <div id="side_panel_movel_new_2" class="side_panel_new_icons_text">
+                        &nbsp;Live
+                    </div>
+                </div>
+                <div class="side_panel_new_icons_text_holder">
+                    <div id="side_panel_movel_new_3">
+                        User
+                    </div>
+                </div>
+                <div class="side_panel_new_icons_text_holder">
+                    <div id="side_panel_movel_new_4">
+                        Featured
+                    </div>
+                </div>
+                <div class="side_panel_new_icons_text_holder">
+                    <div id="side_panel_movel_new_5">
+                        Games
+                    </div>
+                </div>
+                <div class="side_panel_new_icons_text_holder">
+                    <div id="side_panel_movel_new_6">
+                        Videos
+                    </div>
+                </div>
+                <div class="side_panel_new_icons_text_holder">
+                    <div id="side_panel_movel_new_7">
+                        Clips
+                    </div>
+                </div>
+            </div>
+            <div id="side_panel_movel_bottom" class="side_panel_fix_top_bottom">
+                <div class="side_panel_movel_bottom_holder">
+                    <div class="side_panel_movel_bottom_text">
+                        <div id="side_panel_movel_new_8" class="side_panel_new_icons_text">
+                            &nbsp;Settings
+                        </div>
+                    </div>
+                    <div class="side_panel_movel_bottom_text">
+                        <div id="side_panel_movel_new_9">
+                            &nbsp;About
+                        </div>
+                    </div>
+                    <div class="side_panel_movel_bottom_text">
+                        <div id="side_panel_movel_new_10">
+                            &nbsp;Controls
+                        </div>
+                    </div>
+                    <div class="side_panel_movel_bottom_text">
+                        <div id="side_panel_movel_new_11">
+                            &nbsp;Exit
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="side_panel_fix" class="side_panel_fix">
             <div id="side_panel_fix_top" class="side_panel_fix_top_bottom">
@@ -1791,7 +1893,6 @@
                     <div id="side_panel_new_0_img" class="side_panel_new_icons_top_iner">
                     </div>
                 </div>
-
                 <div id="side_panel_new_1" class="side_panel_new_icons_top">
                     <div class="side_panel_new_icons_top_iner">
                         <i class="icon icon-search"></i>
@@ -1817,8 +1918,6 @@
                 <div id="side_panel_new_7" class="side_panel_new_icons">
                     <i class="icon icon-movie"></i>
                 </div>
-            </div>
-            <div id="side_panel_fix_bottom" class="side_panel_fix_top_bottom">
             </div>
         </div>
         <div id="user_feed" class="user_feed user_feed_hide">
