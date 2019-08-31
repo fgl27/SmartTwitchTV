@@ -14,8 +14,7 @@ function Sidepannel_RemoveFocusEtc() {
 }
 
 function Sidepannel_AddFocusFeed() {
-    Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
-    Main_AddClass(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed, 'side_panel_feed_img_focus');
+    Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_new_icons_text');
     Sidepannel_Scroll();
     Sidepannel_UpdateThumb();
 }
@@ -25,8 +24,7 @@ function Sidepannel_isShowing() {
 }
 
 function Sidepannel_RemoveFocusFeed() {
-    Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_feed_text_focus');
-    Main_RemoveClass(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed, 'side_panel_feed_img_focus');
+    Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_new_icons_text');
 }
 
 function Sidepannel_UpdateThumb() {
@@ -169,12 +167,14 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_Scroll() {
-    var value = '1%'; //default
-    if (Sidepannel_PosFeed > 5) { //Start scrolling in the middle
-        if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 5))
-            value = 'calc(-18.1% *' + (Sidepannel_PosFeed - 5) + ')';
-        else if (((Sidepannel_GetSize() - 5) - 6) > 0) //if we are in the 5 left
-            value = 'calc(-18.1% *' + ((Sidepannel_GetSize() - 5) - 6) + ')';
+    var value = '1%', //default
+        center = 7;
+
+    if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
+        if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
+            value = 'calc(-18.1% *' + (Sidepannel_PosFeed - center) + ')';
+        else if (((Sidepannel_GetSize() - center) - center) > 0) //if we are in the 7 left
+            value = 'calc(-18.1% *' + ((Sidepannel_GetSize() - center) - center) + ')';
     }
 
     document.getElementById('side_panel_holder').style.marginTop = value;

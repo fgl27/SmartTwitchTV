@@ -352,8 +352,9 @@ function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
     div.className = 'side_panel_feed';
 
     div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
-        '" class="side_panel_div"><div style="width: 100%;"><div id="' +
-        UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] +
+        '" class="side_panel_div"><div id="' + UserLiveFeed_side_ids[2] + id +
+        '" style="width: 100%;"><div id="' + UserLiveFeed_side_ids[3] + id +
+        '" style="display: none;">' + valuesArray[1] +
         '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
         '" class="side_panel_channel_img" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
