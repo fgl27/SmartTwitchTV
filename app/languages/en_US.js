@@ -234,7 +234,7 @@ function en_USLang() {
     STR_PLAY_NEXT_IN = "Playing next in ";
     STR_PLAY_ALL = "Play All";
     STR_AUTO_PLAY_NEXT = "Auto Play next clip";
-    STR_SIDE_PANEL_SETTINGS = "Settings, about, etc...";
+    STR_SIDE_PANEL_SETTINGS = "Back";
     STR_UP = " Press up";
     STR_LIVE_FEED = "Live Feed";
     STR_END_DIALOG_SETTINGS = "End dialog";
