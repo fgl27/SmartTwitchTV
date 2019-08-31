@@ -166,10 +166,17 @@ function AddUser_RestoreUsers() {
         //Check and refresh all tokens at start
         for (var i = 0; i < AddUser_UsernameArray.length; i++) {
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
+
             if (!AddUser_UsernameArray[i].logo) AddUser_UpdateUser(i, 0);
+            else if (!i) AddUser_UpdateSidepanel();
         }
-        Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + AddUser_UsernameArray[0].logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
     }
+}
+
+function AddUser_UpdateSidepanel() {
+    Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + AddUser_UsernameArray[0].logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
+    document.getElementById('side_panel_movel').style.width = (18 + (AddUser_UsernameArray[0].display_name.length > 8 ? AddUser_UsernameArray[0].display_name.length - 8 : 0)) + "ch";
+    Main_innerHTML('side_panel_movel_new_0', STR_SPACE + AddUser_UsernameArray[0].display_name);
 }
 
 function AddUser_UserIsSet() {
@@ -206,7 +213,7 @@ function AddUser_UpdateUsertSuccess(response, position) {
         user = user.users[0];
         AddUser_UsernameArray[position].display_name = user.display_name;
         AddUser_UsernameArray[position].logo = user.logo;
-        if (!position) Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + AddUser_UsernameArray[position].logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
+        if (!position) AddUser_UpdateSidepanel();
     }
     AddUser_SaveUserArray();
 }
