@@ -272,8 +272,8 @@ function UserLiveFeed_loadDataSuccessFinish() {
         Main_HideElement('dialog_loading_feed');
         Main_HideElement('dialog_loading_side_feed');
         UserLiveFeed_FeedAddFocus();
-        Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed();
+        window.setTimeout(Sidepannel_PreloadImgs, 600);
 
         //The app just started or user change don't nottify
         if (UserLiveFeed_CheckNotifycation) UserLiveFeed_LiveNotification();
