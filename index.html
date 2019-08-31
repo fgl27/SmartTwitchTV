@@ -32,6 +32,7 @@
             font-family: 'Roboto', 'Roboto-Bold';
             margin: auto;
             overflow: hidden;
+            text-rendering: optimizeLegibility;
         }
 
         div.class_bold {
@@ -688,7 +689,7 @@
             vertical-align: middle;
             display: inline-block;
             width: 84%;
-            font-size: 90%;
+            font-size: 80%;
             word-wrap: break-word;
             overflow: hidden;
             color: #FFFFFF;
@@ -813,14 +814,14 @@
 
         div.side_panel {
             position: absolute;
-            border-radius: 0.75em;
-            border: 0.15em solid #FFFFFF;
+            border-right: 0.135em solid;
+            border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
             background-color: #090909;
             bottom: 0;
             left: -1%;
-            height: 91%;
-            width: 25%;
-            transition: margin-left 0.65s ease-in-out !important;
+            height: 100%;
+            width: 22%;
+            transition: margin-left 0.5s;
             overflow: hidden;
         }
 
@@ -1395,7 +1396,8 @@
             border-radius: 0.2em;
             padding-bottom: 16.1%;
             background-repeat: no-repeat;
-            color: #7B7B7B;
+            color: #FFFFFF;
+            text-shadow: -0.04em -0.04em 0 #000, 0.04em -0.04em 0 #000, -0.04em 0.04em 0 #000, 0.04em 0.04em 0 #000;
         }
 
         div.side_panel_iner_div1,
@@ -1429,10 +1431,9 @@
         }
 
         img.side_panel_channel_img {
-            height: 90%;
+            height: 92.5%;
             position: absolute;
             top: 0;
-            border-radius: 0.2em;
         }
 
         div.side_panel_new_title,
@@ -1449,14 +1450,6 @@
         div.side_panel_new_game {
             font-family: 'Roboto';
             font-size: 64%;
-        }
-
-        div.side_panel_feed_text_focus {
-            color: #FFFFFF;
-        }
-
-        .side_panel_feed_img_focus {
-            box-shadow: 0 0 0 0.1em #000000, 0 0 0 0.2em #FFFFFF;
         }
     </style>
     <!-- jsstart this is here so release_maker can work don't remove-->
@@ -1854,27 +1847,27 @@
                 </div>
                 <div class="side_panel_new_icons_text_holder">
                     <div id="side_panel_movel_new_3">
-                        User
+                        &nbsp;User
                     </div>
                 </div>
                 <div class="side_panel_new_icons_text_holder">
                     <div id="side_panel_movel_new_4">
-                        Featured
+                        &nbsp;Featured
                     </div>
                 </div>
                 <div class="side_panel_new_icons_text_holder">
                     <div id="side_panel_movel_new_5">
-                        Games
+                        &nbsp;Games
                     </div>
                 </div>
                 <div class="side_panel_new_icons_text_holder">
                     <div id="side_panel_movel_new_6">
-                        Videos
+                        &nbsp;Videos
                     </div>
                 </div>
                 <div class="side_panel_new_icons_text_holder">
                     <div id="side_panel_movel_new_7">
-                        Clips
+                        &nbsp;Clips
                     </div>
                 </div>
             </div>
@@ -1966,13 +1959,13 @@
                             <div id="side_panel_thumbdiv0_0" class="side_panel_div">
                                 <div id="side_panel_feed_1" class="side_panel_feed_top">
                                     <div class="side_panel_icons">
-                                        <i class="icon icon-arrow-circle-left"></i>
+                                        <i class="icon icon-arrow-circle-right"></i>
                                     </div>&nbsp;
                                     <span id="side_panel_feed_settings"></span>
                                 </div>
                                 <div id="side_panel_feed_2" class="side_panel_feed_top">
                                     <div class="side_panel_icons">
-                                        <i class="icon icon-arrow-circle-right"></i>
+                                        <i class="icon icon-arrow-circle-left"></i>
                                     </div>&nbsp;
                                     <span id="side_panel_feed_refresh"></span>
                                 </div>
