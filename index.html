@@ -734,9 +734,12 @@
         div.side_panel_movel {
             border-right: 0.135em solid;
             border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
-            background-color: rgba(0, 0, 0, 0.82);
             /* 19 for 8 characters user name + 1 for it letter above 8*/
             width: 19ch;
+        }
+
+        div.side_panel_background_color {
+            background-color: rgba(0, 0, 0, 0.85);
         }
 
         div.side_panel_fix_top_bottom {
@@ -816,7 +819,6 @@
             position: absolute;
             border-right: 0.135em solid;
             border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
-            background-color: #090909;
             bottom: 0;
             left: -1%;
             height: 100%;
@@ -1431,7 +1433,7 @@
         }
 
         img.side_panel_channel_img {
-            height: 92.5%;
+            width: 15%;
             position: absolute;
             top: 0;
         }
@@ -1816,7 +1818,7 @@
                 </div>
             </div>
         </div>
-        <div id="side_panel_movel" class="side_panel_movel">
+        <div id="side_panel_movel" class="side_panel_movel side_panel_background_color">
             <div id="side_panel_movel_top" class="side_panel_fix_top_bottom">
                 <div class="side_panel_movel_top_text">
                     <div class="side_panel_icons">
@@ -1897,7 +1899,7 @@
             </div>
         </div>
         <div id="side_panel_fix" class="side_panel_fix">
-            <div id="side_panel_fix_top" class="side_panel_fix_top_bottom" style="background: #000000;">
+            <div id="side_panel_fix_top" class="side_panel_fix_top_bottom" style="background-color: #000000;">
                 <div id="side_panel_new_0" class="side_panel_new_icons_top">
                     <div id="side_panel_new_0_img" class="side_panel_new_icons_top_iner">
                     </div>
@@ -1908,7 +1910,7 @@
                     </div>
                 </div>
             </div>
-            <div id="side_panel_fix_center" class="side_panel_fix_center" style="background: #000000;">
+            <div id="side_panel_fix_center" class="side_panel_fix_center" style="background-color: #000000;">
                 <div id="side_panel_new_2" class="side_panel_new_icons">
                     <i class="icon icon-play"></i>
                 </div>
@@ -1948,7 +1950,7 @@
                 <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
             </div>
         </div>
-        <div id="side_panel" class="side_panel side_panel_hide" style="margin-left: -31.5%;">
+        <div id="side_panel" class="side_panel side_panel_background_color side_panel_hide" style="margin-left: -31.5%;">
             <div id="side_panel_new" style="width: 100%; position: absolute;">
                 <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
                     <div id="dialog_loading_side_feed" class="side_panel_dialog hide" style="overflow: visible;">
@@ -1972,7 +1974,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="side_panel_new_row_1" style="overflow: hidden; width: 94%; position: absolute; background: #090909;">
+                    <div id="side_panel_new_row_1" style="overflow: hidden; width: 94%; position: absolute;">
                         <div id="side_panel_holder" style="margin-top: 1%;">
                         </div>
                     </div>
