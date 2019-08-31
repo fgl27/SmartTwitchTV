@@ -143,8 +143,8 @@ function Sidepannel_ShowFeed() {
         if (Main_isElementShowing('side_panel_feed_holder')) {
             document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
             if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
-                Sidepannel_PreloadImgs();
                 Sidepannel_AddFocusFeed();
+                window.setTimeout(Sidepannel_PreloadImgs, 600);
             }
         } else {
             document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
