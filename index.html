@@ -738,6 +738,11 @@
             width: 19ch;
         }
 
+        div.side_panel_movel_hide {
+            /* 14 for 8 characters user name + 1 for it letter above 8*/
+            margin-left: -14ch;
+        }
+
         div.side_panel_background_color {
             background-color: rgba(0, 0, 0, 0.85);
         }
@@ -1818,7 +1823,7 @@
                 </div>
             </div>
         </div>
-        <div id="side_panel_movel" class="side_panel_movel side_panel_background_color">
+        <div id="side_panel_movel" class="side_panel_movel side_panel_movel_hide side_panel_background_color">
             <div id="side_panel_movel_top" class="side_panel_fix_top_bottom">
                 <div class="side_panel_movel_top_text">
                     <div class="side_panel_icons">
@@ -1828,14 +1833,14 @@
                 </div>
                 <div class="side_panel_new_icons_top">
                     <div class="side_panel_movel_iner">
-                        <div id="side_panel_movel_new_0" class="side_panel_new_icons_text">
+                        <div id="side_panel_movel_new_0">
                             &nbsp;Add User
                         </div>
                     </div>
                 </div>
                 <div class="side_panel_new_icons_top">
                     <div class="side_panel_movel_iner">
-                        <div id="side_panel_movel_new_1" class="side_panel_new_icons_text">
+                        <div id="side_panel_movel_new_1">
                             &nbsp;Search
                         </div>
                     </div>
@@ -1843,7 +1848,7 @@
             </div>
             <div id="side_panel_movel_center" class="side_panel_fix_center">
                 <div class="side_panel_new_icons_text_holder">
-                    <div id="side_panel_movel_new_2" class="side_panel_new_icons_text">
+                    <div id="side_panel_movel_new_2">
                         &nbsp;Live
                     </div>
                 </div>
@@ -1876,7 +1881,7 @@
             <div id="side_panel_movel_bottom" class="side_panel_fix_top_bottom">
                 <div class="side_panel_movel_bottom_holder">
                     <div class="side_panel_movel_bottom_text">
-                        <div id="side_panel_movel_new_8" class="side_panel_new_icons_text">
+                        <div id="side_panel_movel_new_8">
                             &nbsp;Settings
                         </div>
                     </div>
