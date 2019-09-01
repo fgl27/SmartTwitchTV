@@ -172,7 +172,7 @@ function en_USLang() {
     STR_PLACEHOLDER_PRESS_UP = "Press Up to ";
     STR_FALLOW_GAMES = "Followed Games";
     STR_USER_GAMES_CHANGE = "Change between";
-    STR_GUIDE = " Back key then Enter";
+    STR_GUIDE = " Hold enter";
     STR_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     STR_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     STR_STARTED = "Started ";
@@ -213,7 +213,7 @@ function en_USLang() {
     STR_RESTORE_PLAYBACK_SUMARRY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user, the app then can restore what was previously playing on next start";
     STR_CHAT_FONT = "Chat font size";
     STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
-    STR_SIDE_PANEL = "Side panel: D-pad left or Back key twice";
+    STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
     STR_SIZE = "Size ";
     STR_BRIGHTNESS = "Brightness ";
     STR_FORBIDDEN = "Forbidden content, this Live content must be for Prime only subscribers or restrained to the official Twitch app";

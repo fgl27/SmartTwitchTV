@@ -731,7 +731,7 @@ function ScreensObj_InitAGame() {
             ScreensObj_TopLableAgameInit();
             //fix user label
             Main_RemoveClass('top_bar_user', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
             Main_textContent('top_bar_user', STR_USER);
 
             if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
@@ -917,13 +917,13 @@ function ScreensObj_InitClip() {
             Main_values.Main_CenterLablesVectorPos = 5;
             this.SetPeriod();
             Main_AddClass('top_bar_clip', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
             Sidepannel_SetDefaultLables();
         },
         label_exit: function() {
             Main_RestoreTopLabel();
             Main_RemoveClass('top_bar_clip', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
         },
     }, Base_obj);
 
@@ -1313,7 +1313,7 @@ function ScreensObj_TopLableUserInit() {
 function ScreensObj_TopLableUserExit() {
     Main_values.Users_Position = 0;
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
     Main_textContent('top_bar_user', STR_USER);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
 }

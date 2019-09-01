@@ -163,10 +163,8 @@ function Sidepannel_RestoreScreen() {
 }
 
 function Sidepannel_Go(GoTo) {
-    if (GoTo === Main_values.Main_Go) {
-        document.body.addEventListener("keydown", Sidepannel_Callback, false);
-        Main_ReloadScreen();
-    } else {
+    if (GoTo == Main_values.Main_Go) document.body.addEventListener("keydown", Sidepannel_Callback, false);
+    else {
         Main_values.Main_Before = Main_values.Main_Go;
         Main_values.Main_Go = GoTo;
         Main_ExitCurrent(Main_values.Main_Before);
