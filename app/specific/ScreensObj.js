@@ -255,6 +255,8 @@ function ScreensObj_InitVod() {
             Main_values.Main_CenterLablesVectorPos = 4;
             Main_AddClass('top_bar_vod', 'icon_center_focus');
             Sidepannel_SetDefaultLables();
+            Main_values.Sidepannel_IsUser = false;
+            Sidepannel_SetTopOpacity(this.screen);
             this.SetPeriod();
         },
         label_exit: function() {
@@ -516,6 +518,8 @@ function ScreensObj_InitLive() {
             Main_values.Main_CenterLablesVectorPos = 0;
             Main_AddClass('top_bar_live', 'icon_center_focus');
             Sidepannel_SetDefaultLables();
+            Main_values.Sidepannel_IsUser = false;
+            Sidepannel_SetTopOpacity(this.screen);
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_live', 'icon_center_focus');
@@ -795,6 +799,8 @@ function ScreensObj_InitFeatured() {
             Main_values.Main_CenterLablesVectorPos = 2;
             Main_AddClass('top_bar_featured', 'icon_center_focus');
             Sidepannel_SetDefaultLables();
+            Main_values.Sidepannel_IsUser = false;
+            Sidepannel_SetTopOpacity(this.screen);
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_featured', 'icon_center_focus');
@@ -924,6 +930,8 @@ function ScreensObj_InitClip() {
             Main_AddClass('top_bar_clip', 'icon_center_focus');
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
             Sidepannel_SetDefaultLables();
+            Main_values.Sidepannel_IsUser = false;
+            Sidepannel_SetTopOpacity(this.screen);
         },
         label_exit: function() {
             Main_RestoreTopLabel();
@@ -1065,6 +1073,8 @@ function ScreensObj_InitGame() {
             Main_values.Main_CenterLablesVectorPos = 3;
             Main_AddClass('top_bar_game', 'icon_center_focus');
             Sidepannel_SetDefaultLables();
+            Main_values.Sidepannel_IsUser = false;
+            Sidepannel_SetTopOpacity(this.screen);
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
@@ -1296,6 +1306,8 @@ function ScreensObj_TopLableAgameInit() {
     Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
     Sidepannel_SetDefaultLables();
+    Main_values.Sidepannel_IsUser = false;
+    Sidepannel_SetTopOpacity(inUseObj.screen);
 }
 
 function ScreensObj_TopLableAgameExit() {
