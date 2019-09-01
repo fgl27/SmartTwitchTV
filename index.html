@@ -747,11 +747,11 @@
         }
 
         div.side_panel_movel_bottom_holder {
-            height: 50%;
+            height: 35%;
             padding-top: 9vh;
             padding-left: 0.5vw;
             color: #FFFFFF;
-            font-size: 110%;
+            font-size: 75%;
             text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
         }
 
@@ -771,7 +771,7 @@
             height: 16.667%;
             position: relative;
             color: #FFFFFF;
-            font-size: 150%;
+            font-size: 100%;
             text-align: center;
             text-shadow: -0.02em -0.02em 0 #000, 0.02em -0.02em 0 #000, -0.02em 0.02em 0 #000, 0.02em 0.02em 0 #000;
         }
@@ -780,10 +780,15 @@
             padding-left: 3.5vw;
             width: auto;
             text-align: left;
+            font-size: 125%;
         }
 
         div.side_panel_new_icons_text {
             background: rgba(255, 255, 255, 0.25);
+        }
+
+        .side_panel_new_icons_pad {
+            vertical-align: sub;
         }
 
         div.side_panel_movel_top_text {
@@ -792,7 +797,7 @@
             position: absolute;
             padding-top: 1vh;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-60%);
         }
 
         div.side_panel_new_icons_top {
@@ -1826,116 +1831,118 @@
                 </div>
             </div>
         </div>
-        <div id="side_panel_movel" class="side_panel_movel side_panel_border side_panel_background_color">
-            <div id="side_panel_movel_top" class="side_panel_fix_top_bottom">
-                <div class="side_panel_movel_top_text">
-                    <div class="side_panel_icons">
-                        <i class="icon icon-arrow-circle-left"></i>
-                    </div>&nbsp;
-                    <span id="side_panel_movel_top_text">Live feed</span>
-                </div>
-                <div class="side_panel_new_icons_top">
-                    <div class="side_panel_movel_iner">
-                        <div id="side_panel_movel_new_0">
-                            &nbsp;Add User
+        <div id="side_panel_new_holder" class="hide">
+            <div id="side_panel_movel" class="side_panel_movel side_panel_border side_panel_background_color">
+                <div id="side_panel_movel_top" class="side_panel_fix_top_bottom">
+                    <div class="side_panel_movel_top_text">
+                        <div class="side_panel_icons">
+                            <i class="icon icon-arrow-circle-left"></i>
+                        </div>&nbsp;
+                        <span id="side_panel_movel_top_text">Live feed</span>
+                    </div>
+                    <div class="side_panel_new_icons_top">
+                        <div class="side_panel_movel_iner">
+                            <div id="side_panel_movel_new_0">
+                                &nbsp;Add User
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side_panel_new_icons_top">
+                        <div class="side_panel_movel_iner">
+                            <div id="side_panel_movel_new_1">
+                                &nbsp;Search
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="side_panel_new_icons_top">
-                    <div class="side_panel_movel_iner">
-                        <div id="side_panel_movel_new_1">
-                            &nbsp;Search
+                <div id="side_panel_movel_center" class="side_panel_fix_center">
+                    <div class="side_panel_new_icons_text_holder">
+                        <div id="side_panel_movel_new_2">
+                            &nbsp;Live
+                        </div>
+                    </div>
+                    <div class="side_panel_new_icons_text_holder">
+                        <div id="side_panel_movel_new_3">
+                            &nbsp;User
+                        </div>
+                    </div>
+                    <div class="side_panel_new_icons_text_holder">
+                        <div id="side_panel_movel_new_4">
+                            &nbsp;Featured
+                        </div>
+                    </div>
+                    <div class="side_panel_new_icons_text_holder">
+                        <div id="side_panel_movel_new_5">
+                            &nbsp;Games
+                        </div>
+                    </div>
+                    <div class="side_panel_new_icons_text_holder">
+                        <div id="side_panel_movel_new_6">
+                            &nbsp;Videos
+                        </div>
+                    </div>
+                    <div class="side_panel_new_icons_text_holder">
+                        <div id="side_panel_movel_new_7">
+                            &nbsp;Clips
+                        </div>
+                    </div>
+                </div>
+                <div id="side_panel_movel_bottom" class="side_panel_fix_top_bottom">
+                    <div class="side_panel_movel_bottom_holder">
+                        <div class="side_panel_movel_bottom_text">
+                            <div id="side_panel_movel_new_8">
+                                &nbsp;Settings
+                            </div>
+                        </div>
+                        <div class="side_panel_movel_bottom_text">
+                            <div id="side_panel_movel_new_9">
+                                &nbsp;About
+                            </div>
+                        </div>
+                        <div class="side_panel_movel_bottom_text">
+                            <div id="side_panel_movel_new_10">
+                                &nbsp;Controls
+                            </div>
+                        </div>
+                        <div class="side_panel_movel_bottom_text">
+                            <div id="side_panel_movel_new_11">
+                                &nbsp;Exit
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="side_panel_movel_center" class="side_panel_fix_center">
-                <div class="side_panel_new_icons_text_holder">
-                    <div id="side_panel_movel_new_2">
-                        &nbsp;Live
-                    </div>
-                </div>
-                <div class="side_panel_new_icons_text_holder">
-                    <div id="side_panel_movel_new_3">
-                        &nbsp;User
-                    </div>
-                </div>
-                <div class="side_panel_new_icons_text_holder">
-                    <div id="side_panel_movel_new_4">
-                        &nbsp;Featured
-                    </div>
-                </div>
-                <div class="side_panel_new_icons_text_holder">
-                    <div id="side_panel_movel_new_5">
-                        &nbsp;Games
-                    </div>
-                </div>
-                <div class="side_panel_new_icons_text_holder">
-                    <div id="side_panel_movel_new_6">
-                        &nbsp;Videos
-                    </div>
-                </div>
-                <div class="side_panel_new_icons_text_holder">
-                    <div id="side_panel_movel_new_7">
-                        &nbsp;Clips
-                    </div>
-                </div>
-            </div>
-            <div id="side_panel_movel_bottom" class="side_panel_fix_top_bottom">
-                <div class="side_panel_movel_bottom_holder">
-                    <div class="side_panel_movel_bottom_text">
-                        <div id="side_panel_movel_new_8">
-                            &nbsp;Settings
+            <div id="side_panel_fix" class="side_panel_fix">
+                <div id="side_panel_fix_top" class="side_panel_fix_top_bottom" style="background-color: #000000;">
+                    <div id="side_panel_new_0" class="side_panel_new_icons_top">
+                        <div id="side_panel_new_0_img" class="side_panel_new_icons_top_iner">
                         </div>
                     </div>
-                    <div class="side_panel_movel_bottom_text">
-                        <div id="side_panel_movel_new_9">
-                            &nbsp;About
-                        </div>
-                    </div>
-                    <div class="side_panel_movel_bottom_text">
-                        <div id="side_panel_movel_new_10">
-                            &nbsp;Controls
-                        </div>
-                    </div>
-                    <div class="side_panel_movel_bottom_text">
-                        <div id="side_panel_movel_new_11">
-                            &nbsp;Exit
+                    <div id="side_panel_new_1" class="side_panel_new_icons_top">
+                        <div class="side_panel_new_icons_top_iner">
+                            <i class="icon icon-search"></i>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div id="side_panel_fix" class="side_panel_fix">
-            <div id="side_panel_fix_top" class="side_panel_fix_top_bottom" style="background-color: #000000;">
-                <div id="side_panel_new_0" class="side_panel_new_icons_top">
-                    <div id="side_panel_new_0_img" class="side_panel_new_icons_top_iner">
+                <div id="side_panel_fix_center" class="side_panel_fix_center" style="background-color: #000000;">
+                    <div id="side_panel_new_2" class="side_panel_new_icons">
+                        <i class="icon icon-play side_panel_new_icons_pad"></i>
                     </div>
-                </div>
-                <div id="side_panel_new_1" class="side_panel_new_icons_top">
-                    <div class="side_panel_new_icons_top_iner">
-                        <i class="icon icon-search"></i>
+                    <div id="side_panel_new_3" class="side_panel_new_icons">
+                        <i class="icon icon-users side_panel_new_icons_pad"></i>
                     </div>
-                </div>
-            </div>
-            <div id="side_panel_fix_center" class="side_panel_fix_center" style="background-color: #000000;">
-                <div id="side_panel_new_2" class="side_panel_new_icons">
-                    <i class="icon icon-play"></i>
-                </div>
-                <div id="side_panel_new_3" class="side_panel_new_icons">
-                    <i class="icon icon-users"></i>
-                </div>
-                <div id="side_panel_new_4" class="side_panel_new_icons">
-                    <i class="icon icon-star"></i>
-                </div>
-                <div id="side_panel_new_5" class="side_panel_new_icons">
-                    <i class="icon icon-gamepad"></i>
-                </div>
-                <div id="side_panel_new_6" class="side_panel_new_icons">
-                    <i class="icon icon-movie-play"></i>
-                </div>
-                <div id="side_panel_new_7" class="side_panel_new_icons">
-                    <i class="icon icon-movie"></i>
+                    <div id="side_panel_new_4" class="side_panel_new_icons">
+                        <i class="icon icon-star side_panel_new_icons_pad"></i>
+                    </div>
+                    <div id="side_panel_new_5" class="side_panel_new_icons">
+                        <i class="icon icon-gamepad side_panel_new_icons_pad"></i>
+                    </div>
+                    <div id="side_panel_new_6" class="side_panel_new_icons">
+                        <i class="icon icon-movie-play side_panel_new_icons_pad"></i>
+                    </div>
+                    <div id="side_panel_new_7" class="side_panel_new_icons">
+                        <i class="icon icon-movie side_panel_new_icons_pad"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1961,8 +1968,8 @@
         <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide" style="margin-left: -31.5%;">
             <div id="side_panel_new" style="width: 100%; position: absolute;">
                 <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
-                    <div id="dialog_loading_side_feed" class="side_panel_dialog hide" style="overflow: visible;">
-                        <i class="icon icon-circle-o-notch fa fa-spin strokedelinebig" style="font-size: 250%;"></i>
+                    <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
+                        <i class="icon icon-circle-o-notch fa fa-spin" style="font-size: 250%;"></i>
                     </div>
                     <div id="side_panel_row_0">
                         <div id="side_panel_cell0_0" style="width: 100%; display: inline-block; padding: 1%;">
