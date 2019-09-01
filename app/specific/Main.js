@@ -380,10 +380,7 @@ function Main_showExitDialog() {
 
 function Main_HideExitDialog() {
     document.body.removeEventListener("keydown", Main_ExitDialog, false);
-    if (Sidepannel_Isscreen) {
-        Sidepannel_Isscreen = false;
-        Main_SwitchScreenAction();
-    } else Main_CenterLablesStart(Sidepannel_Callback);
+    Main_SwitchScreenAction();
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
     Main_ExitCursor = 0;
@@ -1068,7 +1065,7 @@ function Main_CenterLables(event) {
                     Main_CenterLablesCleanSwitchScreen(Main_values.Main_Go);
                 } else {
                     Main_CenterLablesClean();
-                    Sidepannel_Start(Main_CenterLables);
+                    //Sidepannel_Start(Main_CenterLables);
                 }
             }
             break;

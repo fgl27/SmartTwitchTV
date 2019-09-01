@@ -177,11 +177,14 @@ function AddUser_UpdateSidepanel() {
     Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + AddUser_UsernameArray[0].logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
     Main_innerHTML('side_panel_movel_new_0', STR_SPACE + AddUser_UsernameArray[0].display_name);
 
-    var size = AddUser_UsernameArray[0].display_name.length;
+    var size = AddUser_UsernameArray[0].display_name.length,
+        doc = document.getElementById('side_panel_movel');
+
     size = (size > 8 ? size - 8 : 0);
 
-    document.getElementById('side_panel_movel').style.width = (19 + size) + "ch";
-    document.getElementById('side_panel_movel').style.marginLeft = -(14 + size) + "ch";
+    doc.style.marginLeft = -(14 + size) + "ch";
+    doc.style.width = (19 + size) + "ch";
+
 }
 
 function AddUser_UserIsSet() {

@@ -454,7 +454,7 @@ function ChannelContent_handleKeyDown(event) {
         case KEY_LEFT:
             if (!ChannelContent_cursorX) {
                 ChannelContent_removeFocus();
-                Sidepannel_Start(ChannelContent_handleKeyDown, true);
+                Sidepannel_Start(ChannelContent_handleKeyDown);
             } else if (!ChannelContent_cursorY) {
                 ChannelContent_removeFocus();
                 ChannelContent_cursorX--;

@@ -296,7 +296,7 @@ function Users_handleKeyDown(event) {
                 Users_setRemoveDialog();
             } else if (!Users_cursorX) {
                 Users_removeFocus();
-                Sidepannel_Start(Users_handleKeyDown, true);
+                Sidepannel_Start(Users_handleKeyDown);
             } else if (Main_ThumbNull((Users_cursorY), (Users_cursorX - 1), Users_ids[0])) {
                 Users_removeFocus();
                 Users_cursorX--;

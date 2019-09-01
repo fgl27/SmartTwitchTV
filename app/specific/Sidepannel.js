@@ -1,16 +1,16 @@
 //Spacing for reease maker not trow erros frm jshint
-var Sidepannel_Isscreen = false;
-var Sidepannel_Pos = 0;
+var Sidepannel_Pos = 2;
 var Sidepannel_PosFeed = 0;
 var Sidepannel_Callback;
 var Sidepannel_UpdateThumbDoc;
+var Sidepannel_IsMain = true;
 
-function Sidepannel_AddFocusEtc() {
-    Main_AddClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
+function Sidepannel_AddFocusMain() {
+    Main_AddClass('side_panel_movel_new_' + Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
-function Sidepannel_RemoveFocusEtc() {
-    Main_RemoveClass('side_panel_' + Sidepannel_Pos, 'side_panel_text_focus');
+function Sidepannel_RemoveFocusMain() {
+    Main_RemoveClass('side_panel_movel_new_' + Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
 function Sidepannel_AddFocusFeed() {
@@ -69,48 +69,45 @@ function Sidepannel_GetSize() {
 }
 
 function Sidepannel_KeyEnter() {
-    if (!Sidepannel_Pos) {
-        Sidepannel_Isscreen = false;
+    if (!Sidepannel_Pos) { //TODO USer
+        console.log('TODO USer');
+        Sidepannel_Go(Main_values.Main_Go);
+    } else if (Sidepannel_Pos === 1) {
         if (Main_values.Main_Go !== Main_Search) {
             if (!Main_values.Search_isSearching &&
                 (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
                 ChannelContent_SetChannelValue();
             Main_OpenSearch();
         } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
-    } else if (Sidepannel_Pos === 1) {
-        Sidepannel_Isscreen = false;
+    } else if (Sidepannel_Pos === 2) Sidepannel_Go(Main_Live);
+    else if (Sidepannel_Pos === 3) Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);
+    else if (Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
+    else if (Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
+    else if (Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
+    else if (Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
+    else if (Sidepannel_Pos === 8) {
         Main_showSettings();
-    } else if (Sidepannel_Pos === 2) {
+    } else if (Sidepannel_Pos === 9) {
         document.body.removeEventListener("keydown", Sidepannel_Callback, false);
         document.body.addEventListener("keydown", Screens_handleKeyControls);
         Main_showAboutDialog();
-        Sidepannel_Isscreen = false;
-    } else if (Sidepannel_Pos === 3) {
+    } else if (Sidepannel_Pos === 10) {
         document.body.removeEventListener("keydown", Sidepannel_Callback, false);
         document.body.addEventListener("keydown", Screens_handleKeyControls);
         Main_showControlsDialog();
-        Sidepannel_Isscreen = false;
-    } else if (Sidepannel_Pos === 4) Main_showExitDialog(Sidepannel_Callback);
-    else if (Sidepannel_Pos === 5) Sidepannel_Go(Main_Live);
-    else if (Sidepannel_Pos === 6) Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);
-    else if (Sidepannel_Pos === 7) Sidepannel_Go(Main_Featured);
-    else if (Sidepannel_Pos === 8) Sidepannel_Go(Main_games);
-    else if (Sidepannel_Pos === 9) Sidepannel_Go(Main_Vod);
-    else if (Sidepannel_Pos === 10) Sidepannel_Go(Main_Clip);
+    } else if (Sidepannel_Pos === 11) Main_showExitDialog(Sidepannel_Callback);
     Sidepannel_Hide();
 }
 
 function Sidepannel_RestoreScreen() {
-    if (Sidepannel_Isscreen) {
-        Sidepannel_Isscreen = false;
-        Main_SwitchScreenAction();
-    }
+    Main_SwitchScreenAction();
 }
 
 function Sidepannel_Go(GoTo) {
-    Sidepannel_Isscreen = false;
-    if (GoTo === Main_values.Main_Go) document.body.addEventListener("keydown", Sidepannel_Callback, false);
-    else {
+    if (GoTo === Main_values.Main_Go) {
+        document.body.addEventListener("keydown", Sidepannel_Callback, false);
+        Main_ReloadScreen();
+    } else {
         Main_values.Main_Before = Main_values.Main_Go;
         Main_values.Main_Go = GoTo;
         Main_ExitCurrent(Main_values.Main_Before);
@@ -118,52 +115,61 @@ function Sidepannel_Go(GoTo) {
     }
 }
 
-function Sidepannel_Start(callback, Isscreen) {
-    Main_RemoveClass('side_panel', 'side_panel_hide');
+function Sidepannel_Start(callback) {
     Sidepannel_Callback = callback;
-    Sidepannel_Isscreen = Isscreen;
     document.body.removeEventListener("keydown", Sidepannel_Callback);
-    Sidepannel_ShowFeed();
+    if (!Sidepannel_IsMain && AddUser_UserIsSet()) Sidepannel_StartFeed();
+    else Sidepannel_StartMain();
 }
 
+function Sidepannel_StartMain() {
+    Sidepannel_IsMain = true;
+    Main_ShowElement('side_panel_fix');
+    document.getElementById('side_panel_movel').style.marginLeft = '';
+    document.getElementById('side_panel_fix').style.marginLeft = '';
+    document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
+    Sidepannel_AddFocusMain();
+}
+
+function Sidepannel_StartFeed() {
+    Sidepannel_IsMain = false;
+    document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
+    Main_RemoveClass('side_panel', 'side_panel_hide');
+    Sidepannel_ShowFeed();
+    Sidepannel_HideMain(true);
+}
 
 function Sidepannel_ShowFeed() {
-    var hasuser = AddUser_UserIsSet();
+    if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
+    Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
 
-    if (hasuser) {
-        if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
-        Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
-    }
-
-    if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
+    if (!UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
 
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 
-    if (hasuser) {
-        if (Main_isElementShowing('side_panel_feed_holder')) {
-            document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
-            if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
-                Sidepannel_AddFocusFeed();
-                window.setTimeout(Sidepannel_PreloadImgs, 600);
-            }
-        } else {
-            document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
-        }
-    } else {
-        Main_HideElement('side_panel_feed_holder');
-        Main_ShowElement('side_panel_etc');
-        document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
+    if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
+        Sidepannel_AddFocusFeed();
+        window.setTimeout(Sidepannel_PreloadImgs, 600);
     }
 }
 
+function Sidepannel_HideMain(hideAll) {
+    var size = AddUser_UsernameArray[0].display_name.length;
+    size = (size > 8 ? size - 8 : 0);
+
+    if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-4.5ch';
+    document.getElementById('side_panel_movel').style.marginLeft = -((hideAll ? 20 : 14) + size) + "ch";
+}
+
 function Sidepannel_Hide() {
+    Sidepannel_HideMain();
+    Sidepannel_RemoveFocusMain();
+    Main_ShowElement('side_panel_fix');
+    document.getElementById('side_panel_fix').style.marginLeft = '';
     Main_AddClass('side_panel', 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
-    Sidepannel_RemoveFocusEtc();
-    Sidepannel_Pos = 0;
-    Sidepannel_AddFocusEtc();
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
-    document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
+    document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
 }
 
 function Sidepannel_Scroll() {
@@ -184,22 +190,15 @@ function Sidepannel_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             Sidepannel_Hide();
-            if (Sidepannel_Isscreen) {
-                Sidepannel_Isscreen = false;
-                Main_SwitchScreenAction();
-            } else {
-                document.body.addEventListener("keydown", Sidepannel_Callback, false);
-                Main_CenterLablesChange();
-            }
-            break;
-        case KEY_LEFT:
-            document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
-            document.body.addEventListener("keydown", Sidepannel_handleKeyDownEtc, false);
-            Main_HideElement('side_panel_feed_thumb');
-            Main_HideElement('side_panel_feed_holder');
-            Main_ShowElement('side_panel_etc');
+            Main_SwitchScreenAction();
             break;
         case KEY_RIGHT:
+            Main_AddClass('side_panel', 'side_panel_hide');
+            Main_HideElement('side_panel_feed_thumb');
+            document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
+            Sidepannel_StartMain();
+            break;
+        case KEY_LEFT:
             UserLiveFeed_FeedRefreshFocus();
             break;
         case KEY_UP:
@@ -222,7 +221,6 @@ function Sidepannel_handleKeyDown(event) {
             Sidepannel_Hide();
             Main_values.Play_isHost = false;
             Play_UserLiveFeedPressed = true;
-            Sidepannel_Isscreen = false;
             Main_ready(function() {
                 Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
                 doc.style.transition = '';
@@ -233,26 +231,18 @@ function Sidepannel_handleKeyDown(event) {
     }
 }
 
-function Sidepannel_handleKeyDownEtc(event) {
+function Sidepannel_handleKeyDownMain(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
-        case KEY_LEFT:
-            Sidepannel_Hide();
-            if (Sidepannel_Isscreen) {
-                Sidepannel_Isscreen = false;
-                Main_SwitchScreenAction();
-            } else {
-                document.body.addEventListener("keydown", Sidepannel_Callback, false);
-                Main_CenterLablesChange();
-            }
-            break;
         case KEY_RIGHT:
+            Sidepannel_Hide();
+            Main_SwitchScreenAction();
+            break;
+        case KEY_LEFT:
             if (AddUser_UserIsSet()) {
-                document.body.removeEventListener("keydown", Sidepannel_handleKeyDownEtc);
-                document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
-                Main_HideElement('side_panel_etc');
-                Main_ShowElement('side_panel_feed_holder');
-                Main_ShowElement('side_panel_feed_thumb');
+                document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
+                Main_ShowElement('side_panel_feed_thumb'); //TODO check if this is needed
+                Sidepannel_StartFeed();
             } else {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
                 window.setTimeout(Main_HideWarningDialog, 2000);
@@ -260,16 +250,16 @@ function Sidepannel_handleKeyDownEtc(event) {
             break;
         case KEY_UP:
             if (Sidepannel_Pos) {
-                Sidepannel_RemoveFocusEtc();
+                Sidepannel_RemoveFocusMain();
                 Sidepannel_Pos--;
-                Sidepannel_AddFocusEtc();
+                Sidepannel_AddFocusMain();
             }
             break;
         case KEY_DOWN:
-            if (Sidepannel_Pos < 10) {
-                Sidepannel_RemoveFocusEtc();
+            if (Sidepannel_Pos < 11) {
+                Sidepannel_RemoveFocusMain();
                 Sidepannel_Pos++;
-                Sidepannel_AddFocusEtc();
+                Sidepannel_AddFocusMain();
             }
             break;
         case KEY_ENTER:

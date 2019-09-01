@@ -729,6 +729,7 @@
             height: 100%;
             width: 4%;
             overflow: hidden;
+            transition: margin-left 0.5s;
         }
 
         div.side_panel_movel {
@@ -736,11 +737,7 @@
             border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
             /* 19 for 8 characters user name + 1 for it letter above 8*/
             width: 19ch;
-        }
-
-        div.side_panel_movel_hide {
-            /* 14 for 8 characters user name + 1 for it letter above 8*/
-            margin-left: -14ch;
+            transition: margin-left 0.5s;
         }
 
         div.side_panel_background_color {
@@ -1823,7 +1820,7 @@
                 </div>
             </div>
         </div>
-        <div id="side_panel_movel" class="side_panel_movel side_panel_movel_hide side_panel_background_color">
+        <div id="side_panel_movel" class="side_panel_movel side_panel_background_color">
             <div id="side_panel_movel_top" class="side_panel_fix_top_bottom">
                 <div class="side_panel_movel_top_text">
                     <div class="side_panel_icons">
