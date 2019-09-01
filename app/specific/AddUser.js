@@ -182,8 +182,8 @@ function AddUser_UpdateSidepanel() {
 
     size = (size > 8 ? size - 8 : 0);
 
-    doc.style.marginLeft = -(14 + size) + "ch";
-    doc.style.width = (19 + size) + "ch";
+    doc.style.marginLeft = 'calc(-13% - ' + size + 'ch)';
+    doc.style.width = 'calc(17% + ' + size + 'ch)';
 
 }
 
