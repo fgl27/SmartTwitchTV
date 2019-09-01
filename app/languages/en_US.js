@@ -46,7 +46,7 @@ function en_USLang() {
     STR_PLAYER_PROBLEM = "Connection failed, unable to load video content exiting...";
     STR_PAST_BROA = " Past Broadcasts";
     STR_PAST_HIGHL = " Highlights";
-    STR_CLIPS = " Clips";
+    STR_CLIPS = "Clips";
     STR_CONTENT = " Content";
     STR_STREAM_ON = "Streamed ";
     STR_DURATION = "Duration ";
@@ -61,9 +61,10 @@ function en_USLang() {
     STR_CANCEL = "Cancel";
     STR_NOT_LIVE = "Rerun";
     STR_LIVE_CHANNELS = " Channels Live";
-    STR_LIVE_HOSTS = " Hosts Live";
+    STR_LIVE_HOSTS = "Hosts";
     STR_LIVE_GAMES = " Games Live";
     STR_USER_CHANNEL = " Followed Channels";
+    STR_USER_MY_CHANNEL = "My Channel";
     STR_USER_ADD = " Add User";
     STR_USER_REMOVE = " Remove User";
     STR_USER_ERROR = "User doesn\'t exist";
@@ -203,7 +204,7 @@ function en_USLang() {
     STR_CHAT_END = "Chat: The Chat has ended!";
     STR_TIME = ": Most recent";
     STR_VIWES = ": Most views";
-    STR_NOKEY_VIDEO_WARN = "Set an authentication key to be able to see followed videos";
+    STR_NOKEY_VIDEO_WARN = "Set an user authentication key to be able to see followed videos";
     STR_SWITCH_TYPE = "Switch: Most recent or views";
     STR_ENABLE = "Enable";
     STR_DISABLE = "Disable";
@@ -291,10 +292,11 @@ function en_USLang() {
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
     STR_SINGLE_EXIT = "Single return key press";
     STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key return click";
-    STR_USER_MY_CHANNEL = "My Channel";
     STR_NOW_LIVE = "Now Live";
     STR_NOW_LIVE_SHOW = "Show Now Live notification";
     STR_NOW_DURATION = "Now Live notification duration in seconds";
     STR_GLOBAL_FONT = "Global app font size offset";
     STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited";
+    STR_GO_BACK = "Go back";
+    STR_USER_MODE = "User Menu";
 }

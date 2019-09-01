@@ -4,6 +4,7 @@ var Sidepannel_PosFeed = 0;
 var Sidepannel_Callback;
 var Sidepannel_UpdateThumbDoc;
 var Sidepannel_IsMain = true;
+var Sidepannel_IsUser = false;
 
 function Sidepannel_AddFocusMain() {
     Main_AddClass('side_panel_movel_new_' + Sidepannel_Pos, 'side_panel_new_icons_text');
@@ -70,9 +71,48 @@ function Sidepannel_GetSize() {
     return document.getElementById('side_panel_holder').getElementsByClassName('side_panel_feed').length;
 }
 
-function Sidepannel_KeyEnter() {
+function Sidepannel_KeyEnterUser() {
+
+    if (Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
+        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
+        window.setTimeout(Main_HideWarningDialog, 5000);
+        return;
+    }
+
+    if (Sidepannel_Pos === 2) {
+        Sidepannel_IsUser = false;
+        Sidepannel_SetDefaultLables();
+    } else if (Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
+    else if (Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
+    else if (Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
+    else if (Sidepannel_Pos === 6) Sidepannel_Go(Main_UserVod);
+    else if (Sidepannel_Pos === 7) Sidepannel_Go(Main_UserChannels);
+    else if (Sidepannel_Pos === 8) {
+        Main_values.Main_selectedChannel_id = AddUser_UsernameArray[Main_values.Users_Position].id;
+        Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[Main_values.Users_Position].display_name ? AddUser_UsernameArray[Main_values.Users_Position].display_name : AddUser_UsernameArray[Main_values.Users_Position].name;
+        Main_values.Main_selectedChannel = AddUser_UsernameArray[Main_values.Users_Position].name;
+
+        Main_values.Main_BeforeChannel = Main_values.Main_Go;
+        Main_values.Main_Go = Main_ChannelContent;
+        Main_values.Main_BeforeChannelisSet = true;
+        AddCode_IsFallowing = false;
+        ChannelContent_UserChannels = false;
+        Main_ExitCurrent(Main_values.Main_BeforeChannel);
+        Main_SwitchScreen();
+    } else Sidepannel_KeyEnterBase();
+
+    if (Sidepannel_Pos !== 2) Sidepannel_Hide();
+    else {
+        Sidepannel_RemoveFocusMain();
+        Sidepannel_Pos++;
+        Sidepannel_AddFocusMain();
+    }
+}
+
+function Sidepannel_KeyEnterBase() {
+
     if (!Sidepannel_Pos) { //TODO USer
-        console.log('TODO USer');
+        console.log('TODO USer add switch etc');
         Sidepannel_Go(Main_values.Main_Go);
     } else if (Sidepannel_Pos === 1) {
         if (Main_values.Main_Go !== Main_Search) {
@@ -81,24 +121,42 @@ function Sidepannel_KeyEnter() {
                 ChannelContent_SetChannelValue();
             Main_OpenSearch();
         } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
-    } else if (Sidepannel_Pos === 2) Sidepannel_Go(Main_Live);
-    else if (Sidepannel_Pos === 3) Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);
-    else if (Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
-    else if (Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
-    else if (Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
-    else if (Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
-    else if (Sidepannel_Pos === 8) {
-        Main_showSettings();
     } else if (Sidepannel_Pos === 9) {
-        document.body.removeEventListener("keydown", Sidepannel_Callback, false);
-        document.body.addEventListener("keydown", Screens_handleKeyControls);
-        Main_showAboutDialog();
+        Main_showSettings();
     } else if (Sidepannel_Pos === 10) {
         document.body.removeEventListener("keydown", Sidepannel_Callback, false);
         document.body.addEventListener("keydown", Screens_handleKeyControls);
+        Main_showAboutDialog();
+    } else if (Sidepannel_Pos === 11) {
+        document.body.removeEventListener("keydown", Sidepannel_Callback, false);
+        document.body.addEventListener("keydown", Screens_handleKeyControls);
         Main_showControlsDialog();
-    } else if (Sidepannel_Pos === 11) Main_showExitDialog(Sidepannel_Callback);
-    Sidepannel_Hide();
+    } else if (Sidepannel_Pos === 12) Main_showExitDialog(Sidepannel_Callback);
+
+}
+
+function Sidepannel_KeyEnter() {
+    if (Sidepannel_IsUser) {
+        Sidepannel_KeyEnterUser();
+        return;
+    }
+
+    if (Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
+    else if (Sidepannel_Pos === 4) {
+        //TODO add a proper add user thing
+        Sidepannel_SetUserLables();
+    } else if (Sidepannel_Pos === 5) Sidepannel_Go(Main_Featured);
+    else if (Sidepannel_Pos === 6) Sidepannel_Go(Main_games);
+    else if (Sidepannel_Pos === 7) Sidepannel_Go(Main_Vod);
+    else if (Sidepannel_Pos === 8) Sidepannel_Go(Main_Clip);
+    else Sidepannel_KeyEnterBase();
+
+    if (Sidepannel_Pos !== 4) Sidepannel_Hide();
+    else {
+        Sidepannel_RemoveFocusMain();
+        Sidepannel_Pos--;
+        Sidepannel_AddFocusMain();
+    }
 }
 
 function Sidepannel_RestoreScreen() {
@@ -161,7 +219,7 @@ function Sidepannel_HideMain(hideAll) {
     size = (size > 8 ? size - 8 : 0);
 
     if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-4%';
-    document.getElementById('side_panel_movel').style.marginLeft = marginLeft = 'calc(-' + (hideAll ? 17.5 : 13) + '% - ' + size + 'ch)'; //-((hideAll ? 19.5 : 13.5) + size) + "ch";
+    document.getElementById('side_panel_movel').style.marginLeft = 'calc(-' + (hideAll ? 17.5 : 13) + '% - ' + size + 'ch)';
 }
 
 function Sidepannel_Hide() {
@@ -178,8 +236,9 @@ function Sidepannel_Hide() {
 
 function Sidepannel_SetTopOpacity(Main_Go) {
     Sidepannel_Pos = Sidepannel_SetTopOpacityGetpos(Main_Go);
+    if (!Sidepannel_IsUser && Sidepannel_Pos === 2) Sidepannel_Pos++;
 
-    for (var i = 1; i < 8; i++) {
+    for (var i = 1; i < 9; i++) {
         if (i !== Sidepannel_Pos) document.getElementById('side_panel_new_' + i).style.opacity = '0.5';
     }
 }
@@ -197,8 +256,71 @@ function Sidepannel_SetTopOpacityGetpos(Main_Go) {
 }
 
 function Sidepannel_UnSetTopOpacity() {
-    for (var i = 1; i < 8; i++)
+    for (var i = 1; i < 9; i++)
         document.getElementById('side_panel_new_' + i).style.opacity = '';
+}
+
+function Sidepannel_SetUserLables() {
+    //Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);
+    Sidepannel_IsUser = true;
+
+    Main_innerHTML('side_panel_movel_user_text', STR_SPACE + STR_USER_MODE + STR_SPACE);
+    Main_ShowElement('side_panel_movel_user_text_holder');
+    Main_ShowElement('side_panel_movel_new_back');
+    Main_ShowElement('side_panel_new_2');
+
+    Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_GO_BACK);
+    Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_LIVE_HOSTS);
+    Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_GAMES);
+    Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_VIDEOS);
+    Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_CHANNELS);
+    Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_USER_MY_CHANNEL);
+
+
+    Sidepannel_SetIcons('side_panel_new_5', 'gamepad');
+    Sidepannel_SetIcons('side_panel_new_6', 'movie-play');
+    Sidepannel_SetIcons('side_panel_new_7', 'filmstrip');
+    Sidepannel_SetIcons('side_panel_new_8', 'user');
+}
+
+function Sidepannel_SetDefaultLables() {
+    Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
+
+
+    if (AddUser_UsernameArray[0]) Main_innerHTML('side_panel_movel_new_0', STR_SPACE + (AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : STR_USER_ADD));
+    else Main_innerHTML('side_panel_movel_new_0', STR_SPACE + STR_USER_ADD);
+
+    Main_HideElement('side_panel_movel_new_back');
+    Main_HideElement('side_panel_new_2');
+    Main_HideElement('side_panel_movel_user_text_holder');
+
+    Main_innerHTML('side_panel_movel_new_1', STR_SPACE + STR_SEARCH);
+
+    Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_GO_BACK);
+    Main_innerHTML('side_panel_movel_new_3', STR_SPACE + STR_LIVE);
+    Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_USER);
+    Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_FEATURED);
+    Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_GAMES);
+    Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_VIDEOS);
+    Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_CLIPS);
+
+    Main_innerHTML('side_panel_movel_new_9', STR_SPACE + STR_SETTINGS);
+    Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_ABOUT);
+    Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_CONTROLS);
+    Main_innerHTML('side_panel_movel_new_12', STR_SPACE + STR_EXIT);
+
+    Sidepannel_SetIcons('side_panel_new_1', 'search');
+    Sidepannel_SetIcons('side_panel_new_2', 'arrow-circle-left');
+    Sidepannel_SetIcons('side_panel_new_3', 'play');
+    Sidepannel_SetIcons('side_panel_new_4', 'users');
+    Sidepannel_SetIcons('side_panel_new_5', 'star');
+    Sidepannel_SetIcons('side_panel_new_6', 'gamepad');
+    Sidepannel_SetIcons('side_panel_new_7', 'movie-play');
+    Sidepannel_SetIcons('side_panel_new_8', 'movie');
+}
+
+function Sidepannel_SetIcons(div, icon) {
+    Main_innerHTML(div, '<i class="icon icon-' + icon + ' side_panel_new_icons_pad"></i>');
 }
 
 function Sidepannel_Scroll() {
@@ -281,13 +403,15 @@ function Sidepannel_handleKeyDownMain(event) {
             if (Sidepannel_Pos) {
                 Sidepannel_RemoveFocusMain();
                 Sidepannel_Pos--;
+                if (!Sidepannel_IsUser && Sidepannel_Pos === 2) Sidepannel_Pos--;
                 Sidepannel_AddFocusMain();
             }
             break;
         case KEY_DOWN:
-            if (Sidepannel_Pos < 11) {
+            if (Sidepannel_Pos < 12) {
                 Sidepannel_RemoveFocusMain();
                 Sidepannel_Pos++;
+                if (!Sidepannel_IsUser && Sidepannel_Pos === 2) Sidepannel_Pos++;
                 Sidepannel_AddFocusMain();
             }
             break;

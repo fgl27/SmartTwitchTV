@@ -1289,6 +1289,8 @@ function ScreensObj_TopLableUserInit() {
     Main_AddClass('top_bar_user', 'icon_center_focus');
     if (inUseObj.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) inUseObj.status = false;
     inUseObj.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+
+    Sidepannel_SetUserLables();
 }
 
 function ScreensObj_TopLableUserExit() {
@@ -1297,4 +1299,6 @@ function ScreensObj_TopLableUserExit() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_textContent('top_bar_user', STR_USER);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+
+    Sidepannel_SetDefaultLables();
 }

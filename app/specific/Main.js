@@ -255,6 +255,8 @@ function Main_SetStringsMain(isStarting) {
     Main_textContent('top_bar_vod', STR_VIDEOS);
     Main_textContent('top_bar_clip', STR_CLIPS);
 
+    Sidepannel_SetDefaultLables();
+
     Main_textContent("dialog_end_next_text", STR_PLAY_NEXT);
     Main_textContent("dialog_end_replay_text", STR_REPLAY);
     Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
