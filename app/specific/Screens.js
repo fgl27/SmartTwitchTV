@@ -165,6 +165,7 @@ function Screens_loadDatafail() {
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
         inUseObj.key_exit();
         Main_ShowElement('topbar');
+        Main_ShowElement('side_panel_new_holder');
     } else inUseObj.dataEnded = true;
 }
 
@@ -423,6 +424,7 @@ function Screens_loadDataSuccessFinishEnd() {
     Main_FirstRun = false;
     Main_HideLoadDialog();
     Main_ShowElement('topbar');
+    Main_ShowElement('side_panel_new_holder');
 }
 
 function Screens_addFocus(forceScroll) {
