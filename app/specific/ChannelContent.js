@@ -447,9 +447,14 @@ function ChannelContent_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 ChannelContent_removeFocus();
-                Main_CenterLablesStart(ChannelContent_handleKeyDown);
+                document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+                Main_values.Main_Go = Main_values.Main_BeforeChannel;
+                Main_values.Main_BeforeChannel = Main_Live;
+                ChannelContent_exit();
+                Sidepannel_SetDefaultLables();
+                Main_values.Main_selectedChannel_id = '';
+                Main_SwitchScreenAction();
             }
-            Sidepannel_RestoreScreen();
             break;
         case KEY_LEFT:
             if (!ChannelContent_cursorX) {

@@ -91,6 +91,11 @@ var Base_obj = {
         } else if (this.screen === Main_AGameClip || this.screen === Main_AGameVod) {
             Screens_BasicExit(Main_aGame);
             Main_SwitchScreenAction();
+        } else if (this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) {
+            Screens_BasicExit(Main_ChannelContent);
+            Main_SwitchScreenAction();
+        } else if (Main_values.Main_Go === Main_ChannelVod) {
+            Main_CenterLablesCleanSwitchScreen(Main_ChannelContent);
         } else Screens_OpenSidePanel();
     },
     concatenate: function(responseText) {

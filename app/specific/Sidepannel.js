@@ -163,7 +163,7 @@ function Sidepannel_RestoreScreen() {
 }
 
 function Sidepannel_Go(GoTo) {
-    if (GoTo == Main_values.Main_Go) document.body.addEventListener("keydown", Sidepannel_Callback, false);
+    if (GoTo === Main_values.Main_Go) document.body.addEventListener("keydown", Sidepannel_Callback, false);
     else {
         Main_values.Main_Before = Main_values.Main_Go;
         Main_values.Main_Go = GoTo;
@@ -232,7 +232,7 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {
-    Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
+    Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go] ? Sidepannel_Pos_Screens[Main_Go] : Sidepannel_Pos;
 
     for (var i = 1; i < 9; i++) {
         if (i !== Sidepannel_Pos) document.getElementById('side_panel_new_' + i).style.opacity = '0.5';
@@ -255,10 +255,10 @@ var Sidepannel_Pos_Screens = [
     3, // 12
     3, // 13
     3, // 14
-    3, // 15
-    3, // 16
-    3, // 17
-    3, // 18
+    0, // 15
+    0, // 16
+    0, // 17
+    0, // 18
     6, //Main_aGame 19
     6, //Main_AGameVod 20
     6, //Main_AGameClip 21
@@ -293,8 +293,8 @@ function Sidepannel_SetUserLables() {
 }
 
 function Sidepannel_SetDefaultLables() {
+    Sidepannel_IsUser = false;
     Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
-
 
     if (AddUser_UsernameArray[0]) Main_innerHTML('side_panel_movel_new_0', STR_SPACE + (AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : STR_USER_ADD));
     else Main_innerHTML('side_panel_movel_new_0', STR_SPACE + STR_USER_ADD);
