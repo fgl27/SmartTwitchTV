@@ -393,6 +393,7 @@ function Screens_loadDataSuccessFinish() {
                     Screens_loadDataSuccessFinishEnd();
                 });
             }
+            Sidepannel_SetTopOpacity(Main_values.Main_Go);
         } else {
             Screens_addFocus(true);
             Main_SaveValues();
@@ -630,22 +631,25 @@ function Screens_KeyLeftRight(y, x) {
         Screens_ChangeFocus(y, x);
 }
 
+function Screens_OpenSidePanel() {
+    if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+    inUseObj.key_exit(true);
+    document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    Sidepannel_Start(Screens_handleKeyDown);
+}
+
 function Screens_handleKeyDown(event) {
     if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (!inUseObj.loadingData) inUseObj.key_exit();
+            if (!inUseObj.loadingData) Screens_OpenSidePanel();
             break;
         case KEY_LEFT:
             if (inUseObj.loadingData) break;
-            if (!inUseObj.posX) {
-                if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-                inUseObj.key_exit(true);
-                document.body.removeEventListener("keydown", Screens_handleKeyDown);
-                Sidepannel_Start(Screens_handleKeyDown);
-            } else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+            if (!inUseObj.posX) Screens_OpenSidePanel();
+            else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
         case KEY_RIGHT:
             //Prevent scroll too fast out of inUseObj.Cells.length
@@ -656,11 +660,7 @@ function Screens_handleKeyDown(event) {
             else Screens_addFocus(true);
             break;
         case KEY_UP:
-            if (inUseObj.HasSwitches) {
-                if (inUseObj.posY === -1) inUseObj.key_exit();
-                else Screens_KeyUpDown(-1);
-            } else if (!inUseObj.posY) inUseObj.key_exit();
-            else Screens_KeyUpDown(-1);
+            Screens_KeyUpDown(-1);
             break;
         case KEY_DOWN:
             //Prevent scroll too fast out of inUseObj.Cells.length
