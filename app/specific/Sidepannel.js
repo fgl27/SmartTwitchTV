@@ -234,7 +234,6 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {
-    console.log('Sidepannel_SetTopOpacity ' + Main_Go);
     Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
 
     for (var i = 1; i < 9; i++) {

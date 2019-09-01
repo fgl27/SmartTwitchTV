@@ -76,6 +76,7 @@ var Base_obj = {
             Screens_removeFocusFallow();
             this.posY = 0;
         }
+
         if (this.screen === Main_aGame) {
             if (Main_values.Games_return) {
                 Main_values.Main_Go = Main_SearchGames;

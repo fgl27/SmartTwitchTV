@@ -99,6 +99,7 @@ function Screens_exit() {
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement(inUseObj.ids[10]);
     Main_HideWarningDialog();
+    Screens_ClearAnimation();
 }
 
 function Screens_StartLoad() {
@@ -569,7 +570,7 @@ function Screens_addFocusGame(y, x, idArray, forceScroll) {
 
 function Screens_ChangeFocus(y, x) {
     Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-    if (inUseObj.HasAnimateThumb) Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
+    Screens_ClearAnimation();
     inUseObj.posY += y;
     inUseObj.posX = x;
     Screens_addFocus();
@@ -601,10 +602,7 @@ function Screens_KeyUpDown(y) {
     //TODO improve this
     if (inUseObj.HasSwitches && !inUseObj.posY && y === -1 && !inUseObj.emptyContent) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-        if (inUseObj.HasAnimateThumb) {
-            window.clearInterval(this.AnimateThumbId);
-            Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
-        }
+        Screens_ClearAnimation();
         inUseObj.posY = -1;
         if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 1;
         Screens_addFocusFallow();
@@ -622,6 +620,13 @@ function Screens_KeyUpDown(y) {
     }
 }
 
+function Screens_ClearAnimation() {
+    if (inUseObj.HasAnimateThumb) {
+        window.clearInterval(inUseObj.AnimateThumbId);
+        Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
+    }
+}
+
 function Screens_KeyLeftRight(y, x) {
     if (inUseObj.HasSwitches && inUseObj.posY === -1) {
         inUseObj.posY = -1;
@@ -636,6 +641,7 @@ function Screens_KeyLeftRight(y, x) {
 
 function Screens_OpenSidePanel() {
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+    Screens_ClearAnimation();
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
     Sidepannel_Start(Screens_handleKeyDown);
 }
