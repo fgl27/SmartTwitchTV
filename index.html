@@ -1466,6 +1466,50 @@
         .side_panel_feed_img_focus {
             box-shadow: 0 0 0 0.1em #000000, 0 0 0 0.2em #FFFFFF;
         }
+
+        /*adapted from https://loading.io/css/*/
+        .loading {
+            display: inline-block;
+            position: relative;
+            width: 3em;
+            height: 3em;
+            color: #FFFFFF;
+        }
+
+        .loading div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 2.390625em;
+            height: 2.390625em;
+            margin: 0.28125em;
+            border: 0.28125em solid #000000;
+            border-radius: 50%;
+            animation: loading 0.6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #fff transparent transparent transparent;
+        }
+
+        .loading div:nth-child(1) {
+            animation-delay: -0.225s;
+        }
+
+        .loading div:nth-child(2) {
+            animation-delay: -0.15s;
+        }
+
+        .loading div:nth-child(3) {
+            animation-delay: -0.075s;
+        }
+
+        @keyframes loading {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
     <!-- jsstart this is here so release_maker can work don't remove-->
     <script src="app/general/resize.js" defer></script>
@@ -1525,7 +1569,12 @@
             <div id="scrollbar" class="scroll"></div>
         </div>
         <div id="dialog_loading" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
-            <i class="icon icon-circle-o-notch fa fa-spin strokedelinebig" style="font-size: 350%;"></i>
+            <div class="loading">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
         </div>
         <div id="main_remove_dialog" class="dialog_exit hide" style="width: 75%; margin-left: 12.5%;">
             <div id="main_dialog_remove" class="exit_text"></div>
@@ -1808,7 +1857,12 @@
                 </div>
             </div>
             <div id="dialog_loading_play" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
-                <i class="icon icon-circle-o-notch fa fa-spin strokedelinebig" style="font-size: 350%;"></i>
+                <div class="loading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 21%;">
                 <div id="play_dialog_exit_text" class="strokedelinebig" style="font-size: 200%;"></div>
@@ -1950,7 +2004,12 @@
             <div id="icon_feed_refresh" class="dialogs_feed" style="bottom: 22%; text-align: left; margin-left: 1%;">
             </div>
             <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 2.5%; overflow: visible;">
-                <i class="icon icon-circle-o-notch fa fa-spin strokedelinebig" style="font-size: 350%;"></i>
+                <div class="loading">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
             <div id="user_feed_scroll" class="user_feed_scroll">
             </div>
@@ -1969,7 +2028,12 @@
             <div id="side_panel_new" style="width: 100%; position: absolute;">
                 <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
                     <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
-                        <i class="icon icon-circle-o-notch fa fa-spin" style="font-size: 250%;"></i>
+                        <div class="loading">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
                     </div>
                     <div id="side_panel_row_0">
                         <div id="side_panel_cell0_0" style="width: 100%; display: inline-block; padding: 1%;">
