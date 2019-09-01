@@ -1795,6 +1795,7 @@ function Play_handleKeyUpClear() {
 }
 
 function Play_handleKeyDown(e) {
+    console.log('Play_handleKeyDown ' + e.keyCode);
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
             case KEY_RETURN:
