@@ -132,7 +132,7 @@ function Settings_exit() {
     document.getElementById('top_bar_vod').style.display = 'inline-block';
     document.getElementById('top_bar_clip').style.display = 'inline-block';
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
     Main_HideElement('settings_holder');
 }
 

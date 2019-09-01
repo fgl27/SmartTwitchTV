@@ -1,5 +1,7 @@
 //Variable initialization
 var inUseObj = {};
+var Screens_clear = false;
+var Screens_KeyEnterID;
 
 //Initiate all Main screens obj and they properties
 function Screens_InitScreens() {
@@ -646,6 +648,20 @@ function Screens_OpenSidePanel() {
     Sidepannel_Start(Screens_handleKeyDown);
 }
 
+function Screens_handleKeyUp(e) {
+    if (e.keyCode === KEY_ENTER) {
+        Play_handleKeyUpClear();
+        if (!Screens_clear) inUseObj.key_play();
+    }
+}
+
+function Play_handleKeyUpClear() {
+    window.clearTimeout(Screens_KeyEnterID);
+    document.body.removeEventListener("keyup", Screens_handleKeyUp);
+    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+}
+
+
 function Screens_handleKeyDown(event) {
     if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
@@ -681,7 +697,10 @@ function Screens_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            inUseObj.key_play();
+            document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
+            document.body.addEventListener("keyup", Screens_handleKeyUp, false);
+            Screens_clear = false;
+            Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 1000);
             break;
         case KEY_PG_DOWN:
         case KEY_PG_UP:

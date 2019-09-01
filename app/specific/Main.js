@@ -1181,6 +1181,7 @@ function Main_RemoveKeys() {
 }
 
 function Main_ReloadScreen() {
+    Screens_clear = true;
     window.clearTimeout(Main_SetTopOpacityId);
     Main_UnSetTopOpacity();
 
