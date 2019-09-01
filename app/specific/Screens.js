@@ -375,6 +375,7 @@ function Screens_loadDataSuccessFinish() {
                         Main_FirstRun = false;
                         Main_HideLoadDialog();
                     }
+                    Sidepannel_SetTopOpacity(Main_values.Main_Go);
                 });
             } else {
                 Main_ready(function() {
@@ -394,7 +395,6 @@ function Screens_loadDataSuccessFinish() {
                     Screens_loadDataSuccessFinishEnd();
                 });
             }
-            Sidepannel_SetTopOpacity(Main_values.Main_Go);
         } else {
             Screens_addFocus(true);
             Main_SaveValues();
@@ -425,6 +425,7 @@ function Screens_loadDataSuccessFinishEnd() {
     Main_HideLoadDialog();
     Main_ShowElement('topbar');
     Main_ShowElement('side_panel_new_holder');
+    Sidepannel_SetTopOpacity(Main_values.Main_Go);
 }
 
 function Screens_addFocus(forceScroll) {
@@ -635,7 +636,6 @@ function Screens_KeyLeftRight(y, x) {
 
 function Screens_OpenSidePanel() {
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-    inUseObj.key_exit(true);
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
     Sidepannel_Start(Screens_handleKeyDown);
 }
@@ -646,7 +646,7 @@ function Screens_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (!inUseObj.loadingData) Screens_OpenSidePanel();
+            if (!inUseObj.loadingData) inUseObj.key_exit();
             break;
         case KEY_LEFT:
             if (inUseObj.loadingData) break;

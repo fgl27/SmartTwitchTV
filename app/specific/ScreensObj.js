@@ -68,20 +68,29 @@ var Base_obj = {
     set_ThumbSize: function() {
         this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 0.3%;';
     },
-    key_exit: function(CenterLables) {
-        if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-        else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-        else {
-            if (Main_ThumbNull(this.posY, this.posX, this.ids[0])) {
-                Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-            } else if (this.posY < 0) {
-                Screens_removeFocusFallow();
-                this.posY = 0;
-            }
-            if (!CenterLables) Main_CenterLablesStart(Screens_handleKeyDown);
+    key_exit: function() {
+
+        if (Main_ThumbNull(this.posY, this.posX, this.ids[0])) {
+            Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+        } else if (this.posY < 0) {
+            Screens_removeFocusFallow();
+            this.posY = 0;
         }
-        Sidepannel_RestoreScreen();
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        if (this.screen === Main_aGame) {
+            if (Main_values.Games_return) {
+                Main_values.Main_Go = Main_SearchGames;
+                Main_values.Main_gameSelected = Main_values.gameSelectedOld;
+                Main_values.gameSelectedOld = null;
+            } else {
+                Main_values.Main_Go = Main_values.Main_BeforeAgame;
+                Main_values.Main_BeforeAgame = Main_games;
+            }
+            Screens_BasicExit(Main_games);
+            Main_SwitchScreenAction();
+        } else if (this.screen === Main_AGameClip || this.screen === Main_AGameVod) {
+            Screens_BasicExit(Main_aGame);
+            Main_SwitchScreenAction();
+        } else Screens_OpenSidePanel();
     },
     concatenate: function(responseText) {
         if (this.data) {
@@ -239,6 +248,7 @@ function ScreensObj_InitVod() {
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 4;
             Main_AddClass('top_bar_vod', 'icon_center_focus');
+            Sidepannel_SetDefaultLables();
             this.SetPeriod();
         },
         label_exit: function() {
@@ -499,6 +509,7 @@ function ScreensObj_InitLive() {
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 0;
             Main_AddClass('top_bar_live', 'icon_center_focus');
+            Sidepannel_SetDefaultLables();
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_live', 'icon_center_focus');
@@ -777,6 +788,7 @@ function ScreensObj_InitFeatured() {
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 2;
             Main_AddClass('top_bar_featured', 'icon_center_focus');
+            Sidepannel_SetDefaultLables();
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_featured', 'icon_center_focus');
@@ -905,6 +917,7 @@ function ScreensObj_InitClip() {
             this.SetPeriod();
             Main_AddClass('top_bar_clip', 'icon_center_focus');
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
+            Sidepannel_SetDefaultLables();
         },
         label_exit: function() {
             Main_RestoreTopLabel();
@@ -1045,6 +1058,7 @@ function ScreensObj_InitGame() {
         label_init: function() {
             Main_values.Main_CenterLablesVectorPos = 3;
             Main_AddClass('top_bar_game', 'icon_center_focus');
+            Sidepannel_SetDefaultLables();
         },
         label_exit: function() {
             Main_RemoveClass('top_bar_game', 'icon_center_focus');
@@ -1274,6 +1288,8 @@ function ScreensObj_TopLableAgameInit() {
         inUseObj.gameSelected !== Main_values.Main_gameSelected) inUseObj.status = false;
     inUseObj.gameSelected = Main_values.Main_gameSelected;
     Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+
+    Sidepannel_SetDefaultLables();
 }
 
 function ScreensObj_TopLableAgameExit() {
@@ -1299,6 +1315,4 @@ function ScreensObj_TopLableUserExit() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
     Main_textContent('top_bar_user', STR_USER);
     Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-
-    Sidepannel_SetDefaultLables();
 }
