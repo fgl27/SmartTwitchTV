@@ -644,7 +644,7 @@ function Screens_handleKeyDown(event) {
                 if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
                 inUseObj.key_exit(true);
                 document.body.removeEventListener("keydown", Screens_handleKeyDown);
-                Sidepannel_Start(Screens_handleKeyDown, true);
+                Sidepannel_Start(Screens_handleKeyDown);
             } else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
         case KEY_RIGHT:
