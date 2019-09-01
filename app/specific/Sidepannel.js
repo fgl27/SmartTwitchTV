@@ -233,7 +233,7 @@ function Sidepannel_SetTopOpacity(Main_Go) {
     if (Sidepannel_Pos_Screens[Main_Go]) Main_values.Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
 
     for (var i = 1; i < 9; i++) {
-        if (i !== Main_values.Sidepannel_Pos) document.getElementById('side_panel_new_' + i).style.opacity = '0.5';
+        if (i !== Main_values.Sidepannel_Pos) document.getElementById('side_panel_new_' + i).style.opacity = '0.25';
         else document.getElementById('side_panel_new_' + i).style.opacity = '';
     }
 }
