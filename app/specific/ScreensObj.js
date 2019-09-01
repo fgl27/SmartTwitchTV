@@ -86,7 +86,7 @@ var Base_obj = {
                 Main_values.Main_Go = Main_values.Main_BeforeAgame;
                 Main_values.Main_BeforeAgame = Main_games;
             }
-            Screens_BasicExit(Main_games);
+            Screens_BasicExit(Main_values.Main_Go);
             Main_SwitchScreenAction();
         } else if (this.screen === Main_AGameClip || this.screen === Main_AGameVod) {
             Screens_BasicExit(Main_aGame);
