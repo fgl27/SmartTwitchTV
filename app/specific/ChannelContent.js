@@ -33,6 +33,13 @@ function ChannelContent_init() {
     Main_textContent('top_bar_game', STR_CHANNEL_CONT);
     document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
+
+    if (Main_values.Main_BeforeChannel === Main_UserChannels || Main_values.My_channel) {
+        Main_values.Sidepannel_Pos = Main_values.My_channel ? 8 : 7;
+        Sidepannel_SetUserLables();
+        Sidepannel_SetTopOpacity(Main_values.Main_Go);
+    }
+
     if (ChannelContent_status) {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement(ChannelContent_ids[10]);
@@ -46,6 +53,7 @@ function ChannelContent_exit() {
     Main_RestoreTopLabel();
     document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
     Main_HideElement(ChannelContent_ids[10]);
+    Main_values.My_channel = false;
 }
 
 function ChannelContent_StartLoad() {

@@ -378,7 +378,6 @@ function Screens_loadDataSuccessFinish() {
                         Main_FirstRun = false;
                         Main_HideLoadDialog();
                     }
-                    Sidepannel_SetTopOpacity(Main_values.Main_Go);
                 });
             } else {
                 Main_ready(function() {
@@ -428,6 +427,10 @@ function Screens_loadDataSuccessFinishEnd() {
     Main_HideLoadDialog();
     Main_ShowElement('topbar');
     Main_ShowElement('side_panel_new_holder');
+
+    if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLables();
+    else Sidepannel_SetDefaultLables();
+
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
 }
 

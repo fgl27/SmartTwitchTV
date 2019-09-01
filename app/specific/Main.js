@@ -64,6 +64,9 @@ var Main_values = {
     "ChatBackground": 10,
     "IsRerun": false,
     "Main_selectedChannelPartner": false,
+    "Sidepannel_Pos": 2,
+    "Sidepannel_IsUser": false,
+    "My_channel": false,
 };
 
 var Main_LastClickFinish = true;
