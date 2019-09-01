@@ -110,7 +110,6 @@ function Sidepannel_KeyEnterUser() {
 }
 
 function Sidepannel_KeyEnterBase() {
-
     if (!Sidepannel_Pos) { //TODO USer
         console.log('TODO USer add switch etc');
         Sidepannel_Go(Main_values.Main_Go);
@@ -235,25 +234,38 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {
-    Sidepannel_Pos = Sidepannel_SetTopOpacityGetpos(Main_Go);
-    if (!Sidepannel_IsUser && Sidepannel_Pos === 2) Sidepannel_Pos++;
+    console.log('Sidepannel_SetTopOpacity ' + Main_Go);
+    Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
 
     for (var i = 1; i < 9; i++) {
         if (i !== Sidepannel_Pos) document.getElementById('side_panel_new_' + i).style.opacity = '0.5';
     }
 }
 
-function Sidepannel_SetTopOpacityGetpos(Main_Go) {
-    if (Main_Go < 7) return Main_Go + 1;
-    else if (Main_Go === Main_UserLive || Main_Go === Main_UserHost ||
-        Main_Go === Main_usergames || Main_Go === Main_UserLive || Main_Go === Main_UserChannels ||
-        Main_Go === Main_UserVod) return 3;
-    else if (Main_Go === Main_SearchGames || Main_Go === Main_SearchLive ||
-        Main_Go === Main_SearchChannels) return 1;
-    else if (Main_Go === Main_aGame || Main_Go === Main_AGameVod || Main_Go === Main_AGameClip) return 5;
-
-    return Sidepannel_Pos;
-}
+var Sidepannel_Pos_Screens = [
+    1, //Main_Search 0
+    3, //Main_Live 1
+    4, //Main_Users 2
+    5, //Main_Featured 3
+    6, //Main_games 4
+    7, //Main_Vod 5
+    8, //Main_Clip 6
+    3, //Main_UserLive 7
+    4, //Main_UserHost 8
+    5, //Main_usergames 9
+    6, //Main_UserVod 10
+    7, //Main_UserChannels 11
+    3, // 12
+    3, // 13
+    3, // 14
+    3, // 15
+    3, // 16
+    3, // 17
+    3, // 18
+    6, //Main_aGame 19
+    6, //Main_AGameVod 20
+    6, //Main_AGameClip 21
+];
 
 function Sidepannel_UnSetTopOpacity() {
     for (var i = 1; i < 9; i++)
@@ -264,7 +276,7 @@ function Sidepannel_SetUserLables() {
     //Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);
     Sidepannel_IsUser = true;
 
-    Main_innerHTML('side_panel_movel_user_text', STR_SPACE + STR_USER_MODE + STR_SPACE);
+    Main_innerHTML('side_panel_movel_user_text', STR_SPACE + STR_USER_MENU + STR_SPACE);
     Main_ShowElement('side_panel_movel_user_text_holder');
     Main_ShowElement('side_panel_movel_new_back');
     Main_ShowElement('side_panel_new_2');
@@ -320,7 +332,8 @@ function Sidepannel_SetDefaultLables() {
 }
 
 function Sidepannel_SetIcons(div, icon) {
-    Main_innerHTML(div, '<i class="icon icon-' + icon + ' side_panel_new_icons_pad"></i>');
+    if (icon) Main_innerHTML(div, '<i class="icon icon-' + icon + ' side_panel_new_icons_pad"></i>');
+    else Main_textContent(div, '');
 }
 
 function Sidepannel_Scroll() {
