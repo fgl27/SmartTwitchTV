@@ -14,7 +14,8 @@ function Sidepannel_RemoveFocusMain() {
 }
 
 function Sidepannel_AddFocusFeed() {
-    Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_new_icons_text');
+    //Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_new_icons_text');
+    Main_AddClass(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed, 'side_panel_feed_img_focus');
     Sidepannel_Scroll();
     Sidepannel_UpdateThumb();
 }
@@ -24,7 +25,8 @@ function Sidepannel_isShowing() {
 }
 
 function Sidepannel_RemoveFocusFeed() {
-    Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_new_icons_text');
+    //Main_RemoveClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_new_icons_text');
+    Main_RemoveClass(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed, 'side_panel_feed_img_focus');
 }
 
 function Sidepannel_UpdateThumb() {
@@ -158,8 +160,8 @@ function Sidepannel_HideMain(hideAll) {
     var size = AddUser_UsernameArray[0].display_name.length;
     size = (size > 8 ? size - 8 : 0);
 
-    if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-4.5ch';
-    document.getElementById('side_panel_movel').style.marginLeft = -((hideAll ? 20 : 14) + size) + "ch";
+    if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-4%';
+    document.getElementById('side_panel_movel').style.marginLeft = marginLeft = 'calc(-' + (hideAll ? 17.5 : 13) + '% - ' + size + 'ch)'; //-((hideAll ? 19.5 : 13.5) + size) + "ch";
 }
 
 function Sidepannel_Hide() {
@@ -201,7 +203,7 @@ function Sidepannel_UnSetTopOpacity() {
 
 function Sidepannel_Scroll() {
     var value = '1%', //default
-        center = 7;
+        center = 6;
 
     if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))

@@ -733,15 +733,13 @@
         }
 
         div.side_panel_movel {
-            border-right: 0.135em solid;
-            border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
             /* 19 for 8 characters user name + 1 for it letter above 8*/
             width: 19ch;
             transition: margin-left 0.5s;
         }
 
         div.side_panel_background_color {
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: rgba(0, 0, 0, 0.9);
         }
 
         div.side_panel_fix_top_bottom {
@@ -785,7 +783,7 @@
         }
 
         div.side_panel_new_icons_text {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.25);
         }
 
         div.side_panel_movel_top_text {
@@ -819,14 +817,17 @@
 
         div.side_panel {
             position: absolute;
-            border-right: 0.135em solid;
-            border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
             bottom: 0;
             left: -1%;
             height: 100%;
-            width: 22%;
+            width: 25.5%;
             transition: margin-left 0.5s;
             overflow: hidden;
+        }
+
+        div.side_panel_border {
+            border-right: 0.12em solid;
+            border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
         }
 
         div.side_panel_hide {
@@ -1448,12 +1449,16 @@
             text-overflow: ellipsis;
             overflow: hidden;
             font-family: 'Roboto-Bold';
-            font-size: 78%;
+            font-size: 84%;
         }
 
         div.side_panel_new_game {
             font-family: 'Roboto';
-            font-size: 64%;
+            font-size: 70%;
+        }
+
+        .side_panel_feed_img_focus {
+            box-shadow: 0 0 0 0.1em #000000, 0 0 0 0.2em #FFFFFF;
         }
     </style>
     <!-- jsstart this is here so release_maker can work don't remove-->
@@ -1820,7 +1825,7 @@
                 </div>
             </div>
         </div>
-        <div id="side_panel_movel" class="side_panel_movel side_panel_background_color">
+        <div id="side_panel_movel" class="side_panel_movel side_panel_border side_panel_background_color">
             <div id="side_panel_movel_top" class="side_panel_fix_top_bottom">
                 <div class="side_panel_movel_top_text">
                     <div class="side_panel_icons">
@@ -1952,7 +1957,7 @@
                 <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
             </div>
         </div>
-        <div id="side_panel" class="side_panel side_panel_background_color side_panel_hide" style="margin-left: -31.5%;">
+        <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide" style="margin-left: -31.5%;">
             <div id="side_panel_new" style="width: 100%; position: absolute;">
                 <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
                     <div id="dialog_loading_side_feed" class="side_panel_dialog hide" style="overflow: visible;">
