@@ -37,6 +37,7 @@ function calculateFontSize() {
         setWidthHeight(document.getElementsByClassName(classes[i]), scaledWidth, currentHeight);
 
     //Some only need width changes as Height is not base on screen size
+    document.getElementById('dialog_warning').style.width = (scaledWidth * 0.6) + 'px';
     document.getElementById('topbar').style.width = scaledWidth + 'px';
     document.getElementById('settings_holder').style.width = scaledWidth + 'px';
 }
