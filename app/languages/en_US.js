@@ -37,7 +37,6 @@ function en_USLang() {
     STR_CHANNELS = "Channels";
     STR_CHANNEL = "Channel";
     STR_GOBACK_START = "Back to previous screen: Back key";
-    STR_TWICE = " twice";
     STR_IS_OFFLINE = " has ended";
     STR_IS_SUB_ONLY = "This video is only available to subscribers.";
     STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
