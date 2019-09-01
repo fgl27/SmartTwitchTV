@@ -129,6 +129,7 @@ function Sidepannel_StartMain() {
     document.getElementById('side_panel_fix').style.marginLeft = '';
     document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
     Sidepannel_AddFocusMain();
+    Sidepannel_UnSetTopOpacity();
 }
 
 function Sidepannel_StartFeed() {
@@ -164,12 +165,38 @@ function Sidepannel_HideMain(hideAll) {
 function Sidepannel_Hide() {
     Sidepannel_HideMain();
     Sidepannel_RemoveFocusMain();
+    Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_ShowElement('side_panel_fix');
     document.getElementById('side_panel_fix').style.marginLeft = '';
     Main_AddClass('side_panel', 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
+}
+
+function Sidepannel_SetTopOpacity(Main_Go) {
+    Sidepannel_Pos = Sidepannel_SetTopOpacityGetpos(Main_Go);
+
+    for (var i = 1; i < 8; i++) {
+        if (i !== Sidepannel_Pos) document.getElementById('side_panel_new_' + i).style.opacity = '0.5';
+    }
+}
+
+function Sidepannel_SetTopOpacityGetpos(Main_Go) {
+    if (Main_Go < 7) return Main_Go + 1;
+    else if (Main_Go === Main_UserLive || Main_Go === Main_UserHost ||
+        Main_Go === Main_usergames || Main_Go === Main_UserLive || Main_Go === Main_UserChannels ||
+        Main_Go === Main_UserVod) return 3;
+    else if (Main_Go === Main_SearchGames || Main_Go === Main_SearchLive ||
+        Main_Go === Main_SearchChannels) return 1;
+    else if (Main_Go === Main_aGame || Main_Go === Main_AGameVod || Main_Go === Main_AGameClip) return 5;
+
+    return Sidepannel_Pos;
+}
+
+function Sidepannel_UnSetTopOpacity() {
+    for (var i = 1; i < 8; i++)
+        document.getElementById('side_panel_new_' + i).style.opacity = '';
 }
 
 function Sidepannel_Scroll() {

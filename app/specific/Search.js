@@ -41,6 +41,7 @@ function Search_exit() {
     document.getElementById('top_bar_clip').style.display = 'inline-block';
     Main_SearchInput.value = '';
     Main_HideElement('search_scroll');
+    Sidepannel_SetTopOpacity(Main_values.Main_Go);
 }
 
 function Search_loadData() {
