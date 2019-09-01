@@ -23,9 +23,9 @@
 }
 .fa {
   display: inline-block;
-  font: normal normal normal 14px/1 "icons";
+  font: normal normal normal 0 "icons";
   font-size: inherit;
-  text-rendering: auto;
+  text-rendering: optimizeLegibility;
 }
 .fa-spin {
   animation: fa-spin 1s infinite linear;
