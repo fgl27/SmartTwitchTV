@@ -652,13 +652,14 @@ function Screens_OpenSidePanel() {
 }
 
 function Screens_handleKeyUp(e) {
+    console.log('Screens_handleKeyUp ' + e.keyCode);
     if (e.keyCode === KEY_ENTER) {
-        Play_handleKeyUpClear();
+        Screens_handleKeyUpClear();
         if (!Screens_clear) inUseObj.key_play();
     }
 }
 
-function Play_handleKeyUpClear() {
+function Screens_handleKeyUpClear() {
     window.clearTimeout(Screens_KeyEnterID);
     document.body.removeEventListener("keyup", Screens_handleKeyUp);
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
@@ -666,6 +667,7 @@ function Play_handleKeyUpClear() {
 
 
 function Screens_handleKeyDown(event) {
+    console.log('Screens_handleKeyDown ' + event.keyCode);
     if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
