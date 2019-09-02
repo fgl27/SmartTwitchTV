@@ -64,7 +64,7 @@ function en_USLang() {
     STR_LIVE_GAMES = " Games Live";
     STR_USER_CHANNEL = " Followed Channels";
     STR_USER_MY_CHANNEL = "My Channel";
-    STR_USER_ADD = " Add User";
+    STR_USER_ADD = "Add User";
     STR_USER_REMOVE = " Remove User";
     STR_USER_ERROR = "User doesn\'t exist";
     STR_USER_HOSTING = " hosting ";
