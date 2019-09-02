@@ -237,7 +237,7 @@ function Main_initWindows() {
                 Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
                 Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
             });
-        }, (Main_IsNotBrowser && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 350 : 0);
+        }, (Main_IsNotBrowser && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 850 : 0);
     });
 }
 

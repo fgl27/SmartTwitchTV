@@ -652,7 +652,6 @@ function Screens_OpenSidePanel() {
 }
 
 function Screens_handleKeyUp(e) {
-    console.log('Screens_handleKeyUp ' + e.keyCode);
     if (e.keyCode === KEY_ENTER) {
         Screens_handleKeyUpClear();
         if (!Screens_clear) inUseObj.key_play();
@@ -667,7 +666,6 @@ function Screens_handleKeyUpClear() {
 
 
 function Screens_handleKeyDown(event) {
-    console.log('Screens_handleKeyDown ' + event.keyCode);
     if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
