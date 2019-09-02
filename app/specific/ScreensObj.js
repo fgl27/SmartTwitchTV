@@ -101,8 +101,6 @@ var Base_obj = {
         } else if (this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) {
             Screens_BasicExit(Main_ChannelContent);
             Main_SwitchScreenAction();
-        } else if (Main_values.Main_Go === Main_ChannelVod) {
-            Main_CenterLablesCleanSwitchScreen(Main_ChannelContent);
         } else Screens_OpenSidePanel();
     },
     concatenate: function(responseText) {
@@ -259,22 +257,15 @@ function ScreensObj_InitVod() {
             document.getElementById(this.table).appendChild(this.row);
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 4;
-            Main_AddClass('top_bar_vod', 'icon_center_focus');
             Sidepannel_SetDefaultLables();
             Main_values.Sidepannel_IsUser = false;
             Sidepannel_SetTopOpacity(this.screen);
             this.SetPeriod();
         },
-        label_exit: function() {
-            Main_textContent('top_bar_vod', STR_VIDEOS);
-            Main_RemoveClass('top_bar_vod', 'icon_center_focus');
-        },
         SetPeriod: function() {
-            Main_innerHTML('top_bar_vod', STR_VIDEOS +
-                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]));
-
             Main_setItem('vod_periodPos', this.periodPos);
+            ScreensObj_SetTopLable(STR_VIDEOS + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
+                Main_Periods[this.periodPos - 1]);
         },
     }, Base_obj);
 
@@ -323,14 +314,12 @@ function ScreensObj_InitChannelVod() {
             if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
             if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
             this.lastselectedChannel = Main_values.Main_selectedChannel;
-            Main_values.Main_CenterLablesVectorPos = 1;
             Main_cleanTopLabel();
             Main_ShowElement('label_side_panel');
-            Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
             this.SetPeriod();
         },
         SetPeriod: function() {
-            Main_textContent('top_bar_game', this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname + ": " + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA));
         },
         label_exit: function() {
             Main_RestoreTopLabel();
@@ -397,11 +386,9 @@ function ScreensObj_InitAGameVod() {
         },
         label_exit: ScreensObj_TopLableAgameExit,
         SetPeriod: function() {
-            Main_innerHTML('top_bar_game', STR_AGAME +
-                Main_UnderCenter((this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                    Main_Periods[this.periodPos - 1] + ': ' + Main_values.Main_gameSelected));
-
             Main_setItem('AGameVod_periodPos', this.periodPos);
+
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ': ' + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]);
         }
     }, Base_obj);
 
@@ -448,17 +435,13 @@ function ScreensObj_InitUserVod() {
             document.getElementById(this.table).appendChild(this.row);
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
-            Main_AddClass('top_bar_user', 'icon_center_focus');
             this.SetPeriod();
         },
-        label_exit: ScreensObj_TopLableUserExit,
         SetPeriod: function() {
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(
-                AddUser_UsernameArray[Main_values.Users_Position].name + ' ' +
-                (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_TIME : STR_VIWES)));
-
             Main_setItem('UserVod_periodPos', this.periodPos);
+
+            ScreensObj_SetTopLable(STR_USER + STR_SPACE + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
+                (this.periodPos === 1 ? STR_TIME : STR_VIWES));
         }
     }, Base_obj);
 
@@ -521,14 +504,11 @@ function ScreensObj_InitLive() {
                 (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 0;
-            Main_AddClass('top_bar_live', 'icon_center_focus');
             Sidepannel_SetDefaultLables();
             Main_values.Sidepannel_IsUser = false;
             Sidepannel_SetTopOpacity(this.screen);
-        },
-        label_exit: function() {
-            Main_RemoveClass('top_bar_live', 'icon_center_focus');
+
+            ScreensObj_SetTopLable(STR_LIVE);
         },
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
@@ -553,13 +533,13 @@ function ScreensObj_InitSearchLive() {
                 '&offset=' + this.offset;
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
             Main_values.Search_isSearching = true;
             Main_cleanTopLabel();
             if (this.lastData !== Main_values.Search_data) this.status = false;
             this.lastData = Main_values.Search_data;
-            Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_LIVE + ' ' + "'" + Main_values.Search_data + "'"));
             Sidepannel_SetTopOpacity(this.screen);
+
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_LIVE + STR_SPACE + "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             Main_values.Search_isSearching = false;
@@ -619,10 +599,8 @@ function ScreensObj_InitUserLive() {
         },
         label_init: function() {
             ScreensObj_TopLableUserInit();
-            Main_innerHTML('top_bar_user', STR_USER +
-                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_CHANNELS));
+            ScreensObj_SetTopLable(STR_USER + STR_SPACE + STR_LIVE_CHANNELS);
         },
-        label_exit: ScreensObj_TopLableUserExit,
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         }
@@ -695,10 +673,9 @@ function ScreensObj_InitUserHost() {
         },
         label_init: function() {
             ScreensObj_TopLableUserInit();
-            Main_innerHTML('top_bar_user', STR_USER +
-                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_LIVE_HOSTS));
+
+            ScreensObj_SetTopLable(STR_USER + STR_SPACE + STR_LIVE_HOSTS);
         },
-        label_exit: ScreensObj_TopLableUserExit,
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         }
@@ -745,18 +722,12 @@ function ScreensObj_InitAGame() {
         },
         label_init: function() {
             ScreensObj_TopLableAgameInit();
-            //fix user label
-            Main_RemoveClass('top_bar_user', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
-            Main_textContent('top_bar_user', STR_USER);
 
             if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
                 Main_cleanTopLabel();
-                Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
             } else Main_values.gameSelectedOld = null;
 
-            Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_LIVE +
-                ': ' + Main_values.Main_gameSelected));
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ": " + STR_LIVE);
         },
         label_exit: ScreensObj_TopLableAgameExit,
         HasSwitches: true,
@@ -803,14 +774,11 @@ function ScreensObj_InitFeatured() {
                     AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 2;
-            Main_AddClass('top_bar_featured', 'icon_center_focus');
             Sidepannel_SetDefaultLables();
             Main_values.Sidepannel_IsUser = false;
             Sidepannel_SetTopOpacity(this.screen);
-        },
-        label_exit: function() {
-            Main_RemoveClass('top_bar_featured', 'icon_center_focus');
+
+            ScreensObj_SetTopLable(STR_FEATURED);
         },
         object: 'featured',
         key_play: function() {
@@ -928,22 +896,18 @@ function ScreensObj_InitClip() {
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         SetPeriod: function() {
-            Main_innerHTML('top_bar_clip', STR_CLIPS + Main_UnderCenter(Main_Periods[this.periodPos - 1]));
             Main_setItem('Clip_periodPos', this.periodPos);
+            ScreensObj_SetTopLable(STR_CLIPS + Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 5;
             this.SetPeriod();
-            Main_AddClass('top_bar_clip', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
             Sidepannel_SetDefaultLables();
             Main_values.Sidepannel_IsUser = false;
             Sidepannel_SetTopOpacity(this.screen);
+
         },
         label_exit: function() {
             Main_RestoreTopLabel();
-            Main_RemoveClass('top_bar_clip', 'icon_center_focus');
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
         },
     }, Base_obj);
 
@@ -964,17 +928,16 @@ function ScreensObj_InitChannelClip() {
                 this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
         },
         SetPeriod: function() {
-            Main_innerHTML('top_bar_game', STR_CLIPS + Main_Periods[this.periodPos - 1]);
             Main_setItem('ChannelClip_periodPos', this.periodPos);
+
+            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname + ": " + STR_CLIPS + Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
             if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
                 ChannelContent_RestoreChannelValue();
             if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
             Main_cleanTopLabel();
             this.SetPeriod();
-            Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
             Main_ShowElement('label_side_panel');
             this.lastselectedChannel = Main_values.Main_selectedChannel;
         },
@@ -998,9 +961,9 @@ function ScreensObj_InitAGameClip() {
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         SetPeriod: function() {
-            Main_innerHTML('top_bar_game', STR_AGAME + Main_UnderCenter(STR_CLIPS +
-                Main_Periods[this.periodPos - 1] + ': ' + Main_values.Main_gameSelected));
             Main_setItem('AGameClip_periodPos', this.periodPos);
+
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ': ' + STR_CLIPS + Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
             ScreensObj_TopLableAgameInit();
@@ -1077,14 +1040,11 @@ function ScreensObj_InitGame() {
             this.url = this.base_url + '&offset=' + this.offset;
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 3;
-            Main_AddClass('top_bar_game', 'icon_center_focus');
             Sidepannel_SetDefaultLables();
             Main_values.Sidepannel_IsUser = false;
             Sidepannel_SetTopOpacity(this.screen);
-        },
-        label_exit: function() {
-            Main_RemoveClass('top_bar_game', 'icon_center_focus');
+
+            ScreensObj_SetTopLable(STR_GAMES);
         },
     }, Base_obj);
 
@@ -1111,7 +1071,7 @@ function ScreensObj_InitUserGames() {
         key_refresh: function() {
             this.isLive = !this.isLive;
 
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+            ScreensObj_SetTopLable(STR_USER + STR_SPACE + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
 
             Screens_StartLoad();
 
@@ -1123,9 +1083,8 @@ function ScreensObj_InitUserGames() {
             ScreensObj_TopLableUserInit();
             Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_BR + STR_GUIDE);
 
-            Main_innerHTML('top_bar_user', STR_USER + Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + ' ' + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES)));
+            ScreensObj_SetTopLable(STR_USER + STR_SPACE + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
         },
-        label_exit: ScreensObj_TopLableUserExit,
     }, Base_obj);
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
@@ -1148,13 +1107,13 @@ function ScreensObj_InitSearchGames() {
         },
         label_init: function() {
             if (!Main_values.gameSelectedOld) Main_values.gameSelectedOld = Main_values.Main_gameSelected;
-            Main_values.Main_CenterLablesVectorPos = 1;
             Main_values.Search_isSearching = true;
             Main_cleanTopLabel();
             if (this.lastData !== Main_values.Search_data) this.status = false;
             this.lastData = Main_values.Search_data;
-            Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_GAMES + ' ' + "'" + Main_values.Search_data + "'"));
             Sidepannel_SetTopOpacity(this.screen);
+
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_GAMES + STR_SPACE + "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             Main_values.Main_gameSelected = Main_values.gameSelectedOld;
@@ -1214,10 +1173,9 @@ function ScreensObj_InitUserChannels() {
         },
         label_init: function() {
             ScreensObj_TopLableUserInit();
-            Main_innerHTML('top_bar_user', STR_USER +
-                Main_UnderCenter(AddUser_UsernameArray[Main_values.Users_Position].name + STR_USER_CHANNEL));
+
+            ScreensObj_SetTopLable(STR_USER + STR_SPACE + STR_USER_CHANNEL);
         },
-        label_exit: ScreensObj_TopLableUserExit,
         key_play: function() {
             if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
@@ -1263,13 +1221,13 @@ function ScreensObj_InitSearchChannels() {
                 '&offset=' + this.offset;
         },
         label_init: function() {
-            Main_values.Main_CenterLablesVectorPos = 1;
             Main_values.Search_isSearching = true;
             Main_cleanTopLabel();
             if (this.lastData !== Main_values.Search_data) this.status = false;
             this.lastData = Main_values.Search_data;
-            Main_innerHTML('top_bar_user', STR_SEARCH + Main_UnderCenter(STR_CHANNELS + ' ' + "'" + Main_values.Search_data + "'"));
             Sidepannel_SetTopOpacity(this.screen);
+
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_CHANNELS + STR_SPACE + "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
@@ -1305,9 +1263,7 @@ function ScreensObj_InitSearchChannels() {
 }
 
 function ScreensObj_TopLableAgameInit() {
-    Main_values.Main_CenterLablesVectorPos = 3;
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-    Main_AddClass('top_bar_game', 'icon_center_focus');
     Main_ShowElement('label_side_panel');
     if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
         inUseObj.gameSelected !== Main_values.Main_gameSelected) inUseObj.status = false;
@@ -1321,24 +1277,16 @@ function ScreensObj_TopLableAgameInit() {
 
 function ScreensObj_TopLableAgameExit() {
     inUseObj.gameSelected = Main_values.Main_gameSelected;
-    Main_RemoveClass('top_bar_game', 'icon_center_focus');
-    Main_innerHTML('top_bar_game', STR_GAMES);
     Main_HideElement('label_side_panel');
 }
 
 function ScreensObj_TopLableUserInit() {
-    Main_values.Main_CenterLablesVectorPos = 1;
-    Main_AddClass('top_bar_user', 'icon_center_focus');
     if (inUseObj.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) inUseObj.status = false;
     inUseObj.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
 
     Sidepannel_SetUserLables();
 }
 
-function ScreensObj_TopLableUserExit() {
-    Main_values.Users_Position = 0;
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
-    Main_textContent('top_bar_user', STR_USER);
-    Main_HideElement('label_side_panel');
+function ScreensObj_SetTopLable(text) {
+    Main_innerHTML('top_lable', text);
 }

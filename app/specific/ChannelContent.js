@@ -29,8 +29,6 @@ function ChannelContent_init() {
     if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
-    Main_textContent('top_bar_user', Main_values.Main_selectedChannelDisplayname);
-    Main_textContent('top_bar_game', STR_CHANNEL_CONT);
     document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
 
@@ -366,7 +364,6 @@ function ChannelContent_checkUser() {
 function ChannelContent_addFocus() {
     Main_AddClass(ChannelContent_ids[0] +
         ChannelContent_cursorY + '_' + (!ChannelContent_cursorY ? ChannelContent_cursorX : 0), Main_classThumb);
-    if (Main_CenterLablesInUse) ChannelContent_removeFocus();
     Main_handleKeyUp();
 }
 
@@ -486,7 +483,6 @@ function ChannelContent_handleKeyDown(event) {
         case KEY_UP:
             if (!ChannelContent_cursorY) {
                 ChannelContent_removeFocus();
-                Main_CenterLablesStart(ChannelContent_handleKeyDown);
             } else {
                 ChannelContent_removeFocus();
                 ChannelContent_cursorY = 0;

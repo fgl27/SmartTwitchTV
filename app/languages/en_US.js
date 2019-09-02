@@ -22,7 +22,7 @@ function en_USLang() {
     STR_SWITCH_VOD = "Switch: Past Broadcasts or Highlights";
     STR_SWITCH_CLIP = "Switch: Period (24h, 7d, 30d, all)";
     STR_GO_TO = "Go to ";
-    STR_USER = "User ";
+    STR_USER = "User";
     STR_LIVE = "Live";
     STR_GAMES = "Games";
     STR_PLAYING = "Playing ";

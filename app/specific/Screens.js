@@ -97,7 +97,7 @@ function Screens_init() {
 
 function Screens_exit() {
     Main_addFocusVideoOffset = 0;
-    inUseObj.label_exit();
+    if (inUseObj.label_exit) inUseObj.label_exit();
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement(inUseObj.ids[10]);
     Main_HideWarningDialog();
@@ -369,8 +369,6 @@ function Screens_loadDataSuccessFinish() {
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
                     Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-                    window.clearTimeout(Main_SetTopOpacityId);
-                    Main_UnSetTopOpacity();
                     Main_SwitchScreenAction();
                     if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
                     else {
@@ -455,7 +453,6 @@ function Screens_addFocus(forceScroll) {
     }
 
     inUseObj.addrow(forceScroll, inUseObj.posY);
-    if (Main_CenterLablesInUse) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
     lazyLoadInstance.update();
 }
 
@@ -625,7 +622,7 @@ function Screens_KeyUpDown(y) {
 function Screens_ClearAnimation() {
     if (inUseObj.HasAnimateThumb) {
         window.clearInterval(inUseObj.AnimateThumbId);
-        Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
+        if (Screens_ThumbNotNull(inUseObj.ids[6] + inUseObj.posY + '_' + inUseObj.posX)) Main_ShowElement(inUseObj.ids[6] + inUseObj.posY + '_' + inUseObj.posX);
     }
 }
 
@@ -702,23 +699,12 @@ function Screens_handleKeyDown(event) {
             Screens_clear = false;
             Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 1000);
             break;
-        case KEY_PG_DOWN:
-        case KEY_PG_UP:
-            Screens_SwitchScreen(event);
-            break;
         case KEY_REFRESH:
             Main_ReloadScreen();
             break;
         default:
             break;
     }
-}
-
-function Screens_SwitchScreen(event) {
-    if (Main_ForbidenScreens()) return;
-    Main_keyClickDelay();
-    document.body.addEventListener("keydown", Main_CenterLables, false);
-    Main_CenterLables(event);
 }
 
 function AGame_headerOptions() {
