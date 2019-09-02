@@ -1006,12 +1006,22 @@
             overflow: hidden;
         }
 
+        div.top_lable {
+            text-align: center;
+            width: 100%;
+            color: #FFFFFF;
+            font-size: 50%;
+            font-family: 'Roboto-Bold';
+            position: absolute;
+        }
+
         div.topbar {
             z-index: -1;
             position: absolute;
             margin-left: 5%;
             width: 94.5%;
-            background: rgba(0, 0, 0, 1);
+            background: rgba(155, 0, 0, 1);
+            height: 4.5vh;
         }
 
         div.topbar_dim {
@@ -1021,7 +1031,6 @@
         div.controls_div {
             float: left;
             padding-left: 1%;
-            padding-top: 0.5%;
             max-width: 26%;
         }
 
@@ -1426,7 +1435,6 @@
             padding-left: 1%;
         }
 
-
         div.side_panel_iner_div2 {
             width: 60%;
             padding-left: 0.2em;
@@ -1562,13 +1570,7 @@
                 <div id="label_refresh" class="icon_top_label"></div>
                 <div id="label_side_panel" class="icon_top_label hide"></div>
             </div>
-            <div id="top_lables" class="hide" style="text-align: center; width: 72%; margin-left: 18.5%;">
-                <div id="top_bar_live" class="icon_center_label"></div>
-                <div id="top_bar_user" class="icon_center_label"></div>
-                <div id="top_bar_featured" class="icon_center_label"></div>
-                <div id="top_bar_game" class="icon_center_label"></div>
-                <div id="top_bar_vod" class="icon_center_label"></div>
-                <div id="top_bar_clip" class="icon_center_label"></div>
+            <div id="top_lable" class="top_lable">
             </div>
         </div>
         <div id="scrollbar_holder" class="scrollbar_holder">

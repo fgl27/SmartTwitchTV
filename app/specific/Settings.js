@@ -102,18 +102,9 @@ var Settings_positions_length = 0;
 //Variable initialization end
 
 function Settings_init() {
-    Main_UnSetTopOpacity();
     Main_HideElement('label_side_panel');
-    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK_START);
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
-    Main_textContent('top_bar_user', STR_SETTINGS);
-    document.getElementById("top_lables").style.marginLeft = '14%';
-    document.getElementById('top_bar_live').style.display = 'none';
-    document.getElementById('top_bar_featured').style.display = 'none';
-    document.getElementById('top_bar_game').style.display = 'none';
-    document.getElementById('top_bar_vod').style.display = 'none';
-    document.getElementById('top_bar_clip').style.display = 'none';
-    Main_AddClass('top_bar_user', 'icon_center_focus');
+    ScreensObj_SetTopLable(STR_SETTINGS);
     Main_ShowElement('settings_holder');
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);
@@ -124,15 +115,6 @@ function Settings_exit() {
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
     Main_ShowElement('label_side_panel');
     Settings_RemoveinputFocus();
-    Main_textContent('top_bar_user', STR_USER);
-    document.getElementById("top_lables").style.marginLeft = '18.5%';
-    document.getElementById('top_bar_live').style.display = 'inline-block';
-    document.getElementById('top_bar_featured').style.display = 'inline-block';
-    document.getElementById('top_bar_game').style.display = 'inline-block';
-    document.getElementById('top_bar_vod').style.display = 'inline-block';
-    document.getElementById('top_bar_clip').style.display = 'inline-block';
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
     Main_HideElement('settings_holder');
 }
 

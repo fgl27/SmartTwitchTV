@@ -165,7 +165,6 @@ function Users_addFocus() {
         } else Main_ScrollTable(Users_ids[5], 0);
 
     } else Main_handleKeyUp();
-    if (Main_CenterLablesInUse) Users_removeFocus();
 }
 
 function Users_removeFocus() {
@@ -284,7 +283,6 @@ function Users_handleKeyDown(event) {
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Users_removeFocus();
-                Main_CenterLablesStart(Users_handleKeyDown);
             }
             Sidepannel_RestoreScreen();
             break;
@@ -343,7 +341,6 @@ function Users_handleKeyDown(event) {
         case KEY_UP:
             if (!Users_cursorY) {
                 Users_removeFocus();
-                Main_CenterLablesStart(Users_handleKeyDown);
             } else {
                 for (i = 0; i < Users_ColoumnsCount; i++) {
                     if (Main_ThumbNull((Users_cursorY - 1), (Users_cursorX - i), Users_ids[0])) {
@@ -400,10 +397,6 @@ function Users_handleKeyDown(event) {
                     }
                 }
             } else Users_keyEnter();
-            break;
-        case KEY_PG_DOWN:
-        case KEY_PG_UP:
-            Screens_SwitchScreen(event);
             break;
         case KEY_REFRESH:
             Main_ReloadScreen();

@@ -134,7 +134,6 @@ var Languages_positions_length = 0;
 //Variable initialization end
 
 function Languages_init() {
-    Main_UnSetTopOpacity();
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
     Main_HideElement('settings_main');
     Main_ShowElement('settings_lang');
