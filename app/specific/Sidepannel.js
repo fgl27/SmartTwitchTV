@@ -69,7 +69,7 @@ function Sidepannel_GetSize() {
 }
 
 function Sidepannel_KeyEnterUser() {
-
+    var hidepanel = true;
     if (Main_values.Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
         window.setTimeout(Main_HideWarningDialog, 5000);
@@ -79,6 +79,19 @@ function Sidepannel_KeyEnterUser() {
     if (Main_values.Sidepannel_Pos === 2) {
         Main_values.Sidepannel_IsUser = false;
         Sidepannel_SetDefaultLables();
+        Sidepannel_UnSetTopOpacity();
+
+        if (!Sidepannel_MainISuser()) {
+            Sidepannel_RemoveFocusMain();
+            Main_values.Sidepannel_Pos++;
+            Sidepannel_SetTopOpacity(Main_values.Main_Go);
+            Sidepannel_AddFocusMain();
+        } else {
+            Sidepannel_RemoveFocusMain();
+            Main_values.Sidepannel_Pos = 3;
+            Sidepannel_AddFocusMain();
+        }
+        hidepanel = false;
     } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
     else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
     else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
@@ -99,12 +112,13 @@ function Sidepannel_KeyEnterUser() {
         Main_SwitchScreen();
     } else Sidepannel_KeyEnterBase();
 
-    if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
-    else {
-        Sidepannel_RemoveFocusMain();
-        Main_values.Sidepannel_Pos++;
-        Sidepannel_AddFocusMain();
-    }
+    if (hidepanel) Sidepannel_Hide();
+}
+
+function Sidepannel_MainISuser() {
+    return Main_values.Main_Go === Main_UserLive || Main_values.Main_Go === Main_UserHost ||
+        Main_values.Main_Go === Main_usergames || Main_values.Main_Go === Main_UserVod ||
+        Main_values.Main_Go === Main_UserChannels || Main_values.Main_Go === Main_ChannelContent;
 }
 
 function Sidepannel_KeyEnterBase() {
@@ -138,22 +152,31 @@ function Sidepannel_KeyEnter() {
         return;
     }
 
+    var hidepanel = true;
+
     if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
     else if (Main_values.Sidepannel_Pos === 4) {
         //TODO add a proper add user thing
         Sidepannel_SetUserLables();
+        Sidepannel_UnSetTopOpacity();
+
+        if (Sidepannel_MainISuser()) {
+            Sidepannel_RemoveFocusMain();
+            Sidepannel_SetTopOpacity(Main_values.Main_Go);
+            Sidepannel_AddFocusMain();
+        } else {
+            Sidepannel_RemoveFocusMain();
+            Main_values.Sidepannel_Pos = 3;
+            Sidepannel_AddFocusMain();
+        }
+        hidepanel = false;
     } else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_Featured);
     else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_games);
     else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_Vod);
     else if (Main_values.Sidepannel_Pos === 8) Sidepannel_Go(Main_Clip);
     else Sidepannel_KeyEnterBase();
 
-    if (Main_values.Sidepannel_Pos !== 4) Sidepannel_Hide();
-    else {
-        Sidepannel_RemoveFocusMain();
-        Main_values.Sidepannel_Pos--;
-        Sidepannel_AddFocusMain();
-    }
+    if (hidepanel) Sidepannel_Hide();
 }
 
 function Sidepannel_RestoreScreen() {
@@ -184,7 +207,6 @@ function Sidepannel_StartMain() {
     document.getElementById('side_panel_fix').style.marginLeft = '';
     document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
     Sidepannel_AddFocusMain();
-    Sidepannel_UnSetTopOpacity();
 }
 
 function Sidepannel_StartFeed() {
@@ -231,11 +253,9 @@ function Sidepannel_Hide() {
 
 function Sidepannel_SetTopOpacity(Main_Go) {
     if (Sidepannel_Pos_Screens[Main_Go]) Main_values.Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
+    Sidepannel_UnSetTopOpacity();
 
-    for (var i = 1; i < 9; i++) {
-        if (i !== Main_values.Sidepannel_Pos) document.getElementById('side_panel_new_' + i).style.opacity = '0.25';
-        else document.getElementById('side_panel_new_' + i).style.opacity = '';
-    }
+    Main_AddClass('side_panel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
 var Sidepannel_Pos_Screens = [
@@ -264,8 +284,7 @@ var Sidepannel_Pos_Screens = [
 ];
 
 function Sidepannel_UnSetTopOpacity() {
-    for (var i = 1; i < 9; i++)
-        document.getElementById('side_panel_new_' + i).style.opacity = '';
+    for (var i = 1; i < 9; i++) Main_RemoveClass('side_panel_new_' + i, 'side_panel_new_icons_text');
 }
 
 function Sidepannel_SetUserLables() {
@@ -307,7 +326,7 @@ function Sidepannel_SetDefaultLables() {
 
     Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_GO_BACK);
     Main_innerHTML('side_panel_movel_new_3', STR_SPACE + STR_LIVE);
-    Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_USER);
+    Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_USER_MENU);
     Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_FEATURED);
     Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_GAMES);
     Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_VIDEOS);
