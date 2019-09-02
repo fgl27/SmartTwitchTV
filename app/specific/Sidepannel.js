@@ -118,9 +118,10 @@ function Sidepannel_MainISuser() {
 }
 
 function Sidepannel_KeyEnterBase() {
-    if (!Main_values.Sidepannel_Pos) { //TODO USer
-        console.log('TODO USer add switch etc');
-        Sidepannel_Go(Main_values.Main_Go);
+    if (!Main_values.Sidepannel_Pos) {
+        Main_values.Main_Before = Main_values.Main_Go;
+        Main_ExitCurrent(Main_values.Main_Go);
+        AddUser_init();
     } else if (Main_values.Sidepannel_Pos === 1) {
         if (Main_values.Main_Go !== Main_Search) {
             if (!Main_values.Search_isSearching &&
@@ -224,7 +225,7 @@ function Sidepannel_ShowFeed() {
 }
 
 function Sidepannel_HideMain(hideAll) {
-    var size = AddUser_UsernameArray[0].display_name.length;
+    var size = AddUser_UsernameArray[0] ? AddUser_UsernameArray[0].display_name.length : STR_USER_ADD;
     size = (size > 8 ? size - 8 : 0);
 
     if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-4%';
@@ -247,7 +248,7 @@ function Sidepannel_SetTopOpacity(Main_Go) {
     if (Sidepannel_Pos_Screens[Main_Go]) Main_values.Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
     Sidepannel_UnSetTopOpacity();
 
-    Main_AddClass('side_panel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
+    if (Main_values.Sidepannel_Pos) Main_AddClass('side_panel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
 var Sidepannel_Pos_Screens = [

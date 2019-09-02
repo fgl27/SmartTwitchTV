@@ -11,7 +11,7 @@ var AddUser_keyBoardOn = false;
 function AddUser_init() {
     Main_values.Main_Go = Main_addUser;
     Main_CounterDialogRst();
-    Main_AddClass('top_bar_user', 'icon_center_focus');
+    ScreensObj_SetTopLable(STR_USER_ADD);
     Main_HideWarningDialog();
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
     Main_ShowElement('add_user_scroll');
@@ -22,7 +22,6 @@ function AddUser_exit() {
     AddUser_RemoveinputFocus(false);
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_HideElement('add_user_scroll');
 }
 
@@ -170,7 +169,7 @@ function AddUser_RestoreUsers() {
             if (!AddUser_UsernameArray[i].logo) AddUser_UpdateUser(i, 0);
             else if (!i) AddUser_UpdateSidepanel();
         }
-    }
+    } else AddUser_UpdateSidepanelDefault();
 }
 
 function AddUser_UpdateSidepanel() {
@@ -178,6 +177,20 @@ function AddUser_UpdateSidepanel() {
     Main_innerHTML('side_panel_movel_new_0', STR_SPACE + AddUser_UsernameArray[0].display_name);
 
     var size = AddUser_UsernameArray[0].display_name.length,
+        doc = document.getElementById('side_panel_movel');
+
+    size = (size > 8 ? size - 8 : 0);
+
+    doc.style.marginLeft = 'calc(-13% - ' + size + 'ch)';
+    doc.style.width = 'calc(17% + ' + size + 'ch)';
+
+}
+
+function AddUser_UpdateSidepanelDefault() {
+    Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + IMG_404_LOGO + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
+    Main_innerHTML('side_panel_movel_new_0', STR_SPACE + STR_USER_ADD);
+
+    var size = STR_USER_ADD,
         doc = document.getElementById('side_panel_movel');
 
     size = (size > 8 ? size - 8 : 0);
@@ -245,7 +258,10 @@ function AddUser_SaveNewUser(responseText) {
     AddUser_SaveUserArray();
     Users_status = false;
     AddUser_exit();
-    Users_init();
+    Main_values.Main_Go = Main_values.Main_Before;
+    Main_HideLoadDialog();
+    if (AddUser_UsernameArray.length === 1) AddUser_UpdateSidepanel();
+    Main_SwitchScreenAction();
     AddUser_loadingData = false;
 }
 
