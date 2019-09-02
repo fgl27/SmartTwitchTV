@@ -278,24 +278,9 @@ function Main_SetStringsMain(isStarting) {
 function Main_SetStringsSecondary() {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
 
-    Main_textContent('side_panel_search', STR_SEARCH);
-    Main_textContent('side_panel_settings', STR_SETTINGS);
-    Main_textContent('side_panel_about', STR_ABOUT);
-    Main_textContent('side_panel_controls', STR_CONTROLS);
-    Main_textContent('side_panel_exit', STR_EXIT);
-
     Main_textContent('side_panel_feed_settings', STR_SIDE_PANEL_SETTINGS);
     Main_textContent('side_panel_feed_refresh', STR_REFRESH);
     Main_textContent('user_feed_notify_main', STR_NOW_LIVE);
-
-    Main_textContent('side_panel_live', STR_LIVE);
-    Main_textContent('side_panel_user', STR_USER);
-    Main_textContent('side_panel_featured', STR_FEATURED);
-    Main_textContent('side_panel_games', STR_GAMES);
-    Main_textContent('side_panel_videos', STR_VIDEOS);
-    Main_textContent('side_panel_clips', STR_CLIPS);
-    Main_textContent('side_panel_hide', STR_HIDE);
-    Main_textContent('side_panel_back', STR_LIVE_FEED);
 
     Main_textContent('chanel_button', STR_CHANNELS);
     Main_textContent('game_button', STR_GAMES);
