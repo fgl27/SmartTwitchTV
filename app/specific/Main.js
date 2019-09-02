@@ -506,9 +506,6 @@ function Main_ThumbNull(y, x, thumbnail) {
 function Main_ReStartScreens() {
     Main_updateclock();
     Main_SwitchScreen();
-    Sidepannel_HideMain();
-    Main_ShowElement('side_panel_fix');
-    document.getElementById('side_panel_fix').style.marginLeft = '';
     document.body.addEventListener("keyup", Main_handleKeyUp, false);
 }
 
@@ -805,7 +802,6 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
 }
 
 function Main_openStream() {
-    Sidepannel_HideMain(true);
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
     Main_HideElement('scene1');
@@ -844,7 +840,6 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    Sidepannel_HideMain(true);
     Main_ready(PlayClip_Start);
 }
 
@@ -879,7 +874,6 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
 }
 
 function Main_openVod() {
-    Sidepannel_HideMain(true);
     document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
     Main_HideElement('scene1');
     Main_ShowElement('scene2');
