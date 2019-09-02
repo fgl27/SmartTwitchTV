@@ -289,7 +289,7 @@ function Main_SetStringsSecondary() {
 }
 
 function Main_IconLoad(lable, icon, string) {
-    Main_innerHTML(lable, '<div class="strokedeline" style="vertical-align: middle; display: inline-block;"><i class="' + icon + '" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
+    Main_innerHTML(lable, '<div class="strokedeline" style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF; font-size: 115%;"></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block;">' + STR_SPACE + string + '</div>');
 }
 
 function Main_HideElement(element) {
