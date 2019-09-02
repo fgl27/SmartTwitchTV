@@ -248,7 +248,7 @@ function Main_SetStringsMain(isStarting) {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
     Main_innerHTML('label_update', '<div class="strokedeline" style="vertical-align: middle; display: inline-block;"><i class="icon-arrow-up" style="color: #FF0000; font-size: 115%; "></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
 
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
     UserLiveFeed_SetFeedPicText();
 
     Main_textContent('top_bar_live', STR_LIVE);
@@ -510,6 +510,7 @@ function Main_ReStartScreens() {
 }
 
 function Main_SetTopOpacity() {
+    return;
     var elem, i = 0;
     for (i; i < Main_OpacityDivs.length; i++) {
         if (i < 2) document.getElementById(Main_OpacityDivs[i]).style.opacity = '0.35';
@@ -522,6 +523,7 @@ function Main_SetTopOpacity() {
 }
 
 function Main_UnSetTopOpacity() {
+    return;
     for (var i = 0; i < Main_OpacityDivs.length; i++)
         document.getElementById(Main_OpacityDivs[i]).style.opacity = '1';
     Main_RemoveClass('topbar', 'topbar_dim');
@@ -685,12 +687,12 @@ Main_ExitCurrentobj[Main_games] = Screens_exit;
 
 function Main_ExitCurrent(ExitCurrent) {
     if (Main_ExitCurrentobj[ExitCurrent]) Main_ExitCurrentobj[ExitCurrent]();
-    if (Main_isElementShowing('settings_scroll')) Settings_exit();
+    if (Main_isElementShowing('settings_holder')) Settings_exit();
 }
 
 function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+    Main_HideElement('label_side_panel');
     Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_textContent('top_bar_live', STR_LIVE);
     Main_textContent('top_bar_user', STR_USER);
@@ -701,7 +703,7 @@ function Main_RestoreTopLabel() {
 }
 
 function Main_cleanTopLabel() {
-    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
+    Main_ShowElement('label_side_panel');
     Main_empty('top_bar_live');
     Main_empty('top_bar_game');
     Main_empty('top_bar_vod');

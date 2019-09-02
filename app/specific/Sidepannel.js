@@ -252,7 +252,7 @@ function Sidepannel_SetTopOpacity(Main_Go) {
 
 var Sidepannel_Pos_Screens = [
     1, //Main_Search 0
-    2, //Main_Live 1
+    3, //Main_Live 1
     0, //Main_Users 2
     4, //Main_Featured 3
     5, //Main_games 4
@@ -263,16 +263,16 @@ var Sidepannel_Pos_Screens = [
     5, //Main_usergames 9
     6, //Main_UserVod 10
     7, //Main_UserChannels 11
-    3, // 12
-    3, // 13
-    3, // 14
-    0, // 15
-    0, // 16
-    0, // 17
-    0, // 18
-    6, //Main_aGame 19
-    6, //Main_AGameVod 20
-    6, //Main_AGameClip 21
+    1, // Main_SearchGames 12
+    1, // Main_SearchLive 13
+    1, // Main_SearchChannels 14
+    0, // Main_ChannelContent 15
+    0, // Main_ChannelVod 16
+    0, // Main_ChannelClip 17
+    0, // Main_addUser 18
+    5, //Main_aGame 19
+    5, //Main_AGameVod 20
+    5, //Main_AGameClip 21
 ];
 
 function Sidepannel_UnSetTopOpacity() {
