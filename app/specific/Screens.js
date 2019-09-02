@@ -294,10 +294,9 @@ function Screens_createCellVod(id, idArray, valuesArray) {
     return Screens_createCell(
         idArray[8] + id,
         valuesArray,
-        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"' +
-        (valuesArray[7] ? ' style="background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
-        '><div><img id="' +
-        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div id="' + idArray[6] + id + '" ' +
+        (valuesArray[7] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
+        '><img id="' + idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_text2"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_channel" style="width: 72%; display: inline-block;">' +

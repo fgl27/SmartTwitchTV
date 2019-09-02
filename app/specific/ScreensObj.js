@@ -162,7 +162,7 @@ var Base_Vod_obj = {
     AnimateThumb: function(screen) {
         window.clearInterval(this.AnimateThumbId);
         if (!Vod_DoAnimateThumb) return;
-        var div = document.getElementById(this.ids[0] + this.posY + '_' + this.posX);
+        var div = document.getElementById(this.ids[6] + this.posY + '_' + this.posX);
 
         // Only load the animation if it can be loaded
         // This prevent starting animating before it has loaded or animated a empty image
