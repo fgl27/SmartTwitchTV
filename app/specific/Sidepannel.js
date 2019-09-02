@@ -86,10 +86,6 @@ function Sidepannel_KeyEnterUser() {
             Main_values.Sidepannel_Pos++;
             Sidepannel_SetTopOpacity(Main_values.Main_Go);
             Sidepannel_AddFocusMain();
-        } else {
-            Sidepannel_RemoveFocusMain();
-            Main_values.Sidepannel_Pos = 3;
-            Sidepannel_AddFocusMain();
         }
         hidepanel = false;
     } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
@@ -154,8 +150,7 @@ function Sidepannel_KeyEnter() {
 
     var hidepanel = true;
 
-    if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
-    else if (Main_values.Sidepannel_Pos === 4) {
+    if (Main_values.Sidepannel_Pos === 2) {
         //TODO add a proper add user thing
         Sidepannel_SetUserLables();
         Sidepannel_UnSetTopOpacity();
@@ -164,16 +159,13 @@ function Sidepannel_KeyEnter() {
             Sidepannel_RemoveFocusMain();
             Sidepannel_SetTopOpacity(Main_values.Main_Go);
             Sidepannel_AddFocusMain();
-        } else {
-            Sidepannel_RemoveFocusMain();
-            Main_values.Sidepannel_Pos = 3;
-            Sidepannel_AddFocusMain();
         }
         hidepanel = false;
-    } else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_Featured);
-    else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_games);
-    else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_Vod);
-    else if (Main_values.Sidepannel_Pos === 8) Sidepannel_Go(Main_Clip);
+    } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
+    else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
+    else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
+    else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
+    else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
     else Sidepannel_KeyEnterBase();
 
     if (hidepanel) Sidepannel_Hide();
@@ -260,12 +252,12 @@ function Sidepannel_SetTopOpacity(Main_Go) {
 
 var Sidepannel_Pos_Screens = [
     1, //Main_Search 0
-    3, //Main_Live 1
-    4, //Main_Users 2
-    5, //Main_Featured 3
-    6, //Main_games 4
-    7, //Main_Vod 5
-    8, //Main_Clip 6
+    2, //Main_Live 1
+    0, //Main_Users 2
+    4, //Main_Featured 3
+    5, //Main_games 4
+    6, //Main_Vod 5
+    7, //Main_Clip 6
     3, //Main_UserLive 7
     4, //Main_UserHost 8
     5, //Main_usergames 9
@@ -293,21 +285,21 @@ function Sidepannel_SetUserLables() {
 
     Main_innerHTML('side_panel_movel_user_text', STR_SPACE + STR_USER_MENU + STR_SPACE);
     Main_ShowElement('side_panel_movel_user_text_holder');
-    Main_ShowElement('side_panel_movel_new_back');
-    Main_ShowElement('side_panel_new_2');
+    Main_ShowElement('side_panel_movel_new_8');
+    Main_ShowElement('side_panel_new_8');
 
-    Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_GO_BACK);
+    Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_MAIN_MENU);
     Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_LIVE_HOSTS);
     Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_GAMES);
     Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_VIDEOS);
     Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_CHANNELS);
     Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_USER_MY_CHANNEL);
 
-
+    Sidepannel_SetIcons('side_panel_new_2', 'arrow-circle-left');
+    Sidepannel_SetIcons('side_panel_new_4', 'users');
     Sidepannel_SetIcons('side_panel_new_5', 'gamepad');
     Sidepannel_SetIcons('side_panel_new_6', 'movie-play');
     Sidepannel_SetIcons('side_panel_new_7', 'filmstrip');
-    Sidepannel_SetIcons('side_panel_new_8', 'user');
 
 }
 
@@ -318,19 +310,19 @@ function Sidepannel_SetDefaultLables() {
     if (AddUser_UsernameArray[0]) Main_innerHTML('side_panel_movel_new_0', STR_SPACE + (AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : STR_USER_ADD));
     else Main_innerHTML('side_panel_movel_new_0', STR_SPACE + STR_USER_ADD);
 
-    Main_HideElement('side_panel_movel_new_back');
-    Main_HideElement('side_panel_new_2');
+    Main_HideElement('side_panel_movel_new_8');
+    Main_HideElement('side_panel_new_8');
     Main_HideElement('side_panel_movel_user_text_holder');
 
     Main_innerHTML('side_panel_movel_new_1', STR_SPACE + STR_SEARCH);
 
-    Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_GO_BACK);
+    Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_USER_MENU);
     Main_innerHTML('side_panel_movel_new_3', STR_SPACE + STR_LIVE);
-    Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_USER_MENU);
-    Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_FEATURED);
-    Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_GAMES);
-    Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_VIDEOS);
-    Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_CLIPS);
+    Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_FEATURED);
+    Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_GAMES);
+    Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_VIDEOS);
+    Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_CLIPS);
+    Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_USER_MY_CHANNEL);
 
     Main_innerHTML('side_panel_movel_new_9', STR_SPACE + STR_SETTINGS);
     Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_ABOUT);
@@ -338,14 +330,13 @@ function Sidepannel_SetDefaultLables() {
     Main_innerHTML('side_panel_movel_new_12', STR_SPACE + STR_EXIT);
 
     Sidepannel_SetIcons('side_panel_new_1', 'search');
-    Sidepannel_SetIcons('side_panel_new_2', 'arrow-circle-left');
+    Sidepannel_SetIcons('side_panel_new_2', 'user');
     Sidepannel_SetIcons('side_panel_new_3', 'play');
-    Sidepannel_SetIcons('side_panel_new_4', 'users');
-    Sidepannel_SetIcons('side_panel_new_5', 'star');
-    Sidepannel_SetIcons('side_panel_new_6', 'gamepad');
-    Sidepannel_SetIcons('side_panel_new_7', 'movie-play');
-    Sidepannel_SetIcons('side_panel_new_8', 'movie');
-
+    Sidepannel_SetIcons('side_panel_new_4', 'star');
+    Sidepannel_SetIcons('side_panel_new_5', 'gamepad');
+    Sidepannel_SetIcons('side_panel_new_6', 'movie-play');
+    Sidepannel_SetIcons('side_panel_new_7', 'movie');
+    Sidepannel_SetIcons('side_panel_new_8', 'user');
 }
 
 function Sidepannel_SetIcons(div, icon) {
@@ -433,7 +424,7 @@ function Sidepannel_handleKeyDownMain(event) {
             if (Main_values.Sidepannel_Pos) {
                 Sidepannel_RemoveFocusMain();
                 Main_values.Sidepannel_Pos--;
-                if (!Main_values.Sidepannel_IsUser && Main_values.Sidepannel_Pos === 2) Main_values.Sidepannel_Pos--;
+                if (!Main_values.Sidepannel_IsUser && Main_values.Sidepannel_Pos === 8) Main_values.Sidepannel_Pos--;
                 Sidepannel_AddFocusMain();
             }
             break;
@@ -441,7 +432,7 @@ function Sidepannel_handleKeyDownMain(event) {
             if (Main_values.Sidepannel_Pos < 12) {
                 Sidepannel_RemoveFocusMain();
                 Main_values.Sidepannel_Pos++;
-                if (!Main_values.Sidepannel_IsUser && Main_values.Sidepannel_Pos === 2) Main_values.Sidepannel_Pos++;
+                if (!Main_values.Sidepannel_IsUser && Main_values.Sidepannel_Pos === 8) Main_values.Sidepannel_Pos++;
                 Sidepannel_AddFocusMain();
             }
             break;
