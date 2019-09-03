@@ -73,9 +73,7 @@ var Main_addFocusFinish = true;
 var Main_newUsercode = 0;
 var Main_ExitCursor = 0;
 var Main_ExitDialogID = null;
-var Main_ScrollbarIsHide = true;
 var Main_IsDayFirst = false;
-var Main_ScrollbarElement;
 var Main_SearchInput;
 var Main_AddUserInput;
 var Main_updateclockId;
@@ -191,7 +189,6 @@ function Main_initWindows() {
     Screens_InitScreens();
     Main_SetStringsMain(true);
 
-    Main_ScrollbarElement = document.getElementById("scrollbar");
     Main_RestoreValues();
     Main_GoBefore = Main_values.Main_Go;
 
@@ -376,41 +373,6 @@ function Main_ExitCursorSet() {
     else Main_AddClass('exit_app_close', 'button_search_focused');
 }
 
-function Main_CounterDialogRst() {
-    Main_empty('dialog_counter_text');
-    Main_Scrollbar(0, 0, 0);
-}
-
-function Main_CounterDialog(x, y, coloumns, total) {
-    if (total > 0) {
-        Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
-        Main_Scrollbar(y, coloumns, total);
-    } else Main_CounterDialogRst();
-}
-
-function Main_Scrollbar(y, coloumns, total) {
-    var screen_size = ((screen.height / 100) * 7);
-    //if show the scroll, else reset it's position and hide by setting it's color equal to parent background
-    if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
-        // min screen_size max screen.height - (screen_size * 3)
-        var needExtraSpace = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod ||
-            Main_values.Main_Go === Main_AGameClip || Main_values.Main_Go === Main_ChannelVod ||
-            Main_values.Main_Go === Main_UserVod || Main_values.Main_Go === Main_Vod ||
-            Main_values.Main_Go === Main_Clip || Main_values.Main_Go === Main_ChannelClip);
-        var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (needExtraSpace ? 1.8 : 1)));
-        Main_ScrollbarElement.style.top = (nextPositon / BodyfontSize) + "em";
-
-        if (Main_ScrollbarIsHide) {
-            Main_ScrollbarIsHide = false;
-            Main_ScrollbarElement.style.backgroundColor = "#777777";
-        }
-    } else {
-        Main_ScrollbarElement.style.backgroundColor = "#000000";
-        Main_ScrollbarElement.style.top = (screen_size / BodyfontSize) + "em";
-        Main_ScrollbarIsHide = true;
-    }
-}
-
 function Main_showWarningDialog(text) {
     Main_textContent('dialog_warning_text', text);
     Main_ShowElement('dialog_warning');
@@ -437,7 +399,6 @@ function Main_showSettings() {
     Main_HideControlsDialog();
     Main_HideWarningDialog();
     Main_ExitCurrent(Main_values.Main_Go);
-    Main_CounterDialogRst();
     Settings_init();
 }
 
@@ -610,8 +571,6 @@ function Main_SwitchScreenAction(removekey) {
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
-    Main_CounterDialogRst();
-
     if (Main_Switchobj[Main_values.Main_Go]) Main_Switchobj[Main_values.Main_Go]();
     else Main_Switchobj[1]();
 
@@ -623,7 +582,6 @@ function Main_OpenSearch() {
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_Search;
     Main_HideWarningDialog();
-    Main_CounterDialogRst();
     Search_init();
 }
 
@@ -976,8 +934,6 @@ function Main_ReloadScreen() {
 
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
-
-    Main_CounterDialogRst();
 
     if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
     else if (Main_values.Main_Go === Main_Users) Users_StartLoad();

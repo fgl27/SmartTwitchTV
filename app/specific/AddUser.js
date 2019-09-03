@@ -10,7 +10,6 @@ var AddUser_keyBoardOn = false;
 
 function AddUser_init() {
     Main_values.Main_Go = Main_addUser;
-    Main_CounterDialogRst();
     ScreensObj_SetTopLable(STR_USER_ADD);
     Main_HideWarningDialog();
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
