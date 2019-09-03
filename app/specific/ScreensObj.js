@@ -1072,9 +1072,12 @@ function ScreensObj_InitUserGames() {
         },
         label_init: function() {
             ScreensObj_TopLableUserInit();
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_BR + STR_GUIDE);
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_GUIDE);
 
             ScreensObj_SetTopLable(STR_USER + STR_SPACE + (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
+        },
+        label_exit: function() {
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
         },
     }, Base_obj);
 
