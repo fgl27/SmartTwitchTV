@@ -1091,19 +1091,19 @@
             background-color: rgba(150, 150, 150, 0.7);
         }
 
-        div.right,
-        div.left {
-            border-top: 0.4em solid transparent;
-            border-bottom: 0.4em solid transparent;
+        .right,
+        .left {
+            border-top: 0.33em solid transparent;
+            border-bottom: 0.33em solid transparent;
             opacity: 0;
         }
 
-        div.right {
-            border-left: 0.6em solid white;
+        .right {
+            border-left: 0.5em solid white;
         }
 
-        div.left {
-            border-right: 0.6em solid white;
+        .left {
+            border-right: 0.5em solid white;
         }
 
         div.settings_main {
@@ -1124,14 +1124,34 @@
         }
 
         div.settings_div {
-            border-radius: 0.6em;
             box-sizing: border-box;
-            border: 0.1em solid rgba(0, 0, 0, 0);
+            border-top: 0.05em solid;
+            border-bottom: 0.05em solid;
+            border-image: linear-gradient(#000000, #000000) 1;
         }
 
         div.settings_div_focus {
-            border-color: #FFFFFF;
             background-color: rgba(255, 255, 255, 0.1);
+            border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
+        }
+
+        div.settings_value {
+            width: 27%;
+            display: inline-block;
+            text-align: center;
+            font-size: 55%;
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+            vertical-align: middle;
+            border-top: 0.1em solid;
+            border-bottom: 0.1em solid;
+            border-image: linear-gradient(#000000, #000000) 1;
+        }
+
+        div.settings_value_focus {
+            margin-bottom: 0.15em;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
 
         div.settings_section {
@@ -1167,25 +1187,6 @@
             display: inline-block;
             vertical-align: middle;
             /* When the html code is compressed loaded from js this div and the next have no space in between, adding a margin makes it look ok, but too big when the code is not compresed*/
-        }
-
-        div.settings_value {
-            width: 27%;
-            display: inline-block;
-            text-align: center;
-            border: 0.1em solid rgba(0, 0, 0, 0);
-            border-radius: 0.2em;
-            font-size: 55%;
-            margin-left: 0.5em;
-            margin-right: 0.5em;
-            box-sizing: border-box;
-            vertical-align: middle;
-        }
-
-        div.settings_value_focus {
-            margin-bottom: 0.15em;
-            border-color: #FFFFFF;
-            background-color: rgba(255, 255, 255, 0.4);
         }
 
         .controls_holder {
