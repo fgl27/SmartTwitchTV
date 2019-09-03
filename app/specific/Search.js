@@ -8,9 +8,7 @@ function Search_init() {
     Main_HideWarningDialog();
     Main_HideElement('label_refresh');
     Main_ShowElement('label_side_panel');
-    Main_textContent('top_bar_user', STR_SEARCH);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
-    Main_AddClass('top_bar_user', 'icon_center_focus');
     Main_ShowElement('search_scroll');
     Search_cursorY = 0;
     Search_cursorX = 0;
@@ -23,8 +21,6 @@ function Search_exit() {
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     Search_refreshInputFocusTools();
     Main_values.Main_Go = Main_values.Main_BeforeSearch;
-    Main_textContent('top_bar_user', STR_USER);
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_HideElement('label_side_panel');
     Main_ShowElement('label_refresh');
     Main_SearchInput.value = '';
