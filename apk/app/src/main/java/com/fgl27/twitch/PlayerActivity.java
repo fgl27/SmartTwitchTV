@@ -501,6 +501,30 @@ public class PlayerActivity extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        //Override key play and pause as those get send to js as KEYCODE_MEDIA_PLAY_PAUSE
+        if (event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PLAY) {
+            //Prevent send it up down and up
+            if (event.getAction() == KeyEvent.ACTION_DOWN) return true;
+
+            //P for play
+            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_P));
+            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_P));
+            return true;
+        } else if (event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PAUSE) {
+            //Prevent send it up down and up
+            if (event.getAction() == KeyEvent.ACTION_DOWN) return true;
+
+            //S for stop/pause
+            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_S));
+            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_S));
+            return true;
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
     // A web app that loads all thumbnails content and interact with the player
     private void initializeWebview() {
         mwebview = findViewById(R.id.WebView);
