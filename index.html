@@ -126,7 +126,7 @@
         div.screen_holder_games {
             width: 100%;
             position: fixed;
-            top: 6.5%;
+            top: 7.8%;
         }
 
         div.screen_holder_games {
@@ -210,11 +210,11 @@
         div.stream_thumbnail_video,
         div.stream_thumbnail_game,
         div.stream_thumbnail_clip,
+        div.stream_thumbnail_live,
         div.stream_thumbnail_channel {
             width: 100%;
             height: 0;
             position: relative;
-            border-radius: 0.4ch;
         }
 
         div.stream_thumbnail_video {
@@ -225,8 +225,63 @@
 
         div.stream_thumbnail_clip {
             /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 75%;
+            padding-bottom: 56.25%;
             background-repeat: no-repeat;
+        }
+
+        div.stream_thumbnail_focused {
+            background-color: #cacaca !important;
+            color: #000000 !important;
+            border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 1 !important;
+        }
+
+        div.stream_thumbnail_live {
+            /* height / width * 100% of Main.VideoSize*/
+            padding-bottom: 79%;
+            background-color: #000000;
+            color: #FFFFFF;
+            border-right: 0.05em solid;
+            border-left: 0.05em solid;
+            border-image: linear-gradient(#000000, #000000) 1;
+        }
+
+        div.stream_thumbnail_live_img {
+            width: 100%;
+            background-color: #000000;
+            padding-bottom: 56.25%;
+        }
+
+        div.stream_thumbnail_live_holder {
+            width: 31%;
+            display: inline-block;
+            padding: 1.1%;
+        }
+
+        div.stream_thumbnail_live_text_holder {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            bottom: 0.15em;
+            padding: 0.5%;
+            font-size: 95%;
+        }
+
+        .stream_info_live,
+        .stream_info_live_name {
+            width: 100%;
+            text-align: left;
+            word-wrap: break-word;
+            font-size: 85%;
+            font-family: 'Roboto-Bold';
+        }
+
+        .stream_info_live {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-family: 'Roboto';
+            font-size: 75%;
         }
 
         div.stream_thumbnail_game {
@@ -236,10 +291,6 @@
         div.stream_thumbnail_channel {
             padding-bottom: 100%;
             background-repeat: no-repeat;
-        }
-
-        div.stream_thumbnail_focused {
-            box-shadow: 0 0 0 0.175em #000000, 0 0 0 0.325em #FFFFFF;
         }
 
         div.feed_thumbnail_focused {
@@ -267,7 +318,6 @@
             max-width: 100%;
             max-height: 100%;
             overflow: hidden;
-            border-radius: 0.2em;
         }
 
         img.stream_img_fallow {
