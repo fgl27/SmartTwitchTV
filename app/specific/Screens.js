@@ -308,25 +308,37 @@ function Screens_createCellVod(id, idArray, valuesArray) {
         Play_timeS(valuesArray[6]) + '</div></div></div></div>');
 }
 
+function Screens_createCellNew(id_attribute, Data_content, html_content) {
+    var div = document.createElement('div');
+
+    div.setAttribute('id', id_attribute);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
+    div.classList.add('stream_thumbnail_live_holder');
+
+    div.innerHTML = html_content;
+
+    return div;
+}
+
 function Screens_createCellLive(id, data, idArray, valuesArray) {
     var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
 
-    return Screens_createCell(
+    return Screens_createCellNew(
         idArray[8] + id,
         data,
-        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_clip"><div><img id="' +
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[3] + id + '" class="stream_channel" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
-        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon" style="color: ' +
+        idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+        idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
+        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
         (data[2] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
         ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
-        '"class="stream_info" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
+        '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
-        '<div id="' + idArray[4] + id + '"class="stream_info">' + twemoji.parse(valuesArray[2]) + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-        '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info">' + valuesArray[4] + '</div></div></div>');
+        '<div id="' + idArray[4] + id + '"class="stream_info_live">' + twemoji.parse(valuesArray[2]) + '</div>' +
+        '<div id="' + idArray[5] + id + '"class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
+        '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info_live">' + valuesArray[4] + '</div></div></div>');
 }
 
 function Screens_loadDataSuccessFinish() {
@@ -459,14 +471,14 @@ function Screens_ThumbNotNull(thumbnail) {
 function Screens_addrow(forceScroll, y) {
     if (inUseObj.currY < y) { // down
         inUseObj.currY = inUseObj.posY;
-        if (y > 1) Screens_addrowDown(y);
+        Screens_addrowDown(y);
     } else if (inUseObj.currY > y) { // Up
         inUseObj.currY = inUseObj.posY;
-        if (y > 0 && (inUseObj.Cells.length) > (y + 2)) {
+        if ((inUseObj.Cells.length) > (y + 3) && y) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 3)))
-                document.getElementById(inUseObj.ids[12] + (y + 3)).remove();
+            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 4)))
+                document.getElementById(inUseObj.ids[12] + (y + 4)).remove();
         }
     }
 
@@ -474,8 +486,8 @@ function Screens_addrow(forceScroll, y) {
 }
 
 function Screens_addrowDown(y) {
-    if (inUseObj.Cells[y + 2]) {
-        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
+    if (inUseObj.Cells[y + 3]) {
+        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 3]);
         if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2)))
             document.getElementById(inUseObj.ids[12] + (y - 2)).remove();
     } else if (inUseObj.loadingData) {
@@ -532,7 +544,7 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
-                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 7);
+                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 9.4);
             } else Main_handleKeyUp();
         } else Main_ScrollTable(idArray[10], 0);
 
