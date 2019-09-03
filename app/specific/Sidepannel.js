@@ -196,8 +196,8 @@ function Sidepannel_Start(callback) {
 function Sidepannel_StartMain() {
     Sidepannel_IsMain = true;
     Main_ShowElement('side_panel_fix');
-    document.getElementById('side_panel_movel').style.marginLeft = '';
-    document.getElementById('side_panel_fix').style.marginLeft = '';
+    document.getElementById('side_panel_movel').style.marginLeft = 0;
+    document.getElementById('side_panel_fix').style.marginLeft = 0;
     document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
     Sidepannel_AddFocusMain();
 }
@@ -224,12 +224,18 @@ function Sidepannel_ShowFeed() {
     }
 }
 
+var Sidepannel_MoveldefaultMargin = 14.5;
+var Sidepannel_FixdefaultMargin = 4;
+var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin;
+
 function Sidepannel_HideMain(hideAll) {
     var size = AddUser_UsernameArray[0] ? AddUser_UsernameArray[0].display_name.length : STR_USER_ADD;
     size = (size > 8 ? size - 8 : 0);
 
-    if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-4%';
-    document.getElementById('side_panel_movel').style.marginLeft = 'calc(-' + (hideAll ? 17.5 : 13) + '% - ' + size + 'ch)';
+    if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-' + Sidepannel_FixdefaultMargin + '%';
+
+    document.getElementById('side_panel_movel').style.marginLeft =
+        'calc(-' + (hideAll ? (Sidepannel_MoveldefaultWidth + 0.5) : Sidepannel_MoveldefaultMargin) + '% - ' + size + 'ch)';
 }
 
 function Sidepannel_Hide() {
@@ -237,7 +243,7 @@ function Sidepannel_Hide() {
     Sidepannel_RemoveFocusMain();
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_ShowElement('side_panel_fix');
-    document.getElementById('side_panel_fix').style.marginLeft = '';
+    document.getElementById('side_panel_fix').style.marginLeft = 0;
     Main_AddClass('side_panel', 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
