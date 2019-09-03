@@ -133,6 +133,7 @@ var Base_Vod_obj = {
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+    thumbclass: 'stream_thumbnail_live_holder',
     addFocus: function(y, x, idArray, forceScroll) {
         this.AnimateThumb(this);
         Screens_addFocusVideo(y, x, idArray, forceScroll);
@@ -270,7 +271,6 @@ function ScreensObj_InitVod() {
     }, Base_obj);
 
     Vod = Screens_assign(Vod, Base_Vod_obj);
-    Vod.set_ThumbSize();
 }
 
 function ScreensObj_InitChannelVod() {
@@ -327,7 +327,6 @@ function ScreensObj_InitChannelVod() {
     }, Base_obj);
 
     ChannelVod = Screens_assign(ChannelVod, Base_Vod_obj);
-    ChannelVod.set_ThumbSize();
 
     ChannelVod.addCell = function(cell) {
 
@@ -393,7 +392,6 @@ function ScreensObj_InitAGameVod() {
     }, Base_obj);
 
     AGameVod = Screens_assign(AGameVod, Base_Vod_obj);
-    AGameVod.set_ThumbSize();
 }
 
 function ScreensObj_InitUserVod() {
@@ -446,7 +444,6 @@ function ScreensObj_InitUserVod() {
     }, Base_obj);
 
     UserVod = Screens_assign(UserVod, Base_Vod_obj);
-    UserVod.set_ThumbSize();
 }
 
 var Base_Live_obj = {
@@ -455,6 +452,7 @@ var Base_Live_obj = {
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
+    thumbclass: 'stream_thumbnail_live_holder',
     img_404: IMG_404_VIDEO,
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
@@ -516,7 +514,6 @@ function ScreensObj_InitLive() {
     }, Base_obj);
 
     Live = Screens_assign(Live, Base_Live_obj);
-    Live.set_ThumbSize();
 }
 
 function ScreensObj_InitSearchLive() {
@@ -551,7 +548,6 @@ function ScreensObj_InitSearchLive() {
     }, Base_obj);
 
     SearchLive = Screens_assign(SearchLive, Base_Live_obj);
-    SearchLive.set_ThumbSize();
 
     SearchLive.setMax = function(tempObj) {
         this.MaxOffset = tempObj._total;
@@ -607,7 +603,6 @@ function ScreensObj_InitUserLive() {
     }, Base_obj);
 
     UserLive = Screens_assign(UserLive, Base_Live_obj);
-    UserLive.set_ThumbSize();
 
     UserLive.concatenate = function(responseText) {
         if (this.token || this.followerChannelsDone) {
@@ -682,7 +677,6 @@ function ScreensObj_InitUserHost() {
     }, Base_obj);
 
     UserHost = Screens_assign(UserHost, Base_Live_obj);
-    UserHost.set_ThumbSize();
 
     UserHost.addCell = function(cell) {
         if (!this.idObject[cell.target._id + '' + cell._id]) { //combined id host and hosted
@@ -758,7 +752,6 @@ function ScreensObj_InitAGame() {
     }, Base_obj);
 
     AGame = Screens_assign(AGame, Base_Live_obj);
-    AGame.set_ThumbSize();
 }
 
 function ScreensObj_InitFeatured() {
@@ -787,7 +780,6 @@ function ScreensObj_InitFeatured() {
     }, Base_obj);
 
     Featured = Screens_assign(Featured, Base_Live_obj);
-    Featured.set_ThumbSize();
 
     Featured.addCell = function(cell) {
         cell = cell.stream;
@@ -803,6 +795,7 @@ var Base_Clip_obj = {
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
+    thumbclass: 'stream_thumbnail_live_holder',
     cursor: null,
     object: 'clips',
     period: ['day', 'week', 'month', 'all'],
@@ -912,7 +905,6 @@ function ScreensObj_InitClip() {
     }, Base_obj);
 
     Clip = Screens_assign(Clip, Base_Clip_obj);
-    Clip.set_ThumbSize();
 }
 
 function ScreensObj_InitChannelClip() {
@@ -945,7 +937,6 @@ function ScreensObj_InitChannelClip() {
     }, Base_obj);
 
     ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
-    ChannelClip.set_ThumbSize();
 }
 
 function ScreensObj_InitAGameClip() {
@@ -973,7 +964,6 @@ function ScreensObj_InitAGameClip() {
     }, Base_obj);
 
     AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
-    AGameClip.set_ThumbSize();
 }
 
 var Base_Game_obj = {
