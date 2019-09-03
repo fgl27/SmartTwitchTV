@@ -489,6 +489,34 @@ function Main_SwitchScreen(removekey) {
     });
 }
 
+function Main_RemoveKeys() {
+
+    if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+    else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
+    else {
+        if (Main_values.Main_Go === Main_Live) inUseObj = Live;
+        else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
+        else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
+        else if (Main_values.Main_Go === Main_games) inUseObj = Game;
+        else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
+        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
+        else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
+        else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
+        else if (Main_values.Main_Go === Main_usergames) inUseObj = UserGames;
+        else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
+        else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
+        else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
+        else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
+        else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
+        else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
+        else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
+        else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
+        else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
+
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    }
+}
+
 var Main_Switchobj = {
     // way not?... 'computed property names' is only available in ES6 (use 'esversion: 6').
     //    [Main_Users]: Users_init
@@ -577,7 +605,7 @@ Main_Switchobj[Main_games] = function() {
     Screens_init();
 };
 
-function Main_SwitchScreenAction() {
+function Main_SwitchScreenAction(removekey) {
     Main_HideWarningDialog();
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
@@ -586,6 +614,8 @@ function Main_SwitchScreenAction() {
 
     if (Main_Switchobj[Main_values.Main_Go]) Main_Switchobj[Main_values.Main_Go]();
     else Main_Switchobj[1]();
+
+    if (removekey) Main_RemoveKeys();
 }
 
 function Main_OpenSearch() {
