@@ -9,5 +9,5 @@ ext.versions = [
 
         supportLib           : '28.0.0',
         gradlePlugin         : '3.5.0',
-        benmanes             : '0.23.0',
+        benmanes             : '0.24.0',
 ]
