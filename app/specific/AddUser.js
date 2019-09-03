@@ -172,31 +172,24 @@ function AddUser_RestoreUsers() {
 }
 
 function AddUser_UpdateSidepanel() {
-    Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + AddUser_UsernameArray[0].logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
-    Main_innerHTML('side_panel_movel_new_0', STR_SPACE + AddUser_UsernameArray[0].display_name);
-
-    var size = AddUser_UsernameArray[0].display_name.length,
-        doc = document.getElementById('side_panel_movel');
-
-    size = (size > 8 ? size - 8 : 0);
-
-    doc.style.marginLeft = 'calc(-13% - ' + size + 'ch)';
-    doc.style.width = 'calc(17% + ' + size + 'ch)';
-
+    AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
 }
 
 function AddUser_UpdateSidepanelDefault() {
-    Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + IMG_404_LOGO + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
-    Main_innerHTML('side_panel_movel_new_0', STR_SPACE + STR_USER_ADD);
+    AddUser_UpdateSidepanelSize(IMG_404_LOGO, STR_USER_ADD);
+}
 
-    var size = STR_USER_ADD,
+function AddUser_UpdateSidepanelSize(logo, username) {
+    Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
+    Main_innerHTML('side_panel_movel_new_0', STR_SPACE + username);
+
+    var size = username.length,
         doc = document.getElementById('side_panel_movel');
 
     size = (size > 8 ? size - 8 : 0);
 
-    doc.style.marginLeft = 'calc(-13% - ' + size + 'ch)';
-    doc.style.width = 'calc(17% + ' + size + 'ch)';
-
+    doc.style.marginLeft = 'calc(-' + Sidepannel_MoveldefaultMargin + '% - ' + size + 'ch)';
+    doc.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
 }
 
 function AddUser_UserIsSet() {
