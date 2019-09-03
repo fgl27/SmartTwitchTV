@@ -1016,7 +1016,6 @@
         }
 
         div.topbar {
-            z-index: -1;
             position: absolute;
             margin-left: 5%;
             width: 94.5%;
@@ -1561,18 +1560,6 @@
 
 <body>
     <div id="scene1" class="screen_size" style="background-color: rgba(0, 0, 0, 1);">
-        <div id="topbar" class="topbar hide">
-            <div class="top_clock">
-                <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
-            </div>
-            <div id="controls_div" class="controls_div">
-                <div id="label_update" class="icon_top_label hide"></div>
-                <div id="label_refresh" class="icon_top_label"></div>
-                <div id="label_side_panel" class="icon_top_label hide"></div>
-            </div>
-            <div id="top_lable" class="top_lable">
-            </div>
-        </div>
         <div id="scrollbar_holder" class="scrollbar_holder">
             <div id="scrollbar" class="scroll"></div>
         </div>
@@ -1716,6 +1703,18 @@
             </div>
             <div id="UserVod_scroll" class="screen_holder hide">
                 <div id="stream_table_user_vod" class="streams_div"></div>
+            </div>
+        </div>
+        <div id="topbar" class="topbar hide">
+            <div class="top_clock">
+                <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
+            </div>
+            <div id="controls_div" class="controls_div">
+                <div id="label_update" class="icon_top_label hide"></div>
+                <div id="label_refresh" class="icon_top_label"></div>
+                <div id="label_side_panel" class="icon_top_label hide"></div>
+            </div>
+            <div id="top_lable" class="top_lable">
             </div>
         </div>
         <div id="side_panel_new_holder" class="hide">
