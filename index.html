@@ -28,7 +28,7 @@
     <style>
         body,
         html {
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 100, 1);
             font-family: 'Roboto', 'Roboto-Bold';
             margin: auto;
             overflow: hidden;
@@ -130,7 +130,7 @@
         }
 
         div.screen_holder_games {
-            top: 2.5%;
+            top: 4.5%;
         }
 
         div.settings_holder {
@@ -231,7 +231,7 @@
         }
 
         div.stream_thumbnail_focused {
-            background-color: #cacaca !important;
+            background-color: #F5F5F5 !important;
             color: #000000 !important;
             border-image: linear-gradient(to bottom, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
@@ -246,10 +246,34 @@
             border-image: linear-gradient(#000000, #000000) 1;
         }
 
+        div.stream_thumbnail_live_game {
+            width: 100%;
+            background-color: #000000;
+            padding-bottom: 139.7%;
+        }
+
         div.stream_thumbnail_live_img {
             width: 100%;
             background-color: #000000;
             padding-bottom: 56.25%;
+        }
+
+        div.stream_thumbnail_game_holder {
+            width: 16%;
+            display: inline-block;
+            padding: 1%;
+            padding-top: 0;
+            padding-left: 2.5%;
+        }
+
+        div.stream_thumbnail_game {
+            padding-bottom: 175%;
+            font-size: 80%;
+            background-color: #000000;
+            color: #FFFFFF;
+            border-right: 0.05em solid;
+            border-left: 0.05em solid;
+            border-image: linear-gradient(#000000, #000000) 1;
         }
 
         div.stream_thumbnail_live_holder {
@@ -283,10 +307,6 @@
             overflow: hidden;
             font-family: 'Roboto';
             font-size: 75%;
-        }
-
-        div.stream_thumbnail_game {
-            padding-bottom: 139.70%;
         }
 
         div.stream_thumbnail_channel {

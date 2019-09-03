@@ -969,6 +969,7 @@ function ScreensObj_InitAGameClip() {
 var Base_Game_obj = {
     HeaderQuatity: 2,
     ThumbSize: 19.35,
+    thumbclass: 'stream_thumbnail_game_holder',
     ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ItemsLimit: Main_ItemsLimitGame,
     ColoumnsCount: Main_ColoumnsCountGame,

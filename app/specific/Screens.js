@@ -240,20 +240,6 @@ function Screens_createCell(id_attribute, Data_content, html_content) {
     return div;
 }
 
-function Screens_createCellGame(id, idArray, valuesArray) {
-    return Screens_createCell(
-        idArray[5] + id,
-        valuesArray[1],
-        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div><img id="' +
-        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
-        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_text2"><div id="<div id="' +
-        idArray[3] + id + '" class="stream_channel">' + valuesArray[1] + '</div>' +
-        (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
-            '"class="stream_info_games" style="width: 100%; display: inline-block;">' + valuesArray[2] +
-            '</div>' : '') + '</div></div>');
-}
-
 function Screens_createCellChannel(id, idArray, valuesArray) {
     return Screens_createCell(
         idArray[8] + id,
@@ -266,6 +252,20 @@ function Screens_createCellChannel(id, idArray, valuesArray) {
         (valuesArray[4] ? STR_SPACE + STR_SPACE +
             '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' +
             IMG_PARTNER + '">' : "") + '</div></div></div>');
+}
+
+function Screens_createCellGame(id, idArray, valuesArray) {
+    return Screens_createCellNew(
+        idArray[5] + id,
+        valuesArray[1],
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
+        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
+        idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div id="<div id="' +
+        idArray[3] + id + '" class="stream_info_live_name">' + valuesArray[1] + '</div>' +
+        (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
+            '"class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
+            '</div>' : '') + '</div></div>');
 }
 
 function Screens_createCellClip(id, idArray, valuesArray) {
@@ -565,13 +565,12 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
 
 function Screens_addFocusGame(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
-
         if (inUseObj.posY < (inUseObj.Cells.length - 1) || forceScroll)
-            Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1, 2.5);
+            Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1, 4.5);
 
     } else if ((inUseObj.Cells.length - 1) === y && (Main_ThumbNull(y - 1, x, idArray[0]))) {
-        Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1, 2.5);
-    } else Main_ScrollTable(idArray[10], 0);
+        Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1, 4.5);
+    } else Main_handleKeyUp();
 }
 
 function Screens_ChangeFocus(y, x) {
