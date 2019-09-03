@@ -32,6 +32,8 @@ function ChannelContent_init() {
     document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
 
+    ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname);
+
     if (Main_values.Main_BeforeChannel === Main_UserChannels || Main_values.My_channel) {
         Main_values.Sidepannel_Pos = Main_values.My_channel ? 8 : 7;
         Sidepannel_SetUserLables();
