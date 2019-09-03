@@ -29,7 +29,6 @@ function Users_init() {
     Main_values.Main_Go = Main_Users;
     document.getElementById("screens_holder").style.top = "";
     Main_HideWarningDialog();
-    Main_AddClass('top_bar_user', 'icon_center_focus');
     document.body.addEventListener("keydown", Users_handleKeyDown, false);
     if (Users_status) {
         Main_YRst(Users_cursorY);
@@ -41,7 +40,6 @@ function Users_init() {
 
 function Users_exit() {
     Main_values.Users_Position = 0;
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     document.body.removeEventListener("keydown", Users_handleKeyDown);
     Main_HideElement(Users_ids[5]);
     document.getElementById("screens_holder").style.top = "0";
