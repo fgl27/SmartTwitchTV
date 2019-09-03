@@ -1,6 +1,6 @@
 //https://developer.android.com/reference/android/view/KeyEvent
-var KEY_PAUSE = 127;
-var KEY_PLAY = 126;
+var KEY_PAUSE = 83;
+var KEY_PLAY = 80;
 var KEY_PLAYPAUSE = 179;
 
 var KEY_LEFT = 37;
