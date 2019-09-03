@@ -102,10 +102,11 @@ var Settings_positions_length = 0;
 //Variable initialization end
 
 function Settings_init() {
-    Main_HideElement('label_side_panel');
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_ShowElement('settings_holder');
+    Main_ShowElement('label_side_panel');
+    Main_HideElement('label_refresh');
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);
     Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
@@ -113,7 +114,8 @@ function Settings_init() {
 
 function Settings_exit() {
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
-    Main_ShowElement('label_side_panel');
+    Main_HideElement('label_side_panel');
+    Main_ShowElement('label_refresh');
     Settings_RemoveinputFocus();
     Main_HideElement('settings_holder');
 }

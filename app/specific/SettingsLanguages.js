@@ -138,8 +138,7 @@ function Languages_init() {
     Main_HideElement('settings_main');
     Main_ShowElement('settings_lang');
     Languages_HideShowAll();
-    Main_textContent('top_bar_featured', STR_SETTINGS_LANG);
-    document.getElementById('top_bar_featured').style.display = 'inline-block';
+    ScreensObj_SetTopLable(STR_SETTINGS + STR_SPACE + STR_CONTENT_LANG);
     document.body.addEventListener("keydown", Languages_handleKeyDown, false);
     Languages_cursorY = 0;
     Languages_inputFocus(Languages_cursorY);
@@ -152,8 +151,6 @@ function Languages_exit() {
     Settings_ScrollTable();
     Main_ShowElement('settings_main');
     Main_HideElement('settings_lang');
-    Main_textContent('top_bar_featured', STR_FEATURED);
-    document.getElementById('top_bar_featured').style.display = 'none';
     Languages_RemoveinputFocus();
     Languages_SetLang();
     Languages_ResetLang();
