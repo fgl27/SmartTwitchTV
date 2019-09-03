@@ -13,18 +13,17 @@ function Sidepannel_RemoveFocusMain() {
 }
 
 function Sidepannel_AddFocusFeed() {
-    //Main_AddClass(UserLiveFeed_side_ids[2] + Sidepannel_PosFeed, 'side_panel_new_icons_text');
-    Main_AddClass(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed, 'side_panel_feed_img_focus');
+    Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
     Sidepannel_Scroll();
     Sidepannel_UpdateThumb();
 }
 
-function Sidepannel_isShowing() {
-    return document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1;
+function Sidepannel_RemoveFocusFeed() {
+    Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
 }
 
-function Sidepannel_RemoveFocusFeed() {
-    Main_RemoveClass(UserLiveFeed_side_ids[1] + Sidepannel_PosFeed, 'side_panel_feed_img_focus');
+function Sidepannel_isShowing() {
+    return document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1;
 }
 
 function Sidepannel_UpdateThumb() {
