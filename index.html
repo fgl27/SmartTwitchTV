@@ -201,14 +201,6 @@
             display: inline-block;
         }
 
-        div.stream_thumbnail_channel_vod {
-            margin-left: 5%;
-            width: 90%;
-            height: 0;
-            padding-bottom: 7%;
-            border-radius: 0.4ch;
-        }
-
         div.stream_thumbnail_video,
         div.stream_thumbnail_game,
         div.stream_thumbnail_clip,
@@ -235,6 +227,22 @@
             background-color: #F5F5F5 !important;
             color: #000000 !important;
             border-image: linear-gradient(to bottom, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
+        }
+
+        div.stream_switch_focused {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
+        }
+
+        div.stream_thumbnail_channel_vod {
+            margin-left: 5%;
+            width: 90%;
+            height: 0;
+            padding-bottom: 7%;
+            box-sizing: border-box;
+            border-top: 0.05em solid;
+            border-bottom: 0.05em solid;
+            border-image: linear-gradient(#000000, #000000) 1;
         }
 
         div.stream_thumbnail_live {

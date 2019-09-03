@@ -584,13 +584,15 @@ function Screens_ChangeFocus(y, x) {
 function Screens_addFocusFallow() {
     if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 0;
     else if (inUseObj.posX < 0) inUseObj.posX = inUseObj.SwitchesIcons.length - 1;
-    Main_AddClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, Main_classThumb);
+
+    Main_AddClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, 'stream_switch_focused');
 }
 
 function Screens_removeFocusFallow() {
     if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 0;
     else if (inUseObj.posX < 0) inUseObj.posX = inUseObj.SwitchesIcons.length - 1;
-    Main_RemoveClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, Main_classThumb);
+
+    Main_RemoveClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, 'stream_switch_focused');
 }
 
 function Screens_BasicExit(before) {
