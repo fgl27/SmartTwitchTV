@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -800,6 +801,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
             return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, post);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getDevice() {
+            return android.os.Build.MODEL;
         }
 
         @SuppressWarnings("unused")//called by JS
