@@ -123,10 +123,15 @@
         }
 
         div.screen_holder,
+        div.screen_holder_switch,
         div.screen_holder_games {
             width: 100%;
             position: fixed;
             top: 7.8%;
+        }
+
+        div.screen_holder_switch {
+            top: 5.8%;
         }
 
         div.screen_holder_games {
@@ -1066,7 +1071,7 @@
             text-align: left;
             word-wrap: break-word;
             color: #FFFFFF;
-            font-size: 100%;
+            font-size: 70%;
             font-family: 'Roboto-Bold';
             text-shadow: #000000 0 0 0.15em, #000000 0 0 0.15em, #000000 0 0 0.1em;
         }
@@ -1729,10 +1734,15 @@
         <div id="dialog_controls" class="about_dialogs hide" style="width: 85%; margin-left: 7.5%;">
             <div id="dialog_controls_text" class="controls_text"></div>
         </div>
+        <div id="dialog_counter" style="position: absolute; z-index:101; width: 100%; bottom: 0;">
+            <div style="float: right; width: auto; height: auto; display: inline-block; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.75));">
+                <div id="dialog_counter_text" class="counter_class"></div>
+            </div>
+        </div>
         <div id="screens_holder" class="screens">
             <!-- Channel screens-->
             <div id="UserChannels_scroll" class="screen_holder hide">
-                <div id="stream_table_user_channels" class="streams_div"></div>
+                <div id="stream_table_user_channels" class="streams_div" style="margin-left: 6.5%;"></div>
             </div>
             <div id="SearchChannels_scroll" class="screen_holder hide">
                 <div id="stream_table_search_channel" class="streams_div"></div>
@@ -1777,13 +1787,13 @@
             </div>
 
             <!-- Clip screens-->
-            <div id="Clip_scroll" class="screen_holder hide">
+            <div id="Clip_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_clip" class="streams_div"></div>
             </div>
-            <div id="ChannelClip_scroll" class="screen_holder hide">
+            <div id="ChannelClip_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_channel_clip" class="streams_div"></div>
             </div>
-            <div id="AGameClip_scroll" class="screen_holder hide">
+            <div id="AGameClip_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_a_game_clip" class="streams_div"></div>
             </div>
 
@@ -1847,7 +1857,7 @@
             <div id="UserLive_scroll" class="screen_holder hide">
                 <div id="stream_table_user_live" class="streams_div"></div>
             </div>
-            <div id="AGame_scroll" class="screen_holder hide">
+            <div id="AGame_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_a_game" class="streams_div"></div>
             </div>
             <div id="SearchLive_scroll" class="screen_holder hide">
@@ -1855,16 +1865,16 @@
             </div>
 
             <!-- Vod screens-->
-            <div id="Vod_scroll" class="screen_holder hide">
+            <div id="Vod_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_vod" class="streams_div"></div>
             </div>
-            <div id="AGameVod_scroll" class="screen_holder hide">
+            <div id="AGameVod_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_a_game_vod" class="streams_div"></div>
             </div>
-            <div id="ChannelVod_scroll" class="screen_holder hide">
+            <div id="ChannelVod_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_channel_vod" class="streams_div"></div>
             </div>
-            <div id="UserVod_scroll" class="screen_holder hide">
+            <div id="UserVod_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_user_vod" class="streams_div"></div>
             </div>
         </div>
