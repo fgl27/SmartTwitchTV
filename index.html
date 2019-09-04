@@ -41,7 +41,6 @@
         }
 
         div.icon_center_focus,
-        div.stream_thumbnail_channel,
         div.side_panel_return,
         div.side_panel_text_focus {
             text-shadow: -0.1ch 0 0 #000000,
@@ -267,6 +266,12 @@
             padding-bottom: 56.25%;
         }
 
+        div.stream_thumbnail_channel_img {
+            width: 100%;
+            background-color: #000000;
+            padding-bottom: 100%;
+        }
+
         div.stream_thumbnail_game_holder {
             width: 16%;
             display: inline-block;
@@ -291,6 +296,12 @@
             padding: 1.1%;
         }
 
+        div.stream_thumbnail_channel_holder {
+            width: 15%;
+            display: inline-block;
+            padding: 0.5%;
+        }
+
         div.stream_thumbnail_live_text_holder {
             position: absolute;
             right: 0;
@@ -301,12 +312,17 @@
         }
 
         .stream_info_live,
+        .stream_info_channel_name,
         .stream_info_live_name {
             width: 100%;
             text-align: left;
             word-wrap: break-word;
             font-size: 85%;
             font-family: 'Roboto-Bold';
+        }
+
+        .stream_info_channel_name {
+            font-size: 75%;
         }
 
         .stream_info_live {
@@ -318,8 +334,12 @@
         }
 
         div.stream_thumbnail_channel {
-            padding-bottom: 100%;
-            background-repeat: no-repeat;
+            padding-bottom: 112%;
+            background-color: #000000;
+            color: #FFFFFF;
+            border-right: 0.05em solid;
+            border-left: 0.05em solid;
+            border-image: linear-gradient(#000000, #000000) 1;
         }
 
         div.feed_thumbnail_focused {
