@@ -232,7 +232,7 @@ function ChannelContent_createCell(channel_name, channel_id, preview_thumbnail, 
         '\'"></div><div class="stream_thumbnail_live_text_holder"><div id="channel_content_cell0_3" style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
         '<i class="icon-' + (rerun ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
         (rerun ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
-        ';"></i> ' + channel_display_name + '</div><div "class="stream_info_live" style="width:' +
+        ';"></i> ' + channel_display_name + '</div><div class="stream_info_live" style="width:' +
         (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         (ishosting ? '' : quality) + '</div></div>' +
         '<div class="stream_info_live">' + stream_title + '</div>' +
@@ -245,7 +245,7 @@ function ChannelContent_createCellOffline() {
     Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="lazy stream_img" alt="" data-src="' + ChannelContent_offline_image + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
         '\'"></div><div class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
-        Main_values.Main_selectedChannelDisplayname + '</div><div "class="stream_info_live" style="width:0%; float: right; text-align: right; display: inline-block;"></div></div>' +
+        Main_values.Main_selectedChannelDisplayname + '</div><div class="stream_info_live" style="width:0%; float: right; text-align: right; display: inline-block;"></div></div>' +
         '<div class="stream_info_live">' + STR_CH_IS_OFFLINE + '</div>' +
         '</div>');
 }
