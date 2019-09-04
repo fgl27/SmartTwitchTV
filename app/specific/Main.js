@@ -719,7 +719,11 @@ function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
 
 function Main_checkVersion() {
     if (Main_IsNotBrowser) {
-        Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion;
+        var device = '';
+        try {
+            device = Android.getDevice();
+        } catch (e) {}
+        Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion + ' Device: ' + device;
         if (Main_needUpdate(Main_IsNotBrowserVersion)) Main_ShowElement('label_update');
     }
 
