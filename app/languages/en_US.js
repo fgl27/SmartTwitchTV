@@ -298,4 +298,5 @@ function en_USLang() {
     STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited";
     STR_MAIN_MENU = "Main Menu";
     STR_USER_MENU = "User Menu";
+    STR_CH_IS_OFFLINE = "Is offline";
 }

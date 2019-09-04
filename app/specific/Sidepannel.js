@@ -193,6 +193,7 @@ function Sidepannel_Start(callback) {
 }
 
 function Sidepannel_StartMain() {
+    Main_RemoveClass('scenefeed', 'scenefeed_background');
     Sidepannel_IsMain = true;
     Main_ShowElement('side_panel_fix');
     document.getElementById('side_panel_movel').style.marginLeft = 0;
@@ -210,6 +211,7 @@ function Sidepannel_StartFeed() {
 }
 
 function Sidepannel_ShowFeed() {
+    Main_AddClass('scenefeed', 'scenefeed_background');
     if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
     Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
 
@@ -245,6 +247,8 @@ function Sidepannel_Hide() {
     document.getElementById('side_panel_fix').style.marginLeft = 0;
     Main_AddClass('side_panel', 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
+    Main_RemoveClass('scenefeed', 'scenefeed_background');
+
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
 }
@@ -351,14 +355,14 @@ function Sidepannel_SetIcons(div, icon) {
 }
 
 function Sidepannel_Scroll() {
-    var value = '1%', //default
+    var value = '0%', //default
         center = 6;
 
     if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
-            value = 'calc(-18.1% *' + (Sidepannel_PosFeed - center) + ')';
+            value = 'calc(-18.115% *' + (Sidepannel_PosFeed - center) + ')';
         else if (((Sidepannel_GetSize() - center) - center) > 0) //if we are in the 7 left
-            value = 'calc(-18.1% *' + ((Sidepannel_GetSize() - center) - center) + ')';
+            value = 'calc(-18.115% *' + ((Sidepannel_GetSize() - center) - center) + ')';
     }
 
     document.getElementById('side_panel_holder').style.marginTop = value;
@@ -372,6 +376,7 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_RIGHT:
             Main_AddClass('side_panel', 'side_panel_hide');
+            Main_RemoveClass('scenefeed', 'scenefeed_background');
             Main_HideElement('side_panel_feed_thumb');
             document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
             Sidepannel_StartMain();
