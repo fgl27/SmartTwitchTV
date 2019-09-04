@@ -65,9 +65,6 @@ var Base_obj = {
     data_cursor: 0,
     loadDataSuccess: Screens_loadDataSuccess,
     addrow: Screens_addrow,
-    set_ThumbSize: function() {
-        this.ThumbCssText = 'width: ' + this.ThumbSize + '%; display: inline-block; padding: 0.3%;';
-    },
     key_exit: function() {
 
         if (Main_ThumbNull(this.posY, this.posX, this.ids[0])) {
@@ -129,7 +126,6 @@ var Base_obj = {
 };
 
 var Base_Vod_obj = {
-    ThumbSize: 32.65,
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
@@ -447,7 +443,6 @@ function ScreensObj_InitUserVod() {
 }
 
 var Base_Live_obj = {
-    ThumbSize: 32.65,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
@@ -789,7 +784,6 @@ function ScreensObj_InitFeatured() {
 
 var Base_Clip_obj = {
     HeaderQuatity: 2,
-    ThumbSize: 32.65,
     ItemsLimit: Main_ItemsLimitVideo,
     TopRowCreated: false,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
@@ -968,7 +962,6 @@ function ScreensObj_InitAGameClip() {
 
 var Base_Game_obj = {
     HeaderQuatity: 2,
-    ThumbSize: 19.35,
     thumbclass: 'stream_thumbnail_game_holder',
     ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ItemsLimit: Main_ItemsLimitGame,
@@ -1040,7 +1033,6 @@ function ScreensObj_InitGame() {
     }, Base_obj);
 
     Game = Screens_assign(Game, Base_Game_obj);
-    Game.set_ThumbSize();
 }
 
 function ScreensObj_InitUserGames() {
@@ -1082,7 +1074,6 @@ function ScreensObj_InitUserGames() {
     }, Base_obj);
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
-    UserGames.set_ThumbSize();
 }
 
 function ScreensObj_InitSearchGames() {
@@ -1117,16 +1108,15 @@ function ScreensObj_InitSearchGames() {
     }, Base_obj);
 
     SearchGames = Screens_assign(SearchGames, Base_Game_obj);
-    SearchGames.set_ThumbSize();
     SearchGames.ItemsLimit = 100;
 }
 
 var Base_Channel_obj = {
-    ThumbSize: 16,
     ItemsLimit: Main_ItemsLimitChannel,
     ColoumnsCount: Main_ColoumnsCountChannel,
     addFocus: Screens_addFocusChannel,
     ItemsReloadLimit: Main_ItemsReloadLimitChannel,
+    thumbclass: 'stream_thumbnail_channel_holder',
     img_404: IMG_404_LOGO,
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
@@ -1196,7 +1186,6 @@ function ScreensObj_InitUserChannels() {
     }, Base_obj);
 
     UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
-    UserChannels.set_ThumbSize();
     UserChannels.addrow = Screens_addrowChannel;
     UserChannels.visiblerows = 5;
 }
@@ -1251,7 +1240,6 @@ function ScreensObj_InitSearchChannels() {
     }, Base_obj);
 
     SearchChannels = Screens_assign(SearchChannels, Base_Channel_obj);
-    SearchChannels.set_ThumbSize();
     SearchChannels.addrow = Screens_addrowChannel;
     SearchChannels.visiblerows = 5;
 }

@@ -234,28 +234,30 @@ function Screens_createCell(id_attribute, Data_content, html_content) {
 
     div.setAttribute('id', id_attribute);
     div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
-    div.style.cssText = inUseObj.ThumbCssText;
+    div.classList.add(inUseObj.thumbclass);
+
     div.innerHTML = html_content;
 
     return div;
 }
 
+
 function Screens_createCellChannel(id, idArray, valuesArray) {
     return Screens_createCell(
         idArray[8] + id,
         valuesArray,
-        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div><img id="' + idArray[1] +
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
         id + '" alt="" class="lazy stream_img" data-src="' + valuesArray[2] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
-        '<div id="' + idArray[2] + id + '" class="stream_text2">' +
-        '<div id="' + idArray[3] + id + '" class="stream_channel">' + valuesArray[3] +
+        '<div id="' + idArray[2] + id + '" class="stream_thumbnail_live_text_holder">' +
+        '<div id="' + idArray[3] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
         (valuesArray[4] ? STR_SPACE + STR_SPACE +
-            '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' +
+            '<img style="display: inline-block; width: 1.7ch; vertical-align: middle;" alt="" src="' +
             IMG_PARTNER + '">' : "") + '</div></div></div>');
 }
 
 function Screens_createCellGame(id, idArray, valuesArray) {
-    return Screens_createCellNew(
+    return Screens_createCell(
         idArray[5] + id,
         valuesArray[1],
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
@@ -271,7 +273,7 @@ function Screens_createCellGame(id, idArray, valuesArray) {
 function Screens_createCellClip(id, idArray, valuesArray) {
     var playing = (valuesArray[2] !== "" ? STR_PLAYING + valuesArray[2] : "");
 
-    return Screens_createCellNew(
+    return Screens_createCell(
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
@@ -290,7 +292,7 @@ function Screens_createCellClip(id, idArray, valuesArray) {
 }
 
 function Screens_createCellVod(id, idArray, valuesArray) {
-    return Screens_createCellNew(
+    return Screens_createCell(
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[6] + id + '" class="stream_thumbnail_live_img" ' +
@@ -308,22 +310,10 @@ function Screens_createCellVod(id, idArray, valuesArray) {
         Play_timeS(valuesArray[6]) + '</div></div></div></div>');
 }
 
-function Screens_createCellNew(id_attribute, Data_content, html_content) {
-    var div = document.createElement('div');
-
-    div.setAttribute('id', id_attribute);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
-    div.classList.add(inUseObj.thumbclass);
-
-    div.innerHTML = html_content;
-
-    return div;
-}
-
 function Screens_createCellLive(id, data, idArray, valuesArray) {
     var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
 
-    return Screens_createCellNew(
+    return Screens_createCell(
         idArray[8] + id,
         data,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
@@ -556,7 +546,7 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
 
         if (y > 1) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
-                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 42);
+                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 40);
             } else Main_handleKeyUp();
         } else Main_ScrollTable(idArray[10], 0);
 
