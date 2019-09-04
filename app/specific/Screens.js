@@ -249,10 +249,10 @@ function Screens_createCellChannel(id, idArray, valuesArray) {
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
         id + '" alt="" class="lazy stream_img" data-src="' + valuesArray[2] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
-        '<div id="' + idArray[2] + id + '" class="stream_thumbnail_live_text_holder">' +
+        '<div id="' + idArray[2] + id + '" class="stream_thumbnail_channel_text_holder">' +
         '<div id="' + idArray[3] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
         (valuesArray[4] ? STR_SPACE + STR_SPACE +
-            '<img style="display: inline-block; width: 1.7ch; vertical-align: middle;" alt="" src="' +
+            '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
             IMG_PARTNER + '">' : "") + '</div></div></div>');
 }
 

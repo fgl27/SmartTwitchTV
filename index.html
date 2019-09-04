@@ -302,6 +302,7 @@
             padding: 0.5%;
         }
 
+        div.stream_thumbnail_channel_text_holder,
         div.stream_thumbnail_live_text_holder {
             position: absolute;
             right: 0;
@@ -309,6 +310,11 @@
             bottom: 0.15em;
             padding: 0.5%;
             font-size: 95%;
+        }
+
+        div.stream_thumbnail_channel_text_holder {
+            bottom: 0;
+            height: 1em;
         }
 
         .stream_info_live,
@@ -321,8 +327,19 @@
             font-family: 'Roboto-Bold';
         }
 
-        .stream_info_channel_name {
+        .stream_info_channel_partner_icon {
+            display: inline-block;
             font-size: 75%;
+            width: 2ch;
+        }
+
+        .stream_info_channel_name {
+            font-size: 72%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: calc(100% - 3ch);
+            display: inline-block;
         }
 
         .stream_info_live {
