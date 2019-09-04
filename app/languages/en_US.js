@@ -299,4 +299,5 @@ function en_USLang() {
     STR_MAIN_MENU = "Main Menu";
     STR_USER_MENU = "User Menu";
     STR_CH_IS_OFFLINE = "Is offline";
+    STR_SCREEN_COUNTER = "Show screen position counter";
 }

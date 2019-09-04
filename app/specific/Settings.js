@@ -17,6 +17,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "show_screen_counter": { //show_screen_counter
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "live_notification": { //buffer_live
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -184,6 +188,12 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
 
+    // show_screen_counter
+    key = "show_screen_counter";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+    div += Settings_DivOptionNoSummary(key, STR_SCREEN_COUNTER);
+
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
@@ -300,6 +310,9 @@ function Settings_SetStrings() {
     key = "clock_offset";
     Main_textContent(key + '_name', STR_CLOCK_OFFSET);
 
+    key = "show_screen_counter";
+    Main_textContent(key + '_name', STR_SCREEN_COUNTER);
+
     // Content Language selection
     key = "content_lang";
     Main_textContent(key + '_name', STR_CONTENT_LANG);
@@ -401,6 +414,7 @@ function Settings_SetDefautls() {
     Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
+    Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
 }
 
 function Settings_Obj_values(key) {
@@ -466,6 +480,8 @@ function Settings_Setarrows(position) {
 function Settings_SetDefault(position) {
     position = Settings_value_keys[position];
 
+    console.log('Settings_SetDefault ' + position);
+
     if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     else if (position === "live_notification") UserLiveFeed_Notify = Settings_Obj_default("live_notification");
@@ -479,11 +495,18 @@ function Settings_SetDefault(position) {
     else if (position === "default_quality") Play_SetQuality();
     else if (position === "thumb_quality") Main_SetThumb();
     else if (position === "global_font_offset") calculateFontSize();
+    else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
     } else if (position === "bitrate_main") Settings_SetBitRate(1);
     else if (position === "bitrate_min") Settings_SetBitRate(2);
+}
+
+function Settings_ShowCounter(show) {
+    console.log(show);
+    if (show) Main_ShowElement('dialog_counter_text');
+    else Main_HideElement('dialog_counter_text');
 }
 
 function Settings_SetBitRate(whocall) {
@@ -565,7 +588,7 @@ function Settings_SetClock() {
 function Settings_ScrollTable() {
     var doc = document.getElementById('settings_scroll');
 
-    doc.scrollTop = (Settings_cursorY > 8) ? doc.scrollHeight : 0;
+    doc.scrollTop = (Settings_cursorY > 9) ? doc.scrollHeight : 0;
 }
 
 function Settings_handleKeyDown(event) {

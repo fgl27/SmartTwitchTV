@@ -15,7 +15,7 @@ function calculateFontSize() {
         scaledWidth,
 
         //Classes that need width/height recalculated to 16 by 9
-        classes = ['screen_holder', 'screen_size', 'screen_holder_games', 'dialogs'];
+        classes = ['screen_holder', 'screen_size', 'screen_holder_games', 'dialogs', 'screen_holder_switch'];
 
     // Get current client/screen height.
     currentHeight = window.innerHeight;
