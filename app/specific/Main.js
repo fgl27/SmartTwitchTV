@@ -376,6 +376,15 @@ function Main_ExitCursorSet() {
     else Main_AddClass('exit_app_close', 'button_search_focused');
 }
 
+function Main_CounterDialogRst() {
+    Main_empty('dialog_counter_text');
+}
+
+function Main_CounterDialog(x, y, coloumns, total) {
+    if (total > 0) Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
+    else Main_CounterDialogRst();
+}
+
 function Main_showWarningDialog(text) {
     Main_textContent('dialog_warning_text', text);
     Main_ShowElement('dialog_warning');
@@ -402,6 +411,7 @@ function Main_showSettings() {
     Main_HideControlsDialog();
     Main_HideWarningDialog();
     Main_ExitCurrent(Main_values.Main_Go);
+    Main_CounterDialogRst();
     Settings_init();
 }
 
@@ -574,6 +584,8 @@ function Main_SwitchScreenAction(removekey) {
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
+    Main_CounterDialogRst();
+
     if (Main_Switchobj[Main_values.Main_Go]) Main_Switchobj[Main_values.Main_Go]();
     else Main_Switchobj[1]();
 
@@ -585,6 +597,7 @@ function Main_OpenSearch() {
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_Search;
     Main_HideWarningDialog();
+    Main_CounterDialogRst();
     Search_init();
 }
 
@@ -937,6 +950,8 @@ function Main_ReloadScreen() {
 
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
+
+    Main_CounterDialogRst();
 
     if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
     else if (Main_values.Main_Go === Main_Users) Users_StartLoad();

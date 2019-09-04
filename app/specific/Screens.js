@@ -129,6 +129,7 @@ function Screens_StartLoad() {
     inUseObj.data = null;
     inUseObj.data_cursor = 0;
     inUseObj.dataEnded = false;
+    Main_CounterDialogRst();
     Screens_loadDataRequestStart();
 }
 
@@ -400,6 +401,8 @@ function Screens_loadDataSuccessFinish() {
             Main_SaveValues();
             Screens_loadDataSuccessFinishEnd();
         }
+    } else {
+        Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
     }
 }
 
@@ -440,6 +443,7 @@ function Screens_addFocus(forceScroll) {
     }
     if (inUseObj.posY < 0) {
         Screens_addFocusFallow();
+        if (!inUseObj.emptyContent) Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
         return;
     }
 
@@ -526,6 +530,7 @@ function Screens_addrowChannelDown(y) {
 
 function Screens_addrowEnd(forceScroll) {
     Main_AddClass(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX, Main_classThumb);
+    Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
     inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, forceScroll);
 }
