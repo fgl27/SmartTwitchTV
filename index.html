@@ -625,30 +625,28 @@
 
         div.button_search {
             width: 18%;
-            height: 2.9em;
-            line-height: 2.9em;
+            height: 2.1em;
+            line-height: 2.1em;
             border-radius: 0.75em;
             margin-top: 2%;
             margin-left: 10%;
-            padding-top: 0.5%;
-            box-shadow: 0 0 0.7em rgba(0, 0, 0, 0.45);
             color: #000000;
             font-family: 'Roboto-Bold';
             font-size: 150%;
-            text-align: center;
-            vertical-align: middle;
-            background-color: #AAAAAA;
-            border: 0.2em solid #AAAAAA;
+            background-color: #999999;
             display: inline-block;
-            text-shadow: #FFFFFF 0 0 0.36em, #FFFFFF 0 0 0.36em, #FFFFFF 0 0 0.25em;
+            text-shadow: -0.03em -0.03em 0 #FFF, 0.03em -0.03em 0 #FFF, -0.03em 0.03em 0 #FFF, 0.03em 0.03em 0 #FFF;
+            border-top: 0.055em solid;
+            border-bottom: 0.055em solid;
+            border-image: linear-gradient(#101010, #101010) 1;
         }
 
         div.button_search_focused {
-            padding-top: 0.5%;
+            opacity: 1;
             color: #FFFFFF;
-            background-color: #454545;
-            border: 0.2em solid #FFFFFF;
-            text-shadow: #000000 0 0 0.36em, #000000 0 0 0.36em, #000000 0 0 0.25em;
+            background-color: #2F2F2F;
+            text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
+            border-image: linear-gradient(to right, #101010 20%, #D0D3D4, #101010 80%) 1;
         }
 
         .follower_header {
@@ -1079,12 +1077,13 @@
         div.dialog_exit {
             position: fixed;
             z-index: 100;
-            border-radius: 0.75em;
-            border: 0.15em solid #FFFFFF;
             width: 60%;
             margin-top: 16%;
             margin-left: 20%;
-            background-color: #000000;
+            background-color: #101010;
+            border-top: 0.1em solid;
+            border-bottom: 0.1em solid;
+            border-image: linear-gradient(to right, #101010 20%, #D0D3D4, #101010 80%) 1;
         }
 
         div.chat_container {
@@ -1717,12 +1716,14 @@
                 <div id="remove_yes" class="button_search"></div>
             </div>
         </div>
-        <div id="main_dialog_exit" class="dialog_exit hide">
-            <div id="main_dialog_exit_text" class="exit_text"></div>
-            <div style="text-align: center; margin-bottom: 4%;">
-                <div id="exit_app_cancel" class="button_search_focused button_search" style="margin-left: 0%;"></div>
-                <div id="exit_app_minimize" class="button_search"></div>
-                <div id="exit_app_close" class="button_search"></div>
+        <div id="main_dialog_exit" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
+            <div class="dialog_exit">
+                <div id="main_dialog_exit_text" class="exit_text"></div>
+                <div style="text-align: center; margin-bottom: 4%;">
+                    <div id="exit_app_cancel" class="button_search_focused button_search" style="margin-left: 0%;"></div>
+                    <div id="exit_app_minimize" class="button_search"></div>
+                    <div id="exit_app_close" class="button_search"></div>
+                </div>
             </div>
         </div>
         <div id="dialog_warning" class="strokedeline dialogs hide" style="z-index:101; margin-top: 31%; width: 60%; margin-left: 20%;">

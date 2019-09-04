@@ -480,8 +480,6 @@ function Settings_Setarrows(position) {
 function Settings_SetDefault(position) {
     position = Settings_value_keys[position];
 
-    console.log('Settings_SetDefault ' + position);
-
     if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     else if (position === "live_notification") UserLiveFeed_Notify = Settings_Obj_default("live_notification");
@@ -504,7 +502,6 @@ function Settings_SetDefault(position) {
 }
 
 function Settings_ShowCounter(show) {
-    console.log(show);
     if (show) Main_ShowElement('dialog_counter_text');
     else Main_HideElement('dialog_counter_text');
 }
