@@ -28,7 +28,7 @@
     <style>
         body,
         html {
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 100, 1);
             font-family: 'Roboto', 'Roboto-Bold';
             margin: auto;
             overflow: hidden;
@@ -293,7 +293,6 @@
 
         div.stream_thumbnail_live_text_holder {
             position: absolute;
-            bottom: 0;
             right: 0;
             left: 0;
             bottom: 0.15em;
@@ -334,6 +333,27 @@
             font-size: 100%;
         }
 
+        img.stream_img_channel {
+            height: 43%;
+            max-width: 100%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        img.stream_img_channel_logo {
+            height: 100%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about_streamer {
+            width: 100%;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
         div.stream_channel_content_icon {
             width: 100%;
             color: #FFFFFF;
@@ -342,12 +362,19 @@
             padding-top: 4%;
         }
 
+        img.stream_img_side,
         img.stream_img {
             width: 100%;
             position: absolute;
             max-width: 100%;
             max-height: 100%;
             overflow: hidden;
+        }
+
+        img.stream_img_side {
+            width: 99.6%;
+            margin-left: 0.2%;
+            margin-top: 0.4%;
         }
 
         img.stream_img_fallow {
@@ -480,6 +507,11 @@
         .stream_channel_fallow_icon {
             color: #FFFFFF;
             font-size: 100%
+        }
+
+        div.scenefeed_background {
+            transition: background 0.45s;
+            background: rgba(0, 0, 0, 0.75);
         }
 
         div.user_feed_notify {
@@ -764,14 +796,16 @@
         }
 
         div.side_panel_feed_thumb {
-            border-radius: 0.2em;
-            box-shadow: 0 0 0 0.175em #000000, 0 0 0 0.325em #FFFFFF;
+            box-sizing: border-box;
             position: absolute;
             width: 60%;
             height: 78%;
             top: 12%;
             left: 32%;
             background-color: #000000;
+            border-right: 0.1em solid;
+            border-left: 0.1em solid;
+            border-image: linear-gradient(to bottom, #000000 20%, #D0D3D4, #000000 80%) 1;
         }
 
         div.side_panel_dialog {
@@ -889,7 +923,7 @@
             left: -1%;
             height: 100%;
             width: 25.5%;
-            transition: margin-left 0.5s;
+            transition: margin-left 0.45s;
             overflow: hidden;
         }
 
@@ -1667,7 +1701,42 @@
                 <div id="stream_table_search_channel" class="streams_div"></div>
             </div>
             <div id="channel_content_scroll" class="screen_holder hide">
-                <table id="stream_table_channel_content" class="streams_tables"></table>
+                <div id="stream_table_channel_content" class="streams_div">
+                    <div>
+                        <div id="channel_content_celly_0" class="stream_cell_period">
+                            <div id="channel_content_thumbdivy_0" class="stream_thumbnail_channel_vod">
+                                <div id="channel_content_titley_0" class="stream_channel_fallow_game"></div>
+                            </div>
+                        </div>
+                        <div id="channel_content_celly_1" class="stream_cell_period">
+                            <div id="channel_content_thumbdivy_1" class="stream_thumbnail_channel_vod">
+                                <div id="channel_content_titley_1" class="stream_channel_fallow_game"></div>
+                            </div>
+                        </div>
+                        <div id="channel_content_celly_2" class="stream_cell_period">
+                            <div id="channel_content_thumbdivy_2" class="stream_thumbnail_channel_vod">
+                                <div id="channel_content_titley_2" class="stream_channel_fallow_game"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="channel_content_row0">
+                        <div id="channel_content_cell0_0" class="stream_thumbnail_live_holder">
+                            <div class="stream_thumbnail_live">
+                                <div id="channel_content_thumbdiv0_1" class="stream_thumbnail_live_img"></div>
+                            </div>
+                        </div>
+                        <div id="channel_content_cell0_1" class="stream_thumbnail_live_holder">
+                            <div id="channel_content_thumbdiv0_0" class="stream_thumbnail_live">
+                            </div>
+                        </div>
+                        <div id="channel_content_cell0_0" class="stream_thumbnail_live_holder" style="padding-right: 0;">
+                            <div class="stream_thumbnail_live">
+                                <div id="channel_content_infodiv0_1" class="stream_thumbnail_live_text_holder" style="height: 98%; font-size: 80%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="channel_content_img0_1"></div>
+                </div>
             </div>
 
             <!-- Clip screens-->
@@ -2060,7 +2129,7 @@
             </div>
         </div>
         <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">
-            <div class="stream_thumbnail_clip" style="width: 100%; box-shadow: 0 0 0 0.175em #000000, 0 0 0 0.325em #FFFFFF;"><img id="feed_thumb_img" class="stream_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></div>
+            <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></div>
             <div style="width: 96%; height: 20%; bottom:0; color: #FFFFFF; font-size: 120%; padding: 1%;">
                 <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold" style="width: 75%; display: inline-block; font-size: 110%;"></div>
                 <div id="feed_thum_quality" class="side_panel_feed_thumb_text" style="width: 24%; float: right; text-align: right; display: inline-block;"></div>
@@ -2099,7 +2168,7 @@
                         </div>
                     </div>
                     <div id="side_panel_new_row_1" style="overflow: hidden; width: 94%; position: absolute;">
-                        <div id="side_panel_holder" style="margin-top: 1%;">
+                        <div id="side_panel_holder">
                         </div>
                     </div>
                 </div>
