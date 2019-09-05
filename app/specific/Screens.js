@@ -843,6 +843,7 @@ function Screens_PeriodhandleKeyDown(event) {
 var Screens_OffSetDialogID;
 
 function Screens_OffSetStart() {
+    inUseObj.OffSetPos = inUseObj.extraoffset / 100;
     Screens_setOffSetDialog();
     Main_ShowElement('dialog_OffSet');
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
@@ -889,7 +890,6 @@ function Screens_OffSetAddFocus(pos) {
 function Screens_OffSethandleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
-            Screens_OffSetAddFocus(inUseObj.OffSetPos);
             Screens_OffSetDialogHide();
             break;
         case KEY_LEFT:
