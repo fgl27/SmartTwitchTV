@@ -28,7 +28,7 @@
     <style>
         body,
         html {
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 100, 1);
             font-family: 'Roboto', 'Roboto-Bold';
             margin: auto;
             overflow: hidden;
@@ -214,6 +214,7 @@
             width: 100%;
             height: 0;
             position: relative;
+            border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
         div.stream_thumbnail_video {
@@ -229,14 +230,14 @@
         }
 
         div.stream_thumbnail_focused {
-            background-color: #F5F5F5 !important;
+            background-color: #ebebeb !important;
             color: #000000 !important;
-            border-image: linear-gradient(to bottom, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
+            border-color: #ebebeb !important;
         }
 
         div.stream_switch_focused {
             background-color: rgba(255, 255, 255, 0.15);
-            border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
+            border-color: #ebebeb !important;
         }
 
         div.stream_thumbnail_channel_vod {
@@ -244,10 +245,7 @@
             width: 90%;
             height: 0;
             padding-bottom: 6%;
-            box-sizing: border-box;
-            border-top: 0.05em solid;
-            border-bottom: 0.05em solid;
-            border-image: linear-gradient(#000000, #000000) 1;
+            border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
         div.stream_thumbnail_live {
@@ -255,9 +253,6 @@
             padding-bottom: 79%;
             background-color: #000000;
             color: #FFFFFF;
-            border-right: 0.05em solid;
-            border-left: 0.05em solid;
-            border-image: linear-gradient(#000000, #000000) 1;
         }
 
         div.stream_thumbnail_live_game {
@@ -360,9 +355,6 @@
             padding-bottom: 112%;
             background-color: #000000;
             color: #FFFFFF;
-            border-right: 0.05em solid;
-            border-left: 0.05em solid;
-            border-image: linear-gradient(#000000, #000000) 1;
         }
 
         div.feed_thumbnail_focused {
@@ -842,9 +834,7 @@
             top: 12%;
             left: 32%;
             background-color: #000000;
-            border-right: 0.1em solid;
-            border-left: 0.1em solid;
-            border-image: linear-gradient(to bottom, #000000 20%, #D0D3D4, #000000 80%) 1;
+            border: 0.06em solid #ebebeb;
         }
 
         div.side_panel_dialog {
