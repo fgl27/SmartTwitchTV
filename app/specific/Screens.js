@@ -551,7 +551,7 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
 
         if (y > 1) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
-                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 40);
+                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 39);
             } else Main_handleKeyUp();
         } else Main_ScrollTable(idArray[10], 0);
 
