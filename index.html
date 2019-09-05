@@ -605,16 +605,17 @@
             box-shadow: 0 0 1.45em rgba(0, 0, 0, 0.45);
             color: black;
             font-family: 'Roboto-Bold';
-            font-size: 200%;
+            font-size: 150%;
             text-align: center;
             vertical-align: middle;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: #ebebeb;
             border-radius: 0.75em;
-            border: 0.2em solid #FFFFFF;
-            box-shadow: inset 0 0 0 0.2em #000000;
-            padding: 0.2em;
+            border: 0.1em solid #FFFFFF;
+            box-shadow: inset 0 0 0 0.08em #000000;
+            padding: 0.08em;
         }
 
+        div.button_dialog,
         div.button_search {
             width: 18%;
             height: 2.1em;
@@ -629,15 +630,24 @@
             display: inline-block;
             text-shadow: -0.03em -0.03em 0 #FFF, 0.03em -0.03em 0 #FFF, -0.03em 0.03em 0 #FFF, 0.03em 0.03em 0 #FFF;
             border-top: 0.055em solid;
-            border-bottom: 0.055em solid;
+            border-bottom: 0.06em solid;
+            border-image: linear-gradient(#000000, #000000) 1;
+            text-align: center;
+        }
+
+        div.button_dialog {
             border-image: linear-gradient(#101010, #101010) 1;
         }
 
+        div.button_dialog_focused,
         div.button_search_focused {
-            opacity: 1;
             color: #FFFFFF;
             background-color: #2F2F2F;
             text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
+            border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1;
+        }
+
+        div.button_dialog_focused {
             border-image: linear-gradient(to right, #101010 20%, #D0D3D4, #101010 80%) 1;
         }
 
@@ -1697,17 +1707,17 @@
         <div id="main_remove_dialog" class="dialog_exit hide" style="width: 75%; margin-left: 12.5%;">
             <div id="main_dialog_remove" class="exit_text"></div>
             <div style="text-align: center; margin-bottom: 4%;">
-                <div id="remove_cancel" class="button_search_focused button_search" style="margin-left: 0%;"></div>
-                <div id="remove_yes" class="button_search"></div>
+                <div id="remove_cancel" class="button_dialog_focused button_dialog" style="margin-left: 0%;"></div>
+                <div id="remove_yes" class="button_dialog"></div>
             </div>
         </div>
         <div id="main_dialog_exit" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
             <div class="dialog_exit">
                 <div id="main_dialog_exit_text" class="exit_text"></div>
                 <div style="text-align: center; margin-bottom: 4%;">
-                    <div id="exit_app_cancel" class="button_search_focused button_search" style="margin-left: 0%;"></div>
-                    <div id="exit_app_minimize" class="button_search"></div>
-                    <div id="exit_app_close" class="button_search"></div>
+                    <div id="exit_app_cancel" class="button_dialog_focused button_dialog" style="margin-left: 0%;"></div>
+                    <div id="exit_app_minimize" class="button_dialog"></div>
+                    <div id="exit_app_close" class="button_dialog"></div>
                 </div>
             </div>
         </div>

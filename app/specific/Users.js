@@ -260,11 +260,11 @@ function Users_isRemoveDialogShown() {
 
 function Users_RemoveCursorSet() {
     if (!Users_RemoveCursor) {
-        Main_AddClass('remove_cancel', 'button_search_focused');
-        Main_RemoveClass('remove_yes', 'button_search_focused');
+        Main_AddClass('remove_cancel', 'button_dialog_focused');
+        Main_RemoveClass('remove_yes', 'button_dialog_focused');
     } else {
-        Main_RemoveClass('remove_cancel', 'button_search_focused');
-        Main_AddClass('remove_yes', 'button_search_focused');
+        Main_RemoveClass('remove_cancel', 'button_dialog_focused');
+        Main_AddClass('remove_yes', 'button_dialog_focused');
     }
 }
 
