@@ -788,6 +788,7 @@ function Screens_setPeriodDialog() {
 
 function Screens_PeriodDialogHide() {
     Screens_clearPeriodDialogId();
+    Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
     document.body.removeEventListener("keydown", Screens_PeriodhandleKeyDown, false);
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     Main_HideElement('dialog_period');
@@ -805,7 +806,6 @@ function Screens_PeriodhandleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
-            Screens_PeriodAddFocus(inUseObj.periodPos);
             Screens_PeriodDialogHide();
             break;
         case KEY_LEFT:
