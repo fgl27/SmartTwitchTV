@@ -368,12 +368,12 @@ function Main_HideExitDialog() {
 }
 
 function Main_ExitCursorSet() {
-    Main_RemoveClass('exit_app_cancel', 'button_search_focused');
-    Main_RemoveClass('exit_app_minimize', 'button_search_focused');
-    Main_RemoveClass('exit_app_close', 'button_search_focused');
-    if (!Main_ExitCursor) Main_AddClass('exit_app_cancel', 'button_search_focused');
-    else if (Main_ExitCursor === 1) Main_AddClass('exit_app_minimize', 'button_search_focused');
-    else Main_AddClass('exit_app_close', 'button_search_focused');
+    Main_RemoveClass('exit_app_cancel', 'button_dialog_focused');
+    Main_RemoveClass('exit_app_minimize', 'button_dialog_focused');
+    Main_RemoveClass('exit_app_close', 'button_dialog_focused');
+    if (!Main_ExitCursor) Main_AddClass('exit_app_cancel', 'button_dialog_focused');
+    else if (Main_ExitCursor === 1) Main_AddClass('exit_app_minimize', 'button_dialog_focused');
+    else Main_AddClass('exit_app_close', 'button_dialog_focused');
 }
 
 function Main_CounterDialogRst() {
