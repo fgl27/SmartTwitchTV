@@ -32,6 +32,8 @@ function ChannelContent_init() {
     document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
 
+    Main_innerHTML('top_lable', Main_values.Main_selectedChannelDisplayname);
+
     if (Main_values.Main_BeforeChannel === Main_UserChannels || Main_values.My_channel) {
         Main_values.Sidepannel_Pos = Main_values.My_channel ? 8 : 7;
         Sidepannel_SetUserLables();
@@ -39,7 +41,6 @@ function ChannelContent_init() {
     }
 
     if (ChannelContent_status) {
-        ChannelContent_setPartner();
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement(ChannelContent_ids[10]);
         ChannelContent_checkUser();
@@ -186,19 +187,15 @@ function ChannelContent_setFallow() {
     else Main_innerHTML("channel_content_titley_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FALLOW : STR_NOKEY));
 }
 
-function ChannelContent_setPartner() {
-    Main_innerHTML('top_lable', Main_values.Main_selectedChannelDisplayname + STR_SPACE + STR_SPACE +
-        (Main_values.Main_selectedChannelPartner ? '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : ""));
-}
-
 function ChannelContent_loadDataSuccess() {
-    ChannelContent_setPartner();
-
     Main_innerHTML("channel_content_thumbdiv0_1", '<img class="lazy stream_img_channel_logo" alt="" data-src="' + Main_values.Main_selectedChannelLogo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
 
     Main_innerHTML("channel_content_img0_1", '<img class="lazy stream_img_channel" alt="" data-src="' + ChannelContent_profile_banner + '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'">');
 
-    Main_innerHTML("channel_content_infodiv0_1", ChannelContent_description !== '' ? STR_ABOUT + STR_SPACE + Main_values.Main_selectedChannelDisplayname + ':' + STR_BR + twemoji.parse(ChannelContent_description) : '');
+    Main_innerHTML("channel_content_infodiv0_1", ChannelContent_description !== '' ?
+        Main_values.Main_selectedChannelDisplayname + STR_SPACE + STR_SPACE +
+        (Main_values.Main_selectedChannelPartner ? '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "") + STR_BR +
+        STR_ABOUT + ':' + STR_BR + twemoji.parse(ChannelContent_description) : '');
 
     if (ChannelContent_responseText !== null) {
         var response = JSON.parse(ChannelContent_responseText);

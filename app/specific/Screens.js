@@ -839,3 +839,85 @@ function Screens_PeriodhandleKeyDown(event) {
             break;
     }
 }
+
+var Screens_OffSetDialogID;
+
+function Screens_OffSetStart() {
+    Screens_setOffSetDialog();
+    Main_ShowElement('dialog_OffSet');
+    document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    document.body.addEventListener("keydown", Screens_OffSethandleKeyDown, false);
+}
+
+function Screens_clearOffSetDialogId() {
+    window.clearTimeout(Screens_OffSetDialogID);
+}
+
+function Screens_SetOffSetDialogId() {
+    window.clearTimeout(Screens_OffSetDialogID);
+    Screens_OffSetDialogID = window.setTimeout(Screens_OffSetDialogHide, 6000);
+}
+
+function Screens_setOffSetDialog() {
+    Screens_OffSetAddFocus(inUseObj.OffSetPos * 100);
+    Screens_SetOffSetDialogId();
+}
+
+function Screens_OffSetDialogHide() {
+    Screens_clearOffSetDialogId();
+    document.body.removeEventListener("keydown", Screens_OffSethandleKeyDown, false);
+    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_HideElement('dialog_OffSet');
+}
+
+function Screens_OffSetAddFocus(pos) {
+    Main_textContent("dialog_OffSet_val", pos);
+    var maxValue = 5000;
+
+    if (pos > 0 && pos < maxValue) {
+        document.getElementById("dialog_OffSet_left").style.opacity = "1";
+        document.getElementById("dialog_OffSet_right").style.opacity = "1";
+    } else if (pos === maxValue) {
+        document.getElementById("dialog_OffSet_left").style.opacity = "1";
+        document.getElementById("dialog_OffSet_right").style.opacity = "0.2";
+    } else {
+        document.getElementById("dialog_OffSet_left").style.opacity = "0.2";
+        document.getElementById("dialog_OffSet_right").style.opacity = "1";
+    }
+}
+
+function Screens_OffSethandleKeyDown(event) {
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            Screens_OffSetAddFocus(inUseObj.OffSetPos);
+            Screens_OffSetDialogHide();
+            break;
+        case KEY_LEFT:
+            Screens_clearOffSetDialogId();
+            Screens_SetOffSetDialogId();
+            inUseObj.OffSetPos--;
+            if (inUseObj.OffSetPos < 0) inUseObj.OffSetPos = 0;
+            Screens_OffSetAddFocus(inUseObj.OffSetPos * 100);
+            break;
+        case KEY_RIGHT:
+            Screens_clearOffSetDialogId();
+            Screens_SetOffSetDialogId();
+            inUseObj.OffSetPos++;
+            if (inUseObj.OffSetPos > 50) inUseObj.OffSetPos = 50;
+            Screens_OffSetAddFocus(inUseObj.OffSetPos * 100);
+            break;
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
+        case KEY_ENTER:
+            Screens_OffSetDialogHide();
+            if (inUseObj.extraoffset !== inUseObj.OffSetPos) {
+                inUseObj.extraoffset = inUseObj.OffSetPos * 100;
+                inUseObj.SetPeriod();
+                Screens_StartLoad();
+            }
+            break;
+        default:
+            break;
+    }
+}

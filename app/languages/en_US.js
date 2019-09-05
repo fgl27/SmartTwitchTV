@@ -201,8 +201,8 @@ function en_USLang() {
     STR_FROM = "From:" + STR_BR;
     STR_FROM_START = STR_FROM + "Start";
     STR_CHAT_END = "Chat: The Chat has ended!";
-    STR_TIME = ": Most recent";
-    STR_VIWES = ": Most views";
+    STR_TIME = ", Most recent";
+    STR_VIWES = ", Most views";
     STR_NOKEY_VIDEO_WARN = "Set an user authentication key to be able to see followed videos";
     STR_SWITCH_TYPE = "Switch: Most recent or views";
     STR_ENABLE = "Enable";
@@ -300,4 +300,6 @@ function en_USLang() {
     STR_USER_MENU = "User Menu";
     STR_CH_IS_OFFLINE = "Is offline";
     STR_SCREEN_COUNTER = "Show screen position counter";
+    STR_SWITCH_POS = "Switch: Starting Position offset";
+    STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
 }
