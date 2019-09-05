@@ -286,6 +286,9 @@ function Main_SetStringsSecondary() {
     Main_innerHTML("dialog_period_3", Main_Periods[2]);
     Main_innerHTML("dialog_period_4", Main_Periods[3]);
 
+    Main_innerHTML("dialog_OffSet_text", STR_SWITCH_POS + STR_BR);
+    Main_textContent("dialog_OffSet_text_summary", STR_SWITCH_POS_SUMMARY);
+
     Main_textContent("dialog_vod_text", STR_VOD_HISTORY);
     Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 

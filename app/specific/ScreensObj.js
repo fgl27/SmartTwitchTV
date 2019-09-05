@@ -143,16 +143,6 @@ var Base_Vod_obj = {
     empty_str: function() {
         return STR_NO + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     },
-    key_play: function() {
-        if (this.posY === -1) {
-            if (this.posX === 0) {
-                this.highlight = !this.highlight;
-                this.SetPeriod();
-                Screens_StartLoad();
-                Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
-            } else Screens_PeriodStart();
-        } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-    },
     AnimateThumbId: null,
     HasAnimateThumb: true,
     Vod_newImg: new Image(),
@@ -229,6 +219,16 @@ function ScreensObj_InitVod() {
                 '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
+        key_play: function() {
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    this.highlight = !this.highlight;
+                    this.SetPeriod();
+                    Screens_StartLoad();
+                    Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
+                } else Screens_OffSetStart();
+            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
             this.TopRowCreated = true;
@@ -266,26 +266,45 @@ function ScreensObj_InitVod() {
 
 function ScreensObj_InitChannelVod() {
     ChannelVod = Screens_assign({
-        periodMaxPos: 4,
+        periodMaxPos: 2,
         HeaderQuatity: 2,
         object: 'videos',
         ids: Screens_ScreenIds('ChannelVod'),
         table: 'stream_table_channel_vod',
         screen: Main_ChannelVod,
+        time: ['time', 'views'],
+        extraoffset: 0,
+        OffSetPos: 0,
         highlightSTR: 'ChannelVod_highlight',
         highlight: Main_getItemBool('ChannelVod_highlight', false),
-        periodPos: Main_getItemInt('ChannelVod_periodPos', 2),
+        periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
         base_url: 'https://api.twitch.tv/kraken/channels/',
         set_url: function() {
             this.url = this.base_url +
                 encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitMax +
-                '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') + '&sort=time&offset=' + this.offset;
+                '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') + '&sort=' +
+                this.time[this.periodPos - 1] + '&offset=' + (this.offset + this.extraoffset);
         },
-        SwitchesIcons: ['movie-play'],
+        key_play: function() {
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    this.highlight = !this.highlight;
+                    this.SetPeriod();
+                    Screens_StartLoad();
+                    Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
+                } else if (this.posX === 1) {
+                    this.periodPos++;
+                    if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
+                    this.SetPeriod();
+                    Screens_StartLoad();
+                } else Screens_OffSetStart();
+            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        },
+        SwitchesIcons: ['movie-play', 'history', 'offset'],
         addSwitches: function() {
             this.TopRowCreated = true;
             this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD];
+            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_TYPE, STR_SPACE + STR_SPACE + STR_SWITCH_POS];
             var thumbfallow, div, i = 0;
 
             for (i; i < SwitchesStrings.length; i++) {
@@ -303,14 +322,23 @@ function ScreensObj_InitChannelVod() {
         lastselectedChannel: '',
         label_init: function() {
             if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-            if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
+            if (Main_values.Main_selectedChannel !== this.lastselectedChannel) {
+                this.OffSetPos = 0;
+                this.extraoffset = 0;
+                this.status = false;
+            }
             this.lastselectedChannel = Main_values.Main_selectedChannel;
             Main_cleanTopLabel();
             Main_ShowElement('label_side_panel');
             this.SetPeriod();
         },
         SetPeriod: function() {
-            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname + ": " + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA));
+            Main_setItem('UserVod_periodPos', this.periodPos);
+
+            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname + ": " +
+                (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
+                (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + inUseObj.extraoffset);
+
         },
         label_exit: function() {
             Main_RestoreTopLabel();
@@ -349,6 +377,16 @@ function ScreensObj_InitAGameVod() {
                 Main_ItemsLimitMax + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                 '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+        },
+        key_play: function() {
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    this.highlight = !this.highlight;
+                    this.SetPeriod();
+                    Screens_StartLoad();
+                    Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
+                } else Screens_PeriodStart();
+            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -403,6 +441,16 @@ function ScreensObj_InitUserVod() {
 
             this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                 '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
+        },
+        key_play: function() {
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    this.highlight = !this.highlight;
+                    this.SetPeriod();
+                    Screens_StartLoad();
+                    Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
+                } else Screens_PeriodStart();
+            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
