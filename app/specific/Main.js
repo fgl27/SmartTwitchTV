@@ -960,6 +960,7 @@ function Main_ExitDialog(event) {
 
 function Main_ReloadScreen() {
     Screens_clear = true;
+    ChannelContent_clear = true;
 
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
