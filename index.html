@@ -493,13 +493,13 @@
                 0 0.075em 0 #666666,
                 0 0.1125em 0 #555555,
                 0 0.2em 0 #000000,
-                0 0.25em 0 #000000,
+                0 0.2em 0 #000000,
                 0.1em 0.1em 0 #000000,
-                0.1em 0.15em 0 #000000,
+                0.1em 0.1em 0 #000000,
                 -0.1em 0.1em 0 #000000,
-                -0.1em 0.15em 0 #000000,
-                -0.05em 0.2em 0 #000000,
-                0.05em 0.2em 0 #000000;
+                -0.1em 0.1em 0 #000000,
+                -0.05em 0.15em 0 #000000,
+                0.05em 0.15em 0 #000000;
         }
 
         .strokicon {
@@ -702,8 +702,7 @@
 
 
         div.controls_text {
-            font-size: 70%;
-            font-family: 'Roboto-Bold';
+            font-size: 74%;
             margin-top: 0;
             margin-bottom: 0;
         }
@@ -1008,16 +1007,12 @@
 
         div.about_dialogs {
             position: absolute;
-            z-index: 99;
-            border-radius: 0.75em;
-            border: 0.15em solid #FFFFFF;
-            background-color: rgba(0, 0, 0, 0.90);
+            z-index: 200;
+            background-color: #101010;
             top: 50%;
             transform: translateY(-50%);
-        }
-
-        div.about_dialogs {
-            background-color: rgba(0, 0, 0, 1);
+            border-radius: 0.2em;
+            border: 0.0825em solid #FFFFFF;
         }
 
         div.dialogs {
@@ -1177,7 +1172,7 @@
         }
 
         div.dialog_end_icons {
-            font-size: 90%;
+            font-size: 80%;
             vertical-align: top;
             display: inline-block;
             padding-top: 1%;
@@ -1185,14 +1180,15 @@
             padding-right: 1%;
             padding-left: 1%;
             width: 15%;
-            border-radius: 0.75em;
-            border: 0.15em solid rgba(0, 0, 0, 0);
+            border-radius: 0.2em;
+            border: 0.0825em solid rgba(0, 0, 0, 0);
         }
 
         div.dialog_end_icons_focus {
             border-color: #FFFFFF;
-            background-color: rgba(150, 150, 150, 0.7);
+            background-color: rgba(150, 150, 150, 0.55);
         }
+
 
         .right,
         .left {
@@ -1316,8 +1312,8 @@
             padding-top: 0.25em;
             padding-bottom: 0.25em;
             text-align: center;
-            border-radius: 0.5em;
-            border: 0.1em solid rgba(0, 0, 0, 0);
+            border-radius: 0.2em;
+            border: 0.0825em solid rgba(0, 0, 0, 0);
         }
 
         .next_button {
@@ -1342,9 +1338,9 @@
             padding: 0.25em;
             height: 1.25em;
             text-align: center;
-            border-radius: 0.4em;
-            border: 0.1em solid rgba(0, 0, 0, 0);
+            border: 0.0825em solid rgba(0, 0, 0, 0);
             position: relative;
+            border-radius: 0.2em;
         }
 
         .extra_button_text {
@@ -1393,9 +1389,9 @@
             margin-left: 2.5%;
             height: 2.5em;
             text-align: center;
-            border-radius: 0.6em;
             margin-bottom: 0.5ch;
-            border: 0.1em solid rgba(0, 0, 0, 0);
+            border-radius: 0.2em;
+            border: 0.0825em solid rgba(0, 0, 0, 0);
         }
 
         .progress_bar_div_focus {
@@ -1407,7 +1403,7 @@
         .progress_bar_timer {
             text-align: center;
             width: 7%;
-            font-size: 80%;
+            font-size: 75%;
             font-family: 'Roboto-Bold';
             color: #FFFFFF;
             display: inline-block;
@@ -1440,7 +1436,6 @@
         .inner_progress_bar {
             width: 10%;
             height: 0.37em;
-            border-radius: 0.6em;
             background-color: #444444;
             text-align: center;
             line-height: 1.5em;
@@ -1729,11 +1724,15 @@
         <div id="dialog_warning" class="strokedeline dialogs hide" style="z-index:101; margin-top: 31%; width: 60%; margin-left: 20%;">
             <div id="dialog_warning_text" class="strokedeline" style="font-size: 150%; "></div>
         </div>
-        <div id="dialog_about" class="about_dialogs hide" style="width: 95%; margin-left: 2.5%;">
-            <div id="dialog_about_text" class="about_text"></div>
+        <div id="dialog_about" class="screen_size hide" style="z-index: 200; background: rgba(0, 0, 0, 0.75);">
+            <div class="about_dialogs" style="width: 95%; margin-left: 2.5%;">
+                <div id="dialog_about_text" class="about_text"></div>
+            </div>
         </div>
-        <div id="dialog_controls" class="about_dialogs hide" style="width: 85%; margin-left: 7.5%;">
-            <div id="dialog_controls_text" class="controls_text"></div>
+        <div id="dialog_controls" class="screen_size hide" style="z-index: 200; background: rgba(0, 0, 0, 0.75);">
+            <div class="about_dialogs" style="width: 85%; margin-left: 7.5%;">
+                <div id="dialog_controls_text" class="controls_text"></div>
+            </div>
         </div>
         <div id="dialog_counter" style="position: absolute; z-index:101; width: 100%; bottom: 0;">
             <div style="float: right; width: auto; height: auto; display: inline-block; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.75));">
@@ -2087,25 +2086,25 @@
         </div>
         <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 50%; z-index: 2;">
             <div id="dialog_vod_start" class="dialogs hide" style="z-index:3; font-size: 150%; height: 75%; margin-top: 25%;">
-                <div id="dialog_vod_text" class="strokedeline" style="font-size: 165%; padding-bottom: 2%;">
+                <div id="dialog_vod_text" class="strokedeline" style="font-size: 140%; padding-bottom: 2%;">
                 </div>
                 <!-- from saved-->
                 <div id="dialog_vod_0" class="dialog_end_icons dialog_end_icons_focus">
-                    <i class="icon-history strokicon" style="font-size: 250%;"></i>
+                    <i class="icon-history strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_vod_saved_text" class="strokedeline"></div>
                 </div>
                 <!-- from start-->
                 <div id="dialog_vod_1" class="dialog_end_icons">
-                    <i class="icon-play strokicon" style="font-size: 250%;"></i>
+                    <i class="icon-play strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_vod_start_text" class="strokedeline"></div>
                 </div>
             </div>
             <div id="dialog_end_stream" class="dialogs hide" style="z-index:4; font-size: 150%; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
-                <div id="dialog_end_stream_text" class="strokedeline" style="margin-top: 25%; font-size: 165%; padding-bottom: 2%;">
+                <div id="dialog_end_stream_text" class="strokedeline" style="margin-top: 29%; font-size: 150%; padding-bottom: 2%;">
                 </div>
                 <!-- next-->
                 <div id="dialog_end_-1" class="dialog_end_icons hide">
-                    <i class="icon-next strokicon" style="font-size: 250%;"></i>
+                    <i class="icon-next strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_end_next_text" class="strokedeline"></div>
                     <div style="font-size: 80%;">
                         <div id="end_next_button_text_name" class="next_channel strokedeline"></div>
@@ -2114,22 +2113,22 @@
                 </div>
                 <!-- replay-->
                 <div id="dialog_end_0" class="dialog_end_icons dialog_end_icons_focus">
-                    <i class="icon-refresh strokicon" style="font-size: 250%;"></i>
+                    <i class="icon-refresh strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_end_replay_text" class="strokedeline"></div>
                 </div>
                 <!-- open vod-->
                 <div id="dialog_end_1" class="dialog_end_icons">
-                    <i class="icon-play strokicon" style="font-size: 250%;"></i>
+                    <i class="icon-play strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_end_vod_text" class="strokedeline"></div>
                 </div>
                 <!-- channel content-->
                 <div id="dialog_end_2" class="dialog_end_icons">
-                    <i class="icon-filmstrip strokicon" style="font-size: 250%;"></i>
+                    <i class="icon-filmstrip strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_end_channel_text" class="strokedeline"></div>
                 </div>
                 <!-- game content-->
                 <div id="dialog_end_3" class="dialog_end_icons">
-                    <i class="icon-gamepad strokicon" style="font-size: 250%;"></i>
+                    <i class="icon-gamepad strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_end_game_text" class="strokedeline"></div>
                 </div>
             </div>
