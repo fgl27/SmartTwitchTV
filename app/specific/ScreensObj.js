@@ -150,12 +150,7 @@ var Base_Vod_obj = {
                 this.SetPeriod();
                 Screens_StartLoad();
                 Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
-            } else {
-                this.periodPos++;
-                if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
-                this.SetPeriod();
-                Screens_StartLoad();
-            }
+            } else Screens_PeriodStart();
         } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
     },
     AnimateThumbId: null,
@@ -262,7 +257,7 @@ function ScreensObj_InitVod() {
         SetPeriod: function() {
             Main_setItem('vod_periodPos', this.periodPos);
             ScreensObj_SetTopLable(STR_VIDEOS + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                Main_Periods[this.periodPos - 1]);
+                STR_SPACE + Main_Periods[this.periodPos - 1]);
         },
     }, Base_obj);
 
@@ -383,7 +378,7 @@ function ScreensObj_InitAGameVod() {
         SetPeriod: function() {
             Main_setItem('AGameVod_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ': ' + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + Main_Periods[this.periodPos - 1]);
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ': ' + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE + Main_Periods[this.periodPos - 1]);
         }
     }, Base_obj);
 
@@ -824,12 +819,8 @@ var Base_Clip_obj = {
     key_play: function() {
         if (this.posY === -1) {
             if (!this.loadingData) {
-                if (!this.posX) {
-                    this.periodPos++;
-                    if (this.periodPos > 4) this.periodPos = 1;
-                    this.SetPeriod();
-                    Screens_StartLoad();
-                } else {
+                if (!this.posX) Screens_PeriodStart();
+                else {
                     PlayClip_All = true;
                     Screens_removeFocusFallow();
                     this.posX = 0;
@@ -884,7 +875,7 @@ function ScreensObj_InitClip() {
         },
         SetPeriod: function() {
             Main_setItem('Clip_periodPos', this.periodPos);
-            ScreensObj_SetTopLable(STR_CLIPS + Main_Periods[this.periodPos - 1]);
+            ScreensObj_SetTopLable(STR_CLIPS + STR_SPACE + Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
             this.SetPeriod();
@@ -916,7 +907,8 @@ function ScreensObj_InitChannelClip() {
         SetPeriod: function() {
             Main_setItem('ChannelClip_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname + ": " + STR_CLIPS + Main_Periods[this.periodPos - 1]);
+            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname + ": " + STR_CLIPS + STR_SPACE +
+                Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
             if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
@@ -948,7 +940,8 @@ function ScreensObj_InitAGameClip() {
         SetPeriod: function() {
             Main_setItem('AGameClip_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ': ' + STR_CLIPS + Main_Periods[this.periodPos - 1]);
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ': ' + STR_CLIPS + STR_SPACE +
+                Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
             ScreensObj_TopLableAgameInit();

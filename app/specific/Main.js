@@ -280,6 +280,12 @@ function Main_SetStringsSecondary() {
 
     Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
 
+    Main_textContent("dialog_period_text", STR_SWITCH_CLIP);
+    Main_innerHTML("dialog_period_1", Main_Periods[0]);
+    Main_innerHTML("dialog_period_2", Main_Periods[1]);
+    Main_innerHTML("dialog_period_3", Main_Periods[2]);
+    Main_innerHTML("dialog_period_4", Main_Periods[3]);
+
     Main_textContent("dialog_vod_text", STR_VOD_HISTORY);
     Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 

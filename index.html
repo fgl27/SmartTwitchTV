@@ -622,7 +622,7 @@
             line-height: 2.1em;
             border-radius: 0.75em;
             margin-top: 2%;
-            margin-left: 10%;
+            margin-left: 8%;
             color: #000000;
             font-family: 'Roboto-Bold';
             font-size: 150%;
@@ -1069,8 +1069,9 @@
             text-shadow: #000000 0 0 0.15em, #000000 0 0 0.15em, #000000 0 0 0.1em;
         }
 
+        div.dialog_period,
         div.dialog_exit {
-            position: fixed;
+            position: absolute;
             z-index: 100;
             width: 60%;
             margin-top: 16%;
@@ -1079,6 +1080,11 @@
             border-top: 0.1em solid;
             border-bottom: 0.1em solid;
             border-image: linear-gradient(to right, #101010 20%, #D0D3D4, #101010 80%) 1;
+        }
+
+        div.dialog_period {
+            width: 80%;
+            margin-left: 10%;
         }
 
         div.chat_container {
@@ -1718,6 +1724,17 @@
                     <div id="exit_app_cancel" class="button_dialog_focused button_dialog" style="margin-left: 0%;"></div>
                     <div id="exit_app_minimize" class="button_dialog"></div>
                     <div id="exit_app_close" class="button_dialog"></div>
+                </div>
+            </div>
+        </div>
+        <div id="dialog_period" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
+            <div class="dialog_period">
+                <div id="dialog_period_text" class="exit_text"></div>
+                <div style="text-align: center; margin-bottom: 4%;">
+                    <div id="dialog_period_1" class="button_dialog" style="margin-left: 0%;"></div>
+                    <div id="dialog_period_2" class="button_dialog"></div>
+                    <div id="dialog_period_3" class="button_dialog"></div>
+                    <div id="dialog_period_4" class="button_dialog"></div>
                 </div>
             </div>
         </div>

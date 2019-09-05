@@ -72,10 +72,10 @@ function en_USLang() {
     STR_USER_MAKE_ONE = "Make First";
     STR_USER_NUMBER_ONE = "First user can follow (when providing a key) and see live channels feed outside of the user screen<br>";
     STR_ADD_USER_SH = "Add a Twitch user to display it\'s Followed Channels content here";
-    STR_CLIP_DAY = " (24h)";
-    STR_CLIP_WEEK = " (7d)";
-    STR_CLIP_MONTH = " (30d)";
-    STR_CLIP_ALL = " (all)";
+    STR_CLIP_DAY = "24h";
+    STR_CLIP_WEEK = "7d";
+    STR_CLIP_MONTH = "30d";
+    STR_CLIP_ALL = "all";
     STR_JUMP_TIME = "Jumping";
     STR_JUMP_T0 = " to ";
     STR_JUMP_CANCEL = "Jump Canceled";
