@@ -335,6 +335,7 @@ function Screens_createCellLive(id, data, idArray, valuesArray) {
 function Screens_loadDataSuccessFinish() {
     if (!inUseObj.status) {
         if (Main_values.Main_Go === Main_aGame) AGame_Checkfallow();
+
         if (inUseObj.emptyContent) Main_showWarningDialog(inUseObj.empty_str());
         else {
             inUseObj.status = true;
@@ -437,7 +438,7 @@ function Screens_addFocus(forceScroll) {
     if (inUseObj.emptyContent) {
         if (inUseObj.HasSwitches) inUseObj.posY = -1;
         else {
-            inUseObj.key_exit();
+            inUseObj.key_exit(inUseObj.emptyContent);
             return;
         }
     }

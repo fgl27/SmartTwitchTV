@@ -65,7 +65,7 @@ var Base_obj = {
     data_cursor: 0,
     loadDataSuccess: Screens_loadDataSuccess,
     addrow: Screens_addrow,
-    key_exit: function() {
+    key_exit: function(goSidepanel) {
 
         if (Main_ThumbNull(this.posY, this.posX, this.ids[0])) {
             Main_removeFocus(this.posY + '_' + this.posX, this.ids);
@@ -74,7 +74,7 @@ var Base_obj = {
             this.posY = 0;
         }
 
-        if (this.screen === Main_aGame) {
+        if ((this.screen === Main_aGame) && !goSidepanel) {
             if (Main_values.Games_return) {
                 Main_values.Main_Go = Main_SearchGames;
                 Main_values.Main_gameSelected = Main_values.gameSelectedOld;
@@ -85,17 +85,17 @@ var Base_obj = {
             }
             Screens_BasicExit(Main_values.Main_Go);
             Main_SwitchScreenAction();
-        } else if (this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
-            this.screen === Main_SearchChannels) {
+        } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
+                this.screen === Main_SearchChannels) && !goSidepanel) {
             if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
             else Main_values.Main_Go = Main_values.Main_BeforeSearch;
             Main_values.Search_isSearching = false;
             Screens_BasicExit(Main_values.Main_Go);
             Main_SwitchScreenAction();
-        } else if (this.screen === Main_AGameClip || this.screen === Main_AGameVod) {
+        } else if ((this.screen === Main_AGameClip || this.screen === Main_AGameVod) && !goSidepanel) {
             Screens_BasicExit(Main_aGame);
             Main_SwitchScreenAction();
-        } else if (this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) {
+        } else if ((this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) && !goSidepanel) {
             Screens_BasicExit(Main_ChannelContent);
             Main_SwitchScreenAction();
         } else Screens_OpenSidePanel();
