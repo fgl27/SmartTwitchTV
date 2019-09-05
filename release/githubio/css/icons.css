@@ -207,3 +207,6 @@
 .icon-user:before {
   content: "\4a";
 }
+.icon-offset:before {
+  content: "\57";
+}
