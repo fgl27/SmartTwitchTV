@@ -21,6 +21,8 @@ var ChannelContent_ChannelValue = {};
 var ChannelContent_ChannelValueIsset = false;
 var ChannelContent_offline_image = null;
 var ChannelContent_profile_banner = '';
+var ChannelContent_KeyEnterID;
+var ChannelContent_clear = false;
 //Variable initialization end
 
 function ChannelContent_init() {
@@ -364,6 +366,19 @@ function ChannelContent_RestoreChannelValue() {
     ChannelContent_ChannelValueIsset = false;
 }
 
+function ChannelContent_handleKeyUp(e) {
+    if (e.keyCode === KEY_ENTER) {
+        ChannelContent_handleKeyUpClear();
+        if (!ChannelContent_clear) ChannelContent_keyEnter();
+    }
+}
+
+function ChannelContent_handleKeyUpClear() {
+    window.clearTimeout(ChannelContent_KeyEnterID);
+    document.body.removeEventListener("keyup", ChannelContent_handleKeyUp);
+    document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
+}
+
 function ChannelContent_handleKeyDown(event) {
     if (Main_FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
@@ -428,7 +443,10 @@ function ChannelContent_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            ChannelContent_keyEnter();
+            document.body.removeEventListener("keydown", ChannelContent_handleKeyDown, false);
+            document.body.addEventListener("keyup", ChannelContent_handleKeyUp, false);
+            ChannelContent_clear = false;
+            ChannelContent_KeyEnterID = window.setTimeout(Main_ReloadScreen, 1000);
             break;
         case KEY_REFRESH:
             Main_ReloadScreen();

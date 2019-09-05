@@ -661,7 +661,6 @@ function Screens_handleKeyUpClear() {
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
 }
 
-
 function Screens_handleKeyDown(event) {
     if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
