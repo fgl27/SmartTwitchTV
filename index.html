@@ -220,6 +220,7 @@
         div.stream_thumbnail_game,
         div.stream_thumbnail_clip,
         div.stream_thumbnail_live,
+        div.stream_thumbnail_player_feed,
         div.stream_thumbnail_user,
         div.stream_thumbnail_channel {
             width: 100%;
@@ -238,6 +239,21 @@
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 56.25%;
             background-repeat: no-repeat;
+        }
+
+        div.stream_thumbnail_player_feed {
+            /* height / width * 100% of Main.VideoSize*/
+            padding-bottom: 73.25%;
+            background-repeat: no-repeat;
+            background: #000000;
+            color: #FFFFFF;
+            border: 0.06em solid rgba(0, 0, 0, 0);
+        }
+
+        div.feed_thumbnail_focused {
+            background-color: #ebebeb !important;
+            color: #000000 !important;
+            border-color: #ebebeb !important;
         }
 
         div.stream_thumbnail_focused {
@@ -398,10 +414,6 @@
             color: #FFFFFF;
         }
 
-        div.feed_thumbnail_focused {
-            box-shadow: 0 0 0 0.125em #000000, 0 0 0 0.275em #FFFFFF;
-        }
-
         div.stream_user_icon {
             width: 100%;
             color: #FFFFFF;
@@ -459,26 +471,17 @@
             right: 0;
         }
 
-        div.stream_text_channel,
-        div.stream_text2,
-        div.stream_text {
+        div.player_live_feed_text {
             position: absolute;
-            bottom: 0.15em;
-            right: 0.2em;
-            left: 0.2em;
-            background-color: rgba(0, 0, 0, 0.5);
+            bottom: 0;
+            right: 0;
+            left: 0;
             padding: 0.5%;
             font-size: 95%;
         }
 
         div.stream_text_channel {
             background-color: rgba(0, 0, 0, 0);
-        }
-
-        div.stream_text2 {
-            bottom: 0;
-            right: 0;
-            left: 0;
         }
 
         .next_channel,
@@ -610,7 +613,7 @@
             z-index: 3;
             position: absolute;
             bottom: 0.1%;
-            height: 26%;
+            height: 32%;
             width: 100%;
             overflow: hidden;
         }
@@ -629,9 +632,9 @@
 
         /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
         div.user_feed_thumb {
-            width: 19.6%;
+            width: 19.22%;
             display: inline-block;
-            padding: 0.125em;
+            padding: 0.35%;
         }
 
         div.input_text_box {
@@ -2247,7 +2250,7 @@
         <div id="user_feed" class="user_feed user_feed_hide">
             <div id="icon_feed_refresh" class="dialogs_feed" style="bottom: 22%; text-align: left; margin-left: 1%;">
             </div>
-            <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 2.5%; overflow: visible;">
+            <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                 <div class="loading">
                     <div></div>
                     <div></div>
