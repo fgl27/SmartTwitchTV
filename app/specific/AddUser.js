@@ -249,6 +249,7 @@ function AddUser_SaveNewUser(responseText) {
 
     AddUser_SaveUserArray();
     Users_status = false;
+    Users_Userlastadded = AddUser_Username.name;
     Users_ShowAutetication = true;
     AddUser_exit();
     Main_values.Main_Go = Main_Users;
@@ -297,9 +298,15 @@ function AddUser_UserMakeOne(Position) {
 }
 
 function AddUser_UserCodeExist(user) {
-    return AddUser_UsernameArray.filter(function(e) {
-        return e.name === user;
+    return AddUser_UsernameArray.filter(function(array) {
+        return array.name === user;
     }).length > 0;
+}
+
+function AddUser_UserFindpos(user) {
+    return AddUser_UsernameArray.map(function(array) {
+        return array.name;
+    }).indexOf(user);
 }
 
 function AddUser_IsUserSet() {
