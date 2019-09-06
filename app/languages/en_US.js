@@ -69,7 +69,7 @@ function en_USLang() {
     STR_USER_ERROR = "User doesn\'t exist";
     STR_USER_HOSTING = " hosting ";
     STR_USER_SET = " already set";
-    STR_USER_MAKE_ONE = "Make First";
+    STR_USER_MAKE_ONE = "Switch to";
     STR_USER_NUMBER_ONE = "First user can follow (when providing a key) and see live channels feed outside of the user screen<br>";
     STR_ADD_USER_SH = "Add a Twitch user to display it\'s Followed Channels content here";
     STR_CLIP_DAY = "24h";
@@ -142,7 +142,7 @@ function en_USLang() {
     STR_OAUTH_EXPLAIN4 = "Login to Twitch.TV using the username you are trying to add a key for";
     STR_OAUTH_EXPLAIN5 = "Click on Authorize button of Twitch.TV site if you agree with the requested permissions";
     STR_OAUTH_EXPLAIN6 = "The web page will update and show a key code, the key only has lowercase letters and nubers.";
-    STR_USER_CODE = " Add Authentication key";
+    STR_USER_CODE = "Add Authentication key";
     STR_USER_CODE_OK = "Key added OK";
     STR_KEY_BAD = "Key test failed, new one needs to be added";
     STR_KEY_OK = "Key test return OK";
@@ -302,4 +302,6 @@ function en_USLang() {
     STR_SCREEN_COUNTER = "Show screen position counter";
     STR_SWITCH_POS = "Switch: Starting Position offset";
     STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
+    STR_USER_OPTION = "Choose a option for user";
+    STR_MAIN_USER = "Main user";
 }

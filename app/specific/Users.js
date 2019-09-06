@@ -4,6 +4,9 @@ var Users_cursorX = 0;
 var Users_ColoumnsCount = 8;
 var Users_RemoveCursor = 0;
 var Users_RemoveDialogID = null;
+var Users_beforeUser = 1;
+var Users_UserDialogID = null;
+var Users_Isautentication = true;
 
 var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll'];
 var Users_status = false;
@@ -25,10 +28,11 @@ function Users_init() {
         Main_SwitchScreen();
         return;
     }
-    Main_values.Main_CenterLablesVectorPos = 1;
+
+    if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
     Main_values.Main_Go = Main_Users;
-    document.getElementById("screens_holder").style.top = "";
     Main_HideWarningDialog();
+    ScreensObj_SetTopLable(STR_USER + ": ", STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
     document.body.addEventListener("keydown", Users_handleKeyDown, false);
     if (Users_status) {
         Main_YRst(Users_cursorY);
@@ -39,10 +43,8 @@ function Users_init() {
 }
 
 function Users_exit() {
-    Main_values.Users_Position = 0;
     document.body.removeEventListener("keydown", Users_handleKeyDown);
     Main_HideElement(Users_ids[5]);
-    document.getElementById("screens_holder").style.top = "0";
 }
 
 function Users_StartLoad() {
@@ -55,83 +57,67 @@ function Users_StartLoad() {
     Users_cursorX = 0;
     Users_cursorY = 0;
     Users_loadingData = true;
+    Main_CounterDialogRst();
     Main_ready(function() {
         Users_loadData();
     });
 }
 
 function Users_loadData() {
-    var row, coloumn_id, tbody = document.createElement('tbody'),
-        color, doc = document.getElementById("stream_table_user"),
-        tr;
+    var row = document.createElement('div');
+    var doc = document.getElementById('stream_table_user');
+    var x = 1; // 1 as first is used by add user
+    var y = 0;
 
-    for (var x = 0; x < AddUser_UsernameArray.length; x++) {
-        coloumn_id = 0;
-        color = ((x % 2) ? 'B5B5B5' : 'FFFFFF');
+    var div = document.createElement('div');
 
-        tr = document.createElement('tr');
-        tr.className = 'follower_header';
-        tr.innerHTML = '<div class="follower_header">' + (!x ? STR_USER_NUMBER_ONE : '') +
-            AddUser_UsernameArray[x].name + STR_CONTENT + '</div>';
+    div.setAttribute('id', Users_ids[4] + '0_0');
+    div.classList.add('stream_thumbnail_user_icon_holder');
 
-        doc.appendChild(tbody);
-        doc.appendChild(tr);
+    div.innerHTML = '<div id="' + Users_ids[0] + '0_0' +
+        '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"></div>' +
+        '<div  class="stream_thumbnail_user_text_holder">' +
+        '<div class="stream_info_user_name">' + STR_USER_ADD +
+        '</div><div style="color:#FFFFFF;font-size: 8em; transform: translate(9%, -100%); float: left;"><i class="icon-user-plus" ></i></div></div></div>';
 
-        row = document.createElement('tr');
+    row.appendChild(div);
 
-        //live
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_LIVE_CHANNELS, 'play', color));
+    for (var user = 0; user < AddUser_UsernameArray.length; user++) {
 
-        //host
-        coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_LIVE_HOSTS, 'users', color));
-
-        //games
-        coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES),
-            'gamepad', color));
-
-        //videos
-        coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_VIDEOS, 'movie-play', color));
-
-        //channels
-        coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_CHANNEL, 'filmstrip', color));
-
-        //my channels
-        coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_MY_CHANNEL, 'user', color));
-
-        //add or make one
-        coloumn_id++;
-        if (!x) row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_ADD, 'user-plus', color));
-        else row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_MAKE_ONE, 'arrow-up', color));
-
-        //remove user
-        coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, STR_USER_REMOVE, 'user-times', color));
-
-        //add key
-        coloumn_id++;
-        row.appendChild(Users_createChannelCell(x + '_' + coloumn_id, (AddUser_UsernameArray[x].access_token ? STR_USER_CODE_OK : STR_USER_CODE), 'key', color));
-
-        doc.appendChild(row);
+        row.appendChild(Users_createCell(y + '_' + x, user));
+        x++;
+        if (x > 5) {
+            doc.appendChild(row);
+            row = document.createElement('div');
+            y++;
+            x = 0;
+        }
     }
+
+    if (x <= 5) doc.appendChild(row);
 
     Users_loadDataSuccessFinish();
 }
 
-function Users_createChannelCell(id, stream_type, icons, color) {
-    var td = document.createElement('td');
-    td.setAttribute('id', Users_ids[4] + id);
-    td.className = 'stream_cell';
-    td.innerHTML = '<div id="' + Users_ids[0] + id + '" class="stream_thumbnail_channel" ><div id="' + Users_ids[1] + id +
-        '" class="stream_user_icon" style="color: #' + color + ';"><i class="icon-' + icons + '" style="font-size: 5em;"></i></div></div>' +
-        '<div id="' + Users_ids[2] + id + '" class="stream_text">' +
-        '<div id="' + Users_ids[3] + id + '" class="stream_channel" style="text-align: center;">' + stream_type + '</div></div>';
 
-    return td;
+function Users_createCell(id, pos) {
+    var div = document.createElement('div');
+
+    div.setAttribute('id', Users_ids[4] + id);
+    div.setAttribute(Main_DataAttribute, pos);
+    div.classList.add('stream_thumbnail_user_icon_holder');
+
+    div.innerHTML = '<div id="' + Users_ids[0] + id +
+        '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"><img id="' + Users_ids[1] +
+        id + '" alt="" class="lazy stream_img" data-src="' + AddUser_UsernameArray[pos].logo +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'"></div>' +
+        '<div  class="stream_thumbnail_user_text_holder">' +
+        '<div class="stream_info_user_name">' + AddUser_UsernameArray[pos].display_name +
+        '</div><div class="stream_info_user_name">' +
+        (AddUser_UsernameArray[pos].access_token ? STR_USER_CODE_OK : STR_USER_CODE) +
+        '</div></div></div>';
+
+    return div;
 }
 
 function Users_loadDataSuccessFinish() {
@@ -145,6 +131,7 @@ function Users_loadDataSuccessFinish() {
         Main_ShowElement(Users_ids[5]);
         Main_FirstLoad = false;
         Users_loadingData = false;
+        lazyLoadInstance.update();
     });
 }
 
@@ -152,14 +139,17 @@ function Users_resetGameCell() {
     for (var x = 0; x < AddUser_UsernameArray.length; x++) Main_textContent(Users_ids[3] + x + '_' + 2, (UserGames.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
 }
 
-function Users_addFocus() {
+function Users_addFocus(forceScroll) {
     Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
-    if (Main_YchangeAddFocus(Users_cursorY)) {
+
+    Main_CounterDialog(Users_cursorX, Users_cursorY, Main_ColoumnsCountChannel, AddUser_UsernameArray.length + 1);
+
+    if (Main_YchangeAddFocus(Users_cursorY) || forceScroll) {
 
         if (Users_cursorY > 1) {
 
             if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0]))
-                Main_ScrollTableCalc(Users_ids[5], (document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).offsetTop * -1), 57);
+                Main_ScrollTableCalc(Users_ids[5], (document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).offsetTop * -1), 39);
         } else Main_ScrollTable(Users_ids[5], 0);
 
     } else Main_handleKeyUp();
@@ -172,64 +162,54 @@ function Users_removeFocus() {
 
 //TODO add a temp user for when going back and for from user to games or etc
 function Users_keyEnter() {
-    Main_values.Users_Position = Users_cursorY;
-
-    if (Users_cursorX === 3 && !AddUser_UsernameArray[Main_values.Users_Position].access_token) {
-        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
-        window.setTimeout(Main_HideWarningDialog, 5000);
-        return;
-    }
-
-    if (Users_cursorX === 8 && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
-        Main_showWarningDialog(STR_USER_CODE_OK);
-        window.setTimeout(Main_HideWarningDialog, 1500);
-        return;
-    }
-
-    if (Users_cursorX !== 7 && Users_cursorX !== 8) {
+    if (!Users_cursorX && !Users_cursorY) {
+        Main_values.Main_Before = Main_values.Main_Go;
         Main_HideElement(Users_ids[5]);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
-        document.getElementById("screens_holder").style.top = "0";
-    }
+        AddUser_init();
+    } else Users_showUserDialog();
+}
 
-    Main_ready(function() {
-        if (!Users_cursorX) {
-            inUseObj = UserLive;
-            Screens_init();
-        } else if (Users_cursorX === 1) {
-            inUseObj = UserHost;
-            Screens_init();
-        } else if (Users_cursorX === 2) {
-            inUseObj = UserGames;
-            Screens_init();
-        } else if (Users_cursorX === 3) {
-            inUseObj = UserVod;
-            Screens_init();
-        } else if (Users_cursorX === 4) {
-            inUseObj = UserChannels;
-            Screens_init();
-        } else if (Users_cursorX === 5) {
+function Users_clearUserDialog() {
+    window.clearTimeout(Users_UserDialogID);
+}
 
-            Main_values.Main_selectedChannel_id = AddUser_UsernameArray[Main_values.Users_Position].id;
-            Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[Main_values.Users_Position].display_name ? AddUser_UsernameArray[Main_values.Users_Position].display_name : AddUser_UsernameArray[Main_values.Users_Position].name;
-            Main_values.Main_selectedChannel = AddUser_UsernameArray[Main_values.Users_Position].name;
+function Users_setUserDialog() {
+    Users_UserDialogID = window.setTimeout(Users_HideUserDialog, 20000);
+}
 
-            Main_values.Main_BeforeChannel = Main_Users;
-            Main_values.Main_Go = Main_ChannelContent;
-            Main_values.Main_BeforeChannelisSet = true;
-            AddCode_IsFallowing = false;
-            ChannelContent_UserChannels = false;
-            Main_SwitchScreen();
+var Users_showUserDialogPos = 0;
 
-        } else if (Users_cursorX === 6) {
-            if (!Users_cursorY) {
-                Main_values.Main_Before = Main_Users;
-                AddUser_init();
-            } else AddUser_UserMakeOne(Users_cursorY);
-        } else if (Users_cursorX === 7) Users_showRemoveDialog();
-        else if (Users_cursorX === 8 && !AddUser_UsernameArray[Main_values.Users_Position].access_token)
-            Users_showRemoveDialog();
-    });
+function Users_showUserDialog() {
+    Users_RemoveCursor = 0;
+    Users_setUserDialog();
+    Users_showUserDialogPos = document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute);
+
+    Main_innerHTML("main_dialog_user_text", STR_USER_OPTION + " " + AddUser_UsernameArray[Users_showUserDialogPos].display_name);
+    Main_innerHTML("main_dialog_user_key", (AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE));
+
+    Main_ShowElement('main_dialog_user');
+}
+
+function Users_HideUserDialog() {
+    Users_clearUserDialog();
+    Main_HideElement('main_dialog_user');
+    Users_RemoveCursor = 0;
+    Users_UserCursorSet();
+}
+
+function Users_isUserDialogShown() {
+    return Main_isElementShowing('main_dialog_user');
+}
+
+function Users_UserCursorSet() {
+    Main_RemoveClass('main_dialog_user_first', 'button_dialog_focused');
+    Main_RemoveClass('main_dialog_user_key', 'button_dialog_focused');
+    Main_RemoveClass('main_dialog_user_remove', 'button_dialog_focused');
+
+    if (!Users_RemoveCursor) Main_AddClass('main_dialog_user_first', 'button_dialog_focused');
+    else if (Users_RemoveCursor === 1) Main_AddClass('main_dialog_user_key', 'button_dialog_focused');
+    else if (Users_RemoveCursor) Main_AddClass('main_dialog_user_remove', 'button_dialog_focused');
 }
 
 function Users_clearRemoveDialog() {
@@ -242,8 +222,8 @@ function Users_setRemoveDialog() {
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
-    if (Users_cursorX === 7) Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
-    else if (Users_cursorX === 8) Main_innerHTML("main_dialog_remove", STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Main_values.Users_Position].name + '?');
+    if (!Users_Isautentication) Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
+    else Main_innerHTML("main_dialog_remove", STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
     Main_ShowElement('main_remove_dialog');
 }
 
@@ -277,12 +257,14 @@ function Users_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN:
             if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
+            else if (Users_isUserDialogShown()) Users_HideUserDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                Users_removeFocus();
+                Users_exit();
+                Main_values.Main_Go = Users_beforeUser;
+                Main_SwitchScreenAction();
             }
-            Sidepannel_RestoreScreen();
             break;
         case KEY_LEFT:
             if (Users_isRemoveDialogShown()) {
@@ -291,6 +273,12 @@ function Users_handleKeyDown(event) {
                 Users_RemoveCursorSet();
                 Users_clearRemoveDialog();
                 Users_setRemoveDialog();
+            } else if (Users_isUserDialogShown()) {
+                Users_RemoveCursor--;
+                if (Users_RemoveCursor < 0) Users_RemoveCursor = 2;
+                Users_UserCursorSet();
+                Users_clearUserDialog();
+                Users_setUserDialog();
             } else if (!Users_cursorX) {
                 Users_removeFocus();
                 Sidepannel_Start(Users_handleKeyDown);
@@ -321,6 +309,12 @@ function Users_handleKeyDown(event) {
                 Users_RemoveCursorSet();
                 Users_clearRemoveDialog();
                 Users_setRemoveDialog();
+            } else if (Users_isUserDialogShown()) {
+                Users_RemoveCursor++;
+                if (Users_RemoveCursor > 2) Users_RemoveCursor = 0;
+                Users_UserCursorSet();
+                Users_clearUserDialog();
+                Users_setUserDialog();
             } else if (Main_ThumbNull((Users_cursorY), (Users_cursorX + 1), Users_ids[0])) {
                 Users_removeFocus();
                 Users_cursorX++;
@@ -337,9 +331,7 @@ function Users_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            if (!Users_cursorY) {
-                Users_removeFocus();
-            } else {
+            if (Users_cursorY) {
                 for (i = 0; i < Users_ColoumnsCount; i++) {
                     if (Main_ThumbNull((Users_cursorY - 1), (Users_cursorX - i), Users_ids[0])) {
                         Users_removeFocus();
@@ -366,22 +358,19 @@ function Users_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
+            // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
+            var temp_RemoveCursor = Users_RemoveCursor;
             if (Users_isRemoveDialogShown()) {
-                var temp_RemoveCursor;
-                if ((Users_cursorX === 7)) {
-                    // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
-                    temp_RemoveCursor = Users_RemoveCursor;
-                    Users_HideRemoveDialog();
+                Users_HideRemoveDialog();
+                if (!Users_Isautentication) {
                     if (temp_RemoveCursor) {
                         document.body.removeEventListener("keydown", Users_handleKeyDown);
                         Users_exit();
-                        AddUser_removeUser(Users_cursorY);
+                        AddUser_removeUser(Users_showUserDialogPos);
                     }
                 } else {
-                    temp_RemoveCursor = Users_RemoveCursor;
-                    Users_HideRemoveDialog();
                     if (temp_RemoveCursor) {
-                        Main_values.Users_AddcodePosition = Main_values.Users_Position;
+                        Main_values.Users_AddcodePosition = Users_showUserDialogPos;
                         Main_SaveValues();
                         var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?';
                         var type_code = 'code';
@@ -389,10 +378,27 @@ function Users_handleKeyDown(event) {
                         var redirect_uri = AddCode_redirect_uri;
                         var scope = 'user_read+user_follows_edit+user_subscriptions';
                         var force_verify = 'true';
-                        var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' + encodeURIComponent(client_id) +
-                            '&redirect_uri=' + redirect_uri + '&scope=' + scope + '&force_verify=' + force_verify;
+                        var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
+                            encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +
+                            '&force_verify=' + force_verify;
                         window.location = url;
                     }
+                }
+            } else if (Users_isUserDialogShown()) {
+                Users_HideUserDialog();
+                if (!temp_RemoveCursor) {
+                    AddUser_UserMakeOne(Users_showUserDialogPos);
+                } else if (temp_RemoveCursor === 1) {
+                    if (AddUser_UsernameArray[Users_showUserDialogPos].access_token) {
+                        Main_showWarningDialog(STR_USER_CODE_OK);
+                        window.setTimeout(Main_HideWarningDialog, 1500);
+                    } else {
+                        Users_Isautentication = true;
+                        Users_showRemoveDialog();
+                    }
+                } else {
+                    Users_Isautentication = false;
+                    Users_showRemoveDialog();
                 }
             } else Users_keyEnter();
             break;

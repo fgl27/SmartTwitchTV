@@ -279,12 +279,16 @@ function Main_SetStringsSecondary() {
     Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
     Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
+    Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
 
     Main_textContent("dialog_period_text", STR_SWITCH_CLIP);
     Main_innerHTML("dialog_period_1", Main_Periods[0]);
     Main_innerHTML("dialog_period_2", Main_Periods[1]);
     Main_innerHTML("dialog_period_3", Main_Periods[2]);
     Main_innerHTML("dialog_period_4", Main_Periods[3]);
+
+    Main_innerHTML("main_dialog_user_first", STR_USER_MAKE_ONE);
+    Main_innerHTML("main_dialog_user_remove", STR_USER_REMOVE);
 
     Main_innerHTML("dialog_OffSet_text", STR_SWITCH_POS + STR_BR);
     Main_textContent("dialog_OffSet_text_summary", STR_SWITCH_POS_SUMMARY);

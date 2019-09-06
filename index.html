@@ -125,6 +125,7 @@
         div.screen_holder,
         div.screen_holder_channel,
         div.screen_holder_switch,
+        div.screen_holder_user,
         div.screen_holder_games {
             width: 100%;
             position: fixed;
@@ -141,6 +142,10 @@
 
         div.screen_holder_channel {
             top: 6%;
+        }
+
+        div.screen_holder_user {
+            top: 7%;
         }
 
         div.settings_holder {
@@ -215,6 +220,7 @@
         div.stream_thumbnail_game,
         div.stream_thumbnail_clip,
         div.stream_thumbnail_live,
+        div.stream_thumbnail_user,
         div.stream_thumbnail_channel {
             width: 100%;
             height: 0;
@@ -302,6 +308,7 @@
             padding: 1.1%;
         }
 
+        div.stream_thumbnail_user_icon_holder,
         div.stream_thumbnail_channel_holder {
             width: 15%;
             display: inline-block;
@@ -309,6 +316,15 @@
             padding-bottom: 1.25%;
         }
 
+        div.stream_thumbnail_user_icon_holder {
+            width: 14.5%;
+            transform: translateY(-11%);
+            padding: 1%;
+            padding-top: 0.8%;
+            padding-bottom: 0;
+        }
+
+        div.stream_thumbnail_user_text_holder,
         div.stream_thumbnail_channel_text_holder,
         div.stream_thumbnail_live_text_holder {
             position: absolute;
@@ -324,8 +340,14 @@
             height: 1em;
         }
 
+        div.stream_thumbnail_user_text_holder {
+            bottom: 0;
+            height: 2em;
+        }
+
         .stream_info_live,
         .stream_info_channel_name,
+        .stream_info_user_name,
         .stream_info_live_name {
             width: 100%;
             text-align: left;
@@ -340,6 +362,7 @@
             width: 2ch;
         }
 
+        .stream_info_user_name,
         .stream_info_channel_name {
             font-size: 72%;
             white-space: nowrap;
@@ -347,6 +370,12 @@
             overflow: hidden;
             width: calc(100% - 3ch);
             display: inline-block;
+        }
+
+        .stream_info_user_name {
+            font-size: 70%;
+            width: 100%;
+            display: block;
         }
 
         .stream_info_live {
@@ -359,6 +388,12 @@
 
         div.stream_thumbnail_channel {
             padding-bottom: 112%;
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+        div.stream_thumbnail_user {
+            padding-bottom: 122%;
             background-color: #000000;
             color: #FFFFFF;
         }
@@ -634,7 +669,6 @@
             font-size: 150%;
             background-color: #999999;
             display: inline-block;
-            text-shadow: -0.03em -0.03em 0 #FFF, 0.03em -0.03em 0 #FFF, -0.03em 0.03em 0 #FFF, 0.03em 0.03em 0 #FFF;
             border-top: 0.055em solid;
             border-bottom: 0.06em solid;
             border-image: linear-gradient(#000000, #000000) 1;
@@ -1724,6 +1758,16 @@
                 <div id="remove_yes" class="button_dialog"></div>
             </div>
         </div>
+        <div id="main_dialog_user" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
+            <div class="dialog_exit" style="width: 80%; margin-left: 10%;">
+                <div id="main_dialog_user_text" class="exit_text"></div>
+                <div style="text-align: center; margin-bottom: 4%;">
+                    <div id="main_dialog_user_first" class="button_dialog_focused button_dialog" style="margin-left: 0%;"></div>
+                    <div id="main_dialog_user_key" class="button_dialog" style="width: 35%;"></div>
+                    <div id="main_dialog_user_remove" class="button_dialog" style="width: 22%;"></div>
+                </div>
+            </div>
+        </div>
         <div id="main_dialog_exit" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
             <div class="dialog_exit">
                 <div id="main_dialog_exit_text" class="exit_text"></div>
@@ -1837,8 +1881,8 @@
             </div>
 
             <!-- Etc screens-->
-            <div id="user_scroll" class="screen_holder hide">
-                <table id="stream_table_user" class="streams_tables"></table>
+            <div id="user_scroll" class="screen_holder_user hide">
+                <div id="stream_table_user" class="streams_div"></div>
             </div>
             <div id="settings_holder" class="settings_holder hide">
                 <div id="settings_scroll" class="screen_holder_settings">
@@ -2255,6 +2299,9 @@
                     </div>
                     <div id="side_panel_new_row_1" style="overflow: hidden; width: 94%; position: absolute;">
                         <div id="side_panel_holder">
+                        </div>
+                        <div id="side_panel_warn" class="side_panel_feed_top" style="display: none;">
+                            <span id="side_panel_warn_text"></span>
                         </div>
                     </div>
                 </div>
