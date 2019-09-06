@@ -154,7 +154,7 @@ function AddCode_CheckOauthToken() {
     var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
         AddUser_UsernameArray[Main_values.Users_Position].access_token;
 
-    BasehttpGet(theUrl, AddCode_loadingDataTimeout, 0, null, AddCode_CheckOauthTokenSucess, AddCode_CheckOauthTokenError);
+    BasehttpGet(theUrl, AddCode_loadingDataTimeout, 2, null, AddCode_CheckOauthTokenSucess, AddCode_CheckOauthTokenError);
 }
 
 function AddCode_CheckOauthTokenSucess(response) {
@@ -427,7 +427,7 @@ function AddCode_CheckToken(position, tryes) {
 
     if (Main_IsNotBrowser) {
 
-        xmlHttp = Android.mreadUrl(theUrl, 3500, 0, null);
+        xmlHttp = Android.mreadUrl(theUrl, 3500, 2, null);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
@@ -449,6 +449,8 @@ function AddCode_CheckToken(position, tryes) {
         xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         xmlHttp.timeout = 10000;
         xmlHttp.ontimeout = function() {};
 
