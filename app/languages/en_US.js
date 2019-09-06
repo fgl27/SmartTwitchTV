@@ -305,4 +305,5 @@ function en_USLang() {
     STR_USER_OPTION = "Choose a option for user";
     STR_MAIN_USER = "Main user";
     STR_USER_TOP_LABLE = "Click on a user to see options";
+    STR_USER_EXTRAS = "User: Switch, add, key";
 }
