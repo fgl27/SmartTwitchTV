@@ -182,9 +182,9 @@ function Play_PreStart() {
     Play_SetChatFont();
     Play_SetAudioIcon();
 
-    Main_innerHTML('user_feed_notify_img_holder', '<img id="user_feed_notify_img" class="notify_img" src="' + IMG_404_LOGO +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
-        '\'" style="box-shadow: #FFFFFF 0 0 0 0.125em">');
+    Main_innerHTML('user_feed_notify_img_holder',
+        '<img id="user_feed_notify_img" class="notify_img" src="' + IMG_404_LOGO +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'" >');
 }
 
 function Play_SetQuality() {
