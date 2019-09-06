@@ -42,6 +42,7 @@ function UserLiveFeed_StartLoad() {
         Main_HideElement('side_panel_feed_thumb');
         Sidepannel_PosFeed = 0;
         Main_empty('side_panel_holder');
+        document.getElementById('side_panel_warn').style.display = 'none';
         UserLiveFeed_status = false;
         document.getElementById('user_feed_scroll').style.left = "0.125em";
         Main_ShowElement('dialog_loading_feed');

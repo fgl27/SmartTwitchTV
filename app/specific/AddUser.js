@@ -107,7 +107,7 @@ function AddUser_KeyboardEvent(event) {
                     AddUser_loadDataRequest();
                 } else {
                     Main_HideLoadDialog();
-                    Main_showWarningDialog(STR_USER + AddUser_Username + STR_USER_SET);
+                    Main_showWarningDialog(STR_USER + " " + AddUser_Username + STR_USER_SET);
                     window.setTimeout(function() {
                         Main_HideWarningDialog();
                         AddUser_inputFocus();
@@ -263,17 +263,24 @@ function AddUser_removeUser(Position) {
     var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
     if (index > -1) AddUser_UsernameArray.splice(index, 1);
 
+    // reset localStorage usernames
+    AddUser_SaveUserArray();
+
     // restart users and smarthub
     if (AddUser_UsernameArray.length > 0) {
         Users_status = false;
         Users_init();
     } else AddUser_init();
-
-    // reset localStorage usernames
-    AddUser_SaveUserArray();
 }
 
 function AddUser_SaveUserArray() {
+    //Remove first user alphabetical sort and add first back
+    var mainuser = AddUser_UsernameArray.splice(0, 1);
+    AddUser_UsernameArray.sort(function(a, b) {
+        return (a.display_name).toLowerCase().localeCompare((b.display_name).toLowerCase());
+    });
+    AddUser_UsernameArray.splice(0, 0, mainuser[0]);
+
     Main_setItem('AddUser_UsernameArray', JSON.stringify(AddUser_UsernameArray));
 }
 
@@ -281,14 +288,17 @@ function AddUser_UserMakeOne(Position) {
     AddUser_Username = AddUser_UsernameArray[0];
     AddUser_UsernameArray[0] = AddUser_UsernameArray[Position];
     AddUser_UsernameArray[Position] = AddUser_Username;
-    Users_status = false;
-    Users_init();
     AddUser_SaveUserArray();
+    Users_status = false;
+    AddUser_UpdateSidepanel();
+    Users_init();
     Main_values.Users_Position = 0;
 }
 
 function AddUser_UserCodeExist(user) {
-    return AddUser_UsernameArray.indexOf(user) !== -1;
+    return AddUser_UsernameArray.filter(function(e) {
+        return e.name === user;
+    }).length > 0;
 }
 
 function AddUser_IsUserSet() {
