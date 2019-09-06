@@ -316,8 +316,8 @@ function Sidepannel_SetDefaultLables() {
     //Main_values.Sidepannel_IsUser = false;
     Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
-    if (AddUser_UsernameArray[0]) Main_innerHTML('side_panel_movel_new_0', STR_SPACE + (AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : STR_USER_ADD));
-    else Main_innerHTML('side_panel_movel_new_0', STR_SPACE + STR_USER_ADD);
+    if (AddUser_UsernameArray[0]) Sidepannel_SetUserlable(AddUser_UsernameArray[0].display_name);
+    else Sidepannel_SetUserlable(STR_USER_ADD);
 
     Main_HideElement('side_panel_movel_new_8');
     Main_HideElement('side_panel_new_8');
@@ -346,6 +346,11 @@ function Sidepannel_SetDefaultLables() {
     Sidepannel_SetIcons('side_panel_new_6', 'movie-play');
     Sidepannel_SetIcons('side_panel_new_7', 'movie');
     Sidepannel_SetIcons('side_panel_new_8', 'user');
+}
+
+function Sidepannel_SetUserlable(text) {
+    Main_innerHTML('side_panel_movel_new_0', STR_SPACE + text + STR_BR +
+        '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_SPACE + STR_USER_EXTRAS + '</div>');
 }
 
 function Sidepannel_SetIcons(div, icon) {
