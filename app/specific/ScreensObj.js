@@ -256,7 +256,7 @@ function ScreensObj_InitVod() {
         },
         SetPeriod: function() {
             Main_setItem('vod_periodPos', this.periodPos);
-            ScreensObj_SetTopLable(STR_VIDEOS + ": ", (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
+            ScreensObj_SetTopLable(STR_VIDEOS, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
                 STR_SPACE + Main_Periods[this.periodPos - 1]);
         },
     }, Base_obj);
@@ -335,7 +335,7 @@ function ScreensObj_InitChannelVod() {
         SetPeriod: function() {
             Main_setItem('UserVod_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname + ": ",
+            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname,
                 (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
                 (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + inUseObj.extraoffset);
 
@@ -416,7 +416,7 @@ function ScreensObj_InitAGameVod() {
         SetPeriod: function() {
             Main_setItem('AGameVod_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ': ', (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE + Main_Periods[this.periodPos - 1]);
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE + Main_Periods[this.periodPos - 1]);
         }
     }, Base_obj);
 
@@ -477,7 +477,7 @@ function ScreensObj_InitUserVod() {
         SetPeriod: function() {
             Main_setItem('UserVod_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(STR_USER + ": ", (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
+            ScreensObj_SetTopLable(STR_USER, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
                 (this.periodPos === 1 ? STR_TIME : STR_VIWES));
         }
     }, Base_obj);
@@ -574,7 +574,7 @@ function ScreensObj_InitSearchLive() {
             this.lastData = Main_values.Search_data;
             Sidepannel_SetTopOpacity(this.screen);
 
-            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_LIVE + ": ", "'" + Main_values.Search_data + "'");
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_LIVE, "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             Main_values.Search_isSearching = false;
@@ -633,7 +633,7 @@ function ScreensObj_InitUserLive() {
         },
         label_init: function() {
             ScreensObj_TopLableUserInit();
-            ScreensObj_SetTopLable(STR_USER + ": ", STR_LIVE_CHANNELS);
+            ScreensObj_SetTopLable(STR_USER, STR_LIVE_CHANNELS);
         },
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
@@ -707,7 +707,7 @@ function ScreensObj_InitUserHost() {
         label_init: function() {
             ScreensObj_TopLableUserInit();
 
-            ScreensObj_SetTopLable(STR_USER + ": ", STR_LIVE_HOSTS);
+            ScreensObj_SetTopLable(STR_USER, STR_LIVE_HOSTS);
         },
         key_play: function() {
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
@@ -759,7 +759,7 @@ function ScreensObj_InitAGame() {
                 Main_cleanTopLabel();
             } else Main_values.gameSelectedOld = null;
 
-            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ": ", STR_LIVE);
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_LIVE);
         },
         label_exit: ScreensObj_TopLableAgameExit,
         HasSwitches: true,
@@ -923,7 +923,7 @@ function ScreensObj_InitClip() {
         },
         SetPeriod: function() {
             Main_setItem('Clip_periodPos', this.periodPos);
-            ScreensObj_SetTopLable(STR_CLIPS + ": ", Main_Periods[this.periodPos - 1]);
+            ScreensObj_SetTopLable(STR_CLIPS, Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
             this.SetPeriod();
@@ -955,7 +955,7 @@ function ScreensObj_InitChannelClip() {
         SetPeriod: function() {
             Main_setItem('ChannelClip_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname + ": ", STR_CLIPS + STR_SPACE +
+            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname, STR_CLIPS + STR_SPACE +
                 Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
@@ -988,7 +988,7 @@ function ScreensObj_InitAGameClip() {
         SetPeriod: function() {
             Main_setItem('AGameClip_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_gameSelected + ': ', STR_CLIPS + STR_SPACE +
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE +
                 Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
@@ -1095,7 +1095,7 @@ function ScreensObj_InitUserGames() {
         key_refresh: function() {
             this.isLive = !this.isLive;
 
-            ScreensObj_SetTopLable(STR_USER + ": ", (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
+            ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
 
             Screens_StartLoad();
 
@@ -1107,7 +1107,7 @@ function ScreensObj_InitUserGames() {
             ScreensObj_TopLableUserInit();
             Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_GUIDE);
 
-            ScreensObj_SetTopLable(STR_USER + ": ", (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
+            ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
         },
         label_exit: function() {
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -1139,7 +1139,7 @@ function ScreensObj_InitSearchGames() {
             this.lastData = Main_values.Search_data;
             Sidepannel_SetTopOpacity(this.screen);
 
-            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_GAMES + ": ", "'" + Main_values.Search_data + "'");
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_GAMES, "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             Main_values.Main_gameSelected = Main_values.gameSelectedOld;
@@ -1199,7 +1199,7 @@ function ScreensObj_InitUserChannels() {
         label_init: function() {
             ScreensObj_TopLableUserInit();
 
-            ScreensObj_SetTopLable(STR_USER + ": ", STR_USER_CHANNEL);
+            ScreensObj_SetTopLable(STR_USER, STR_USER_CHANNEL);
         },
         key_play: function() {
             if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
@@ -1251,7 +1251,7 @@ function ScreensObj_InitSearchChannels() {
             this.lastData = Main_values.Search_data;
             Sidepannel_SetTopOpacity(this.screen);
 
-            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_CHANNELS + ": ", "'" + Main_values.Search_data + "'");
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_CHANNELS, "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
@@ -1311,5 +1311,5 @@ function ScreensObj_TopLableUserInit() {
 }
 
 function ScreensObj_SetTopLable(text, small_text) {
-    Main_innerHTML('top_lable', text + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ""));
+    Main_innerHTML('top_lable', text + STR_SPACE + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ""));
 }
