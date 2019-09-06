@@ -40,73 +40,7 @@
             font-family: 'Roboto-Bold';
         }
 
-        div.icon_center_focus,
-        div.side_panel_return,
-        div.side_panel_text_focus {
-            text-shadow: -0.1ch 0 0 #000000,
-                0.05ch -0.05ch 0 #000000,
-                0.05ch 0.05ch 0 #000000,
-                0 0.05ch 0 #000000,
-                -0.05ch 0 0 #000000,
-                -0.05ch 0.05ch 0 #000000,
-                -0.05ch -0.15ch 0 #000000,
-                0 -0.05ch 0 #000000,
-                0 0.1ch 0 #777777,
-                0 0.15ch 0 #666666,
-                0 0.2ch 0 #555555,
-                0 0.3ch 0 #000000,
-                0.1ch -0.05ch 0 #000000,
-                0.1ch -0.1ch 0 #000000,
-                0.05ch -0.15ch 0 #000000,
-                -0.1ch -0.05ch 0 #000000,
-                -0.1ch -0.1ch 0 #000000,
-                -0.1ch -0.15ch 0 #000004,
-                0.1ch 0.1ch 0 #000000,
-                0.1ch 0.15ch 0 #000000,
-                0.1ch 0.2ch 0 #000000,
-                0.1ch 0.25ch 0 #000000,
-                0.1ch 0.3ch 0 #000000,
-                -0.1ch 0.1ch 0 #000000,
-                -0.1ch 0.15ch 0 #000000,
-                -0.1ch 0.2ch 0 #000000,
-                -0.1ch 0.25ch 0 #000004,
-                -0.1ch 0.3ch 0 #000000;
-        }
-
-        div.icon_center_label,
-        div.side_panel_text {
-            text-shadow: -0.1ch 0 0 #000000,
-                0.05ch -0.05ch 0 #000000,
-                0.05ch 0.05ch 0 #000000,
-                0 0.05ch 0 #000000,
-                -0.05ch 0 0 #000000,
-                -0.05ch 0.05ch 0 #000000,
-                -0.05ch -0.15ch 0 #000000,
-                0 -0.05ch 0 #000000,
-                0 0.1ch 0 #444444,
-                0 0.15ch 0 #333333,
-                0 0.2ch 0 #222222,
-                0 0.3ch 0 #000000,
-                0.1ch -0.05ch 0 #000000,
-                0.1ch -0.1ch 0 #000000,
-                0.05ch -0.15ch 0 #000000,
-                -0.1ch -0.05ch 0 #000000,
-                -0.1ch -0.1ch 0 #000000,
-                -0.1ch -0.15ch 0 #000004,
-                0.1ch 0.1ch 0 #000000,
-                0.1ch 0.15ch 0 #000000,
-                0.1ch 0.2ch 0 #000000,
-                0.1ch 0.25ch 0 #000000,
-                0.1ch 0.3ch 0 #000000,
-                -0.1ch 0.1ch 0 #000000,
-                -0.1ch 0.15ch 0 #000000,
-                -0.1ch 0.2ch 0 #000000,
-                -0.1ch 0.25ch 0 #000004,
-                -0.1ch 0.3ch 0 #000000;
-        }
-
         div.screen_size,
-        div.scrollbar_holder,
         div.screens {
             position: fixed;
             background-color: rgba(0, 0, 0, 0);
@@ -180,34 +114,6 @@
             transition: opacity 1s ease-in-out !important;
         }
 
-        div.icon_center_label {
-            max-width: 64%;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            color: #777777;
-            display: inline-block;
-            font-size: 175%;
-            font-family: 'Roboto-Bold';
-            padding-right: 0.7%;
-            transition: opacity 1s ease-in-out;
-        }
-
-        div.icon_center_focus {
-            transition: color 0.3s ease-in-out;
-            color: #FFFFFF;
-        }
-
-        div.icon_center_line {
-            text-decoration: overline;
-        }
-
-        td.stream_cell {
-            padding: 0.4ch;
-            position: relative;
-            width: 33.33%;
-        }
-
         div.stream_cell_period {
             padding-left: 2ch;
             position: relative;
@@ -216,7 +122,6 @@
             transform: translateY(15%);
         }
 
-        div.stream_thumbnail_video,
         div.stream_thumbnail_game,
         div.stream_thumbnail_clip,
         div.stream_thumbnail_live,
@@ -227,12 +132,6 @@
             height: 0;
             position: relative;
             border: 0.06em solid rgba(0, 0, 0, 0);
-        }
-
-        div.stream_thumbnail_video {
-            /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 56.25%;
-            background-repeat: no-repeat;
         }
 
         div.stream_thumbnail_clip {
@@ -502,10 +401,6 @@
             font-size: 75%;
         }
 
-        .stream_info,
-        div.stream_channel,
-        div.stream_channel_info,
-        .stream_info_games,
         div.stream_channel_fallow_game {
             width: 100%;
             text-align: left;
@@ -539,6 +434,8 @@
         }
 
         .strokicon {
+            font-size: 90%;
+            color: #FFFFFF;
             text-shadow: 0 0.025em 0 #000000,
                 -0.025em 0 0 #000000,
                 0 0.0375em 0 #777777,
@@ -552,28 +449,6 @@
                 0.04em 0.03em 0 #000000,
                 0 0.1em 0 #000000,
                 0 -0.04em 0 #000000;
-        }
-
-        .stream_info {
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            font-family: 'Roboto';
-            font-size: 75%;
-        }
-
-        .stream_info_games {
-            font-family: 'Roboto';
-            font-size: 75%;
-        }
-
-        div.stream_channel_info {
-            width: 63%;
-            margin: 0;
-            position: absolute;
-            bottom: 1em;
-            left: 0;
-            font-size: 75%;
         }
 
         div.stream_channel_fallow_game {
@@ -1023,31 +898,6 @@
             display: inline-block
         }
 
-        div.side_panel_return,
-        div.side_panel_text {
-            color: #7B7B7B;
-            display: inline-block;
-            margin-top: 1%;
-            margin-bottom: 1%;
-            font-size: 140%;
-            font-family: 'Roboto-Bold';
-            text-align: left;
-            width: 84%;
-            margin-left: 22%;
-        }
-
-        div.side_panel_return,
-        div.side_panel_text_focus {
-            color: #FFFFFF;
-        }
-
-        div.side_panel_return {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            font-size: 150%;
-        }
-
         div.about_dialogs {
             position: absolute;
             z-index: 200;
@@ -1083,11 +933,6 @@
 
         .red_text {
             color: #FF2121;
-        }
-
-        .strokicon {
-            font-size: 90%;
-            color: #FFFFFF;
         }
 
         table.streams_tables {
