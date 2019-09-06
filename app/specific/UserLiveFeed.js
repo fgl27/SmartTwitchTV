@@ -331,15 +331,15 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
     div.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     div.className = 'user_feed_thumb';
-    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
-        '<div><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
+        '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
         Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
-        '<div id="' + UserLiveFeed_ids[2] + id + '" class="stream_text2">' +
+        '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text">' +
         '<div id="' + UserLiveFeed_ids[3] + id +
-        '" class="stream_channel" style="width: 66%; display: inline-block;"><i class="icon-' +
+        '" class="stream_info_live_name" style="width: 66%; display: inline-block;"><i class="icon-' +
         (!data[2] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE +
         valuesArray[1] + '</div>' + '<div id="' + UserLiveFeed_ids[5] + id +
-        '"class="stream_info">' + valuesArray[2] + '</div>' + '</div></div>';
+        '"class="stream_info_live">' + valuesArray[2] + '</div>' + '</div></div>';
 
     return div;
 }
