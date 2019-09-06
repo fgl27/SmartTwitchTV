@@ -66,6 +66,7 @@ var Main_values = {
     "Sidepannel_Pos": 2,
     "Sidepannel_IsUser": false,
     "My_channel": false,
+    "DeviceBitrateCheck": false,
 };
 
 var Main_LastClickFinish = true;
@@ -187,9 +188,25 @@ function Main_initWindows() {
     lazyLoadInstance = new LazyLoad();
 
     Screens_InitScreens();
+    Main_RestoreValues();
+
+    var device = null;
+    try {
+        device = Android.getDevice();
+    } catch (e) {}
+
+    if (!Main_values.DeviceBitrateCheck && device !== null) {
+        Main_values.DeviceBitrateCheck = true;
+        //Some devices are very slow and need small bitrate when if picture in picture shield doesn't.
+        if (device.toLowerCase().indexOf('shield android tv') !== -1) {
+            Settings_value.bitrate_min.defaultValue = 0;
+            Main_setItem('bitrate_min', 1);
+            Android.SetSmallPlayerBandwidth(0);
+        }
+    }
+
     Main_SetStringsMain(true);
 
-    Main_RestoreValues();
     Main_GoBefore = Main_values.Main_Go;
 
     Main_ready(function() {
