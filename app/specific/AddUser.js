@@ -249,8 +249,9 @@ function AddUser_SaveNewUser(responseText) {
 
     AddUser_SaveUserArray();
     Users_status = false;
+    Users_ShowAutetication = true;
     AddUser_exit();
-    Main_values.Main_Go = Main_values.Main_Before;
+    Main_values.Main_Go = Main_Users;
     Main_HideLoadDialog();
     if (AddUser_UsernameArray.length === 1) AddUser_UpdateSidepanel();
     Main_SwitchScreenAction();

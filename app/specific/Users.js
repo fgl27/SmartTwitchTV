@@ -7,6 +7,7 @@ var Users_RemoveDialogID = null;
 var Users_beforeUser = 1;
 var Users_UserDialogID = null;
 var Users_Isautentication = true;
+var Users_ShowAutetication = false;
 
 var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll'];
 var Users_status = false;
@@ -137,6 +138,12 @@ function Users_loadDataSuccessFinish() {
         Main_FirstLoad = false;
         Users_loadingData = false;
         lazyLoadInstance.update();
+        if (Users_ShowAutetication) {
+            Users_ShowAutetication = false;
+            Users_showUserDialogPos = AddUser_UsernameArray.length - 1;
+            Users_Isautentication = true;
+            Users_showRemoveDialog();
+        }
     });
 }
 
@@ -222,7 +229,7 @@ function Users_clearRemoveDialog() {
 }
 
 function Users_setRemoveDialog() {
-    Users_RemoveDialogID = window.setTimeout(Users_HideRemoveDialog, 20000);
+    Users_RemoveDialogID = window.setTimeout(Users_HideRemoveDialog, 30000);
 }
 
 function Users_showRemoveDialog() {
