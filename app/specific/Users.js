@@ -35,7 +35,7 @@ function Users_init() {
 
     Main_values.Main_Go = Main_Users;
     Main_HideWarningDialog();
-    ScreensObj_SetTopLable(STR_USER + ": ", STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
+    ScreensObj_SetTopLable(STR_USER, STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
     document.body.addEventListener("keydown", Users_handleKeyDown, false);
     if (Users_status) {
         Main_YRst(Users_cursorY);
