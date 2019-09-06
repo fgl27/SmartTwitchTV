@@ -304,4 +304,5 @@ function en_USLang() {
     STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
     STR_USER_OPTION = "Choose a option for user";
     STR_MAIN_USER = "Main user";
+    STR_USER_TOP_LABLE = "Click on a user to see options";
 }

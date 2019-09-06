@@ -30,6 +30,9 @@ function Users_init() {
     }
 
     if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
+    Main_ShowElement('label_side_panel');
+    Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABLE);
+
     Main_values.Main_Go = Main_Users;
     Main_HideWarningDialog();
     ScreensObj_SetTopLable(STR_USER + ": ", STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
@@ -43,8 +46,10 @@ function Users_init() {
 }
 
 function Users_exit() {
+    Main_HideElement('label_side_panel');
     document.body.removeEventListener("keydown", Users_handleKeyDown);
     Main_HideElement(Users_ids[5]);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 }
 
 function Users_StartLoad() {
