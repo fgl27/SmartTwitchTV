@@ -190,7 +190,7 @@ function ChannelContent_setFallow() {
 }
 
 function ChannelContent_loadDataSuccess() {
-    Main_innerHTML("channel_content_thumbdiv0_1", '<img class="lazy stream_img_channel_logo" alt="" data-src="' + Main_values.Main_selectedChannelLogo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
+    Main_innerHTML("channel_content_thumbdiv0_1", '<img class="lazy stream_img_channel_logo" alt="" data-src="' + Main_values.Main_selectedChannelLogo.replace("300x300", '600x600') + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
 
     Main_innerHTML("channel_content_img0_1", '<img class="lazy stream_img_channel" alt="" data-src="' + ChannelContent_profile_banner + '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'">');
 
@@ -327,7 +327,6 @@ function ChannelContent_keyEnter() {
         Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
 
         Main_values.Play_selectedChannelDisplayname = document.getElementById('channel_content_cell0_3').textContent;
-        console.log(Main_values.Play_selectedChannelDisplayname);
 
         if (Main_values.Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) {
             Main_values.Play_isHost = true;
@@ -337,7 +336,6 @@ function ChannelContent_keyEnter() {
         } else Main_values.Play_selectedChannel_id = Main_values.Main_selectedChannel_id;
 
         var playing = document.getElementById('channel_content_cell0_5').textContent;
-        console.log(playing);
         Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
 
         Main_ready(Main_openStream);
