@@ -85,7 +85,7 @@ function Users_loadData() {
         '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"></div>' +
         '<div  class="stream_thumbnail_user_text_holder">' +
         '<div class="stream_info_user_name">' + STR_USER_ADD +
-        '</div><div style="color:#FFFFFF;font-size: 8em; transform: translate(9%, -100%); float: left;"><i class="icon-user-plus" ></i></div></div></div>';
+        '</div><div style="color:#FFFFFF;font-size: 7em; transform: translate(17%, -110%); float: left;"><i class="icon-user-plus" ></i></div></div></div>';
 
     row.appendChild(div);
 
