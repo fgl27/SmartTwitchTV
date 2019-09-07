@@ -196,7 +196,7 @@ var Users_showUserDialogPos = 0;
 function Users_showUserDialog() {
     Users_RemoveCursor = 0;
     Users_setUserDialog();
-    Users_showUserDialogPos = document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute);
+    Users_showUserDialogPos = parseInt(document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute));
 
     Main_innerHTML("main_dialog_user_text", STR_USER_OPTION + " " + AddUser_UsernameArray[Users_showUserDialogPos].display_name);
     Main_innerHTML("main_dialog_user_key", (AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE));
