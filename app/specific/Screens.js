@@ -346,6 +346,13 @@ function Screens_loadDataSuccessFinish() {
         inUseObj.FirstLoad = false;
         //TODO improve this check
         if (Main_FirstRun) {
+            //Force reset some values as I have reset the Never_run_new value and some things may crash
+            if (Main_values.Never_run_new) {
+                Main_GoBefore = Main_Live;
+                Main_values.Play_WasPlaying = false;
+            }
+
+
             if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying && inUseObj.status) {
 
                 Main_ExitCurrent(Main_values.Main_Go);
@@ -386,12 +393,12 @@ function Screens_loadDataSuccessFinish() {
                     Main_values.Main_BeforeChannelisSet = false;
                     Main_values.Main_BeforeAgameisSet = false;
 
-                    if (Main_values.Never_run) {
+                    if (Main_values.Never_run_new) {
                         Main_showControlsDialog();
                         document.body.removeEventListener("keydown", Screens_handleKeyDown);
                         document.body.addEventListener("keydown", Screens_handleKeyControls, false);
                     }
-                    Main_values.Never_run = false;
+                    Main_values.Never_run_new = false;
                     Screens_addFocus(true);
                     Main_SaveValues();
                     Screens_loadDataSuccessFinishEnd();
