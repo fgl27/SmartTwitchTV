@@ -790,13 +790,24 @@
             background-color: rgba(0, 0, 0, 0.9);
         }
 
-        div.side_panel_fix_top_bottom {
+        div.side_panel_fix_top_2,
+        div.side_panel_fix_top {
+            height: 42%;
+        }
+
+        div.side_panel_fix_top_2 {
+            height: 42%;
+            transform: translateY(-65%);
+        }
+
+        div.side_panel_fix_bottom {
             height: 32%;
+            transform: translateY(-172%);
         }
 
         div.side_panel_fix_center {
             height: 42%;
-            transform: translateY(-4%);
+            transform: translateY(-120%);
         }
 
         div.side_panel_movel_bottom_holder {
@@ -1559,6 +1570,18 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* Simple way to see center of screen
+        .center {
+            border: 2px solid blue;
+            margin: auto;
+            background: #F00;
+            position: relative;
+            text-align: center;
+            top: 50%;
+            width: 20%;
+            color: #FFF;
+        }*/
     </style>
     <!-- jsstart this is here so release_maker can work don't remove-->
     <script src="app/general/resize.js" defer></script>
@@ -1830,20 +1853,27 @@
         </div>
         <div id="side_panel_new_holder" class="hide">
             <div id="side_panel_movel" class="side_panel_movel side_panel_border side_panel_background_color">
-                <div id="side_panel_movel_top" class="side_panel_fix_top_bottom">
+                <div class="side_panel_fix_top">
                     <div class="side_panel_movel_top_text">
                         <div class="side_panel_icons">
                             <i class="icon icon-arrow-circle-left"></i>
                         </div>&nbsp;
                         <span id="side_panel_movel_top_text"></span>
                     </div>
-                    <div class="side_panel_new_icons_top">
-                        <div id="side_panel_movel_new_0" class="side_panel_movel_iner" style="font-size: 112%; transform: translateY(118%); height: 2em;">
-                        </div>
+                    <!-- Empty div are added to make fill up the container and make the layout perfect align-->
+                    <div class="side_panel_new_icons_text_holder">
                     </div>
-                    <div class="side_panel_new_icons_top">
-                        <div id="side_panel_movel_new_1" class="side_panel_movel_iner" style="font-size: 1.2em;">
-                        </div>
+                    <div id="side_panel_movel_new_0" class="side_panel_new_icons_text_holder" style="height: 2.1em;">
+                    </div>
+                    <div class="side_panel_new_icons_text_holder">
+                    </div>
+                </div>
+                <div class="side_panel_fix_top_2">
+                    <div class="side_panel_new_icons_text_holder">
+                    </div>
+                    <div id="side_panel_movel_new_1" class="side_panel_new_icons_text_holder">
+                    </div>
+                    <div class="side_panel_new_icons_text_holder">
                     </div>
                 </div>
                 <div id="side_panel_movel_center" class="side_panel_fix_center">
@@ -1865,7 +1895,7 @@
                     <div id="side_panel_movel_new_8" class="side_panel_new_icons_text_holder hide">
                     </div>
                 </div>
-                <div id="side_panel_movel_bottom" class="side_panel_fix_top_bottom">
+                <div id="side_panel_movel_bottom" class="side_panel_fix_bottom">
                     <div class="side_panel_movel_bottom_holder">
                         <div class="side_panel_movel_bottom_text">
                             <div id="side_panel_movel_new_9">
@@ -1887,15 +1917,24 @@
                 </div>
             </div>
             <div id="side_panel_fix" class="side_panel_fix">
-                <div id="side_panel_fix_top" class="side_panel_fix_top_bottom" style="background-color: #000000;">
-                    <div id="side_panel_new_0" class="side_panel_new_icons_top">
-                        <div id="side_panel_new_0_img" class="side_panel_new_icons_top_iner">
+                <div class="side_panel_fix_top" style="background-color: #000000;">
+                    <!-- Empty div are added to make fill up the container and make the layout perfect align-->
+                    <div class="side_panel_new_icons">
+                    </div>
+                    <div id="side_panel_new_0" class="side_panel_new_icons">
+                        <div id="side_panel_new_0_img">
                         </div>
                     </div>
-                    <div class="side_panel_new_icons_top">
-                        <div id="side_panel_new_1" class="side_panel_new_icons_top_iner">
-                            <i class="icon icon-search"></i>
-                        </div>
+                    <div class="side_panel_new_icons">
+                    </div>
+                </div>
+                <div class="side_panel_fix_top_2" style="background-color: #000000;">
+                    <div class="side_panel_new_icons">
+                    </div>
+                    <div id="side_panel_new_1" class="side_panel_new_icons">
+                        <i class="icon icon-search side_panel_new_icons_pad"></i>
+                    </div>
+                    <div class="side_panel_new_icons">
                     </div>
                 </div>
                 <div id="side_panel_fix_center" class="side_panel_fix_center" style="background-color: #000000;">
@@ -1923,6 +1962,10 @@
                 </div>
             </div>
         </div>
+        <!-- Simple way to see center of screen
+        <div class="center">
+            <p>Test Text</p>
+        </div>-->
     </div>
     </div>
     <div id="scene2" class="screen_size hide">
