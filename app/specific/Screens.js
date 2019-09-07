@@ -707,7 +707,7 @@ function Screens_handleKeyDown(event) {
             document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
             document.body.addEventListener("keyup", Screens_handleKeyUp, false);
             Screens_clear = false;
-            Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 1000);
+            Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 500);
             break;
         case KEY_REFRESH:
             Main_ReloadScreen();

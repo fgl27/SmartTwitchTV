@@ -444,7 +444,7 @@ function ChannelContent_handleKeyDown(event) {
             document.body.removeEventListener("keydown", ChannelContent_handleKeyDown, false);
             document.body.addEventListener("keyup", ChannelContent_handleKeyUp, false);
             ChannelContent_clear = false;
-            ChannelContent_KeyEnterID = window.setTimeout(Main_ReloadScreen, 1000);
+            ChannelContent_KeyEnterID = window.setTimeout(Main_ReloadScreen, 500);
             break;
         case KEY_REFRESH:
             Main_ReloadScreen();
