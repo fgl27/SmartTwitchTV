@@ -196,7 +196,7 @@ function Sidepannel_StartMain() {
     Sidepannel_IsMain = true;
     Main_ShowElement('side_panel_fix');
     document.getElementById('side_panel_movel').style.marginLeft = 0;
-    document.getElementById('side_panel_fix').style.marginLeft = 0;
+    document.getElementById('side_panel_fix').style.marginLeft = '';
     document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
     Sidepannel_AddFocusMain();
 }
@@ -224,7 +224,7 @@ function Sidepannel_ShowFeed() {
     }
 }
 
-var Sidepannel_MoveldefaultMargin = 14.5;
+var Sidepannel_MoveldefaultMargin = 17;
 var Sidepannel_FixdefaultMargin = 4;
 var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin;
 
@@ -243,7 +243,7 @@ function Sidepannel_Hide() {
     Sidepannel_RemoveFocusMain();
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_ShowElement('side_panel_fix');
-    document.getElementById('side_panel_fix').style.marginLeft = 0;
+    document.getElementById('side_panel_fix').style.marginLeft = '';
     Main_AddClass('side_panel', 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
     Main_RemoveClass('scenefeed', 'scenefeed_background');
@@ -350,7 +350,7 @@ function Sidepannel_SetDefaultLables() {
 
 function Sidepannel_SetUserlable(text) {
     Main_innerHTML('side_panel_movel_new_0', STR_SPACE + text + STR_BR +
-        '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_SPACE + STR_USER_EXTRAS + '</div>');
+        '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_SPACE + STR_SPACE + STR_USER_EXTRAS + '</div>');
 }
 
 function Sidepannel_SetIcons(div, icon) {
