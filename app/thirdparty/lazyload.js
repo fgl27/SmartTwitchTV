@@ -14,7 +14,7 @@
     var defaultSettings = {
         elements_selector: ".lazy",
         container: isBot || runningOnBrowser ? document : null,
-        threshold: 300,
+        threshold: 3000,
         thresholds: null,
         data_src: "src",
         data_srcset: "srcset",
