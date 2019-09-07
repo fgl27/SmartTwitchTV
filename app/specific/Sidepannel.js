@@ -313,9 +313,6 @@ function Sidepannel_SetUserLables() {
 }
 
 function Sidepannel_SetDefaultLables() {
-    //Main_values.Sidepannel_IsUser = false;
-    Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
-
     if (AddUser_UsernameArray[0]) Sidepannel_SetUserlable(AddUser_UsernameArray[0].display_name);
     else Sidepannel_SetUserlable(STR_USER_ADD);
 
