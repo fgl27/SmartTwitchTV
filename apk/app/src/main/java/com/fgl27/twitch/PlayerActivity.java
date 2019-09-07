@@ -867,6 +867,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public boolean misAVC52Supported() {
+            return Tools.isAVC52Supported();
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public String getVideoQuality() {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
