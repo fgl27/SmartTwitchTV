@@ -94,7 +94,7 @@ public final class Tools {
                 return null;
             }
         } catch (IOException e) {
-            Log.w(TAG, "IOException ", e);
+            Log.w(TAG, "readUrl IOException ", e);
             return null;
         }
     }
@@ -176,20 +176,43 @@ public final class Tools {
 
     public static boolean isCodecSupported(String name) {
         for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos())
-            if (codec.getName().contains(name) && !codec.getName().contains("google"))
+            if (codec.getName().contains(name) && !codec.isEncoder() && !codec.getName().contains("google"))
                 return true;
 
         return false;
+    }
+
+    public static boolean isAVC52Supported() {
+        int maxAVCLevel = 0;
+        for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos()) {
+            if (!codec.isEncoder() && !codec.getName().contains("google")) {
+                for (String type : codec.getSupportedTypes()) {
+                    if (type.contains("avc")) {
+                        try {
+                            for (MediaCodecInfo.CodecProfileLevel codecProfileLevel : codec.getCapabilitiesForType(type).profileLevels) {
+                                if (codecProfileLevel.level > maxAVCLevel) {
+                                    maxAVCLevel = codecProfileLevel.level;
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.w(TAG, "mAVCMaxLevel Exception ", e);
+                        }
+                    }
+                }
+            }
+
+        }
+        return maxAVCLevel >= 65536;
     }
 
     private static Charset mresponseCharset(String getContentType) {
         try {
             return responseCharset(getContentType);
         } catch (UnsupportedCharsetException e) {
-            Log.i(TAG, "Unsupported response charset", e);
+            Log.i(TAG, "mresponseCharset Unsupported response charset", e);
             return null;
         } catch (IllegalCharsetNameException e) {
-            Log.i(TAG, "Illegal response charset", e);
+            Log.i(TAG, "mresponseCharset Illegal response charset", e);
             return null;
         }
     }
@@ -201,7 +224,7 @@ public final class Tools {
             ob.put("responseText", responseText);
             return ob.toString();
         } catch (JSONException e) {
-            Log.w(TAG, "JSONException ", e);
+            Log.w(TAG, "JsonObToString JSONException ", e);
             return null;
         }
     }

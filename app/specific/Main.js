@@ -206,8 +206,9 @@ function Main_initWindows() {
     }
 
     //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
-    //TODO do a proper codec device support chek
-    if (device !== null) Main_SupportsAvc1High = (device.toLowerCase().indexOf('shield android tv') !== -1);
+    try {
+        Main_SupportsAvc1High = Android.misAVC52Supported();
+    } catch (e) {}
 
     Main_SetStringsMain(true);
 
