@@ -247,7 +247,7 @@ function Play_SetChatFont() {
 }
 
 function Play_Start() {
-    if (Play_isFullScreen || !Main_IsNotBrowser) Play_showBufferDialog();
+    Play_showBufferDialog();
 
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
