@@ -4,6 +4,10 @@ var Sidepannel_Callback;
 var Sidepannel_UpdateThumbDoc;
 var Sidepannel_IsMain = true;
 
+var Sidepannel_MoveldefaultMargin = 14.5;
+var Sidepannel_FixdefaultMargin = 4;
+var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin;
+
 function Sidepannel_AddFocusMain() {
     Main_AddClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
 }
@@ -224,13 +228,9 @@ function Sidepannel_ShowFeed() {
     }
 }
 
-var Sidepannel_MoveldefaultMargin = 17;
-var Sidepannel_FixdefaultMargin = 4;
-var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin;
-
 function Sidepannel_HideMain(hideAll) {
     var size = AddUser_UsernameArray[0] ? AddUser_UsernameArray[0].display_name.length : STR_USER_ADD;
-    size = (size > 8 ? size - 8 : 0);
+    size = (size > 11 ? size - 11 : 0);
 
     if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-' + Sidepannel_FixdefaultMargin + '%';
 

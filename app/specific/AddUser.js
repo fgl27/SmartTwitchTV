@@ -186,7 +186,7 @@ function AddUser_UpdateSidepanelSize(logo, username) {
     var size = username.length,
         doc = document.getElementById('side_panel_movel');
 
-    size = (size > 8 ? size - 8 : 0);
+    size = (size > 11 ? size - 11 : 0);
 
     doc.style.marginLeft = 'calc(-' + Sidepannel_MoveldefaultMargin + '% - ' + size + 'ch)';
     doc.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
