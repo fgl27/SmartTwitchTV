@@ -696,6 +696,7 @@ function Play_loadDataSuccess(responseText) {
         Play_state = Play_STATE_LOADING_PLAYLIST;
         Play_loadData();
     } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
+        UserLiveFeed_Hide();
         Play_qualities = Play_extractQualities(responseText);
         Play_state = Play_STATE_PLAYING;
         if (Main_IsNotBrowser) Android.SetAuto(Play_AutoUrl);
