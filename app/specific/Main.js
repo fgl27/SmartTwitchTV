@@ -27,7 +27,6 @@ var Main_aGame = 19;
 var Main_AGameVod = 20;
 var Main_AGameClip = 21;
 
-
 var Main_GoBefore = '';
 var Main_values = {
     "Main_Go": 1,
@@ -121,6 +120,7 @@ var Main_randomimg = '?' + Math.random();
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
 var Main_updateUserFeedId;
 var Main_vp9supported = false;
+var Main_SupportsAvc1High = false;
 var lazyLoadInstance;
 //Variable initialization end
 
@@ -204,6 +204,10 @@ function Main_initWindows() {
             Android.SetSmallPlayerBandwidth(0);
         }
     }
+
+    //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
+    //TODO do a proper codec device support chek
+    if (device !== null) Main_SupportsAvc1High = (device.toLowerCase().indexOf('shield android tv') !== -1);
 
     Main_SetStringsMain(true);
 
