@@ -449,7 +449,12 @@ function ScreensObj_InitUserVod() {
                     this.SetPeriod();
                     Screens_StartLoad();
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
-                } else Screens_PeriodStart();
+                } else {
+                    this.periodPos++;
+                    if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
+                    this.SetPeriod();
+                    Screens_StartLoad();
+                }
             } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         SwitchesIcons: ['movie-play', 'history'],
