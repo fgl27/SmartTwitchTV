@@ -267,23 +267,28 @@ function AddUser_removeUser(Position) {
 
     // reset localStorage usernames
     AddUser_SaveUserArray();
-    //Reset main user if user is 0
-    if (!Position) AddUser_UpdateSidepanel();
 
     // restart users and smarthub
     if (AddUser_UsernameArray.length > 0) {
+        //Reset main user if user is 0
+        if (!Position) AddUser_UpdateSidepanel();
         Users_status = false;
         Users_init();
-    } else AddUser_init();
+    } else {
+        AddUser_UpdateSidepanelDefault();
+        AddUser_init();
+    }
 }
 
 function AddUser_SaveUserArray() {
-    //Remove first user alphabetical sort and add first back
-    var mainuser = AddUser_UsernameArray.splice(0, 1);
-    AddUser_UsernameArray.sort(function(a, b) {
-        return (a.display_name).toLowerCase().localeCompare((b.display_name).toLowerCase());
-    });
-    AddUser_UsernameArray.splice(0, 0, mainuser[0]);
+    if (AddUser_UsernameArray.length > 0) {
+        //Remove first user alphabetical sort and add first back
+        var mainuser = AddUser_UsernameArray.splice(0, 1);
+        AddUser_UsernameArray.sort(function(a, b) {
+            return (a.display_name).toLowerCase().localeCompare((b.display_name).toLowerCase());
+        });
+        AddUser_UsernameArray.splice(0, 0, mainuser[0]);
+    }
 
     Main_setItem('AddUser_UsernameArray', JSON.stringify(AddUser_UsernameArray));
 }
