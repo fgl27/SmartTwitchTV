@@ -297,6 +297,7 @@ function Main_SetStringsSecondary() {
 
     Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
     Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
+    Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
     Main_textContent("dialog_period_text", STR_SWITCH_CLIP);
     Main_innerHTML("dialog_period_1", Main_Periods[0]);
