@@ -172,6 +172,7 @@ function AddUser_RestoreUsers() {
 }
 
 function AddUser_UpdateSidepanel() {
+    console.log('AddUser_UpdateSidepanel');
     AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
 }
 
@@ -260,13 +261,14 @@ function AddUser_SaveNewUser(responseText) {
 }
 
 function AddUser_removeUser(Position) {
-
     // remove the user
     var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
     if (index > -1) AddUser_UsernameArray.splice(index, 1);
 
     // reset localStorage usernames
     AddUser_SaveUserArray();
+    //Reset main user if user is 0
+    if (!Position) AddUser_UpdateSidepanel();
 
     // restart users and smarthub
     if (AddUser_UsernameArray.length > 0) {
