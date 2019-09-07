@@ -17,6 +17,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "show_screen_counter": { //show_screen_counter
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "live_notification": { //buffer_live
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -102,19 +106,11 @@ var Settings_positions_length = 0;
 //Variable initialization end
 
 function Settings_init() {
-    Main_UnSetTopOpacity();
-    Main_HideElement('label_side_panel');
-    Main_IconLoad('label_refresh', 'icon-arrow-circle-left', STR_GOBACK_START);
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
-    Main_textContent('top_bar_user', STR_SETTINGS);
-    document.getElementById("top_lables").style.marginLeft = '14%';
-    document.getElementById('top_bar_live').style.display = 'none';
-    document.getElementById('top_bar_featured').style.display = 'none';
-    document.getElementById('top_bar_game').style.display = 'none';
-    document.getElementById('top_bar_vod').style.display = 'none';
-    document.getElementById('top_bar_clip').style.display = 'none';
-    Main_AddClass('top_bar_user', 'icon_center_focus');
-    Main_ShowElement('settings_scroll');
+    ScreensObj_SetTopLable(STR_SETTINGS);
+    Main_ShowElement('settings_holder');
+    Main_ShowElement('label_side_panel');
+    Main_HideElement('label_refresh');
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);
     Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
@@ -122,18 +118,10 @@ function Settings_init() {
 
 function Settings_exit() {
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
-    Main_ShowElement('label_side_panel');
+    Main_HideElement('label_side_panel');
+    Main_ShowElement('label_refresh');
     Settings_RemoveinputFocus();
-    Main_textContent('top_bar_user', STR_USER);
-    document.getElementById("top_lables").style.marginLeft = '18.5%';
-    document.getElementById('top_bar_live').style.display = 'inline-block';
-    document.getElementById('top_bar_featured').style.display = 'inline-block';
-    document.getElementById('top_bar_game').style.display = 'inline-block';
-    document.getElementById('top_bar_vod').style.display = 'inline-block';
-    document.getElementById('top_bar_clip').style.display = 'inline-block';
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + STR_GUIDE);
-    Main_HideElement('settings_scroll');
+    Main_HideElement('settings_holder');
 }
 
 // The order in Settings_SetSettings is the display order
@@ -199,6 +187,12 @@ function Settings_SetSettings() {
     Settings_value_keys.push(key);
 
     div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
+
+    // show_screen_counter
+    key = "show_screen_counter";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+    div += Settings_DivOptionNoSummary(key, STR_SCREEN_COUNTER);
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
@@ -316,6 +310,9 @@ function Settings_SetStrings() {
     key = "clock_offset";
     Main_textContent(key + '_name', STR_CLOCK_OFFSET);
 
+    key = "show_screen_counter";
+    Main_textContent(key + '_name', STR_SCREEN_COUNTER);
+
     // Content Language selection
     key = "content_lang";
     Main_textContent(key + '_name', STR_CONTENT_LANG);
@@ -417,6 +414,7 @@ function Settings_SetDefautls() {
     Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
+    Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
 }
 
 function Settings_Obj_values(key) {
@@ -495,11 +493,17 @@ function Settings_SetDefault(position) {
     else if (position === "default_quality") Play_SetQuality();
     else if (position === "thumb_quality") Main_SetThumb();
     else if (position === "global_font_offset") calculateFontSize();
+    else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
     } else if (position === "bitrate_main") Settings_SetBitRate(1);
     else if (position === "bitrate_min") Settings_SetBitRate(2);
+}
+
+function Settings_ShowCounter(show) {
+    if (show) Main_ShowElement('dialog_counter_text');
+    else Main_HideElement('dialog_counter_text');
 }
 
 function Settings_SetBitRate(whocall) {

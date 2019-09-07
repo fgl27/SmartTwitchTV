@@ -124,7 +124,7 @@ function PlayExtra_KeyEnter() {
 
 function PlayExtra_Resume() {
     // restart audio source position to where ther user has left it
-    Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+    if (Main_IsNotBrowser) Android.mSwitchPlayerAudio(Play_controlsAudioPos);
     Play_SetAudioIcon();
     PlayExtra_state = Play_STATE_LOADING_TOKEN;
     PlayExtra_loadingDataTry = 0;
