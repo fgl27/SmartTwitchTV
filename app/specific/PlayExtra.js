@@ -85,40 +85,42 @@ function PlayExtra_KeyEnter() {
         if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
             UserLiveFeed_Hide();
 
-            PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
+            Main_ready(function() {
+                PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
 
-            if (PlayExtra_WasPicturePicture) PlayExtra_SavePlayData();
-            else PlayExtra_Save_selectedChannel_id_Old = null;
+                if (PlayExtra_WasPicturePicture) PlayExtra_SavePlayData();
+                else PlayExtra_Save_selectedChannel_id_Old = null;
 
-            PlayExtra_PicturePicture = true;
+                PlayExtra_PicturePicture = true;
 
-            Main_values.Play_isHost = false;
-            Play_UserLiveFeedPressed = true;
+                Main_values.Play_isHost = false;
+                Play_UserLiveFeedPressed = true;
 
-            PlayExtra_selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute));
-            PlayExtra_selectedChannel_id = PlayExtra_selectedChannel[1];
-            PlayExtra_IsRerun = PlayExtra_selectedChannel[2];
-            PlayExtra_selectedChannel = PlayExtra_selectedChannel[0];
-            PlayExtra_isHost = false;
-            PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
+                PlayExtra_selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                PlayExtra_selectedChannel_id = PlayExtra_selectedChannel[1];
+                PlayExtra_IsRerun = PlayExtra_selectedChannel[2];
+                PlayExtra_selectedChannel = PlayExtra_selectedChannel[0];
+                PlayExtra_isHost = false;
+                PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
 
-            Main_textContent('chat_container2_name_text', PlayExtra_selectedChannelDisplayname);
+                Main_textContent('chat_container2_name_text', PlayExtra_selectedChannelDisplayname);
 
-            PlayExtra_DisplaynameHost = Main_values.Play_DisplaynameHost;
+                PlayExtra_DisplaynameHost = Main_values.Play_DisplaynameHost;
 
-            var playing = document.getElementById(UserLiveFeed_ids[5] + Play_FeedPos).textContent;
-            PlayExtra_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
+                var playing = document.getElementById(UserLiveFeed_ids[5] + Play_FeedPos).textContent;
+                PlayExtra_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
 
-            if (Main_IsNotBrowser) {
-                //Not on auto mode for change to auto before start picture in picture
-                if (Play_quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
+                if (Main_IsNotBrowser) {
+                    //Not on auto mode for change to auto before start picture in picture
+                    if (Play_quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
-                Play_quality = "Auto";
-                Play_qualityPlaying = Play_quality;
-                PlayExtra_quality = "Auto";
-                PlayExtra_qualityPlaying = PlayExtra_quality;
-            }
-            PlayExtra_Resume();
+                    Play_quality = "Auto";
+                    Play_qualityPlaying = Play_quality;
+                    PlayExtra_quality = "Auto";
+                    PlayExtra_qualityPlaying = PlayExtra_quality;
+                }
+                PlayExtra_Resume();
+            });
         } else UserLiveFeed_ResetFeedId();
     }
 }
