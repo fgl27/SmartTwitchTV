@@ -27,6 +27,7 @@ var Play_state = 0;
 var Play_Status_Always_On = false;
 var Play_RefreshAutoTry = 0;
 var Play_SingleClickExit = 0;
+var Play_SupportsSource = true;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
@@ -46,6 +47,7 @@ var Play_isHost_Old;
 var Play_DisplaynameHost_Old;
 var Play_selectedChannelDisplayname_Old;
 var Play_gameSelected_Old;
+var Play_SupportsSource_Old;
 
 var Play_pauseEndID = null;
 var Play_pauseStartID = null;
@@ -248,6 +250,7 @@ function Play_SetChatFont() {
 
 function Play_Start() {
     Play_showBufferDialog();
+    Play_SupportsSource = true;
 
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
@@ -366,7 +369,9 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
 
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
+            '&reassignments_supported=true&playlist_include_framerate=true' +
+            (Play_SupportsSource ? "&allow_source=true" : '') +
+            '&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
         if (UseAndroid) Android.ResStartAuto(theUrl, 1, 0);
@@ -550,7 +555,9 @@ function Play_loadDataRequest() {
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
+            '&reassignments_supported=true&playlist_include_framerate=true' +
+            (Play_SupportsSource ? "&allow_source=true" : '') +
+            '&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
     }
 
@@ -697,6 +704,15 @@ function Play_loadDataSuccess(responseText) {
         Play_loadData();
     } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
         UserLiveFeed_Hide();
+
+        //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
+        if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+            Play_Warn('Play_loadDataSuccess avc1 issue');
+            Play_SupportsSource = false;
+            Play_loadData();
+            return;
+        }
+
         Play_qualities = Play_extractQualities(responseText);
         Play_state = Play_STATE_PLAYING;
         if (Main_IsNotBrowser) Android.SetAuto(Play_AutoUrl);
@@ -1764,6 +1780,7 @@ function Play_SavePlayData() {
     Play_DisplaynameHost_Old = Main_values.Play_DisplaynameHost;
     Play_selectedChannelDisplayname_Old = Main_values.Play_selectedChannelDisplayname;
     Play_gameSelected_Old = Main_values.Play_gameSelected;
+    Play_SupportsSource_Old = Play_SupportsSource;
 }
 
 function Play_RestorePlayData() {
@@ -1784,6 +1801,7 @@ function Play_RestorePlayData() {
     Main_values.Play_DisplaynameHost = Play_DisplaynameHost_Old;
     Main_values.Play_selectedChannelDisplayname = Play_selectedChannelDisplayname_Old;
     Main_values.Play_gameSelected = Play_gameSelected_Old;
+    Play_SupportsSource = Play_SupportsSource_Old;
 
     Main_SaveValues();
     Play_updateStreamInfoStart();

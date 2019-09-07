@@ -48,6 +48,7 @@ var PlayVod_WasSubChekd = false;
 function PlayVod_Start() {
     Play_showBufferDialog();
     Play_HideEndDialog();
+    Play_SupportsSource = true;
     PlayVod_currentTime = 0;
     Main_textContent("stream_live_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
@@ -276,7 +277,8 @@ function PlayVod_loadDataRequest() {
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' +
             PlayVod_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true' +
+            '&reassignments_supported=true&playlist_include_framerate=true' +
+            (Play_SupportsSource ? "&allow_source=true" : '') +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
         PlayVod_autoUrl = theUrl;
     }
@@ -357,6 +359,15 @@ function PlayVod_loadDataSuccess(responseText) {
         PlayVod_state = Play_STATE_LOADING_PLAYLIST;
         PlayVod_loadData();
     } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) {
+
+        //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
+        if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+            Play_Warn('PlayVod_loadDataSuccess avc1 issue');
+            Play_SupportsSource = false;
+            PlayVod_loadData();
+            return;
+        }
+
         PlayVod_playlistResponse = responseText;
         PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
         PlayVod_state = Play_STATE_PLAYING;
