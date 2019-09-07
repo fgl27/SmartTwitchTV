@@ -362,7 +362,6 @@ function PlayVod_loadDataSuccess(responseText) {
 
         //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
         if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
-            Play_Warn('PlayVod_loadDataSuccess avc1 issue');
             Play_SupportsSource = false;
             PlayVod_loadData();
             return;
