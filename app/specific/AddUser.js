@@ -10,8 +10,7 @@ var AddUser_keyBoardOn = false;
 
 function AddUser_init() {
     Main_values.Main_Go = Main_addUser;
-    Main_CounterDialogRst();
-    Main_AddClass('top_bar_user', 'icon_center_focus');
+    ScreensObj_SetTopLable(STR_USER_ADD);
     Main_HideWarningDialog();
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
     Main_ShowElement('add_user_scroll');
@@ -22,7 +21,6 @@ function AddUser_exit() {
     AddUser_RemoveinputFocus(false);
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
     Main_HideElement('add_user_scroll');
 }
 
@@ -109,7 +107,7 @@ function AddUser_KeyboardEvent(event) {
                     AddUser_loadDataRequest();
                 } else {
                     Main_HideLoadDialog();
-                    Main_showWarningDialog(STR_USER + AddUser_Username + STR_USER_SET);
+                    Main_showWarningDialog(STR_USER + " " + AddUser_Username + STR_USER_SET);
                     window.setTimeout(function() {
                         Main_HideWarningDialog();
                         AddUser_inputFocus();
@@ -166,9 +164,32 @@ function AddUser_RestoreUsers() {
         //Check and refresh all tokens at start
         for (var i = 0; i < AddUser_UsernameArray.length; i++) {
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
+
             if (!AddUser_UsernameArray[i].logo) AddUser_UpdateUser(i, 0);
+            else if (!i) AddUser_UpdateSidepanel();
         }
-    }
+    } else AddUser_UpdateSidepanelDefault();
+}
+
+function AddUser_UpdateSidepanel() {
+    AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
+}
+
+function AddUser_UpdateSidepanelDefault() {
+    AddUser_UpdateSidepanelSize(IMG_404_LOGO, STR_USER_ADD);
+}
+
+function AddUser_UpdateSidepanelSize(logo, username) {
+    Main_innerHTML("side_panel_new_0_img", '<img id="side_panel_new_0_img" class="side_panel_new_img" alt="" src="' + logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
+    Sidepannel_SetUserlable(username);
+
+    var size = username.length,
+        doc = document.getElementById('side_panel_movel');
+
+    size = (size > 8 ? size - 8 : 0);
+
+    doc.style.marginLeft = 'calc(-' + Sidepannel_MoveldefaultMargin + '% - ' + size + 'ch)';
+    doc.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
 }
 
 function AddUser_UserIsSet() {
@@ -205,6 +226,7 @@ function AddUser_UpdateUsertSuccess(response, position) {
         user = user.users[0];
         AddUser_UsernameArray[position].display_name = user.display_name;
         AddUser_UsernameArray[position].logo = user.logo;
+        if (!position) AddUser_UpdateSidepanel();
     }
     AddUser_SaveUserArray();
 }
@@ -227,8 +249,13 @@ function AddUser_SaveNewUser(responseText) {
 
     AddUser_SaveUserArray();
     Users_status = false;
+    Users_Userlastadded = AddUser_Username.name;
+    Users_ShowAutetication = true;
     AddUser_exit();
-    Users_init();
+    Main_values.Main_Go = Main_Users;
+    Main_HideLoadDialog();
+    if (AddUser_UsernameArray.length === 1) AddUser_UpdateSidepanel();
+    Main_SwitchScreenAction();
     AddUser_loadingData = false;
 }
 
@@ -238,17 +265,24 @@ function AddUser_removeUser(Position) {
     var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
     if (index > -1) AddUser_UsernameArray.splice(index, 1);
 
+    // reset localStorage usernames
+    AddUser_SaveUserArray();
+
     // restart users and smarthub
     if (AddUser_UsernameArray.length > 0) {
         Users_status = false;
         Users_init();
     } else AddUser_init();
-
-    // reset localStorage usernames
-    AddUser_SaveUserArray();
 }
 
 function AddUser_SaveUserArray() {
+    //Remove first user alphabetical sort and add first back
+    var mainuser = AddUser_UsernameArray.splice(0, 1);
+    AddUser_UsernameArray.sort(function(a, b) {
+        return (a.display_name).toLowerCase().localeCompare((b.display_name).toLowerCase());
+    });
+    AddUser_UsernameArray.splice(0, 0, mainuser[0]);
+
     Main_setItem('AddUser_UsernameArray', JSON.stringify(AddUser_UsernameArray));
 }
 
@@ -256,14 +290,23 @@ function AddUser_UserMakeOne(Position) {
     AddUser_Username = AddUser_UsernameArray[0];
     AddUser_UsernameArray[0] = AddUser_UsernameArray[Position];
     AddUser_UsernameArray[Position] = AddUser_Username;
-    Users_status = false;
-    Users_init();
     AddUser_SaveUserArray();
+    Users_status = false;
+    AddUser_UpdateSidepanel();
+    Users_init();
     Main_values.Users_Position = 0;
 }
 
 function AddUser_UserCodeExist(user) {
-    return AddUser_UsernameArray.indexOf(user) !== -1;
+    return AddUser_UsernameArray.filter(function(array) {
+        return array.name === user;
+    }).length > 0;
+}
+
+function AddUser_UserFindpos(user) {
+    return AddUser_UsernameArray.map(function(array) {
+        return array.name;
+    }).indexOf(user);
 }
 
 function AddUser_IsUserSet() {

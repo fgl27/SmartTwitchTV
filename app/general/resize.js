@@ -15,7 +15,7 @@ function calculateFontSize() {
         scaledWidth,
 
         //Classes that need width/height recalculated to 16 by 9
-        classes = ['screen_holder', 'screen_size', 'screen_holder_games', 'dialogs'];
+        classes = ['screen_holder', 'screen_size', 'screen_holder_games', 'dialogs', 'screen_holder_switch', 'screen_holder_channel', 'screen_holder_user'];
 
     // Get current client/screen height.
     currentHeight = window.innerHeight;
@@ -37,10 +37,9 @@ function calculateFontSize() {
         setWidthHeight(document.getElementsByClassName(classes[i]), scaledWidth, currentHeight);
 
     //Some only need width changes as Height is not base on screen size
-    document.getElementById('topbar').style.width = scaledWidth + 'px';
-
+    document.getElementById('dialog_warning').style.width = (scaledWidth * 0.6) + 'px';
+    document.getElementById('topbar').style.width = (scaledWidth * 0.945) + 'px';
     document.getElementById('settings_holder').style.width = scaledWidth + 'px';
-    document.getElementById('settings_holder').style.height = (currentHeight * 0.915) + 'px';
 }
 
 function setWidthHeight(elementsArray, Width, Height) {

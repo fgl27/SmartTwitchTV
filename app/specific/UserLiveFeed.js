@@ -42,6 +42,7 @@ function UserLiveFeed_StartLoad() {
         Main_HideElement('side_panel_feed_thumb');
         Sidepannel_PosFeed = 0;
         Main_empty('side_panel_holder');
+        document.getElementById('side_panel_warn').style.display = 'none';
         UserLiveFeed_status = false;
         document.getElementById('user_feed_scroll').style.left = "0.125em";
         Main_ShowElement('dialog_loading_feed');
@@ -272,8 +273,8 @@ function UserLiveFeed_loadDataSuccessFinish() {
         Main_HideElement('dialog_loading_feed');
         Main_HideElement('dialog_loading_side_feed');
         UserLiveFeed_FeedAddFocus();
-        Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed();
+        window.setTimeout(Sidepannel_PreloadImgs, 600);
 
         //The app just started or user change don't nottify
         if (UserLiveFeed_CheckNotifycation) UserLiveFeed_LiveNotification();
@@ -330,15 +331,15 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
     div.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     div.className = 'user_feed_thumb';
-    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_clip" >' +
-        '<div><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
+        '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
         Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
-        '<div id="' + UserLiveFeed_ids[2] + id + '" class="stream_text2">' +
+        '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text">' +
         '<div id="' + UserLiveFeed_ids[3] + id +
-        '" class="stream_channel" style="width: 66%; display: inline-block;"><i class="icon-' +
+        '" class="stream_info_live_name" style="width: 66%; display: inline-block;"><i class="icon-' +
         (!data[2] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE +
         valuesArray[1] + '</div>' + '<div id="' + UserLiveFeed_ids[5] + id +
-        '"class="stream_info">' + valuesArray[2] + '</div>' + '</div></div>';
+        '"class="stream_info_live">' + valuesArray[2] + '</div>' + '</div></div>';
 
     return div;
 }
@@ -352,8 +353,9 @@ function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
     div.className = 'side_panel_feed';
 
     div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
-        '" class="side_panel_div"><div style="width: 100%;"><div id="' +
-        UserLiveFeed_side_ids[3] + id + '" style="display: none;">' + valuesArray[1] +
+        '" class="side_panel_div"><div id="' + UserLiveFeed_side_ids[2] + id +
+        '" style="width: 100%;"><div id="' + UserLiveFeed_side_ids[3] + id +
+        '" style="display: none;">' + valuesArray[1] +
         '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
         '" class="side_panel_channel_img" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +

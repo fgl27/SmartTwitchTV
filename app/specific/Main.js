@@ -4,28 +4,29 @@ var Main_isDebug = false;
 
 var Main_cursorYAddFocus = -1;
 
+var Main_Search = 0;
 var Main_Live = 1;
-var Main_addUser = 2;
-var Main_games = 3;
-var Main_aGame = 4;
-var Main_UserLive = 5;
-var Main_UserHost = 6;
-var Main_usergames = 7;
-var Main_Search = 8;
-var Main_SearchGames = 9;
-var Main_SearchLive = 10;
-var Main_ChannelContent = 11;
-var Main_ChannelVod = 12;
-var Main_ChannelClip = 13;
-var Main_Users = 14;
-var Main_UserChannels = 15;
-var Main_SearchChannels = 16;
-var Main_Vod = 17;
-var Main_Clip = 18;
-var Main_AGameVod = 19;
-var Main_AGameClip = 20;
-var Main_Featured = 21;
-var Main_UserVod = 22;
+var Main_Users = 2;
+var Main_Featured = 3;
+var Main_games = 4;
+var Main_Vod = 5;
+var Main_Clip = 6;
+var Main_UserLive = 7;
+var Main_UserHost = 8;
+var Main_usergames = 9;
+var Main_UserVod = 10;
+var Main_UserChannels = 11;
+var Main_SearchGames = 12;
+var Main_SearchLive = 13;
+var Main_SearchChannels = 14;
+var Main_ChannelContent = 15;
+var Main_ChannelVod = 16;
+var Main_ChannelClip = 17;
+var Main_addUser = 18;
+var Main_aGame = 19;
+var Main_AGameVod = 20;
+var Main_AGameClip = 21;
+
 
 var Main_GoBefore = '';
 var Main_values = {
@@ -57,32 +58,31 @@ var Main_values = {
     "Games_return": false,
     "Search_isSearching": false,
     "Play_ChatForceDisable": false,
-    "Never_run": true,
-    "Main_CenterLablesVectorPos": 0,
+    "Never_run_new": true,
     "Chat_font_size": 3,
     "ChatBackground": 10,
     "IsRerun": false,
     "Main_selectedChannelPartner": false,
+    "Sidepannel_Pos": 2,
+    "Sidepannel_IsUser": false,
+    "My_channel": false,
+    "DeviceBitrateCheck": false,
 };
 
 var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
-var Main_CenterLablesInUse = false;
 var Main_newUsercode = 0;
 var Main_ExitCursor = 0;
 var Main_ExitDialogID = null;
-var Main_ScrollbarIsHide = true;
 var Main_IsDayFirst = false;
-var Main_ScrollbarElement;
 var Main_SearchInput;
 var Main_AddUserInput;
-var Main_SetTopOpacityId;
 var Main_updateclockId;
 var Main_ContentLang = "";
-var Main_OpacityDivs = ["label_side_panel", "label_refresh", "top_bar_live", "top_bar_user", "top_bar_featured", "top_bar_game", "top_bar_vod", "top_bar_clip"];
 var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
+var Main_FirstLoad = false;
 
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
@@ -188,10 +188,25 @@ function Main_initWindows() {
     lazyLoadInstance = new LazyLoad();
 
     Screens_InitScreens();
+    Main_RestoreValues();
+
+    var device = null;
+    try {
+        device = Android.getDevice();
+    } catch (e) {}
+
+    if (!Main_values.DeviceBitrateCheck && device !== null) {
+        Main_values.DeviceBitrateCheck = true;
+        //Some devices are very slow and need small bitrate when if picture in picture shield doesn't.
+        if (device.toLowerCase().indexOf('shield android tv') !== -1) {
+            Settings_value.bitrate_min.defaultValue = 0;
+            Main_setItem('bitrate_min', 1);
+            Android.SetSmallPlayerBandwidth(0);
+        }
+    }
+
     Main_SetStringsMain(true);
 
-    Main_ScrollbarElement = document.getElementById("scrollbar");
-    Main_RestoreValues();
     Main_GoBefore = Main_values.Main_Go;
 
     Main_ready(function() {
@@ -230,10 +245,9 @@ function Main_initWindows() {
         window.setTimeout(function() {
             Main_ready(function() {
                 Screens_init();
-                Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 5000);
                 Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
             });
-        }, (Main_IsNotBrowser && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 350 : 0);
+        }, (Main_IsNotBrowser && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 850 : 0);
     });
 }
 
@@ -242,17 +256,12 @@ function Main_SetStringsMain(isStarting) {
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
-    Main_innerHTML('label_update', '<div class="strokedeline" style="vertical-align: middle; display: inline-block;"><i class="icon-arrow-up" style="color: #FF0000; font-size: 115%; "></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
+    Main_innerHTML('label_update', '<div style="vertical-align: middle; display: inline-block;"><i class="icon-arrow-up" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
 
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
+    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
     UserLiveFeed_SetFeedPicText();
 
-    Main_textContent('top_bar_live', STR_LIVE);
-    Main_textContent('top_bar_user', isStarting ? STR_USER : STR_SETTINGS);
-    Main_textContent('top_bar_featured', STR_FEATURED);
-    Main_textContent('top_bar_game', STR_GAMES);
-    Main_textContent('top_bar_vod', STR_VIDEOS);
-    Main_textContent('top_bar_clip', STR_CLIPS);
+    Sidepannel_SetDefaultLables();
 
     Main_textContent("dialog_end_next_text", STR_PLAY_NEXT);
     Main_textContent("dialog_end_replay_text", STR_REPLAY);
@@ -272,24 +281,9 @@ function Main_SetStringsMain(isStarting) {
 function Main_SetStringsSecondary() {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
 
-    Main_textContent('side_panel_search', STR_SEARCH);
-    Main_textContent('side_panel_settings', STR_SETTINGS);
-    Main_textContent('side_panel_about', STR_ABOUT);
-    Main_textContent('side_panel_controls', STR_CONTROLS);
-    Main_textContent('side_panel_exit', STR_EXIT);
-
     Main_textContent('side_panel_feed_settings', STR_SIDE_PANEL_SETTINGS);
     Main_textContent('side_panel_feed_refresh', STR_REFRESH);
     Main_textContent('user_feed_notify_main', STR_NOW_LIVE);
-
-    Main_textContent('side_panel_live', STR_LIVE);
-    Main_textContent('side_panel_user', STR_USER);
-    Main_textContent('side_panel_featured', STR_FEATURED);
-    Main_textContent('side_panel_games', STR_GAMES);
-    Main_textContent('side_panel_videos', STR_VIDEOS);
-    Main_textContent('side_panel_clips', STR_CLIPS);
-    Main_textContent('side_panel_hide', STR_HIDE);
-    Main_textContent('side_panel_back', STR_LIVE_FEED);
 
     Main_textContent('chanel_button', STR_CHANNELS);
     Main_textContent('game_button', STR_GAMES);
@@ -302,14 +296,30 @@ function Main_SetStringsSecondary() {
     Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
     Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
+    Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
+
+    Main_textContent("dialog_period_text", STR_SWITCH_CLIP);
+    Main_innerHTML("dialog_period_1", Main_Periods[0]);
+    Main_innerHTML("dialog_period_2", Main_Periods[1]);
+    Main_innerHTML("dialog_period_3", Main_Periods[2]);
+    Main_innerHTML("dialog_period_4", Main_Periods[3]);
+
+    Main_innerHTML("main_dialog_user_first", STR_USER_MAKE_ONE);
+    Main_innerHTML("main_dialog_user_remove", STR_USER_REMOVE);
+
+    Main_innerHTML("dialog_OffSet_text", STR_SWITCH_POS + STR_BR);
+    Main_textContent("dialog_OffSet_text_summary", STR_SWITCH_POS_SUMMARY);
 
     Main_textContent("dialog_vod_text", STR_VOD_HISTORY);
     Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 
+    Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
+    Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
+    Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
 }
 
 function Main_IconLoad(lable, icon, string) {
-    Main_innerHTML(lable, '<div class="strokedeline" style="vertical-align: middle; display: inline-block;"><i class="' + icon + '" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedeline" style="vertical-align: middle; display: inline-block">' + STR_SPACE + string + '</div>');
+    Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block;">' + STR_SPACE + string + '</div>');
 }
 
 function Main_HideElement(element) {
@@ -380,10 +390,7 @@ function Main_showExitDialog() {
 
 function Main_HideExitDialog() {
     document.body.removeEventListener("keydown", Main_ExitDialog, false);
-    if (Sidepannel_Isscreen) {
-        Sidepannel_Isscreen = false;
-        Main_SwitchScreenAction();
-    } else Main_CenterLablesStart(Sidepannel_Callback);
+    Main_SwitchScreenAction();
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
     Main_ExitCursor = 0;
@@ -391,47 +398,21 @@ function Main_HideExitDialog() {
 }
 
 function Main_ExitCursorSet() {
-    Main_RemoveClass('exit_app_cancel', 'button_search_focused');
-    Main_RemoveClass('exit_app_minimize', 'button_search_focused');
-    Main_RemoveClass('exit_app_close', 'button_search_focused');
-    if (!Main_ExitCursor) Main_AddClass('exit_app_cancel', 'button_search_focused');
-    else if (Main_ExitCursor === 1) Main_AddClass('exit_app_minimize', 'button_search_focused');
-    else Main_AddClass('exit_app_close', 'button_search_focused');
+    Main_RemoveClass('exit_app_cancel', 'button_dialog_focused');
+    Main_RemoveClass('exit_app_minimize', 'button_dialog_focused');
+    Main_RemoveClass('exit_app_close', 'button_dialog_focused');
+    if (!Main_ExitCursor) Main_AddClass('exit_app_cancel', 'button_dialog_focused');
+    else if (Main_ExitCursor === 1) Main_AddClass('exit_app_minimize', 'button_dialog_focused');
+    else Main_AddClass('exit_app_close', 'button_dialog_focused');
 }
 
 function Main_CounterDialogRst() {
     Main_empty('dialog_counter_text');
-    Main_Scrollbar(0, 0, 0);
 }
 
 function Main_CounterDialog(x, y, coloumns, total) {
-    if (total > 0) {
-        Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
-        Main_Scrollbar(y, coloumns, total);
-    } else Main_CounterDialogRst();
-}
-
-function Main_Scrollbar(y, coloumns, total) {
-    var screen_size = ((screen.height / 100) * 7);
-    //if show the scroll, else reset it's position and hide by setting it's color equal to parent background
-    if ((coloumns === 3 && (total > 9)) || (coloumns === 5 && (total > 10)) || (coloumns === 6 && (total > 12))) {
-        // min screen_size max screen.height - (screen_size * 3)
-        var needExtraSpace = (Main_values.Main_Go === Main_aGame || Main_values.Main_Go === Main_AGameVod ||
-            Main_values.Main_Go === Main_AGameClip || Main_values.Main_Go === Main_ChannelVod ||
-            Main_values.Main_Go === Main_UserVod || Main_values.Main_Go === Main_Vod ||
-            Main_values.Main_Go === Main_Clip || Main_values.Main_Go === Main_ChannelClip);
-        var nextPositon = Math.ceil((screen.height - (screen_size * 3)) / (Math.ceil(total / coloumns) - 1) * y + (screen_size * (needExtraSpace ? 1.8 : 1)));
-        Main_ScrollbarElement.style.top = (nextPositon / BodyfontSize) + "em";
-
-        if (Main_ScrollbarIsHide) {
-            Main_ScrollbarIsHide = false;
-            Main_ScrollbarElement.style.backgroundColor = "#777777";
-        }
-    } else {
-        Main_ScrollbarElement.style.backgroundColor = "#000000";
-        Main_ScrollbarElement.style.top = (screen_size / BodyfontSize) + "em";
-        Main_ScrollbarIsHide = true;
-    }
+    if (total > 0) Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
+    else Main_CounterDialogRst();
 }
 
 function Main_showWarningDialog(text) {
@@ -506,31 +487,38 @@ function Main_ReStartScreens() {
     document.body.addEventListener("keyup", Main_handleKeyUp, false);
 }
 
-function Main_SetTopOpacity() {
-    var elem, i = 0;
-    for (i; i < Main_OpacityDivs.length; i++) {
-        if (i < 2) document.getElementById(Main_OpacityDivs[i]).style.opacity = '0.35';
-        else {
-            elem = document.getElementById(Main_OpacityDivs[i]);
-            if (elem.className.indexOf('icon_center_focus') === -1) elem.style.opacity = '0.35';
-        }
-    }
-    Main_AddClass('topbar', 'topbar_dim');
-}
-
-function Main_UnSetTopOpacity() {
-    for (var i = 0; i < Main_OpacityDivs.length; i++)
-        document.getElementById(Main_OpacityDivs[i]).style.opacity = '1';
-    Main_RemoveClass('topbar', 'topbar_dim');
-}
-
 function Main_SwitchScreen(removekey) {
-    window.clearTimeout(Main_SetTopOpacityId);
-    Main_UnSetTopOpacity();
-
     Main_ready(function() {
         Main_SwitchScreenAction(removekey);
     });
+}
+
+function Main_RemoveKeys() {
+
+    if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+    else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
+    else {
+        if (Main_values.Main_Go === Main_Live) inUseObj = Live;
+        else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
+        else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
+        else if (Main_values.Main_Go === Main_games) inUseObj = Game;
+        else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
+        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
+        else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
+        else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
+        else if (Main_values.Main_Go === Main_usergames) inUseObj = UserGames;
+        else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
+        else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
+        else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
+        else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
+        else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
+        else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
+        else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
+        else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
+        else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
+
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    }
 }
 
 var Main_Switchobj = {
@@ -631,7 +619,6 @@ function Main_SwitchScreenAction(removekey) {
     if (Main_Switchobj[Main_values.Main_Go]) Main_Switchobj[Main_values.Main_Go]();
     else Main_Switchobj[1]();
 
-    Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
     if (removekey) Main_RemoveKeys();
 }
 
@@ -641,8 +628,6 @@ function Main_OpenSearch() {
     Main_values.Main_Go = Main_Search;
     Main_HideWarningDialog();
     Main_CounterDialogRst();
-    window.clearTimeout(Main_SetTopOpacityId);
-    Main_UnSetTopOpacity();
     Search_init();
 }
 
@@ -682,33 +667,16 @@ Main_ExitCurrentobj[Main_games] = Screens_exit;
 
 function Main_ExitCurrent(ExitCurrent) {
     if (Main_ExitCurrentobj[ExitCurrent]) Main_ExitCurrentobj[ExitCurrent]();
-    if (Main_isElementShowing('settings_scroll')) Settings_exit();
+    if (Main_isElementShowing('settings_holder')) Settings_exit();
 }
 
 function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
-    Main_IconLoad('label_side_panel', 'icon-ellipsis', STR_SIDE_PANEL);
-    Main_RemoveClass('top_bar_user', 'icon_center_focus');
-    Main_textContent('top_bar_live', STR_LIVE);
-    Main_textContent('top_bar_user', STR_USER);
-    Main_textContent('top_bar_featured', STR_FEATURED);
-    Main_textContent('top_bar_game', STR_GAMES);
-    Main_textContent('top_bar_vod', STR_VIDEOS);
-    Main_textContent('top_bar_clip', STR_CLIPS);
+    Main_HideElement('label_side_panel');
 }
 
 function Main_cleanTopLabel() {
-    Main_IconLoad('label_side_panel', 'icon-arrow-circle-left', STR_GOBACK);
-    Main_empty('top_bar_live');
-    Main_empty('top_bar_game');
-    Main_empty('top_bar_vod');
-    Main_empty('top_bar_clip');
-    Main_empty('top_bar_featured');
-    Main_AddClass('top_bar_user', 'icon_center_focus');
-}
-
-function Main_UnderCenter(text) {
-    return '<div style="font-size: 30%; position: fixed; line-height: 0; text-shadow: #000000 0 0 0.285em, #000000 0 0 0.285em, #000000 0 0 0.2em">' + text + '</div>';
+    Main_ShowElement('label_side_panel');
 }
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
@@ -1011,182 +979,9 @@ function Main_ExitDialog(event) {
     }
 }
 
-var Main_CenterLablesVector = ['top_bar_live', 'top_bar_user', 'top_bar_featured', 'top_bar_game', 'top_bar_vod', 'top_bar_clip'];
-var Main_CenterScreenVector = [Main_Live, Main_Users, Main_Featured, Main_games, Main_Vod, Main_Clip];
-var Main_FirstLoad = false;
-
-function Main_CenterLables(event) {
-    if (Main_FirstLoad || inUseObj.FirstLoad || Main_CantClick()) return;
-    switch (event.keyCode) {
-        case KEY_RETURN:
-            if (Main_isControlsDialogShown()) {
-                Main_CenterLablesChange();
-                Main_HideControlsDialog();
-            } else if (Main_isAboutDialogShown()) {
-                Main_CenterLablesChange();
-                Main_HideAboutDialog();
-            } else {
-                if (Main_values.Main_Go === Main_aGame) {
-                    if (Main_values.Games_return) {
-                        Main_values.Main_Go = Main_SearchGames;
-                        Main_values.Main_gameSelected = Main_values.gameSelectedOld;
-                        Main_values.gameSelectedOld = null;
-                    } else {
-                        Main_values.Main_Go = Main_values.Main_BeforeAgame;
-                        Main_values.Main_BeforeAgame = Main_games;
-                    }
-                    Main_CenterLablesCleanSwitchScreen(Main_values.Main_Go);
-                } else if (Main_values.Main_Go === Main_AGameClip) {
-                    Main_CenterLablesCleanSwitchScreen(Main_aGame);
-                } else if (Main_values.Main_Go === Main_usergames ||
-                    Main_values.Main_Go === Main_UserHost || Main_values.Main_Go === Main_UserVod ||
-                    Main_values.Main_Go === Main_UserLive || Main_values.Main_Go === Main_UserChannels) {
-                    Main_CenterLablesCleanSwitchScreen(Main_Users);
-                } else if (Main_values.Main_Go === Main_ChannelClip) {
-                    Main_CenterLablesCleanSwitchScreen(Main_ChannelContent);
-                } else if (Main_values.Main_Go === Main_AGameVod) {
-                    Main_CenterLablesCleanSwitchScreen(Main_aGame);
-                } else if (Main_values.Main_Go === Main_ChannelContent) {
-                    Main_values.Main_Go = Main_values.Main_BeforeChannel;
-                    Main_values.Main_BeforeChannel = Main_Live;
-                    ChannelContent_exit();
-                    Main_values.Main_selectedChannel_id = '';
-                    Main_CenterLablesCleanSwitch();
-                } else if (Main_values.Main_Go === Main_ChannelVod) {
-                    Main_CenterLablesCleanSwitchScreen(Main_ChannelContent);
-                } else if (Main_values.Main_Go === Main_SearchLive) {
-                    if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
-                    else Main_values.Main_Go = Main_values.Main_BeforeSearch;
-                    Main_values.Search_isSearching = false;
-                    Main_CenterLablesCleanSwitchScreen(Main_values.Main_Go);
-                } else if (Main_values.Main_Go === Main_SearchGames) {
-                    if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
-                    else Main_values.Main_Go = Main_values.Main_BeforeSearch;
-                    Main_values.Search_isSearching = false;
-                    Main_CenterLablesCleanSwitchScreen(Main_values.Main_Go);
-                } else if (Main_values.Main_Go === Main_SearchChannels) {
-                    if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
-                    else Main_values.Main_Go = Main_values.Main_BeforeSearch;
-                    if (Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-                    Main_values.Search_isSearching = false;
-                    Main_CenterLablesCleanSwitchScreen(Main_values.Main_Go);
-                } else {
-                    Main_CenterLablesClean();
-                    Sidepannel_Start(Main_CenterLables);
-                }
-            }
-            break;
-        case KEY_PG_UP:
-        case KEY_RIGHT:
-            if (Main_ForbidenScreens()) break;
-            Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
-            Main_values.Main_CenterLablesVectorPos++;
-            if (Main_values.Main_CenterLablesVectorPos > 5) Main_values.Main_CenterLablesVectorPos = 0;
-            Main_CenterLablesChange();
-            Main_CenterLablesExit();
-            break;
-        case KEY_PG_DOWN:
-        case KEY_LEFT:
-            if (Main_ForbidenScreens()) break;
-            Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
-            Main_values.Main_CenterLablesVectorPos--;
-            if (Main_values.Main_CenterLablesVectorPos < 0) Main_values.Main_CenterLablesVectorPos = 5;
-            Main_CenterLablesChange();
-            Main_CenterLablesExit();
-            break;
-        case KEY_DOWN:
-            Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
-            document.body.removeEventListener("keydown", Main_CenterLables);
-            Main_CenterLablesInUse = false;
-            Main_SwitchScreenAction();
-            break;
-        case KEY_ENTER:
-        case KEY_REFRESH:
-            Main_ReloadScreen();
-            break;
-        default:
-            break;
-    }
-}
-
-function Main_ForbidenScreens() {
-    return Main_values.Search_isSearching || Main_values.Main_Go === Main_ChannelContent ||
-        Main_values.Main_Go === Main_ChannelVod || Main_values.Main_Go === Main_ChannelClip ||
-        Main_values.Main_Go === Main_SearchLive || Main_values.Main_Go === Main_SearchGames ||
-        Main_values.Main_Go === Main_SearchChannels;
-}
-
-function Main_CenterLablesCleanSwitchScreen(screen) {
-    Screens_BasicExit(screen);
-    Main_CenterLablesCleanSwitch();
-}
-
-function Main_CenterLablesCleanSwitch() {
-    Main_CenterLablesClean();
-    Main_SwitchScreenAction();
-}
-
-function Main_CenterLablesStart(callback) {
-    window.clearTimeout(Main_SetTopOpacityId);
-    Main_UnSetTopOpacity();
-    document.body.removeEventListener("keydown", callback);
-    document.body.removeEventListener("keydown", Main_CenterLables);
-    document.body.addEventListener("keydown", Main_CenterLables, false);
-    Main_CenterLablesChange();
-}
-
-function Main_CenterLablesClean() {
-    Main_RemoveClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
-    document.body.removeEventListener("keydown", Main_CenterLables);
-    Main_CenterLablesInUse = false;
-}
-
-function Main_CenterLablesChange() {
-    Main_CenterLablesInUse = true;
-    Main_AddClass(Main_CenterLablesVector[Main_values.Main_CenterLablesVectorPos], 'icon_center_line');
-}
-
-function Main_CenterLablesExit() {
-    Main_ExitCurrent(Main_values.Main_Go);
-    Main_values.Main_Go = Main_CenterScreenVector[Main_values.Main_CenterLablesVectorPos];
-    if (Main_values.Main_Go === Main_Users && !AddUser_IsUserSet()) {
-        Main_values.Main_Go = Main_addUser;
-        Main_CenterLablesClean();
-        AddUser_init();
-    } else Main_SwitchScreen(true);
-}
-
-function Main_RemoveKeys() {
-
-    if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
-    else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
-    else {
-        if (Main_values.Main_Go === Main_Live) inUseObj = Live;
-        else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
-        else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
-        else if (Main_values.Main_Go === Main_games) inUseObj = Game;
-        else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
-        else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
-        else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
-        else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
-        else if (Main_values.Main_Go === Main_usergames) inUseObj = UserGames;
-        else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
-        else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
-        else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
-        else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
-        else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
-        else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
-        else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
-        else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
-        else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
-
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    }
-}
-
 function Main_ReloadScreen() {
-    window.clearTimeout(Main_SetTopOpacityId);
-    Main_UnSetTopOpacity();
+    Screens_clear = true;
+    ChannelContent_clear = true;
 
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
@@ -1219,8 +1014,6 @@ function Main_ReloadScreen() {
 
         Screens_StartLoad();
     }
-
-    Main_SetTopOpacityId = window.setTimeout(Main_SetTopOpacity, 3000);
 }
 
 function Main_setItem(item, value) {
