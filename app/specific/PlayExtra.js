@@ -83,13 +83,14 @@ function PlayExtra_KeyEnter() {
     else {
         var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
         if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
+            UserLiveFeed_Hide();
+
             PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
 
             if (PlayExtra_WasPicturePicture) PlayExtra_SavePlayData();
             else PlayExtra_Save_selectedChannel_id_Old = null;
 
             PlayExtra_PicturePicture = true;
-            UserLiveFeed_Hide();
 
             Main_values.Play_isHost = false;
             Play_UserLiveFeedPressed = true;

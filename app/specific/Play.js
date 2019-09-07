@@ -1927,7 +1927,7 @@ function Play_handleKeyDown(e) {
                     document.body.addEventListener("keyup", Play_handleKeyUp, false);
                     PlayExtra_clear = false;
                     UserLiveFeed_ResetFeedId();
-                    PlayExtra_KeyEnterID = window.setTimeout(PlayExtra_KeyEnter, 500);
+                    PlayExtra_KeyEnterID = window.setTimeout(PlayExtra_KeyEnter, 250);
                 } else Play_showPanel();
                 break;
             case KEY_RETURN:
