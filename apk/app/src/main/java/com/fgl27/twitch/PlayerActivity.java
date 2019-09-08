@@ -6,11 +6,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -175,6 +177,18 @@ public class PlayerActivity extends Activity {
             loadingView[1] = PlayerView[1].findViewById(R.id.exo_buffering);
             loadingView[1].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
             loadingView[1].setBackgroundResource(R.drawable.shadow);
+
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+
+            float Scale = (float) size.y / 1080.0f;
+            int DefaultSize = Math.round(40 * this.getResources().getDisplayMetrics().density * Scale);
+            FrameLayout.LayoutParams DefaultSizeFrame = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
+
+            loadingView[0].setLayoutParams(DefaultSizeFrame);
+            loadingView[1].setLayoutParams(DefaultSizeFrame);
+            loadingView[2].setLayoutParams(DefaultSizeFrame);
 
             shouldCallJavaCheck = false;
 
