@@ -150,7 +150,6 @@ function AddCode_requestTokensSucess(responseText) {
 }
 
 function AddCode_CheckOauthToken() {
-
     var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
         AddUser_UsernameArray[Main_values.Users_Position].access_token;
 
