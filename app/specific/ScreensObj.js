@@ -437,7 +437,7 @@ function ScreensObj_InitUserVod() {
         periodPos: Main_getItemInt('UserVod_periodPos', 1),
         base_url: 'https://api.twitch.tv/kraken/videos/followed?limit=' + Main_ItemsLimitMax,
         set_url: function() {
-            this.token = Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token;
+            this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
 
             this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                 '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
@@ -613,10 +613,10 @@ function ScreensObj_InitUserLive() {
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
 
-            if (AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+            if (AddUser_UsernameArray[0].access_token) {
                 //User has added a key
                 this.HeaderQuatity = 3;
-                this.token = Main_OAuth + AddUser_UsernameArray[Main_values.Users_Position].access_token;
+                this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
                 this.url = this.base_url + 'followed?' + 'limit=' + Main_ItemsLimitMax + '&offset=' +
                     this.offset + '&stream_type=all';
             } else {
@@ -630,7 +630,7 @@ function ScreensObj_InitUserLive() {
                 } else {
                     //User fallowed channels list is not done, load fallowed channels
                     this.url = 'https://api.twitch.tv/kraken/users/' +
-                        encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
+                        encodeURIComponent(AddUser_UsernameArray[0].id) +
                         '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.loadChannelOffsset +
                         '&sortby=created_at';
                 }
@@ -706,7 +706,7 @@ function ScreensObj_InitUserHost() {
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url +
-                encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) +
+                encodeURIComponent(AddUser_UsernameArray[0].name) +
                 '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
         },
         label_init: function() {
@@ -806,8 +806,8 @@ function ScreensObj_InitFeatured() {
         base_url: 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.url = this.base_url + '&offset=' + this.offset +
-                (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
-                    AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
+                (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+                    AddUser_UsernameArray[0].access_token : '');
         },
         label_init: function() {
             Sidepannel_SetDefaultLables();
@@ -1092,7 +1092,7 @@ function ScreensObj_InitUserGames() {
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].name) + '/follows/games';
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games';
 
             if (this.isLive) this.url += '/live?limit=750';
             else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
@@ -1198,7 +1198,7 @@ function ScreensObj_InitUserChannels() {
         base_url: 'https://api.twitch.tv/kraken/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].id) +
                 '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
         },
         label_init: function() {
@@ -1309,8 +1309,8 @@ function ScreensObj_TopLableAgameExit() {
 }
 
 function ScreensObj_TopLableUserInit() {
-    if (inUseObj.OldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) inUseObj.status = false;
-    inUseObj.OldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+    if (inUseObj.OldUserName !== AddUser_UsernameArray[0].name) inUseObj.status = false;
+    inUseObj.OldUserName = AddUser_UsernameArray[0].name;
 
     Sidepannel_SetUserLables();
 }

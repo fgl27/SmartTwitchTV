@@ -99,9 +99,9 @@ function Sidepannel_KeyEnterUser() {
     else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_UserVod);
     else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_UserChannels);
     else if (Main_values.Sidepannel_Pos === 8) {
-        Main_values.Main_selectedChannel_id = AddUser_UsernameArray[Main_values.Users_Position].id;
-        Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[Main_values.Users_Position].display_name ? AddUser_UsernameArray[Main_values.Users_Position].display_name : AddUser_UsernameArray[Main_values.Users_Position].name;
-        Main_values.Main_selectedChannel = AddUser_UsernameArray[Main_values.Users_Position].name;
+        Main_values.Main_selectedChannel_id = AddUser_UsernameArray[0].id;
+        Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : AddUser_UsernameArray[0].name;
+        Main_values.Main_selectedChannel = AddUser_UsernameArray[0].name;
 
         Main_values.Main_BeforeChannel = Main_values.Main_Go;
         Main_values.Main_Go = Main_ChannelContent;
@@ -215,8 +215,8 @@ function Sidepannel_StartFeed() {
 
 function Sidepannel_ShowFeed() {
     Main_AddClass('scenefeed', 'scenefeed_background');
-    if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
-    Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+    if (Play_FeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status = false;
+    Play_FeedOldUserName = AddUser_UsernameArray[0].name;
 
     if (!UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
 
