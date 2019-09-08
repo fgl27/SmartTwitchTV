@@ -16,7 +16,10 @@ var PlayExtra_gameSelected = '';
 var PlayExtra_isHost = '';
 var PlayExtra_DisplaynameHost = '';
 var PlayExtra_PicturePicture = false;
+var PlayExtra_SupportsSource = true;
+var PlayExtra_AutoUrl = '';
 
+var PlayExtra_SupportsSource_Old;
 var PlayExtra_selectedChannel_id_Old;
 var PlayExtra_IsRerun_Old;
 var PlayExtra_selectedChannel_Old;
@@ -145,6 +148,7 @@ function PlayExtra_SwitchPlayerStoreOld() {
     PlayExtra_qualities_Old = Play_qualities;
     PlayExtra_qualityPlaying_Old = Play_qualityPlaying;
     PlayExtra_quality_Old = Play_quality;
+    PlayExtra_SupportsSource_Old = Play_SupportsSource;
 }
 
 function PlayExtra_SwitchPlayerResStoreOld() {
@@ -158,6 +162,7 @@ function PlayExtra_SwitchPlayerResStoreOld() {
     PlayExtra_qualities = PlayExtra_qualities_Old;
     PlayExtra_qualityPlaying = PlayExtra_qualityPlaying_Old;
     PlayExtra_quality = PlayExtra_quality_Old;
+    PlayExtra_SupportsSource = PlayExtra_SupportsSource_Old;
 }
 
 function PlayExtra_SwitchPlayer() {
@@ -183,6 +188,7 @@ function PlayExtra_SwitchPlayer() {
     Play_qualities = PlayExtra_qualities;
     Play_qualityPlaying = PlayExtra_qualityPlaying;
     Play_quality = PlayExtra_quality;
+    Play_SupportsSource = PlayExtra_SupportsSource;
 
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
@@ -232,6 +238,16 @@ function PlayExtra_loadDataSuccess(responseText) {
         PlayExtra_loadingDataTry = 0;
         PlayExtra_loadDataRequest();
     } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) {
+
+        //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
+        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+            PlayExtra_SupportsSource = false;
+            PlayExtra_loadingDataTry = 0;
+            PlayExtra_loadDataRequest();
+            return;
+        }
+
+        Android.SetAuto2(PlayExtra_AutoUrl);
         PlayExtra_qualities = Play_extractQualities(responseText);
         PlayExtra_state = Play_STATE_PLAYING;
         PlayExtra_SetPanel();
@@ -280,8 +296,10 @@ function PlayExtra_loadDataRequest() {
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
+            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
+            (PlayExtra_SupportsSource ? "&allow_source=true" : '') +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+        PlayExtra_AutoUrl = theUrl;
     }
 
     var xmlHttp;
@@ -293,7 +311,7 @@ function PlayExtra_loadDataRequest() {
             return;
         }
 
-        PlayExtra_loadDataSuccessreadyState(xmlHttp, state, theUrl);
+        PlayExtra_loadDataSuccessreadyState(xmlHttp);
 
     } else {
         xmlHttp = new XMLHttpRequest();
@@ -304,19 +322,16 @@ function PlayExtra_loadDataRequest() {
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) PlayExtra_loadDataSuccessreadyState(xmlHttp, state, theUrl);
+            if (xmlHttp.readyState === 4) PlayExtra_loadDataSuccessreadyState(xmlHttp);
         };
 
         xmlHttp.send(null);
     }
 }
 
-function PlayExtra_loadDataSuccessreadyState(xmlHttp, state, theUrl) {
+function PlayExtra_loadDataSuccessreadyState(xmlHttp) {
     if (xmlHttp.status === 200) {
         Play_loadingDataTry = 0;
-
-        if (Play_isOn && !state) Android.SetAuto2(theUrl);
-
         PlayExtra_loadDataSuccess(xmlHttp.responseText);
     } else if (xmlHttp.status === 403) { //forbidden access
         PlayExtra_loadDataFail(STR_FORBIDDEN);
@@ -388,7 +403,8 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
 
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
+            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
+            (PlayExtra_SupportsSource ? "&allow_source=true" : '') +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
         if (UseAndroid) Android.ResStartAuto2(theUrl);

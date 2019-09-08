@@ -559,6 +559,7 @@ function Play_loadDataRequest() {
             (Play_SupportsSource ? "&allow_source=true" : '') +
             '&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+        Play_AutoUrl = theUrl;
     }
 
     var xmlHttp;
@@ -572,10 +573,7 @@ function Play_loadDataRequest() {
         }
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
-            if (Play_isOn) {
-                if (!state) Play_AutoUrl = theUrl;
-                Play_loadDataSuccess(xmlHttp.responseText);
-            }
+            if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
         } else if (xmlHttp.status === 403) { //forbidden access
             if (Play_selectedChannel_id_Old !== null) Play_RestorePlayData();
             else if (!PlayExtra_PicturePicture) Play_ForbiddenLive();
