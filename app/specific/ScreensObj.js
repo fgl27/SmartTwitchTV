@@ -226,7 +226,7 @@ function ScreensObj_InitVod() {
                     this.SetPeriod();
                     Screens_StartLoad();
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
-                } else Screens_OffSetStart();
+                } else Screens_PeriodStart();
             } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         SwitchesIcons: ['movie-play', 'history'],
