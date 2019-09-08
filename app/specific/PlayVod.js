@@ -271,8 +271,8 @@ function PlayVod_loadDataRequest() {
 
     if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
         theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token ? '&oauth_token=' +
-                AddUser_UsernameArray[Main_values.Users_Position].access_token : '');
+            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+                AddUser_UsernameArray[0].access_token : '');
     } else {
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' +
@@ -376,7 +376,7 @@ function PlayVod_loadDataSuccess(responseText) {
 }
 
 function PlayVod_loadDataCheckSub() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_CheckSub();
     } else {

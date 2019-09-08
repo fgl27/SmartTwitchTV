@@ -58,7 +58,7 @@ function UserLiveFeed_StartLoad() {
 }
 
 function UserLiveFeed_CheckToken() {
-    UserLiveFeed_token = AddUser_UsernameArray[Main_values.Users_Position].access_token;
+    UserLiveFeed_token = AddUser_UsernameArray[0].access_token;
     if (UserLiveFeed_token) {
         UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
         UserLiveFeed_loadChannelUserLive();
@@ -76,7 +76,7 @@ function UserLiveFeed_loadDataPrepare() {
 }
 
 function UserLiveFeed_loadChannels() {
-    var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[Main_values.Users_Position].id) +
+    var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at';
 
     BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeed_loadChannelLive, UserLiveFeed_loadDataError, false);
@@ -159,7 +159,7 @@ function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
             } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                 //Token has change or because is new or because it is invalid because user delete in twitch settings
                 // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-                AddCode_refreshTokens(Main_values.Users_Position, 0, UserLiveFeed_CheckToken, UserLiveFeed_loadDataRefreshTokenError);
+                AddCode_refreshTokens(0, 0, UserLiveFeed_CheckToken, UserLiveFeed_loadDataRefreshTokenError);
             } else {
                 UserLiveFeed_loadDataErrorLive();
             }
@@ -170,7 +170,7 @@ function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
 }
 
 function UserLiveFeed_loadDataRefreshTokenError() {
-    if (!AddUser_UsernameArray[Main_values.Users_Position].access_token) UserLiveFeed_CheckToken();
+    if (!AddUser_UsernameArray[0].access_token) UserLiveFeed_CheckToken();
     else UserLiveFeed_loadDataErrorLive();
 }
 
@@ -204,8 +204,8 @@ function UserLiveFeed_loadDataSuccess(responseText) {
         docside = document.getElementById("side_panel_holder"),
         i = 0;
 
-    if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[Main_values.Users_Position].name]) {
-        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[Main_values.Users_Position].name] = {};
+    if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
+        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
         UserLiveFeed_CheckNotifycation = false;
     }
 
@@ -215,7 +215,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
         if (!UserLiveFeed_idObject[id]) {
 
             //Check if was live if not notificate
-            if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[Main_values.Users_Position].name][id]) {
+            if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][id]) {
                 UserLiveFeed_NotifyLiveidObject.push({
                     name: stream.channel.display_name,
                     logo: stream.channel.logo,
@@ -254,7 +254,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
         }
     }
 
-    UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[Main_values.Users_Position].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject));
+    UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject));
 
     //    doc.appendChild(UserLiveFeed_CreatFeed(i++,
     //        ['ashlynn', 35618666, false],
@@ -377,8 +377,8 @@ function UserLiveFeed_ShowFeed() {
     var hasuser = AddUser_UserIsSet();
 
     if (hasuser) {
-        if (Play_FeedOldUserName !== AddUser_UsernameArray[Main_values.Users_Position].name) UserLiveFeed_status = false;
-        Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+        if (Play_FeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status = false;
+        Play_FeedOldUserName = AddUser_UsernameArray[0].name;
     }
 
     if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;

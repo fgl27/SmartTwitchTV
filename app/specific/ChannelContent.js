@@ -314,7 +314,7 @@ function ChannelContent_keyEnter() {
                 Screens_init();
             });
         } else if (ChannelContent_cursorX === 2) {
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
                 AddCode_PlayRequest = false;
                 AddCode_Channel_id = Main_values.Main_selectedChannel_id;
                 if (AddCode_IsFallowing) AddCode_UnFallow();

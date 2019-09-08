@@ -47,7 +47,6 @@ var Main_values = {
     "Play_selectedChannelDisplayname": '',
     "Play_selectedChannel": '',
     "Play_gameSelected": '',
-    "Users_Position": 0,
     "Users_AddcodePosition": 0,
     "Play_WasPlaying": 0,
     "ChannelVod_vodId": '',
@@ -947,7 +946,7 @@ function Main_updateUserFeed() {
     if (AddUser_UserIsSet()) {
         window.setTimeout(function() {
             if (!document.hidden && !UserLiveFeed_isFeedShow() && !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
-                Play_FeedOldUserName = AddUser_UsernameArray[Main_values.Users_Position].name;
+                Play_FeedOldUserName = AddUser_UsernameArray[0].name;
                 UserLiveFeed_StartLoad();
             }
         }, 15000);
@@ -1082,7 +1081,7 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
     if (xmlHttp.status === 200) {
         callbackSucess(xmlHttp.responseText);
     } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-        AddCode_refreshTokens(Main_values.Users_Position, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
+        AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
     } else {
         calbackError();
     }
@@ -1112,7 +1111,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
             if (xmlHttp.status === 200) {
                 callbackSucess(xmlHttp.responseText);
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                AddCode_refreshTokens(Main_values.Users_Position, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
+                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
             } else {
                 calbackError();
             }

@@ -743,7 +743,7 @@ function AGame_headerOptionsExit() {
 }
 
 function AGame_fallow() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[Main_values.Users_Position].access_token) {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         if (AGame_fallowing) AddCode_UnFallowGame();
         else AddCode_FallowGame();
     } else {
