@@ -200,27 +200,26 @@
         }
 
         div.stream_thumbnail_game_holder {
-            width: 16%;
+            width: 17.1%;
             display: inline-block;
             padding: 1%;
             padding-top: 0;
-            padding-left: 2.5%;
+            padding-bottom: 0.2%;
         }
 
         div.stream_thumbnail_game {
-            padding-bottom: 175%;
+            padding-bottom: 164%;
             font-size: 80%;
             background-color: #000000;
             color: #FFFFFF;
-            border-right: 0.05em solid;
-            border-left: 0.05em solid;
-            border-image: linear-gradient(#000000, #000000) 1;
+            border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
         div.stream_thumbnail_live_holder {
-            width: 31%;
+            width: 32.25%;
             display: inline-block;
-            padding: 1.1%;
+            padding: 0.5%;
+            padding-bottom: 1.5%;
         }
 
         div.stream_thumbnail_user_icon_holder,
@@ -241,6 +240,7 @@
 
         div.stream_thumbnail_user_text_holder,
         div.stream_thumbnail_channel_text_holder,
+        div.stream_thumbnail_game_text_holder,
         div.stream_thumbnail_live_text_holder {
             position: absolute;
             right: 0;
@@ -248,6 +248,10 @@
             bottom: 0.15em;
             padding: 0.5%;
             font-size: 95%;
+        }
+
+        div.stream_thumbnail_game_text_holder {
+            bottom: 0;
         }
 
         div.stream_thumbnail_channel_text_holder {
@@ -268,6 +272,15 @@
             text-align: left;
             word-wrap: break-word;
             font-size: 85%;
+            font-family: 'Roboto-Bold';
+        }
+
+        .stream_info_game_name {
+            width: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-size: 75%;
             font-family: 'Roboto-Bold';
         }
 
@@ -962,6 +975,11 @@
 
         div.streams_div {
             margin-left: 5%;
+            width: 94.5%;
+        }
+
+        div.streams_game_div {
+            margin-left: 7%;
             width: 94.5%;
         }
 
@@ -1738,9 +1756,9 @@
                             <div id="channel_content_thumbdiv0_0" class="stream_thumbnail_live">
                             </div>
                         </div>
-                        <div id="channel_content_cell0_0" class="stream_thumbnail_live_holder" style="padding-right: 0;">
+                        <div id="channel_content_cell0_0" class="stream_thumbnail_live_holder" style="padding-right: 0; padding-left: 0;">
                             <div class="stream_thumbnail_live">
-                                <div id="channel_content_infodiv0_1" class="stream_thumbnail_live_text_holder" style="height: 98%; font-size: 80%;"></div>
+                                <div id="channel_content_infodiv0_1" class="stream_thumbnail_live_text_holder" style="height: 98%; font-size: 80%; width: 96%; margin-left: 2%;"></div>
                             </div>
                         </div>
                     </div>
@@ -1776,13 +1794,13 @@
 
             <!-- Games screens-->
             <div id="Game_scroll" class="screen_holder_games hide">
-                <div id="stream_table_games" class="streams_div"></div>
+                <div id="stream_table_games" class="streams_game_div"></div>
             </div>
             <div id="UserGames_scroll" class="screen_holder_games hide">
-                <div id="stream_table_user_games" class="streams_div"></div>
+                <div id="stream_table_user_games" class="streams_game_div"></div>
             </div>
             <div id="SearchGames_scroll" class="screen_holder_games hide">
-                <div id="stream_table_search_game" class="streams_div"></div>
+                <div id="stream_table_search_game" class="streams_game_div"></div>
             </div>
 
             <!-- Input screens-->
