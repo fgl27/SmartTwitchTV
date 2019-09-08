@@ -199,7 +199,7 @@ function ChannelContent_loadDataSuccess() {
 
     streamer_bio += (Main_values.Main_selectedChannelPartner ? STR_SPACE + STR_SPACE + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "");
 
-    streamer_bio += ChannelContent_description !== '' ?
+    streamer_bio += ChannelContent_selectedChannelViews !== '' ?
         STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + STR_VIEWS : '';
 
     streamer_bio += ChannelContent_selectedChannelFallower !== '' ?
