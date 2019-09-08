@@ -264,8 +264,8 @@ function Screens_createCellGame(id, idArray, valuesArray) {
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
         idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
-        idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div id="<div id="' +
-        idArray[3] + id + '" class="stream_info_live_name">' + valuesArray[1] + '</div>' +
+        idArray[2] + id + '" class="stream_thumbnail_game_text_holder"><div id="<div id="' +
+        idArray[3] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
         (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
             '"class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
             '</div>' : '') + '</div></div>');
@@ -547,7 +547,7 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
             if (Main_ThumbNull((y + 1), 0, idArray[0])) {
-                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 9.4);
+                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 8.8);
             } else Main_handleKeyUp();
         } else Main_ScrollTable(idArray[10], 0);
 

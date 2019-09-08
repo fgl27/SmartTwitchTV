@@ -46,6 +46,7 @@ function ChannelContent_init() {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement(ChannelContent_ids[10]);
         ChannelContent_checkUser();
+        ChannelContent_removeAllFallowFocus();
         ChannelContent_addFocus();
         Main_SaveValues();
     } else ChannelContent_StartLoad();
@@ -288,6 +289,12 @@ function ChannelContent_addFocusFallow() {
 function ChannelContent_removeFocus() {
     if (ChannelContent_cursorY) Main_RemoveClass("channel_content_thumbdiv0_0", Main_classThumb);
     else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
+}
+
+function ChannelContent_removeAllFallowFocus() {
+    Main_RemoveClass('channel_content_thumbdivy_0', 'stream_switch_focused');
+    Main_RemoveClass('channel_content_thumbdivy_1', 'stream_switch_focused');
+    Main_RemoveClass('channel_content_thumbdivy_2', 'stream_switch_focused');
 }
 
 function ChannelContent_keyEnter() {
