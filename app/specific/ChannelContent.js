@@ -195,10 +195,20 @@ function ChannelContent_loadDataSuccess() {
 
     Main_innerHTML("channel_content_img0_1", '<img class="lazy stream_img_channel" alt="" data-src="' + ChannelContent_profile_banner + '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'">');
 
-    Main_innerHTML("channel_content_infodiv0_1", ChannelContent_description !== '' ?
-        Main_values.Main_selectedChannelDisplayname + STR_SPACE + STR_SPACE +
-        (Main_values.Main_selectedChannelPartner ? '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "") + STR_BR +
-        STR_ABOUT + ':' + STR_BR + twemoji.parse(ChannelContent_description) : '');
+    var streamer_bio = Main_values.Main_selectedChannelDisplayname;
+
+    streamer_bio += (Main_values.Main_selectedChannelPartner ? STR_SPACE + STR_SPACE + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "");
+
+    streamer_bio += ChannelContent_description !== '' ?
+        STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + STR_VIEWS : '';
+
+    streamer_bio += ChannelContent_selectedChannelFallower !== '' ?
+        STR_BR + Main_addCommas(ChannelContent_selectedChannelFallower) + STR_FALLOWERS : '';
+
+    streamer_bio += ChannelContent_description !== '' ?
+        STR_BR + STR_BR + STR_ABOUT + ':' + STR_BR + twemoji.parse(ChannelContent_description) : '';
+
+    Main_innerHTML("channel_content_infodiv0_1", streamer_bio);
 
     if (ChannelContent_responseText !== null) {
         var response = JSON.parse(ChannelContent_responseText);
