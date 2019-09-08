@@ -172,7 +172,6 @@ function AddUser_RestoreUsers() {
 }
 
 function AddUser_UpdateSidepanel() {
-    console.log('AddUser_UpdateSidepanel');
     AddUser_UpdateSidepanelSize(AddUser_UsernameArray[0].logo, AddUser_UsernameArray[0].display_name);
 }
 
