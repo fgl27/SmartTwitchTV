@@ -30,6 +30,8 @@ var PlayExtra_gameSelected_Old;
 var PlayExtra_qualities_Old;
 var PlayExtra_qualityPlaying_Old;
 var PlayExtra_quality_Old;
+var PlayExtra_AutoUrl_Old;
+
 var PlayExtra_RefreshAutoTry = 0;
 
 var PlayExtra_Save_selectedChannel_id_Old = null;
@@ -149,6 +151,7 @@ function PlayExtra_SwitchPlayerStoreOld() {
     PlayExtra_qualityPlaying_Old = Play_qualityPlaying;
     PlayExtra_quality_Old = Play_quality;
     PlayExtra_SupportsSource_Old = Play_SupportsSource;
+    PlayExtra_AutoUrl_Old = Play_AutoUrl;
 }
 
 function PlayExtra_SwitchPlayerResStoreOld() {
@@ -162,6 +165,7 @@ function PlayExtra_SwitchPlayerResStoreOld() {
     PlayExtra_qualities = PlayExtra_qualities_Old;
     PlayExtra_qualityPlaying = PlayExtra_qualityPlaying_Old;
     PlayExtra_quality = PlayExtra_quality_Old;
+    PlayExtra_AutoUrl = PlayExtra_AutoUrl_Old;
     PlayExtra_SupportsSource = PlayExtra_SupportsSource_Old;
 }
 
@@ -189,6 +193,7 @@ function PlayExtra_SwitchPlayer() {
     Play_qualityPlaying = PlayExtra_qualityPlaying;
     Play_quality = PlayExtra_quality;
     Play_SupportsSource = PlayExtra_SupportsSource;
+    Play_AutoUrl = PlayExtra_AutoUrl;
 
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
@@ -406,6 +411,8 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
             '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
             (PlayExtra_SupportsSource ? "&allow_source=true" : '') +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+        PlayExtra_AutoUrl = theUrl;
 
         if (UseAndroid) Android.ResStartAuto2(theUrl);
         else Android.SetAuto2(theUrl);

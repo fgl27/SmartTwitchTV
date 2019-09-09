@@ -28,6 +28,7 @@ var Play_Status_Always_On = false;
 var Play_RefreshAutoTry = 0;
 var Play_SingleClickExit = 0;
 var Play_SupportsSource = true;
+var Play_LowLatency = false;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
@@ -172,9 +173,15 @@ function Play_PreStart() {
     Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 3);
     Play_controlsAudioPos = Main_getItemInt('Play_controlsAudioPos', 1);
 
+    Play_LowLatency = Main_getItemBool('Play_LowLatency', false);
+
     if (Main_IsNotBrowser) {
         Android.mSetPlayerPosition(Play_PicturePicturePos);
         Android.mSetPlayerSize(Play_PicturePictureSize);
+
+        try {
+            Android.mSetlatency(Play_LowLatency);
+        } catch (e) {}
     }
 
     Play_SetQuality();
@@ -262,6 +269,9 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     //Chat delay
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
+
+    document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
+
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     UserLiveFeed_SetFeedPicText();
@@ -373,6 +383,8 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
             (Play_SupportsSource ? "&allow_source=true" : '') +
             '&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+        Play_AutoUrl = theUrl;
 
         if (UseAndroid) Android.ResStartAuto(theUrl, 1, 0);
         else Android.SetAuto(theUrl);
@@ -997,7 +1009,7 @@ function Play_HideBufferDialog() {
 }
 
 function Play_showWarningDialog(text) {
-    Main_textContent("dialog_warning_play_text", text);
+    Main_innerHTML("dialog_warning_play_text", text);
     Main_ShowElement('dialog_warning_play');
 }
 
@@ -1988,15 +2000,16 @@ var Play_controlsFallow = 4;
 var Play_controlsSpeed = 5;
 var Play_controlsQuality = 6;
 var Play_controlsQualityMini = 7;
-var Play_controlsAudio = 8;
-var Play_controlsChat = 9;
-var Play_controlsChatSide = 10;
-var Play_controlsChatForceDis = 11;
-var Play_controlsChatPos = 12;
-var Play_controlsChatSize = 13;
-var Play_controlsChatBright = 14;
-var Play_controlsChatFont = 15;
-var Play_controlsChatDelay = 16;
+var Play_controlsLowLatency = 8;
+var Play_controlsAudio = 9;
+var Play_controlsChat = 10;
+var Play_controlsChatSide = 11;
+var Play_controlsChatForceDis = 12;
+var Play_controlsChatPos = 13;
+var Play_controlsChatSize = 14;
+var Play_controlsChatBright = 15;
+var Play_controlsChatFont = 16;
+var Play_controlsChatDelay = 17;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2209,6 +2222,45 @@ function Play_MakeControls() {
             Play_BottomArrows(this.position);
         },
 
+    };
+
+    Play_controls[Play_controlsLowLatency] = { //quality
+        icons: "history",
+        string: STR_LOW_LATENCY,
+        values: null,
+        defaultValue: 0,
+        opacity: 0,
+        enterKey: function() {
+            Play_hidePanel();
+
+            Play_LowLatency = !Play_LowLatency;
+
+            if (Main_IsNotBrowser) {
+                try {
+                    Android.mSetlatency(Play_LowLatency);
+                } catch (e) {}
+
+                if (PlayExtra_PicturePicture) {
+                    Android.ResStartAuto(Play_AutoUrl, 1, 0);
+                    Android.ResStartAuto2(PlayExtra_AutoUrl);
+                } else {
+                    if (Play_quality.indexOf("Auto") !== -1) Android.SetAuto(Play_AutoUrl);
+                    Play_onPlayer();
+                }
+
+            }
+
+            if (Play_LowLatency) {
+                Play_showWarningDialog(STR_FORBIDDEN);
+                window.setTimeout(Play_HideWarningDialog, 3000);
+            }
+
+            Main_setItem('Play_LowLatency', Play_LowLatency);
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('extra_button_' + this.position, "(" + (Play_LowLatency ? STR_ENABLE : STR_DISABLE) + ")");
+        },
     };
 
     Play_controls[Play_controlsAudio] = { //speed
