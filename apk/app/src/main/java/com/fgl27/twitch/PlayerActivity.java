@@ -125,6 +125,7 @@ public class PlayerActivity extends Activity {
     private boolean alredystarted;
     private boolean shouldCallJavaCheck;
     public boolean IsIN5050 = false;
+    public boolean mLowLatency = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +161,8 @@ public class PlayerActivity extends Activity {
 
             mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"),
                     dataSourceFactory,
-                    3);
+                    3,
+                    false);
 
             VideoHolder = findViewById(R.id.videoholder);
 
@@ -228,7 +230,7 @@ public class PlayerActivity extends Activity {
         if (seeking) player[position].seekTo(mResumePosition);
 
         player[position].prepare(
-                mediaSourcePlaying[position] != null ? mediaSourcePlaying[position] : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall),
+                mediaSourcePlaying[position] != null ? mediaSourcePlaying[position] : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall, mLowLatency),
                 !seeking,
                 true);
 
@@ -657,7 +659,7 @@ public class PlayerActivity extends Activity {
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             myHandler.post(() -> {
                 expires[mainPlayer] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1);
+                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
             });
         }
 
@@ -668,7 +670,7 @@ public class PlayerActivity extends Activity {
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             myHandler.post(() -> {
                 expires[mainPlayer] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1);
+                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
                 PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position);
             });
         }
@@ -680,7 +682,7 @@ public class PlayerActivity extends Activity {
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             myHandler.post(() -> {
                 expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1);
+                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
                 PreinitializePlayer2(mediaSourcesAuto[mainPlayer ^ 1], "");
             });
         }
@@ -692,8 +694,14 @@ public class PlayerActivity extends Activity {
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             myHandler.post(() -> {
                 expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1);
+                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
             });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mSetlatency(boolean LowLatency) {
+            mLowLatency = LowLatency;
         }
 
         @SuppressWarnings("unused")//called by JS

@@ -286,10 +286,23 @@ public final class Tools {
         return false;
     }
 
-    public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int mwhocall) {
-        if (mwhocall < 3)
-            return new HlsMediaSource.Factory(dataSourceFactory).setAllowChunklessPreparation(true).createMediaSource(uri);
-        else
+    public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int mwhocall, boolean LowLatency) {
+        if (mwhocall == 1) {
+            if (LowLatency) {
+                return new HlsMediaSource.Factory(dataSourceFactory)
+                        .setAllowChunklessPreparation(true)
+                        .setLowLatency(3000)
+                        .createMediaSource(uri);
+            } else {
+                return new HlsMediaSource.Factory(dataSourceFactory)
+                        .setAllowChunklessPreparation(true)
+                        .createMediaSource(uri);
+            }
+        } else if (mwhocall == 2) {
+            return new HlsMediaSource.Factory(dataSourceFactory)
+                    .setAllowChunklessPreparation(true)
+                    .createMediaSource(uri);
+        } else
             return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
     }
 
