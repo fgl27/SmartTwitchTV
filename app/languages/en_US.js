@@ -306,4 +306,7 @@ function en_USLang() {
     STR_MAIN_USER = "Main user";
     STR_USER_TOP_LABLE = "Click on a user to see options";
     STR_USER_EXTRAS = "User: Switch, add, key";
+    STR_LOW_LATENCY = "Low Latency";
+    STR_FORBIDDEN = "If start getting buffers issue disable " + STR_LOW_LATENCY + "<br>Use " + STR_SETTINGS_BUFFER_LIVE +
+        " equal or bellow to 1 for this to have effect";
 }
