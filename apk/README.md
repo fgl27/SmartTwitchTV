@@ -22,7 +22,7 @@ $ ./gradlew assembleDebug
 **Make sure SmartTwitchTV and ExoPlayer repo are cloned in to the same folder**<br>
 **Android Studio build is supported**<br>
 
-The reason to build **ExoPlayer** from source is because is necessary manly this change [HlsMediaPlaylist hardcoded targetDurationUs to 1s](https://github.com/fgl27/ExoPlayer/commit/0d05b9aa0e8e736ec82d65316694ce4f3aaf0aeb) to achieve a smooth playback experience , plus I add minor changes to **ExoPlayer** [ExoPlayer/commits?author=fgl27](https://github.com/fgl27/ExoPlayer/commits?author=fgl27), **ExoPlayer** supports all possible devices, but here I'm only supporting TV devices using SDK 22 and up, so we can update some dependencies without worry on old SDK devices support/workarounds plus I may add a improve here or there when I see feet, plus the branch used is the [dev-v2](https://github.com/fgl27/ExoPlayer/commits/dev-v2) that has the latest improves and fixes.
+The reason to build **ExoPlayer** from source is because I made changes to improve the performance and to add some features [ExoPlayer/commits?author=fgl27](https://github.com/fgl27/ExoPlayer/commits?author=fgl27), isn't possible to build this project using google **ExoPlayer** repo.
 
 Project Apk Dependencies
 ==============
