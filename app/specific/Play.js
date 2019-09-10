@@ -2085,7 +2085,7 @@ function Play_MakeControls() {
         setIcon: function(AddCode_IsFallowing) {
             Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
                 (AddCode_IsFallowing ? "heart" : "heart-o") +
-                '" style="color: #' + (AddCode_IsFallowing ? "00b300" : "FFFFFF") + ';" ></i>');
+                '" style="color: #' + (AddCode_IsFallowing ? "6441a4" : "FFFFFF") + ';" ></i>');
         },
     };
 
