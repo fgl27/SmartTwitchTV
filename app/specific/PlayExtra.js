@@ -108,7 +108,7 @@ function PlayExtra_KeyEnter() {
                 PlayExtra_isHost = false;
                 PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
 
-                Main_textContent('chat_container2_name_text', PlayExtra_selectedChannelDisplayname);
+                Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_selectedChannelDisplayname + STR_SPACE);
 
                 PlayExtra_DisplaynameHost = Main_values.Play_DisplaynameHost;
 
@@ -198,8 +198,8 @@ function PlayExtra_SwitchPlayer() {
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
 
-    Main_textContent('chat_container2_name_text', PlayExtra_selectedChannelDisplayname);
-    Main_textContent('chat_container_name_text', Main_values.Play_selectedChannelDisplayname);
+    Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_selectedChannelDisplayname + STR_SPACE);
+    Main_innerHTML('chat_container_name_text', STR_SPACE + Main_values.Play_selectedChannelDisplayname + STR_SPACE);
 }
 
 function PlayExtra_ShowChat() {

@@ -295,7 +295,7 @@ function Play_Start() {
     Play_currentTime = 0;
     Play_watching_time = new Date().getTime();
     Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_WATCHING + Play_timeS(0));
-    Main_textContent('chat_container_name_text', Main_values.Play_selectedChannelDisplayname);
+    Main_innerHTML('chat_container_name_text', STR_SPACE + Main_values.Play_selectedChannelDisplayname + STR_SPACE);
     Play_created = Play_timeMs(0);
 
     Main_textContent("stream_live_time", Play_created);
