@@ -304,7 +304,7 @@ function Sidepannel_SetUserLables() {
     Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_CHANNELS);
     Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_USER_MY_CHANNEL);
 
-    Sidepannel_SetIcons('side_panel_new_2', 'arrow-circle-left');
+    Sidepannel_SetIcons('side_panel_new_2', 'arrow-left');
     Sidepannel_SetIcons('side_panel_new_4', 'users');
     Sidepannel_SetIcons('side_panel_new_5', 'gamepad');
     Sidepannel_SetIcons('side_panel_new_6', 'movie-play');

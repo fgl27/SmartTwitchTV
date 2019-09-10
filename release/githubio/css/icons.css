@@ -69,11 +69,8 @@
 .icon-search:before {
   content: "\68";
 }
-.icon-arrow-circle-left:before {
+.icon-arrow-left:before {
   content: "\69";
-}
-.icon-info-circle:before {
-  content: "\6a";
 }
 .icon-heart-o:before {
   content: "\6b";
@@ -120,7 +117,7 @@
 .icon-play-1:before {
   content: "\45";
 }
-.icon-arrow-circle-right:before {
+.icon-arrow-right:before {
   content: "\6e";
 }
 .icon-next:before {
@@ -161,9 +158,6 @@
 }
 .icon-resize-down:before {
   content: "\54";
-}
-.icon-buffer:before {
-  content: "\55";
 }
 .icon-sound-off:before {
   content: "\4d";
