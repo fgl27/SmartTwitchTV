@@ -21,6 +21,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "live_feed_sort": { //show_screen_counter
+        "values": ["views", "a-z", "z-a"],
+        "defaultValue": 1
+    },
     "live_notification": { //buffer_live
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -138,6 +142,13 @@ function Settings_SetSettings() {
     Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
 
     div += Settings_DivOptionWithSummary(key, STR_CONTENT_LANG, '');
+
+    //live_feed_sort
+    key = "live_feed_sort";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_VIEWS, STR_A_Z, STR_Z_A];
+
+    div += Settings_DivOptionWithSummary(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
 
     //thumb qualityes
     key = "thumb_quality";
@@ -318,6 +329,11 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_CONTENT_LANG);
     Main_textContent(key, Settings_Obj_values(key));
     Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
+
+    key = "live_feed_sort";
+    Settings_DivOptionChangeLang(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
+    Main_textContent(key, Settings_Obj_values(key));
+    Settings_value[key].values = [STR_VIEWS, STR_A_Z, STR_Z_A];
 
     //Player settings
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);

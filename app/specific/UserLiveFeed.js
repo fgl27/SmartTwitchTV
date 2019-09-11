@@ -194,9 +194,9 @@ function UserLiveFeed_loadDataErrorLive() {
 
 function UserLiveFeed_loadDataSuccess(responseText) {
 
-    var response = JSON.parse(responseText);
-    var response_items = response.streams.length;
-    //UserLiveFeed_MaxOffset = parseInt(response._total);
+    var response = JSON.parse(responseText).streams;
+    var response_items = response.length;
+    var sorting = Settings_Obj_default('live_feed_sort');
 
     if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
 
@@ -209,8 +209,14 @@ function UserLiveFeed_loadDataSuccess(responseText) {
         UserLiveFeed_CheckNotifycation = false;
     }
 
+    if (sorting) {
+        response.sort(function(a, b) {
+            return (sorting === 1 ? a.channel.display_name : b.channel.display_name).toLowerCase().localeCompare((sorting === 1 ? b.channel.display_name : a.channel.display_name).toLowerCase());
+        });
+    }
+
     for (i; i < response_items; i++) {
-        stream = response.streams[i];
+        stream = response[i];
         id = stream.channel._id;
         if (!UserLiveFeed_idObject[id]) {
 
@@ -231,7 +237,8 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                 [stream.channel.name, id, Main_is_rerun(stream.stream_type)],
                 [stream.preview.template.replace("{width}x{height}", Main_VideoSize),
                     stream.channel.display_name,
-                    stream.game
+                    stream.game,
+                    Main_addCommas(stream.viewers)
                 ]));
 
             if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name) Sidepannel_PosFeed = i;
@@ -335,10 +342,11 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
         '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + valuesArray[0] +
         Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text">' +
-        '<div id="' + UserLiveFeed_ids[3] + id +
-        '" class="stream_info_live_name" style="width: 66%; display: inline-block;"><i class="icon-' +
-        (!data[2] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE +
-        valuesArray[1] + '</div>' + '<div id="' + UserLiveFeed_ids[5] + id +
+        '<div style="line-height: 1.6ch;"><div id="' + UserLiveFeed_ids[3] + id +
+        '" class="stream_info_live_name" style="width: 63%; display: inline-block;">' + valuesArray[1] + '</div>' +
+        '<div "class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
+        '<i class="icon-' + (!data[2] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' +
+        STR_SPACE + valuesArray[3] + '</div></div><div id="' + UserLiveFeed_ids[5] + id +
         '"class="stream_info_live">' + valuesArray[2] + '</div>' + '</div></div>';
 
     return div;
