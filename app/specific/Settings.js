@@ -601,7 +601,7 @@ function Settings_SetClock() {
 function Settings_ScrollTable() {
     var doc = document.getElementById('settings_scroll');
 
-    doc.scrollTop = (Settings_cursorY > 9) ? doc.scrollHeight : 0;
+    doc.scrollTop = (Settings_cursorY > 10) ? doc.scrollHeight : 0;
 }
 
 function Settings_handleKeyDown(event) {
