@@ -310,7 +310,7 @@ function en_USLang() {
     STR_FORBIDDEN = "If start getting buffers issue disable " + STR_LOW_LATENCY +
         "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
     STR_LIVE_FEED_SORT = "Live feed sort";
-    STR_LIVE_FEED_SORT_SUMMARY = "Sorts both side panel live feed as player live feed";
+    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed";
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
 }
