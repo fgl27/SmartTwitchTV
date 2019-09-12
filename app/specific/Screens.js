@@ -110,7 +110,6 @@ function Screens_StartLoad() {
     Main_HideWarningDialog();
     inUseObj.cursor = null;
     inUseObj.status = false;
-    inUseObj.row = document.createElement('div');
     inUseObj.MaxOffset = 0;
     inUseObj.TopRowCreated = false;
     inUseObj.offset = 0;
@@ -196,6 +195,7 @@ function Screens_loadDataSuccess() {
 
         if (!inUseObj.row_id) {
             inUseObj.row = document.createElement('div');
+            inUseObj.row.classList.add('animateheitrnas');
             inUseObj.row.id = inUseObj.ids[12] + inUseObj.row_id;
         }
 
@@ -207,6 +207,7 @@ function Screens_loadDataSuccess() {
 
             if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
                 inUseObj.row = document.createElement('div');
+                inUseObj.row.classList.add('animateheitrnas');
                 inUseObj.row.id = inUseObj.ids[12] + inUseObj.row_id;
                 inUseObj.coloumn_id = 0;
             }
@@ -478,20 +479,42 @@ function Screens_addrow(forceScroll, y) {
         inUseObj.currY = inUseObj.posY;
         if ((inUseObj.Cells.length) > (y + 3) && y) {
             var doc = document.getElementById(inUseObj.table);
+            inUseObj.Cells[y - 1].classList.add('animatehei');
             doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 4)))
+
+            Main_ready(function() {
+                doc = document.getElementById(inUseObj.ids[12] + (y - 1));
+                doc.classList.remove('animateheitrnasnone');
+                doc.classList.remove('animatehei');
+            });
+            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 4))) {
                 document.getElementById(inUseObj.ids[12] + (y + 4)).remove();
+            }
         }
     }
 
     Screens_addrowEnd(forceScroll);
 }
 
+function Screens_addHei() {
+    var ele = document.getElementById(inUseObj.table).getElementsByClassName("animatehei");
+    for (var i = 0; i < ele.length; i++)
+        ele[i].classList.add('animateheitrnasnone');
+}
+
 function Screens_addrowDown(y) {
     if (inUseObj.Cells[y + 3]) {
         document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 3]);
-        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2)))
-            document.getElementById(inUseObj.ids[12] + (y - 2)).remove();
+        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
+            Screens_addHei();
+            document.getElementById(inUseObj.ids[12] + (y - 2)).classList.remove('animateheitrnasnone');
+            document.getElementById(inUseObj.ids[12] + (y - 2)).classList.add('animatehei');
+            inUseObj.Cells[y - 2] = document.getElementById(inUseObj.ids[12] + (y - 2)).cloneNode(true);
+            console.log(inUseObj.Cells[y - 2]);
+            window.setTimeout(function() {
+                document.getElementById(inUseObj.ids[12] + (y - 2)).remove();
+            }, 400);
+        }
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
         //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
@@ -545,12 +568,12 @@ function Screens_addrowEnd(forceScroll) {
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
-        if (y > 0) {
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) {
+        if (y === 1) {
+            if (Main_ThumbNull((y + 1), 0, idArray[0]) && document.getElementById(idArray[10]).style.top === '') {
                 Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 8.4);
             } else Main_handleKeyUp();
-        } else Main_ScrollTable(idArray[10], 0);
-
+        } else if (!y) Main_ScrollTable(idArray[10], 0);
+        else Main_handleKeyUp();
     } else Main_handleKeyUp();
 }
 
