@@ -34,7 +34,6 @@ Project Web Dependencies
 
 * [Nightdev KapChat - KapChat captures (kaptures ![kapa](https://static-cdn.jtvnw.net/emoticons/v1/25/1.0)) Twitch chat directly into OBS or XSplit.](https://www.nightdev.com/kapchat/)
 * [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
-* [LazyLoad - A a fast, lightweight and flexible script that speeds up your web application by loading your content images, videos and iframes only as they enter the viewport](https://github.com/verlok/lazyload)
 * [Twemoji - A simple library that provides standard Unicode emoji support across all platforms](https://github.com/twitter/twemoji)
 * [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
 * [HTMLMinifier - is a highly configurable, well-tested, JavaScript-based HTML minifier.](https://github.com/kangax/html-minifier)
