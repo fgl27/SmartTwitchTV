@@ -110,8 +110,6 @@ function Screens_StartLoad() {
     Main_HideWarningDialog();
     inUseObj.cursor = null;
     inUseObj.status = false;
-    inUseObj.row = document.createElement('div');
-    inUseObj.MaxOffset = 0;
     inUseObj.TopRowCreated = false;
     inUseObj.offset = 0;
     inUseObj.idObject = {};
