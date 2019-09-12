@@ -210,9 +210,17 @@ function UserLiveFeed_loadDataSuccess(responseText) {
     }
 
     if (sorting) {
-        response.sort(function(a, b) {
-            return (sorting === 1 ? a.channel.display_name : b.channel.display_name).toLowerCase().localeCompare((sorting === 1 ? b.channel.display_name : a.channel.display_name).toLowerCase());
-        });
+        if (sorting === 1) {
+            //A-Z
+            response.sort(function(a, b) {
+                return a.channel.display_name.toLowerCase().localeCompare(b.channel.display_name.toLowerCase());
+            });
+        } else {
+            //Z-A
+            response.sort(function(a, b) {
+                return b.channel.display_name.toLowerCase().localeCompare(a.channel.display_name.toLowerCase());
+            });
+        }
     }
 
     for (i; i < response_items; i++) {
