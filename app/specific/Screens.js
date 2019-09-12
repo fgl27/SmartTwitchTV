@@ -194,6 +194,7 @@ function Screens_loadDataSuccess() {
 
         if (!inUseObj.row_id) {
             inUseObj.row = document.createElement('div');
+            inUseObj.row.classList.add('animate_height_transition');
             inUseObj.row.id = inUseObj.ids[12] + inUseObj.row_id;
         }
 
@@ -205,6 +206,7 @@ function Screens_loadDataSuccess() {
 
             if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
                 inUseObj.row = document.createElement('div');
+                inUseObj.row.classList.add('animate_height_transition');
                 inUseObj.row.id = inUseObj.ids[12] + inUseObj.row_id;
                 inUseObj.coloumn_id = 0;
             }
@@ -476,19 +478,37 @@ function Screens_addrow(forceScroll, y) {
         if ((inUseObj.Cells.length) > (y + 3) && y) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 4)))
+
+            Main_ready(function() {
+                document.getElementById(inUseObj.ids[12] + (y - 1)).classList.remove('animate_height');
+            });
+            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 4))) {
                 document.getElementById(inUseObj.ids[12] + (y + 4)).remove();
+            }
         }
     }
 
     Screens_addrowEnd(forceScroll);
 }
 
+function Screens_addHei() {
+    var ele = document.getElementById(inUseObj.table).getElementsByClassName("animate_height");
+    for (var i = 0; i < ele.length; i++)
+        ele[i].remove();
+}
+
 function Screens_addrowDown(y) {
     if (inUseObj.Cells[y + 3]) {
         document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 3]);
-        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2)))
-            document.getElementById(inUseObj.ids[12] + (y - 2)).remove();
+        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
+            Screens_addHei();
+            document.getElementById(inUseObj.ids[12] + (y - 2)).classList.add('animate_height');
+            inUseObj.Cells[y - 2] = document.getElementById(inUseObj.ids[12] + (y - 2));
+            window.setTimeout(function() {
+                var ele = document.getElementById(inUseObj.ids[12] + (y - 2));
+                if (ele !== null) ele.remove();
+            }, 750);
+        }
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
         //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
@@ -542,12 +562,12 @@ function Screens_addrowEnd(forceScroll) {
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
-        if (y > 0) {
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) {
+        if (y === 1) {
+            if (Main_ThumbNull((y + 1), 0, idArray[0]) && document.getElementById(idArray[10]).style.top === '') {
                 Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 8.4);
             } else Main_handleKeyUp();
-        } else Main_ScrollTable(idArray[10], 0);
-
+        } else if (!y) Main_ScrollTable(idArray[10], 0);
+        else Main_handleKeyUp();
     } else Main_handleKeyUp();
 }
 
