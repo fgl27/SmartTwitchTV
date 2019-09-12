@@ -246,7 +246,7 @@ function Screens_createCellChannel(id, idArray, valuesArray) {
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
-        id + '" alt="" class="lazy stream_img" data-src="' + valuesArray[2] +
+        id + '" alt="" class="stream_img" src="' + valuesArray[2] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_thumbnail_channel_text_holder">' +
         '<div id="' + idArray[3] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
@@ -260,7 +260,7 @@ function Screens_createCellGame(id, idArray, valuesArray) {
         idArray[5] + id,
         valuesArray[1],
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
-        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_thumbnail_game_text_holder"><div id="<div id="' +
         idArray[3] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
@@ -276,7 +276,7 @@ function Screens_createCellClip(id, idArray, valuesArray) {
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[13] +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[13] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
@@ -296,7 +296,7 @@ function Screens_createCellVod(id, idArray, valuesArray) {
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[6] + id + '" class="stream_thumbnail_live_img" ' +
         (valuesArray[7] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
-        '><img id="' + idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
+        '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
@@ -316,7 +316,7 @@ function Screens_createCellLive(id, data, idArray, valuesArray) {
         idArray[8] + id,
         data,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
@@ -461,7 +461,6 @@ function Screens_addFocus(forceScroll) {
     }
 
     inUseObj.addrow(forceScroll, inUseObj.posY);
-    lazyLoadInstance.update();
 }
 
 function Screens_ThumbNotNull(thumbnail) {
