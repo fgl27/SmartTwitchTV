@@ -205,7 +205,7 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
-        //Show main buffer if this call is in the main player as this is needed fro when we are fast/back forwarding
+        //Show main loading if this call is in the main player as this is needed fro when we are fast/back forwarding
         //On small player it will show its own loading
         if (!isSmall && !IsIN5050) showLoading();
 
@@ -347,8 +347,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void showLoading() {
-        if (loadingView[2].getVisibility() != View.VISIBLE)
-            loadingView[2].setVisibility(View.VISIBLE);
+        loadingView[2].setVisibility(View.VISIBLE);
     }
 
     private void hideLoading(int position) {
@@ -945,13 +944,14 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, @Player.State int playbackState) {
             myHandler.post(() -> {
+                hideLoading(2);
                 if (playWhenReady) {
                     if (playbackState == Player.STATE_ENDED) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         player[position].setPlayWhenReady(false);
                         PlayerEventListenerClear(position);
                     } else if (playbackState == Player.STATE_BUFFERING) {
-                        hideLoading(2);
+
 
                         //Use the player buffer as a player check state to prevent be buffering for ever
                         //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
@@ -979,7 +979,7 @@ public class PlayerActivity extends Activity {
                                     mwhocall + "," + player[position].getDuration() + ")"));
                         }
                     }
-                } else hideLoading(2);
+                }
             });
         }
 
