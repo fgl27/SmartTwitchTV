@@ -191,9 +191,9 @@ function ChannelContent_setFallow() {
 }
 
 function ChannelContent_loadDataSuccess() {
-    Main_innerHTML("channel_content_thumbdiv0_1", '<img class="stream_img_channel_logo" alt="" src="' + Main_values.Main_selectedChannelLogo.replace("300x300", '600x600') + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
+    Main_innerHTML("channel_content_thumbdiv0_1", '<img class="lazy stream_img_channel_logo" alt="" data-src="' + Main_values.Main_selectedChannelLogo.replace("300x300", '600x600') + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
 
-    Main_innerHTML("channel_content_img0_1", '<img class="stream_img_channel" alt="" src="' + ChannelContent_profile_banner + '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'">');
+    Main_innerHTML("channel_content_img0_1", '<img class="lazy stream_img_channel" alt="" data-src="' + ChannelContent_profile_banner + '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER + '\'">');
 
     var streamer_bio = Main_values.Main_selectedChannelDisplayname;
 
@@ -228,6 +228,7 @@ function ChannelContent_loadDataSuccess() {
     } else ChannelContent_createCellOffline();
 
     ChannelContent_loadDataSuccessFinish();
+    lazyLoadInstance.update();
 }
 
 function ChannelContent_createCell(channel_name, channel_id, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, rerun) {
@@ -236,7 +237,7 @@ function ChannelContent_createCell(channel_name, channel_id, preview_thumbnail, 
 
     document.getElementById('channel_content_cell0_1').setAttribute(Main_DataAttribute, JSON.stringify([channel_name, channel_id, rerun]));
 
-    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
+    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="lazy stream_img" alt="" data-src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
         '\'"></div><div class="stream_thumbnail_live_text_holder"><div id="channel_content_cell0_3" style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
         '<i class="icon-' + (rerun ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
@@ -251,7 +252,7 @@ function ChannelContent_createCell(channel_name, channel_id, preview_thumbnail, 
 
 function ChannelContent_createCellOffline() {
     ChannelContent_isoffline = true;
-    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' + ChannelContent_offline_image + Main_randomimg +
+    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="lazy stream_img" alt="" data-src="' + ChannelContent_offline_image + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
         '\'"></div><div class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
         Main_values.Main_selectedChannelDisplayname + '</div><div class="stream_info_live" style="width:0%; float: right; text-align: right; display: inline-block;"></div></div>' +

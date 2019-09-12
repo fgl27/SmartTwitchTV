@@ -194,7 +194,6 @@ function Screens_loadDataSuccess() {
 
         if (!inUseObj.row_id) {
             inUseObj.row = document.createElement('div');
-            inUseObj.row.classList.add('animate_height_transition');
             inUseObj.row.id = inUseObj.ids[12] + inUseObj.row_id;
         }
 
@@ -206,7 +205,6 @@ function Screens_loadDataSuccess() {
 
             if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
                 inUseObj.row = document.createElement('div');
-                inUseObj.row.classList.add('animate_height_transition');
                 inUseObj.row.id = inUseObj.ids[12] + inUseObj.row_id;
                 inUseObj.coloumn_id = 0;
             }
@@ -248,7 +246,7 @@ function Screens_createCellChannel(id, idArray, valuesArray) {
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
-        id + '" alt="" class="stream_img" src="' + valuesArray[2] +
+        id + '" alt="" class="lazy stream_img" data-src="' + valuesArray[2] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_thumbnail_channel_text_holder">' +
         '<div id="' + idArray[3] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
@@ -262,7 +260,7 @@ function Screens_createCellGame(id, idArray, valuesArray) {
         idArray[5] + id,
         valuesArray[1],
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_thumbnail_game_text_holder"><div id="<div id="' +
         idArray[3] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
@@ -278,7 +276,7 @@ function Screens_createCellClip(id, idArray, valuesArray) {
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[13] +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[13] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
@@ -298,7 +296,7 @@ function Screens_createCellVod(id, idArray, valuesArray) {
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[6] + id + '" class="stream_thumbnail_live_img" ' +
         (valuesArray[7] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[7] + ');"' : '') +
-        '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
+        '><img id="' + idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
@@ -318,7 +316,7 @@ function Screens_createCellLive(id, data, idArray, valuesArray) {
         idArray[8] + id,
         data,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] + Main_randomimg +
+        idArray[1] + id + '" class="lazy stream_img" alt="" data-src="' + valuesArray[0] + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id + '" class="stream_thumbnail_live_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
@@ -463,6 +461,7 @@ function Screens_addFocus(forceScroll) {
     }
 
     inUseObj.addrow(forceScroll, inUseObj.posY);
+    lazyLoadInstance.update();
 }
 
 function Screens_ThumbNotNull(thumbnail) {
@@ -478,37 +477,19 @@ function Screens_addrow(forceScroll, y) {
         if ((inUseObj.Cells.length) > (y + 3) && y) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-
-            Main_ready(function() {
-                document.getElementById(inUseObj.ids[12] + (y - 1)).classList.remove('animate_height');
-            });
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 4))) {
+            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 4)))
                 document.getElementById(inUseObj.ids[12] + (y + 4)).remove();
-            }
         }
     }
 
     Screens_addrowEnd(forceScroll);
 }
 
-function Screens_addHei() {
-    var ele = document.getElementById(inUseObj.table).getElementsByClassName("animate_height");
-    for (var i = 0; i < ele.length; i++)
-        ele[i].remove();
-}
-
 function Screens_addrowDown(y) {
     if (inUseObj.Cells[y + 3]) {
         document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 3]);
-        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
-            Screens_addHei();
-            document.getElementById(inUseObj.ids[12] + (y - 2)).classList.add('animate_height');
-            inUseObj.Cells[y - 2] = document.getElementById(inUseObj.ids[12] + (y - 2));
-            window.setTimeout(function() {
-                var ele = document.getElementById(inUseObj.ids[12] + (y - 2));
-                if (ele !== null) ele.remove();
-            }, 750);
-        }
+        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2)))
+            document.getElementById(inUseObj.ids[12] + (y - 2)).remove();
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
         //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
@@ -562,12 +543,12 @@ function Screens_addrowEnd(forceScroll) {
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
-        if (y === 1) {
-            if (Main_ThumbNull((y + 1), 0, idArray[0]) && document.getElementById(idArray[10]).style.top === '') {
+        if (y > 0) {
+            if (Main_ThumbNull((y + 1), 0, idArray[0])) {
                 Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 8.4);
             } else Main_handleKeyUp();
-        } else if (!y) Main_ScrollTable(idArray[10], 0);
-        else Main_handleKeyUp();
+        } else Main_ScrollTable(idArray[10], 0);
+
     } else Main_handleKeyUp();
 }
 
