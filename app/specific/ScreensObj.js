@@ -54,7 +54,7 @@ var Base_obj = {
     loadingDataTimeout: 3500,
     MaxOffset: 0,
     offset: 0,
-    visiblerows: 4,
+    visiblerows: 3,
     status: false,
     emptyContent: false,
     itemsCountCheck: false,

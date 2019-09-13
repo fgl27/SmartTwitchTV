@@ -62,7 +62,7 @@
 
         .animate_height_transition {
             height: 18em;
-            transition: height 0.75s;
+            transition: height 0.45s ease-in-out;
         }
 
         div.screen_holder,
@@ -73,7 +73,7 @@
             width: 100%;
             position: fixed;
             top: 7.6%;
-            transition: top 0.75s;
+            transition: top 0.45s ease-in-out;
         }
 
         div.screen_holder_switch {
@@ -121,7 +121,6 @@
             font-size: 55%;
             font-family: 'Roboto-Bold';
             vertical-align: middle;
-            transition: opacity 1s ease-in-out !important;
         }
 
         div.stream_cell_period {
@@ -169,6 +168,9 @@
             background-color: #ebebeb !important;
             color: #000000 !important;
             border-color: #ebebeb !important;
+            transition: background-color 0.45s ease-in-out,
+                color 0.45s ease-in-out,
+                border-color 0.45s ease-in-out;
         }
 
         div.stream_switch_focused {
@@ -487,7 +489,7 @@
         }
 
         div.scenefeed_background {
-            transition: background 0.45s;
+            transition: background 0.45s ease-in-out;
             background: rgba(0, 0, 0, 0.75);
         }
 
@@ -501,7 +503,7 @@
             background: #000000;
             border: 0.06em solid;
             border-color: #ebebeb !important;
-            transition: margin-top 0.65s ease-in-out !important;
+            transition: margin-top 0.45s ease-in-out !important;
         }
 
         div.user_feed_notify_hide {
@@ -807,7 +809,7 @@
             width: 5%;
             margin-left: -1%;
             overflow: hidden;
-            transition: margin-left 0.45s;
+            transition: margin-left 0.45s ease-in-out;
         }
 
         div.side_panel_background_color {
@@ -921,7 +923,7 @@
             left: -1%;
             height: 100%;
             width: 25.5%;
-            transition: margin-left 0.45s;
+            transition: margin-left 0.45s ease-in-out;
             overflow: hidden;
         }
 
