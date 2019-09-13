@@ -1168,6 +1168,7 @@ var Base_Channel_obj = {
     addFocus: Screens_addFocusChannel,
     ItemsReloadLimit: Main_ItemsReloadLimitChannel,
     thumbclass: 'stream_thumbnail_channel_holder',
+    rowClass: 'animate_height_transition_channel',
     img_404: IMG_404_LOGO,
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;

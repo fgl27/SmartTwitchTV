@@ -274,7 +274,9 @@ function Users_handleKeyDown(event) {
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
                 Users_exit();
+                Sidepannel_RemoveFocusMain();
                 Main_values.Main_Go = Users_beforeUser;
+                Sidepannel_SetTopOpacity(Main_values.Main_Go);
                 Main_SwitchScreenAction();
             }
             break;
