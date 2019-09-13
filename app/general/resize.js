@@ -52,4 +52,4 @@ function setWidthHeight(elementsArray, Width, Height) {
 
 //Do the calculation and changes on proper events call
 window.addEventListener('resize', calculateFontSize, false);
-window.addEventListener('load', calculateFontSize, false);
+//window.addEventListener('load', calculateFontSize, false);
