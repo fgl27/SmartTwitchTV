@@ -131,6 +131,7 @@ var Base_Vod_obj = {
     ColoumnsCount: Main_ColoumnsCountVideo,
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     thumbclass: 'stream_thumbnail_live_holder',
+    rowClass: 'animate_height_transition',
     addFocus: function(y, x, idArray, forceScroll) {
         this.AnimateThumb(this);
         Screens_addFocusVideo(y, x, idArray, forceScroll);
@@ -496,6 +497,7 @@ var Base_Live_obj = {
     ItemsLimit: Main_ItemsLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
+    rowClass: 'animate_height_transition',
     thumbclass: 'stream_thumbnail_live_holder',
     img_404: IMG_404_VIDEO,
     setMax: function(tempObj) {
@@ -838,6 +840,7 @@ var Base_Clip_obj = {
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     ColoumnsCount: Main_ColoumnsCountVideo,
     addFocus: Screens_addFocusVideo,
+    rowClass: 'animate_height_transition',
     thumbclass: 'stream_thumbnail_live_holder',
     cursor: null,
     object: 'clips',
@@ -1012,6 +1015,7 @@ var Base_Game_obj = {
     thumbclass: 'stream_thumbnail_game_holder',
     ItemsReloadLimit: Main_ItemsReloadLimitGame,
     ItemsLimit: Main_ItemsLimitGame,
+    rowClass: 'animate_height_transition_games',
     ColoumnsCount: Main_ColoumnsCountGame,
     addFocus: Screens_addFocusGame,
     img_404: IMG_404_GAME,
