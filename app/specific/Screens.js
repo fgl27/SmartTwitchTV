@@ -594,7 +594,7 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
         } else document.getElementById(idArray[10]).style.top = '';
     }
 
-    Main_handleKeyUp();
+    window.setTimeout(Main_handleKeyUp);
 }
 
 function Screens_addFocusChannel(y, x, idArray, forceScroll) {
