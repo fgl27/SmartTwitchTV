@@ -417,6 +417,7 @@ function Play_Resume() {
         Play_watching_time = new Date().getTime();
         Play_isOn = true;
         Play_clearPause();
+        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
         if (Play_isOn) {
             Play_showBufferDialog();
             Play_loadingInfoDataTry = 0;
@@ -1282,7 +1283,7 @@ function Play_KeyPause(PlayVodClip) {
         Play_clearPause();
         Play_HideBufferDialog();
 
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
+        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
 
         if (Play_isPanelShown()) {
             if (PlayVodClip === 1) Play_hidePanel();
@@ -1294,7 +1295,7 @@ function Play_KeyPause(PlayVodClip) {
     } else {
         Play_HideBufferDialog();
 
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i> </div>');
+        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
         if (Main_IsNotBrowser) Android.play(false);
     }
