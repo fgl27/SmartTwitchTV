@@ -383,7 +383,7 @@ function Sidepannel_handleKeyDown(event) {
             Sidepannel_StartMain();
             break;
         case KEY_LEFT:
-            UserLiveFeed_FeedRefreshFocus();
+            if (!UserLiveFeed_loadingData) UserLiveFeed_FeedRefresh();
             break;
         case KEY_UP:
             if (Sidepannel_PosFeed && !UserLiveFeed_loadingData) {
@@ -400,15 +400,17 @@ function Sidepannel_handleKeyDown(event) {
             }
             break;
         case KEY_ENTER:
-            var doc = document.getElementById("side_panel");
-            doc.style.transition = 'none';
-            Sidepannel_Hide();
-            Main_values.Play_isHost = false;
-            Play_UserLiveFeedPressed = true;
-            Main_ready(function() {
-                Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
-                doc.style.transition = '';
-            });
+            if (!UserLiveFeed_loadingData) {
+                var doc = document.getElementById("side_panel");
+                doc.style.transition = 'none';
+                Sidepannel_Hide();
+                Main_values.Play_isHost = false;
+                Play_UserLiveFeedPressed = true;
+                Main_ready(function() {
+                    Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
+                    doc.style.transition = '';
+                });
+            }
             break;
         default:
             break;
