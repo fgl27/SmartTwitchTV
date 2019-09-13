@@ -2,6 +2,10 @@
 var inUseObj = {};
 var Screens_clear = false;
 var Screens_KeyEnterID;
+var Screens_ScrollAnimationTimeout = 450;
+var Screens_ChangeFocusAnimationFinished = true;
+var Screens_ChangeFocusAnimationFast = false;
+
 
 //Initiate all Main screens obj and they properties
 function Screens_InitScreens() {
@@ -342,6 +346,9 @@ function Screens_loadDataSuccessFinish() {
             var doc = document.getElementById(inUseObj.table);
             for (var i = 0; i < (inUseObj.Cells.length < inUseObj.visiblerows ? inUseObj.Cells.length : inUseObj.visiblerows); i++)
                 doc.appendChild(inUseObj.Cells[i]);
+
+            inUseObj.offsttop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
+            console.log(inUseObj.offsttop);
         }
         inUseObj.FirstLoad = false;
         //TODO improve this check
@@ -475,39 +482,51 @@ function Screens_addrow(forceScroll, y) {
         Screens_addrowDown(y);
     } else if (inUseObj.currY > y) { // Up
         inUseObj.currY = inUseObj.posY;
-        if ((inUseObj.Cells.length) > (y + 3) && y) {
+        if (y && (inUseObj.Cells.length) > (y + 1) && inUseObj.Cells[y + 2]) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+            document.getElementById(inUseObj.ids[12] + (y - 1)).classList.add('animate_height');
 
-            Main_ready(function() {
+            if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                Main_ready(function() {
+                    document.getElementById(inUseObj.ids[12] + (y - 1)).classList.remove('animate_height');
+                });
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
+                    Screens_ChangeFocusAnimationFinished = true;
+
+                }, Screens_ScrollAnimationTimeout);
+            } else {
                 document.getElementById(inUseObj.ids[12] + (y - 1)).classList.remove('animate_height');
-            });
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 4))) {
-                document.getElementById(inUseObj.ids[12] + (y + 4)).remove();
+                Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
             }
+
         }
     }
-
     Screens_addrowEnd(forceScroll);
 }
 
-function Screens_addHei() {
-    var ele = document.getElementById(inUseObj.table).getElementsByClassName("animate_height");
-    for (var i = 0; i < ele.length; i++)
-        ele[i].remove();
-}
-
 function Screens_addrowDown(y) {
-    if (inUseObj.Cells[y + 3]) {
-        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 3]);
+    if (inUseObj.Cells[y + 1]) {
+        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 1]);
+
         if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
-            Screens_addHei();
-            document.getElementById(inUseObj.ids[12] + (y - 2)).classList.add('animate_height');
-            inUseObj.Cells[y - 2] = document.getElementById(inUseObj.ids[12] + (y - 2));
-            window.setTimeout(function() {
-                var ele = document.getElementById(inUseObj.ids[12] + (y - 2));
-                if (ele !== null) ele.remove();
-            }, 750);
+            if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                document.getElementById(inUseObj.ids[12] + (y - 2)).classList.add('animate_height');
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
+                    Screens_ChangeFocusAnimationFinished = true;
+                }, Screens_ScrollAnimationTimeout);
+
+            } else Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
         }
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
@@ -520,6 +539,11 @@ function Screens_addrowDown(y) {
     }
 }
 
+function Screens_RemoveElement(id) {
+    var ele = document.getElementById(id);
+    if (ele) ele.remove();
+}
+
 function Screens_addrowChannel(forceScroll, y) {
     if (inUseObj.currY < y) { // down
         inUseObj.currY = inUseObj.posY;
@@ -529,8 +553,7 @@ function Screens_addrowChannel(forceScroll, y) {
         if (y > 1 && (inUseObj.Cells.length) > (y + 3)) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y + 3)))
-                document.getElementById(inUseObj.ids[12] + (y + 3)).remove();
+            Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
         }
     }
 
@@ -540,8 +563,7 @@ function Screens_addrowChannel(forceScroll, y) {
 function Screens_addrowChannelDown(y) {
     if (inUseObj.Cells[y + 2]) {
         document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
-        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3)))
-            document.getElementById(inUseObj.ids[12] + (y - 3)).remove();
+        Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
         //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
@@ -562,12 +584,18 @@ function Screens_addrowEnd(forceScroll) {
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
-        if (y === 1) {
-            if (Main_ThumbNull((y + 1), 0, idArray[0]) && document.getElementById(idArray[10]).style.top === '') {
-                Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[0] + y + '_' + x).offsetTop * -1, 8.4);
+        if (y > 0) {
+            if (Main_ThumbNull((y + 1), 0, idArray[0])) {
+
+                if (Main_ThumbNull((y - 1), 0, idArray[0]))
+                    document.getElementById(idArray[10]).style.top = 'calc(8.4% - ' + inUseObj.offsttop + 'em)';
+
+                Main_handleKeyUp();
+
             } else Main_handleKeyUp();
         } else if (!y) Main_ScrollTable(idArray[10], 0);
         else Main_handleKeyUp();
+
     } else Main_handleKeyUp();
 }
 
@@ -686,8 +714,14 @@ function Screens_handleKeyUpClear() {
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
 }
 
+document.body.addEventListener("keyup", Screens_handleKeyUpAnimationFast);
+
+function Screens_handleKeyUpAnimationFast() {
+    Screens_ChangeFocusAnimationFast = false;
+}
+
 function Screens_handleKeyDown(event) {
-    if (inUseObj.FirstLoad || Main_CantClick()) return;
+    if (inUseObj.FirstLoad || Main_CantClick() || !Screens_ChangeFocusAnimationFinished) return;
     else Main_keyClickDelayStart();
 
     switch (event.keyCode) {
