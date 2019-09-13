@@ -45,6 +45,7 @@ var Base_obj = {
     posY: 0,
     currY: 0,
     row_id: 0,
+    offsttop: 0,
     coloumn_id: 0,
     dataEnded: false,
     idObject: {},

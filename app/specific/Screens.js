@@ -2,7 +2,7 @@
 var inUseObj = {};
 var Screens_clear = false;
 var Screens_KeyEnterID;
-var Screens_ScrollAnimationTimeout = 450;
+var Screens_ScrollAnimationTimeout = 450; //Same time as animate_height_transition
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
 
@@ -347,8 +347,6 @@ function Screens_loadDataSuccessFinish() {
             for (var i = 0; i < (inUseObj.Cells.length < inUseObj.visiblerows ? inUseObj.Cells.length : inUseObj.visiblerows); i++)
                 doc.appendChild(inUseObj.Cells[i]);
 
-            inUseObj.offsttop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
-            console.log(inUseObj.offsttop);
         }
         inUseObj.FirstLoad = false;
         //TODO improve this check
@@ -585,18 +583,18 @@ function Screens_addrowEnd(forceScroll) {
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) {
 
-                if (Main_ThumbNull((y - 1), 0, idArray[0]))
-                    document.getElementById(idArray[10]).style.top = 'calc(8.4% - ' + inUseObj.offsttop + 'em)';
+            if (Main_ThumbNull((y + 1), 0, idArray[0])) { //We didn't reach the bottom yet
+                if (!inUseObj.offsttop)
+                    inUseObj.offsttop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
 
-                Main_handleKeyUp();
+                document.getElementById(idArray[10]).style.top = 'calc(8.4% - ' + inUseObj.offsttop + 'em)';
+            }
 
-            } else Main_handleKeyUp();
-        } else if (!y) Main_ScrollTable(idArray[10], 0);
-        else Main_handleKeyUp();
+        } else document.getElementById(idArray[10]).style.top = '';
+    }
 
-    } else Main_handleKeyUp();
+    Main_handleKeyUp();
 }
 
 function Screens_addFocusChannel(y, x, idArray, forceScroll) {
