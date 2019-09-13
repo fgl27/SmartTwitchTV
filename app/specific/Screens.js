@@ -622,27 +622,22 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
         if (y > 1) {
+
             if (!inUseObj.offsttop)
                 inUseObj.offsttop = document.getElementById(idArray[0] + 2 + '_' + 0).offsetTop / BodyfontSize;
 
-            console.log(y + ' inUseObj.Cells.length ' + inUseObj.Cells.length); //feio
-
+            //Channels is a odd screen as thumb are small it need a minor workaround to get all working
+            //TODO revise this for a simple implementeation
             if (inUseObj.Cells.length < 6) {
-                if (inUseObj.Cells[y + 1] && (y + 2) < inUseObj.Cells.length || inUseObj.Cells.length === 4) {
-                    console.log('if length 1');
+                if (inUseObj.Cells[y + 1] && (y + 2) < inUseObj.Cells.length || inUseObj.Cells.length === 4)
                     document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsttop + 'em)';
-                } else if (inUseObj.Cells.length > 3) {
-                    console.log('else length 1');
+                else if (inUseObj.Cells.length > 3)
                     document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsttop * 3 / 2) + 'em)';
-                }
             } else {
-                if (inUseObj.Cells[y + 2]) {
-                    console.log('if 1');
+                if (inUseObj.Cells[y + 2])
                     document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsttop + 'em)';
-                } else {
-                    console.log('else ');
+                else
                     document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsttop * 3 / 2) + 'em)';
-                }
             }
 
         } else document.getElementById(idArray[10]).style.top = '';
