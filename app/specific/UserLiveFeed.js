@@ -424,7 +424,7 @@ function UserLiveFeed_setHideFeed() {
     if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
 }
 
-function UserLiveFeed_FeedRefreshFocus() {
+function UserLiveFeed_FeedRefresh() {
     UserLiveFeed_clearHideFeed();
     if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
