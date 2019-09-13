@@ -525,7 +525,7 @@ function PlayClip_handleKeyDown(e) {
                     } else Play_BottomUpDown(3, 1);
                     PlayClip_setHidePanel();
                 } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
-                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefreshFocus();
+                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
                 else PlayClip_showPanel();
                 break;
             case KEY_DOWN:
