@@ -122,7 +122,6 @@ function PlayVod_PosStart() {
     PlayVod_tokenResponse = 0;
     PlayVod_playlistResponse = 0;
     PlayVod_playingTry = 0;
-    document.addEventListener('visibilitychange', PlayVod_Resume, false);
     Play_jumping = false;
     PlayVod_isOn = true;
     PlayVod_WasSubChekd = false;
@@ -206,39 +205,27 @@ function PlayVod_updateVodInfoPannel(response) {
 }
 
 function PlayVod_Resume() {
-    if (document.hidden) {
-        if (Play_isEndDialogVisible()) {
-            Play_CleanHideExit();
-            Play_hideChat();
-            PlayVod_shutdownStream();
-        } else {
-            PlayVod_SaveOffset();
-            PlayVod_SaveVodIds();
-            Play_ClearPlayer();
-            window.clearInterval(PlayVod_SaveOffsetId);
-        }
-    } else {
-        PlayVod_isOn = true;
-        Play_clearPause();
-        if (PlayVod_isOn) {
-            Play_showBufferDialog();
-            Play_ResumeAfterOnlineCounter = 0;
+    PlayVod_isOn = true;
+    Play_clearPause();
+    Play_showBufferDialog();
+    Play_ResumeAfterOnlineCounter = 0;
 
-            //Get the time from android as it can save it more reliably
-            Main_values.vodOffset = Android.getsavedtime() / 1000;
+    //Get the time from android as it can save it more reliably
+    Main_values.vodOffset = Android.getsavedtime() / 1000;
 
-            if (navigator.onLine) PlayVod_ResumeAfterOnline();
-            else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
+    window.clearInterval(Play_ResumeAfterOnlineId);
 
-            Play_EndSet(2);
-            PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+    if (navigator.onLine) PlayVod_ResumeAfterOnline();
+    else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
 
-            window.clearInterval(Play_ShowPanelStatusId);
-            Play_ShowPanelStatusId = window.setInterval(function() {
-                Play_UpdateStatus(2);
-            }, 1000);
-        }
-    }
+    Play_EndSet(2);
+    window.clearInterval(PlayVod_SaveOffsetId);
+    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+
+    window.clearInterval(Play_ShowPanelStatusId);
+    Play_ShowPanelStatusId = window.setInterval(function() {
+        Play_UpdateStatus(2);
+    }, 1000);
 }
 
 function PlayVod_ResumeAfterOnline(forced) {
@@ -494,7 +481,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
 
 function PlayVod_ClearVod() {
     document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
-    document.removeEventListener('visibilitychange', PlayVod_Resume);
     Main_values.vodOffset = 0;
     window.clearInterval(PlayVod_streamInfoTimerId);
     ChannelVod_DurationSeconds = 0;

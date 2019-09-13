@@ -86,7 +86,6 @@ function PlayClip_Start() {
         AddCode_CheckFallow();
     } else Play_hideFallow();
 
-    document.addEventListener('visibilitychange', PlayClip_Resume, false);
     PlayClip_IsJumping = false;
     PlayClip_jumpCount = 0;
     PlayClip_TimeToJump = 0;
@@ -225,7 +224,7 @@ function PlayClip_UpdateDuration(duration) {
 function PlayClip_Resume() {
     //return;
     window.clearInterval(Play_ShowPanelStatusId);
-    if (document.hidden) PlayClip_shutdownStream();
+    PlayClip_shutdownStream();
 }
 
 function PlayClip_shutdownStream() {
@@ -249,7 +248,6 @@ function PlayClip_PreshutdownStream(closePlayer) {
     UserLiveFeed_Hide();
     PlayClip_qualities = [];
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
-    document.removeEventListener('visibilitychange', PlayClip_Resume);
     ChannelVod_vodOffset = 0;
 }
 
