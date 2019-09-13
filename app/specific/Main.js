@@ -128,9 +128,11 @@ Main_Start();
 function Main_Start() {
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function() {
+            calculateFontSize();
             Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
         });
     } else { // `DOMContentLoaded` already fired
+        calculateFontSize();
         Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
     }
 }
@@ -193,7 +195,7 @@ function Main_initWindows() {
 
     if (!Main_values.DeviceBitrateCheck && device !== null) {
         Main_values.DeviceBitrateCheck = true;
-        //Some devices are very slow and need small bitrate when if picture in picture shield doesn't.
+        //Some devices are very slow and need small bitrate when in picture in picture shield doesn't.
         if (device.toLowerCase().indexOf('shield android tv') !== -1) {
             Settings_value.bitrate_min.defaultValue = 0;
             Main_setItem('bitrate_min', 1);
