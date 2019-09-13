@@ -4,8 +4,8 @@ var Sidepannel_Callback;
 var Sidepannel_UpdateThumbDoc;
 var Sidepannel_IsMain = true;
 
-var Sidepannel_MoveldefaultMargin = 14.5;
-var Sidepannel_FixdefaultMargin = 4;
+var Sidepannel_MoveldefaultMargin = 13.5;
+var Sidepannel_FixdefaultMargin = 5;
 var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin;
 
 function Sidepannel_AddFocusMain() {
