@@ -128,11 +128,9 @@ Main_Start();
 function Main_Start() {
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function() {
-            calculateFontSize();
             Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
         });
     } else { // `DOMContentLoaded` already fired
-        calculateFontSize();
         Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
     }
 }
@@ -158,6 +156,7 @@ function Main_loadTranslations(language) {
         if (Main_IsNotBrowser) Main_vp9supported = Android.misCodecSupported();
 
         Settings_SetDefautls();
+        calculateFontSize();
         en_USLang();
         Languages_SetDefautls();
 
