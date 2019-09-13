@@ -598,14 +598,6 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
 }
 
 function Screens_addFocusGame(y, x, idArray, forceScroll) {
-    //    if (Main_YchangeAddFocus(y) || forceScroll) {
-    //        if (inUseObj.posY < (inUseObj.Cells.length - 1) || forceScroll)
-    //            Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[5] + y + '_' + x).offsetTop * -1, 4.5);
-
-    //    } else if ((inUseObj.Cells.length - 1) === y && (Main_ThumbNull(y - 1, x, idArray[0]))) {
-    //        Main_ScrollTableCalc(idArray[10], document.getElementById(idArray[5] + (y - 1) + '_' + x).offsetTop * -1, 4.5);
-    //    } else Main_handleKeyUp();
-
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
 
