@@ -12,10 +12,7 @@ function calculateFontSize() {
 
         currentHeight,
         scaleFactor,
-        scaledWidth,
-
-        //Classes that need width/height recalculated to 16 by 9
-        classes = ['screen_holder', 'screen_size', 'screen_holder_games', 'dialogs', 'screen_holder_switch', 'screen_holder_channel', 'screen_holder_user'];
+        scaledWidth;
 
     // Get current client/screen height.
     currentHeight = window.innerHeight;
@@ -31,25 +28,7 @@ function calculateFontSize() {
     document.body.style.width = scaledWidth + 'px';
     document.body.style.height = currentHeight + 'px';
     document.body.style.fontSize = BodyfontSize + 'px';
-
-    //Some div need manual resizing do it after body
-    for (var i = 0; i < classes.length; i++)
-        setWidthHeight(document.getElementsByClassName(classes[i]), scaledWidth, currentHeight);
-
-    //Some only need width changes as Height is not base on screen size
-    document.getElementById('dialog_warning').style.width = (scaledWidth * 0.6) + 'px';
-    document.getElementById('topbar').style.width = (scaledWidth * 0.945) + 'px';
-    document.getElementById('settings_holder').style.width = scaledWidth + 'px';
-}
-
-function setWidthHeight(elementsArray, Width, Height) {
-
-    for (var i = 0; i < elementsArray.length; i++) {
-        elementsArray[i].style.width = Width + 'px';
-        elementsArray[i].style.height = Height + 'px';
-    }
 }
 
 //Do the calculation and changes on proper events call
 window.addEventListener('resize', calculateFontSize, false);
-//window.addEventListener('load', calculateFontSize, false);

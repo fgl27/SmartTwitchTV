@@ -314,9 +314,6 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    document.removeEventListener('visibilitychange', Play_Resume);
-    document.addEventListener('visibilitychange', Play_Resume, false);
-
     Play_updateStreamInfoStart();
     Play_loadData();
     document.body.removeEventListener("keyup", Main_handleKeyUp);
@@ -332,7 +329,7 @@ function Play_Warn(text) { // jshint ignore:line
 function Play_CheckResume() { // jshint ignore:line
     if (Play_isOn) Play_Resume();
     else if (PlayVod_isOn) PlayVod_Resume();
-    else if (PlayClip_isOn) PlayClip_shutdownStream();
+    else if (PlayClip_isOn) PlayClip_Resume();
 }
 
 function Play_CheckResumeForced(isPicturePicture) { // jshint ignore:line
@@ -401,39 +398,26 @@ function Play_RefreshAutoError(UseAndroid) {
 }
 
 function Play_Resume() {
-    if (document.hidden) {
-        if (Play_isEndDialogVisible()) {
-            Play_CleanHideExit();
-            Play_hideChat();
-            Play_shutdownStream();
-        } else {
-            Play_ClearPlayer();
-            Play_Playing = false;
-            ChatLive_Clear(0);
-            ChatLive_Clear(1);
-            window.clearInterval(Play_streamInfoTimerId);
-        }
-    } else {
-        Play_watching_time = new Date().getTime();
-        Play_isOn = true;
-        Play_clearPause();
-        if (Play_isOn) {
-            Play_showBufferDialog();
-            Play_loadingInfoDataTry = 0;
-            Play_RefreshAutoTry = 0;
-            Play_loadingInfoDataTimeout = 3000;
-            Play_RestoreFromResume = true;
-            if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
-            else Play_updateStreamInfo();
-            Play_ResumeAfterOnlineCounter = 0;
-            if (navigator.onLine) Play_ResumeAfterOnline();
-            else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
+    Play_watching_time = new Date().getTime();
+    Play_isOn = true;
+    Play_clearPause();
+    Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
+    Play_showBufferDialog();
+    Play_loadingInfoDataTry = 0;
+    Play_RefreshAutoTry = 0;
+    Play_loadingInfoDataTimeout = 3000;
+    Play_RestoreFromResume = true;
+    if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
+    else Play_updateStreamInfo();
+    Play_ResumeAfterOnlineCounter = 0;
 
-            window.clearInterval(Play_streamInfoTimerId);
-            Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
-            Play_ShowPanelStatus(1);
-        }
-    }
+    window.clearInterval(Play_ResumeAfterOnlineId);
+    if (navigator.onLine) Play_ResumeAfterOnline();
+    else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
+
+    window.clearInterval(Play_streamInfoTimerId);
+    Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
+    Play_ShowPanelStatus(1);
 }
 
 function Play_ResumeAfterOnline(forced) {
@@ -987,7 +971,6 @@ function Play_ClearPlayer() {
 function Play_ClearPlay(clearChat) {
     Play_Playing = false;
     document.body.removeEventListener("keydown", Play_handleKeyDown);
-    document.removeEventListener('visibilitychange', Play_Resume);
     if (clearChat) ChatLive_Clear(0);
     window.clearInterval(Play_streamInfoTimerId);
     Play_IsWarning = false;
@@ -1282,7 +1265,7 @@ function Play_KeyPause(PlayVodClip) {
         Play_clearPause();
         Play_HideBufferDialog();
 
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
+        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
 
         if (Play_isPanelShown()) {
             if (PlayVodClip === 1) Play_hidePanel();
@@ -1294,7 +1277,7 @@ function Play_KeyPause(PlayVodClip) {
     } else {
         Play_HideBufferDialog();
 
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i> </div>');
+        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
         if (Main_IsNotBrowser) Android.play(false);
     }
