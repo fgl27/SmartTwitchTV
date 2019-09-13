@@ -9,12 +9,10 @@ var Sidepannel_FixdefaultMargin = 5;
 var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin;
 
 function Sidepannel_AddFocusMain() {
-    console.log('Sidepannel_AddFocusMain ' + Main_values.Sidepannel_Pos);
     Main_AddClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
 function Sidepannel_RemoveFocusMain() {
-    console.log('Sidepannel_RemoveFocusMain ' + Main_values.Sidepannel_Pos);
     Main_RemoveClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 

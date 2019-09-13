@@ -167,7 +167,6 @@ function Screens_loadDatafail() {
     inUseObj.loadingData = false;
     if (!inUseObj.itemsCount) {
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
-        console.log('Screens_loadDatafail');
         inUseObj.FirstLoad = false;
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
@@ -340,7 +339,6 @@ function Screens_createCellLive(id, data, idArray, valuesArray) {
 }
 
 function Screens_loadDataSuccessFinish() {
-    console.log('Screens_loadDataSuccessFinish');
     if (!inUseObj.status) {
         if (Main_values.Main_Go === Main_aGame) AGame_Checkfallow();
 
@@ -808,10 +806,8 @@ function Screens_handleKeyDown(event) {
             //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
             if (inUseObj.dataEnded ||
                 (inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
-                console.log('KEY_DOWN if');
                 Screens_KeyUpDown(1);
             } else {
-                console.log('KEY_DOWN else');
                 Screens_addFocus(true);
             }
             break;
