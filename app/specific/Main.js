@@ -239,7 +239,6 @@ function Main_initWindows() {
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
 
-        document.addEventListener('visibilitychange', Main_Resume, false);
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
 
         inUseObj = Live;
@@ -921,13 +920,13 @@ function Main_getclock() {
 }
 
 // right after the TV comes from standby the network can lag, delay the check
-function Main_Resume() {
-    if (!document.hidden) {
-        Main_updateclock();
-        //Update clock twice as first try clock may be out of date in the case TV was on standby
-        window.setTimeout(Main_updateclock, 20000);
-    }
-}
+//function Main_Resume() {
+//    if (!document.hidden) {
+//        Main_updateclock();
+//        //Update clock twice as first try clock may be out of date in the case TV was on standby
+//        window.setTimeout(Main_updateclock, 20000);
+//    }
+//}
 
 function Main_updateclock() {
     if (!document.hidden) {

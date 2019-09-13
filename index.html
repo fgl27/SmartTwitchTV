@@ -41,8 +41,9 @@
         }
 
         div.screen_size,
+        div.feed_screen,
         div.screens {
-            position: fixed;
+            position: relative;
             background-color: rgba(0, 0, 0, 0);
             width: 100%;
             height: 100%;
@@ -51,9 +52,31 @@
             font-kerning: none;
         }
 
+        div.feed_screen {
+            transform: translateY(-100%);
+        }
+
         div.screens {
-            position: fixed;
-            overflow: hidden;
+            position: absolute;
+        }
+
+        .animate_height {
+            height: 0px !important;
+        }
+
+        .animate_height_transition_channel,
+        .animate_height_transition_games,
+        .animate_height_transition {
+            height: 47vh;
+            transition: height 0.45s ease-in-out;
+        }
+
+        .animate_height_transition_games {
+            height: 48.3vh;
+        }
+
+        .animate_height_transition_channel {
+            height: 32.075vh;
         }
 
         div.screen_holder,
@@ -62,8 +85,9 @@
         div.screen_holder_user,
         div.screen_holder_games {
             width: 100%;
-            position: fixed;
+            position: absolute;
             top: 7.6%;
+            transition: top 0.45s ease-in-out;
         }
 
         div.screen_holder_switch {
@@ -83,7 +107,7 @@
         }
 
         div.settings_holder {
-            position: fixed;
+            position: absolute;
             top: 6%;
             width: 100%;
             height: 91.5%;
@@ -111,7 +135,6 @@
             font-size: 55%;
             font-family: 'Roboto-Bold';
             vertical-align: middle;
-            transition: opacity 1s ease-in-out !important;
         }
 
         div.stream_cell_period {
@@ -159,6 +182,9 @@
             background-color: #ebebeb !important;
             color: #000000 !important;
             border-color: #ebebeb !important;
+            transition: background-color 0.45s ease-in-out,
+                color 0.45s ease-in-out,
+                border-color 0.45s ease-in-out;
         }
 
         div.stream_switch_focused {
@@ -334,9 +360,9 @@
         }
 
         img.stream_img_channel {
-            height: 43%;
-            max-width: 96%;
-            margin-left: 2%;
+            height: 83%;
+            max-width: 95%;
+            margin-left: 2.5%;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
@@ -477,7 +503,7 @@
         }
 
         div.scenefeed_background {
-            transition: background 0.45s;
+            transition: background 0.45s ease-in-out;
             background: rgba(0, 0, 0, 0.75);
         }
 
@@ -491,7 +517,7 @@
             background: #000000;
             border: 0.06em solid;
             border-color: #ebebeb !important;
-            transition: margin-top 0.65s ease-in-out !important;
+            transition: margin-top 0.45s ease-in-out !important;
         }
 
         div.user_feed_notify_hide {
@@ -656,7 +682,7 @@
         }
 
         div.scene_channel_panel {
-            position: fixed;
+            position: absolute;
             z-index: 2;
             opacity: 0;
         }
@@ -797,7 +823,7 @@
             width: 5%;
             margin-left: -1%;
             overflow: hidden;
-            transition: margin-left 0.45s;
+            transition: margin-left 0.45s ease-in-out;
         }
 
         div.side_panel_background_color {
@@ -911,7 +937,7 @@
             left: -1%;
             height: 100%;
             width: 25.5%;
-            transition: margin-left 0.45s;
+            transition: margin-left 0.45s ease-in-out;
             overflow: hidden;
         }
 
@@ -964,13 +990,6 @@
 
         .red_text {
             color: #FF2121;
-        }
-
-        table.streams_tables {
-            border: 0;
-            margin-left: 0.95em;
-            table-layout: fixed;
-            width: 98%;
         }
 
         div.streams_div {
@@ -1102,6 +1121,7 @@
             display: none;
         }
 
+        div.dialog_end_icons_start,
         div.dialog_end_icons {
             font-size: 80%;
             vertical-align: top;
@@ -1116,11 +1136,14 @@
             border: 0.0825em solid rgba(0, 0, 0, 0);
         }
 
+        div.dialog_end_icons_start {
+            height: 23%;
+        }
+
         div.dialog_end_icons_focus {
             border-color: #FFFFFF;
             background-color: rgba(150, 150, 150, 0.55);
         }
-
 
         .right,
         .left {
@@ -1638,7 +1661,7 @@
 
 <body>
     <div id="scene1" class="screen_size" style="background-color: rgba(0, 0, 0, 1);">
-        <div id="dialog_loading" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
+        <div id="dialog_loading" class="screens dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
             <div class="loading">
                 <div></div>
                 <div></div>
@@ -1646,7 +1669,7 @@
                 <div></div>
             </div>
         </div>
-        <div id="main_remove_dialog" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
+        <div id="main_remove_dialog" class="screens hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
             <div class="dialog_exit" style="width: 75%; margin-left: 12.5%;">
                 <div id="main_dialog_remove" class="exit_text"></div>
                 <div style="text-align: center; margin-bottom: 4%;">
@@ -1655,7 +1678,7 @@
                 </div>
             </div>
         </div>
-        <div id="main_dialog_user" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
+        <div id="main_dialog_user" class="screens hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
             <div class="dialog_exit" style="width: 80%; margin-left: 10%;">
                 <div id="main_dialog_user_text" class="exit_text"></div>
                 <div style="text-align: center; margin-bottom: 4%;">
@@ -1665,7 +1688,7 @@
                 </div>
             </div>
         </div>
-        <div id="main_dialog_exit" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
+        <div id="main_dialog_exit" class="screens hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
             <div class="dialog_exit">
                 <div id="main_dialog_exit_text" class="exit_text"></div>
                 <div style="text-align: center; margin-bottom: 4%;">
@@ -1675,7 +1698,7 @@
                 </div>
             </div>
         </div>
-        <div id="dialog_period" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
+        <div id="dialog_period" class="screens hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
             <div class="dialog_period">
                 <div id="dialog_period_text" class="exit_text"></div>
                 <div style="text-align: center; margin-bottom: 4%;">
@@ -1686,7 +1709,7 @@
                 </div>
             </div>
         </div>
-        <div id="dialog_OffSet" class="screen_size hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
+        <div id="dialog_OffSet" class="screens hide" style="z-index: 100; background: rgba(0, 0, 0, 0.75);">
             <div class="dialog_period">
                 <div id="dialog_OffSet_text" class="exit_text"></div>
                 <div id="dialog_OffSet_text_summary" class="exit_text"></div>
@@ -1704,12 +1727,12 @@
         <div id="dialog_warning" class="strokedeline dialogs hide" style="z-index:101; margin-top: 31%; width: 60%; margin-left: 20%;">
             <div id="dialog_warning_text" class="strokedeline" style="font-size: 150%; "></div>
         </div>
-        <div id="dialog_about" class="screen_size hide" style="z-index: 200; background: rgba(0, 0, 0, 0.75);">
+        <div id="dialog_about" class="screens hide" style="z-index: 200; background: rgba(0, 0, 0, 0.75);">
             <div class="about_dialogs" style="width: 95%; margin-left: 2.5%;">
                 <div id="dialog_about_text" class="about_text"></div>
             </div>
         </div>
-        <div id="dialog_controls" class="screen_size hide" style="z-index: 200; background: rgba(0, 0, 0, 0.75);">
+        <div id="dialog_controls" class="screens hide" style="z-index: 200; background: rgba(0, 0, 0, 0.75);">
             <div class="about_dialogs" style="width: 85%; margin-left: 7.5%;">
                 <div id="dialog_controls_text" class="controls_text"></div>
             </div>
@@ -2084,17 +2107,17 @@
             <div id="stream_quality" class="playsideinfostatus"></div>
             <div id="stream_status" class="playsideinfostatus"></div>
         </div>
-        <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 50%; z-index: 2;">
+        <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 100%; z-index: 2;">
             <div id="dialog_vod_start" class="dialogs hide" style="z-index:3; font-size: 150%; height: 75%; margin-top: 25%;">
                 <div id="dialog_vod_text" class="strokedeline" style="font-size: 140%; padding-bottom: 2%;">
                 </div>
                 <!-- from saved-->
-                <div id="dialog_vod_0" class="dialog_end_icons dialog_end_icons_focus">
+                <div id="dialog_vod_0" class="dialog_end_icons_start dialog_end_icons_focus">
                     <i class="icon-history strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_vod_saved_text" class="strokedeline"></div>
                 </div>
                 <!-- from start-->
-                <div id="dialog_vod_1" class="dialog_end_icons">
+                <div id="dialog_vod_1" class="dialog_end_icons_start">
                     <i class="icon-play strokicon" style="font-size: 225%;"></i>
                     <div id="dialog_vod_start_text" class="strokedeline"></div>
                 </div>
@@ -2148,7 +2171,7 @@
             </div>
         </div>
     </div>
-    <div id="scenefeed" class="screen_size">
+    <div id="scenefeed" class="feed_screen">
         <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide" style="margin-top: -20%;">
             <div id="user_feed_notify_content" class="side_panel_div side_panel_feed_text_focus">
                 <div id="user_feed_notify_main" class="class_bold" style="text-align: center;"></div>
@@ -2177,7 +2200,7 @@
         </div>
         <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">
             <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></div>
-            <div style="width: 96%; height: 20%; bottom:0; color: #FFFFFF; font-size: 120%; padding: 1%;">
+            <div style="width: 96%; height: 20%; bottom:0; color: #FFFFFF; font-size: 110%; padding: 1%;">
                 <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold" style="width: 75%; display: inline-block; font-size: 110%;"></div>
                 <div id="feed_thum_quality" class="side_panel_feed_thumb_text" style="width: 24%; float: right; text-align: right; display: inline-block;"></div>
                 <div id="feed_thum_title" class="side_panel_feed_thumb_text"></div>
