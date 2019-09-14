@@ -598,11 +598,52 @@ function Settings_SetClock() {
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
 }
 
-function Settings_ScrollTable() {
-    var doc = document.getElementById('settings_scroll');
+var Settings_CurY = 0;
 
-    doc.scrollTop = (Settings_cursorY > 10) ? doc.scrollHeight : 0;
+function Settings_ScrollTable() {
+    var doc;
+
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === 11) {
+        doc = document.getElementById('settings_scroll');
+        doc.scrollTop = doc.scrollHeight;
+        var position = doc.scrollTop;
+        doc.scrollTop = 0;
+        scrollTo(doc, position, 450);
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === 10) {
+        doc = document.getElementById('settings_scroll');
+        scrollTo(doc, 0, 450);
+    }
+
+    Settings_CurY = Settings_cursorY;
 }
+
+function scrollTo(element, to, duration) {
+    var start = element.scrollTop,
+        change = to - start,
+        currentTime = 0,
+        increment = 3;
+
+    var animateScroll = function() {
+        currentTime += increment;
+        var val = Math.easeInOutQuad(currentTime, start, change, duration);
+        element.scrollTop = val;
+        if (currentTime < duration) {
+            setTimeout(animateScroll, increment);
+        }
+    };
+    animateScroll();
+}
+
+//t = current time
+//b = start value
+//c = change in value
+//d = duration
+Math.easeInOutQuad = function(t, b, c, d) {
+    t /= d / 2;
+    if (t < 1) return c / 2 * t * t + b;
+    t--;
+    return -c / 2 * (t * (t - 2) - 1) + b;
+};
 
 function Settings_handleKeyDown(event) {
     var key;
