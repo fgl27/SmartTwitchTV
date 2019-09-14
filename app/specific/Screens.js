@@ -6,14 +6,8 @@ var Screens_ScrollAnimationTimeout = 450; //Same time as animate_height_transiti
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
 
-
-//Initiate all Main screens obj and they properties
-function Screens_InitScreens() {
-    console.log('InitScreens place holder');
-}
-
 //Initiate all Secondary screens obj and they properties
-function Screens_InitSecondaryScreens() {
+function Screens_InitScreens() {
     //Live screens
     ScreensObj_InitLive();
     ScreensObj_InitFeatured();
