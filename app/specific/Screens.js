@@ -617,12 +617,12 @@ function Screens_addrowEnd(forceScroll) {
 }
 
 function Screens_addFocusChannel(y, x, idArray, forceScroll) {
+    if (!inUseObj.offsttop)
+        inUseObj.offsttop = document.getElementById(idArray[0] + 2 + '_' + 0).offsetTop / BodyfontSize;
+
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
         if (y > 1) {
-
-            if (!inUseObj.offsttop)
-                inUseObj.offsttop = document.getElementById(idArray[0] + 2 + '_' + 0).offsetTop / BodyfontSize;
 
             //Channels is a odd screen as thumb are small it need a minor workaround to get all working
             //TODO revise this for a simple implementeation
@@ -645,15 +645,14 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
 }
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
+    if (!inUseObj.offsttop)
+        inUseObj.offsttop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
+
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
 
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) { //We didn't reach the bottom yet
-                if (!inUseObj.offsttop)
-                    inUseObj.offsttop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
-
+            if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
                 document.getElementById(idArray[10]).style.top = 'calc(8.4% - ' + inUseObj.offsttop + 'em)';
-            }
 
         } else document.getElementById(idArray[10]).style.top = '';
     }
@@ -662,15 +661,14 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
 }
 
 function Screens_addFocusGame(y, x, idArray, forceScroll) {
+    if (!inUseObj.offsttop)
+        inUseObj.offsttop = document.getElementById(idArray[5] + 1 + '_' + 0).offsetTop / BodyfontSize;
+
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
 
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) { //We didn't reach the bottom yet
-                if (!inUseObj.offsttop)
-                    inUseObj.offsttop = document.getElementById(idArray[5] + 1 + '_' + 0).offsetTop / BodyfontSize;
-
+            if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
                 document.getElementById(idArray[10]).style.top = 'calc(4.5% - ' + inUseObj.offsttop + 'em)';
-            }
 
         } else document.getElementById(idArray[10]).style.top = '';
     }
