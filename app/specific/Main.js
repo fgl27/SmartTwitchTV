@@ -184,7 +184,6 @@ function Main_loadTranslations(language) {
 }
 
 function Main_initWindows() {
-    Screens_InitScreens();
     Main_RestoreValues();
 
     var device = null;
@@ -221,7 +220,7 @@ function Main_initWindows() {
             Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
         }
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
-        Screens_InitSecondaryScreens();
+        Screens_InitScreens();
 
         document.getElementById("side_panel").style.marginLeft = '';
         document.getElementById("user_feed_notify").style.marginTop = '';
