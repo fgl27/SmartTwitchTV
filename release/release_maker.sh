@@ -213,7 +213,7 @@ if [ "$canuglifyjs" == 1 ]; then
 	echo -e "${bldblu}	uglifyjs  master.js";
 	uglifyjs master.js -c -m reserved=['Play_PannelEndStart','Play_CheckResume','Play_PlayerCheck','Play_UpdateDuration','Play_CheckResumeForced','PlayExtra_End'],toplevel -o master.js;
 fi;
-#Play_CheckResume Play_UpdateDuration PlayExtra_End Play_PannelEndStart Play_CheckResumeForced Play_PlayerCheck
+
 echo -e "\\n${bldgrn}Compression done\\n";
 
 # copy master.js temp files to githubio/js/
