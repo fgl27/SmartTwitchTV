@@ -357,19 +357,37 @@ function Sidepannel_SetIcons(div, icon) {
 
 function Sidepannel_Scroll() {
     var value = '0%', //default
-        center = 6;
+        center = 6,
+        doc = document.getElementById('side_panel_holder');
 
     if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
-            value = 'calc(-18.115% *' + (Sidepannel_PosFeed - center) + ')';
+            value = (-18.115 * (Sidepannel_PosFeed - center)) + '%';
         else if (((Sidepannel_GetSize() - center) - center) > 0) //if we are in the 7 left
-            value = 'calc(-18.115% *' + ((Sidepannel_GetSize() - center) - center) + ')';
+            value = (-18.115 * (Sidepannel_GetSize() - (center * 2))) + '%';
     }
 
-    document.getElementById('side_panel_holder').style.marginTop = value;
+    if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) {
+        Screens_ChangeFocusAnimationFinished = false;
+        Screens_ChangeFocusAnimationFast = true;
+
+        doc.classList.add('side_panel_holder_ani');
+
+        window.setTimeout(function() {
+            Screens_ChangeFocusAnimationFinished = true;
+        }, 200); //Same value as side_panel_holder_ani
+
+    } else {
+        doc.classList.remove('side_panel_holder_ani');
+    }
+
+    doc.style.marginTop = value;
+
 }
 
 function Sidepannel_handleKeyDown(event) {
+    if (!Screens_ChangeFocusAnimationFinished && (event.keyCode === KEY_DOWN || event.keyCode === KEY_UP)) return;
+
     switch (event.keyCode) {
         case KEY_RETURN:
             Sidepannel_Hide();
