@@ -611,7 +611,7 @@ function Screens_addrowEnd(forceScroll) {
 }
 
 function Screens_addFocusChannel(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsttop)
+    if (!inUseObj.offsttop && inUseObj.Cells[2])
         inUseObj.offsttop = document.getElementById(idArray[0] + 2 + '_' + 0).offsetTop / BodyfontSize;
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
@@ -639,7 +639,7 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
 }
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsttop)
+    if (!inUseObj.offsttop && inUseObj.Cells[1])
         inUseObj.offsttop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
@@ -655,7 +655,7 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
 }
 
 function Screens_addFocusGame(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsttop)
+    if (!inUseObj.offsttop && inUseObj.Cells[1])
         inUseObj.offsttop = document.getElementById(idArray[5] + 1 + '_' + 0).offsetTop / BodyfontSize;
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
