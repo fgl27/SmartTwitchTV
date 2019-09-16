@@ -124,7 +124,7 @@ js_comp_ugf() {
 		cd "$i" || exit;
 		for x in *.js; do
 			echo -e "${bldblu}	Including compresed version of $x to master.js";
-			uglifyjs "$x" -c -m reserved=['Play_PannelEndStart','Play_CheckResume','Play_UpdateDuration'] -o "$mainfolder"/"$temp_maker_folder""$x";
+			uglifyjs "$x" -c -m -o "$mainfolder"/"$temp_maker_folder""$x";
 			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/master.js;
 		done
 		cd - &> /dev/null || exit;
@@ -213,7 +213,7 @@ if [ "$canuglifyjs" == 1 ]; then
 	echo -e "${bldblu}	uglifyjs  master.js";
 	uglifyjs master.js -c -m reserved=['Play_PannelEndStart','Play_CheckResume','Play_PlayerCheck','Play_UpdateDuration','Play_CheckResumeForced','PlayExtra_End'],toplevel -o master.js;
 fi;
-
+#Play_CheckResume Play_UpdateDuration PlayExtra_End Play_PannelEndStart Play_CheckResumeForced Play_PlayerCheck
 echo -e "\\n${bldgrn}Compression done\\n";
 
 # copy master.js temp files to githubio/js/
