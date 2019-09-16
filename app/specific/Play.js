@@ -1826,7 +1826,7 @@ function Play_handleKeyDown(e) {
         switch (e.keyCode) {
             case KEY_LEFT:
                 if (UserLiveFeed_isFeedShow()) {
-                    if (Play_FeedPos && !UserLiveFeed_loadingData) {
+                    if (Screens_ChangeFocusAnimationFinished && Play_FeedPos && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();
                         Play_FeedPos--;
                         UserLiveFeed_FeedAddFocus();
@@ -1859,7 +1859,8 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_RIGHT:
                 if (UserLiveFeed_isFeedShow()) {
-                    if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
+                    if (Screens_ChangeFocusAnimationFinished &&
+                        Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
                         UserLiveFeed_FeedRemoveFocus();
                         Play_FeedPos++;
                         UserLiveFeed_FeedAddFocus();

@@ -551,11 +551,15 @@
             white-space: nowrap;
         }
 
+        div.user_feed_scroll_ani {
+            transition: left 0.2s ease-in-out;
+        }
+
         /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
         div.user_feed_thumb {
             width: 19.22%;
             display: inline-block;
-            padding: 0.35%;
+            padding: 0.355%;
         }
 
         div.input_text_box {
@@ -2207,7 +2211,7 @@
                     <div></div>
                 </div>
             </div>
-            <div id="user_feed_scroll" class="user_feed_scroll">
+            <div id="user_feed_scroll" class="user_feed_scroll user_feed_scroll_ani">
             </div>
         </div>
         <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">

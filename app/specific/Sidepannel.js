@@ -377,17 +377,13 @@ function Sidepannel_Scroll() {
             Screens_ChangeFocusAnimationFinished = true;
         }, 200); //Same value as side_panel_holder_ani
 
-    } else {
-        doc.classList.remove('side_panel_holder_ani');
-    }
+    } else doc.classList.remove('side_panel_holder_ani');
 
     doc.style.marginTop = value;
 
 }
 
 function Sidepannel_handleKeyDown(event) {
-    if (!Screens_ChangeFocusAnimationFinished && (event.keyCode === KEY_DOWN || event.keyCode === KEY_UP)) return;
-
     switch (event.keyCode) {
         case KEY_RETURN:
             Sidepannel_Hide();
@@ -404,14 +400,14 @@ function Sidepannel_handleKeyDown(event) {
             if (!UserLiveFeed_loadingData) UserLiveFeed_FeedRefresh();
             break;
         case KEY_UP:
-            if (Sidepannel_PosFeed && !UserLiveFeed_loadingData) {
+            if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed--;
                 Sidepannel_AddFocusFeed();
             }
             break;
         case KEY_DOWN:
-            if (Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData) {
+            if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed++;
                 Sidepannel_AddFocusFeed();
