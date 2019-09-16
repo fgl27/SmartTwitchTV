@@ -150,6 +150,7 @@ function Main_loadTranslations(language) {
             console.log('Main_isReleased: ' + Main_isReleased);
             console.log('Main_isDebug: ' + Main_isDebug);
             console.log('Main_isBrowser: ' + !Main_IsNotBrowser);
+            Main_AddClass('scenefeed', 'feed_screen_input');
         }
         Main_showLoadDialog();
 
