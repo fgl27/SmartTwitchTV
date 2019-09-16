@@ -458,7 +458,21 @@ function UserLiveFeed_FeedGetPos() {
 
 function UserLiveFeed_FeedSetPos() {
     var position = UserLiveFeed_FeedGetPos();
-    if (position) document.getElementById('user_feed_scroll').style.left = (position / BodyfontSize) + "em";
+    var doc = document.getElementById('user_feed_scroll');
+
+    if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) {
+        Screens_ChangeFocusAnimationFinished = false;
+        Screens_ChangeFocusAnimationFast = true;
+
+        doc.classList.add('user_feed_scroll_ani');
+
+        window.setTimeout(function() {
+            Screens_ChangeFocusAnimationFinished = true;
+        }, 200); //Same value as user_feed_scroll_ani
+
+    } else doc.classList.remove('user_feed_scroll_ani');
+
+    if (position) doc.style.left = (position / BodyfontSize) + "em";
 }
 
 function UserLiveFeed_ThumbNull(y, thumbnail) {
