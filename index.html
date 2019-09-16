@@ -1569,6 +1569,8 @@
             top: 0;
         }
 
+        div.notification_title,
+        div.notification_game,
         div.side_panel_new_title,
         div.side_panel_new_game {
             width: 100%;
@@ -1583,6 +1585,16 @@
         div.side_panel_new_game {
             font-family: 'Roboto';
             font-size: 68%;
+        }
+
+        div.notification_title {
+            font-size: 94%;
+        }
+
+        div.notification_game {
+            font-family: 'Roboto';
+            font-size: 72%;
+            line-height: 2em;
         }
 
         .side_panel_feed_img_focus {
@@ -2198,9 +2210,9 @@
                 <div id="user_feed_notify_main" class="class_bold" style="text-align: center;"></div>
                 <div>
                     <div id="user_feed_notify_img_holder" class="side_panel_iner_div1"></div>
-                    <div style="display: inline-block; width: 68%; padding-left: 12%; padding-top: 5%;">
-                        <div id="user_feed_notify_name" class="side_panel_new_title"></div>
-                        <div id="user_feed_notify_game" class="side_panel_new_game"></div>
+                    <div style="display: inline-block; width: 68%; padding-left: 12%; padding-top: 3%;">
+                        <div id="user_feed_notify_name" class="notification_title"></div>
+                        <div id="user_feed_notify_game" class="notification_game"></div>
                     </div>
                 </div>
             </div>
