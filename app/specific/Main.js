@@ -241,13 +241,10 @@ function Main_initWindows() {
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
 
         inUseObj = Live;
-        //Minor delay to let all properly load before starting to show the app
-        window.setTimeout(function() {
-            Main_ready(function() {
-                Screens_init();
-                Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
-            });
-        }, (Main_IsNotBrowser && Settings_value.restor_playback.defaultValue && !Main_values.Play_WasPlaying) ? 850 : 0);
+        Main_ready(function() {
+            Screens_init();
+            Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
+        });
     });
 }
 
