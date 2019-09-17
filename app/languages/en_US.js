@@ -313,4 +313,5 @@ function en_USLang() {
     STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed";
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
+    STR_APP_ANIMATIONS = "Enable app animations";
 }

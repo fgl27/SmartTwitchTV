@@ -196,7 +196,7 @@ function Sidepannel_Start(callback) {
 }
 
 function Sidepannel_StartMain() {
-    Main_RemoveClass('scenefeed', 'scenefeed_background');
+    Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
     Sidepannel_IsMain = true;
     Main_ShowElement('side_panel_fix');
     document.getElementById('side_panel_movel').style.marginLeft = 0;
@@ -214,7 +214,7 @@ function Sidepannel_StartFeed() {
 }
 
 function Sidepannel_ShowFeed() {
-    Main_AddClass('scenefeed', 'scenefeed_background');
+    Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
     if (Play_FeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status = false;
     Play_FeedOldUserName = AddUser_UsernameArray[0].name;
 
@@ -246,7 +246,7 @@ function Sidepannel_Hide() {
     document.getElementById('side_panel_fix').style.marginLeft = '';
     Main_AddClass('side_panel', 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
-    Main_RemoveClass('scenefeed', 'scenefeed_background');
+    Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
@@ -367,17 +367,21 @@ function Sidepannel_Scroll() {
             value = (-18.115 * (Sidepannel_GetSize() - (center * 2))) + '%';
     }
 
-    if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) {
+    if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
 
+        doc.style.transition = '';
         doc.classList.add('side_panel_holder_ani');
 
         window.setTimeout(function() {
             Screens_ChangeFocusAnimationFinished = true;
         }, 200); //Same value as side_panel_holder_ani
 
-    } else doc.classList.remove('side_panel_holder_ani');
+    } else {
+        doc.style.transition = 'none';
+        doc.classList.remove('side_panel_holder_ani');
+    }
 
     doc.style.marginTop = value;
 
@@ -391,7 +395,7 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_RIGHT:
             Main_AddClass('side_panel', 'side_panel_hide');
-            Main_RemoveClass('scenefeed', 'scenefeed_background');
+            Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
             Main_HideElement('side_panel_feed_thumb');
             document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
             Sidepannel_StartMain();

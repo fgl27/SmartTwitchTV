@@ -12,6 +12,7 @@ var UserLiveFeed_LastPos = null;
 var UserSidePannel_LastPos = null;
 var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
+var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
 
 var UserLiveFeed_CheckNotifycation = false;
 var UserLiveFeed_WasLiveidObject = {};
@@ -437,7 +438,7 @@ function UserLiveFeed_FeedRefresh() {
 function UserLiveFeed_FeedAddFocus() {
     UserLiveFeed_ResetFeedId();
     if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
-        Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
+        Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, UserLiveFeed_FocusClass);
     else return;
 
     UserLiveFeed_FeedSetPos();
@@ -460,7 +461,8 @@ function UserLiveFeed_FeedSetPos() {
     var position = UserLiveFeed_FeedGetPos();
     var doc = document.getElementById('user_feed_scroll');
 
-    if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) {
+    if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+        !Screens_ChangeFocusAnimationFast) {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
 
@@ -481,7 +483,7 @@ function UserLiveFeed_ThumbNull(y, thumbnail) {
 
 function UserLiveFeed_FeedRemoveFocus() {
     if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
-        Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, 'feed_thumbnail_focused');
+        Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, UserLiveFeed_FocusClass);
 }
 
 function UserLiveFeed_SetFeedPicText() {
