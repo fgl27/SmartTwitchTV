@@ -437,7 +437,7 @@ function Settings_SetDefautls() {
     Settings_SetBuffers(0);
     Settings_SetClock();
     Main_SetThumb();
-    Settings_SetAnimations();
+    if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     UserLiveFeed_Notify = Settings_Obj_default("live_notification");
@@ -551,31 +551,26 @@ function Settings_SetAnimations() {
             'side_panel_movel',
             'side_panel'
         ],
-        elementsArray,
         animate = Settings_Obj_default("app_animations"),
-        i, j;
+        mtransition = animate ? '' : 'none';
 
-    for (i = 0; i < classes.length; i++) {
-        elementsArray = document.getElementsByClassName(classes[i]);
-        for (j = 0; j < elementsArray.length; j++) {
-            elementsArray[j].style.transition = animate ? '' : 'none';
+    classes.forEach(
+        function(classe) {
+            Array.from(document.getElementsByClassName(classe)).forEach(
+                function(ele) {
+                    ele.style.transition = mtransition;
+                }
+            );
         }
-    }
+    );
 
     UserLiveFeed_FeedRemoveFocus();
 
-    //When remove a class from a list of array made of that class the array gets mess up so, add remove and change.
-    elementsArray = document.getElementsByClassName(Main_classThumb);
-    Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
-    for (j = 0; j < elementsArray.length; j++) {
-        elementsArray[j].classList.add(Main_classThumb);
-    }
-
-    elementsArray = document.getElementsByClassName(Main_classThumb);
-    Main_classThumb = !animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
-    for (j = 0; j < elementsArray.length; j++) {
-        elementsArray[j].classList.remove(Main_classThumb);
-    }
+    Array.from(document.getElementsByClassName(Main_classThumb)).forEach(
+        function(ele) {
+            ele.classList.remove(Main_classThumb);
+        }
+    );
 
     Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
     UserLiveFeed_FocusClass = animate ? 'feed_thumbnail_focused' : 'feed_thumbnail_focused_no_ani';
