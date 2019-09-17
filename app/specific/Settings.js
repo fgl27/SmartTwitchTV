@@ -17,6 +17,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "app_animations": { //app_animations
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "show_screen_counter": { //show_screen_counter
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -175,6 +179,12 @@ function Settings_SetSettings() {
     Settings_value[key].values = [STR_NO, STR_YES];
 
     div += Settings_DivOptionNoSummary(key, STR_VIDEOS_ANIMATION);
+
+    key = "app_animations";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionNoSummary(key, STR_APP_ANIMATIONS);
 
     key = "clip_auto_play_next";
     Settings_value_keys.push(key);
@@ -407,6 +417,10 @@ function Settings_SetStrings() {
     Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
     Settings_value[key].values = [STR_NO, STR_YES];
 
+    key = "app_animations";
+    Main_textContent(key + '_name', STR_APP_ANIMATIONS);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
     for (key in Settings_value)
         if (Settings_value.hasOwnProperty(key))
             Main_textContent(key, Settings_Obj_values(key));
@@ -423,6 +437,7 @@ function Settings_SetDefautls() {
     Settings_SetBuffers(0);
     Settings_SetClock();
     Main_SetThumb();
+    Settings_SetAnimations();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     UserLiveFeed_Notify = Settings_Obj_default("live_notification");
@@ -502,6 +517,7 @@ function Settings_SetDefault(position) {
     else if (position === "live_notification_time") UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
     else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
+    else if (position === "app_animations") Settings_SetAnimations();
     else if (position === "buffer_live") Settings_SetBuffers(1);
     else if (position === "buffer_vod") Settings_SetBuffers(2);
     else if (position === "buffer_clip") Settings_SetBuffers(3);
@@ -515,6 +531,55 @@ function Settings_SetDefault(position) {
         Main_updateclock();
     } else if (position === "bitrate_main") Settings_SetBitRate(1);
     else if (position === "bitrate_min") Settings_SetBitRate(2);
+}
+
+function Settings_SetAnimations() {
+    var classes = ['screen_holder',
+            'screen_holder_channel',
+            'screen_holder_switch',
+            'screen_holder_user',
+            'screen_holder_user',
+            'screen_holder_games',
+            'animate_height_transition_channel',
+            'animate_height_transition_games',
+            'animate_height_transition',
+            'side_panel_holder_ani',
+            'scenefeed_background',
+            'user_feed_notify',
+            'user_feed_scroll_ani',
+            'side_panel_fix',
+            'side_panel_movel',
+            'side_panel'
+        ],
+        elementsArray,
+        animate = Settings_Obj_default("app_animations"),
+        i, j;
+
+    for (i = 0; i < classes.length; i++) {
+        elementsArray = document.getElementsByClassName(classes[i]);
+        for (j = 0; j < elementsArray.length; j++) {
+            elementsArray[j].style.transition = animate ? '' : 'none';
+        }
+    }
+
+    UserLiveFeed_FeedRemoveFocus();
+
+    //When remove a class from a list of array made of that class the array gets mess up so, add remove and change.
+    elementsArray = document.getElementsByClassName(Main_classThumb);
+    Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
+    for (j = 0; j < elementsArray.length; j++) {
+        elementsArray[j].classList.add(Main_classThumb);
+    }
+
+    elementsArray = document.getElementsByClassName(Main_classThumb);
+    Main_classThumb = !animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
+    for (j = 0; j < elementsArray.length; j++) {
+        elementsArray[j].classList.remove(Main_classThumb);
+    }
+
+    Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
+    UserLiveFeed_FocusClass = animate ? 'feed_thumbnail_focused' : 'feed_thumbnail_focused_no_ani';
+    Screens_SettingDoAnimations = animate;
 }
 
 function Settings_ShowCounter(show) {

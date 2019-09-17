@@ -5,6 +5,7 @@ var Screens_KeyEnterID;
 var Screens_ScrollAnimationTimeout = 450; //Same time as animate_height_transition
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
+var Screens_SettingDoAnimations = true;
 
 //Initiate all Secondary screens obj and they properties
 function Screens_InitScreens() {
@@ -482,7 +483,8 @@ function Screens_addrowChannel(forceScroll, y) {
             doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
             document.getElementById(inUseObj.ids[12] + (y - 2)).classList.add('animate_height');
 
-            if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
@@ -510,7 +512,8 @@ function Screens_addrowChannelDown(y) {
         document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
 
         if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3))) {
-            if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
@@ -546,7 +549,8 @@ function Screens_addrow(forceScroll, y) {
             doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
             document.getElementById(inUseObj.ids[12] + (y - 1)).classList.add('animate_height');
 
-            if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
@@ -574,7 +578,8 @@ function Screens_addrowDown(y) {
         document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 1]);
 
         if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
-            if (Screens_ChangeFocusAnimationFinished && !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 

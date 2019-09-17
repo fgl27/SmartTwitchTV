@@ -152,7 +152,7 @@ function Users_resetGameCell() {
 }
 
 function Users_addFocus(forceScroll) {
-    Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
+    Main_AddClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, Main_classThumb);
 
     Main_CounterDialog(Users_cursorX, Users_cursorY, Main_ColoumnsCountChannel, AddUser_UsernameArray.length + 1);
 
@@ -169,7 +169,7 @@ function Users_addFocus(forceScroll) {
 
 function Users_removeFocus() {
     Main_addFocusFinish = false;
-    Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, 'stream_thumbnail_focused');
+    Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, Main_classThumb);
 }
 
 //TODO add a temp user for when going back and for from user to games or etc

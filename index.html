@@ -181,20 +181,28 @@
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
+        div.feed_thumbnail_focused_no_ani,
         div.feed_thumbnail_focused {
             background-color: #ebebeb !important;
             color: #000000 !important;
             border-color: #ebebeb !important;
+        }
+
+        div.feed_thumbnail_focused {
             /* same animation time as user_feed_scroll_ani*/
             transition: background-color 0.2s ease-in-out,
                 color 0.2s ease-in-out,
                 border-color 0.2s ease-in-out;
         }
 
+        div.stream_thumbnail_focused_no_ani,
         div.stream_thumbnail_focused {
             background-color: #ebebeb !important;
             color: #000000 !important;
             border-color: #ebebeb !important;
+        }
+
+        div.stream_thumbnail_focused {
             /* same animation time as animate_height_transition*/
             transition: background-color 0.45s ease-in-out,
                 color 0.45s ease-in-out,
@@ -514,6 +522,11 @@
         .stream_channel_fallow_icon {
             color: #FFFFFF;
             font-size: 100%
+        }
+
+        div.scenefeed_background_no_ani,
+        div.scenefeed_background {
+            background: rgba(0, 0, 0, 0.75);
         }
 
         div.scenefeed_background {
