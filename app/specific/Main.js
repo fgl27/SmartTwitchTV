@@ -353,13 +353,19 @@ function Main_textContent(div, value) {
 function Main_replaceClassEmoji(div) {
     var emojiel = document.getElementById(div).getElementsByClassName("emoji");
     if (emojiel) {
-        var i = 0;
-        for (i; i < emojiel.length; i++)
-            emojiel[i].classList.add('emoticon');
 
-        emojiel = document.getElementById(div).getElementsByClassName("emoticon");
-        for (i = 0; i < emojiel.length; i++)
-            emojiel[i].classList.remove('emoji');
+        Array.from(emojiel).forEach(
+            function(ele) {
+                ele.classList.add('emoticon');
+            }
+        );
+
+        Array.from(document.getElementById(div).getElementsByClassName("emoticon")).forEach(
+            function(ele) {
+                ele.classList.remove('emoji');
+            }
+        );
+
     }
 }
 
