@@ -16,10 +16,10 @@ function Sidepannel_RemoveFocusMain() {
     Main_RemoveClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
-function Sidepannel_AddFocusFeed() {
+function Sidepannel_AddFocusFeed(skipAnimation) {
     if (Sidepannel_GetSize()) {
         Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
-        Sidepannel_Scroll();
+        Sidepannel_Scroll(skipAnimation);
         Sidepannel_UpdateThumb();
     } else document.getElementById('side_panel_warn').style.display = 'inline-block';
 }
@@ -223,7 +223,7 @@ function Sidepannel_ShowFeed() {
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
 
     if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
-        Sidepannel_AddFocusFeed();
+        Sidepannel_AddFocusFeed(true);
         window.setTimeout(Sidepannel_PreloadImgs, 600);
     }
 }
@@ -355,7 +355,7 @@ function Sidepannel_SetIcons(div, icon) {
     else Main_textContent(div, '');
 }
 
-function Sidepannel_Scroll() {
+function Sidepannel_Scroll(skipAnimation) {
     var value = '0%', //default
         center = 6,
         doc = document.getElementById('side_panel_holder');
@@ -367,7 +367,8 @@ function Sidepannel_Scroll() {
             value = (-18.115 * (Sidepannel_GetSize() - (center * 2))) + '%';
     }
 
-    if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) {
+    if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+        !Screens_ChangeFocusAnimationFast) {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
 
@@ -379,6 +380,7 @@ function Sidepannel_Scroll() {
         }, 200); //Same value as side_panel_holder_ani
 
     } else {
+        if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
         doc.style.transition = 'none';
         doc.classList.remove('side_panel_holder_ani');
     }

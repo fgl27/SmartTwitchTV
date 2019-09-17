@@ -288,7 +288,7 @@ function UserLiveFeed_loadDataSuccessFinish() {
     Main_ready(function() {
         Main_HideElement('dialog_loading_feed');
         Main_HideElement('dialog_loading_side_feed');
-        Sidepannel_AddFocusFeed();
+        Sidepannel_AddFocusFeed(true);
         UserLiveFeed_FeedAddFocus(true);
         window.setTimeout(Sidepannel_PreloadImgs, 600);
 
