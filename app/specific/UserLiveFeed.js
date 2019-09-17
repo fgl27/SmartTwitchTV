@@ -466,7 +466,6 @@ function UserLiveFeed_FeedSetPos() {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
 
-
         doc.style.transition = '';
         doc.classList.add('user_feed_scroll_ani');
 
