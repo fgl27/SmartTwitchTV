@@ -1023,6 +1023,7 @@ var Base_Game_obj = {
         return STR_NO + STR_LIVE_GAMES;
     },
     key_play: function() {
+        Main_removeFocus(this.posY + '_' + this.posX, this.ids);
         Main_values.Main_gameSelected = JSON.parse(document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
         Main_values.Main_BeforeAgame = this.screen;
@@ -1034,7 +1035,6 @@ var Base_Game_obj = {
         Main_HideElement(this.ids[10]);
 
         Main_SwitchScreenAction();
-        Main_removeFocus(this.posY + '_' + this.posX, this.ids);
     },
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
