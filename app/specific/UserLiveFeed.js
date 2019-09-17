@@ -466,13 +466,17 @@ function UserLiveFeed_FeedSetPos() {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
 
+
+        doc.style.transition = '';
         doc.classList.add('user_feed_scroll_ani');
 
         window.setTimeout(function() {
             Screens_ChangeFocusAnimationFinished = true;
         }, 200); //Same value as user_feed_scroll_ani
-
-    } else doc.classList.remove('user_feed_scroll_ani');
+    } else {
+        doc.style.transition = 'none';
+        doc.classList.remove('user_feed_scroll_ani');
+    }
 
     if (position) doc.style.left = (position / BodyfontSize) + "em";
 }
