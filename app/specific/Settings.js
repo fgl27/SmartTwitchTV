@@ -667,16 +667,18 @@ var Settings_CurY = 0;
 
 function Settings_ScrollTable() {
     var doc;
-
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === 11) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === 12) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
-        var position = doc.scrollTop;
-        doc.scrollTop = 0;
-        scrollTo(doc, position, 450);
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === 10) {
+        if (Settings_Obj_default("app_animations")) {
+            var position = doc.scrollTop;
+            doc.scrollTop = 0;
+            scrollTo(doc, position, 450);
+        }
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === 11) {
         doc = document.getElementById('settings_scroll');
-        scrollTo(doc, 0, 450);
+        if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 450);
+        else doc.scrollTop = 0;
     }
 
     Settings_CurY = Settings_cursorY;
