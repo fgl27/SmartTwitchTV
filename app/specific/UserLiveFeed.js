@@ -18,6 +18,7 @@ var UserLiveFeed_CheckNotifycation = false;
 var UserLiveFeed_WasLiveidObject = {};
 var UserLiveFeed_NotifyLiveidObject = [];
 var UserLiveFeed_Notify = true;
+var UserLiveFeed_NotifyRunning = false;
 var UserLiveFeed_NotifyTimeout = 3000;
 
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
@@ -302,11 +303,13 @@ function UserLiveFeed_loadDataSuccessFinish() {
 }
 
 function UserLiveFeed_LiveNotification() {
-    if (!UserLiveFeed_Notify || !UserLiveFeed_NotifyLiveidObject.length) {
+    if (UserLiveFeed_NotifyRunning || !UserLiveFeed_Notify ||
+     !UserLiveFeed_NotifyLiveidObject.length) {
         UserLiveFeed_NotifyLiveidObject = [];
         return;
     }
 
+    UserLiveFeed_NotifyRunning = true;
     UserLiveFeed_LiveNotificationShow(0);
 }
 
@@ -334,7 +337,10 @@ function UserLiveFeed_LiveNotificationHide(position) {
         window.setTimeout(function() {
             UserLiveFeed_LiveNotificationShow(position + 1);
         }, 800);
-    } else UserLiveFeed_NotifyLiveidObject = [];
+    } else {
+        UserLiveFeed_NotifyRunning = false;
+        UserLiveFeed_NotifyLiveidObject = [];
+    }
 }
 
 function UserLiveFeed_GetSize() {
