@@ -288,8 +288,8 @@ function UserLiveFeed_loadDataSuccessFinish() {
     Main_ready(function() {
         Main_HideElement('dialog_loading_feed');
         Main_HideElement('dialog_loading_side_feed');
-        UserLiveFeed_FeedAddFocus();
         Sidepannel_AddFocusFeed();
+        UserLiveFeed_FeedAddFocus(true);
         window.setTimeout(Sidepannel_PreloadImgs, 600);
 
         //The app just started or user change don't nottify
@@ -404,7 +404,7 @@ function UserLiveFeed_ShowFeed() {
 
     if (hasuser) {
         Main_RemoveClass('user_feed', 'user_feed_hide');
-        UserLiveFeed_FeedAddFocus();
+        UserLiveFeed_FeedAddFocus(true);
     }
 }
 
@@ -435,13 +435,13 @@ function UserLiveFeed_FeedRefresh() {
     }
 }
 
-function UserLiveFeed_FeedAddFocus() {
+function UserLiveFeed_FeedAddFocus(skipAnimation) {
     UserLiveFeed_ResetFeedId();
     if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
         Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, UserLiveFeed_FocusClass);
     else return;
 
-    UserLiveFeed_FeedSetPos();
+    UserLiveFeed_FeedSetPos(skipAnimation);
 }
 
 function UserLiveFeed_FeedGetPos() {
@@ -457,11 +457,11 @@ function UserLiveFeed_FeedGetPos() {
     return position;
 }
 
-function UserLiveFeed_FeedSetPos() {
+function UserLiveFeed_FeedSetPos(skipAnimation) {
     var position = UserLiveFeed_FeedGetPos();
     var doc = document.getElementById('user_feed_scroll');
 
-    if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+    if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
         !Screens_ChangeFocusAnimationFast) {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
@@ -473,6 +473,7 @@ function UserLiveFeed_FeedSetPos() {
             Screens_ChangeFocusAnimationFinished = true;
         }, 200); //Same value as user_feed_scroll_ani
     } else {
+        if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
         doc.style.transition = 'none';
         doc.classList.remove('user_feed_scroll_ani');
     }
