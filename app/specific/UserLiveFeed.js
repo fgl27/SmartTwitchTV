@@ -304,7 +304,7 @@ function UserLiveFeed_loadDataSuccessFinish() {
 
 function UserLiveFeed_LiveNotification() {
     if (UserLiveFeed_NotifyRunning || !UserLiveFeed_Notify ||
-     !UserLiveFeed_NotifyLiveidObject.length) {
+        !UserLiveFeed_NotifyLiveidObject.length) {
         UserLiveFeed_NotifyLiveidObject = [];
         return;
     }
