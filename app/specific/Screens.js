@@ -2,7 +2,7 @@
 var inUseObj = {};
 var Screens_clear = false;
 var Screens_KeyEnterID;
-var Screens_ScrollAnimationTimeout = 450; //Same time as animate_height_transition
+var Screens_ScrollAnimationTimeout = 350; //Same time as animate_height_transition
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
 var Screens_SettingDoAnimations = true;
@@ -775,7 +775,7 @@ function Screens_handleKeyUpAnimationFast() {
 }
 
 function Screens_handleKeyDown(event) {
-    if (inUseObj.FirstLoad || Main_CantClick() || !Screens_ChangeFocusAnimationFinished) return;
+    if (inUseObj.FirstLoad || Main_CantClick()) return;
     else Main_keyClickDelayStart();
 
     switch (event.keyCode) {
@@ -792,18 +792,21 @@ function Screens_handleKeyDown(event) {
             //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
             if (inUseObj.dataEnded ||
                 inUseObj.posX < (inUseObj.ColoumnsCount - 1) ||
-                (inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) Screens_KeyLeftRight(1, 0);
-            else Screens_addFocus(true);
+                (inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
+                if (inUseObj.posX === (inUseObj.ColoumnsCount - 1)) {
+                    if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0);
+                } else Screens_KeyLeftRight(1, 0);
+            } else Screens_addFocus(true);
             break;
         case KEY_UP:
-            Screens_KeyUpDown(-1);
+            if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(-1);
             break;
         case KEY_DOWN:
             //Prevent scroll too fast out of inUseObj.Cells.length
             //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
             if (inUseObj.dataEnded ||
                 (inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
-                Screens_KeyUpDown(1);
+                if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(1);
             } else {
                 Screens_addFocus(true);
             }
@@ -815,7 +818,7 @@ function Screens_handleKeyDown(event) {
             document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
             document.body.addEventListener("keyup", Screens_handleKeyUp, false);
             Screens_clear = false;
-            Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 500);
+            Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 400);
             break;
         case KEY_REFRESH:
             Main_ReloadScreen();
