@@ -549,7 +549,8 @@ function Settings_SetAnimations() {
             'user_feed_scroll_ani',
             'side_panel_fix',
             'side_panel_movel',
-            'side_panel'
+            'side_panel',
+            'user_feed'
         ],
         animate = Settings_Obj_default("app_animations"),
         mtransition = animate ? '' : 'none';
