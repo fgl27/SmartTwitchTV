@@ -201,7 +201,6 @@ public class PlayerActivity extends Activity {
     // The main player initialization function
     private void initializePlayer(int position) {
         boolean isSmall = (mainPlayer != position);
-        boolean seeking = (mResumePosition > 0) && (mwhocall > 1);
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
@@ -227,12 +226,13 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setPlayer(player[position]);
         }
 
-        if (seeking) player[position].seekTo(mResumePosition);
+        player[position].setMediaItem(
+                mediaSourcePlaying[position] != null ?
+                        mediaSourcePlaying[position] :
+                        Tools.buildMediaSource(uri, dataSourceFactory, mwhocall, mLowLatency),
+                mResumePosition);
 
-        player[position].prepare(
-                mediaSourcePlaying[position] != null ? mediaSourcePlaying[position] : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall, mLowLatency),
-                !seeking,
-                true);
+        player[position].prepare();
 
         player[position].setPlayWhenReady(true);
         SwitchPlayerAudio(AudioSource);
@@ -269,7 +269,8 @@ public class PlayerActivity extends Activity {
         PlayerView[position].setPlayer(player[position]);
 
         player[position].setPlayWhenReady(false);
-        player[position].prepare(mediaurireset, true, true);
+        player[position].setMediaItem(mediaurireset);
+        player[position].prepare();
 
         releasePlayer(position);
     }
