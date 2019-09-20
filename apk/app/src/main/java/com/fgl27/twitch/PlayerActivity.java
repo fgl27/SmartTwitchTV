@@ -126,7 +126,7 @@ public class PlayerActivity extends Activity {
     private boolean shouldCallJavaCheck;
     public boolean IsIN5050 = false;
     public boolean mLowLatency = false;
-    public boolean[] mCheckDroppedFrames= new boolean[2];
+    public boolean[] mCheckDroppedFrames = new boolean[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -955,14 +955,12 @@ public class PlayerActivity extends Activity {
                         player[position].setPlayWhenReady(false);
                         PlayerEventListenerClear(position);
                     } else if (playbackState == Player.STATE_BUFFERING) {
-
-
                         //Use the player buffer as a player check state to prevent be buffering for ever
                         //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         PlayerCheckHandler[position].postDelayed(() -> {
                             //Player was released or is on pause
-                            if (player[position] == null || !player[position].isPlaying())
+                            if (!player[position].isPlaying())
                                 return;
 
                             PlayerEventListenerCheckCounter(position, false);
@@ -982,7 +980,7 @@ public class PlayerActivity extends Activity {
                                 player[otherplayer].setPlayWhenReady(true);
                         }
 
-                        if (player[position] != null && mwhocall > 1) {
+                        if (mwhocall > 1) {
                             myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
                                     mwhocall + "," + player[position].getDuration() + ")"));
                         }
@@ -1001,7 +999,8 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerAllowCheckDroppedFrames(int position) {
-        if (player[position] != null && player[position].isPlaying()) mCheckDroppedFrames[position] = true;
+        if (player[position] != null && player[position].isPlaying())
+            mCheckDroppedFrames[position] = true;
     }
 
     public void PlayerEventListenerClear(int position) {
@@ -1075,7 +1074,7 @@ public class PlayerActivity extends Activity {
 
         @Override
         public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
-            if (mCheckDroppedFrames[position]){
+            if (mCheckDroppedFrames[position]) {
                 droppedFrames[position] += count;
                 droppedFramesTotal += count;
             }
