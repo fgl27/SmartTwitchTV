@@ -254,6 +254,7 @@ public class PlayerActivity extends Activity {
     // So here we do more then what seems necessary by releasing, starting and releasing again
     // But on longer test this gives the best performance
     private void ClearPlayer(int position) {
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
         PlayerView[position].setVisibility(View.GONE);
 
         if (player[position] != null) {
@@ -960,7 +961,7 @@ public class PlayerActivity extends Activity {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         PlayerCheckHandler[position].postDelayed(() -> {
                             //Player was released or is on pause
-                            if (!player[position].isPlaying())
+                            if (player[position] != null && !player[position].isPlaying())
                                 return;
 
                             PlayerEventListenerCheckCounter(position, false);
