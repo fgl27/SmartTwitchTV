@@ -125,6 +125,7 @@ function Settings_init() {
 }
 
 function Settings_exit() {
+    Settings_ScrollTableReset();
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
     Main_HideElement('label_side_panel');
     Main_ShowElement('label_refresh');
@@ -678,6 +679,11 @@ function Settings_ScrollTable() {
     }
 
     Settings_CurY = Settings_cursorY;
+}
+
+function Settings_ScrollTableReset() {
+    document.getElementById('settings_scroll').scrollTop = 0;
+    Settings_CurY = 0;
 }
 
 function scrollTo(element, to, duration) {
