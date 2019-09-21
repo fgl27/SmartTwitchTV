@@ -1424,7 +1424,7 @@ function Play_EndDialogPressed(PlayVodClip) {
                 if (PlayClip_HasVOD) {
                     PlayVod_currentTime = 0;
                     Chat_offset = ChannelVod_vodOffset;
-                    Chat_Init(0);
+                    Chat_Init();
                 } else Chat_NoVod();
             }
         }
@@ -2352,7 +2352,7 @@ function Play_MakeControls() {
             if (PlayVodClip === 1) {
                 ChatLive_Init(0);
                 if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLive_Init(1);
-            } else Chat_Init(0);
+            } else Chat_Init();
 
             this.setLable();
             Main_SaveValues();
