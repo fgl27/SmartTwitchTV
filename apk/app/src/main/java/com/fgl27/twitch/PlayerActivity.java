@@ -126,7 +126,6 @@ public class PlayerActivity extends Activity {
     private boolean shouldCallJavaCheck;
     public boolean IsIN5050 = false;
     public boolean mLowLatency = false;
-    public boolean[] mCheckDroppedFrames = new boolean[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,7 +201,7 @@ public class PlayerActivity extends Activity {
     // The main player initialization function
     private void initializePlayer(int position) {
         boolean isSmall = (mainPlayer != position);
-        mCheckDroppedFrames[position] = false;
+        boolean seeking = (mResumePosition > 0) && (mwhocall > 1);
 
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
@@ -228,13 +227,12 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setPlayer(player[position]);
         }
 
-        player[position].setMediaItem(
-                mediaSourcePlaying[position] != null ?
-                        mediaSourcePlaying[position] :
-                        Tools.buildMediaSource(uri, dataSourceFactory, mwhocall, mLowLatency),
-                mResumePosition);
+        if (seeking) player[position].seekTo(mResumePosition);
 
-        player[position].prepare();
+        player[position].prepare(
+                mediaSourcePlaying[position] != null ? mediaSourcePlaying[position] : Tools.buildMediaSource(uri, dataSourceFactory, mwhocall, mLowLatency),
+                !seeking,
+                true);
 
         player[position].setPlayWhenReady(true);
         SwitchPlayerAudio(AudioSource);
@@ -272,8 +270,7 @@ public class PlayerActivity extends Activity {
         PlayerView[position].setPlayer(player[position]);
 
         player[position].setPlayWhenReady(false);
-        player[position].setMediaItem(mediaurireset);
-        player[position].prepare();
+        player[position].prepare(mediaurireset, true, true);
 
         releasePlayer(position);
     }
@@ -970,10 +967,6 @@ public class PlayerActivity extends Activity {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         PlayerCheckCounter[position] = 0;
 
-                        //Prevent to show droppedFrames right after STATE_READY
-                        //As the player is syncing audio and video and for that it drops frames
-                        PlayerCheckHandler[position].postDelayed(() -> PlayerAllowCheckDroppedFrames(position), 2000);
-
                         //If other not playing just play it so they stay close to sync
                         int otherplayer = position ^ 1;
                         if (player[otherplayer] != null) {
@@ -997,11 +990,6 @@ public class PlayerActivity extends Activity {
                 PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
             });
         }
-    }
-
-    public void PlayerAllowCheckDroppedFrames(int position) {
-        if (player[position] != null && player[position].isPlaying())
-            mCheckDroppedFrames[position] = true;
     }
 
     public void PlayerEventListenerClear(int position) {
@@ -1075,10 +1063,8 @@ public class PlayerActivity extends Activity {
 
         @Override
         public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
-            if (mCheckDroppedFrames[position]) {
-                droppedFrames[position] += count;
-                droppedFramesTotal += count;
-            }
+            droppedFrames[position] += count;
+            droppedFramesTotal += count;
         }
 
         @Override
