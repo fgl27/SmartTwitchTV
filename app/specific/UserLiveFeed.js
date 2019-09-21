@@ -53,6 +53,7 @@ function UserLiveFeed_StartLoad() {
         UserLiveFeed_followerChannels = '';
         Play_FeedPos = 0;
         UserLiveFeed_idObject = {};
+        Main_updateclock();
 
         UserLiveFeed_loadDataPrepare();
         UserLiveFeed_CheckToken();

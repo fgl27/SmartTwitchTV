@@ -61,6 +61,7 @@ function ChannelContent_exit() {
 
 function ChannelContent_StartLoad() {
     ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname);
+    Main_updateclock();
     ChannelContent_isoffline = false;
     Main_HideElement(ChannelContent_ids[10]);
     ChannelContent_offline_image = null;
