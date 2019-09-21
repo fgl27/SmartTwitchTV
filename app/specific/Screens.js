@@ -105,6 +105,7 @@ function Screens_exit() {
 
 function Screens_StartLoad() {
     Main_showLoadDialog();
+    Main_updateclock();
     Main_empty(inUseObj.table);
     Main_HideWarningDialog();
     inUseObj.cursor = null;
