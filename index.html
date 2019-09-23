@@ -24,7 +24,7 @@
     <link rel="preconnect" href="https://usher.ttvnw.net">
     <link rel="stylesheet" href="https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css">
     <title>SmartTV Twitch</title>
-    <link rel='shortcut icon' type='image/x-icon' href="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/favicon.ico" />
     <style>
         body,
         html {
@@ -190,9 +190,7 @@
 
         div.feed_thumbnail_focused {
             /* same animation time as user_feed_scroll_ani*/
-            transition: background-color 0.2s ease-in-out,
-                color 0.2s ease-in-out,
-                border-color 0.2s ease-in-out;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
         }
 
         div.stream_thumbnail_focused_no_ani,
@@ -204,9 +202,7 @@
 
         div.stream_thumbnail_focused {
             /* same animation time as animate_height_transition*/
-            transition: background-color 0.35s ease-in-out,
-                color 0.35s ease-in-out,
-                border-color 0.35s ease-in-out;
+            transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out, border-color 0.35s ease-in-out;
         }
 
         div.stream_switch_focused {
@@ -475,42 +471,13 @@
 
         div.stream_channel_fallow_game,
         .pause_button3d {
-            text-shadow: -0.1em 0 0 #000000,
-                0.05em -0.05em 0 #000000,
-                0.05em 0.05em 0 #000000,
-                0 0.05em 0 #000000,
-                -0.05em 0 0 #000000,
-                -0.05em 0.05em 0 #000000,
-                0 -0.05em 0 #000000,
-                0 0.0375em 0 #777777,
-                0 0.075em 0 #666666,
-                0 0.1125em 0 #555555,
-                0 0.2em 0 #000000,
-                0 0.2em 0 #000000,
-                0.1em 0.1em 0 #000000,
-                0.1em 0.1em 0 #000000,
-                -0.1em 0.1em 0 #000000,
-                -0.1em 0.1em 0 #000000,
-                -0.05em 0.15em 0 #000000,
-                0.05em 0.15em 0 #000000;
+            text-shadow: -0.1em 0 0 #000000, 0.05em -0.05em 0 #000000, 0.05em 0.05em 0 #000000, 0 0.05em 0 #000000, -0.05em 0 0 #000000, -0.05em 0.05em 0 #000000, 0 -0.05em 0 #000000, 0 0.0375em 0 #777777, 0 0.075em 0 #666666, 0 0.1125em 0 #555555, 0 0.2em 0 #000000, 0 0.2em 0 #000000, 0.1em 0.1em 0 #000000, 0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000, -0.05em 0.15em 0 #000000, 0.05em 0.15em 0 #000000;
         }
 
         .strokicon {
             font-size: 90%;
             color: #FFFFFF;
-            text-shadow: 0 0.025em 0 #000000,
-                -0.025em 0 0 #000000,
-                0 0.0375em 0 #777777,
-                0 0.055em 0 #666666,
-                0 0.07em 0 #555455,
-                -0.03em -0.03em 0 #000000,
-                0.03em -0.03em 0 #000000,
-                -0.03em 0.08em 0 #000000,
-                0.03em 0.08em 0 #000000,
-                -0.04em 0.03em 0 #000000,
-                0.04em 0.03em 0 #000000,
-                0 0.1em 0 #000000,
-                0 -0.04em 0 #000000;
+            text-shadow: 0 0.025em 0 #000000, -0.025em 0 0 #000000, 0 0.0375em 0 #777777, 0 0.055em 0 #666666, 0 0.07em 0 #555455, -0.03em -0.03em 0 #000000, 0.03em -0.03em 0 #000000, -0.03em 0.08em 0 #000000, 0.03em 0.08em 0 #000000, -0.04em 0.03em 0 #000000, 0.04em 0.03em 0 #000000, 0 0.1em 0 #000000, 0 -0.04em 0 #000000;
         }
 
         div.stream_channel_fallow_game {
@@ -578,6 +545,7 @@
         }
 
         /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
+
         div.user_feed_thumb {
             width: 19.22%;
             display: inline-block;
@@ -692,7 +660,6 @@
             font-size: 110%;
         }
 
-
         div.controls_text {
             font-size: 74%;
             margin-top: 0;
@@ -802,6 +769,7 @@
         }
 
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
+
         div.side_panel_feed {
             width: 100%;
             padding: 1%;
@@ -1617,6 +1585,7 @@
         }
 
         /*adapted from https://loading.io/css/*/
+
         .loading {
             display: inline-block;
             position: relative;
@@ -1786,7 +1755,7 @@
             </div>
         </div>
         <div id="dialog_counter" style="position: absolute; z-index:101; width: 100%; bottom: 0;">
-            <div style="float: right; width: auto; height: auto; display: inline-block; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.75));">
+            <div style="float: right; width: auto; height: auto; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.75));">
                 <div id="dialog_counter_text" class="counter_class"></div>
             </div>
         </div>
@@ -2249,7 +2218,7 @@
             <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></div>
             <div style="width: 96%; height: 20%; bottom:0; color: #FFFFFF; font-size: 110%; padding: 1%;">
                 <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold" style="width: 75%; display: inline-block; font-size: 110%;"></div>
-                <div id="feed_thum_quality" class="side_panel_feed_thumb_text" style="width: 24%; float: right; text-align: right; display: inline-block;"></div>
+                <div id="feed_thum_quality" class="side_panel_feed_thumb_text" style="width: 24%; float: right; text-align: right;"></div>
                 <div id="feed_thum_title" class="side_panel_feed_thumb_text"></div>
                 <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
                 <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
