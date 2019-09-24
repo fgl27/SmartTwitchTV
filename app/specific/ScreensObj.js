@@ -67,13 +67,7 @@ var Base_obj = {
     loadDataSuccess: Screens_loadDataSuccess,
     addrow: Screens_addrow,
     key_exit: function(goSidepanel) {
-
-        if (Main_ThumbNull(this.posY, this.posX, this.ids[0])) {
-            Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-        } else if (this.posY < 0) {
-            Screens_removeFocusFallow();
-            this.posY = 0;
-        }
+        Screens_RemoveAllFocus();
 
         if ((this.screen === Main_aGame) && !goSidepanel) {
             if (Main_values.Games_return) {
@@ -177,8 +171,7 @@ var Base_Vod_obj = {
             this.row.appendChild(
                 Screens_createCellVod(
                     this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    [thubnail.replace("{width}x{height}", Main_VideoSize),
+                    this.ids, [thubnail.replace("{width}x{height}", Main_VideoSize),
                         cell.channel.display_name,
                         STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
                         twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""),
@@ -518,9 +511,7 @@ var Base_Live_obj = {
 
             this.row.appendChild(
                 Screens_createCellLive(
-                    this.row_id + '_' + this.coloumn_id,
-                    [cell.channel.name, cell.channel._id, Main_is_rerun(cell.stream_type)], this.ids,
-                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    this.row_id + '_' + this.coloumn_id, [cell.channel.name, cell.channel._id, Main_is_rerun(cell.stream_type)], this.ids, [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
                         cell.channel.display_name,
                         cell.channel.status, cell.game,
                         STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE + STR_FOR + Main_addCommas(cell.viewers) +
@@ -732,9 +723,7 @@ function ScreensObj_InitUserHost() {
 
             this.row.appendChild(
                 Screens_createCellLive(
-                    this.row_id + '_' + this.coloumn_id,
-                    [cell.target.channel.name, cell.target._id, false], this.ids,
-                    [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                    this.row_id + '_' + this.coloumn_id, [cell.target.channel.name, cell.target._id, false], this.ids, [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                         cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
                         cell.target.title, cell.target.meta_game,
                         STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
@@ -896,8 +885,7 @@ var Base_Clip_obj = {
             this.row.appendChild(
                 Screens_createCellClip(
                     this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    [cell.slug,
+                    this.ids, [cell.slug,
                         cell.duration,
                         cell.game,
                         cell.broadcaster.name,
@@ -1051,8 +1039,7 @@ var Base_Game_obj = {
             this.row.appendChild(
                 Screens_createCellGame(
                     this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    [game.box.template.replace("{width}x{height}", Main_GameSize),
+                    this.ids, [game.box.template.replace("{width}x{height}", Main_GameSize),
                         game.name,
                         hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
                         Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : ''
@@ -1186,8 +1173,7 @@ var Base_Channel_obj = {
             this.row.appendChild(
                 Screens_createCellChannel(
                     this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    [cell.name, cell._id, cell.logo, cell.display_name, cell.partner]));
+                    this.ids, [cell.name, cell._id, cell.logo, cell.display_name, cell.partner]));
 
             this.coloumn_id++;
         }

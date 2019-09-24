@@ -750,10 +750,20 @@ function Screens_KeyLeftRight(y, x) {
 }
 
 function Screens_OpenSidePanel() {
+    Screens_RemoveAllFocus();
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Screens_ClearAnimation();
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
     Sidepannel_Start(Screens_handleKeyDown);
+}
+
+function Screens_RemoveAllFocus() {
+    if (Main_ThumbNull(inUseObj.posY, inUseObj.posX, inUseObj.ids[0])) {
+        Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+    } else if (inUseObj.posY < 0) {
+        Screens_removeFocusFallow();
+        inUseObj.posY = 0;
+    }
 }
 
 function Screens_handleKeyUp(e) {
