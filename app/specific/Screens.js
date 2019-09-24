@@ -380,7 +380,7 @@ function Screens_loadDataSuccessFinish() {
                 Main_ready(function() {
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
-                    Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+                    Screens_RemoveAllFocus();
                     Main_SwitchScreenAction();
                     if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
                     else {
