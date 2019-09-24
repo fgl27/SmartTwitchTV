@@ -388,5 +388,4 @@ function Chat_Clean(chat_number) {
             Chat_div[chat_number].removeChild(linesToDelete[0]);
         }
     }
-    ChatLive_ChatFixPosition(chat_number);
 }

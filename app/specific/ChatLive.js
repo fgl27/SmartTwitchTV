@@ -7,7 +7,6 @@ var ChatLive_loadBadgesChannelId;
 var ChatLive_socket = [];
 var ChatLive_loaded = [];
 var ChatLive_CheckId = [];
-var ChatLive_FixId = [];
 var ChatLive_LineAddCounter = [];
 var extraEmotesDone = {
     bbtv: {},
@@ -261,10 +260,6 @@ function ChatLive_Check(chat_number) {
     if (!ChatLive_loaded[chat_number]) {
         ChatLive_socket[chat_number].close(1000);
         ChatLive_loadChat(chat_number);
-    } else {
-        ChatLive_FixId[chat_number] = window.setInterval(function() {
-            ChatLive_ChatFixPosition(chat_number);
-        }, 1000);
     }
 }
 
@@ -353,7 +348,6 @@ function ChatLive_LineAdd(message, chat_number) {
 
     Chat_div[chat_number].appendChild(elem);
 
-    ChatLive_ChatFixPosition(chat_number);
     ChatLive_LineAddCounter[chat_number]++;
     if (ChatLive_LineAddCounter[chat_number] > Chat_CleanMax) {
         ChatLive_LineAddCounter[chat_number] = 0;
@@ -361,15 +355,10 @@ function ChatLive_LineAdd(message, chat_number) {
     }
 }
 
-function ChatLive_ChatFixPosition(chat_number) {
-    Chat_div[chat_number].scrollTop = Chat_div[chat_number].scrollHeight;
-}
-
 function ChatLive_ClearIds(chat_number) {
     ChatLive_CheckClear(chat_number);
     window.clearTimeout(ChatLive_loadBadgesChannelId);
     window.clearTimeout(ChatLive_loadEmotesChannelId);
-    window.clearInterval(ChatLive_FixId[chat_number]);
 }
 
 function ChatLive_Clear(chat_number) {

@@ -1426,13 +1426,14 @@
         .chat_box {
             background-color: transparent;
             font-size: 0.65em;
-            position: absolute;
-            border-radius: 0.2em;
-            width: calc(100% - 0.05em);
-            height: calc(100% - 0.05em);
             margin: 0.25em;
-            overflow: hidden;
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
+        }
+
+        .chat_box_holder {
+            height: 100%;
+            display: flex;
+            flex-direction: column-reverse;
         }
 
         .tag {
@@ -2035,7 +2036,11 @@
     <div id="scene2" class="screen_size hide">
         <div id="chat_container" class="chat_container hide">
             <div id="chat_inner_container" class="chat_size_default">
-                <div id="chat_box" class="chat_box"></div>
+                <div class="chat_box_holder">
+                    <div>
+                        <div id="chat_box" class="chat_box"></div>
+                    </div>
+                </div>
                 <div id="play_chat_dialog"
                     style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
                     <div id="play_chat_dialog_text" class="strokedeline"
@@ -2046,7 +2051,11 @@
         </div>
         <div id="chat_container2" class="chat_container2 hide">
             <div id="chat_inner_container2" class="chat_size_default">
-                <div id="chat_box2" class="chat_box"></div>
+                <div class="chat_box_holder">
+                    <div>
+                        <div id="chat_box2" class="chat_box"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="chat_container2_name" class="chat_container2_name hide">
