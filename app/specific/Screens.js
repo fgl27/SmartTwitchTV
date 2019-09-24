@@ -244,7 +244,6 @@ function Screens_createCell(id_attribute, Data_content, html_content) {
     return div;
 }
 
-
 function Screens_createCellChannel(id, idArray, valuesArray) {
     return Screens_createCell(
         idArray[8] + id,
