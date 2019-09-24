@@ -365,6 +365,7 @@ function ChatLive_Clear(chat_number) {
     ChatLive_ClearIds(chat_number);
     if (ChatLive_socket[chat_number]) ChatLive_socket[chat_number].close(1000);
     ChatLive_Id[chat_number] = 0;
+    ChatLive_LineAddCounter[chat_number] = 0;
 
     if (!chat_number) Main_empty('chat_box');
     else Main_empty('chat_box2');
