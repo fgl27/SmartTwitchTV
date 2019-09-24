@@ -24,7 +24,8 @@
     <link rel="preconnect" href="https://usher.ttvnw.net">
     <link rel="stylesheet" href="https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css">
     <title>SmartTV Twitch</title>
-    <link rel="shortcut icon" type="image/x-icon" href="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon"
+        href="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/favicon.ico" />
     <style>
         body,
         html {
@@ -35,11 +36,11 @@
             -webkit-font-smoothing: antialiased;
             -webkit-text-stroke: 0.005em;
         }
-        
+
         div.class_bold {
             font-family: 'Roboto-Bold';
         }
-        
+
         div.screen_size,
         div.feed_screen,
         div.screens {
@@ -51,43 +52,43 @@
             letter-spacing: 0.075ch;
             font-kerning: none;
         }
-        
+
         div.feed_screen {
             transform: translateY(-100%);
             z-index: 100;
         }
-        
+
         div.feed_screen_input {
             pointer-events: none;
         }
-        
+
         div.screens {
             position: absolute;
         }
-        
+
         .animate_height {
             height: 0px !important;
         }
-        
+
         .animate_height_transition_channel,
         .animate_height_transition_games,
         .animate_height_transition {
             height: 47vh;
             transition: height 0.35s ease-in-out;
         }
-        
+
         .animate_height_transition_games {
             height: 48.3vh;
         }
-        
+
         .animate_height_transition_channel {
             height: 32.075vh;
         }
-        
+
         .side_panel_holder_ani {
             transition: margin-top 0.2s ease-in-out;
         }
-        
+
         div.screen_holder,
         div.screen_holder_channel,
         div.screen_holder_switch,
@@ -98,23 +99,23 @@
             top: 7.6%;
             transition: top 0.35s ease-in-out;
         }
-        
+
         div.screen_holder_switch {
             top: 4.1%;
         }
-        
+
         div.screen_holder_games {
             top: 4.5%;
         }
-        
+
         div.screen_holder_channel {
             top: 6%;
         }
-        
+
         div.screen_holder_user {
             top: 7%;
         }
-        
+
         div.settings_holder {
             position: absolute;
             top: 6%;
@@ -122,7 +123,7 @@
             height: 91.5%;
             overflow: hidden;
         }
-        
+
         div.screen_holder_settings {
             position: absolute;
             overflow: hidden;
@@ -130,12 +131,12 @@
             width: 97.5%;
             height: 100%;
         }
-        
+
         .live_icon {
             vertical-align: middle;
             font-size: 65%;
         }
-        
+
         div.icon_top_label {
             width: auto;
             height: 1.75%;
@@ -145,7 +146,7 @@
             font-family: 'Roboto-Bold';
             vertical-align: middle;
         }
-        
+
         div.stream_cell_period {
             padding-left: 2ch;
             position: relative;
@@ -153,7 +154,7 @@
             display: inline-block;
             transform: translateY(15%);
         }
-        
+
         div.stream_thumbnail_game,
         div.stream_thumbnail_clip,
         div.stream_thumbnail_live,
@@ -165,13 +166,13 @@
             position: relative;
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
-        
+
         div.stream_thumbnail_clip {
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 56.25%;
             background-repeat: no-repeat;
         }
-        
+
         div.stream_thumbnail_player_feed {
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 73.25%;
@@ -180,36 +181,36 @@
             color: #FFFFFF;
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
-        
+
         div.feed_thumbnail_focused_no_ani,
         div.feed_thumbnail_focused {
             background-color: #ebebeb !important;
             color: #000000 !important;
             border-color: #ebebeb !important;
         }
-        
+
         div.feed_thumbnail_focused {
             /* same animation time as user_feed_scroll_ani*/
             transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
         }
-        
+
         div.stream_thumbnail_focused_no_ani,
         div.stream_thumbnail_focused {
             background-color: #ebebeb !important;
             color: #000000 !important;
             border-color: #ebebeb !important;
         }
-        
+
         div.stream_thumbnail_focused {
             /* same animation time as animate_height_transition*/
             transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out, border-color 0.35s ease-in-out;
         }
-        
+
         div.stream_switch_focused {
             background-color: rgba(255, 255, 255, 0.15);
             border-color: #ebebeb !important;
         }
-        
+
         div.stream_thumbnail_channel_vod {
             margin-left: 5%;
             width: 90%;
@@ -217,32 +218,32 @@
             padding-bottom: 6%;
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
-        
+
         div.stream_thumbnail_live {
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 79%;
             background-color: #000000;
             color: #FFFFFF;
         }
-        
+
         div.stream_thumbnail_live_game {
             width: 100%;
             background-color: #000000;
             padding-bottom: 139.7%;
         }
-        
+
         div.stream_thumbnail_live_img {
             width: 100%;
             background-color: #000000;
             padding-bottom: 56.25%;
         }
-        
+
         div.stream_thumbnail_channel_img {
             width: 100%;
             background-color: #000000;
             padding-bottom: 100%;
         }
-        
+
         div.stream_thumbnail_game_holder {
             width: 17.1%;
             display: inline-block;
@@ -250,7 +251,7 @@
             padding-top: 0;
             padding-bottom: 0.2%;
         }
-        
+
         div.stream_thumbnail_game {
             padding-bottom: 164%;
             font-size: 80%;
@@ -258,14 +259,14 @@
             color: #FFFFFF;
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
-        
+
         div.stream_thumbnail_live_holder {
             width: 32.25%;
             display: inline-block;
             padding: 0.5%;
             padding-bottom: 1.5%;
         }
-        
+
         div.stream_thumbnail_user_icon_holder,
         div.stream_thumbnail_channel_holder {
             width: 15%;
@@ -273,7 +274,7 @@
             padding: 0.5%;
             padding-bottom: 1.25%;
         }
-        
+
         div.stream_thumbnail_user_icon_holder {
             width: 14.5%;
             transform: translateY(-11%);
@@ -281,7 +282,7 @@
             padding-top: 0.8%;
             padding-bottom: 0;
         }
-        
+
         div.stream_thumbnail_user_text_holder,
         div.stream_thumbnail_channel_text_holder,
         div.stream_thumbnail_game_text_holder,
@@ -293,21 +294,21 @@
             padding: 0.5%;
             font-size: 95%;
         }
-        
+
         div.stream_thumbnail_game_text_holder {
             bottom: 0;
         }
-        
+
         div.stream_thumbnail_channel_text_holder {
             bottom: 0;
             height: 1em;
         }
-        
+
         div.stream_thumbnail_user_text_holder {
             bottom: 0;
             height: 2em;
         }
-        
+
         .stream_info_live,
         .stream_info_channel_name,
         .stream_info_user_name,
@@ -318,7 +319,7 @@
             font-size: 85%;
             font-family: 'Roboto-Bold';
         }
-        
+
         .stream_info_game_name {
             width: 100%;
             white-space: nowrap;
@@ -327,13 +328,13 @@
             font-size: 75%;
             font-family: 'Roboto-Bold';
         }
-        
+
         .stream_info_channel_partner_icon {
             display: inline-block;
             font-size: 75%;
             width: 2ch;
         }
-        
+
         .stream_info_user_name,
         .stream_info_channel_name {
             font-size: 72%;
@@ -343,13 +344,13 @@
             width: calc(100% - 3ch);
             display: inline-block;
         }
-        
+
         .stream_info_user_name {
             font-size: 70%;
             width: 100%;
             display: block;
         }
-        
+
         .stream_info_live {
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -357,26 +358,26 @@
             font-family: 'Roboto';
             font-size: 75%;
         }
-        
+
         div.stream_thumbnail_channel {
             padding-bottom: 112%;
             background-color: #000000;
             color: #FFFFFF;
         }
-        
+
         div.stream_thumbnail_user {
             padding-bottom: 122%;
             background-color: #000000;
             color: #FFFFFF;
         }
-        
+
         div.stream_user_icon {
             width: 100%;
             color: #FFFFFF;
             text-align: center;
             font-size: 100%;
         }
-        
+
         img.stream_img_channel {
             height: 83%;
             max-width: 95%;
@@ -385,20 +386,20 @@
             left: 50%;
             transform: translateX(-50%);
         }
-        
+
         img.stream_img_channel_logo {
             height: 100%;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
         }
-        
+
         .about_streamer {
             width: 100%;
             text-align: left;
             word-wrap: break-word;
         }
-        
+
         div.stream_channel_content_icon {
             width: 100%;
             color: #FFFFFF;
@@ -406,7 +407,7 @@
             font-size: 800%;
             padding-top: 4%;
         }
-        
+
         img.stream_img_side,
         img.stream_img {
             width: 100%;
@@ -415,19 +416,19 @@
             max-height: 100%;
             overflow: hidden;
         }
-        
+
         img.stream_img_side {
             width: 99.2%;
             margin-left: 0.2%;
             margin-top: 0.2%;
         }
-        
+
         img.stream_img_fallow {
             height: 100%;
             position: absolute;
             right: 0;
         }
-        
+
         div.player_live_feed_text {
             position: absolute;
             bottom: 0;
@@ -436,11 +437,11 @@
             padding: 0.5%;
             font-size: 95%;
         }
-        
+
         div.stream_text_channel {
             background-color: rgba(0, 0, 0, 0);
         }
-        
+
         .next_channel,
         .next_info {
             width: 100%;
@@ -450,7 +451,7 @@
             font-family: 'Roboto-Bold';
             font-size: 85%;
         }
-        
+
         .next_info {
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -458,7 +459,7 @@
             font-family: 'Roboto';
             font-size: 75%;
         }
-        
+
         div.stream_channel_fallow_game {
             width: 100%;
             text-align: left;
@@ -468,39 +469,39 @@
             font-family: 'Roboto-Bold';
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
-        
+
         div.stream_channel_fallow_game,
         .pause_button3d {
             text-shadow: -0.1em 0 0 #000000, 0.05em -0.05em 0 #000000, 0.05em 0.05em 0 #000000, 0 0.05em 0 #000000, -0.05em 0 0 #000000, -0.05em 0.05em 0 #000000, 0 -0.05em 0 #000000, 0 0.0375em 0 #777777, 0 0.075em 0 #666666, 0 0.1125em 0 #555555, 0 0.2em 0 #000000, 0 0.2em 0 #000000, 0.1em 0.1em 0 #000000, 0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000, -0.05em 0.15em 0 #000000, 0.05em 0.15em 0 #000000;
         }
-        
+
         .strokicon {
             font-size: 90%;
             color: #FFFFFF;
             text-shadow: 0 0.025em 0 #000000, -0.025em 0 0 #000000, 0 0.0375em 0 #777777, 0 0.055em 0 #666666, 0 0.07em 0 #555455, -0.03em -0.03em 0 #000000, 0.03em -0.03em 0 #000000, -0.03em 0.08em 0 #000000, 0.03em 0.08em 0 #000000, -0.04em 0.03em 0 #000000, 0.04em 0.03em 0 #000000, 0 0.1em 0 #000000, 0 -0.04em 0 #000000;
         }
-        
+
         div.stream_channel_fallow_game {
             text-align: center;
             padding-top: 0.5%;
             font-size: 76%;
         }
-        
+
         .stream_channel_fallow_icon {
             color: #FFFFFF;
             font-size: 100%
         }
-        
+
         div.scenefeed_background_no_ani,
         div.scenefeed_background {
             background: rgba(0, 0, 0, 0.75);
         }
-        
+
         div.scenefeed_background {
             transition: background 0.35s ease-in-out;
             background: rgba(0, 0, 0, 0.75);
         }
-        
+
         div.user_feed_notify {
             z-index: 3;
             position: absolute;
@@ -513,11 +514,11 @@
             border-color: #ebebeb !important;
             transition: margin-top 0.35s ease-in-out;
         }
-        
+
         div.user_feed_notify_hide {
             margin-top: -20%;
         }
-        
+
         div.user_feed {
             z-index: 3;
             position: absolute;
@@ -527,11 +528,11 @@
             overflow: hidden;
             transition: bottom 0.35s ease-in-out;
         }
-        
+
         div.user_feed_hide {
             bottom: -40%;
         }
-        
+
         div.user_feed_scroll {
             position: absolute;
             width: 100%;
@@ -539,24 +540,25 @@
             height: auto;
             white-space: nowrap;
         }
-        
+
         div.user_feed_scroll_ani {
             transition: left 0.2s ease-in-out;
         }
+
         /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
-        
+
         div.user_feed_thumb {
             width: 19.22%;
             display: inline-block;
             padding: 0.355%;
         }
-        
+
         div.input_text_box {
             width: 70%;
             margin-top: 13%;
             margin-left: 15%;
         }
-        
+
         input.input_class {
             width: 100%;
             height: 2em;
@@ -572,7 +574,7 @@
             box-shadow: inset 0 0 0 0.08em #000000;
             padding: 0.08em;
         }
-        
+
         div.button_dialog,
         div.button_search {
             width: 18%;
@@ -591,11 +593,11 @@
             border-image: linear-gradient(#000000, #000000) 1;
             text-align: center;
         }
-        
+
         div.button_dialog {
             border-image: linear-gradient(#101010, #101010) 1;
         }
-        
+
         div.button_dialog_focused,
         div.button_search_focused {
             color: #FFFFFF;
@@ -603,11 +605,11 @@
             text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
             border-image: linear-gradient(to right, #000000 6%, #D0D3D4, #000000 94%) 1;
         }
-        
+
         div.button_dialog_focused {
             border-image: linear-gradient(to right, #101010 9%, #D0D3D4, #101010 91%) 1;
         }
-        
+
         .follower_header {
             width: 97vw;
             overflow: hidden;
@@ -617,25 +619,25 @@
             font-size: 120%;
             margin-bottom: 0;
         }
-        
+
         .follower_banner {
             height: 26%;
         }
-        
+
         img.stream_img_banner {
             height: 26vh;
             display: block;
             margin-left: 50%;
             transform: translateX(-50%);
         }
-        
+
         div.about_text_title {
             text-align: center;
             width: 100%;
             font-size: 130%;
             font-family: 'Roboto-Bold';
         }
-        
+
         div.about_text,
         div.exit_text,
         div.controls_text {
@@ -651,50 +653,50 @@
             font-size: 85%;
             text-shadow: #000000 0 0 0.2em, #000000 0 0 0.2em, #000000 0 0 0.15em;
         }
-        
+
         div.exit_text {
             margin-top: 2%;
             margin-bottom: 2%;
             width: 96%;
             font-size: 110%;
         }
-        
+
         div.controls_text {
             font-size: 74%;
             margin-top: 0;
             margin-bottom: 0;
         }
-        
+
         div.up,
         div.down {
             border-left: 0.6em solid transparent;
             border-right: 0.6em solid transparent;
         }
-        
+
         div.up {
             border-bottom: 0.8em solid white;
         }
-        
+
         div.down {
             border-top: 0.8em solid white;
         }
-        
+
         div.scene_channel_panel {
             position: absolute;
             z-index: 2;
             opacity: 0;
         }
-        
+
         div.playsideinfostatus,
         div.playsideinfotext {
             word-wrap: break-word;
             line-height: 2.2ch
         }
-        
+
         div.playsideinfotext {
             display: inline-block;
         }
-        
+
         div.playsideinfo {
             z-index: 100;
             position: absolute;
@@ -707,12 +709,12 @@
             padding: 1%;
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
-        
+
         div.playsideinfofocus {
             border-radius: 0.75em;
             background-color: rgba(0, 0, 0, 0.60);
         }
-        
+
         div.playclock {
             position: absolute;
             text-align: center;
@@ -722,7 +724,7 @@
             font-size: 100%;
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
-        
+
         div.playmaininfo {
             vertical-align: top;
             padding-left: 1%;
@@ -735,23 +737,23 @@
             word-wrap: break-word;
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
-        
+
         div.playerinfo {
             width: 100%;
             background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.32));
         }
-        
+
         div.partnericon_div {
             display: inline-block;
             width: auto;
         }
-        
+
         img.partnericon_img {
             display: inline-block;
             width: 1.5ch;
             vertical-align: middle;
         }
-        
+
         div.lang_text,
         div.partnericon_text {
             display: inline-block;
@@ -759,20 +761,21 @@
             font-size: 70%;
             font-family: 'Roboto';
         }
-        
+
         div.partnericon_text {
             border-radius: 0.1em;
             text-shadow: none;
             font-size: 60%;
             font-family: 'Roboto-Bold';
         }
+
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
-        
+
         div.side_panel_feed {
             width: 100%;
             padding: 1%;
         }
-        
+
         div.side_panel_feed_top {
             margin-top: 1%;
             margin-bottom: 1%;
@@ -785,13 +788,13 @@
             overflow: hidden;
             color: #FFFFFF;
         }
-        
+
         div.side_panel_feed_thumb_text {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
         }
-        
+
         div.side_panel_feed_thumb {
             box-sizing: border-box;
             position: absolute;
@@ -802,7 +805,7 @@
             background-color: #000000;
             border: 0.06em solid #ebebeb;
         }
-        
+
         div.side_panel_dialog {
             text-align: center;
             margin-top: 20%;
@@ -812,7 +815,7 @@
             color: #FFFFFF;
             position: absolute;
         }
-        
+
         div.side_panel_fix,
         div.side_panel_movel {
             position: absolute;
@@ -823,31 +826,31 @@
             overflow: hidden;
             transition: margin-left 0.35s ease-in-out;
         }
-        
+
         div.side_panel_background_color {
             background-color: rgba(0, 0, 0, 0.9);
         }
-        
+
         div.side_panel_fix_top_2,
         div.side_panel_fix_top {
             height: 42%;
         }
-        
+
         div.side_panel_fix_top_2 {
             height: 42%;
             transform: translateY(-65%);
         }
-        
+
         div.side_panel_fix_bottom {
             height: 32%;
             transform: translateY(-172%);
         }
-        
+
         div.side_panel_fix_center {
             height: 42%;
             transform: translateY(-118%);
         }
-        
+
         div.side_panel_movel_bottom_holder {
             height: 35%;
             padding-top: 9vh;
@@ -856,12 +859,12 @@
             font-size: 75%;
             text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
         }
-        
+
         div.side_panel_movel_bottom_text {
             height: 25%;
             width: auto;
         }
-        
+
         div.side_panel_new_icons_top,
         div.side_panel_new_icons_text_holder,
         div.side_panel_new_icons {
@@ -874,26 +877,26 @@
             text-align: center;
             text-shadow: -0.02em -0.02em 0 #000, 0.02em -0.02em 0 #000, -0.02em 0.02em 0 #000, 0.02em 0.02em 0 #000;
         }
-        
+
         div.side_panel_new_icons {
             margin-left: 10%;
         }
-        
+
         div.side_panel_new_icons_text_holder {
             padding-left: 21%;
             width: auto;
             text-align: left;
             font-size: 125%;
         }
-        
+
         div.side_panel_new_icons_text {
             background: rgba(255, 255, 255, 0.25);
         }
-        
+
         .side_panel_new_icons_pad {
             vertical-align: sub;
         }
-        
+
         div.side_panel_movel_user_text,
         div.side_panel_movel_top_text {
             color: #FFFFFF;
@@ -903,32 +906,32 @@
             left: 25%;
             width: 75%;
         }
-        
+
         div.side_panel_movel_user_text {
             transform: translateY(-115%);
             text-decoration: underline;
         }
-        
+
         div.side_panel_new_icons_top {
             padding-top: 0;
             height: 50%;
         }
-        
+
         div.side_panel_new_icons_top_iner {
             transform: translateY(110%);
             margin-left: 20%;
         }
-        
+
         div.side_panel_movel_iner {
             transform: translateY(1.28em);
             padding-left: 20%;
             text-align: left;
         }
-        
+
         img.side_panel_new_img {
             width: 70%;
         }
-        
+
         div.side_panel {
             position: absolute;
             bottom: 0;
@@ -938,21 +941,21 @@
             transition: margin-left 0.35s ease-in-out;
             overflow: hidden;
         }
-        
+
         div.side_panel_border {
             border-right: 0.11em solid;
             border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
         }
-        
+
         div.side_panel_hide {
             margin-left: -31.5%;
         }
-        
+
         .side_panel_icons {
             vertical-align: middle;
             display: inline-block
         }
-        
+
         div.about_dialogs {
             position: absolute;
             z-index: 200;
@@ -962,7 +965,7 @@
             border-radius: 0.2em;
             border: 0.0825em solid #FFFFFF;
         }
-        
+
         div.dialogs {
             position: absolute;
             text-align: center;
@@ -970,36 +973,36 @@
             font-family: 'Roboto-Bold';
             color: #FFFFFF;
         }
-        
+
         div.dialogs_feed {
             text-align: center;
             width: 100%;
             font-family: 'Roboto-Bold';
             color: #FFFFFF;
         }
-        
+
         .strokedeline {
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
-        
+
         .strokedelinebig {
             text-shadow: -0.0175em -0.0175em 0 #000, 0.0175em -0.0175em 0 #000, -0.0175em 0.0175em 0 #000, 0.0175em 0.0175em 0 #000;
         }
-        
+
         .red_text {
             color: #FF2121;
         }
-        
+
         div.streams_div {
             margin-left: 5%;
             width: 94.5%;
         }
-        
+
         div.streams_game_div {
             margin-left: 7%;
             width: 94.5%;
         }
-        
+
         div.counter_class {
             width: 100%;
             text-align: left;
@@ -1009,7 +1012,7 @@
             font-family: 'Roboto-Bold';
             text-shadow: #000000 0 0 0.15em, #000000 0 0 0.15em, #000000 0 0 0.1em;
         }
-        
+
         div.dialog_period,
         div.dialog_exit {
             position: absolute;
@@ -1022,13 +1025,13 @@
             border-bottom: 0.1em solid;
             border-image: linear-gradient(to right, #101010 20%, #D0D3D4, #101010 80%) 1;
         }
-        
+
         div.dialog_period {
             margin-top: 10%;
             width: 80%;
             margin-left: 10%;
         }
-        
+
         div.chat_container {
             z-index: 2;
             border-radius: 0.1em;
@@ -1040,7 +1043,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
-        
+
         div.chat_container_name,
         div.chat_container2_name {
             z-index: 2;
@@ -1060,17 +1063,17 @@
             text-overflow: ellipsis;
             overflow: hidden;
         }
-        
+
         div.chat_container_name {
             top: 0.2%;
             left: 75.2%;
         }
-        
+
         div.chat_container2_name_text {
             display: inline-block;
             padding-top: 0.5%;
         }
-        
+
         div.chat_container2 {
             z-index: 2;
             border-radius: 0.1em;
@@ -1082,7 +1085,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
-        
+
         div.top_lable {
             text-align: center;
             width: 100%;
@@ -1091,7 +1094,7 @@
             font-family: 'Roboto-Bold';
             position: absolute;
         }
-        
+
         div.topbar {
             position: absolute;
             margin-left: 5%;
@@ -1099,26 +1102,26 @@
             background: rgba(0, 0, 0, 1);
             height: 4.5vh;
         }
-        
+
         div.topbar_dim {
             background: rgba(0, 0, 0, 1);
         }
-        
+
         div.controls_div {
             float: left;
             padding-left: 1%;
         }
-        
+
         div.top_clock {
             position: absolute;
             right: 1%;
             top: 0.5%;
         }
-        
+
         .hide {
             display: none;
         }
-        
+
         div.dialog_end_icons_start,
         div.dialog_end_icons {
             font-size: 80%;
@@ -1133,38 +1136,38 @@
             border-radius: 0.2em;
             border: 0.0825em solid rgba(0, 0, 0, 0);
         }
-        
+
         div.dialog_end_icons_start {
             height: 23%;
         }
-        
+
         div.dialog_end_icons_focus {
             border-color: #FFFFFF;
             background-color: rgba(150, 150, 150, 0.55);
         }
-        
+
         .right,
         .left {
             border-top: 0.26em solid transparent;
             border-bottom: 0.26em solid transparent;
             opacity: 0;
         }
-        
+
         .right {
             border-left: 0.45em solid white;
         }
-        
+
         .left {
             border-right: 0.45em solid white;
         }
-        
+
         div.settings_main {
             font-family: 'Roboto-Bold';
             color: #FFFFFF;
             width: 95%;
             margin-left: 2.5%;
         }
-        
+
         div.settings_div,
         div.settings_title,
         div.settings_summary,
@@ -1174,19 +1177,19 @@
             vertical-align: middle;
             font-size: 140%;
         }
-        
+
         div.settings_div {
             box-sizing: border-box;
             border-top: 0.05em solid;
             border-bottom: 0.05em solid;
             border-image: linear-gradient(#000000, #000000) 1;
         }
-        
+
         div.settings_div_focus {
             background-color: rgba(255, 255, 255, 0.15);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
-        
+
         div.settings_value {
             width: 20%;
             display: inline-block;
@@ -1199,23 +1202,23 @@
             border-bottom: 0.1em solid;
             border-image: linear-gradient(#000000, #000000) 1;
         }
-        
+
         div.settings_value_focus {
             background-color: rgba(255, 255, 255, 0.15);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
-        
+
         div.settings_section {
             font-size: 130%;
             text-align: center;
         }
-        
+
         div.settings_title {
             width: 80%;
             font-size: 100%;
             text-align: center;
         }
-        
+
         div.settings_summary {
             width: 93%;
             margin-left: 3.5%;
@@ -1223,7 +1226,7 @@
             text-align: left;
             font-family: 'Roboto';
         }
-        
+
         div.settings_name {
             margin-left: 3.5%;
             width: 69%;
@@ -1233,14 +1236,14 @@
             vertical-align: middle;
             word-wrap: break-word;
         }
-        
+
         div.settings_arraw_div {
             width: 2%;
             display: inline-block;
             vertical-align: middle;
             /* When the html code is compressed loaded from js this div and the next have no space in between, adding a margin makes it look ok, but too big when the code is not compresed*/
         }
-        
+
         .controls_holder {
             z-index: -100;
             position: absolute;
@@ -1250,14 +1253,14 @@
             text-align: center;
             background: linear-gradient(to top, black, rgba(0, 0, 0, 0.085));
         }
-        
+
         .progress_pause_holder {
             bottom: 8.5ch;
             position: absolute;
             width: 100%;
             justify-content: center;
         }
-        
+
         .next_button,
         .pause_button {
             display: inline-block;
@@ -1268,23 +1271,23 @@
             border-radius: 0.2em;
             border: 0.0825em solid rgba(0, 0, 0, 0);
         }
-        
+
         .next_button {
             padding-left: 0.35em;
             padding-right: 0.35em;
             max-width: 96%;
             background-color: rgba(0, 0, 0, 0.35);
         }
-        
+
         .pause_button {
             height: auto;
         }
-        
+
         .controls_button_holder {
             display: inline-block;
             width: 6.25%;
         }
-        
+
         .controls_button {
             display: inline-block;
             width: 3ch;
@@ -1295,7 +1298,7 @@
             position: relative;
             border-radius: 0.2em;
         }
-        
+
         .extra_button_text {
             width: 100vw;
             height: 1.5ch;
@@ -1304,25 +1307,25 @@
             /* translateX(-50%) but as scale(0.8) it because 0.5/0.8 = 0.625 */
             transform: scale(0.8) translateX(-62.5%);
         }
-        
+
         .extra_button_text_holder {
             font-size: 100%;
             color: #FFFFFF;
             white-space: nowrap;
         }
-        
+
         .arrows_text {
             display: inline-block;
             vertical-align: middle;
             color: #FFFFFF;
         }
-        
+
         .pause_button3d {
             color: #FFFFFF;
             font-size: 120%;
             vertical-align: middle;
         }
-        
+
         .next_text {
             display: inline-block;
             width: auto;
@@ -1330,13 +1333,13 @@
             font-size: 100%;
             vertical-align: middle;
         }
-        
+
         .pause_next_div {
             text-align: center;
             width: 95%;
             margin-left: 2.5%;
         }
-        
+
         .progress_bar_div {
             width: 95%;
             margin-left: 2.5%;
@@ -1346,12 +1349,12 @@
             border-radius: 0.2em;
             border: 0.0825em solid rgba(0, 0, 0, 0);
         }
-        
+
         .progress_bar_div_focus {
             background-color: rgba(0, 0, 0, 0.7);
             border-color: #FFFFFF;
         }
-        
+
         .progress_bar_jump,
         .progress_bar_timer {
             text-align: center;
@@ -1361,22 +1364,22 @@
             color: #FFFFFF;
             display: inline-block;
         }
-        
+
         .progress_bar_jump {
             width: 40%;
         }
-        
+
         .progress_bar_holder {
             vertical-align: middle;
             width: 80%;
             border-radius: 0.6em;
             display: inline-block;
         }
-        
+
         .progress_bar_holder_focus {
             box-shadow: 0 0 0 0.1em #FFFFFF;
         }
-        
+
         .progress_bar {
             width: 100%;
             box-sizing: border-box;
@@ -1385,7 +1388,7 @@
             background-color: #DDDDDD;
             overflow: hidden;
         }
-        
+
         .inner_progress_bar {
             width: 10%;
             height: 0.37em;
@@ -1394,12 +1397,13 @@
             line-height: 1.5em;
             color: white;
         }
+
         /* Chat this is a adaptation of https://www.nightdev.com/kapchat/ functions*/
-        
+
         .nick {
             font-family: 'Roboto-Bold';
         }
-        
+
         .chat_line {
             margin-left: 0.15em;
             margin-right: 0.15em;
@@ -1410,7 +1414,7 @@
             font-size: 0.9em !important;
             font-family: 'Roboto-Bold';
         }
-        
+
         .chat_line,
         .message {
             /*word-break: break-all;*/
@@ -1418,7 +1422,7 @@
             margin-bottom: 0.175em;
             line-height: 1em;
         }
-        
+
         .chat_box {
             background-color: transparent;
             font-size: 0.65em;
@@ -1430,7 +1434,7 @@
             overflow: hidden;
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
-        
+
         .tag {
             display: inline-block;
             background-position: 0 center;
@@ -1442,61 +1446,61 @@
             margin-right: 0.25em;
             overflow: hidden;
         }
-        
+
         .emoticon {
             height: 1.75em;
             margin-bottom: -0.35em;
         }
-        
+
         .emoji {
             height: 1em;
             margin-right: 0.1em;
             margin-left: 0.1em;
             margin-bottom: -0.05em;
         }
-        
+
         .chat_extra_small {
             width: 115%;
             height: 115%;
             transform: scale(0.869);
             transform-origin: 0 0;
         }
-        
+
         .chat_size_small {
             width: 100%;
             height: 100%;
             transform: scale(1);
             transform-origin: 0 0;
         }
-        
+
         .chat_size_default {
             width: 75%;
             height: 75%;
             transform: scale(1.3333);
             transform-origin: 0 0;
         }
-        
+
         .chat_size_biger {
             width: 60%;
             height: 60%;
             transform: scale(1.66667);
             transform-origin: 0 0;
         }
-        
+
         .chat_size_bigest {
             width: 50%;
             height: 50%;
             transform: scale(2);
             transform-origin: 0 0;
         }
-        
+
         div.side_panel_not {
             width: 100%;
             height: 100%;
             position: relative;
             color: #FFFFFF;
         }
-        
+
         div.side_panel_div {
             width: 100%;
             height: 0;
@@ -1509,12 +1513,12 @@
             border-bottom: 0.05em solid;
             border-image: linear-gradient(#000000, #000000) 1;
         }
-        
+
         div.side_panel_div_focused {
             background-color: rgba(255, 255, 255, 0.15);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
-        
+
         div.side_panel_iner_div1,
         div.side_panel_iner_div2,
         div.side_panel_iner_div3 {
@@ -1522,33 +1526,33 @@
             display: inline-block;
             overflow: hidden;
         }
-        
+
         div.side_panel_iner_div1 {
             padding-left: 1%;
         }
-        
+
         div.side_panel_iner_div2 {
             width: 60%;
             padding-left: 0.2em;
             padding-top: 0.25em;
         }
-        
+
         div.side_panel_iner_div3 {
             width: 17%;
         }
-        
+
         img.notify_img {
             height: 92%;
             position: absolute;
             top: 4%;
         }
-        
+
         img.side_panel_channel_img {
             width: 15%;
             position: absolute;
             top: 0;
         }
-        
+
         div.notification_title,
         div.notification_game,
         div.side_panel_new_title,
@@ -1561,27 +1565,28 @@
             font-family: 'Roboto-Bold';
             font-size: 84%;
         }
-        
+
         div.side_panel_new_game {
             font-family: 'Roboto';
             font-size: 68%;
         }
-        
+
         div.notification_title {
             font-size: 94%;
         }
-        
+
         div.notification_game {
             font-family: 'Roboto';
             font-size: 72%;
             line-height: 2em;
         }
-        
+
         .side_panel_feed_img_focus {
             box-shadow: 0 0 0 0.1em #000000, 0 0 0 0.2em #FFFFFF;
         }
+
         /*adapted from https://loading.io/css/*/
-        
+
         .loading {
             display: inline-block;
             position: relative;
@@ -1591,7 +1596,7 @@
             background-color: rgba(0, 0, 0, 0.15);
             border-radius: 2em;
         }
-        
+
         .loading div {
             box-sizing: border-box;
             display: block;
@@ -1604,27 +1609,29 @@
             animation: loading 0.6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
             border-color: #fff transparent transparent transparent;
         }
-        
+
         .loading div:nth-child(1) {
             animation-delay: -0.225s;
         }
-        
+
         .loading div:nth-child(2) {
             animation-delay: -0.15s;
         }
-        
+
         .loading div:nth-child(3) {
             animation-delay: -0.075s;
         }
-        
+
         @keyframes loading {
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
         }
+
         /* Simple way to see center of screen
         .center {
             border: 2px solid blue;
@@ -1693,7 +1700,8 @@
             <div class="dialog_exit" style="width: 80%; margin-left: 10%;">
                 <div id="main_dialog_user_text" class="exit_text"></div>
                 <div style="text-align: center; margin-bottom: 4%;">
-                    <div id="main_dialog_user_first" class="button_dialog_focused button_dialog" style="margin-left: 0%;"></div>
+                    <div id="main_dialog_user_first" class="button_dialog_focused button_dialog"
+                        style="margin-left: 0%;"></div>
                     <div id="main_dialog_user_key" class="button_dialog" style="width: 35%;"></div>
                     <div id="main_dialog_user_remove" class="button_dialog" style="width: 22%;"></div>
                 </div>
@@ -1703,7 +1711,8 @@
             <div class="dialog_exit">
                 <div id="main_dialog_exit_text" class="exit_text"></div>
                 <div style="text-align: center; margin-bottom: 4%;">
-                    <div id="exit_app_cancel" class="button_dialog_focused button_dialog" style="margin-left: 0%;"></div>
+                    <div id="exit_app_cancel" class="button_dialog_focused button_dialog" style="margin-left: 0%;">
+                    </div>
                     <div id="exit_app_minimize" class="button_dialog"></div>
                     <div id="exit_app_close" class="button_dialog"></div>
                 </div>
@@ -1735,7 +1744,8 @@
                 </div>
             </div>
         </div>
-        <div id="dialog_warning" class="strokedeline dialogs hide" style="z-index:101; margin-top: 31%; width: 60%; margin-left: 20%;">
+        <div id="dialog_warning" class="strokedeline dialogs hide"
+            style="z-index:101; margin-top: 31%; width: 60%; margin-left: 20%;">
             <div id="dialog_warning_text" class="strokedeline" style="font-size: 150%; "></div>
         </div>
         <div id="dialog_about" class="screens hide" style="z-index: 200; background: rgba(0, 0, 0, 0.75);">
@@ -1749,7 +1759,8 @@
             </div>
         </div>
         <div id="dialog_counter" style="position: absolute; z-index:101; width: 100%; bottom: 0;">
-            <div style="float: right; width: auto; height: auto; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.75));">
+            <div
+                style="float: right; width: auto; height: auto; background: linear-gradient(to top, black, rgba(0, 0, 0, 0.75));">
                 <div id="dialog_counter_text" class="counter_class"></div>
             </div>
         </div>
@@ -1792,7 +1803,8 @@
                         </div>
                         <div class="stream_thumbnail_live_holder" style="padding-right: 0; padding-left: 0;">
                             <div class="stream_thumbnail_live">
-                                <div id="channel_content_infodiv0_1" class="stream_thumbnail_live_text_holder" style="height: 98%; font-size: 80%; width: 96%; margin-left: 2%;"></div>
+                                <div id="channel_content_infodiv0_1" class="stream_thumbnail_live_text_holder"
+                                    style="height: 98%; font-size: 80%; width: 96%; margin-left: 2%;"></div>
                             </div>
                         </div>
                     </div>
@@ -2024,8 +2036,10 @@
         <div id="chat_container" class="chat_container hide">
             <div id="chat_inner_container" class="chat_size_default">
                 <div id="chat_box" class="chat_box"></div>
-                <div id="play_chat_dialog" style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
-                    <div id="play_chat_dialog_text" class="strokedeline" style="display: inline-block; font-size: 100%; color: #FFFFFF;">
+                <div id="play_chat_dialog"
+                    style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
+                    <div id="play_chat_dialog_text" class="strokedeline"
+                        style="display: inline-block; font-size: 100%; color: #FFFFFF;">
                     </div>
                 </div>
             </div>
@@ -2039,7 +2053,8 @@
             <div id="chat_container2_sound_icon" class="chat_container2_name_text">
                 <i class="icon-sound-off strokicon"></i>
             </div>
-            <div id="chat_container2_name_text" class="strokedeline chat_container2_name_text" style="transform: translateY(-7%);"></div>
+            <div id="chat_container2_name_text" class="strokedeline chat_container2_name_text"
+                style="transform: translateY(-7%);"></div>
             <div class="chat_container2_name_text">
                 <i class="icon-arrow-right strokicon"></i>
             </div>
@@ -2048,14 +2063,17 @@
             <div class="chat_container2_name_text">
                 <i class="icon-arrow-left strokicon"></i>
             </div>
-            <div id="chat_container_name_text" class="strokedeline chat_container2_name_text" style="transform: translateY(-7%);"></div>
+            <div id="chat_container_name_text" class="strokedeline chat_container2_name_text"
+                style="transform: translateY(-7%);"></div>
             <div id="chat_container_sound_icon" class="chat_container2_name_text">
                 <i class="icon-sound strokicon"></i>
             </div>
         </div>
         <div id="scene_channel_panel" class="screen_size scene_channel_panel">
             <div class="playerinfo">
-                <img id="stream_info_icon" style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 9.5%;" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+                <img id="stream_info_icon"
+                    style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 9.5%;"
+                    alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
                 <div id="stream_clock" class="playclock"></div>
                 <div class="playmaininfo">
                     <div id="stream_info_name" class="class_bold" style="font-size: 160%; margin-bottom: 0.2em;"></div>
@@ -2070,7 +2088,8 @@
             </div>
             <div id="progress_pause_holder" class="progress_pause_holder">
                 <div id="progress_bar_div" class="progress_bar_div">
-                    <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline" style="transform: translateY(-25%);"></div>
+                    <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline"
+                        style="transform: translateY(-25%);"></div>
                     <div>
                         <div style="width: 100%; position: relative; transform: translateY(-50%);">
                             <div id="progress_bar_current_time" class="progress_bar_timer strokedeline"></div>
@@ -2082,20 +2101,25 @@
                             <div id="progress_bar_duration" class="progress_bar_timer strokedeline"></div>
                         </div>
                     </div>
-                    <div id="progress_bar_steps" class="progress_bar_jump strokedeline" style="position: relative; top: 35%; transform: translateY(-110%);"></div>
+                    <div id="progress_bar_steps" class="progress_bar_jump strokedeline"
+                        style="position: relative; top: 35%; transform: translateY(-110%);"></div>
                 </div>
                 <div id="pause_next_div" class="pause_next_div">
                     <div style="width: 44%; display: inline-block; text-align: right;">
                         <div id="back_button" class="next_button" style="opacity: 0;">
                             <div id="back_button_text" class="next_text">
-                                <div id="back_button_text_name" class="next_channel strokedeline" style="text-align: right;"></div>
-                                <div id="back_button_text_title" class="next_info strokedeline" style="text-align: right;"></div>
+                                <div id="back_button_text_name" class="next_channel strokedeline"
+                                    style="text-align: right;"></div>
+                                <div id="back_button_text_title" class="next_info strokedeline"
+                                    style="text-align: right;"></div>
                             </div>
                             <i class="pause_button3d icon-back"></i>
                         </div>
                     </div>
-                    <div style="width: 5%; display: inline-block; text-align: center; margin-left: 0.5ch; margin-right: 0.5ch;">
-                        <div id="pause_button" class="pause_button" style="width: 90%; padding-top: 0.375em; padding-bottom: 0.375em;">
+                    <div
+                        style="width: 5%; display: inline-block; text-align: center; margin-left: 0.5ch; margin-right: 0.5ch;">
+                        <div id="pause_button" class="pause_button"
+                            style="width: 90%; padding-top: 0.375em; padding-bottom: 0.375em;">
                             <div>
                                 <i class="pause_button3d icon-pause"></i>
                             </div>
@@ -2118,7 +2142,8 @@
             <div id="stream_status" class="playsideinfostatus"></div>
         </div>
         <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 100%; z-index: 2;">
-            <div id="dialog_vod_start" class="dialogs hide" style="z-index:3; font-size: 150%; height: 75%; margin-top: 25%;">
+            <div id="dialog_vod_start" class="dialogs hide"
+                style="z-index:3; font-size: 150%; height: 75%; margin-top: 25%;">
                 <div id="dialog_vod_text" class="strokedeline" style="font-size: 140%; padding-bottom: 2%;">
                 </div>
                 <!-- from saved-->
@@ -2132,8 +2157,10 @@
                     <div id="dialog_vod_start_text" class="strokedeline"></div>
                 </div>
             </div>
-            <div id="dialog_end_stream" class="dialogs hide" style="z-index:4; font-size: 150%; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
-                <div id="dialog_end_stream_text" class="strokedeline" style="margin-top: 29%; font-size: 150%; padding-bottom: 2%;">
+            <div id="dialog_end_stream" class="dialogs hide"
+                style="z-index:4; font-size: 150%; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
+                <div id="dialog_end_stream_text" class="strokedeline"
+                    style="margin-top: 29%; font-size: 150%; padding-bottom: 2%;">
                 </div>
                 <!-- next-->
                 <div id="dialog_end_-1" class="dialog_end_icons hide">
@@ -2165,7 +2192,8 @@
                     <div id="dialog_end_game_text" class="strokedeline"></div>
                 </div>
             </div>
-            <div id="dialog_loading_play" class="screen_size dialogs hide" style="z-index:98; margin-top: 50vh; overflow: visible;">
+            <div id="dialog_loading_play" class="screen_size dialogs hide"
+                style="z-index:98; margin-top: 50vh; overflow: visible;">
                 <div class="loading">
                     <div></div>
                     <div></div>
@@ -2209,16 +2237,20 @@
             </div>
         </div>
         <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">
-            <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></div>
+            <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt=""
+                    src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></div>
             <div style="width: 96%; height: 20%; bottom:0; color: #FFFFFF; font-size: 110%; padding: 1%;">
-                <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold" style="width: 75%; display: inline-block; font-size: 110%;"></div>
-                <div id="feed_thum_quality" class="side_panel_feed_thumb_text" style="width: 24%; float: right; text-align: right;"></div>
+                <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold"
+                    style="width: 75%; display: inline-block; font-size: 110%;"></div>
+                <div id="feed_thum_quality" class="side_panel_feed_thumb_text"
+                    style="width: 24%; float: right; text-align: right;"></div>
                 <div id="feed_thum_title" class="side_panel_feed_thumb_text"></div>
                 <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
                 <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
             </div>
         </div>
-        <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide" style="margin-left: -31.5%;">
+        <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide"
+            style="margin-left: -31.5%;">
             <div id="side_panel_new" style="width: 100%; position: absolute;">
                 <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
                     <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
