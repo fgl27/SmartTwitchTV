@@ -57,6 +57,7 @@ function ChannelContent_exit() {
     document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
     Main_HideElement(ChannelContent_ids[10]);
     Main_values.My_channel = false;
+    ChannelContent_removeFocus();
 }
 
 function ChannelContent_StartLoad() {
@@ -312,6 +313,7 @@ function ChannelContent_keyEnter() {
         if (!ChannelContent_cursorX) {
             document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
             Main_HideElement(ChannelContent_ids[10]);
+            ChannelContent_removeFocus();
             Main_ready(function() {
                 inUseObj = ChannelVod;
                 Screens_init();
@@ -319,6 +321,7 @@ function ChannelContent_keyEnter() {
         } else if (ChannelContent_cursorX === 1) {
             document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
             Main_HideElement(ChannelContent_ids[10]);
+            ChannelContent_removeFocus();
             Main_ready(function() {
                 inUseObj = ChannelClip;
                 Screens_init();
