@@ -137,7 +137,7 @@ var Base_Vod_obj = {
     HasSwitches: true,
     period: ['day', 'week', 'month', 'all'],
     empty_str: function() {
-        return STR_NO + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+        return STR_NO + STR_SPACE + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
     },
     AnimateThumbId: null,
     HasAnimateThumb: true,
@@ -498,7 +498,7 @@ var Base_Live_obj = {
         if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
     },
     empty_str: function() {
-        return STR_NO + STR_LIVE_CHANNELS;
+        return STR_NO + STR_SPACE + STR_LIVE_CHANNELS;
     },
     addCell: function(cell) {
         this.addCellTemp(cell);
@@ -836,7 +836,7 @@ var Base_Clip_obj = {
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
     empty_str: function() {
-        return STR_NO + STR_CLIPS;
+        return STR_NO + STR_SPACE + STR_CLIPS;
     },
     HasSwitches: true,
     SwitchesIcons: ['history', 'play-1'],
@@ -1008,7 +1008,7 @@ var Base_Game_obj = {
     addFocus: Screens_addFocusGame,
     img_404: IMG_404_GAME,
     empty_str: function() {
-        return STR_NO + STR_LIVE_GAMES;
+        return STR_NO + STR_SPACE + STR_LIVE_GAMES;
     },
     key_play: function() {
         Main_removeFocus(this.posY + '_' + this.posX, this.ids);
@@ -1162,7 +1162,7 @@ var Base_Channel_obj = {
         if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
     },
     empty_str: function() {
-        return STR_NO + STR_USER_CHANNEL;
+        return STR_NO + STR_SPACE + STR_USER_CHANNEL;
     },
     addCellTemp: function(cell) {
         if (!this.idObject[cell._id]) {
