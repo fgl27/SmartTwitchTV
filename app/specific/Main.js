@@ -422,7 +422,7 @@ function Main_CounterDialog(x, y, coloumns, total) {
 }
 
 function Main_showWarningDialog(text) {
-    Main_textContent('dialog_warning_text', text);
+    Main_innerHTML('dialog_warning_text', text);
     Main_ShowElement('dialog_warning');
 }
 
