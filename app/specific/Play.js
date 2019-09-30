@@ -651,41 +651,41 @@ function Play_ForbiddenLive() {
 //Browsers crash trying to get the streams link
 function Play_loadDataSuccessFake() {
     Play_qualities = [{
-            'id': 'Auto',
-            'band': 0,
-            'codec': 'avc',
-            'url': 'https://auto'
-        },
-        {
-            'id': '1080p60 | source ',
-            'band': '| 10.00Mbps',
-            'codec': ' | avc',
-            'url': 'https://souce'
-        },
-        {
-            'id': '720p60',
-            'band': ' | 5.00Mbps',
-            'codec': ' | avc',
-            'url': 'https://720p60'
-        },
-        {
-            'id': '720p',
-            'band': ' | 2.50Mbps',
-            'codec': ' | avc',
-            'url': 'https://720'
-        },
-        {
-            'id': '480p',
-            'band': ' | 2.50Mbps',
-            'codec': ' | avc',
-            'url': 'https://480'
-        },
-        {
-            'id': '320p',
-            'band': ' | 2.50Mbps',
-            'codec': ' | avc',
-            'url': 'https://320'
-        },
+        'id': 'Auto',
+        'band': 0,
+        'codec': 'avc',
+        'url': 'https://auto'
+    },
+    {
+        'id': '1080p60 | source ',
+        'band': '| 10.00Mbps',
+        'codec': ' | avc',
+        'url': 'https://souce'
+    },
+    {
+        'id': '720p60',
+        'band': ' | 5.00Mbps',
+        'codec': ' | avc',
+        'url': 'https://720p60'
+    },
+    {
+        'id': '720p',
+        'band': ' | 2.50Mbps',
+        'codec': ' | avc',
+        'url': 'https://720'
+    },
+    {
+        'id': '480p',
+        'band': ' | 2.50Mbps',
+        'codec': ' | avc',
+        'url': 'https://480'
+    },
+    {
+        'id': '320p',
+        'band': ' | 2.50Mbps',
+        'codec': ' | avc',
+        'url': 'https://320'
+    },
     ];
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
@@ -951,6 +951,7 @@ function Play_ClearPlayer() {
     Play_clearPause();
     Play_HideWarningDialog();
     Play_HideEndDialog();
+    Main_updateclock();
     Play_IncrementView = '';
 
     if (Play_qualityIndex === (Play_getQualitiesCount() - 1)) {
@@ -1493,13 +1494,11 @@ function Play_OpenChannel(PlayVodClip) {
     Main_values.Main_Go = Main_ChannelContent;
 
     if (PlayVodClip === 1) {
-        PlayExtra_PicturePicture = false;
-        PlayExtra_selectedChannel = '';
+        Play_ClearPP();
         Main_values.Main_selectedChannel_id = Main_values.Play_selectedChannel_id;
         Main_values.Main_selectedChannel = Main_values.Play_selectedChannel;
         Main_values.Main_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname;
         ChannelContent_UserChannels = AddCode_IsFallowing;
-        Play_hideChat();
         Play_shutdownStream();
     } else if (PlayVodClip === 2) PlayVod_shutdownStream();
     else if (PlayVodClip === 3) PlayClip_shutdownStream();
@@ -1507,9 +1506,7 @@ function Play_OpenChannel(PlayVodClip) {
 
 function Play_OpenSearch(PlayVodClip) {
     if (PlayVodClip === 1) {
-        PlayExtra_PicturePicture = false;
-        PlayExtra_selectedChannel = '';
-        Play_hideChat();
+        Play_ClearPP();
         Play_PreshutdownStream(true);
     } else if (PlayVodClip === 2) PlayVod_PreshutdownStream();
     else if (PlayVodClip === 3) PlayClip_PreshutdownStream();
@@ -1518,7 +1515,6 @@ function Play_OpenSearch(PlayVodClip) {
     PlayVod_ProgresBarrUpdate(0, 0);
     Main_ShowElement('scene1');
     Main_HideElement('scene2');
-    Main_updateclock();
     document.body.addEventListener("keyup", Main_handleKeyUp, false);
     Main_OpenSearch();
 }
@@ -1546,11 +1542,23 @@ function Play_OpenGame(PlayVodClip) {
     Main_values.Main_gameSelected = Main_values.Play_gameSelected;
     Play_hideChat();
     if (PlayVodClip === 1) {
-        PlayExtra_PicturePicture = false;
-        PlayExtra_selectedChannel = '';
+        Play_ClearPP();
         Play_shutdownStream();
     } else if (PlayVodClip === 2) PlayVod_shutdownStream();
     else if (PlayVodClip === 3) PlayClip_shutdownStream();
+}
+
+function Play_ClearPP() {
+    if (Main_IsNotBrowser) {
+        if (!Play_isFullScreen) {
+            Play_isFullScreen = !Play_isFullScreen;
+            Play_SetFullScreen(Play_isFullScreen);
+        }
+    }
+
+    PlayExtra_PicturePicture = false;
+    PlayExtra_selectedChannel = '';
+    Play_hideChat();
 }
 
 function Play_FallowUnfallow() {
