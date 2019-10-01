@@ -364,7 +364,7 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
         '<div "class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
         '<i class="icon-' + (!data[2] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' +
         STR_SPACE + valuesArray[3] + '</div></div><div id="' + UserLiveFeed_ids[4] + id +
-        '"class="stream_info_live"><span behavior="scroll" direction="left" scrollamount="10">' + valuesArray[4] + '</span></div><div id="' +
+        '"class="stream_info_live">' + valuesArray[4] + '</div><div id="' +
         UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + valuesArray[2] + '</div></div></div>';
 
     return div;
@@ -450,19 +450,12 @@ function UserLiveFeed_FeedAddFocus(skipAnimation) {
 
     Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, UserLiveFeed_FocusClass);
 
-    var doc = document.getElementById(UserLiveFeed_ids[4] + Play_FeedPos);
-    doc.innerHTML = doc.innerHTML.replace(/<span/gi, '<marquee').replace(/<\/span>/gi, '</marquee>');
-    console.log(doc);
     UserLiveFeed_FeedSetPos(skipAnimation);
 }
 
 function UserLiveFeed_FeedRemoveFocus() {
-    if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0])) {
+    if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
         Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, UserLiveFeed_FocusClass);
-
-        var doc = document.getElementById(UserLiveFeed_ids[4] + Play_FeedPos);
-        doc.innerHTML = doc.innerHTML.replace(/<marquee/gi, '<span').replace(/<\/marquee>/gi, '</span>');
-    }
 }
 
 function UserLiveFeed_FeedGetPos() {
