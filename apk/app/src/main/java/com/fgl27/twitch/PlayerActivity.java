@@ -975,8 +975,8 @@ public class PlayerActivity extends Activity {
                         }
 
                         if (mwhocall > 1) {
-                            myHandler.post(() -> mwebview.loadUrl("javascript:Play_UpdateDuration(" +
-                                    mwhocall + "," + player[position].getDuration() + ")"));
+                            mwebview.loadUrl("javascript:Play_UpdateDuration(" +
+                                    mwhocall + "," + player[position].getDuration() + ")");
                         }
                     }
                 }
