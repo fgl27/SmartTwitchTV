@@ -283,6 +283,15 @@
             padding-bottom: 0;
         }
 
+        div.channel_about {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            height: 98%;
+            font-size: 80%;
+            width: 96%;
+            margin-left: 2%;
+        }
+
         div.stream_thumbnail_user_text_holder,
         div.stream_thumbnail_channel_text_holder,
         div.stream_thumbnail_game_text_holder,
@@ -1804,8 +1813,8 @@
                         </div>
                         <div class="stream_thumbnail_live_holder" style="padding-right: 0; padding-left: 0;">
                             <div class="stream_thumbnail_live">
-                                <div id="channel_content_infodiv0_1" class="stream_thumbnail_live_text_holder"
-                                    style="height: 98%; font-size: 80%; width: 96%; margin-left: 2%;"></div>
+                                <div id="channel_content_infodiv0_1"
+                                    class="stream_thumbnail_live_text_holder channel_about"></div>
                             </div>
                         </div>
                     </div>
