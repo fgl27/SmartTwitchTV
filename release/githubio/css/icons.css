@@ -93,9 +93,6 @@
 .icon-refresh:before {
   content: "\73";
 }
-.icon-play:before {
-  content: "\72";
-}
 .icon-user-plus:before {
   content: "\78";
 }
@@ -125,9 +122,6 @@
 }
 .icon-back:before {
   content: "\46";
-}
-.icon-star:before {
-  content: "\47";
 }
 .icon-speedometer:before {
   content: "\48";
@@ -173,4 +167,10 @@
 }
 .icon-offset:before {
   content: "\57";
+}
+.icon-star:before {
+  content: "\61";
+}
+.icon-play:before {
+  content: "\62";
 }
