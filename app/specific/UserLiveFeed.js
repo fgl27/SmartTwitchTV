@@ -360,11 +360,11 @@ function UserLiveFeed_CreatFeed(id, data, valuesArray) {
         Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\'"></div>' +
         '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text">' +
         '<div style="line-height: 1.6ch;"><div id="' + UserLiveFeed_ids[3] + id +
-        '" class="stream_info_live_name" style="width: 63%; display: inline-block;">' + valuesArray[1] + '</div>' +
+        '" class="stream_info_live_name" style="width: 63%; display: inline-block;">' + Main_ReplaceLargeFont(valuesArray[1]) + '</div>' +
         '<div "class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
         '<i class="icon-' + (!data[2] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' +
         STR_SPACE + valuesArray[3] + '</div></div><div id="' + UserLiveFeed_ids[4] + id +
-        '"class="stream_info_live">' + twemoji.parse(valuesArray[4]) + '</div><div id="' +
+        '"class="stream_info_live">' + Main_ReplaceLargeFont(twemoji.parse(valuesArray[4])) + '</div><div id="' +
         UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + valuesArray[2] + '</div></div></div>';
 
     return div;
@@ -386,7 +386,7 @@ function UserLiveFeed_CreatSideFeed(id, jsondata, data, valuesArray) {
         '" class="side_panel_channel_img" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
         '\'"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
-        '" class="side_panel_new_title">' + valuesArray[2] + '</div><div id="' +
+        '" class="side_panel_new_title">' + Main_ReplaceLargeFont(valuesArray[2]) + '</div><div id="' +
         UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + valuesArray[3] +
         '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
         (!jsondata[2] ? 'circle" style="color: red;' : 'refresh" style="') +
