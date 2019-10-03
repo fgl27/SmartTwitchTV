@@ -120,7 +120,7 @@ function Users_createCell(id, pos) {
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'"></div>' +
         '<div  class="stream_thumbnail_user_text_holder">' +
         '<div class="stream_info_user_name">' + AddUser_UsernameArray[pos].display_name +
-        '</div><div class="stream_info_user_name">' +
+        '</div><div class="stream_info_user_title">' +
         (AddUser_UsernameArray[pos].access_token ? STR_USER_CODE_OK : STR_USER_CODE) +
         '</div></div></div>';
 

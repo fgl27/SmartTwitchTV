@@ -330,6 +330,7 @@
         .stream_info_live,
         .stream_info_channel_name,
         .stream_info_user_name,
+        .stream_info_user_title,
         .stream_info_live_name {
             width: 100%;
             text-align: left;
@@ -354,6 +355,7 @@
         }
 
         .stream_info_user_name,
+        .stream_info_user_title,
         .stream_info_channel_name {
             font-size: 72%;
             white-space: nowrap;
@@ -363,10 +365,15 @@
             display: inline-block;
         }
 
+        .stream_info_user_title,
         .stream_info_user_name {
             font-size: 70%;
             width: 100%;
             display: block;
+        }
+
+        .stream_info_user_name {
+            padding-top: 0.25em;
         }
 
         .stream_info_live {
