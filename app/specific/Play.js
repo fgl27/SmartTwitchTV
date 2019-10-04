@@ -2242,7 +2242,7 @@ function Play_MakeControls() {
             }
 
             if (Play_LowLatency) {
-                Play_showWarningDialog(STR_FORBIDDEN);
+                Play_showWarningDialog(STR_LOW_LATENCY_SUMARRY);
                 window.setTimeout(Play_HideWarningDialog, 3000);
             }
 
