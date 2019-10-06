@@ -7,6 +7,11 @@ var Languages_value = {
         "defaultValue": 2,
         "set_values": ""
     },
+    "Bulgarian [BG]": {
+        "values": ["off", "on"],
+        "defaultValue": 1,
+        "set_values": "bg"
+    },
     "Dansk [DA]": {
         "values": ["off", "on"],
         "defaultValue": 1,
