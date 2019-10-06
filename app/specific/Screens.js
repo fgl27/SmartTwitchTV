@@ -6,6 +6,8 @@ var Screens_ScrollAnimationTimeout = 350; //Same time as animate_height_transiti
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
 var Screens_SettingDoAnimations = true;
+//Start the app in async mode by default
+var Screens_ForceSync = false;
 
 //Initiate all Secondary screens obj and they properties
 function Screens_InitScreens() {
@@ -145,10 +147,12 @@ function Screens_loadDataPrepare() {
 
 function Screens_loadDataRequest() {
     inUseObj.set_url();
-    if (Main_IsNotBrowser && !inUseObj.itemsCount)
+    if (Main_IsNotBrowser && !inUseObj.itemsCount && Screens_ForceSync)
         BaseAndroidhttpGet(inUseObj.url, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
     else
         BasexmlHttpGet(inUseObj.url, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError, false);
+
+    Screens_ForceSync = true;
 }
 
 function Screens_loadDataError() {
@@ -353,7 +357,7 @@ function Screens_loadDataSuccessFinish() {
                 Main_GoBefore = Main_Live;
                 Main_values.Play_WasPlaying = false;
             }
-
+            Screens_ForceSync = false;
 
             if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying && inUseObj.status) {
 
