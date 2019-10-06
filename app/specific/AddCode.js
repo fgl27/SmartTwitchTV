@@ -59,12 +59,14 @@ function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFun
 
 function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
     var response = JSON.parse(responseText);
-
     if (AddCode_TokensCheckScope(response.scope)) {
         AddUser_UsernameArray[position].access_token = response.access_token;
         AddUser_UsernameArray[position].refresh_token = response.refresh_token;
 
         AddUser_SaveUserArray();
+
+        AddCode_Refreshtimeout(position, response.expires_in);
+
     } else AddCode_requestTokensFailRunning(position);
 
     if (callbackFunc) callbackFunc();
@@ -147,16 +149,30 @@ function AddCode_requestTokensSucess(responseText) {
 }
 
 function AddCode_CheckOauthToken() {
-    var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
-        AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token;
+    var theUrl = 'https://id.twitch.tv/oauth2/validate';
 
-    BasehttpGet(theUrl, AddCode_loadingDataTimeout, 2, null, AddCode_CheckOauthTokenSucess, AddCode_CheckOauthTokenError, true);
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token);
+
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) AddCode_CheckOauthTokenSucess(xmlHttp.responseText);
+            else AddCode_CheckOauthTokenError();
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
 function AddCode_CheckOauthTokenSucess(response) {
-    var token = JSON.parse(response).token;
-    if (token.user_name &&
-        token.user_name.indexOf(AddUser_UsernameArray[Main_values.Users_AddcodePosition].name) !== -1) {
+    var token = JSON.parse(response);
+    if (token.login &&
+        token.login.indexOf(AddUser_UsernameArray[Main_values.Users_AddcodePosition].name) !== -1) {
         AddUser_SaveUserArray();
         Main_newUsercode = 0;
         Main_HideLoadDialog();
@@ -411,71 +427,44 @@ function AddCode_RequestCheckSubfail() {
 }
 
 function AddCode_CheckTokenStart(position) {
-    AddCode_TimeoutReset10();
     AddCode_CheckToken(position, 0);
 }
 
 function AddCode_CheckToken(position, tryes) {
-    var theUrl = 'https://api.twitch.tv/kraken?oauth_token=' +
-        AddUser_UsernameArray[position].access_token;
+    var theUrl = 'https://id.twitch.tv/oauth2/validate';
 
-    var xmlHttp;
+    var xmlHttp = new XMLHttpRequest();
 
-    if (Main_IsNotBrowser) {
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
 
-        xmlHttp = Android.mreadUrl(theUrl, 3500, 2, null);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
 
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            AddCode_CheckTokenError(position, tryes);
-            return;
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
+            else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                AddCode_TimeoutReset10();
+                AddCode_refreshTokens(position, 0, null, null);
+            } else AddCode_CheckTokenError(position, tryes);
         }
+    };
 
-        if (xmlHttp.status === 200) {
-            AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-        } else if (xmlHttp.status === 400) { //token expired
-            AddCode_TimeoutReset10();
-            AddCode_refreshTokens(position, 0, null, null);
-        } else {
-            AddCode_CheckTokenError(position, tryes);
-        }
-
-    } else {
-
-        xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.open("GET", proxyurl + theUrl, true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-                } else if (xmlHttp.status === 400) { //token expired
-                    AddCode_TimeoutReset10();
-                    AddCode_refreshTokens(position, 0, null, null);
-                } else {
-                    AddCode_CheckTokenError(position, tryes);
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    xmlHttp.send(null);
 }
 
 function AddCode_CheckTokenSuccess(responseText, position) {
     var token = JSON.parse(responseText);
-    if (!token.token.valid) {
+    if (token.scopes && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
+    else if (token.expires_in) AddCode_Refreshtimeout(position, token.expires_in);
+}
+
+function AddCode_Refreshtimeout(position, time) {
+    window.setTimeout(function() {
         AddCode_TimeoutReset10();
         AddCode_refreshTokens(position, 0, null, null);
-    } else {
-        if (!AddCode_TokensCheckScope(token.token.authorization.scopes)) AddCode_requestTokensFailRunning(position);
-    }
+    }, (time - 60) * 1000);
 }
 
 function AddCode_CheckTokenError(position, tryes) {
