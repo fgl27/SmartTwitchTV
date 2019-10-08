@@ -154,7 +154,6 @@ function Main_loadTranslations(language) {
             Main_AddClass('scenefeed', 'feed_screen_input');
         }
         Main_showLoadDialog();
-        AddUser_RestoreUsers();
 
         if (Main_IsNotBrowser) Main_vp9supported = Android.misCodecSupported();
 
@@ -181,6 +180,7 @@ function Main_loadTranslations(language) {
 
         if (window.location.href.indexOf('code') !== -1) processCode(window.location.href);
 
+        AddUser_RestoreUsers();
         //Allow page to proper load/resize and users 0 be restored before Main_initWindows
         window.setTimeout(Main_initWindows, 500);
     });
