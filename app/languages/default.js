@@ -13,7 +13,6 @@ var STR_CONTROLS_MAIN_0 = '';
 var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
 var STR_CONTROLS_PLAY_0 = '';
-var STR_OAUTH_EXPLAIN = '';
 var STR_SPACE = '&nbsp;';
 var STR_PAYPAL;
 
@@ -100,11 +99,4 @@ function DefaultLang() {
         STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
-
-    STR_OAUTH_EXPLAIN = STR_OAUTH_EXPLAIN1 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN2.replace('link_link', '<div class="class_bold" style="display: inline-block; color: #FF0000; font-size: 110%;">http://tiny.cc/twitchkeycode</div>') + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN3 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN4 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN5 + STR_BR +
-        STR_DOT + STR_OAUTH_EXPLAIN6;
 }
