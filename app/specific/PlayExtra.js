@@ -377,28 +377,10 @@ function PlayExtra_RefreshAutoRequest(UseAndroid) {
         (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
-    var xmlHttp;
-    if (UseAndroid) {
+    var xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
 
-        xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
-
-        if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
-        else PlayExtra_RefreshAutoError(UseAndroid);
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = 3000;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid);
-        };
-
-        xmlHttp.send(null);
-    }
+    if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
+    else PlayExtra_RefreshAutoError(UseAndroid);
 }
 
 function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
