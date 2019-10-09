@@ -345,28 +345,10 @@ function Play_RefreshAutoRequest(UseAndroid) {
         (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
-    var xmlHttp;
-    if (UseAndroid) {
+    var xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
 
-        xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
-
-        if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
-        else Play_RefreshAutoError(UseAndroid);
-
-    } else {
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = 3000;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid);
-        };
-
-        xmlHttp.send(null);
-    }
+    if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
+    else Play_RefreshAutoError(UseAndroid);
 }
 
 function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
