@@ -726,7 +726,10 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mClearSmallPlayer() {
-            myHandler.post(() -> ClearPlayer(mainPlayer ^ 1));
+            myHandler.post(() -> {
+                PicturePicture = false;
+                ClearPlayer(mainPlayer ^ 1);
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
