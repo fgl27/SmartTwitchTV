@@ -310,13 +310,9 @@ function PlayExtra_loadDataRequest() {
     var xmlHttp;
     if (Main_IsNotBrowser) {
         xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            Play_loadDataError();
-            return;
-        }
 
-        PlayExtra_loadDataSuccessreadyState(xmlHttp);
+        if (xmlHttp) PlayExtra_loadDataSuccessreadyState(JSON.parse(xmlHttp));
+        else Play_loadDataError();
 
     } else {
         xmlHttp = new XMLHttpRequest();
