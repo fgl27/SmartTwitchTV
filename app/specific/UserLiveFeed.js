@@ -236,6 +236,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
                 UserLiveFeed_NotifyLiveidObject.push({
                     name: stream.channel.display_name,
                     logo: stream.channel.logo,
+                    title: Main_ReplaceLargeFont(twemoji.parse(stream.channel.status)),
                     game: stream.game,
                     rerun: Main_is_rerun(stream.stream_type),
                 });
@@ -317,10 +318,11 @@ function UserLiveFeed_LiveNotification() {
 
 function UserLiveFeed_LiveNotificationShow(position) {
 
+    document.getElementById('user_feed_notify_img').src = UserLiveFeed_NotifyLiveidObject[position].logo;
     Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
 
     Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
-    document.getElementById('user_feed_notify_img').src = UserLiveFeed_NotifyLiveidObject[position].logo;
+    Main_innerHTML('user_feed_notify_title', UserLiveFeed_NotifyLiveidObject[position].title);
 
     Main_ready(function() {
         Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
