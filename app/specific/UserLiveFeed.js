@@ -321,11 +321,13 @@ function UserLiveFeed_LiveNotificationShow(position) {
 
     img.onload = function() {
         this.onload = null;
+        this.onerror = null;
         UserLiveFeed_LiveNotificationOnload(position);
     };
 
     img.onerror = function() {
         this.onerror = null;
+        this.onload = null;
         this.src = IMG_404_LOGO;
         UserLiveFeed_LiveNotificationOnload(position);
     };
