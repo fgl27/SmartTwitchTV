@@ -321,19 +321,19 @@ function UserLiveFeed_LiveNotificationShow(position) {
 
     img.onload = function() {
         this.onload = null;
-        UserLiveFeed_LiveOnload(position);
+        UserLiveFeed_LiveNotificationOnload(position);
     };
 
     img.onerror = function() {
         this.onerror = null;
         this.src = IMG_404_LOGO;
-        UserLiveFeed_LiveOnload(position);
+        UserLiveFeed_LiveNotificationOnload(position);
     };
 
     img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
 }
 
-function UserLiveFeed_LiveOnload(position) {
+function UserLiveFeed_LiveNotificationOnload(position) {
     Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
 
     Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
