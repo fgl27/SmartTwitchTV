@@ -317,8 +317,23 @@ function UserLiveFeed_LiveNotification() {
 }
 
 function UserLiveFeed_LiveNotificationShow(position) {
+    var img = document.getElementById('user_feed_notify_img');
 
-    document.getElementById('user_feed_notify_img').src = UserLiveFeed_NotifyLiveidObject[position].logo;
+    img.onload = function() {
+        this.onload = null;
+        UserLiveFeed_LiveOnload(position);
+    };
+
+    img.onerror = function() {
+        this.onerror = null;
+        this.src = IMG_404_LOGO;
+        UserLiveFeed_LiveOnload(position);
+    };
+
+    img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
+}
+
+function UserLiveFeed_LiveOnload(position) {
     Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
 
     Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
@@ -330,7 +345,6 @@ function UserLiveFeed_LiveNotificationShow(position) {
         window.setTimeout(function() {
             UserLiveFeed_LiveNotificationHide(position);
         }, UserLiveFeed_NotifyTimeout);
-
     });
 }
 
