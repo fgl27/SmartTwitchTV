@@ -545,7 +545,8 @@ public class PlayerActivity extends Activity {
     private void initializeWebview() {
         mwebview = findViewById(R.id.WebView);
         mwebview.setBackgroundColor(Color.TRANSPARENT);
-        //mwebview.setWebContentsDebuggingEnabled(true);
+        if (BuildConfig.DEBUG)
+            mwebview.setWebContentsDebuggingEnabled(true);
 
         WebSettings websettings = mwebview.getSettings();
 
