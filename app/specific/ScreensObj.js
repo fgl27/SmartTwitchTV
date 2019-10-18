@@ -1096,6 +1096,7 @@ function ScreensObj_InitGame() {
                     this.coloumn_id++;
                 }
             };
+            Screens_StartLoad();
         },
     }, Base_obj);
 
