@@ -111,6 +111,7 @@ function Screens_StartLoad() {
     Main_empty(inUseObj.table);
     Main_HideWarningDialog();
     inUseObj.cursor = null;
+    inUseObj.after = '';
     inUseObj.status = false;
     inUseObj.TopRowCreated = false;
     inUseObj.offset = 0;
