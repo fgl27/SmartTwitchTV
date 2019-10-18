@@ -180,6 +180,9 @@ function Main_loadTranslations(language) {
 
         if (window.location.href.indexOf('code') !== -1) processCode(window.location.href);
 
+        Main_SearchInput = document.getElementById("search_input");
+        Main_AddUserInput = document.getElementById("user_input");
+
         AddUser_RestoreUsers();
         //Allow page to proper load/resize and users 0 be restored before Main_initWindows
         window.setTimeout(Main_initWindows, 500);
@@ -236,9 +239,6 @@ function Main_initWindows() {
         Play_SetFullScreen(Play_isFullScreen);
 
         PlayVod_RestoreVodIds();
-
-        Main_SearchInput = document.getElementById("search_input");
-        Main_AddUserInput = document.getElementById("user_input");
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
 
