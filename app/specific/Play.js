@@ -136,23 +136,23 @@ var Play_ChatPositionsAfter = [ //Chat positions size 100 to 50%
 var Play_ChatSizeVal = [{
     "containerHeight": 17, // 12.5%
     "percentage": '12.5%',
-    "dialogTop": 15
+    "dialogTop": -25
 }, {
     "containerHeight": 32, // 25%
     "percentage": '25%',
-    "dialogTop": 30
+    "dialogTop": -40
 }, {
     "containerHeight": 48, // 50%
     "percentage": '50%',
-    "dialogTop": 50
+    "dialogTop": -60
 }, {
     "containerHeight": 73, // 75%
     "percentage": '75%',
-    "dialogTop": 75
+    "dialogTop": -80
 }, {
     "containerHeight": 99.6, // 100%
     "percentage": '100%',
-    "dialogTop": 115
+    "dialogTop": -120
 }];
 
 var Play_ChatFontObj = ['chat_extra_small', 'chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
