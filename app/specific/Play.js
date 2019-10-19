@@ -858,7 +858,7 @@ function Play_EndStart(hosting, PlayVodClip) {
 
 function Play_isNotplaying() {
     if (Main_IsNotBrowser) return !Android.getPlaybackState();
-    else return false;
+    return false;
 }
 
 function Play_clock() {

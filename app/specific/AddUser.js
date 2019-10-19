@@ -300,7 +300,6 @@ function AddUser_UserMakeOne(Position) {
     Users_status = false;
     AddUser_UpdateSidepanel();
     Users_init();
-    Main_values.Users_Position = 0;
 }
 
 function AddUser_UserCodeExist(user) {
