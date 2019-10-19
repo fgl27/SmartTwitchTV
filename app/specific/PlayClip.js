@@ -141,13 +141,13 @@ function PlayClip_loadDataError() {
 
 function PlayClip_loadDataSuccessFake() {
     PlayClip_qualities = [{
-            'id': 'Auto',
-            'url': ''
-        },
-        {
-            'id': '1080p60 | source | mp4',
-            'url': 'https://fake'
-        },
+        'id': 'Auto',
+        'url': ''
+    },
+    {
+        'id': '1080p60 | source | mp4',
+        'url': 'https://fake'
+    },
     ];
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
