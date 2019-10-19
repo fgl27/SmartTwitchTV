@@ -201,6 +201,8 @@ function ScreensObj_InitVod() {
     Vod = Screens_assign({
         periodMaxPos: 4,
         HeaderQuatity: 2,
+        key_pgUp: Main_Clip,
+        key_pgDown: Main_games,
         object: 'vods',
         ids: Screens_ScreenIds('Vod'),
         table: 'stream_table_vod',
@@ -263,6 +265,7 @@ function ScreensObj_InitChannelVod() {
     ChannelVod = Screens_assign({
         periodMaxPos: 2,
         HeaderQuatity: 2,
+        key_pgUp: Main_ChannelClip,
         object: 'videos',
         ids: Screens_ScreenIds('ChannelVod'),
         table: 'stream_table_channel_vod',
@@ -360,6 +363,8 @@ function ScreensObj_InitAGameVod() {
         periodMaxPos: 4,
         HeaderQuatity: 2,
         object: 'vods',
+        key_pgUp: Main_Vod,
+        key_pgDown: Main_Featured,
         ids: Screens_ScreenIds('AGameVod'),
         table: 'stream_table_a_game_vod',
         screen: Main_AGameVod,
@@ -423,6 +428,8 @@ function ScreensObj_InitUserVod() {
         periodMaxPos: 2,
         HeaderQuatity: 3,
         object: 'videos',
+        key_pgUp: Main_UserChannels,
+        key_pgDown: Main_usergames,
         ids: Screens_ScreenIds('UserVod'),
         table: 'stream_table_user_vod',
         screen: Main_UserVod,
@@ -473,6 +480,7 @@ function ScreensObj_InitUserVod() {
         },
         label_init: function() {
             this.SetPeriod();
+            Sidepannel_SetTopOpacity(this.screen);
         },
         SetPeriod: function() {
             Main_setItem('UserVod_periodPos', this.periodPos);
@@ -532,6 +540,8 @@ function ScreensObj_InitLive() {
         table: 'stream_table_live',
         screen: Main_Live,
         object: 'streams',
+        key_pgUp: Main_Featured,
+        key_pgDown: Main_Clip,
         base_url: 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -600,6 +610,8 @@ function ScreensObj_InitUserLive() {
         table: 'stream_table_user_live',
         screen: Main_UserLive,
         object: 'streams',
+        key_pgUp: Main_UserHost,
+        key_pgDown: Main_UserChannels,
         base_url: 'https://api.twitch.tv/kraken/streams/',
         loadChannelOffsset: 0,
         followerChannels: '',
@@ -696,6 +708,8 @@ function ScreensObj_InitUserHost() {
         table: 'stream_table_user_host',
         screen: Main_UserHost,
         object: 'hosts',
+        key_pgUp: Main_usergames,
+        key_pgDown: Main_UserLive,
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -742,6 +756,8 @@ function ScreensObj_InitAGame() {
         table: 'stream_table_a_game',
         screen: Main_aGame,
         object: 'streams',
+        key_pgUp: Main_Vod,
+        key_pgDown: Main_Featured,
         base_url: 'https://api.twitch.tv/kraken/streams?game=',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -795,6 +811,8 @@ function ScreensObj_InitFeatured() {
         ids: Screens_ScreenIds('Featured'),
         table: 'stream_table_featured',
         screen: Main_Featured,
+        key_pgUp: Main_games,
+        key_pgDown: Main_Live,
         base_url: 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.url = this.base_url + '&offset=' + this.offset +
@@ -911,6 +929,8 @@ function ScreensObj_InitClip() {
         ids: Screens_ScreenIds('Clip'),
         table: 'stream_table_clip',
         screen: Main_Clip,
+        key_pgUp: Main_Live,
+        key_pgDown: Main_Vod,
         periodPos: Main_getItemInt('Clip_periodPos', 2),
         base_url: 'https://api.twitch.tv/kraken/clips/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
@@ -942,6 +962,7 @@ function ScreensObj_InitChannelClip() {
         ids: Screens_ScreenIds('ChannelClip'),
         table: 'stream_table_channel_clip',
         screen: Main_ChannelClip,
+        key_pgDown: Main_ChannelVod,
         periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
         base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
         set_url: function() {
@@ -975,6 +996,8 @@ function ScreensObj_InitAGameClip() {
         ids: Screens_ScreenIds('AGameClip'),
         table: 'stream_table_a_game_clip',
         screen: Main_AGameClip,
+        key_pgUp: Main_Vod,
+        key_pgDown: Main_Featured,
         periodPos: Main_getItemInt('AGameClip_periodPos', 2),
         base_url: 'https://api.twitch.tv/kraken/clips/top?game=',
         set_url: function() {
@@ -1060,6 +1083,8 @@ function ScreensObj_InitGame() {
         ids: Screens_ScreenIds('Game'),
         table: 'stream_table_games',
         screen: Main_games,
+        key_pgUp: Main_Vod,
+        key_pgDown: Main_Featured,
         object: 'top',
         useHelix: false,
         base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
@@ -1108,6 +1133,8 @@ function ScreensObj_InitUserGames() {
         ids: Screens_ScreenIds('UserGames'),
         table: 'stream_table_user_games',
         screen: Main_usergames,
+        key_pgUp: Main_UserVod,
+        key_pgDown: Main_UserHost,
         isLive: Main_getItemBool('user_Games_live', true),
         OldUserName: '',
         object: 'follows',
@@ -1217,6 +1244,8 @@ function ScreensObj_InitUserChannels() {
         table: 'stream_table_user_channels',
         screen: Main_UserChannels,
         object: 'follows',
+        key_pgUp: Main_UserLive,
+        key_pgDown: Main_UserVod,
         base_url: 'https://api.twitch.tv/kraken/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -1335,6 +1364,7 @@ function ScreensObj_TopLableUserInit() {
     inUseObj.OldUserName = AddUser_UsernameArray[0].name;
 
     Sidepannel_SetUserLables();
+    Sidepannel_SetTopOpacity(inUseObj.screen);
 }
 
 function ScreensObj_SetTopLable(text, small_text) {

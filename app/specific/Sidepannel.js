@@ -257,6 +257,7 @@ function Sidepannel_Hide() {
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {
+    console.log('Sidepannel_SetTopOpacity ' + Main_Go);
     if (Sidepannel_Pos_Screens[Main_Go]) Main_values.Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
     Sidepannel_UnSetTopOpacity();
 
