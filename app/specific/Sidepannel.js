@@ -158,14 +158,18 @@ function Sidepannel_KeyEnter() {
     var hidepanel = true;
 
     if (Main_values.Sidepannel_Pos === 2) {
-        //TODO add a proper add user thing
-        Sidepannel_SetUserLables();
-        Sidepannel_UnSetTopOpacity();
+        if (AddUser_IsUserSet()) {
+            Sidepannel_SetUserLables();
+            Sidepannel_UnSetTopOpacity();
 
-        if (Sidepannel_MainISuser()) {
-            Sidepannel_RemoveFocusMain();
-            Sidepannel_SetTopOpacity(Main_values.Main_Go);
-            Sidepannel_AddFocusMain();
+            if (Sidepannel_MainISuser()) {
+                Sidepannel_RemoveFocusMain();
+                Sidepannel_SetTopOpacity(Main_values.Main_Go);
+                Sidepannel_AddFocusMain();
+            }
+        } else {
+            Main_showWarningDialog(STR_NOKUSER_WARN);
+            window.setTimeout(Main_HideWarningDialog, 2000);
         }
         hidepanel = false;
     } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
@@ -289,7 +293,6 @@ function Sidepannel_UnSetTopOpacity() {
 }
 
 function Sidepannel_SetUserLables() {
-    //Sidepannel_Go(AddUser_IsUserSet() ? Main_Users : Main_addUser);
     Main_values.Sidepannel_IsUser = true;
 
     Main_innerHTML('side_panel_movel_user_text', STR_SPACE + STR_USER_MENU + STR_SPACE);
