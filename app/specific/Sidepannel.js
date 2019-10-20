@@ -60,13 +60,13 @@ function Sidepannel_partnerIcon(name, partner, isrerun) {
 }
 
 function Sidepannel_PreloadImgs() {
-    Array.from(document.getElementsByClassName('side_panel_feed')).forEach(
-        function(ele) {
-            if (ele !== null) {
-                new Image().src = JSON.parse(ele.getAttribute('side_panel_data'))[2] + Main_randomimg;
-            }
+    var doc;
+    for (var i = 0; i < Sidepannel_GetSize(); i++) {
+        doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
+        if (doc !== null) {
+            new Image().src = JSON.parse(doc.getAttribute('side_panel_data'))[2] + Main_randomimg;
         }
-    );
+    }
 }
 
 function Sidepannel_GetSize() {
