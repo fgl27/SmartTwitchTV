@@ -1080,7 +1080,6 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
         AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
     } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
         inUseObj.setHelix();
-        BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
     } else {
         calbackError();
     }
