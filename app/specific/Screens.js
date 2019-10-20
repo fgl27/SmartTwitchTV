@@ -795,12 +795,16 @@ function Screens_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_PG_DOWN:
-            if (!inUseObj.loadingData && inUseObj.key_pgDown)
+            if (!inUseObj.loadingData && inUseObj.key_pgDown) {
+                Screens_RemoveAllFocus();
                 Sidepannel_Go(inUseObj.key_pgDown);
+            }
             break;
         case KEY_PG_UP:
-            if (!inUseObj.loadingData && inUseObj.key_pgUp)
+            if (!inUseObj.loadingData && inUseObj.key_pgUp) {
+                Screens_RemoveAllFocus();
                 Sidepannel_Go(inUseObj.key_pgUp);
+            }
             break;
         case KEY_RETURN:
             if (!inUseObj.loadingData) inUseObj.key_exit();
