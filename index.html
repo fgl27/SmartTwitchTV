@@ -1463,8 +1463,8 @@
 
         .chat_box_holder {
             height: 100%;
-            display: flex;
-            flex-direction: column-reverse;
+            transform: rotate(180deg);
+            overflow: hidden;
         }
 
         .tag {
@@ -2077,7 +2077,7 @@
         <div id="chat_container" class="chat_container hide">
             <div id="chat_inner_container" class="chat_size_default">
                 <div class="chat_box_holder">
-                    <div>
+                    <div style="transform: rotate(180deg);">
                         <div id="chat_box" class="chat_box"></div>
                     </div>
                 </div>
@@ -2092,7 +2092,7 @@
         <div id="chat_container2" class="chat_container2 hide">
             <div id="chat_inner_container2" class="chat_size_default">
                 <div class="chat_box_holder">
-                    <div>
+                    <div style="transform: rotate(180deg);">
                         <div id="chat_box2" class="chat_box"></div>
                     </div>
                 </div>
