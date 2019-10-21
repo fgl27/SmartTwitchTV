@@ -5,8 +5,7 @@
     android:id="@+id/root"
     android:focusable="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:keepScreenOn="true">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/videoholder"

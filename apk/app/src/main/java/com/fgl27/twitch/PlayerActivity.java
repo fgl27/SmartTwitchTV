@@ -16,6 +16,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -245,6 +246,8 @@ public class PlayerActivity extends Activity {
                 PlayerView[tempPos].setVisibility(View.VISIBLE);
             }
         }
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     // For some reason the player can lag a device when stated without releasing it first
@@ -273,6 +276,10 @@ public class PlayerActivity extends Activity {
         player[position].prepare(mediaurireset, true, true);
 
         releasePlayer(position);
+
+        //Both players are close enable screen saver
+        if (player[0] == null && player[1] == null)
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
@@ -837,10 +844,26 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetScreenSaver(boolean keepOn) {
+            myHandler.post(() -> {
+                if (keepOn)
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                else
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void play(boolean play) {
             myHandler.post(() -> {
                 if (player[0] != null) player[0].setPlayWhenReady(play);
                 if (player[1] != null) player[1].setPlayWhenReady(play);
+
+                if (play)
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                else
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
         }
 
