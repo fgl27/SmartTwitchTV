@@ -110,6 +110,13 @@ function Screens_StartLoad() {
     Main_updateclock();
     Main_empty(inUseObj.table);
     Main_HideWarningDialog();
+
+    //After one refresh reset helix
+    if (inUseObj.useHelix) {
+        if (inUseObj.forceResetHelix) inUseObj.resetHelix();
+        else inUseObj.forceResetHelix = true;
+    }
+
     inUseObj.cursor = null;
     inUseObj.after = '';
     inUseObj.status = false;
