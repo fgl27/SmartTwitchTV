@@ -247,7 +247,7 @@ public class PlayerActivity extends Activity {
             }
         }
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        KeepScreenOn(true);
     }
 
     // For some reason the player can lag a device when stated without releasing it first
@@ -279,7 +279,7 @@ public class PlayerActivity extends Activity {
 
         //Both players are close enable screen saver
         if (player[0] == null && player[1] == null)
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            KeepScreenOn(false);
     }
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
@@ -352,6 +352,13 @@ public class PlayerActivity extends Activity {
             mResumePosition = player[position].isCurrentWindowSeekable() ?
                     Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
         }
+    }
+
+    public void KeepScreenOn(boolean keepOn) {
+        if (keepOn)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void showLoading() {
@@ -844,13 +851,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetScreenSaver(boolean keepOn) {
-            myHandler.post(() -> {
-                if (keepOn)
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                else
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            });
+        public void mKeepScreenOn(boolean keepOn) {
+            myHandler.post(() -> KeepScreenOn(keepOn));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -860,10 +862,7 @@ public class PlayerActivity extends Activity {
                 if (player[0] != null) player[0].setPlayWhenReady(play);
                 if (player[1] != null) player[1].setPlayWhenReady(play);
 
-                if (play)
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                else
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                KeepScreenOn(play);
             });
         }
 
