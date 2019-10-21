@@ -1102,8 +1102,8 @@ function ScreensObj_InitGame() {
         setHelix: function() {
             this.useHelix = true;
             this.base_url = 'https://api.twitch.tv/helix/games/top?first=' + Main_ItemsLimitMax;
-            this.after = '';
             this.object = 'data';
+            this.forceResetHelix = false;
             this.addCell = function(cell) {
                 if (!this.idObject[cell.id]) {
 
@@ -1122,6 +1122,12 @@ function ScreensObj_InitGame() {
                 }
             };
             Screens_StartLoad();
+        },
+        resetHelix: function() {
+            this.useHelix = false;
+            this.base_url = 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax;
+            this.object = 'top';
+            this.addCell = Base_Game_obj.addCell;
         },
     }, Base_obj);
 
