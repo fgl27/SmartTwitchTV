@@ -1,6 +1,6 @@
 //Variable initialization
 var Main_isReleased = false;
-var Main_isDebug = true;
+var Main_isDebug = false;
 
 var Main_cursorYAddFocus = -1;
 
@@ -137,7 +137,6 @@ function Main_Start() {
 
 function Main_loadTranslations(language) {
     Main_Checktylesheet();
-    Main_isDebug = false;
 
     Main_ready(function() {
         try {
@@ -879,12 +878,14 @@ function Main_Checktylesheet() {
     span.style.display = 'none';
     document.body.insertBefore(span, document.body.firstChild);
 
-    if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-        if (Main_isDebug) console.log('Main_Checktylesheet reloading');
-        Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-    } else if (Main_isDebug) console.log('Main_Checktylesheet loaded OK');
+    Main_ready(function() {
+        if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
+            console.log('Main_Checktylesheet reloading');
+            Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
+        } else console.log('Main_Checktylesheet loaded OK');
 
-    document.body.removeChild(span);
+        document.body.removeChild(span);
+    });
 }
 
 function Main_LoadStylesheet(path) {
