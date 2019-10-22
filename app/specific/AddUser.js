@@ -221,7 +221,6 @@ function AddUser_UpdateUser(position, tryes) {
 function AddUser_UpdateUsertSuccess(response, position) {
     var user = JSON.parse(response);
     if (user._total) {
-        Main_AddUserInput.value = '';
         document.body.removeEventListener("keydown", AddUser_handleKeyDown);
         user = user.users[0];
         AddUser_UsernameArray[position].display_name = user.display_name;
