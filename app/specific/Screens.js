@@ -801,16 +801,16 @@ function Screens_handleKeyDown(event) {
     else Main_keyClickDelayStart();
 
     switch (event.keyCode) {
-        case KEY_PG_DOWN:
-            if (!inUseObj.loadingData && inUseObj.key_pgDown) {
-                Screens_RemoveAllFocus();
-                Sidepannel_Go(inUseObj.key_pgDown);
-            }
-            break;
         case KEY_PG_UP:
             if (!inUseObj.loadingData && inUseObj.key_pgUp) {
                 Screens_RemoveAllFocus();
                 Sidepannel_Go(inUseObj.key_pgUp);
+            }
+            break;
+        case KEY_PG_DOWN:
+            if (!inUseObj.loadingData && inUseObj.key_pgDown) {
+                Screens_RemoveAllFocus();
+                Sidepannel_Go(inUseObj.key_pgDown);
             }
             break;
         case KEY_RETURN:
