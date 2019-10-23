@@ -848,6 +848,8 @@ function Screens_handleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+            inUseObj.key_play();
+            break;
         case KEY_ENTER:
             document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
             document.body.addEventListener("keyup", Screens_handleKeyUp, false);

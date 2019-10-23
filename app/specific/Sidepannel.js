@@ -424,6 +424,9 @@ function Sidepannel_handleKeyDown(event) {
                 Sidepannel_AddFocusFeed();
             }
             break;
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
         case KEY_ENTER:
             if (!UserLiveFeed_loadingData) {
                 var doc = document.getElementById("side_panel");
@@ -475,6 +478,9 @@ function Sidepannel_handleKeyDownMain(event) {
                 Sidepannel_AddFocusMain();
             }
             break;
+        case KEY_PLAY:
+        case KEY_PAUSE:
+        case KEY_PLAYPAUSE:
         case KEY_ENTER:
             Sidepannel_KeyEnter();
             break;
