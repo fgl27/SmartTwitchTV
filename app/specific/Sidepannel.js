@@ -410,6 +410,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_LEFT:
             if (!UserLiveFeed_loadingData) UserLiveFeed_FeedRefresh();
             break;
+        case KEY_PG_UP:
         case KEY_UP:
             if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData) {
                 Sidepannel_RemoveFocusFeed();
@@ -417,6 +418,7 @@ function Sidepannel_handleKeyDown(event) {
                 Sidepannel_AddFocusFeed();
             }
             break;
+        case KEY_PG_DOWN:
         case KEY_DOWN:
             if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData) {
                 Sidepannel_RemoveFocusFeed();
@@ -462,6 +464,7 @@ function Sidepannel_handleKeyDownMain(event) {
                 window.setTimeout(Main_HideWarningDialog, 2000);
             }
             break;
+        case KEY_PG_UP:
         case KEY_UP:
             if (Main_values.Sidepannel_Pos) {
                 Sidepannel_RemoveFocusMain();
@@ -470,6 +473,7 @@ function Sidepannel_handleKeyDownMain(event) {
                 Sidepannel_AddFocusMain();
             }
             break;
+        case KEY_PG_DOWN:
         case KEY_DOWN:
             if (Main_values.Sidepannel_Pos < 12) {
                 Sidepannel_RemoveFocusMain();
