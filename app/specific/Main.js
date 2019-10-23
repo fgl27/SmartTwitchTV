@@ -110,7 +110,7 @@ var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '2.0';
 var Main_stringVersion_Min = '.81';
-var Main_minversion = '102119';
+var Main_minversion = '102319';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsNotBrowserVersion = '';
 var Main_ClockOffset = 0;
