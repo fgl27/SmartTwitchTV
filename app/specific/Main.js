@@ -211,6 +211,7 @@ function Main_initWindows() {
             //Enable animations
             Settings_value.app_animations.defaultValue = 1;
             Main_setItem('bitrate_min', 2);
+            Settings_SetAnimations();
         }
     }
 
