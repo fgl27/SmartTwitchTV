@@ -19,7 +19,7 @@ var Settings_value = {
     },
     "app_animations": { //app_animations
         "values": ["no", "yes"],
-        "defaultValue": 2
+        "defaultValue": 1
     },
     "show_screen_counter": { //show_screen_counter
         "values": ["no", "yes"],
