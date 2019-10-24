@@ -872,7 +872,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<Boolean> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Boolean>() {
                 @Override
                 public void run() {
-                    if (player[mainPlayer] != null) value = player[mainPlayer].getPlayWhenReady();
+                    if (player[mainPlayer] != null) value = player[mainPlayer].isPlaying();
                     else value = false;
                 }
             });
@@ -984,7 +984,7 @@ public class PlayerActivity extends Activity {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                         PlayerCheckHandler[position].postDelayed(() -> {
                             //Player was released or is on pause
-                            if (player[position] == null || !player[position].getPlayWhenReady())
+                            if (player[position] == null || !player[position].isPlaying())
                                 return;
 
                             PlayerEventListenerCheckCounter(position, false);
@@ -996,7 +996,7 @@ public class PlayerActivity extends Activity {
                         //If other not playing just play it so they stay close to sync
                         int otherplayer = position ^ 1;
                         if (player[otherplayer] != null) {
-                            if (!player[otherplayer].getPlayWhenReady())
+                            if (!player[otherplayer].isPlaying())
                                 player[otherplayer].setPlayWhenReady(true);
                         }
 
