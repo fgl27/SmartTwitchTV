@@ -64,7 +64,7 @@ var Main_values = {
     "Sidepannel_Pos": 2,
     "Sidepannel_IsUser": false,
     "My_channel": false,
-    "DeviceBitrateCheck": false,
+    "DeviceCheck": false,
 };
 
 var Main_LastClickFinish = true;
@@ -193,24 +193,30 @@ function Main_loadTranslations(language) {
 function Main_initWindows() {
     Main_RestoreValues();
 
-    var device = null;
+    var device = null,
+        manufacturer = null;
+
     try {
         device = Android.getDevice();
+        manufacturer = Android.getManufacturer();
     } catch (e) {}
 
-    if (!Main_values.DeviceBitrateCheck && device !== null) {
-        Main_values.DeviceBitrateCheck = true;
-        if (device.toLowerCase().indexOf('shield android tv') !== -1) {
-            //Some devices are very slow and are afected by some app default setting Nvidea shield is not
+    if (!Main_values.DeviceCheck && device !== null && manufacturer !== null) {
+
+        Main_values.DeviceCheck = true;
+
+        if (device.toLowerCase().indexOf('shield android tv') !== -1 ||
+            manufacturer.toLowerCase().indexOf('nvidia') !== -1) {
+            //Some devices are very slow and are affected by some app default setting Nvidia shield is not
 
             //bitrate to max possible
             Settings_value.bitrate_min.defaultValue = 0;
             Main_setItem('bitrate_min', 1);
             Android.SetSmallPlayerBandwidth(0);
 
-            //Enable animations
+            //Enable app animations
             Settings_value.app_animations.defaultValue = 1;
-            Main_setItem('bitrate_min', 2);
+            Main_setItem('app_animations', 2);
             Settings_SetAnimations();
         }
     }
