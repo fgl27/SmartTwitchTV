@@ -59,9 +59,11 @@ public final class Tools {
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
     public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
+        HttpURLConnection urlConnection = null;
+        HEADERS[2][1] = access_token;
+
         try {
-            HttpURLConnection urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
-            HEADERS[2][1] = access_token;
+            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
 
             for (int i = 0; i < HeaderQuantity; i++)
                 urlConnection.setRequestProperty(HEADERS[i][0], HEADERS[i][1]);
@@ -96,6 +98,9 @@ public final class Tools {
         } catch (IOException e) {
             Log.w(TAG, "readUrl IOException ", e);
             return null;
+        } finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
         }
     }
 
