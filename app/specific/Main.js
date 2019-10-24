@@ -200,11 +200,17 @@ function Main_initWindows() {
 
     if (!Main_values.DeviceBitrateCheck && device !== null) {
         Main_values.DeviceBitrateCheck = true;
-        //Some devices are very slow and need small bitrate when in picture in picture shield doesn't.
         if (device.toLowerCase().indexOf('shield android tv') !== -1) {
+            //Some devices are very slow and are afected by some app default setting Nvidea shield is not
+
+            //bitrate to max possible
             Settings_value.bitrate_min.defaultValue = 0;
             Main_setItem('bitrate_min', 1);
             Android.SetSmallPlayerBandwidth(0);
+
+            //Enable animations
+            Settings_value.app_animations.defaultValue = 1;
+            Main_setItem('bitrate_min', 2);
         }
     }
 
