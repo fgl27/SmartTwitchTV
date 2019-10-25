@@ -1109,7 +1109,7 @@ function Play_RefreshWatchingtime() {
         STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_watching_time)));
 
     Main_innerHTML("stream_live_time", STR_SINCE +
-        (Play_created.indexOf('00:00') === -1 ? Play_streamLiveAt(Play_created) : '00:00'));
+        (('00:00').indexOf(Play_created) !== -1 ? '00:00' : Play_streamLiveAt(Play_created)));
 
     if (!Play_Status_Always_On) {
         if (Play_qualityPlaying.indexOf("Auto") !== -1 && Main_IsNotBrowser) {
