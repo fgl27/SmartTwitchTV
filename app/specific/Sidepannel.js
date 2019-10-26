@@ -407,6 +407,7 @@ function Sidepannel_handleKeyDown(event) {
             document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
             Sidepannel_StartMain();
             break;
+        case KEY_REFRESH:
         case KEY_LEFT:
             if (!UserLiveFeed_loadingData) UserLiveFeed_FeedRefresh();
             break;
