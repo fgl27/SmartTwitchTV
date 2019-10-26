@@ -226,6 +226,7 @@ function ChannelContent_loadDataSuccess() {
                 Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language),
                 Main_is_rerun(stream.stream_type));
 
+            ChannelContent_cursorX = 1;
         } else ChannelContent_createCellOffline();
     } else ChannelContent_createCellOffline();
 
