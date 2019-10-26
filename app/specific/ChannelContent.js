@@ -460,6 +460,8 @@ function ChannelContent_handleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+            ChannelContent_keyEnter();
+            break;
         case KEY_ENTER:
             document.body.removeEventListener("keydown", ChannelContent_handleKeyDown, false);
             document.body.addEventListener("keyup", ChannelContent_handleKeyUp, false);
