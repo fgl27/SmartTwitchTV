@@ -1139,6 +1139,7 @@ function ScreensObj_InitUserGames() {
         ids: Screens_ScreenIds('UserGames'),
         table: 'stream_table_user_games',
         screen: Main_usergames,
+        key_pgDownNext: Main_UserChannels,
         key_pgDown: Main_UserVod,
         key_pgUp: Main_UserHost,
         isLive: Main_getItemBool('user_Games_live', true),
@@ -1252,6 +1253,7 @@ function ScreensObj_InitUserChannels() {
         object: 'follows',
         key_pgDown: Main_UserLive,
         key_pgUp: Main_UserVod,
+        key_pgUpNext: Main_usergames,
         base_url: 'https://api.twitch.tv/kraken/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;

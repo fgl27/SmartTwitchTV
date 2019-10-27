@@ -804,13 +804,17 @@ function Screens_handleKeyDown(event) {
         case KEY_PG_UP:
             if (!inUseObj.loadingData && inUseObj.key_pgUp) {
                 Screens_RemoveAllFocus();
-                Sidepannel_Go(inUseObj.key_pgUp);
+                if (inUseObj.screen === Main_UserChannels)
+                    Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgUpNext : inUseObj.key_pgUp);
+                else Sidepannel_Go(inUseObj.key_pgUp);
             }
             break;
         case KEY_PG_DOWN:
             if (!inUseObj.loadingData && inUseObj.key_pgDown) {
                 Screens_RemoveAllFocus();
-                Sidepannel_Go(inUseObj.key_pgDown);
+                if (inUseObj.screen === Main_usergames)
+                    Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgDownNext : inUseObj.key_pgDown);
+                else Sidepannel_Go(inUseObj.key_pgDown);
             }
             break;
         case KEY_RETURN:
