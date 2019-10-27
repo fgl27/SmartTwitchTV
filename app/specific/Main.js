@@ -104,6 +104,7 @@ var Main_AcceptHeader = 'Accept';
 var Main_Authorization = 'Authorization';
 var Main_OAuth = 'OAuth ';
 var Main_TwithcV5Json = 'application/vnd.twitchtv.v5+json';
+var Main_TwithcV5Flag = '&api_version=5';
 
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
