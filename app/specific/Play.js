@@ -936,17 +936,25 @@ function Play_ClearPlayer() {
     Main_updateclock();
     Play_IncrementView = '';
 
-    if (Play_qualityIndex === (Play_getQualitiesCount() - 1)) {
-        Play_quality = Play_qualities[1].id;
-        Play_qualityPlaying = Play_quality;
+    if (Play_qualities[1] && Play_qualityIndex === (Play_getQualitiesCount() - 1)) {
+        if (Play_qualities[1].hasOwnProperty('id')) {
+            Play_quality = Play_qualities[1].id;
+            Play_qualityPlaying = Play_quality;
+        }
     }
-    if (PlayVod_qualityIndex === (PlayVod_getQualitiesCount() - 1)) {
-        PlayVod_quality = PlayVod_qualities[1].id;
-        PlayVod_qualityPlaying = PlayVod_quality;
+
+    if (PlayVod_qualities[1] && PlayVod_qualityIndex === (PlayVod_getQualitiesCount() - 1)) {
+        if (PlayVod_qualities[1].hasOwnProperty('id')) {
+            PlayVod_quality = PlayVod_qualities[1].id;
+            PlayVod_qualityPlaying = PlayVod_quality;
+        }
     }
-    if (PlayClip_qualityIndex === (PlayClip_getQualitiesCount() - 1)) {
-        PlayClip_quality = PlayClip_qualities[0].id;
-        PlayClip_qualityPlaying = PlayClip_quality;
+
+    if (PlayClip_qualities[0] && PlayClip_qualityIndex === (PlayClip_getQualitiesCount() - 1)) {
+        if (PlayClip_qualities[0].hasOwnProperty('id')) {
+            PlayClip_quality = PlayClip_qualities[0].id;
+            PlayClip_qualityPlaying = PlayClip_quality;
+        }
     }
 
 }
