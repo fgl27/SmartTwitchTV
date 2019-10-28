@@ -435,6 +435,10 @@ function PlayClip_OpenVod() {
 function PlayClip_handleKeyDown(e) {
     if (PlayClip_state !== PlayClip_STATE_PLAYING) {
         switch (e.keyCode) {
+            case KEY_STOP:
+                Play_CleanHideExit();
+                PlayClip_shutdownStream();
+                break;
             case KEY_RETURN:
                 if (Play_ExitDialogVisible() || Play_SingleClickExit) {
                     Play_CleanHideExit();
@@ -554,6 +558,10 @@ function PlayClip_handleKeyDown(e) {
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
                 } else PlayClip_showPanel();
                 break;
+            case KEY_STOP:
+                Play_CleanHideExit();
+                PlayClip_shutdownStream();
+                break;
             case KEY_RETURN:
                 if (Play_isPanelShown()) PlayClip_hidePanel();
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
@@ -598,8 +606,31 @@ function PlayClip_handleKeyDown(e) {
                 Play_BottomUpDown(3, -1);
                 Play_Panelcounter = Play_controlsDefault;
                 break;
+            case KEY_MEDIA_FAST_FORWARD:
+                if (!Play_isEndDialogVisible()) PlayClip_FastBackForward(1);
+                break;
+            case KEY_MEDIA_REWIND:
+                if (!Play_isEndDialogVisible()) PlayClip_FastBackForward(-1);
+                break;
+            case KEY_MEDIA_NEXT:
+                PlayClip_PlayNext();
+                break;
+            case KEY_MEDIA_PREVIOUS:
+                PlayClip_PlayPreviously();
+                break;
             default:
                 break;
         }
     }
+}
+
+function PlayClip_FastBackForward(position) {
+    Play_clearHidePanel();
+    if (!Play_isPanelShown()) PlayClip_showPanel();
+    PlayVod_PanelY = 0;
+    PlayVod_IconsBottonFocus();
+
+    PlayVod_jumpStart(position, PlayClip_DurationSeconds);
+    PlayVod_ProgressBaroffset = 2500;
+    PlayClip_setHidePanel();
 }
