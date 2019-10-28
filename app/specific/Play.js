@@ -1802,16 +1802,23 @@ function Play_handleKeyUpClear() {
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
 }
 
+function Play_Exit() {
+    Play_CleanHideExit();
+    Play_hideChat();
+    PlayExtra_PicturePicture = false;
+    PlayExtra_selectedChannel = '';
+    Play_shutdownStream();
+}
+
 function Play_handleKeyDown(e) {
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
+            case KEY_STOP:
+                Play_Exit();
+                break;
             case KEY_RETURN:
                 if (Play_ExitDialogVisible() || Play_SingleClickExit) {
-                    Play_CleanHideExit();
-                    Play_hideChat();
-                    PlayExtra_PicturePicture = false;
-                    PlayExtra_selectedChannel = '';
-                    Play_shutdownStream();
+                    Play_Exit();
                 } else {
                     Play_showExitDialog();
                 }
@@ -1941,6 +1948,9 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_RETURN:
                 Play_KeyReturn(false);
+                break;
+            case KEY_STOP:
+                Play_Exit();
                 break;
             case KEY_PLAY:
                 if (!Play_isEndDialogVisible() && Play_isNotplaying()) Play_KeyPause(1);

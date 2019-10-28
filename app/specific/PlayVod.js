@@ -826,6 +826,10 @@ function PlayVod_DialogPressed(fromStart) {
 function PlayVod_handleKeyDown(e) {
     if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
         switch (e.keyCode) {
+            case KEY_STOP:
+                Play_CleanHideExit();
+                PlayVod_shutdownStream();
+                break;
             case KEY_RETURN:
                 if (Play_ExitDialogVisible() || Play_SingleClickExit) {
                     Play_CleanHideExit();
@@ -951,6 +955,10 @@ function PlayVod_handleKeyDown(e) {
                     Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
                 } else PlayVod_showPanel(true);
                 break;
+            case KEY_STOP:
+                Play_CleanHideExit();
+                PlayVod_shutdownStream();
+                break;
             case KEY_RETURN:
                 Play_KeyReturn(true);
                 break;
@@ -986,8 +994,25 @@ function PlayVod_handleKeyDown(e) {
                 Play_BottomUpDown(2, -1);
                 Play_Panelcounter = Play_controlsDefault;
                 break;
+            case KEY_MEDIA_FAST_FORWARD:
+                if (!Play_isEndDialogVisible()) PlayVod_FastBackForward(1);
+                break;
+            case KEY_MEDIA_REWIND:
+                if (!Play_isEndDialogVisible()) PlayVod_FastBackForward(-1);
+                break;
             default:
                 break;
         }
     }
+}
+
+function PlayVod_FastBackForward(position) {
+    Play_clearHidePanel();
+    if (!Play_isPanelShown()) PlayVod_showPanel(true);
+    PlayVod_PanelY = 0;
+    PlayVod_IconsBottonFocus();
+
+    PlayVod_jumpStart(position, ChannelVod_DurationSeconds);
+    PlayVod_ProgressBaroffset = 2500;
+    PlayVod_setHidePanel();
 }
