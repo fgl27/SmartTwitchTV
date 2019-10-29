@@ -1007,8 +1007,8 @@ function PlayVod_handleKeyDown(e) {
 }
 
 function PlayVod_FastBackForward(position) {
-    Play_clearHidePanel();
     if (!Play_isPanelShown()) PlayVod_showPanel(true);
+    Play_clearHidePanel();
     PlayVod_PanelY = 0;
     PlayVod_IconsBottonFocus();
 

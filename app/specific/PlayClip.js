@@ -625,8 +625,8 @@ function PlayClip_handleKeyDown(e) {
 }
 
 function PlayClip_FastBackForward(position) {
-    Play_clearHidePanel();
     if (!Play_isPanelShown()) PlayClip_showPanel();
+    Play_clearHidePanel();
     PlayVod_PanelY = 0;
     PlayVod_IconsBottonFocus();
 
