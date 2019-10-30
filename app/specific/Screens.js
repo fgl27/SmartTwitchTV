@@ -122,7 +122,7 @@ function Screens_StartLoad() {
     inUseObj.status = false;
     inUseObj.TopRowCreated = false;
     inUseObj.offset = 0;
-    inUseObj.offsttop = 0;
+    inUseObj.offsettop = 0;
     inUseObj.idObject = {};
     inUseObj.Cells = [];
     inUseObj.FirstLoad = true;
@@ -465,6 +465,8 @@ function Screens_addFocus(forceScroll) {
     }
     if (inUseObj.posY < 0) {
         Screens_addFocusFallow();
+        //Reset screen position
+        document.getElementById(inUseObj.ids[10]).style.top = '';
         if (!inUseObj.emptyContent) Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
         return;
     }
@@ -628,8 +630,8 @@ function Screens_addrowEnd(forceScroll) {
 }
 
 function Screens_addFocusChannel(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsttop && inUseObj.Cells[2])
-        inUseObj.offsttop = document.getElementById(idArray[0] + 2 + '_' + 0).offsetTop / BodyfontSize;
+    if (!inUseObj.offsettop && inUseObj.Cells[2])
+        inUseObj.offsettop = document.getElementById(idArray[0] + 2 + '_' + 0).offsetTop / BodyfontSize;
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -639,14 +641,14 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
             //TODO revise this for a simple implementeation
             if (inUseObj.Cells.length < 6) {
                 if (inUseObj.Cells[y + 1] && (y + 2) < inUseObj.Cells.length || inUseObj.Cells.length === 4)
-                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsttop + 'em)';
+                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
                 else if (inUseObj.Cells.length > 3)
-                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsttop * 3 / 2) + 'em)';
+                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
             } else {
                 if (inUseObj.Cells[y + 2])
-                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsttop + 'em)';
+                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
                 else
-                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsttop * 3 / 2) + 'em)';
+                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
             }
 
         } else document.getElementById(idArray[10]).style.top = '';
@@ -656,14 +658,14 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
 }
 
 function Screens_addFocusVideo(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsttop && inUseObj.Cells[1])
-        inUseObj.offsttop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
+    if (!inUseObj.offsettop && inUseObj.Cells[1])
+        inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
 
             if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
-                document.getElementById(idArray[10]).style.top = 'calc(8.4% - ' + inUseObj.offsttop + 'em)';
+                document.getElementById(idArray[10]).style.top = 'calc(8.4% - ' + inUseObj.offsettop + 'em)';
 
         } else document.getElementById(idArray[10]).style.top = '';
     }
@@ -672,14 +674,14 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
 }
 
 function Screens_addFocusGame(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsttop && inUseObj.Cells[1])
-        inUseObj.offsttop = document.getElementById(idArray[5] + 1 + '_' + 0).offsetTop / BodyfontSize;
+    if (!inUseObj.offsettop && inUseObj.Cells[1])
+        inUseObj.offsettop = document.getElementById(idArray[5] + 1 + '_' + 0).offsetTop / BodyfontSize;
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
 
             if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
-                document.getElementById(idArray[10]).style.top = 'calc(4.5% - ' + inUseObj.offsttop + 'em)';
+                document.getElementById(idArray[10]).style.top = 'calc(4.5% - ' + inUseObj.offsettop + 'em)';
 
         } else document.getElementById(idArray[10]).style.top = '';
     }
