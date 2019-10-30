@@ -36,7 +36,8 @@ function DefaultLang() {
         STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_CONTROLS_PLAY_3 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_5 + STR_BR +
-        STR_DOT + STR_CONTROLS_PLAY_6 + STR_BR + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_6 + STR_BR +
+        STR_DOT + STR_CONTROLS_PLAY_13 + STR_BR + STR_BR +
 
         STR_DIV_TITLE + STR_PICTURE_PICTURE + '</div>' +
         STR_DIV_MIDLE_LEFT +

@@ -7,8 +7,8 @@ function en_USLang() {
     //document.getElementById("side_panel").style.width = "25%";
 
     //Below are variables to translate
-    STR_KEY_UP_DOWN = " (PG Up/Down)";
-    STR_GUIDE_EXTRA = STR_SPACE + "or key 2";
+    STR_KEY_UP_DOWN = " PG Up/Down";
+    STR_GUIDE_EXTRA = STR_SPACE + "or key number 2";
     STR_REFRESH = "Refresh";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
@@ -93,11 +93,11 @@ function en_USLang() {
     STR_UPDATE = 'Update';
     STR_CURRENT_VERSION = "Current installed version ";
     STR_LATEST_VERSION = " latest available version ";
-    STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter to start playing";
+    STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause media";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
     STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it auto force close";
-    STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad left or right or" + STR_KEY_UP_DOWN;
+    STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad up/Down or" + STR_KEY_UP_DOWN;
     STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
     STR_ABOUT_INFO_1 = "This is a SmartTV Client for Twitch developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
@@ -121,7 +121,7 @@ function en_USLang() {
 
     STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
-    STR_CONTROLS_PLAY_2 = "Close the video: press back key twice";
+    STR_CONTROLS_PLAY_2 = "Close the video: press back key twice or media key Stop";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol";
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
     STR_CONTROLS_PLAY_5 = "Change video quality: use the player bottom controls Quality";
@@ -132,6 +132,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
+    STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...)";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
     STR_F_DISABLE_CHAT = "Chat force disable";
     STR_UPDATE_AVAILABLE = "Update available, check google play store";
