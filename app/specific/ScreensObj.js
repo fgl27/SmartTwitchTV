@@ -45,7 +45,7 @@ var Base_obj = {
     posY: 0,
     currY: 0,
     row_id: 0,
-    offsttop: 0,
+    offsettop: 0,
     coloumn_id: 0,
     dataEnded: false,
     idObject: {},
@@ -66,7 +66,7 @@ var Base_obj = {
     data_cursor: 0,
     loadDataSuccess: Screens_loadDataSuccess,
     addrow: Screens_addrow,
-    key_exit: function(goSidepanel) {
+    key_exit: function(goSidepanel) {//TODO overwrite this on if object
         Screens_RemoveAllFocus();
 
         if ((this.screen === Main_aGame) && !goSidepanel) {
