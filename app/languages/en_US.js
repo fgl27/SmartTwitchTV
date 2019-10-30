@@ -303,7 +303,6 @@ function en_USLang() {
     STR_LOW_LATENCY = "Low Latency";
     STR_LOW_LATENCY_SUMARRY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
         "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
-    STR_FORBIDDEN = "Forbidden content, this Live content must be for Prime only subscribers or restrained to the official Twitch app";
     STR_LIVE_FEED_SORT = "Live feed sort";
     STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed";
     STR_A_Z = "Alphabetical A - Z";
