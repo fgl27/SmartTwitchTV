@@ -209,7 +209,7 @@ function en_USLang() {
     STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
     STR_SIZE = "Size ";
     STR_BRIGHTNESS = "Brightness ";
-    STR_FORBIDDEN = "Forbidden content, this Live content must be for Prime only subscribers or restrained to the official Twitch app";
+    STR_FORBIDDEN = "Forbidden content, this is restricted in yours region or is restrained to the official Twitch app only";
     STR_JUMPING_STEP = "Jump step ";
     STR_SECOND = " second";
     STR_SECONDS = STR_SECOND + "s";
