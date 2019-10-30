@@ -268,7 +268,7 @@ function PlayVod_loadDataRequest() {
             PlayVod_tokenResponse.sig +
             '&reassignments_supported=true&playlist_include_framerate=true' +
             (Play_SupportsSource ? "&allow_source=true" : '') +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
         PlayVod_autoUrl = theUrl;
     }
 
