@@ -641,24 +641,14 @@ function PlayVod_jump() {
     if (!Play_isEndDialogVisible()) {
 
         if (PlayVod_isOn) {
-            if (Main_IsNotBrowser) {
-                Chat_Pause();
-                Chat_offset = PlayVod_TimeToJump;
-                Main_values.vodOffset = PlayVod_TimeToJump;
-                Main_SaveValues();
-                Main_values.vodOffset = 0;
+            Chat_Pause();
+            Chat_offset = PlayVod_TimeToJump;
+            Main_values.vodOffset = PlayVod_TimeToJump;
+            Main_SaveValues();
+            Main_values.vodOffset = 0;
+        } else Chat_offset = ChannelVod_vodOffset;
 
-                PlayVod_TimeToJump = PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : -1;
-                if (PlayVod_quality.indexOf("Auto") !== -1) Android.StartAuto(2, PlayVod_TimeToJump);
-                else Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_TimeToJump);
-            }
-
-        } else {
-            Chat_offset = ChannelVod_vodOffset;
-            if (Main_IsNotBrowser) Android.startVideoOffset(PlayClip_playingUrl, 3,
-                (PlayVod_TimeToJump > 0) ? (PlayVod_TimeToJump * 1000) : -1);
-        }
-
+        if (Main_IsNotBrowser) Android.mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
         if (PlayClip_HasVOD) Chat_Init();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
