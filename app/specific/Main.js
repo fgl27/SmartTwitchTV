@@ -195,39 +195,31 @@ function Main_loadTranslations(language) {
 function Main_initWindows() {
     Main_RestoreValues();
 
-    var device = null,
-        manufacturer = null;
+    if (Main_IsNotBrowser) {
 
-    try {
-        device = Android.getDevice();
-        manufacturer = Android.getManufacturer();
-    } catch (e) {}
+        if (!Main_values.DeviceCheck) {
 
-    if (!Main_values.DeviceCheck && device !== null && manufacturer !== null) {
+            Main_values.DeviceCheck = true;
 
-        Main_values.DeviceCheck = true;
+            if ((Android.getDevice()).toLowerCase().indexOf('shield android tv') !== -1 ||
+                (Android.getManufacturer()).toLowerCase().indexOf('nvidia') !== -1) {
+                //Some devices are very slow and are affected by some app default setting Nvidia shield is not
 
-        if (device.toLowerCase().indexOf('shield android tv') !== -1 ||
-            manufacturer.toLowerCase().indexOf('nvidia') !== -1) {
-            //Some devices are very slow and are affected by some app default setting Nvidia shield is not
+                //bitrate to max possible
+                Settings_value.bitrate_min.defaultValue = 0;
+                Main_setItem('bitrate_min', 1);
+                Android.SetSmallPlayerBandwidth(0);
 
-            //bitrate to max possible
-            Settings_value.bitrate_min.defaultValue = 0;
-            Main_setItem('bitrate_min', 1);
-            Android.SetSmallPlayerBandwidth(0);
-
-            //Enable app animations
-            Settings_value.app_animations.defaultValue = 1;
-            Main_setItem('app_animations', 2);
-            Settings_SetAnimations();
+                //Enable app animations
+                Settings_value.app_animations.defaultValue = 1;
+                Main_setItem('app_animations', 2);
+                Settings_SetAnimations();
+            }
         }
-    }
 
-    //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
-    try {
+        //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
         Main_SupportsAvc1High = Android.misAVC52Supported();
-    } catch (e) {}
-
+    }
     Main_SetStringsMain(true);
 
     Main_GoBefore = Main_values.Main_Go;
@@ -703,9 +695,7 @@ function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
 function Main_checkVersion() {
     if (Main_IsNotBrowser) {
         var device = '';
-        try {
-            device = Android.getDevice();
-        } catch (e) {}
+        device = Android.getDevice();
         Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion + ' Device: ' + device;
         if (Main_needUpdate(Main_IsNotBrowserVersion)) Main_ShowElement('label_update');
     }
