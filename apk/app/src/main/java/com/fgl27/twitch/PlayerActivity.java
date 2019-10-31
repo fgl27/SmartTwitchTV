@@ -646,6 +646,17 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void mseekTo(long position) {
+            myHandler.post(() -> {
+                if (player[mainPlayer] != null) {
+                    player[mainPlayer].seekTo(position);
+                    player[mainPlayer].setPlayWhenReady(true);
+                }
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
             myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1));
         }
