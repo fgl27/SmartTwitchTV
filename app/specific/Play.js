@@ -178,10 +178,7 @@ function Play_PreStart() {
     if (Main_IsNotBrowser) {
         Android.mSetPlayerPosition(Play_PicturePicturePos);
         Android.mSetPlayerSize(Play_PicturePictureSize);
-
-        try {
-            Android.mSetlatency(Play_LowLatency);
-        } catch (e) {}
+        Android.mSetlatency(Play_LowLatency);
     }
 
     Play_SetQuality();
@@ -2227,9 +2224,7 @@ function Play_MakeControls() {
             Play_LowLatency = !Play_LowLatency;
 
             if (Main_IsNotBrowser) {
-                try {
-                    Android.mSetlatency(Play_LowLatency);
-                } catch (e) {}
+                Android.mSetlatency(Play_LowLatency);
 
                 if (PlayExtra_PicturePicture) {
                     Android.ResStartAuto(Play_AutoUrl, 1, 0);

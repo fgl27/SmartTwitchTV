@@ -648,7 +648,12 @@ function PlayVod_jump() {
             Main_values.vodOffset = 0;
         } else Chat_offset = ChannelVod_vodOffset;
 
-        if (Main_IsNotBrowser) Android.mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
+        if (Main_IsNotBrowser) {
+            //TODO after some app updates
+            try {
+                Android.mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
+            } catch (e) {}
+        }
         if (PlayClip_HasVOD) Chat_Init();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
