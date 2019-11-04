@@ -275,7 +275,10 @@ function Main_SetStringsMain(isStarting) {
     Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
     Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
     Main_textContent("dialog_end_game_text", STR_GAME_CONT);
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_ABOUT_INFO_0);
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER +
+        '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
+
+
     Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
     if (isStarting) Settings_SetSettings();
@@ -431,7 +434,6 @@ function Main_showWarningDialog(text) {
 function Main_HideWarningDialog() {
     Main_HideElement('dialog_warning');
 }
-
 
 function Main_AboutDialogUpdateTime() {
     Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay(Date.now() - Main_RunningTime));
@@ -709,6 +711,7 @@ function Main_checkVersion() {
 
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
         STR_BR + '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
+
     Main_RunningTime = Date.now();
 }
 
