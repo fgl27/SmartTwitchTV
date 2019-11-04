@@ -96,6 +96,7 @@ public class PlayerActivity extends Activity {
     public WebView mwebview;
 
     private boolean onCreateReady;
+    private boolean IsonStop;
     public boolean PicturePicture;
 
     public int heightDefault = 0;
@@ -133,6 +134,7 @@ public class PlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
+            IsonStop = false;
             onCreateReady = true;
             setContentView(R.layout.activity_player);
 
@@ -201,6 +203,11 @@ public class PlayerActivity extends Activity {
 
     // The main player initialization function
     private void initializePlayer(int position) {
+        if (IsonStop) {
+            monStop();
+            return;
+        }
+
         boolean isSmall = (mainPlayer != position);
         boolean seeking = (mResumePosition > 0) && (mwhocall > 1);
 
@@ -458,6 +465,7 @@ public class PlayerActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        IsonStop = false;
         //The app was close but shouldCallJavaCheck is true that means the TV enter standby so call java here
         if (player[mainPlayer] == null && shouldCallJavaCheck && mwebview != null && alredystarted) {
             mwebview.loadUrl("javascript:Play_CheckResume()");
@@ -469,8 +477,19 @@ public class PlayerActivity extends Activity {
     @Override
     public void onStop() {
         super.onStop();
+        monStop();
+    }
+
+    private void monStop() {
+        IsonStop = true;
         PlayerCheckHandler[0].removeCallbacksAndMessages(null);
         PlayerCheckHandler[1].removeCallbacksAndMessages(null);
+
+        //Kill playclip if playing or if on end dialog
+        if (player[mainPlayer] != null && mwebview != null && alredystarted && mwhocall == 3) {
+            mwebview.loadUrl("javascript:Play_CheckResume()");
+        }
+
         updateResumePosition(0);
         updateResumePosition(1);
         ClearPlayer(0);

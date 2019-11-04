@@ -819,9 +819,10 @@ function Play_loadChat() {
 
 //called by android PlayerActivity
 function Play_PlayerCheck(mwhocall) { // jshint ignore:line
-    if (mwhocall === 1) {
+    if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
+    else if (mwhocall === 1) {
 
-        if (navigator.onLine && (Play_qualityIndex < Play_getQualitiesCount() - 1)) {
+        if ((Play_qualityIndex < Play_getQualitiesCount() - 1)) {
             Play_qualityIndex++;
             Play_qualityDisplay();
             Play_qualityChanged();
@@ -829,7 +830,7 @@ function Play_PlayerCheck(mwhocall) { // jshint ignore:line
 
     } else if (mwhocall === 2) {
 
-        if (navigator.onLine && (PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
+        if ((PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
             PlayVod_qualityIndex++;
             Main_values.vodOffset = Android.getsavedtime() / 1000;
             PlayVod_qualityDisplay();
@@ -838,7 +839,7 @@ function Play_PlayerCheck(mwhocall) { // jshint ignore:line
 
     } else if (mwhocall === 3) {
 
-        if (navigator.onLine && (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
+        if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
             PlayClip_qualityIndex++;
             PlayClip_qualityDisplay();
             PlayClip_qualityChanged();
@@ -1357,7 +1358,7 @@ function Play_EndText(PlayVodClip) {
                 Play_shutdownStream();
             } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
-                if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) PlayClip_PlayNext();
+                if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced) && !document.hidden) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
             }
 
