@@ -892,6 +892,22 @@ function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
     return Play_timeMs((new Date().getTime()) - (new Date(time).getTime()));
 }
 
+function Play_timeDay(time) {
+    var minutes, hours, days;
+
+    time = Math.floor(parseInt(time / 1000) / 60);
+    minutes = time % 60;
+
+    time = Math.floor(time / 60);
+    hours = time % 24;
+
+    time = Math.floor(time / 24);
+    days = time;
+
+    //final time 00:00 or 00:00:00
+    return days + "d " + hours + "h " + minutes + "m";
+}
+
 function Play_shutdownStream() {
     if (Play_isOn) {
         Play_PreshutdownStream(true);
