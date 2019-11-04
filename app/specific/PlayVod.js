@@ -272,7 +272,8 @@ function PlayVod_loadDataRequest() {
         PlayVod_autoUrl = theUrl;
     }
 
-    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError, false);
+    BasehttpGet(theUrl, Play_loadingDataTimeout,
+        PlayVod_state === Play_STATE_LOADING_TOKEN ? 2 : 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError);
 }
 
 function PlayVod_loadDataError() {

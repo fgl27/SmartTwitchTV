@@ -540,7 +540,7 @@ function Play_loadDataRequest() {
     var xmlHttp;
     if (Main_IsNotBrowser) {
 
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 1, null);
+        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, state ? 2 : 1, null);
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             Play_loadDataError();
@@ -566,6 +566,8 @@ function Play_loadDataRequest() {
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        if (state)
+            xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
 
         xmlHttp.ontimeout = function() {};
 
