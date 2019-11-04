@@ -309,5 +309,5 @@ function en_USLang() {
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
-    STR_RUNNINGTIME = "App running since:";
+    STR_RUNNINGTIME = "App running for:";
 }
