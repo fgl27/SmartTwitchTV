@@ -81,6 +81,7 @@ var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
 var Main_FirstLoad = false;
+var Main_RunningTime = 0;
 
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
@@ -431,8 +432,14 @@ function Main_HideWarningDialog() {
     Main_HideElement('dialog_warning');
 }
 
+
+function Main_AboutDialogUpdateTime() {
+    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay(Date.now() - Main_RunningTime));
+}
+
 function Main_showAboutDialog() {
     Main_HideControlsDialog();
+    Main_AboutDialogUpdateTime();
     Main_ShowElement('dialog_about');
 }
 
@@ -700,7 +707,9 @@ function Main_checkVersion() {
         if (Main_needUpdate(Main_IsNotBrowserVersion)) Main_ShowElement('label_update');
     }
 
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag + STR_ABOUT_INFO_0);
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
+        STR_BR + '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
+    Main_RunningTime = Date.now();
 }
 
 function Main_needUpdate(version) {
@@ -936,6 +945,7 @@ function Main_getclock() {
 function Main_updateclock() {
     if (!document.hidden) {
         Main_textContent('label_clock', Main_getclock());
+        if (Main_RunningTime) Main_AboutDialogUpdateTime();
         Main_randomimg = '?' + Math.random();
     }
 }
