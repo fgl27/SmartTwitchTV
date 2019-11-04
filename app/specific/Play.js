@@ -901,11 +901,10 @@ function Play_timeDay(time) {
     time = Math.floor(time / 60);
     hours = time % 24;
 
-    time = Math.floor(time / 24);
-    days = time;
+    days = Math.floor(time / 24);
 
-    //final time 00:00 or 00:00:00
-    return days + "d " + hours + "h " + minutes + "m";
+    //final time 0m or 23h 59m or 1d 23h 59m
+    return (days ? days + 'd ' : '') + (hours ? hours + 'h ' : '') + minutes + "m";
 }
 
 function Play_shutdownStream() {
