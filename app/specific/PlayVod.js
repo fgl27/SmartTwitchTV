@@ -85,7 +85,7 @@ function PlayVod_Start() {
     } else {
         PlayVod_updateStreamerInfoValues();
         Main_innerHTML("stream_info_title", ChannelVod_title);
-        Main_textContent("stream_info_game", '');
+        Main_textContent("stream_info_game", ChannelVod_game);
         Main_innerHTML("stream_live_time", ChannelVod_createdAt + ',' + STR_SPACE + ChannelVod_views);
         Main_textContent("stream_live_viewers", '');
         Main_textContent("stream_watching_time", '');

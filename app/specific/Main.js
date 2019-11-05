@@ -845,6 +845,7 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     Main_values.Main_selectedChannelDisplayname = Main_values.ChannelVod_vodId[1];
     ChannelVod_createdAt = Main_values.ChannelVod_vodId[2];
     ChannelVod_title = Main_values.ChannelVod_vodId[3];
+    ChannelVod_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_STARTED + STR_PLAYING + Main_values.Play_gameSelected : "");
     ChannelVod_views = Main_values.ChannelVod_vodId[4];
 
     Main_values.Main_selectedChannel_id = Main_values.ChannelVod_vodId[13];

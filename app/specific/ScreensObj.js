@@ -15,6 +15,7 @@ var ChannelVod_createdAt = '';
 var ChannelVod_views = '';
 var ChannelVod_Duration = '';
 var ChannelVod_title = '';
+var ChannelVod_game = '';
 
 var Vod_DoAnimateThumb = 1;
 
@@ -171,10 +172,11 @@ var Base_Vod_obj = {
             this.row.appendChild(
                 Screens_createCellVod(
                     this.row_id + '_' + this.coloumn_id,
-                    this.ids, [thubnail.replace("{width}x{height}", Main_VideoSize),
+                    this.ids,
+                    [thubnail.replace("{width}x{height}", Main_VideoSize),
                     cell.channel.display_name,
                     STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
-                    twemoji.parse(cell.title) + STR_BR + (cell.game !== "" && cell.game !== null ? STR_STARTED + STR_PLAYING + cell.game : ""),
+                    twemoji.parse(cell.title),
                     Main_addCommas(cell.views) + STR_VIEWS,
                     cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language) : '',
                     cell.length,
@@ -187,7 +189,7 @@ var Base_Vod_obj = {
                     cell.channel._id,
                     cell.channel.logo,
                     cell.channel.partner
-                ]));
+                    ]));
 
             this.coloumn_id++;
         }
@@ -519,13 +521,17 @@ var Base_Live_obj = {
 
             this.row.appendChild(
                 Screens_createCellLive(
-                    this.row_id + '_' + this.coloumn_id, [cell.channel.name, cell.channel._id, Main_is_rerun(cell.stream_type)], this.ids, [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
+                    this.row_id + '_' + this.coloumn_id,
+                    [cell.channel.name, cell.channel._id, Main_is_rerun(cell.stream_type)],
+                    this.ids,
+                    [cell.preview.template.replace("{width}x{height}", Main_VideoSize),
                     cell.channel.display_name,
-                    cell.channel.status, cell.game,
+                    cell.channel.status,
+                    cell.game,
                     STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE + STR_FOR + Main_addCommas(cell.viewers) +
                     STR_SPACE + STR_VIEWER,
                     Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language)
-                ]));
+                    ]));
 
             this.coloumn_id++;
         }
@@ -737,12 +743,15 @@ function ScreensObj_InitUserHost() {
 
             this.row.appendChild(
                 Screens_createCellLive(
-                    this.row_id + '_' + this.coloumn_id, [cell.target.channel.name, cell.target._id, false], this.ids, [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
+                    this.row_id + '_' + this.coloumn_id,
+                    [cell.target.channel.name, cell.target._id, false],
+                    this.ids,
+                    [cell.target.preview_urls.template.replace("{width}x{height}", Main_VideoSize),
                     cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
                     cell.target.title, cell.target.meta_game,
                     STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
                     Main_addCommas(cell.target.viewers) + STR_SPACE + STR_VIEWER, ''
-                ]));
+                    ]));
 
             this.coloumn_id++;
         }
@@ -903,7 +912,8 @@ var Base_Clip_obj = {
             this.row.appendChild(
                 Screens_createCellClip(
                     this.row_id + '_' + this.coloumn_id,
-                    this.ids, [cell.slug,
+                    this.ids,
+                    [cell.slug,
                     cell.duration,
                     cell.game,
                     cell.broadcaster.name,
@@ -917,7 +927,7 @@ var Base_Clip_obj = {
                     STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),
                     Main_addCommas(cell.views) + STR_VIEWS,
                     cell.thumbnails.medium
-                ]));
+                    ]));
 
             this.coloumn_id++;
         }
