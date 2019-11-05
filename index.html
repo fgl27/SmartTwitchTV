@@ -96,12 +96,12 @@
         div.screen_holder_games {
             width: 100%;
             position: absolute;
-            top: 7.6%;
+            top: 6.9%;
             transition: top 0.35s ease-in-out;
         }
 
         div.screen_holder_switch {
-            top: 4.1%;
+            top: 2.6%;
         }
 
         div.screen_holder_games {
@@ -152,7 +152,7 @@
             position: relative;
             width: 30%;
             display: inline-block;
-            transform: translateY(15%);
+            transform: translateY(25%);
         }
 
         div.icon_feed_refresh {
@@ -184,7 +184,7 @@
 
         div.stream_thumbnail_player_feed {
             /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 78%;
+            padding-bottom: 86%;
             background-repeat: no-repeat;
             background: #000000;
             color: #FFFFFF;
@@ -230,7 +230,7 @@
 
         div.stream_thumbnail_live {
             /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 79%;
+            padding-bottom: 82%;
             background-color: #000000;
             color: #FFFFFF;
         }
@@ -308,9 +308,9 @@
             position: absolute;
             right: 0;
             left: 0;
-            bottom: 0.15em;
             padding: 0.5%;
             font-size: 95%;
+            margin-top: 0.1em;
         }
 
         div.stream_thumbnail_game_text_holder {
@@ -328,6 +328,7 @@
         }
 
         .stream_info_live,
+        .stream_info_live_title,
         .stream_info_channel_name,
         .stream_info_user_name,
         .stream_info_user_title,
@@ -382,6 +383,14 @@
             overflow: hidden;
             font-family: 'Roboto';
             font-size: 75%;
+        }
+
+        .stream_info_live_title {
+            word-wrap: break-word;
+            max-height: 2.35em;
+            font-size: 72%;
+            overflow: hidden;
+            white-space: normal;
         }
 
         div.stream_thumbnail_channel {
@@ -486,13 +495,14 @@
         }
 
         div.stream_channel_fallow_game {
+            text-align: center;
+            font-size: 71%;
+            line-height: 0.5em;
             width: 100%;
-            text-align: left;
             word-wrap: break-word;
             color: #FFFFFF;
-            font-size: 85%;
             font-family: 'Roboto-Bold';
-            text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
+            transform: translateY(65%);
         }
 
         div.stream_channel_fallow_game,
@@ -504,12 +514,6 @@
             font-size: 90%;
             color: #FFFFFF;
             text-shadow: 0 0.025em 0 #000000, -0.025em 0 0 #000000, 0 0.0375em 0 #777777, 0 0.055em 0 #666666, 0 0.07em 0 #555455, -0.03em -0.03em 0 #000000, 0.03em -0.03em 0 #000000, -0.03em 0.08em 0 #000000, 0.03em 0.08em 0 #000000, -0.04em 0.03em 0 #000000, 0.04em 0.03em 0 #000000, 0 0.1em 0 #000000, 0 -0.04em 0 #000000;
-        }
-
-        div.stream_channel_fallow_game {
-            text-align: center;
-            padding-top: 0.5%;
-            font-size: 76%;
         }
 
         .stream_channel_fallow_icon {
@@ -548,7 +552,7 @@
             z-index: 3;
             position: absolute;
             bottom: 0.1%;
-            height: 32%;
+            height: 35%;
             width: 100%;
             overflow: hidden;
             transition: bottom 0.35s ease-in-out;
@@ -820,11 +824,19 @@
             text-overflow: ellipsis;
         }
 
+        div.side_panel_feed_thumb_title_text {
+            word-wrap: break-word;
+            max-height: 2.5em;
+            font-family: 'Roboto-Bold';
+            font-size: 97%;
+            overflow: hidden;
+        }
+
         div.side_panel_feed_thumb {
             box-sizing: border-box;
             position: absolute;
             width: 60%;
-            height: 79%;
+            height: 83%;
             top: 16%;
             left: 32%;
             background-color: #000000;
@@ -1120,7 +1132,7 @@
             text-align: center;
             width: 100%;
             color: #FFFFFF;
-            font-size: 135%;
+            font-size: 130%;
             font-family: 'Roboto-Bold';
             position: absolute;
         }
@@ -1130,7 +1142,7 @@
             margin-left: 5%;
             width: 94.5%;
             background: rgba(0, 0, 0, 1);
-            height: 4.5vh;
+            height: 4.25vh;
         }
 
         div.topbar_dim {
@@ -1589,10 +1601,9 @@
             display: inline-block;
             width: 78%;
             padding-left: 3%;
-            padding-top: 1.75%;
         }
 
-        div.notification_title,
+        div.notification_name,
         div.notification_game,
         div.side_panel_new_title,
         div.side_panel_new_game {
@@ -1610,13 +1621,24 @@
             font-size: 68%;
         }
 
+        div.notification_name {
+            font-size: 92%;
+        }
+
         div.notification_title {
-            font-size: 94%;
+            width: 100%;
+            text-align: left;
+            font-family: 'Roboto-Bold';
+            overflow: hidden;
+            font-size: 65%;
+            word-wrap: break-word;
+            max-height: 2.35em;
+            white-space: normal;
         }
 
         div.notification_game {
             font-family: 'Roboto';
-            font-size: 70%;
+            font-size: 68%;
         }
 
         .side_panel_feed_img_focus {
@@ -1810,7 +1832,7 @@
             <div id="SearchChannels_scroll" class="screen_holder_channel hide">
                 <div id="stream_table_search_channel" class="streams_div"></div>
             </div>
-            <div id="channel_content_scroll" class="screen_holder hide">
+            <div id="channel_content_scroll" class="screen_holder_switch hide">
                 <div id="stream_table_channel_content" class="streams_div">
                     <div>
                         <div id="channel_content_celly_0" class="stream_cell_period">
@@ -2265,8 +2287,8 @@
                 <div>
                     <div id="user_feed_notify_img_holder" class="side_panel_iner_div1"></div>
                     <div class="notification_holder">
-                        <div id="user_feed_notify_name" class="notification_title"></div>
-                        <div id="user_feed_notify_title" class="notification_game"></div>
+                        <div id="user_feed_notify_name" class="notification_name"></div>
+                        <div id="user_feed_notify_title" class="notification_title"></div>
                         <div id="user_feed_notify_game" class="notification_game"></div>
                     </div>
                 </div>
@@ -2294,7 +2316,7 @@
                     style="width: 75%; display: inline-block; font-size: 110%;"></div>
                 <div id="feed_thum_quality" class="side_panel_feed_thumb_text"
                     style="width: 24%; float: right; text-align: right;"></div>
-                <div id="feed_thum_title" class="side_panel_feed_thumb_text"></div>
+                <div id="feed_thum_title" class="side_panel_feed_thumb_title_text"></div>
                 <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
                 <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
             </div>

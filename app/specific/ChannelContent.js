@@ -249,7 +249,7 @@ function ChannelContent_createCell(channel_name, channel_id, preview_thumbnail, 
         ';"></i> ' + channel_display_name + '</div><div class="stream_info_live" style="width:' +
         (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         (ishosting ? '' : quality) + '</div></div>' +
-        '<div class="stream_info_live">' + stream_title + '</div>' +
+        '<div class="stream_info_live_title">' + stream_title + '</div>' +
         '<div id="channel_content_cell0_5" class="stream_info_live">' + (stream_game !== "" ? STR_PLAYING + stream_game : "") +
         '</div>' + '<div class="stream_info_live">' + viwers + '</div></div>');
 }
