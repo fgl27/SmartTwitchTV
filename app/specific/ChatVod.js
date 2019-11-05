@@ -150,7 +150,6 @@ function Chat_loadChatRequest(id) {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 if (Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
-                return;
             } else {
                 if (Chat_Id === id) Chat_loadChatError(id);
             }
@@ -265,7 +264,7 @@ function Chat_Clear() {
 function Main_Addline(id) {
     var elem;
     if (Chat_Position < (Chat_Messages.length - 1)) {
-        for (var i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
+        for (var i = Chat_Position; i < Chat_Messages.length; i++ , Chat_Position++) {
             if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
                 elem = document.createElement('div');
                 elem.className = 'chat_line';
@@ -296,9 +295,10 @@ function Main_Addline(id) {
             elem.className = 'chat_line';
             elem.innerHTML = div;
 
-            Chat_div[0].appendChild(elem);
+            if (!Chat_hasEnded) Chat_div[0].appendChild(elem);
 
             Chat_hasEnded = true;
+            window.clearInterval(Chat_addlinesId);
         }
     }
 }
@@ -322,7 +322,6 @@ function Chat_loadChatNextRequest(id) {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
-                return;
             } else {
                 if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextError(id);
             }
