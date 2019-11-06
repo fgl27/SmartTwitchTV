@@ -550,14 +550,12 @@ function Play_loadDataRequest() {
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
             if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
-        } else if (xmlHttp.status === 403) { //forbidden access
-            if (Play_selectedChannel_id_Old !== null) Play_RestorePlayData();
-            else if (!PlayExtra_PicturePicture) Play_ForbiddenLive();
-            else Play_CloseBigAndSwich();
-        } else if (xmlHttp.status === 404) { //off line
-            if (Play_selectedChannel_id_Old !== null) Play_RestorePlayData();
-            else if (!PlayExtra_PicturePicture) Play_CheckHostStart();
-            else Play_CloseBigAndSwich();
+        } else if (xmlHttp.status === 403 || xmlHttp.status === 404 ||
+            xmlHttp.status === 410) { //forbidden access
+            //404 = off line
+            //403 = forbidden access
+            //410 = api v3 is gone use v5 bug
+            Play_loadDataErrorFinish(xmlHttp.status === 410, xmlHttp.status === 403);
         } else {
             Play_loadDataError();
         }
@@ -611,15 +609,20 @@ function Play_loadDataError() {
             if (Play_RestoreFromResume) window.setTimeout(Play_loadDataRequest, 500);
             else Play_loadDataRequest();
         } else {
-            if (Main_IsNotBrowser) {
-
-                if (Play_selectedChannel_id_Old !== null) Play_RestorePlayData();
-                else if (!PlayExtra_PicturePicture) Play_CheckHostStart();
-                else Play_CloseBigAndSwich();
-
-            } else Play_loadDataSuccessFake();
+            if (Main_IsNotBrowser) Play_loadDataErrorFinish();
+            else Play_loadDataSuccessFake();
         }
     }
+}
+
+function Play_loadDataErrorFinish(error_410, Isforbiden) {
+    if (Play_selectedChannel_id_Old !== null) Play_RestorePlayData(error_410);
+    else if (!PlayExtra_PicturePicture) {
+
+        if (Isforbiden) Play_ForbiddenLive();
+        else Play_CheckHostStart(error_410);
+
+    } else Play_CloseBigAndSwich(error_410);
 }
 
 function Play_ForbiddenLive() {
@@ -1636,7 +1639,9 @@ function Play_PlayEndStart(PlayVodClip) {
     Play_showEndDialog();
 }
 
-function Play_CheckHostStart() {
+function Play_CheckHostStart(error_410) {
+    if (error_410) Play_showWarningDialog(STR_410_ERROR);
+
     Play_showBufferDialog();
     Play_state = -1;
     Play_loadingDataTry = 0;
@@ -1723,7 +1728,7 @@ function Play_KeyReturn(is_vod) {
     }
 }
 
-function Play_CloseBigAndSwich() {
+function Play_CloseBigAndSwich(error_410) {
     Play_HideBufferDialog();
     Play_state = Play_STATE_PLAYING;
 
@@ -1732,7 +1737,9 @@ function Play_CloseBigAndSwich() {
         Play_SetFullScreen(Play_isFullScreen);
     }
 
-    Play_showWarningDialog(Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+    Play_showWarningDialog(error_410 ? STR_410_ERROR :
+        Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+
     window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 2500);
@@ -1794,11 +1801,13 @@ function Play_SavePlayData() {
     Play_SupportsSource_Old = Play_SupportsSource;
 }
 
-function Play_RestorePlayData() {
+function Play_RestorePlayData(error_410) {
     Play_HideBufferDialog();
     Play_state = Play_STATE_PLAYING;
 
-    Play_showWarningDialog(Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+    Play_showWarningDialog(error_410 ? STR_410_ERROR :
+        Main_values.Play_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+
     window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 2000);

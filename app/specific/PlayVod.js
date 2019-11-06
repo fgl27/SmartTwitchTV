@@ -256,9 +256,10 @@ function PlayVod_loadData() {
 var PlayVod_autoUrl;
 
 function PlayVod_loadDataRequest() {
-    var theUrl;
+    var theUrl,
+        state = PlayVod_state === Play_STATE_LOADING_TOKEN;
 
-    if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
+    if (state) {
         theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_' +
             (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
@@ -272,8 +273,54 @@ function PlayVod_loadDataRequest() {
         PlayVod_autoUrl = theUrl;
     }
 
-    BasehttpGet(theUrl, Play_loadingDataTimeout,
-        PlayVod_state === Play_STATE_LOADING_TOKEN ? 2 : 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError);
+    // BasehttpGet(theUrl, Play_loadingDataTimeout,
+    //     PlayVod_state === Play_STATE_LOADING_TOKEN ? 2 : 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError);
+
+    var xmlHttp;
+    if (Main_IsNotBrowser) {
+
+        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, state ? 2 : 1, null);
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+        else {
+            PlayVod_loadDataError();
+            return;
+        }
+        PlayVod_loadDataEnd(xmlHttp);
+
+    } else {
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = Play_loadingDataTimeout;
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        if (state)
+            xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                PlayVod_loadDataEnd(xmlHttp);
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+}
+
+function PlayVod_loadDataEnd(xmlHttp) {
+    if (xmlHttp.status === 200) PlayVod_loadDataSuccess(xmlHttp.responseText);
+    else if (xmlHttp.status === 410) {
+        //410 = api v3 is gone use v5 bug
+        PlayVod_410Error();
+    } else PlayVod_loadDataError();
+}
+
+function PlayVod_410Error() {
+    Play_HideBufferDialog();
+    Play_showWarningDialog(STR_410_ERROR);
+    window.setTimeout(function() {
+        if (PlayVod_isOn) PlayVod_shutdownStream();
+    }, 3000);
 }
 
 function PlayVod_loadDataError() {
