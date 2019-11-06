@@ -184,7 +184,7 @@
 
         div.stream_thumbnail_player_feed {
             /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 86%;
+            padding-bottom: 84.5%;
             background-repeat: no-repeat;
             background: #000000;
             color: #FFFFFF;
@@ -230,7 +230,7 @@
 
         div.stream_thumbnail_live {
             /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 82%;
+            padding-bottom: 80.5%;
             background-color: #000000;
             color: #FFFFFF;
         }
@@ -313,8 +313,20 @@
             margin-top: 0.1em;
         }
 
+        div.stream_thumbnail_live_text_holder {
+            height: 12.5vh;
+        }
+
+        .stream_spam_text_holder {
+            display: inline-block;
+            width: 100%;
+            top: 50%;
+            position: relative;
+            transform: translateY(-50%);
+        }
+
         div.stream_thumbnail_game_text_holder {
-            bottom: 0;
+            height: 6.5vh;
         }
 
         div.stream_thumbnail_channel_text_holder {
@@ -387,7 +399,7 @@
 
         .stream_info_live_title {
             word-wrap: break-word;
-            max-height: 2.35em;
+            max-height: 2.4em;
             font-size: 72%;
             overflow: hidden;
             white-space: normal;
@@ -470,6 +482,7 @@
             left: 0;
             padding: 0.5%;
             font-size: 90%;
+            height: 9.5vh;
         }
 
         div.stream_text_channel {
@@ -818,6 +831,15 @@
             color: #FFFFFF;
         }
 
+        div.side_panel_feed_thumb_text_holder {
+            width: 98%;
+            height: 24%;
+            bottom: 0;
+            color: #FFFFFF;
+            font-size: 110%;
+            padding: 1%;
+        }
+
         div.side_panel_feed_thumb_text {
             overflow: hidden;
             white-space: nowrap;
@@ -836,7 +858,7 @@
             box-sizing: border-box;
             position: absolute;
             width: 60%;
-            height: 83%;
+            height: 82%;
             top: 16%;
             left: 32%;
             background-color: #000000;
@@ -2311,14 +2333,16 @@
         <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">
             <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt=""
                     src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="></div>
-            <div style="width: 96%; height: 20%; bottom:0; color: #FFFFFF; font-size: 110%; padding: 1%;">
-                <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold"
-                    style="width: 75%; display: inline-block; font-size: 110%;"></div>
-                <div id="feed_thum_quality" class="side_panel_feed_thumb_text"
-                    style="width: 24%; float: right; text-align: right;"></div>
-                <div id="feed_thum_title" class="side_panel_feed_thumb_title_text"></div>
-                <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
-                <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
+            <div class="side_panel_feed_thumb_text_holder">
+                <span class="stream_spam_text_holder">
+                    <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold"
+                        style="width: 75%; display: inline-block; font-size: 110%;"></div>
+                    <div id="feed_thum_quality" class="side_panel_feed_thumb_text"
+                        style="width: 24%; float: right; text-align: right;"></div>
+                    <div id="feed_thum_title" class="side_panel_feed_thumb_title_text"></div>
+                    <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
+                    <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
+                </span>
             </div>
         </div>
         <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide"
