@@ -431,6 +431,12 @@ function Play_partnerIcon(name, partner, islive, lang) {
 }
 
 function Play_updateStreamInfoStartValues(response) {
+    if (AddUser_UserIsSet()) {
+        AddCode_PlayRequest = true;
+        AddCode_Channel_id = Main_values.Play_selectedChannel_id;
+        AddCode_CheckFallow();
+    } else Play_hideFallow();
+
     response = JSON.parse(response);
     if (response.stream !== null) {
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
@@ -449,11 +455,6 @@ function Play_updateStreamInfoStartValues(response) {
         Play_LoadLogoSucess = true;
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Play_selectedChannelLogo);
         Play_created = response.stream.created_at;
-        if (AddUser_UserIsSet()) {
-            AddCode_PlayRequest = true;
-            AddCode_Channel_id = Main_values.Play_selectedChannel_id;
-            AddCode_CheckFallow();
-        } else Play_hideFallow();
     }
 }
 
@@ -936,6 +937,12 @@ function Play_PreshutdownStream(closePlayer) {
 }
 
 function Play_exitMain() {
+
+    if (AddUser_UserIsSet()) {
+        AddCode_IsFallowing = false;
+        Play_setFallow();
+    } else Play_hideFallow();
+
     PlayVod_ProgresBarrUpdate(0, 0);
     Main_ShowElement('scene1');
     Main_HideElement('scene2');
