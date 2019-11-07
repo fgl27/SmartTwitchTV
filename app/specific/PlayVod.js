@@ -261,7 +261,7 @@ function PlayVod_loadDataRequest() {
 
     if (state) {
         theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+            Main_TwithcV5Flag + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
@@ -272,9 +272,6 @@ function PlayVod_loadDataRequest() {
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
         PlayVod_autoUrl = theUrl;
     }
-
-    // BasehttpGet(theUrl, Play_loadingDataTimeout,
-    //     PlayVod_state === Play_STATE_LOADING_TOKEN ? 2 : 1, null, PlayVod_loadDataSuccess, PlayVod_loadDataError);
 
     var xmlHttp;
     if (Main_IsNotBrowser) {

@@ -338,11 +338,12 @@ function Play_CheckResumeForced(isPicturePicture) { // jshint ignore:line
 }
 
 function Play_RefreshAutoRequest(UseAndroid) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token?platform=_' +
+    var theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
+        '/access_token?platform=_' + Main_TwithcV5Flag +
         (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
-    var xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
+    var xmlHttp = Android.mreadUrl(theUrl, 3000, 2, null);
 
     if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
     else Play_RefreshAutoError(UseAndroid);
@@ -525,7 +526,8 @@ function Play_loadDataRequest() {
     var theUrl, state = Play_state === Play_STATE_LOADING_TOKEN;
 
     if (state) {
-        theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel + '/access_token?platform=_' +
+        theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
+            '/access_token?platform=_' + Main_TwithcV5Flag +
             (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
