@@ -48,6 +48,7 @@ public final class Tools {
     //Same values as in the js counterpart
     private static final String CLIENTIDHEADER = "Client-ID";
     private static final String CLIENTID = "5seja5ptej058mxqy7gh5tcudjqtm9";
+    private static final String BackupclientId = "kimne78kx3ncx6brgo4mv6wki5h1ko";
     private static final String ACCEPTHEADER = "Accept";
     private static final String TWITHCV5JSON = "application/vnd.twitchtv.v5+json";
     private static final String AUTHORIZATION = "Authorization";
@@ -58,9 +59,10 @@ public final class Tools {
 
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
-    public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
+    public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post, boolean backupid) {
         HttpURLConnection urlConnection = null;
         HEADERS[2][1] = access_token;
+        HEADERS[0][1] = backupid ? BackupclientId : CLIENTID;
 
         try {
             urlConnection = (HttpURLConnection) new URL(urlString).openConnection();

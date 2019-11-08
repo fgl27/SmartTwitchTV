@@ -261,7 +261,7 @@ function PlayVod_loadDataRequest() {
 
     if (state) {
         theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_' +
-            Main_TwithcV5Flag + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+            Main_TwithcV5Flag + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
@@ -276,7 +276,9 @@ function PlayVod_loadDataRequest() {
     var xmlHttp;
     if (Main_IsNotBrowser) {
 
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, state ? 2 : 1, null);
+        try {
+            xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 1, null, false, Play_410ERROR);
+        } catch (e) {}
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             PlayVod_loadDataError();
@@ -305,19 +307,13 @@ function PlayVod_loadDataRequest() {
 }
 
 function PlayVod_loadDataEnd(xmlHttp) {
-    if (xmlHttp.status === 200) PlayVod_loadDataSuccess(xmlHttp.responseText);
-    else if (xmlHttp.status === 410) {
-        //410 = api v3 is gone use v5 bug
-        PlayVod_410Error();
-    } else PlayVod_loadDataError();
-}
-
-function PlayVod_410Error() {
-    Play_HideBufferDialog();
-    Play_showWarningDialog(STR_410_ERROR);
-    window.setTimeout(function() {
-        if (PlayVod_isOn) PlayVod_shutdownStream();
-    }, 3000);
+    if (xmlHttp.status === 200) {
+        PlayVod_loadDataSuccess(xmlHttp.responseText);
+        Play_410ERROR = false;
+    } else {
+        if (xmlHttp.status === 410) Play_410ERROR = true;
+        PlayVod_loadDataError();
+    }
 }
 
 function PlayVod_loadDataError() {

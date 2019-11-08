@@ -864,13 +864,19 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, false);
+            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, false, false);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
-            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, post);
+            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, post, false);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post, boolean backupid) {
+            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token, post, backupid);
         }
 
         @SuppressWarnings("unused")//called by JS
