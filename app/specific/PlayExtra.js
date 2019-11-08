@@ -296,7 +296,7 @@ function PlayExtra_loadDataRequest() {
 
     if (state) {
         theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
@@ -309,7 +309,9 @@ function PlayExtra_loadDataRequest() {
 
     var xmlHttp;
     if (Main_IsNotBrowser) {
-        xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
+        try {
+            xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null, false, Play_410ERROR);
+        } catch (e) {}
 
         if (xmlHttp) PlayExtra_loadDataSuccessreadyState(JSON.parse(xmlHttp));
         else Play_loadDataError();
@@ -334,11 +336,13 @@ function PlayExtra_loadDataSuccessreadyState(xmlHttp) {
     if (xmlHttp.status === 200) {
         Play_loadingDataTry = 0;
         PlayExtra_loadDataSuccess(xmlHttp.responseText);
+        Play_410ERROR = false;
     } else if (xmlHttp.status === 403) { //forbidden access
         PlayExtra_loadDataFail(STR_FORBIDDEN);
     } else if (xmlHttp.status === 404) { //off line
         PlayExtra_loadDataFail(PlayExtra_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
     } else {
+        if (xmlHttp.status === 410) Play_410ERROR = true;
         PlayExtra_loadDataError();
     }
 }
@@ -370,10 +374,14 @@ function PlayExtra_loadDataFail(Reason) {
 
 function PlayExtra_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_' +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
-    var xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
+    var xmlHttp;
+
+    try {
+        xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null, false, Play_410ERROR);
+    } catch (e) {}
 
     if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
     else PlayExtra_RefreshAutoError(UseAndroid);
@@ -395,7 +403,11 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
         if (UseAndroid) Android.ResStartAuto2(theUrl);
         else Android.SetAuto2(theUrl);
 
-    } else PlayExtra_RefreshAutoError(UseAndroid);
+        Play_410ERROR = false;
+    } else {
+        if (xmlHttp.status === 410) Play_410ERROR = true;
+        PlayExtra_RefreshAutoError(UseAndroid);
+    }
 }
 
 function PlayExtra_RefreshAutoError(UseAndroid) {

@@ -339,11 +339,15 @@ function Play_CheckResumeForced(isPicturePicture) { // jshint ignore:line
 
 function Play_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
-        '/access_token?platform=_' + Main_TwithcV5Flag +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+        '/access_token?platform=_' +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
-    var xmlHttp = Android.mreadUrl(theUrl, 3000, 2, null);
+    var xmlHttp;
+
+    try {
+        xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null, false, Play_410ERROR);
+    } catch (e) {}
 
     if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
     else Play_RefreshAutoError(UseAndroid);
@@ -366,7 +370,11 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
         if (UseAndroid) Android.ResStartAuto(theUrl, 1, 0);
         else Android.SetAuto(theUrl);
 
-    } else Play_RefreshAutoError(UseAndroid);
+        Play_410ERROR = false;
+    } else {
+        if (xmlHttp.status === 410) Play_410ERROR = true;
+        Play_RefreshAutoError(UseAndroid);
+    }
 }
 
 function Play_RefreshAutoError(UseAndroid) {
