@@ -309,7 +309,10 @@ function PlayExtra_loadDataRequest() {
 
     var xmlHttp;
     if (Main_IsNotBrowser) {
-        xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
+        try {
+            if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
+            else xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null, false);
+        } catch (e) {}
 
         if (xmlHttp) PlayExtra_loadDataSuccessreadyState(JSON.parse(xmlHttp));
         else Play_loadDataError();
@@ -338,9 +341,7 @@ function PlayExtra_loadDataSuccessreadyState(xmlHttp) {
         PlayExtra_loadDataFail(STR_FORBIDDEN);
     } else if (xmlHttp.status === 404) { //off line
         PlayExtra_loadDataFail(PlayExtra_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
-    } else {
-        PlayExtra_loadDataError();
-    }
+    } else PlayExtra_loadDataError();
 }
 
 function PlayExtra_loadDataError() {
@@ -373,7 +374,11 @@ function PlayExtra_RefreshAutoRequest(UseAndroid) {
         (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
-    var xmlHttp = Android.mreadUrl(theUrl, 3000, 1, null);
+    var xmlHttp;
+
+    try {
+        xmlHttp = Android.mreadUrlHLS(theUrl);
+    } catch (e) {}
 
     if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
     else PlayExtra_RefreshAutoError(UseAndroid);

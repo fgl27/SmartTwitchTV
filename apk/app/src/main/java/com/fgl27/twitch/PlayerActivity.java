@@ -875,6 +875,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public String mreadUrlHLS(String url) {
+            return Tools.readUrlHLS(mwebContext, url);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public String getManufacturer() {
             return android.os.Build.MANUFACTURER;
         }
