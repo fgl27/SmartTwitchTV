@@ -339,9 +339,7 @@ function Play_CheckResumeForced(isPicturePicture) { // jshint ignore:line
 
 function Play_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
-        '/access_token?platform=_' +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
-            AddUser_UsernameArray[0].access_token : '');
+        '/access_token?platform=_';
 
     var xmlHttp;
 
@@ -531,9 +529,7 @@ function Play_loadDataRequest() {
 
     if (state) {
         theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
-            '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
-                AddUser_UsernameArray[0].access_token : '');
+            '/access_token?platform=_';
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +

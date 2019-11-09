@@ -295,9 +295,7 @@ function PlayExtra_loadDataRequest() {
     var theUrl, state = PlayExtra_state === Play_STATE_LOADING_TOKEN;
 
     if (state) {
-        theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
-                AddUser_UsernameArray[0].access_token : '');
+        theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_';
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
@@ -370,9 +368,7 @@ function PlayExtra_loadDataFail(Reason) {
 }
 
 function PlayExtra_RefreshAutoRequest(UseAndroid) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_' +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
-            AddUser_UsernameArray[0].access_token : '');
+    var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_';
 
     var xmlHttp;
 
