@@ -339,11 +339,15 @@ function Play_CheckResumeForced(isPicturePicture) { // jshint ignore:line
 
 function Play_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
-        '/access_token?platform=_' + Main_TwithcV5Flag +
+        '/access_token?platform=_' +
         (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
-    var xmlHttp = Android.mreadUrl(theUrl, 3000, 2, null);
+    var xmlHttp;
+
+    try {
+        xmlHttp = Android.mreadUrlHLS(theUrl);
+    } catch (e) {}
 
     if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
     else Play_RefreshAutoError(UseAndroid);
@@ -527,7 +531,7 @@ function Play_loadDataRequest() {
 
     if (state) {
         theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
-            '/access_token?platform=_' + Main_TwithcV5Flag +
+            '/access_token?platform=_' +
             (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
@@ -543,7 +547,11 @@ function Play_loadDataRequest() {
     var xmlHttp;
     if (Main_IsNotBrowser) {
 
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, state ? 2 : 1, null);
+        try {
+            if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
+            else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null, false);
+        } catch (e) {}
+
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
             Play_loadDataError();
@@ -553,7 +561,7 @@ function Play_loadDataRequest() {
             Play_loadingDataTry = 0;
             if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
         } else if (xmlHttp.status === 403 || xmlHttp.status === 404 ||
-            xmlHttp.status === 410) { //forbidden access
+        xmlHttp.status === 410) { //forbidden access
             //404 = off line
             //403 = forbidden access
             //410 = api v3 is gone use v5 bug
@@ -567,8 +575,6 @@ function Play_loadDataRequest() {
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Play_loadingDataTimeout;
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        if (state)
-            xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
 
         xmlHttp.ontimeout = function() {};
 
@@ -1642,7 +1648,10 @@ function Play_PlayEndStart(PlayVodClip) {
 }
 
 function Play_CheckHostStart(error_410) {
-    if (error_410) Play_showWarningDialog(STR_410_ERROR);
+    if (error_410) {
+        Play_IsWarning = true;
+        Play_showWarningDialog(STR_410_ERROR);
+    }
 
     Play_showBufferDialog();
     Play_state = -1;

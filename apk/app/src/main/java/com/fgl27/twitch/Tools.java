@@ -2,6 +2,7 @@
 
 package com.fgl27.twitch;
 
+import android.content.Context;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +40,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public final class Tools {
 
@@ -55,6 +58,23 @@ public final class Tools {
     private static String[][] HEADERS = {{CLIENTIDHEADER, CLIENTID},
             {ACCEPTHEADER, TWITHCV5JSON},
             {AUTHORIZATION, null}};
+
+    public static String readUrlHLS(Context context, String url) {
+        try {
+            com.google.gson.JsonObject JSON =
+                    Ion.with(context).load(url).asJsonObject().get();
+            if (JSON != null) {
+                return JsonObToString(200, JSON.toString());
+            }
+        } catch (InterruptedException e) {
+            Log.w(TAG, "readUrlHLS InterruptedException ", e);
+        } catch (ExecutionException e) {
+            Log.w(TAG, "readUrlHLS ExecutionException ", e);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "readUrlHLS NullPointerException ", e);
+        }
+        return null;
+    }
 
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
