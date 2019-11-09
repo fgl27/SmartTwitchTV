@@ -637,14 +637,18 @@ function Screens_addrowEnd(forceScroll) {
     inUseObj.addFocus(inUseObj.posY, inUseObj.ids, forceScroll);
 }
 
-function Screens_addFocusChannel(y, idArray, forceScroll) {
+function Screens_setOffset(pos, y) {
     if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
-        var pos = !y ? (y + 2) : y;
+        pos = !y ? (y + pos) : y;
         if (inUseObj.Cells[pos]) {
             inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop / BodyfontSize;
             inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
         }
     }
+}
+
+function Screens_addFocusChannel(y, idArray, forceScroll) {
+    Screens_setOffset(2, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -671,13 +675,7 @@ function Screens_addFocusChannel(y, idArray, forceScroll) {
 }
 
 function Screens_addFocusVideo(y, idArray, forceScroll) {
-    if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
-        var pos = !y ? (y + 1) : y;
-        if (inUseObj.Cells[pos]) {
-            inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop / BodyfontSize;
-            inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
-        }
-    }
+    Screens_setOffset(1, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
@@ -692,13 +690,7 @@ function Screens_addFocusVideo(y, idArray, forceScroll) {
 }
 
 function Screens_addFocusGame(y, idArray, forceScroll) {
-    if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
-        var pos = !y ? (y + 1) : y;
-        if (inUseObj.Cells[pos]) {
-            inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop / BodyfontSize;
-            inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
-        }
-    }
+    Screens_setOffset(1, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
