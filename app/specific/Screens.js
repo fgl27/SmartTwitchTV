@@ -634,12 +634,17 @@ function Screens_addrowEnd(forceScroll) {
     Main_AddClass(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX, Main_classThumb);
     Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
-    inUseObj.addFocus(inUseObj.posY, inUseObj.posX, inUseObj.ids, forceScroll);
+    inUseObj.addFocus(inUseObj.posY, inUseObj.ids, forceScroll);
 }
 
-function Screens_addFocusChannel(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsettop && inUseObj.Cells[2])
-        inUseObj.offsettop = document.getElementById(idArray[0] + 2 + '_' + 0).offsetTop / BodyfontSize;
+function Screens_addFocusChannel(y, idArray, forceScroll) {
+    if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+        var pos = !y ? (y + 2) : y;
+        if (inUseObj.Cells[pos]) {
+            inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop / BodyfontSize;
+            inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
+        }
+    }
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -665,9 +670,14 @@ function Screens_addFocusChannel(y, x, idArray, forceScroll) {
     Main_handleKeyUp();
 }
 
-function Screens_addFocusVideo(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsettop && inUseObj.Cells[1])
-        inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + 1 + '_' + 0).offsetTop / BodyfontSize;
+function Screens_addFocusVideo(y, idArray, forceScroll) {
+    if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+        var pos = !y ? (y + 1) : y;
+        if (inUseObj.Cells[pos]) {
+            inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop / BodyfontSize;
+            inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
+        }
+    }
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
@@ -681,9 +691,14 @@ function Screens_addFocusVideo(y, x, idArray, forceScroll) {
     Main_handleKeyUp();
 }
 
-function Screens_addFocusGame(y, x, idArray, forceScroll) {
-    if (!inUseObj.offsettop && inUseObj.Cells[1])
-        inUseObj.offsettop = document.getElementById(idArray[5] + 1 + '_' + 0).offsetTop / BodyfontSize;
+function Screens_addFocusGame(y, idArray, forceScroll) {
+    if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+        var pos = !y ? (y + 1) : y;
+        if (inUseObj.Cells[pos]) {
+            inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop / BodyfontSize;
+            inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
+        }
+    }
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
