@@ -340,7 +340,7 @@ function Play_CheckResumeForced(isPicturePicture) { // jshint ignore:line
 function Play_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
         '/access_token?platform=_' +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
     var xmlHttp;
@@ -357,6 +357,12 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
     if (xmlHttp.status === 200) {
         Play_RefreshAutoTry = 0;
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
+        if (Play_tokenResponse.indexOf('"status":410') !== -1) {
+            Play_410ERROR = true;
+            Play_RefreshAutoError(UseAndroid);
+            return;
+        }
+        Play_410ERROR = false;
 
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
@@ -566,9 +572,9 @@ function Play_loadDataRequest() {
             if (xmlHttp.responseText.indexOf('"status":410') !== -1) {
                 Play_410ERROR = true;
                 Play_loadDataError();
-            } else if (Play_isOn) {
-                Play_loadDataSuccess(xmlHttp.responseText);
+            } else {
                 Play_410ERROR = false;
+                Play_loadDataSuccess(xmlHttp.responseText);
             }
 
         } else if (xmlHttp.status === 403 || xmlHttp.status === 404 ||
