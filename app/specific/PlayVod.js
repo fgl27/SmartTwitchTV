@@ -261,7 +261,7 @@ function PlayVod_loadDataRequest() {
 
     if (state) {
         theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
@@ -309,8 +309,15 @@ function PlayVod_loadDataRequest() {
 }
 
 function PlayVod_loadDataEnd(xmlHttp) {
-    if (xmlHttp.status === 200) PlayVod_loadDataSuccess(xmlHttp.responseText);
-    else if (xmlHttp.status === 410) {
+    if (xmlHttp.status === 200) {
+        if (xmlHttp.responseText.indexOf('"status":410') !== -1) {
+            Play_410ERROR = true;
+            PlayVod_loadDataError();
+        } else {
+            PlayVod_loadDataSuccess(xmlHttp.responseText);
+            Play_410ERROR = false;
+        }
+    } else if (xmlHttp.status === 410) {
         //410 = api v3 is gone use v5 bug
         PlayVod_410Error();
     } else PlayVod_loadDataError();

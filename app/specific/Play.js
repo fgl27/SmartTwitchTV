@@ -526,13 +526,15 @@ function Play_loadData() {
     Play_loadDataRequest();
 }
 
+var Play_410ERROR = false;
+
 function Play_loadDataRequest() {
     var theUrl, state = Play_state === Play_STATE_LOADING_TOKEN;
 
     if (state) {
         theUrl = 'https://api.twitch.tv/api/channels/' + Main_values.Play_selectedChannel +
             '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
@@ -557,11 +559,20 @@ function Play_loadDataRequest() {
             Play_loadDataError();
             return;
         }
+
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
-            if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
+
+            if (xmlHttp.responseText.indexOf('"status":410') !== -1) {
+                Play_410ERROR = true;
+                Play_loadDataError();
+            } else if (Play_isOn) {
+                Play_loadDataSuccess(xmlHttp.responseText);
+                Play_410ERROR = false;
+            }
+
         } else if (xmlHttp.status === 403 || xmlHttp.status === 404 ||
-        xmlHttp.status === 410) { //forbidden access
+            xmlHttp.status === 410) { //forbidden access
             //404 = off line
             //403 = forbidden access
             //410 = api v3 is gone use v5 bug
