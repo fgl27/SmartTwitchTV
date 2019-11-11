@@ -340,7 +340,8 @@ function PlayExtra_loadDataSuccessreadyState(xmlHttp) {
         if (xmlHttp.responseText.indexOf('"status":410') !== -1) {
             Play_410ERROR = true;
             PlayExtra_loadDataError();
-        } else if (Play_isOn) {
+        } else {
+            Play_410ERROR = false;
             Play_loadingDataTry = 0;
             PlayExtra_loadDataSuccess(xmlHttp.responseText);
         }
@@ -379,7 +380,7 @@ function PlayExtra_loadDataFail(Reason) {
 
 function PlayExtra_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_selectedChannel + '/access_token?platform=_' +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '');
 
     var xmlHttp;
@@ -396,6 +397,12 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
     if (xmlHttp.status === 200) {
         PlayExtra_RefreshAutoTry = 0;
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
+        if (Play_tokenResponse.indexOf('"status":410') !== -1) {
+            Play_410ERROR = true;
+            PlayExtra_RefreshAutoError(UseAndroid);
+            return;
+        }
+        Play_410ERROR = false;
 
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +

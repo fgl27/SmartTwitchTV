@@ -314,8 +314,8 @@ function PlayVod_loadDataEnd(xmlHttp) {
             Play_410ERROR = true;
             PlayVod_loadDataError();
         } else {
-            PlayVod_loadDataSuccess(xmlHttp.responseText);
             Play_410ERROR = false;
+            PlayVod_loadDataSuccess(xmlHttp.responseText);
         }
     } else if (xmlHttp.status === 410) {
         //410 = api v3 is gone use v5 bug
