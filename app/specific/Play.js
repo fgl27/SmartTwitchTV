@@ -533,6 +533,8 @@ function Play_loadData() {
     Play_loadDataRequest();
 }
 
+//Some times the server is returning {"error":"Gone","status":410,"message":"this API has been removed."}
+//On those case we can't use user oauth_token to prevent the 410 error
 var Play_410ERROR = false;
 
 function Play_loadDataRequest() {
@@ -544,6 +546,12 @@ function Play_loadDataRequest() {
             (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
+        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig')) {
+            Play_410ERROR = true;
+            Play_loadDataError();
+            return;
+        }
+
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
             '&reassignments_supported=true&playlist_include_framerate=true' +
@@ -551,6 +559,8 @@ function Play_loadDataRequest() {
             '&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
         Play_AutoUrl = theUrl;
+
+        Play_410ERROR = false;
     }
 
     var xmlHttp;
