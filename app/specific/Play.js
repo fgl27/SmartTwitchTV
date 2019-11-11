@@ -357,8 +357,7 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
     if (xmlHttp.status === 200) {
         Play_RefreshAutoTry = 0;
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
-        if (Play_tokenResponse.indexOf('"status":410') !== -1 || !Play_tokenResponse.hasOwnProperty('token') ||
-            !Play_tokenResponse.hasOwnProperty('sig')) {
+        if (Play_tokenResponse.indexOf('"status":410') !== -1) {
             Play_410ERROR = true;
             Play_RefreshAutoError(UseAndroid);
             return;
