@@ -264,6 +264,11 @@ function PlayVod_loadDataRequest() {
             (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
                 AddUser_UsernameArray[0].access_token : '');
     } else {
+        if (!PlayVod_tokenResponse.hasOwnProperty('token') || !PlayVod_tokenResponse.hasOwnProperty('sig')) {
+            Play_410ERROR = true;
+            PlayVod_loadDataError();
+            return;
+        }
         theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
             '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' +
             PlayVod_tokenResponse.sig +
@@ -271,6 +276,8 @@ function PlayVod_loadDataRequest() {
             (Play_SupportsSource ? "&allow_source=true" : '') +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
         PlayVod_autoUrl = theUrl;
+
+        Play_410ERROR = false;
     }
 
     var xmlHttp;
