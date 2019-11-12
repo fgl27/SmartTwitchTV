@@ -1047,11 +1047,7 @@ var Base_Game_obj = {
     },
     key_play: function() {
         Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-
         Main_values.Main_gameSelected = JSON.parse(document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
-        Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
-        Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
-
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
         Main_values.Main_BeforeAgame = this.screen;
         Main_values.Main_Go = Main_aGame;
@@ -1086,8 +1082,7 @@ var Base_Game_obj = {
                     this.ids, [game.box.template.replace("{width}x{height}", Main_GameSize),
                     game.name,
                     hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                        Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',
-                    game._id
+                        Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : ''
                 ]));
 
             this.coloumn_id++;
@@ -1159,19 +1154,33 @@ function ScreensObj_InitUserGames() {
         key_pgDownNext: Main_UserChannels,
         key_pgDown: Main_UserVod,
         key_pgUp: Main_UserHost,
-        isLive: true,//Main_getItemBool('user_Games_live', true),
+        isLive: Main_getItemBool('user_Games_live', true),
         OldUserName: '',
         object: 'follows',
-        base_url: 'https://api.twitch.tv/kraken/users/',
+        base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].id) + '/follows/games?&limit=100' +
-                (this.cursor ? '&cursor=' + this.cursor : '');
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games';
+
+            if (this.isLive) this.url += '/live?limit=750';
+            else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
+        },
+        key_refresh: function() {
+            this.isLive = !this.isLive;
+
+            ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
+
+            Screens_StartLoad();
+
+            Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
+            if (Users_status) Users_resetGameCell();
+
         },
         label_init: function() {
             ScreensObj_TopLableUserInit();
+            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FALLOW_GAMES + ":" + STR_GUIDE);
 
-            ScreensObj_SetTopLable(STR_USER, STR_FALLOW_GAMES);
+            ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FALLOW_GAMES));
         },
         label_exit: function() {
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -1179,30 +1188,6 @@ function ScreensObj_InitUserGames() {
     }, Base_obj);
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
-
-    UserGames.setMax = function(tempObj) {
-        this.cursor = tempObj._cursor;
-        if (this.cursor === '') this.dataEnded = true;
-    };
-
-    UserGames.addCell = function(cell) {
-        if (!this.idObject[cell.game._id]) {
-
-            this.itemsCount++;
-            this.idObject[cell.game._id] = 1;
-
-            this.row.appendChild(
-                Screens_createCellGame(
-                    this.row_id + '_' + this.coloumn_id,
-                    this.ids, [cell.game.box.template.replace("{width}x{height}", Main_GameSize),
-                    cell.game.name,
-                    '',
-                    cell.game._id
-                ]));
-
-            this.coloumn_id++;
-        }
-    };
 }
 
 function ScreensObj_InitSearchGames() {
