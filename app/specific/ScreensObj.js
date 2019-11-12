@@ -1157,6 +1157,7 @@ function ScreensObj_InitUserGames() {
         isLive: Main_getItemBool('user_Games_live', true),
         OldUserName: '',
         object: 'follows',
+        use_hls: true,
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
