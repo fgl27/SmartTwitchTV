@@ -1047,7 +1047,11 @@ var Base_Game_obj = {
     },
     key_play: function() {
         Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+
         Main_values.Main_gameSelected = JSON.parse(document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+        Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
+        Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
+
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
         Main_values.Main_BeforeAgame = this.screen;
         Main_values.Main_Go = Main_aGame;
@@ -1082,7 +1086,8 @@ var Base_Game_obj = {
                     this.ids, [game.box.template.replace("{width}x{height}", Main_GameSize),
                     game.name,
                     hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                        Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : ''
+                        Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',
+                    game._id
                 ]));
 
             this.coloumn_id++;
@@ -1127,7 +1132,8 @@ function ScreensObj_InitGame() {
                             this.row_id + '_' + this.coloumn_id,
                             this.ids, [cell.box_art_url.replace("{width}x{height}", Main_GameSize),
                             cell.name,
-                            ''
+                            '',
+                            cell._id
                         ]));
 
                     this.coloumn_id++;

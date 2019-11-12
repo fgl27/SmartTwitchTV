@@ -41,6 +41,7 @@ var Main_values = {
     "Main_selectedChannelLogo": '',
     "Main_selectedChannel_id": '',
     "Main_gameSelected": '',
+    "Main_gameSelected_id": '',
     "Main_OldgameSelected": null,
     "Play_isHost": false,
     "Play_DisplaynameHost": '',
