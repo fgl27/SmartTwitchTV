@@ -438,9 +438,11 @@ function AddCode_UnFallowGameJs(xmlHttp) {
 }
 
 function AddCode_UnFallowGameEnd(xmlHttp) {
-    if (xmlHttp.status === 404) { // success we now unfallow the game
-        var tempStatus = JSON.parse(xmlHttp.responseText);
-        if (tempStatus.message.indexOf('does not follow') !== -1) {
+    if (xmlHttp.status === 404 || xmlHttp.status === 204) { // success we now unfallow the game
+        if (xmlHttp.status === 204) { // success we now unfallow the game
+            AGame_fallowing = false;
+            AGame_setFallow();
+        } else if (JSON.parse(xmlHttp.responseText).message.indexOf('does not follow') !== -1) {
             AGame_fallowing = false;
             AGame_setFallow();
         } else AddCode_UnFallowGameRequestError();
