@@ -311,7 +311,7 @@ function PlayExtra_loadDataRequest() {
     if (Main_IsNotBrowser) {
         try {
             if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-            else xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null, false);
+            else xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
         } catch (e) {}
 
         if (xmlHttp) {

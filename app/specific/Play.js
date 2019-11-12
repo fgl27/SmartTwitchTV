@@ -569,7 +569,7 @@ function Play_loadDataRequest() {
 
         try {
             if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-            else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null, false);
+            else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
         } catch (e) {}
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
