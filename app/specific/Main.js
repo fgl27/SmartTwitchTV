@@ -41,7 +41,6 @@ var Main_values = {
     "Main_selectedChannelLogo": '',
     "Main_selectedChannel_id": '',
     "Main_gameSelected": '',
-    "Main_gameSelected_id": '',
     "Main_OldgameSelected": null,
     "Play_isHost": false,
     "Play_DisplaynameHost": '',
@@ -1012,7 +1011,10 @@ function Main_ReloadScreen() {
 
     if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
     else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
-    else {
+    else if (Main_values.Main_Go === Main_usergames) {
+        inUseObj = UserGames;
+        if (!inUseObj.loadingData) inUseObj.key_refresh();
+    } else {
         if (Main_values.Main_Go === Main_Live) inUseObj = Live;
         else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
         else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
@@ -1025,7 +1027,6 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
         else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
         else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
-        else if (Main_values.Main_Go === Main_usergames) inUseObj = UserGames;
         else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
         else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
         else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
