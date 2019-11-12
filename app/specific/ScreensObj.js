@@ -1174,8 +1174,6 @@ function ScreensObj_InitUserGames() {
             Screens_StartLoad();
 
             Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
-            if (Users_status) Users_resetGameCell();
-
         },
         label_init: function() {
             ScreensObj_TopLableUserInit();
