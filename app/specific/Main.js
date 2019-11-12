@@ -1140,6 +1140,29 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
     xmlHttp.send(null);
 }
 
+function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
+    var xmlHttp;
+
+    try {
+        xmlHttp = Android.mreadUrlHLS(theUrl);
+    } catch (e) {}
+
+    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+    else {
+        calbackError();
+        return;
+    }
+
+    try {
+
+        if (JSON.parse(xmlHttp.responseText).hasOwnProperty('status'))
+            calbackError();
+        else
+            callbackSucess(xmlHttp.responseText);
+
+    } catch (e) {}
+}
+
 //Duplicated (BasehttpPost === BasehttpGet minus the post part ) as the android side may not be there and is not needed yet
 //function BasehttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, useProxy) { // jshint ignore:line
 //    if (Main_IsNotBrowser) BasexmlHttpPost(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
