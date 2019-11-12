@@ -717,6 +717,7 @@ function ScreensObj_InitUserHost() {
         object: 'hosts',
         key_pgDown: Main_usergames,
         key_pgUp: Main_UserLive,
+        use_hls: true,
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
