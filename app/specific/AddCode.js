@@ -422,20 +422,30 @@ function AddCode_RequestUnFallowGame() {
         '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) + '?oauth_token=' +
         AddUser_UsernameArray[0].access_token + Main_TwithcV5Flag;
 
-    AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFallowGameRequestReady);
+    if (Main_IsNotBrowser)
+        AddCode_BasereadwritedUrl(theUrl, 'DELETE', 2, null, AddCode_UnFallowGameAndroid);
+    else
+        AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFallowGameJs);
 }
 
-function AddCode_UnFallowGameRequestReady(xmlHttp) {
-    if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 204) { // success we now unfallow the game
-            AGame_fallowing = false;
-            AGame_setFallow();
-            return;
-        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            AddCode_refreshTokens(0, 0, AddCode_UnFallowGame, null);
-        } else { // internet error
-            AddCode_UnFallowGameRequestError();
-        }
+function AddCode_UnFallowGameAndroid(xmlHttp) {
+    if (xmlHttp !== null) AddCode_UnFallowGameEnd(xmlHttp);
+    else AddCode_UnFallowGameRequestError();
+}
+
+function AddCode_UnFallowGameJs(xmlHttp) {
+    if (xmlHttp.readyState === 4) AddCode_UnFallowGameEnd(xmlHttp);
+}
+
+function AddCode_UnFallowGameEnd(xmlHttp) {
+    if (xmlHttp.status === 204) { // success we now unfallow the game
+        AGame_fallowing = false;
+        AGame_setFallow();
+        return;
+    } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+        AddCode_refreshTokens(0, 0, AddCode_UnFallowGame, null);
+    } else { // internet error
+        AddCode_UnFallowGameRequestError();
     }
 }
 
@@ -489,23 +499,6 @@ function AddCode_RequestCheckFallowGame() {
     } catch (e) {}
 }
 
-// function AddCode_CheckFallowGameReady(xmlHttp) {
-//     if (xmlHttp.readyState === 4) {
-//         if (xmlHttp.status === 200) { //success yes user fallows
-//             AGame_fallowing = true;
-//             AGame_setFallow();
-//             return;
-//         } else if (xmlHttp.status === 404) { //success no user doesnot fallows
-//             AGame_fallowing = false;
-//             AGame_setFallow();
-//             return;
-//         } else { // internet error
-//             AddCode_CheckFallowGameError();
-//             return;
-//         }
-//     }
-// }
-
 function AddCode_CheckFallowGameError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestCheckFallowGame();
@@ -515,10 +508,10 @@ function AddCode_CheckFallowGameError() {
     }
 }
 
-function AddCode_BasexmlHttpGet(theUrl, type, HeaderQuatity, access_token, callbackready) {
+function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackready) {
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open(type, theUrl, true);
+    xmlHttp.open(Method, theUrl, true);
     xmlHttp.timeout = AddCode_loadingDataTimeout;
 
     Main_Headers[2][1] = access_token;
@@ -551,4 +544,15 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
     };
 
     xmlHttp.send(null);
+}
+
+function AddCode_BasereadwritedUrl(theUrl, Method, HeaderQuatity, access_token, callbackready) {
+    try {
+        var xmlHttp = Android.mreadwritedUrl(theUrl, 5000, HeaderQuatity, access_token, Method);
+
+        if (xmlHttp) callbackready(JSON.parse(xmlHttp));
+        else callbackready(xmlHttp);
+    } catch (e) {
+        callbackready(null);
+    }
 }

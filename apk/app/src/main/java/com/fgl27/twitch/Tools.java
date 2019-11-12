@@ -132,7 +132,7 @@ public final class Tools {
             urlConnection.setConnectTimeout(timeout);
             urlConnection.setReadTimeout(timeout);
 
-            if (Method != null) {
+            if (Method != null) {//If Method != null this will use the default get method, same as readUrl
                 urlConnection.setRequestMethod(Method);
                 urlConnection.setDoOutput(true);
             }
