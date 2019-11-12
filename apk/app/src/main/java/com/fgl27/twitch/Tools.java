@@ -78,7 +78,7 @@ public final class Tools {
 
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
-    public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token, boolean post) {
+    public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
         HttpURLConnection urlConnection = null;
         HEADERS[2][1] = access_token;
 
@@ -91,8 +91,49 @@ public final class Tools {
             urlConnection.setConnectTimeout(timeout);
             urlConnection.setReadTimeout(timeout);
 
-            if (post) {
-                urlConnection.setRequestMethod("POST");
+            urlConnection.connect();
+
+            int status = urlConnection.getResponseCode();
+
+            if (status != -1) {
+                final Charset mresponseCharset = mresponseCharset(urlConnection.getContentType());
+
+                if (mresponseCharset != null) {
+                    byte[] responseBytes;
+
+                    if (status != HttpURLConnection.HTTP_OK)
+                        responseBytes = readFully(urlConnection.getErrorStream());
+                    else responseBytes = readFully(urlConnection.getInputStream());
+
+                    return JsonObToString(status, new String(responseBytes, mresponseCharset));
+                } else return JsonObToString(status, "fail");
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            Log.w(TAG, "readUrl IOException ", e);
+            return null;
+        } finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
+        }
+    }
+
+    public static String readwritedUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String Method) {
+        HttpURLConnection urlConnection = null;
+        HEADERS[2][1] = access_token;
+
+        try {
+            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
+
+            for (int i = 0; i < HeaderQuantity; i++)
+                urlConnection.setRequestProperty(HEADERS[i][0], HEADERS[i][1]);
+
+            urlConnection.setConnectTimeout(timeout);
+            urlConnection.setReadTimeout(timeout);
+
+            if (Method != null) {
+                urlConnection.setRequestMethod(Method);
                 urlConnection.setDoOutput(true);
             }
 
