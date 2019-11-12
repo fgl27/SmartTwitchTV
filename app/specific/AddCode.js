@@ -438,10 +438,12 @@ function AddCode_UnFallowGameJs(xmlHttp) {
 }
 
 function AddCode_UnFallowGameEnd(xmlHttp) {
-    if (xmlHttp.status === 204) { // success we now unfallow the game
-        AGame_fallowing = false;
-        AGame_setFallow();
-        return;
+    if (xmlHttp.status === 404) { // success we now unfallow the game
+        var tempStatus = JSON.parse(xmlHttp.responseText);
+        if (tempStatus.message.indexOf('does not follow') !== -1) {
+            AGame_fallowing = false;
+            AGame_setFallow();
+        } else AddCode_UnFallowGameRequestError();
     } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
         AddCode_refreshTokens(0, 0, AddCode_UnFallowGame, null);
     } else { // internet error
