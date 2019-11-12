@@ -418,10 +418,11 @@ function AddCode_UnFallowGame() {
 }
 
 function AddCode_RequestUnFallowGame() {
-    var theUrl = 'https://api.twitch.tv/kraken/users/' + AddUser_UsernameArray[0].id + '/follows/games/' +
-        Main_values.Main_gameSelected_id + Main_TwithcV5Flag_I;
+    var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[0].name +
+        '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) + '?oauth_token=' +
+        AddUser_UsernameArray[0].access_token + Main_TwithcV5Flag;
 
-    AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_UnFallowGameRequestReady);
+    AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFallowGameRequestReady);
 }
 
 function AddCode_UnFallowGameRequestReady(xmlHttp) {
@@ -441,6 +442,10 @@ function AddCode_UnFallowGameRequestReady(xmlHttp) {
 function AddCode_UnFallowGameRequestError() {
     AddCode_loadingDataTry++;
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestUnFallowGame();
+    else {
+        Main_showWarningDialog(STR_410_FEATURING);
+        window.setTimeout(Main_HideWarningDialog, 2000);
+    }
 }
 
 function AddCode_CheckFallowGame() {

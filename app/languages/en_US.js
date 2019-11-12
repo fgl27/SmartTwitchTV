@@ -311,4 +311,5 @@ function en_USLang() {
     STR_APP_ANIMATIONS = "Enable app animations";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get stream link issue";
+    STR_410_FEATURING = "Third party app lost this featuring";
 }
