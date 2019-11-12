@@ -275,7 +275,7 @@ function Screens_createCellChannel(id, idArray, valuesArray) {
 function Screens_createCellGame(id, idArray, valuesArray) {
     return Screens_createCell(
         idArray[5] + id,
-        valuesArray[1],
+        valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
