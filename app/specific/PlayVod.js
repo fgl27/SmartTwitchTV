@@ -458,7 +458,7 @@ function PlayVod_isSub() {
         PlayVod_loadData();
     } else {
         Play_HideBufferDialog();
-        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB);
+        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB + STR_410_FEATURING);
         window.setTimeout(function() {
             if (PlayVod_isOn) PlayVod_shutdownStream();
         }, 4000);
