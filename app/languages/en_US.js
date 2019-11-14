@@ -147,7 +147,7 @@ function en_USLang() {
     STR_FALLOW = " Follow";
     STR_IS_SUB_NOOAUTH = " And you have not set a authentication key the app can\'t check yours sub status.";
     STR_IS_SUB_NOT_SUB = " And you are not a sub of this channel";
-    STR_IS_SUB_IS_SUB = " You are a sub of this channel but, ";
+    STR_IS_SUB_IS_SUB = " You are a sub of this channel but ";
     STR_OAUTH_FAIL = "Fail authentication check with the provider key, please check and try again";
     STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user ";
     STR_NOKEY = "No user";
