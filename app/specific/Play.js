@@ -1515,6 +1515,10 @@ function Play_EndSet(PlayVodClip) {
         document.getElementById('dialog_end_0').style.display = 'none';
         document.getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", STR_OPEN_HOST);
+
+        Play_EndTextsReset();
+        Main_innerHTML("end_channel_name_text", Main_values.Play_selectedChannelDisplayname);
+        Main_innerHTML("end_vod_title_text", Main_values.Play_selectedChannelDisplayname + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name);
     } else if (PlayVodClip === 1) { // play
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 2;
@@ -1522,18 +1526,44 @@ function Play_EndSet(PlayVodClip) {
         document.getElementById('dialog_end_-1').style.display = 'none';
         document.getElementById('dialog_end_0').style.display = 'none';
         document.getElementById('dialog_end_1').style.display = 'none';
+
+        Play_EndTextsReset();
+        Main_innerHTML("end_channel_name_text", Main_values.Play_selectedChannelDisplayname);
     } else if (PlayVodClip === 2) { // vod
         Play_EndIconsResetFocus();
         document.getElementById('dialog_end_-1').style.display = 'none';
         document.getElementById('dialog_end_0').style.display = 'inline-block';
         document.getElementById('dialog_end_1').style.display = 'none';
+
+        Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML("end_replay_title_text", ChannelVod_title);
+
+        Main_textContent("end_vod_name_text", '');
+        Main_textContent("end_vod_title_text", '');
+
+        Main_innerHTML("end_channel_name_text", Main_values.Main_selectedChannelDisplayname);
     } else if (PlayVodClip === 3) { // clip
         Play_EndIconsResetFocus();
         document.getElementById('dialog_end_-1').style.display = PlayClip_HasNext ? 'inline-block' : 'none';
         document.getElementById('dialog_end_0').style.display = 'inline-block';
         document.getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
+
+        Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML("end_replay_title_text", ChannelClip_title);
+
+        Main_innerHTML("end_vod_name_text", Main_values.Main_selectedChannelDisplayname);
+
+        Main_innerHTML("end_channel_name_text", Main_values.Main_selectedChannelDisplayname);
     }
+    Main_textContent("end_game_name_text", Main_values.Play_gameSelected);
+}
+
+function Play_EndTextsReset() {
+    Main_textContent("end_replay_name_text", '');
+    Main_textContent("end_replay_title_text", '');
+    Main_textContent("end_vod_name_text", '');
+    Main_textContent("end_vod_title_text", '');
 }
 
 function Play_OpenChannel(PlayVodClip) {
