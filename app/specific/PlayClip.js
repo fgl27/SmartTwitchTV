@@ -101,6 +101,7 @@ function PlayClip_Start() {
     else {
         Main_textContent("end_vod_name_text", '');
         Main_innerHTML("end_vod_title_text", '');
+        Play_controls[Play_controlsOpenVod].setLable('');
     }
 }
 
@@ -110,7 +111,9 @@ function PlayClip_updateVodInfo() {
 }
 
 function PlayClip_updateVodInfoSucess(response) {
-    Main_innerHTML("end_vod_title_text", twemoji.parse(JSON.parse(response).title, false, true));
+    ChannelVod_title = twemoji.parse(JSON.parse(response).title, false, true);
+    Main_innerHTML("end_vod_title_text", ChannelVod_title);
+    Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title);
 }
 
 function PlayClip_updateVodInfoError() {
