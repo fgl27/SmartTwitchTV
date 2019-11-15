@@ -12,17 +12,17 @@ Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
-4. See error
+4. See error something doesn't work
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
-If applicable not demanding, add screenshots/picture to help explain your problem.
-
-**Operation system (if is a installation problem):**
- - OS: Android
- - Version [e.g. 9, 8.1, etc...]
+Whenever you can add screenshots/picture to help explain/show your problem.
+ 
+ **Device:**
+ - TV Manufacture Device: Nvidia Shield, Xiaomi Mi box I II III IV, etc...
+ - Os version [e.g. Tizen 2.3, Tizen 2.4, Tizen 5...]
 
 **Additional context**
 Add any other context about the problem here.
