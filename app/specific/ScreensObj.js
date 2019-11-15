@@ -98,7 +98,7 @@ var Base_obj = {
         } else Screens_OpenSidePanel();
     },
     concatenate: function(responseText) {
-        console.log(responseText);
+        //console.log(responseText);
         if (this.data) {
             responseText = JSON.parse(responseText);
 
