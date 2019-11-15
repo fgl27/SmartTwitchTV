@@ -96,6 +96,26 @@ function PlayClip_Start() {
 
     PlayClip_loadingtreamerInfoTry = 0;
     PlayClip_GetStreamerInfo();
+    PlayVod_loadingInfoDataTry = 0;
+    if (PlayClip_HasVOD) PlayClip_updateVodInfo();
+    else {
+        Main_textContent("end_vod_name_text", '');
+        Main_innerHTML("end_vod_title_text", '');
+    }
+}
+
+function PlayClip_updateVodInfo() {
+    var theUrl = 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
+    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError, false);
+}
+
+function PlayClip_updateVodInfoSucess(response) {
+    Main_innerHTML("end_vod_title_text", twemoji.parse(JSON.parse(response).title, false, true));
+}
+
+function PlayClip_updateVodInfoError() {
+    PlayVod_loadingInfoDataTry++;
+    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) PlayClip_updateVodInfo();
 }
 
 function PlayClip_GetStreamerInfo() {

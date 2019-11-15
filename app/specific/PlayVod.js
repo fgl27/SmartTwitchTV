@@ -112,7 +112,8 @@ function PlayVod_PosStart() {
     Main_SaveValues();
 
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
-    new Image().src = Play_IncrementView;
+    //View bot is blocking it
+    //new Image().src = Play_IncrementView;
 
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;
@@ -166,6 +167,8 @@ function PlayVod_updateVodInfoError() {
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
 
+    ChannelVod_title = twemoji.parse(response.title, false, true);
+
     //TODO add a warning about muted segments
     //if (response.muted_segments) console.log(response.muted_segments);
 
@@ -173,7 +176,7 @@ function PlayVod_updateVodInfoPannel(response) {
     Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false,
         '[' + (response.channel.broadcaster_language).toUpperCase() + ']');
 
-    Main_innerHTML("stream_info_title", twemoji.parse(response.title, false, true));
+    Main_innerHTML("stream_info_title", ChannelVod_title);
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +
         response.game : ""));
 
@@ -201,7 +204,11 @@ function PlayVod_updateVodInfoPannel(response) {
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_CheckFallow();
     } else Play_hideFallow();
-    new Image().src = response.increment_view_count_url;
+
+    //View bot is blocking it
+    //new Image().src = response.increment_view_count_url;
+
+    Play_EndSet(2);
 }
 
 function PlayVod_Resume() {
