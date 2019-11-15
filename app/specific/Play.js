@@ -468,6 +468,9 @@ function Play_updateStreamInfoStartValues(response) {
         Play_LoadLogoSucess = true;
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Play_selectedChannelLogo);
         Play_created = response.stream.created_at;
+
+        Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
+        Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
     }
 }
 
@@ -506,6 +509,9 @@ function Play_updateStreamInfoValues(response) {
 
         if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
             response.stream.channel.logo);
+
+        Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
+        Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
     }
 }
 
@@ -2123,24 +2129,34 @@ function Play_MakeControls() {
     Play_controls[Play_controlsChanelCont] = { //channel content
         icons: "filmstrip",
         string: STR_CHANNEL_CONT,
-        values: null,
+        values: '',
         defaultValue: null,
         opacity: 0,
         enterKey: function(PlayVodClip) {
             Play_ForceHidePannel();
             Play_OpenChannel(PlayVodClip);
         },
+        setLable: function(title) {
+            Main_innerHTML('extra_button_' + this.position,
+                '<div style="max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' +
+                title + '</div>');
+        },
     };
 
     Play_controls[Play_controlsGameCont] = { //game content
         icons: "gamepad",
         string: STR_GAME_CONT,
-        values: null,
+        values: '',
         defaultValue: null,
         opacity: 0,
         enterKey: function(PlayVodClip) {
             Play_ForceHidePannel();
             Play_OpenGame(PlayVodClip);
+        },
+        setLable: function(title) {
+            Main_innerHTML('extra_button_' + this.position,
+                '<div style="max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
+                title + '</div>');
         },
     };
 
@@ -2155,7 +2171,9 @@ function Play_MakeControls() {
             PlayClip_OpenVod();
         },
         setLable: function(title) {
-            Main_innerHTML('extra_button_' + this.position, '<div style="max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' + title + '</div>');
+            Main_innerHTML('extra_button_' + this.position,
+                '<div style="max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
+                title + '</div>');
         },
     };
 
@@ -2163,7 +2181,7 @@ function Play_MakeControls() {
     Play_controls[Play_controlsFallow] = { //fallowing
         icons: "heart-o",
         string: STR_FALLOW,
-        values: null,
+        values: '',
         defaultValue: null,
         opacity: 0,
         enterKey: function(PlayVodClip) {
@@ -2176,6 +2194,7 @@ function Play_MakeControls() {
         setLable: function(string, AddCode_IsFallowing) {
             Main_textContent('extra_button_text' + this.position, string);
             this.setIcon(AddCode_IsFallowing);
+            Main_textContent('extra_button_' + this.position, AddCode_IsFallowing ? STR_CLICK_UNFALLOW : STR_CLICK_FALLOW);
         },
         setIcon: function(AddCode_IsFallowing) {
             Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
