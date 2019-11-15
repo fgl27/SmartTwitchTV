@@ -1,10 +1,26 @@
 # Comment to a new issue.
 issuesOpened: >
-  Thank your for raising a issue. I will try and get back to you as soon as possible.
+  Thank you for raising a issue.<br>
 
-  Regards @fgl27
+  Make sure you follow the issue templates for yours type of issue see bellow.<br>
+
+  **Bug report:**<br>
+  https://github.com/fgl27/SmartTwitchTV/blob/master/.github/ISSUE_TEMPLATE/bug_report.md<br>
+
+  **Etc issue that doesn't applies to features or bugs:**<br>
+  https://github.com/fgl27/SmartTwitchTV/blob/master/.github/ISSUE_TEMPLATE/etc-related.md<br>
+  
+  **Feature request new app feature:**<br>
+  https://github.com/fgl27/SmartTwitchTV/blob/master/.github/ISSUE_TEMPLATE/etc-related.md<br>
+
+  **Feature request related to a problem:**<br>
+  https://github.com/fgl27/SmartTwitchTV/blob/master/.github/ISSUE_TEMPLATE/feature-request-related-to-a-problem.md<br>
+
+  Issue that don't properly fallow the templates can be close without any treatment.<br>
+
+  I have sent an email to @fgl27 he will get back to you as soon as possible.
 
 pullRequestOpened: >
-  Thank your for raising your pull request. I will review it as soon as possible.
+  Thank your for raising your pull request.
 
-  Regards @fgl27
+  I have sent an email to @fgl27 he will get back to you as soon as possible.
