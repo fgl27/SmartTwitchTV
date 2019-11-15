@@ -312,4 +312,6 @@ function en_USLang() {
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get stream link issue";
     STR_410_FEATURING = "Third party app are current without access for this featuring.";
+    STR_CLICK_UNFALLOW = "(Click to unfallow)";
+    STR_CLICK_FALLOW = "(Click to fallow)";
 }

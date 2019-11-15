@@ -103,6 +103,8 @@ function PlayClip_Start() {
         Main_innerHTML("end_vod_title_text", '');
         Play_controls[Play_controlsOpenVod].setLable('');
     }
+    Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
+    Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
 }
 
 function PlayClip_updateVodInfo() {
