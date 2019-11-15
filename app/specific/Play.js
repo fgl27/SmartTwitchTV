@@ -2155,7 +2155,7 @@ function Play_MakeControls() {
             PlayClip_OpenVod();
         },
         setLable: function(title) {
-            Main_innerHTML('extra_button_' + this.position, title);
+            Main_innerHTML('extra_button_' + this.position, '<div style="max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' + title + '</div>');
         },
     };
 
