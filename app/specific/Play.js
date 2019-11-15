@@ -2147,12 +2147,15 @@ function Play_MakeControls() {
     Play_controls[Play_controlsOpenVod] = { //open vod
         icons: "movie-play",
         string: STR_OPEN_BROADCAST,
-        values: null,
+        values: '',
         defaultValue: null,
         opacity: 0,
         enterKey: function() {
             Play_ForceHidePannel();
             PlayClip_OpenVod();
+        },
+        setLable: function(title) {
+            Main_innerHTML('extra_button_' + this.position, title);
         },
     };
 
