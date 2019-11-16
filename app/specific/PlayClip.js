@@ -113,7 +113,7 @@ function PlayClip_updateVodInfo() {
 }
 
 function PlayClip_updateVodInfoSucess(response) {
-    ChannelVod_title = twemoji.parse(JSON.parse(response).title, false, true);
+    ChannelVod_title = twemoji.parse(JSON.parse(response).title, false, false);
     Main_innerHTML("end_vod_title_text", ChannelVod_title);
     Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title);
 }
