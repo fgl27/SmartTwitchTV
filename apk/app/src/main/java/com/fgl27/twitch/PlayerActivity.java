@@ -238,7 +238,7 @@ public class PlayerActivity extends Activity {
                 mediaSourcePlaying[position] != null ?
                         mediaSourcePlaying[position] :
                         Tools.buildMediaSource(uri, dataSourceFactory, mwhocall, mLowLatency),
-                mResumePosition);
+                ((mResumePosition > 0) && (mwhocall > 1)) ? mResumePosition : C.TIME_UNSET);
 
         player[position].prepare();
 
