@@ -49,6 +49,7 @@ var Play_selectedChannel_id_Old = null;
 var Play_IsRerun_Old;
 var Play_selectedChannel_Old;
 var Play_isHost_Old;
+var Play_Main_isHost_Old;
 var Play_DisplaynameHost_Old;
 var Play_selectedChannelDisplayname_Old;
 var Play_gameSelected_Old;
@@ -2011,6 +2012,7 @@ function Play_SavePlayData() {
     Play_IsRerun_Old = Main_values.IsRerun;
     Play_selectedChannel_Old = Main_values.Play_selectedChannel;
     Play_isHost_Old = Play_isHost;
+    Play_Main_isHost_Old = Main_values.Play_isHost;
     Play_DisplaynameHost_Old = Main_values.Play_DisplaynameHost;
     Play_selectedChannelDisplayname_Old = Main_values.Play_selectedChannelDisplayname;
     Play_gameSelected_Old = Main_values.Play_gameSelected;
@@ -2041,6 +2043,7 @@ function Play_RestorePlayDataValues() {
     Main_values.IsRerun = Play_IsRerun_Old;
     Main_values.Play_selectedChannel = Play_selectedChannel_Old;
     Play_isHost = Play_isHost_Old;
+    Main_values.Play_isHost = Play_Main_isHost_Old;
     Main_values.Play_DisplaynameHost = Play_DisplaynameHost_Old;
     Main_values.Play_selectedChannelDisplayname = Play_selectedChannelDisplayname_Old;
     Main_values.Play_gameSelected = Play_gameSelected_Old;
