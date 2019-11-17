@@ -276,7 +276,7 @@ function PlayClip_PreshutdownStream(closePlayer) {
     if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
-    UserLiveFeed_Hide();
+    UserLiveFeed_Hide(true);
     PlayClip_qualities = [];
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
     ChannelVod_vodOffset = 0;

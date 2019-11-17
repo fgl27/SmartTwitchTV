@@ -553,7 +553,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     window.clearInterval(PlayVod_updateStreamInfId);
     Main_values.Play_WasPlaying = 0;
     Chat_Clear();
-    UserLiveFeed_Hide();
+    UserLiveFeed_Hide(true);
     Play_ClearPlayer();
     PlayVod_ClearVod();
 }

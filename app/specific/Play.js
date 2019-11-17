@@ -818,7 +818,8 @@ function Play_loadDataSuccess(responseText) {
         Play_state = Play_STATE_LOADING_PLAYLIST;
         Play_loadData();
     } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
-        UserLiveFeed_Hide();
+
+        UserLiveFeed_Hide(true);
 
         if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
         else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
@@ -842,6 +843,7 @@ function Play_loadDataSuccess(responseText) {
         Play_selectedChannel_id_Old = null;
         if (Play_isOn) Play_qualityChanged();
         UserLiveFeed_PreventHide = false;
+
     }
 }
 
@@ -1079,7 +1081,9 @@ function Play_PreshutdownStream(closePlayer) {
     }
 
     if (closePlayer) Play_isOn = false;
-    if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide();
+
+    if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide(true);
+
     Play_ClearPlay(closePlayer);
     Play_ClearPlayer();
 
@@ -1456,7 +1460,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_state = -1;
     PlayVod_state = -1;
     PlayClip_state = -1;
-    UserLiveFeed_Hide();
+    UserLiveFeed_Hide(true);
     Play_hideChat();
     Play_hidePanel();
     PlayClip_hidePanel();
@@ -1559,66 +1563,72 @@ function Play_EndTextClear() {
 }
 
 function Play_EndDialogPressed(PlayVodClip) {
-    UserLiveFeed_PreventHide = false;
+    var doc = document.getElementById('user_feed');
+    doc.style.transition = 'none';
+
     UserLiveFeed_Hide();
 
-    var canhide = true;
-    if (Play_Endcounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
-    else if (!Play_Endcounter) {
-        if (PlayVodClip === 2) {
-            if (!PlayVod_qualities.length) {
-                canhide = false;
-                Play_showWarningDialog(STR_CLIP_FAIL);
-                window.setTimeout(function() {
-                    Play_HideWarningDialog();
-                }, 2000);
-            } else {
-                PlayVod_replay = true;
-                PlayVod_Start();
-                Play_clearPause();
-                PlayVod_currentTime = 0;
-                Chat_offset = 0;
-                Chat_Init();
+    Main_ready(function() {
+        if (Settings_Obj_default("app_animations")) doc.style.transition = '';
+        UserLiveFeed_PreventHide = false;
+        var canhide = true;
+        if (Play_Endcounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
+        else if (!Play_Endcounter) {
+            if (PlayVodClip === 2) {
+                if (!PlayVod_qualities.length) {
+                    canhide = false;
+                    Play_showWarningDialog(STR_CLIP_FAIL);
+                    window.setTimeout(function() {
+                        Play_HideWarningDialog();
+                    }, 2000);
+                } else {
+                    PlayVod_replay = true;
+                    PlayVod_Start();
+                    Play_clearPause();
+                    PlayVod_currentTime = 0;
+                    Chat_offset = 0;
+                    Chat_Init();
+                }
+            } else if (PlayVodClip === 3) {
+                if (!PlayClip_qualities.length) {
+                    canhide = false;
+                    Play_showWarningDialog(STR_CLIP_FAIL);
+                    window.setTimeout(function() {
+                        Play_HideWarningDialog();
+                    }, 2000);
+                } else {
+                    PlayClip_replayOrNext = true;
+                    PlayClip_replay = true;
+                    PlayClip_Start();
+                    Play_clearPause();
+                }
             }
-        } else if (PlayVodClip === 3) {
-            if (!PlayClip_qualities.length) {
-                canhide = false;
-                Play_showWarningDialog(STR_CLIP_FAIL);
-                window.setTimeout(function() {
-                    Play_HideWarningDialog();
-                }, 2000);
+        } else if (Play_Endcounter === 1) {
+            if (Main_values.Play_isHost) {
+                Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname + STR_USER_HOSTING;
+                Main_values.Play_selectedChannel = Play_TargetHost.target_login;
+                Main_values.Play_selectedChannelDisplayname = Play_TargetHost.target_display_name;
+                Main_values.Play_DisplaynameHost = Main_values.Play_DisplaynameHost + Main_values.Play_selectedChannelDisplayname;
+                Android.play(false);
+                Play_PreshutdownStream(false);
+
+                document.body.addEventListener("keydown", Play_handleKeyDown, false);
+
+                Main_values.Play_selectedChannel_id = Play_TargetHost.target_id;
+                Main_ready(Play_Start);
             } else {
-                PlayClip_replayOrNext = true;
-                PlayClip_replay = true;
-                PlayClip_Start();
-                Play_clearPause();
+                PlayClip_OpenVod();
+                if (!PlayClip_HasVOD) canhide = false;
             }
-        }
-    } else if (Play_Endcounter === 1) {
-        if (Main_values.Play_isHost) {
-            Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname + STR_USER_HOSTING;
-            Main_values.Play_selectedChannel = Play_TargetHost.target_login;
-            Main_values.Play_selectedChannelDisplayname = Play_TargetHost.target_display_name;
-            Main_values.Play_DisplaynameHost = Main_values.Play_DisplaynameHost + Main_values.Play_selectedChannelDisplayname;
-            Android.play(false);
-            Play_PreshutdownStream(false);
+        } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
+        else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
 
-            document.body.addEventListener("keydown", Play_handleKeyDown, false);
+        if (Play_Endcounter !== 1)
+            if (Play_Endcounter === 3 && Main_values.Play_gameSelected === '') canhide = false;
 
-            Main_values.Play_selectedChannel_id = Play_TargetHost.target_id;
-            Main_ready(Play_Start);
-        } else {
-            PlayClip_OpenVod();
-            if (!PlayClip_HasVOD) canhide = false;
-        }
-    } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
-    else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
-
-    if (Play_Endcounter !== 1)
-        if (Play_Endcounter === 3 && Main_values.Play_gameSelected === '') canhide = false;
-
-    if (canhide) Play_HideEndDialog();
-    Play_EndDialogEnter = 0;
+        if (canhide) Play_HideEndDialog();
+        Play_EndDialogEnter = 0;
+    });
 }
 
 function Play_EndSet(PlayVodClip) {
