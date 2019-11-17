@@ -231,6 +231,7 @@ function en_USLang() {
     STR_AUTO_PLAY_NEXT = "Auto Play next clip";
     STR_SIDE_PANEL_SETTINGS = "Back to Main menu";
     STR_UP = " Press up";
+    STR_HOLD_UP = " Hold up";
     STR_LIVE_FEED = "Live Feed";
     STR_END_DIALOG_SETTINGS = "End dialog";
     STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that it will take for the stream/video/clip to end dialog taking action";
