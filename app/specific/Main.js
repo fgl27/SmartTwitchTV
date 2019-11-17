@@ -794,7 +794,7 @@ function Main_openStream() {
     Main_HideElement('scene1');
     Main_ShowElement('scene2');
     Play_hidePanel();
-    Play_HideEndDialog();
+    if (!Play_EndDialogEnter) Play_HideEndDialog();
     Main_ready(Play_Start);
 }
 
