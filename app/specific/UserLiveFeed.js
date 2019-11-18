@@ -437,7 +437,10 @@ function UserLiveFeed_ShowFeed(PreventAddfocus) {
     if (hasuser) {
         if (Main_isElementShowing('scene2')) Main_RemoveClass('user_feed', 'user_feed_hide');
         if (!PreventAddfocus) UserLiveFeed_FeedAddFocus(true);
-        else UserLiveFeed_FeedRemoveFocus();
+        else {
+            UserLiveFeed_FeedRemoveFocus();
+            UserLiveFeed_FeedSetPos(true);
+        }
     }
 }
 
