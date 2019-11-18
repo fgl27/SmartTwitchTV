@@ -373,7 +373,7 @@ function Screens_loadDataSuccessFinish() {
             //Force reset some values as I have reset the Never_run_new value and some things may crash
             if (Main_values.Never_run_new) {
                 Main_GoBefore = Main_Live;
-                Main_values.Play_WasPlaying = false;
+                Main_values.Play_WasPlaying = 0;
             }
             Screens_ForceSync = false;
 
