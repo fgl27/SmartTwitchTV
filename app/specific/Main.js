@@ -973,6 +973,7 @@ function Main_updateUserFeed() {
 function Main_ExitDialog(event) {
     switch (event.keyCode) {
         case KEY_RETURN_Q:
+        case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Main_HideExitDialog();
             break;
