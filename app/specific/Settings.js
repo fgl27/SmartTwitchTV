@@ -717,6 +717,7 @@ Math.easeInOutQuad = function(t, b, c, d) {
 function Settings_handleKeyDown(event) {
     var key;
     switch (event.keyCode) {
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();

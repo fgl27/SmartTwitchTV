@@ -17,6 +17,7 @@ var KEY_PG_UP = 33;
 var KEY_REFRESH = 50; //key #2
 
 var KEY_RETURN = 49; //key #1
+var KEY_RETURN_Q = 81; //key q
 
 var KEY_KEYBOARD_BACKSPACE = 8; // http://developer.samsung.com/tv/develop/guides/user-interaction/keyboardime
 var KEY_KEYBOARD_DONE = 13;

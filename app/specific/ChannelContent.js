@@ -405,6 +405,7 @@ function ChannelContent_handleKeyDown(event) {
     else Main_keyClickDelayStart();
 
     switch (event.keyCode) {
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();

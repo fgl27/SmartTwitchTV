@@ -441,6 +441,7 @@ function Screens_loadDataSuccessFinish() {
 function Screens_handleKeyControls(event) {
     switch (event.keyCode) {
         case KEY_ENTER:
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             Main_HideControlsDialog();
             Main_HideAboutDialog();
@@ -836,6 +837,7 @@ function Screens_handleKeyDown(event) {
                 else Sidepannel_Go(inUseObj.key_pgDown);
             }
             break;
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             if (!inUseObj.loadingData) inUseObj.key_exit();
             break;
@@ -982,6 +984,7 @@ function Screens_PeriodRemoveFocus(pos) {
 
 function Screens_PeriodhandleKeyDown(event) {
     switch (event.keyCode) {
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
             Screens_PeriodDialogHide();
@@ -1068,6 +1071,7 @@ function Screens_OffSetAddFocus(pos) {
 
 function Screens_OffSethandleKeyDown(event) {
     switch (event.keyCode) {
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             Screens_OffSetDialogHide();
             break;
