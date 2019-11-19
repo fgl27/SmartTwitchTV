@@ -463,6 +463,7 @@ function ChannelContent_handleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+        case KEY_KEYBOARD_SPACE:
             ChannelContent_keyEnter();
             break;
         case KEY_ENTER:

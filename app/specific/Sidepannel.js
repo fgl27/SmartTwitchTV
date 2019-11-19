@@ -430,6 +430,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+        case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
             if (!UserLiveFeed_loadingData) {
                 var doc = document.getElementById("side_panel");
@@ -486,6 +487,7 @@ function Sidepannel_handleKeyDownMain(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+        case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
             Sidepannel_KeyEnter();
             break;

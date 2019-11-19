@@ -636,6 +636,7 @@ function PlayClip_handleKeyDown(e) {
                 }
                 break;
             case KEY_PLAYPAUSE:
+            case KEY_KEYBOARD_SPACE:
                 if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
                     if (Play_isNotplaying()) Chat_Play(Chat_Id);
                     else Chat_Pause();
