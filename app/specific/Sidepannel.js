@@ -397,6 +397,7 @@ function Sidepannel_Scroll(skipAnimation) {
 function Sidepannel_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_RETURN_Q:
+        case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Sidepannel_Hide();
             Main_SwitchScreenAction();
@@ -453,6 +454,7 @@ function Sidepannel_handleKeyDown(event) {
 function Sidepannel_handleKeyDownMain(event) {
     switch (event.keyCode) {
         case KEY_RETURN_Q:
+        case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
         case KEY_RIGHT:
             Sidepannel_Hide();

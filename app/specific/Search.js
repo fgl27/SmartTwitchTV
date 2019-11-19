@@ -60,6 +60,7 @@ function Search_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN_Q:
+        case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
