@@ -369,6 +369,7 @@ function Users_handleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+        case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
             // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
             var temp_RemoveCursor = Users_RemoveCursor;

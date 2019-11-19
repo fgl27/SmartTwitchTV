@@ -871,6 +871,7 @@ function Screens_handleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+        case KEY_KEYBOARD_SPACE:
             inUseObj.key_play();
             break;
         case KEY_ENTER:
@@ -1004,6 +1005,7 @@ function Screens_PeriodhandleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+        case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
             Screens_PeriodDialogHide();
             if (inUseObj.periodPos !== Screens_PeriodDialogPos) {
@@ -1086,6 +1088,7 @@ function Screens_OffSethandleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
+        case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
             Screens_OffSetDialogHide();
             if (inUseObj.extraoffset !== inUseObj.OffSetPos) {
