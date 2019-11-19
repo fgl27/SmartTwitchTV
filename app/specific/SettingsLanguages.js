@@ -288,6 +288,7 @@ function Languages_HideShowAll() {
 function Languages_handleKeyDown(event) {
     var key;
     switch (event.keyCode) {
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             Languages_exit();
             break;

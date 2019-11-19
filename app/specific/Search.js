@@ -59,6 +59,7 @@ function Search_handleKeyDown(event) {
     if (Search_keyBoardOn) return;
 
     switch (event.keyCode) {
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -150,6 +151,7 @@ function Search_removeEventListener() {
 
 function Search_KeyboardEvent(event) {
     switch (event.keyCode) {
+        case KEY_RETURN_Q:
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();

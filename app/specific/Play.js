@@ -2101,6 +2101,7 @@ function Play_handleKeyDown(e) {
             case KEY_STOP:
                 Play_Exit();
                 break;
+            case KEY_RETURN_Q:
             case KEY_RETURN:
                 if (Play_ExitDialogVisible() || Play_SingleClickExit) {
                     Play_Exit();
@@ -2246,6 +2247,7 @@ function Play_handleKeyDown(e) {
                     PlayExtra_KeyEnterID = window.setTimeout(PlayExtra_KeyEnter, 250);
                 } else Play_showPanel();
                 break;
+            case KEY_RETURN_Q:
             case KEY_RETURN:
                 Play_KeyReturn(false);
                 break;
