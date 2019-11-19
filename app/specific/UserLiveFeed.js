@@ -435,13 +435,25 @@ function UserLiveFeed_ShowFeed(PreventAddfocus) {
     if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad(PreventAddfocus);
 
     if (hasuser) {
-        if (Main_isElementShowing('scene2')) Main_RemoveClass('user_feed', 'user_feed_hide');
+        if (Main_isElementShowing('scene2')) UserLiveFeed_Show(PreventAddfocus);
+
         if (!PreventAddfocus) UserLiveFeed_FeedAddFocus(true);
         else {
             UserLiveFeed_FeedRemoveFocus();
             UserLiveFeed_FeedSetPos(true);
         }
     }
+}
+
+function UserLiveFeed_Show(notransition) {
+    if (notransition) {
+        var doc = document.getElementById('user_feed');
+        doc.style.transition = 'none';
+        doc.classList.remove('user_feed_hide');
+        Main_ready(function() {
+            if (Settings_Obj_default("app_animations")) doc.style.transition = '';
+        });
+    } else Main_RemoveClass('user_feed', 'user_feed_hide');
 }
 
 function UserLiveFeed_Hide(notransition) {
