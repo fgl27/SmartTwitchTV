@@ -2025,7 +2025,7 @@ function Play_handleKeyUpEndClear() {
 function Play_EndDialogUpDown() {
 
     Play_EndTextClear();
-    if (UserLiveFeed_loadingData) return;
+    if (UserLiveFeed_loadingData || !AddUser_UserIsSet()) return;
 
     if (Play_EndFocus) {
         Play_EndFocus = false;
