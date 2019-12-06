@@ -1585,72 +1585,67 @@ function Play_EndTextClear() {
 }
 
 function Play_EndDialogPressed(PlayVodClip) {
-    var doc = document.getElementById('user_feed');
-    doc.style.transition = 'none';
-
-    UserLiveFeed_Hide();
-
-    Main_ready(function() {
-        if (Settings_Obj_default("app_animations")) doc.style.transition = '';
-        UserLiveFeed_PreventHide = false;
-        var canhide = true;
-        if (Play_Endcounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
-        else if (!Play_Endcounter) {
-            if (PlayVodClip === 2) {
-                if (!PlayVod_qualities.length) {
-                    canhide = false;
-                    Play_showWarningDialog(STR_CLIP_FAIL);
-                    window.setTimeout(function() {
-                        Play_HideWarningDialog();
-                    }, 2000);
-                } else {
-                    PlayVod_replay = true;
-                    PlayVod_Start();
-                    Play_clearPause();
-                    PlayVod_currentTime = 0;
-                    Chat_offset = 0;
-                    Chat_Init();
-                }
-            } else if (PlayVodClip === 3) {
-                if (!PlayClip_qualities.length) {
-                    canhide = false;
-                    Play_showWarningDialog(STR_CLIP_FAIL);
-                    window.setTimeout(function() {
-                        Play_HideWarningDialog();
-                    }, 2000);
-                } else {
-                    PlayClip_replayOrNext = true;
-                    PlayClip_replay = true;
-                    PlayClip_Start();
-                    Play_clearPause();
-                }
-            }
-        } else if (Play_Endcounter === 1) {
-            if (Main_values.Play_isHost) {
-                Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname + STR_USER_HOSTING;
-                Main_values.Play_selectedChannel = Play_TargetHost.target_login;
-                Main_values.Play_selectedChannelDisplayname = Play_TargetHost.target_display_name;
-                Main_values.Play_DisplaynameHost = Main_values.Play_DisplaynameHost + Main_values.Play_selectedChannelDisplayname;
-                Android.play(false);
-                Play_PreshutdownStream(false);
-
-                document.body.addEventListener("keydown", Play_handleKeyDown, false);
-
-                Main_values.Play_selectedChannel_id = Play_TargetHost.target_id;
-                Main_ready(Play_Start);
+    var canhide = true;
+    if (Play_Endcounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
+    else if (!Play_Endcounter) {
+        if (PlayVodClip === 2) {
+            if (!PlayVod_qualities.length) {
+                canhide = false;
+                Play_showWarningDialog(STR_CLIP_FAIL);
+                window.setTimeout(function() {
+                    Play_HideWarningDialog();
+                }, 2000);
             } else {
-                PlayClip_OpenVod();
-                if (!PlayClip_HasVOD) canhide = false;
+                PlayVod_replay = true;
+                PlayVod_Start();
+                Play_clearPause();
+                PlayVod_currentTime = 0;
+                Chat_offset = 0;
+                Chat_Init();
             }
-        } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
-        else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
+        } else if (PlayVodClip === 3) {
+            if (!PlayClip_qualities.length) {
+                canhide = false;
+                Play_showWarningDialog(STR_CLIP_FAIL);
+                window.setTimeout(function() {
+                    Play_HideWarningDialog();
+                }, 2000);
+            } else {
+                PlayClip_replayOrNext = true;
+                PlayClip_replay = true;
+                PlayClip_Start();
+                Play_clearPause();
+            }
+        }
+    } else if (Play_Endcounter === 1) {
+        if (Main_values.Play_isHost) {
+            Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname + STR_USER_HOSTING;
+            Main_values.Play_selectedChannel = Play_TargetHost.target_login;
+            Main_values.Play_selectedChannelDisplayname = Play_TargetHost.target_display_name;
+            Main_values.Play_DisplaynameHost = Main_values.Play_DisplaynameHost + Main_values.Play_selectedChannelDisplayname;
+            Android.play(false);
+            Play_PreshutdownStream(false);
 
-        if (Play_Endcounter !== 1)
-            if (Play_Endcounter === 3 && Main_values.Play_gameSelected === '') canhide = false;
+            document.body.addEventListener("keydown", Play_handleKeyDown, false);
 
-        if (canhide) Play_HideEndDialog();
-        Play_EndDialogEnter = 0;
-    });
+            Main_values.Play_selectedChannel_id = Play_TargetHost.target_id;
+            Main_ready(Play_Start);
+        } else {
+            PlayClip_OpenVod();
+            if (!PlayClip_HasVOD) canhide = false;
+        }
+    } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
+    else if (Play_Endcounter === 3) Play_OpenGame(PlayVodClip);
+
+    if (Play_Endcounter !== 1)
+        if (Play_Endcounter === 3 && Main_values.Play_gameSelected === '') canhide = false;
+
+    if (canhide) {
+        Play_HideEndDialog();
+        UserLiveFeed_Hide(true);
+        UserLiveFeed_PreventHide = false;
+    }
+    Play_EndDialogEnter = 0;
 }
 
 function Play_EndSet(PlayVodClip) {
