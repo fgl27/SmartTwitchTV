@@ -818,7 +818,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_createdAt = ChannelClip_playUrl[11];
     ChannelClip_views = ChannelClip_playUrl[12];
 
-    ChannelClip_playUrl = ChannelClip_playUrl[13].split("-preview")[0] + ".mp4";
+    ChannelClip_playUrl = ChannelClip_playUrl[0];
 
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
     Main_HideElement('scene1');
