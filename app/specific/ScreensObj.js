@@ -5,6 +5,7 @@ var ChannelClip_game = '';
 var ChannelClip_views = '';
 var ChannelClip_title = '';
 var ChannelClip_playUrl = '';
+var ChannelClip_playUrl2 = '';
 var ChannelClip_createdAt = '';
 var ChannelClip_language = '';
 

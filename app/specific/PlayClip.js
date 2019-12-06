@@ -5,7 +5,7 @@ var PlayClip_TimeToJump = 0;
 var PlayClip_isOn = false;
 var PlayClip_loadingDataTry = 0;
 var PlayClip_loadingDataTimeout = 2000;
-var PlayClip_loadingDataTryMax = 5;
+var PlayClip_loadingDataTryMax = 3;
 var PlayClip_quality = 'source';
 var PlayClip_qualityPlaying = PlayClip_quality;
 var PlayClip_qualityIndex = 0;
@@ -153,7 +153,28 @@ function PlayClip_loadData() {
 function PlayClip_loadDataRequest() {
     var theUrl = 'https://clips.twitch.tv/api/v2/clips/' + ChannelClip_playUrl + '/status';
 
-    BasehttpGet(theUrl, PlayClip_loadingDataTimeout, 1, null, PlayClip_QualityGenerate, PlayClip_loadDataError, true);
+    var xmlHttp = Android.mreadUrl(theUrl, PlayClip_loadingDataTimeout, 1, null);
+
+    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+    else {
+        PlayClip_loadDataError();
+        return;
+    }
+
+    if (xmlHttp.status === 200) {
+        PlayClip_QualityGenerate(xmlHttp.responseText);
+    } else if (xmlHttp.status === 410) { //Workaround for future 410 issue
+        PlayClip_qualities = [];
+        PlayClip_qualities.push({
+            'id': 'source | mp4',
+            'url': ChannelClip_playUrl2
+        });
+
+        PlayClip_state = PlayClip_STATE_PLAYING;
+        PlayClip_qualityChanged();
+    } else {
+        PlayClip_loadDataError();
+    }
 }
 
 function PlayClip_loadDataError() {
