@@ -115,7 +115,7 @@ var Languages_value = {
     "中文 [ZH]": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "zh-cn,zh-tw"
+        "set_values": "zh"
     },
     "日本語 [JA]": {
         "values": ["off", "on"],
