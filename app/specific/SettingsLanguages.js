@@ -153,7 +153,7 @@ function Languages_init() {
 function Languages_exit() {
     document.body.removeEventListener("keydown", Languages_handleKeyDown);
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
-    Settings_ScrollTable();
+    Settings_ScrollTableReset();
     Main_ShowElement('settings_main');
     Main_HideElement('settings_lang');
     Languages_RemoveinputFocus();
