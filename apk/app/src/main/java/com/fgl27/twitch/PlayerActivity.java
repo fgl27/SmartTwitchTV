@@ -234,7 +234,7 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setPlayer(player[position]);
         }
 
-        player[position].setMediaItem(
+        player[position].setMediaSource(
                 mediaSourcePlaying[position] != null ?
                         mediaSourcePlaying[position] :
                         Tools.buildMediaSource(uri, dataSourceFactory, mwhocall, mLowLatency),
@@ -281,7 +281,7 @@ public class PlayerActivity extends Activity {
 
         player[position].setPlayWhenReady(false);
 
-        player[position].setMediaItem(mediaurireset);
+        player[position].setMediaSource(mediaurireset);
         player[position].prepare();
 
         releasePlayer(position);
