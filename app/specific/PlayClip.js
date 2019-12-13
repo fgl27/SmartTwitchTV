@@ -18,6 +18,7 @@ var PlayClip_state = 0;
 var PlayClip_STATE_PLAYING = 1;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 2000;
+var PlayClip_loadData410 = false;
 
 var PlayClip_jumpTimers = [0, 5];
 var PlayClip_DurationSeconds = 0;
@@ -145,6 +146,10 @@ function PlayClip_GetStreamerInfoSuccess(response) {
 }
 
 function PlayClip_loadData() {
+    if (PlayClip_loadData410) {
+        PlayClip_loadDataSuccess410();
+        return;
+    }
     PlayClip_loadingDataTry = 0;
     PlayClip_loadingDataTimeout = 2000;
     PlayClip_loadDataRequest();
@@ -164,14 +169,11 @@ function PlayClip_loadDataRequest() {
     if (xmlHttp.status === 200) {
         PlayClip_QualityGenerate(xmlHttp.responseText);
     } else if (xmlHttp.status === 410) { //Workaround for future 410 issue
-        PlayClip_qualities = [];
-        PlayClip_qualities.push({
-            'id': 'source | mp4',
-            'url': ChannelClip_playUrl2
-        });
-
-        PlayClip_state = PlayClip_STATE_PLAYING;
-        PlayClip_qualityChanged();
+        PlayClip_loadData410 = true;
+        window.setTimeout(function() {
+            PlayClip_loadData410 = false;
+        }, 60 * 60 * 1000);//try again after 1h
+        PlayClip_loadDataSuccess410();
     } else {
         PlayClip_loadDataError();
     }
@@ -200,6 +202,17 @@ function PlayClip_loadDataSuccessFake() {
         'url': 'https://fake'
     },
     ];
+    PlayClip_state = PlayClip_STATE_PLAYING;
+    PlayClip_qualityChanged();
+}
+
+function PlayClip_loadDataSuccess410() {
+    PlayClip_qualities = [];
+    PlayClip_qualities.push({
+        'id': 'source | mp4',
+        'url': ChannelClip_playUrl2
+    });
+
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
 }
