@@ -994,8 +994,9 @@ public class PlayerActivity extends Activity {
 
                     netActivity[mainPlayer] = 0L;
                     if (player[mainPlayer] != null)
-                        value += String.format(Locale.US, "%d", player[mainPlayer].getTotalBufferedDuration());
-                    else value += "0";
+                        value += String.format(Locale.US, "%d", player[mainPlayer].getTotalBufferedDuration()) + "," +
+                            String.format(Locale.US, "%d", player[mainPlayer].getCurrentLiveOffset());
+                    else value += "0,0";
                 }
             });
             return result.get();

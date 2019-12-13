@@ -315,4 +315,11 @@ function en_USLang() {
     STR_410_FEATURING = "Third party app are current without access for this featuring.";
     STR_CLICK_UNFALLOW = "(Click to unfallow)";
     STR_CLICK_FALLOW = "(Click to fallow)";
+    STR_TODAY = " Today)";
+    STR_DROOPED_FRAMES = "Skipped frames: ";
+    STR_BUFFER_HEALT = " Buffer Size: ";
+    STR_AVGMB = " Avg) Mb";
+    STR_NET_ACT = "Net Activity: ";
+    STR_NET_SPEED = "Net Speed:";
+    STR_LATENCY = "Latency To Broadcaster: ";
 }
