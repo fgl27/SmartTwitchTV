@@ -1277,7 +1277,7 @@ function Play_UpdateStatus(mwhocall) {
                 value = Android.getVideoQuality();
                 if (value !== null && value !== undefined) Play_getVideoQuality(value);
             }
-
+            Play_StatusL(Android.getVideoStatus());
         } else if (mwhocall === 2) {
 
             if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality');
@@ -1285,10 +1285,10 @@ function Play_UpdateStatus(mwhocall) {
                 value = Android.getVideoQuality();
                 if (value !== null && value !== undefined) Play_getVideoQuality(value);
             }
+            Play_Status(Android.getVideoStatus());
+        } else Play_Status(Android.getVideoStatus());
 
-        }
 
-        Play_Status(Android.getVideoStatus());
     } else Play_StatusFake();
 }
 
@@ -1324,7 +1324,7 @@ function Play_RefreshWatchingtime() {
             else Play_SetHtmlQuality('stream_quality');
         }
 
-        if (Main_IsNotBrowser) Play_Status(Android.getVideoStatus());
+        if (Main_IsNotBrowser) Play_StatusL(Android.getVideoStatus());
         else Play_StatusFake();
     }
 }
@@ -1335,13 +1335,25 @@ function Play_StatusFake() {
         " Buffer health: 22.22 s");
 }
 
+//TODO improve make one singular func from Play_Status & Play_StatusL
+// Not doing it for performance
 function Play_Status(value) {
     value = value.split(',');
 
-    Main_innerHTML("stream_status", "Net Speed:" + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
-        " (" + value[3] + " Avg) Mbps" + STR_BR + "Net Activity: " + Play_getMbps(value[4]) + " (" +
-        value[5] + " Avg) Mb" + STR_BR + "Drooped frames: " + value[0] + " (" + value[1] + " Today)" +
-        STR_BR + " Buffer health: " + Play_getBuffer(value[6]));
+    Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
+        " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +
+        value[5] + STR_AVGMB + STR_BR + STR_DROOPED_FRAMES + value[0] + " (" + value[1] + STR_TODAY +
+        STR_BR + STR_BUFFER_HEALT + Play_getBuffer(value[6]));
+}
+
+function Play_StatusL(value) {
+    value = value.split(',');
+
+    Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
+        " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +
+        value[5] + STR_AVGMB + STR_BR + STR_DROOPED_FRAMES + value[0] + " (" + value[1] + STR_TODAY +
+        STR_BR + STR_BUFFER_HEALT + Play_getBuffer(value[6]) +
+        STR_BR + STR_LATENCY + Play_getBuffer(value[7]));
 }
 
 function Play_getMbps(value) {
