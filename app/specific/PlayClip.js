@@ -209,7 +209,7 @@ function PlayClip_loadDataSuccessFake() {
 function PlayClip_loadDataSuccess410() {
     PlayClip_qualities = [];
     PlayClip_qualities.push({
-        'id': 'source | mp4',
+        'id': 'Auto | mp4',
         'url': ChannelClip_playUrl2
     });
 
@@ -421,7 +421,22 @@ function PlayClip_RefreshProgressBarr() {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 
     if (!Play_Status_Always_On) {
-        if (Main_IsNotBrowser) Play_VideoStatus(false);
+        if (Main_IsNotBrowser) {
+            Play_VideoStatus(false);
+
+            var value = Android.getVideoQuality();
+
+            if (PlayClip_quality.indexOf("Auto") !== -1 && value !== null && value !== undefined) {
+                value = value.split(',');
+
+                for (var i = 0; i < 2; i++) {
+                    value[i] = (value[i] !== null && value[i] !== 'null' && value[i] !== undefined) ? value[i] : '';
+                }
+
+                Main_textContent('stream_quality', value[0] + value[1] + " | Auto | mp4");
+            }
+
+        }
         else Play_VideoStatusTest();
     }
 }
