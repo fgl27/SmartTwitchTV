@@ -209,7 +209,7 @@ function PlayClip_loadDataSuccessFake() {
 function PlayClip_loadDataSuccess410() {
     PlayClip_qualities = [];
     PlayClip_qualities.push({
-        'id': 'Auto | mp4',
+        'id': 'Auto',
         'url': ChannelClip_playUrl2
     });
 
