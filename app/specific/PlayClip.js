@@ -411,7 +411,7 @@ function PlayClip_showPanel() {
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
     PlayExtra_ResetSpeed();
-    PlayClip_qualityDisplay();
+    Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality);
     Play_ForceShowPannel();
     Play_clearHidePanel();
     PlayClip_setHidePanel();
@@ -455,24 +455,6 @@ function PlayClip_qualityIndexReset() {
 
 function PlayClip_getQualitiesCount() {
     return PlayClip_qualities.length;
-}
-
-function PlayClip_qualityDisplay() {
-    if (PlayClip_getQualitiesCount() === 1) {
-        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "0";
-        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "0";
-    } else if (!PlayClip_qualityIndex) {
-        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "0.2";
-        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "1";
-    } else if (PlayClip_qualityIndex === PlayClip_getQualitiesCount() - 1) {
-        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "1";
-        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "0.2";
-    } else {
-        document.getElementById("control_arrow_up_" + Play_controlsQuality).style.opacity = "1";
-        document.getElementById("control_arrow_down" + Play_controlsQuality).style.opacity = "1";
-    }
-
-    PlayClip_SetHtmlQuality('controls_name_' + Play_controlsQuality);
 }
 
 function PlayClip_SetHtmlQuality(element) {
