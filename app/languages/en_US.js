@@ -316,7 +316,7 @@ function en_USLang() {
     STR_CLICK_UNFALLOW = "(Click to unfallow)";
     STR_CLICK_FALLOW = "(Click to fallow)";
     STR_TODAY = " Today)";
-    STR_DROOPED_FRAMES = "Skipped frames: ";
+    STR_DROOPED_FRAMES = "Skipped Frames: ";
     STR_BUFFER_HEALT = " Buffer Size: ";
     STR_AVGMB = " Avg) Mb";
     STR_NET_ACT = "Net Activity: ";
