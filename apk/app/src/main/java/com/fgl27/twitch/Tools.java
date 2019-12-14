@@ -304,9 +304,10 @@ public final class Tools {
 
         return String.format(Locale.US, "%s,%s,%d,%s",
                 format.height + "p",
-                (format.frameRate == Format.NO_VALUE ? "" : String.format(Locale.US, "%d", Math.round(format.frameRate))),
+                (format.frameRate == Format.NO_VALUE ? "" :
+                        String.format(Locale.US, "%d", Math.round(format.frameRate))),
                 format.bitrate,
-                mgetCodec(format.codecs));
+                (format.codecs != null ? mgetCodec(format.codecs) : null));
     }
 
     private static String mgetCodec(String codec) {
