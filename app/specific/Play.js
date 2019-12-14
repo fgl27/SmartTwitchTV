@@ -666,8 +666,8 @@ function Play_loadDataRequest() {
         Play_410ERROR = false;
     }
 
-    var xmlHttp;
     if (Main_IsNotBrowser) {
+        var xmlHttp;
 
         try {
             if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
@@ -701,43 +701,7 @@ function Play_loadDataRequest() {
             Play_loadDataError();
         }
 
-    } else {
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Play_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_loadingDataTry = 0;
-                    if (Play_isOn) Play_loadDataSuccess(xmlHttp.responseText);
-                } else if (xmlHttp.status === 403) { //forbidden access
-                    Play_loadDataErrorLog(xmlHttp);
-                    if (Main_IsNotBrowser) Play_ForbiddenLive();
-                    else Play_loadDataSuccessFake();
-                } else if (xmlHttp.status === 404) { //off line
-                    Play_loadDataErrorLog(xmlHttp);
-                    if (Main_IsNotBrowser) Play_CheckHostStart();
-                    else Play_loadDataSuccessFake();
-                } else {
-                    Play_loadDataErrorLog(xmlHttp);
-                    Play_loadDataError();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
-}
-
-function Play_loadDataErrorLog(xmlHttp) {
-    if (Main_isDebug) {
-        console.log(xmlHttp.status);
-        console.log(xmlHttp.responseText);
-    }
+    } else Play_loadDataSuccessFake();
 }
 
 function Play_loadDataError() {
@@ -1254,9 +1218,11 @@ function Play_ShowPanelStatus(mwhocall) {
     window.clearInterval(Play_ShowPanelStatusId);
     if (Play_Status_Always_On) {
 
-        Play_ShowPanelStatusId = window.setInterval(function() {
-            Play_UpdateStatus(mwhocall);
-        }, 1000);
+        if (Main_IsNotBrowser) {
+            Play_ShowPanelStatusId = window.setInterval(function() {
+                Play_UpdateStatus(mwhocall);
+            }, 1000);
+        } else Play_VideoStatusTest();
 
         Main_ShowElement('playsideinfo');
         Main_AddClass('playsideinfo', 'playsideinfofocus');
@@ -1265,31 +1231,14 @@ function Play_ShowPanelStatus(mwhocall) {
         Main_RemoveClass('playsideinfo', 'playsideinfofocus');
     }
 }
-//tdo cleac 
+
 function Play_UpdateStatus(mwhocall) {
-    if (Main_IsNotBrowser) {
-        var value = null;
+    var isLive = mwhocall === 1;
 
-        if (mwhocall === 1) {
+    if (isLive && Play_qualityPlaying.indexOf("Auto") !== -1) Play_getVideoQuality(false, Play_SetHtmlQuality);
+    else if (mwhocall === 2 && PlayVod_qualityPlaying.indexOf("Auto") !== -1) Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
 
-            if (Play_qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality');
-            else {
-                value = Android.getVideoQuality();
-                if (value !== null && value !== undefined) Play_getVideoQuality(value);
-            }
-            Play_StatusL(Android.getVideoStatus());
-        } else if (mwhocall === 2) {
-
-            if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality');
-            else {
-                value = Android.getVideoQuality();
-                if (value !== null && value !== undefined) Play_getVideoQuality(value);
-            }
-            Play_Status(Android.getVideoStatus());
-        } else Play_Status(Android.getVideoStatus());
-
-
-    } else Play_StatusFake();
+    Play_VideoStatus(isLive);
 }
 
 function Play_showPanel() {
@@ -1317,43 +1266,28 @@ function Play_RefreshWatchingtime() {
         (('00:00').indexOf(Play_created) !== -1 ? '00:00' : Play_streamLiveAt(Play_created)));
 
     if (!Play_Status_Always_On) {
-        if (Play_qualityPlaying.indexOf("Auto") !== -1 && Main_IsNotBrowser) {
-            var value = Android.getVideoQuality();
-
-            if (value !== null && value !== undefined) Play_getVideoQuality(value);
-            else Play_SetHtmlQuality('stream_quality');
-        }
-
-        if (Main_IsNotBrowser) Play_StatusL(Android.getVideoStatus());
-        else Play_StatusFake();
+        if (Main_IsNotBrowser) {
+            if (Play_qualityPlaying.indexOf("Auto") !== -1) Play_getVideoQuality(false, Play_SetHtmlQuality);
+            Play_VideoStatus(true);
+        } else Play_VideoStatusTest();
     }
 }
 
-function Play_StatusFake() {
-    Main_innerHTML("stream_status", "Net Speed:&nbsp;&nbsp;&nbsp;90.00 (90.00 Avg) Mbps" + STR_BR +
-        "Net Activity: 20.00 (20.00 Avg) Mb" + STR_BR + "Drooped frames: 100 (100 Today)" + STR_BR +
-        " Buffer health: 22.22 s");
+function Play_VideoStatusTest() {
+    Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' (150.00 Avg) Mbps' +
+        STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 Today)' +
+        STR_BR + STR_BUFFER_HEALT + Play_getBuffer(100.37 * 1000) +
+        STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000));
 }
 
-//TODO improve make one singular func from Play_Status & Play_StatusL
-// Not doing it for performance
-function Play_Status(value) {
-    value = value.split(',');
-
-    Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
-        " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +
-        value[5] + STR_AVGMB + STR_BR + STR_DROOPED_FRAMES + value[0] + " (" + value[1] + STR_TODAY +
-        STR_BR + STR_BUFFER_HEALT + Play_getBuffer(value[6]));
-}
-
-function Play_StatusL(value) {
-    value = value.split(',');
+function Play_VideoStatus(showLatency) {
+    var value = Android.getVideoStatus().split(',');
 
     Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
         " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +
         value[5] + STR_AVGMB + STR_BR + STR_DROOPED_FRAMES + value[0] + " (" + value[1] + STR_TODAY +
         STR_BR + STR_BUFFER_HEALT + Play_getBuffer(value[6]) +
-        STR_BR + STR_LATENCY + Play_getBuffer(value[7]));
+        (showLatency ? (STR_BR + STR_LATENCY + Play_getBuffer(value[7])) : ''));
 }
 
 function Play_getMbps(value) {
@@ -1368,7 +1302,14 @@ function Play_getBuffer(value) {
     return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
 }
 
-function Play_getVideoQuality(value) {
+function Play_getVideoQuality(forceCallback, callback) {
+    var value = Android.getVideoQuality();
+
+    if (value === null && value === undefined || forceCallback) {
+        callback('stream_quality');
+        return;
+    }
+
     value = value.split(',');
 
     for (var i = 0; i < value.length; i++) {

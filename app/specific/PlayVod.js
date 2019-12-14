@@ -295,8 +295,9 @@ function PlayVod_loadDataRequest() {
         Play_410ERROR = false;
     }
 
-    var xmlHttp;
+
     if (Main_IsNotBrowser) {
+        var xmlHttp;
 
         try {
             if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
@@ -310,24 +311,7 @@ function PlayVod_loadDataRequest() {
         }
         PlayVod_loadDataEnd(xmlHttp);
 
-    } else {
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Play_loadingDataTimeout;
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        if (state)
-            xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                PlayVod_loadDataEnd(xmlHttp);
-            }
-        };
-
-        xmlHttp.send(null);
-    }
+    } else PlayVod_loadDataSuccessFake();
 }
 
 function PlayVod_loadDataEnd(xmlHttp) {
@@ -604,15 +588,11 @@ function PlayVod_RefreshProgressBarr(show) {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
 
     if (!Play_Status_Always_On) {
-        if (Main_IsNotBrowser && PlayVod_qualityPlaying.indexOf("Auto") !== -1 && show) {
-            var value = Android.getVideoQuality();
+        if (Main_IsNotBrowser && PlayVod_qualityPlaying.indexOf("Auto") !== -1 && show)
+            Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
 
-            if (value !== null && value !== undefined) Play_getVideoQuality(value);
-            else PlayVod_SetHtmlQuality('stream_quality');
-        }
-
-        if (Main_IsNotBrowser) Play_Status(Android.getVideoStatus());
-        else Play_StatusFake();
+        if (Main_IsNotBrowser) Play_VideoStatus(false);
+        else Play_VideoStatusTest();
     }
 }
 

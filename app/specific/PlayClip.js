@@ -146,7 +146,7 @@ function PlayClip_GetStreamerInfoSuccess(response) {
 }
 
 function PlayClip_loadData() {
-    if (PlayClip_loadData410) {
+    if (PlayClip_loadData410 || !Main_IsNotBrowser) {
         PlayClip_loadDataSuccess410();
         return;
     }
@@ -421,8 +421,8 @@ function PlayClip_RefreshProgressBarr() {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 
     if (!Play_Status_Always_On) {
-        if (Main_IsNotBrowser) Play_Status(Android.getVideoStatus());
-        else Play_StatusFake();
+        if (Main_IsNotBrowser) Play_VideoStatus(false);
+        else Play_VideoStatusTest();
     }
 }
 
