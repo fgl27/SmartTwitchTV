@@ -114,7 +114,7 @@ function PlayClip_Start() {
 }
 
 function PlayClip_updateVodInfo() {
-    var theUrl = 'https://api.twitch.tv/kraken/videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
     BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError, false);
 }
 
@@ -130,7 +130,7 @@ function PlayClip_updateVodInfoError() {
 }
 
 function PlayClip_GetStreamerInfo() {
-    var theUrl = 'https://api.twitch.tv/kraken/channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
     BasehttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
 }

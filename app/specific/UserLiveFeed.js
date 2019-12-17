@@ -82,7 +82,7 @@ function UserLiveFeed_loadDataPrepare() {
 }
 
 function UserLiveFeed_loadChannels() {
-    var theUrl = 'https://api.twitch.tv/kraken/users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+    var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
 
     BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeed_loadChannelLive, UserLiveFeed_loadDataError, false);
@@ -135,7 +135,7 @@ function UserLiveFeed_loadChannelLive(responseText) {
 }
 
 function UserLiveFeed_loadChannelUserLive() {
-    var theUrl = 'https://api.twitch.tv/kraken/streams/';
+    var theUrl = Main_kraken_api + 'streams/';
 
     if (UserLiveFeed_token) {
         theUrl += 'followed?';

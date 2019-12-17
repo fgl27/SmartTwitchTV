@@ -215,7 +215,7 @@ function ScreensObj_InitVod() {
         highlightSTR: 'Vod_highlight',
         highlight: Main_getItemBool('Vod_highlight', false),
         periodPos: Main_getItemInt('vod_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/videos/top?limit=' + Main_ItemsLimitMax,
+        base_url: Main_kraken_api + 'videos/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                 '&sort=views&offset=' + this.offset + '&period=' + this.period[this.periodPos - 1] +
@@ -281,7 +281,7 @@ function ScreensObj_InitChannelVod() {
         highlightSTR: 'ChannelVod_highlight',
         highlight: Main_getItemBool('ChannelVod_highlight', false),
         periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
-        base_url: 'https://api.twitch.tv/kraken/channels/',
+        base_url: Main_kraken_api + 'channels/',
         set_url: function() {
             this.url = this.base_url +
                 encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitMax +
@@ -376,7 +376,7 @@ function ScreensObj_InitAGameVod() {
         highlightSTR: 'AGameVod_highlight',
         highlight: Main_getItemBool('AGameVod_highlight', false),
         periodPos: Main_getItemInt('AGameVod_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/videos/top?game=',
+        base_url: Main_kraken_api + 'videos/top?game=',
         set_url: function() {
             this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' +
                 Main_ItemsLimitMax + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
@@ -442,7 +442,7 @@ function ScreensObj_InitUserVod() {
         highlightSTR: 'UserVod_highlight',
         highlight: Main_getItemBool('UserVod_highlight', false),
         periodPos: Main_getItemInt('UserVod_periodPos', 1),
-        base_url: 'https://api.twitch.tv/kraken/videos/followed?limit=' + Main_ItemsLimitMax,
+        base_url: Main_kraken_api + 'videos/followed?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
 
@@ -551,7 +551,7 @@ function ScreensObj_InitLive() {
         object: 'streams',
         key_pgDown: Main_Featured,
         key_pgUp: Main_Clip,
-        base_url: 'https://api.twitch.tv/kraken/streams?limit=' + Main_ItemsLimitMax,
+        base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + '&offset=' + this.offset +
@@ -579,7 +579,7 @@ function ScreensObj_InitSearchLive() {
         table: 'stream_table_search_live',
         screen: Main_SearchLive,
         object: 'streams',
-        base_url: 'https://api.twitch.tv/kraken/search/streams?limit=' + Main_ItemsLimitMax + '&query=',
+        base_url: Main_kraken_api + 'search/streams?limit=' + Main_ItemsLimitMax + '&query=',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + encodeURIComponent(Main_values.Search_data) +
@@ -621,7 +621,7 @@ function ScreensObj_InitUserLive() {
         object: 'streams',
         key_pgDown: Main_UserHost,
         key_pgUp: Main_UserChannels,
-        base_url: 'https://api.twitch.tv/kraken/streams/',
+        base_url: Main_kraken_api + 'streams/',
         loadChannelOffsset: 0,
         followerChannels: '',
         followerChannelsDone: false,
@@ -644,7 +644,7 @@ function ScreensObj_InitUserLive() {
                         'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
                 } else {
                     //User fallowed channels list is not done, load fallowed channels
-                    this.url = 'https://api.twitch.tv/kraken/users/' +
+                    this.url = Main_kraken_api + 'users/' +
                         encodeURIComponent(AddUser_UsernameArray[0].id) +
                         '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.loadChannelOffsset +
                         '&sortby=created_at';
@@ -771,7 +771,7 @@ function ScreensObj_InitAGame() {
         object: 'streams',
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
-        base_url: 'https://api.twitch.tv/kraken/streams?game=',
+        base_url: Main_kraken_api + 'streams?game=',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) +
@@ -826,7 +826,7 @@ function ScreensObj_InitFeatured() {
         screen: Main_Featured,
         key_pgDown: Main_games,
         key_pgUp: Main_Live,
-        base_url: 'https://api.twitch.tv/kraken/streams/featured?limit=' + Main_ItemsLimitMax,
+        base_url: Main_kraken_api + 'streams/featured?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.url = this.base_url + '&offset=' + this.offset +
                 (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
@@ -946,7 +946,7 @@ function ScreensObj_InitClip() {
         key_pgDown: Main_Live,
         key_pgUp: Main_Vod,
         periodPos: Main_getItemInt('Clip_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/clips/top?limit=' + Main_ItemsLimitMax,
+        base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.url = this.base_url + '&period=' + this.period[this.periodPos - 1] +
                 (this.cursor ? '&cursor=' + this.cursor : '') +
@@ -978,7 +978,7 @@ function ScreensObj_InitChannelClip() {
         screen: Main_ChannelClip,
         key_pgUp: Main_ChannelVod,
         periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/clips/top?channel=',
+        base_url: Main_kraken_api + 'clips/top?channel=',
         set_url: function() {
             this.url = this.base_url + encodeURIComponent(Main_values.Main_selectedChannel) +
                 '&limit=' + Main_ItemsLimitMax + '&period=' +
@@ -1013,7 +1013,7 @@ function ScreensObj_InitAGameClip() {
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         periodPos: Main_getItemInt('AGameClip_periodPos', 2),
-        base_url: 'https://api.twitch.tv/kraken/clips/top?game=',
+        base_url: Main_kraken_api + 'clips/top?game=',
         set_url: function() {
             this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
                 '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
@@ -1106,7 +1106,7 @@ function ScreensObj_InitGame() {
         key_pgUp: Main_Featured,
         object: 'top',
         useHelix: false,
-        base_url: 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax,
+        base_url: Main_kraken_api + 'games/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset && !this.useHelix) this.dataEnded = true;
             this.url = this.base_url + (this.useHelix ? '&after=' + this.after : '&offset=' + this.offset);
@@ -1145,7 +1145,7 @@ function ScreensObj_InitGame() {
         },
         resetHelix: function() {
             this.useHelix = false;
-            this.base_url = 'https://api.twitch.tv/kraken/games/top?limit=' + Main_ItemsLimitMax;
+            this.base_url = Main_kraken_api + 'games/top?limit=' + Main_ItemsLimitMax;
             this.object = 'top';
             this.addCell = Base_Game_obj.addCell;
         },
@@ -1206,7 +1206,7 @@ function ScreensObj_InitSearchGames() {
         OldUserName: '',
         object: 'games',
         lastData: '',
-        base_url: 'https://api.twitch.tv/kraken/search/games?query=',
+        base_url: Main_kraken_api + 'search/games?query=',
         set_url: function() {
             this.dataEnded = true;
             this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
@@ -1273,7 +1273,7 @@ function ScreensObj_InitUserChannels() {
         key_pgDown: Main_UserLive,
         key_pgUp: Main_UserVod,
         key_pgUpNext: Main_usergames,
-        base_url: 'https://api.twitch.tv/kraken/users/',
+        base_url: Main_kraken_api + 'users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].id) +
@@ -1321,7 +1321,7 @@ function ScreensObj_InitSearchChannels() {
         table: 'stream_table_search_channel',
         screen: Main_SearchChannels,
         object: 'channels',
-        base_url: 'https://api.twitch.tv/kraken/search/channels?limit=' + Main_ItemsLimitMax + '&query=',
+        base_url: Main_kraken_api + 'search/channels?limit=' + Main_ItemsLimitMax + '&query=',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + encodeURIComponent(Main_values.Search_data) +

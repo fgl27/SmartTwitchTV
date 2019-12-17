@@ -519,7 +519,7 @@ function Play_ResumeAfterOnline(forced) {
 }
 
 function Play_updateStreamInfoStart() {
-    var theUrl = 'https://api.twitch.tv/kraken/streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
     BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, false);
 }
 
@@ -589,7 +589,7 @@ function Play_updateStreamInfo() {
         PlayExtra_RefreshAutoRequest(false);
     }
 
-    var theUrl = 'https://api.twitch.tv/kraken/streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
     BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError, false);
 }
 
