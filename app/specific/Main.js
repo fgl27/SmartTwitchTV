@@ -68,6 +68,7 @@ var Main_values = {
     "DeviceCheck": false,
 };
 
+var Main_Force = "4mv6wki5h1ko";
 var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
 var Main_newUsercode = 0;
@@ -83,6 +84,7 @@ var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
 var Main_FirstLoad = false;
 var Main_RunningTime = 0;
+var Main_Hash = "ncx6brgo";
 
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
@@ -124,6 +126,7 @@ var proxyurl = "https://cors-anywhere.herokuapp.com/";
 var Main_updateUserFeedId;
 var Main_vp9supported = false;
 var Main_SupportsAvc1High = false;
+var Main_Fix = "kimne78kx3";
 //Variable initialization end
 
 // this function will be called only once the first time the app startup
@@ -1167,6 +1170,10 @@ function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
 
     } catch (e) {}
 }
+
+var Main_Headers_Back = [
+    [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force]
+];
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
 var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];

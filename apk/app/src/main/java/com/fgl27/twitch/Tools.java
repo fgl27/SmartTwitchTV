@@ -22,14 +22,14 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
+import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -61,8 +61,11 @@ public final class Tools {
 
     public static String readUrlHLS(Context context, String url) {
         try {
-            com.google.gson.JsonObject JSON =
-                    Ion.with(context).load(url).asJsonObject().get();
+            JsonObject JSON =
+                    Ion.with(context)
+                            .load(url)
+                            .asJsonObject()
+                            .get();
             if (JSON != null) {
                 return JsonObToString(200, JSON.toString());
             }
@@ -119,9 +122,11 @@ public final class Tools {
         }
     }
 
-    public static String readwritedUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String Method) {
+    //For other then get methods
+    public static String MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
         HttpURLConnection urlConnection = null;
         HEADERS[2][1] = access_token;
+        HEADERS[0][1] = overwriteID != null ? overwriteID : CLIENTID;
 
         try {
             urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
@@ -132,9 +137,18 @@ public final class Tools {
             urlConnection.setConnectTimeout(timeout);
             urlConnection.setReadTimeout(timeout);
 
-            if (Method != null) {//If Method != null this will use the default get method, same as readUrl
+            if (Method != null) {//If Method == null this will use the default get method, same as readUrl
                 urlConnection.setRequestMethod(Method);
                 urlConnection.setDoOutput(true);
+            }
+
+            if (postMessage != null) {//If postMessage == null we don't send a thing
+                OutputStream mOutputStream = urlConnection.getOutputStream();
+                OutputStreamWriter mOutputStreamWriter = new OutputStreamWriter(mOutputStream, StandardCharsets.UTF_8);
+                mOutputStreamWriter.write(postMessage);
+                mOutputStreamWriter.flush();
+                mOutputStreamWriter.close();
+                mOutputStream.close();
             }
 
             urlConnection.connect();
@@ -157,7 +171,7 @@ public final class Tools {
                 return null;
             }
         } catch (IOException e) {
-            Log.w(TAG, "readUrl IOException ", e);
+            Log.w(TAG, "postUrl IOException ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -284,15 +298,10 @@ public final class Tools {
     }
 
     private static String JsonObToString(int status, String responseText) {
-        JSONObject ob = new JSONObject();
-        try {
-            ob.put("status", status);
-            ob.put("responseText", responseText);
-            return ob.toString();
-        } catch (JSONException e) {
-            Log.w(TAG, "JsonObToString JSONException ", e);
-            return null;
-        }
+        JsonObject JSON = new JsonObject();
+        JSON.addProperty("status", status);
+        JSON.addProperty("responseText", responseText);
+        return JSON.toString();
     }
 
     public static String mgetVideoQuality(SimpleExoPlayer player) {

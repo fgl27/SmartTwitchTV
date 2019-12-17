@@ -871,14 +871,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String mreadwritedUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String Method) {
-            return Tools.readwritedUrl(urlString, timeout, HeaderQuantity, access_token, Method);
+        public String mreadUrlHLS(String url) {
+            return Tools.readUrlHLS(mwebContext, url);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String mreadUrlHLS(String url) {
-            return Tools.readUrlHLS(mwebContext, url);
+        public String mMethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
+            return Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -995,7 +995,7 @@ public class PlayerActivity extends Activity {
                     netActivity[mainPlayer] = 0L;
                     if (player[mainPlayer] != null)
                         value += String.format(Locale.US, "%d", player[mainPlayer].getTotalBufferedDuration()) + "," +
-                            String.format(Locale.US, "%d", player[mainPlayer].getCurrentLiveOffset());
+                                String.format(Locale.US, "%d", player[mainPlayer].getCurrentLiveOffset());
                     else value += "0,0";
                 }
             });
