@@ -553,7 +553,7 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
 function AddCode_BasereadwritedUrl(theUrl, Method, HeaderQuatity, access_token, callbackready) {
     //remove the try after some app updates
     try {
-        var xmlHttp = Android.mreadwritedUrl(theUrl, 5000, HeaderQuatity, access_token, Method);
+        var xmlHttp = Android.mMethodUrl(theUrl, 5000, HeaderQuatity, access_token, null, null, Method);
 
         if (xmlHttp) callbackready(JSON.parse(xmlHttp));
         else callbackready(xmlHttp);
