@@ -220,6 +220,7 @@ function PlayVod_updateVodInfoPannel(response) {
 }
 
 function PlayVod_Resume() {
+    UserLiveFeed_Hide(true);
     PlayVod_isOn = true;
     Play_clearPause();
     Play_showBufferDialog();
