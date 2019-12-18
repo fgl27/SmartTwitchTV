@@ -145,8 +145,10 @@ js_jshint() {
 
 	jsh_check="$(jshint "$mainfolder"/release/master.js)";
 	if [ ! -z "$jsh_check" ]; then
-		echo -e "${bldbldred}JSHint erros or warnings foud:\\n"
-		echo -e "$jsh_check"
+		echo -e "${bldred}	JSHint erros or warnings found:\\n"
+		echo -e "${bldred}	$jsh_check"
+		echo -e "\\n${bldred}	Fix the problems and try the release maker again\\n"
+		exit;
 	else
 		echo -e "${bldblu}JSHint Test finished no errors or warnings found\\n"
 		cp -rf "$mainfolder"/release/master.js "$mainfolder"/release/githubio/js/master_uncompressed.js;
