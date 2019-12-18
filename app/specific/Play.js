@@ -328,9 +328,10 @@ function Play_Start() {
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
 }
 
-function Play_Warn(text) { // jshint ignore:line
-    Play_showWarningDialog(text);
-}
+// To Force a warn, not used regularly so keep commented out
+//function Play_Warn(text) {
+//    Play_showWarningDialog(text);
+//}
 
 var Play_CheckIfIsLiveStartCounter = 0;
 var Play_CheckIfIsLiveStartChannel = 0;
@@ -419,13 +420,13 @@ function Play_CheckIfIsLiveLink() {
     else Play_CheckIfIsLiveLinkError();
 }
 
-function Play_CheckResume() { // jshint ignore:line
+function Play_CheckResume() { // Called only by JAVA
     if (Play_isOn) Play_Resume();
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
 }
 
-function Play_CheckResumeForced(isPicturePicture) { // jshint ignore:line
+function Play_CheckResumeForced(isPicturePicture) { // Called only by JAVA
     Play_RefreshAutoTry = 0;
     PlayExtra_RefreshAutoTry = 0;
 
@@ -888,7 +889,7 @@ function Play_extractStreamDeclarations(input) {
 
     var myRegexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g;
     var marray;
-    while (marray = myRegexp.exec(input)) result.push(marray[0]); // jshint ignore:line 
+    while ((marray = myRegexp.exec(input))) result.push(marray[0]);
 
     return result;
 }
@@ -957,7 +958,7 @@ function Play_loadChat() {
 }
 
 //called by android PlayerActivity
-function Play_PlayerCheck(mwhocall) { // jshint ignore:line
+function Play_PlayerCheck(mwhocall) { // Called only by JAVA
     if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
     else if (mwhocall === 1) {
 
@@ -1795,7 +1796,7 @@ function Play_qualityIndexReset() {
 }
 
 //called by android PlayerActivity
-function Play_PannelEndStart(PlayVodClip) { // jshint ignore:line
+function Play_PannelEndStart(PlayVodClip) { // Called only by JAVA
     if (PlayVodClip === 1) { //live
         PlayExtra_PicturePicture = false;
         PlayExtra_selectedChannel = '';
@@ -1863,7 +1864,7 @@ function Play_CheckHost(responseText) {
     Play_PlayEndStart(1);
 }
 
-function Play_UpdateDuration(mwhocall, duration) { // jshint ignore:line
+function Play_UpdateDuration(mwhocall, duration) { // Called only by JAVA
     if (duration > 0) {
         if (mwhocall === 2) PlayVod_UpdateDuration(duration);
         else if (mwhocall === 3) PlayClip_UpdateDuration(duration);
