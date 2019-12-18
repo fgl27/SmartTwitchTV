@@ -39,23 +39,30 @@ mainfolder="$(dirname ""$(dirname "$0")"")";
 
 cd "$mainfolder" || exit
 
+master_start=$(echo "$a" | sed -n '/APISTART/,/APIMID/p' release/api.js);
+master_end=$(echo "$a" | sed -n '/APICENTER/,/APIEND/p' release/api.js);
+
 # jshint indent all the *.js code
 js_jshint() {
-        array=( "$@" );
+	array=( "$@" );
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			cat "$x" >> "$mainfolder"/release/master.js &
+			cat "$x" >> "$mainfolder"/release/master.js
 		done
 		cd - &> /dev/null || exit;
 	done
 
+	echo "$master_end" >> "$mainfolder"/release/master.js;
+
 	jsh_check="$(jshint "$mainfolder"/release/master.js)";
 	if [ ! -z "$jsh_check" ]; then
-		echo -e "${bldbldred}JSHint erros or warnings foud:\\n"
-		echo -e "$jsh_check"
+		echo -e "${bldred}	JSHint erros or warnings found:\\n"
+		echo -e "${bldred}	$jsh_check"
+		echo -e "\\n${bldred}	Fix the problems and try the release maker again\\n"
+		exit;
 	else
-		echo -e "${bldblu}JSHint Test finished no errors or warnings found\\n"
+		echo -e "${bldblu}	JSHint Test finished no errors or warnings found"
 	fi;
 }
 
@@ -64,7 +71,8 @@ if which 'jshint' >/dev/null ; then
 		npm install jshint -g
 	fi;
 	echo -e "${bldgrn}\nJSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, ReconnectingWebSocket, punycode */' > "$mainfolder"/release/master.js;
+	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, ReconnectingWebSocket, punycode, smartTwitchTV */' > "$mainfolder"/release/master.js;
+	echo "$master_start" >> "$mainfolder"/release/master.js;
 	js_jshint "${js_folders[@]}";
 else
 	echo -e "\\n${bldred}can't run jshint because it is not installed";

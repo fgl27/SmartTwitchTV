@@ -470,7 +470,7 @@ public class PlayerActivity extends Activity {
         IsonStop = false;
         //The app was close but shouldCallJavaCheck is true that means the TV enter standby so call java here
         if (player[mainPlayer] == null && shouldCallJavaCheck && mwebview != null && alredystarted) {
-            mwebview.loadUrl("javascript:Play_CheckResume()");
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResume()");
         }
         alredystarted = true;
     }
@@ -489,7 +489,7 @@ public class PlayerActivity extends Activity {
 
         //Kill playclip if playing or if on end dialog
         if (player[mainPlayer] != null && mwebview != null && alredystarted && mwhocall == 3) {
-            mwebview.loadUrl("javascript:Play_CheckResume()");
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResume()");
         }
 
         updateResumePosition(0);
@@ -1046,7 +1046,7 @@ public class PlayerActivity extends Activity {
                         }
 
                         if (mwhocall > 1) {
-                            mwebview.loadUrl("javascript:Play_UpdateDuration(" +
+                            mwebview.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" +
                                     mwhocall + "," + player[position].getDuration() + ")");
                         }
                     }
@@ -1076,9 +1076,9 @@ public class PlayerActivity extends Activity {
             ClearPlayer(position);
             AudioSource = 1;
 
-            mwebview.loadUrl("javascript:PlayExtra_End(" + mswitch + ")");
+            mwebview.loadUrl("javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")");
 
-        } else mwebview.loadUrl("javascript:Play_PannelEndStart(" + mwhocall + ")");
+        } else mwebview.loadUrl("javascript:smartTwitchTV.Play_PannelEndStart(" + mwhocall + ")");
     }
 
     public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
@@ -1101,7 +1101,7 @@ public class PlayerActivity extends Activity {
                     mediaSourcePlaying[position] = mediaSourcesAuto[position];
                     initializePlayer(position);
                 } else
-                    mwebview.loadUrl("javascript:Play_CheckResumeForced(" + (mainPlayer != position) + ")");
+                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ")");
 
             } else initializePlayer(position);
 
@@ -1113,7 +1113,7 @@ public class PlayerActivity extends Activity {
         } else if (PlayerCheckCounter[position] > 1) {
 
             // Second if not in auto mode use js to check if is possible to drop quality
-            mwebview.loadUrl("javascript:Play_PlayerCheck(" + mwhocall + ")");
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_PlayerCheck(" + mwhocall + ")");
 
         } else {
             //First try and not auto mode only restart the player

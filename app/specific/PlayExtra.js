@@ -214,7 +214,7 @@ function PlayExtra_HideChat() {
     Main_HideElement('chat_container2_name');
 }
 
-function PlayExtra_End(doSwitch) { // jshint ignore:line
+function PlayExtra_End(doSwitch) { // Called only by JAVA
     //Some player ended switch and warn
     if (doSwitch) PlayExtra_SwitchPlayer();
 

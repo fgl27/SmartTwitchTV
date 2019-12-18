@@ -131,7 +131,7 @@ var Main_Fix = "kimne78kx3";
 //Variable initialization end
 
 // this function will be called only once the first time the app startup
-Main_Start();
+if (!Main_isReleased) Main_Start();
 
 function Main_Start() {
     if (document.readyState === "loading") {
