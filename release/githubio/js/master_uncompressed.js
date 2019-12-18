@@ -5791,6 +5791,7 @@
     }
 
     function Play_Resume() {
+        UserLiveFeed_Hide(true);
         Play_watching_time = new Date().getTime();
         Play_isOn = true;
         Play_clearPause();
@@ -8487,6 +8488,7 @@
     }
 
     function PlayVod_Resume() {
+        UserLiveFeed_Hide(true);
         PlayVod_isOn = true;
         Play_clearPause();
         Play_showBufferDialog();
