@@ -487,6 +487,7 @@ function Play_RefreshAutoError(UseAndroid) {
 }
 
 function Play_Resume() {
+    UserLiveFeed_Hide(true);
     Play_watching_time = new Date().getTime();
     Play_isOn = true;
     Play_clearPause();
