@@ -366,6 +366,14 @@
             STR_DOT + STR_CONTROLS_PLAY_6 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_13 + STR_BR + STR_BR +
 
+            STR_DIV_TITLE + STR_CHAT + '</div>' +
+            STR_DIV_MIDLE_LEFT +
+            STR_DOT + STR_CONTROLS_PLAY_7 + STR_BR +
+            STR_DOT + STR_CONTROLS_PLAY_8 + STR_BR +
+            STR_DOT + STR_CONTROLS_PLAY_9 + STR_BR +
+            STR_DOT + STR_CONTROLS_PLAY_10 + STR_BR +
+            STR_DOT + STR_CONTROLS_PLAY_11 + STR_BR + STR_BR +
+
             STR_DIV_TITLE + STR_PICTURE_PICTURE + '</div>' +
             STR_DIV_MIDLE_LEFT +
             STR_DOT + STR_PICTURE_CONTROLS1 + STR_BR +
@@ -379,15 +387,7 @@
             STR_DOT + STR_PICTURE_CONTROLS8 + STR_BR +
             STR_DOT + STR_PICTURE_CONTROLS9 + STR_BR +
             STR_DOT + STR_PICTURE_CONTROLS10 + STR_BR +
-            STR_DOT + STR_PICTURE_CONTROLS11 + STR_BR +
-
-            STR_DIV_TITLE + STR_CHAT + ':</div>' +
-            STR_DIV_MIDLE_LEFT +
-            STR_DOT + STR_CONTROLS_PLAY_7 + STR_BR +
-            STR_DOT + STR_CONTROLS_PLAY_8 + STR_BR +
-            STR_DOT + STR_CONTROLS_PLAY_9 + STR_BR +
-            STR_DOT + STR_CONTROLS_PLAY_10 + STR_BR +
-            STR_DOT + STR_CONTROLS_PLAY_11;
+            STR_DOT + STR_PICTURE_CONTROLS11;
 
         STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
             STR_DIV_TITLE + STR_GENERAL + '</div>' +
@@ -427,7 +427,8 @@
             STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
-    } //Spacing for reease maker not trow erros frm jshint
+    }
+    //Spacing for reease maker not trow erros frm jshint
     function en_USLang() {
         // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
         Main_IsDayFirst = false;
@@ -555,7 +556,7 @@
         STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
         STR_CONTROLS_PLAY_5 = "Change video quality: use the player bottom controls Quality";
         STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
-        STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right" + STR_GUIDE_EXTRA + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right or key number 3" + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or " + STR_KEY_UP_DOWN + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down" + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
@@ -665,7 +666,6 @@
         STR_END_DIALOG_SETTINGS = "End dialog";
         STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that it will take for the stream/video/clip to end dialog taking action";
         STR_END_DIALOG_DISABLE = "Disable the timer";
-        STR_CHAT = "Chat Show";
         STR_CHAT_SIZE = "Chat size";
         STR_CHAT_POS = "Chat position";
         STR_CHAT_VIDEO_MODE = "Video mode";
@@ -701,9 +701,9 @@
         STR_PICTURE_LIVE_FEED = 'Hold enter to start "Picture in Picture Mode" then use D-Pad left to move, right to resize or down to change videos';
         STR_AUDIO_SOURCE = "Audio source";
         STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";
-        STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter to start";
-        STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter above a stream in live feed";
-        STR_PICTURE_CONTROLS3 = "Change big window content: simple click above a stream in live feed";
+        STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 2 to start";
+        STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter or press key 2 after selecting a stream from live feed";
+        STR_PICTURE_CONTROLS3 = "Change big window content: simple key enter click after selecting a stream from live feed";
         STR_PICTURE_CONTROLS4 = "Change content between windows: D-pad down big becomes small and vice versa";
         STR_PICTURE_CONTROLS5 = "Change small window position: D-pad left";
         STR_PICTURE_CONTROLS6 = "Change small window size: D-pad right";
@@ -815,6 +815,7 @@
     var KEY_PG_DOWN = 34;
     var KEY_PG_UP = 33;
     var KEY_REFRESH = 50; //key #2
+    var KEY_CHAT = 51; //key #3
 
     var KEY_RETURN = 49; //key #1
     var KEY_RETURN_Q = 81; //key q
@@ -829,6 +830,10 @@
 
     var KEY_MEDIA_FAST_FORWARD = 228;
     var KEY_MEDIA_REWIND = 227;
+
+    var KEY_A = 65;
+    var KEY_C = 67;
+    var KEY_E = 69;
     //Variable initialization
     var AddCode_loadingDataTry = 0;
     var AddCode_loadingDataTryMax = 5;
@@ -3067,7 +3072,7 @@
 
     var Main_stringVersion = '2.0';
     var Main_stringVersion_Min = '.100';
-    var Main_minversion = '121719';
+    var Main_minversion = '122419';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_ClockOffset = 0;
@@ -3394,7 +3399,9 @@
         Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay(Date.now() - Main_RunningTime));
     }
 
-    function Main_showAboutDialog() {
+    function Main_showAboutDialog(removeEventListener, addEventListener) {
+        document.body.removeEventListener("keydown", removeEventListener);
+        document.body.addEventListener("keydown", addEventListener, false);
         Main_HideControlsDialog();
         Main_AboutDialogUpdateTime();
         Main_ShowElement('dialog_about');
@@ -3416,7 +3423,9 @@
         Settings_init();
     }
 
-    function Main_showControlsDialog() {
+    function Main_showControlsDialog(removeEventListener, addEventListener) {
+        document.body.removeEventListener("keydown", removeEventListener);
+        document.body.addEventListener("keydown", addEventListener, false);
         Main_HideAboutDialog();
         Main_ShowElement('dialog_controls');
     }
@@ -4833,6 +4842,9 @@
                     if (!Play_isEndDialogVisible()) Play_KeyPause(3);
                     break;
                 case KEY_REFRESH:
+                    if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                    break;
+                case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(3);
                     break;
                 case KEY_PG_UP:
@@ -7185,11 +7197,11 @@
 
         if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
         else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) UserLiveFeed_Hide();
-        else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+        else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
             if (is_vod) PlayVod_hidePanel();
             else Play_hidePanel();
         } else {
-            if (Play_isVodDialogShown() && Play_ExitDialogVisible()) {
+            if (Play_isVodDialogVisible() && Play_ExitDialogVisible()) {
                 Play_HideVodDialog();
                 PlayVod_PreshutdownStream(false);
                 Play_exitMain();
@@ -7254,15 +7266,17 @@
     function Play_handleKeyUp(e) {
         if (e.keyCode === KEY_ENTER) {
             Play_handleKeyUpClear();
-            if (!PlayExtra_clear) {
-                var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-                if (doc === null) UserLiveFeed_ResetFeedId();
-                else Play_OpenLiveFeed(true, doc);
-            }
+            if (!PlayExtra_clear) Play_OpenLiveFeedCheck();
         } else if (e.keyCode === KEY_UP) {
             Play_handleKeyUpEndClear();
             if (!Play_EndUpclear) Play_EndDialogUpDown();
         }
+    }
+
+    function Play_OpenLiveFeedCheck() {
+        var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+        if (doc === null) UserLiveFeed_ResetFeedId();
+        else Play_OpenLiveFeed(true, doc);
     }
 
     function Play_OpenLiveFeed(ResetFeed, doc) {
@@ -7534,6 +7548,9 @@
                     if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                     break;
                 case KEY_REFRESH:
+                    Play_OpenLiveFeedCheck();
+                    break;
+                case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(1);
                     break;
                 case KEY_PG_UP:
@@ -9093,7 +9110,7 @@
         }, 1000);
     }
 
-    function Play_isVodDialogShown() {
+    function Play_isVodDialogVisible() {
         return Main_isElementShowing('dialog_vod_start');
     }
 
@@ -9134,7 +9151,7 @@
     }
 
     function PlayVod_handleKeyDown(e) {
-        if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
+        if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogVisible()) {
             switch (e.keyCode) {
                 case KEY_STOP:
                     Play_CleanHideExit();
@@ -9167,7 +9184,7 @@
                         Play_ChatPosition();
                         Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
                         Play_controls[Play_controlsChatPos].setLable();
-                    } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
                         else if (!PlayVod_PanelY) {
@@ -9175,7 +9192,7 @@
                             PlayVod_ProgressBaroffset = 2500;
                         }
                         PlayVod_setHidePanel();
-                    } else if (Play_isVodDialogShown()) {
+                    } else if (Play_isVodDialogVisible()) {
                         PlayVod_IconsRemoveFocus();
                         if (PlayVod_VodPositions) PlayVod_VodPositions--;
                         else PlayVod_VodPositions++;
@@ -9187,7 +9204,7 @@
                         if (Play_Endcounter < 0) Play_Endcounter = 3;
                         if (Play_Endcounter === 1) Play_Endcounter = 0;
                         Play_EndIconsAddFocus();
-                    } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                    } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_RIGHT:
                     if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
@@ -9198,7 +9215,7 @@
                         }
                     } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
                         Play_controls[Play_controlsChat].enterKey(2);
-                    } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
                         else if (!PlayVod_PanelY) {
@@ -9206,7 +9223,7 @@
                             PlayVod_ProgressBaroffset = 2500;
                         }
                         PlayVod_setHidePanel();
-                    } else if (Play_isVodDialogShown()) {
+                    } else if (Play_isVodDialogVisible()) {
                         PlayVod_IconsRemoveFocus();
                         if (PlayVod_VodPositions) PlayVod_VodPositions--;
                         else PlayVod_VodPositions++;
@@ -9218,7 +9235,7 @@
                         if (Play_Endcounter > 3) Play_Endcounter = 0;
                         if (Play_Endcounter === 1) Play_Endcounter = 2;
                         Play_EndIconsAddFocus();
-                    } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                    } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_UP:
                     if (Play_isEndDialogVisible()) {
@@ -9228,7 +9245,7 @@
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = PlayVod_handleKeyDown;
                         Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);
-                    } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY--;
@@ -9237,11 +9254,11 @@
                         PlayVod_setHidePanel();
                     } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
                     else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
-                    else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                    else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_DOWN:
                     if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
-                    else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                    else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY++;
@@ -9251,10 +9268,10 @@
                     } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                     else if (Play_isFullScreen && Play_isChatShown()) {
                         Play_KeyChatSizeChage();
-                    } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                    } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_ENTER:
-                    if (Play_isVodDialogShown()) PlayVod_DialogPressed(PlayVod_VodPositions);
+                    if (Play_isVodDialogVisible()) PlayVod_DialogPressed(PlayVod_VodPositions);
                     else if (Play_isEndDialogVisible()) {
                         if (Play_EndFocus) Play_EndDialogPressed(2);
                         else {
@@ -9308,6 +9325,9 @@
                     if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                     break;
                 case KEY_REFRESH:
+                    if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                    break;
+                case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(2);
                     break;
                 case KEY_PG_UP:
@@ -9761,11 +9781,9 @@
                         Main_values.Main_BeforeChannelisSet = false;
                         Main_values.Main_BeforeAgameisSet = false;
 
-                        if (Main_values.Never_run_new) {
-                            Main_showControlsDialog();
-                            document.body.removeEventListener("keydown", Screens_handleKeyDown);
-                            document.body.addEventListener("keydown", Screens_handleKeyControls, false);
-                        }
+                        if (Main_values.Never_run_new)
+                            Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+
                         Main_values.Never_run_new = false;
                         Screens_addFocus(true);
                         Main_SaveValues();
@@ -10217,7 +10235,6 @@
                 }
                 break;
             case KEY_PLAY:
-            case KEY_PAUSE:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
                 inUseObj.key_play();
@@ -10230,6 +10247,19 @@
                 break;
             case KEY_REFRESH:
                 Main_ReloadScreen();
+                break;
+            case KEY_PAUSE: //key s
+                Main_showSettings();
+                break;
+            case KEY_A:
+                Main_showAboutDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+                break;
+            case KEY_C:
+                Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+                break;
+            case KEY_E:
+                document.body.removeEventListener("keydown", Screens_handleKeyDown);
+                Main_showExitDialog();
                 break;
             default:
                 break;
@@ -10353,7 +10383,6 @@
                 Screens_PeriodAddFocus(Screens_PeriodDialogPos);
                 break;
             case KEY_PLAY:
-            case KEY_PAUSE:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
@@ -13264,16 +13293,11 @@
             } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
         } else if (Main_values.Sidepannel_Pos === 9) {
             Main_showSettings();
-        } else if (Main_values.Sidepannel_Pos === 10) {
-            document.body.removeEventListener("keydown", Sidepannel_Callback, false);
-            document.body.addEventListener("keydown", Screens_handleKeyControls);
-            Main_showAboutDialog();
-        } else if (Main_values.Sidepannel_Pos === 11) {
-            document.body.removeEventListener("keydown", Sidepannel_Callback, false);
-            document.body.addEventListener("keydown", Screens_handleKeyControls);
-            Main_showControlsDialog();
-        } else if (Main_values.Sidepannel_Pos === 12) Main_showExitDialog(Sidepannel_Callback);
-
+        } else if (Main_values.Sidepannel_Pos === 10)
+            Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+        else if (Main_values.Sidepannel_Pos === 11)
+            Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+        else if (Main_values.Sidepannel_Pos === 12) Main_showExitDialog();
     }
 
     function Sidepannel_KeyEnter() {
@@ -13557,7 +13581,6 @@
                 }
                 break;
             case KEY_PLAY:
-            case KEY_PAUSE:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
@@ -13572,6 +13595,22 @@
                         if (Settings_Obj_default("app_animations")) doc.style.transition = '';
                     });
                 }
+                break;
+            case KEY_PAUSE: //key s
+                Main_showSettings();
+                Sidepannel_Hide();
+                break;
+            case KEY_A:
+                Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+                Sidepannel_Hide();
+                break;
+            case KEY_C:
+                Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+                Sidepannel_Hide();
+                break;
+            case KEY_E:
+                Main_showExitDialog();
+                Sidepannel_Hide();
                 break;
             default:
                 break;
@@ -13616,16 +13655,32 @@
                 }
                 break;
             case KEY_PLAY:
-            case KEY_PAUSE:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
                 Sidepannel_KeyEnter();
                 break;
+            case KEY_PAUSE: //key s
+                Main_showSettings();
+                Sidepannel_Hide();
+                break;
+            case KEY_A:
+                Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+                Sidepannel_Hide();
+                break;
+            case KEY_C:
+                Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+                Sidepannel_Hide();
+                break;
+            case KEY_E:
+                Main_showExitDialog();
+                Sidepannel_Hide();
+                break;
             default:
                 break;
         }
-    } //Spacing for reease maker not trow erros frm jshint
+    }
+    //Spacing for reease maker not trow erros frm jshint
     var UserLiveFeed_loadingData = false;
     var UserLiveFeed_loadingDataTry = 0;
     var UserLiveFeed_loadingDataTimeout = 3500;
