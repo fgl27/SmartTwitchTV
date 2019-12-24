@@ -698,7 +698,7 @@
         STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
         STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
         STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short loading call when changing video source, to prevent this set both values the same at the cost of possible app slowdowns if the bitrate values are too high, the best indicative for detecting too high bitrate for picture in picture is the player Drooped frames value if you are constantly drooping the bitrate is too high, other indicative is the constantly buffering of the stream.";
-        STR_PICTURE_LIVE_FEED = 'Hold enter to start "Picture in Picture Mode" then use D-Pad left to move, right to resize or down to change videos';
+        STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
         STR_AUDIO_SOURCE = "Audio source";
         STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";
         STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 2 to start";
