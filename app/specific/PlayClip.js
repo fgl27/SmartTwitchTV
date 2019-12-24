@@ -688,6 +688,9 @@ function PlayClip_handleKeyDown(e) {
                 if (!Play_isEndDialogVisible()) Play_KeyPause(3);
                 break;
             case KEY_REFRESH:
+                if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                break;
+            case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(3);
                 break;
             case KEY_PG_UP:

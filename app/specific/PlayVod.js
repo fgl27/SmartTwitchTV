@@ -825,7 +825,7 @@ function Play_HideVodDialog() {
     }, 1000);
 }
 
-function Play_isVodDialogShown() {
+function Play_isVodDialogVisible() {
     return Main_isElementShowing('dialog_vod_start');
 }
 
@@ -866,7 +866,7 @@ function PlayVod_OpenLiveStream() {
 }
 
 function PlayVod_handleKeyDown(e) {
-    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogShown()) {
+    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogVisible()) {
         switch (e.keyCode) {
             case KEY_STOP:
                 Play_CleanHideExit();
@@ -899,7 +899,7 @@ function PlayVod_handleKeyDown(e) {
                     Play_ChatPosition();
                     Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
                     Play_controls[Play_controlsChatPos].setLable();
-                } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
                     else if (!PlayVod_PanelY) {
@@ -907,7 +907,7 @@ function PlayVod_handleKeyDown(e) {
                         PlayVod_ProgressBaroffset = 2500;
                     }
                     PlayVod_setHidePanel();
-                } else if (Play_isVodDialogShown()) {
+                } else if (Play_isVodDialogVisible()) {
                     PlayVod_IconsRemoveFocus();
                     if (PlayVod_VodPositions) PlayVod_VodPositions--;
                     else PlayVod_VodPositions++;
@@ -919,7 +919,7 @@ function PlayVod_handleKeyDown(e) {
                     if (Play_Endcounter < 0) Play_Endcounter = 3;
                     if (Play_Endcounter === 1) Play_Endcounter = 0;
                     Play_EndIconsAddFocus();
-                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_RIGHT:
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
@@ -930,7 +930,7 @@ function PlayVod_handleKeyDown(e) {
                     }
                 } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
                     Play_controls[Play_controlsChat].enterKey(2);
-                } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
                     else if (!PlayVod_PanelY) {
@@ -938,7 +938,7 @@ function PlayVod_handleKeyDown(e) {
                         PlayVod_ProgressBaroffset = 2500;
                     }
                     PlayVod_setHidePanel();
-                } else if (Play_isVodDialogShown()) {
+                } else if (Play_isVodDialogVisible()) {
                     PlayVod_IconsRemoveFocus();
                     if (PlayVod_VodPositions) PlayVod_VodPositions--;
                     else PlayVod_VodPositions++;
@@ -950,7 +950,7 @@ function PlayVod_handleKeyDown(e) {
                     if (Play_Endcounter > 3) Play_Endcounter = 0;
                     if (Play_Endcounter === 1) Play_Endcounter = 2;
                     Play_EndIconsAddFocus();
-                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_UP:
                 if (Play_isEndDialogVisible()) {
@@ -960,7 +960,7 @@ function PlayVod_handleKeyDown(e) {
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = PlayVod_handleKeyDown;
                     Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);
-                } else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY--;
@@ -969,11 +969,11 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_setHidePanel();
                 } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
-                else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_DOWN:
                 if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
-                else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+                else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
@@ -983,10 +983,10 @@ function PlayVod_handleKeyDown(e) {
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if (Play_isFullScreen && Play_isChatShown()) {
                     Play_KeyChatSizeChage();
-                } else if (!Play_isVodDialogShown()) PlayVod_showPanel(true);
+                } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_ENTER:
-                if (Play_isVodDialogShown()) PlayVod_DialogPressed(PlayVod_VodPositions);
+                if (Play_isVodDialogVisible()) PlayVod_DialogPressed(PlayVod_VodPositions);
                 else if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(2);
                     else {
@@ -1040,6 +1040,9 @@ function PlayVod_handleKeyDown(e) {
                 if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                 break;
             case KEY_REFRESH:
+                if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                break;
+            case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(2);
                 break;
             case KEY_PG_UP:
