@@ -444,7 +444,9 @@ function Main_AboutDialogUpdateTime() {
     Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay(Date.now() - Main_RunningTime));
 }
 
-function Main_showAboutDialog() {
+function Main_showAboutDialog(removeEventListener, addEventListener) {
+    document.body.removeEventListener("keydown", removeEventListener);
+    document.body.addEventListener("keydown", addEventListener, false);
     Main_HideControlsDialog();
     Main_AboutDialogUpdateTime();
     Main_ShowElement('dialog_about');
@@ -466,7 +468,9 @@ function Main_showSettings() {
     Settings_init();
 }
 
-function Main_showControlsDialog() {
+function Main_showControlsDialog(removeEventListener, addEventListener) {
+    document.body.removeEventListener("keydown", removeEventListener);
+    document.body.addEventListener("keydown", addEventListener, false);
     Main_HideAboutDialog();
     Main_ShowElement('dialog_controls');
 }
