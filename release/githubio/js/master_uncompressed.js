@@ -7548,7 +7548,7 @@
                     if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                     break;
                 case KEY_REFRESH:
-                    if (UserLiveFeed_isFeedShow()) Play_OpenLiveFeedCheck();
+                    if (UserLiveFeed_isFeedShow()) PlayExtra_KeyEnter();
                     break;
                 case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(1);
