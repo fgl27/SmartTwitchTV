@@ -137,16 +137,11 @@ function Sidepannel_KeyEnterBase() {
         } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
     } else if (Main_values.Sidepannel_Pos === 9) {
         Main_showSettings();
-    } else if (Main_values.Sidepannel_Pos === 10) {
-        document.body.removeEventListener("keydown", Sidepannel_Callback, false);
-        document.body.addEventListener("keydown", Screens_handleKeyControls);
-        Main_showAboutDialog();
-    } else if (Main_values.Sidepannel_Pos === 11) {
-        document.body.removeEventListener("keydown", Sidepannel_Callback, false);
-        document.body.addEventListener("keydown", Screens_handleKeyControls);
-        Main_showControlsDialog();
-    } else if (Main_values.Sidepannel_Pos === 12) Main_showExitDialog(Sidepannel_Callback);
-
+    } else if (Main_values.Sidepannel_Pos === 10)
+        Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+    else if (Main_values.Sidepannel_Pos === 11)
+        Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+    else if (Main_values.Sidepannel_Pos === 12) Main_showExitDialog();
 }
 
 function Sidepannel_KeyEnter() {
@@ -430,7 +425,6 @@ function Sidepannel_handleKeyDown(event) {
             }
             break;
         case KEY_PLAY:
-        case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
@@ -445,6 +439,22 @@ function Sidepannel_handleKeyDown(event) {
                     if (Settings_Obj_default("app_animations")) doc.style.transition = '';
                 });
             }
+            break;
+        case KEY_PAUSE://key s
+            Main_showSettings();
+            Sidepannel_Hide();
+            break;
+        case KEY_A:
+            Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+            Sidepannel_Hide();
+            break;
+        case KEY_C:
+            Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+            Sidepannel_Hide();
+            break;
+        case KEY_E:
+            Main_showExitDialog();
+            Sidepannel_Hide();
             break;
         default:
             break;
@@ -489,11 +499,26 @@ function Sidepannel_handleKeyDownMain(event) {
             }
             break;
         case KEY_PLAY:
-        case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
             Sidepannel_KeyEnter();
+            break;
+        case KEY_PAUSE://key s
+            Main_showSettings();
+            Sidepannel_Hide();
+            break;
+        case KEY_A:
+            Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+            Sidepannel_Hide();
+            break;
+        case KEY_C:
+            Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+            Sidepannel_Hide();
+            break;
+        case KEY_E:
+            Main_showExitDialog();
+            Sidepannel_Hide();
             break;
         default:
             break;

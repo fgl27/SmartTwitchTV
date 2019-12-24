@@ -30,3 +30,7 @@ var KEY_MEDIA_PREVIOUS = 177;
 
 var KEY_MEDIA_FAST_FORWARD = 228;
 var KEY_MEDIA_REWIND = 227;
+
+var KEY_A = 65;
+var KEY_C = 67;
+var KEY_E = 69;

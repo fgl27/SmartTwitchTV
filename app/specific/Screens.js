@@ -417,11 +417,9 @@ function Screens_loadDataSuccessFinish() {
                     Main_values.Main_BeforeChannelisSet = false;
                     Main_values.Main_BeforeAgameisSet = false;
 
-                    if (Main_values.Never_run_new) {
-                        Main_showControlsDialog();
-                        document.body.removeEventListener("keydown", Screens_handleKeyDown);
-                        document.body.addEventListener("keydown", Screens_handleKeyControls, false);
-                    }
+                    if (Main_values.Never_run_new)
+                        Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+
                     Main_values.Never_run_new = false;
                     Screens_addFocus(true);
                     Main_SaveValues();
@@ -873,7 +871,6 @@ function Screens_handleKeyDown(event) {
             }
             break;
         case KEY_PLAY:
-        case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
             inUseObj.key_play();
@@ -886,6 +883,19 @@ function Screens_handleKeyDown(event) {
             break;
         case KEY_REFRESH:
             Main_ReloadScreen();
+            break;
+        case KEY_PAUSE://key s
+            Main_showSettings();
+            break;
+        case KEY_A:
+            Main_showAboutDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+            break;
+        case KEY_C:
+            Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+            break;
+        case KEY_E:
+            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_showExitDialog();
             break;
         default:
             break;
@@ -1009,7 +1019,6 @@ function Screens_PeriodhandleKeyDown(event) {
             Screens_PeriodAddFocus(Screens_PeriodDialogPos);
             break;
         case KEY_PLAY:
-        case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
