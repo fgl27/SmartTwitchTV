@@ -126,7 +126,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
     STR_CONTROLS_PLAY_5 = "Change video quality: use the player bottom controls Quality";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
-    STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right" + STR_GUIDE_EXTRA + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right or key number 3" + STR_CONTROLS_PLAY_0;
     STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or " + STR_KEY_UP_DOWN + STR_CONTROLS_PLAY_0;
     STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down" + STR_CONTROLS_PLAY_0;
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
@@ -236,7 +236,6 @@ function en_USLang() {
     STR_END_DIALOG_SETTINGS = "End dialog";
     STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that it will take for the stream/video/clip to end dialog taking action";
     STR_END_DIALOG_DISABLE = "Disable the timer";
-    STR_CHAT = "Chat Show";
     STR_CHAT_SIZE = "Chat size";
     STR_CHAT_POS = "Chat position";
     STR_CHAT_VIDEO_MODE = "Video mode";
@@ -272,9 +271,9 @@ function en_USLang() {
     STR_PICTURE_LIVE_FEED = 'Hold enter to start "Picture in Picture Mode" then use D-Pad left to move, right to resize or down to change videos';
     STR_AUDIO_SOURCE = "Audio source";
     STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";
-    STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter to start";
-    STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter above a stream in live feed";
-    STR_PICTURE_CONTROLS3 = "Change big window content: simple click above a stream in live feed";
+    STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 2 to start";
+    STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter or press key 2 after selecting a stream from live feed";
+    STR_PICTURE_CONTROLS3 = "Change big window content: simple key enter click after selecting a stream from live feed";
     STR_PICTURE_CONTROLS4 = "Change content between windows: D-pad down big becomes small and vice versa";
     STR_PICTURE_CONTROLS5 = "Change small window position: D-pad left";
     STR_PICTURE_CONTROLS6 = "Change small window size: D-pad right";

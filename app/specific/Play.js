@@ -1881,11 +1881,11 @@ function Play_KeyReturn(is_vod) {
 
     if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
     else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) UserLiveFeed_Hide();
-    else if (Play_isPanelShown() && !Play_isVodDialogShown()) {
+    else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
         if (is_vod) PlayVod_hidePanel();
         else Play_hidePanel();
     } else {
-        if (Play_isVodDialogShown() && Play_ExitDialogVisible()) {
+        if (Play_isVodDialogVisible() && Play_ExitDialogVisible()) {
             Play_HideVodDialog();
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
@@ -1950,15 +1950,17 @@ function Play_CloseSmall() {
 function Play_handleKeyUp(e) {
     if (e.keyCode === KEY_ENTER) {
         Play_handleKeyUpClear();
-        if (!PlayExtra_clear) {
-            var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-            if (doc === null) UserLiveFeed_ResetFeedId();
-            else Play_OpenLiveFeed(true, doc);
-        }
+        if (!PlayExtra_clear) Play_OpenLiveFeedCheck();
     } else if (e.keyCode === KEY_UP) {
         Play_handleKeyUpEndClear();
         if (!Play_EndUpclear) Play_EndDialogUpDown();
     }
+}
+
+function Play_OpenLiveFeedCheck() {
+    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+    if (doc === null) UserLiveFeed_ResetFeedId();
+    else Play_OpenLiveFeed(true, doc);
 }
 
 function Play_OpenLiveFeed(ResetFeed, doc) {
@@ -2230,6 +2232,9 @@ function Play_handleKeyDown(e) {
                 if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                 break;
             case KEY_REFRESH:
+                Play_OpenLiveFeedCheck();
+                break;
+            case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(1);
                 break;
             case KEY_PG_UP:
