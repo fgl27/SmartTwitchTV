@@ -1,4 +1,5 @@
 //Variable initialization
+var smartTwitchTV;
 var Main_isReleased = false;
 var Main_isDebug = false;
 
@@ -148,6 +149,19 @@ function Main_loadTranslations(language) {
 
     Main_ready(function() {
         try {
+            if (window.location.href.indexOf('asset') !== -1) {
+                //Same as in smartTwitchTV/release/api.js
+                //The app is running from assets need to expose smartTwitchTV
+                smartTwitchTV = {
+                    'mainstart': Main_Start,
+                    'Play_PannelEndStart': Play_PannelEndStart,
+                    'Play_CheckResume': Play_CheckResume,
+                    'Play_PlayerCheck': Play_PlayerCheck,
+                    'Play_UpdateDuration': Play_UpdateDuration,
+                    'Play_CheckResumeForced': Play_CheckResumeForced,
+                    'PlayExtra_End': PlayExtra_End
+                };
+            }
             Main_IsNotBrowser = Android.getAndroid();
             Main_IsNotBrowserVersion = Android.getversion();
         } catch (e) {
@@ -254,6 +268,7 @@ function Main_initWindows() {
         PlayVod_RestoreVodIds();
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+        Main_initClick();
 
         inUseObj = Live;
         Main_ready(function() {
@@ -332,6 +347,73 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
     Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
     Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
+}
+
+var Main_initClickDoc = ["clickup", "clickdown", "clickleft", "clickright", "clickenter"];
+var Main_setHideButtonsId;
+var Main_scenekeysDoc;
+
+function Main_initClick() {
+    if (Main_IsNotBrowser) {
+        //TODO remove the try after some itme of the app be released
+        try {
+           //Only show virtual d-pad on none TV devices
+            if (Android.deviceIsTV()) return;
+        } catch (e) {
+            return;
+        }
+    }
+    Main_ShowElement('scenekeys');
+    Main_scenekeysDoc = document.getElementById('scenekeys');
+
+    for (var i = 0; i < Main_initClickDoc.length; i++) {
+        Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
+    }
+
+    document.body.onpointerup = function() {
+        Main_initbodyClickSet();
+    };
+    Main_initbodyClickSet();
+}
+
+function Main_initbodyClickSet() {
+    if (Main_isElementShowing('search_scroll')) Search_KeyboardDismiss();
+    else if (Main_isElementShowing('add_user_scroll')) AddUser_KeyboardDismiss();
+
+    Main_scenekeysDoc.style.opacity = "0.6";
+    Main_clearHideButtons();
+    Main_setHideButtons();
+}
+
+function Main_buttonsVisible() {
+    return Main_scenekeysDoc.style.opacity === '0.6';
+}
+
+function Main_clearHideButtons() {
+    window.clearTimeout(Main_setHideButtonsId);
+}
+
+function Main_setHideButtons() {
+    Main_setHideButtonsId = window.setTimeout(Main_HideButtons, 2000);
+}
+
+function Main_HideButtons() {
+    Main_scenekeysDoc.style.opacity = "0";
+}
+
+function Main_initClickSet(doc, pos) {
+    doc.onpointerdown = function() {
+        if (!Main_buttonsVisible()) return;
+
+        if (Main_IsNotBrowser) Android.keyEvent(pos, 0);
+        else console.log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
+    };
+    doc.onpointerup = function() {
+        if (!Main_buttonsVisible()) return;
+
+        if (Main_IsNotBrowser) Android.keyEvent(pos, 1);
+        else console.log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
+    };
 }
 
 function Main_IconLoad(lable, icon, string) {

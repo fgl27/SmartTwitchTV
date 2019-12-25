@@ -53,12 +53,46 @@
             font-kerning: none;
         }
 
+        div.scenekeys {
+            width: 57vh;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            padding-bottom: 6.5vh;
+            opacity: 0.5;
+            padding-right: 0.5vh;
+            z-index: 101;
+        }
+
+        div.scenekeysholder {
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .avoidclicks {
+            pointer-events: none !important;
+        }
+
+        .dontavoidclicks {
+            pointer-events: all;
+        }
+
+        .icon_key {
+            font-size: 9vh !important;
+        }
+
+        div.scenekeys_screen {
+            transform: translateY(-100%);
+            z-index: 101;
+        }
+
         div.feed_screen {
             transform: translateY(-100%);
             z-index: 100;
         }
 
-        div.feed_screen_input {
+        .feed_screen_input {
             pointer-events: none;
         }
 
@@ -584,7 +618,7 @@
         }
 
         div.user_feed {
-            z-index: 3;
+            z-index: -1;
             position: absolute;
             bottom: 0.1%;
             height: 35%;
@@ -1208,6 +1242,7 @@
         }
 
         div.dialog_end_icons_start,
+        div.dialog_click,
         div.dialog_end_icons {
             font-size: 3.25vh;
             vertical-align: top;
@@ -1951,7 +1986,7 @@
 
             <!-- Input screens-->
             <div id="add_user_scroll" class="screen_holder hide">
-                <div id="add_user" class="input_text_box">
+                <div id="add_user" class="input_text_box" style="margin-top: 10%;">
                     <input id="user_input" class="input_class" type="text" placeholder="" />
                 </div>
             </div>
@@ -2414,6 +2449,31 @@
                         <div id="side_panel_warn" class="side_panel_feed_top" style="display: none;">
                             <span id="side_panel_warn_text"></span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="scenekeys" class="hide dontavoidclicks">
+            <div class="scenekeys">
+                <div class="scenekeysholder">
+                    <div class="dialog_click" style="padding-bottom: 3vh;">
+                        <i id="clickup" class="icon-key-up strokicon icon_key"></i>
+                    </div>
+                </div>
+                <div class="scenekeysholder">
+                    <div class="dialog_click">
+                        <i id="clickleft" class="icon-key-left strokicon icon_key"></i>
+                    </div>
+                    <div class="dialog_click" style="padding-left: 10vh; padding-right: 10vh;">
+                        <i id="clickenter" class="icon-circle strokicon icon_key"></i>
+                    </div>
+                    <div class="dialog_click">
+                        <i id="clickright" class="icon-key-right strokicon icon_key"></i>
+                    </div>
+                </div>
+                <div class="scenekeysholder">
+                    <div class="dialog_click" style="padding-top: 3vh;">
+                        <i id="clickdown" class="icon-key-down strokicon icon_key"></i>
                     </div>
                 </div>
             </div>

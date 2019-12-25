@@ -4,14 +4,13 @@
 
     /** Detect free variables */
     var smartTwitchTVGlobal = typeof global === 'object' && global;
-    if (
-        smartTwitchTVGlobal.global === smartTwitchTVGlobal ||
+    if (smartTwitchTVGlobal.global === smartTwitchTVGlobal ||
         smartTwitchTVGlobal.window === smartTwitchTVGlobal ||
-        smartTwitchTVGlobal.self === smartTwitchTVGlobal
-    ) {
+        smartTwitchTVGlobal.self === smartTwitchTVGlobal) {
+
         root = smartTwitchTVGlobal;
+
     }
-    var smartTwitchTV;
     //APIMID this line is here so release_maker can work don't remove
     //APICENTER this line is here so release_maker can work don't remove
 
@@ -20,7 +19,7 @@
      * and all function need to be called outiside the API
      * smartTwitchTV + all functions called by java
      */
-    smartTwitchTV = {
+    smartTwitchTV = {// smartTwitchTV var is defined in app/specific/Main.js
         'mainstart': Main_Start, //Main_Start id Main_Start() func from app/specific/Main.js
         'Play_PannelEndStart': Play_PannelEndStart, //Play_PannelEndStart() func from app/specific/Play.js
         'Play_CheckResume': Play_CheckResume, //Play_CheckResume() func from app/specific/Play.js
