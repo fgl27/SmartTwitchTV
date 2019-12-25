@@ -67,6 +67,7 @@ var Main_values = {
     "Sidepannel_IsUser": false,
     "My_channel": false,
     "DeviceCheck": false,
+    "Never_run_phone": true
 };
 
 var Main_Force = "4mv6wki5h1ko";
@@ -326,6 +327,7 @@ function Main_SetStringsSecondary() {
     Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
     Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
+    Main_innerHTML("dialog_phone_text", STR_ABOUT_PHONE_0);
     Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
     Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
@@ -352,17 +354,20 @@ function Main_SetStringsSecondary() {
 var Main_initClickDoc = ["clickup", "clickdown", "clickleft", "clickright", "clickenter"];
 var Main_setHideButtonsId;
 var Main_scenekeysDoc;
+var Main_isTV;
 
 function Main_initClick() {
     if (Main_IsNotBrowser) {
         //TODO remove the try after some itme of the app be released
         try {
+           Main_isTV = Android.deviceIsTV();
            //Only show virtual d-pad on none TV devices
-            if (Android.deviceIsTV()) return;
+            if (Main_isTV) return;
         } catch (e) {
             return;
         }
     }
+
     Main_ShowElement('scenekeys');
     Main_scenekeysDoc = document.getElementById('scenekeys');
 
@@ -548,6 +553,21 @@ function Main_showSettings() {
     Main_ExitCurrent(Main_values.Main_Go);
     Main_CounterDialogRst();
     Settings_init();
+}
+
+function Main_showphoneDialog(removeEventListener, addEventListener) {
+    document.body.removeEventListener("keydown", removeEventListener);
+    document.body.addEventListener("keydown", addEventListener, false);
+    Main_HideAboutDialog();
+    Main_ShowElement('dialog_phone');
+}
+
+function Main_HidephoneDialog() {
+    Main_HideElement('dialog_phone');
+}
+
+function Main_isphoneDialogVisible() {
+    return Main_isElementShowing('dialog_phone');
 }
 
 function Main_showControlsDialog(removeEventListener, addEventListener) {
