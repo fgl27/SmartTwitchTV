@@ -8,6 +8,8 @@ import android.media.MediaCodecList;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -385,6 +387,7 @@ public final class Tools {
     //https://exoplayer.dev/shrinking.html
     private static class Mp4ExtractorsFactory implements ExtractorsFactory {
         @Override
+        @NonNull
         public Extractor[] createExtractors() {
             return new Extractor[]{new Mp4Extractor()};
         }
