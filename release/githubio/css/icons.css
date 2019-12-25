@@ -174,3 +174,15 @@
 .icon-play:before {
   content: "\62";
 }
+.icon-key-right:before {
+  content: "\63";
+}
+.icon-key-left:before {
+  content: "\65";
+}
+.icon-key-down:before {
+  content: "\66";
+}
+.icon-key-up:before {
+  content: "\6a";
+}
