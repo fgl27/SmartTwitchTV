@@ -831,6 +831,13 @@
     var KEY_MEDIA_FAST_FORWARD = 228;
     var KEY_MEDIA_REWIND = 227;
 
+    //var KEY_4 = 52;
+    //var KEY_5 = 53;
+    var KEY_6 = 54;
+    var KEY_7 = 55;
+    var KEY_8 = 56;
+    var KEY_9 = 57;
+
     var KEY_A = 65;
     var KEY_C = 67;
     var KEY_E = 69;
@@ -10249,15 +10256,19 @@
                 Main_ReloadScreen();
                 break;
             case KEY_PAUSE: //key s
+            case KEY_6:
                 Main_showSettings();
                 break;
             case KEY_A:
+            case KEY_7:
                 Main_showAboutDialog(Screens_handleKeyDown, Screens_handleKeyControls);
                 break;
             case KEY_C:
+            case KEY_8:
                 Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
                 break;
             case KEY_E:
+            case KEY_9:
                 document.body.removeEventListener("keydown", Screens_handleKeyDown);
                 Main_showExitDialog();
                 break;
@@ -13597,18 +13608,22 @@
                 }
                 break;
             case KEY_PAUSE: //key s
+            case KEY_6:
                 Main_showSettings();
                 Sidepannel_Hide();
                 break;
             case KEY_A:
+            case KEY_7:
                 Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
                 Sidepannel_Hide();
                 break;
             case KEY_C:
+            case KEY_8:
                 Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
                 Sidepannel_Hide();
                 break;
             case KEY_E:
+            case KEY_9:
                 Main_showExitDialog();
                 Sidepannel_Hide();
                 break;
@@ -13661,18 +13676,22 @@
                 Sidepannel_KeyEnter();
                 break;
             case KEY_PAUSE: //key s
+            case KEY_6:
                 Main_showSettings();
                 Sidepannel_Hide();
                 break;
             case KEY_A:
+            case KEY_7:
                 Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
                 Sidepannel_Hide();
                 break;
             case KEY_C:
+            case KEY_8:
                 Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
                 Sidepannel_Hide();
                 break;
             case KEY_E:
+            case KEY_9:
                 Main_showExitDialog();
                 Sidepannel_Hide();
                 break;
