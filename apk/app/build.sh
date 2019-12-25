@@ -80,6 +80,10 @@ if [ "$localOK" == 0 ]; then
 	echo "$NDK_DIR" >> local.properties;
 fi;
 
+old='                <!-- <category android:name="android.intent.category.LAUNCHER"/> -->'
+new='                <category android:name="android.intent.category.LAUNCHER"/>'
+sed  --in-place "s%$old%$new%g" app/src/main/AndroidManifest.xml
+
 if [ $BAPP == 1 ]; then
 	./gradlew clean
 	echo -e "\n The above is just the cleaning build start now\n";
@@ -93,6 +97,10 @@ fi;
 
 END2="$(date)";
 END=$(date +%s.%N);
+
+old='                <!-- <category android:name="android.intent.category.LAUNCHER"/> -->'
+new='                <category android:name="android.intent.category.LAUNCHER"/>'
+sed  --in-place "s%$new%$old%g" app/src/main/AndroidManifest.xml
 
 if [ ! -e ./app/build/outputs/apk/release/app-release-unsigned.apk ] && [ ! -e ./app/build/outputs/apk/debug/app-debug.apk ]; then
 	echo -e "\n${bldred}App not build${txtrst}\n"

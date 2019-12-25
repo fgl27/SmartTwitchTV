@@ -3,8 +3,10 @@
 package com.fgl27.twitch;
 
 import android.app.Activity;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -57,6 +59,17 @@ public class PlayerActivity extends Activity {
             Gravity.CENTER | Gravity.BOTTOM};
 
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
+
+    public final int[] keys = {
+            KeyEvent.KEYCODE_DPAD_UP,
+            KeyEvent.KEYCODE_DPAD_DOWN,
+            KeyEvent.KEYCODE_DPAD_LEFT,
+            KeyEvent.KEYCODE_DPAD_RIGHT,
+            KeyEvent.KEYCODE_ENTER};
+
+    public final int[] keysAction = {
+            KeyEvent.ACTION_DOWN,
+            KeyEvent.ACTION_UP};
 
     public int DefaultPositions = 0;
 
@@ -1001,6 +1014,19 @@ public class PlayerActivity extends Activity {
             });
             return result.get();
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean deviceIsTV() {
+            UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
+            return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void keyEvent(int key, int keyaction) {
+            myHandler.post(() -> mwebview.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
+        }
     }
 
     // Basic EventListener for exoplayer
@@ -1061,6 +1087,7 @@ public class PlayerActivity extends Activity {
                 PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
             });
         }
+
     }
 
     public void PlayerEventListenerClear(int position) {

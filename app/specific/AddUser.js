@@ -52,6 +52,8 @@ function AddUser_handleKeyDown(event) {
 }
 
 function AddUser_inputFocus() {
+    Main_AddClass('scenekeys', 'avoidclicks');
+    Main_AddClass('scenefeed', 'avoidclicks');
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
@@ -61,6 +63,8 @@ function AddUser_inputFocus() {
 }
 
 function AddUser_removeEventListener() {
+    Main_RemoveClass('scenekeys', 'avoidclicks');
+    Main_RemoveClass('scenefeed', 'avoidclicks');
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);
         Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
@@ -98,26 +102,7 @@ function AddUser_KeyboardEvent(event) {
             break;
         case KEY_KEYBOARD_DONE:
         case KEY_DOWN:
-            if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
-
-                AddUser_Username = Main_AddUserInput.value;
-
-                if (!AddUser_UserCodeExist(AddUser_Username)) {
-                    AddUser_loadingDataTry = 0;
-                    AddUser_loadingDataTimeout = 3500;
-                    AddUser_loadingData = true;
-                    Main_HideElement('add_user_scroll');
-                    Main_showLoadDialog();
-                    AddUser_loadDataRequest();
-                } else {
-                    Main_HideLoadDialog();
-                    Main_showWarningDialog(STR_USER + " " + AddUser_Username + STR_USER_SET);
-                    window.setTimeout(function() {
-                        Main_HideWarningDialog();
-                        AddUser_inputFocus();
-                    }, 1500);
-                }
-            } else AddUser_inputFocus();
+            AddUser_KeyboardDismiss();
             break;
         case KEY_KEYBOARD_BACKSPACE:
             Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
@@ -128,6 +113,29 @@ function AddUser_KeyboardEvent(event) {
         default:
             break;
     }
+}
+
+function AddUser_KeyboardDismiss() {
+    if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
+
+        AddUser_Username = Main_AddUserInput.value;
+
+        if (!AddUser_UserCodeExist(AddUser_Username)) {
+            AddUser_loadingDataTry = 0;
+            AddUser_loadingDataTimeout = 3500;
+            AddUser_loadingData = true;
+            Main_HideElement('add_user_scroll');
+            Main_showLoadDialog();
+            AddUser_loadDataRequest();
+        } else {
+            Main_HideLoadDialog();
+            Main_showWarningDialog(STR_USER + " " + AddUser_Username + STR_USER_SET);
+            window.setTimeout(function() {
+                Main_HideWarningDialog();
+                AddUser_inputFocus();
+            }, 1500);
+        }
+    } else AddUser_inputFocus();
 }
 
 function AddUser_loadDataRequest() {

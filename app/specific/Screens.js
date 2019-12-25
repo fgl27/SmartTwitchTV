@@ -67,12 +67,12 @@ function Screens_assign() {
     var ret = {},
         i = 0,
         j;
-    for (i; i < arguments.length; i += 1) {
+    for (i; i < arguments.length; i++) {
 
         var obj = arguments[i],
             keys = Object.keys(obj);
 
-        for (j = 0; j < keys.length; j += 1)
+        for (j = 0; j < keys.length; j++)
             ret[keys[j]] = obj[keys[j]];
 
     }
