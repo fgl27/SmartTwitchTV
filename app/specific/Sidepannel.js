@@ -441,18 +441,22 @@ function Sidepannel_handleKeyDown(event) {
             }
             break;
         case KEY_PAUSE://key s
+        case KEY_6:
             Main_showSettings();
             Sidepannel_Hide();
             break;
         case KEY_A:
+        case KEY_7:
             Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
             Sidepannel_Hide();
             break;
         case KEY_C:
+        case KEY_8:
             Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
             Sidepannel_Hide();
             break;
         case KEY_E:
+        case KEY_9:
             Main_showExitDialog();
             Sidepannel_Hide();
             break;
@@ -505,18 +509,22 @@ function Sidepannel_handleKeyDownMain(event) {
             Sidepannel_KeyEnter();
             break;
         case KEY_PAUSE://key s
+        case KEY_6:
             Main_showSettings();
             Sidepannel_Hide();
             break;
         case KEY_A:
+        case KEY_7:
             Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
             Sidepannel_Hide();
             break;
         case KEY_C:
+        case KEY_8:
             Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
             Sidepannel_Hide();
             break;
         case KEY_E:
+        case KEY_9:
             Main_showExitDialog();
             Sidepannel_Hide();
             break;

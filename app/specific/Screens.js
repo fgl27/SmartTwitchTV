@@ -885,15 +885,19 @@ function Screens_handleKeyDown(event) {
             Main_ReloadScreen();
             break;
         case KEY_PAUSE://key s
+        case KEY_6:
             Main_showSettings();
             break;
         case KEY_A:
+        case KEY_7:
             Main_showAboutDialog(Screens_handleKeyDown, Screens_handleKeyControls);
             break;
         case KEY_C:
+        case KEY_8:
             Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
             break;
         case KEY_E:
+        case KEY_9:
             document.body.removeEventListener("keydown", Screens_handleKeyDown);
             Main_showExitDialog();
             break;
