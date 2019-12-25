@@ -5,14 +5,13 @@
 
     /** Detect free variables */
     var smartTwitchTVGlobal = typeof global === 'object' && global;
-    if (
-        smartTwitchTVGlobal.global === smartTwitchTVGlobal ||
+    if (smartTwitchTVGlobal.global === smartTwitchTVGlobal ||
         smartTwitchTVGlobal.window === smartTwitchTVGlobal ||
-        smartTwitchTVGlobal.self === smartTwitchTVGlobal
-    ) {
+        smartTwitchTVGlobal.self === smartTwitchTVGlobal) {
+
         root = smartTwitchTVGlobal;
+
     }
-    var smartTwitchTV;
     // Keep this file named as (zero)*** so it loads first in release_maker
     var STR_REFRESH;
     var STR_SEARCH;
@@ -325,7 +324,8 @@
     var STR_NET_SPEED;
     var STR_NET_ACT;
     var STR_LATENCY;
-    // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_WARNING;
+    var STR_ABOUT_PHONE; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -337,6 +337,7 @@
     var STR_ABOUT_KEY = '';
     var STR_SETTINGS_KEY = '';
     var STR_CONTROLS_MAIN_0 = '';
+    var STR_ABOUT_PHONE_0 = '';
     var STR_ABOUT_INFO_HEADER = '';
     var STR_ABOUT_INFO_0 = '';
     var STR_CONTROLS_PLAY_0 = '';
@@ -364,7 +365,7 @@
             STR_DOT + STR_CONTROLS_PLAY_3 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_5 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_6 + STR_BR +
-            STR_DOT + STR_CONTROLS_PLAY_13 + STR_BR + STR_BR +
+            STR_DOT + STR_CONTROLS_PLAY_13 + STR_BR +
 
             STR_DIV_TITLE + STR_CHAT + '</div>' +
             STR_DIV_MIDLE_LEFT +
@@ -372,7 +373,7 @@
             STR_DOT + STR_CONTROLS_PLAY_8 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_9 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_10 + STR_BR +
-            STR_DOT + STR_CONTROLS_PLAY_11 + STR_BR + STR_BR +
+            STR_DOT + STR_CONTROLS_PLAY_11 + STR_BR +
 
             STR_DIV_TITLE + STR_PICTURE_PICTURE + '</div>' +
             STR_DIV_MIDLE_LEFT +
@@ -401,6 +402,10 @@
             STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +
             STR_DOT + STR_CONTROLS_MAIN_14 + STR_BR + '</div>' +
             STR_CONTROLS_PLAY_0 + STR_BR +
+            STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
+
+        STR_ABOUT_PHONE_0 = STR_DIV_TITLE + STR_WARNING + '</div>' + STR_BR +
+            STR_ABOUT_PHONE + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
         STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
@@ -751,6 +756,8 @@
         STR_NET_ACT = "Net Activity: ";
         STR_NET_SPEED = "Net Speed:";
         STR_LATENCY = "Latency To Broadcaster: ";
+        STR_WARNING = "Warning";
+        STR_ABOUT_PHONE = "This app was design to be used on TVs, the support for other device is  limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter key use the virtual D-pad + back key to navigate, click on anywhere on the screen to show the virtual D-pad.";
     }
     //Spacing for release maker not trow erros from jshint
     var IMG_404_GAME = "data:image/png;base64,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";
@@ -798,7 +805,8 @@
     }
 
     //Do the calculation and changes on proper events call
-    window.addEventListener('resize', calculateFontSize, false); //https://developer.android.com/reference/android/view/KeyEvent
+    window.addEventListener('resize', calculateFontSize, false);
+    //https://developer.android.com/reference/android/view/KeyEvent
     //overwrite from java dispatchKeyEvent()
     var KEY_PAUSE = 83; //overwrite key S = stop because p = play
     var KEY_PLAY = 80; //overwrite key P = play
@@ -1458,6 +1466,8 @@
     }
 
     function AddUser_inputFocus() {
+        Main_AddClass('scenekeys', 'avoidclicks');
+        Main_AddClass('scenefeed', 'avoidclicks');
         document.body.removeEventListener("keydown", AddUser_handleKeyDown);
         document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
         Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
@@ -1467,6 +1477,8 @@
     }
 
     function AddUser_removeEventListener() {
+        Main_RemoveClass('scenekeys', 'avoidclicks');
+        Main_RemoveClass('scenefeed', 'avoidclicks');
         if (Main_AddUserInput !== null) {
             var elClone = Main_AddUserInput.cloneNode(true);
             Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
@@ -1504,26 +1516,7 @@
                 break;
             case KEY_KEYBOARD_DONE:
             case KEY_DOWN:
-                if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
-
-                    AddUser_Username = Main_AddUserInput.value;
-
-                    if (!AddUser_UserCodeExist(AddUser_Username)) {
-                        AddUser_loadingDataTry = 0;
-                        AddUser_loadingDataTimeout = 3500;
-                        AddUser_loadingData = true;
-                        Main_HideElement('add_user_scroll');
-                        Main_showLoadDialog();
-                        AddUser_loadDataRequest();
-                    } else {
-                        Main_HideLoadDialog();
-                        Main_showWarningDialog(STR_USER + " " + AddUser_Username + STR_USER_SET);
-                        window.setTimeout(function() {
-                            Main_HideWarningDialog();
-                            AddUser_inputFocus();
-                        }, 1500);
-                    }
-                } else AddUser_inputFocus();
+                AddUser_KeyboardDismiss();
                 break;
             case KEY_KEYBOARD_BACKSPACE:
                 Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
@@ -1534,6 +1527,29 @@
             default:
                 break;
         }
+    }
+
+    function AddUser_KeyboardDismiss() {
+        if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
+
+            AddUser_Username = Main_AddUserInput.value;
+
+            if (!AddUser_UserCodeExist(AddUser_Username)) {
+                AddUser_loadingDataTry = 0;
+                AddUser_loadingDataTimeout = 3500;
+                AddUser_loadingData = true;
+                Main_HideElement('add_user_scroll');
+                Main_showLoadDialog();
+                AddUser_loadDataRequest();
+            } else {
+                Main_HideLoadDialog();
+                Main_showWarningDialog(STR_USER + " " + AddUser_Username + STR_USER_SET);
+                window.setTimeout(function() {
+                    Main_HideWarningDialog();
+                    AddUser_inputFocus();
+                }, 1500);
+            }
+        } else AddUser_inputFocus();
     }
 
     function AddUser_loadDataRequest() {
@@ -2961,6 +2977,7 @@
             }
         }
     } //Variable initialization
+    var smartTwitchTV;
     var Main_isReleased = false;
     var Main_isDebug = false;
 
@@ -3028,6 +3045,7 @@
         "Sidepannel_IsUser": false,
         "My_channel": false,
         "DeviceCheck": false,
+        "Never_run_phone": true
     };
 
     var Main_Force = "4mv6wki5h1ko";
@@ -3079,7 +3097,7 @@
 
     var Main_stringVersion = '2.0';
     var Main_stringVersion_Min = '.100';
-    var Main_minversion = '122419';
+    var Main_minversion = '122519';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_ClockOffset = 0;
@@ -3110,6 +3128,19 @@
 
         Main_ready(function() {
             try {
+                if (window.location.href.indexOf('asset') !== -1) {
+                    //Same as in smartTwitchTV/release/api.js
+                    //The app is running from assets need to expose smartTwitchTV
+                    smartTwitchTV = {
+                        'mainstart': Main_Start,
+                        'Play_PannelEndStart': Play_PannelEndStart,
+                        'Play_CheckResume': Play_CheckResume,
+                        'Play_PlayerCheck': Play_PlayerCheck,
+                        'Play_UpdateDuration': Play_UpdateDuration,
+                        'Play_CheckResumeForced': Play_CheckResumeForced,
+                        'PlayExtra_End': PlayExtra_End
+                    };
+                }
                 Main_IsNotBrowser = Android.getAndroid();
                 Main_IsNotBrowserVersion = Android.getversion();
             } catch (e) {
@@ -3216,6 +3247,7 @@
             PlayVod_RestoreVodIds();
 
             Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+            Main_initClick();
 
             inUseObj = Live;
             Main_ready(function() {
@@ -3273,6 +3305,7 @@
         Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
         Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
+        Main_innerHTML("dialog_phone_text", STR_ABOUT_PHONE_0);
         Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
         Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
@@ -3294,6 +3327,76 @@
         Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
         Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
         Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
+    }
+
+    var Main_initClickDoc = ["clickup", "clickdown", "clickleft", "clickright", "clickenter"];
+    var Main_setHideButtonsId;
+    var Main_scenekeysDoc;
+    var Main_isTV;
+
+    function Main_initClick() {
+        if (Main_IsNotBrowser) {
+            //TODO remove the try after some itme of the app be released
+            try {
+                Main_isTV = Android.deviceIsTV();
+                //Only show virtual d-pad on none TV devices
+                if (Main_isTV) return;
+            } catch (e) {
+                return;
+            }
+        }
+
+        Main_ShowElement('scenekeys');
+        Main_scenekeysDoc = document.getElementById('scenekeys');
+
+        for (var i = 0; i < Main_initClickDoc.length; i++) {
+            Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
+        }
+
+        document.body.onpointerup = function() {
+            Main_initbodyClickSet();
+        };
+        Main_initbodyClickSet();
+    }
+
+    function Main_initbodyClickSet() {
+        if (Main_isElementShowing('search_scroll')) Search_KeyboardDismiss();
+        else if (Main_isElementShowing('add_user_scroll')) AddUser_KeyboardDismiss();
+
+        Main_scenekeysDoc.style.opacity = "0.6";
+        Main_clearHideButtons();
+        Main_setHideButtons();
+    }
+
+    function Main_buttonsVisible() {
+        return Main_scenekeysDoc.style.opacity === '0.6';
+    }
+
+    function Main_clearHideButtons() {
+        window.clearTimeout(Main_setHideButtonsId);
+    }
+
+    function Main_setHideButtons() {
+        Main_setHideButtonsId = window.setTimeout(Main_HideButtons, 2000);
+    }
+
+    function Main_HideButtons() {
+        Main_scenekeysDoc.style.opacity = "0";
+    }
+
+    function Main_initClickSet(doc, pos) {
+        doc.onpointerdown = function() {
+            if (!Main_buttonsVisible()) return;
+
+            if (Main_IsNotBrowser) Android.keyEvent(pos, 0);
+            else console.log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
+        };
+        doc.onpointerup = function() {
+            if (!Main_buttonsVisible()) return;
+
+            if (Main_IsNotBrowser) Android.keyEvent(pos, 1);
+            else console.log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
+        };
     }
 
     function Main_IconLoad(lable, icon, string) {
@@ -3428,6 +3531,21 @@
         Main_ExitCurrent(Main_values.Main_Go);
         Main_CounterDialogRst();
         Settings_init();
+    }
+
+    function Main_showphoneDialog(removeEventListener, addEventListener) {
+        document.body.removeEventListener("keydown", removeEventListener);
+        document.body.addEventListener("keydown", addEventListener, false);
+        Main_HideAboutDialog();
+        Main_ShowElement('dialog_phone');
+    }
+
+    function Main_HidephoneDialog() {
+        Main_HideElement('dialog_phone');
+    }
+
+    function Main_isphoneDialogVisible() {
+        return Main_isElementShowing('dialog_phone');
     }
 
     function Main_showControlsDialog(removeEventListener, addEventListener) {
@@ -9438,12 +9556,12 @@
         var ret = {},
             i = 0,
             j;
-        for (i; i < arguments.length; i += 1) {
+        for (i; i < arguments.length; i++) {
 
             var obj = arguments[i],
                 keys = Object.keys(obj);
 
-            for (j = 0; j < keys.length; j += 1)
+            for (j = 0; j < keys.length; j++)
                 ret[keys[j]] = obj[keys[j]];
 
         }
@@ -9791,7 +9909,18 @@
                         if (Main_values.Never_run_new)
                             Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
 
+                        if (Main_values.Never_run_phone && !Main_isTV) {
+                            Main_showphoneDialog(Main_values.Never_run_new ?
+                                Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
+                            Settings_value.global_font_offset.defaultValue = 6;
+                            Main_setItem('global_font_offset', 7);
+                            Main_textContent('global_font_offset', Settings_Obj_values('global_font_offset'));
+                            calculateFontSize();
+                            Main_values.Never_run_phone = false;
+                        }
+
                         Main_values.Never_run_new = false;
+
                         Screens_addFocus(true);
                         Main_SaveValues();
                         Screens_loadDataSuccessFinishEnd();
@@ -9813,6 +9942,10 @@
             case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
+                if (Main_isphoneDialogVisible()) {
+                    Main_HidephoneDialog();
+                    break;
+                }
                 Main_HideControlsDialog();
                 Main_HideAboutDialog();
                 document.body.addEventListener("keydown", Screens_handleKeyDown, false);
@@ -12019,6 +12152,8 @@
     }
 
     function Search_inputFocus() {
+        Main_AddClass('scenekeys', 'avoidclicks');
+        Main_AddClass('scenefeed', 'avoidclicks');
         document.body.removeEventListener("keydown", Search_handleKeyDown);
         document.body.addEventListener("keydown", Search_KeyboardEvent, false);
         Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
@@ -12027,6 +12162,8 @@
     }
 
     function Search_RemoveinputFocus(EnaKeydown) {
+        Main_RemoveClass('scenekeys', 'avoidclicks');
+        Main_RemoveClass('scenefeed', 'avoidclicks');
         Main_SearchInput.blur();
         Search_removeEventListener();
         document.body.removeEventListener("keydown", Search_KeyboardEvent);
@@ -12060,9 +12197,7 @@
                 break;
             case KEY_KEYBOARD_DONE:
             case KEY_DOWN:
-                Search_RemoveinputFocus(true);
-                Search_cursorY = 1;
-                Search_refreshInputFocusTools();
+                Search_KeyboardDismiss();
                 break;
             case KEY_KEYBOARD_BACKSPACE:
                 Main_SearchInput.value = Main_SearchInput.value.slice(0, -1);
@@ -12073,7 +12208,14 @@
             default:
                 break;
         }
-    } //Variable initialization
+    }
+
+    function Search_KeyboardDismiss() {
+        Search_RemoveinputFocus(true);
+        Search_cursorY = 1;
+        Search_refreshInputFocusTools();
+    }
+    //Variable initialization
     var Settings_cursorY = 0;
     var Settings_value = {
         "restor_playback": { //restor_playback
@@ -15985,7 +16127,7 @@
      * and all function need to be called outiside the API
      * smartTwitchTV + all functions called by java
      */
-    smartTwitchTV = {
+    smartTwitchTV = { // smartTwitchTV var is defined in app/specific/Main.js
         'mainstart': Main_Start, //Main_Start id Main_Start() func from app/specific/Main.js
         'Play_PannelEndStart': Play_PannelEndStart, //Play_PannelEndStart() func from app/specific/Play.js
         'Play_CheckResume': Play_CheckResume, //Play_CheckResume() func from app/specific/Play.js

@@ -119,7 +119,7 @@ var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '2.0';
 var Main_stringVersion_Min = '.100';
-var Main_minversion = '122419';
+var Main_minversion = '122519';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsNotBrowserVersion = '';
 var Main_ClockOffset = 0;
@@ -360,8 +360,8 @@ function Main_initClick() {
     if (Main_IsNotBrowser) {
         //TODO remove the try after some itme of the app be released
         try {
-           Main_isTV = Android.deviceIsTV();
-           //Only show virtual d-pad on none TV devices
+            Main_isTV = Android.deviceIsTV();
+            //Only show virtual d-pad on none TV devices
             if (Main_isTV) return;
         } catch (e) {
             return;
