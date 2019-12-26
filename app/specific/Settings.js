@@ -953,6 +953,13 @@ function Settings_CodecsUpDown(offset) {
 }
 
 function Settings_CodecsRigthLeft(offset) {
+
+    if (Settings_CodecsTotal < 2) {
+        Main_showWarningDialog(STR_ONE_CODEC_ENA);
+        window.setTimeout(Main_HideWarningDialog, 2000);
+        return;
+    }
+
     var key = "codecs" + Settings_CodecsPos,
         index;
 
