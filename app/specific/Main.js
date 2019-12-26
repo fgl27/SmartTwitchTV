@@ -351,7 +351,7 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
 }
 
-var Main_initClickDoc = ["clickup", "clickdown", "clickleft", "clickright", "clickenter"];
+var Main_initClickDoc = ["clickup", "clickdown", "clickleft", "clickright", "clickenter", "clickback"];
 var Main_setHideButtonsId;
 var Main_scenekeysDoc;
 var Main_isTV;
