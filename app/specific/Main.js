@@ -399,7 +399,7 @@ function Main_clearHideButtons() {
 }
 
 function Main_setHideButtons() {
-    Main_setHideButtonsId = window.setTimeout(Main_HideButtons, 2000);
+    Main_setHideButtonsId = window.setTimeout(Main_HideButtons, 4000);
 }
 
 function Main_HideButtons() {
