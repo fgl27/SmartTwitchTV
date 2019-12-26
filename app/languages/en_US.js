@@ -323,7 +323,7 @@ function en_USLang() {
     STR_NET_SPEED = "Net Speed:";
     STR_LATENCY = "Latency To Broadcaster: ";
     STR_WARNING = "Warning";
-    STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter key controller use the on screen virtual D-pad + back key to navigate, click anywhere on the screen to show the virtual D-pad.";
+    STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter key controller use the on screen virtual D-pad + back key to navigate, in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
     STR_DPAD_POSTION = "D-pad screen position";
     STR_DPAD_OPACITY = "D-pad opacity";
 }
