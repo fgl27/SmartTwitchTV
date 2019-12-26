@@ -180,6 +180,7 @@ function Main_loadTranslations(language) {
 
         if (Main_IsNotBrowser) Main_vp9supported = Android.misCodecSupported();
 
+        Main_initClick();
         Settings_SetDefautls();
         calculateFontSize();
         en_USLang();
@@ -269,7 +270,6 @@ function Main_initWindows() {
         PlayVod_RestoreVodIds();
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-        Main_initClick();
 
         inUseObj = Live;
         Main_ready(function() {
@@ -354,6 +354,7 @@ function Main_SetStringsSecondary() {
 var Main_initClickDoc = ["clickup", "clickdown", "clickleft", "clickright", "clickenter", "clickback"];
 var Main_setHideButtonsId;
 var Main_scenekeysDoc;
+var Main_scenekeysPositionDoc;
 var Main_isTV;
 
 function Main_initClick() {
@@ -370,6 +371,7 @@ function Main_initClick() {
 
     Main_ShowElement('scenekeys');
     Main_scenekeysDoc = document.getElementById('scenekeys');
+    Main_scenekeysPositionDoc = document.getElementById('scenekeys_position');
 
     for (var i = 0; i < Main_initClickDoc.length; i++) {
         Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
@@ -385,13 +387,14 @@ function Main_initbodyClickSet() {
     if (Main_isElementShowing('search_scroll')) Search_KeyboardDismiss();
     else if (Main_isElementShowing('add_user_scroll')) AddUser_KeyboardDismiss();
 
-    Main_scenekeysDoc.style.opacity = "0.6";
+    Settings_DpadOpacity();
     Main_clearHideButtons();
     Main_setHideButtons();
 }
 
 function Main_buttonsVisible() {
-    return Main_scenekeysDoc.style.opacity === '0.6';
+    return parseFloat(Main_scenekeysDoc.style.opacity) ===
+     parseFloat(Settings_Obj_default("dpad_opacity") * 0.05);
 }
 
 function Main_clearHideButtons() {
