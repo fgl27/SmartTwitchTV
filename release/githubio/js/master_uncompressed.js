@@ -325,7 +325,9 @@
     var STR_NET_ACT;
     var STR_LATENCY;
     var STR_WARNING;
-    var STR_ABOUT_PHONE; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_ABOUT_PHONE;
+    var STR_CHAT_SHOW;
+    // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -524,6 +526,7 @@
         STR_CLOSE_THIS = "Press back or enter key to close this.";
         STR_PLAYER = "Player Related:";
         STR_CHAT = "Chat Related:";
+        STR_CHAT_SHOW = "Chat show";
         STR_GENERAL = "General Related:";
         STR_UPDATE = 'Update';
         STR_CURRENT_VERSION = "Current installed version ";
@@ -8021,7 +8024,7 @@
 
         Play_controls[Play_controlsChat] = { //chat enable disable
             icons: "chat",
-            string: STR_CHAT,
+            string: STR_CHAT_SHOW,
             values: null,
             defaultValue: null,
             opacity: 0,
