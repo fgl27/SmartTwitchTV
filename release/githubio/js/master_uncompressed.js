@@ -327,6 +327,17 @@
     var STR_WARNING;
     var STR_ABOUT_PHONE;
     var STR_CHAT_SHOW;
+    var STR_DPAD_POSTION;
+    var STR_DPAD_OPACITY;
+    var STR_BLOCKED_CODEC;
+    var STR_BLOCKED_CODEC_SUMARRY;
+    var STR_CODEC_DIALOG_TITLE;
+    var STR_SUPPORTED_CODEC;
+    var STR_MAX_RES;
+    var STR_MAX_BIT;
+    var STR_MAX_LEVEL;
+    var STR_MAX_FPS;
+    var STR_ONE_CODEC_ENA;
     // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
@@ -702,7 +713,7 @@
         STR_PLAYER_AUTO_ALL = "Both windows";
         STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
         STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-        STR_PLAYER_BITRATE_SUMARRY = "The maximum video allowed bitrate for the auto quality, this is most to prevent lag or slowdowns when playing in picture and picture mode as that mode used Auto quality only, but also can be used to limit the Main window bitrate when using Auto quality and prevent the player from trying bitrate bigger then what yours internet supports, some devices will slowdown too much if the main and small window bitrate is too high, the recommended is 3Mbps for small and unlimited for main.";
+        STR_PLAYER_BITRATE_SUMARRY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
         STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
         STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
         STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short loading call when changing video source, to prevent this set both values the same at the cost of possible app slowdowns if the bitrate values are too high, the best indicative for detecting too high bitrate for picture in picture is the player Drooped frames value if you are constantly drooping the bitrate is too high, other indicative is the constantly buffering of the stream.";
@@ -760,7 +771,18 @@
         STR_NET_SPEED = "Net Speed:";
         STR_LATENCY = "Latency To Broadcaster: ";
         STR_WARNING = "Warning";
-        STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter key controller use the on screen virtual D-pad + back key to navigate, click anywhere on the screen to show the virtual D-pad.";
+        STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter key controller use the on screen virtual D-pad + back key to navigate, in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
+        STR_DPAD_POSTION = "D-pad screen position";
+        STR_DPAD_OPACITY = "D-pad opacity";
+        STR_BLOCKED_CODEC = "Blocked Codecs";
+        STR_BLOCKED_CODEC_SUMARRY = "List used codecs capabilities and allow to block a codec from be used";
+        STR_CODEC_DIALOG_TITLE = "Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block codecs and see if the performance of the app improves.";
+        STR_SUPPORTED_CODEC = "Supported codecs:";
+        STR_MAX_RES = "Max resolution: ";
+        STR_MAX_BIT = "Max bitrate: ";
+        STR_MAX_LEVEL = "Max level: ";
+        STR_MAX_FPS = "Max fps per resolution:";
+        STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     }
     //Spacing for release maker not trow erros from jshint
     var IMG_404_GAME = "data:image/png;base64,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";
@@ -3099,8 +3121,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '2.0';
-    var Main_stringVersion_Min = '.101';
-    var Main_minversion = '122519';
+    var Main_stringVersion_Min = '.103';
+    var Main_minversion = '122619';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_ClockOffset = 0;
@@ -3161,6 +3183,7 @@
 
             if (Main_IsNotBrowser) Main_vp9supported = Android.misCodecSupported();
 
+            Main_initClick();
             Settings_SetDefautls();
             calculateFontSize();
             en_USLang();
@@ -3250,7 +3273,6 @@
             PlayVod_RestoreVodIds();
 
             Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-            Main_initClick();
 
             inUseObj = Live;
             Main_ready(function() {
@@ -3332,9 +3354,10 @@
         Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
     }
 
-    var Main_initClickDoc = ["clickup", "clickdown", "clickleft", "clickright", "clickenter"];
+    var Main_initClickDoc = ["clickup", "clickdown", "clickleft", "clickright", "clickenter", "clickback"];
     var Main_setHideButtonsId;
     var Main_scenekeysDoc;
+    var Main_scenekeysPositionDoc;
     var Main_isTV;
 
     function Main_initClick() {
@@ -3351,6 +3374,7 @@
 
         Main_ShowElement('scenekeys');
         Main_scenekeysDoc = document.getElementById('scenekeys');
+        Main_scenekeysPositionDoc = document.getElementById('scenekeys_position');
 
         for (var i = 0; i < Main_initClickDoc.length; i++) {
             Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
@@ -3366,13 +3390,14 @@
         if (Main_isElementShowing('search_scroll')) Search_KeyboardDismiss();
         else if (Main_isElementShowing('add_user_scroll')) AddUser_KeyboardDismiss();
 
-        Main_scenekeysDoc.style.opacity = "0.6";
+        Settings_DpadOpacity();
         Main_clearHideButtons();
         Main_setHideButtons();
     }
 
     function Main_buttonsVisible() {
-        return Main_scenekeysDoc.style.opacity === '0.6';
+        return parseInt(Main_scenekeysDoc.style.opacity * 100) ===
+            parseInt(Settings_Obj_default("dpad_opacity") * 5);
     }
 
     function Main_clearHideButtons() {
@@ -12305,6 +12330,21 @@
             "values": ["All"],
             "set_values": [""],
             "defaultValue": 1
+        },
+        "blocked_codecs": { //blocked_codecs
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "dpad_position": { //dpad postion
+            "values": ["right-bottom", "right-top", "left-top", "left-bottom"],
+            "defaultValue": 1
+        },
+        "dpad_opacity": { //dpad opacity
+            "values": ["0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%",
+                "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"
+            ],
+            "defaultValue": 15
         }
     };
 
@@ -12436,6 +12476,18 @@
         Settings_value[key].values = [STR_NO, STR_YES];
         div += Settings_DivOptionNoSummary(key, STR_SCREEN_COUNTER);
 
+        if (!Main_isTV || !Main_IsNotBrowser) {
+            // dpad_position
+            key = "dpad_position";
+            Settings_value_keys.push(key);
+            div += Settings_DivOptionNoSummary(key, STR_DPAD_POSTION);
+
+            // dpad_opacity
+            key = "dpad_opacity";
+            Settings_value_keys.push(key);
+            div += Settings_DivOptionNoSummary(key, STR_DPAD_OPACITY);
+        }
+
         // Player settings title
         div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
@@ -12464,6 +12516,13 @@
         Settings_value[key].values = [STR_AUTO, STR_SOURCE];
 
         div += Settings_DivOptionWithSummary(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
+
+
+        key = "blocked_codecs";
+        Settings_value_keys.push(key);
+        Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
+
+        div += Settings_DivOptionWithSummary(key, STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMARRY);
 
         // Player buffer title/summary
         div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
@@ -12554,6 +12613,12 @@
 
         key = "show_screen_counter";
         Main_textContent(key + '_name', STR_SCREEN_COUNTER);
+
+        key = "dpad_position";
+        Main_textContent(key + '_name', STR_DPAD_POSTION);
+
+        key = "dpad_opacity";
+        Main_textContent(key + '_name', STR_DPAD_OPACITY);
 
         // Content Language selection
         key = "content_lang";
@@ -12657,6 +12722,10 @@
         }
         Settings_SetBuffers(0);
         Settings_SetClock();
+        if (!Main_isTV) {
+            Settings_DpadOpacity();
+            Settings_DpadPOsition();
+        }
         Main_SetThumb();
         if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
         Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
@@ -12667,6 +12736,8 @@
         Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
         Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
+        Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
+        Settings_CodecsSet();
     }
 
     function Settings_Obj_values(key) {
@@ -12686,7 +12757,7 @@
     }
 
     function Settings_inputFocus(position) {
-        var key = Settings_value_keys[Settings_cursorY];
+        var key = Settings_value_keys[position];
         Main_AddClass(key, 'settings_value_focus');
         Main_AddClass(key + '_div', 'settings_div_focus');
         Settings_Setarrows(position);
@@ -12694,7 +12765,10 @@
     }
 
     function Settings_RemoveinputFocus() {
-        var key = Settings_value_keys[Settings_cursorY];
+        Settings_RemoveinputFocusKey(Settings_value_keys[Settings_cursorY]);
+    }
+
+    function Settings_RemoveinputFocusKey(key) {
         document.getElementById(key + "arrow_left").style.opacity = "0";
         document.getElementById(key + "arrow_right").style.opacity = "0";
         Main_RemoveClass(key, 'settings_value_focus');
@@ -12710,8 +12784,10 @@
     }
 
     function Settings_Setarrows(position) {
-        var key = Settings_value_keys[position];
+        Settings_SetarrowsKey(Settings_value_keys[position]);
+    }
 
+    function Settings_SetarrowsKey(key) {
         if (!Settings_Obj_length(key)) return;
 
         var currentValue = Settings_Obj_default(key);
@@ -12752,6 +12828,29 @@
             Main_updateclock();
         } else if (position === "bitrate_main") Settings_SetBitRate(1);
         else if (position === "bitrate_min") Settings_SetBitRate(2);
+        else if (position === "dpad_opacity") Settings_DpadOpacity();
+        else if (position === "dpad_position") Settings_DpadPOsition();
+    }
+
+    function Settings_DpadOpacity() {
+        Main_clearHideButtons();
+        Main_setHideButtons();
+        Main_scenekeysDoc.style.opacity = Settings_Obj_default("dpad_opacity") * 0.05;
+    }
+
+    var Settings_DpadPOsitions = [
+        [0, 0],
+        [0, 44],
+        [63, 44],
+        [63, 0]
+    ];
+
+    function Settings_DpadPOsition() {
+        Settings_DpadOpacity();
+        Main_clearHideButtons();
+        Main_setHideButtons();
+        Main_scenekeysPositionDoc.style.right = Settings_DpadPOsitions[Settings_Obj_default("dpad_position")][0] + "%";
+        Main_scenekeysPositionDoc.style.bottom = Settings_DpadPOsitions[Settings_Obj_default("dpad_position")][1] + "%";
     }
 
     function Settings_SetAnimations() {
@@ -12882,8 +12981,10 @@
     var Settings_CurY = 0;
 
     function Settings_ScrollTable() {
-        var doc;
-        if (Settings_CurY < Settings_cursorY && Settings_cursorY === 12) {
+        var doc,
+            offset = (!Main_isTV || !Main_IsNotBrowser) ? 2 : 0;
+
+        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
             doc = document.getElementById('settings_scroll');
             doc.scrollTop = doc.scrollHeight;
             if (Settings_Obj_default("app_animations")) {
@@ -12891,7 +12992,7 @@
                 doc.scrollTop = 0;
                 scrollTo(doc, position, 450);
             }
-        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === 11) {
+        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
             doc = document.getElementById('settings_scroll');
             if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 450);
             else doc.scrollTop = 0;
@@ -12976,11 +13077,188 @@
                 break;
             case KEY_ENTER:
                 if (!Settings_cursorY) Languages_init();
+                else if (Settings_value_keys[Settings_cursorY].indexOf('blocked_codecs') !== -1) Settings_CodecsShow();
                 break;
             default:
                 break;
         }
-    } //Variable initialization
+    }
+
+    var Settings_CodecsValue;
+    var Settings_CodecsTotal;
+    var Settings_CodecsPos;
+    var Settings_CodecsNames = [];
+    var Settings_DisableCodecsNames = [];
+
+    function Settings_CodecsShow() {
+        document.body.removeEventListener("keydown", Settings_handleKeyDown);
+
+        if (!Settings_CodecsValue) {
+            //TODO remove the try after some itme of the app be released
+            try {
+                Settings_CodecsValue = '';
+                Settings_CodecsValue = Android.getcodecCapabilities('avc');
+            } catch (e) {
+                if (Main_IsNotBrowser) {
+                    document.body.addEventListener("keydown", Settings_handleKeyDownCodecs, false);
+                    return;
+                }
+            }
+
+            if (!Main_IsNotBrowser) Settings_CodecsValue = "video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73|video/avc,OMX.google.h264.decoder,4080x4080,48 Mbps,8,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68|video/avc,OMX.chico.h264.decoder,4080x4080,48 Mbps,8,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68";
+
+            var dialogContent = '',
+                codecs = Settings_CodecsValue.split('|'),
+                codecsValue,
+                i = 0,
+                j,
+                temptitlecontent,
+                key;
+
+            Settings_CodecsTotal = codecs.length;
+            Settings_CodecsNames = [];
+
+            dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR +
+                STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
+
+            for (i; i < Settings_CodecsTotal; i++) {
+                key = "codecs" + i;
+                Settings_value[key] = {
+                    "values": [STR_ENABLE, STR_DISABLE],
+                    "defaultValue": Main_getItemInt(key, 0)
+                };
+
+                codecsValue = codecs[i].split(',');
+
+                Settings_CodecsNames.push(codecsValue[1]);
+
+                temptitlecontent = "";
+                temptitlecontent += STR_MAX_RES + codecsValue[2] + STR_BR;
+                temptitlecontent += STR_MAX_BIT + codecsValue[3] + STR_BR;
+                temptitlecontent += STR_MAX_LEVEL + codecsValue[5] + STR_BR + STR_MAX_FPS + STR_BR;
+                for (j = 6; j < codecsValue.length; j++) {
+                    temptitlecontent += (parseFloat(codecsValue[j].split(': ')[1]) > 0) ? codecsValue[j] + " fps" + STR_BR : "";
+                }
+                dialogContent += STR_BR + Settings_DivOptionWithSummary(key, codecsValue[1], temptitlecontent) + STR_BR;
+            }
+
+            Main_innerHTML("dialog_codecs_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+
+        }
+
+        if (Settings_CodecsTotal > 0) {
+            Settings_CodecsPos = 0;
+            Main_AddClass("codecs" + Settings_CodecsPos, 'settings_value_focus');
+            Main_AddClass("codecs" + Settings_CodecsPos + '_div', 'settings_div_focus');
+            Settings_SetarrowsKey("codecs" + Settings_CodecsPos);
+        }
+
+        Main_ShowElement('dialog_codecs');
+        document.body.addEventListener("keydown", Settings_handleKeyDownCodecs, false);
+    }
+
+    function Settings_handleKeyDownCodecs(event) {
+        var key;
+        switch (event.keyCode) {
+            case KEY_ENTER:
+            case KEY_RETURN_Q:
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                Settings_RemoveinputFocusKey("codecs" + Settings_CodecsPos);
+                Main_HideElement('dialog_codecs');
+                document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
+                document.body.addEventListener("keydown", Settings_handleKeyDown, false);
+                break;
+            case KEY_LEFT:
+                key = "codecs" + Settings_CodecsPos;
+                if (Settings_Obj_default(key) > 0) Settings_CodecsRigthLeft(-1);
+                break;
+            case KEY_RIGHT:
+                key = "codecs" + Settings_CodecsPos;
+                if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRigthLeft(1);
+                break;
+            case KEY_UP:
+                if (Settings_CodecsPos > 0) Settings_CodecsUpDown(-1);
+                break;
+            case KEY_DOWN:
+                if (Settings_CodecsPos < (Settings_CodecsTotal - 1)) Settings_CodecsUpDown(1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function Settings_CodecsUpDown(offset) {
+        Settings_RemoveinputFocusKey("codecs" + Settings_CodecsPos);
+        Settings_CodecsPos += offset;
+
+        var key = "codecs" + Settings_CodecsPos;
+        Main_AddClass(key, 'settings_value_focus');
+        Main_AddClass(key + '_div', 'settings_div_focus');
+        Settings_SetarrowsKey(key);
+    }
+
+    function Settings_CodecsRigthLeft(offset) {
+
+        if (Settings_CodecsTotal < 2) {
+            Main_showWarningDialog(STR_ONE_CODEC_ENA);
+            window.setTimeout(Main_HideWarningDialog, 2000);
+            return;
+        }
+
+        var key = "codecs" + Settings_CodecsPos,
+            index;
+
+        Settings_value[key].defaultValue += offset;
+
+        Main_setItem(key, Settings_Obj_default(key));
+        Main_textContent(key, Settings_Obj_values(key));
+        Settings_SetarrowsKey(key);
+
+        if (Settings_value[key].defaultValue) {
+            Settings_DisableCodecsNames.push(Settings_CodecsNames[Settings_CodecsPos]);
+
+            //Make sure at least one is enable
+            var oneEnable = false,
+                i = 0;
+            for (i; i < Settings_CodecsTotal; i++) {
+                if (!Settings_value["codecs" + i].defaultValue) {
+                    oneEnable = true;
+                    break;
+                }
+            }
+            if (!oneEnable) {
+                Main_showWarningDialog(STR_ONE_CODEC_ENA);
+                window.setTimeout(Main_HideWarningDialog, 2000);
+                for (i = 0; i < Settings_CodecsTotal; i++) {
+                    if (Settings_CodecsPos !== i) {
+                        key = "codecs" + i;
+                        Settings_value[key].defaultValue += -1;
+                        Main_setItem(key, Settings_Obj_default(key));
+                        Main_textContent(key, Settings_Obj_values(key));
+                        index = Settings_DisableCodecsNames.indexOf(Settings_CodecsNames[i]);
+                        if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
+
+                        break;
+                    }
+                }
+            }
+        } else {
+            index = Settings_DisableCodecsNames.indexOf(Settings_CodecsNames[Settings_CodecsPos]);
+            if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
+        }
+        Main_setItem('Settings_DisableCodecsNames', JSON.stringify(Settings_DisableCodecsNames));
+
+        Settings_CodecsSet();
+    }
+
+    function Settings_CodecsSet() {
+        //TODO remove the try after some itme of the app be released
+        try {
+            Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+        } catch (e) {}
+    }
+    //Variable initialization
     var Languages_cursorY = 0;
     var Languages_Selected = '';
     var Languages_value = {
