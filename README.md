@@ -10,7 +10,7 @@ This project is a port of this repo [smarttv-twitch](https://github.com/fgl27/sm
 Are phones and tablets supported?
 ==============
 
-Yes but is limited, you need to use the APK from [release](https://github.com/fgl27/SmartTwitchTV/releases) and manually install the APK. Be aware that as the app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter key controller use the the on screen virtual D-pad + back key to navigate, click anywhere on the screen to show the virtual D-pad.
+Yes but is limited, you need to use the APK from [release](https://github.com/fgl27/SmartTwitchTV/releases) and manually install the APK. Be aware that as the app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter key controller use the on screen virtual D-pad + back key to navigate, click anywhere on the screen to show the virtual D-pad.
 
 Download
 ==============
