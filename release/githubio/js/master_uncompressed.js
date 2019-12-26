@@ -3412,19 +3412,30 @@
         Main_scenekeysDoc.style.opacity = "0";
     }
 
+    var Main_initClickSetId;
+
     function Main_initClickSet(doc, pos) {
         doc.onpointerdown = function() {
+            window.clearInterval(Main_initClickSetId);
             if (!Main_buttonsVisible()) return;
 
-            if (Main_IsNotBrowser) Android.keyEvent(pos, 0);
-            else console.log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
+            Main_Clickonpointerdown(pos);
+            Main_initClickSetId = window.setInterval(function() {
+                Main_Clickonpointerdown(pos);
+            }, 150);
         };
         doc.onpointerup = function() {
+            window.clearInterval(Main_initClickSetId);
             if (!Main_buttonsVisible()) return;
 
             if (Main_IsNotBrowser) Android.keyEvent(pos, 1);
             else console.log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
         };
+    }
+
+    function Main_Clickonpointerdown(pos) {
+        if (Main_IsNotBrowser) Android.keyEvent(pos, 0);
+        else console.log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
     }
 
     function Main_IconLoad(lable, icon, string) {
