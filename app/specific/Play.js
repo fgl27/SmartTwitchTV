@@ -2580,7 +2580,7 @@ function Play_MakeControls() {
 
     Play_controls[Play_controlsChat] = { //chat enable disable
         icons: "chat",
-        string: STR_CHAT,
+        string: STR_CHAT_SHOW,
         values: null,
         defaultValue: null,
         opacity: 0,
