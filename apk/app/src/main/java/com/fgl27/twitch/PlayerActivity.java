@@ -45,7 +45,6 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 public class PlayerActivity extends Activity {
@@ -68,7 +67,7 @@ public class PlayerActivity extends Activity {
             KeyEvent.KEYCODE_DPAD_LEFT,
             KeyEvent.KEYCODE_DPAD_RIGHT,
             KeyEvent.KEYCODE_ENTER,
-            KeyEvent.KEYCODE_BACK};
+            KeyEvent.KEYCODE_1};
 
     public final int[] keysAction = {
             KeyEvent.ACTION_DOWN,
