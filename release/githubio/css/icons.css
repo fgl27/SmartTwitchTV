@@ -186,3 +186,6 @@
 .icon-key-up:before {
   content: "\6a";
 }
+.icon-return:before {
+  content: "\42";
+}
