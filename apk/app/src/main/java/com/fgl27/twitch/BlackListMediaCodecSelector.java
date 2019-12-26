@@ -11,6 +11,7 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class BlackListMediaCodecSelector implements MediaCodecSelector {
 
@@ -32,7 +33,7 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
         for (MediaCodecInfo codecInfo: codecInfos) {
             boolean blacklisted = false;
             for (String blackListedCodec: BLACKLISTEDCODECS) {
-                if (codecInfo != null && codecInfo.name.toLowerCase().contains(blackListedCodec.toLowerCase())) {
+                if (codecInfo != null && codecInfo.name.toLowerCase(Locale.US).contains(blackListedCodec.toLowerCase(Locale.US))) {
                     blacklisted = true;
                     break;
                 }
