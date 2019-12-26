@@ -85,7 +85,16 @@ var Settings_value = {
         "values": ["All"],
         "set_values": [""],
         "defaultValue": 1
-    }
+    },
+    "dpad_position": { //dpad postion
+        "values": ["right-bottom", "right-top", "left-top", "left-bottom"],
+        "defaultValue": 1
+    },
+    "dpad_opacity": { //dpad opacity
+        "values": ["0%", "5%","10%","15%","20%", "25%", "30%", "35%", "40%", "45%",
+            "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
+        "defaultValue": 15
+    },
 };
 
 function Settings_GenerateClock() {
@@ -216,6 +225,18 @@ function Settings_SetSettings() {
     Settings_value[key].values = [STR_NO, STR_YES];
     div += Settings_DivOptionNoSummary(key, STR_SCREEN_COUNTER);
 
+    if (!Main_isTV || !Main_IsNotBrowser) {
+        // dpad_position
+        key = "dpad_position";
+        Settings_value_keys.push(key);
+        div += Settings_DivOptionNoSummary(key, STR_DPAD_POSTION);
+
+        // dpad_opacity
+        key = "dpad_opacity";
+        Settings_value_keys.push(key);
+        div += Settings_DivOptionNoSummary(key, STR_DPAD_OPACITY);
+    }
+
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
@@ -335,6 +356,12 @@ function Settings_SetStrings() {
     key = "show_screen_counter";
     Main_textContent(key + '_name', STR_SCREEN_COUNTER);
 
+    key = "dpad_position";
+    Main_textContent(key + '_name', STR_DPAD_POSTION);
+
+    key = "dpad_opacity";
+    Main_textContent(key + '_name', STR_DPAD_OPACITY);
+
     // Content Language selection
     key = "content_lang";
     Main_textContent(key + '_name', STR_CONTENT_LANG);
@@ -437,6 +464,8 @@ function Settings_SetDefautls() {
     }
     Settings_SetBuffers(0);
     Settings_SetClock();
+    Settings_DpadOpacity();
+    Settings_DpadPOsition();
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
@@ -532,6 +561,27 @@ function Settings_SetDefault(position) {
         Main_updateclock();
     } else if (position === "bitrate_main") Settings_SetBitRate(1);
     else if (position === "bitrate_min") Settings_SetBitRate(2);
+    else if (position === "dpad_opacity") Settings_DpadOpacity();
+    else if (position === "dpad_position") Settings_DpadPOsition();
+}
+
+function Settings_DpadOpacity() {
+    Main_clearHideButtons();
+    Main_setHideButtons();
+    Main_scenekeysDoc.style.opacity = Settings_Obj_default("dpad_opacity") * 0.05;
+}
+
+var Settings_DpadPOsitions = [[0,0],
+                              [0,44],
+                              [63,44],
+                              [63,0]];
+
+function Settings_DpadPOsition() {
+    Settings_DpadOpacity();
+    Main_clearHideButtons();
+    Main_setHideButtons();
+    Main_scenekeysPositionDoc.style.right = Settings_DpadPOsitions[Settings_Obj_default("dpad_position")][0] + "%";
+    Main_scenekeysPositionDoc.style.bottom = Settings_DpadPOsitions[Settings_Obj_default("dpad_position")][1] + "%";
 }
 
 function Settings_SetAnimations() {
@@ -662,8 +712,10 @@ function Settings_SetClock() {
 var Settings_CurY = 0;
 
 function Settings_ScrollTable() {
-    var doc;
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === 12) {
+    var doc,
+    offset = (!Main_isTV || !Main_IsNotBrowser) ? 2 : 0;
+
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -671,7 +723,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 450);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === 11) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 450);
         else doc.scrollTop = 0;
