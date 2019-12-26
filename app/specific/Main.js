@@ -394,7 +394,7 @@ function Main_initbodyClickSet() {
 
 function Main_buttonsVisible() {
     return parseFloat(Main_scenekeysDoc.style.opacity) ===
-     parseFloat(Settings_Obj_default("dpad_opacity") * 0.05);
+        parseFloat(Settings_Obj_default("dpad_opacity") * 0.05);
 }
 
 function Main_clearHideButtons() {
