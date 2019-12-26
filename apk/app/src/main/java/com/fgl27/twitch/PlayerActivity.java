@@ -31,6 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -44,6 +45,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 public class PlayerActivity extends Activity {
@@ -72,11 +74,14 @@ public class PlayerActivity extends Activity {
             KeyEvent.ACTION_DOWN,
             KeyEvent.ACTION_UP};
 
+    public String[] BLACKLISTEDCODECS = null;
+
     public int DefaultPositions = 0;
 
     public PlayerView[] PlayerView = new PlayerView[2];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[2];
     public DataSource.Factory dataSourceFactory;
+    public DefaultRenderersFactory renderersFactory;
 
     public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[2];
 
@@ -237,10 +242,20 @@ public class PlayerActivity extends Activity {
             trackSelector[position] = new DefaultTrackSelector(this);
             trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
 
-            player[position] = new SimpleExoPlayer.Builder(this)
-                    .setTrackSelector(trackSelector[position])
-                    .setLoadControl(loadControl[mwhocall])
-                    .build();
+            if (BLACKLISTEDCODECS != null) {
+                renderersFactory = new DefaultRenderersFactory(this);
+                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
+
+                player[position] = new SimpleExoPlayer.Builder(this, renderersFactory)
+                        .setTrackSelector(trackSelector[position])
+                        .setLoadControl(loadControl[mwhocall])
+                        .build();
+            } else {
+                player[position] = new SimpleExoPlayer.Builder(this)
+                        .setTrackSelector(trackSelector[position])
+                        .setLoadControl(loadControl[mwhocall])
+                        .build();
+            }
 
             player[position].addListener(new PlayerEventListener(position));
             player[position].addAnalyticsListener(new AnalyticsEventListener(position));
@@ -1027,6 +1042,18 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void keyEvent(int key, int keyaction) {
             myHandler.post(() -> mwebview.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getcodecCapabilities(String CodecType) {
+            return Tools.codecCapabilities(CodecType);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void setBlackListMediaCodec(String CodecType) {
+            BLACKLISTEDCODECS = !CodecType.isEmpty() ? CodecType.split(",") : null;
         }
     }
 

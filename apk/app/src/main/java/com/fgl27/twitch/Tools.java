@@ -38,6 +38,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -49,6 +50,23 @@ public final class Tools {
     private static final String TAG = Tools.class.getName();
 
     private static final String[] codecNames = {"avc", "vp9", "mp4a"};
+
+    //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
+    private static final String[] AvcLevels = {
+            "1", "1.1", "1.2", "1.3", "1.b",
+            "2", "2.1", "2.2",
+            "3", "3.1", "3.2",
+            "4", "4.1", "4.2",
+            "5", "5.1", "5.2",
+            "6", "6.1", "6.2"};
+
+    private static final Integer[] AvcLevelsEx = {
+            1, 4, 8, 16, 2,
+            32, 64, 128,
+            256, 512, 1024,
+            2048, 4096, 8192,
+            16384, 32768, 65536,
+            131072, 262144, 524288};
 
     //Same values as in the js counterpart
     private static final String CLIENTIDHEADER = "Client-ID";
@@ -285,6 +303,80 @@ public final class Tools {
 
         }
         return maxAVCLevel >= 65536;
+    }
+
+    // Receives the codec type (avc, vp9 or etc...) and returns a comma concatenate string
+    // Type, Name, Max resolution Width x Heigth, Max bitrate Mbps, Max profile, Max level, 160p to 4k fps (returns fps = 0.0 for unsupported resolutions) | next codec same type
+    //video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73 | next codec same type
+    public static String codecCapabilities(String CodecType) {
+        String values = "";
+        String info;
+        int position;
+        int lowerWidth;
+        int UperWidth;
+
+        for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos()) {
+            if (!codec.isEncoder()) {
+                for (String type : codec.getSupportedTypes()) {
+                    if (type.contains(CodecType)) {
+                        try {
+                            MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
+                            MediaCodecInfo.VideoCapabilities videoCapabilities = codecCapabilities.getVideoCapabilities();
+
+                            MediaCodecInfo.CodecProfileLevel[] profile = codecCapabilities.profileLevels;
+
+                            if (CodecType.contains("avc")) { //check avc arrays others codecs current not used
+                                position = Arrays.asList(AvcLevelsEx).indexOf(profile[profile.length - 1].level);
+                                info = String.format(Locale.US, "%d,%s",
+                                        profile[profile.length - 1].profile,
+                                        (position > 0) ? AvcLevels[position] : "Unknown level " + profile[profile.length - 1].level);
+                            } else {
+                                info = String.format(Locale.US, "%d,%d",
+                                        profile[profile.length - 1].profile,
+                                        profile[profile.length - 1].level);
+                            }
+
+                            lowerWidth = videoCapabilities.getSupportedWidths().getLower();
+                            UperWidth = videoCapabilities.getSupportedWidths().getUpper();
+
+                            values += ((values.isEmpty()) ? "" : "|" ) +
+                                    String.format(Locale.US,
+                                            //"type %s,codec %s,Max res %dx%d,Max bit %d Mbps,Max level %s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
+                                            "%s,%s,%dx%d,%d Mbps,%s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
+                                            type,
+                                            codec.getName(),
+                                            videoCapabilities.getSupportedWidths().getUpper(),
+                                            videoCapabilities.getSupportedHeights().getUpper(),
+                                            videoCapabilities.getBitrateRange().getUpper() / 1000000,
+                                            info,
+                                            codecframeRate(videoCapabilities, 240, 160, lowerWidth, UperWidth),
+                                            codecframeRate(videoCapabilities, 480, 360, lowerWidth, UperWidth),
+                                            codecframeRate(videoCapabilities, 640, 480, lowerWidth, UperWidth),
+                                            codecframeRate(videoCapabilities, 1280, 720, lowerWidth, UperWidth),
+                                            codecframeRate(videoCapabilities, 1920, 1080, lowerWidth, UperWidth),
+                                            codecframeRate(videoCapabilities, 2560, 1440, lowerWidth, UperWidth),
+                                            codecframeRate(videoCapabilities, 3840, 2160, lowerWidth, UperWidth));
+
+                        } catch (Exception e) {
+                            Log.w(TAG, "codecCapabilities Exception ", e);
+                        }
+                    }
+                }
+            }
+
+        }
+        Log.d(TAG, values);
+        return values != null ? values : "";
+    }
+
+    private static Double codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
+        try {
+            //Check if is bigger then smallest and smaller then the biggest
+            return (width >= lowerWidth && width <= UperWidth) ? videoCapabilities.getSupportedFrameRatesFor(width, height).getUpper() : 0.0;
+        } catch (Exception e) {
+            Log.w(TAG, "codecframeRate Exception width " + width + " height " + height, e);
+            return 0.0;
+        }
     }
 
     private static Charset mresponseCharset(String getContentType) {

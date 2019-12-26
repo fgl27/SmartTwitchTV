@@ -1291,14 +1291,14 @@
             width: 100%;
             display: inline-block;
             vertical-align: middle;
-            font-size: 140%;
+            font-size: 135%;
         }
 
         div.settings_div {
             box-sizing: border-box;
             border-top: 0.05em solid;
             border-bottom: 0.05em solid;
-            border-image: linear-gradient(#000000, #000000) 1;
+            border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
         }
 
         div.settings_div_focus {
@@ -1316,7 +1316,7 @@
             vertical-align: middle;
             border-top: 0.1em solid;
             border-bottom: 0.1em solid;
-            border-image: linear-gradient(#000000, #000000) 1;
+            border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
         }
 
         div.settings_value_focus {
@@ -1331,7 +1331,7 @@
 
         div.settings_title {
             width: 80%;
-            font-size: 100%;
+            font-size: 95%;
             text-align: center;
         }
 
@@ -1895,6 +1895,11 @@
         <div id="dialog_phone" class="screens hide" style="z-index: 200; background: rgba(0, 0, 0, 0.75);">
             <div class="about_dialogs" style="width: 80%; margin-left: 10%;">
                 <div id="dialog_phone_text" class="about_text"></div>
+            </div>
+        </div>
+        <div id="dialog_codecs" class="screens hide" style="z-index: 1; background: rgba(0, 0, 0, 0.75);">
+            <div class="about_dialogs" style="width: 95%; margin-left: 2.5%;">
+                <div id="dialog_codecs_text" class="about_text"></div>
             </div>
         </div>
         <div id="dialog_counter" style="position: absolute; z-index:101; width: 100%; bottom: 0;">
@@ -2477,7 +2482,7 @@
                 </div>
                 <div class="scenekeysholder">
                     <div class="dialog_click" style="padding-top: 3vh;">
-                    <!-- Empty to make the layout to be centered-->
+                        <!-- Empty to make the layout to be centered-->
                     </div>
                     <div class="dialog_click" style="padding-top: 3vh; padding-left: 10vh; padding-right: 10vh;">
                         <i id="clickdown" class="icon-key-down strokicon icon_key"></i>
