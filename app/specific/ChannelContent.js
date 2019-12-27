@@ -478,10 +478,9 @@ function ChannelContent_handleKeyDown(event) {
             Main_ReloadScreen();
             break;
         case KEY_4:
-            if (AddUser_UserIsSet()) {
-                ChannelContent_removeFocus();
-                Sidepannel_Start(ChannelContent_handleKeyDown, true);
-            } else {
+            ChannelContent_removeFocus();
+            Sidepannel_Start(ChannelContent_handleKeyDown, AddUser_UserIsSet());
+            if (!AddUser_UserIsSet()) {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
                 window.setTimeout(Main_HideWarningDialog, 2000);
             }

@@ -917,10 +917,9 @@ function Screens_handleKeyDown(event) {
             Main_showExitDialog();
             break;
         case KEY_4:
-            if (inUseObj.loadingData) break;
-            else if (!inUseObj.posX) {
-                if (AddUser_UserIsSet()) Screens_OpenSidePanel(true);
-                else {
+            if (!inUseObj.loadingData) {
+                Screens_OpenSidePanel(AddUser_UserIsSet());
+                if (!AddUser_UserIsSet()) {
                     Main_showWarningDialog(STR_NOKUSER_WARN);
                     window.setTimeout(Main_HideWarningDialog, 2000);
                 }

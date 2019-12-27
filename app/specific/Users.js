@@ -421,10 +421,9 @@ function Users_handleKeyDown(event) {
             Main_ReloadScreen();
             break;
         case KEY_4:
-            if (AddUser_UserIsSet()) {
-                Users_removeFocus();
-                Sidepannel_Start(Users_handleKeyDown, true);
-            } else {
+            Users_removeFocus();
+            Sidepannel_Start(Users_handleKeyDown, AddUser_UserIsSet());
+            if (!AddUser_UserIsSet()) {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
                 window.setTimeout(Main_HideWarningDialog, 2000);
             }

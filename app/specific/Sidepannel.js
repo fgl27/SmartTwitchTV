@@ -197,6 +197,7 @@ function Sidepannel_Start(callback, forceFeed) {
         else {
             Main_showWarningDialog(STR_NOKUSER_WARN);
             window.setTimeout(Main_HideWarningDialog, 2000);
+            Sidepannel_StartMain();
         }
     } else Sidepannel_StartMain();
 }
