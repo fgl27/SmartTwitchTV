@@ -3387,8 +3387,8 @@
     }
 
     function Main_initbodyClickSet() {
-        if (Main_isElementShowing('search_scroll')) Search_KeyboardDismiss();
-        else if (Main_isElementShowing('add_user_scroll')) AddUser_KeyboardDismiss();
+        //if (Main_isElementShowing('search_scroll')) Search_KeyboardDismiss();
+        //else if (Main_isElementShowing('add_user_scroll')) AddUser_KeyboardDismiss();
 
         Settings_DpadOpacity();
         Main_clearHideButtons();
