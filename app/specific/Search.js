@@ -125,7 +125,7 @@ function Search_handleKeyDown(event) {
 }
 
 function Search_inputFocus() {
-    Main_AddClass('scenekeys', 'avoidclicks');
+    //Main_AddClass('scenekeys', 'avoidclicks');
     Main_AddClass('scenefeed', 'avoidclicks');
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     document.body.addEventListener("keydown", Search_KeyboardEvent, false);
@@ -135,7 +135,7 @@ function Search_inputFocus() {
 }
 
 function Search_RemoveinputFocus(EnaKeydown) {
-    Main_RemoveClass('scenekeys', 'avoidclicks');
+    //Main_RemoveClass('scenekeys', 'avoidclicks');
     Main_RemoveClass('scenefeed', 'avoidclicks');
     Main_SearchInput.blur();
     Search_removeEventListener();

@@ -52,7 +52,7 @@ function AddUser_handleKeyDown(event) {
 }
 
 function AddUser_inputFocus() {
-    Main_AddClass('scenekeys', 'avoidclicks');
+    //Main_AddClass('scenekeys', 'avoidclicks');
     Main_AddClass('scenefeed', 'avoidclicks');
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
@@ -63,7 +63,7 @@ function AddUser_inputFocus() {
 }
 
 function AddUser_removeEventListener() {
-    Main_RemoveClass('scenekeys', 'avoidclicks');
+    //Main_RemoveClass('scenekeys', 'avoidclicks');
     Main_RemoveClass('scenefeed', 'avoidclicks');
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);
