@@ -189,11 +189,16 @@ function Sidepannel_Go(GoTo) {
     }
 }
 
-function Sidepannel_Start(callback) {
+function Sidepannel_Start(callback, forceFeed) {
     Sidepannel_Callback = callback;
     document.body.removeEventListener("keydown", Sidepannel_Callback);
-    if (!Sidepannel_IsMain && AddUser_UserIsSet()) Sidepannel_StartFeed();
-    else Sidepannel_StartMain();
+    if (!Sidepannel_IsMain || forceFeed) {
+        if (AddUser_UserIsSet()) Sidepannel_StartFeed();
+        else {
+            Main_showWarningDialog(STR_NOKUSER_WARN);
+            window.setTimeout(Main_HideWarningDialog, 2000);
+        }
+    } else Sidepannel_StartMain();
 }
 
 function Sidepannel_StartMain() {
@@ -474,10 +479,10 @@ function Sidepannel_handleKeyDownMain(event) {
             Sidepannel_Hide();
             Main_SwitchScreenAction();
             break;
+        case KEY_4:
         case KEY_LEFT:
             if (AddUser_UserIsSet()) {
                 document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
-                Main_ShowElement('side_panel_feed_thumb'); //TODO check if this is needed
                 Sidepannel_StartFeed();
             } else {
                 Main_showWarningDialog(STR_NOKUSER_WARN);

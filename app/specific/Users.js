@@ -420,6 +420,15 @@ function Users_handleKeyDown(event) {
         case KEY_REFRESH:
             Main_ReloadScreen();
             break;
+        case KEY_4:
+            if (AddUser_UserIsSet()) {
+                Users_removeFocus();
+                Sidepannel_Start(Users_handleKeyDown, true);
+            } else {
+                Main_showWarningDialog(STR_NOKUSER_WARN);
+                window.setTimeout(Main_HideWarningDialog, 2000);
+            }
+            break;
         default:
             break;
     }

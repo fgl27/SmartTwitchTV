@@ -61,13 +61,16 @@ public class PlayerActivity extends Activity {
 
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
 
-    public final int[] keys = {
+    public final int[] keys = {//same order as Main_initClickDoc /smartTwitchTV/app/specific/Main.js
             KeyEvent.KEYCODE_DPAD_UP,
             KeyEvent.KEYCODE_DPAD_DOWN,
             KeyEvent.KEYCODE_DPAD_LEFT,
             KeyEvent.KEYCODE_DPAD_RIGHT,
             KeyEvent.KEYCODE_ENTER,
-            KeyEvent.KEYCODE_1};
+            KeyEvent.KEYCODE_1,//key_1 is mapped as back key
+            KeyEvent.KEYCODE_PAGE_UP,
+            KeyEvent.KEYCODE_PAGE_DOWN,
+            KeyEvent.KEYCODE_NUMPAD_4};
 
     public final int[] keysAction = {
             KeyEvent.ACTION_DOWN,
