@@ -419,7 +419,7 @@ function Main_initClickSet(doc, pos) {
         Main_Clickonpointerdown(pos);
         Main_initClickSetId = window.setInterval(function() {
             Main_Clickonpointerdown(pos);
-        }, 150);
+        }, 250);
     };
     doc.onpointerup = function() {
         window.clearInterval(Main_initClickSetId);
