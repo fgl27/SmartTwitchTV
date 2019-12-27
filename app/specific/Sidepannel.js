@@ -480,7 +480,7 @@ function Sidepannel_handleKeyDownMain(event) {
             Sidepannel_Hide();
             Main_SwitchScreenAction();
             break;
-        case KEY_4:
+        case KEY_CHAT:
         case KEY_LEFT:
             if (AddUser_UserIsSet()) {
                 document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);

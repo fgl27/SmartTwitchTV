@@ -335,4 +335,5 @@ function en_USLang() {
     STR_MAX_LEVEL = "Max level: ";
     STR_MAX_FPS = "Max fps per resolution:";
     STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
+    STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
 }

@@ -70,7 +70,7 @@ public class PlayerActivity extends Activity {
             KeyEvent.KEYCODE_1,//key_1 is mapped as back key
             KeyEvent.KEYCODE_PAGE_UP,
             KeyEvent.KEYCODE_PAGE_DOWN,
-            KeyEvent.KEYCODE_4};
+            KeyEvent.KEYCODE_3};
 
     public final int[] keysAction = {
             KeyEvent.ACTION_DOWN,

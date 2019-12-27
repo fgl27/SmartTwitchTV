@@ -420,7 +420,7 @@ function Users_handleKeyDown(event) {
         case KEY_REFRESH:
             Main_ReloadScreen();
             break;
-        case KEY_4:
+        case KEY_CHAT:
             Users_removeFocus();
             Sidepannel_Start(Users_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {
