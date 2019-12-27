@@ -3422,7 +3422,7 @@
             Main_Clickonpointerdown(pos);
             Main_initClickSetId = window.setInterval(function() {
                 Main_Clickonpointerdown(pos);
-            }, 250);
+            }, 400);
         };
         doc.onpointerup = function() {
             window.clearInterval(Main_initClickSetId);
