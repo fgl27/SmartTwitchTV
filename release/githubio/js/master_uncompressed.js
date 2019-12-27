@@ -3413,24 +3413,35 @@
     }
 
     var Main_initClickSetId;
+    var Main_initClickTimeoutId;
 
     function Main_initClickSet(doc, pos) {
         doc.onpointerdown = function() {
-            window.clearInterval(Main_initClickSetId);
+            Main_ClickonpointerdownClear();
             if (!Main_buttonsVisible()) return;
 
             Main_Clickonpointerdown(pos);
-            Main_initClickSetId = window.setInterval(function() {
-                Main_Clickonpointerdown(pos);
-            }, 400);
+
+            Main_initClickTimeoutId = window.setTimeout(function() {
+                Main_ClickonpointerdownClear();
+                Main_initClickSetId = window.setInterval(function() {
+                    Main_Clickonpointerdown(pos);
+                }, 50);
+            }, 600);
         };
+
         doc.onpointerup = function() {
-            window.clearInterval(Main_initClickSetId);
+            Main_ClickonpointerdownClear();
             if (!Main_buttonsVisible()) return;
 
             if (Main_IsNotBrowser) Android.keyEvent(pos, 1);
             else console.log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
         };
+    }
+
+    function Main_ClickonpointerdownClear() {
+        window.clearTimeout(Main_initClickTimeoutId);
+        window.clearInterval(Main_initClickSetId);
     }
 
     function Main_Clickonpointerdown(pos) {
