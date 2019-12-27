@@ -428,7 +428,7 @@ function ChannelContent_handleKeyDown(event) {
                 if (ChannelContent_cursorX < 0) ChannelContent_cursorX = 2;
                 ChannelContent_addFocus();
             } else {
-                document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+                ChannelContent_removeFocus();
                 Sidepannel_Start(ChannelContent_handleKeyDown);
             }
             break;
@@ -476,6 +476,15 @@ function ChannelContent_handleKeyDown(event) {
             break;
         case KEY_REFRESH:
             Main_ReloadScreen();
+            break;
+        case KEY_4:
+            if (AddUser_UserIsSet()) {
+                ChannelContent_removeFocus();
+                Sidepannel_Start(ChannelContent_handleKeyDown, true);
+            } else {
+                Main_showWarningDialog(STR_NOKUSER_WARN);
+                window.setTimeout(Main_HideWarningDialog, 2000);
+            }
             break;
         default:
             break;

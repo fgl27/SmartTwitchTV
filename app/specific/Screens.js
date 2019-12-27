@@ -794,12 +794,12 @@ function Screens_KeyLeftRight(y, x) {
         Screens_ChangeFocus(y, x);
 }
 
-function Screens_OpenSidePanel() {
+function Screens_OpenSidePanel(forceFeed) {
     Screens_RemoveAllFocus();
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Screens_ClearAnimation();
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    Sidepannel_Start(Screens_handleKeyDown);
+    Sidepannel_Start(Screens_handleKeyDown, forceFeed);
 }
 
 function Screens_RemoveAllFocus() {
@@ -915,6 +915,16 @@ function Screens_handleKeyDown(event) {
         case KEY_9:
             document.body.removeEventListener("keydown", Screens_handleKeyDown);
             Main_showExitDialog();
+            break;
+        case KEY_4:
+            if (inUseObj.loadingData) break;
+            else if (!inUseObj.posX) {
+                if (AddUser_UserIsSet()) Screens_OpenSidePanel(true);
+                else {
+                    Main_showWarningDialog(STR_NOKUSER_WARN);
+                    window.setTimeout(Main_HideWarningDialog, 2000);
+                }
+            }
             break;
         default:
             break;
