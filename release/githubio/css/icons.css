@@ -99,9 +99,6 @@
 .icon-users:before {
   content: "\75";
 }
-.icon-arrow-up:before {
-  content: "\76";
-}
 .icon-movie-play:before {
   content: "\7a";
 }
@@ -188,4 +185,16 @@
 }
 .icon-return:before {
   content: "\42";
+}
+.icon-update:before {
+  content: "\74";
+}
+.icon-pg-down:before {
+  content: "\72";
+}
+.icon-pg-up:before {
+  content: "\76";
+}
+.icon-feed:before {
+  content: "\77";
 }
