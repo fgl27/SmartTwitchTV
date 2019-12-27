@@ -67,6 +67,7 @@ function DefaultLang() {
         STR_DIV_TITLE + STR_GENERAL + '</div>' +
         STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_SIDE_PANEL + STR_BR +
+        STR_DOT + STR_USER_LIVE + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_2 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_3 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_4 + STR_BR +

@@ -916,7 +916,7 @@ function Screens_handleKeyDown(event) {
             document.body.removeEventListener("keydown", Screens_handleKeyDown);
             Main_showExitDialog();
             break;
-        case KEY_4:
+        case KEY_CHAT:
             if (!inUseObj.loadingData) {
                 Screens_OpenSidePanel(AddUser_UserIsSet());
                 if (!AddUser_UserIsSet()) {

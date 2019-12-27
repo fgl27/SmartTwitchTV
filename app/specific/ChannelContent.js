@@ -477,7 +477,7 @@ function ChannelContent_handleKeyDown(event) {
         case KEY_REFRESH:
             Main_ReloadScreen();
             break;
-        case KEY_4:
+        case KEY_CHAT:
             ChannelContent_removeFocus();
             Sidepannel_Start(ChannelContent_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {
