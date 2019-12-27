@@ -328,7 +328,7 @@ function en_USLang() {
     STR_DPAD_OPACITY = "D-pad opacity";
     STR_BLOCKED_CODEC = "Blocked Codecs";
     STR_BLOCKED_CODEC_SUMARRY = "List used codecs capabilities and allow to block a codec from be used";
-    STR_CODEC_DIALOG_TITLE = "Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block codecs and see if the performance of the app improves.";
+    STR_CODEC_DIALOG_TITLE = "Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block codecs and see if the performance of the app improves. The app content only uses avc/h264 decoders no other is listed.";
     STR_SUPPORTED_CODEC = "Supported codecs:";
     STR_MAX_RES = "Max resolution: ";
     STR_MAX_BIT = "Max bitrate: ";
