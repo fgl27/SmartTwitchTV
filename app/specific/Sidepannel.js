@@ -400,6 +400,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_RETURN_Q:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
+        case KEY_CHAT:
             Sidepannel_Hide();
             Main_SwitchScreenAction();
             break;
