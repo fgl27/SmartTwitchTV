@@ -129,7 +129,7 @@ var Main_randomimg = '?' + Math.random();
 var proxyurl = "https://cors-anywhere.herokuapp.com/";
 var Main_updateUserFeedId;
 var Main_vp9supported = false;
-var Main_SupportsAvc1High = false;
+//var Main_SupportsAvc1High = false;
 var Main_Fix = "kimne78kx3";
 //Variable initialization end
 
@@ -282,7 +282,7 @@ function Main_initWindows() {
 
         //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
         //TODO add a warning when playing avc1.640034 and a setting to disable it
-        Main_SupportsAvc1High = true;// Android.misAVC52Supported();
+        //Main_SupportsAvc1High = Android.misAVC52Supported();
     }
 
     Main_SetStringsMain(true);
