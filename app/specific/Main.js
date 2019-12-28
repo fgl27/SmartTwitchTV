@@ -891,7 +891,7 @@ function Main_checkVersion() {
     }
 
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
-        STR_BR + '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
+        STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
     Main_RunningTime = Date.now();
 }
