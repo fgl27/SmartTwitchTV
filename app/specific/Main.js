@@ -67,7 +67,8 @@ var Main_values = {
     "Sidepannel_IsUser": false,
     "My_channel": false,
     "DeviceCheck": false,
-    "Never_run_phone": true
+    "Never_run_phone": true,
+    "Codec_is_Check": false,
 };
 
 var Main_Force = "4mv6wki5h1ko";
@@ -239,9 +240,51 @@ function Main_initWindows() {
             }
         }
 
+        //Disable googles OMX.google.h264.decoder if another codec is available
+        //Check if at least one none google codec is available
+        if (!Main_values.Codec_is_Check) {
+            var getcodec = null;
+            try {
+                getcodec = Android.getcodecCapabilities('avc');
+            } catch (e) {
+                getcodec = null;
+            }
+
+            if (getcodec !== null) {
+
+                Main_values.Codec_is_Check = true;
+                var codecs = getcodec.split('|');
+
+                if (codecs.length > 1) {
+                
+                    var codecsValue,
+                    codecsnames = [];
+
+                    for (var i = 0; i < codecs.length; i++) {
+                        codecsValue = codecs[i].split(',');
+                        if (codecsValue[1].toLowerCase().indexOf('google') !== -1)
+                            codecsnames.push(codecsValue[1]);
+                    }
+
+                    if (codecsnames.length < 2) {
+
+                        Main_setItem(codecsnames[0], 1);
+                        Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
+
+                        try {
+                            Android.setBlackListMediaCodec(codecsnames.join());
+                        } catch (e) {}
+                    }
+                }
+            }
+
+        }
+
         //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
-        Main_SupportsAvc1High = Android.misAVC52Supported();
+        //TODO add a warning when playing avc1.640034 and a setting to disable it
+        Main_SupportsAvc1High = true;// Android.misAVC52Supported();
     }
+
     Main_SetStringsMain(true);
 
     Main_GoBefore = Main_values.Main_Go;
