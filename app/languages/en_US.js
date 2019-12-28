@@ -105,13 +105,12 @@ function en_USLang() {
     STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
     STR_ABOUT_INFO_3 = "Developer information:";
     STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on github";
-    STR_ABOUT_INFO_5 = "github.com/fgl27/SmartTwitchTV";
+    STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
     STR_ABOUT_INFO_6 = "This application uses following dependencies:";
     STR_ABOUT_INFO_7 = "Nightdev KapChat - KapChat captures Twitch chat directly into OBS or XSplit (https://www.nightdev.com/kapchat/)";
     STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)";
     STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms (https://github.com/twitter/twemoji)";
     STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
-    STR_ABOUT_INFO_11 = "JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc. (https://github.com/beautify-web/js-beautify)";
     STR_ABOUT_INFO_12 = "HTMLMinifier - A highly configurable, well-tested, JavaScript-based HTML minifier (https://github.com/kangax/html-minifier)";
     STR_ABOUT_INFO_13 = "JSHint - A Static Code Analysis Tool for JavaScript (https://github.com/jshint/jshint)";
 
@@ -119,6 +118,9 @@ function en_USLang() {
     STR_ABOUT_INFO_15 = "Android:";
     STR_ABOUT_INFO_16 = "Google: Leanback v17 (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
     STR_ABOUT_INFO_17 = "Google: ExoPlayer (https://github.com/google/ExoPlayer)";
+    STR_ABOUT_INFO_18 = "Phones and Tablets support:";
+    STR_ABOUT_INFO_19 = "Yes is possible to use this app on phones and tablets, but this app is design to be used mainly on TVs, the support for other device is limited and because of that not released on play store, use the bello link to download latest APK and manually install it";
+    STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
 
     STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
@@ -268,7 +270,7 @@ function en_USLang() {
     STR_PLAYER_BITRATE_SUMARRY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
-    STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short loading call when changing video source, to prevent this set both values the same at the cost of possible app slowdowns if the bitrate values are too high, the best indicative for detecting too high bitrate for picture in picture is the player Drooped frames value if you are constantly drooping the bitrate is too high, other indicative is the constantly buffering of the stream.";
+    STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
     STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
     STR_AUDIO_SOURCE = "Audio source";
     STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";

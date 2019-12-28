@@ -5,6 +5,7 @@ var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertica
 var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
 var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
+var STR_DIV_LINK = '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #0000FF;">';
 var STR_CONTROL_KEY = '';
 var STR_SEARCH_KEY = '';
 var STR_ABOUT_KEY = '';
@@ -83,14 +84,17 @@ function DefaultLang() {
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
-    STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 + STR_BR +
-        (Main_IsNotBrowser ? '' : STR_BR + '<div class="class_bold" style="display: inline-block; color: #FF0000; font-size: 110%;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
-        STR_BR +
+    STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 +
+        (Main_IsNotBrowser ? '' : STR_BR + '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #FF0000; font-size: 110%;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
+
+        STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
+        STR_ABOUT_INFO_19 + STR_BR +
+        STR_DIV_LINK + STR_ABOUT_INFO_20 + '</div>' + STR_BR +
         STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
-        STR_ABOUT_EMAIL + STR_BR +
+        STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
         STR_PAYPAL +
         STR_ABOUT_INFO_4 + STR_BR +
-        STR_ABOUT_INFO_5 + STR_BR +
+        STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR +
         STR_BR +
         STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
         STR_DIV_MIDLE_LEFT +
@@ -99,7 +103,6 @@ function DefaultLang() {
         STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_10 + STR_BR +
-        STR_DOT + STR_ABOUT_INFO_11 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_12 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
         STR_ABOUT_INFO_15 + STR_BR +
