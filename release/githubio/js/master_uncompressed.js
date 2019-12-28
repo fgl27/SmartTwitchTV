@@ -778,7 +778,7 @@
         STR_DPAD_OPACITY = "D-pad opacity";
         STR_BLOCKED_CODEC = "Blocked Codecs";
         STR_BLOCKED_CODEC_SUMARRY = "List used codecs capabilities and allow to block a codec from be used";
-        STR_CODEC_DIALOG_TITLE = "Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block codecs and see if the performance of the app improves. The app content only uses avc/h264 decoders no other is listed.";
+        STR_CODEC_DIALOG_TITLE = 'Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block it and see if the performance of the app improves, <span style="color: #FF0000;">by default OMX.google decoder is disabled</span> a constant accumulation of skipped frames is a indicative of a codec issue.<br>The app content only uses avc/h264 decoders no other is listed.';
         STR_SUPPORTED_CODEC = "Supported codecs:";
         STR_MAX_RES = "Max resolution: ";
         STR_MAX_BIT = "Max bitrate: ";
@@ -3081,7 +3081,8 @@
         "Sidepannel_IsUser": false,
         "My_channel": false,
         "DeviceCheck": false,
-        "Never_run_phone": true
+        "Never_run_phone": true,
+        "Codec_is_Check": false,
     };
 
     var Main_Force = "4mv6wki5h1ko";
@@ -3253,9 +3254,51 @@
                 }
             }
 
+            //Disable googles OMX.google.h264.decoder if another codec is available
+            //Check if at least one none google codec is available
+            if (!Main_values.Codec_is_Check) {
+                var getcodec = null;
+                try {
+                    getcodec = Android.getcodecCapabilities('avc');
+                } catch (e) {
+                    getcodec = null;
+                }
+
+                if (getcodec !== null) {
+
+                    Main_values.Codec_is_Check = true;
+                    var codecs = getcodec.split('|');
+
+                    if (codecs.length > 1) {
+
+                        var codecsValue,
+                            codecsnames = [];
+
+                        for (var i = 0; i < codecs.length; i++) {
+                            codecsValue = codecs[i].split(',');
+                            if (codecsValue[1].toLowerCase().indexOf('google') !== -1)
+                                codecsnames.push(codecsValue[1]);
+                        }
+
+                        if (codecsnames.length < 2) {
+
+                            Main_setItem(codecsnames[0], 1);
+                            Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
+
+                            try {
+                                Android.setBlackListMediaCodec(codecsnames.join());
+                            } catch (e) {}
+                        }
+                    }
+                }
+
+            }
+
             //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
-            Main_SupportsAvc1High = Android.misAVC52Supported();
+            //TODO add a warning when playing avc1.640034 and a setting to disable it
+            Main_SupportsAvc1High = true; // Android.misAVC52Supported();
         }
+
         Main_SetStringsMain(true);
 
         Main_GoBefore = Main_values.Main_Go;
@@ -13167,15 +13210,15 @@
                 STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
 
             for (i; i < Settings_CodecsTotal; i++) {
-                key = "codecs" + i;
+                codecsValue = codecs[i].split(',');
+
+                key = codecsValue[1];
                 Settings_value[key] = {
                     "values": [STR_ENABLE, STR_DISABLE],
                     "defaultValue": Main_getItemInt(key, 0)
                 };
 
-                codecsValue = codecs[i].split(',');
-
-                Settings_CodecsNames.push(codecsValue[1]);
+                Settings_CodecsNames.push(key);
 
                 temptitlecontent = "";
                 temptitlecontent += STR_MAX_RES + codecsValue[2] + STR_BR;
@@ -13193,9 +13236,9 @@
 
         if (Settings_CodecsTotal > 0) {
             Settings_CodecsPos = 0;
-            Main_AddClass("codecs" + Settings_CodecsPos, 'settings_value_focus');
-            Main_AddClass("codecs" + Settings_CodecsPos + '_div', 'settings_div_focus');
-            Settings_SetarrowsKey("codecs" + Settings_CodecsPos);
+            Main_AddClass(Settings_CodecsNames[Settings_CodecsPos], 'settings_value_focus');
+            Main_AddClass(Settings_CodecsNames[Settings_CodecsPos] + '_div', 'settings_div_focus');
+            Settings_SetarrowsKey(Settings_CodecsNames[Settings_CodecsPos]);
         }
 
         Main_ShowElement('dialog_codecs');
@@ -13209,17 +13252,17 @@
             case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                Settings_RemoveinputFocusKey("codecs" + Settings_CodecsPos);
+                Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);
                 Main_HideElement('dialog_codecs');
                 document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
                 document.body.addEventListener("keydown", Settings_handleKeyDown, false);
                 break;
             case KEY_LEFT:
-                key = "codecs" + Settings_CodecsPos;
+                key = Settings_CodecsNames[Settings_CodecsPos];
                 if (Settings_Obj_default(key) > 0) Settings_CodecsRigthLeft(-1);
                 break;
             case KEY_RIGHT:
-                key = "codecs" + Settings_CodecsPos;
+                key = Settings_CodecsNames[Settings_CodecsPos];
                 if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRigthLeft(1);
                 break;
             case KEY_UP:
@@ -13234,10 +13277,10 @@
     }
 
     function Settings_CodecsUpDown(offset) {
-        Settings_RemoveinputFocusKey("codecs" + Settings_CodecsPos);
+        Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);
         Settings_CodecsPos += offset;
 
-        var key = "codecs" + Settings_CodecsPos;
+        var key = Settings_CodecsNames[Settings_CodecsPos];
         Main_AddClass(key, 'settings_value_focus');
         Main_AddClass(key + '_div', 'settings_div_focus');
         Settings_SetarrowsKey(key);
@@ -13251,7 +13294,7 @@
             return;
         }
 
-        var key = "codecs" + Settings_CodecsPos,
+        var key = Settings_CodecsNames[Settings_CodecsPos],
             index;
 
         Settings_value[key].defaultValue += offset;
@@ -13266,8 +13309,9 @@
             //Make sure at least one is enable
             var oneEnable = false,
                 i = 0;
+
             for (i; i < Settings_CodecsTotal; i++) {
-                if (!Settings_value["codecs" + i].defaultValue) {
+                if (!Settings_value[Settings_CodecsNames[i]].defaultValue) {
                     oneEnable = true;
                     break;
                 }
@@ -13277,7 +13321,7 @@
                 window.setTimeout(Main_HideWarningDialog, 2000);
                 for (i = 0; i < Settings_CodecsTotal; i++) {
                     if (Settings_CodecsPos !== i) {
-                        key = "codecs" + i;
+                        key = Settings_CodecsNames[i];
                         Settings_value[key].defaultValue += -1;
                         Main_setItem(key, Settings_Obj_default(key));
                         Main_textContent(key, Settings_Obj_values(key));
@@ -13292,8 +13336,8 @@
             index = Settings_DisableCodecsNames.indexOf(Settings_CodecsNames[Settings_CodecsPos]);
             if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
         }
-        Main_setItem('Settings_DisableCodecsNames', JSON.stringify(Settings_DisableCodecsNames));
 
+        Main_setItem('Settings_DisableCodecsNames', JSON.stringify(Settings_DisableCodecsNames));
         Settings_CodecsSet();
     }
 
