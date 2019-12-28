@@ -29,6 +29,25 @@
             android:layout_gravity="bottom|right"
             app:use_controller="false"
             app:show_buffering="always"/>
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view_texture_view"
+            android:focusableInTouchMode="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:use_controller="false"
+            app:surface_type="texture_view"
+            app:show_buffering="always"/>
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view2_texture_view"
+            android:focusableInTouchMode="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|right"
+            app:use_controller="false"
+            app:surface_type="texture_view"
+            app:show_buffering="always"/>
     </FrameLayout>
 
     <WebView
