@@ -5,7 +5,7 @@ var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertica
 var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
 var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
-var STR_DIV_LINK = '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #0000FF;">';
+var STR_DIV_LINK = '<div style="text-align: center; width: 100%; display: inline-block; color: #0366d6;">';
 var STR_CONTROL_KEY = '';
 var STR_SEARCH_KEY = '';
 var STR_ABOUT_KEY = '';
