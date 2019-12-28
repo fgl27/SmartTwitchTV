@@ -3134,7 +3134,7 @@
 
     var Main_stringVersion = '2.0';
     var Main_stringVersion_Min = '.104';
-    var Main_minversion = '122719';
+    var Main_minversion = '122819';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_ClockOffset = 0;
@@ -3143,7 +3143,7 @@
     var proxyurl = "https://cors-anywhere.herokuapp.com/";
     var Main_updateUserFeedId;
     var Main_vp9supported = false;
-    var Main_SupportsAvc1High = false;
+    //var Main_SupportsAvc1High = false;
     var Main_Fix = "kimne78kx3";
     //Variable initialization end
 
@@ -3296,7 +3296,7 @@
 
             //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
             //TODO add a warning when playing avc1.640034 and a setting to disable it
-            Main_SupportsAvc1High = true; // Android.misAVC52Supported();
+            //Main_SupportsAvc1High = Android.misAVC52Supported();
         }
 
         Main_SetStringsMain(true);
@@ -5135,10 +5135,10 @@
     var PlayExtra_isHost = '';
     var PlayExtra_DisplaynameHost = '';
     var PlayExtra_PicturePicture = false;
-    var PlayExtra_SupportsSource = true;
+    //var PlayExtra_SupportsSource = true;
     var PlayExtra_AutoUrl = '';
 
-    var PlayExtra_SupportsSource_Old;
+    //var PlayExtra_SupportsSource_Old;
     var PlayExtra_selectedChannel_id_Old;
     var PlayExtra_IsRerun_Old;
     var PlayExtra_selectedChannel_Old;
@@ -5269,7 +5269,7 @@
         PlayExtra_qualities_Old = Play_qualities;
         PlayExtra_qualityPlaying_Old = Play_qualityPlaying;
         PlayExtra_quality_Old = Play_quality;
-        PlayExtra_SupportsSource_Old = Play_SupportsSource;
+        //PlayExtra_SupportsSource_Old = Play_SupportsSource;
         PlayExtra_AutoUrl_Old = Play_AutoUrl;
     }
 
@@ -5285,7 +5285,7 @@
         PlayExtra_qualityPlaying = PlayExtra_qualityPlaying_Old;
         PlayExtra_quality = PlayExtra_quality_Old;
         PlayExtra_AutoUrl = PlayExtra_AutoUrl_Old;
-        PlayExtra_SupportsSource = PlayExtra_SupportsSource_Old;
+        //PlayExtra_SupportsSource = PlayExtra_SupportsSource_Old;
     }
 
     function PlayExtra_SwitchPlayer() {
@@ -5311,7 +5311,7 @@
         Play_qualities = PlayExtra_qualities;
         Play_qualityPlaying = PlayExtra_qualityPlaying;
         Play_quality = PlayExtra_quality;
-        Play_SupportsSource = PlayExtra_SupportsSource;
+        //Play_SupportsSource = PlayExtra_SupportsSource;
         Play_AutoUrl = PlayExtra_AutoUrl;
 
         PlayExtra_SwitchPlayerResStoreOld();
@@ -5364,12 +5364,12 @@
         } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) {
 
             //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-            if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
-                PlayExtra_SupportsSource = false;
-                PlayExtra_loadingDataTry = 0;
-                PlayExtra_loadDataRequest();
-                return;
-            }
+            //        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+            //            PlayExtra_SupportsSource = false;
+            //            PlayExtra_loadingDataTry = 0;
+            //            PlayExtra_loadDataRequest();
+            //            return;
+            //        }
 
             Android.SetAuto2(PlayExtra_AutoUrl);
             PlayExtra_qualities = Play_extractQualities(responseText);
@@ -5420,9 +5420,12 @@
         } else {
             theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
                 '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-                '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
-                (PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+                '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
                 (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+            //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
             PlayExtra_AutoUrl = theUrl;
         }
 
@@ -5528,8 +5531,11 @@
             var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
                 '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
                 '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
-                (PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+                '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
                 (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+            //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
             PlayExtra_AutoUrl = theUrl;
 
@@ -5575,7 +5581,7 @@
     var Play_Status_Always_On = false;
     var Play_RefreshAutoTry = 0;
     var Play_SingleClickExit = 0;
-    var Play_SupportsSource = true;
+    //var Play_SupportsSource = true;
     var Play_LowLatency = false;
     var Play_EndUpclear = false;
     var Play_EndUpclearID;
@@ -5601,7 +5607,7 @@
     var Play_DisplaynameHost_Old;
     var Play_selectedChannelDisplayname_Old;
     var Play_gameSelected_Old;
-    var Play_SupportsSource_Old;
+    //var Play_SupportsSource_Old;
 
     var Play_pauseEndID = null;
     var Play_pauseStartID = null;
@@ -5809,7 +5815,7 @@
 
     function Play_Start() {
         Play_showBufferDialog();
-        Play_SupportsSource = true;
+        //Play_SupportsSource = true;
 
         Main_empty('stream_info_title');
         Play_LoadLogoSucess = false;
@@ -5950,8 +5956,9 @@
     function Play_CheckIfIsLiveLink() {
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Play_CheckIfIsLiveStartChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true' +
-            (Play_SupportsSource ? "&allow_source=true" : '') + '&p=' + Main_RandomInt();
+            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&p=' +
+            Main_RandomInt();
+        //(Play_SupportsSource ? "&allow_source=true" : '') + '&p=' + Main_RandomInt();
 
         var xmlHttp;
         try {
@@ -6013,10 +6020,11 @@
 
             var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
                 '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-                '&reassignments_supported=true&playlist_include_framerate=true' +
-                (Play_SupportsSource ? "&allow_source=true" : '') +
-                '&fast_bread=true' +
+                '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
                 (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
+            //(Play_SupportsSource ? "&allow_source=true" : '') +
+            //'&fast_bread=true' +
+            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
 
             Play_AutoUrl = theUrl;
 
@@ -6208,9 +6216,12 @@
             theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Main_values.Play_selectedChannel +
                 '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
                 '&reassignments_supported=true&playlist_include_framerate=true' +
-                (Play_SupportsSource ? "&allow_source=true" : '') +
-                '&fast_bread=true' +
-                (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+                '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
+                (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
+            //(Play_SupportsSource ? "&allow_source=true" : '') +
+            //'&fast_bread=true' +
+            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
             Play_AutoUrl = theUrl;
 
             Play_410ERROR = false;
@@ -6365,11 +6376,11 @@
             Play_HideEndDialog();
 
             //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-            if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
-                Play_SupportsSource = false;
-                Play_loadData();
-                return;
-            }
+            //        if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+            //            Play_SupportsSource = false;
+            //            Play_loadData();
+            //            return;
+            //        }
 
             Play_qualities = Play_extractQualities(responseText);
             Play_state = Play_STATE_PLAYING;
@@ -7560,7 +7571,7 @@
         Play_DisplaynameHost_Old = Main_values.Play_DisplaynameHost;
         Play_selectedChannelDisplayname_Old = Main_values.Play_selectedChannelDisplayname;
         Play_gameSelected_Old = Main_values.Play_gameSelected;
-        Play_SupportsSource_Old = Play_SupportsSource;
+        //Play_SupportsSource_Old = Play_SupportsSource;
     }
 
     function Play_RestorePlayData(error_410) {
@@ -7591,7 +7602,7 @@
         Main_values.Play_DisplaynameHost = Play_DisplaynameHost_Old;
         Main_values.Play_selectedChannelDisplayname = Play_selectedChannelDisplayname_Old;
         Main_values.Play_gameSelected = Play_gameSelected_Old;
-        Play_SupportsSource = Play_SupportsSource_Old;
+        //Play_SupportsSource = Play_SupportsSource_Old;
     }
 
     function Play_handleKeyUpClear() {
@@ -8565,7 +8576,7 @@
     function PlayVod_Start() {
         Play_showBufferDialog();
         Play_HideEndDialog();
-        Play_SupportsSource = true;
+        //Play_SupportsSource = true;
         PlayVod_currentTime = 0;
         Main_textContent("stream_live_time", '');
         Main_textContent('progress_bar_current_time', Play_timeS(0));
@@ -8805,9 +8816,11 @@
             theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
                 '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' +
                 PlayVod_tokenResponse.sig +
-                '&reassignments_supported=true&playlist_include_framerate=true' +
-                (Play_SupportsSource ? "&allow_source=true" : '') +
+                '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true' +
                 (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
+            //(Play_SupportsSource ? "&allow_source=true" : '') +
+            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
+
             PlayVod_autoUrl = theUrl;
 
             Play_410ERROR = false;
@@ -8930,11 +8943,11 @@
         } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) {
 
             //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-            if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
-                Play_SupportsSource = false;
-                PlayVod_loadData();
-                return;
-            }
+            //        if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+            //            Play_SupportsSource = false;
+            //            PlayVod_loadData();
+            //            return;
+            //        }
 
             PlayVod_playlistResponse = responseText;
             PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
