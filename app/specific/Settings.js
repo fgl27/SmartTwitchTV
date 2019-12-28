@@ -593,8 +593,8 @@ function Settings_DpadOpacity() {
 }
 
 var Settings_DpadPOsitions = [
-    [0, 0],
-    [0, 44],
+    [6, 0],
+    [6, 44],
     [63, 44],
     [63, 0]
 ];
