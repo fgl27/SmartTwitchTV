@@ -867,7 +867,8 @@ function Settings_CodecsShow() {
             i = 0,
             j,
             temptitlecontent,
-            key;
+            key,
+            spacer = " | ";
 
         Settings_CodecsTotal = codecs.length;
         Settings_CodecsNames = [];
@@ -887,13 +888,16 @@ function Settings_CodecsShow() {
             Settings_CodecsNames.push(key);
 
             temptitlecontent = "";
-            temptitlecontent += STR_MAX_RES + codecsValue[2] + STR_BR;
-            temptitlecontent += STR_MAX_BIT + codecsValue[3] + STR_BR;
+            temptitlecontent += STR_MAX_RES + codecsValue[2] + spacer;
+            temptitlecontent += STR_MAX_BIT + codecsValue[3] + spacer;
             temptitlecontent += STR_MAX_LEVEL + codecsValue[5] + STR_BR + STR_MAX_FPS + STR_BR;
             for (j = 6; j < codecsValue.length; j++) {
-                temptitlecontent += (parseFloat(codecsValue[j].split(': ')[1]) > 0) ? codecsValue[j] + " fps" + STR_BR : "";
+                temptitlecontent += (parseFloat(codecsValue[j].split(': ')[1]) > 0) ? codecsValue[j] + " fps" + spacer : "";
             }
-            dialogContent += STR_BR + Settings_DivOptionWithSummary(key, codecsValue[1], temptitlecontent) + STR_BR;
+
+            temptitlecontent = temptitlecontent.substring(0, temptitlecontent.length - 3);
+
+            dialogContent += Settings_DivOptionWithSummary(key, codecsValue[1], temptitlecontent + STR_BR + STR_BR);
         }
 
         Main_innerHTML("dialog_codecs_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
