@@ -119,7 +119,7 @@ function en_USLang() {
     STR_ABOUT_INFO_16 = "Google: Leanback v17 (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
     STR_ABOUT_INFO_17 = "Google: ExoPlayer (https://github.com/google/ExoPlayer)";
     STR_ABOUT_INFO_18 = "Phones and Tablets support:";
-    STR_ABOUT_INFO_19 = "Yes is possible to use this app on phones and tablets, but this app is design to be used mainly on TVs, the support for other device is limited and because of that not released on play store, use the bello link to download latest APK and manually install it";
+    STR_ABOUT_INFO_19 = "Yes is possible to use this app on phones and tablets, but this app is design to be used mainly on TVs, the support for other device is limited and because of that not released on play store, use the bellow link to download latest APK and manually install it";
     STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
 
     STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
