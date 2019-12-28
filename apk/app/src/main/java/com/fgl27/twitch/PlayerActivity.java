@@ -107,6 +107,7 @@ public class PlayerActivity extends Activity {
     //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
     public MediaSource[] mediaSourcePlaying = new MediaSource[2];
 
+    private FrameLayout.LayoutParams DefaultSizeFrame;
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
     private FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
     private FrameLayout.LayoutParams PlayerViewSmallSize;
@@ -188,37 +189,62 @@ public class PlayerActivity extends Activity {
                     3,
                     false);
 
+            DefaultSizeFrame();
+
             VideoHolder = findViewById(R.id.videoholder);
 
             loadingView[2] = findViewById(R.id.loading);
-
-            PlayerView[0] = findViewById(R.id.player_view);
-            PlayerView[1] = findViewById(R.id.player_view2);
-            PlayerView[1].setVisibility(View.GONE);
-
-            loadingView[0] = PlayerView[0].findViewById(R.id.exo_buffering);
-            loadingView[0].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
-            loadingView[0].setBackgroundResource(R.drawable.shadow);
-
-            loadingView[1] = PlayerView[1].findViewById(R.id.exo_buffering);
-            loadingView[1].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
-            loadingView[1].setBackgroundResource(R.drawable.shadow);
-
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-
-            float Scale = (float) size.y / 1080.0f;
-            int DefaultSize = Math.round(40 * this.getResources().getDisplayMetrics().density * Scale);
-            FrameLayout.LayoutParams DefaultSizeFrame = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
-
-            loadingView[0].setLayoutParams(DefaultSizeFrame);
-            loadingView[1].setLayoutParams(DefaultSizeFrame);
             loadingView[2].setLayoutParams(DefaultSizeFrame);
+
+            setPlayer(true);
 
             shouldCallJavaCheck = false;
 
             initializeWebview();
+        }
+    }
+
+    private void DefaultSizeFrame() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        float Scale = (float) size.y / 1080.0f;
+        int DefaultSize = Math.round(40 * this.getResources().getDisplayMetrics().density * Scale);
+        DefaultSizeFrame = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
+    }
+
+    public void setPlayer(boolean surface_view) {
+
+        if (surface_view){
+            PlayerView[0] = findViewById(R.id.player_view_texture_view);
+            PlayerView[1] = findViewById(R.id.player_view2_texture_view);
+            PlayerView[0].setVisibility(View.GONE);
+            PlayerView[1].setVisibility(View.GONE);
+
+            PlayerView[0] = findViewById(R.id.player_view);
+            PlayerView[1] = findViewById(R.id.player_view2);
+
+            PlayerView[0].setVisibility(View.VISIBLE);
+            PlayerView[1].setVisibility(View.GONE);
+        } else {
+            PlayerView[0] = findViewById(R.id.player_view);
+            PlayerView[1] = findViewById(R.id.player_view2);
+            PlayerView[0].setVisibility(View.GONE);
+            PlayerView[1].setVisibility(View.GONE);
+
+            PlayerView[0] = findViewById(R.id.player_view_texture_view);
+            PlayerView[1] = findViewById(R.id.player_view2_texture_view);
+
+            PlayerView[0].setVisibility(View.VISIBLE);
+            PlayerView[1].setVisibility(View.GONE);
+        }
+
+        for(int i = 0; i < 2; i++){
+            loadingView[i] = PlayerView[i].findViewById(R.id.exo_buffering);
+            loadingView[i].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
+            loadingView[i].setBackgroundResource(R.drawable.shadow);
+            loadingView[i].setLayoutParams(DefaultSizeFrame);
         }
     }
 
@@ -1086,6 +1112,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void setBlackListMediaCodec(String CodecType) {
             BLACKLISTEDCODECS = !CodecType.isEmpty() ? CodecType.split(",") : null;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void msetPlayer(boolean surface_view) {
+            myHandler.post(() -> setPlayer(surface_view));
         }
     }
 
