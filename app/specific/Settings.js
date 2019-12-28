@@ -876,15 +876,15 @@ function Settings_CodecsShow() {
             STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
 
         for (i; i < Settings_CodecsTotal; i++) {
-            key = "codecs" + i;
+            codecsValue = codecs[i].split(',');
+
+            key = codecsValue[1];
             Settings_value[key] = {
                 "values": [STR_ENABLE, STR_DISABLE],
                 "defaultValue": Main_getItemInt(key, 0)
             };
 
-            codecsValue = codecs[i].split(',');
-
-            Settings_CodecsNames.push(codecsValue[1]);
+            Settings_CodecsNames.push(key);
 
             temptitlecontent = "";
             temptitlecontent += STR_MAX_RES + codecsValue[2] + STR_BR;
@@ -902,9 +902,9 @@ function Settings_CodecsShow() {
 
     if (Settings_CodecsTotal > 0) {
         Settings_CodecsPos = 0;
-        Main_AddClass("codecs" + Settings_CodecsPos, 'settings_value_focus');
-        Main_AddClass("codecs" + Settings_CodecsPos + '_div', 'settings_div_focus');
-        Settings_SetarrowsKey("codecs" + Settings_CodecsPos);
+        Main_AddClass(Settings_CodecsNames[Settings_CodecsPos], 'settings_value_focus');
+        Main_AddClass(Settings_CodecsNames[Settings_CodecsPos] + '_div', 'settings_div_focus');
+        Settings_SetarrowsKey(Settings_CodecsNames[Settings_CodecsPos]);
     }
 
     Main_ShowElement('dialog_codecs');
@@ -918,17 +918,17 @@ function Settings_handleKeyDownCodecs(event) {
         case KEY_RETURN_Q:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            Settings_RemoveinputFocusKey("codecs" + Settings_CodecsPos);
+            Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);
             Main_HideElement('dialog_codecs');
             document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
             document.body.addEventListener("keydown", Settings_handleKeyDown, false);
             break;
         case KEY_LEFT:
-            key = "codecs" + Settings_CodecsPos;
+            key = Settings_CodecsNames[Settings_CodecsPos];
             if (Settings_Obj_default(key) > 0) Settings_CodecsRigthLeft(-1);
             break;
         case KEY_RIGHT:
-            key = "codecs" + Settings_CodecsPos;
+            key = Settings_CodecsNames[Settings_CodecsPos];
             if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRigthLeft(1);
             break;
         case KEY_UP:
@@ -943,10 +943,10 @@ function Settings_handleKeyDownCodecs(event) {
 }
 
 function Settings_CodecsUpDown(offset) {
-    Settings_RemoveinputFocusKey("codecs" + Settings_CodecsPos);
+    Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);
     Settings_CodecsPos += offset;
 
-    var key = "codecs" + Settings_CodecsPos;
+    var key = Settings_CodecsNames[Settings_CodecsPos];
     Main_AddClass(key, 'settings_value_focus');
     Main_AddClass(key + '_div', 'settings_div_focus');
     Settings_SetarrowsKey(key);
@@ -960,7 +960,7 @@ function Settings_CodecsRigthLeft(offset) {
         return;
     }
 
-    var key = "codecs" + Settings_CodecsPos,
+    var key = Settings_CodecsNames[Settings_CodecsPos],
         index;
 
     Settings_value[key].defaultValue += offset;
@@ -975,8 +975,9 @@ function Settings_CodecsRigthLeft(offset) {
         //Make sure at least one is enable
         var oneEnable = false,
             i = 0;
+
         for (i; i < Settings_CodecsTotal; i++) {
-            if (!Settings_value["codecs" + i].defaultValue) {
+            if (!Settings_value[Settings_CodecsNames[i]].defaultValue) {
                 oneEnable = true;
                 break;
             }
@@ -986,7 +987,7 @@ function Settings_CodecsRigthLeft(offset) {
             window.setTimeout(Main_HideWarningDialog, 2000);
             for (i = 0; i < Settings_CodecsTotal; i++) {
                 if (Settings_CodecsPos !== i) {
-                    key = "codecs" + i;
+                    key = Settings_CodecsNames[i];
                     Settings_value[key].defaultValue += -1;
                     Main_setItem(key, Settings_Obj_default(key));
                     Main_textContent(key, Settings_Obj_values(key));
@@ -1001,8 +1002,8 @@ function Settings_CodecsRigthLeft(offset) {
         index = Settings_DisableCodecsNames.indexOf(Settings_CodecsNames[Settings_CodecsPos]);
         if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
     }
-    Main_setItem('Settings_DisableCodecsNames', JSON.stringify(Settings_DisableCodecsNames));
 
+    Main_setItem('Settings_DisableCodecsNames', JSON.stringify(Settings_DisableCodecsNames));
     Settings_CodecsSet();
 }
 
