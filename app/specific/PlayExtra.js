@@ -16,10 +16,10 @@ var PlayExtra_gameSelected = '';
 var PlayExtra_isHost = '';
 var PlayExtra_DisplaynameHost = '';
 var PlayExtra_PicturePicture = false;
-var PlayExtra_SupportsSource = true;
+//var PlayExtra_SupportsSource = true;
 var PlayExtra_AutoUrl = '';
 
-var PlayExtra_SupportsSource_Old;
+//var PlayExtra_SupportsSource_Old;
 var PlayExtra_selectedChannel_id_Old;
 var PlayExtra_IsRerun_Old;
 var PlayExtra_selectedChannel_Old;
@@ -150,7 +150,7 @@ function PlayExtra_SwitchPlayerStoreOld() {
     PlayExtra_qualities_Old = Play_qualities;
     PlayExtra_qualityPlaying_Old = Play_qualityPlaying;
     PlayExtra_quality_Old = Play_quality;
-    PlayExtra_SupportsSource_Old = Play_SupportsSource;
+    //PlayExtra_SupportsSource_Old = Play_SupportsSource;
     PlayExtra_AutoUrl_Old = Play_AutoUrl;
 }
 
@@ -166,7 +166,7 @@ function PlayExtra_SwitchPlayerResStoreOld() {
     PlayExtra_qualityPlaying = PlayExtra_qualityPlaying_Old;
     PlayExtra_quality = PlayExtra_quality_Old;
     PlayExtra_AutoUrl = PlayExtra_AutoUrl_Old;
-    PlayExtra_SupportsSource = PlayExtra_SupportsSource_Old;
+    //PlayExtra_SupportsSource = PlayExtra_SupportsSource_Old;
 }
 
 function PlayExtra_SwitchPlayer() {
@@ -192,7 +192,7 @@ function PlayExtra_SwitchPlayer() {
     Play_qualities = PlayExtra_qualities;
     Play_qualityPlaying = PlayExtra_qualityPlaying;
     Play_quality = PlayExtra_quality;
-    Play_SupportsSource = PlayExtra_SupportsSource;
+    //Play_SupportsSource = PlayExtra_SupportsSource;
     Play_AutoUrl = PlayExtra_AutoUrl;
 
     PlayExtra_SwitchPlayerResStoreOld();
@@ -245,12 +245,12 @@ function PlayExtra_loadDataSuccess(responseText) {
     } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) {
 
         //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
-            PlayExtra_SupportsSource = false;
-            PlayExtra_loadingDataTry = 0;
-            PlayExtra_loadDataRequest();
-            return;
-        }
+//        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+//            PlayExtra_SupportsSource = false;
+//            PlayExtra_loadingDataTry = 0;
+//            PlayExtra_loadDataRequest();
+//            return;
+//        }
 
         Android.SetAuto2(PlayExtra_AutoUrl);
         PlayExtra_qualities = Play_extractQualities(responseText);
@@ -301,9 +301,12 @@ function PlayExtra_loadDataRequest() {
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
-            (PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+            //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
         PlayExtra_AutoUrl = theUrl;
     }
 
@@ -409,8 +412,11 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_selectedChannel +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
             '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
-            (PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+            //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
         PlayExtra_AutoUrl = theUrl;
 
