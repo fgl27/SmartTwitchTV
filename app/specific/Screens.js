@@ -420,15 +420,15 @@ function Screens_loadDataSuccessFinish() {
                     if (Main_values.Never_run_new)
                         Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
 
-		    if (Main_values.Never_run_phone && !Main_isTV) {
-			 Main_showphoneDialog(Main_values.Never_run_new ?
-			      Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
-			 Settings_value.global_font_offset.defaultValue = 6;
-			 Main_setItem('global_font_offset', 7);
-			 Main_textContent('global_font_offset', Settings_Obj_values('global_font_offset'));
-			 calculateFontSize();
-			 Main_values.Never_run_phone = false;
-		    }
+                    if (Main_values.Never_run_phone && !Main_isTV) {
+                        Main_showphoneDialog(Main_values.Never_run_new ?
+                            Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
+                        Settings_value.global_font_offset.defaultValue = 6;
+                        Main_setItem('global_font_offset', 7);
+                        Main_textContent('global_font_offset', Settings_Obj_values('global_font_offset'));
+                        calculateFontSize();
+                        Main_values.Never_run_phone = false;
+                    }
 
                     Main_values.Never_run_new = false;
 

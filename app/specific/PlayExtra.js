@@ -245,12 +245,12 @@ function PlayExtra_loadDataSuccess(responseText) {
     } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) {
 
         //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-//        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
-//            PlayExtra_SupportsSource = false;
-//            PlayExtra_loadingDataTry = 0;
-//            PlayExtra_loadDataRequest();
-//            return;
-//        }
+        //        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+        //            PlayExtra_SupportsSource = false;
+        //            PlayExtra_loadingDataTry = 0;
+        //            PlayExtra_loadDataRequest();
+        //            return;
+        //        }
 
         Android.SetAuto2(PlayExtra_AutoUrl);
         PlayExtra_qualities = Play_extractQualities(responseText);
@@ -304,8 +304,8 @@ function PlayExtra_loadDataRequest() {
             '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
-            //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
-            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+        //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+        //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
         PlayExtra_AutoUrl = theUrl;
     }
@@ -415,8 +415,8 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
             '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
-            //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
-            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+        //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
+        //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
         PlayExtra_AutoUrl = theUrl;
 
