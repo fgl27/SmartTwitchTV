@@ -87,6 +87,7 @@ function en_USLang() {
     STR_VERSION = "Version: ";
     STR_TWITCH_TV = "SmartTV Client for Twitch";
     STR_CLOSE_THIS = "Press back or enter key to close this.";
+    STR_CLOSE_THIS2 = "Press back to close this.";
     STR_PLAYER = "Player Related:";
     STR_CHAT = "Chat Related:";
     STR_CHAT_SHOW = "Chat show";
@@ -340,4 +341,6 @@ function en_USLang() {
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
     STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
     STR_PP_WORKAROUND_SUMMARY = "For some devices most running android N or older, is needed to enable this to have PP mode working, don't enable this on a device that doesn't need it, as it will result is a lower image quality";
+    STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
+        STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
 }

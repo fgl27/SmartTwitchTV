@@ -208,7 +208,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
 
-    div += Settings_Content('pp_workaround', array_no_yes, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
+    div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
     // Player buffer title/summary
     div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
@@ -356,7 +356,7 @@ function Settings_SetStrings() {
 
     key = "pp_workaround";
     Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
-    Settings_value[key].values = [STR_NO, STR_YES];
+    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
 
     key = "clip_auto_play_next";
     Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);

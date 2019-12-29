@@ -69,6 +69,7 @@ var Main_values = {
     "DeviceCheck": false,
     "Never_run_phone": true,
     "Codec_is_Check": false,
+    "check_pp_workaround": true,
 };
 
 var Main_Force = "4mv6wki5h1ko";
@@ -123,6 +124,7 @@ var Main_stringVersion_Min = '.104';
 var Main_minversion = '122819';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsNotBrowserVersion = '';
+var Main_AndroidSDK = 1000;
 var Main_ClockOffset = 0;
 var Main_IsNotBrowser = 0;
 var Main_randomimg = '?' + Math.random();
@@ -280,6 +282,12 @@ function Main_initWindows() {
 
         }
 
+        try {
+            Main_AndroidSDK = Android.getSDK();
+        } catch (e) {
+            Main_AndroidSDK = 1000;
+        }
+
         //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
         //TODO add a warning when playing avc1.640034 and a setting to disable it
         //Main_SupportsAvc1High = Android.misAVC52Supported();
@@ -342,7 +350,6 @@ function Main_SetStringsMain(isStarting) {
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER +
         '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
 
-
     Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
     if (isStarting) Settings_SetSettings();
@@ -392,6 +399,8 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
     Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
     Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
+
+    Main_innerHTML("dialog_os_text", STR_PP_WARNIG + STR_BR + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS2 + '</div>');
 }
 
 var Main_initClickDoc = [
