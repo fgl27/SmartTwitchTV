@@ -154,138 +154,61 @@ function Settings_exit() {
 // The order in Settings_SetSettings is the display order
 function Settings_SetSettings() {
     var div = '',
-        key;
+        key,
+        array_no_yes = [STR_NO, STR_YES];
 
     // General settings title
     div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
-    // Content Language selection
-    key = "content_lang";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
+    div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMARRY], STR_CONTENT_LANG, '');
 
-    div += Settings_DivOptionWithSummary(key, STR_CONTENT_LANG, '');
+    div += Settings_Content('live_feed_sort',
+        [STR_VIEWS, STR_A_Z, STR_Z_A], STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
 
-    //live_feed_sort
-    key = "live_feed_sort";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_VIEWS, STR_A_Z, STR_Z_A];
+    div += Settings_Content('thumb_quality',
+        [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
+        STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
 
-    div += Settings_DivOptionWithSummary(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
+    div += Settings_Content('global_font_offset',null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
-    //thumb qualityes
-    key = "thumb_quality";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
+    div += Settings_Content('restor_playback',array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
 
-    div += Settings_DivOptionWithSummary(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
+    div += Settings_Content('videos_animation',array_no_yes, STR_VIDEOS_ANIMATION, null);
 
-    key = "global_font_offset";
-    Settings_value_keys.push(key);
+    div += Settings_Content('app_animations',array_no_yes, STR_APP_ANIMATIONS, null);
 
-    div += Settings_DivOptionWithSummary(key, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
+    div += Settings_Content('clip_auto_play_next',array_no_yes, STR_AUTO_PLAY_NEXT, null);
 
-    //Player restore playback
-    key = "restor_playback";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
+    div += Settings_Content('live_notification',array_no_yes, STR_NOW_LIVE_SHOW, null);
 
-    div += Settings_DivOptionWithSummary(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
+    div += Settings_Content('live_notification_time',null, STR_NOW_DURATION, null);
 
-    // Videos
-    key = "videos_animation";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
+    div += Settings_Content('clock_offset',null, STR_CLOCK_OFFSET, null);
 
-    div += Settings_DivOptionNoSummary(key, STR_VIDEOS_ANIMATION);
+    div += Settings_Content('show_screen_counter',array_no_yes, STR_SCREEN_COUNTER, null);
 
-    key = "app_animations";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    div += Settings_DivOptionNoSummary(key, STR_APP_ANIMATIONS);
-
-    key = "clip_auto_play_next";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    div += Settings_DivOptionNoSummary(key, STR_AUTO_PLAY_NEXT);
-
-    key = "live_notification";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    div += Settings_DivOptionNoSummary(key, STR_NOW_LIVE_SHOW);
-
-    key = "live_notification_time";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_NOW_DURATION);
-
-    // Clock offset
-    key = "clock_offset";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
-
-    // show_screen_counter
-    key = "show_screen_counter";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-    div += Settings_DivOptionNoSummary(key, STR_SCREEN_COUNTER);
 
     if (!Main_isTV || !Main_IsNotBrowser) {
-        // dpad_position
-        key = "dpad_position";
-        Settings_value_keys.push(key);
-        div += Settings_DivOptionNoSummary(key, STR_DPAD_POSTION);
+        div += Settings_Content('dpad_position',null, STR_DPAD_POSTION, null);
 
-        // dpad_opacity
-        key = "dpad_opacity";
-        Settings_value_keys.push(key);
-        div += Settings_DivOptionNoSummary(key, STR_DPAD_OPACITY);
+        div += Settings_Content('dpad_opacity',null, STR_DPAD_OPACITY, null);
     }
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    key = "keep_panel_info_visible";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
+    div += Settings_Content('keep_panel_info_visible',array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
-    div += Settings_DivOptionNoSummary(key, STR_KEEP_INFO_VISIBLE);
+    div += Settings_Content('single_click_exit',array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-    key = "single_click_exit";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
+    div += Settings_Content('end_dialog_counter',null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+    Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
-    div += Settings_DivOptionWithSummary(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
+    div += Settings_Content('default_quality',[STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
 
-    // end_dialog_counter
-    key = "end_dialog_counter";
-    Settings_value_keys.push(key);
-    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+    div += Settings_Content('blocked_codecs',[STR_CONTENT_LANG_SUMARRY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMARRY);
 
-    div += Settings_DivOptionWithSummary(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-
-    //Player restore playback
-    key = "default_quality";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_AUTO, STR_SOURCE];
-
-    div += Settings_DivOptionWithSummary(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
-
-    key = "blocked_codecs";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
-
-    div += Settings_DivOptionWithSummary(key, STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMARRY);
-
-    key = "pp_workaround";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    div += Settings_DivOptionWithSummary(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMARRY);
+    div += Settings_Content('pp_workaround',array_no_yes, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMARRY);
 
     // Player buffer title/summary
     div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
@@ -302,40 +225,32 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionNoSummary(key, STR_PLAYER_BITRATE_MAIN);
 
-    // Player buffer vod
-    key = "bitrate_min";
-    Settings_value_keys.push(key);
-    Settings_value[key].values = Settings_value.bitrate_main.values;
-    Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-
-    div += Settings_DivOptionWithSummary(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
+    div += Settings_Content('bitrate_min',
+        Settings_value.bitrate_main.values, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
+    Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
     Settings_SetBitRate(0);
 
     // Player buffer title/summary
     div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
         '<div id="setting_title_buffers_summary" class="settings_summary">' + STR_SETTINGS_BUFFER_SIZE_SUMMARY + '</div>';
 
-    // Player buffer live
-    key = "buffer_live";
-    Settings_value_keys.push(key);
 
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_LIVE);
+    div += Settings_Content('buffer_live', null, STR_SETTINGS_BUFFER_LIVE, null);
 
-    // Player buffer vod
-    key = "buffer_vod";
-    Settings_value_keys.push(key);
+    div += Settings_Content('buffer_vod', null, STR_SETTINGS_BUFFER_VOD, null);
 
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_VOD);
-
-    // Player buffer clip
-    key = "buffer_clip";
-    Settings_value_keys.push(key);
-
-    div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_CLIP);
+    div += Settings_Content('buffer_clip', null, STR_SETTINGS_BUFFER_CLIP, null);
 
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
     Languages_SetSettings();
+}
+
+function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
+    Settings_value_keys.push(key);
+    if (valuesArray) Settings_value[key].values = valuesArray;
+
+    return (STR_SUMMARY) ? Settings_DivOptionWithSummary(key, STR, STR_SUMMARY) : Settings_DivOptionNoSummary(key, STR);
 }
 
 function Settings_DivTitle(key, string) {
