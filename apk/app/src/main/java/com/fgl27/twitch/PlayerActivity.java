@@ -428,8 +428,8 @@ public class PlayerActivity extends Activity {
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             else
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "KeepScreenOn NullPointerException ", e);
+        } catch (Exception e) {
+            Log.w(TAG, "KeepScreenOn Exception ", e);
         }
     }
 
