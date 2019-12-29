@@ -2535,7 +2535,7 @@ function Play_MakeControls() {
             }
 
             if (Play_LowLatency) {
-                Play_showWarningDialog(STR_LOW_LATENCY_SUMARRY);
+                Play_showWarningDialog(STR_LOW_LATENCY_SUMMARY);
                 window.setTimeout(Play_HideWarningDialog, 3000);
             }
 

@@ -160,18 +160,18 @@ function Settings_SetSettings() {
     // General settings title
     div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
-    div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMARRY], STR_CONTENT_LANG, '');
+    div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
 
     div += Settings_Content('live_feed_sort',
         [STR_VIEWS, STR_A_Z, STR_Z_A], STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
 
     div += Settings_Content('thumb_quality',
         [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
-        STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
+        STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMMARY);
 
     div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
-    div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
+    div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
     div += Settings_Content('videos_animation', array_no_yes, STR_VIDEOS_ANIMATION, null);
 
@@ -204,15 +204,15 @@ function Settings_SetSettings() {
     div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
     Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
-    div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
+    div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
-    div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMARRY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMARRY);
+    div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
 
-    div += Settings_Content('pp_workaround', array_no_yes, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMARRY);
+    div += Settings_Content('pp_workaround', array_no_yes, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
     // Player buffer title/summary
     div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
-        '<div id="setting_title_bandwidth_summary" class="settings_summary">' + STR_PLAYER_BITRATE_SUMARRY + '</div>';
+        '<div id="setting_title_bandwidth_summary" class="settings_summary">' + STR_PLAYER_BITRATE_SUMMARY + '</div>';
 
     // Player buffer live
     key = "bitrate_main";
@@ -226,7 +226,7 @@ function Settings_SetSettings() {
     div += Settings_DivOptionNoSummary(key, STR_PLAYER_BITRATE_MAIN);
 
     div += Settings_Content('bitrate_min',
-        Settings_value.bitrate_main.values, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
+        Settings_value.bitrate_main.values, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
     Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
     Settings_SetBitRate(0);
 
@@ -297,7 +297,7 @@ function Settings_SetStrings() {
     key = "content_lang";
     Main_textContent(key + '_name', STR_CONTENT_LANG);
     Main_textContent(key, Settings_Obj_values(key));
-    Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
+    Settings_value[key].values = [STR_CONTENT_LANG_SUMMARY];
 
     key = "live_feed_sort";
     Settings_DivOptionChangeLang(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
@@ -309,14 +309,14 @@ function Settings_SetStrings() {
 
     // Player buffer title/summary
     Main_textContent('setting_title_bandwidth', STR_PLAYER_BITRATE);
-    Main_textContent('setting_title_bandwidth_summary', STR_PLAYER_BITRATE_SUMARRY);
+    Main_textContent('setting_title_bandwidth_summary', STR_PLAYER_BITRATE_SUMMARY);
 
     key = "bitrate_main";
     Main_textContent(key + '_name', STR_PLAYER_BITRATE_MAIN);
     Settings_value[key].values[0] = STR_DISABLE;
 
     key = "bitrate_min";
-    Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
+    Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
     Settings_value[key].values[0] = STR_DISABLE;
 
     // Player buffer title/summary
@@ -329,19 +329,19 @@ function Settings_SetStrings() {
 
     //Player restore
     key = "restor_playback";
-    Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
+    Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
     Settings_value[key].values = [STR_YES, STR_NO];
 
     //Thumb quality
     key = "thumb_quality";
-    Settings_DivOptionChangeLang(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
+    Settings_DivOptionChangeLang(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMMARY);
     Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
     Settings_DivOptionChangeLang('global_font_offset', STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
     //Player restore
     key = "default_quality";
-    Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
+    Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
     Settings_value[key].values = [STR_AUTO, STR_SOURCE];
 
     // Chat size
@@ -355,7 +355,7 @@ function Settings_SetStrings() {
     Settings_value[key].values = [STR_YES, STR_NO];
 
     key = "pp_workaround";
-    Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMARRY);
+    Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
     Settings_value[key].values = [STR_NO, STR_YES];
 
     key = "clip_auto_play_next";
