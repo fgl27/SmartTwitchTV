@@ -1521,7 +1521,13 @@
     }
 
     function AddUser_removeEventListener() {
-        //Main_RemoveClass('scenekeys', 'avoidclicks');
+        if (!Main_isTV) {
+            //TODO remove the try after some itme of the app be released
+            try {
+                Android.mhideSystemUI();
+            } catch (e) {}
+        }
+
         Main_RemoveClass('scenefeed', 'avoidclicks');
         if (Main_AddUserInput !== null) {
             var elClone = Main_AddUserInput.cloneNode(true);
@@ -3150,7 +3156,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '2.0';
-    var Main_stringVersion_Min = '.105';
+    var Main_stringVersion_Min = '.106';
     var Main_minversion = '122919';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -12337,7 +12343,13 @@
     }
 
     function Search_RemoveinputFocus(EnaKeydown) {
-        //Main_RemoveClass('scenekeys', 'avoidclicks');
+        if (!Main_isTV) {
+            //TODO remove the try after some itme of the app be released
+            try {
+                Android.mhideSystemUI();
+            } catch (e) {}
+        }
+
         Main_RemoveClass('scenefeed', 'avoidclicks');
         Main_SearchInput.blur();
         Search_removeEventListener();
@@ -12492,10 +12504,11 @@
             "defaultValue": 1
         },
         "dpad_opacity": { //dpad opacity
-            "values": ["0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%",
-                "50%", "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"
+            "values": [
+                "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%",
+                "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"
             ],
-            "defaultValue": 15
+            "defaultValue": 12
         }
     };
 
