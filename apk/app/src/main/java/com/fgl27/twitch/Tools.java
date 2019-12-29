@@ -311,7 +311,7 @@ public final class Tools {
     // Type, Name, Max resolution Width x Heigth, Max bitrate Mbps, Max profile, Max level, 160p to 4k fps (returns fps = 0.0 for unsupported resolutions) | next codec same type
     //video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73 | next codec same type
     public static String codecCapabilities(String CodecType) {
-        String values = "";
+        StringBuilder values = new StringBuilder();
         String info;
         int position;
         int lowerWidth;
@@ -341,23 +341,22 @@ public final class Tools {
                             lowerWidth = videoCapabilities.getSupportedWidths().getLower();
                             UperWidth = videoCapabilities.getSupportedWidths().getUpper();
 
-                            values += ((values.isEmpty()) ? "" : "|" ) +
-                                    String.format(Locale.US,
-                                            //"type %s,codec %s,Max res %dx%d,Max bit %d Mbps,Max level %s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
-                                            "%s,%s,%dx%d,%d Mbps,%s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
-                                            type,
-                                            codec.getName(),
-                                            videoCapabilities.getSupportedWidths().getUpper(),
-                                            videoCapabilities.getSupportedHeights().getUpper(),
-                                            videoCapabilities.getBitrateRange().getUpper() / 1000000,
-                                            info,
-                                            codecframeRate(videoCapabilities, 240, 160, lowerWidth, UperWidth),
-                                            codecframeRate(videoCapabilities, 480, 360, lowerWidth, UperWidth),
-                                            codecframeRate(videoCapabilities, 640, 480, lowerWidth, UperWidth),
-                                            codecframeRate(videoCapabilities, 1280, 720, lowerWidth, UperWidth),
-                                            codecframeRate(videoCapabilities, 1920, 1080, lowerWidth, UperWidth),
-                                            codecframeRate(videoCapabilities, 2560, 1440, lowerWidth, UperWidth),
-                                            codecframeRate(videoCapabilities, 3840, 2160, lowerWidth, UperWidth));
+                            values.append((values.length() == 0) ? "" : "|").append(String.format(Locale.US,
+                                    //"type %s,codec %s,Max res %dx%d,Max bit %d Mbps,Max level %s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
+                                    "%s,%s,%dx%d,%d Mbps,%s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
+                                    type,
+                                    codec.getName(),
+                                    videoCapabilities.getSupportedWidths().getUpper(),
+                                    videoCapabilities.getSupportedHeights().getUpper(),
+                                    videoCapabilities.getBitrateRange().getUpper() / 1000000,
+                                    info,
+                                    codecframeRate(videoCapabilities, 240, 160, lowerWidth, UperWidth),
+                                    codecframeRate(videoCapabilities, 480, 360, lowerWidth, UperWidth),
+                                    codecframeRate(videoCapabilities, 640, 480, lowerWidth, UperWidth),
+                                    codecframeRate(videoCapabilities, 1280, 720, lowerWidth, UperWidth),
+                                    codecframeRate(videoCapabilities, 1920, 1080, lowerWidth, UperWidth),
+                                    codecframeRate(videoCapabilities, 2560, 1440, lowerWidth, UperWidth),
+                                    codecframeRate(videoCapabilities, 3840, 2160, lowerWidth, UperWidth)));
 
                         } catch (Exception e) {
                             Log.w(TAG, "codecCapabilities Exception ", e);
@@ -367,8 +366,7 @@ public final class Tools {
             }
 
         }
-        Log.d(TAG, values);
-        return values != null ? values : "";
+        return values.toString();
     }
 
     private static Double codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
