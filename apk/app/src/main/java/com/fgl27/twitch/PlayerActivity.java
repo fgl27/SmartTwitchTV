@@ -3,13 +3,12 @@
 package com.fgl27.twitch;
 
 import android.app.Activity;
-import android.app.UiModeManager;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -120,6 +119,7 @@ public class PlayerActivity extends Activity {
     private boolean onCreateReady;
     private boolean IsonStop;
     public boolean PicturePicture;
+    public boolean deviceIsTV;
 
     public int heightDefault = 0;
     public int mwidthDefault = 0;
@@ -159,6 +159,8 @@ public class PlayerActivity extends Activity {
             IsonStop = false;
             onCreateReady = true;
             setContentView(R.layout.activity_player);
+
+            deviceIsTV = Tools.deviceIsTV(this);
 
             myHandler = new Handler(Looper.getMainLooper());
             PlayerCheckHandler[0] = new Handler(Looper.getMainLooper());
@@ -565,14 +567,9 @@ public class PlayerActivity extends Activity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus && !mdeviceIsTV()) {
+        if (hasFocus && !deviceIsTV) {
             hideSystemUI();
         }
-    }
-
-    public boolean mdeviceIsTV() {
-        UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
-        return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
     private void hideSystemUI() {
@@ -582,14 +579,14 @@ public class PlayerActivity extends Activity {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE
-                // Set the content to appear under the system bars so that the
-                // content doesn't resize when the system bars hide and show.
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                // Hide the nav bar and status bar
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
     //Close the app
@@ -971,13 +968,19 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getManufacturer() {
-            return android.os.Build.MANUFACTURER;
+            return Build.MANUFACTURER;
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getDevice() {
-            return android.os.Build.MODEL;
+            return Build.MODEL;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public int getSDK() {
+            return Build.VERSION.SDK_INT;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1092,8 +1095,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean deviceIsTV() {
-            UiModeManager uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
-            return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
+            return deviceIsTV;
         }
 
         @SuppressWarnings("unused")//called by JS

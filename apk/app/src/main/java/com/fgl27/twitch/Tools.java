@@ -2,7 +2,9 @@
 
 package com.fgl27.twitch;
 
+import android.app.UiModeManager;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.net.Uri;
@@ -44,6 +46,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import static android.content.Context.UI_MODE_SERVICE;
 
 public final class Tools {
 
@@ -483,5 +487,10 @@ public final class Tools {
         public Extractor[] createExtractors() {
             return new Extractor[]{new Mp4Extractor()};
         }
+    }
+
+    public static boolean deviceIsTV(@NonNull Context context) {
+        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(UI_MODE_SERVICE);
+        return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 }
