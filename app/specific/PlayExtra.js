@@ -286,9 +286,29 @@ function PlayExtra_UnSetPanel() {
 }
 
 function PlayExtra_qualityChanged() {
-    if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
-
     if (Main_IsNotBrowser && Play_isOn) Android.initializePlayer2Auto();
+
+    if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround) {
+
+        Main_ShowElement('dialog_os');
+        document.body.removeEventListener("keydown", Play_handleKeyDown, false);
+        document.body.addEventListener("keydown", PlayExtra_handleKeyDown, false);
+
+        Main_values.check_pp_workaround = false;
+        Main_SaveValues();
+    }
+
+    if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
+}
+
+function PlayExtra_handleKeyDown(e) {
+    if (e.keyCode === KEY_RETURN || e.keyCode === KEY_RETURN_Q || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
+
+        document.body.removeEventListener("keydown", PlayExtra_handleKeyDown, false);
+        document.body.addEventListener("keydown", Play_handleKeyDown, false);
+        Main_HideElement('dialog_os');
+
+    }
 }
 
 function PlayExtra_loadDataRequest() {
