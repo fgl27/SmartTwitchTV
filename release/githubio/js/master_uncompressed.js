@@ -199,7 +199,7 @@
     var STR_ENABLE;
     var STR_DISABLE;
     var STR_RESTORE_PLAYBACK;
-    var STR_RESTORE_PLAYBACK_SUMARRY;
+    var STR_RESTORE_PLAYBACK_SUMMARY;
     var STR_CHAT_FONT;
     var STR_OAUTH_FAIL_USER;
     var STR_VIDEOS_ANIMATION;
@@ -214,7 +214,7 @@
     var STR_CLOCK_OFFSET;
     var STR_APP_LANG;
     var STR_CONTENT_LANG;
-    var STR_CONTENT_LANG_SUMARRY;
+    var STR_CONTENT_LANG_SUMMARY;
     var STR_LANG_ALL;
     var STR_NO_GAME;
     var STR_ABOUT_INFO_2_SOURCE;
@@ -246,13 +246,13 @@
     var STR_NORMAL;
     var STR_AUTO;
     var STR_DEF_QUALITY;
-    var STR_DEF_QUALITY_SUMARRY;
+    var STR_DEF_QUALITY_SUMMARY;
     var STR_VERY_LOW;
     var STR_LOW;
     var STR_HIGH;
     var STR_VERY_HIGH;
     var STR_THUMB_RESOLUTION;
-    var STR_THUMB_RESOLUTION_SUMARRY;
+    var STR_THUMB_RESOLUTION_SUMMARY;
     var STR_PAYPAL_SUMMARY;
     var STR_CHAT_DELAY;
     var STR_SECOND;
@@ -264,10 +264,10 @@
     var STR_PLAYER_RESYNC;
     var STR_PLAYER_AUTO_ALL;
     var STR_PLAYER_BITRATE;
-    var STR_PLAYER_BITRATE_SUMARRY;
+    var STR_PLAYER_BITRATE_SUMMARY;
     var STR_PLAYER_BITRATE_MAIN;
     var STR_PLAYER_BITRATE_SMALL;
-    var STR_PLAYER_BITRATE_SMALL_SUMARRY;
+    var STR_PLAYER_BITRATE_SMALL_SUMMARY;
     var STR_PLAYER_BITRATE_UNLIMITED;
     var STR_PICTURE_LIVE_FEED;
     var STR_AUDIO_SOURCE;
@@ -311,7 +311,7 @@
     var STR_A_Z;
     var STR_Z_A;
     var STR_APP_ANIMATIONS;
-    var STR_LOW_LATENCY_SUMARRY;
+    var STR_LOW_LATENCY_SUMMARY;
     var STR_CONTROLS_PLAY_13;
     var STR_RUNNINGTIME;
     var STR_410_ERROR;
@@ -332,7 +332,7 @@
     var STR_DPAD_POSTION;
     var STR_DPAD_OPACITY;
     var STR_BLOCKED_CODEC;
-    var STR_BLOCKED_CODEC_SUMARRY;
+    var STR_BLOCKED_CODEC_SUMMARY;
     var STR_CODEC_DIALOG_TITLE;
     var STR_SUPPORTED_CODEC;
     var STR_MAX_RES;
@@ -341,6 +341,10 @@
     var STR_MAX_FPS;
     var STR_ONE_CODEC_ENA;
     var STR_USER_LIVE;
+    var STR_PP_WORKAROUND;
+    var STR_PP_WORKAROUND_SUMMARY;
+    var STR_PP_WARNIG;
+    var STR_CLOSE_THIS2;
     // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
@@ -542,6 +546,7 @@
         STR_VERSION = "Version: ";
         STR_TWITCH_TV = "SmartTV Client for Twitch";
         STR_CLOSE_THIS = "Press back or enter key to close this.";
+        STR_CLOSE_THIS2 = "Press back to close this.";
         STR_PLAYER = "Player Related:";
         STR_CHAT = "Chat Related:";
         STR_CHAT_SHOW = "Chat show";
@@ -662,7 +667,7 @@
         STR_DISABLE = "Disable";
         STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
         STR_RESTORE_PLAYBACK = "Restore playback";
-        STR_RESTORE_PLAYBACK_SUMARRY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user, the app then can restore what was previously playing on next start";
+        STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user, the app then can restore what was previously playing on next start";
         STR_CHAT_FONT = "Chat font size";
         STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
         STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
@@ -676,7 +681,7 @@
         STR_CLOCK_OFFSET = "Clock offset";
         STR_APP_LANG = "Application language";
         STR_CONTENT_LANG = "Content language";
-        STR_CONTENT_LANG_SUMARRY = "Press enter to change";
+        STR_CONTENT_LANG_SUMMARY = "Press enter to change";
         STR_LANG_ALL = "All";
         STR_NO_GAME = "No game from this";
         STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
@@ -707,13 +712,13 @@
         STR_NORMAL = "Normal";
         STR_AUTO = "Auto";
         STR_DEF_QUALITY = "Default player start quality";
-        STR_DEF_QUALITY_SUMARRY = "Used when the app is first opened, after the user change the quality that becomes default for that section, a section ends when the apps is closed";
+        STR_DEF_QUALITY_SUMMARY = "Used when the app is first opened, after the user change the quality that becomes default for that section, a section ends when the apps is closed";
         STR_VERY_LOW = "Very low";
         STR_LOW = "Low";
         STR_HIGH = "High";
         STR_VERY_HIGH = "Very high";
         STR_THUMB_RESOLUTION = "Thumbnails quality";
-        STR_THUMB_RESOLUTION_SUMARRY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
+        STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
         STR_PAYPAL_SUMMARY = "Donations use above Email.";
         STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load second stream info";
         STR_PLAYER_RESYNC = "Player Auto Sync";
@@ -722,10 +727,10 @@
         STR_PLAYER_AUTO_ALL = "Both windows";
         STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
         STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-        STR_PLAYER_BITRATE_SUMARRY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
+        STR_PLAYER_BITRATE_SUMMARY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
         STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
         STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
-        STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
+        STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
         STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
         STR_AUDIO_SOURCE = "Audio source";
         STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";
@@ -760,7 +765,7 @@
         STR_USER_TOP_LABLE = "Click on a user to see options";
         STR_USER_EXTRAS = "User: Switch, add, key";
         STR_LOW_LATENCY = "Low Latency";
-        STR_LOW_LATENCY_SUMARRY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
+        STR_LOW_LATENCY_SUMMARY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
             "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
         STR_LIVE_FEED_SORT = "Live feed sort";
         STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed";
@@ -784,7 +789,7 @@
         STR_DPAD_POSTION = "D-pad screen position";
         STR_DPAD_OPACITY = "D-pad opacity";
         STR_BLOCKED_CODEC = "Blocked Codecs";
-        STR_BLOCKED_CODEC_SUMARRY = "List used codecs capabilities and allow to block a codec from be used";
+        STR_BLOCKED_CODEC_SUMMARY = "List used codecs capabilities and allow to block a codec from be used";
         STR_CODEC_DIALOG_TITLE = 'Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block it and see if the performance of the app improves, <span style="color: #FF0000;">by default OMX.google decoder is disabled</span> a constant accumulation of skipped frames is a indicative of a codec issue.<br>The app content only uses avc/h264 decoders no other is listed.';
         STR_SUPPORTED_CODEC = "Supported codecs:";
         STR_MAX_RES = "Max resolution: ";
@@ -793,6 +798,10 @@
         STR_MAX_FPS = "Max fps per resolution:";
         STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
         STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
+        STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
+        STR_PP_WORKAROUND_SUMMARY = "For some devices most running android N or older, is needed to enable this to have PP mode working, don't enable this on a device that doesn't need it, as it will result is a lower image quality";
+        STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
+            STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
     }
     //Spacing for release maker not trow erros from jshint
     var IMG_404_GAME = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAAHbCAMAAACjqpKKAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABjUExURQAAAFNTX1paYlBQWwAAAv7+/v///VJSXv///1FRXUtLU0VETQkIDFVVX05OWO/v8FJSWxYWGEJCRCkoLX5+gaurrjIyNru7u+fn6dLS152coXZ1e8TEyGhobPf3+d7e34uLj6Msg3EAABAXSURBVHja7N2HgqIwFAVQICA9Iih29P+/chNCExJs6IT1Pt2doo7MmZdCSMBwEZOHAQKgAhWoCKACFagIoAIVqAigAhWoCKACFagIoAIVqAigAhWoCKACFagIoAIVqAigAhWoQEUAFahARQAVqEBFABWoQEUAFahARQAVqEBFABWoQEUAFahARQAVqEBFABWoQAUqAqhABSoCqEAFKgKoQAUqAqhABSoCqEAFKgKoQAUqAqhABSoCqEAFKgKoQAUqUBFABSpQEUAFKlARQAUqUBFABSpQEUAFKlARQAUqUBFABSpQEUAFKlARQAUqUIGKACpQgYr4GVRTfPDLkDxefc80gTo9av0soE6KqnwKUF9FLR8nhAAVqCj+aKiA+iBqgi7VJEGI8DSpbyWUxEkV9eOUmIRYpk+thLgEqE+hxj5J2C2gvSDsFgTUZ9z8CUB9BpXVA5QkNOxHkLL/0jBIEkKSxDeB+gQqNVkxT2KriXN1s8p/cUzLTEamPoXquwml58NGHmsrYKQmUJ9C5T37IFjvi14seRS7jRWydoq1ZkB9BpU18EFw3Tn98BzP85ztmaFSoD5fpzLUi8cJxa2MxaJYOF6xOaeM9H9FFfs0vLU2zfqrd6LpkbKuP0Pde71YsPAchhpSXv7frlTNKvREdb+Cuuih+kB9BXUxjBrVnABV7+Ivdtu/ger8DKrfDoZ8tE4V7VaJmvz/qP40Q0fPocZA1RG13tXQGNWcEtX9WdQhCiHl+JHYYvLOXyuU9lMb1Em6VG73KEO5vc8T/weo0/ZTZ4FabxQyFajzQhUb+GwLxp6vQO00VL+M+kq3AKgfQFUX/8lRy5b1V1CJn3wDNdEZlZjsbhLXZNvlU/aVK47XkwrVfzDc6hg/nycV0CEqH6wuUVPiBnF78OXVMMsuYB2vDV98DNWP2T02Y5Y7cczSrDJlm8yUE25c3h5InEqVvUq2R1Wi1iP/cWv6aqLyPrXJPohR1dd6K58r/rHPCiMlfL4DqWc+BJRPfHgt2OvSdL2XFH6Po1ppmATJqz98GLwO4M2jXqisgJuE+kEQhBNFmktQeZ7yY1RxnoaTRUDLwu+/OCT0ueLPCk/sutaUkcSShqrgrsX2nCSTvlXCqlPWrJq6ZSorssRaXw+qCRDPx+G0k6GyXN1vpovDYX1OKPVfnpn5QVRWk5LzenO67HbLyWIx2E0VqNO9Q7Hc7TfXc8xZXxy6/GSXyrSY6X4npju8Hbzy5CNSfVRHVABOXb2++zbsXly21+PZZB1BU4+GqplPGruBdT1dlkXheN40rsLts8HfgCXrZXOk1PTLHsDTXYCPoRJiWscNn6Uz6a/8cVSvnEnkFCdWA8S8wOmESql1PJyKZjtng1q9x257ZRWAq1emBsGZtdVFPeXJmQ+qyIIlq1fNkJhaoNa7iUHACn8hEJwZFX+nep+i2GuIGh5PRWPgzKmhEuXKuVzjwNUP1Wn+7rMq/tXmXg5x6GuHuheFacoOwLeKP/+4Y6hUD9R6MZnI1BmHszskfOBbJAoB6vSovk6oizl6ljvDLaqvCyoRqIv/ANUH6hSkYiqRQH3l4AxQH0HVo/VP/itUd26oi4V28DeoRAfUes2jCnXBdqurXQKxtkyshSj3EPiX8v3Guk8unjkWj+4wdRcMFovbP634knf+iU8I+fuG6i6qaFqbHZfm9ymH7eWok47JyH6+EtWfB6pXJ0gdizbHut/u5l4nsSYP8aaep0T1fe1RHWe3P+0VcdoqYv/hWHo3uyldVC1a/3uZutyuj2tpXI9WmEqDntefjONhL2upWlTdGyrWptI0DPgkEBrQoA7+GU1Xtm0bkojyzlMnjzA9n24buB6qq33rvzsEOUMVc4GC5saVR1HFk8V97HZnPk//M/aSlKOqM1WHQ9T3Ud2QuOXK9c5MBT5HyAqySI66SvmBzfJp9Vm9VP/M0XCrOdl+/XP4G9PgOIJaP21qVLMzWd9vGQRg0kyRrGZ0VuOPHNVToFK/Ra1/2xFUm6Fa1a/nq/+Q4rPu9/ofZWXZdGl4vJ+p30Gte3CDJ1dKZaay/tIQlR+kcAdJRJKRTM2T2Jwo+kN5WqFWieqSXpTYfNbzaKaS5mQzzQzm8eJvNc8kNze/fr/OW0u2pn1I60zldZN0I0U6JEGqQmU7f5JMdU2GaqtR3Tvp51YVyk312flYRzU7Pm7rDt2KvySa0x2lZfGXoCYhn/jhN0kmco6SeLT4Vwt/E/JmDOpVnVD55rE/eNyrS5tE4ZvqKVAJXwtQN6gVVmxZNIsMRUNlWapzm3S+pX6ws2FxHItFWc0vEuiDKrY1jlVTkWm4lhb/5cEKFC/iqIYKdargqPX6DNFtCfQq/uX6hl7U+0mhvPiXe1Ty/aMkzKSFnxd/mky1/1Qtkvhz1Juy1bTWlMZxmGfqCLZeMRzf3K3Vr1DuUa2ysTcaf3Dw5DwNErb1bswzhLTFvx3++xpqbwIKT9QkyLNVpIx8IxkFdS7nKLIVr7AlqOw77Bbxm+p1tvIHymK1ylLq8lOt8tOH+u0Mhb9CvVmKR8N8VTrcRsORHZybmelibPRytkdjgGrcNF72+8HynlVApugOmn+OemNKwmzM1DZYpnZH7Ksx4WdR+64SpGdRoyjLA5N14vhSr79Gvdm9I0G+GkfpFf/HUFfDiOxuriqlVtKXKp7NagBKk4TySuAPUeuatP46TLPoKdSm+I9lVjYYjj4eU957vZd96bE39F1+GaxUfztWAyQxS1by96id3dJUFH5DHQy1GDZV/Uy9fU24Gaxr2l1Xxt2Izpfdkq/X2jWxZLdrJqlLRL2ah3FMdUPN75ka0tZ/DJV9Hu+Hh+YYqm2o34krGdG6qA/ItksBHW+TyRo+Q1QAVsxrgL9v/Utd0yex5eaR/QiqLFPVL7HpadgJeyhTjzvJ2SoXh0z1RnYW8ssGkP8ctfx2MEQtPoTKM5Ukv4nqFGXxH8lufmeoTnVe5e5M9hHUFUMtr7WgEWqSR+Okc0BNXB32qD6JaowU/4lRy04VQ+Vj1rqhGnNHFUcvdUQd7/xPjqro/KtQpfsmLaqudeqkqOH2W6isSyVOtqod6gStf/lDbLv6JBzLVP6sSFn8vf67jTRUOmYqnRCVHyxpY3A2H8dZbpK0mbiWTYNq/OeodmRtOnMml8M5uZfODMt1BtSHUJmHM3auhWpWbvn/NgXqI8U/Wi87Tczg+UX9nfIkF0B9FHXniMv2qNZIVydJ458A9UHUsvg7qvMC8FNOtqPcmxyoj6JWiSpfhVKedbJ6HKjPZOojS3OUqLy1Wzpe7+Atu8tQbaDeRy2ZRGvXq5Ud77C6s+8PVCmqOH4tMtXrL5A6KLq1yNSHUJONbP3VNZGtIMojoN4t/pw1y2V8Rzl1BtSHUKtJV7fjWcb5Ils3yTq7QL2PKpl0Vcb5IvtJ2xyo9+pUu+0o3Uy64qh7R7LemKFG6PyPdv7HwtrL/jibHLupd3ZTn0X1fgL1zQGVsTj/Lup7Q3/I1A8MUgN1gGrfO5zi3TucAlTZIerRA3/e3QN/qFOfP0Tt3DtEjUz9wLQfoI6i2kCdA+oZqCj+k6O+OukXqEDVAvWxhRSoUz+w5Oe1TE1+IFN5638ZnpPy8FLxt9l+gn2+DE5nybS2qR3pt5DiU10q2w63g1WUl/XKMJ5nLV9gnQZXwtstd5vctn8DVRwKyazhOSPD6JWSX25cLj2dpbX6LVTZAvPIeK3150tWV8oF6z9S/G3b+FL8EqrU1TZe7qUa0i0UZ7KIfqWhmj4j1Yn6M62/NCtte9qawRbL/W1k6ofq1PI0SkAFKlCBClSgAhWoQH0ftTl9sgSVzAU1Mt7Y85xMtRr5Z2jtSWnrXC2v8SVO9EzmgWrZXxw6Uauu8vp0w+1lPlpUb5aotgaotH9Bmtmi7q6K6yN9OeJje97Lw37mmVrst1rEqX+Rr97FaGeF2l567o/Dc5pLMvYnG88Pddpr079zvcT6vvDmjiqm9RfO36MunEV1L3qsM0TV6Tq+bXQrKH511upitMl3Lpz436N6QJ2Gtf8IUF9WbW4eUL+Qwx5QP4DqAfV/QCVA/SDqaGQHp7kkhTMbXN5L5cE7/1ZIxBmWv4h6Z3QtPxTNLv6s8lRMDRYj/7FuqNedU+iyq/9UspaZ6lz4bqqlF6qRXS9F9zwIMxGtKtViebryK7xqhro6bi9LnQu/pNvfDk8u95t1HGhWp/KrEx23y5GTI+ixmyo/uwirUbfXf+3dAVPaMBiAYWPwcmmbmNLZUxD1///KJU2rE+nqmMAXfd/bbYNznDxLWoRAdsZbYSN1tWriUTU/ySdQ9fBP/dMQuHl6fNk546VN/7SCv9o8Pt8+iX465eDsv71/uNtW2nkv7Zia3hZRb++ex1cshJVZbw5O/5s497c7pUP4uIH5xUdq2pt3t3l4TtvE3Qpr/hu6v3+Ix9O0AWDQ0lDTMpCrVduH7S+JvWzu5tpsXnbKp+NphBWGmj8ZZdpWV1pd9dd9wFXaad0eN1BP+JDq3Rt5Lr/Q5+NDk6qerfJ62CZSKSVtpOa3gVx+OdrhZT9rF9Km7/5Dw2bw+ckpFbzAE9Ufh1dxqNdOG7s/v+O5KaixiKrPjro4//N7luSN03Gkpv2o1Ove2mMu6OkK7825pr/SyoZrv/wkteTySLUma6bf7bvdy/+vo1A1qKCCCiqooIIKKqjHoI6Pgu3nV6iUgWpOEKiggloAqgEV1BJQlTGgfnNU/R1Qg1KXQZ0wpzdpqfgXrZxeXp8qmHR8OUUb66WhXpXbMFKDDkaD+tWvUVmjmP5fZ5pRtQX1C02HF/7ivRKG2q6KVU2oXURVpzmkHosaH1K1hQ7V4dNTm6ar5aHadds0JY7V0bTtK6cuNv3nWvddsypQdZU/57evK+VURH39oUYCqq2Go2ppqtk0Tn6v44nq7fQvA9XpustHgOJq2jj54zgdlkqKQtXW133XNiWadn3t81J+JWz6K5VVi6vt1j6k5fw2rT8ThZpOnb6Op6vC6vt+7Z3TaXFfvAtaFKqJB6Sgp8/Lq6Y/xTcs6w3DutN4D6wVNlLjL+XcdWHFbzie9cNwWtDayDqmjgX3j03LlJcu718/dztLt7d/vQnm5F2ZM/d65xYu718/dztLt7d0vUhUW1hFoB77n7B0eQlh7uvm/t23Rv0JnX36f3bELt3+Z2fAOUcoqBxTOaZyTIUAVFBBJVBBBZVABRVUAhVUUAlUUEElUEEFlUAFFVQCFVRQCVRQQSVQQQUVVAIVVFAJVFBBJVBBBZVABRVUAhVUUAlUUEElUEEFlUAFFVQCFVRQQSVQQQWVQAUVVAIVVFAJVFBBJVBBBZVABRVUAhVUUAlUUEElUEEFFVQCFVRQCVRQQSVQQQWVQAUVVAIVVFAJVFBBJVBBBZVABRVUAhVUUEElUEEFlUAFFVQCFVRQCVRQQSVQQQWVQAUVVAIVVFAJVFBBJVBBBZVABRXUH9tvlWLdWXsgA/8AAAAASUVORK5CYII=";
@@ -3090,6 +3099,7 @@
         "DeviceCheck": false,
         "Never_run_phone": true,
         "Codec_is_Check": false,
+        "check_pp_workaround": true,
     };
 
     var Main_Force = "4mv6wki5h1ko";
@@ -3140,10 +3150,11 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '2.0';
-    var Main_stringVersion_Min = '.104';
-    var Main_minversion = '122819';
+    var Main_stringVersion_Min = '.105';
+    var Main_minversion = '122919';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
+    var Main_AndroidSDK = 1000;
     var Main_ClockOffset = 0;
     var Main_IsNotBrowser = 0;
     var Main_randomimg = '?' + Math.random();
@@ -3301,6 +3312,12 @@
 
             }
 
+            try {
+                Main_AndroidSDK = Android.getSDK();
+            } catch (e) {
+                Main_AndroidSDK = 1000;
+            }
+
             //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
             //TODO add a warning when playing avc1.640034 and a setting to disable it
             //Main_SupportsAvc1High = Android.misAVC52Supported();
@@ -3363,7 +3380,6 @@
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER +
             '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
 
-
         Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
         if (isStarting) Settings_SetSettings();
@@ -3413,6 +3429,8 @@
         Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
         Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_fallow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
         Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
+
+        Main_innerHTML("dialog_os_text", STR_PP_WARNIG + STR_BR + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS2 + '</div>');
     }
 
     var Main_initClickDoc = [
@@ -5412,9 +5430,29 @@
     }
 
     function PlayExtra_qualityChanged() {
-        if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
-
         if (Main_IsNotBrowser && Play_isOn) Android.initializePlayer2Auto();
+
+        if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround) {
+
+            Main_ShowElement('dialog_os');
+            document.body.removeEventListener("keydown", Play_handleKeyDown, false);
+            document.body.addEventListener("keydown", PlayExtra_handleKeyDown, false);
+
+            Main_values.check_pp_workaround = false;
+            Main_SaveValues();
+        }
+
+        if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
+    }
+
+    function PlayExtra_handleKeyDown(e) {
+        if (e.keyCode === KEY_RETURN || e.keyCode === KEY_RETURN_Q || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
+
+            document.body.removeEventListener("keydown", PlayExtra_handleKeyDown, false);
+            document.body.addEventListener("keydown", Play_handleKeyDown, false);
+            Main_HideElement('dialog_os');
+
+        }
     }
 
     function PlayExtra_loadDataRequest() {
@@ -5747,6 +5785,7 @@
             Android.mSetPlayerPosition(Play_PicturePicturePos);
             Android.mSetPlayerSize(Play_PicturePictureSize);
             Android.mSetlatency(Play_LowLatency);
+            Settings_PP_Workaround();
         }
 
         Play_SetQuality();
@@ -7615,7 +7654,7 @@
     function Play_handleKeyUpClear() {
         window.clearTimeout(PlayExtra_KeyEnterID);
         document.body.removeEventListener("keyup", Play_handleKeyUp);
-        document.body.addEventListener("keydown", Play_handleKeyDown, false);
+        if (!Main_isElementShowing('dialog_os')) document.body.addEventListener("keydown", Play_handleKeyDown, false);
     }
 
     function Play_Exit() {
@@ -8095,7 +8134,7 @@
                 }
 
                 if (Play_LowLatency) {
-                    Play_showWarningDialog(STR_LOW_LATENCY_SUMARRY);
+                    Play_showWarningDialog(STR_LOW_LATENCY_SUMMARY);
                     window.setTimeout(Play_HideWarningDialog, 3000);
                 }
 
@@ -12362,6 +12401,10 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
+        "pp_workaround": { //pp_workaround
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "keep_panel_info_visible": { //clip_auto_play_next
             "values": ["no", "yes"],
             "defaultValue": 1
@@ -12445,7 +12488,7 @@
             "defaultValue": 1
         },
         "dpad_position": { //dpad postion
-            "values": ["right-bottom", "right-top", "left-top", "left-bottom"],
+            "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
             "defaultValue": 1
         },
         "dpad_opacity": { //dpad opacity
@@ -12504,137 +12547,65 @@
     // The order in Settings_SetSettings is the display order
     function Settings_SetSettings() {
         var div = '',
-            key;
+            key,
+            array_no_yes = [STR_NO, STR_YES];
 
         // General settings title
         div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
-        // Content Language selection
-        key = "content_lang";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
+        div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
 
-        div += Settings_DivOptionWithSummary(key, STR_CONTENT_LANG, '');
+        div += Settings_Content('live_feed_sort',
+            [STR_VIEWS, STR_A_Z, STR_Z_A], STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
 
-        //live_feed_sort
-        key = "live_feed_sort";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_VIEWS, STR_A_Z, STR_Z_A];
+        div += Settings_Content('thumb_quality',
+            [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
+            STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMMARY);
 
-        div += Settings_DivOptionWithSummary(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
+        div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
-        //thumb qualityes
-        key = "thumb_quality";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
+        div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
-        div += Settings_DivOptionWithSummary(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
+        div += Settings_Content('videos_animation', array_no_yes, STR_VIDEOS_ANIMATION, null);
 
-        key = "global_font_offset";
-        Settings_value_keys.push(key);
+        div += Settings_Content('app_animations', array_no_yes, STR_APP_ANIMATIONS, null);
 
-        div += Settings_DivOptionWithSummary(key, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
+        div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
 
-        //Player restore playback
-        key = "restor_playback";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_NO, STR_YES];
+        div += Settings_Content('live_notification', array_no_yes, STR_NOW_LIVE_SHOW, null);
 
-        div += Settings_DivOptionWithSummary(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
+        div += Settings_Content('live_notification_time', null, STR_NOW_DURATION, null);
 
-        // Videos
-        key = "videos_animation";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_NO, STR_YES];
+        div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
 
-        div += Settings_DivOptionNoSummary(key, STR_VIDEOS_ANIMATION);
+        div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
-        key = "app_animations";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_NO, STR_YES];
-
-        div += Settings_DivOptionNoSummary(key, STR_APP_ANIMATIONS);
-
-        key = "clip_auto_play_next";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_NO, STR_YES];
-
-        div += Settings_DivOptionNoSummary(key, STR_AUTO_PLAY_NEXT);
-
-        key = "live_notification";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_NO, STR_YES];
-
-        div += Settings_DivOptionNoSummary(key, STR_NOW_LIVE_SHOW);
-
-        key = "live_notification_time";
-        Settings_value_keys.push(key);
-
-        div += Settings_DivOptionNoSummary(key, STR_NOW_DURATION);
-
-        // Clock offset
-        key = "clock_offset";
-        Settings_value_keys.push(key);
-
-        div += Settings_DivOptionNoSummary(key, STR_CLOCK_OFFSET);
-
-        // show_screen_counter
-        key = "show_screen_counter";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_NO, STR_YES];
-        div += Settings_DivOptionNoSummary(key, STR_SCREEN_COUNTER);
 
         if (!Main_isTV || !Main_IsNotBrowser) {
-            // dpad_position
-            key = "dpad_position";
-            Settings_value_keys.push(key);
-            div += Settings_DivOptionNoSummary(key, STR_DPAD_POSTION);
+            div += Settings_Content('dpad_position', null, STR_DPAD_POSTION, null);
 
-            // dpad_opacity
-            key = "dpad_opacity";
-            Settings_value_keys.push(key);
-            div += Settings_DivOptionNoSummary(key, STR_DPAD_OPACITY);
+            div += Settings_Content('dpad_opacity', null, STR_DPAD_OPACITY, null);
         }
 
         // Player settings title
         div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-        key = "keep_panel_info_visible";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_NO, STR_YES];
+        div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
-        div += Settings_DivOptionNoSummary(key, STR_KEEP_INFO_VISIBLE);
+        div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-        key = "single_click_exit";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_NO, STR_YES];
+        div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+        Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
-        div += Settings_DivOptionWithSummary(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
+        div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
-        // end_dialog_counter
-        key = "end_dialog_counter";
-        Settings_value_keys.push(key);
-        Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+        div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
 
-        div += Settings_DivOptionWithSummary(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-
-        //Player restore playback
-        key = "default_quality";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_AUTO, STR_SOURCE];
-
-        div += Settings_DivOptionWithSummary(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
-
-
-        key = "blocked_codecs";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
-
-        div += Settings_DivOptionWithSummary(key, STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMARRY);
+        div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
         // Player buffer title/summary
         div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
-            '<div id="setting_title_bandwidth_summary" class="settings_summary">' + STR_PLAYER_BITRATE_SUMARRY + '</div>';
+            '<div id="setting_title_bandwidth_summary" class="settings_summary">' + STR_PLAYER_BITRATE_SUMMARY + '</div>';
 
         // Player buffer live
         key = "bitrate_main";
@@ -12647,40 +12618,32 @@
 
         div += Settings_DivOptionNoSummary(key, STR_PLAYER_BITRATE_MAIN);
 
-        // Player buffer vod
-        key = "bitrate_min";
-        Settings_value_keys.push(key);
-        Settings_value[key].values = Settings_value.bitrate_main.values;
-        Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-
-        div += Settings_DivOptionWithSummary(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
+        div += Settings_Content('bitrate_min',
+            Settings_value.bitrate_main.values, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
+        Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
         Settings_SetBitRate(0);
 
         // Player buffer title/summary
         div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
             '<div id="setting_title_buffers_summary" class="settings_summary">' + STR_SETTINGS_BUFFER_SIZE_SUMMARY + '</div>';
 
-        // Player buffer live
-        key = "buffer_live";
-        Settings_value_keys.push(key);
 
-        div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_LIVE);
+        div += Settings_Content('buffer_live', null, STR_SETTINGS_BUFFER_LIVE, null);
 
-        // Player buffer vod
-        key = "buffer_vod";
-        Settings_value_keys.push(key);
+        div += Settings_Content('buffer_vod', null, STR_SETTINGS_BUFFER_VOD, null);
 
-        div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_VOD);
-
-        // Player buffer clip
-        key = "buffer_clip";
-        Settings_value_keys.push(key);
-
-        div += Settings_DivOptionNoSummary(key, STR_SETTINGS_BUFFER_CLIP);
+        div += Settings_Content('buffer_clip', null, STR_SETTINGS_BUFFER_CLIP, null);
 
         Main_innerHTML("settings_main", div);
         Settings_positions_length = Settings_value_keys.length;
         Languages_SetSettings();
+    }
+
+    function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
+        Settings_value_keys.push(key);
+        if (valuesArray) Settings_value[key].values = valuesArray;
+
+        return (STR_SUMMARY ? Settings_DivOptionWithSummary(key, STR, STR_SUMMARY) : Settings_DivOptionNoSummary(key, STR));
     }
 
     function Settings_DivTitle(key, string) {
@@ -12715,24 +12678,19 @@
         //General settings
         Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
 
-        // Clock offset
-        key = "clock_offset";
-        Main_textContent(key + '_name', STR_CLOCK_OFFSET);
+        Main_textContent('clock_offset_name', STR_CLOCK_OFFSET);
 
-        key = "show_screen_counter";
-        Main_textContent(key + '_name', STR_SCREEN_COUNTER);
+        Main_textContent('show_screen_counter_name', STR_SCREEN_COUNTER);
 
-        key = "dpad_position";
-        Main_textContent(key + '_name', STR_DPAD_POSTION);
+        Main_textContent('dpad_position_name', STR_DPAD_POSTION);
 
-        key = "dpad_opacity";
-        Main_textContent(key + '_name', STR_DPAD_OPACITY);
+        Main_textContent('dpad_opacity_name', STR_DPAD_OPACITY);
 
         // Content Language selection
         key = "content_lang";
         Main_textContent(key + '_name', STR_CONTENT_LANG);
         Main_textContent(key, Settings_Obj_values(key));
-        Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
+        Settings_value[key].values = [STR_CONTENT_LANG_SUMMARY];
 
         key = "live_feed_sort";
         Settings_DivOptionChangeLang(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
@@ -12744,42 +12702,39 @@
 
         // Player buffer title/summary
         Main_textContent('setting_title_bandwidth', STR_PLAYER_BITRATE);
-        Main_textContent('setting_title_bandwidth_summary', STR_PLAYER_BITRATE_SUMARRY);
+        Main_textContent('setting_title_bandwidth_summary', STR_PLAYER_BITRATE_SUMMARY);
 
         key = "bitrate_main";
         Main_textContent(key + '_name', STR_PLAYER_BITRATE_MAIN);
         Settings_value[key].values[0] = STR_DISABLE;
+
         key = "bitrate_min";
-        Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
+        Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
         Settings_value[key].values[0] = STR_DISABLE;
 
         // Player buffer title/summary
         Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
         Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
-        key = "buffer_live";
-        Main_textContent(key + '_name', STR_SETTINGS_BUFFER_LIVE);
-        key = "buffer_vod";
-        Main_textContent(key + '_name', STR_SETTINGS_BUFFER_VOD);
-        key = "buffer_clip";
-        Main_textContent(key + '_name', STR_SETTINGS_BUFFER_CLIP);
+        Main_textContent('buffer_live_name', STR_SETTINGS_BUFFER_LIVE);
+        Main_textContent('buffer_vod_name', STR_SETTINGS_BUFFER_VOD);
+        Main_textContent('buffer_clip_name', STR_SETTINGS_BUFFER_CLIP);
 
         //Player restore
         key = "restor_playback";
-        Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
+        Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
         Settings_value[key].values = [STR_YES, STR_NO];
 
         //Thumb quality
         key = "thumb_quality";
-        Settings_DivOptionChangeLang(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
+        Settings_DivOptionChangeLang(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMMARY);
         Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
-        key = "global_font_offset";
-        Settings_DivOptionChangeLang(key, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
+        Settings_DivOptionChangeLang('global_font_offset', STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
         //Player restore
         key = "default_quality";
-        Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
+        Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
         Settings_value[key].values = [STR_AUTO, STR_SOURCE];
 
         // Chat size
@@ -12792,6 +12747,10 @@
         Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
         Settings_value[key].values = [STR_YES, STR_NO];
 
+        key = "pp_workaround";
+        Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
+        Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+
         key = "clip_auto_play_next";
         Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
         Settings_value[key].values = [STR_NO, STR_YES];
@@ -12800,8 +12759,7 @@
         Main_textContent(key + '_name', STR_NOW_LIVE_SHOW);
         Settings_value[key].values = [STR_NO, STR_YES];
 
-        key = "live_notification_time";
-        Main_textContent(key + '_name', STR_NOW_DURATION);
+        Main_textContent('live_notification_time_name', STR_NOW_DURATION);
 
         key = "keep_panel_info_visible";
         Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
@@ -12938,6 +12896,14 @@
         else if (position === "bitrate_min") Settings_SetBitRate(2);
         else if (position === "dpad_opacity") Settings_DpadOpacity();
         else if (position === "dpad_position") Settings_DpadPOsition();
+        else if (position === "pp_workaround") Settings_PP_Workaround();
+    }
+
+    function Settings_PP_Workaround() {
+        //TODO remove the try after some itme of the app be released
+        try {
+            Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
+        } catch (e) {}
     }
 
     function Settings_DpadOpacity() {
