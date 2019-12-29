@@ -250,7 +250,7 @@ function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
     Settings_value_keys.push(key);
     if (valuesArray) Settings_value[key].values = valuesArray;
 
-    return (STR_SUMMARY) ? Settings_DivOptionWithSummary(key, STR, STR_SUMMARY) : Settings_DivOptionNoSummary(key, STR);
+    return (STR_SUMMARY ? Settings_DivOptionWithSummary(key, STR, STR_SUMMARY) : Settings_DivOptionNoSummary(key, STR));
 }
 
 function Settings_DivTitle(key, string) {
