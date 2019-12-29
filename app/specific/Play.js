@@ -405,7 +405,7 @@ function Play_CheckIfIsLiveLink() {
         '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
         '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&p=' +
         Main_RandomInt();
-        //(Play_SupportsSource ? "&allow_source=true" : '') + '&p=' + Main_RandomInt();
+    //(Play_SupportsSource ? "&allow_source=true" : '') + '&p=' + Main_RandomInt();
 
     var xmlHttp;
     try {
@@ -469,9 +469,9 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
             '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-            //(Play_SupportsSource ? "&allow_source=true" : '') +
-            //'&fast_bread=true' +
-            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
+        //(Play_SupportsSource ? "&allow_source=true" : '') +
+        //'&fast_bread=true' +
+        //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
 
         Play_AutoUrl = theUrl;
 
@@ -665,9 +665,9 @@ function Play_loadDataRequest() {
             '&reassignments_supported=true&playlist_include_framerate=true' +
             '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-            //(Play_SupportsSource ? "&allow_source=true" : '') +
-            //'&fast_bread=true' +
-            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+        //(Play_SupportsSource ? "&allow_source=true" : '') +
+        //'&fast_bread=true' +
+        //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
         Play_AutoUrl = theUrl;
 
@@ -823,11 +823,11 @@ function Play_loadDataSuccess(responseText) {
         Play_HideEndDialog();
 
         //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-//        if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
-//            Play_SupportsSource = false;
-//            Play_loadData();
-//            return;
-//        }
+        //        if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+        //            Play_SupportsSource = false;
+        //            Play_loadData();
+        //            return;
+        //        }
 
         Play_qualities = Play_extractQualities(responseText);
         Play_state = Play_STATE_PLAYING;

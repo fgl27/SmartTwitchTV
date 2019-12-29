@@ -215,7 +215,7 @@
         var k = 0;
         delta = firstTime ? floor(delta / damp) : delta >> 1;
         delta += floor(delta / numPoints);
-        for ( /* no initialization */ ; delta > baseMinusTMin * tMax >> 1; k += base) {
+        for ( /* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
             delta = floor(delta / baseMinusTMin);
         }
         return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
@@ -267,14 +267,14 @@
         // Main decoding loop: start just after the last delimiter if any basic code
         // points were copied; start at the beginning otherwise.
 
-        for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */ ) {
+        for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {
 
             // `index` is the index of the next character to be consumed.
             // Decode a generalized variable-length integer into `delta`,
             // which gets added to `i`. The overflow checking is easier
             // if we increase `i` as we go, then subtract off its starting
             // value at the end to obtain `delta`.
-            for (oldi = i, w = 1, k = base; /* no condition */ ; k += base) {
+            for (oldi = i, w = 1, k = base; /* no condition */; k += base) {
 
                 if (index >= inputLength) {
                     error('invalid-input');
@@ -409,7 +409,7 @@
 
                 if (currentValue === n) {
                     // Represent delta as a generalized variable-length integer
-                    for (q = delta, k = base; /* no condition */ ; k += base) {
+                    for (q = delta, k = base; /* no condition */; k += base) {
                         t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
                         if (q < t) {
                             break;

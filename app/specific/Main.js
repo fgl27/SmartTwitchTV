@@ -256,9 +256,9 @@ function Main_initWindows() {
                 var codecs = getcodec.split('|');
 
                 if (codecs.length > 1) {
-                
+
                     var codecsValue,
-                    codecsnames = [];
+                        codecsnames = [];
 
                     for (var i = 0; i < codecs.length; i++) {
                         codecsValue = codecs[i].split(',');
@@ -396,7 +396,7 @@ function Main_SetStringsSecondary() {
 
 var Main_initClickDoc = [
     "clickup", "clickdown", "clickleft", "clickright", "clickenter", "clickback",
-    "clickpgup","clickpgdown","clickfeed"];
+    "clickpgup", "clickpgdown", "clickfeed"];
 var Main_setHideButtonsId;
 var Main_scenekeysDoc;
 var Main_scenekeysPositionDoc;

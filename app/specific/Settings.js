@@ -169,46 +169,46 @@ function Settings_SetSettings() {
         [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
         STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
 
-    div += Settings_Content('global_font_offset',null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
+    div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
-    div += Settings_Content('restor_playback',array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
+    div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMARRY);
 
-    div += Settings_Content('videos_animation',array_no_yes, STR_VIDEOS_ANIMATION, null);
+    div += Settings_Content('videos_animation', array_no_yes, STR_VIDEOS_ANIMATION, null);
 
-    div += Settings_Content('app_animations',array_no_yes, STR_APP_ANIMATIONS, null);
+    div += Settings_Content('app_animations', array_no_yes, STR_APP_ANIMATIONS, null);
 
-    div += Settings_Content('clip_auto_play_next',array_no_yes, STR_AUTO_PLAY_NEXT, null);
+    div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
 
-    div += Settings_Content('live_notification',array_no_yes, STR_NOW_LIVE_SHOW, null);
+    div += Settings_Content('live_notification', array_no_yes, STR_NOW_LIVE_SHOW, null);
 
-    div += Settings_Content('live_notification_time',null, STR_NOW_DURATION, null);
+    div += Settings_Content('live_notification_time', null, STR_NOW_DURATION, null);
 
-    div += Settings_Content('clock_offset',null, STR_CLOCK_OFFSET, null);
+    div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
 
-    div += Settings_Content('show_screen_counter',array_no_yes, STR_SCREEN_COUNTER, null);
+    div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
 
     if (!Main_isTV || !Main_IsNotBrowser) {
-        div += Settings_Content('dpad_position',null, STR_DPAD_POSTION, null);
+        div += Settings_Content('dpad_position', null, STR_DPAD_POSTION, null);
 
-        div += Settings_Content('dpad_opacity',null, STR_DPAD_OPACITY, null);
+        div += Settings_Content('dpad_opacity', null, STR_DPAD_OPACITY, null);
     }
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    div += Settings_Content('keep_panel_info_visible',array_no_yes, STR_KEEP_INFO_VISIBLE, null);
+    div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
-    div += Settings_Content('single_click_exit',array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
+    div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-    div += Settings_Content('end_dialog_counter',null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+    div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
     Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
-    div += Settings_Content('default_quality',[STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
+    div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
 
-    div += Settings_Content('blocked_codecs',[STR_CONTENT_LANG_SUMARRY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMARRY);
+    div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMARRY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMARRY);
 
-    div += Settings_Content('pp_workaround',array_no_yes, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMARRY);
+    div += Settings_Content('pp_workaround', array_no_yes, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMARRY);
 
     // Player buffer title/summary
     div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
