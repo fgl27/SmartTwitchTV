@@ -47,8 +47,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static android.content.Context.UI_MODE_SERVICE;
-
 public final class Tools {
 
     private static final String TAG = Tools.class.getName();
@@ -490,7 +488,7 @@ public final class Tools {
     }
 
     public static boolean deviceIsTV(@NonNull Context context) {
-        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(UI_MODE_SERVICE);
+        UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
         return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 }
