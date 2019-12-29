@@ -421,10 +421,16 @@ public class PlayerActivity extends Activity {
     }
 
     public void KeepScreenOn(boolean keepOn) {
-        if (keepOn)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        else
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //On android 6 this seems to cause a excepetion
+        //Didn't manage to catch it on a device I own
+        try {
+            if (keepOn)
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            else
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } catch (NullPointerException e) {
+            Log.w(TAG, "KeepScreenOn NullPointerException ", e);
+        }
     }
 
     private void showLoading() {
