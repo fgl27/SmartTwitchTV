@@ -63,7 +63,13 @@ function AddUser_inputFocus() {
 }
 
 function AddUser_removeEventListener() {
-    //Main_RemoveClass('scenekeys', 'avoidclicks');
+    if (!Main_isTV) {
+        //TODO remove the try after some itme of the app be released
+        try {
+            Android.mhideSystemUI();
+        } catch (e) {}
+    }
+
     Main_RemoveClass('scenefeed', 'avoidclicks');
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);

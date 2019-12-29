@@ -135,7 +135,13 @@ function Search_inputFocus() {
 }
 
 function Search_RemoveinputFocus(EnaKeydown) {
-    //Main_RemoveClass('scenekeys', 'avoidclicks');
+    if (!Main_isTV) {
+        //TODO remove the try after some itme of the app be released
+        try {
+            Android.mhideSystemUI();
+        } catch (e) {}
+    }
+
     Main_RemoveClass('scenefeed', 'avoidclicks');
     Main_SearchInput.blur();
     Search_removeEventListener();
