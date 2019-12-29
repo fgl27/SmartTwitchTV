@@ -207,7 +207,7 @@ function en_USLang() {
     STR_DISABLE = "Disable";
     STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
-    STR_RESTORE_PLAYBACK_SUMARRY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user, the app then can restore what was previously playing on next start";
+    STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user, the app then can restore what was previously playing on next start";
     STR_CHAT_FONT = "Chat font size";
     STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
     STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
@@ -221,7 +221,7 @@ function en_USLang() {
     STR_CLOCK_OFFSET = "Clock offset";
     STR_APP_LANG = "Application language";
     STR_CONTENT_LANG = "Content language";
-    STR_CONTENT_LANG_SUMARRY = "Press enter to change";
+    STR_CONTENT_LANG_SUMMARY = "Press enter to change";
     STR_LANG_ALL = "All";
     STR_NO_GAME = "No game from this";
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
@@ -252,13 +252,13 @@ function en_USLang() {
     STR_NORMAL = "Normal";
     STR_AUTO = "Auto";
     STR_DEF_QUALITY = "Default player start quality";
-    STR_DEF_QUALITY_SUMARRY = "Used when the app is first opened, after the user change the quality that becomes default for that section, a section ends when the apps is closed";
+    STR_DEF_QUALITY_SUMMARY = "Used when the app is first opened, after the user change the quality that becomes default for that section, a section ends when the apps is closed";
     STR_VERY_LOW = "Very low";
     STR_LOW = "Low";
     STR_HIGH = "High";
     STR_VERY_HIGH = "Very high";
     STR_THUMB_RESOLUTION = "Thumbnails quality";
-    STR_THUMB_RESOLUTION_SUMARRY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
+    STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
     STR_PAYPAL_SUMMARY = "Donations use above Email.";
     STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load second stream info";
     STR_PLAYER_RESYNC = "Player Auto Sync";
@@ -267,10 +267,10 @@ function en_USLang() {
     STR_PLAYER_AUTO_ALL = "Both windows";
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
     STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-    STR_PLAYER_BITRATE_SUMARRY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
+    STR_PLAYER_BITRATE_SUMMARY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
-    STR_PLAYER_BITRATE_SMALL_SUMARRY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
+    STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
     STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
     STR_AUDIO_SOURCE = "Audio source";
     STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";
@@ -305,7 +305,7 @@ function en_USLang() {
     STR_USER_TOP_LABLE = "Click on a user to see options";
     STR_USER_EXTRAS = "User: Switch, add, key";
     STR_LOW_LATENCY = "Low Latency";
-    STR_LOW_LATENCY_SUMARRY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
+    STR_LOW_LATENCY_SUMMARY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
         "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
     STR_LIVE_FEED_SORT = "Live feed sort";
     STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed";
@@ -329,7 +329,7 @@ function en_USLang() {
     STR_DPAD_POSTION = "D-pad screen position";
     STR_DPAD_OPACITY = "D-pad opacity";
     STR_BLOCKED_CODEC = "Blocked Codecs";
-    STR_BLOCKED_CODEC_SUMARRY = "List used codecs capabilities and allow to block a codec from be used";
+    STR_BLOCKED_CODEC_SUMMARY = "List used codecs capabilities and allow to block a codec from be used";
     STR_CODEC_DIALOG_TITLE = 'Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block it and see if the performance of the app improves, <span style="color: #FF0000;">by default OMX.google decoder is disabled</span> a constant accumulation of skipped frames is a indicative of a codec issue.<br>The app content only uses avc/h264 decoders no other is listed.';
     STR_SUPPORTED_CODEC = "Supported codecs:";
     STR_MAX_RES = "Max resolution: ";
@@ -339,5 +339,5 @@ function en_USLang() {
     STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
     STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
-    STR_PP_WORKAROUND_SUMARRY = "For some devices most running android N or older, is needed to enable this to have PP mode working, don't enable this on a device that don't need as it will cause image quality degradation";
+    STR_PP_WORKAROUND_SUMMARY = "For some devices most running android N or older, is needed to enable this to have PP mode working, don't enable this on a device that doesn't need it, as it will result is a lower image quality";
 }
