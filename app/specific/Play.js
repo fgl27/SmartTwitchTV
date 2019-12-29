@@ -186,6 +186,7 @@ function Play_PreStart() {
         Android.mSetPlayerPosition(Play_PicturePicturePos);
         Android.mSetPlayerSize(Play_PicturePictureSize);
         Android.mSetlatency(Play_LowLatency);
+        Settings_PP_Workaround();
     }
 
     Play_SetQuality();

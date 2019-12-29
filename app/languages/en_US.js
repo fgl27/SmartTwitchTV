@@ -338,4 +338,6 @@ function en_USLang() {
     STR_MAX_FPS = "Max fps per resolution:";
     STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
+    STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
+    STR_PP_WORKAROUND_SUMARRY = "For some devices most running android N or older, is needed to enable this to have PP mode working, don't enable this on a device that don't need as it will cause image quality degradation";
 }
