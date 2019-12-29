@@ -285,18 +285,13 @@ function Settings_SetStrings() {
     //General settings
     Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
 
-    // Clock offset
-    key = "clock_offset";
-    Main_textContent(key + '_name', STR_CLOCK_OFFSET);
+    Main_textContent('clock_offset_name', STR_CLOCK_OFFSET);
 
-    key = "show_screen_counter";
-    Main_textContent(key + '_name', STR_SCREEN_COUNTER);
+    Main_textContent('show_screen_counter_name', STR_SCREEN_COUNTER);
 
-    key = "dpad_position";
-    Main_textContent(key + '_name', STR_DPAD_POSTION);
+    Main_textContent('dpad_position_name', STR_DPAD_POSTION);
 
-    key = "dpad_opacity";
-    Main_textContent(key + '_name', STR_DPAD_OPACITY);
+    Main_textContent('dpad_opacity_name', STR_DPAD_OPACITY);
 
     // Content Language selection
     key = "content_lang";
@@ -319,6 +314,7 @@ function Settings_SetStrings() {
     key = "bitrate_main";
     Main_textContent(key + '_name', STR_PLAYER_BITRATE_MAIN);
     Settings_value[key].values[0] = STR_DISABLE;
+
     key = "bitrate_min";
     Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMARRY);
     Settings_value[key].values[0] = STR_DISABLE;
@@ -327,12 +323,9 @@ function Settings_SetStrings() {
     Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
     Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
-    key = "buffer_live";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_LIVE);
-    key = "buffer_vod";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_VOD);
-    key = "buffer_clip";
-    Main_textContent(key + '_name', STR_SETTINGS_BUFFER_CLIP);
+    Main_textContent('buffer_live_name', STR_SETTINGS_BUFFER_LIVE);
+    Main_textContent('buffer_vod_name', STR_SETTINGS_BUFFER_VOD);
+    Main_textContent('buffer_clip_name', STR_SETTINGS_BUFFER_CLIP);
 
     //Player restore
     key = "restor_playback";
@@ -344,8 +337,7 @@ function Settings_SetStrings() {
     Settings_DivOptionChangeLang(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMARRY);
     Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
-    key = "global_font_offset";
-    Settings_DivOptionChangeLang(key, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
+    Settings_DivOptionChangeLang('global_font_offset', STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
     //Player restore
     key = "default_quality";
@@ -374,8 +366,7 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_NOW_LIVE_SHOW);
     Settings_value[key].values = [STR_NO, STR_YES];
 
-    key = "live_notification_time";
-    Main_textContent(key + '_name', STR_NOW_DURATION);
+    Main_textContent('live_notification_time_name', STR_NOW_DURATION);
 
     key = "keep_panel_info_visible";
     Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
