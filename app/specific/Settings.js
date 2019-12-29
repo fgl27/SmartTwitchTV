@@ -9,6 +9,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "pp_workaround": { //pp_workaround
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "keep_panel_info_visible": { //clip_auto_play_next
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -92,7 +96,7 @@ var Settings_value = {
         "defaultValue": 1
     },
     "dpad_position": { //dpad postion
-        "values": ["right-bottom", "right-top", "left-top", "left-bottom"],
+        "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
         "defaultValue": 1
     },
     "dpad_opacity": { //dpad opacity
@@ -271,12 +275,17 @@ function Settings_SetSettings() {
 
     div += Settings_DivOptionWithSummary(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMARRY);
 
-
     key = "blocked_codecs";
     Settings_value_keys.push(key);
     Settings_value[key].values = [STR_CONTENT_LANG_SUMARRY];
 
     div += Settings_DivOptionWithSummary(key, STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMARRY);
+
+    key = "pp_workaround";
+    Settings_value_keys.push(key);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    div += Settings_DivOptionWithSummary(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMARRY);
 
     // Player buffer title/summary
     div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
@@ -438,6 +447,10 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
     Settings_value[key].values = [STR_YES, STR_NO];
 
+    key = "pp_workaround";
+    Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMARRY);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
     key = "clip_auto_play_next";
     Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
     Settings_value[key].values = [STR_NO, STR_YES];
@@ -584,6 +597,14 @@ function Settings_SetDefault(position) {
     else if (position === "bitrate_min") Settings_SetBitRate(2);
     else if (position === "dpad_opacity") Settings_DpadOpacity();
     else if (position === "dpad_position") Settings_DpadPOsition();
+    else if (position === "pp_workaround") Settings_PP_Workaround();
+}
+
+function Settings_PP_Workaround() {
+    //TODO remove the try after some itme of the app be released
+    try {
+        Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
+    } catch (e) {}
 }
 
 function Settings_DpadOpacity() {

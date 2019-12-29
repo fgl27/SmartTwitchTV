@@ -1,5 +1,3 @@
-//adapt part of the player from https://github.com/yuliskov/SmartYouTubeTV
-
 package com.fgl27.twitch;
 
 import android.app.Activity;
@@ -217,7 +215,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void setPlayer(boolean surface_view) {
-
+        //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
         if (surface_view){
             PlayerView[0] = findViewById(R.id.player_view_texture_view);
             PlayerView[1] = findViewById(R.id.player_view2_texture_view);
@@ -1118,8 +1116,15 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void msetPlayer(boolean surface_view) {
-            myHandler.post(() -> setPlayer(surface_view));
+        public void msetPlayer(boolean surface_view, boolean sizechat) {
+            myHandler.post(() -> {
+                setPlayer(surface_view);
+
+                if (sizechat) updateVidesizeChatPP(false);
+                else updateVidesizeChat(true);
+
+                UpdadeSizePosSmall(mainPlayer ^ 1);
+            });
         }
     }
 
