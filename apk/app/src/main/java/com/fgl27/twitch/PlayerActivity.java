@@ -1136,7 +1136,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mhideSystemUI() {
-            myHandler.post(() -> hideSystemUI());
+            myHandler.post(PlayerActivity.this::hideSystemUI);
         }
     }
 
