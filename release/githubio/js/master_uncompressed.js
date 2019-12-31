@@ -2583,7 +2583,7 @@
         if (tags.hasOwnProperty('display-name')) {
             var nick = tags['display-name'];
             if (typeof nick === 'string')
-                div += '<span class="nick" style="color: #' + defaultColors[(nick).charCodeAt(0) % defaultColorsLength] + ';">' + nick + '</span>&#58;&nbsp;';
+                div += '<span style="color: #' + defaultColors[(nick).charCodeAt(0) % defaultColorsLength] + ';">' + nick + '</span>&#58;&nbsp;';
         }
 
         //Add message
@@ -2868,7 +2868,7 @@
             }
 
             //Add nick
-            div += '<span class="nick" style="color: #' + defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength] + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
+            div += '<span style="color: #' + defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength] + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
 
             //Add mesage
             div += '<span class="message">';
