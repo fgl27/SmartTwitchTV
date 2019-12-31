@@ -345,11 +345,11 @@ function ChannelContent_keyEnter() {
         document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
         Main_HideElement(ChannelContent_ids[10]);
 
-        Main_values.Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
+        Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
             .getAttribute(Main_DataAttribute));
 
-        Main_values.Play_selectedChannel = Main_values.Play_data[6];
-        Main_values.IsRerun = Main_values.Play_data[8];
+        Main_values.Play_selectedChannel = Main_values_Play_data[6];
+        Main_values.IsRerun = Main_values_Play_data[8];
 
         Main_values.Play_selectedChannelDisplayname = document.getElementById('channel_content_cell0_3').textContent;
 
