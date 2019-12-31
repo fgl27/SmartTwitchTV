@@ -294,7 +294,7 @@ function Main_initWindows() {
         if (!Main_values.OS_is_Check && Main_AndroidSDK < 1000) {
             if (Main_AndroidSDK < 26) {
                 Settings_value.pp_workaround.defaultValue = 1;
-                Main_setItem('pp_workaround', 1);
+                Main_setItem('pp_workaround', 2);
             }
             Main_values.OS_is_Check = true;
         }
