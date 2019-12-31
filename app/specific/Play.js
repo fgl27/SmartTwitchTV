@@ -344,7 +344,7 @@ function Play_CheckIfIsLiveStart(callback) {
 
     Play_CheckIfIsLiveStartCounter = 0;
     Play_CheckIfIsLiveStartCallback = callback;
-    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[0];
+    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[6];
 
     Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
 
@@ -1970,7 +1970,7 @@ function Play_OpenLiveFeedCheck() {
 }
 
 function Play_OpenLiveFeed(ResetFeed, doc) {
-    var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
+    var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
     if (Main_values.Play_selectedChannel !== selectedChannel &&
         PlayExtra_selectedChannel !== selectedChannel) {
         Play_SavePlayData();
