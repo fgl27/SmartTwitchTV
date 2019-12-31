@@ -48,6 +48,7 @@ var Main_values = {
     "Play_DisplaynameHost": '',
     "Play_selectedChannelDisplayname": '',
     "Play_selectedChannel": '',
+    "Play_data": '',
     "Play_gameSelected": '',
     "Users_AddcodePosition": 0,
     "Play_WasPlaying": 0,
@@ -968,11 +969,11 @@ function Main_ThumbOpenIsNull(id, thumbnail) {
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
-    Main_values.Play_selectedChannel = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    Main_values.Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
-    Main_values.Play_selectedChannel_id = Main_values.Play_selectedChannel[1];
-    Main_values.IsRerun = Main_values.Play_selectedChannel[2];
-    Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
+    Main_values.Play_selectedChannel = Main_values.Play_data[6];
+    Main_values.Play_selectedChannel_id = Main_values.Play_data[7];
+    Main_values.IsRerun = Main_values.Play_data[8];
 
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
 

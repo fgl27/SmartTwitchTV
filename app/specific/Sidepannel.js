@@ -33,19 +33,20 @@ function Sidepannel_isShowing() {
 }
 
 function Sidepannel_UpdateThumb() {
-    var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute('side_panel_data'));
+    var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed)
+        .getAttribute(Main_DataAttribute));
 
     Sidepannel_UpdateThumbDoc.onerror = function() {
         this.onerror = null;
         this.src = IMG_404_VIDEO;
     };
-    Sidepannel_UpdateThumbDoc.src = info[2] + Main_randomimg;
+    Sidepannel_UpdateThumbDoc.src = info[0].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
 
-    Main_innerHTML('feed_thum_name', Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[3]), info[9], info[8]));
-    Main_innerHTML('feed_thum_quality', info[7]);
-    Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[4])));
-    Main_innerHTML('feed_thum_game', (info[5] !== "" ? STR_PLAYING + info[5] : ""));
-    Main_innerHTML('feed_thum_views', info[6]);
+    Main_innerHTML('feed_thum_name', Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[1]), info[10], info[8]));
+    Main_innerHTML('feed_thum_quality', info[5]);
+    Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
+    Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
+    Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
 
     if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing())
         Main_ShowElement('side_panel_feed_thumb');
@@ -64,7 +65,8 @@ function Sidepannel_PreloadImgs() {
     for (var i = 0; i < Sidepannel_GetSize(); i++) {
         doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
         if (doc !== null) {
-            new Image().src = JSON.parse(doc.getAttribute('side_panel_data'))[2] + Main_randomimg;
+            new Image().src = JSON.parse(doc.getAttribute(Main_DataAttribute))[0].replace("{width}x{height}", Main_SidePannelSize) +
+                Main_randomimg;
         }
     }
 }
