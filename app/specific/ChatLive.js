@@ -296,7 +296,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     if (tags.hasOwnProperty('display-name')) {
         var nick = tags['display-name'];
         if (typeof nick === 'string')
-            div += '<span class="nick" style="color: #' + defaultColors[(nick).charCodeAt(0) % defaultColorsLength] + ';">' + nick + '</span>&#58;&nbsp;';
+            div += '<span style="color: #' + defaultColors[(nick).charCodeAt(0) % defaultColorsLength] + ';">' + nick + '</span>&#58;&nbsp;';
     }
 
     //Add message
