@@ -217,16 +217,15 @@ function ChannelContent_loadDataSuccess() {
     if (ChannelContent_responseText !== null) {
         var response = JSON.parse(ChannelContent_responseText);
         if (response.stream !== null) {
-            var hosting = ChannelContent_TargetId !== undefined ? Main_values.Main_selectedChannelDisplayname +
-                STR_USER_HOSTING : '';
+
             var stream = response.stream;
-            ChannelContent_createCell(stream.channel.name, stream.channel._id, stream.preview.template,
-                twemoji.parse(stream.channel.status), stream.game,
-                hosting + stream.channel.display_name,
-                STR_SINCE + Play_streamLiveAt(stream.created_at) + STR_SPACE + STR_FOR +
-                Main_addCommas(stream.viewers) + STR_SPACE + STR_VIEWER,
-                Main_videoqualitylang(stream.video_height, stream.average_fps, stream.channel.broadcaster_language),
-                Main_is_rerun(stream.stream_type));
+
+            if (ChannelContent_TargetId !== undefined) {
+                stream.channel.display_name = Main_values.Main_selectedChannelDisplayname +
+                    STR_USER_HOSTING + stream.channel.display_name;
+            }
+
+            ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
 
             ChannelContent_cursorX = 1;
         } else ChannelContent_createCellOffline();
@@ -235,23 +234,25 @@ function ChannelContent_loadDataSuccess() {
     ChannelContent_loadDataSuccessFinish();
 }
 
-function ChannelContent_createCell(channel_name, channel_id, preview_thumbnail, stream_title, stream_game, channel_display_name, viwers, quality, rerun) {
+function ChannelContent_createCell(valuesArray) {
 
     var ishosting = ChannelContent_TargetId !== undefined;
 
-    document.getElementById('channel_content_cell0_1').setAttribute(Main_DataAttribute, JSON.stringify([channel_name, channel_id, rerun]));
+    document.getElementById('channel_content_cell0_1').setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
 
-    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' + preview_thumbnail.replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
+    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
         '\'"></div><div class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div id="channel_content_cell0_3" style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
-        '<i class="icon-' + (rerun ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
-        (rerun ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
-        ';"></i> ' + channel_display_name + '</div><div class="stream_info_live" style="width:' +
+        '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
+        (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
+        ';"></i> ' + valuesArray[1] + '</div><div class="stream_info_live" style="width:' +
         (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
-        (ishosting ? '' : quality) + '</div></div>' +
-        '<div class="stream_info_live_title">' + stream_title + '</div>' +
-        '<div id="channel_content_cell0_5" class="stream_info_live">' + (stream_game !== "" ? STR_PLAYING + stream_game : "") +
-        '</div>' + '<div class="stream_info_live">' + viwers + '</div></span></div>');
+        (ishosting ? '' : valuesArray[5]) + '</div></div>' +
+        '<div class="stream_info_live_title">' + twemoji.parse(valuesArray[2]) + '</div>' +
+        '<div id="channel_content_cell0_5" class="stream_info_live">' +
+        (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
+        '</div>' + '<div class="stream_info_live">' +
+        valuesArray[11] + STR_FOR + valuesArray[4] + STR_SPACE + STR_VIEWER + '</div></span></div>');
 }
 
 function ChannelContent_createCellOffline() {
@@ -344,10 +345,11 @@ function ChannelContent_keyEnter() {
         document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
         Main_HideElement(ChannelContent_ids[10]);
 
-        Main_values.Play_selectedChannel = JSON.parse(document.getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
+        Main_values.Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
+            .getAttribute(Main_DataAttribute));
 
-        Main_values.IsRerun = Main_values.Play_selectedChannel[2];
-        Main_values.Play_selectedChannel = Main_values.Play_selectedChannel[0];
+        Main_values.Play_selectedChannel = Main_values.Play_data[6];
+        Main_values.IsRerun = Main_values.Play_data[8];
 
         Main_values.Play_selectedChannelDisplayname = document.getElementById('channel_content_cell0_3').textContent;
 
