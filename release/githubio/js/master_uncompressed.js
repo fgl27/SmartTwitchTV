@@ -2145,7 +2145,7 @@
             Main_values.Play_selectedChannel = Main_values_Play_data[6];
             Main_values.IsRerun = Main_values_Play_data[8];
 
-            Main_values.Play_selectedChannelDisplayname = document.getElementById('channel_content_cell0_3').textContent;
+            Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
 
             if (Main_values.Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) {
                 Main_values.Play_isHost = true;
