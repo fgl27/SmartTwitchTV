@@ -89,7 +89,7 @@ function Chat_loadEmotesError() {
 }
 
 function Chat_loadEmotesSuccess(data) {
-    ChatLive_loadEmotesbbtv(JSON.parse(data));
+    ChatLive_loadEmotesbbtvGlobal(JSON.parse(data));
     Chat_loadEmotesffz();
 }
 
