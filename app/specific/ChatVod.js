@@ -197,7 +197,7 @@ function Chat_loadChatSuccess(responseText, id) {
         }
 
         //Add nick
-        div += '<span class="nick" style="color: #' + defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength] + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
+        div += '<span style="color: #' + defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength] + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
 
         //Add mesage
         div += '<span class="message">';
