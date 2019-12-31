@@ -799,7 +799,7 @@
         STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
         STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
         STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
-        STR_PP_WORKAROUND_SUMMARY = "For some devices most running android N or older, is needed to enable this to have PP mode working, don't enable this on a device that doesn't need it, as it will result is a lower image quality";
+        STR_PP_WORKAROUND_SUMMARY = "On some devices running android N or older, is need to enable this, to have PP mode working, don't enable this on a device that doesn't need it as it will result is a lower image quality";
         STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
             STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
     }
@@ -3106,6 +3106,7 @@
         "Never_run_phone": true,
         "Codec_is_Check": false,
         "check_pp_workaround": true,
+        "OS_is_Check": false,
     };
 
     var Main_Force = "4mv6wki5h1ko";
@@ -3322,6 +3323,16 @@
                 Main_AndroidSDK = Android.getSDK();
             } catch (e) {
                 Main_AndroidSDK = 1000;
+            }
+
+            //Android N (sdk 25) and older don't properly support animations on surface_view
+            //So enable the workaround by default
+            if (!Main_values.OS_is_Check && Main_AndroidSDK < 1000) {
+                if (Main_AndroidSDK < 26) {
+                    Settings_value.pp_workaround.defaultValue = 1;
+                    Main_setItem('pp_workaround', 1);
+                }
+                Main_values.OS_is_Check = true;
             }
 
             //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
@@ -5438,7 +5449,7 @@
     function PlayExtra_qualityChanged() {
         if (Main_IsNotBrowser && Play_isOn) Android.initializePlayer2Auto();
 
-        if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround) {
+        if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
 
             Main_ShowElement('dialog_os');
             document.body.removeEventListener("keydown", Play_handleKeyDown, false);
