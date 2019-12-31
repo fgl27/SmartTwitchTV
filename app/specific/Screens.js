@@ -333,26 +333,27 @@ function Screens_createCellVod(id, idArray, valuesArray) {
         Play_timeS(valuesArray[6]) + '</div></div></span></div></div>');
 }
 
-function Screens_createCellLive(id, data, idArray, valuesArray) {
+function Screens_createCellLive(id, idArray, valuesArray) {
     var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
 
     return Screens_createCell(
         idArray[8] + id,
-        data,
+        valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] + Main_randomimg +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\'"></div><div id="' +
         idArray[2] + id +
         '" class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
-        '<i class="icon-' + (data[2] ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
-        (data[2] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
+        '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
+        (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
         ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info_live_title">' + twemoji.parse(valuesArray[2]) + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-        '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info_live">' + valuesArray[4] + '</div></span></div></div>');
+        '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info_live">' +
+        valuesArray[11] + STR_FOR + valuesArray[4] + STR_SPACE + STR_VIEWER + '</div></span></div></div>');
 }
 
 function Screens_loadDataSuccessFinish() {
