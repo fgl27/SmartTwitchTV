@@ -70,6 +70,7 @@ var Main_values = {
     "Never_run_phone": true,
     "Codec_is_Check": false,
     "check_pp_workaround": true,
+    "OS_is_Check": false,
 };
 
 var Main_Force = "4mv6wki5h1ko";
@@ -286,6 +287,16 @@ function Main_initWindows() {
             Main_AndroidSDK = Android.getSDK();
         } catch (e) {
             Main_AndroidSDK = 1000;
+        }
+
+        //Android N (sdk 25) and older don't properly support animations on surface_view
+        //So enable the workaround by default
+        if (!Main_values.OS_is_Check && Main_AndroidSDK < 1000) {
+            if (Main_AndroidSDK < 26) {
+                Settings_value.pp_workaround.defaultValue = 1;
+                Main_setItem('pp_workaround', 1);
+            }
+            Main_values.OS_is_Check = true;
         }
 
         //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it

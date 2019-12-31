@@ -288,7 +288,7 @@ function PlayExtra_UnSetPanel() {
 function PlayExtra_qualityChanged() {
     if (Main_IsNotBrowser && Play_isOn) Android.initializePlayer2Auto();
 
-    if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround) {
+    if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
 
         Main_ShowElement('dialog_os');
         document.body.removeEventListener("keydown", Play_handleKeyDown, false);
