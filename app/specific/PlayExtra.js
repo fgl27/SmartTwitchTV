@@ -86,8 +86,8 @@ function PlayExtra_KeyEnter() {
     var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
     if (doc === null) UserLiveFeed_ResetFeedId();
     else {
-        var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
-        if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel !== selectedChannel) {
+        var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel[6] !== selectedChannel) {
             UserLiveFeed_Hide();
 
             Main_ready(function() {
@@ -101,10 +101,10 @@ function PlayExtra_KeyEnter() {
                 Main_values.Play_isHost = false;
                 Play_UserLiveFeedPressed = true;
 
-                PlayExtra_selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute));
-                PlayExtra_selectedChannel_id = PlayExtra_selectedChannel[1];
-                PlayExtra_IsRerun = PlayExtra_selectedChannel[2];
-                PlayExtra_selectedChannel = PlayExtra_selectedChannel[0];
+                PlayExtra_selectedChannel = selectedChannel[6];
+                PlayExtra_selectedChannel_id = selectedChannel[7];
+                PlayExtra_IsRerun = selectedChannel[8];
+
                 PlayExtra_isHost = false;
                 PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
 
