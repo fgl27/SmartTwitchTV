@@ -61,14 +61,8 @@ function Sidepannel_partnerIcon(name, partner, isrerun) {
 }
 
 function Sidepannel_PreloadImgs() {
-    var doc;
-    for (var i = 0; i < Sidepannel_GetSize(); i++) {
-        doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
-        if (doc !== null) {
-            new Image().src = JSON.parse(doc.getAttribute(Main_DataAttribute))[0].replace("{width}x{height}", Main_SidePannelSize) +
-                Main_randomimg;
-        }
-    }
+    for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++)
+            new Image().src = UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
 }
 
 function Sidepannel_GetSize() {
@@ -233,7 +227,7 @@ function Sidepannel_ShowFeed() {
 
     if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_AddFocusFeed(true);
-        window.setTimeout(Sidepannel_PreloadImgs, 600);
+        window.setTimeout(Sidepannel_PreloadImgs, 10);
     }
 }
 

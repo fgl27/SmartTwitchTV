@@ -1403,17 +1403,17 @@ function ScreensObj_SetTopLable(text, small_text) {
 
 function ScreensObj_LiveCellArray(cell) {
     return [
-        cell.preview.template,
-        cell.channel.display_name,
-        cell.channel.status,
-        cell.game,
-        Main_addCommas(cell.viewers),
-        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),
-        cell.channel.name,
-        cell.channel._id,
-        Main_is_rerun(cell.stream_type),
-        cell.channel.logo,
-        cell.channel.partner,
-        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE
+        cell.preview.template,//0
+        cell.channel.display_name,//1
+        cell.channel.status,//2
+        cell.game,//3
+        Main_addCommas(cell.viewers),//4
+        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
+        cell.channel.name,//6
+        cell.channel._id,//7
+        Main_is_rerun(cell.stream_type),//8
+        cell.channel.logo,//9
+        cell.channel.partner,//10
+        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE//11
     ];
 }
