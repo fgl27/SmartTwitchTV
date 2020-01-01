@@ -198,3 +198,6 @@
 .icon-feed:before {
   content: "\77";
 }
+.icon-settings:before {
+  content: "\43";
+}
