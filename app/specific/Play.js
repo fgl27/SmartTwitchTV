@@ -44,6 +44,7 @@ var Play_qualityIndex = 0;
 var Play_ChatEnable = false;
 var Play_exitID = null;
 var Play_AutoUrl = '';
+var Play_StreamTitle = '';
 
 var Play_selectedChannel_id_Old = null;
 var Play_IsRerun_Old;
@@ -601,8 +602,10 @@ function Play_updateStreamInfo() {
 function Play_updateStreamInfoValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
-        Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
         Main_values.Play_gameSelected = response.stream.game;
+        Play_StreamTitle = twemoji.parse(response.stream.channel.status, false, true);
+
+        Main_innerHTML("stream_info_title", Play_StreamTitle);
         Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected);
 
         Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(response.stream.viewers) +
@@ -613,6 +616,8 @@ function Play_updateStreamInfoValues(response) {
 
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
+
+        Main_history_UpdateLive(Main_values.Play_selectedChannel_id, Main_values.Play_gameSelected, Play_StreamTitle);
     }
 }
 
@@ -802,6 +807,7 @@ function Play_loadDataSuccessFake() {
     ];
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
+    Main_Set_history('live');
 }
 
 function Play_loadDataSuccess(responseText) {
@@ -836,6 +842,7 @@ function Play_loadDataSuccess(responseText) {
         if (Play_isOn) Play_qualityChanged();
         UserLiveFeed_PreventHide = false;
 
+        Main_Set_history('live');
     }
 }
 
@@ -1693,7 +1700,7 @@ function Play_OpenSearch(PlayVodClip) {
     if (PlayVodClip === 1) {
         Play_ClearPP();
         Play_PreshutdownStream(true);
-    } else if (PlayVodClip === 2) PlayVod_PreshutdownStream();
+    } else if (PlayVodClip === 2) PlayVod_PreshutdownStream(true);
     else if (PlayVodClip === 3) PlayClip_PreshutdownStream();
 
     Main_values.Play_WasPlaying = 0;
