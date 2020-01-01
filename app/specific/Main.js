@@ -1071,7 +1071,7 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     ChannelVod_views = Main_values_Play_data[4];
 
     Main_values.Main_selectedChannel = Main_values_Play_data[6];
-    Main_values.ChannelVod_vodId = Main_values_Play_data[7].substr(1);
+    Main_values.ChannelVod_vodId = Main_values_Play_data[7];
 
     ChannelVod_language = Main_values_Play_data[9];
     ChannelVod_title = Main_values_Play_data[10];
@@ -1425,8 +1425,8 @@ function Main_Set_history(type) {
         if (index > -1) {
 
             //Use Screens_assign() to change only obj that has changed
-            Main_values_History_data[AddUser_UsernameArray[0]][type][index] = Screens_assign(
-                Main_values_History_data[AddUser_UsernameArray[0]][type][index],
+            Main_values_History_data[AddUser_UsernameArray[0].id][type][index] = Screens_assign(
+                Main_values_History_data[AddUser_UsernameArray[0].id][type][index],
                 {
                     data: Main_values_Play_data,
                     date: new Date().getTime(),
@@ -1436,10 +1436,10 @@ function Main_Set_history(type) {
 
         } else {
             //Limit size to 1000
-            if (Main_values_History_data[AddUser_UsernameArray[0]][type].length > 999)
-                Main_values_History_data[AddUser_UsernameArray[0]][type].splice(0, 1);
+            if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 999)
+                Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(0, 1);
 
-            Main_values_History_data[AddUser_UsernameArray[0]][type].push(
+            Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
                 {
                     data: Main_values_Play_data,
                     date: new Date().getTime(),
@@ -1460,8 +1460,8 @@ function Main_Set_history(type) {
 
 function Main_history_Exist(type, id) {
 
-    for (var index = 0; index < Main_values_History_data[AddUser_UsernameArray[0]][type].length; index++)
-        if (Main_values_History_data[AddUser_UsernameArray[0]][type][index].id === id) return index;
+    for (var index = 0; index < Main_values_History_data[AddUser_UsernameArray[0].id][type].length; index++)
+        if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id === id) return index;
 
     return -1;
 }
@@ -1473,16 +1473,16 @@ function Main_history_UpdateLive(id, game, title) {
     if (index > -1) {
 
         //Use Screens_assign() to change only obj that has changed
-        Main_values_History_data[AddUser_UsernameArray[0]].live[index] = Screens_assign(
-            Main_values_History_data[AddUser_UsernameArray[0]].live[index],
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
             {
                 date: new Date().getTime(),
                 game: game
             }
         );
 
-        Main_values_History_data[AddUser_UsernameArray[0]].live[index].data[2] = title;
-        Main_values_History_data[AddUser_UsernameArray[0]].live[index].data[3] = game;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
     }
     console.log(Main_values_History_data);
 }
@@ -1494,8 +1494,8 @@ function Main_history_UpdateVod(id, time) {
     if (index > -1) {
 
         //Use Screens_assign() to change only obj that has changed
-        Main_values_History_data[AddUser_UsernameArray[0]].vod[index] = Screens_assign(
-            Main_values_History_data[AddUser_UsernameArray[0]].vod[index],
+        Main_values_History_data[AddUser_UsernameArray[0].id].vod[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0].id].vod[index],
             {
                 date: new Date().getTime(),
                 watched: time
@@ -1512,8 +1512,8 @@ function Main_history_UpdateClip(id, time) {
     if (index > -1) {
 
         //Use Screens_assign() to change only obj that has changed
-        Main_values_History_data[AddUser_UsernameArray[0]].clip[index] = Screens_assign(
-            Main_values_History_data[AddUser_UsernameArray[0]].clip[index],
+        Main_values_History_data[AddUser_UsernameArray[0].id].clip[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0].id].clip[index],
             {
                 date: new Date().getTime(),
                 watched: time

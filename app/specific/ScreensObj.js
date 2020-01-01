@@ -190,7 +190,7 @@ var Base_Vod_obj = {
                         Main_addCommas(cell.views) + STR_VIEWS,//4
                         cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language) : '',//5
                         cell.channel.name,//6
-                        cell._id,//7
+                        cell._id.substr(1),//7
                         cell.animated_preview_url,//8
                         cell.channel.broadcaster_language,//9
                         twemoji.parse(cell.title),//10
@@ -1342,7 +1342,7 @@ var Base_History_obj = {
         return STR_NO + STR_SPACE + STR_HISTORY;
     },
     history_concatenate: function() {
-        this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0]][this.Type]));
+        this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
         Main_History_Sort(this.data, 'name', 1);
         this.dataEnded = true;
         this.loadDataSuccess();
