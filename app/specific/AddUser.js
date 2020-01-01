@@ -188,7 +188,7 @@ function AddUser_RestoreUsers() {
             else if (!i) AddUser_UpdateSidepanel();
 
             //Set user history obj
-            Main_values_History_data[AddUser_UsernameArray[i]] = {
+            Main_values_History_data[AddUser_UsernameArray[i].id] = {
                 live: [],
                 vod: [],
                 clip: []
@@ -275,6 +275,12 @@ function AddUser_SaveNewUser(responseText) {
         access_token: 0,
         refresh_token: 0
     });
+
+    Main_values_History_data[AddUser_UsernameArray[AddUser_UserFindpos(AddUser_Username.name)].id] = {
+        live: [],
+        vod: [],
+        clip: []
+    };
 
     AddUser_SaveUserArray();
     Users_status = false;

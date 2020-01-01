@@ -97,7 +97,7 @@ function PlayVod_Start() {
 
     PlayVod_VodIdex = Main_history_Exist('vod', Main_values.ChannelVod_vodId);
     PlayVod_VodOffset = (PlayVod_VodIdex > -1) ?
-        Main_values_History_data[AddUser_UsernameArray[0]].vod[PlayVod_VodIdex].watched : 0;
+        Main_values_History_data[AddUser_UsernameArray[0].id].vod[PlayVod_VodIdex].watched : 0;
 
     if (PlayVod_VodOffset && !Main_values.vodOffset) {
         Play_HideBufferDialog();
