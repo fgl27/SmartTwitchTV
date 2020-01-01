@@ -27,6 +27,9 @@ var Main_addUser = 18;
 var Main_aGame = 19;
 var Main_AGameVod = 20;
 var Main_AGameClip = 21;
+var Main_HistoryLive = 22;
+var Main_HistoryVod = 23;
+var Main_HistoryClip = 24;
 
 var Main_GoBefore = '';
 var Main_values = {
@@ -733,6 +736,9 @@ function Main_RemoveKeys() {
         else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
         else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
         else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
+        else if (Main_values.Main_Go === Main_HistoryLive) inUseObj = HistoryLive;
+        else if (Main_values.Main_Go === Main_HistoryVod) inUseObj = HistoryVod;
+        else if (Main_values.Main_Go === Main_HistoryClip) inUseObj = HistoryClip;
 
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
@@ -825,6 +831,19 @@ Main_Switchobj[Main_games] = function() {
     inUseObj = Game;
     Screens_init();
 };
+Main_Switchobj[Main_HistoryLive] = function() {
+    inUseObj = HistoryLive;
+    Screens_init();
+};
+Main_Switchobj[Main_HistoryVod] = function() {
+    inUseObj = HistoryVod;
+    Screens_init();
+};
+Main_Switchobj[Main_HistoryClip] = function() {
+    inUseObj = HistoryClip;
+    Screens_init();
+};
+
 
 function Main_SwitchScreenAction(removekey) {
     Main_HideWarningDialog();
@@ -881,6 +900,9 @@ Main_ExitCurrentobj[Main_Vod] = Screens_exit;
 Main_ExitCurrentobj[Main_ChannelClip] = Screens_exit;
 Main_ExitCurrentobj[Main_aGame] = Screens_exit;
 Main_ExitCurrentobj[Main_games] = Screens_exit;
+Main_ExitCurrentobj[Main_HistoryLive] = Screens_exit;
+Main_ExitCurrentobj[Main_HistoryVod] = Screens_exit;
+Main_ExitCurrentobj[Main_HistoryClip] = Screens_exit;
 
 function Main_ExitCurrent(ExitCurrent) {
     if (Main_ExitCurrentobj[ExitCurrent]) Main_ExitCurrentobj[ExitCurrent]();
@@ -1238,6 +1260,9 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
         else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
         else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
+        else if (Main_values.Main_Go === Main_HistoryLive) inUseObj = HistoryLive;
+        else if (Main_values.Main_Go === Main_HistoryVod) inUseObj = HistoryVod;
+        else if (Main_values.Main_Go === Main_HistoryClip) inUseObj = HistoryClip;
 
         Screens_StartLoad();
     }
@@ -1503,15 +1528,14 @@ function Main_Restore_history() {
     console.log(Main_values_History_data);
 }
 
-function Main_History_Sort(type, msort, direction) {
-    if (direction) {
-        Main_values_History_data[AddUser_UsernameArray[0]][type].sort(function(a, b) {
+function Main_History_Sort(array, msort, direction) {
+    if (direction) {//a-z
+        array.sort(function(a, b) {
             return (a[msort] < b[msort] ? -1 : (a[msort] > b[msort] ? 1 : 0));
         });
-    } else {
-        Main_values_History_data[AddUser_UsernameArray[0]][type].sort(function(a, b) {
+    } else {//z-a
+        array.sort(function(a, b) {
             return (a[msort] > b[msort] ? -1 : (a[msort] < b[msort] ? 1 : 0));
         });
     }
-    Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
 }

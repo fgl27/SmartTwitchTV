@@ -43,6 +43,9 @@ function Screens_InitScreens() {
     ScreensObj_InitSearchGames();
     ScreensObj_InitSearchLive();
     ScreensObj_InitSearchChannels();
+
+    //History screen
+    ScreensObj_HistoryLive();
 }
 
 //TODO cleanup not used when finished migrate all
@@ -155,7 +158,9 @@ function Screens_loadDataPrepare() {
 
 function Screens_loadDataRequest() {
     inUseObj.set_url();
-    if (Main_IsNotBrowser && inUseObj.use_hls)
+    if (inUseObj.isHistory)
+        inUseObj.history_concatenate();
+    else if (Main_IsNotBrowser && inUseObj.use_hls)
         BaseAndroidHlsGet(inUseObj.url + Main_TwithcV5Flag, Screens_concatenate, Screens_loadDataError);
     else if (Main_IsNotBrowser && !inUseObj.itemsCount && Screens_ForceSync)
         BaseAndroidhttpGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
