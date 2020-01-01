@@ -12238,18 +12238,18 @@
 
     function ScreensObj_LiveCellArray(cell) {
         return [
-            cell.preview.template,
-            cell.channel.display_name,
-            cell.channel.status,
-            cell.game,
-            Main_addCommas(cell.viewers),
-            Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),
-            cell.channel.name,
-            cell.channel._id,
-            Main_is_rerun(cell.stream_type),
-            cell.channel.logo,
-            cell.channel.partner,
-            STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE
+            cell.preview.template, //0
+            cell.channel.display_name, //1
+            cell.channel.status, //2
+            cell.game, //3
+            Main_addCommas(cell.viewers), //4
+            Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language), //5
+            cell.channel.name, //6
+            cell.channel._id, //7
+            Main_is_rerun(cell.stream_type), //8
+            cell.channel.logo, //9
+            cell.channel.partner, //10
+            STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE //11
         ];
     }
     //Variable initialization
@@ -13789,14 +13789,8 @@
     }
 
     function Sidepannel_PreloadImgs() {
-        var doc;
-        for (var i = 0; i < Sidepannel_GetSize(); i++) {
-            doc = document.getElementById(UserLiveFeed_side_ids[8] + i);
-            if (doc !== null) {
-                new Image().src = JSON.parse(doc.getAttribute(Main_DataAttribute))[0].replace("{width}x{height}", Main_SidePannelSize) +
-                    Main_randomimg;
-            }
-        }
+        for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++)
+            new Image().src = UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
     }
 
     function Sidepannel_GetSize() {
@@ -13961,7 +13955,7 @@
 
         if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
             Sidepannel_AddFocusFeed(true);
-            window.setTimeout(Sidepannel_PreloadImgs, 600);
+            window.setTimeout(Sidepannel_PreloadImgs, 10);
         }
     }
 
@@ -14290,6 +14284,7 @@
     var UserLiveFeed_CheckNotifycation = false;
     var UserLiveFeed_WasLiveidObject = {};
     var UserLiveFeed_NotifyLiveidObject = [];
+    var UserLiveFeed_PreloadImgs = [];
     var UserLiveFeed_Notify = true;
     var UserLiveFeed_NotifyRunning = false;
     var UserLiveFeed_NotifyTimeout = 3000;
@@ -14313,6 +14308,7 @@
                 UserLiveFeed_LastPos = null;
             }
 
+            UserLiveFeed_PreloadImgs = [];
             UserLiveFeed_PreventAddfocus = PreventAddfocus;
             Main_empty('user_feed_scroll');
             Main_HideElement('side_panel_feed_thumb');
@@ -14490,12 +14486,14 @@
             if (sorting === 1) {
                 //A-Z
                 response.sort(function(a, b) {
-                    return a.channel.display_name.toLowerCase().localeCompare(b.channel.display_name.toLowerCase());
+                    return (a.channel.display_name.toLowerCase() < b.channel.display_name.toLowerCase() ? -1 :
+                        (a.channel.display_name.toLowerCase() > b.channel.display_name.toLowerCase() ? 1 : 0));
                 });
             } else {
                 //Z-A
                 response.sort(function(a, b) {
-                    return b.channel.display_name.toLowerCase().localeCompare(a.channel.display_name.toLowerCase());
+                    return (a.channel.display_name.toLowerCase() > b.channel.display_name.toLowerCase() ? -1 :
+                        (a.channel.display_name.toLowerCase() < b.channel.display_name.toLowerCase() ? 1 : 0));
                 });
             }
         }
@@ -14505,19 +14503,20 @@
             id = stream.channel._id;
             if (!UserLiveFeed_idObject[id]) {
 
+                UserLiveFeed_idObject[id] = 1;
+                mArray = ScreensObj_LiveCellArray(stream);
+                UserLiveFeed_PreloadImgs.push(mArray[0]);
+
                 //Check if was live if not notificate
                 if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][id]) {
                     UserLiveFeed_NotifyLiveidObject.push({
-                        name: stream.channel.display_name,
-                        logo: stream.channel.logo,
-                        title: Main_ReplaceLargeFont(twemoji.parse(stream.channel.status)),
-                        game: stream.game,
-                        rerun: Main_is_rerun(stream.stream_type),
+                        name: mArray[1],
+                        logo: mArray[9],
+                        title: Main_ReplaceLargeFont(twemoji.parse(mArray[2])),
+                        game: mArray[3],
+                        rerun: mArray[8],
                     });
                 }
-
-                UserLiveFeed_idObject[id] = 1;
-                mArray = ScreensObj_LiveCellArray(stream);
 
                 if (UserLiveFeed_LastPos !== null && UserLiveFeed_LastPos === stream.channel.name)
                     Play_FeedPos = i;
@@ -14562,7 +14561,7 @@
             Main_HideElement('dialog_loading_side_feed');
             Sidepannel_AddFocusFeed(true);
             UserLiveFeed_FeedAddFocus(true);
-            window.setTimeout(Sidepannel_PreloadImgs, 600);
+            window.setTimeout(Sidepannel_PreloadImgs, 10);
 
             //The app just started or user change don't nottify
             if (UserLiveFeed_CheckNotifycation) UserLiveFeed_LiveNotification();
