@@ -1342,28 +1342,52 @@ var Base_History_obj = {
         return STR_NO + STR_SPACE + STR_HISTORY;
     },
     history_concatenate: function() {
-        this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0]].live));
+        this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0]][this.Type]));
         Main_History_Sort(this.data, 'name', 1);
         this.dataEnded = true;
         this.loadDataSuccess();
         this.loadingData = false;
+    },
+    history_exit: function() {
+        if (this.status) {
+            Screens_removeFocusFallow();
+            this.posY = 0;
+            this.posX = 0;
+            Main_AddClass(this.ids[0] + '0_' + this.posX, Main_classThumb);
+        }
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_HideElement(this.ids[10]);
     }
 };
 
 function ScreensObj_HistoryLive() {
     HistoryLive = Screens_assign({
         HeaderQuatity: 2,
+        Type: 'live',
         ids: Screens_ScreenIds('HistoryLive'),
-        table: 'stream_table_hisorylive',
+        table: 'stream_table_historylive',
         screen: Main_HistoryLive,
-        base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
         label_init: function() {
             Main_HistoryPos = 0;
             ScreensObj_TopLableUserInit();
             ScreensObj_SetTopLable(STR_USER, STR_HISTORY + STR_SPACE + STR_LIVE);
         },
         key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    Main_values.Main_Go = Main_HistoryVod;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 1) {
+                    Main_values.Main_Go = Main_HistoryClip;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 2) {
+                    Main_HistoryPos = 0;
+                }
+            } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+
         },
         addCell: function(cell) {
             if (!this.idObject[cell.data[7]]) {
@@ -1395,6 +1419,67 @@ function ScreensObj_HistoryLive() {
     }, Base_obj);
 
     HistoryLive = Screens_assign(HistoryLive, Base_History_obj);
+}
+
+function ScreensObj_HistoryVod() {
+    HistoryVod = Screens_assign({
+        HeaderQuatity: 2,
+        Type: 'vod',
+        ids: Screens_ScreenIds('HistoryVod'),
+        table: 'stream_table_historyvod',
+        screen: Main_HistoryVod,
+        label_init: function() {
+            Main_HistoryPos = 1;
+            ScreensObj_TopLableUserInit();
+            ScreensObj_SetTopLable(STR_USER, STR_HISTORY + STR_SPACE + STR_VIDEOS);
+        },
+        key_play: function() {
+
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    Main_values.Main_Go = Main_HistoryLive;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 1) {
+                    Main_values.Main_Go = Main_HistoryClip;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 2) {
+                    Main_HistoryPos = 0;
+                }
+            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+
+        },
+        addCell: function(cell) {
+            if (!this.idObject[cell.data[7]]) {
+
+                this.itemsCount++;
+                this.idObject[cell.data[7]] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellVod(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        cell.data
+                    )
+                );
+
+                this.coloumn_id++;
+            }
+        },
+        SwitchesIcons: ['play', 'movie', 'settings'],
+        addSwitches: function() {
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE + STR_SETTINGS
+                ]
+            );
+        },
+    }, Base_obj);
+
+    HistoryVod = Screens_assign(HistoryVod, Base_History_obj);
 }
 
 function ScreensObj_addSwitches(StringsArray) {
