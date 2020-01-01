@@ -1482,6 +1482,67 @@ function ScreensObj_HistoryVod() {
     HistoryVod = Screens_assign(HistoryVod, Base_History_obj);
 }
 
+function ScreensObj_HistoryClip() {
+    HistoryClip = Screens_assign({
+        HeaderQuatity: 2,
+        Type: 'clip',
+        ids: Screens_ScreenIds('HistoryClip'),
+        table: 'stream_table_historyclip',
+        screen: Main_HistoryClip,
+        label_init: function() {
+            Main_HistoryPos = 1;
+            ScreensObj_TopLableUserInit();
+            ScreensObj_SetTopLable(STR_USER, STR_HISTORY + STR_SPACE + STR_CLIPS);
+        },
+        key_play: function() {
+
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    Main_values.Main_Go = Main_HistoryLive;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 1) {
+                    Main_values.Main_Go = Main_HistoryVod;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 2) {
+                    Main_HistoryPos = 0;
+                }
+            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+
+        },
+        addCell: function(cell) {
+            if (!this.idObject[cell.data[7]]) {
+
+                this.itemsCount++;
+                this.idObject[cell.data[7]] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellClip(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        cell.data
+                    )
+                );
+
+                this.coloumn_id++;
+            }
+        },
+        SwitchesIcons: ['play', 'movie-play', 'settings'],
+        addSwitches: function() {
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE + STR_SETTINGS
+                ]
+            );
+        },
+    }, Base_obj);
+
+    HistoryClip = Screens_assign(HistoryClip, Base_History_obj);
+}
+
 function ScreensObj_addSwitches(StringsArray) {
     inUseObj.TopRowCreated = true;
     inUseObj.row = document.createElement('div');
