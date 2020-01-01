@@ -1,7 +1,6 @@
 //Variable initialization
 var ChatLive_loadingDataTry = 0;
 var ChatLive_loadingDataTryMax = 10;
-var ChatLive_loadEmotesChannelId;
 var ChatLive_Id = [];
 var ChatLive_loadBadgesChannelId;
 var ChatLive_socket = [];
@@ -69,9 +68,12 @@ function ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number) {
     ChatLive_loadingDataTry++;
     if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
     else {
-        if (ChatLive_Id[chat_number] === id) ChatLive_loadBadgesChannelId = window.setTimeout(function() {
-            ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
-        }, 500);
+        if (ChatLive_Id[chat_number] === id) {
+            window.clearTimeout(ChatLive_loadBadgesChannelId);
+            ChatLive_loadBadgesChannelId = window.setTimeout(function() {
+                ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
+            }, 500);
+        }
     }
 }
 
@@ -358,7 +360,6 @@ function ChatLive_LineAdd(message, chat_number) {
 function ChatLive_ClearIds(chat_number) {
     ChatLive_CheckClear(chat_number);
     window.clearTimeout(ChatLive_loadBadgesChannelId);
-    window.clearTimeout(ChatLive_loadEmotesChannelId);
 }
 
 function ChatLive_Clear(chat_number) {
