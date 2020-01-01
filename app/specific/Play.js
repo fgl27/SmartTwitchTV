@@ -1313,7 +1313,7 @@ function Play_getBuffer(value) {
 function Play_getVideoQuality(forceCallback, callback) {
     var value = Android.getVideoQuality();
 
-    if (value === null && value === undefined || forceCallback) {
+    if (value === null || value === undefined || forceCallback) {
         callback('stream_quality');
         return;
     }
