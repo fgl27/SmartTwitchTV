@@ -2406,7 +2406,7 @@
     }
 
     function ChatLive_loadEmotesChannelSuccess(data, chat_number) {
-        ChatLive_loadEmotesbbtvChannel(JSON.parse(data));
+        ChatLive_loadEmotesbbtv(JSON.parse(data));
         extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = 1;
     }
 
@@ -2450,22 +2450,12 @@
         extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = 1;
     }
 
-    function ChatLive_loadEmotesbbtvGlobal(data) {
-        data.forEach(function(emote) {
-            extraEmotes[emote.code] = {
-                code: emote.code,
-                id: emote.id,
-                '2x': 'https://cdn.betterttv.net/emote/' + emote.id + '/2x'
-            };
-        });
-    }
-
-    function ChatLive_loadEmotesbbtvChannel(data) {
+    function ChatLive_loadEmotesbbtv(data) {
         data.emotes.forEach(function(emote) {
             extraEmotes[emote.code] = {
                 code: emote.code,
                 id: emote.id,
-                '2x': 'https://cdn.betterttv.net/emote/' + emote.id + '/2x'
+                '2x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '2x')
             };
         });
     }
@@ -2760,7 +2750,7 @@
     }
 
     function Chat_loadEmotesSuccess(data) {
-        ChatLive_loadEmotesbbtvGlobal(JSON.parse(data));
+        ChatLive_loadEmotesbbtv(JSON.parse(data));
         Chat_loadEmotesffz();
     }
 
@@ -3046,8 +3036,7 @@
                 Chat_div[chat_number].removeChild(linesToDelete[0]);
             }
         }
-    }
-    //Variable initialization
+    } //Variable initialization
     var smartTwitchTV;
     var Main_isReleased = false;
     var Main_isDebug = false;
