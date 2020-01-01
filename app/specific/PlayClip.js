@@ -210,6 +210,7 @@ function PlayClip_loadDataSuccessFake() {
     ];
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
+    Main_Set_history('clip');
 }
 
 function PlayClip_loadDataSuccess410() {
@@ -221,6 +222,7 @@ function PlayClip_loadDataSuccess410() {
 
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
+    Main_Set_history('clip');
 }
 
 function PlayClip_QualityGenerate(response) {
@@ -248,6 +250,7 @@ function PlayClip_QualityGenerate(response) {
 
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
+    Main_Set_history('clip');
 }
 
 function PlayClip_FrameRate(value) {
@@ -311,6 +314,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream(closePlayer) {
+    Main_history_UpdateClip(ChannelClip_Id, Main_values.ChannelVod_vodId, Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0);
     PlayClip_hidePanel();
     if (Main_IsNotBrowser) {
         if (closePlayer) Android.stopVideo(3);

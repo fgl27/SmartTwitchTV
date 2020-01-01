@@ -74,6 +74,7 @@ var Main_values = {
 };
 
 var Main_values_Play_data;
+var Main_values_History_data = {};//The obj is defined in AddUser_RestoreUsers()
 var Main_Force = "4mv6wki5h1ko";
 var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
@@ -329,8 +330,6 @@ function Main_initWindows() {
         Play_MakeControls();
         Play_SetControls();
         Play_SetFullScreen(Play_isFullScreen);
-
-        PlayVod_RestoreVodIds();
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
 
@@ -1004,23 +1003,26 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
+    ChannelClip_playUrl = Main_values_Play_data[0];
     PlayClip_DurationSeconds = parseInt(Main_values_Play_data[1]);
-    Main_values.Play_gameSelected = Main_values_Play_data[2];
-    Main_values.Main_selectedChannel = Main_values_Play_data[3];
+    Main_values.Main_selectedChannel_id = Main_values_Play_data[2];
+
+    Main_values.Play_gameSelected = Main_values_Play_data[3];
+    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
+    ChannelClip_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_PLAYING + Main_values.Play_gameSelected : "");
+
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[4];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[5];
-    Main_values.Main_selectedChannel_id = Main_values_Play_data[6];
-    Main_values.ChannelVod_vodId = Main_values_Play_data[7];
-    ChannelVod_vodOffset = parseInt(Main_values_Play_data[8]);
+    ChannelClip_Id = Main_values_Play_data[7];
+    Main_values.Main_selectedChannel = Main_values_Play_data[6];
+    Main_values.ChannelVod_vodId = Main_values_Play_data[8];
+    ChannelVod_vodOffset = parseInt(Main_values_Play_data[9]);
 
-    ChannelClip_title = Main_values_Play_data[9];
-    ChannelClip_language = Main_values_Play_data[10];
-    ChannelClip_game = (Main_values_Play_data[2] !== "" ? STR_PLAYING + Main_values_Play_data[2] : "");
-    ChannelClip_createdAt = Main_values_Play_data[11];
-    ChannelClip_views = Main_values_Play_data[12];
-
-    ChannelClip_playUrl2 = Main_values_Play_data[13].split("-preview")[0] + ".mp4";
-    ChannelClip_playUrl = Main_values_Play_data[0];
+    ChannelClip_title = Main_values_Play_data[10];
+    ChannelClip_language = Main_values_Play_data[11];
+    ChannelClip_createdAt = Main_values_Play_data[12];
+    ChannelClip_views = Main_values_Play_data[13];
+    ChannelClip_playUrl2 = Main_values_Play_data[14].split("-preview")[0] + ".mp4";
 
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
     Main_HideElement('scene1');
@@ -1037,28 +1039,27 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
-    ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[6]);
-    ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
-
-    ChannelVod_language = Main_values_Play_data[9];
-    Main_values.Play_gameSelected = Main_values_Play_data[10];
-
-    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
-
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
     ChannelVod_createdAt = Main_values_Play_data[2];
-    ChannelVod_title = Main_values_Play_data[3];
+
+    Main_values.Play_gameSelected = Main_values_Play_data[3];
+    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
     ChannelVod_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_STARTED + STR_PLAYING + Main_values.Play_gameSelected : "");
+
     ChannelVod_views = Main_values_Play_data[4];
+
+    Main_values.Main_selectedChannel = Main_values_Play_data[6];
+    Main_values.ChannelVod_vodId = Main_values_Play_data[7].substr(1);
+
+    ChannelVod_language = Main_values_Play_data[9];
+    ChannelVod_title = Main_values_Play_data[10];
+    ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[11]);
+    ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
+    Play_IncrementView = Main_values_Play_data[12];
 
     Main_values.Main_selectedChannel_id = Main_values_Play_data[13];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[14];
     Main_values.Main_selectedChannelPartner = Main_values_Play_data[15];
-
-    Main_values.Main_selectedChannel = Main_values_Play_data[11];
-    Play_IncrementView = Main_values_Play_data[12];
-
-    Main_values.ChannelVod_vodId = Main_values_Play_data[8].substr(1);
 
     Main_openVod();
 }
@@ -1390,4 +1391,127 @@ function Main_ReplaceLargeFont(text) {
     return text.replace(/[^\x00-\x7F]/g, function(match) {
         return '<span style="font-size: 0.8em;">' + match + '</span>';
     });
+}
+
+function Main_Set_history(type) {
+    if (AddUser_IsUserSet() && Main_values_Play_data) {
+        var index = Main_history_Exist(type, Main_values_Play_data[7]);
+
+        if (index > -1) {
+
+            //Use Screens_assign() to change only obj that has changed
+            Main_values_History_data[AddUser_UsernameArray[0]][type][index] = Screens_assign(
+                Main_values_History_data[AddUser_UsernameArray[0]][type][index],
+                {
+                    data: Main_values_Play_data,
+                    date: new Date().getTime(),
+                    game: Main_values_Play_data[3],
+                }
+            );
+
+        } else {
+            //Limit size to 1000
+            if (Main_values_History_data[AddUser_UsernameArray[0]][type].length > 999)
+                Main_values_History_data[AddUser_UsernameArray[0]][type].splice(0, 1);
+
+            Main_values_History_data[AddUser_UsernameArray[0]][type].push(
+                {
+                    data: Main_values_Play_data,
+                    date: new Date().getTime(),
+                    name: Main_values_Play_data[6].toLowerCase(),
+                    game: Main_values_Play_data[3],
+                    id: Main_values_Play_data[7],
+                    watched: 0
+                }
+            );
+
+        }
+
+        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        //Main_History_Sort(type, msort, direction);
+        console.log(Main_values_History_data);
+    }
+}
+
+function Main_history_Exist(type, id) {
+
+    for (var index = 0; index < Main_values_History_data[AddUser_UsernameArray[0]][type].length; index++)
+        if (Main_values_History_data[AddUser_UsernameArray[0]][type][index].id === id) return index;
+
+    return -1;
+}
+
+function Main_history_UpdateLive(id, game, title) {
+
+    var index = Main_history_Exist('live', id);
+
+    if (index > -1) {
+
+        //Use Screens_assign() to change only obj that has changed
+        Main_values_History_data[AddUser_UsernameArray[0]].live[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0]].live[index],
+            {
+                date: new Date().getTime(),
+                game: game
+            }
+        );
+
+        Main_values_History_data[AddUser_UsernameArray[0]].live[index].data[2] = title;
+        Main_values_History_data[AddUser_UsernameArray[0]].live[index].data[3] = game;
+    }
+    console.log(Main_values_History_data);
+}
+
+function Main_history_UpdateVod(id, time) {
+
+    var index = Main_history_Exist('vod', id);
+
+    if (index > -1) {
+
+        //Use Screens_assign() to change only obj that has changed
+        Main_values_History_data[AddUser_UsernameArray[0]].vod[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0]].vod[index],
+            {
+                date: new Date().getTime(),
+                watched: time
+            }
+        );
+    }
+    console.log(Main_values_History_data);
+}
+
+function Main_history_UpdateClip(id, time) {
+
+    var index = Main_history_Exist('clip', id);
+
+    if (index > -1) {
+
+        //Use Screens_assign() to change only obj that has changed
+        Main_values_History_data[AddUser_UsernameArray[0]].clip[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0]].clip[index],
+            {
+                date: new Date().getTime(),
+                watched: time
+            }
+        );
+    }
+    console.log(Main_values_History_data);
+}
+
+function Main_Restore_history() {
+    Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+    console.log(Main_values_History_data);
+}
+
+function Main_History_Sort(type, msort, direction) {
+    if (direction) {
+        Main_values_History_data[AddUser_UsernameArray[0]][type].sort(function(a, b) {
+            return (a[msort] < b[msort] ? -1 : (a[msort] > b[msort] ? 1 : 0));
+        });
+    } else {
+        Main_values_History_data[AddUser_UsernameArray[0]][type].sort(function(a, b) {
+            return (a[msort] > b[msort] ? -1 : (a[msort] < b[msort] ? 1 : 0));
+        });
+    }
+    Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
 }
