@@ -1490,7 +1490,7 @@ function ScreensObj_HistoryClip() {
         table: 'stream_table_historyclip',
         screen: Main_HistoryClip,
         label_init: function() {
-            Main_HistoryPos = 1;
+            Main_HistoryPos = 2;
             ScreensObj_TopLableUserInit();
             ScreensObj_SetTopLable(STR_USER, STR_HISTORY + STR_SPACE + STR_CLIPS);
         },

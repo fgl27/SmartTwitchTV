@@ -199,7 +199,7 @@ function Play_PreStart() {
 
     Main_innerHTML('user_feed_notify_img_holder',
         '<img id="user_feed_notify_img" alt="" class="notify_img" src="' + IMG_404_LOGO +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'" >');
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';" >');
 }
 
 function Play_SetQuality() {
