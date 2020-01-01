@@ -18,6 +18,8 @@ var ChannelVod_views = '';
 var ChannelVod_Duration = '';
 var ChannelVod_title = '';
 var ChannelVod_game = '';
+var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
+var Main_HistoryPos = 0;
 
 var Vod_DoAnimateThumb = 1;
 
@@ -42,6 +44,9 @@ var UserChannels;
 var SearchGames;
 var SearchLive;
 var SearchChannels;
+var HistoryLive;
+var HistoryVod;
+var HistoryClip;
 
 var Base_obj = {
     posX: 0,
@@ -538,7 +543,6 @@ var Base_Live_obj = {
         }
     },
 };
-
 
 function ScreensObj_InitLive() {
     Live = Screens_assign({
@@ -1281,7 +1285,7 @@ function ScreensObj_InitUserChannels() {
         table: 'stream_table_user_channels',
         screen: Main_UserChannels,
         object: 'follows',
-        key_pgDown: Main_UserLive,
+        key_pgDown: Main_History[Main_HistoryPos],
         key_pgUp: Main_UserVod,
         key_pgUpNext: Main_usergames,
         base_url: Main_kraken_api + 'users/',
@@ -1377,6 +1381,93 @@ function ScreensObj_InitSearchChannels() {
     SearchChannels = Screens_assign(SearchChannels, Base_Channel_obj);
     SearchChannels.addrow = Screens_addrowChannel;
     SearchChannels.visiblerows = 5;
+}
+
+var Base_History_obj = {
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+    ItemsLimit: Main_ItemsLimitVideo,
+    ColoumnsCount: Main_ColoumnsCountVideo,
+    addFocus: Screens_addFocusVideo,
+    rowClass: 'animate_height_transition',
+    thumbclass: 'stream_thumbnail_live_holder',
+    img_404: IMG_404_VIDEO,
+    isHistory: true,
+    HasSwitches: true,
+    key_pgDown: Main_UserLive,
+    key_pgUp: Main_UserChannels,
+    set_url: function() {return;},
+    empty_str: function() {
+        return STR_NO + STR_SPACE + STR_HISTORY;
+    },
+    history_concatenate: function() {
+        this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0]].live));
+        Main_History_Sort(this.data, 'name', 1);
+        this.dataEnded = true;
+        this.loadDataSuccess();
+        this.loadingData = false;
+    }
+};
+
+function ScreensObj_HistoryLive() {
+    HistoryLive = Screens_assign({
+        HeaderQuatity: 2,
+        ids: Screens_ScreenIds('HistoryLive'),
+        table: 'stream_table_hisorylive',
+        screen: Main_HistoryLive,
+        base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
+        label_init: function() {
+            Main_HistoryPos = 0;
+            ScreensObj_TopLableUserInit();
+            ScreensObj_SetTopLable(STR_USER, STR_HISTORY + STR_SPACE + STR_LIVE);
+        },
+        key_play: function() {
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+        },
+        addCell: function(cell) {
+            if (!this.idObject[cell.data[7]]) {
+
+                this.itemsCount++;
+                this.idObject[cell.data[7]] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellLive(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        cell.data
+                    )
+                );
+
+                this.coloumn_id++;
+            }
+        },
+        SwitchesIcons: ['movie-play', 'movie', 'settings'],
+        addSwitches: function() {
+            ScreensObj_addSwitches([
+                STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
+                STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
+                STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE + STR_SETTINGS]);
+        },
+    }, Base_obj);
+
+    HistoryLive = Screens_assign(HistoryLive, Base_History_obj);
+}
+
+function ScreensObj_addSwitches(StringsArray) {
+    inUseObj.TopRowCreated = true;
+    inUseObj.row = document.createElement('div');
+    var thumbfallow, div, i = 0;
+
+    for (i; i < StringsArray.length; i++) {
+        thumbfallow = '<i class="icon-' + inUseObj.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + StringsArray[i];
+        div = document.createElement('div');
+        div.setAttribute('id', inUseObj.ids[8] + 'y_' + i);
+        div.className = 'stream_cell_period';
+        div.innerHTML = '<div id="' + inUseObj.ids[0] +
+            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
+            'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+        inUseObj.row.appendChild(div);
+    }
+    document.getElementById(inUseObj.table).appendChild(inUseObj.row);
 }
 
 function ScreensObj_TopLableAgameInit() {
