@@ -137,7 +137,7 @@ var Base_Vod_obj = {
     setMax: function(tempObj) {
         if (tempObj[this.object].length < (Main_ItemsLimitMax - 5)) this.dataEnded = true;
     },
-    img_404: IMG_404_VIDEO,
+    img_404: IMG_404_VOD,
     HasSwitches: true,
     period: ['day', 'week', 'month', 'all'],
     empty_str: function() {
