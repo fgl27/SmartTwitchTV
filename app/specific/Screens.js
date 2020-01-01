@@ -46,6 +46,7 @@ function Screens_InitScreens() {
 
     //History screen
     ScreensObj_HistoryLive();
+    ScreensObj_HistoryVod();
 }
 
 //TODO cleanup not used when finished migrate all
