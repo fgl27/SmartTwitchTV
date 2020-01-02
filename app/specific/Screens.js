@@ -358,7 +358,7 @@ function Screens_createCellLive(id, idArray, valuesArray) {
         '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info_live_title">' + twemoji.parse(valuesArray[2]) + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info_live">' + (valuesArray[10] !== "" ? STR_PLAYING + valuesArray[10] : "") +
+        '<div id="' + idArray[5] + id + '"class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
         '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info_live">' +
         valuesArray[11] + STR_FOR + valuesArray[4] + STR_SPACE + STR_VIEWER + '</div></span></div></div>');
 }
