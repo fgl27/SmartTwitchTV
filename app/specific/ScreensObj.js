@@ -177,9 +177,10 @@ var Base_Vod_obj = {
                         twemoji.parse(cell.title),//10
                         cell.length,//11
                         cell.increment_view_count_url,//12
-                        cell.channel._id,//13
-                        cell.channel.logo,//14
-                        cell.channel.partner//15
+                        cell.views,//13
+                        cell.channel._id,//14
+                        cell.channel.logo,//15
+                        cell.channel.partner//16
                     ]
                 )
             );
@@ -865,8 +866,9 @@ var Base_Clip_obj = {
                         twemoji.parse(cell.title),//10
                         '[' + cell.language.toUpperCase() + ']',//11
                         STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//12
-                        Main_addCommas(cell.views) + STR_VIEWS,//13
-                        cell.thumbnails.medium//14
+                        cell.views,//13
+                        Main_addCommas(cell.views) + STR_VIEWS,//14
+                        cell.thumbnails.medium//15
                     ]
                 )
             );
@@ -1594,7 +1596,8 @@ function ScreensObj_LiveCellArray(cell) {
         cell.channel.logo,//9
         cell.channel.partner,//10
         STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE,//11
-        cell.created_at//12
+        cell.created_at,//12
+        cell.viewers//13
     ];
 }
 

@@ -617,7 +617,7 @@ function Play_updateStreamInfoValues(response) {
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
 
-        Main_history_UpdateLive(Main_values.Play_selectedChannel_id, Main_values.Play_gameSelected, Play_StreamTitle);
+        Main_history_UpdateLive(Main_values.Play_selectedChannel_id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers);
     }
 }
 

@@ -1043,8 +1043,8 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_title = Main_values_Play_data[10];
     ChannelClip_language = Main_values_Play_data[11];
     ChannelClip_createdAt = Main_values_Play_data[12];
-    ChannelClip_views = Main_values_Play_data[13];
-    ChannelClip_playUrl2 = Main_values_Play_data[14].split("-preview")[0] + ".mp4";
+    ChannelClip_views = Main_values_Play_data[14];
+    ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
     Main_HideElement('scene1');
@@ -1079,9 +1079,9 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
     Play_IncrementView = Main_values_Play_data[12];
 
-    Main_values.Main_selectedChannel_id = Main_values_Play_data[13];
-    Main_values.Main_selectedChannelLogo = Main_values_Play_data[14];
-    Main_values.Main_selectedChannelPartner = Main_values_Play_data[15];
+    Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
+    Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
+    Main_values.Main_selectedChannelPartner = Main_values_Play_data[16];
 
     Main_openVod();
 }
@@ -1431,6 +1431,7 @@ function Main_Set_history(type) {
                     data: Main_values_Play_data,
                     date: new Date().getTime(),
                     game: Main_values_Play_data[3],
+                    views: Main_values_Play_data[13]
                 }
             );
 
@@ -1446,6 +1447,7 @@ function Main_Set_history(type) {
                     name: Main_values_Play_data[6].toLowerCase(),
                     game: Main_values_Play_data[3],
                     id: Main_values_Play_data[7],
+                    views: Main_values_Play_data[13],
                     watched: 0
                 }
             );
@@ -1466,7 +1468,7 @@ function Main_history_Exist(type, id) {
     return -1;
 }
 
-function Main_history_UpdateLive(id, game, title) {
+function Main_history_UpdateLive(id, game, title, views) {
 
     var index = Main_history_Exist('live', id);
 
@@ -1477,12 +1479,14 @@ function Main_history_UpdateLive(id, game, title) {
             Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
             {
                 date: new Date().getTime(),
-                game: game
+                game: game,
+                views: views,
             }
         );
 
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = views;
     }
     console.log(Main_values_History_data);
 }
