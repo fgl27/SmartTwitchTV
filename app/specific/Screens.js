@@ -52,19 +52,20 @@ function Screens_InitScreens() {
 
 //TODO cleanup not used when finished migrate all
 function Screens_ScreenIds(base) {
-    return [base + '_thumbdiv',
-    base + '_img',
-    base + '_infodiv',
-    base + '_title',
-    base + '_createdon',
-    base + '_game',
-    base + '_viewers',
-    base + '_duration',
-    base + '_cell',
-        'cpempty_',
-    base + '_scroll',
-    base + '_lang',
-    base + '_row'
+    return [
+        base + '_thumbdiv',//0
+        base + '_img',//1
+        base + '_infodiv',//2
+        base + '_title',//3
+        base + '_createdon',//4
+        base + '_game',//5
+        base + '_viewers',//6
+        base + '_duration',//7
+        base + '_cell',//8
+        'cpempty_',//9
+        base + '_scroll',//10
+        base + '_lang',//11
+        base + '_row'//12
     ];
 }
 
@@ -294,7 +295,7 @@ function Screens_createCellGame(id, idArray, valuesArray) {
             '</div>' : '') + '</div></span></div>');
 }
 
-function Screens_createCellClip(id, idArray, valuesArray) {
+function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_until) {
     var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
 
     return Screens_createCell(
@@ -308,17 +309,21 @@ function Screens_createCellClip(id, idArray, valuesArray) {
         idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
         valuesArray[4] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[11] + '</div></div><div id="' + idArray[11] + id + '"class="stream_info_live_title">' +
+        valuesArray[11] + '</div></div><div id="' + idArray[11] + id + '"class="' +
+        (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
         valuesArray[10] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div id="' + idArray[6] + id +
         '"class="stream_info_live" style="width: auto; display: inline-block;">' + valuesArray[12] + ',' + STR_SPACE +
         valuesArray[14] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(valuesArray[1]) + '</div></div></div></span></div></div>');
+        Play_timeS(valuesArray[1]) + '</div></div>' +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
+        '</div></span></div></div>');
 }
 
-function Screens_createCellVod(id, idArray, valuesArray) {
+function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until) {
     return Screens_createCell(
         idArray[8] + id,
         valuesArray,
@@ -331,16 +336,20 @@ function Screens_createCellVod(id, idArray, valuesArray) {
         idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
-        '</div></div><div id="' + idArray[11] + id + '"class="stream_info_live_title">' + valuesArray[3] + '</div>' +
+        '</div></div><div id="' + idArray[11] + id +
+        '"class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + valuesArray[10] + '</div>' +
         '<div id="' + idArray[9] + id + '"class="stream_info_live">' +
         (valuesArray[3] !== "" && valuesArray[3] !== null ? STR_STARTED + STR_PLAYING + valuesArray[3] : "") + '</div>' +
         '<div style="line-height: 1.3ch;"><div id="' + idArray[4] + id + '"class="stream_info_live" style="width: auto; display: inline-block;">' +
         valuesArray[2] + ',' + STR_SPACE + valuesArray[4] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info_live" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(valuesArray[11]) + '</div></div></span></div></div>');
+        Play_timeS(valuesArray[11]) + '</div></div>' +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
+        '</span></div></div>');
 }
 
-function Screens_createCellLive(id, idArray, valuesArray) {
+function Screens_createCellLive(id, idArray, valuesArray, Extra_when) {
     var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
 
     return Screens_createCell(
@@ -357,10 +366,14 @@ function Screens_createCellLive(id, idArray, valuesArray) {
         ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
-        '<div id="' + idArray[4] + id + '"class="stream_info_live_title">' + twemoji.parse(valuesArray[2]) + '</div>' +
+        '<div id="' + idArray[4] + id + '"class="' +
+        (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + twemoji.parse(valuesArray[2]) + '</div>' +
         '<div id="' + idArray[5] + id + '"class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-        '</div>' + '<div id="' + idArray[6] + id + '"class="stream_info_live">' +
-        valuesArray[11] + STR_FOR + valuesArray[4] + STR_SPACE + STR_VIEWER + '</div></span></div></div>');
+        '</div><div id="' + idArray[6] + id + '"class="stream_info_live">' +
+        valuesArray[11] + STR_FOR + valuesArray[4] + STR_SPACE + STR_VIEWER + '</div>' +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
+        '</span></div></div>');
 }
 
 function Screens_loadDataSuccessFinish() {
@@ -389,14 +402,17 @@ function Screens_loadDataSuccessFinish() {
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;
-                if (!Main_values.vodOffset) Main_values.vodOffset = 1;
-                ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
 
                 Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
                 Main_ready(function() {
                     if (Main_values.Play_WasPlaying === 1) Main_openStream();
-                    else Main_openVod();
+                    else {
+                        if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                        ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
+
+                        Main_openVod();
+                    }
 
                     Main_SwitchScreen(true);
                     window.setTimeout(function() {
@@ -848,6 +864,8 @@ function Screens_handleKeyDown(event) {
                 Screens_RemoveAllFocus();
                 if (inUseObj.screen === Main_UserChannels)
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgUpNext : inUseObj.key_pgUp);
+                else if (inUseObj.screen === Main_UserLive)
+                    Sidepannel_Go(Main_History[Main_HistoryPos]);
                 else Sidepannel_Go(inUseObj.key_pgUp);
             }
             break;
@@ -856,6 +874,8 @@ function Screens_handleKeyDown(event) {
                 Screens_RemoveAllFocus();
                 if (inUseObj.screen === Main_usergames)
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgDownNext : inUseObj.key_pgDown);
+                else if (inUseObj.screen === Main_UserChannels)
+                    Sidepannel_Go(Main_History[Main_HistoryPos]);
                 else Sidepannel_Go(inUseObj.key_pgDown);
             }
             break;

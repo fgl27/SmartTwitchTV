@@ -314,7 +314,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream(closePlayer) {
-    Main_history_UpdateClip(ChannelClip_Id, Main_values.ChannelVod_vodId, Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0);
+    Main_history_UpdateClip(ChannelClip_Id, Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0);
     PlayClip_hidePanel();
     if (Main_IsNotBrowser) {
         if (closePlayer) Android.stopVideo(3);

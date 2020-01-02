@@ -918,10 +918,17 @@ function Main_cleanTopLabel() {
     Main_ShowElement('label_side_panel');
 }
 
-function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
+function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z' or ms
     time = new Date(time);
     if (Main_IsDayFirst) return time.getDate() + ' ' + STR_MONTHS[time.getMonth()] + ' ' + time.getFullYear();
     else return STR_MONTHS[time.getMonth()] + ' ' + time.getDate() + ' ' + time.getFullYear();
+}
+
+//WithHM = with hour minutes
+function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or ms
+    var result = Main_videoCreatedAt(time);
+    time = new Date(time);
+    return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
 }
 
 function Main_checkVersion() {
