@@ -86,8 +86,11 @@ function PlayExtra_KeyEnter() {
     var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
     if (doc === null) UserLiveFeed_ResetFeedId();
     else {
-        var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute));
-        if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel[6] !== selectedChannel) {
+        Main_values_Play_data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+        if (Main_values.Play_selectedChannel !== Main_values_Play_data &&
+            PlayExtra_selectedChannel[6] !== Main_values_Play_data) {
+
             UserLiveFeed_Hide();
 
             Main_ready(function() {
@@ -101,9 +104,9 @@ function PlayExtra_KeyEnter() {
                 Main_values.Play_isHost = false;
                 Play_UserLiveFeedPressed = true;
 
-                PlayExtra_selectedChannel = selectedChannel[6];
-                PlayExtra_selectedChannel_id = selectedChannel[7];
-                PlayExtra_IsRerun = selectedChannel[8];
+                PlayExtra_selectedChannel = Main_values_Play_data[6];
+                PlayExtra_selectedChannel_id = Main_values_Play_data[7];
+                PlayExtra_IsRerun = Main_values_Play_data[8];
 
                 PlayExtra_isHost = false;
                 PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
@@ -264,6 +267,7 @@ function PlayExtra_loadDataSuccess(responseText) {
             ChatLive_Init(1);
             PlayExtra_ShowChat();
         }
+        Main_Set_history('live');
     }
 }
 
