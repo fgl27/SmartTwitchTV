@@ -565,7 +565,7 @@ function ScreensObj_InitUserLive() {
         screen: Main_UserLive,
         object: 'streams',
         key_pgDown: Main_UserHost,
-        key_pgUp: Main_UserChannels,
+        key_pgUp: Main_HistoryLive,
         base_url: Main_kraken_api + 'streams/',
         loadChannelOffsset: 0,
         followerChannels: '',
@@ -1382,7 +1382,8 @@ function ScreensObj_HistoryLive() {
                     Screens_createCellLive(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
-                        cell.data
+                        cell.data,
+                        cell.date
                     )
                 );
 
@@ -1446,7 +1447,9 @@ function ScreensObj_HistoryVod() {
                     Screens_createCellVod(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
-                        cell.data
+                        cell.data,
+                        cell.date,
+                        cell.watched
                     )
                 );
 
@@ -1512,7 +1515,9 @@ function ScreensObj_HistoryClip() {
                     Screens_createCellClip(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
-                        cell.data
+                        cell.data,
+                        cell.date,
+                        cell.watched,
                     )
                 );
 

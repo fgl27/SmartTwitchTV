@@ -374,6 +374,7 @@
 
         .stream_info_live,
         .stream_info_live_title,
+        .stream_info_live_title_single_line,
         .stream_info_channel_name,
         .stream_info_user_name,
         .stream_info_user_title,
@@ -433,6 +434,14 @@
         .stream_info_live_title {
             word-wrap: break-word;
             max-height: 2.4em;
+            font-size: 72%;
+            overflow: hidden;
+            white-space: normal;
+        }
+
+        .stream_info_live_title_single_line {
+            word-wrap: break-word;
+            max-height: 1.2em;
             font-size: 72%;
             overflow: hidden;
             white-space: normal;

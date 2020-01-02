@@ -1025,6 +1025,7 @@ function Play_lessthanten(time) {
 
 function Play_timeS(time) {
     var seconds, minutes, hours;
+    time = Math.round(time);
 
     seconds = Play_lessthanten(parseInt(time) % 60);
 

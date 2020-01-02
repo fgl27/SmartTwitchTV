@@ -344,4 +344,7 @@ function en_USLang() {
     STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
         STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
     STR_HISTORY = "History";
+    STR_WATCHED = "Watched on ";
+    STR_UNTIL = "until ";
+
 }
