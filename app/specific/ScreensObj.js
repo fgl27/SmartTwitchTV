@@ -152,26 +152,7 @@ var Base_Vod_obj = {
     AnimateThumbId: null,
     HasAnimateThumb: true,
     Vod_newImg: new Image(),
-    AnimateThumb: function(screen) {
-        window.clearInterval(this.AnimateThumbId);
-        if (!Vod_DoAnimateThumb) return;
-        var div = document.getElementById(this.ids[6] + this.posY + '_' + this.posX);
-
-        // Only load the animation if it can be loaded
-        // This prevent starting animating before it has loaded or animated a empty image
-        this.Vod_newImg.onload = function() {
-            this.onload = null;
-            Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
-            div.style.backgroundSize = div.offsetWidth + "px";
-            var frame = 0;
-            screen.AnimateThumbId = window.setInterval(function() {
-                // 10 = quantity of frames in the preview img
-                div.style.backgroundPosition = "0px " + ((++frame % 10) * (-div.offsetHeight)) + "px";
-            }, 650);
-        };
-
-        this.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
-    },
+    AnimateThumb: ScreensObj_AnimateThumbId,
     addCellBase: function(cell, thubnail) {
         if (!this.idObject[cell._id] && (thubnail + '').indexOf('404_processing') === -1) {
 
@@ -1428,6 +1409,9 @@ function ScreensObj_HistoryVod() {
         ids: Screens_ScreenIds('HistoryVod'),
         table: 'stream_table_historyvod',
         screen: Main_HistoryVod,
+        Vod_newImg: new Image(),
+        HasAnimateThumb: true,
+        AnimateThumb: ScreensObj_AnimateThumbId,
         label_init: function() {
             Main_HistoryPos = 1;
             ScreensObj_TopLableUserInit();
@@ -1480,6 +1464,11 @@ function ScreensObj_HistoryVod() {
     }, Base_obj);
 
     HistoryVod = Screens_assign(HistoryVod, Base_History_obj);
+
+    HistoryVod.addFocus = function(y, x, idArray, forceScroll) {
+        this.AnimateThumb(this);
+        Screens_addFocusVideo(y, x, idArray, forceScroll);
+    };
 }
 
 function ScreensObj_HistoryClip() {
@@ -1607,4 +1596,25 @@ function ScreensObj_LiveCellArray(cell) {
         STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE,//11
         cell.created_at//12
     ];
+}
+
+function ScreensObj_AnimateThumbId(screen) {
+    window.clearInterval(screen.AnimateThumbId);
+    if (!Vod_DoAnimateThumb) return;
+    var div = document.getElementById(screen.ids[6] + screen.posY + '_' + screen.posX);
+
+    // Only load the animation if it can be loaded
+    // This prevent starting animating before it has loaded or animated a empty image
+    screen.Vod_newImg.onload = function() {
+        screen.onload = null;
+        Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
+        div.style.backgroundSize = div.offsetWidth + "px";
+        var frame = 0;
+        screen.AnimateThumbId = window.setInterval(function() {
+            // 10 = quantity of frames in the preview img
+            div.style.backgroundPosition = "0px " + ((++frame % 10) * (-div.offsetHeight)) + "px";
+        }, 650);
+    };
+
+    screen.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
 }
