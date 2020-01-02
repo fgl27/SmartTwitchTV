@@ -1494,6 +1494,8 @@ function Main_history_UpdateLive(id, game, title, views) {
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = views;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
+            STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
     }
     console.log(Main_values_History_data);
 }
