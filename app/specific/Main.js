@@ -1004,7 +1004,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     } else Main_values.Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
 
     var playing = document.getElementById(idsArray[5] + id).textContent;
-    Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
+    Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? Main_values_Play_data[3] : '';
 
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Main_openStream();
