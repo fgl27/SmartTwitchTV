@@ -5,8 +5,17 @@
 var BodyfontSize;
 
 function calculateFontSize() {
+
+    var offset = 0;
+    //Prevent crash in case Settings_value is not yet loaded
+    try {
+        offset = Settings_value.global_font_offset.values[Main_getItemInt('global_font_offset', Settings_value.global_font_offset.defaultValue) - 1];
+    } catch (e) {
+        offset = 0;
+    }
+
     // Initial sizes.
-    var initialFontSize = 29 + Settings_value.global_font_offset.values[Main_getItemInt('global_font_offset', Settings_value.global_font_offset.defaultValue) - 1],
+    var initialFontSize = 29 + offset,
         initialWidth = 1920,
         initialHeight = 1080,
 
@@ -31,4 +40,8 @@ function calculateFontSize() {
 }
 
 //Do the calculation and changes on proper events call
-window.addEventListener('resize', calculateFontSize, false);
+window.addEventListener('resize', calculateFontSizeTizen, false);
+
+function calculateFontSizeTizen() {
+    if (!Main_IsNotBrowser) calculateFontSize();
+}
