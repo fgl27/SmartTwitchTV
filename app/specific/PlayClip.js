@@ -341,10 +341,10 @@ function PlayClip_UpdateNext() {
         PlayClip_HasNext = true;
         text = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
         Main_textContent("next_button_text_name", text[4]);
-        Main_innerHTML("next_button_text_title", text[9]);
+        Main_innerHTML("next_button_text_title", text[10]);
 
         Main_textContent("end_next_button_text_name", text[4]);
-        Main_innerHTML("end_next_button_text_title", text[9]);
+        Main_innerHTML("end_next_button_text_title", text[10]);
 
         PlayClip_HideShowNext(0, 1);
     } else PlayClip_HideShowNext(0, 0);
@@ -353,7 +353,7 @@ function PlayClip_UpdateNext() {
         PlayClip_HasBack = true;
         text = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
         Main_textContent("back_button_text_name", text[4]);
-        Main_innerHTML("back_button_text_title", text[9]);
+        Main_innerHTML("back_button_text_title", text[10]);
         PlayClip_HideShowNext(1, 1);
     } else PlayClip_HideShowNext(1, 0);
 }
