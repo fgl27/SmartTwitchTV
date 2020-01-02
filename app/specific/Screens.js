@@ -301,7 +301,7 @@ function Screens_createCellClip(id, idArray, valuesArray) {
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[14] +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
         '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="' +
         idArray[2] + id +
         '" class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
@@ -313,7 +313,7 @@ function Screens_createCellClip(id, idArray, valuesArray) {
         '<div id="' + idArray[4] + id + '"class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div id="' + idArray[6] + id +
         '"class="stream_info_live" style="width: auto; display: inline-block;">' + valuesArray[12] + ',' + STR_SPACE +
-        valuesArray[13] + '</div><div id="' + idArray[5] + id +
+        valuesArray[14] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
         Play_timeS(valuesArray[1]) + '</div></div></div></span></div></div>');
 }
