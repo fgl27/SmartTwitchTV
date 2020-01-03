@@ -44,7 +44,6 @@ var Play_qualityIndex = 0;
 var Play_ChatEnable = false;
 var Play_exitID = null;
 var Play_AutoUrl = '';
-var Play_StreamTitle = '';
 
 var Play_selectedChannel_id_Old = null;
 var Play_IsRerun_Old;
@@ -545,6 +544,8 @@ function Play_partnerIcon(name, partner, islive, lang) {
     Main_innerHTML("stream_info_name", div);
 }
 
+var Play_BroadcastID;
+
 function Play_updateStreamInfoStartValues(response) {
     if (AddUser_UserIsSet()) {
         AddCode_PlayRequest = true;
@@ -555,9 +556,9 @@ function Play_updateStreamInfoStartValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
-        Play_StreamTitle = twemoji.parse(response.stream.channel.status, false, true);
+        Play_BroadcastID = response.stream._id;
 
-        Main_innerHTML("stream_info_title", Play_StreamTitle);
+        Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
         Main_values.Play_gameSelected = response.stream.game;
         Play_Lang = ' [' + (response.stream.channel.broadcaster_language).toUpperCase() + ']';
 
@@ -578,7 +579,9 @@ function Play_updateStreamInfoStartValues(response) {
         if (Play_isHost && Main_history_Exist('live', Main_values.Play_selectedChannel_id) < 0) {
             Main_values_Play_data = ScreensObj_LiveCellArray(response.stream);
             Main_Set_history('live');
-        } else Main_history_UpdateLive(response.stream._id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers, Play_created);
+        } else Main_history_UpdateLive(Play_BroadcastID, Main_values.Play_gameSelected, response.stream.channel.status, response.stream.viewers, Play_created);
+        Play_loadingInfoDataTry = 0;
+        Play_updateVodInfo();
     }
 }
 
@@ -590,6 +593,38 @@ function Play_updateStreamInfoStartError() {
         }, 750);
     }
     Play_loadingInfoDataTry++;
+}
+
+function Play_updateVodInfo() {
+    var theUrl = Main_kraken_api + 'channels/' + Main_values.Play_selectedChannel_id + '/videos?limit=5&broadcast_type=archive&sort=time';
+
+    BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateVodInfoSuccess, Play_updateVodInfoError, false);
+}
+
+function Play_updateVodInfoError() {
+    if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
+        Play_loadingInfoDataTimeout += 500;
+        window.setTimeout(function() {
+            if (Play_isOn) Play_updateVodInfo();
+        }, 750);
+    }
+    Play_loadingInfoDataTry++;
+}
+var Play_VodID;
+
+function Play_updateVodInfoSuccess(response) {
+    response = JSON.parse(response).videos;
+    for (var i = 0; i < response.length; i++) {
+        if (response[i].status.indexOf('recording') !== -1) {
+            Play_VodID = response[i]._id.substr(1);
+            Main_history_UpdateLiveVod(
+                Play_BroadcastID,
+                Play_VodID,
+                'https://static-cdn.jtvnw.net/s3_vods/' + response[i].animated_preview_url.split('/')[3] +
+                '/thumb/thumb0-' + Main_VideoSize + '.jpg'
+            );
+        }
+    }
 }
 
 function Play_updateStreamInfo() {
@@ -609,9 +644,8 @@ function Play_updateStreamInfoValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
         Main_values.Play_gameSelected = response.stream.game;
-        Play_StreamTitle = twemoji.parse(response.stream.channel.status, false, true);
 
-        Main_innerHTML("stream_info_title", Play_StreamTitle);
+        Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
         Main_textContent("stream_info_game", STR_PLAYING + Main_values.Play_gameSelected);
 
         Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(response.stream.viewers) +
@@ -623,7 +657,7 @@ function Play_updateStreamInfoValues(response) {
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
 
-        Main_history_UpdateLive(response.stream._id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers, response.stream.created_at);
+        Main_history_UpdateLive(response.stream._id, Main_values.Play_gameSelected, response.stream.channel.status, response.stream.viewers, response.stream.created_at);
     }
 }
 

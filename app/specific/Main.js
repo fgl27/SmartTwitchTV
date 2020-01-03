@@ -1009,6 +1009,28 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     Main_values.Play_selectedChannel_id = Main_values_Play_data[14];
     Main_values.IsRerun = Main_values_Play_data[8];
 
+    //The stream is now a vod
+    if (document.getElementById(idsArray[1] + id).src.indexOf('s3_vods') !== -1) {
+        console.log('is vod');
+
+        var index = Main_history_Exist('live', Main_values_Play_data[7]);
+
+        if (index > -1) {
+            Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+            Main_values.vodOffset =
+                ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
+
+            console.log('vod id ' + Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid);
+            console.log('vod offset ' +
+                ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000)
+            );
+            if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
+            Main_openVod();
+            return;
+        }
+
+    } else console.log('is notvod');
+
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
 
     if (Main_values.Play_isHost) {
@@ -1509,6 +1531,28 @@ function Main_history_UpdateLive(id, game, title, views, created_at) {
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12] = created_at;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
             STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
+
+        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+    }
+    console.log(Main_values_History_data);
+}
+
+function Main_history_UpdateLiveVod(id, vod, vod_img) {
+    if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
+
+    var index = Main_history_Exist('live', id);
+
+    if (index > -1) {
+
+        //Use Screens_assign() to change only obj that has changed
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
+            {
+                vodid: vod,
+                vodimg: vod_img,
+            }
+        );
+        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
     }
     console.log(Main_values_History_data);
 }
@@ -1528,6 +1572,7 @@ function Main_history_UpdateVod(id, time) {
                 watched: time
             }
         );
+        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
     }
     console.log(Main_values_History_data);
 }
@@ -1547,6 +1592,7 @@ function Main_history_UpdateClip(id, time) {
                 watched: time
             }
         );
+        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
     }
     console.log(Main_values_History_data);
 }

@@ -678,7 +678,9 @@ public class PlayerActivity extends Activity {
         websettings.setAllowFileAccess(true);
         websettings.setAllowContentAccess(true);
         websettings.setAllowFileAccessFromFileURLs(true);
-        websettings.setAllowUniversalAccessFromFileURLs(true);
+        //Don't allow CORS from js this is neeed for the images redirec to work
+        //when CORS affects a link that is needed to load one uses Tools.readUrl
+        //websettings.setAllowUniversalAccessFromFileURLs(true);
         websettings.setUseWideViewPort(true);
         websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
