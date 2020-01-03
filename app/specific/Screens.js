@@ -505,6 +505,7 @@ function Screens_loadDataSuccessFinishEnd() {
 }
 
 function Screens_addFocus(forceScroll) {
+
     if (inUseObj.emptyContent) {
         if (inUseObj.HasSwitches) inUseObj.posY = -1;
         else {
@@ -516,7 +517,9 @@ function Screens_addFocus(forceScroll) {
         Screens_addFocusFallow();
         //Reset screen position
         document.getElementById(inUseObj.ids[10]).style.top = '';
-        if (!inUseObj.emptyContent) Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+        if (!inUseObj.emptyContent)
+            Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+
         return;
     }
 
@@ -832,6 +835,7 @@ function Screens_RemoveAllFocus() {
     } else if (inUseObj.posY < 0) {
         Screens_removeFocusFallow();
         inUseObj.posY = 0;
+        inUseObj.posX = 0;
     }
 }
 
@@ -1170,6 +1174,127 @@ function Screens_OffSethandleKeyDown(event) {
                 inUseObj.SetPeriod();
                 Screens_StartLoad();
             }
+            break;
+        default:
+            break;
+    }
+}
+
+var Screens_histDialogID;
+
+function Screens_histStart() {
+    inUseObj.sethistDialog();
+    Main_ShowElement('dialog_hist_setting');
+    document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    document.body.addEventListener("keydown", Screens_histhandleKeyDown, false);
+}
+
+function Screens_clearhistDialogId() {
+    window.clearTimeout(Screens_histDialogID);
+}
+
+function Screens_SethistDialogId() {
+    window.clearTimeout(Screens_histDialogID);
+    Screens_histDialogID = window.setTimeout(Screens_histDialogHide, 6000);
+}
+
+function Screens_histDialogHide() {
+    Screens_histRemoveFocus(inUseObj.histPosY);
+    inUseObj.histPosY = 0;
+    Screens_histAddFocus(0);
+    Screens_clearhistDialogId();
+    document.body.removeEventListener("keydown", Screens_histhandleKeyDown, false);
+    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_HideElement('dialog_hist_setting');
+}
+
+function Screens_histAddFocus(divPos) {
+    Main_AddClass('dialog_hist_setting_' + divPos, 'settings_div_focus');
+    Main_AddClass('dialog_hist_val_' + divPos, 'settings_value_focus');
+    Screens_histSetArrow();
+}
+
+function Screens_histRemoveFocus(divPos) {
+    Main_RemoveClass('dialog_hist_setting_' + divPos, 'settings_div_focus');
+    Main_RemoveClass('dialog_hist_val_' + divPos, 'settings_value_focus');
+    document.getElementById("dialog_hist_left_" + divPos).style.opacity = "0";
+    document.getElementById("dialog_hist_right_" + divPos).style.opacity = "0";
+}
+
+function Screens_histSetArrow() {
+    Screens_histArrow(
+        inUseObj.histPosX[inUseObj.histPosY],
+        inUseObj.histArrays[inUseObj.histPosY].length,
+        inUseObj.histArrays[inUseObj.histPosY][inUseObj.histPosX[inUseObj.histPosY]],
+        inUseObj.histPosY
+    );
+
+    Main_setItem(inUseObj.histPosXName, JSON.stringify(inUseObj.histPosX));
+}
+
+function Screens_histArrow(pos, maxValue, text, divPos) {
+    Main_textContent('dialog_hist_val_' + divPos, text);
+
+    if (maxValue === 1) {
+        document.getElementById("dialog_hist_left_" + divPos).style.opacity = "0";
+        document.getElementById("dialog_hist_right_" + divPos).style.opacity = "0";
+    } else if (!pos) {
+        document.getElementById("dialog_hist_left_" + divPos).style.opacity = "0.2";
+        document.getElementById("dialog_hist_right_" + divPos).style.opacity = "1";
+    } else if (pos === (maxValue - 1)) {
+        document.getElementById("dialog_hist_left_" + divPos).style.opacity = "1";
+        document.getElementById("dialog_hist_right_" + divPos).style.opacity = "0.2";
+    } else {
+        document.getElementById("dialog_hist_left_" + divPos).style.opacity = "1";
+        document.getElementById("dialog_hist_right_" + divPos).style.opacity = "1";
+    }
+}
+
+function Screens_histhandleKeyDown(event) {
+    switch (event.keyCode) {
+        case KEY_RETURN_Q:
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            Screens_histDialogHide();
+            break;
+        case KEY_LEFT:
+            Screens_clearhistDialogId();
+            Screens_SethistDialogId();
+            inUseObj.histPosX[inUseObj.histPosY]--;
+            if (inUseObj.histPosX[inUseObj.histPosY] < 0) inUseObj.histPosX[inUseObj.histPosY] = 0;
+            else Screens_histSetArrow();
+            break;
+        case KEY_RIGHT:
+            Screens_clearhistDialogId();
+            Screens_SethistDialogId();
+            inUseObj.histPosX[inUseObj.histPosY]++;
+            if (inUseObj.histPosX[inUseObj.histPosY] > (inUseObj.histArrays[inUseObj.histPosY].length - 1))
+                inUseObj.histPosX[inUseObj.histPosY] = inUseObj.histArrays[inUseObj.histPosY].length - 1;
+            else Screens_histSetArrow();
+            break;
+        case KEY_UP:
+            Screens_clearhistDialogId();
+            Screens_SethistDialogId();
+            inUseObj.histPosY--;
+            if (inUseObj.histPosY < 0) inUseObj.histPosY = 0;
+            else {
+                Screens_histRemoveFocus(inUseObj.histPosY + 1);
+                Screens_histAddFocus(inUseObj.histPosY);
+            }
+            break;
+        case KEY_DOWN:
+            Screens_clearhistDialogId();
+            Screens_SethistDialogId();
+            inUseObj.histPosY++;
+            if (inUseObj.histPosY > (inUseObj.histArrays.length - 1))
+                inUseObj.histPosY = inUseObj.histArrays.length - 1;
+            else {
+                Screens_histRemoveFocus(inUseObj.histPosY - 1);
+                Screens_histAddFocus(inUseObj.histPosY);
+            }
+            break;
+        case KEY_ENTER:
+            console.log('KEY_ENTER');
             break;
         default:
             break;

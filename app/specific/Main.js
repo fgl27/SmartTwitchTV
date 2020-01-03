@@ -415,6 +415,12 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
 
     Main_innerHTML("dialog_os_text", STR_PP_WARNIG + STR_BR + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS2 + '</div>');
+
+    Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
+    Main_textContent("dialog_hist_setting_name_1", STR_ENABLE);
+    Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
+    Main_textContent('dialog_hist_val_2', STR_PRESS_ENTER_D);
+    Main_textContent('dialog_hist_text_end', STR_PRESS_ENTER_APPLY);
 }
 
 var Main_initClickDoc = [
@@ -1475,7 +1481,8 @@ function Main_history_Exist(type, id) {
     return -1;
 }
 
-function Main_history_UpdateLive(id, game, title, views) {
+function Main_history_UpdateLive(id, game, title, views, created_at) {
+    if (!AddUser_IsUserSet()) return;
 
     var index = Main_history_Exist('live', id);
 
@@ -1491,9 +1498,11 @@ function Main_history_UpdateLive(id, game, title, views) {
             }
         );
 
+        //Some values will change as the stream updates or as the streames goes offline and online again
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = views;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12] = created_at;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
             STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
     }
@@ -1501,6 +1510,7 @@ function Main_history_UpdateLive(id, game, title, views) {
 }
 
 function Main_history_UpdateVod(id, time) {
+    if (!AddUser_IsUserSet()) return;
 
     var index = Main_history_Exist('vod', id);
 
@@ -1519,6 +1529,7 @@ function Main_history_UpdateVod(id, time) {
 }
 
 function Main_history_UpdateClip(id, time) {
+    if (!AddUser_IsUserSet()) return;
 
     var index = Main_history_Exist('clip', id);
 
