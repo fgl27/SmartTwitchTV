@@ -1652,13 +1652,14 @@ function ScreensObj_LiveCellArray(cell) {
         Main_addCommas(cell.viewers),//4
         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
         cell.channel.name,//6
-        cell.channel._id,//7
+        cell._id,//7
         Main_is_rerun(cell.stream_type),//8
         cell.channel.logo,//9
         cell.channel.partner,//10
         STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE,//11
         cell.created_at,//12
-        cell.viewers//13
+        cell.viewers,//13
+        cell.channel._id//14
     ];
 }
 

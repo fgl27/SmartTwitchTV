@@ -1006,7 +1006,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
     Main_values.Play_selectedChannel = Main_values_Play_data[6];
-    Main_values.Play_selectedChannel_id = Main_values_Play_data[7];
+    Main_values.Play_selectedChannel_id = Main_values_Play_data[14];
     Main_values.IsRerun = Main_values_Play_data[8];
 
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;

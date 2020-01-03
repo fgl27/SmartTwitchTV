@@ -578,7 +578,7 @@ function Play_updateStreamInfoStartValues(response) {
         if (Play_isHost && Main_history_Exist('live', Main_values.Play_selectedChannel_id) < 0) {
             Main_values_Play_data = ScreensObj_LiveCellArray(response.stream);
             Main_Set_history('live');
-        } else Main_history_UpdateLive(Main_values.Play_selectedChannel_id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers, Play_created);
+        } else Main_history_UpdateLive(response.stream._id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers, Play_created);
     }
 }
 
@@ -623,7 +623,7 @@ function Play_updateStreamInfoValues(response) {
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
 
-        Main_history_UpdateLive(Main_values.Play_selectedChannel_id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers, response.stream.created_at);
+        Main_history_UpdateLive(response.stream._id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers, response.stream.created_at);
     }
 }
 
@@ -848,7 +848,7 @@ function Play_loadDataSuccess(responseText) {
         if (Play_isOn) Play_qualityChanged();
         UserLiveFeed_PreventHide = false;
 
-        Main_Set_history('live');
+        if (!Play_isHost) Main_Set_history('live');
     }
 }
 
