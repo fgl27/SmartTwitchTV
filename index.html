@@ -1290,6 +1290,7 @@
             margin-left: 2.5%;
         }
 
+        div.hist_div,
         div.settings_div,
         div.settings_title,
         div.settings_summary,
@@ -1300,6 +1301,7 @@
             font-size: 135%;
         }
 
+        div.hist_div,
         div.settings_div {
             box-sizing: border-box;
             border-top: 0.05em solid;
@@ -1307,11 +1309,16 @@
             border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
         }
 
+        div.hist_div {
+            width: 70%;
+        }
+
         div.settings_div_focus {
             background-color: rgba(255, 255, 255, 0.15);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
 
+        div.hist_value,
         div.settings_value {
             width: 18%;
             display: inline-block;
@@ -1323,6 +1330,11 @@
             border-top: 0.1em solid;
             border-bottom: 0.1em solid;
             border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
+        }
+
+
+        div.hist_value {
+            width: 25%;
         }
 
         div.settings_value_focus {
@@ -1349,6 +1361,7 @@
             font-family: 'Roboto';
         }
 
+        div.hist_name,
         div.settings_name {
             margin-left: 1.5%;
             width: 74.5%;
@@ -1357,6 +1370,10 @@
             font-size: 72%;
             vertical-align: middle;
             word-wrap: break-word;
+        }
+
+        div.hist_name {
+            width: 54%;
         }
 
         div.settings_arraw_div {
@@ -1883,6 +1900,47 @@
                         <div id="dialog_OffSet_right" class="right" style="opacity: 1;"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="dialog_hist_setting" class="screens hide"
+            style="z-index: 99; background: rgba(0, 0, 0, 0.75); color: #FFFFFF;">
+            <div class="dialog_period" style="text-align: center;">
+                <div id="dialog_hist_text" class="exit_text"></div>
+
+                <div id="dialog_hist_setting_0" class="hist_div settings_div_focus">
+                    <div id="dialog_hist_setting_name_0" class="hist_name"></div>
+                    <div class="settings_arraw_div">
+                        <div id="dialog_hist_left_0" class="left" style="opacity: 0.2;"></div>
+                    </div>
+                    <div id="dialog_hist_val_0" class="strokedeline hist_value settings_value_focus"></div>
+                    <div class="settings_arraw_div">
+                        <div id="dialog_hist_right_0" class="right" style="opacity: 1;"></div>
+                    </div>
+                </div>
+
+                <div id="dialog_hist_setting_1" class="hist_div">
+                    <div id="dialog_hist_setting_name_1" class="hist_name"></div>
+                    <div class="settings_arraw_div">
+                        <div id="dialog_hist_left_1" class="left" style="opacity: 0;"></div>
+                    </div>
+                    <div id="dialog_hist_val_1" class="strokedeline hist_value"></div>
+                    <div class="settings_arraw_div">
+                        <div id="dialog_hist_right_1" class="right" style="opacity: 0;"></div>
+                    </div>
+                </div>
+
+                <div id="dialog_hist_setting_2" class="hist_div">
+                    <div id="dialog_hist_setting_name_2" class="hist_name"></div>
+                    <div class="settings_arraw_div">
+                        <div id="dialog_hist_left_2" class="left" style="opacity: 0;"></div>
+                    </div>
+                    <div id="dialog_hist_val_2" class="strokedeline hist_value"></div>
+                    <div class="settings_arraw_div">
+                        <div id="dialog_hist_right_2" class="right" style="opacity: 0;"></div>
+                    </div>
+                </div>
+
+                <div id="dialog_hist_text_end" class="exit_text"></div>
             </div>
         </div>
         <div id="dialog_warning" class="strokedeline dialogs hide"

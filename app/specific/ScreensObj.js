@@ -608,6 +608,7 @@ function ScreensObj_InitUserLive() {
     UserLive = Screens_assign(UserLive, Base_Live_obj);
 
     UserLive.concatenate = function(responseText) {
+        //console.log(responseText);
         if (this.token || this.followerChannelsDone) {
             //User has added a key or fallowed channels list is done, concatenate live channels
             if (this.data) {
@@ -1320,6 +1321,37 @@ var Base_History_obj = {
     HasSwitches: true,
     key_pgDown: Main_UserLive,
     key_pgUp: Main_UserChannels,
+    histPosY: 0,
+    sorting: [],
+    sortingPos: 0,
+    Upsorting: function() {
+        this.sorting = [
+            STR_NAME_A_Z,
+            STR_NAME_Z_A,
+            STR_GAME_A_Z,
+            STR_GAME_Z_A,
+            STR_VIWES_MOST,
+            STR_VIWES_LOWEST,
+            STR_SEEN_LAST,
+            STR_SEEN_FIRTS
+        ];
+    },
+    histEna: [],
+    histEnaPos: 0,
+    UpEna: function() {
+        this.histEna = [
+            STR_YES,
+            STR_NO
+        ];
+    },
+    histArrays: [],
+    UpArrays: function() {
+        this.histArrays = [
+            this.sorting,
+            this.histEna,
+            [STR_PRESS_ENTER_D]
+        ];
+    },
     set_url: function() {return;},
     empty_str: function() {
         return STR_NO + STR_SPACE + STR_HISTORY;
@@ -1340,16 +1372,34 @@ var Base_History_obj = {
         }
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
         Main_HideElement(this.ids[10]);
+    },
+    sethistMainDialog: function() {
+        this.Upsorting();
+        this.UpEna();
+        this.UpArrays();
+
+        Screens_histSetArrow();
+
+        Main_textContent(
+            'dialog_hist_val_' + 1,
+            this.histArrays[1][this.histPosX[1]]
+        );
     }
 };
 
 function ScreensObj_HistoryLive() {
     HistoryLive = Screens_assign({
-        HeaderQuatity: 2,
         Type: 'live',
         ids: Screens_ScreenIds('HistoryLive'),
         table: 'stream_table_historylive',
         screen: Main_HistoryLive,
+        histPosXName: 'HistoryLive_histPosX',
+        histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0]),
+        sethistDialog: function() {
+            Screens_SethistDialogId();
+            Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            this.sethistMainDialog();
+        },
         label_init: function() {
             Main_HistoryPos = 0;
             ScreensObj_TopLableUserInit();
@@ -1366,9 +1416,7 @@ function ScreensObj_HistoryLive() {
                     Main_values.Main_Go = Main_HistoryClip;
                     this.history_exit();
                     Main_SwitchScreenAction();
-                } else if (this.posX === 2) {
-                    Main_HistoryPos = 0;
-                }
+                } else Screens_histStart();
             } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
         },
@@ -1407,7 +1455,6 @@ function ScreensObj_HistoryLive() {
 
 function ScreensObj_HistoryVod() {
     HistoryVod = Screens_assign({
-        HeaderQuatity: 2,
         Type: 'vod',
         ids: Screens_ScreenIds('HistoryVod'),
         table: 'stream_table_historyvod',
@@ -1415,6 +1462,13 @@ function ScreensObj_HistoryVod() {
         Vod_newImg: new Image(),
         HasAnimateThumb: true,
         AnimateThumb: ScreensObj_AnimateThumbId,
+        histPosXName: 'HistoryVod_histPosX',
+        histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0]),
+        sethistDialog: function() {
+            Screens_SethistDialogId();
+            Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            this.sethistMainDialog();
+        },
         label_init: function() {
             Main_HistoryPos = 1;
             ScreensObj_TopLableUserInit();
@@ -1431,9 +1485,7 @@ function ScreensObj_HistoryVod() {
                     Main_values.Main_Go = Main_HistoryClip;
                     this.history_exit();
                     Main_SwitchScreenAction();
-                } else if (this.posX === 2) {
-                    Main_HistoryPos = 0;
-                }
+                } else Screens_histStart();
             } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
         },
@@ -1478,11 +1530,17 @@ function ScreensObj_HistoryVod() {
 
 function ScreensObj_HistoryClip() {
     HistoryClip = Screens_assign({
-        HeaderQuatity: 2,
         Type: 'clip',
         ids: Screens_ScreenIds('HistoryClip'),
         table: 'stream_table_historyclip',
         screen: Main_HistoryClip,
+        histPosXName: 'HistoryClip_histPosX',
+        histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0]),
+        sethistDialog: function() {
+            Screens_SethistDialogId();
+            Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            this.sethistMainDialog();
+        },
         label_init: function() {
             Main_HistoryPos = 2;
             ScreensObj_TopLableUserInit();
@@ -1499,9 +1557,7 @@ function ScreensObj_HistoryClip() {
                     Main_values.Main_Go = Main_HistoryVod;
                     this.history_exit();
                     Main_SwitchScreenAction();
-                } else if (this.posX === 2) {
-                    Main_HistoryPos = 0;
-                }
+                } else Screens_histStart();
             } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
         },

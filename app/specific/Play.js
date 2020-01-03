@@ -555,8 +555,9 @@ function Play_updateStreamInfoStartValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
         Main_values.IsRerun = Main_is_rerun(response.stream.stream_type);
+        Play_StreamTitle = twemoji.parse(response.stream.channel.status, false, true);
 
-        Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
+        Main_innerHTML("stream_info_title", Play_StreamTitle);
         Main_values.Play_gameSelected = response.stream.game;
         Play_Lang = ' [' + (response.stream.channel.broadcaster_language).toUpperCase() + ']';
 
@@ -573,6 +574,11 @@ function Play_updateStreamInfoStartValues(response) {
 
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
+
+        if (Play_isHost && Main_history_Exist('live', Main_values.Play_selectedChannel_id) < 0) {
+            Main_values_Play_data = ScreensObj_LiveCellArray(response.stream);
+            Main_Set_history('live');
+        } else Main_history_UpdateLive(Main_values.Play_selectedChannel_id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers, Play_created);
     }
 }
 
@@ -617,7 +623,7 @@ function Play_updateStreamInfoValues(response) {
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
 
-        Main_history_UpdateLive(Main_values.Play_selectedChannel_id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers);
+        Main_history_UpdateLive(Main_values.Play_selectedChannel_id, Main_values.Play_gameSelected, Play_StreamTitle, response.stream.viewers, response.stream.created_at);
     }
 }
 
