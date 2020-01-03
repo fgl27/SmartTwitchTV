@@ -1417,7 +1417,11 @@ function ScreensObj_HistoryLive() {
         label_init: function() {
             Main_HistoryPos = 0;
             ScreensObj_TopLableUserInit();
-            ScreensObj_SetTopLable(STR_USER, STR_HISTORY + STR_SPACE + STR_LIVE);
+            ScreensObj_SetTopLable(
+                STR_USER,
+                STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE +
+                '(' + this.sorting[this.histPosX[0]] + ')'
+            );
         },
         key_play: function() {
 
@@ -1465,6 +1469,7 @@ function ScreensObj_HistoryLive() {
     }, Base_obj);
 
     HistoryLive = Screens_assign(HistoryLive, Base_History_obj);
+    HistoryLive.Upsorting();
 }
 
 function ScreensObj_HistoryVod() {
@@ -1486,7 +1491,12 @@ function ScreensObj_HistoryVod() {
         label_init: function() {
             Main_HistoryPos = 1;
             ScreensObj_TopLableUserInit();
-            ScreensObj_SetTopLable(STR_USER, STR_HISTORY + STR_SPACE + STR_VIDEOS);
+
+            ScreensObj_SetTopLable(
+                STR_USER,
+                STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE +
+                '(' + this.sorting[this.histPosX[0]] + ')'
+            );
         },
         key_play: function() {
 
@@ -1540,6 +1550,7 @@ function ScreensObj_HistoryVod() {
         this.AnimateThumb(this);
         Screens_addFocusVideo(y, x, idArray, forceScroll);
     };
+    HistoryVod.Upsorting();
 }
 
 function ScreensObj_HistoryClip() {
@@ -1558,7 +1569,13 @@ function ScreensObj_HistoryClip() {
         label_init: function() {
             Main_HistoryPos = 2;
             ScreensObj_TopLableUserInit();
-            ScreensObj_SetTopLable(STR_USER, STR_HISTORY + STR_SPACE + STR_CLIPS);
+
+            ScreensObj_SetTopLable(
+                STR_USER,
+                STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE +
+                '(' + this.sorting[this.histPosX[0]] + ')'
+            );
+
         },
         key_play: function() {
 
@@ -1607,6 +1624,7 @@ function ScreensObj_HistoryClip() {
     }, Base_obj);
 
     HistoryClip = Screens_assign(HistoryClip, Base_History_obj);
+    HistoryClip.Upsorting();
 }
 
 function ScreensObj_addSwitches(StringsArray) {
