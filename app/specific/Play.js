@@ -579,7 +579,14 @@ function Play_updateStreamInfoStartValues(response) {
         if (Play_isHost && Main_history_Exist('live', Main_values.Play_selectedChannel_id) < 0) {
             Main_values_Play_data = ScreensObj_LiveCellArray(response.stream);
             Main_Set_history('live');
-        } else Main_history_UpdateLive(Play_BroadcastID, Main_values.Play_gameSelected, response.stream.channel.status, response.stream.viewers, Play_created);
+        } else {
+            Main_history_UpdateLive(
+                Play_BroadcastID,
+                Main_values.Play_gameSelected,
+                response.stream.channel.status,
+                response.stream.viewers
+            );
+        }
         Play_loadingInfoDataTry = 0;
         Play_updateVodInfo();
     }
@@ -595,6 +602,7 @@ function Play_updateStreamInfoStartError() {
     Play_loadingInfoDataTry++;
 }
 
+//When update this also update PlayExtra_updateVodInfo
 function Play_updateVodInfo() {
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Play_selectedChannel_id + '/videos?limit=5&broadcast_type=archive&sort=time';
 
@@ -626,6 +634,7 @@ function Play_updateVodInfoSuccess(response) {
     }
 }
 
+//When update this also update PlayExtra_updateStreamInfo
 function Play_updateStreamInfo() {
     Play_RefreshAutoTry = 0;
     Play_RefreshAutoRequest(false);
@@ -656,7 +665,16 @@ function Play_updateStreamInfoValues(response) {
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Play_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
 
-        Main_history_UpdateLive(response.stream._id, Main_values.Play_gameSelected, response.stream.channel.status, response.stream.viewers, response.stream.created_at);
+        Main_history_UpdateLive(
+            response.stream._id,
+            Main_values.Play_gameSelected,
+            response.stream.channel.status,
+            response.stream.viewers
+        );
+        if (PlayExtra_PicturePicture) {
+            Play_updateStreamInfoErrorTry = 0;
+            PlayExtra_updateStreamInfo();
+        }
     }
 }
 
