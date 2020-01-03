@@ -1432,6 +1432,10 @@ function Main_ReplaceLargeFont(text) {
 }
 
 function Main_Set_history(type) {
+    if (type === 'live' && HistoryLive.histPosX[1]) return;
+    if (type === 'vod' && HistoryVod.histPosX[1]) return;
+    if (type === 'clip' && HistoryClip.histPosX[1]) return;
+
     if (AddUser_IsUserSet() && Main_values_Play_data) {
         var index = Main_history_Exist(type, Main_values_Play_data[7]);
 
@@ -1482,7 +1486,7 @@ function Main_history_Exist(type, id) {
 }
 
 function Main_history_UpdateLive(id, game, title, views, created_at) {
-    if (!AddUser_IsUserSet()) return;
+    if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
 
     var index = Main_history_Exist('live', id);
 
@@ -1501,7 +1505,7 @@ function Main_history_UpdateLive(id, game, title, views, created_at) {
         //Some values will change as the stream updates or as the streames goes offline and online again
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = views;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[4] = Main_addCommas(views);
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12] = created_at;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
             STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
@@ -1510,7 +1514,7 @@ function Main_history_UpdateLive(id, game, title, views, created_at) {
 }
 
 function Main_history_UpdateVod(id, time) {
-    if (!AddUser_IsUserSet()) return;
+    if (!AddUser_IsUserSet() || HistoryVod.histPosX[1]) return;
 
     var index = Main_history_Exist('vod', id);
 
@@ -1529,7 +1533,7 @@ function Main_history_UpdateVod(id, time) {
 }
 
 function Main_history_UpdateClip(id, time) {
-    if (!AddUser_IsUserSet()) return;
+    if (!AddUser_IsUserSet() || HistoryClip.histPosX[1]) return;
 
     var index = Main_history_Exist('clip', id);
 
@@ -1562,4 +1566,14 @@ function Main_History_Sort(array, msort, direction) {
             return (a[msort] > b[msort] ? -1 : (a[msort] < b[msort] ? 1 : 0));
         });
     }
+}
+
+
+function Main_Slice(arrayTocopy) {
+    var array = [];
+    //slice may crash RangeError: Maximum call stack size exceeded
+    for (var i = 0; i < arrayTocopy.length; i++) {
+        array.push(arrayTocopy[i]);
+    }
+    return array;
 }
