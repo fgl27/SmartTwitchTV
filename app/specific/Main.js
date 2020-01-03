@@ -1026,13 +1026,13 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
             );
             if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
 
-            Play_showWarningDialog(STR_LIVE_VOD);
 
             Main_openVod();
+            Play_showWarningDialog(STR_LIVE_VOD);
 
             window.setTimeout(function() {
                 if (!Play_IsWarning) Play_HideWarningDialog();
-            }, 2000);
+            }, 3000);
             return;
         }
 
