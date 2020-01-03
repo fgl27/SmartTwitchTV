@@ -105,7 +105,7 @@ function PlayExtra_KeyEnter() {
                 Play_UserLiveFeedPressed = true;
 
                 PlayExtra_selectedChannel = Main_values_Play_data[6];
-                PlayExtra_selectedChannel_id = Main_values_Play_data[7];
+                PlayExtra_selectedChannel_id = Main_values_Play_data[14];
                 PlayExtra_IsRerun = Main_values_Play_data[8];
 
                 PlayExtra_isHost = false;
