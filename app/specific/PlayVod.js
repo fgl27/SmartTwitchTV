@@ -44,6 +44,7 @@ var PlayVod_SaveOffsetId;
 var PlayVod_WasSubChekd = false;
 var PlayVod_VodIdex;
 var PlayVod_VodOffset;
+var PlayVod_HasVodInfo = false;
 //Variable initialization end
 
 function PlayVod_Start() {
@@ -82,9 +83,11 @@ function PlayVod_Start() {
     PlayClip_HideShowNext(1, 0);
 
     if (Main_values.vodOffset) { // this is a vod coming from a clip or from restore playback
+        PlayVod_HasVodInfo = false;
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
+        PlayVod_HasVodInfo = true;
         PlayVod_updateStreamerInfoValues();
         Main_innerHTML("stream_info_title", ChannelVod_title);
         Main_textContent("stream_info_game", ChannelVod_game);
@@ -179,6 +182,8 @@ function PlayVod_updateVodInfoError() {
 
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
+    Main_values_Play_data = ScreensObj_VodCellArray(response);
+    Main_Set_history('vod');
 
     ChannelVod_title = twemoji.parse(response.title, false, true);
 
@@ -413,7 +418,7 @@ function PlayVod_loadDataSuccessFake() {
     ];
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_qualityChanged();
-    Main_Set_history('vod');
+    if (PlayVod_HasVodInfo) Main_Set_history('vod');
 }
 
 function PlayVod_loadDataSuccess(responseText) {
@@ -435,7 +440,7 @@ function PlayVod_loadDataSuccess(responseText) {
         PlayVod_state = Play_STATE_PLAYING;
         if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
         if (PlayVod_isOn) PlayVod_qualityChanged();
-        Main_Set_history('vod');
+        if (PlayVod_HasVodInfo) Main_Set_history('vod');
     }
 }
 
