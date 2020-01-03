@@ -31,6 +31,7 @@ var PlayExtra_qualities_Old;
 var PlayExtra_qualityPlaying_Old;
 var PlayExtra_quality_Old;
 var PlayExtra_AutoUrl_Old;
+var PlayExtra_BroadcastID;
 
 var PlayExtra_RefreshAutoTry = 0;
 
@@ -105,6 +106,7 @@ function PlayExtra_KeyEnter() {
                 Play_UserLiveFeedPressed = true;
 
                 PlayExtra_selectedChannel = Main_values_Play_data[6];
+                PlayExtra_BroadcastID = Main_values_Play_data[7];
                 PlayExtra_selectedChannel_id = Main_values_Play_data[14];
                 PlayExtra_IsRerun = Main_values_Play_data[8];
 
@@ -268,6 +270,8 @@ function PlayExtra_loadDataSuccess(responseText) {
             PlayExtra_ShowChat();
         }
         Main_Set_history('live');
+        Play_loadingInfoDataTry = 0;
+        PlayExtra_updateVodInfo();
     }
 }
 
@@ -455,5 +459,37 @@ function PlayExtra_RefreshAutoError(UseAndroid) {
         PlayExtra_RefreshAutoTry++;
         if (PlayExtra_RefreshAutoTry < 5) PlayExtra_RefreshAutoRequest(UseAndroid);
         else if (UseAndroid) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+    }
+}
+
+
+function PlayExtra_updateVodInfo() {
+    var theUrl = Main_kraken_api + 'channels/' + PlayExtra_selectedChannel_id + '/videos?limit=5&broadcast_type=archive&sort=time';
+
+    BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, PlayExtra_updateVodInfoSuccess, PlayExtra_updateVodInfoError, false);
+}
+
+function PlayExtra_updateVodInfoError() {
+    if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
+        Play_loadingInfoDataTimeout += 500;
+        window.setTimeout(function() {
+            if (Play_isOn) Play_updateVodInfo();
+        }, 750);
+    }
+    Play_loadingInfoDataTry++;
+}
+
+function PlayExtra_updateVodInfoSuccess(response) {
+    response = JSON.parse(response).videos;
+    for (var i = 0; i < response.length; i++) {
+        if (response[i].status.indexOf('recording') !== -1) {
+
+            Main_history_UpdateLiveVod(
+                PlayExtra_BroadcastID,
+                response[i]._id.substr(1),
+                'https://static-cdn.jtvnw.net/s3_vods/' + response[i].animated_preview_url.split('/')[3] +
+                '/thumb/thumb0-' + Main_VideoSize + '.jpg'
+            );
+        }
     }
 }

@@ -610,16 +610,15 @@ function Play_updateVodInfoError() {
     }
     Play_loadingInfoDataTry++;
 }
-var Play_VodID;
 
 function Play_updateVodInfoSuccess(response) {
     response = JSON.parse(response).videos;
     for (var i = 0; i < response.length; i++) {
         if (response[i].status.indexOf('recording') !== -1) {
-            Play_VodID = response[i]._id.substr(1);
+
             Main_history_UpdateLiveVod(
                 Play_BroadcastID,
-                Play_VodID,
+                response[i]._id.substr(1),
                 'https://static-cdn.jtvnw.net/s3_vods/' + response[i].animated_preview_url.split('/')[3] +
                 '/thumb/thumb0-' + Main_VideoSize + '.jpg'
             );
