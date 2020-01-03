@@ -441,7 +441,7 @@
 
         .stream_info_live_title_single_line {
             word-wrap: break-word;
-            max-height: 1.2em;
+            max-height: 1.175em;
             font-size: 72%;
             overflow: hidden;
             white-space: normal;
@@ -856,6 +856,7 @@
         }
 
         div.lang_text,
+        div.vodicon_text,
         div.partnericon_text {
             display: inline-block;
             width: auto;
@@ -863,11 +864,18 @@
             font-family: 'Roboto';
         }
 
+        div.vodicon_text,
         div.partnericon_text {
             border-radius: 0.1em;
             text-shadow: none;
             font-size: 60%;
             font-family: 'Roboto-Bold';
+        }
+
+        div.vodicon_text {
+            transform: translateY(-8%);
+            border-radius: 0.5em;
+            font-size: 70%;
         }
 
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
@@ -1243,7 +1251,7 @@
         }
 
         .hide {
-            display: none;
+            display: none !important;
         }
 
         div.dialog_end_icons_start,

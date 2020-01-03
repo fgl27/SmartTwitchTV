@@ -349,7 +349,7 @@ function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until
         '</span></div></div>');
 }
 
-function Screens_createCellLive(id, idArray, valuesArray, Extra_when) {
+function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodimg) {
     var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
 
     return Screens_createCell(
@@ -357,13 +357,19 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when) {
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
-        '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="' +
+        (Extra_vodimg ?
+            ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + inUseObj.img_404 +
+                '\';};this.src=\'' + Extra_vodimg + '\';' +
+                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hide\');' +
+                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hide\');" crossorigin="anonymous"></div><div id="') :
+            ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
         idArray[2] + id +
         '" class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
         '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
-        (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
-        ';"></i> ' + valuesArray[1] + '</div><div id="' + idArray[7] + id +
+        (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
+        '<div class="vodicon_text hide" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;' +
+        valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
         '<div id="' + idArray[4] + id + '"class="' +
@@ -375,7 +381,7 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when) {
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
         '</span></div></div>');
 }
-
+//document.getElementById(idsArray[5] + id).classList.add(\'hide\');
 function Screens_loadDataSuccessFinish() {
     if (!inUseObj.status) {
         if (Main_values.Main_Go === Main_aGame) AGame_Checkfallow();
