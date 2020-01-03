@@ -1212,9 +1212,11 @@ function Screens_histDialogHide(Update) {
             Main_values_History_data[AddUser_UsernameArray[0].id][inUseObj.Type] = [];
             Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
             Main_ReloadScreen();
-        } else if (inUseObj.histPosX[0] !== inUseObj.histPosXTemp[0]) Main_ReloadScreen();
+        } else if (inUseObj.histPosX[0] !== inUseObj.histPosXTemp[0]) {
+            inUseObj.label_init();
+            Main_ReloadScreen();
+        }
     } else {
-        Main_Slice(inUseObj.histPosXTemp, inUseObj.histPosX);
         inUseObj.histPosX = Main_Slice(inUseObj.histPosXTemp);
         Main_setItem(inUseObj.histPosXName, JSON.stringify(inUseObj.histPosX));
     }
