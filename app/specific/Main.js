@@ -1505,7 +1505,7 @@ function Main_history_UpdateLive(id, game, title, views, created_at) {
         //Some values will change as the stream updates or as the streames goes offline and online again
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[4] = Main_addCommas(views);
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[4] = STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12] = created_at;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
             STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
