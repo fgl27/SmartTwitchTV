@@ -352,7 +352,7 @@ function en_USLang() {
     STR_NAME_Z_A = "Name Z - A";
     STR_GAME_A_Z = "Game A - Z";
     STR_GAME_Z_A = "Game Z - A";
-    STR_VIWES_MOST = "Views most";
+    STR_VIWES_MOST = "Views highest";
     STR_VIWES_LOWEST = "Views lowest";
     STR_SEEN_LAST = "Seen last";
     STR_SEEN_FIRTS = "Seen first";
