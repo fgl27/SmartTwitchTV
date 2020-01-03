@@ -1198,14 +1198,27 @@ function Screens_SethistDialogId() {
     Screens_histDialogID = window.setTimeout(Screens_histDialogHide, 6000);
 }
 
-function Screens_histDialogHide() {
+function Screens_histDialogHide(Update) {
     Screens_histRemoveFocus(inUseObj.histPosY);
-    inUseObj.histPosY = 0;
+
     Screens_histAddFocus(0);
     Screens_clearhistDialogId();
     document.body.removeEventListener("keydown", Screens_histhandleKeyDown, false);
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     Main_HideElement('dialog_hist_setting');
+
+    if (Update) {
+        if (inUseObj.histPosY === 2) {
+            Main_values_History_data[AddUser_UsernameArray[0].id][inUseObj.Type] = [];
+            Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+            Main_ReloadScreen();
+        } else if (inUseObj.histPosX[0] !== inUseObj.histPosXTemp[0]) Main_ReloadScreen();
+    } else {
+        Main_Slice(inUseObj.histPosXTemp, inUseObj.histPosX);
+        inUseObj.histPosX = Main_Slice(inUseObj.histPosXTemp);
+        Main_setItem(inUseObj.histPosXName, JSON.stringify(inUseObj.histPosX));
+    }
+    inUseObj.histPosY = 0;
 }
 
 function Screens_histAddFocus(divPos) {
@@ -1294,7 +1307,7 @@ function Screens_histhandleKeyDown(event) {
             }
             break;
         case KEY_ENTER:
-            console.log('KEY_ENTER');
+            Screens_histDialogHide(true);
             break;
         default:
             break;

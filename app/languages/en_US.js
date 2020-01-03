@@ -357,5 +357,5 @@ function en_USLang() {
     STR_SEEN_LAST = "Seen last";
     STR_SEEN_FIRTS = "Seen first";
     STR_PRESS_ENTER_D = "Press enter to delete";
-    STR_PRESS_ENTER_APPLY = "Press enter or back key to exit and apply the changes";
+    STR_PRESS_ENTER_APPLY = "Press enter apply the changes, back to exit without applying";
 }

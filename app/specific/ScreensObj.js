@@ -1322,7 +1322,18 @@ var Base_History_obj = {
     key_pgDown: Main_UserLive,
     key_pgUp: Main_UserChannels,
     histPosY: 0,
+    histPosXTemp: [0, 0, 0],
     sorting: [],
+    sortingValues: [
+        ['name', 1],
+        ['name', 0],
+        ['game', 1],
+        ['game', 0],
+        ['views', 0],
+        ['views', 1],
+        ['date', 0],
+        ['date', 1],
+    ],
     sortingPos: 0,
     Upsorting: function() {
         this.sorting = [
@@ -1358,7 +1369,7 @@ var Base_History_obj = {
     },
     history_concatenate: function() {
         this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
-        Main_History_Sort(this.data, 'name', 1);
+        Main_History_Sort(this.data, this.sortingValues[this.histPosX[0]][0], this.sortingValues[this.histPosX[0]][1]);
         this.dataEnded = true;
         this.loadDataSuccess();
         this.loadingData = false;
@@ -1381,9 +1392,12 @@ var Base_History_obj = {
         Screens_histSetArrow();
 
         Main_textContent(
-            'dialog_hist_val_' + 1,
+            'dialog_hist_val_1',
             this.histArrays[1][this.histPosX[1]]
         );
+        document.getElementById("dialog_hist_left_1").style.opacity = "0";
+        document.getElementById("dialog_hist_right_1").style.opacity = "0";
+        this.histPosXTemp = Main_Slice(this.histPosX);
     }
 };
 
@@ -1573,7 +1587,7 @@ function ScreensObj_HistoryClip() {
                         this.ids,
                         cell.data,
                         cell.date,
-                        cell.watched,
+                        cell.watched
                     )
                 );
 
