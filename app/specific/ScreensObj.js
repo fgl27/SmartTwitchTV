@@ -153,8 +153,10 @@ var Base_Vod_obj = {
     HasAnimateThumb: true,
     Vod_newImg: new Image(),
     AnimateThumb: ScreensObj_AnimateThumbId,
-    addCell: function(cell) {
-        if (!this.idObject[cell._id] && (cell.preview.template + '').indexOf('404_processing') === -1) {
+    addCellBase: function(cell, thubnail) {
+        if (!this.idObject[cell._id] && (thubnail + '').indexOf('404_processing') === -1) {
+
+            cell.preview.template = thubnail;
 
             this.itemsCount++;
             this.idObject[cell._id] = 1;
@@ -169,6 +171,9 @@ var Base_Vod_obj = {
 
             this.coloumn_id++;
         }
+    },
+    addCell: function(cell) {
+        this.addCellBase(cell, cell.preview.template);
     }
 };
 
