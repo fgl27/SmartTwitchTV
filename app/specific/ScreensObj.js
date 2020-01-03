@@ -696,18 +696,22 @@ function ScreensObj_InitUserHost() {
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
                     [
-                        cell.target.preview_urls.template,
-                        cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
-                        cell.target.title, cell.target.meta_game,
+                        cell.target.preview_urls.template,//0
+                        cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,//1
+                        cell.target.title, //2
+                        cell.target.meta_game,//3
                         STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
-                        Main_addCommas(cell.target.viewers),
-                        '',
-                        cell.target.channel.name,
-                        cell.target._id,
-                        false,
-                        cell.target.channel.logo,
-                        '',
-                        ''
+                        Main_addCommas(cell.target.viewers) + STR_SPACE + STR_VIEWER,//4
+                        '',//5 quality
+                        cell.target.channel.name,//6
+                        '',//7 broadcast id
+                        false,//8
+                        cell.target.channel.logo,//9
+                        '',//10 partner
+                        '',//11 stream creat at string
+                        '',//12 stream creat at
+                        cell.target.viewers,//13
+                        cell.target._id//14
                     ]
                 )
             );
@@ -1681,7 +1685,7 @@ function ScreensObj_LiveCellArray(cell) {
         cell.channel.display_name,//1
         cell.channel.status,//2
         cell.game,//3
-        Main_addCommas(cell.viewers),//4
+        STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,//4
         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
         cell.channel.name,//6
         cell._id,//7
