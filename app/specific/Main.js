@@ -1025,7 +1025,14 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
                 ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000)
             );
             if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
+
+            Play_showWarningDialog(STR_LIVE_VOD);
+
             Main_openVod();
+
+            window.setTimeout(function() {
+                if (!Play_IsWarning) Play_HideWarningDialog();
+            }, 2000);
             return;
         }
 
