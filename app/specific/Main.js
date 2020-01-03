@@ -1016,6 +1016,14 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
         var index = Main_history_Exist('live', Main_values_Play_data[7]);
 
         if (index > -1) {
+            Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
+            Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
+            Main_values.Main_selectedChannel = Main_values_Play_data[6];
+
+            Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
+            Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
+            Main_values.Main_selectedChannelPartner = Main_values_Play_data[10];
+
             Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
             Main_values.vodOffset =
                 ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
@@ -1043,7 +1051,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     if (Main_values.Play_isHost) {
         Main_values.Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
         Main_values.Play_selectedChannelDisplayname = Main_values.Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
-    } else Main_values.Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+    } else Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
 
     var playing = document.getElementById(idsArray[5] + id).textContent;
     Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? Main_values_Play_data[3] : '';
