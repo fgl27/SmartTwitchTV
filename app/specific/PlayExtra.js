@@ -462,7 +462,6 @@ function PlayExtra_RefreshAutoError(UseAndroid) {
     }
 }
 
-
 function PlayExtra_updateVodInfo() {
     var theUrl = Main_kraken_api + 'channels/' + PlayExtra_selectedChannel_id + '/videos?limit=5&broadcast_type=archive&sort=time';
 
@@ -492,4 +491,31 @@ function PlayExtra_updateVodInfoSuccess(response) {
             );
         }
     }
+}
+
+function PlayExtra_updateStreamInfo() {
+    var theUrl = Main_kraken_api + 'streams/' + PlayExtra_selectedChannel_id + Main_TwithcV5Flag_I;
+    BasexmlHttpGet(theUrl, 3000, 2, null, PlayExtra_updateStreamInfoValues, PlayExtra_updateStreamInfoError, false);
+}
+
+function PlayExtra_updateStreamInfoValues(response) {
+    response = JSON.parse(response);
+    if (response.stream !== null) {
+        Main_history_UpdateLive(
+            response.stream._id,
+            response.stream.game,
+            response.stream.channel.status,
+            response.stream.viewers
+        );
+    }
+}
+
+function PlayExtra_updateStreamInfoError() {
+    if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
+        window.setTimeout(function() {
+            if (Play_isOn) PlayExtra_updateStreamInfoValues();
+            //give a second for it retry as the TV may be on coming from resume
+        }, 2500);
+        Play_updateStreamInfoErrorTry++;
+    } else Play_updateStreamInfoErrorTry = 0;
 }

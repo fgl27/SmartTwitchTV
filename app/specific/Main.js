@@ -1507,7 +1507,7 @@ function Main_history_Exist(type, id) {
     return -1;
 }
 
-function Main_history_UpdateLive(id, game, title, views, created_at) {
+function Main_history_UpdateLive(id, game, title, views) {
     if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
 
     var index = Main_history_Exist('live', id);
@@ -1528,7 +1528,6 @@ function Main_history_UpdateLive(id, game, title, views, created_at) {
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[4] = STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER;
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12] = created_at;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
             STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
 
