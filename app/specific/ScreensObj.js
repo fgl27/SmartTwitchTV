@@ -1307,6 +1307,7 @@ var Base_History_obj = {
     thumbclass: 'stream_thumbnail_live_holder',
     img_404: IMG_404_VIDEO,
     isHistory: true,
+    streamerID: {},
     HasSwitches: true,
     key_pgDown: Main_UserLive,
     key_pgUp: Main_UserChannels,
@@ -1357,6 +1358,7 @@ var Base_History_obj = {
         return STR_NO + STR_SPACE + STR_HISTORY;
     },
     history_concatenate: function() {
+        this.streamerID = {};
         this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
         Main_History_Sort(this.data, this.sortingValues[this.histPosX[0]][0], this.sortingValues[this.histPosX[0]][1]);
         this.dataEnded = true;
@@ -1439,10 +1441,13 @@ function ScreensObj_HistoryLive() {
                         this.ids,
                         cell.data,
                         cell.date,
-                        cell.vodimg
+                        cell.vodimg,
+                        (this.streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
                     )
                 );
 
+                //If there is alredy one stream shoing all the rest is a VOD
+                this.streamerID[cell.data[14]] = 1;
                 this.coloumn_id++;
             }
         },

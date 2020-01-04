@@ -1009,37 +1009,25 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     Main_values.Play_selectedChannel_id = Main_values_Play_data[14];
     Main_values.IsRerun = Main_values_Play_data[8];
 
-    //The stream is now a vod
-    if (document.getElementById(idsArray[1] + id).src.indexOf('s3_vods') !== -1) {
+    if (inUseObj.screen === Main_HistoryLive) {
 
         var index = Main_history_Exist('live', Main_values_Play_data[7]);
 
         if (index > -1) {
-            Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
-            Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
-            Main_values.Main_selectedChannel = Main_values_Play_data[6];
 
-            Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
-            Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
-            Main_values.Main_selectedChannelPartner = Main_values_Play_data[10];
+            if (document.getElementById(idsArray[1] + id).src.indexOf('s3_vods') !== -1) {
+                Main_OPenAsVod(index);
+                return;
+            } else {//is live check is is really
 
-            Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-            Main_values.vodOffset =
-                ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[3] + id);
+                else Main_OPenAsLive();
 
-            if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
-            PlayVod_VodOffsetTemp = Main_values.vodOffset;
+                return;
+            }
 
-            Main_openVod();
-            Play_showWarningDialog(STR_LIVE_VOD);
-
-            window.setTimeout(function() {
-                if (!Play_IsWarning) Play_HideWarningDialog();
-            }, 3000);
-            return;
         }
-
-    } else console.log('is notvod');
+    }
 
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
 
@@ -1048,11 +1036,92 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
         Main_values.Play_selectedChannelDisplayname = Main_values.Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
     } else Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
 
-    var playing = document.getElementById(idsArray[5] + id).textContent;
-    Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? Main_values_Play_data[3] : '';
+    Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
 
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Main_openStream();
+}
+
+var Main_CheckBroadcastIDex;
+var Main_CheckBroadcastIDoc;
+var Main_CheckBroadcastIDErrorTry = 0;
+
+function Main_CheckBroadcastID(index, doc) {
+    Main_CheckBroadcastIDex = index;
+    Main_CheckBroadcastIDoc = doc;
+    Main_CheckBroadcastIDErrorTry = 0;
+    Main_CheckBroadcastIDStart();
+}
+
+function Main_CheckBroadcastIDStart() {
+    var theUrl = Main_kraken_api + 'streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
+    BasexmlHttpGet(theUrl, 3000, 2, null, Main_CheckBroadcastIDStartSucess, Main_CheckBroadcastIDStartError, false);
+}
+
+function Main_CheckBroadcastIDStartSucess(response) {
+    response = JSON.parse(response);
+    if (response.stream !== null) {
+        if (Main_values_Play_data[7] === response.stream._id) {
+            Main_OPenAsLive();
+            return;
+        }
+    }
+
+    //force set as vod and set the div
+    Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex] = Screens_assign(
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex],
+        {
+            forceVod: true
+        }
+    );
+
+    var doc = document.getElementById(Main_CheckBroadcastIDoc);
+    doc.childNodes[0].classList.add('hide');
+    doc.childNodes[2].classList.remove('hide');
+
+    Main_OPenAsVod(Main_CheckBroadcastIDex);
+}
+
+function Main_CheckBroadcastIDStartError() {
+    if (Main_CheckBroadcastIDErrorTry < 5) {
+        Main_CheckBroadcastIDStart();
+        Main_CheckBroadcastIDErrorTry++;
+    } else Main_OPenAsLive();
+}
+
+function Main_OPenAsLive() {
+    Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
+    Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
+    Main_openStream();
+}
+
+function Main_OPenAsVod(index) {
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+        Main_OPenAsLive();
+        return;
+    }
+
+    Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
+    Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
+    Main_values.Main_selectedChannel = Main_values_Play_data[6];
+
+    Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
+    Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
+    Main_values.Main_selectedChannelPartner = Main_values_Play_data[10];
+
+    Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+    Main_values.vodOffset =
+        ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
+
+    if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
+    PlayVod_VodOffsetTemp = Main_values.vodOffset;
+
+    Main_openVod();
+    Play_showWarningDialog(STR_LIVE_VOD);
+
+    window.setTimeout(function() {
+        if (!Play_IsWarning) Play_HideWarningDialog();
+    }, 3000);
 }
 
 function Main_openStream() {
@@ -1502,6 +1571,10 @@ function Main_Set_history(type) {
             );
 
         }
+
+        Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(function(a, b) {
+            return (a.id > b.id ? -1 : (a.id < b.id ? 1 : 0));
+        });
 
         Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
         //Main_History_Sort(type, msort, direction);

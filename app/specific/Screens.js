@@ -349,14 +349,16 @@ function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until
         '</span></div></div>');
 }
 
-function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodimg) {
+//TODO uncomplicate this ifs
+function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodimg, force_VOD) {
     var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
 
     return Screens_createCell(
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
+        idArray[1] + id + '" class="stream_img" alt="" src="' +
+        (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)) +
         (Extra_vodimg ?
             ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + inUseObj.img_404 +
                 '\';};this.src=\'' + Extra_vodimg + '\';' +
@@ -366,9 +368,11 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodi
         idArray[2] + id +
         '" class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
-        '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
+        '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hide' : '') + '" style="color: ' +
         (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
-        (Extra_vodimg ? '<div class="vodicon_text hide" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;' : '') +
+        (Extra_vodimg || force_VOD ?
+            ('<div class="vodicon_text ' + (force_VOD ? '' : 'hide') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
+            '<span ></span>') + //empty span to prevent error when childNodes[2].classList.remove
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
