@@ -1060,6 +1060,7 @@ function Main_CheckBroadcastIDStart() {
 }
 
 function Main_CheckBroadcastIDStartSucess(response) {
+    console.log(response);
     response = JSON.parse(response);
     if (response.stream !== null) {
         if (Main_values_Play_data[7] === response.stream._id) {
@@ -1117,8 +1118,8 @@ function Main_OPenAsVod(index) {
     if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
     PlayVod_VodOffsetTemp = Main_values.vodOffset;
 
-    Main_openVod();
     Play_showWarningDialog(STR_LIVE_VOD);
+    Main_openVod();
 
     window.setTimeout(function() {
         if (!Play_IsWarning) Play_HideWarningDialog();
