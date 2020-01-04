@@ -588,7 +588,7 @@ function Play_updateStreamInfoStartValues(response) {
             );
         }
         Play_loadingInfoDataTry = 0;
-        Play_updateVodInfo();
+        Play_updateVodInfo(response.stream.channel._id, response.stream._id, 0);
     }
 }
 
@@ -602,34 +602,51 @@ function Play_updateStreamInfoStartError() {
     Play_loadingInfoDataTry++;
 }
 
-//When update this also update PlayExtra_updateVodInfo
-function Play_updateVodInfo() {
-    var theUrl = Main_kraken_api + 'channels/' + Main_values.Play_selectedChannel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
+function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
+    var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time',
+        xmlHttp = new XMLHttpRequest();
 
-    BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateVodInfoSuccess, Play_updateVodInfoError, false);
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+
+    for (var i = 0; i < 2; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) Play_updateVodInfoSuccess(xmlHttp.responseText, BroadcastID);
+            else Play_updateVodInfoError(Channel_id, BroadcastID, tryes);
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
-function Play_updateVodInfoError() {
-    if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
-        Play_loadingInfoDataTimeout += 500;
+function Play_updateVodInfoError(Channel_id, BroadcastID, tryes) {
+    if (tryes < 10) {
         window.setTimeout(function() {
-            if (Play_isOn) Play_updateVodInfo();
-        }, 750);
+            if (Play_isOn) Play_updateVodInfo(Channel_id, BroadcastID, tryes);
+        }, 500);
     }
     Play_loadingInfoDataTry++;
 }
 
-function Play_updateVodInfoSuccess(response) {
+function Play_updateVodInfoSuccess(response, BroadcastID) {
     response = JSON.parse(response).videos;
+
     for (var i = 0; i < response.length; i++) {
         if (response[i].status.indexOf('recording') !== -1) {
 
             Main_history_UpdateLiveVod(
-                Play_BroadcastID,
+                BroadcastID,
                 response[i]._id.substr(1),
                 'https://static-cdn.jtvnw.net/s3_vods/' + response[i].animated_preview_url.split('/')[3] +
                 '/thumb/thumb0-' + Main_VideoSize + '.jpg'
             );
+
+            break;
         }
     }
 }
