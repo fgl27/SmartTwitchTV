@@ -1039,6 +1039,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
 
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+
     Main_openStream();
 }
 
@@ -1570,15 +1571,19 @@ function Main_Set_history(type) {
                 }
             );
 
+            if (type === 'live') {
+                //Sort live by id this allows to always show the newst first even by sorting by othrs tipe
+                //this allows to get with are alredy VOD easier when there is more then one broadcast for the same streamer
+                Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
+                    function(a, b) {
+                        return (a.id > b.id ? -1 : (a.id < b.id ? 1 : 0));
+                    }
+                );
+            }
+
+            Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+            console.log(Main_values_History_data);
         }
-
-        Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(function(a, b) {
-            return (a.id > b.id ? -1 : (a.id < b.id ? 1 : 0));
-        });
-
-        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
-        //Main_History_Sort(type, msort, direction);
-        console.log(Main_values_History_data);
     }
 }
 
@@ -1615,8 +1620,8 @@ function Main_history_UpdateLive(id, game, title, views) {
             STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
 
         Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        console.log(Main_values_History_data);
     }
-    console.log(Main_values_History_data);
 }
 
 function Main_history_UpdateLiveVod(id, vod, vod_img) {
@@ -1635,8 +1640,8 @@ function Main_history_UpdateLiveVod(id, vod, vod_img) {
             }
         );
         Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        console.log(Main_values_History_data);
     }
-    console.log(Main_values_History_data);
 }
 
 function Main_history_UpdateVod(id, time) {
@@ -1655,8 +1660,8 @@ function Main_history_UpdateVod(id, time) {
             }
         );
         Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        console.log(Main_values_History_data);
     }
-    console.log(Main_values_History_data);
 }
 
 function Main_history_UpdateClip(id, time) {
@@ -1675,8 +1680,8 @@ function Main_history_UpdateClip(id, time) {
             }
         );
         Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        console.log(Main_values_History_data);
     }
-    console.log(Main_values_History_data);
 }
 
 function Main_Restore_history() {
@@ -1686,16 +1691,19 @@ function Main_Restore_history() {
 
 function Main_History_Sort(array, msort, direction) {
     if (direction) {//a-z
-        array.sort(function(a, b) {
-            return (a[msort] < b[msort] ? -1 : (a[msort] > b[msort] ? 1 : 0));
-        });
+        array.sort(
+            function(a, b) {
+                return (a[msort] < b[msort] ? -1 : (a[msort] > b[msort] ? 1 : 0));
+            }
+        );
     } else {//z-a
-        array.sort(function(a, b) {
-            return (a[msort] > b[msort] ? -1 : (a[msort] < b[msort] ? 1 : 0));
-        });
+        array.sort(
+            function(a, b) {
+                return (a[msort] > b[msort] ? -1 : (a[msort] < b[msort] ? 1 : 0));
+            }
+        );
     }
 }
-
 
 function Main_Slice(arrayTocopy) {
     var array = [];
