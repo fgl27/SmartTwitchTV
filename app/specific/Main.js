@@ -1060,7 +1060,6 @@ function Main_CheckBroadcastIDStart() {
 }
 
 function Main_CheckBroadcastIDStartSucess(response) {
-    console.log(response);
     response = JSON.parse(response);
     if (response.stream !== null) {
         if (Main_values_Play_data[7] === response.stream._id) {
