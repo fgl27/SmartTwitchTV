@@ -44,6 +44,7 @@ var PlayVod_SaveOffsetId;
 var PlayVod_WasSubChekd = false;
 var PlayVod_VodIdex;
 var PlayVod_VodOffset;
+var PlayVod_VodOffsetTemp;
 var PlayVod_HasVodInfo = false;
 //Variable initialization end
 
@@ -182,6 +183,17 @@ function PlayVod_updateVodInfoError() {
 
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
+
+    ChannelVod_DurationSeconds = parseInt(response.length);
+
+    if (ChannelVod_DurationSeconds < PlayVod_VodOffsetTemp) {
+        Android.mseekTo(0);
+        Main_values.vodOffset = 0;
+        Chat_offset = 0;
+        Chat_Init();
+    }
+    PlayVod_VodOffsetTemp = 0;
+
     Main_values_Play_data = ScreensObj_VodCellArray(response);
     Main_Set_history('vod');
 
@@ -202,7 +214,7 @@ function PlayVod_updateVodInfoPannel(response) {
     Main_textContent("stream_live_viewers", '');
     Main_textContent("stream_watching_time", '');
 
-    ChannelVod_DurationSeconds = parseInt(response.length);
+
     Main_textContent('progress_bar_duration', Play_timeS(ChannelVod_DurationSeconds));
 
     PlayVod_currentTime = Main_values.vodOffset * 1000;

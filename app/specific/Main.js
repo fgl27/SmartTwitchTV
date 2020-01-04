@@ -1011,7 +1011,6 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
 
     //The stream is now a vod
     if (document.getElementById(idsArray[1] + id).src.indexOf('s3_vods') !== -1) {
-        console.log('is vod');
 
         var index = Main_history_Exist('live', Main_values_Play_data[7]);
 
@@ -1028,12 +1027,8 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
             Main_values.vodOffset =
                 ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
 
-            console.log('vod id ' + Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid);
-            console.log('vod offset ' +
-                ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000)
-            );
             if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
-
+            PlayVod_VodOffsetTemp = Main_values.vodOffset;
 
             Main_openVod();
             Play_showWarningDialog(STR_LIVE_VOD);
