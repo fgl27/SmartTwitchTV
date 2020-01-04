@@ -1426,7 +1426,7 @@ function ScreensObj_HistoryLive() {
                     this.history_exit();
                     Main_SwitchScreenAction();
                 } else Screens_histStart();
-            } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+            } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown, true);
 
         },
         addCell: function(cell) {
