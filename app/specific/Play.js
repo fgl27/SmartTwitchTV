@@ -604,7 +604,7 @@ function Play_updateStreamInfoStartError() {
 
 //When update this also update PlayExtra_updateVodInfo
 function Play_updateVodInfo() {
-    var theUrl = Main_kraken_api + 'channels/' + Main_values.Play_selectedChannel_id + '/videos?limit=5&broadcast_type=archive&sort=time';
+    var theUrl = Main_kraken_api + 'channels/' + Main_values.Play_selectedChannel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
 
     BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateVodInfoSuccess, Play_updateVodInfoError, false);
 }
