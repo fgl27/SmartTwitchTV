@@ -354,8 +354,8 @@ function en_USLang() {
     STR_GAME_Z_A = "Game Z - A";
     STR_VIWES_MOST = "Views highest";
     STR_VIWES_LOWEST = "Views lowest";
-    STR_SEEN_LAST = "Seen last";
-    STR_SEEN_FIRTS = "Seen first";
+    STR_NEWEST = "Newest";
+    STR_OLDEST = "Oldest";
     STR_PRESS_ENTER_D = "Press enter to delete";
     STR_PRESS_ENTER_APPLY = "Press enter apply the changes, back to exit without applying";
     STR_LIVE_VOD = "This Live stream is now a VOD<br>opening the VOD from where you last stop watching the Live";
