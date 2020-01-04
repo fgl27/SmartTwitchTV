@@ -383,7 +383,7 @@ function UserLiveFeed_CreatFeed(id, data) {
         '" class="stream_info_live_name" style="width: 63%; display: inline-block;">' + Main_ReplaceLargeFont(data[1]) + '</div>' +
         '<div "class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
         '<i class="icon-' + (!data[8] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' +
-        STR_SPACE + data[4] + '</div></div><div id="' + UserLiveFeed_ids[4] + id +
+        STR_SPACE + Main_addCommas(data[13]) + '</div></div><div id="' + UserLiveFeed_ids[4] + id +
         '"class="stream_info_live_title">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div><div id="' +
         UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + data[3] + '</div></span></div></div>';
 
@@ -409,7 +409,7 @@ function UserLiveFeed_CreatSideFeed(id, data) {
         UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + data[3] +
         '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
         (!data[8] ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 55%; "></i><div style="font-size: 58%;">' + data[4] + '</div></div></div></div></div></div>';
+        ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(data[13]) + '</div></div></div></div></div></div>';
 
     return div;
 }
