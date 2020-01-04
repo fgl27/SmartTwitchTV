@@ -1000,7 +1000,7 @@ function Main_ThumbOpenIsNull(id, thumbnail) {
     return document.getElementById(thumbnail + id) === null;
 }
 
-function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
+function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
@@ -1009,7 +1009,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
     Main_values.Play_selectedChannel_id = Main_values_Play_data[14];
     Main_values.IsRerun = Main_values_Play_data[8];
 
-    if (inUseObj.screen === Main_HistoryLive) {
+    if (checkHistory) {
 
         var index = Main_history_Exist('live', Main_values_Play_data[7]);
 
