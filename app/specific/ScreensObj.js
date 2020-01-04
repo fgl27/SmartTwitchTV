@@ -1315,26 +1315,26 @@ var Base_History_obj = {
     histPosXTemp: [0, 0, 0],
     sorting: [],
     sortingValues: [
+        ['date', 0],
+        ['date', 1],
         ['name', 1],
         ['name', 0],
         ['game', 1],
         ['game', 0],
         ['views', 0],
-        ['views', 1],
-        ['date', 0],
-        ['date', 1],
+        ['views', 1]
     ],
     sortingPos: 0,
     Upsorting: function() {
         this.sorting = [
+            STR_NEWEST,
+            STR_OLDEST,
             STR_NAME_A_Z,
             STR_NAME_Z_A,
             STR_GAME_A_Z,
             STR_GAME_Z_A,
             STR_VIWES_MOST,
-            STR_VIWES_LOWEST,
-            STR_SEEN_LAST,
-            STR_SEEN_FIRTS
+            STR_VIWES_LOWEST
         ];
     },
     histEna: [],
