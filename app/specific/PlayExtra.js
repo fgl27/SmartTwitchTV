@@ -97,8 +97,11 @@ function PlayExtra_KeyEnter() {
             Main_ready(function() {
                 PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
 
-                if (PlayExtra_WasPicturePicture) PlayExtra_SavePlayData();
-                else PlayExtra_Save_selectedChannel_id_Old = null;
+                if (PlayExtra_WasPicturePicture) {
+                    //PlayExtra_PicturePicture was alredy enable so save data and update live historyinfo
+                    PlayExtra_updateStreamInfo();
+                    PlayExtra_SavePlayData();
+                } else PlayExtra_Save_selectedChannel_id_Old = null;
 
                 PlayExtra_PicturePicture = true;
 
@@ -463,7 +466,7 @@ function PlayExtra_RefreshAutoError(UseAndroid) {
 }
 
 function PlayExtra_updateVodInfo() {
-    var theUrl = Main_kraken_api + 'channels/' + PlayExtra_selectedChannel_id + '/videos?limit=5&broadcast_type=archive&sort=time';
+    var theUrl = Main_kraken_api + 'channels/' + PlayExtra_selectedChannel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
 
     BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, PlayExtra_updateVodInfoSuccess, PlayExtra_updateVodInfoError, false);
 }
@@ -472,7 +475,7 @@ function PlayExtra_updateVodInfoError() {
     if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
         Play_loadingInfoDataTimeout += 500;
         window.setTimeout(function() {
-            if (Play_isOn) Play_updateVodInfo();
+            if (Play_isOn) PlayExtra_updateVodInfo();
         }, 750);
     }
     Play_loadingInfoDataTry++;
@@ -513,7 +516,7 @@ function PlayExtra_updateStreamInfoValues(response) {
 function PlayExtra_updateStreamInfoError() {
     if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
         window.setTimeout(function() {
-            if (Play_isOn) PlayExtra_updateStreamInfoValues();
+            if (Play_isOn) PlayExtra_updateStreamInfo();
             //give a second for it retry as the TV may be on coming from resume
         }, 2500);
         Play_updateStreamInfoErrorTry++;

@@ -2012,6 +2012,7 @@ function Play_CloseSmall() {
             Play_SetFullScreen(Play_isFullScreen);
         }
     }
+    PlayExtra_updateStreamInfo();
     PlayExtra_PicturePicture = false;
     PlayExtra_selectedChannel = '';
     PlayExtra_UnSetPanel();
