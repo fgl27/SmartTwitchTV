@@ -362,16 +362,16 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodi
         (Extra_vodimg ?
             ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + inUseObj.img_404 +
                 '\';};this.src=\'' + Extra_vodimg + '\';' +
-                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hide\');' +
-                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hide\');" crossorigin="anonymous"></div><div id="') :
+                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hideimp\');' +
+                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
             ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
         idArray[2] + id +
         '" class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
-        '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hide' : '') + '" style="color: ' +
+        '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
         (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
         (Extra_vodimg || force_VOD ?
-            ('<div class="vodicon_text ' + (force_VOD ? '' : 'hide') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
+            ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
             '<span ></span>') + //empty span to prevent error when childNodes[2].classList.remove
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
@@ -385,7 +385,7 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodi
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
         '</span></div></div>');
 }
-//document.getElementById(idsArray[5] + id).classList.add(\'hide\');
+
 function Screens_loadDataSuccessFinish() {
     if (!inUseObj.status) {
         if (Main_values.Main_Go === Main_aGame) AGame_Checkfallow();

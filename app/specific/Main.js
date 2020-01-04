@@ -1076,8 +1076,8 @@ function Main_CheckBroadcastIDStartSucess(response) {
     );
 
     var doc = document.getElementById(Main_CheckBroadcastIDoc);
-    doc.childNodes[0].classList.add('hide');
-    doc.childNodes[2].classList.remove('hide');
+    doc.childNodes[0].classList.add('hideimp');
+    doc.childNodes[2].classList.remove('hideimp');
 
     Main_OPenAsVod(Main_CheckBroadcastIDex);
 }
