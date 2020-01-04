@@ -274,7 +274,7 @@ function PlayExtra_loadDataSuccess(responseText) {
         }
         Main_Set_history('live');
         Play_loadingInfoDataTry = 0;
-        PlayExtra_updateVodInfo();
+        Play_updateVodInfo(PlayExtra_selectedChannel_id, PlayExtra_BroadcastID, 0);
     }
 }
 
@@ -462,37 +462,6 @@ function PlayExtra_RefreshAutoError(UseAndroid) {
         PlayExtra_RefreshAutoTry++;
         if (PlayExtra_RefreshAutoTry < 5) PlayExtra_RefreshAutoRequest(UseAndroid);
         else if (UseAndroid) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
-    }
-}
-
-function PlayExtra_updateVodInfo() {
-    var theUrl = Main_kraken_api + 'channels/' + PlayExtra_selectedChannel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
-
-    BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, PlayExtra_updateVodInfoSuccess, PlayExtra_updateVodInfoError, false);
-}
-
-function PlayExtra_updateVodInfoError() {
-    if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
-        Play_loadingInfoDataTimeout += 500;
-        window.setTimeout(function() {
-            if (Play_isOn) PlayExtra_updateVodInfo();
-        }, 750);
-    }
-    Play_loadingInfoDataTry++;
-}
-
-function PlayExtra_updateVodInfoSuccess(response) {
-    response = JSON.parse(response).videos;
-    for (var i = 0; i < response.length; i++) {
-        if (response[i].status.indexOf('recording') !== -1) {
-
-            Main_history_UpdateLiveVod(
-                PlayExtra_BroadcastID,
-                response[i]._id.substr(1),
-                'https://static-cdn.jtvnw.net/s3_vods/' + response[i].animated_preview_url.split('/')[3] +
-                '/thumb/thumb0-' + Main_VideoSize + '.jpg'
-            );
-        }
     }
 }
 
