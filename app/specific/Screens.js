@@ -412,6 +412,7 @@ function Screens_loadDataSuccessFinish() {
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;
+                Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
                 Main_ready(function() {
                     if (Main_values.Play_WasPlaying === 1) Main_openStream();
@@ -423,7 +424,6 @@ function Screens_loadDataSuccessFinish() {
                     }
 
                     Main_SwitchScreen(true);
-                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
                     window.setTimeout(function() {
                         if (!Play_IsWarning) Play_HideWarningDialog();
                     }, 3000);
