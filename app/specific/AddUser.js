@@ -331,7 +331,7 @@ function AddUser_SaveUserArray() {
     Main_setItem('AddUser_UsernameArray', string);
 
     try {
-        if (Main_CanBackup) Android.BackupFile('user.json', string);
+        if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
     } catch (e) {}
 }
 
