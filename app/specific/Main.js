@@ -142,6 +142,8 @@ var Main_vp9supported = false;
 var Main_Fix = "kimne78kx3";
 var Main_DoRestore = true;
 var Main_CanBackup = false;
+var Main_UserBackupFile = 'user.json';
+var Main_HistoryBackupFile = 'history.json';
 //Variable initialization end
 
 // this function will be called only once the first time the app startup
@@ -271,9 +273,9 @@ function Main_BackupDialodKeyDown(event) {
 function Main_initRestoreBackups() {
     try {
 
-        if (Android.HasBackupFile('user.json')) {
+        if (Android.HasBackupFile(Main_UserBackupFile)) {
 
-            var tempBackup = Android.RestoreBackupFile('user.json');
+            var tempBackup = Android.RestoreBackupFile(Main_UserBackupFile);
 
             if (tempBackup !== null) {
                 var tempBackupArray = JSON.parse(tempBackup) || [];
@@ -281,7 +283,7 @@ function Main_initRestoreBackups() {
                 if (tempBackupArray.length > 0) {
                     Main_setItem('AddUser_UsernameArray', tempBackup);
 
-                    tempBackup = Android.RestoreBackupFile('history.json');
+                    tempBackup = Android.RestoreBackupFile(Main_HistoryBackupFile);
                     if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
 
                     AddUser_RestoreUsers();
@@ -303,8 +305,8 @@ function Main_initWindows() {
         //Backup at start as a backup may never be done yet
         if (Main_CanBackup) {
             try {
-                Android.BackupFile('user.json', JSON.stringify(AddUser_UsernameArray));
-                Android.BackupFile('history.json', JSON.stringify(Main_values_History_data));
+                Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
             } catch (e) {}
         }
 
@@ -1798,7 +1800,7 @@ function Main_setHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
     Main_setItem('Main_values_History_data', string);
     try {
-        if (Main_CanBackup) Android.BackupFile('history.json', string);
+        if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
     } catch (e) {}
 }
 
