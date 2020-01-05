@@ -362,6 +362,7 @@ function en_USLang() {
     STR_BACKUP = "Allow the app to make and restore backups?<br>(Users and they history will be backup)" + "<br><br>" +
         "Click Yes the app will save backups for future use, and restore a saved backup if app data is empty." +
         "Is necessary to give the app storage permission for this, so give before click yes." + "<br><br>" +
-        "If you don't give storage permission no backups will be ever made.";
+        "If you don't give storage permission no backups will be ever made." + "<br><br>" +
+        "The Backup folder is Main_Storage/data/com.fgl27.twitch/Backup";
     STR_DELETE_SURE = "Are you sure you wanna to delete ";
 }
