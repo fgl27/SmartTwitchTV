@@ -157,7 +157,6 @@ public class PlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
-            check_writeexternalstorage();
             IsonStop = false;
             onCreateReady = true;
             setContentView(R.layout.activity_player);
@@ -1177,6 +1176,12 @@ public class PlayerActivity extends Activity {
             if (permission) return Tools.RestoreBackupFile(file, mwebContext);
 
             return null;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void requestWr() {
+            myHandler.post(PlayerActivity.this::check_writeexternalstorage);
         }
     }
 
