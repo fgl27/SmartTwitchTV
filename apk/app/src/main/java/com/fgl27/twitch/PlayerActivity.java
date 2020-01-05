@@ -1154,8 +1154,11 @@ public class PlayerActivity extends Activity {
             }
 
             if (permission) {
-                String[] content = {file, file_content};
-                new Tools.BackupJson(mwebContext).execute(content);
+                new Tools.BackupJson().execute(
+                        mwebContext.getPackageName(),
+                        file,
+                        file_content
+                );
             }
         }
 
