@@ -359,4 +359,8 @@ function en_USLang() {
     STR_PRESS_ENTER_D = "Press enter to delete";
     STR_PRESS_ENTER_APPLY = "Press enter apply the changes, back to exit without applying";
     STR_LIVE_VOD = "This Live stream is now a VOD<br>opening the VOD from where you last stop watching the Live";
+    STR_BACKUP = "Allow the app to make and restore backups?<br>(Users and they history will be backup)" + "<br><br>" +
+        "Click Yes the app will try to restore a saved backup and save backups for future use." +
+        "Is necessary to give the app storage access for this, so give before click yes." + "<br><br>" +
+        "If you don't wanna to give permission no backups will be ever made.";
 }

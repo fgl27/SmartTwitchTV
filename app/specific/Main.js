@@ -74,6 +74,7 @@ var Main_values = {
     "Codec_is_Check": false,
     "check_pp_workaround": true,
     "OS_is_Check": false,
+    "Restore_Backup_Check": false
 };
 
 var Main_values_Play_data;
@@ -216,43 +217,84 @@ function Main_loadTranslations(language) {
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
 
-        //Allow page to proper load/resize and users 0 be restored before Main_initWindows
-        if (AddUser_RestoreUsers()) window.setTimeout(Main_initWindows, 500);
+        Main_RestoreValues();
+
+        if (AddUser_RestoreUsers()) window.setTimeout(Main_initWindows, 500); //Allow page to proper load/resize and users 0 be restored before Main_initWindows
         else {
-            //TODO add a dialog asking restore???
-            try {
-                window.setTimeout(function() {
 
-                    if (Android.HasBackupFile('user.json')) {
-                        var tempBackup = Android.RestoreBackupFile('user.json');
+            if (!Main_values.Restore_Backup_Check) {
 
-                        if (tempBackup !== null) {
-                            var tempBackupArray = JSON.parse(tempBackup) || [];
-
-                            if (tempBackupArray.length > 0) {
-                                Main_setItem('AddUser_UsernameArray', tempBackup);
-
-                                tempBackup = Android.RestoreBackupFile('history.json');
-                                if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
-
-                                AddUser_RestoreUsers();
-                            }
-                        }
-
-                        window.setTimeout(Main_initWindows, 500);
-                    }
-
-                }, 5000);
-            } catch (e) {
-                window.setTimeout(Main_initWindows, 500);
-            }
+                try {
+                    Android.requestWr();
+                    Main_HideLoadDialog();
+                    Main_innerHTML("main_dialog_remove", STR_BACKUP);
+                    Main_textContent('remove_cancel', STR_NO);
+                    Main_textContent('remove_yes', STR_YES);
+                    Main_ShowElement('main_remove_dialog');
+                    Main_values.Restore_Backup_Check = true;
+                    document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+                } catch (e) {
+                    window.setTimeout(Main_initWindows, 500);
+                    return;
+                }
+            } else window.setTimeout(Main_initWindows, 500);
         }
     });
 
 }
 
+function Main_BackupDialodKeyDown(event) {
+    switch (event.keyCode) {
+        case KEY_LEFT:
+            Users_RemoveCursor--;
+            if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
+            Users_RemoveCursorSet();
+            break;
+        case KEY_RIGHT:
+            Users_RemoveCursor++;
+            if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
+            Users_RemoveCursorSet();
+            break;
+        case KEY_ENTER:
+            Main_showLoadDialog();
+            Main_HideElement('main_remove_dialog');
+            document.body.removeEventListener("keydown", Main_BackupDialodKeyDown);
+            if (Users_RemoveCursor) Main_initRestoreBackups();
+            else Main_initWindows();
+            break;
+        default:
+            break;
+    }
+}
+
+function Main_initRestoreBackups() {
+    try {
+
+        if (Android.HasBackupFile('user.json')) {
+            var tempBackup = Android.RestoreBackupFile('user.json');
+
+            if (tempBackup !== null) {
+                var tempBackupArray = JSON.parse(tempBackup) || [];
+
+                if (tempBackupArray.length > 0) {
+                    Main_setItem('AddUser_UsernameArray', tempBackup);
+
+                    tempBackup = Android.RestoreBackupFile('history.json');
+                    if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
+
+                    AddUser_RestoreUsers();
+                }
+            }
+
+            Main_initWindows();
+        }
+
+    } catch (e) {
+        Main_initWindows();
+    }
+}
+
 function Main_initWindows() {
-    Main_RestoreValues();
 
     if (Main_IsNotBrowser) {
 
