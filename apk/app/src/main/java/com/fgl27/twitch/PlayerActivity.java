@@ -1,7 +1,10 @@
 package com.fgl27.twitch;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -154,6 +157,7 @@ public class PlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
+            check_writeexternalstorage();
             IsonStop = false;
             onCreateReady = true;
             setContentView(R.layout.activity_player);
@@ -1140,6 +1144,40 @@ public class PlayerActivity extends Activity {
         public void mhideSystemUI() {
             myHandler.post(PlayerActivity.this::hideSystemUI);
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void BackupFile(String file, String file_content) {
+
+            boolean permission = true;
+            if (Build.VERSION.SDK_INT >= 23) {
+                permission = mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            }
+
+            if (permission) {
+                String[] content = {file, file_content};
+                new Tools.BackupJson(mwebContext).execute(content);
+            }
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean HasBackupFile(String file) {
+            return Tools.HasBackupFile(file, mwebContext);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String RestoreBackupFile(String file) {
+            boolean permission = true;
+            if (Build.VERSION.SDK_INT >= 23) {
+                permission = mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            }
+
+            if (permission) return Tools.RestoreBackupFile(file, mwebContext);
+
+            return null;
+        }
     }
 
     // Basic EventListener for exoplayer
@@ -1289,6 +1327,19 @@ public class PlayerActivity extends Activity {
             if (netActivity[position] > 0) {
                 netcounter++;
                 netActivityAVG += ((float) netActivity[position] / 1000000);
+            }
+        }
+    }
+
+    @TargetApi(23)
+    private void check_writeexternalstorage() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int hasWriteExternalPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        123);
             }
         }
     }
