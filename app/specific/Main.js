@@ -216,9 +216,37 @@ function Main_loadTranslations(language) {
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
 
-        AddUser_RestoreUsers();
         //Allow page to proper load/resize and users 0 be restored before Main_initWindows
-        window.setTimeout(Main_initWindows, 500);
+        if (AddUser_RestoreUsers()) window.setTimeout(Main_initWindows, 500);
+        else {
+            //TODO add a dialog asking restore???
+            try {
+                window.setTimeout(function() {
+
+                    if (Android.HasBackupFile('user.json')) {
+                        var tempBackup = Android.RestoreBackupFile('user.json');
+
+                        if (tempBackup !== null) {
+                            var tempBackupArray = JSON.parse(tempBackup) || [];
+
+                            if (tempBackupArray.length > 0) {
+                                Main_setItem('AddUser_UsernameArray', tempBackup);
+
+                                tempBackup = Android.RestoreBackupFile('history.json');
+                                if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
+
+                                AddUser_RestoreUsers();
+                            }
+                        }
+
+                        window.setTimeout(Main_initWindows, 500);
+                    }
+
+                }, 5000);
+            } catch (e) {
+                window.setTimeout(Main_initWindows, 500);
+            }
+        }
     });
 
 }
@@ -1581,7 +1609,7 @@ function Main_Set_history(type) {
                 );
             }
 
-            Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+            Main_setHistoryItem();
             console.log(Main_values_History_data);
         }
     }
@@ -1619,7 +1647,7 @@ function Main_history_UpdateLive(id, game, title, views) {
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
             STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
 
-        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        Main_setHistoryItem();
         console.log(Main_values_History_data);
     }
 }
@@ -1639,7 +1667,7 @@ function Main_history_UpdateLiveVod(id, vod, vod_img) {
                 vodimg: vod_img,
             }
         );
-        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        Main_setHistoryItem();
         console.log(Main_values_History_data);
     }
 }
@@ -1659,7 +1687,7 @@ function Main_history_UpdateVod(id, time) {
                 watched: time
             }
         );
-        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        Main_setHistoryItem();
         console.log(Main_values_History_data);
     }
 }
@@ -1679,7 +1707,7 @@ function Main_history_UpdateClip(id, time) {
                 watched: time
             }
         );
-        Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+        Main_setHistoryItem();
         console.log(Main_values_History_data);
     }
 }
@@ -1703,6 +1731,14 @@ function Main_History_Sort(array, msort, direction) {
             }
         );
     }
+}
+
+function Main_setHistoryItem() {
+    var string = JSON.stringify(Main_values_History_data);
+    Main_setItem('Main_values_History_data', string);
+    try {
+        Android.BackupFile('history.json', string);
+    } catch (e) {}
 }
 
 function Main_Slice(arrayTocopy) {

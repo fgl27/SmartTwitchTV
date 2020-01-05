@@ -1219,7 +1219,7 @@ function Screens_histDialogHide(Update) {
     if (Update) {
         if (inUseObj.histPosY === 2) {
             Main_values_History_data[AddUser_UsernameArray[0].id][inUseObj.Type] = [];
-            Main_setItem('Main_values_History_data', JSON.stringify(Main_values_History_data));
+            Main_setHistoryItem();
             Main_ReloadScreen();
         } else if (inUseObj.histPosX[0] !== inUseObj.histPosXTemp[0]) {
             inUseObj.label_init();

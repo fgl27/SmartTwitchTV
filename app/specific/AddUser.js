@@ -196,7 +196,16 @@ function AddUser_RestoreUsers() {
         }
 
         Main_Restore_history();
-    } else AddUser_UpdateSidepanelDefault();
+        try {
+            Android.BackupFile('user.json', JSON.stringify(AddUser_UsernameArray));
+            Android.BackupFile('history.json', JSON.stringify(Main_values_History_data));
+        } catch (e) {}
+
+        return true;
+    } else {
+        AddUser_UpdateSidepanelDefault();
+        return false;
+    }
 }
 
 function AddUser_UpdateSidepanel() {
@@ -323,8 +332,12 @@ function AddUser_SaveUserArray() {
         });
         AddUser_UsernameArray.splice(0, 0, mainuser[0]);
     }
+    var string = JSON.stringify(AddUser_UsernameArray);
+    Main_setItem('AddUser_UsernameArray', string);
 
-    Main_setItem('AddUser_UsernameArray', JSON.stringify(AddUser_UsernameArray));
+    try {
+        Android.BackupFile('user.json', string);
+    } catch (e) {}
 }
 
 function AddUser_UserMakeOne(Position) {
