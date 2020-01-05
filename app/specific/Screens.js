@@ -1252,6 +1252,7 @@ function Screens_HideRemoveDialog() {
     Main_HideElement('main_remove_dialog');
     Users_RemoveCursor = 0;
     Users_UserCursorSet();
+    Users_RemoveCursorSet();
 }
 
 function Screens_histDeleteKeyDown(event) {
@@ -1276,8 +1277,10 @@ function Screens_histDeleteKeyDown(event) {
             Users_RemoveCursor = 0;
         /* falls through */
         case KEY_ENTER:
-            if (Users_RemoveCursor) Screens_histDelete();
+            var temp = Users_RemoveCursor;
             Screens_HideRemoveDialog();
+
+            if (temp) Screens_histDelete();
             break;
         default:
             break;
