@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -497,20 +496,13 @@ public final class Tools {
         return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
-    public static class BackupJson extends AsyncTask< String[], String, Void > {
-
-        private WeakReference< Context > contextRef;
-
-        public BackupJson(Context context) {
-            contextRef = new WeakReference < > (context);
-        }
+    public static class BackupJson extends AsyncTask< String, Void, Void > {
 
         @Override
-        protected Void doInBackground(String[]...backup_contents) {
-            Context mContext = contextRef.get();
+        protected Void doInBackground(String...params) {
             File Dir = new File(
                     Environment.getExternalStorageDirectory(),
-                    String.format(Locale.US, "data/%s/Backup", mContext.getPackageName())
+                    String.format(Locale.US, "data/%s/Backup", params[0])
             );
 
             boolean isDirCreated= Dir.exists();
@@ -520,8 +512,8 @@ public final class Tools {
 
             if(isDirCreated) {
                 try {
-                    FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() +  "/" + backup_contents[0][0], false);
-                    mWriter .write(backup_contents[0][1]);
+                    FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() +  "/" + params[1], false);
+                    mWriter .write(params[2]);
                     mWriter .close();
                 } catch (IOException e) {
                     Log.w(TAG, "BackupJson IOException ", e);
