@@ -758,7 +758,9 @@ function Screens_addFocusGame(y, idArray, forceScroll) {
 }
 
 function Screens_ChangeFocus(y, x) {
-    Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+    if (inUseObj.posY > -1) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
+    else Screens_removeFocusFallow();
+
     Screens_ClearAnimation();
     inUseObj.posY += y;
     inUseObj.posX = x;
@@ -790,7 +792,6 @@ function Screens_BasicExit(before) {
 }
 
 function Screens_KeyUpDown(y) {
-    console.log('Screens_KeyUpDown');
     //TODO improve this
     if (inUseObj.HasSwitches && !inUseObj.posY && y === -1 && !inUseObj.emptyContent) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
@@ -803,7 +804,6 @@ function Screens_KeyUpDown(y) {
         Screens_addFocus();
         Screens_removeFocusFallow();
     } else {
-        console.log('Screens_KeyUpDown else');
         for (var i = 0; i < inUseObj.ColoumnsCount; i++) {
             if (Main_ThumbNull((inUseObj.posY + y), (inUseObj.posX - i), inUseObj.ids[0])) {
                 Screens_ChangeFocus(y, inUseObj.posX - i);
