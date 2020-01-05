@@ -225,7 +225,7 @@ function Main_loadTranslations(language) {
             if (!Main_values.Restore_Backup_Check) {
 
                 try {
-                    Android.requestWr();
+                    if (Main_IsNotBrowser) Android.requestWr();
                     Main_HideLoadDialog();
                     Main_innerHTML("main_dialog_remove", STR_BACKUP);
                     Main_textContent('remove_cancel', STR_NO);
@@ -295,6 +295,8 @@ function Main_initRestoreBackups() {
 }
 
 function Main_initWindows() {
+    Users_RemoveCursor = 0;
+    Users_RemoveCursorSet();
 
     if (Main_IsNotBrowser) {
 
