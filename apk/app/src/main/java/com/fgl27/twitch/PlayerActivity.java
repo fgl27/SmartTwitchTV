@@ -1183,6 +1183,14 @@ public class PlayerActivity extends Activity {
         public void requestWr() {
             myHandler.post(PlayerActivity.this::check_writeexternalstorage);
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean canBackupFile() {
+            if (Build.VERSION.SDK_INT >= 23) {
+                return mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            } else return true;
+        }
     }
 
     // Basic EventListener for exoplayer
