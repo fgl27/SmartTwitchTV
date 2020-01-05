@@ -1414,6 +1414,9 @@ function ScreensObj_HistoryLive() {
                 '(' + this.sorting[this.histPosX[0]] + ')'
             );
         },
+        history_Type: function() {
+            return STR_LIVE;
+        },
         key_play: function() {
 
             if (this.posY === -1) {
@@ -1482,6 +1485,9 @@ function ScreensObj_HistoryVod() {
             Screens_SethistDialogId();
             Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
             this.sethistMainDialog();
+        },
+        history_Type: function() {
+            return STR_VIDEOS;
         },
         label_init: function() {
             Main_HistoryPos = 1;
@@ -1560,6 +1566,9 @@ function ScreensObj_HistoryClip() {
             Screens_SethistDialogId();
             Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
             this.sethistMainDialog();
+        },
+        history_Type: function() {
+            return STR_CLIPS;
         },
         label_init: function() {
             Main_HistoryPos = 2;

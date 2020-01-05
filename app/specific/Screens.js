@@ -790,6 +790,7 @@ function Screens_BasicExit(before) {
 }
 
 function Screens_KeyUpDown(y) {
+    console.log('Screens_KeyUpDown');
     //TODO improve this
     if (inUseObj.HasSwitches && !inUseObj.posY && y === -1 && !inUseObj.emptyContent) {
         Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
@@ -802,6 +803,7 @@ function Screens_KeyUpDown(y) {
         Screens_addFocus();
         Screens_removeFocusFallow();
     } else {
+        console.log('Screens_KeyUpDown else');
         for (var i = 0; i < inUseObj.ColoumnsCount; i++) {
             if (Main_ThumbNull((inUseObj.posY + y), (inUseObj.posX - i), inUseObj.ids[0])) {
                 Screens_ChangeFocus(y, inUseObj.posX - i);
@@ -1218,9 +1220,8 @@ function Screens_histDialogHide(Update) {
 
     if (Update) {
         if (inUseObj.histPosY === 2) {
-            Main_values_History_data[AddUser_UsernameArray[0].id][inUseObj.Type] = [];
-            Main_setHistoryItem();
-            Main_ReloadScreen();
+            Screens_showDeleteDialog();
+            //Screens_histDelete();
         } else if (inUseObj.histPosX[0] !== inUseObj.histPosXTemp[0]) {
             inUseObj.label_init();
             Main_ReloadScreen();
@@ -1230,6 +1231,63 @@ function Screens_histDialogHide(Update) {
         Main_setItem(inUseObj.histPosXName, JSON.stringify(inUseObj.histPosX));
     }
     inUseObj.histPosY = 0;
+}
+
+function Screens_showDeleteDialog() {
+    Main_innerHTML("main_dialog_remove", STR_DELETE_SURE + inUseObj.history_Type() + STR_SPACE + STR_HISTORY + '?');
+    Main_ShowElement('main_remove_dialog');
+    document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
+    document.body.addEventListener("keydown", Screens_histDeleteKeyDown, false);
+    Screens_setRemoveDialog();
+}
+
+function Screens_setRemoveDialog() {
+    Users_RemoveDialogID = window.setTimeout(Screens_HideRemoveDialog, 5000);
+}
+
+function Screens_HideRemoveDialog() {
+    Users_clearUserDialog();
+    document.body.removeEventListener("keydown", Screens_histDeleteKeyDown);
+    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_HideElement('main_remove_dialog');
+    Users_RemoveCursor = 0;
+    Users_UserCursorSet();
+}
+
+function Screens_histDeleteKeyDown(event) {
+    switch (event.keyCode) {
+        case KEY_LEFT:
+            Users_RemoveCursor--;
+            if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
+            Users_RemoveCursorSet();
+            Users_clearRemoveDialog();
+            Screens_setRemoveDialog();
+            break;
+        case KEY_RIGHT:
+            Users_RemoveCursor++;
+            if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
+            Users_RemoveCursorSet();
+            Users_clearRemoveDialog();
+            Screens_setRemoveDialog();
+            break;
+        case KEY_RETURN_Q:
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            Users_RemoveCursor = 0;
+        /* falls through */
+        case KEY_ENTER:
+            if (Users_RemoveCursor) Screens_histDelete();
+            Screens_HideRemoveDialog();
+            break;
+        default:
+            break;
+    }
+}
+
+function Screens_histDelete() {
+    Main_values_History_data[AddUser_UsernameArray[0].id][inUseObj.Type] = [];
+    Main_setHistoryItem();
+    Main_ReloadScreen();
 }
 
 function Screens_histAddFocus(divPos) {
