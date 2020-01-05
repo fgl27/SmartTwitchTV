@@ -363,4 +363,5 @@ function en_USLang() {
         "Click Yes the app will try to restore a saved backup and save backups for future use." +
         "Is necessary to give the app storage access for this, so give before click yes." + "<br><br>" +
         "If you don't wanna to give permission no backups will be ever made.";
+    STR_DELETE_SURE = "Are you sure you wanna to delete ";
 }
