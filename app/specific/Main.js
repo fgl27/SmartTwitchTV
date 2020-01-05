@@ -140,6 +140,8 @@ var Main_updateUserFeedId;
 var Main_vp9supported = false;
 //var Main_SupportsAvc1High = false;
 var Main_Fix = "kimne78kx3";
+var Main_DoRestore = true;
+var Main_CanBackup = false;
 //Variable initialization end
 
 // this function will be called only once the first time the app startup
@@ -219,26 +221,25 @@ function Main_loadTranslations(language) {
 
         Main_RestoreValues();
 
-        if (AddUser_RestoreUsers()) window.setTimeout(Main_initWindows, 500); //Allow page to proper load/resize and users 0 be restored before Main_initWindows
-        else {
+        Main_DoRestore = AddUser_RestoreUsers();
 
-            if (!Main_values.Restore_Backup_Check) {
+        if (!Main_values.Restore_Backup_Check) {
 
-                try {
-                    if (Main_IsNotBrowser) Android.requestWr();
-                    Main_HideLoadDialog();
-                    Main_innerHTML("main_dialog_remove", STR_BACKUP);
-                    Main_textContent('remove_cancel', STR_NO);
-                    Main_textContent('remove_yes', STR_YES);
-                    Main_ShowElement('main_remove_dialog');
-                    Main_values.Restore_Backup_Check = true;
-                    document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
-                } catch (e) {
-                    window.setTimeout(Main_initWindows, 500);
-                    return;
-                }
-            } else window.setTimeout(Main_initWindows, 500);
-        }
+            try {
+                if (Main_IsNotBrowser) Android.requestWr();
+                Main_HideLoadDialog();
+                Main_innerHTML("main_dialog_remove", STR_BACKUP);
+                Main_textContent('remove_cancel', STR_NO);
+                Main_textContent('remove_yes', STR_YES);
+                Main_ShowElement('main_remove_dialog');
+                Main_values.Restore_Backup_Check = true;
+                document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+            } catch (e) {
+                window.setTimeout(Main_initWindows, 500);
+                return;
+            }
+        } else window.setTimeout(Main_initWindows, 500);
+
     });
 
 }
@@ -259,7 +260,7 @@ function Main_BackupDialodKeyDown(event) {
             Main_showLoadDialog();
             Main_HideElement('main_remove_dialog');
             document.body.removeEventListener("keydown", Main_BackupDialodKeyDown);
-            if (Users_RemoveCursor) Main_initRestoreBackups();
+            if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
             else Main_initWindows();
             break;
         default:
@@ -271,6 +272,7 @@ function Main_initRestoreBackups() {
     try {
 
         if (Android.HasBackupFile('user.json')) {
+
             var tempBackup = Android.RestoreBackupFile('user.json');
 
             if (tempBackup !== null) {
@@ -286,15 +288,30 @@ function Main_initRestoreBackups() {
                 }
             }
 
-            Main_initWindows();
         }
 
+        Main_initWindows();
     } catch (e) {
         Main_initWindows();
     }
 }
 
 function Main_initWindows() {
+    try {
+        Main_CanBackup = Android.canBackupFile();
+
+        //Backup at start as a backup may never be done yet
+        if (Main_CanBackup) {
+            try {
+                Android.BackupFile('user.json', JSON.stringify(AddUser_UsernameArray));
+                Android.BackupFile('history.json', JSON.stringify(Main_values_History_data));
+            } catch (e) {}
+        }
+
+    } catch (e) {
+        Main_CanBackup = false;
+    }
+
     Users_RemoveCursor = 0;
     Users_RemoveCursorSet();
 
@@ -1781,7 +1798,7 @@ function Main_setHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
     Main_setItem('Main_values_History_data', string);
     try {
-        Android.BackupFile('history.json', string);
+        if (Main_CanBackup) Android.BackupFile('history.json', string);
     } catch (e) {}
 }
 

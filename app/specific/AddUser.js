@@ -196,11 +196,6 @@ function AddUser_RestoreUsers() {
         }
 
         Main_Restore_history();
-        try {
-            Android.BackupFile('user.json', JSON.stringify(AddUser_UsernameArray));
-            Android.BackupFile('history.json', JSON.stringify(Main_values_History_data));
-        } catch (e) {}
-
         return true;
     } else {
         AddUser_UpdateSidepanelDefault();
@@ -336,7 +331,7 @@ function AddUser_SaveUserArray() {
     Main_setItem('AddUser_UsernameArray', string);
 
     try {
-        Android.BackupFile('user.json', string);
+        if (Main_CanBackup) Android.BackupFile('user.json', string);
     } catch (e) {}
 }
 
