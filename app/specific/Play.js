@@ -1171,6 +1171,7 @@ function Play_exitMain() {
         Play_setFallow();
     } else Play_hideFallow();
 
+    PlayExtra_HideChat();
     UserLiveFeed_PreventHide = false;
     PlayVod_ProgresBarrUpdate(0, 0);
     Main_ShowElement('scene1');
