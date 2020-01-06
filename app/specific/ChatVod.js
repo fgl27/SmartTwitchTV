@@ -54,7 +54,7 @@ function Chat_loadBadgesGlobal() {
 
 function Chat_loadBadgesGlobalRequest() {
     var theUrl = 'https://badges.twitch.tv/v1/badges/global/display';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadBadgesGlobalSuccess, Chat_loadBadgesGlobalError, false);
+    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadBadgesGlobalSuccess, Chat_loadBadgesGlobalError);
 }
 
 function Chat_loadBadgesGlobalError() {
@@ -80,7 +80,7 @@ function Chat_loadEmotes() {
 
 function Chat_loadEmotesRequest() {
     var theUrl = 'https://api.betterttv.net/2/emotes';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccess, Chat_loadEmotesError, false);
+    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccess, Chat_loadEmotesError);
 }
 
 function Chat_loadEmotesError() {
@@ -101,7 +101,7 @@ function Chat_loadEmotesffz() {
 
 function Chat_loadEmotesRequestffz() {
     var theUrl = 'https://api.frankerfacez.com/v1/set/global';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccessffz, Chat_loadEmotesErrorffz, false);
+    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccessffz, Chat_loadEmotesErrorffz);
 }
 
 function Chat_loadEmotesErrorffz() {

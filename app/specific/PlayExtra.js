@@ -467,7 +467,7 @@ function PlayExtra_RefreshAutoError(UseAndroid) {
 
 function PlayExtra_updateStreamInfo() {
     var theUrl = Main_kraken_api + 'streams/' + PlayExtra_selectedChannel_id + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, 3000, 2, null, PlayExtra_updateStreamInfoValues, PlayExtra_updateStreamInfoError, false);
+    BasexmlHttpGet(theUrl, 3000, 2, null, PlayExtra_updateStreamInfoValues, PlayExtra_updateStreamInfoError);
 }
 
 function PlayExtra_updateStreamInfoValues(response) {

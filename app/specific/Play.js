@@ -525,7 +525,7 @@ function Play_ResumeAfterOnline(forced) {
 
 function Play_updateStreamInfoStart() {
     var theUrl = Main_kraken_api + 'streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, false);
+    BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError);
 }
 
 function Play_partnerIcon(name, partner, islive, lang) {
@@ -662,7 +662,7 @@ function Play_updateStreamInfo() {
     }
 
     var theUrl = Main_kraken_api + 'streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError, false);
+    BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
 }
 
 function Play_updateStreamInfoValues(response) {
@@ -1922,7 +1922,7 @@ function Play_CheckHostStart(error_410) {
 function Play_loadDataCheckHost() {
     var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
         encodeURIComponent(Main_values.Play_selectedChannel_id);
-    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError, true);
+    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
 }
 
 function Play_loadDataCheckHostError() {
