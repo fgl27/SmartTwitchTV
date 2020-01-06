@@ -5960,6 +5960,7 @@
         document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
         document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
         Play_IconsResetFocus();
+        PlayExtra_HideChat();
     }
 
     function PlayExtra_qualityChanged() {
@@ -7330,6 +7331,7 @@
             Play_setFallow();
         } else Play_hideFallow();
 
+        PlayExtra_HideChat();
         UserLiveFeed_PreventHide = false;
         PlayVod_ProgresBarrUpdate(0, 0);
         Main_ShowElement('scene1');
