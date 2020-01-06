@@ -8,6 +8,8 @@ import android.content.res.Configuration;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,9 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,6 +50,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 public final class Tools {
@@ -488,5 +494,67 @@ public final class Tools {
     public static boolean deviceIsTV(@NonNull Context context) {
         UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
         return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
+    }
+
+    public static class BackupJson extends AsyncTask< String, Void, Void > {
+
+        @Override
+        protected Void doInBackground(String...params) {
+            File Dir = new File(
+                    Environment.getExternalStorageDirectory(),
+                    String.format(Locale.US, "data/%s/Backup", params[0])
+            );
+
+            boolean isDirCreated= Dir.exists();
+            if (!isDirCreated) {
+                isDirCreated = Dir.mkdirs();
+            }
+
+            if(isDirCreated) {
+                try {
+                    FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() +  "/" + params[1], false);
+                    mWriter .write(params[2]);
+                    mWriter .close();
+                } catch (IOException e) {
+                    Log.w(TAG, "BackupJson IOException ", e);
+                }
+            }
+
+            return null;
+        }
+
+    }
+
+    public static boolean HasBackupFile(String file, Context context) {
+
+        File mFile = new File(
+                Environment.getExternalStorageDirectory(),
+                String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
+        );
+
+        return mFile.exists();
+    }
+
+    public static String RestoreBackupFile(String file, Context context) {
+        try {
+            File mFile = new File(
+                    Environment.getExternalStorageDirectory(),
+                    String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
+            );
+
+            StringBuilder data = new StringBuilder();
+            Scanner mReader = new Scanner(mFile);
+
+            while (mReader .hasNextLine()) {
+                data.append(mReader .nextLine());
+            }
+
+            mReader .close();
+
+            return data.toString();
+        } catch (FileNotFoundException e) {
+            Log.w(TAG, "RestoreBakupFile FileNotFoundException ", e);
+        }
+        return null;
     }
 }

@@ -31,6 +31,7 @@ var PlayExtra_qualities_Old;
 var PlayExtra_qualityPlaying_Old;
 var PlayExtra_quality_Old;
 var PlayExtra_AutoUrl_Old;
+var PlayExtra_BroadcastID;
 
 var PlayExtra_RefreshAutoTry = 0;
 
@@ -86,24 +87,31 @@ function PlayExtra_KeyEnter() {
     var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
     if (doc === null) UserLiveFeed_ResetFeedId();
     else {
-        var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute));
-        if (Main_values.Play_selectedChannel !== selectedChannel && PlayExtra_selectedChannel[6] !== selectedChannel) {
+        Main_values_Play_data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+        if (Main_values.Play_selectedChannel !== Main_values_Play_data &&
+            PlayExtra_selectedChannel[6] !== Main_values_Play_data) {
+
             UserLiveFeed_Hide();
 
             Main_ready(function() {
                 PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
 
-                if (PlayExtra_WasPicturePicture) PlayExtra_SavePlayData();
-                else PlayExtra_Save_selectedChannel_id_Old = null;
+                if (PlayExtra_WasPicturePicture) {
+                    //PlayExtra_PicturePicture was alredy enable so save data and update live historyinfo
+                    PlayExtra_updateStreamInfo();
+                    PlayExtra_SavePlayData();
+                } else PlayExtra_Save_selectedChannel_id_Old = null;
 
                 PlayExtra_PicturePicture = true;
 
                 Main_values.Play_isHost = false;
                 Play_UserLiveFeedPressed = true;
 
-                PlayExtra_selectedChannel = selectedChannel[6];
-                PlayExtra_selectedChannel_id = selectedChannel[7];
-                PlayExtra_IsRerun = selectedChannel[8];
+                PlayExtra_selectedChannel = Main_values_Play_data[6];
+                PlayExtra_BroadcastID = Main_values_Play_data[7];
+                PlayExtra_selectedChannel_id = Main_values_Play_data[14];
+                PlayExtra_IsRerun = Main_values_Play_data[8];
 
                 PlayExtra_isHost = false;
                 PlayExtra_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
@@ -264,6 +272,9 @@ function PlayExtra_loadDataSuccess(responseText) {
             ChatLive_Init(1);
             PlayExtra_ShowChat();
         }
+        Main_Set_history('live');
+        Play_loadingInfoDataTry = 0;
+        Play_updateVodInfo(PlayExtra_selectedChannel_id, PlayExtra_BroadcastID, 0);
     }
 }
 
@@ -452,4 +463,31 @@ function PlayExtra_RefreshAutoError(UseAndroid) {
         if (PlayExtra_RefreshAutoTry < 5) PlayExtra_RefreshAutoRequest(UseAndroid);
         else if (UseAndroid) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
     }
+}
+
+function PlayExtra_updateStreamInfo() {
+    var theUrl = Main_kraken_api + 'streams/' + PlayExtra_selectedChannel_id + Main_TwithcV5Flag_I;
+    BasexmlHttpGet(theUrl, 3000, 2, null, PlayExtra_updateStreamInfoValues, PlayExtra_updateStreamInfoError, false);
+}
+
+function PlayExtra_updateStreamInfoValues(response) {
+    response = JSON.parse(response);
+    if (response.stream !== null) {
+        Main_history_UpdateLive(
+            response.stream._id,
+            response.stream.game,
+            response.stream.channel.status,
+            response.stream.viewers
+        );
+    }
+}
+
+function PlayExtra_updateStreamInfoError() {
+    if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
+        window.setTimeout(function() {
+            if (Play_isOn) PlayExtra_updateStreamInfo();
+            //give a second for it retry as the TV may be on coming from resume
+        }, 2500);
+        Play_updateStreamInfoErrorTry++;
+    } else Play_updateStreamInfoErrorTry = 0;
 }

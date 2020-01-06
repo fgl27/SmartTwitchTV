@@ -343,4 +343,26 @@ function en_USLang() {
     STR_PP_WORKAROUND_SUMMARY = "On some devices running android N or older, is need to enable this, to have PP mode working, don't enable this on a device that doesn't need it as it will result is a lower image quality";
     STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
         STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
+    STR_HISTORY = "History";
+    STR_WATCHED = "Watched on ";
+    STR_UNTIL = "until ";
+    STR_SORTING = "Sorting";
+    STR_DELETE_HISTORY = "Delete this history";
+    STR_NAME_A_Z = "Name A - Z";
+    STR_NAME_Z_A = "Name Z - A";
+    STR_GAME_A_Z = "Game A - Z";
+    STR_GAME_Z_A = "Game Z - A";
+    STR_VIWES_MOST = "Views highest";
+    STR_VIWES_LOWEST = "Views lowest";
+    STR_NEWEST = "Newest";
+    STR_OLDEST = "Oldest";
+    STR_PRESS_ENTER_D = "Press enter to delete";
+    STR_PRESS_ENTER_APPLY = "Press enter apply the changes, back to exit without applying";
+    STR_LIVE_VOD = "This Live stream is now a VOD<br>opening the VOD from where you last stop watching the Live";
+    STR_BACKUP = "Allow the app to make and restore backups?<br>(Users and they history will be backup)" + "<br><br>" +
+        "Click Yes the app will save backups for future use, and restore a saved backup if app data is empty." +
+        "Is necessary to give the app storage permission for this, so give before click yes." + "<br><br>" +
+        "If you don't give storage permission no backups will be ever made." + "<br><br>" +
+        "The Backup folder is Main_Storage/data/com.fgl27.twitch/Backup";
+    STR_DELETE_SURE = "Are you sure you wanna to delete ";
 }

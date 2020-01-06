@@ -179,14 +179,28 @@ function AddUser_loadDataNoUser() {
 function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
+
         //Check and refresh all tokens at start
         for (var i = 0; i < AddUser_UsernameArray.length; i++) {
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
 
             if (!AddUser_UsernameArray[i].logo) AddUser_UpdateUser(i, 0);
             else if (!i) AddUser_UpdateSidepanel();
+
+            //Set user history obj
+            Main_values_History_data[AddUser_UsernameArray[i].id] = {
+                live: [],
+                vod: [],
+                clip: []
+            };
         }
-    } else AddUser_UpdateSidepanelDefault();
+
+        Main_Restore_history();
+        return true;
+    } else {
+        AddUser_UpdateSidepanelDefault();
+        return false;
+    }
 }
 
 function AddUser_UpdateSidepanel() {
@@ -198,7 +212,9 @@ function AddUser_UpdateSidepanelDefault() {
 }
 
 function AddUser_UpdateSidepanelSize(logo, username) {
-    Main_innerHTML("side_panel_new_0_img", '<img class="side_panel_new_img" alt="" src="' + logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\'">');
+    Main_innerHTML("side_panel_new_0_img",
+        '<img class="side_panel_new_img" alt="" src="' +
+        logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';">');
     Sidepannel_SetUserlable(username);
 
     var size = username.length,
@@ -264,6 +280,12 @@ function AddUser_SaveNewUser(responseText) {
         refresh_token: 0
     });
 
+    Main_values_History_data[AddUser_UsernameArray[AddUser_UserFindpos(AddUser_Username.name)].id] = {
+        live: [],
+        vod: [],
+        clip: []
+    };
+
     AddUser_SaveUserArray();
     Users_status = false;
     Users_Userlastadded = AddUser_Username.name;
@@ -305,8 +327,12 @@ function AddUser_SaveUserArray() {
         });
         AddUser_UsernameArray.splice(0, 0, mainuser[0]);
     }
+    var string = JSON.stringify(AddUser_UsernameArray);
+    Main_setItem('AddUser_UsernameArray', string);
 
-    Main_setItem('AddUser_UsernameArray', JSON.stringify(AddUser_UsernameArray));
+    try {
+        if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
+    } catch (e) {}
 }
 
 function AddUser_UserMakeOne(Position) {

@@ -1,7 +1,10 @@
 package com.fgl27.twitch;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -678,7 +681,9 @@ public class PlayerActivity extends Activity {
         websettings.setAllowFileAccess(true);
         websettings.setAllowContentAccess(true);
         websettings.setAllowFileAccessFromFileURLs(true);
-        websettings.setAllowUniversalAccessFromFileURLs(true);
+        //Don't allow CORS from js this is neeed for the images redirec to work
+        //when CORS affects a link that is needed to load one uses Tools.readUrl
+        //websettings.setAllowUniversalAccessFromFileURLs(true);
         websettings.setUseWideViewPort(true);
         websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
@@ -1138,6 +1143,57 @@ public class PlayerActivity extends Activity {
         public void mhideSystemUI() {
             myHandler.post(PlayerActivity.this::hideSystemUI);
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void BackupFile(String file, String file_content) {
+
+            boolean permission = true;
+            if (Build.VERSION.SDK_INT >= 23) {
+                permission = mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            }
+
+            if (permission) {
+                new Tools.BackupJson().execute(
+                        mwebContext.getPackageName(),
+                        file,
+                        file_content
+                );
+            }
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean HasBackupFile(String file) {
+            return Tools.HasBackupFile(file, mwebContext);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String RestoreBackupFile(String file) {
+            boolean permission = true;
+            if (Build.VERSION.SDK_INT >= 23) {
+                permission = mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            }
+
+            if (permission) return Tools.RestoreBackupFile(file, mwebContext);
+
+            return null;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void requestWr() {
+            myHandler.post(PlayerActivity.this::check_writeexternalstorage);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean canBackupFile() {
+            if (Build.VERSION.SDK_INT >= 23) {
+                return mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            } else return true;
+        }
     }
 
     // Basic EventListener for exoplayer
@@ -1287,6 +1343,19 @@ public class PlayerActivity extends Activity {
             if (netActivity[position] > 0) {
                 netcounter++;
                 netActivityAVG += ((float) netActivity[position] / 1000000);
+            }
+        }
+    }
+
+    @TargetApi(23)
+    private void check_writeexternalstorage() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int hasWriteExternalPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        123);
             }
         }
     }
