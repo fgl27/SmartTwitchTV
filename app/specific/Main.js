@@ -1673,7 +1673,6 @@ function Main_Set_history(type) {
             }
 
             Main_setHistoryItem();
-            console.log(Main_values_History_data);
         }
     }
 }
@@ -1711,7 +1710,6 @@ function Main_history_UpdateLive(id, game, title, views) {
             STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
 
         Main_setHistoryItem();
-        console.log(Main_values_History_data);
     }
 }
 
@@ -1731,7 +1729,6 @@ function Main_history_UpdateLiveVod(id, vod, vod_img) {
             }
         );
         Main_setHistoryItem();
-        console.log(Main_values_History_data);
     }
 }
 
@@ -1751,7 +1748,6 @@ function Main_history_UpdateVod(id, time) {
             }
         );
         Main_setHistoryItem();
-        console.log(Main_values_History_data);
     }
 }
 
@@ -1771,13 +1767,11 @@ function Main_history_UpdateClip(id, time) {
             }
         );
         Main_setHistoryItem();
-        console.log(Main_values_History_data);
     }
 }
 
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
-    console.log(Main_values_History_data);
 }
 
 function Main_History_Sort(array, msort, direction) {

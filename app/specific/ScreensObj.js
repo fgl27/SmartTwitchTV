@@ -252,7 +252,6 @@ function ScreensObj_InitChannelVod() {
                 encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitMax +
                 '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') + '&sort=' +
                 this.time[this.periodPos - 1] + '&offset=' + (this.offset + this.extraoffset);
-            console.log(this.url);
         },
         key_play: function() {
             if (this.posY === -1) {
