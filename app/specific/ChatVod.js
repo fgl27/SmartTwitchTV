@@ -279,11 +279,8 @@ function Main_Addline(id) {
     } else {
         Chat_Pause();
         if (Chat_next !== undefined) {
-            Chat_Messages = [];
-            //slice may crash RangeError: Maximum call stack size exceeded
-            for (i = 0; i < Chat_MessagesNext.length; i++) {
-                Chat_Messages.push(Chat_MessagesNext[i]);
-            }
+            //array.slice() may crash RangeError: Maximum call stack size exceeded
+            Chat_Messages = Main_Slice(Chat_MessagesNext);
 
             Chat_Position = 0;
             Chat_Play(id);

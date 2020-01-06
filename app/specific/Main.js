@@ -27,6 +27,9 @@ var Main_addUser = 18;
 var Main_aGame = 19;
 var Main_AGameVod = 20;
 var Main_AGameClip = 21;
+var Main_HistoryLive = 22;
+var Main_HistoryVod = 23;
+var Main_HistoryClip = 24;
 
 var Main_GoBefore = '';
 var Main_values = {
@@ -71,9 +74,11 @@ var Main_values = {
     "Codec_is_Check": false,
     "check_pp_workaround": true,
     "OS_is_Check": false,
+    "Restore_Backup_Check": false
 };
 
 var Main_values_Play_data;
+var Main_values_History_data = {};//The obj is defined in AddUser_RestoreUsers()
 var Main_Force = "4mv6wki5h1ko";
 var Main_LastClickFinish = true;
 var Main_addFocusFinish = true;
@@ -135,6 +140,10 @@ var Main_updateUserFeedId;
 var Main_vp9supported = false;
 //var Main_SupportsAvc1High = false;
 var Main_Fix = "kimne78kx3";
+var Main_DoRestore = true;
+var Main_CanBackup = false;
+var Main_UserBackupFile = 'user.json';
+var Main_HistoryBackupFile = 'history.json';
 //Variable initialization end
 
 // this function will be called only once the first time the app startup
@@ -212,15 +221,101 @@ function Main_loadTranslations(language) {
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
 
-        AddUser_RestoreUsers();
-        //Allow page to proper load/resize and users 0 be restored before Main_initWindows
-        window.setTimeout(Main_initWindows, 500);
+        Main_RestoreValues();
+
+        Main_DoRestore = AddUser_RestoreUsers();
+
+        if (!Main_values.Restore_Backup_Check) {
+
+            try {
+                if (Main_IsNotBrowser) Android.requestWr();
+                Main_HideLoadDialog();
+                Main_innerHTML("main_dialog_remove", STR_BACKUP);
+                Main_textContent('remove_cancel', STR_NO);
+                Main_textContent('remove_yes', STR_YES);
+                Main_ShowElement('main_remove_dialog');
+                Main_values.Restore_Backup_Check = true;
+                document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+            } catch (e) {
+                window.setTimeout(Main_initWindows, 500);
+                return;
+            }
+        } else window.setTimeout(Main_initWindows, 500);
+
     });
 
 }
 
+function Main_BackupDialodKeyDown(event) {
+    switch (event.keyCode) {
+        case KEY_LEFT:
+            Users_RemoveCursor--;
+            if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
+            Users_RemoveCursorSet();
+            break;
+        case KEY_RIGHT:
+            Users_RemoveCursor++;
+            if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
+            Users_RemoveCursorSet();
+            break;
+        case KEY_ENTER:
+            Main_showLoadDialog();
+            Main_HideElement('main_remove_dialog');
+            document.body.removeEventListener("keydown", Main_BackupDialodKeyDown);
+            if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
+            else Main_initWindows();
+            break;
+        default:
+            break;
+    }
+}
+
+function Main_initRestoreBackups() {
+    try {
+
+        if (Android.HasBackupFile(Main_UserBackupFile)) {
+
+            var tempBackup = Android.RestoreBackupFile(Main_UserBackupFile);
+
+            if (tempBackup !== null) {
+                var tempBackupArray = JSON.parse(tempBackup) || [];
+
+                if (tempBackupArray.length > 0) {
+                    Main_setItem('AddUser_UsernameArray', tempBackup);
+
+                    tempBackup = Android.RestoreBackupFile(Main_HistoryBackupFile);
+                    if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
+
+                    AddUser_RestoreUsers();
+                }
+            }
+
+        }
+
+        Main_initWindows();
+    } catch (e) {
+        Main_initWindows();
+    }
+}
+
 function Main_initWindows() {
-    Main_RestoreValues();
+    try {
+        Main_CanBackup = Android.canBackupFile();
+
+        //Backup at start as a backup may never be done yet
+        if (Main_CanBackup) {
+            try {
+                Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+            } catch (e) {}
+        }
+
+    } catch (e) {
+        Main_CanBackup = false;
+    }
+
+    Users_RemoveCursor = 0;
+    Users_RemoveCursorSet();
 
     if (Main_IsNotBrowser) {
 
@@ -330,8 +425,6 @@ function Main_initWindows() {
         Play_SetControls();
         Play_SetFullScreen(Play_isFullScreen);
 
-        PlayVod_RestoreVodIds();
-
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
 
         inUseObj = Live;
@@ -413,6 +506,12 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FALLOW);
 
     Main_innerHTML("dialog_os_text", STR_PP_WARNIG + STR_BR + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS2 + '</div>');
+
+    Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
+    Main_textContent("dialog_hist_setting_name_1", STR_ENABLE);
+    Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
+    Main_textContent('dialog_hist_val_2', STR_PRESS_ENTER_D);
+    Main_textContent('dialog_hist_text_end', STR_PRESS_ENTER_APPLY);
 }
 
 var Main_initClickDoc = [
@@ -734,6 +833,9 @@ function Main_RemoveKeys() {
         else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
         else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
         else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
+        else if (Main_values.Main_Go === Main_HistoryLive) inUseObj = HistoryLive;
+        else if (Main_values.Main_Go === Main_HistoryVod) inUseObj = HistoryVod;
+        else if (Main_values.Main_Go === Main_HistoryClip) inUseObj = HistoryClip;
 
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
     }
@@ -826,6 +928,19 @@ Main_Switchobj[Main_games] = function() {
     inUseObj = Game;
     Screens_init();
 };
+Main_Switchobj[Main_HistoryLive] = function() {
+    inUseObj = HistoryLive;
+    Screens_init();
+};
+Main_Switchobj[Main_HistoryVod] = function() {
+    inUseObj = HistoryVod;
+    Screens_init();
+};
+Main_Switchobj[Main_HistoryClip] = function() {
+    inUseObj = HistoryClip;
+    Screens_init();
+};
+
 
 function Main_SwitchScreenAction(removekey) {
     Main_HideWarningDialog();
@@ -882,6 +997,9 @@ Main_ExitCurrentobj[Main_Vod] = Screens_exit;
 Main_ExitCurrentobj[Main_ChannelClip] = Screens_exit;
 Main_ExitCurrentobj[Main_aGame] = Screens_exit;
 Main_ExitCurrentobj[Main_games] = Screens_exit;
+Main_ExitCurrentobj[Main_HistoryLive] = Screens_exit;
+Main_ExitCurrentobj[Main_HistoryVod] = Screens_exit;
+Main_ExitCurrentobj[Main_HistoryClip] = Screens_exit;
 
 function Main_ExitCurrent(ExitCurrent) {
     if (Main_ExitCurrentobj[ExitCurrent]) Main_ExitCurrentobj[ExitCurrent]();
@@ -897,10 +1015,17 @@ function Main_cleanTopLabel() {
     Main_ShowElement('label_side_panel');
 }
 
-function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z'
+function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z' or ms
     time = new Date(time);
     if (Main_IsDayFirst) return time.getDate() + ' ' + STR_MONTHS[time.getMonth()] + ' ' + time.getFullYear();
     else return STR_MONTHS[time.getMonth()] + ' ' + time.getDate() + ' ' + time.getFullYear();
+}
+
+//WithHM = with hour minutes
+function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or ms
+    var result = Main_videoCreatedAt(time);
+    time = new Date(time);
+    return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
 }
 
 function Main_checkVersion() {
@@ -966,27 +1091,129 @@ function Main_ThumbOpenIsNull(id, thumbnail) {
     return document.getElementById(thumbnail + id) === null;
 }
 
-function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction) {
+function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
     Main_values.Play_selectedChannel = Main_values_Play_data[6];
-    Main_values.Play_selectedChannel_id = Main_values_Play_data[7];
+    Main_values.Play_selectedChannel_id = Main_values_Play_data[14];
     Main_values.IsRerun = Main_values_Play_data[8];
+
+    if (checkHistory) {
+
+        var index = Main_history_Exist('live', Main_values_Play_data[7]);
+
+        if (index > -1) {
+
+            if (document.getElementById(idsArray[1] + id).src.indexOf('s3_vods') !== -1) {
+                Main_OPenAsVod(index);
+                return;
+            } else {//is live check is is really
+
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[3] + id);
+                else Main_OPenAsLive();
+
+                return;
+            }
+
+        }
+    }
 
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
 
     if (Main_values.Play_isHost) {
         Main_values.Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
         Main_values.Play_selectedChannelDisplayname = Main_values.Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
-    } else Main_values.Play_selectedChannelDisplayname = document.getElementById(idsArray[3] + id).textContent;
+    } else Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
 
-    var playing = document.getElementById(idsArray[5] + id).textContent;
-    Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
+    Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
 
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+
     Main_openStream();
+}
+
+var Main_CheckBroadcastIDex;
+var Main_CheckBroadcastIDoc;
+var Main_CheckBroadcastIDErrorTry = 0;
+
+function Main_CheckBroadcastID(index, doc) {
+    Main_CheckBroadcastIDex = index;
+    Main_CheckBroadcastIDoc = doc;
+    Main_CheckBroadcastIDErrorTry = 0;
+    Main_CheckBroadcastIDStart();
+}
+
+function Main_CheckBroadcastIDStart() {
+    var theUrl = Main_kraken_api + 'streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
+    BasexmlHttpGet(theUrl, 3000, 2, null, Main_CheckBroadcastIDStartSucess, Main_CheckBroadcastIDStartError, false);
+}
+
+function Main_CheckBroadcastIDStartSucess(response) {
+    response = JSON.parse(response);
+    if (response.stream !== null) {
+        if (Main_values_Play_data[7] === response.stream._id) {
+            Main_OPenAsLive();
+            return;
+        }
+    }
+
+    //force set as vod and set the div
+    Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex] = Screens_assign(
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex],
+        {
+            forceVod: true
+        }
+    );
+
+    var doc = document.getElementById(Main_CheckBroadcastIDoc);
+    doc.childNodes[0].classList.add('hideimp');
+    doc.childNodes[2].classList.remove('hideimp');
+
+    Main_OPenAsVod(Main_CheckBroadcastIDex);
+}
+
+function Main_CheckBroadcastIDStartError() {
+    if (Main_CheckBroadcastIDErrorTry < 5) {
+        Main_CheckBroadcastIDStart();
+        Main_CheckBroadcastIDErrorTry++;
+    } else Main_OPenAsLive();
+}
+
+function Main_OPenAsLive() {
+    Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
+    Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
+    Main_openStream();
+}
+
+function Main_OPenAsVod(index) {
+    if (!Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+        Main_OPenAsLive();
+        return;
+    }
+
+    Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
+    Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
+    Main_values.Main_selectedChannel = Main_values_Play_data[6];
+
+    Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
+    Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
+    Main_values.Main_selectedChannelPartner = Main_values_Play_data[10];
+
+    Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+    Main_values.vodOffset =
+        ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
+
+    if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
+    PlayVod_VodOffsetTemp = Main_values.vodOffset;
+
+    Play_showWarningDialog(STR_LIVE_VOD);
+    Main_openVod();
+
+    window.setTimeout(function() {
+        if (!Play_IsWarning) Play_HideWarningDialog();
+    }, 3000);
 }
 
 function Main_openStream() {
@@ -1004,23 +1231,26 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
+    ChannelClip_playUrl = Main_values_Play_data[0];
     PlayClip_DurationSeconds = parseInt(Main_values_Play_data[1]);
-    Main_values.Play_gameSelected = Main_values_Play_data[2];
-    Main_values.Main_selectedChannel = Main_values_Play_data[3];
+    Main_values.Main_selectedChannel_id = Main_values_Play_data[2];
+
+    Main_values.Play_gameSelected = Main_values_Play_data[3];
+    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
+    ChannelClip_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_PLAYING + Main_values.Play_gameSelected : "");
+
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[4];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[5];
-    Main_values.Main_selectedChannel_id = Main_values_Play_data[6];
-    Main_values.ChannelVod_vodId = Main_values_Play_data[7];
-    ChannelVod_vodOffset = parseInt(Main_values_Play_data[8]);
+    ChannelClip_Id = Main_values_Play_data[7];
+    Main_values.Main_selectedChannel = Main_values_Play_data[6];
+    Main_values.ChannelVod_vodId = Main_values_Play_data[8];
+    ChannelVod_vodOffset = parseInt(Main_values_Play_data[9]);
 
-    ChannelClip_title = Main_values_Play_data[9];
-    ChannelClip_language = Main_values_Play_data[10];
-    ChannelClip_game = (Main_values_Play_data[2] !== "" ? STR_PLAYING + Main_values_Play_data[2] : "");
-    ChannelClip_createdAt = Main_values_Play_data[11];
-    ChannelClip_views = Main_values_Play_data[12];
-
-    ChannelClip_playUrl2 = Main_values_Play_data[13].split("-preview")[0] + ".mp4";
-    ChannelClip_playUrl = Main_values_Play_data[0];
+    ChannelClip_title = Main_values_Play_data[10];
+    ChannelClip_language = Main_values_Play_data[11];
+    ChannelClip_createdAt = Main_values_Play_data[12];
+    ChannelClip_views = Main_values_Play_data[14];
+    ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
     Main_HideElement('scene1');
@@ -1037,28 +1267,27 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
-    ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[6]);
-    ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
-
-    ChannelVod_language = Main_values_Play_data[9];
-    Main_values.Play_gameSelected = Main_values_Play_data[10];
-
-    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
-
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
     ChannelVod_createdAt = Main_values_Play_data[2];
-    ChannelVod_title = Main_values_Play_data[3];
+
+    Main_values.Play_gameSelected = Main_values_Play_data[3];
+    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
     ChannelVod_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_STARTED + STR_PLAYING + Main_values.Play_gameSelected : "");
+
     ChannelVod_views = Main_values_Play_data[4];
 
-    Main_values.Main_selectedChannel_id = Main_values_Play_data[13];
-    Main_values.Main_selectedChannelLogo = Main_values_Play_data[14];
-    Main_values.Main_selectedChannelPartner = Main_values_Play_data[15];
+    Main_values.Main_selectedChannel = Main_values_Play_data[6];
+    Main_values.ChannelVod_vodId = Main_values_Play_data[7];
 
-    Main_values.Main_selectedChannel = Main_values_Play_data[11];
+    ChannelVod_language = Main_values_Play_data[9];
+    ChannelVod_title = Main_values_Play_data[10];
+    ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[11]);
+    ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
     Play_IncrementView = Main_values_Play_data[12];
 
-    Main_values.ChannelVod_vodId = Main_values_Play_data[8].substr(1);
+    Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
+    Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
+    Main_values.Main_selectedChannelPartner = Main_values_Play_data[16];
 
     Main_openVod();
 }
@@ -1237,6 +1466,9 @@ function Main_ReloadScreen() {
         else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
         else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
         else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
+        else if (Main_values.Main_Go === Main_HistoryLive) inUseObj = HistoryLive;
+        else if (Main_values.Main_Go === Main_HistoryVod) inUseObj = HistoryVod;
+        else if (Main_values.Main_Go === Main_HistoryClip) inUseObj = HistoryClip;
 
         Screens_StartLoad();
     }
@@ -1390,4 +1622,193 @@ function Main_ReplaceLargeFont(text) {
     return text.replace(/[^\x00-\x7F]/g, function(match) {
         return '<span style="font-size: 0.8em;">' + match + '</span>';
     });
+}
+
+function Main_Set_history(type) {
+    if (type === 'live' && HistoryLive.histPosX[1]) return;
+    if (type === 'vod' && HistoryVod.histPosX[1]) return;
+    if (type === 'clip' && HistoryClip.histPosX[1]) return;
+
+    if (AddUser_IsUserSet() && Main_values_Play_data) {
+        var index = Main_history_Exist(type, Main_values_Play_data[7]);
+
+        if (index > -1) {
+
+            //Use Screens_assign() to change only obj that has changed
+            Main_values_History_data[AddUser_UsernameArray[0].id][type][index] = Screens_assign(
+                Main_values_History_data[AddUser_UsernameArray[0].id][type][index],
+                {
+                    data: Main_values_Play_data,
+                    date: new Date().getTime(),
+                    game: Main_values_Play_data[3],
+                    views: Main_values_Play_data[13]
+                }
+            );
+
+        } else {
+            //Limit size to 1000
+            if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 999)
+                Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(0, 1);
+
+            Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
+                {
+                    data: Main_values_Play_data,
+                    date: new Date().getTime(),
+                    name: Main_values_Play_data[6].toLowerCase(),
+                    game: Main_values_Play_data[3],
+                    id: Main_values_Play_data[7],
+                    views: Main_values_Play_data[13],
+                    watched: 0
+                }
+            );
+
+            if (type === 'live') {
+                //Sort live by id this allows to always show the newst first even by sorting by othrs tipe
+                //this allows to get with are alredy VOD easier when there is more then one broadcast for the same streamer
+                Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
+                    function(a, b) {
+                        return (a.id > b.id ? -1 : (a.id < b.id ? 1 : 0));
+                    }
+                );
+            }
+
+            Main_setHistoryItem();
+            console.log(Main_values_History_data);
+        }
+    }
+}
+
+function Main_history_Exist(type, id) {
+
+    for (var index = 0; index < Main_values_History_data[AddUser_UsernameArray[0].id][type].length; index++)
+        if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id === id) return index;
+
+    return -1;
+}
+
+function Main_history_UpdateLive(id, game, title, views) {
+    if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
+
+    var index = Main_history_Exist('live', id);
+
+    if (index > -1) {
+
+        //Use Screens_assign() to change only obj that has changed
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
+            {
+                date: new Date().getTime(),
+                game: game,
+                views: views,
+            }
+        );
+
+        //Some values will change as the stream updates or as the streames goes offline and online again
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[4] = STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER;
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
+            STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
+
+        Main_setHistoryItem();
+        console.log(Main_values_History_data);
+    }
+}
+
+function Main_history_UpdateLiveVod(id, vod, vod_img) {
+    if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
+
+    var index = Main_history_Exist('live', id);
+
+    if (index > -1) {
+
+        //Use Screens_assign() to change only obj that has changed
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
+            {
+                vodid: vod,
+                vodimg: vod_img,
+            }
+        );
+        Main_setHistoryItem();
+        console.log(Main_values_History_data);
+    }
+}
+
+function Main_history_UpdateVod(id, time) {
+    if (!AddUser_IsUserSet() || HistoryVod.histPosX[1]) return;
+
+    var index = Main_history_Exist('vod', id);
+
+    if (index > -1) {
+
+        //Use Screens_assign() to change only obj that has changed
+        Main_values_History_data[AddUser_UsernameArray[0].id].vod[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0].id].vod[index],
+            {
+                date: new Date().getTime(),
+                watched: time
+            }
+        );
+        Main_setHistoryItem();
+        console.log(Main_values_History_data);
+    }
+}
+
+function Main_history_UpdateClip(id, time) {
+    if (!AddUser_IsUserSet() || HistoryClip.histPosX[1]) return;
+
+    var index = Main_history_Exist('clip', id);
+
+    if (index > -1) {
+
+        //Use Screens_assign() to change only obj that has changed
+        Main_values_History_data[AddUser_UsernameArray[0].id].clip[index] = Screens_assign(
+            Main_values_History_data[AddUser_UsernameArray[0].id].clip[index],
+            {
+                date: new Date().getTime(),
+                watched: time
+            }
+        );
+        Main_setHistoryItem();
+        console.log(Main_values_History_data);
+    }
+}
+
+function Main_Restore_history() {
+    Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+    console.log(Main_values_History_data);
+}
+
+function Main_History_Sort(array, msort, direction) {
+    if (direction) {//a-z
+        array.sort(
+            function(a, b) {
+                return (a[msort] < b[msort] ? -1 : (a[msort] > b[msort] ? 1 : 0));
+            }
+        );
+    } else {//z-a
+        array.sort(
+            function(a, b) {
+                return (a[msort] > b[msort] ? -1 : (a[msort] < b[msort] ? 1 : 0));
+            }
+        );
+    }
+}
+
+function Main_setHistoryItem() {
+    var string = JSON.stringify(Main_values_History_data);
+    Main_setItem('Main_values_History_data', string);
+    try {
+        if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
+    } catch (e) {}
+}
+
+function Main_Slice(arrayTocopy) {
+    var array = [];
+    //slice may crash RangeError: Maximum call stack size exceeded
+    for (var i = 0; i < arrayTocopy.length; i++) {
+        array.push(arrayTocopy[i]);
+    }
+    return array;
 }

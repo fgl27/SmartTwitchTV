@@ -8,6 +8,7 @@ var ChannelClip_playUrl = '';
 var ChannelClip_playUrl2 = '';
 var ChannelClip_createdAt = '';
 var ChannelClip_language = '';
+var ChannelClip_Id = 0;
 
 var ChannelVod_vodOffset = 0;
 var ChannelVod_DurationSeconds = 0;
@@ -17,6 +18,8 @@ var ChannelVod_views = '';
 var ChannelVod_Duration = '';
 var ChannelVod_title = '';
 var ChannelVod_game = '';
+var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
+var Main_HistoryPos = 0;
 
 var Vod_DoAnimateThumb = 1;
 
@@ -41,6 +44,9 @@ var UserChannels;
 var SearchGames;
 var SearchLive;
 var SearchChannels;
+var HistoryLive;
+var HistoryVod;
+var HistoryClip;
 
 var Base_obj = {
     posX: 0,
@@ -146,28 +152,11 @@ var Base_Vod_obj = {
     AnimateThumbId: null,
     HasAnimateThumb: true,
     Vod_newImg: new Image(),
-    AnimateThumb: function(screen) {
-        window.clearInterval(this.AnimateThumbId);
-        if (!Vod_DoAnimateThumb) return;
-        var div = document.getElementById(this.ids[6] + this.posY + '_' + this.posX);
-
-        // Only load the animation if it can be loaded
-        // This prevent starting animating before it has loaded or animated a empty image
-        this.Vod_newImg.onload = function() {
-            this.onload = null;
-            Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
-            div.style.backgroundSize = div.offsetWidth + "px";
-            var frame = 0;
-            screen.AnimateThumbId = window.setInterval(function() {
-                // 10 = quantity of frames in the preview img
-                div.style.backgroundPosition = "0px " + ((++frame % 10) * (-div.offsetHeight)) + "px";
-            }, 650);
-        };
-
-        this.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
-    },
+    AnimateThumb: ScreensObj_AnimateThumbId,
     addCellBase: function(cell, thubnail) {
         if (!this.idObject[cell._id] && (thubnail + '').indexOf('404_processing') === -1) {
+
+            cell.preview.template = thubnail;
 
             this.itemsCount++;
             this.idObject[cell._id] = 1;
@@ -176,23 +165,9 @@ var Base_Vod_obj = {
                 Screens_createCellVod(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
-                    [thubnail.replace("{width}x{height}", Main_VideoSize),
-                    cell.channel.display_name,
-                    STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),
-                    twemoji.parse(cell.title),
-                    Main_addCommas(cell.views) + STR_VIEWS,
-                    cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language) : '',
-                    cell.length,
-                    cell.animated_preview_url,
-                    cell._id,
-                    cell.channel.broadcaster_language,
-                    cell.game,
-                    cell.channel.name,
-                    cell.increment_view_count_url,
-                    cell.channel._id,
-                    cell.channel.logo,
-                    cell.channel.partner
-                    ]));
+                    ScreensObj_VodCellArray(cell)
+                )
+            );
 
             this.coloumn_id++;
         }
@@ -233,22 +208,12 @@ function ScreensObj_InitVod() {
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_CLIP];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
+                    STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
+                ]
+            );
         },
         label_init: function() {
             Sidepannel_SetDefaultLables();
@@ -287,6 +252,7 @@ function ScreensObj_InitChannelVod() {
                 encodeURIComponent(Main_values.Main_selectedChannel_id) + '/videos?limit=' + Main_ItemsLimitMax +
                 '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') + '&sort=' +
                 this.time[this.periodPos - 1] + '&offset=' + (this.offset + this.extraoffset);
+            console.log(this.url);
         },
         key_play: function() {
             if (this.posY === -1) {
@@ -305,22 +271,13 @@ function ScreensObj_InitChannelVod() {
         },
         SwitchesIcons: ['movie-play', 'history', 'offset'],
         addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_TYPE, STR_SPACE + STR_SPACE + STR_SWITCH_POS];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
+                    STR_SPACE + STR_SPACE + STR_SWITCH_TYPE,
+                    STR_SPACE + STR_SPACE + STR_SWITCH_POS
+                ]
+            );
         },
         lastselectedChannel: '',
         label_init: function() {
@@ -395,22 +352,12 @@ function ScreensObj_InitAGameVod() {
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_CLIP];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
+                    STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
+                ]
+            );
         },
         OldgameSelected: '',
         label_init: function() {
@@ -466,22 +413,12 @@ function ScreensObj_InitUserVod() {
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_VOD, STR_SPACE + STR_SPACE + STR_SWITCH_TYPE];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
+                    STR_SPACE + STR_SPACE + STR_SWITCH_TYPE
+                ]
+            );
         },
         label_init: function() {
             this.SetPeriod();
@@ -534,7 +471,6 @@ var Base_Live_obj = {
         }
     },
 };
-
 
 function ScreensObj_InitLive() {
     Live = Screens_assign({
@@ -614,7 +550,7 @@ function ScreensObj_InitUserLive() {
         screen: Main_UserLive,
         object: 'streams',
         key_pgDown: Main_UserHost,
-        key_pgUp: Main_UserChannels,
+        key_pgUp: Main_HistoryLive,
         base_url: Main_kraken_api + 'streams/',
         loadChannelOffsset: 0,
         followerChannels: '',
@@ -657,6 +593,7 @@ function ScreensObj_InitUserLive() {
     UserLive = Screens_assign(UserLive, Base_Live_obj);
 
     UserLive.concatenate = function(responseText) {
+        //console.log(responseText);
         if (this.token || this.followerChannelsDone) {
             //User has added a key or fallowed channels list is done, concatenate live channels
             if (this.data) {
@@ -744,18 +681,22 @@ function ScreensObj_InitUserHost() {
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
                     [
-                        cell.target.preview_urls.template,
-                        cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,
-                        cell.target.title, cell.target.meta_game,
+                        cell.target.preview_urls.template,//0
+                        cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,//1
+                        cell.target.title, //2
+                        cell.target.meta_game,//3
                         STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
-                        Main_addCommas(cell.target.viewers),
-                        '',
-                        cell.target.channel.name,
-                        cell.target._id,
-                        false,
-                        cell.target.channel.logo,
-                        '',
-                        ''
+                        Main_addCommas(cell.target.viewers) + STR_SPACE + STR_VIEWER,//4
+                        '',//5 quality
+                        cell.target.channel.name,//6
+                        '',//7 broadcast id
+                        false,//8
+                        cell.target.channel.logo,//9
+                        '',//10 partner
+                        '',//11 stream creat at string
+                        '',//12 stream creat at
+                        cell.target.viewers,//13
+                        cell.target._id//14
                     ]
                 )
             );
@@ -794,22 +735,13 @@ function ScreensObj_InitAGame() {
         HasSwitches: true,
         SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
         addSwitches: function() {
-            this.TopRowCreated = true;
-            this.row = document.createElement('div');
-            var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_VIDEOS, STR_SPACE + STR_SPACE + STR_CLIPS, STR_SPACE + STR_SPACE + STR_FALLOW];
-            var thumbfallow, div, i = 0;
-
-            for (i; i < SwitchesStrings.length; i++) {
-                thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-                div = document.createElement('div');
-                div.setAttribute('id', this.ids[8] + 'y_' + i);
-                div.className = 'stream_cell_period';
-                div.innerHTML = '<div id="' + this.ids[0] +
-                    'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                    'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-                this.row.appendChild(div);
-            }
-            document.getElementById(this.table).appendChild(this.row);
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_VIDEOS,
+                    STR_SPACE + STR_SPACE + STR_CLIPS,
+                    STR_SPACE + STR_SPACE + STR_FALLOW
+                ]
+            );
         },
         key_play: function() {
             if (this.posY !== -1) {
@@ -875,22 +807,12 @@ var Base_Clip_obj = {
     HasSwitches: true,
     SwitchesIcons: ['history', 'play-1'],
     addSwitches: function() {
-        this.TopRowCreated = true;
-        this.row = document.createElement('div');
-        var SwitchesStrings = [STR_SPACE + STR_SPACE + STR_SWITCH_CLIP, STR_SPACE + STR_SPACE + STR_PLAY_ALL];
-        var thumbfallow, div, i = 0;
-
-        for (i; i < SwitchesStrings.length; i++) {
-            thumbfallow = '<i class="icon-' + this.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + SwitchesStrings[i];
-            div = document.createElement('div');
-            div.setAttribute('id', this.ids[8] + 'y_' + i);
-            div.className = 'stream_cell_period';
-            div.innerHTML = '<div id="' + this.ids[0] +
-                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + this.ids[3] +
-                'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
-            this.row.appendChild(div);
-        }
-        document.getElementById(this.table).appendChild(this.row);
+        ScreensObj_addSwitches(
+            [
+                STR_SPACE + STR_SPACE + STR_SWITCH_CLIP,
+                STR_SPACE + STR_SPACE + STR_PLAY_ALL
+            ]
+        );
     },
     setMax: function(tempObj) {
         this.cursor = tempObj._cursor;
@@ -920,21 +842,26 @@ var Base_Clip_obj = {
                 Screens_createCellClip(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
-                    [cell.slug,
-                    cell.duration,
-                    cell.game,
-                    cell.broadcaster.name,
-                    cell.broadcaster.display_name,
-                    cell.broadcaster.logo.replace("150x150", "300x300"),
-                    cell.broadcaster.id,
-                    (cell.vod !== null ? cell.vod.id : null),
-                    (cell.vod !== null ? cell.vod.offset : null),
-                    twemoji.parse(cell.title),
-                    '[' + cell.language.toUpperCase() + ']',
-                    STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),
-                    Main_addCommas(cell.views) + STR_VIEWS,
-                    cell.thumbnails.medium
-                    ]));
+                    [
+                        cell.slug,//0
+                        cell.duration,//1
+                        cell.broadcaster.id,//2
+                        cell.game,//3
+                        cell.broadcaster.display_name,//4
+                        cell.broadcaster.logo.replace("150x150", "300x300"),//5
+                        cell.broadcaster.name,//6
+                        cell.tracking_id,//7
+                        (cell.vod !== null ? cell.vod.id : null),//8
+                        (cell.vod !== null ? cell.vod.offset : null),//9
+                        twemoji.parse(cell.title),//10
+                        '[' + cell.language.toUpperCase() + ']',//11
+                        STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//12
+                        cell.views,//13
+                        Main_addCommas(cell.views) + STR_VIEWS,//14
+                        cell.thumbnails.medium//15
+                    ]
+                )
+            );
 
             this.coloumn_id++;
         }
@@ -1273,7 +1200,7 @@ function ScreensObj_InitUserChannels() {
         table: 'stream_table_user_channels',
         screen: Main_UserChannels,
         object: 'follows',
-        key_pgDown: Main_UserLive,
+        key_pgDown: Main_History[Main_HistoryPos],
         key_pgUp: Main_UserVod,
         key_pgUpNext: Main_usergames,
         base_url: Main_kraken_api + 'users/',
@@ -1371,6 +1298,357 @@ function ScreensObj_InitSearchChannels() {
     SearchChannels.visiblerows = 5;
 }
 
+var Base_History_obj = {
+    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+    ItemsLimit: Main_ItemsLimitVideo,
+    ColoumnsCount: Main_ColoumnsCountVideo,
+    addFocus: Screens_addFocusVideo,
+    rowClass: 'animate_height_transition',
+    thumbclass: 'stream_thumbnail_live_holder',
+    img_404: IMG_404_VIDEO,
+    isHistory: true,
+    streamerID: {},
+    HasSwitches: true,
+    key_pgDown: Main_UserLive,
+    key_pgUp: Main_UserChannels,
+    histPosY: 0,
+    histPosXTemp: [0, 0, 0],
+    sorting: [],
+    sortingValues: [
+        ['date', 0],
+        ['date', 1],
+        ['name', 1],
+        ['name', 0],
+        ['game', 1],
+        ['game', 0],
+        ['views', 0],
+        ['views', 1]
+    ],
+    sortingPos: 0,
+    Upsorting: function() {
+        this.sorting = [
+            STR_NEWEST,
+            STR_OLDEST,
+            STR_NAME_A_Z,
+            STR_NAME_Z_A,
+            STR_GAME_A_Z,
+            STR_GAME_Z_A,
+            STR_VIWES_MOST,
+            STR_VIWES_LOWEST
+        ];
+    },
+    histEna: [],
+    histEnaPos: 0,
+    UpEna: function() {
+        this.histEna = [
+            STR_YES,
+            STR_NO
+        ];
+    },
+    histArrays: [],
+    UpArrays: function() {
+        this.histArrays = [
+            this.sorting,
+            this.histEna,
+            [STR_PRESS_ENTER_D]
+        ];
+    },
+    set_url: function() {return;},
+    empty_str: function() {
+        return STR_NO + STR_SPACE + STR_HISTORY;
+    },
+    history_concatenate: function() {
+        this.streamerID = {};
+        this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
+        Main_History_Sort(this.data, this.sortingValues[this.histPosX[0]][0], this.sortingValues[this.histPosX[0]][1]);
+        this.dataEnded = true;
+        this.loadDataSuccess();
+        this.loadingData = false;
+    },
+    history_exit: function() {
+        if (this.status) {
+            Screens_removeFocusFallow();
+            this.posY = 0;
+            this.posX = 0;
+            Main_AddClass(this.ids[0] + '0_' + this.posX, Main_classThumb);
+        }
+        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_HideElement(this.ids[10]);
+    },
+    sethistMainDialog: function() {
+        this.Upsorting();
+        this.UpEna();
+        this.UpArrays();
+
+        Screens_histSetArrow();
+
+        Main_textContent(
+            'dialog_hist_val_1',
+            this.histArrays[1][this.histPosX[1]]
+        );
+        document.getElementById("dialog_hist_left_1").style.opacity = "0";
+        document.getElementById("dialog_hist_right_1").style.opacity = "0";
+        this.histPosXTemp = Main_Slice(this.histPosX);
+    }
+};
+
+function ScreensObj_HistoryLive() {
+    HistoryLive = Screens_assign({
+        Type: 'live',
+        ids: Screens_ScreenIds('HistoryLive'),
+        table: 'stream_table_historylive',
+        screen: Main_HistoryLive,
+        histPosXName: 'HistoryLive_histPosX',
+        histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0]),
+        sethistDialog: function() {
+            Screens_SethistDialogId();
+            Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            this.sethistMainDialog();
+        },
+        label_init: function() {
+            Main_HistoryPos = 0;
+            ScreensObj_TopLableUserInit();
+            ScreensObj_SetTopLable(
+                STR_USER,
+                STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE +
+                '(' + this.sorting[this.histPosX[0]] + ')'
+            );
+        },
+        history_Type: function() {
+            return STR_LIVE;
+        },
+        key_play: function() {
+
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    Main_values.Main_Go = Main_HistoryVod;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 1) {
+                    Main_values.Main_Go = Main_HistoryClip;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else Screens_histStart();
+            } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown, true);
+
+        },
+        addCell: function(cell) {
+            if (!this.idObject[cell.data[7]]) {
+
+                this.itemsCount++;
+                this.idObject[cell.data[7]] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellLive(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        cell.data,
+                        cell.date,
+                        cell.vodimg,
+                        (this.streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
+                    )
+                );
+
+                //If there is alredy one stream shoing all the rest is a VOD
+                this.streamerID[cell.data[14]] = 1;
+                this.coloumn_id++;
+            }
+        },
+        SwitchesIcons: ['movie-play', 'movie', 'settings'],
+        addSwitches: function() {
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE + STR_SETTINGS
+                ]
+            );
+        },
+    }, Base_obj);
+
+    HistoryLive = Screens_assign(HistoryLive, Base_History_obj);
+    HistoryLive.Upsorting();
+}
+
+function ScreensObj_HistoryVod() {
+    HistoryVod = Screens_assign({
+        Type: 'vod',
+        ids: Screens_ScreenIds('HistoryVod'),
+        table: 'stream_table_historyvod',
+        screen: Main_HistoryVod,
+        Vod_newImg: new Image(),
+        HasAnimateThumb: true,
+        AnimateThumb: ScreensObj_AnimateThumbId,
+        histPosXName: 'HistoryVod_histPosX',
+        histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0]),
+        sethistDialog: function() {
+            Screens_SethistDialogId();
+            Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            this.sethistMainDialog();
+        },
+        history_Type: function() {
+            return STR_VIDEOS;
+        },
+        label_init: function() {
+            Main_HistoryPos = 1;
+            ScreensObj_TopLableUserInit();
+
+            ScreensObj_SetTopLable(
+                STR_USER,
+                STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE +
+                '(' + this.sorting[this.histPosX[0]] + ')'
+            );
+        },
+        key_play: function() {
+
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    Main_values.Main_Go = Main_HistoryLive;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 1) {
+                    Main_values.Main_Go = Main_HistoryClip;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else Screens_histStart();
+            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+
+        },
+        addCell: function(cell) {
+            if (!this.idObject[cell.data[7]]) {
+
+                this.itemsCount++;
+                this.idObject[cell.data[7]] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellVod(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        cell.data,
+                        cell.date,
+                        cell.watched
+                    )
+                );
+
+                this.coloumn_id++;
+            }
+        },
+        SwitchesIcons: ['play', 'movie', 'settings'],
+        addSwitches: function() {
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE + STR_SETTINGS
+                ]
+            );
+        },
+    }, Base_obj);
+
+    HistoryVod = Screens_assign(HistoryVod, Base_History_obj);
+
+    HistoryVod.addFocus = function(y, x, idArray, forceScroll) {
+        this.AnimateThumb(this);
+        Screens_addFocusVideo(y, x, idArray, forceScroll);
+    };
+    HistoryVod.Upsorting();
+}
+
+function ScreensObj_HistoryClip() {
+    HistoryClip = Screens_assign({
+        Type: 'clip',
+        ids: Screens_ScreenIds('HistoryClip'),
+        table: 'stream_table_historyclip',
+        screen: Main_HistoryClip,
+        histPosXName: 'HistoryClip_histPosX',
+        histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0]),
+        sethistDialog: function() {
+            Screens_SethistDialogId();
+            Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            this.sethistMainDialog();
+        },
+        history_Type: function() {
+            return STR_CLIPS;
+        },
+        label_init: function() {
+            Main_HistoryPos = 2;
+            ScreensObj_TopLableUserInit();
+
+            ScreensObj_SetTopLable(
+                STR_USER,
+                STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE +
+                '(' + this.sorting[this.histPosX[0]] + ')'
+            );
+
+        },
+        key_play: function() {
+
+            if (this.posY === -1) {
+                if (this.posX === 0) {
+                    Main_values.Main_Go = Main_HistoryLive;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else if (this.posX === 1) {
+                    Main_values.Main_Go = Main_HistoryVod;
+                    this.history_exit();
+                    Main_SwitchScreenAction();
+                } else Screens_histStart();
+            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+
+        },
+        addCell: function(cell) {
+            if (!this.idObject[cell.data[7]]) {
+
+                this.itemsCount++;
+                this.idObject[cell.data[7]] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellClip(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        cell.data,
+                        cell.date,
+                        cell.watched
+                    )
+                );
+
+                this.coloumn_id++;
+            }
+        },
+        SwitchesIcons: ['play', 'movie-play', 'settings'],
+        addSwitches: function() {
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
+                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE + STR_SETTINGS
+                ]
+            );
+        },
+    }, Base_obj);
+
+    HistoryClip = Screens_assign(HistoryClip, Base_History_obj);
+    HistoryClip.Upsorting();
+}
+
+function ScreensObj_addSwitches(StringsArray) {
+    inUseObj.TopRowCreated = true;
+    inUseObj.row = document.createElement('div');
+    var thumbfallow, div, i = 0;
+
+    for (i; i < StringsArray.length; i++) {
+        thumbfallow = '<i class="icon-' + inUseObj.SwitchesIcons[i] + ' stream_channel_fallow_icon"></i>' + StringsArray[i];
+        div = document.createElement('div');
+        div.setAttribute('id', inUseObj.ids[8] + 'y_' + i);
+        div.className = 'stream_cell_period';
+        div.innerHTML = '<div id="' + inUseObj.ids[0] +
+            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
+            'y_' + i + '" class="stream_channel_fallow_game">' + thumbfallow + '</div></div>';
+        inUseObj.row.appendChild(div);
+    }
+    document.getElementById(inUseObj.table).appendChild(inUseObj.row);
+}
+
 function ScreensObj_TopLableAgameInit() {
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Main_ShowElement('label_side_panel');
@@ -1407,13 +1685,59 @@ function ScreensObj_LiveCellArray(cell) {
         cell.channel.display_name,//1
         cell.channel.status,//2
         cell.game,//3
-        Main_addCommas(cell.viewers),//4
+        STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,//4
         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
         cell.channel.name,//6
-        cell.channel._id,//7
+        cell._id,//7
         Main_is_rerun(cell.stream_type),//8
         cell.channel.logo,//9
         cell.channel.partner,//10
-        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE//11
+        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE,//11
+        cell.created_at,//12
+        cell.viewers,//13
+        cell.channel._id//14
     ];
+}
+
+function ScreensObj_VodCellArray(cell) {
+    return [
+        cell.preview.template.replace("{width}x{height}", Main_VideoSize),//0
+        cell.channel.display_name,//1
+        STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),//2
+        cell.game,//3
+        Main_addCommas(cell.views) + STR_VIEWS,//4
+        cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language) : '',//5
+        cell.channel.name,//6
+        cell._id.substr(1),//7
+        cell.animated_preview_url,//8
+        cell.channel.broadcaster_language,//9
+        twemoji.parse(cell.title),//10
+        cell.length,//11
+        cell.increment_view_count_url,//12
+        cell.views,//13
+        cell.channel._id,//14
+        cell.channel.logo,//15
+        cell.channel.partner//16
+    ];
+}
+
+function ScreensObj_AnimateThumbId(screen) {
+    window.clearInterval(screen.AnimateThumbId);
+    if (!Vod_DoAnimateThumb) return;
+    var div = document.getElementById(screen.ids[6] + screen.posY + '_' + screen.posX);
+
+    // Only load the animation if it can be loaded
+    // This prevent starting animating before it has loaded or animated a empty image
+    screen.Vod_newImg.onload = function() {
+        screen.onload = null;
+        Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
+        div.style.backgroundSize = div.offsetWidth + "px";
+        var frame = 0;
+        screen.AnimateThumbId = window.setInterval(function() {
+            // 10 = quantity of frames in the preview img
+            div.style.backgroundPosition = "0px " + ((++frame % 10) * (-div.offsetHeight)) + "px";
+        }, 650);
+    };
+
+    screen.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
 }
