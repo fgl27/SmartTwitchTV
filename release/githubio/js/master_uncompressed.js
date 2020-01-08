@@ -3258,7 +3258,7 @@
 
     var Main_stringVersion = '2.0';
     var Main_stringVersion_Min = '.107';
-    var Main_minversion = '010620';
+    var Main_minversion = '010820';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -4678,33 +4678,12 @@
     ];
 
     function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-        var xmlHttp = new XMLHttpRequest();
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers);
+    }
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Timeout;
-
-        Main_Headers[2][1] = access_token;
-
-        for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    callbackSucess(xmlHttp.responseText);
-                } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                    AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
-                } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
-                    inUseObj.setHelix();
-                } else {
-                    calbackError();
-                }
-            }
-        };
-
-        xmlHttp.send(null);
+    function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+        if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError);
+        else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
     }
 
     function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
@@ -4730,8 +4709,44 @@
         } catch (e) {}
     }
 
+    function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back);
+    }
+
+    function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray) {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = Timeout;
+
+        Main_Headers[2][1] = access_token;
+
+        for (var i = 0; i < HeaderQuatity; i++)
+            xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    callbackSucess(xmlHttp.responseText);
+                } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                    AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
+                } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
+                    inUseObj.setHelix();
+                } else {
+                    calbackError();
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+
     var Main_Headers_Back = [
-        [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force]
+        [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
+        [Main_AcceptHeader, Main_TwithcV5Json],
+        [Main_Authorization, null]
     ];
 
     var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -4774,7 +4789,7 @@
                 );
 
             } else {
-                //Limit size to 1000
+                //Limit size to 1500
                 if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 1499) {
 
                     //Sort by oldest first to delete the oldest
@@ -10453,8 +10468,8 @@
         inUseObj.set_url();
         if (inUseObj.isHistory)
             inUseObj.history_concatenate();
-        else if (Main_IsNotBrowser && inUseObj.use_hls)
-            BaseAndroidHlsGet(inUseObj.url + Main_TwithcV5Flag, Screens_concatenate, Screens_loadDataError);
+        else if (inUseObj.use_hls)
+            BasehttpHlsGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
         else if (Main_IsNotBrowser && !inUseObj.itemsCount && Screens_ForceSync)
             BaseAndroidhttpGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
         else
@@ -11165,13 +11180,19 @@
 
         switch (event.keyCode) {
             case KEY_PG_UP:
+                //TODO improve this pg up and down so many unnecessary ifs
                 if (!inUseObj.loadingData && inUseObj.key_pgUp) {
                     Screens_RemoveAllFocus();
                     if (inUseObj.screen === Main_UserChannels)
                         Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgUpNext : inUseObj.key_pgUp);
                     else if (inUseObj.screen === Main_UserLive)
                         Sidepannel_Go(Main_History[Main_HistoryPos]);
-                    else Sidepannel_Go(inUseObj.key_pgUp);
+                    else if (inUseObj.screen === Main_aGame) {
+
+                        if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserHost);
+                        else Sidepannel_Go(Main_Featured);
+
+                    } else Sidepannel_Go(inUseObj.key_pgUp);
                 }
                 break;
             case KEY_PG_DOWN:
@@ -11181,7 +11202,12 @@
                         Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgDownNext : inUseObj.key_pgDown);
                     else if (inUseObj.screen === Main_UserChannels)
                         Sidepannel_Go(Main_History[Main_HistoryPos]);
-                    else Sidepannel_Go(inUseObj.key_pgDown);
+                    else if (inUseObj.screen === Main_aGame) {
+
+                        if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserVod);
+                        else Sidepannel_Go(Main_Vod);
+
+                    } else Sidepannel_Go(inUseObj.key_pgDown);
                 }
                 break;
             case KEY_RETURN_Q:
@@ -13329,14 +13355,19 @@
 
     function ScreensObj_TopLableAgameInit() {
         if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+
         Main_ShowElement('label_side_panel');
+
         if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
-            inUseObj.gameSelected !== Main_values.Main_gameSelected) inUseObj.status = false;
+            inUseObj.gameSelected !== Main_values.Main_gameSelected)
+            inUseObj.status = false;
+
         inUseObj.gameSelected = Main_values.Main_gameSelected;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
-        Sidepannel_SetDefaultLables();
-        Main_values.Sidepannel_IsUser = false;
+        if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_SetUserLables();
+        else Sidepannel_SetDefaultLables();
+
         Sidepannel_SetTopOpacity(inUseObj.screen);
     }
 
