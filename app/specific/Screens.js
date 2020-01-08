@@ -881,7 +881,13 @@ function Screens_handleKeyDown(event) {
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgUpNext : inUseObj.key_pgUp);
                 else if (inUseObj.screen === Main_UserLive)
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
-                else Sidepannel_Go(inUseObj.key_pgUp);
+                else if (inUseObj.screen === Main_aGame) {
+                    Sidepannel_Go(Main_History[Main_HistoryPos]);
+
+                    if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserHost);
+                    else Sidepannel_Go(Main_Featured);
+
+                } else Sidepannel_Go(inUseObj.key_pgUp);
             }
             break;
         case KEY_PG_DOWN:
@@ -891,7 +897,13 @@ function Screens_handleKeyDown(event) {
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgDownNext : inUseObj.key_pgDown);
                 else if (inUseObj.screen === Main_UserChannels)
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
-                else Sidepannel_Go(inUseObj.key_pgDown);
+                else if (inUseObj.screen === Main_aGame) {
+                    Sidepannel_Go(Main_History[Main_HistoryPos]);
+
+                    if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserVod);
+                    else Sidepannel_Go(Main_Vod);
+
+                } else Sidepannel_Go(inUseObj.key_pgDown);
             }
             break;
         case KEY_RETURN_Q:
