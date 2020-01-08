@@ -875,6 +875,7 @@ function Screens_handleKeyDown(event) {
 
     switch (event.keyCode) {
         case KEY_PG_UP:
+            //TODO improve this pg up and down so many unnecessary ifs
             if (!inUseObj.loadingData && inUseObj.key_pgUp) {
                 Screens_RemoveAllFocus();
                 if (inUseObj.screen === Main_UserChannels)

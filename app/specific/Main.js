@@ -1660,7 +1660,7 @@ function Main_Set_history(type) {
             );
 
         } else {
-            //Limit size to 1000
+            //Limit size to 1500
             if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 1499) {
 
                 //Sort by oldest first to delete the oldest
