@@ -883,7 +883,6 @@ function Screens_handleKeyDown(event) {
                 else if (inUseObj.screen === Main_UserLive)
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
                 else if (inUseObj.screen === Main_aGame) {
-                    Sidepannel_Go(Main_History[Main_HistoryPos]);
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserHost);
                     else Sidepannel_Go(Main_Featured);
@@ -899,7 +898,6 @@ function Screens_handleKeyDown(event) {
                 else if (inUseObj.screen === Main_UserChannels)
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
                 else if (inUseObj.screen === Main_aGame) {
-                    Sidepannel_Go(Main_History[Main_HistoryPos]);
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserVod);
                     else Sidepannel_Go(Main_Vod);
