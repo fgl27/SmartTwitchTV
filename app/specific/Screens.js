@@ -164,7 +164,7 @@ function Screens_loadDataRequest() {
     if (inUseObj.isHistory)
         inUseObj.history_concatenate();
     else if (inUseObj.use_hls)
-        BasexmlHttpHlsGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
+        BasehttpHlsGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
     else if (Main_IsNotBrowser && !inUseObj.itemsCount && Screens_ForceSync)
         BaseAndroidhttpGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
     else
