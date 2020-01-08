@@ -4776,14 +4776,13 @@
             } else {
                 //Limit size to 1000
                 if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 1499) {
-                    if (type === 'live') {
-                        //Sort live back by oldest first to delete the oldest
-                        Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
-                            function(a, b) {
-                                return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
-                            }
-                        );
-                    }
+
+                    //Sort by oldest first to delete the oldest
+                    Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
+                        function(a, b) {
+                            return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
+                        }
+                    );
 
                     Main_values_History_data[AddUser_UsernameArray[0].id][type].shift();
                 }
