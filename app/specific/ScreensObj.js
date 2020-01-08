@@ -1650,14 +1650,19 @@ function ScreensObj_addSwitches(StringsArray) {
 
 function ScreensObj_TopLableAgameInit() {
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+
     Main_ShowElement('label_side_panel');
+
     if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
-        inUseObj.gameSelected !== Main_values.Main_gameSelected) inUseObj.status = false;
+        inUseObj.gameSelected !== Main_values.Main_gameSelected)
+        inUseObj.status = false;
+
     inUseObj.gameSelected = Main_values.Main_gameSelected;
     Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
-    Sidepannel_SetDefaultLables();
-    Main_values.Sidepannel_IsUser = false;
+    if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_SetUserLables();
+    else Sidepannel_SetDefaultLables();
+
     Sidepannel_SetTopOpacity(inUseObj.screen);
 }
 
