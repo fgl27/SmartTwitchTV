@@ -1548,33 +1548,12 @@ var Main_Headers = [
 ];
 
 function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-    var xmlHttp = new XMLHttpRequest();
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers);
+}
 
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Timeout;
-
-    Main_Headers[2][1] = access_token;
-
-    for (var i = 0; i < HeaderQuatity; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText);
-            } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
-            } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
-                inUseObj.setHelix();
-            } else {
-                calbackError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
+function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+    if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError);
+    else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
 }
 
 function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
@@ -1600,8 +1579,44 @@ function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
     } catch (e) {}
 }
 
+function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back);
+}
+
+function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = Timeout;
+
+    Main_Headers[2][1] = access_token;
+
+    for (var i = 0; i < HeaderQuatity; i++)
+        xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                callbackSucess(xmlHttp.responseText);
+            } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
+            } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
+                inUseObj.setHelix();
+            } else {
+                calbackError();
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
 var Main_Headers_Back = [
-    [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force]
+    [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
+    [Main_AcceptHeader, Main_TwithcV5Json],
+    [Main_Authorization, null]
 ];
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
