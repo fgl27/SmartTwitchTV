@@ -854,10 +854,11 @@ var Base_Clip_obj = {
                         (cell.vod !== null ? cell.vod.offset : null),//9
                         twemoji.parse(cell.title),//10
                         '[' + cell.language.toUpperCase() + ']',//11
-                        STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//12
+                        cell.created_at,//12
                         cell.views,//13
                         Main_addCommas(cell.views) + STR_VIEWS,//14
-                        cell.thumbnails.medium//15
+                        cell.thumbnails.medium,//15
+                        STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//16
                     ]
                 )
             );
@@ -1717,11 +1718,12 @@ function ScreensObj_VodCellArray(cell) {
         cell.channel.broadcaster_language,//9
         twemoji.parse(cell.title),//10
         cell.length,//11
-        cell.increment_view_count_url,//12
+        cell.created_at,//12
         cell.views,//13
         cell.channel._id,//14
         cell.channel.logo,//15
-        cell.channel.partner//16
+        cell.channel.partner,//16
+        cell.increment_view_count_url//17
     ];
 }
 
