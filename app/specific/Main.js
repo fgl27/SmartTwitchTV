@@ -74,7 +74,8 @@ var Main_values = {
     "Codec_is_Check": false,
     "check_pp_workaround": true,
     "OS_is_Check": false,
-    "Restore_Backup_Check": false
+    "Restore_Backup_Check": false,
+    "Restore_Created_at_fix": false,
 };
 
 var Main_values_Play_data;
@@ -1696,7 +1697,7 @@ function Main_Set_history(type) {
                     }
                 );
             }
-
+            console.log(Main_values_History_data);
             Main_setHistoryItem();
         }
     }
@@ -1797,6 +1798,25 @@ function Main_history_UpdateClip(id, time) {
 
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+
+    //Temp fix as creadt at was added to sorting after
+    if (!Main_values.Restore_Created_at_fix) {
+
+        Main_values.Restore_Created_at_fix = true;
+
+        var i = 0, j;
+
+        for (i = 0; i < AddUser_UsernameArray.length; i++) {
+
+            for (j = 0; j < Main_values_History_data[AddUser_UsernameArray[i].id].live.length; j++) {
+
+                Main_values_History_data[AddUser_UsernameArray[i].id].live[j].created_at =
+                    new Date(Main_values_History_data[AddUser_UsernameArray[i].id].live[j].data[12]).getTime();
+
+            }
+
+        }
+    }
 }
 
 function Main_History_Sort(array, msort, direction) {
