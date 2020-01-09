@@ -4377,7 +4377,7 @@
 
         ChannelClip_title = Main_values_Play_data[10];
         ChannelClip_language = Main_values_Play_data[11];
-        ChannelClip_createdAt = Main_values_Play_data[12];
+        ChannelClip_createdAt = (Main_values_Play_data[16] ? Main_values_Play_data[16] : Main_values_Play_data[12]); //Old sorting fix
         ChannelClip_views = Main_values_Play_data[14];
         ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
@@ -4412,7 +4412,7 @@
         ChannelVod_title = Main_values_Play_data[10];
         ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[11]);
         ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
-        Play_IncrementView = Main_values_Play_data[12];
+        Play_IncrementView = Main_values_Play_data[17];
 
         Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
         Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
@@ -4784,7 +4784,8 @@
                         data: Main_values_Play_data,
                         date: new Date().getTime(),
                         game: Main_values_Play_data[3],
-                        views: Main_values_Play_data[13]
+                        views: Main_values_Play_data[13],
+                        created_at: new Date(Main_values_Play_data[12]).getTime() //Old sorting didn't had this not needed to update as it doesnot change
                     }
                 );
 
@@ -4809,6 +4810,7 @@
                     game: Main_values_Play_data[3],
                     id: Main_values_Play_data[7],
                     views: Main_values_Play_data[13],
+                    created_at: new Date(Main_values_Play_data[12]).getTime(),
                     watched: 0
                 });
 
@@ -4921,6 +4923,7 @@
     }
 
     function Main_History_Sort(array, msort, direction) {
+
         if (direction) { //a-z
             array.sort(
                 function(a, b) {
@@ -10619,7 +10622,7 @@
             valuesArray[10] + '</div>' +
             '<div id="' + idArray[4] + id + '"class="stream_info_live">' + playing + '</div>' +
             '<div style="line-height: 1.3ch;"><div id="' + idArray[6] + id +
-            '"class="stream_info_live" style="width: auto; display: inline-block;">' + valuesArray[12] + ',' + STR_SPACE +
+            '"class="stream_info_live" style="width: auto; display: inline-block;">' + (valuesArray[16] ? valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE + //Old sorting fix
             valuesArray[14] + '</div><div id="' + idArray[5] + id +
             '"class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
             Play_timeS(valuesArray[1]) + '</div></div>' +
@@ -12557,10 +12560,11 @@
                             (cell.vod !== null ? cell.vod.offset : null), //9
                             twemoji.parse(cell.title), //10
                             '[' + cell.language.toUpperCase() + ']', //11
-                            STR_CREATED_AT + Main_videoCreatedAt(cell.created_at), //12
+                            cell.created_at, //12
                             cell.views, //13
                             Main_addCommas(cell.views) + STR_VIEWS, //14
-                            cell.thumbnails.medium //15
+                            cell.thumbnails.medium, //15
+                            STR_CREATED_AT + Main_videoCreatedAt(cell.created_at), //16
                         ]
                     )
                 );
@@ -13422,11 +13426,12 @@
             cell.channel.broadcaster_language, //9
             twemoji.parse(cell.title), //10
             cell.length, //11
-            cell.increment_view_count_url, //12
+            cell.created_at, //12
             cell.views, //13
             cell.channel._id, //14
             cell.channel.logo, //15
-            cell.channel.partner //16
+            cell.channel.partner, //16
+            cell.increment_view_count_url //17
         ];
     }
 
