@@ -4790,7 +4790,6 @@
                         date: new Date().getTime(),
                         game: Main_values_Play_data[3],
                         views: Main_values_Play_data[13],
-                        created_at: new Date(Main_values_Play_data[12]).getTime() //Old sorting didn't had this not needed to update as it doesnot change
                     }
                 );
 
