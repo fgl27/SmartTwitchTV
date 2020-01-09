@@ -30,7 +30,16 @@ var Settings_value = {
         "defaultValue": 2
     },
     "live_feed_sort": { //show_screen_counter
-        "values": ["views", "a-z", "z-a"],
+        "values": [
+            "views_more",
+            "views_less",
+            "name_a-z",
+            "name_z-a",
+            "game_a-z",
+            "game_z-a",
+            "uptime_new",
+            "uptime_old",
+        ],
         "defaultValue": 1
     },
     "live_notification": { //buffer_live
@@ -101,11 +110,22 @@ var Settings_value = {
     },
     "dpad_opacity": { //dpad opacity
         "values": [
-         "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%",
-         "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
+            "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%",
+            "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
         "defaultValue": 12
     }
 };
+
+var Settings_FeedSort = [
+    [null, 'viewers', 0],
+    [null, 'viewers', 1],
+    ['channel', 'name', 1],
+    ['channel', 'name', 0],
+    [null, 'game', 1],
+    [null, 'game', 0],
+    [null, 'created_at', 0],
+    [null, 'created_at', 1]
+];
 
 function Settings_GenerateClock() {
     var clock = [],
@@ -164,7 +184,19 @@ function Settings_SetSettings() {
     div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
 
     div += Settings_Content('live_feed_sort',
-        [STR_VIEWS, STR_A_Z, STR_Z_A], STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
+        [
+            STR_VIWES_MOST,
+            STR_VIWES_LOWEST,
+            STR_NAME_A_Z,
+            STR_NAME_Z_A,
+            STR_GAME_A_Z,
+            STR_GAME_Z_A,
+            STR_CREATED_NEWEST,
+            STR_CREATED_OLDEST
+        ],
+        STR_LIVE_FEED_SORT,
+        STR_LIVE_FEED_SORT_SUMMARY
+    );
 
     div += Settings_Content('thumb_quality',
         [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
@@ -303,7 +335,16 @@ function Settings_SetStrings() {
     key = "live_feed_sort";
     Settings_DivOptionChangeLang(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
     Main_textContent(key, Settings_Obj_values(key));
-    Settings_value[key].values = [STR_VIEWS, STR_A_Z, STR_Z_A];
+    Settings_value[key].values = [
+        STR_VIWES_MOST,
+        STR_VIWES_LOWEST,
+        STR_NAME_A_Z,
+        STR_NAME_Z_A,
+        STR_GAME_A_Z,
+        STR_GAME_Z_A,
+        STR_CREATED_NEWEST,
+        STR_CREATED_OLDEST
+    ];
 
     //Player settings
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
