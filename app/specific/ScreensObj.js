@@ -1322,7 +1322,9 @@ var Base_History_obj = {
         ['game', 1],
         ['game', 0],
         ['views', 0],
-        ['views', 1]
+        ['views', 1],
+        ['created_at', 0],
+        ['created_at', 1]
     ],
     sortingPos: 0,
     Upsorting: function() {
@@ -1334,7 +1336,9 @@ var Base_History_obj = {
             STR_GAME_A_Z,
             STR_GAME_Z_A,
             STR_VIWES_MOST,
-            STR_VIWES_LOWEST
+            STR_VIWES_LOWEST,
+            STR_CREATED_NEWEST,
+            STR_CREATED_OLDEST
         ];
     },
     histEna: [],

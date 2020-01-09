@@ -354,8 +354,8 @@ function en_USLang() {
     STR_GAME_Z_A = "Game Z - A";
     STR_VIWES_MOST = "Views highest";
     STR_VIWES_LOWEST = "Views lowest";
-    STR_NEWEST = "Newest";
-    STR_OLDEST = "Oldest";
+    STR_NEWEST = "Watched newest";
+    STR_OLDEST = "Watched Oldest";
     STR_PRESS_ENTER_D = "Press enter to delete";
     STR_PRESS_ENTER_APPLY = "Press enter apply the changes, back to exit without applying";
     STR_LIVE_VOD = "This Live stream is now a VOD<br>opening the VOD from where you last stop watching the Live";
@@ -365,4 +365,6 @@ function en_USLang() {
         "If you don't give storage permission no backups will be ever made." + "<br><br>" +
         "The Backup folder is Main_Storage/data/com.fgl27.twitch/Backup";
     STR_DELETE_SURE = "Are you sure you wanna to delete ";
+    STR_CREATED_NEWEST = "Created/Uptime newest";
+    STR_CREATED_OLDEST = "Created/Uptime Oldest";
 }
