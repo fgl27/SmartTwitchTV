@@ -1697,7 +1697,7 @@ function Main_Set_history(type) {
                     }
                 );
             }
-            console.log(Main_values_History_data);
+
             Main_setHistoryItem();
         }
     }
