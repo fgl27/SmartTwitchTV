@@ -1247,7 +1247,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
 
     ChannelClip_title = Main_values_Play_data[10];
     ChannelClip_language = Main_values_Play_data[11];
-    ChannelClip_createdAt = Main_values_Play_data[12];
+    ChannelClip_createdAt = (Main_values_Play_data[16] ? Main_values_Play_data[16] : Main_values_Play_data[12]);//Old sorting fix
     ChannelClip_views = Main_values_Play_data[14];
     ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
@@ -1282,7 +1282,7 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     ChannelVod_title = Main_values_Play_data[10];
     ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[11]);
     ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
-    Play_IncrementView = Main_values_Play_data[12];
+    Play_IncrementView = Main_values_Play_data[17];
 
     Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
@@ -1655,7 +1655,8 @@ function Main_Set_history(type) {
                     data: Main_values_Play_data,
                     date: new Date().getTime(),
                     game: Main_values_Play_data[3],
-                    views: Main_values_Play_data[13]
+                    views: Main_values_Play_data[13],
+                    created_at: new Date(Main_values_Play_data[12]).getTime()//Old sorting didn't had this not needed to update as it doesnot change
                 }
             );
 
@@ -1681,6 +1682,7 @@ function Main_Set_history(type) {
                     game: Main_values_Play_data[3],
                     id: Main_values_Play_data[7],
                     views: Main_values_Play_data[13],
+                    created_at: new Date(Main_values_Play_data[12]).getTime(),
                     watched: 0
                 }
             );
@@ -1798,6 +1800,7 @@ function Main_Restore_history() {
 }
 
 function Main_History_Sort(array, msort, direction) {
+
     if (direction) {//a-z
         array.sort(
             function(a, b) {

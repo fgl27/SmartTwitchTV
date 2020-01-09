@@ -314,7 +314,7 @@ function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_unti
         valuesArray[10] + '</div>' +
         '<div id="' + idArray[4] + id + '"class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div id="' + idArray[6] + id +
-        '"class="stream_info_live" style="width: auto; display: inline-block;">' + valuesArray[12] + ',' + STR_SPACE +
+        '"class="stream_info_live" style="width: auto; display: inline-block;">' + (valuesArray[16] ? valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE + //Old sorting fix
         valuesArray[14] + '</div><div id="' + idArray[5] + id +
         '"class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
         Play_timeS(valuesArray[1]) + '</div></div>' +
