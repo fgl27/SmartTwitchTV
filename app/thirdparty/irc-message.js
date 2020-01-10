@@ -29,8 +29,7 @@ window.parseIRC = function(data) {
         for (var i = 0; i < rawTags.length; i++) {
             // Tags delimited by an equals sign are key=value tags.
             // If there's no equals, we assign the tag a value of true.
-            var tag = rawTags[i];
-            var pair = tag.split('=');
+            var pair = rawTags[i].split('=');
             message.tags[pair[0]] = pair[1] || true;
         }
 
