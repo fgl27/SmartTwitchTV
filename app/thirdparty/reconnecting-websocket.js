@@ -124,7 +124,7 @@
             timeoutInterval: 3000,
 
             /** The maximum number of reconnection attempts to make. Unlimited if null. */
-            maxReconnectAttempts: null,
+            maxReconnectAttempts: 50,
 
             /** The binary type, possible values 'blob' or 'arraybuffer', default 'blob'. */
             binaryType: 'blob'
@@ -174,21 +174,37 @@
 
         // Wire up "on*" properties as event handlers
 
-        eventTarget.addEventListener('open', function(event) {
-            self.onopen(event);
-        });
-        eventTarget.addEventListener('close', function(event) {
-            self.onclose(event);
-        });
-        eventTarget.addEventListener('connecting', function(event) {
-            self.onconnecting(event);
-        });
-        eventTarget.addEventListener('message', function(event) {
-            self.onmessage(event);
-        });
-        eventTarget.addEventListener('error', function(event) {
-            self.onerror(event);
-        });
+        eventTarget.addEventListener('open',
+            function(event) {
+                self.onopen(event);
+            }
+        );
+        eventTarget.addEventListener('close',
+            function(event) {
+                self.onclose(event);
+            }
+        );
+        eventTarget.addEventListener('connecting',
+            function(event) {
+                self.onconnecting(event);
+            }
+        );
+        eventTarget.addEventListener('message',
+            function(event) {
+                self.onmessage(event);
+            }
+        );
+        eventTarget.addEventListener('error',
+            function(event) {
+                self.onerror(event);
+            })
+            ;
+        eventTarget.addEventListener('maxAttemptsExceed',
+            function(event) {
+                self.onmaxattemptsexceed(event);
+            }
+        );
+
 
         // Expose the API required by EventTarget
 
@@ -214,14 +230,14 @@
         }
 
         this.open = function(reconnectAttempt) {
+            if (reconnectAttempt && this.reconnectAttempts > this.maxReconnectAttempts) {
+                return;
+            }
+
             ws = new WebSocket(self.url, protocols || []);
             ws.binaryType = this.binaryType;
 
-            if (reconnectAttempt) {
-                if (this.maxReconnectAttempts && this.reconnectAttempts > this.maxReconnectAttempts) {
-                    return;
-                }
-            } else {
+            if (!reconnectAttempt) {
                 eventTarget.dispatchEvent(generateEvent('connecting'));
                 this.reconnectAttempts = 0;
             }
@@ -357,6 +373,8 @@
     ReconnectingWebSocket.prototype.onmessage = function() {};
     /** An event listener to be called when an error occurs. */
     ReconnectingWebSocket.prototype.onerror = function() {};
+    /** An event listener to be called when connecting attempts exceeded */
+    ReconnectingWebSocket.prototype.onmaxattemptsexceed = function() {};
 
     /**
      * Whether all instances of ReconnectingWebSocket should log debug messages.
