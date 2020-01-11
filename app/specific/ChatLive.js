@@ -148,10 +148,7 @@ function ChatLive_loadCheersChannelRequest(chat_number) {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 ChatLive_loadCheersChannelSuccess(JSON.parse(xmlHttp.responseText), chat_number);
-                // } else if (xmlHttp.status === 404) { //not supported by this channel
-                //     extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = 1;
             } else {
-                console.log(xmlHttp);
                 ChatLive_loadCheersChannelError(chat_number);
             }
         }
@@ -371,7 +368,12 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         }
     }
 
-    div += '<span class="message">' + ChatLive_extraMessageTokenize(emoticonize(mmessage, emotes), chat_number, tags.hasOwnProperty('bits')) + '</span>';
+    div += '<span class="message">' +
+        ChatLive_extraMessageTokenize(
+            emoticonize(mmessage, emotes),
+            chat_number,
+            (tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number]))
+        ) + '</span>';
 
     if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number);
     else {

@@ -28,7 +28,7 @@ function extraMessageTokenize(message, chat_number, bits) {
     for (var i = 0; i < tokenizedString.length; i++) {
         message = tokenizedString[i];
 
-        cheer = bits ? findCheerInToken(message, chat_number) : false;
+        cheer = bits ? findCheerInToken(message, chat_number) : 0;
 
         if (cheer) {
             tokenizedString[i] = cheerTemplate(cheer);
@@ -45,10 +45,21 @@ function extraMessageTokenize(message, chat_number, bits) {
 
 function findCheerInToken(message, chat_number) {
     var cheerPrefixes = Object.keys(cheers[ChatLive_selectedChannel_id[chat_number]]),
-        tokenLower = message.toLowerCase(),
+        i;
+
+    //Try  case sensitive first as some prefixes start the same, but some users type without carrying about case
+    for (i = 0; i < cheerPrefixes.length; i++) {
+
+        if (message.startsWith(cheerPrefixes[i])) {
+            return getCheer(cheerPrefixes[i], parseInt(message.substr(cheerPrefixes[i].length), 10), chat_number);
+        }
+    }
+
+    var tokenLower = message.toLowerCase(),
         prefixLower;
 
-    for (var i = 0; i < cheerPrefixes.length; i++) {
+    //Try  case insensitive after
+    for (i = 0; i < cheerPrefixes.length; i++) {
 
         prefixLower = cheerPrefixes[i].toLowerCase();
 
