@@ -5,14 +5,14 @@ function extraEmoticonize(message, emote) {
 }
 
 function extraEmoteTemplate(emote) {
-    return '<img class="emoticon" alt="" src="' + emote['2x'] + '"/>';
+    return '<img class="emoticon" alt="" src="' + emote['4x'] + '"/>';
 }
 
-function emoteTemplate(id) {
-    return '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/2.0"/>';
+function emoteURL(id) {
+    return 'https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0';//emotes 3.0 === 4.0
 }
 
-function cheerTemplate(url) {
+function emoteTemplate(url) {
     return '<img class="emoticon" alt="" src="' + url + '"/>';
 }
 
@@ -31,7 +31,7 @@ function extraMessageTokenize(message, chat_number, bits) {
         cheer = bits ? findCheerInToken(message, chat_number) : 0;
 
         if (cheer) {
-            tokenizedString[i] = cheerTemplate(cheer);
+            tokenizedString[i] = emoteTemplate(cheer);
             continue;
         }
 
@@ -112,7 +112,7 @@ function emoticonize(message, emotes) {
         tokenizedMessage.unshift(punycode.ucs2.encode(message.slice(replacement.last + 1)));
 
         // Unshift the emote HTML (but not as a string to allow us to process links and escape html still)
-        tokenizedMessage.unshift([emoteTemplate(replacement.id)]);
+        tokenizedMessage.unshift([emoteTemplate(emoteURL(replacement.id))]);
 
         // Splice the unparsed piece of the message
         message = message.slice(0, replacement.first);

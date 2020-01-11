@@ -167,7 +167,7 @@ function ChatLive_loadCheersChannelSuccess(data, chat_number) {
     data.actions.forEach(function(action) {
         cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix] = {};
         action.tiers.forEach(function(tier) {
-            cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = tier.images.light.animated['2'];
+            cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = tier.images.light.animated['4'];
         });
     });
 
@@ -219,7 +219,7 @@ function ChatLive_loadEmotesbbtv(data) {
         extraEmotes[emote.code] = {
             code: emote.code,
             id: emote.id,
-            '2x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '2x')
+            '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
         };
     });
 }
@@ -243,7 +243,7 @@ function ChatLive_loadEmotesffz(data) {
                 extraEmotes[emoticon.name] = {
                     code: emoticon.name,
                     id: emoticon.id,
-                    '2x': 'https:' + (emoticon.urls[2] || emoticon.urls[1].replace(/1$/, '2'))
+                    '4x': 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1])
                 };
 
             });
