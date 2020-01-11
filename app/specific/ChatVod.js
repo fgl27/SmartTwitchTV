@@ -206,7 +206,12 @@ function Chat_loadChatSuccess(responseText, id) {
         div += '<span class="message">';
         mmessage.fragments.forEach(function(fragments) {
             if (fragments.hasOwnProperty('emoticon')) div += '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/2.0">';
-            else div += ChatLive_extraMessageTokenize([fragments.text], 0, mmessage.hasOwnProperty('bits_spent'));
+            else div +=
+                ChatLive_extraMessageTokenize(
+                    [fragments.text],
+                    0,
+                    (mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]))
+                );
         });
 
         div += '</span>';
