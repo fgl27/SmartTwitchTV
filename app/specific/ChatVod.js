@@ -128,6 +128,7 @@ function Chat_loadBadgesChannelSuccess(responseText, id) {
     Chat_loadBadgesTransform(responseText, 0);
 
     ChatLive_loadEmotesChannel(0);
+    ChatLive_loadCheersChannel(0);
     ChatLive_loadEmotesChannelffz(0);
     if (Chat_Id === id) Chat_loadChat(id);
 }
@@ -205,7 +206,7 @@ function Chat_loadChatSuccess(responseText, id) {
         div += '<span class="message">';
         mmessage.fragments.forEach(function(fragments) {
             if (fragments.hasOwnProperty('emoticon')) div += '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/2.0">';
-            else div += ChatLive_extraMessageTokenize([fragments.text]);
+            else div += ChatLive_extraMessageTokenize([fragments.text], 0, mmessage.hasOwnProperty('bits_spent'));
         });
 
         div += '</span>';
