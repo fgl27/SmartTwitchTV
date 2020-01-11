@@ -12,30 +12,66 @@ function emoteTemplate(id) {
     return '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/2.0"/>';
 }
 
+function cheerTemplate(url) {
+    return '<img class="emoticon" alt="" src="' + url + '"/>';
+}
 
 function mescape(message) {
     return message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function extraMessageTokenize(message) {
-    var tokenizedString = message.split(' ');
+function extraMessageTokenize(message, chat_number, bits) {
+    var tokenizedString = message.split(' '),
+        emote,
+        cheer;
 
     for (var i = 0; i < tokenizedString.length; i++) {
         message = tokenizedString[i];
 
-        var test = message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '');
-        var emote = extraEmotes[test] || extraEmotes[message];
+        cheer = bits ? findCheerInToken(message, chat_number) : false;
 
-        if (emote) {
-            message = extraEmoticonize(message, emote);
-        } else {
-            message = mescape(message);
+        if (cheer) {
+            tokenizedString[i] = cheerTemplate(cheer);
+            continue;
         }
 
-        tokenizedString[i] = message;
+        emote = extraEmotes[message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '')] || extraEmotes[message];
+
+        tokenizedString[i] = emote ? extraEmoticonize(message, emote) : mescape(message);
     }
 
     return tokenizedString.join(' ');
+}
+
+function findCheerInToken(message, chat_number) {
+    var cheerPrefixes = Object.keys(cheers[ChatLive_selectedChannel_id[chat_number]]),
+        tokenLower = message.toLowerCase(),
+        prefixLower;
+
+    for (var i = 0; i < cheerPrefixes.length; i++) {
+
+        prefixLower = cheerPrefixes[i].toLowerCase();
+
+        if (tokenLower.startsWith(prefixLower)) {
+            return getCheer(cheerPrefixes[i], parseInt(tokenLower.substr(prefixLower.length), 10), chat_number);
+        }
+    }
+
+    return null;
+}
+
+function getCheer(prefix, amount, chat_number) {
+    var amounts = cheers[ChatLive_selectedChannel_id[chat_number]][prefix];
+
+    return amounts[
+        Object.keys(amounts)
+            .sort(function(a, b) {
+                return parseInt(b, 10) - parseInt(a, 10);
+            })
+            .find(function(a) {
+                return amount >= a;
+            })
+    ];
 }
 
 function emoticonize(message, emotes) {
