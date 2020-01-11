@@ -2386,9 +2386,11 @@
     var ChatLive_LineAddCounter = [];
     var extraEmotesDone = {
         bbtv: {},
-        ffz: {}
+        ffz: {},
+        cheers: {}
     };
     var extraEmotes = {};
+    var cheers = {};
 
     var ChatLive_selectedChannel_id = [];
     var ChatLive_selectedChannel = [];
@@ -2458,6 +2460,7 @@
         Chat_loadBadgesTransform(responseText, chat_number);
 
         ChatLive_loadEmotesChannel(chat_number);
+        ChatLive_loadCheersChannel(chat_number);
         ChatLive_loadEmotesChannelffz(chat_number);
         if (ChatLive_Id[chat_number] === id) ChatLive_loadChat(chat_number);
     }
@@ -2500,6 +2503,52 @@
     function ChatLive_loadEmotesChannelSuccess(data, chat_number) {
         ChatLive_loadEmotesbbtv(JSON.parse(data));
         extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = 1;
+    }
+
+    function ChatLive_loadCheersChannel(chat_number) {
+        if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
+            ChatLive_loadingDataTry = 0;
+            ChatLive_loadCheersChannelRequest(chat_number);
+        }
+    }
+
+    function ChatLive_loadCheersChannelRequest(chat_number) {
+        var theUrl = 'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]);
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.ontimeout = function() {};
+        xmlHttp.setRequestHeader(Main_Headers[0][0], Main_Headers[0][1]);
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    ChatLive_loadCheersChannelSuccess(JSON.parse(xmlHttp.responseText), chat_number);
+                } else {
+                    ChatLive_loadCheersChannelError(chat_number);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+
+    function ChatLive_loadCheersChannelError(chat_number) {
+        ChatLive_loadingDataTry++;
+        if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadCheersChannelRequest(chat_number);
+    }
+
+    function ChatLive_loadCheersChannelSuccess(data, chat_number) {
+        cheers[ChatLive_selectedChannel_id[chat_number]] = {};
+        data.actions.forEach(function(action) {
+            cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix] = {};
+            action.tiers.forEach(function(tier) {
+                cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = tier.images.light.animated['4'];
+            });
+        });
+
+        extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]] = 1;
     }
 
     function ChatLive_loadEmotesChannelffz(chat_number) {
@@ -2547,7 +2596,7 @@
             extraEmotes[emote.code] = {
                 code: emote.code,
                 id: emote.id,
-                '2x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '2x')
+                '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
             };
         });
     }
@@ -2571,7 +2620,7 @@
                     extraEmotes[emoticon.name] = {
                         code: emoticon.name,
                         id: emoticon.id,
-                        '2x': 'https:' + (emoticon.urls[2] || emoticon.urls[1].replace(/1$/, '2'))
+                        '4x': 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1])
                     };
 
                 });
@@ -2696,7 +2745,12 @@
             }
         }
 
-        div += '<span class="message">' + ChatLive_extraMessageTokenize(emoticonize(mmessage, emotes)) + '</span>';
+        div += '<span class="message">' +
+            ChatLive_extraMessageTokenize(
+                emoticonize(mmessage, emotes),
+                chat_number,
+                (tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number]))
+            ) + '</span>';
 
         if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number);
         else {
@@ -2707,11 +2761,11 @@
         }
     }
 
-    function ChatLive_extraMessageTokenize(tokenizedMessage) {
+    function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
 
         for (var i = 0; i < tokenizedMessage.length; i++) {
             if (typeof tokenizedMessage[i] === 'string') {
-                tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i]);
+                tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags);
             } else {
                 tokenizedMessage[i] = tokenizedMessage[i][0];
             }
@@ -2880,6 +2934,7 @@
         Chat_loadBadgesTransform(responseText, 0);
 
         ChatLive_loadEmotesChannel(0);
+        ChatLive_loadCheersChannel(0);
         ChatLive_loadEmotesChannelffz(0);
         if (Chat_Id === id) Chat_loadChat(id);
     }
@@ -2956,8 +3011,13 @@
             //Add mesage
             div += '<span class="message">';
             mmessage.fragments.forEach(function(fragments) {
-                if (fragments.hasOwnProperty('emoticon')) div += '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + fragments.emoticon.emoticon_id + '/2.0">';
-                else div += ChatLive_extraMessageTokenize([fragments.text]);
+                if (fragments.hasOwnProperty('emoticon')) div += emoteTemplate(emoteURL(fragments.emoticon.emoticon_id));
+                else div +=
+                    ChatLive_extraMessageTokenize(
+                        [fragments.text],
+                        0,
+                        (mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]))
+                    );
             });
 
             div += '</span>';
@@ -3263,7 +3323,7 @@
 
     var Main_stringVersion = '2.0';
     var Main_stringVersion_Min = '.107';
-    var Main_minversion = '010920';
+    var Main_minversion = '011120';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -16689,37 +16749,76 @@
     }
 
     function extraEmoteTemplate(emote) {
-        return '<img class="emoticon" alt="" src="' + emote['2x'] + '"/>';
+        return '<img class="emoticon" alt="" src="' + emote['4x'] + '"/>';
     }
 
-    function emoteTemplate(id) {
-        return '<img class="emoticon" alt="" src="https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/2.0"/>';
+    function emoteURL(id) {
+        return 'https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0'; //emotes 3.0 === 4.0
     }
 
+    function emoteTemplate(url) {
+        return '<img class="emoticon" alt="" src="' + url + '"/>';
+    }
 
     function mescape(message) {
         return message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    function extraMessageTokenize(message) {
-        var tokenizedString = message.split(' ');
+    function extraMessageTokenize(message, chat_number, bits) {
+        var tokenizedString = message.split(' '),
+            emote,
+            cheer;
 
         for (var i = 0; i < tokenizedString.length; i++) {
             message = tokenizedString[i];
 
-            var test = message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '');
-            var emote = extraEmotes[test] || extraEmotes[message];
+            cheer = bits ? findCheerInToken(message, chat_number) : 0;
 
-            if (emote) {
-                message = extraEmoticonize(message, emote);
-            } else {
-                message = mescape(message);
+            if (cheer) {
+                tokenizedString[i] = emoteTemplate(cheer);
+                continue;
             }
 
-            tokenizedString[i] = message;
+            emote = extraEmotes[message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '')] || extraEmotes[message];
+
+            tokenizedString[i] = emote ? extraEmoticonize(message, emote) : mescape(message);
         }
 
         return tokenizedString.join(' ');
+    }
+
+    function findCheerInToken(message, chat_number) {
+        var cheerPrefixes = Object.keys(cheers[ChatLive_selectedChannel_id[chat_number]]),
+            tokenLower = message.toLowerCase(),
+            index = -1;
+
+
+        for (var i = 0; i < cheerPrefixes.length; i++) {
+            //Try  case sensitive first as some prefixes start the same, but some users type without carrying about case
+            if (message.startsWith(cheerPrefixes[i]))
+                return getCheer(cheerPrefixes[i], parseInt(message.substr(cheerPrefixes[i].length), 10), chat_number);
+
+            //Try  case insensitive after
+            if (tokenLower.startsWith(cheerPrefixes[i].toLowerCase())) index = i;
+        }
+
+        return ((index > -1) ?
+            getCheer(cheerPrefixes[index], parseInt(tokenLower.substr(cheerPrefixes[index].toLowerCase().length), 10), chat_number) :
+            null);
+    }
+
+    function getCheer(prefix, amount, chat_number) {
+        var amounts = cheers[ChatLive_selectedChannel_id[chat_number]][prefix];
+
+        return amounts[
+            Object.keys(amounts)
+            .sort(function(a, b) {
+                return parseInt(b, 10) - parseInt(a, 10);
+            })
+            .find(function(a) {
+                return amount >= a;
+            })
+        ];
     }
 
     function emoticonize(message, emotes) {
@@ -16757,7 +16856,7 @@
             tokenizedMessage.unshift(punycode.ucs2.encode(message.slice(replacement.last + 1)));
 
             // Unshift the emote HTML (but not as a string to allow us to process links and escape html still)
-            tokenizedMessage.unshift([emoteTemplate(replacement.id)]);
+            tokenizedMessage.unshift([emoteTemplate(emoteURL(replacement.id))]);
 
             // Splice the unparsed piece of the message
             message = message.slice(0, replacement.first);
@@ -17854,7 +17953,7 @@
 
         function parse(str, dontremove, emoticon) {
             //Twitch title may contain < or > with causes html problems
-            if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;');
+            if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             //Replace line break
             str = str.replace(/(\r\n|\n|\r)/gm, "");
             return replace(str, function(rawText) {
