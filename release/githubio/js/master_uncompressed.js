@@ -2407,12 +2407,11 @@
 
         ChatLive_loaded[chat_number] = false;
 
-        Main_ready(function() {
-            ChatLive_Id[chat_number] = (new Date()).getTime();
-            ChatLive_selectedChannel_id[chat_number] = !chat_number ? Main_values.Play_selectedChannel_id : PlayExtra_selectedChannel_id;
-            ChatLive_selectedChannel[chat_number] = !chat_number ? Main_values.Play_selectedChannel : PlayExtra_selectedChannel;
-            ChatLive_loadBadgesChannel(ChatLive_Id[chat_number], ChatLive_loadBadgesChannelSuccess, chat_number);
-        });
+
+        ChatLive_Id[chat_number] = (new Date()).getTime();
+        ChatLive_selectedChannel_id[chat_number] = !chat_number ? Main_values.Play_selectedChannel_id : PlayExtra_selectedChannel_id;
+        ChatLive_selectedChannel[chat_number] = !chat_number ? Main_values.Play_selectedChannel : PlayExtra_selectedChannel;
+        ChatLive_loadBadgesChannel(ChatLive_Id[chat_number], ChatLive_loadBadgesChannelSuccess, chat_number);
 
     }
 
@@ -2843,12 +2842,10 @@
         }
         if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
 
-        Main_ready(function() {
-            Chat_Id = (new Date()).getTime();
-            ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
-            ChatLive_selectedChannel[0] = Main_values.Main_selectedChannel;
-            ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess, 0);
-        });
+        Chat_Id = (new Date()).getTime();
+        ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
+        ChatLive_selectedChannel[0] = Main_values.Main_selectedChannel;
+        ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess, 0);
     }
 
     function Chat_loadBadgesGlobal() {
