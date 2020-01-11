@@ -64,17 +64,17 @@ function findCheerInToken(message, chat_number) {
 }
 
 function getCheer(prefix, amount, chat_number) {
-    var amounts = cheers[ChatLive_selectedChannel_id[chat_number]][prefix];
+    var amounts = cheers[ChatLive_selectedChannel_id[chat_number]][prefix],
+        amountsArray = Object.keys(amounts),
+        length = amountsArray.length;
 
-    return amounts[
-        Object.keys(amounts)
-            .sort(function(a, b) {
-                return parseInt(b, 10) - parseInt(a, 10);
-            })
-            .find(function(a) {
-                return amount >= a;
-            })
-    ];
+    //Run on reverse order to catch the correct position amountsArray = 1000, 500, 100, 1 ... amount = 250
+    while (length--) {
+        if (amount >= amountsArray[length]) return amounts[amountsArray[length]];
+    }
+
+    //Fail safe
+    return amounts[amountsArray[0]];
 }
 
 function emoticonize(message, emotes) {
