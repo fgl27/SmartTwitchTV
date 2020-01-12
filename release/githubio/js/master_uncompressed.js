@@ -2384,6 +2384,8 @@
     var ChatLive_loaded = [];
     var ChatLive_CheckId = [];
     var ChatLive_LineAddCounter = [];
+    var ChatLive_Messages = [];
+    var ChatLive_Playing = true;
     var extraEmotesDone = {
         bbtv: {},
         ffz: {},
@@ -2781,16 +2783,37 @@
     }
 
     function ChatLive_LineAdd(message, chat_number) {
-        var elem = document.createElement('div');
-        elem.className = 'chat_line';
-        elem.innerHTML = message;
+        if (ChatLive_Playing) {
+            var elem = document.createElement('div');
+            elem.className = 'chat_line';
+            elem.innerHTML = message;
 
-        Chat_div[chat_number].appendChild(elem);
+            Chat_div[chat_number].appendChild(elem);
 
-        ChatLive_LineAddCounter[chat_number]++;
-        if (ChatLive_LineAddCounter[chat_number] > Chat_CleanMax) {
-            ChatLive_LineAddCounter[chat_number] = 0;
-            Chat_Clean(chat_number);
+            ChatLive_LineAddCounter[chat_number]++;
+            if (ChatLive_LineAddCounter[chat_number] > Chat_CleanMax) {
+                ChatLive_LineAddCounter[chat_number] = 0;
+                Chat_Clean(chat_number);
+            }
+        } else {
+            ChatLive_Messages[chat_number].push(message);
+        }
+    }
+
+    function ChatLive_MessagesRunAfterPause() {
+        var i, j,
+            Temp_Messages = [];
+
+        Temp_Messages[0] = Main_Slice(ChatLive_Messages[0]);
+        ChatLive_Messages[0] = [];
+
+        Temp_Messages[1] = Main_Slice(ChatLive_Messages[1]);
+        ChatLive_Messages[1] = [];
+
+        for (i = 0; i < 2; i++) {
+            for (j = 0; j < Temp_Messages[i].length; j++) {
+                ChatLive_LineAdd(Temp_Messages[i][j], i);
+            }
         }
     }
 
@@ -2804,6 +2827,7 @@
         if (ChatLive_socket[chat_number]) ChatLive_socket[chat_number].close(1000);
         ChatLive_Id[chat_number] = 0;
         ChatLive_LineAddCounter[chat_number] = 0;
+        ChatLive_Messages[chat_number] = [];
 
         if (!chat_number) Main_empty('chat_box');
         else Main_empty('chat_box2');
@@ -2837,6 +2861,8 @@
         Chat_div[1] = document.getElementById('chat_box2');
         ChatLive_LineAddCounter[0] = 0;
         ChatLive_LineAddCounter[1] = 0;
+        ChatLive_Messages[0] = [];
+        ChatLive_Messages[1] = [];
         Chat_loadBadgesGlobal();
     }
 
@@ -4454,7 +4480,6 @@
         Main_HideElement('scene1');
         Main_ShowElement('scene2');
         Play_hideChat();
-        Play_clearPause();
         Play_HideWarningDialog();
         Play_CleanHideExit();
         Main_ready(PlayClip_Start);
@@ -4496,7 +4521,6 @@
         Main_ShowElement('scene2');
         PlayVod_hidePanel();
         Play_hideChat();
-        Play_clearPause();
         Play_CleanHideExit();
         Main_ready(PlayVod_Start);
     }
@@ -6047,6 +6071,7 @@
             PlayExtra_SetPanel();
             if (Play_isOn) PlayExtra_qualityChanged();
             PlayExtra_Save_selectedChannel_id_Old = null;
+            ChatLive_Playing = true;
 
             if (!Play_isFullScreen) {
                 Android.mupdatesizePP(!Play_isFullScreen);
@@ -6329,9 +6354,6 @@
     var Play_selectedChannelDisplayname_Old;
     var Play_gameSelected_Old;
     //var Play_SupportsSource_Old;
-
-    var Play_pauseEndID = null;
-    var Play_pauseStartID = null;
 
     var Play_created = '';
 
@@ -6768,7 +6790,7 @@
         UserLiveFeed_Hide(true);
         Play_watching_time = new Date().getTime();
         Play_isOn = true;
-        Play_clearPause();
+        ChatLive_Playing = true;
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
         Play_showBufferDialog();
         Play_loadingInfoDataTry = 0;
@@ -7190,6 +7212,7 @@
             Play_selectedChannel_id_Old = null;
             if (Play_isOn) Play_qualityChanged();
             UserLiveFeed_PreventHide = false;
+            ChatLive_Playing = true;
 
             if (!Play_isHost) Main_Set_history('live');
         }
@@ -7457,7 +7480,6 @@
     function Play_ClearPlayer() {
         window.clearInterval(Play_ShowPanelStatusId);
         Play_hidePanel();
-        Play_clearPause();
         Play_HideWarningDialog();
         if (!Play_EndDialogEnter) Play_HideEndDialog();
         Main_updateclock();
@@ -7538,20 +7560,6 @@
 
     function Play_ExitDialogVisible() {
         return Main_isElementShowing('play_dialog_exit');
-    }
-
-    // For some reason clearTimeout fail some time when two are set in a sequence on the same function
-    function Play_clearPauseEnd() {
-        window.clearTimeout(Play_pauseEndID);
-    }
-
-    function Play_clearPauseStart() {
-        window.clearTimeout(Play_pauseStartID);
-    }
-
-    function Play_clearPause() {
-        Play_clearPauseEnd();
-        Play_clearPauseStart();
     }
 
     function Play_isPanelShown() {
@@ -7768,7 +7776,8 @@
 
     function Play_KeyPause(PlayVodClip) {
         if (Play_isNotplaying()) {
-            Play_clearPause();
+            ChatLive_Playing = true;
+            ChatLive_MessagesRunAfterPause();
             Play_HideBufferDialog();
 
             Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
@@ -7781,6 +7790,7 @@
 
             if (Main_IsNotBrowser) Android.play(true);
         } else {
+            ChatLive_Playing = false;
             Play_HideBufferDialog();
 
             Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
@@ -7917,7 +7927,6 @@
                 } else {
                     PlayVod_replay = true;
                     PlayVod_Start();
-                    Play_clearPause();
                     PlayVod_currentTime = 0;
                     Chat_offset = 0;
                     Chat_Init();
@@ -7933,7 +7942,6 @@
                     PlayClip_replayOrNext = true;
                     PlayClip_replay = true;
                     PlayClip_Start();
-                    Play_clearPause();
                 }
             }
         } else if (Play_Endcounter === 1) {
@@ -8792,7 +8800,6 @@
                     PlayClip_SetHtmlQuality('stream_quality');
                     PlayClip_onPlayer();
                 }
-                Play_clearPause();
             },
             updown: function(adder, PlayVodClip) {
 
@@ -9578,7 +9585,6 @@
     function PlayVod_Resume() {
         UserLiveFeed_Hide(true);
         PlayVod_isOn = true;
-        Play_clearPause();
         Play_showBufferDialog();
         Play_ResumeAfterOnlineCounter = 0;
 
@@ -10042,7 +10048,6 @@
     }
 
     function PlayVod_jump() {
-        Play_clearPause();
         if (!Play_isEndDialogVisible()) {
 
             if (PlayVod_isOn) {
