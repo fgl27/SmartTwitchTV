@@ -7,6 +7,8 @@ var ChatLive_socket = [];
 var ChatLive_loaded = [];
 var ChatLive_CheckId = [];
 var ChatLive_LineAddCounter = [];
+var ChatLive_Messages = [];
+var ChatLive_Playing = true;
 var extraEmotesDone = {
     bbtv: {},
     ffz: {},
@@ -404,16 +406,37 @@ function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
 }
 
 function ChatLive_LineAdd(message, chat_number) {
-    var elem = document.createElement('div');
-    elem.className = 'chat_line';
-    elem.innerHTML = message;
+    if (ChatLive_Playing) {
+        var elem = document.createElement('div');
+        elem.className = 'chat_line';
+        elem.innerHTML = message;
 
-    Chat_div[chat_number].appendChild(elem);
+        Chat_div[chat_number].appendChild(elem);
 
-    ChatLive_LineAddCounter[chat_number]++;
-    if (ChatLive_LineAddCounter[chat_number] > Chat_CleanMax) {
-        ChatLive_LineAddCounter[chat_number] = 0;
-        Chat_Clean(chat_number);
+        ChatLive_LineAddCounter[chat_number]++;
+        if (ChatLive_LineAddCounter[chat_number] > Chat_CleanMax) {
+            ChatLive_LineAddCounter[chat_number] = 0;
+            Chat_Clean(chat_number);
+        }
+    } else {
+        ChatLive_Messages[chat_number].push(message);
+    }
+}
+
+function ChatLive_MessagesRunAfterPause() {
+    var i, j,
+        Temp_Messages = [];
+
+    Temp_Messages[0] = Main_Slice(ChatLive_Messages[0]);
+    ChatLive_Messages[0] = [];
+
+    Temp_Messages[1] = Main_Slice(ChatLive_Messages[1]);
+    ChatLive_Messages[1] = [];
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < Temp_Messages[i].length; j++) {
+            ChatLive_LineAdd(Temp_Messages[i][j], i);
+        }
     }
 }
 
@@ -427,6 +450,7 @@ function ChatLive_Clear(chat_number) {
     if (ChatLive_socket[chat_number]) ChatLive_socket[chat_number].close(1000);
     ChatLive_Id[chat_number] = 0;
     ChatLive_LineAddCounter[chat_number] = 0;
+    ChatLive_Messages[chat_number] = [];
 
     if (!chat_number) Main_empty('chat_box');
     else Main_empty('chat_box2');

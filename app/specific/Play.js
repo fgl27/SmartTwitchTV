@@ -55,9 +55,6 @@ var Play_selectedChannelDisplayname_Old;
 var Play_gameSelected_Old;
 //var Play_SupportsSource_Old;
 
-var Play_pauseEndID = null;
-var Play_pauseStartID = null;
-
 var Play_created = '';
 
 var Play_loadingDataTry = 0;
@@ -493,7 +490,7 @@ function Play_Resume() {
     UserLiveFeed_Hide(true);
     Play_watching_time = new Date().getTime();
     Play_isOn = true;
-    Play_clearPause();
+    ChatLive_Playing = true;
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
     Play_showBufferDialog();
     Play_loadingInfoDataTry = 0;
@@ -915,6 +912,7 @@ function Play_loadDataSuccess(responseText) {
         Play_selectedChannel_id_Old = null;
         if (Play_isOn) Play_qualityChanged();
         UserLiveFeed_PreventHide = false;
+        ChatLive_Playing = true;
 
         if (!Play_isHost) Main_Set_history('live');
     }
@@ -1182,7 +1180,6 @@ function Play_exitMain() {
 function Play_ClearPlayer() {
     window.clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
-    Play_clearPause();
     Play_HideWarningDialog();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
     Main_updateclock();
@@ -1263,20 +1260,6 @@ function Play_CleanHideExit() {
 
 function Play_ExitDialogVisible() {
     return Main_isElementShowing('play_dialog_exit');
-}
-
-// For some reason clearTimeout fail some time when two are set in a sequence on the same function
-function Play_clearPauseEnd() {
-    window.clearTimeout(Play_pauseEndID);
-}
-
-function Play_clearPauseStart() {
-    window.clearTimeout(Play_pauseStartID);
-}
-
-function Play_clearPause() {
-    Play_clearPauseEnd();
-    Play_clearPauseStart();
 }
 
 function Play_isPanelShown() {
@@ -1493,7 +1476,8 @@ function Play_hideChatBackgroundDialog() {
 
 function Play_KeyPause(PlayVodClip) {
     if (Play_isNotplaying()) {
-        Play_clearPause();
+        ChatLive_Playing = true;
+        ChatLive_MessagesRunAfterPause();
         Play_HideBufferDialog();
 
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
@@ -1506,6 +1490,7 @@ function Play_KeyPause(PlayVodClip) {
 
         if (Main_IsNotBrowser) Android.play(true);
     } else {
+        ChatLive_Playing = false;
         Play_HideBufferDialog();
 
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
@@ -1642,7 +1627,6 @@ function Play_EndDialogPressed(PlayVodClip) {
             } else {
                 PlayVod_replay = true;
                 PlayVod_Start();
-                Play_clearPause();
                 PlayVod_currentTime = 0;
                 Chat_offset = 0;
                 Chat_Init();
@@ -1658,7 +1642,6 @@ function Play_EndDialogPressed(PlayVodClip) {
                 PlayClip_replayOrNext = true;
                 PlayClip_replay = true;
                 PlayClip_Start();
-                Play_clearPause();
             }
         }
     } else if (Play_Endcounter === 1) {
@@ -2517,7 +2500,6 @@ function Play_MakeControls() {
                 PlayClip_SetHtmlQuality('stream_quality');
                 PlayClip_onPlayer();
             }
-            Play_clearPause();
         },
         updown: function(adder, PlayVodClip) {
 

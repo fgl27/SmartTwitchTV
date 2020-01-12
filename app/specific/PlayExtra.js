@@ -266,6 +266,7 @@ function PlayExtra_loadDataSuccess(responseText) {
         PlayExtra_SetPanel();
         if (Play_isOn) PlayExtra_qualityChanged();
         PlayExtra_Save_selectedChannel_id_Old = null;
+        ChatLive_Playing = true;
 
         if (!Play_isFullScreen) {
             Android.mupdatesizePP(!Play_isFullScreen);
