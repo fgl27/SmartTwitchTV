@@ -1256,7 +1256,6 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Main_HideElement('scene1');
     Main_ShowElement('scene2');
     Play_hideChat();
-    Play_clearPause();
     Play_HideWarningDialog();
     Play_CleanHideExit();
     Main_ready(PlayClip_Start);
@@ -1298,7 +1297,6 @@ function Main_openVod() {
     Main_ShowElement('scene2');
     PlayVod_hidePanel();
     Play_hideChat();
-    Play_clearPause();
     Play_CleanHideExit();
     Main_ready(PlayVod_Start);
 }

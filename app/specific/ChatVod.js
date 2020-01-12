@@ -25,6 +25,8 @@ function Chat_Preinit() {
     Chat_div[1] = document.getElementById('chat_box2');
     ChatLive_LineAddCounter[0] = 0;
     ChatLive_LineAddCounter[1] = 0;
+    ChatLive_Messages[0] = [];
+    ChatLive_Messages[1] = [];
     Chat_loadBadgesGlobal();
 }
 
