@@ -328,7 +328,9 @@ function ChatLive_CheckClear(chat_number) {
 
 function ChatLive_loadChatSuccess(message, chat_number) {
     var div = '',
-        tags = message.tags;
+        tags = message.tags,
+        nick,
+        nickColor;
 
     //Add badges
     if (tags.hasOwnProperty('badges')) {
@@ -343,9 +345,11 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
     //Add nick
     if (tags.hasOwnProperty('display-name')) {
-        var nick = tags['display-name'];
-        if (typeof nick === 'string')
-            div += '<span style="color: #' + defaultColors[(nick).charCodeAt(0) % defaultColorsLength] + ';">' + nick + '</span>&#58;&nbsp;';
+        nick = tags['display-name'];
+        nickColor = (typeof tags.color !== "boolean") ? tags.color :
+            (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
+
+        div += '<span style="color: ' + nickColor + ';">' + nick + '</span>&#58;&nbsp;';
     }
 
     //Add message
@@ -380,7 +384,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         ChatLive_extraMessageTokenize(
             emoticonize(mmessage, emotes),
             chat_number,
-            (tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number]))
+            ((tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number])) ? parseInt(tags.bits) : 0)
         ) + '</span>';
 
     if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number);
