@@ -1,0 +1,26 @@
+
+{raw: "@badge-info=;badges=bits/1;bits=5;color=;display-n…RIVMSG #vader :Pride1 Pride1 Pride1 Pride1 Pride1", tags: {…}, prefix: "littlewitch03!littlewitch03@littlewitch03.tmi.twitch.tv", command: "PRIVMSG", params: Array(2)}
+
+raw:"@badge-info=;badges=bits/1;bits=5;color=;display-name=littlewitch03;emotes=;flags=;id=fb58c468-be82-4996-b1f5-cbd9299051d0;mod=0;room-id=69759951;subscriber=0;tmi-sent-ts=1578937260445;turbo=0;user-id=269569684;user-type= :littlewitch03!littlewitch03@littlewitch03.tmi.twitch.tv PRIVMSG #vader :Pride1 Pride1 Pride1 Pride1 Pride1"
+
+tags:
+badge-info: true
+badges: "bits/1"
+bits: "5"
+color: true
+display-name: "littlewitch03"
+emotes: true
+flags: true
+id: "fb58c468-be82-4996-b1f5-cbd9299051d0"
+mod: "0"
+room-id: "69759951"
+subscriber: "0"
+tmi-sent-ts: "1578937260445"
+turbo: "0"
+user-id: "269569684"
+
+prefix: "littlewitch03!littlewitch03@littlewitch03.tmi.twitch.tv"
+
+params: Array(2)
+0: "#vader"
+1: "Pride1 Pride1 Pride1 Pride1 Pride1"
