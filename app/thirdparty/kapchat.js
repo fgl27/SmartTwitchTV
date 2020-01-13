@@ -40,7 +40,7 @@ function extraMessageTokenize(message, chat_number, bits) {
         tokenizedString[i] = emote ? extraEmoticonize(message, emote) : mescape(message);
     }
 
-    return tokenizedString.join(' ');
+    return tokenizedString.join(' ') + (bits ? (' ' + bits + ' bits') : '');
 }
 
 function findCheerInToken(message, chat_number) {
