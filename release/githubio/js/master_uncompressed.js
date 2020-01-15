@@ -2726,7 +2726,7 @@
             nickColor = (typeof tags.color !== "boolean") ? tags.color :
                 (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
 
-            div += '<span style="color: ' + nickColor + ';">' + nick + '</span>&#58;&nbsp;';
+            div += '<span style="color: ' + calculateColorReplacement(nickColor) + ';">' + nick + '</span>&#58;&nbsp;';
         }
 
         //Add message
@@ -3050,7 +3050,7 @@
             nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
                 defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
-            div += '<span style="color: ' + nickColor + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
+            div += '<span style="color: ' + calculateColorReplacement(nickColor) + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
 
             //Add mesage
             div += '<span class="message">';
@@ -16808,6 +16808,29 @@
         }
 
         return tokenizedString.join(' ') + (bits ? (' ' + bits + ' bits') : '');
+    }
+
+    function calculateColorReplacement(color) {
+        // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+        var rgb = "#",
+            brightness = "0.5",
+            c, i;
+
+        if (color === '#000000') return "#2cffa2"; //Black can't be see on a black background
+
+        color = String(color).replace(/[^0-9a-f]/gi, '');
+        if (color.length < 6) {
+            color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
+        }
+
+        for (i = 0; i < 3; i++) {
+            c = parseInt(color.substr(i * 2, 2), 16);
+            if (c < 10) c = 10;
+            c = Math.round(Math.min(Math.max(0, c + (c * brightness)), 255)).toString(16);
+            rgb += ("00" + c).substr(c.length);
+        }
+
+        return rgb;
     }
 
     function findCheerInToken(message, chat_number) {
