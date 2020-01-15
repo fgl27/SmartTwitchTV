@@ -349,7 +349,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         nickColor = (typeof tags.color !== "boolean") ? tags.color :
             (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
 
-        div += '<span style="color: ' + nickColor + ';">' + nick + '</span>&#58;&nbsp;';
+        div += '<span style="color: ' + calculateColorReplacement(nickColor) + ';">' + nick + '</span>&#58;&nbsp;';
     }
 
     //Add message
