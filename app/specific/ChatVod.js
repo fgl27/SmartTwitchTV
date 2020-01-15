@@ -210,7 +210,7 @@ function Chat_loadChatSuccess(responseText, id) {
         nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
             defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
-        div += '<span style="color: ' + nickColor + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
+        div += '<span style="color: ' + calculateColorReplacement(nickColor) + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
 
         //Add mesage
         div += '<span class="message">';
