@@ -368,6 +368,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
     //Add default emotes
     if (tags.hasOwnProperty('emotes')) {
+
         if (typeof tags.emotes === 'string') {
 
             tags.emotes = tags.emotes.split('/');
