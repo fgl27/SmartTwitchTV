@@ -2726,6 +2726,9 @@
 
         //Add message
         var mmessage = message.params[1];
+        //For some bug on the chat implementation some message comes with the row of the next message
+        //Remove the next to fix this... next will be lost as is not correctly formated
+        if (mmessage.indexOf('PRIVMSG') !== -1) mmessage = mmessage.split('@badge-info=')[0];
 
         if (/^\x01ACTION.*\x01$/.test(mmessage)) {
             action = true;
