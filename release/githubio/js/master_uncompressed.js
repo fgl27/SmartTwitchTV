@@ -2745,6 +2745,7 @@
 
         //Add default emotes
         if (tags.hasOwnProperty('emotes')) {
+
             if (typeof tags.emotes === 'string') {
 
                 tags.emotes = tags.emotes.split('/');
@@ -3057,10 +3058,14 @@
             nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
                 defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
-            div += '<span style="color: ' + calculateColorReplacement(nickColor) + ';">' + comments.commenter.display_name + '</span>&#58;&nbsp;';
+            nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+
+            div += '<span ' + (mmessage.is_action ? ('class="class_bold" ' + nickColor) : '') +
+                nickColor + '>' + comments.commenter.display_name + '</span>' +
+                (mmessage.is_action ? '' : '&#58;') + '&nbsp;';
 
             //Add mesage
-            div += '<span class="message">';
+            div += '<span class="message' + (mmessage.is_action ? (' class_bold" ' + nickColor) : '"') + '>';
             mmessage.fragments.forEach(function(fragments) {
                 if (fragments.hasOwnProperty('emoticon')) div += emoteTemplate(emoteURL(fragments.emoticon.emoticon_id));
                 else div +=
@@ -16877,16 +16882,15 @@
     function emoticonize(message, emotes) {
         if (!emotes) return [message];
 
-        var tokenizedMessage = [];
-
-        var emotesList = Object.keys(emotes);
-
-        var replacements = [];
+        var tokenizedMessage = [],
+            emotesList = Object.keys(emotes),
+            replacements = [],
+            emote, i;
 
         emotesList.forEach(function(id) {
-            var emote = emotes[id];
+            emote = emotes[id];
 
-            for (var i = emote.length - 1; i >= 0; i--) {
+            for (i = emote.length - 1; i >= 0; i--) {
                 replacements.push({
                     id: id,
                     first: emote[i][0],
