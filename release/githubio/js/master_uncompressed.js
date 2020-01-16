@@ -2709,6 +2709,8 @@
             nick,
             nickColor;
 
+        if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
+
         //Add badges
         if (tags.hasOwnProperty('badges')) {
             if (typeof tags.badges === 'string') {
