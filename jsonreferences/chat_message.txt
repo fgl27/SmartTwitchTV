@@ -60,3 +60,37 @@ command: "PRIVMSG"
 params:
 0: "#summit1g"
 1: "ACTION sumBuhblam ✧ RESUB HYPE! (ﾉ◕ヮ◕)ﾉ sumBuhblam cheabrah stayed on the 1G Squad!! sum1g sumLove sum1g"
+
+bad message
+
+if (mmessage.indexOf('PRIVMSG') !== -1)
+
+"@badge-info=;badges=;color=#1E90FF;display-name=anz_17;emotes=;flags=;id=79f80fb5-2026-4902-89a0-7955203d867c;mod=0;room-id=71190292;subscriber=0;tmi-sent-ts=1579189770016;turbo=0;user-id=161527883;user-type= :anz_17!anz_17@anz_17.tmi.twitch.tv PRIVMSG #trainwreckstv :gachiHYPER
+@badge-info=;badges=;color=;display-name=joosdid911;emotes=;flags=0-9:A.3,22-35:P.6/S.6;id=4166abed-58f4-47bf-b675-ba9e015dff03;mod=0;room-id=71190292;subscriber=0;tmi-sent-ts=1579189769994;turbo=0;user-id=479107568;user-type= :joosdid911!joosdid911@joosdid911.tmi.twitch.tv PRIVMSG #trainwreckstv :YOU SUCK!! NO ONE STO SUCK YOUR DICK AHHAHA"
+
+{raw: "@badge-info=;badges=;color=#1E90FF;display-name=an…kstv :YOU SUCK!! NO ONE STO SUCK YOUR DICK AHHAHA", tags: {…}, prefix: "anz_17!anz_17@anz_17.tmi.twitch.tv", command: "PRIVMSG", params: Array(2)}
+raw: "@badge-info=;badges=;color=#1E90FF;display-name=anz_17;emotes=;flags=;id=79f80fb5-2026-4902-89a0-7955203d867c;mod=0;room-id=71190292;subscriber=0;tmi-sent-ts=1579189770016;turbo=0;user-id=161527883;user-type= :anz_17!anz_17@anz_17.tmi.twitch.tv PRIVMSG #trainwreckstv :gachiHYPER
+↵@badge-info=;badges=;color=;display-name=joosdid911;emotes=;flags=0-9:A.3,22-35:P.6/S.6;id=4166abed-58f4-47bf-b675-ba9e015dff03;mod=0;room-id=71190292;subscriber=0;tmi-sent-ts=1579189769994;turbo=0;user-id=479107568;user-type= :joosdid911!joosdid911@joosdid911.tmi.twitch.tv PRIVMSG #trainwreckstv :YOU SUCK!! NO ONE STO SUCK YOUR DICK AHHAHA"
+tags:
+badge-info: true
+badges: true
+color: "#1E90FF"
+display-name: "anz_17"
+emotes: true
+flags: true
+id: "79f80fb5-2026-4902-89a0-7955203d867c"
+mod: "0"
+room-id: "71190292"
+subscriber: "0"
+tmi-sent-ts: "1579189770016"
+turbo: "0"
+user-id: "161527883"
+user-type: true
+__proto__: Object
+prefix: "anz_17!anz_17@anz_17.tmi.twitch.tv"
+command: "PRIVMSG"
+params: Array(2)
+0: "#trainwreckstv"
+1: "gachiHYPER
+@badge-info=;badges=;color=;display-name=joosdid911;emotes=;flags=0-9:A.3,22-35:P.6/S.6;id=4166abed-58f4-47bf-b675-ba9e015dff03;mod=0;room-id=71190292;subscriber=0;tmi-sent-ts=1579189769994;turbo=0;user-id=479107568;user-type= :joosdid911!joosdid911@joosdid911.tmi.twitch.tv PRIVMSG #trainwreckstv :YOU SUCK!! NO ONE STO SUCK YOUR DICK AHHAHA"
+length: 2
