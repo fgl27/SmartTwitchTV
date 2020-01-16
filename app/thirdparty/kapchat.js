@@ -102,16 +102,15 @@ function getCheer(prefix, amount, chat_number) {
 function emoticonize(message, emotes) {
     if (!emotes) return [message];
 
-    var tokenizedMessage = [];
-
-    var emotesList = Object.keys(emotes);
-
-    var replacements = [];
+    var tokenizedMessage = [],
+        emotesList = Object.keys(emotes),
+        replacements = [],
+        emote, i;
 
     emotesList.forEach(function(id) {
-        var emote = emotes[id];
+        emote = emotes[id];
 
-        for (var i = emote.length - 1; i >= 0; i--) {
+        for (i = emote.length - 1; i >= 0; i--) {
             replacements.push({
                 id: id,
                 first: emote[i][0],
