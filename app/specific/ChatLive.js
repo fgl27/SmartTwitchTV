@@ -330,7 +330,9 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     var div = '',
         tags = message.tags,
         nick,
-        nickColor;
+        nickColor,
+        action,
+        emotes = {};
 
     if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
 
@@ -345,23 +347,26 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         }
     }
 
-    //Add nick
-    if (tags.hasOwnProperty('display-name')) {
-        nick = tags['display-name'];
-        nickColor = (typeof tags.color !== "boolean") ? tags.color :
-            (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
-
-        div += '<span style="color: ' + calculateColorReplacement(nickColor) + ';">' + nick + '</span>&#58;&nbsp;';
-    }
-
     //Add message
     var mmessage = message.params[1];
 
-    if (/^\x01ACTION.*\x01$/.test(mmessage))
+    if (/^\x01ACTION.*\x01$/.test(mmessage)) {
+        action = true;
         mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
+    }
 
-    var emotes = {};
+    //Add nick
+    nick = tags['display-name'];
+    nickColor = (typeof tags.color !== "boolean") ? tags.color :
+        (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
 
+    nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+
+    div += '<span ' + (action ? ('class="class_bold" ' + nickColor) : '') +
+        nickColor + '>' + nick + '</span>' +
+        (action ? '' : '&#58;') + '&nbsp;';
+
+    //Add default emotes
     if (tags.hasOwnProperty('emotes')) {
         if (typeof tags.emotes === 'string') {
 
@@ -382,7 +387,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         }
     }
 
-    div += '<span class="message">' +
+    div += '<span class="message' + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
         ChatLive_extraMessageTokenize(
             emoticonize(mmessage, emotes),
             chat_number,
