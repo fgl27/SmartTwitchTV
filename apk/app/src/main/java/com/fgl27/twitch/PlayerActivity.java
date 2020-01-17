@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -1148,12 +1147,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void BackupFile(String file, String file_content) {
 
-            boolean permission = true;
-            if (Build.VERSION.SDK_INT >= 23) {
-                permission = mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            }
-
-            if (permission) {
+            if (Tools.WR_storage(mwebContext)) {
                 new Tools.BackupJson().execute(
                         mwebContext.getPackageName(),
                         file,
@@ -1171,12 +1165,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String RestoreBackupFile(String file) {
-            boolean permission = true;
-            if (Build.VERSION.SDK_INT >= 23) {
-                permission = mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            }
-
-            if (permission) return Tools.RestoreBackupFile(file, mwebContext);
+            if (Tools.WR_storage(mwebContext)) return Tools.RestoreBackupFile(file, mwebContext);
 
             return null;
         }
@@ -1190,9 +1179,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean canBackupFile() {
-            if (Build.VERSION.SDK_INT >= 23) {
-                return mwebContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-            } else return true;
+            return Tools.WR_storage(mwebContext);
         }
     }
 
@@ -1349,14 +1336,11 @@ public class PlayerActivity extends Activity {
 
     @TargetApi(23)
     private void check_writeexternalstorage() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            int hasWriteExternalPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (hasWriteExternalPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[] {
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        },
-                        123);
-            }
+        if (!Tools.WR_storage(this)) {
+            requestPermissions(new String[] {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    123);
         }
     }
 }
