@@ -2,13 +2,16 @@
 
 package com.fgl27.twitch;
 
+import android.Manifest;
 import android.app.UiModeManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
@@ -513,8 +516,8 @@ public final class Tools {
             if(isDirCreated) {
                 try {
                     FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() +  "/" + params[1], false);
-                    mWriter .write(params[2]);
-                    mWriter .close();
+                    mWriter.write(params[2]);
+                    mWriter.close();
                 } catch (IOException e) {
                     Log.w(TAG, "BackupJson IOException ", e);
                 }
@@ -549,12 +552,19 @@ public final class Tools {
                 data.append(mReader .nextLine());
             }
 
-            mReader .close();
+            mReader.close();
 
             return data.toString();
         } catch (FileNotFoundException e) {
             Log.w(TAG, "RestoreBakupFile FileNotFoundException ", e);
         }
         return null;
+    }
+
+    public static boolean WR_storage(Context context) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED;
+        } else return true;
     }
 }
