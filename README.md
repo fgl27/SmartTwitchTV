@@ -50,8 +50,8 @@ Project Web Dependencies
 ==============
 
 ## [How the application looks](https://github.com/fgl27/SmartTwitchTV/tree/master/screenshot)
-The application never stops receiving updates the bellow images can be outdated
-![Live](https://fgl27.github.io/SmartTwitchTV/screenshot/animated.gif)
+The application never stops receiving updates the bellow video may be outdated
+[![How the application looks](https://fgl27.github.io/SmartTwitchTV/screenshot/Screenshot_you.png)](http://www.youtube.com/watch?v=ovHBcDUhH84)
 
 
 ## Authentication
