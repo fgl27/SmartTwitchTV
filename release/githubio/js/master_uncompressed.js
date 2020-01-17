@@ -2726,8 +2726,8 @@
 
         //Add message
         var mmessage = message.params[1];
-        //For some bug on the chat implementation some message comes with the row of the next message
-        //Remove the next to fix this... next will be lost as is not correctly formated
+        //For some bug on the chat implementation some message comes with the raw message of the next message
+        //Remove the next to fix current... next will be lost as is not correctly formated
         if (mmessage.indexOf('PRIVMSG') !== -1) mmessage = mmessage.split('@badge-info=')[0];
 
         if (/^\x01ACTION.*\x01$/.test(mmessage)) {
@@ -15866,38 +15866,36 @@
             UserLiveFeed_CheckNotifycation = false;
         }
 
-        if (sorting > 0 || Settings_FeedSort[sorting][2]) {
 
-            var sorting_type1 = Settings_FeedSort[sorting][0],
-                sorting_type2 = Settings_FeedSort[sorting][1],
-                sorting_direction = Settings_FeedSort[sorting][2];
+        var sorting_type1 = Settings_FeedSort[sorting][0],
+            sorting_type2 = Settings_FeedSort[sorting][1],
+            sorting_direction = Settings_FeedSort[sorting][2];
 
-            if (sorting_direction) {
-                //A-Z
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
-                            (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type2] < b[sorting_type2] ? -1 :
-                            (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
-                    });
-                }
+        if (sorting_direction) {
+            //A-Z
+            if (sorting_type1) {
+                response.sort(function(a, b) {
+                    return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
+                        (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
+                });
             } else {
-                //Z-A
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
-                            (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type2] > b[sorting_type2] ? -1 :
-                            (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
-                    });
-                }
+                response.sort(function(a, b) {
+                    return (a[sorting_type2] < b[sorting_type2] ? -1 :
+                        (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
+                });
+            }
+        } else {
+            //Z-A
+            if (sorting_type1) {
+                response.sort(function(a, b) {
+                    return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
+                        (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
+                });
+            } else {
+                response.sort(function(a, b) {
+                    return (a[sorting_type2] > b[sorting_type2] ? -1 :
+                        (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
+                });
             }
         }
 
