@@ -12440,6 +12440,14 @@
                     else this.data = [];
 
                     this.setMax(responseText);
+
+                    //Live user sort by views was removed bt twitch without any warning.
+                    if (this.dataEnded && this.token) {
+                        this.data.sort(function(a, b) {
+                            return (b.viewers - a.viewers);
+                        });
+                    }
+
                     this.loadDataSuccess();
                 }
                 this.loadingData = false;
