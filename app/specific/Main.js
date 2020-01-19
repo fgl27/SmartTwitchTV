@@ -442,7 +442,7 @@ function Main_SetStringsMain(isStarting) {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
     Main_innerHTML('label_update', '<div style="vertical-align: middle; display: inline-block;"><i class="icon-update" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
 
-    Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+    Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
     UserLiveFeed_SetFeedPicText();
 
     Sidepannel_SetDefaultLables();
@@ -512,6 +512,17 @@ function Main_SetStringsSecondary() {
     Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
     Main_textContent('dialog_hist_val_2', STR_PRESS_ENTER_D);
     Main_textContent('dialog_hist_text_end', STR_PRESS_ENTER_APPLY);
+
+    Main_textContent('dialog_opt_text', STR_THUMB_OPTIONS);
+    Main_textContent('dialog_opt_text_end', STR_THUMB_OPTIONS_KEY);
+
+    Main_textContent('dialog_thumb_opt_setting_name_-1', STR_DELETE_FROM_HISTORY);
+    Main_textContent('dialog_thumb_opt_val_-1', STR_PRESS_ENTER_D);
+
+    Main_textContent('dialog_thumb_opt_setting_name_0', STR_OPEN_CHANNEL);
+    Main_textContent('dialog_thumb_opt_setting_name_1', STR_OPEN_GAME);
+    Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
+    Main_textContent('dialog_thumb_opt_setting_name_4', STR_GO_TO);
 }
 
 var Main_initClickDoc = [
@@ -1008,11 +1019,11 @@ function Main_ExitCurrent(ExitCurrent) {
 
 function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
-    Main_HideElement('label_side_panel');
+    Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
 }
 
 function Main_cleanTopLabel() {
-    Main_ShowElement('label_side_panel');
+    Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
 }
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z' or ms

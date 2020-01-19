@@ -850,11 +850,21 @@ function Screens_RemoveAllFocus() {
     }
 }
 
+var Screens_handleKeyUpIsClear = false;
+
 function Screens_handleKeyUp(e) {
     if (e.keyCode === KEY_ENTER) {
         Screens_handleKeyUpClear();
         if (!Screens_clear) inUseObj.key_play();
+    } else if (e.keyCode === KEY_RIGHT) {
+        window.clearTimeout(Screens_KeyEnterID);
+        document.body.removeEventListener("keyup", Screens_handleKeyUp);
+        if (!Screens_clear) {
+            Screens_keyRight();
+            document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+        }
     }
+    Screens_handleKeyUpIsClear = true;
 }
 
 function Screens_handleKeyUpClear() {
@@ -867,6 +877,18 @@ document.body.addEventListener("keyup", Screens_handleKeyUpAnimationFast);
 
 function Screens_handleKeyUpAnimationFast() {
     Screens_ChangeFocusAnimationFast = false;
+}
+
+function Screens_keyRight() {
+    //Prevent scroll too fast out of inUseObj.Cells.length
+    //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
+    if (inUseObj.dataEnded ||
+        inUseObj.posX < (inUseObj.ColoumnsCount - 1) ||
+        (inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
+        if (inUseObj.posX === (inUseObj.ColoumnsCount - 1)) {
+            if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0);
+        } else Screens_KeyLeftRight(1, 0);
+    } else Screens_addFocus(true);
 }
 
 function Screens_handleKeyDown(event) {
@@ -917,15 +939,18 @@ function Screens_handleKeyDown(event) {
             else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
         case KEY_RIGHT:
-            //Prevent scroll too fast out of inUseObj.Cells.length
-            //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
-            if (inUseObj.dataEnded ||
-                inUseObj.posX < (inUseObj.ColoumnsCount - 1) ||
-                (inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
-                if (inUseObj.posX === (inUseObj.ColoumnsCount - 1)) {
-                    if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0);
-                } else Screens_KeyLeftRight(1, 0);
-            } else Screens_addFocus(true);
+            if (inUseObj.posY === -1) {
+                Screens_keyRight();
+                break;
+            }
+
+            Screens_ThumbOptionSpecial = inUseObj.histPosXName ? false : true;
+            Screens_handleKeyUpIsClear = false;
+
+            document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
+            document.body.addEventListener("keyup", Screens_handleKeyUp, false);
+            Screens_clear = false;
+            Screens_KeyEnterID = window.setTimeout(Screens_ThumbOptionStart, 500);
             break;
         case KEY_UP:
             if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(-1);
@@ -1118,6 +1143,7 @@ function Screens_PeriodhandleKeyDown(event) {
 }
 
 var Screens_OffSetDialogID;
+var Screens_ThumbOptionSpecial;
 
 function Screens_OffSetStart() {
     inUseObj.OffSetPos = inUseObj.extraoffset / 100;
@@ -1220,8 +1246,10 @@ function Screens_SethistDialogId() {
     Screens_histDialogID = window.setTimeout(Screens_histDialogHide, 6000);
 }
 
+var Screens_DeleteDialogAll = true;
+
 function Screens_histDialogHide(Update) {
-    Screens_histRemoveFocus(inUseObj.histPosY);
+    Screens_histRemoveFocus(inUseObj.histPosY, 'hist');
 
     Screens_histAddFocus(0);
     Screens_clearhistDialogId();
@@ -1231,8 +1259,8 @@ function Screens_histDialogHide(Update) {
 
     if (Update) {
         if (inUseObj.histPosY === 2) {
-            Screens_showDeleteDialog();
-            //Screens_histDelete();
+            Screens_DeleteDialogAll = true;
+            Screens_showDeleteDialog(STR_DELETE_SURE + inUseObj.history_Type() + STR_SPACE + STR_HISTORY + '?');
         } else if (inUseObj.histPosX[0] !== inUseObj.histPosXTemp[0]) {
             inUseObj.label_init();
             Main_ReloadScreen();
@@ -1244,8 +1272,8 @@ function Screens_histDialogHide(Update) {
     inUseObj.histPosY = 0;
 }
 
-function Screens_showDeleteDialog() {
-    Main_innerHTML("main_dialog_remove", STR_DELETE_SURE + inUseObj.history_Type() + STR_SPACE + STR_HISTORY + '?');
+function Screens_showDeleteDialog(text) {
+    Main_innerHTML("main_dialog_remove", text);
     Main_ShowElement('main_remove_dialog');
     document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
     document.body.addEventListener("keydown", Screens_histDeleteKeyDown, false);
@@ -1257,7 +1285,7 @@ function Screens_setRemoveDialog() {
 }
 
 function Screens_HideRemoveDialog() {
-    Users_clearUserDialog();
+    Users_clearRemoveDialog();
     document.body.removeEventListener("keydown", Screens_histDeleteKeyDown);
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     Main_HideElement('main_remove_dialog');
@@ -1299,9 +1327,22 @@ function Screens_histDeleteKeyDown(event) {
 }
 
 function Screens_histDelete() {
-    Main_values_History_data[AddUser_UsernameArray[0].id][inUseObj.Type] = [];
-    Main_setHistoryItem();
-    Main_ReloadScreen();
+    if (Screens_DeleteDialogAll) {
+        Main_values_History_data[AddUser_UsernameArray[0].id][inUseObj.Type] = [];
+        Main_setHistoryItem();
+        Main_ReloadScreen();
+    } else {
+        var type = 'live';
+
+        if (inUseObj.screen === Main_HistoryVod) type = 'vod';
+        else if (inUseObj.screen === Main_HistoryClip) type = 'clip';
+
+        var index = Main_history_Exist(type, Screens_values_Play_data[7]);
+        if (index > -1) {
+            Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(index, 1);
+            Main_setHistoryItem();
+        }
+    }
 }
 
 function Screens_histAddFocus(divPos) {
@@ -1310,15 +1351,16 @@ function Screens_histAddFocus(divPos) {
     Screens_histSetArrow();
 }
 
-function Screens_histRemoveFocus(divPos) {
-    Main_RemoveClass('dialog_hist_setting_' + divPos, 'settings_div_focus');
-    Main_RemoveClass('dialog_hist_val_' + divPos, 'settings_value_focus');
-    document.getElementById("dialog_hist_left_" + divPos).style.opacity = "0";
-    document.getElementById("dialog_hist_right_" + divPos).style.opacity = "0";
+function Screens_histRemoveFocus(divPos, dialog) {
+    Main_RemoveClass('dialog_' + dialog + '_setting_' + divPos, 'settings_div_focus');
+    Main_RemoveClass('dialog_' + dialog + '_val_' + divPos, 'settings_value_focus');
+    document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
+    document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
 }
 
 function Screens_histSetArrow() {
     Screens_histArrow(
+        'hist',
         inUseObj.histPosX[inUseObj.histPosY],
         inUseObj.histArrays[inUseObj.histPosY].length,
         inUseObj.histArrays[inUseObj.histPosY][inUseObj.histPosX[inUseObj.histPosY]],
@@ -1328,21 +1370,21 @@ function Screens_histSetArrow() {
     Main_setItem(inUseObj.histPosXName, JSON.stringify(inUseObj.histPosX));
 }
 
-function Screens_histArrow(pos, maxValue, text, divPos) {
-    Main_textContent('dialog_hist_val_' + divPos, text);
+function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
+    Main_innerHTML('dialog_' + dialog + '_val_' + divPos, text);
 
     if (maxValue === 1) {
-        document.getElementById("dialog_hist_left_" + divPos).style.opacity = "0";
-        document.getElementById("dialog_hist_right_" + divPos).style.opacity = "0";
+        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
+        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
     } else if (!pos) {
-        document.getElementById("dialog_hist_left_" + divPos).style.opacity = "0.2";
-        document.getElementById("dialog_hist_right_" + divPos).style.opacity = "1";
+        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0.2";
+        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
     } else if (pos === (maxValue - 1)) {
-        document.getElementById("dialog_hist_left_" + divPos).style.opacity = "1";
-        document.getElementById("dialog_hist_right_" + divPos).style.opacity = "0.2";
+        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
+        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0.2";
     } else {
-        document.getElementById("dialog_hist_left_" + divPos).style.opacity = "1";
-        document.getElementById("dialog_hist_right_" + divPos).style.opacity = "1";
+        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
+        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
     }
 }
 
@@ -1374,7 +1416,7 @@ function Screens_histhandleKeyDown(event) {
             inUseObj.histPosY--;
             if (inUseObj.histPosY < 0) inUseObj.histPosY = 0;
             else {
-                Screens_histRemoveFocus(inUseObj.histPosY + 1);
+                Screens_histRemoveFocus(inUseObj.histPosY + 1, 'hist');
                 Screens_histAddFocus(inUseObj.histPosY);
             }
             break;
@@ -1385,7 +1427,7 @@ function Screens_histhandleKeyDown(event) {
             if (inUseObj.histPosY > (inUseObj.histArrays.length - 1))
                 inUseObj.histPosY = inUseObj.histArrays.length - 1;
             else {
-                Screens_histRemoveFocus(inUseObj.histPosY - 1);
+                Screens_histRemoveFocus(inUseObj.histPosY - 1, 'hist');
                 Screens_histAddFocus(inUseObj.histPosY);
             }
             break;
@@ -1395,4 +1437,416 @@ function Screens_histhandleKeyDown(event) {
         default:
             break;
     }
+}
+
+var Screens_ThumbOptionPosY = 0;
+
+function Screens_ThumbOptionStart() {
+    Screens_clear = true;
+
+    Screens_ThumbOptionSetArrowArray();
+
+    if (Screens_ThumbOptionSpecial) {
+        Screens_ThumbOptionPosY = 4;
+        Main_textContent('dialog_thumb_opt_val_4', Screens_ThumbOptionScreens[0]);
+        Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
+    } else {
+        Screens_ThumbOptionShowSpecial();
+
+        Screens_ThumbOptionStringSet();
+        Screens_ThumbOptionPosY = 0;
+    }
+
+    inUseObj.setTODialog();
+    Screens_SeTODialogId();
+    document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    document.body.addEventListener("keydown", Screens_ThumbOptionhandleKeyDown, false);
+
+    Main_ShowElement('dialog_thumb_opt');
+}
+
+function Screens_ThumbOptionShowSpecial() {
+    for (var i = 0; i < 4; i++)
+        Main_RemoveClass('dialog_thumb_opt_setting_' + i, 'hideimp');
+}
+
+function Screens_ThumbOptionHideSpecial() {
+    for (var i = -1; i < 4; i++)
+        Main_AddClass('dialog_thumb_opt_setting_' + i, 'hideimp');
+}
+
+var Screens_values_Play_data;
+var Screens_canFallow = false;
+var Screens_isFallowing = false;
+
+function Screens_ThumbOptionStringSet() {
+    Screens_canFallow = false;
+    Screens_values_Play_data = JSON.parse(document.getElementById(inUseObj.ids[8] + inUseObj.posY + '_' + inUseObj.posX).getAttribute(Main_DataAttribute));
+
+    if (AddUser_UserIsSet()) {
+        Screens_ThumbOption_CheckFallow(Screens_values_Play_data);
+        Main_textContent('dialog_thumb_opt_setting_name_2', STR_CHECK_HISTORY);
+    } else Main_textContent('dialog_thumb_opt_setting_name_2', STR_NOKEY + STR_CANT_FALLOW);
+
+    Main_textContent('dialog_thumb_opt_val_2', '...');
+
+    if (inUseObj.screenType < 2) {
+        Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
+
+        if (Main_values.Play_isHost) {
+            Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1].split(STR_USER_HOSTING)[1]);
+        } else Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1]);
+
+    } else if (inUseObj.screenType === 2) {
+        Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[4]);
+    }
+
+    Main_textContent('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : ''));
+    Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory()]);
+    Main_textContent('dialog_thumb_opt_val_4', Screens_ThumbOptionScreens[0]);
+}
+
+var Screens_ThumbOption_CheckFallow_ID;
+
+function Screens_ThumbOption_CheckFallow(data) {
+    Screens_ThumbOption_CheckFallow_ID = (new Date()).getTime();
+    if (inUseObj.screenType < 2) Screens_ThumbOption_RequestCheckFallow(data[14], 0, Screens_ThumbOption_CheckFallow_ID);
+    else Screens_ThumbOption_RequestCheckFallow(data[2], 0, Screens_ThumbOption_CheckFallow_ID);
+}
+
+function Screens_ThumbOption_RequestCheckFallow(channel_id, trye, ID) {
+    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
+
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open('GET', theUrl, true);
+    xmlHttp.timeout = 5000;
+
+    for (var i = 0; i < 2; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (Screens_ThumbOption_CheckFallow_ID === ID) Screens_ThumbOption_RequestCheckFallowReady(xmlHttp, channel_id, trye, ID);
+    };
+
+    xmlHttp.send(null);
+}
+
+function Screens_ThumbOption_RequestCheckFallowReady(xmlHttp, channel_id, trye, ID) {
+    if (xmlHttp.readyState === 4) {
+        if (Screens_ThumbOption_CheckFallow_ID !== ID) return;
+
+        if (xmlHttp.status === 200) { //yes
+            Screens_canFallow = true;
+            Screens_isFallowing = true;
+            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FALLOWING);
+            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFALLOW.replace('(', '').replace(')', ''));
+        } else if (xmlHttp.status === 404) { //no
+            Screens_canFallow = true;
+            Screens_isFallowing = false;
+            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FALLOW);
+            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FALLOW.replace('(', '').replace(')', ''));
+        } else { // internet error
+            if (trye < 5) Screens_ThumbOption_RequestCheckFallow(channel_id, trye++, ID);
+        }
+    }
+}
+
+function Screens_ThumbOptionStringGetHistory() {
+    return Main_getItemJson(inUseObj.histPosXName, [0, 0, 0])[1];
+}
+
+function Screens_ThumbOptionhandleKeyDown(event) {
+    switch (event.keyCode) {
+        case KEY_RETURN_Q:
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            Screens_ThumbOptionDialogHide();
+            break;
+        case KEY_LEFT:
+            if (Screens_ThumbOptionPosY > 2) {
+                Screens_clearTODialogId();
+                Screens_SeTODialogId();
+                Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
+                if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0) Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = 0;
+                else Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
+            }
+            break;
+        case KEY_RIGHT:
+            if (!Screens_handleKeyUpIsClear) break;
+            if (Screens_ThumbOptionPosY > 2) {
+                Screens_clearTODialogId();
+                Screens_SeTODialogId();
+                Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
+                if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] > (Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1))
+                    Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1;
+                else Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
+            }
+            break;
+        case KEY_UP:
+            if (Screens_ThumbOptionSpecial) break;
+            var lower = document.getElementById('dialog_thumb_opt_setting_-1').className.indexOf('hideimp') === -1 ? -1 : 0;
+            Screens_clearTODialogId();
+            Screens_SeTODialogId();
+            Screens_ThumbOptionPosY--;
+            if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
+            else {
+                Screens_histRemoveFocus(Screens_ThumbOptionPosY + 1, 'thumb_opt');
+                Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
+            }
+            break;
+        case KEY_DOWN:
+            if (Screens_ThumbOptionSpecial) break;
+            Screens_clearTODialogId();
+            Screens_SeTODialogId();
+            Screens_ThumbOptionPosY++;
+            if (Screens_ThumbOptionPosY > 4)
+                Screens_ThumbOptionPosY = 4;
+            else {
+                Screens_histRemoveFocus(Screens_ThumbOptionPosY - 1, 'thumb_opt');
+                Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
+            }
+            break;
+        case KEY_ENTER:
+            if (Screens_ThumbOptionPosY === 2) {
+                Screens_clearTODialogId();
+                Screens_SeTODialogId();
+                Screens_FallowUnfallow();
+            } else Screens_ThumbOptionDialogHide(true);
+            break;
+        default:
+            break;
+    }
+}
+
+var Screens_ThumbOptionDialogID;
+
+function Screens_clearTODialogId() {
+    window.clearTimeout(Screens_ThumbOptionDialogID);
+}
+
+function Screens_SeTODialogId() {
+    window.clearTimeout(Screens_ThumbOptionDialogID);
+    Screens_ThumbOptionDialogID = window.setTimeout(Screens_ThumbOptionDialogHide, 6000);
+}
+
+function Screens_ThumbOptionDialogHide(Update) {
+    Screens_histRemoveFocus(Screens_ThumbOptionPosY, 'thumb_opt');
+
+    Screens_clearTODialogId();
+    document.body.removeEventListener("keydown", Screens_ThumbOptionhandleKeyDown, false);
+    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_HideElement('dialog_thumb_opt');
+
+    if (Update) {
+
+        if (Screens_ThumbOptionPosY === -1) {
+            var streamer, title;
+            if (!inUseObj.screenType) {
+                streamer = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1];
+                title = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[2];
+            } else if (inUseObj.screenType === 1) {
+                streamer = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1];
+                title = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[10];
+            } else if (inUseObj.screenType === 2) {
+                streamer = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[4];
+                title = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[10];
+            }
+
+            Screens_DeleteDialogAll = false;
+            Screens_showDeleteDialog(
+                STR_DELETE_SURE + inUseObj.history_Type() + STR_SPACE + STR_HISTORY + STR_SPACE + STR_FOR + '?' +
+                STR_BR + STR_BR + streamer + STR_BR + title + STR_BR + STR_BR +
+                STR_REFRESH_DELETE);
+
+        } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel();
+        else if (Screens_ThumbOptionPosY === 1) Screens_OpenGame();
+        else if (Screens_ThumbOptionPosY === 3) {
+            if (!inUseObj.screenType) {
+                HistoryLive.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryLive.histPosX));
+            } else if (inUseObj.screenType === 1) {
+                HistoryVod.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryVod.histPosX));
+            } else if (inUseObj.screenType === 2) {
+                HistoryClip.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryClip.histPosX));
+            }
+
+        } else if (Screens_ThumbOptionPosY === 4) Screens_OpenScreen();
+    }
+    Screens_ThumbOptionPosY = 0;
+    Screens_ThumbOptionAddFocus(0);
+}
+
+function Screens_FallowUnfallow() {
+    if (Screens_canFallow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        var theUrl, channel_id = inUseObj.screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
+
+        if (Screens_isFallowing) {
+            theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
+            AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_UnFallowRequestReady);
+        } else {
+            theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
+            AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_FallowRequestReady);
+        }
+    } else {
+        Main_showWarningDialog(STR_NOKEY_WARN);
+        window.setTimeout(Main_HideWarningDialog, 2000);
+    }
+}
+
+function Screens_UnFallowRequestReady(xmlHttp) {
+    if (xmlHttp.readyState === 4) {
+        if (xmlHttp.status === 204) { //success user is now not fallowing the channel
+            Screens_canFallow = true;
+            Screens_isFallowing = false;
+            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FALLOW);
+            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FALLOW.replace('(', '').replace(')', ''));
+        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+            AddCode_refreshTokens(0, 0, Screens_FallowUnfallow, null);
+        }
+    }
+}
+
+function Screens_FallowRequestReady(xmlHttp) {
+    if (xmlHttp.readyState === 4) {
+        if (xmlHttp.status === 200) { //success user is now fallowing the channel
+            Screens_isFallowing = true;
+            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FALLOWING);
+            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFALLOW.replace('(', '').replace(')', ''));
+        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+            AddCode_refreshTokens(0, 0, Screens_FallowUnfallow, null);
+        }
+    }
+}
+
+function Screens_OpenScreen() {
+
+    if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] === 8 && !AddUser_UsernameArray[0].access_token) {
+        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
+        window.setTimeout(Main_HideWarningDialog, 3000);
+        return;
+    }
+
+    if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
+        Main_values.Main_BeforeAgame = (Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) ? Main_values.Main_BeforeChannel : Main_values.Main_Go;
+        Main_values.Main_BeforeAgameisSet = true;
+    }
+
+    Main_ExitCurrent(Main_values.Main_Go);
+    Main_values.Main_Go = Screens_ThumbOptionGOTO[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]];
+
+    Main_ReStartScreens();
+}
+
+function Screens_OpenGame() {
+    Main_values.Play_gameSelected = (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : '');
+    if (Main_values.Play_gameSelected === '') {
+
+        Main_showWarningDialog(STR_NO_GAME);
+        window.setTimeout(Main_HideWarningDialog, 2000);
+        return;
+    }
+
+    if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
+        Main_values.Main_BeforeAgame = (Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) ? Main_values.Main_BeforeChannel : Main_values.Main_Go;
+        Main_values.Main_BeforeAgameisSet = true;
+    }
+
+    Main_ExitCurrent(Main_values.Main_Go);
+    Main_values.Main_Go = Main_aGame;
+
+    Main_values.Main_gameSelected = Main_values.Play_gameSelected;
+    Main_ReStartScreens();
+}
+
+function Screens_OpenChannel() {
+    if (!Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) {
+        Main_values.Main_BeforeChannel = (Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame) ? Main_values.Main_BeforeAgame : Main_values.Main_Go;
+        Main_values.Main_BeforeChannelisSet = true;
+    }
+
+    if (inUseObj.screenType < 2) {
+        Main_values.Main_selectedChannel_id = Screens_values_Play_data[14];
+
+        Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
+
+        if (Main_values.Play_isHost) {
+            Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1].split(STR_USER_HOSTING)[1];
+        } else Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1];
+
+    } else {
+        Main_values.Main_selectedChannel_id = Screens_values_Play_data[2];
+        Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[4];
+    }
+    Main_values.Main_selectedChannel = Screens_values_Play_data[6];
+
+    Main_ExitCurrent(Main_values.Main_Go);
+    Main_values.Main_Go = Main_ChannelContent;
+    Main_ReStartScreens();
+}
+
+function Screens_ThumbOptionAddFocus(divPos) {
+    Main_AddClass('dialog_thumb_opt_setting_' + divPos, 'settings_div_focus');
+    Main_AddClass('dialog_thumb_opt_val_' + divPos, 'settings_value_focus');
+    if (Screens_ThumbOptionPosY === 3) Screens_ThumbOptionSetArrow(Screens_YesNo);
+    else if (Screens_ThumbOptionPosY === 4) Screens_ThumbOptionSetArrow(Screens_ThumbOptionScreens);
+}
+
+function Screens_ThumbOptionSetArrow(array) {
+    Screens_histArrow(
+        'thumb_opt',
+        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY],
+        array.length,
+        array[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]],
+        Screens_ThumbOptionPosY
+    );
+}
+
+var Screens_ThumbOptionScreens = [];
+var Screens_YesNo = [];
+var Screens_ThumbOptionArrays = [];
+var Screens_ThumbOptionPosXArrays = [];
+var Screens_ThumbOptionGOTO = [];
+
+function Screens_ThumbOptionSetArrowArray() {
+    Screens_ThumbOptionScreens = [
+        STR_LIVE,
+        STR_FEATURED,
+        STR_GAMES,
+        STR_VIDEOS,
+        STR_CLIP
+    ];
+
+    if (AddUser_UserIsSet()) {
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_LIVE);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_GAMES);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_VIDEOS);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_CHANNELS);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_HISTORY);
+    }
+
+    Screens_YesNo = [
+        STR_YES,
+        STR_NO
+    ];
+    Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionScreens];
+    Screens_ThumbOptionPosXArrays = [0, 0, 0, Screens_ThumbOptionStringGetHistory(), 0];
+
+    Screens_ThumbOptionGOTO = [
+        Main_Live,
+        Main_Featured,
+        Main_games,
+        Main_Vod,
+        Main_Clip,
+        Main_UserLive,
+        Main_UserHost,
+        Main_usergames,
+        Main_UserVod,
+        Main_UserChannels,
+        Main_History[Main_HistoryPos]];
 }

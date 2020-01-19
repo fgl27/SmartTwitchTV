@@ -136,9 +136,15 @@ var Base_Vod_obj = {
     ItemsReloadLimit: Main_ItemsReloadLimitVideo,
     thumbclass: 'stream_thumbnail_live_holder',
     rowClass: 'animate_height_transition',
+    histPosXName: 'HistoryVod_histPosX',
+    screenType: 1,
     addFocus: function(y, x, idArray, forceScroll) {
         this.AnimateThumb(this);
         Screens_addFocusVideo(y, x, idArray, forceScroll);
+    },
+    setTODialog: function() {
+        Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+        Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
     },
     setMax: function(tempObj) {
         if (tempObj[this.object].length < (Main_ItemsLimitMax - 5)) this.dataEnded = true;
@@ -288,7 +294,7 @@ function ScreensObj_InitChannelVod() {
             }
             this.lastselectedChannel = Main_values.Main_selectedChannel;
             Main_cleanTopLabel();
-            Main_ShowElement('label_side_panel');
+            Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
             this.SetPeriod();
         },
         SetPeriod: function() {
@@ -441,6 +447,8 @@ var Base_Live_obj = {
     addFocus: Screens_addFocusVideo,
     rowClass: 'animate_height_transition',
     thumbclass: 'stream_thumbnail_live_holder',
+    histPosXName: 'HistoryLive_histPosX',
+    screenType: 0,
     img_404: IMG_404_VIDEO,
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
@@ -448,6 +456,10 @@ var Base_Live_obj = {
     },
     empty_str: function() {
         return STR_NO + STR_SPACE + STR_LIVE_CHANNELS;
+    },
+    setTODialog: function() {
+        Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+        Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
     },
     addCell: function(cell) {
         this.addCellTemp(cell);
@@ -804,12 +816,18 @@ var Base_Clip_obj = {
     addFocus: Screens_addFocusVideo,
     rowClass: 'animate_height_transition',
     thumbclass: 'stream_thumbnail_live_holder',
+    histPosXName: 'HistoryClip_histPosX',
+    screenType: 2,
     cursor: null,
     object: 'clips',
     period: ['day', 'week', 'month', 'all'],
     img_404: IMG_404_VIDEO,
     empty_str: function() {
         return STR_NO + STR_SPACE + STR_CLIPS;
+    },
+    setTODialog: function() {
+        Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+        Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_CLIP_DIS);
     },
     HasSwitches: true,
     SwitchesIcons: ['history', 'play-1'],
@@ -934,7 +952,7 @@ function ScreensObj_InitChannelClip() {
             if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
             Main_cleanTopLabel();
             this.SetPeriod();
-            Main_ShowElement('label_side_panel');
+            Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
             this.lastselectedChannel = Main_values.Main_selectedChannel;
         },
         label_exit: Main_RestoreTopLabel,
@@ -982,9 +1000,11 @@ var Base_Game_obj = {
     ColoumnsCount: Main_ColoumnsCountGame,
     addFocus: Screens_addFocusGame,
     img_404: IMG_404_GAME,
+    screenType: 3,
     empty_str: function() {
         return STR_NO + STR_SPACE + STR_LIVE_GAMES;
     },
+    setTODialog: Screens_ThumbOptionHideSpecial,
     key_play: function() {
         Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
@@ -1177,11 +1197,13 @@ var Base_Channel_obj = {
     ItemsReloadLimit: Main_ItemsReloadLimitChannel,
     thumbclass: 'stream_thumbnail_channel_holder',
     rowClass: 'animate_height_transition_channel',
+    screenType: 4,
     img_404: IMG_404_LOGO,
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
         if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
     },
+    setTODialog: Screens_ThumbOptionHideSpecial,
     empty_str: function() {
         return STR_NO + STR_SPACE + STR_USER_CHANNEL;
     },
@@ -1411,11 +1433,16 @@ function ScreensObj_HistoryLive() {
         table: 'stream_table_historylive',
         screen: Main_HistoryLive,
         histPosXName: 'HistoryLive_histPosX',
+        screenType: 0,
         histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0]),
         sethistDialog: function() {
             Screens_SethistDialogId();
             Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
             this.sethistMainDialog();
+        },
+        setTODialog: function() {
+            Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
         },
         label_init: function() {
             Main_HistoryPos = 0;
@@ -1488,6 +1515,7 @@ function ScreensObj_HistoryVod() {
         ids: Screens_ScreenIds('HistoryVod'),
         table: 'stream_table_historyvod',
         screen: Main_HistoryVod,
+        screenType: 1,
         Vod_newImg: new Image(),
         HasAnimateThumb: true,
         AnimateThumb: ScreensObj_AnimateThumbId,
@@ -1497,6 +1525,10 @@ function ScreensObj_HistoryVod() {
             Screens_SethistDialogId();
             Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
             this.sethistMainDialog();
+        },
+        setTODialog: function() {
+            Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
         },
         history_Type: function() {
             return STR_VIDEOS;
@@ -1572,12 +1604,17 @@ function ScreensObj_HistoryClip() {
         ids: Screens_ScreenIds('HistoryClip'),
         table: 'stream_table_historyclip',
         screen: Main_HistoryClip,
+        screenType: 2,
         histPosXName: 'HistoryClip_histPosX',
         histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0]),
         sethistDialog: function() {
             Screens_SethistDialogId();
             Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
             this.sethistMainDialog();
+        },
+        setTODialog: function() {
+            Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_CLIP_DIS);
         },
         history_Type: function() {
             return STR_CLIPS;
@@ -1664,7 +1701,7 @@ function ScreensObj_addSwitches(StringsArray) {
 function ScreensObj_TopLableAgameInit() {
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
-    Main_ShowElement('label_side_panel');
+    Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
 
     if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
         inUseObj.gameSelected !== Main_values.Main_gameSelected)
@@ -1681,7 +1718,7 @@ function ScreensObj_TopLableAgameInit() {
 
 function ScreensObj_TopLableAgameExit() {
     inUseObj.gameSelected = Main_values.Main_gameSelected;
-    Main_HideElement('label_side_panel');
+    Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
 }
 
 function ScreensObj_TopLableUserInit() {
