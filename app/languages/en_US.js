@@ -316,8 +316,8 @@ function en_USLang() {
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get stream link issue";
     STR_410_FEATURING = "Third party app are current without access for this featuring.";
-    STR_CLICK_UNFALLOW = "(Click to unfallow)";
-    STR_CLICK_FALLOW = "(Click to fallow)";
+    STR_CLICK_UNFALLOW = "(Press enter to unfallow)";
+    STR_CLICK_FALLOW = "(Press enter to fallow)";
     STR_TODAY = " Today)";
     STR_DROOPED_FRAMES = "Skipped Frames: ";
     STR_BUFFER_HEALT = " Buffer Size: ";
@@ -367,4 +367,15 @@ function en_USLang() {
     STR_DELETE_SURE = "Are you sure you wanna to delete ";
     STR_CREATED_NEWEST = "Created / Uptime newest";
     STR_CREATED_OLDEST = "Created / Uptime Oldest";
+    STR_THUMB_OPTIONS = "Thumbnail Options";
+    STR_HISTORY_LIVE_DIS = "Live history enable";
+    STR_HISTORY_VOD_DIS = "VOD history enable";
+    STR_HISTORY_CLIP_DIS = "Clip history enable";
+    STR_OPEN_GAME = "Open the game";
+    STR_OPEN_CHANNEL = "Open the channel";
+    STR_THUMB_OPTIONS_KEY = "Press enter above a action (to open or apply it), back to exit without applying";
+    STR_DELETE_FROM_HISTORY = "Delete this from history";
+    STR_CHECK_HISTORY = "Checking fallow status";
+    STR_REFRESH_DELETE = "Refresh the screen after delete to see the change.";
+    STR_THUMB_OPTIONS_TOP = "Hold right for thumbnail options";
 }
