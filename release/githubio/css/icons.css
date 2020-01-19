@@ -201,3 +201,6 @@
 .icon-settings:before {
   content: "\43";
 }
+.icon-multi:before {
+  content: "\21";
+}
