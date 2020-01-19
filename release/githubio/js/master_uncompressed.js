@@ -11325,6 +11325,7 @@
             if (!Screens_clear) {
                 Screens_keyRight();
                 document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+                Screens_ChangeFocusAnimationFast = false;
             }
         }
         Screens_handleKeyUpIsClear = true;
@@ -12313,7 +12314,8 @@
             Main_UserChannels,
             Main_History[Main_HistoryPos]
         ];
-    } //Spacing for reease maker not trow erros frm jshint
+    }
+    //Spacing for reease maker not trow erros frm jshint
     var Main_ItemsLimitMax = 100;
 
     var ChannelClip_game = '';
