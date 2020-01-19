@@ -27,6 +27,8 @@ var Play_state = 0;
 var Play_Status_Always_On = false;
 var Play_RefreshAutoTry = 0;
 var Play_SingleClickExit = 0;
+var Play_MultiEnable = false;
+var Play_MultiCount = 0;
 //var Play_SupportsSource = true;
 var Play_LowLatency = false;
 var Play_EndUpclear = false;
@@ -2133,6 +2135,55 @@ function Play_Exit() {
     Play_shutdownStream();
 }
 
+function Play_MultiStart(pos, streamer) {
+    console.log('Play_MultiStart pos ' + pos + ' streamer ' + streamer);
+
+    var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_' +
+        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
+            AddUser_UsernameArray[0].access_token : '');
+
+    var xmlHttp = Android.mreadUrlHLS(theUrl);
+
+    if (xmlHttp) Play_MultiStartSucess(JSON.parse(xmlHttp), pos, streamer);
+    else Play_MultiStartErro(pos, streamer);
+}
+
+var Play_MultiStartErroTry = 0;
+
+function Play_MultiStartErro(pos, streamer) {
+    console.log('Play_MultiStartErro pos ' + pos + ' streamer ' + streamer);
+    if (Play_isOn) {
+        Play_MultiStartErroTry++;
+        if (Play_MultiStartErroTry < 5) Play_MultiStart(pos, streamer);
+        //else fail
+    }
+}
+
+function Play_MultiStartSucess(xmlHttp, pos, streamer) {
+    console.log('Play_MultiStartSucess pos ' + pos + ' streamer ' + streamer);
+    if (xmlHttp.status === 200) {
+        Play_MultiStartErroTry = 0;
+        Play_tokenResponse = JSON.parse(xmlHttp.responseText);
+        //410 error
+        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
+            xmlHttp.responseText.indexOf('"status":410') !== -1) {
+            Play_MultiStartErro(pos, streamer);
+            return;
+        }
+
+        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + streamer +
+            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
+            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
+            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
+            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+        try {
+            Android.StartMultiStream(pos, theUrl);
+        } catch (e) {}
+
+    } else Play_MultiStartErro(pos, streamer);
+}
+
 function Play_handleKeyDown(e) {
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
@@ -2262,10 +2313,11 @@ function Play_handleKeyDown(e) {
                 } else Play_showPanel();
                 break;
             case KEY_ENTER:
+                var doc;
                 if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(1);
                     else {
-                        var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+                        doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
                         if (doc !== null) {
                             Play_EndDialogEnter = 1;
                             Play_EndUpclearCalback = Play_handleKeyDown;
@@ -2279,11 +2331,21 @@ function Play_handleKeyDown(e) {
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
-                    document.body.removeEventListener("keydown", Play_handleKeyDown, false);
-                    document.body.addEventListener("keyup", Play_handleKeyUp, false);
-                    PlayExtra_clear = false;
-                    UserLiveFeed_ResetFeedId();
-                    PlayExtra_KeyEnterID = window.setTimeout(PlayExtra_KeyEnter, 250);
+                    if (Play_MultiEnable) {
+                        Play_MultiStartErroTry = 0;
+                        doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+                        if (doc === null) UserLiveFeed_ResetFeedId();
+                        else {
+                            Play_MultiCount++;
+                            Play_MultiStart(Play_MultiCount, JSON.parse(doc.getAttribute(Main_DataAttribute))[6]);
+                        }
+                    } else {
+                        document.body.removeEventListener("keydown", Play_handleKeyDown, false);
+                        document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                        PlayExtra_clear = false;
+                        UserLiveFeed_ResetFeedId();
+                        PlayExtra_KeyEnterID = window.setTimeout(PlayExtra_KeyEnter, 250);
+                    }
                 } else Play_showPanel();
                 break;
             case KEY_RETURN_Q:
@@ -2338,15 +2400,16 @@ var Play_controlsSpeed = 5;
 var Play_controlsQuality = 6;
 var Play_controlsQualityMini = 7;
 var Play_controlsLowLatency = 8;
-var Play_controlsAudio = 9;
-var Play_controlsChat = 10;
-var Play_controlsChatSide = 11;
-var Play_controlsChatForceDis = 12;
-var Play_controlsChatPos = 13;
-var Play_controlsChatSize = 14;
-var Play_controlsChatBright = 15;
-var Play_controlsChatFont = 16;
-var Play_controlsChatDelay = 17;
+var Play_MultiStream = 9;
+var Play_controlsAudio = 10;
+var Play_controlsChat = 11;
+var Play_controlsChatSide = 12;
+var Play_controlsChatForceDis = 13;
+var Play_controlsChatPos = 14;
+var Play_controlsChatSize = 15;
+var Play_controlsChatBright = 16;
+var Play_controlsChatFont = 17;
+var Play_controlsChatDelay = 18;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2648,6 +2711,22 @@ function Play_MakeControls() {
         bottomArrows: function() {
             Play_BottomArrows(this.position);
         },
+    };
+
+    Play_controls[Play_MultiStream] = { //speed
+        icons: "multi",
+        string: '4 way multistream',
+        values: null,
+        opacity: 0,
+        enterKey: function() {
+            console.log('Play_MultiStream');
+            try {
+                Android.EnableMultiStream();
+                Play_MultiEnable = true;
+                Play_MultiCount = 0;
+            } catch (e) {}
+
+        }
     };
 
     Play_controls[Play_controlsChat] = { //chat enable disable
