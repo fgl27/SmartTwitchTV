@@ -49,42 +49,59 @@ import java.util.Locale;
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
     private static final int[] positions = {
-            Gravity.RIGHT | Gravity.BOTTOM,
-            Gravity.RIGHT | Gravity.CENTER,
-            Gravity.RIGHT | Gravity.TOP,
-            Gravity.CENTER | Gravity.TOP,
-            Gravity.LEFT | Gravity.TOP,
-            Gravity.LEFT | Gravity.CENTER,
-            Gravity.LEFT | Gravity.BOTTOM,
-            Gravity.CENTER | Gravity.BOTTOM};
+            Gravity.RIGHT | Gravity.BOTTOM,//0
+            Gravity.RIGHT | Gravity.CENTER,//1
+            Gravity.RIGHT | Gravity.TOP,//2
+            Gravity.CENTER | Gravity.TOP,//3
+            Gravity.LEFT | Gravity.TOP,//4
+            Gravity.LEFT | Gravity.CENTER,//5
+            Gravity.LEFT | Gravity.BOTTOM,//6
+            Gravity.CENTER | Gravity.BOTTOM//7
+    };
 
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
 
     public final int[] keys = {//same order as Main_initClickDoc /smartTwitchTV/app/specific/Main.js
-            KeyEvent.KEYCODE_DPAD_UP,
-            KeyEvent.KEYCODE_DPAD_DOWN,
-            KeyEvent.KEYCODE_DPAD_LEFT,
-            KeyEvent.KEYCODE_DPAD_RIGHT,
-            KeyEvent.KEYCODE_ENTER,
-            KeyEvent.KEYCODE_1,//key_1 is mapped as back key
-            KeyEvent.KEYCODE_PAGE_UP,
-            KeyEvent.KEYCODE_PAGE_DOWN,
-            KeyEvent.KEYCODE_3};
+            KeyEvent.KEYCODE_DPAD_UP,//0
+            KeyEvent.KEYCODE_DPAD_DOWN,//1
+            KeyEvent.KEYCODE_DPAD_LEFT,//2
+            KeyEvent.KEYCODE_DPAD_RIGHT,//3
+            KeyEvent.KEYCODE_ENTER,//4
+            KeyEvent.KEYCODE_1,//key_1 is mapped as back key //5
+            KeyEvent.KEYCODE_PAGE_UP,//6
+            KeyEvent.KEYCODE_PAGE_DOWN,//7
+            KeyEvent.KEYCODE_3//8
+    };
 
     public final int[] keysAction = {
-            KeyEvent.ACTION_DOWN,
-            KeyEvent.ACTION_UP};
+            KeyEvent.ACTION_DOWN,//0
+            KeyEvent.ACTION_UP//1
+    };
+
+    public final int[] idsurface = {
+            R.id.player_view,//0
+            R.id.player_view2,//1
+            R.id.player_view3,//2
+            R.id.player_view4//3
+    };
+
+    public final int[] idtexture = {
+            R.id.player_view_texture_view,//0
+            R.id.player_view2_texture_view,//1
+            R.id.player_view3_texture_view,//2
+            R.id.player_view4_texture_view//3
+    };
 
     public String[] BLACKLISTEDCODECS = null;
 
     public int DefaultPositions = 0;
 
-    public PlayerView[] PlayerView = new PlayerView[2];
-    public SimpleExoPlayer[] player = new SimpleExoPlayer[2];
+    public PlayerView[] PlayerView = new PlayerView[4];
+    public SimpleExoPlayer[] player = new SimpleExoPlayer[4];
     public DataSource.Factory dataSourceFactory;
     public DefaultRenderersFactory renderersFactory;
 
-    public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[2];
+    public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[4];
 
     public DefaultTrackSelector.Parameters trackSelectorParameters;
     public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
@@ -100,11 +117,11 @@ public class PlayerActivity extends Activity {
     private MediaSource mediaurireset;
 
     //The mediaSources stored to be used when changing from auto to source 720 etc etc
-    public MediaSource[] mediaSourcesAuto = new MediaSource[2];
-    public long[] expires = new long[2];
+    public MediaSource[] mediaSourcesAuto = new MediaSource[4];
+    public long[] expires = new long[4];
 
     //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
-    public MediaSource[] mediaSourcePlaying = new MediaSource[2];
+    public MediaSource[] mediaSourcePlaying = new MediaSource[4];
 
     private FrameLayout.LayoutParams DefaultSizeFrame;
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
@@ -120,6 +137,7 @@ public class PlayerActivity extends Activity {
     private boolean IsonStop;
     public boolean PicturePicture;
     public boolean deviceIsTV;
+    public boolean MultiStream;
 
     public int heightDefault = 0;
     public int mwidthDefault = 0;
@@ -131,10 +149,10 @@ public class PlayerActivity extends Activity {
     public int AudioSource = 1;
 
     public Handler myHandler;
-    public Handler[] PlayerCheckHandler = new Handler[2];
-    public int[] PlayerCheckCounter = new int[2];
+    public Handler[] PlayerCheckHandler = new Handler[4];
+    public int[] PlayerCheckCounter = new int[4];
 
-    private ProgressBar[] loadingView = new ProgressBar[3];
+    private ProgressBar[] loadingView = new ProgressBar[5];
 
     public int[] droppedFrames = new int[2];
     public long[] conSpeed = new long[2];
@@ -163,8 +181,10 @@ public class PlayerActivity extends Activity {
             deviceIsTV = Tools.deviceIsTV(this);
 
             myHandler = new Handler(Looper.getMainLooper());
-            PlayerCheckHandler[0] = new Handler(Looper.getMainLooper());
-            PlayerCheckHandler[1] = new Handler(Looper.getMainLooper());
+
+            for(int i = 0; i < 4; i++){
+                PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
+            }
 
             dataSourceFactory =
                     new DefaultDataSourceFactory(
@@ -195,8 +215,8 @@ public class PlayerActivity extends Activity {
 
             VideoHolder = findViewById(R.id.videoholder);
 
-            loadingView[2] = findViewById(R.id.loading);
-            loadingView[2].setLayoutParams(DefaultSizeFrame);
+            loadingView[4] = findViewById(R.id.loading);
+            loadingView[4].setLayoutParams(DefaultSizeFrame);
 
             setPlayer(true);
 
@@ -219,30 +239,31 @@ public class PlayerActivity extends Activity {
     public void setPlayer(boolean surface_view) {
         //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
         if (surface_view){
-            PlayerView[0] = findViewById(R.id.player_view_texture_view);
-            PlayerView[1] = findViewById(R.id.player_view2_texture_view);
-            PlayerView[0].setVisibility(View.GONE);
-            PlayerView[1].setVisibility(View.GONE);
-
-            PlayerView[0] = findViewById(R.id.player_view);
-            PlayerView[1] = findViewById(R.id.player_view2);
+            for(int i = 0; i < 4; i++){
+                PlayerView[i] = findViewById(idtexture[i]);
+                PlayerView[i].setVisibility(View.GONE);
+                PlayerView[i] = findViewById(idsurface[i]);
+            }
 
             PlayerView[0].setVisibility(View.VISIBLE);
-            PlayerView[1].setVisibility(View.GONE);
+            for(int i = 1; i < 4; i++){
+                PlayerView[i].setVisibility(View.GONE);
+            }
         } else {
-            PlayerView[0] = findViewById(R.id.player_view);
-            PlayerView[1] = findViewById(R.id.player_view2);
-            PlayerView[0].setVisibility(View.GONE);
-            PlayerView[1].setVisibility(View.GONE);
 
-            PlayerView[0] = findViewById(R.id.player_view_texture_view);
-            PlayerView[1] = findViewById(R.id.player_view2_texture_view);
+            for(int i = 0; i < 4; i++){
+                PlayerView[i] = findViewById(idsurface[i]);
+                PlayerView[i].setVisibility(View.GONE);
+                PlayerView[i] = findViewById(idtexture[i]);
+            }
 
             PlayerView[0].setVisibility(View.VISIBLE);
-            PlayerView[1].setVisibility(View.GONE);
+            for(int i = 1; i < 4; i++){
+                PlayerView[i].setVisibility(View.GONE);
+            }
         }
 
-        for(int i = 0; i < 2; i++){
+        for(int i = 0; i < 4; i++){
             loadingView[i] = PlayerView[i].findViewById(R.id.exo_buffering);
             loadingView[i].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
             loadingView[i].setBackgroundResource(R.drawable.shadow);
@@ -316,6 +337,56 @@ public class PlayerActivity extends Activity {
         KeepScreenOn(true);
     }
 
+    private void initializePlayerMulti(int position, MediaSource mediaSource) {
+        if (IsonStop) {
+            monStop();
+            return;
+        }
+
+        mediaSourcePlaying[position] = mediaSource;
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+
+        if (PlayerView[position].getVisibility() != View.VISIBLE)
+            PlayerView[position].setVisibility(View.VISIBLE);
+
+        if (player[position] == null) {
+            trackSelector[position] = new DefaultTrackSelector(this);
+            trackSelector[position].setParameters(trackSelectorParametersSmall);
+
+            if (BLACKLISTEDCODECS != null) {
+                renderersFactory = new DefaultRenderersFactory(this);
+                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
+
+                player[position] = new SimpleExoPlayer.Builder(this, renderersFactory)
+                        .setTrackSelector(trackSelector[position])
+                        .setLoadControl(loadControl[mwhocall])
+                        .build();
+            } else {
+                player[position] = new SimpleExoPlayer.Builder(this)
+                        .setTrackSelector(trackSelector[position])
+                        .setLoadControl(loadControl[mwhocall])
+                        .build();
+            }
+
+            if (position == 0) {
+                player[position].addListener(new PlayerEventListener(position));
+                player[position].addAnalyticsListener(new AnalyticsEventListener(position));
+            }
+
+            PlayerView[position].setPlayer(player[position]);
+        }
+
+        player[position].setMediaSource(
+                mediaSourcePlaying[position],
+                C.TIME_UNSET
+        );
+
+        player[position].prepare();
+
+        player[position].setPlayWhenReady(true);
+        KeepScreenOn(true);
+    }
+
     // For some reason the player can lag a device when stated without releasing it first
     // It seems that the app keeps working on the player somehow in the background on the already released player
     // So here we do more then what seems necessary by releasing, starting and releasing again
@@ -382,12 +453,12 @@ public class PlayerActivity extends Activity {
         shouldCallJavaCheck = false;
         AudioSource = 1;
 
-        PlayerCheckHandler[0].removeCallbacksAndMessages(null);
-        PlayerCheckHandler[1].removeCallbacksAndMessages(null);
-        mediaSourcePlaying[0] = null;
-        mediaSourcePlaying[1] = null;
-        mediaSourcesAuto[0] = null;
-        mediaSourcesAuto[1] = null;
+        for(int i = 0; i < 4; i++){
+            PlayerCheckHandler[i].removeCallbacksAndMessages(null);
+            mediaSourcePlaying[i] = null;
+            mediaSourcesAuto[i] = null;
+        }
+
         mwhocall = whocall;
         mResumePosition = 0;
 
@@ -436,7 +507,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void showLoading() {
-        loadingView[2].setVisibility(View.VISIBLE);
+        loadingView[4].setVisibility(View.VISIBLE);
     }
 
     private void hideLoading(int position) {
@@ -529,6 +600,36 @@ public class PlayerActivity extends Activity {
         PlayerView[pos].setLayoutParams(PlayerViewSmallSize);
     }
 
+    public void SetMultiStream() {
+        FrameLayout.LayoutParams PlayerViewSizePos = new FrameLayout.LayoutParams(
+                (mwidthDefault / 2),
+                (heightDefault / 2),
+                positions[4]
+        );
+        PlayerView[0].setLayoutParams(PlayerViewSizePos);
+
+        PlayerViewSizePos = new FrameLayout.LayoutParams(
+                (mwidthDefault / 2),
+                (heightDefault / 2),
+                positions[2]
+        );
+        PlayerView[1].setLayoutParams(PlayerViewSizePos);
+
+        PlayerViewSizePos = new FrameLayout.LayoutParams(
+                (mwidthDefault / 2),
+                (heightDefault / 2),
+                positions[6]
+        );
+        PlayerView[2].setLayoutParams(PlayerViewSizePos);
+
+        PlayerViewSizePos = new FrameLayout.LayoutParams(
+                (mwidthDefault / 2),
+                (heightDefault / 2),
+                positions[0]
+        );
+        PlayerView[3].setLayoutParams(PlayerViewSizePos);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -549,25 +650,26 @@ public class PlayerActivity extends Activity {
 
     private void monStop() {
         IsonStop = true;
-        PlayerCheckHandler[0].removeCallbacksAndMessages(null);
-        PlayerCheckHandler[1].removeCallbacksAndMessages(null);
+
+        for(int i = 0; i < 4; i++){
+            PlayerCheckHandler[i].removeCallbacksAndMessages(null);
+            updateResumePosition(i);
+            ClearPlayer(i);
+        }
 
         //Kill playclip if playing or if on end dialog
         if (player[mainPlayer] != null && mwebview != null && alredystarted && mwhocall == 3) {
             mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResume()");
         }
 
-        updateResumePosition(0);
-        updateResumePosition(1);
-        ClearPlayer(0);
-        ClearPlayer(1);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ClearPlayer(0);
-        ClearPlayer(1);
+        for(int i = 0; i < 4; i++){
+            ClearPlayer(i);
+        }
     }
 
     @Override
@@ -701,9 +803,9 @@ public class PlayerActivity extends Activity {
         });
 
         //To load page from assets
-        //mwebview.loadUrl("file:///android_asset/index.html");
+        mwebview.loadUrl("file:///android_asset/index.html");
         //To load page from githubio
-        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+        //mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
 
         mwebview.requestFocus();
     }
@@ -723,7 +825,7 @@ public class PlayerActivity extends Activity {
         public void mshowLoading(boolean show) {
             myHandler.post(() -> {
                 if (show) showLoading();
-                else hideLoading(2);
+                else hideLoading(4);
             });
         }
 
@@ -1181,6 +1283,24 @@ public class PlayerActivity extends Activity {
         public boolean canBackupFile() {
             return Tools.WR_storage(mwebContext);
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void EnableMultiStream() {
+            myHandler.post(() -> {
+                MultiStream = true;
+                SetMultiStream();
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartMultiStream(int position, String url) {
+            myHandler.post(() -> {
+                mediaSourcesAuto[position] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+                initializePlayerMulti(position, mediaSourcesAuto[position]);
+            });
+        }
     }
 
     // Basic EventListener for exoplayer
@@ -1197,7 +1317,7 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, @Player.State int playbackState) {
             myHandler.post(() -> {
-                hideLoading(2);
+                hideLoading(4);
                 if (playWhenReady) {
                     if (playbackState == Player.STATE_ENDED) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
@@ -1245,7 +1365,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerEventListenerClear(int position) {
-        hideLoading(2);
+        hideLoading(4);
         hideLoading(position);
         if (PicturePicture) {
             boolean mswitch = (mainPlayer == position);
@@ -1280,9 +1400,12 @@ public class PlayerActivity extends Activity {
                 //ask java to reset the qualities only if time expired
                 if (expires[position] < System.currentTimeMillis()) {
                     mediaSourcePlaying[position] = mediaSourcesAuto[position];
-                    initializePlayer(position);
+
+                    if (MultiStream) initializePlayerMulti(position, mediaSourcePlaying[position]);
+                    else initializePlayer(position);
+
                 } else
-                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ")");
+                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ")");//TODO revise this for multistream
 
             } else initializePlayer(position);
 
