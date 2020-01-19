@@ -862,6 +862,7 @@ function Screens_handleKeyUp(e) {
         if (!Screens_clear) {
             Screens_keyRight();
             document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+            Screens_ChangeFocusAnimationFast = false;
         }
     }
     Screens_handleKeyUpIsClear = true;
