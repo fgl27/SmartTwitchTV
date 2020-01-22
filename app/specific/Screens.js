@@ -1567,19 +1567,19 @@ function Screens_ThumbOptionhandleKeyDown(event) {
             Screens_ThumbOptionDialogHide();
             break;
         case KEY_LEFT:
+            Screens_clearTODialogId();
+            Screens_SeTODialogId();
             if (Screens_ThumbOptionPosY > 2) {
-                Screens_clearTODialogId();
-                Screens_SeTODialogId();
                 Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
                 if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0) Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = 0;
                 else Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
             }
             break;
         case KEY_RIGHT:
+            Screens_clearTODialogId();
+            Screens_SeTODialogId();
             if (!Screens_handleKeyUpIsClear) break;
             if (Screens_ThumbOptionPosY > 2) {
-                Screens_clearTODialogId();
-                Screens_SeTODialogId();
                 Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
                 if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] > (Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1))
                     Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1;
