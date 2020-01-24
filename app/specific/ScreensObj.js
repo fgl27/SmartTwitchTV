@@ -1743,7 +1743,7 @@ function ScreensObj_LiveCellArray(cell) {
         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
         cell.channel.name,//6
         cell._id,//7
-        Main_is_rerun(cell.stream_type),//8
+        Main_is_rerun(cell.broadcast_platform),//8
         cell.channel.logo,//9
         cell.channel.partner,//10
         STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE,//11

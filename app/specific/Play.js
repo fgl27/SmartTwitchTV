@@ -573,7 +573,7 @@ function Play_updateStreamInfoStartValues(response) {
 
     response = JSON.parse(response);
     if (response.stream !== null) {
-        Play_data.data[8] = Main_is_rerun(response.stream.stream_type);
+        Play_data.data[8] = Main_is_rerun(response.stream.broadcast_platform);
         Play_data.data[7] = response.stream._id;
 
         Main_innerHTML("stream_info_title", twemoji.parse(response.stream.channel.status, false, true));
