@@ -828,7 +828,7 @@ function Settings_CodecsShow() {
             }
         }
 
-        if (!Main_IsNotBrowser) Settings_CodecsValue = "video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73|video/avc,OMX.google.h264.decoder,4080x4080,48 Mbps,8,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68|video/avc,OMX.chico.h264.decoder,4080x4080,48 Mbps,8,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68";
+        if (!Main_IsNotBrowser) Settings_CodecsValue = "video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,32,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73|video/avc,OMX.google.h264.decoder,4080x4080,48 Mbps,8,5.2,32,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68|video/avc,OMX.chico.h264.decoder,4080x4080,48 Mbps,8,5.2,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68";
 
         var dialogContent = '',
             codecs = Settings_CodecsValue.split('|'),
@@ -859,8 +859,9 @@ function Settings_CodecsShow() {
             temptitlecontent = "";
             temptitlecontent += STR_MAX_RES + codecsValue[2] + spacer;
             temptitlecontent += STR_MAX_BIT + codecsValue[3] + spacer;
-            temptitlecontent += STR_MAX_LEVEL + codecsValue[5] + STR_BR + STR_MAX_FPS + STR_BR;
-            for (j = 6; j < codecsValue.length; j++) {
+            temptitlecontent += STR_MAX_LEVEL + codecsValue[5] + spacer;
+            temptitlecontent += STR_MAX_INSTANCES + ((codecsValue[6] > -1) ? codecsValue[6] : STR_MAX_INSTANCES_NOT) + STR_BR;
+            for (j = 7; j < codecsValue.length; j++) {
                 temptitlecontent += (parseFloat(codecsValue[j].split(': ')[1]) > 0) ? codecsValue[j] + " fps" + spacer : "";
             }
 
