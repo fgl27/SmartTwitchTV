@@ -337,6 +337,8 @@ function en_USLang() {
     STR_MAX_BIT = "Max bitrate: ";
     STR_MAX_LEVEL = "Max level: ";
     STR_MAX_FPS = "Max fps per resolution:";
+    STR_MAX_INSTANCES = "Max instances: ";
+    STR_MAX_INSTANCES_NOT = "Not supported";
     STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
     STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
