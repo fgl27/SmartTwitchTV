@@ -145,7 +145,7 @@ function PlayVod_PosStart() {
     document.body.removeEventListener("keyup", Main_handleKeyUp);
 
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
-    Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
+    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 }
 
 function PlayVod_PrepareLoad() {
