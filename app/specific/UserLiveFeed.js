@@ -293,14 +293,26 @@ function UserLiveFeed_loadDataSuccess(responseText) {
 
     UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject));
 
-    // doc.appendChild(UserLiveFeed_CreatFeed(i++,
-    //     ['ashlynn', 35618666, false],
-    //     ["https://static-cdn.jtvnw.net/ttv-static/404_preview-640x360.jpg",
-    //         'ashlynn',
-    //         'test',
-    //         Main_addCommas(10),
-    //         'title'
-    //     ]));
+    doc.appendChild(
+        UserLiveFeed_CreatFeed(i++,
+            [
+                "https://static-cdn.jtvnw.net/ttv-static/404_preview-640x360.jpg",
+                "ashlynn",
+                "title",
+                "game",
+                "for 1000 Viewers",
+                "720p30 [EN]",
+                "ashlynn",
+                10000000000,
+                true,
+                "https://static-cdn.jtvnw.net/ttv-static/404_preview-640x360.jpg",
+                true,
+                "Since 11:04:36&nbsp;",
+                "2020-01-25T09:49:05Z",
+                1000,
+                35618666]
+        )
+    );
 
     UserLiveFeed_loadDataSuccessFinish();
 }

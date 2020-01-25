@@ -354,20 +354,20 @@ function ChannelContent_keyEnter() {
         Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
             .getAttribute(Main_DataAttribute));
 
-        Main_values.Play_selectedChannel = Main_values_Play_data[6];
-        Main_values.IsRerun = Main_values_Play_data[8];
+        Play_data.data[6] = Main_values_Play_data[6];
+        Play_data.data[8] = Main_values_Play_data[8];
 
-        Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
+        Play_data.data[1] = Main_values_Play_data[1];
 
-        if (Main_values.Play_selectedChannelDisplayname.indexOf(STR_USER_HOSTING) !== -1) {
+        if (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1) {
             Main_values.Play_isHost = true;
-            Main_values.Play_DisplaynameHost = Main_values.Play_selectedChannelDisplayname;
-            Main_values.Play_selectedChannelDisplayname = Main_values.Play_selectedChannelDisplayname.split(STR_USER_HOSTING)[1];
-            Main_values.Play_selectedChannel_id = ChannelContent_TargetId;
-        } else Main_values.Play_selectedChannel_id = Main_values.Main_selectedChannel_id;
+            Play_data.DisplaynameHost = Play_data.data[1];
+            Play_data.data[1] = Play_data.data[1].split(STR_USER_HOSTING)[1];
+            Play_data.data[14] = ChannelContent_TargetId;
+        } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
 
         var playing = document.getElementById('channel_content_cell0_5').textContent;
-        Main_values.Play_gameSelected = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
+        Play_data.data[3] = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
 
         Main_ready(Main_openStream);
     }

@@ -415,15 +415,19 @@ function Screens_loadDataSuccessFinish() {
                 Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
                 Main_ready(function() {
-                    if (Main_values.Play_WasPlaying === 1) Main_openStream();
-                    else {
+                    if (Main_values.Play_WasPlaying === 1) {
+                        if (Play_data.data.length > 0) {
+                            Main_openStream();
+                            Main_SwitchScreen(true);
+                        } else Main_SwitchScreen(false);
+                    } else {
                         if (!Main_values.vodOffset) Main_values.vodOffset = 1;
                         ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
 
                         Main_openVod();
+                        Main_SwitchScreen(true);
                     }
 
-                    Main_SwitchScreen(true);
                     window.setTimeout(function() {
                         if (!Play_IsWarning) Play_HideWarningDialog();
                     }, 3000);
@@ -1744,8 +1748,8 @@ function Screens_OpenScreen() {
 }
 
 function Screens_OpenGame() {
-    Main_values.Play_gameSelected = (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : '');
-    if (Main_values.Play_gameSelected === '') {
+    Play_data.data[3] = (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : '');
+    if (Play_data.data[3] === '') {
 
         Main_showWarningDialog(STR_NO_GAME);
         window.setTimeout(Main_HideWarningDialog, 2000);
@@ -1760,7 +1764,7 @@ function Screens_OpenGame() {
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_aGame;
 
-    Main_values.Main_gameSelected = Main_values.Play_gameSelected;
+    Main_values.Main_gameSelected = Play_data.data[3];
     Main_ReStartScreens();
 }
 

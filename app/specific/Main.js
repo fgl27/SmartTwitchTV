@@ -48,10 +48,6 @@ var Main_values = {
     "Main_gameSelected_id": '',
     "Main_OldgameSelected": null,
     "Play_isHost": false,
-    "Play_DisplaynameHost": '',
-    "Play_selectedChannelDisplayname": '',
-    "Play_selectedChannel": '',
-    "Play_gameSelected": '',
     "Users_AddcodePosition": 0,
     "Play_WasPlaying": 0,
     "ChannelVod_vodId": '',
@@ -977,10 +973,12 @@ function Main_OpenSearch() {
 
 function Main_SaveValues() {
     Main_setItem('Main_values', JSON.stringify(Main_values));
+    Main_setItem('Play_data', JSON.stringify(Play_data));
 }
 
 function Main_RestoreValues() {
     Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
+    Play_data = Screens_assign(Play_data, Main_getItemJson('Play_data', {}));
 }
 
 var Main_ExitCurrentobj = {
@@ -1106,10 +1104,9 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    Play_data.data = Main_values_Play_data;
 
-    Main_values.Play_selectedChannel = Main_values_Play_data[6];
-    Main_values.Play_selectedChannel_id = Main_values_Play_data[14];
-    Main_values.IsRerun = Main_values_Play_data[8];
+    Play_data.data[6] = Main_values_Play_data[6];
 
     if (checkHistory) {
 
@@ -1134,11 +1131,9 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
 
     if (Main_values.Play_isHost) {
-        Main_values.Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
-        Main_values.Play_selectedChannelDisplayname = Main_values.Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
-    } else Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
-
-    Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
+        Play_data.Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
+        Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+    }
 
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
@@ -1157,7 +1152,7 @@ function Main_CheckBroadcastID(index, doc) {
 }
 
 function Main_CheckBroadcastIDStart() {
-    var theUrl = Main_kraken_api + 'streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
     BasexmlHttpGet(theUrl, 3000, 2, null, Main_CheckBroadcastIDStartSucess, Main_CheckBroadcastIDStartError, false);
 }
 
@@ -1193,8 +1188,8 @@ function Main_CheckBroadcastIDStartError() {
 }
 
 function Main_OPenAsLive() {
-    Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
-    Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
+    Play_data.data[1] = Main_values_Play_data[1];
+    Play_data.data[3] = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
     Main_openStream();
 }
 
@@ -1246,9 +1241,9 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     PlayClip_DurationSeconds = parseInt(Main_values_Play_data[1]);
     Main_values.Main_selectedChannel_id = Main_values_Play_data[2];
 
-    Main_values.Play_gameSelected = Main_values_Play_data[3];
-    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
-    ChannelClip_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_PLAYING + Main_values.Play_gameSelected : "");
+    Play_data.data[3] = Main_values_Play_data[3];
+    if (Play_data.data[3] === null) Play_data.data[3] = "";
+    ChannelClip_game = (Play_data.data[3] !== "" && Play_data.data[3] !== null ? STR_PLAYING + Play_data.data[3] : "");
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[4];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[5];
@@ -1280,9 +1275,9 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
     ChannelVod_createdAt = Main_values_Play_data[2];
 
-    Main_values.Play_gameSelected = Main_values_Play_data[3];
-    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
-    ChannelVod_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_STARTED + STR_PLAYING + Main_values.Play_gameSelected : "");
+    Play_data.data[3] = Main_values_Play_data[3];
+    if (Play_data.data[3] === null) Play_data.data[3] = "";
+    ChannelVod_game = (Play_data.data[3] !== "" && Play_data.data[3] !== null ? STR_STARTED + STR_PLAYING + Play_data.data[3] : "");
 
     ChannelVod_views = Main_values_Play_data[4];
 
