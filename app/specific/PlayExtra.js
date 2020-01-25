@@ -29,7 +29,7 @@ function PlayExtra_KeyEnter() {
     else {
         Main_values_Play_data = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-        if (Play_data.data[6] !== Main_values_Play_data &&
+        if (Play_data.data[6] !== Main_values_Play_data[6] &&
             PlayExtra_data.data[6] !== Main_values_Play_data[6]) {
             UserLiveFeed_Hide();
 

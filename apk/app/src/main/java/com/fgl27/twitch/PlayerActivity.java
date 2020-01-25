@@ -96,19 +96,20 @@ public class PlayerActivity extends Activity {
 
     public int DefaultPositions = 0;
 
-    public PlayerView[] PlayerView = new PlayerView[4];
-    public SimpleExoPlayer[] player = new SimpleExoPlayer[4];
+    public static final int PlayerAcount = 4;
+    public PlayerView[] PlayerView = new PlayerView[PlayerAcount];
+    public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAcount];
     public DataSource.Factory dataSourceFactory;
     public DefaultRenderersFactory renderersFactory;
 
-    public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[4];
+    public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAcount];
 
     public DefaultTrackSelector.Parameters trackSelectorParameters;
     public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
     public int mainPlayerBandwidth = Integer.MAX_VALUE;
     public int smallPlayerBandwidth = 3000000;
 
-    private LoadControl[] loadControl = new LoadControl[4];
+    private LoadControl[] loadControl = new LoadControl[PlayerAcount];
 
     public long mResumePosition;
     public int mwhocall = 1;
@@ -117,11 +118,11 @@ public class PlayerActivity extends Activity {
     private MediaSource mediaurireset;
 
     //The mediaSources stored to be used when changing from auto to source 720 etc etc
-    public MediaSource[] mediaSourcesAuto = new MediaSource[4];
-    public long[] expires = new long[4];
+    public MediaSource[] mediaSourcesAuto = new MediaSource[PlayerAcount];
+    public long[] expires = new long[PlayerAcount];
 
     //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
-    public MediaSource[] mediaSourcePlaying = new MediaSource[4];
+    public MediaSource[] mediaSourcePlaying = new MediaSource[PlayerAcount];
 
     private FrameLayout.LayoutParams DefaultSizeFrame;
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
@@ -149,10 +150,10 @@ public class PlayerActivity extends Activity {
     public int AudioSource = 1;
 
     public Handler myHandler;
-    public Handler[] PlayerCheckHandler = new Handler[4];
-    public int[] PlayerCheckCounter = new int[4];
+    public Handler[] PlayerCheckHandler = new Handler[PlayerAcount];
+    public int[] PlayerCheckCounter = new int[PlayerAcount];
 
-    private ProgressBar[] loadingView = new ProgressBar[5];
+    private ProgressBar[] loadingView = new ProgressBar[PlayerAcount + 1];
 
     public int[] droppedFrames = new int[2];
     public long[] conSpeed = new long[2];
@@ -182,7 +183,7 @@ public class PlayerActivity extends Activity {
 
             myHandler = new Handler(Looper.getMainLooper());
 
-            for(int i = 0; i < 4; i++){
+            for(int i = 0; i < PlayerAcount; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
             }
 
@@ -239,7 +240,7 @@ public class PlayerActivity extends Activity {
     public void setPlayer(boolean surface_view) {
         //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
         if (surface_view){
-            for(int i = 0; i < 4; i++){
+            for(int i = 0; i < PlayerAcount; i++){
                 PlayerView[i] = findViewById(idtexture[i]);
                 PlayerView[i].setVisibility(View.GONE);
                 PlayerView[i] = findViewById(idsurface[i]);
@@ -251,7 +252,7 @@ public class PlayerActivity extends Activity {
             }
         } else {
 
-            for(int i = 0; i < 4; i++){
+            for(int i = 0; i < PlayerAcount; i++){
                 PlayerView[i] = findViewById(idsurface[i]);
                 PlayerView[i].setVisibility(View.GONE);
                 PlayerView[i] = findViewById(idtexture[i]);
@@ -263,7 +264,7 @@ public class PlayerActivity extends Activity {
             }
         }
 
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < PlayerAcount; i++){
             loadingView[i] = PlayerView[i].findViewById(R.id.exo_buffering);
             loadingView[i].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
             loadingView[i].setBackgroundResource(R.drawable.shadow);
@@ -338,6 +339,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void initializePlayerMulti(int position, MediaSource mediaSource) {
+        boolean PlayerNull = false;
         if (IsonStop) {
             monStop();
             return;
@@ -350,6 +352,7 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setVisibility(View.VISIBLE);
 
         if (player[position] == null) {
+            PlayerNull = true;
             trackSelector[position] = new DefaultTrackSelector(this);
             trackSelector[position].setParameters(trackSelectorParametersSmall);
 
@@ -368,10 +371,12 @@ public class PlayerActivity extends Activity {
                         .build();
             }
 
-            if (position == 0) {
-                player[position].addListener(new PlayerEventListener(position));
-                player[position].addAnalyticsListener(new AnalyticsEventListener(position));
-            }
+            player[position].addListener(new PlayerEventListener(position));
+
+            player[position].addAnalyticsListener(
+                (position < 2) ? new AnalyticsEventListener(position) :
+                    new AnalyticsEventListenerMulti()
+            );
 
             PlayerView[position].setPlayer(player[position]);
         }
@@ -384,6 +389,7 @@ public class PlayerActivity extends Activity {
         player[position].prepare();
 
         player[position].setPlayWhenReady(true);
+        if (PlayerNull) player[position].setVolume(0f);
         KeepScreenOn(true);
     }
 
@@ -453,7 +459,7 @@ public class PlayerActivity extends Activity {
         shouldCallJavaCheck = false;
         AudioSource = 1;
 
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < PlayerAcount; i++){
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             mediaSourcePlaying[i] = null;
             mediaSourcesAuto[i] = null;
@@ -472,8 +478,11 @@ public class PlayerActivity extends Activity {
             player[position].release();
             player[position] = null;
             trackSelector[position] = null;
-            droppedFrames[position] = 0;
-            netActivity[position] = 0L;
+
+            if (position < 2) {//Only player 0 & 1 acount for this
+                droppedFrames[position] = 0;
+                netActivity[position] = 0L;
+            }
         }
     }
 
@@ -630,6 +639,17 @@ public class PlayerActivity extends Activity {
         PlayerView[3].setLayoutParams(PlayerViewSizePos);
     }
 
+    public void UnSetMultiStream() {
+        ClearPlayer(2);
+        ClearPlayer(3);
+
+        updateVidesizeChatPP(IsIN5050);
+        if (!PicturePicture) ClearPlayer(1);
+
+        PlayerView[2].setVisibility(View.GONE);
+        PlayerView[3].setVisibility(View.GONE);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -651,7 +671,7 @@ public class PlayerActivity extends Activity {
     private void monStop() {
         IsonStop = true;
 
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < PlayerAcount; i++){
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             updateResumePosition(i);
             ClearPlayer(i);
@@ -667,7 +687,7 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < PlayerAcount; i++){
             ClearPlayer(i);
         }
     }
@@ -1103,9 +1123,9 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void play(boolean play) {
             myHandler.post(() -> {
-                if (player[0] != null) player[0].setPlayWhenReady(play);
-                if (player[1] != null) player[1].setPlayWhenReady(play);
-
+                for(int i = 0; i < PlayerAcount; i++) {
+                    if (player[i] != null) player[i].setPlayWhenReady(play);
+                }
                 KeepScreenOn(play);
             });
         }
@@ -1295,6 +1315,15 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void DisableMultiStream() {
+            myHandler.post(() -> {
+                MultiStream = false;
+                UnSetMultiStream();
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void StartMultiStream(int position, String url) {
             myHandler.post(() -> {
                 mediaSourcesAuto[position] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
@@ -1455,6 +1484,17 @@ public class PlayerActivity extends Activity {
                 netActivityAVG += ((float) netActivity[position] / 1000000);
             }
         }
+    }
+
+    //Simplet AnalyticsListener for multiplayer no need to be acount for all the data for all players
+    //as the only info show to the user is droppedFramesTotal for all players
+    private class AnalyticsEventListenerMulti implements AnalyticsListener {
+
+        @Override
+        public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
+            droppedFramesTotal += count;
+        }
+
     }
 
     @TargetApi(23)
