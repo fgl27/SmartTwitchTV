@@ -26,6 +26,7 @@ var Play_RefreshAutoTry = 0;
 var Play_SingleClickExit = 0;
 var Play_MultiEnable = false;
 var Play_MultiCount = 0;
+var Play_MultiIsFull = false;
 var Play_MultiArray = [];
 //var Play_SupportsSource = true;
 var Play_LowLatency = false;
@@ -147,7 +148,7 @@ var Play_ChatSizeVal = [{
 
 var Play_ChatFontObj = ['chat_extra_small', 'chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
 
-var Play_data = {
+var Play_data_base = {
     data: [],
     isHost: false,
     DisplaynameHost: '',
@@ -158,7 +159,8 @@ var Play_data = {
     AutoUrl: ''
 };
 
-var PlayExtra_data = JSON.parse(JSON.stringify(Play_data));
+var Play_data = JSON.parse(JSON.stringify(Play_data_base));
+var PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
 
 var Play_data_old = {};
 var PlayExtra_Save_data = {};
@@ -2117,7 +2119,26 @@ function Play_Exit() {
     Play_shutdownStream();
 }
 
-function Play_MultiStart(pos, streamer) {
+function Play_MultiStartPrestart() {
+    Play_MultiStartErroTry = 0;
+    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+    if (doc === null) UserLiveFeed_ResetFeedId();
+    else {
+        if (!Play_MultiIsFull) {
+            Play_MultiCount++;
+            if (Play_MultiCount > 2) Play_MultiIsFull = true;
+        }
+        Play_MultiArray[Play_MultiCount] = JSON.parse(JSON.stringify(Play_data_base));
+        Play_MultiArray[Play_MultiCount].data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        Play_MultiStart(
+            Play_MultiCount,
+            Play_MultiArray[Play_MultiCount].data[6],
+            Play_MultiArray[Play_MultiCount].data[1]
+        );
+    }
+}
+
+function Play_MultiStart(pos, streamer, display_name) {
     console.log('Play_MultiStart pos ' + pos + ' streamer ' + streamer);
 
     var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_' +
@@ -2127,17 +2148,23 @@ function Play_MultiStart(pos, streamer) {
     var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) Play_MultiStartSucess(JSON.parse(xmlHttp), pos, streamer);
-    else Play_MultiStartErro(pos, streamer);
+    else Play_MultiStartErro(pos, streamer, display_name);
 }
 
 var Play_MultiStartErroTry = 0;
 
-function Play_MultiStartErro(pos, streamer) {
+function Play_MultiStartErro(pos, streamer, display_name) {
     console.log('Play_MultiStartErro pos ' + pos + ' streamer ' + streamer);
     if (Play_isOn) {
         Play_MultiStartErroTry++;
-        if (Play_MultiStartErroTry < 5) Play_MultiStart(pos, streamer);
-        //else fail
+        if (Play_MultiStartErroTry < 5) Play_MultiStart(pos, streamer, display_name);
+        else {
+            //restore in case update
+            Play_showWarningDialog(display_name + ' ' + STR_LIVE + STR_IS_OFFLINE);
+            window.setTimeout(function() {
+                Play_HideWarningDialog();
+            }, 2000);
+        }
     }
 }
 
@@ -2295,11 +2322,10 @@ function Play_handleKeyDown(e) {
                 } else Play_showPanel();
                 break;
             case KEY_ENTER:
-                var doc;
                 if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(1);
                     else {
-                        doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+                        var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
                         if (doc !== null) {
                             Play_EndDialogEnter = 1;
                             Play_EndUpclearCalback = Play_handleKeyDown;
@@ -2313,15 +2339,8 @@ function Play_handleKeyDown(e) {
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
-                    if (Play_MultiEnable) {
-                        Play_MultiStartErroTry = 0;
-                        doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-                        if (doc === null) UserLiveFeed_ResetFeedId();
-                        else {
-                            Play_MultiCount++;
-                            Play_MultiStart(Play_MultiCount, JSON.parse(doc.getAttribute(Main_DataAttribute))[6]);
-                        }
-                    } else {
+                    if (Play_MultiEnable) Play_MultiStartPrestart();
+                    else {
                         document.body.removeEventListener("keydown", Play_handleKeyDown, false);
                         document.body.addEventListener("keyup", Play_handleKeyUp, false);
                         PlayExtra_clear = false;
@@ -2702,17 +2721,27 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
             console.log('Play_MultiStream');
-            try {
-                Android.EnableMultiStream();
-            } catch (e) {}
+            Play_MultiEnable = !Play_MultiEnable;
+            if (Play_MultiEnable) {
+                try {
+                    Android.EnableMultiStream();
+                } catch (e) {}
 
-            if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
+                if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
-            Play_MultiEnable = true;
-            Play_MultiCount = 0;
+                Play_MultiEnable = true;
+                Play_MultiIsFull = false;
 
-            Play_MultiArray[0] = JSON.parse(JSON.stringify(Play_data));
-            if (PlayExtra_PicturePicture) Play_MultiArray[0] = JSON.parse(JSON.stringify(PlayExtra_data));
+                Play_MultiArray[0] = JSON.parse(JSON.stringify(Play_data));
+                if (PlayExtra_PicturePicture) {
+                    Play_MultiCount = 1;
+                    Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
+                } else Play_MultiCount = 0;
+            } else {
+                try {
+                    Android.DisableMultiStream();
+                } catch (e) {}
+            }
         }
     };
 
