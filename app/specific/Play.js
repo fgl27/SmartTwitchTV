@@ -2140,6 +2140,24 @@ function Play_Exit() {
     Play_shutdownStream();
 }
 
+function Play_Multi_SetPanel() {
+    document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsAudio).style.display = '';
+    document.getElementById('controls_' + Play_controlsQualityMulti).style.display = '';
+    ChatLive_Clear(1);
+    PlayExtra_HideChat();
+}
+
+function Play_Multi_UnSetPanel() {
+    document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
+    document.getElementById('controls_' + Play_controlsQuality).style.display = '';
+    document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+}
+
 function Play_MultiEnd(position) {
     Play_showWarningDialog(Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
     window.setTimeout(function() {
@@ -2482,17 +2500,18 @@ var Play_controlsFallow = 4;
 var Play_controlsSpeed = 5;
 var Play_controlsQuality = 6;
 var Play_controlsQualityMini = 7;
-var Play_controlsLowLatency = 8;
-var Play_MultiStream = 9;
-var Play_controlsAudio = 10;
-var Play_controlsChat = 11;
-var Play_controlsChatSide = 12;
-var Play_controlsChatForceDis = 13;
-var Play_controlsChatPos = 14;
-var Play_controlsChatSize = 15;
-var Play_controlsChatBright = 16;
-var Play_controlsChatFont = 17;
-var Play_controlsChatDelay = 18;
+var Play_controlsQualityMulti = 8;
+var Play_controlsLowLatency = 9;
+var Play_MultiStream = 10;
+var Play_controlsAudio = 11;
+var Play_controlsChat = 12;
+var Play_controlsChatSide = 13;
+var Play_controlsChatForceDis = 14;
+var Play_controlsChatPos = 15;
+var Play_controlsChatSize = 16;
+var Play_controlsChatBright = 17;
+var Play_controlsChatFont = 18;
+var Play_controlsChatDelay = 19;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2722,6 +2741,49 @@ function Play_MakeControls() {
 
     };
 
+    Play_controls[Play_controlsQualityMulti] = { //quality for Multi
+        icons: "videocamera",
+        string: STR_PLAYER_RESYNC,
+        values: [STR_PLAYER_MULTI_ALL, STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4],
+        defaultValue: 0,
+        opacity: 0,
+        enterKey: function() {
+
+            if (!this.defaultValue) {
+
+                for (var i = 0; i < Play_MultiArray.length; i++) {
+                    if (Play_MultiArray[i].data.length > 0) {
+                        try {
+                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
+                        } catch (e) {}
+                    }
+                }
+            } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl);
+
+            Play_hidePanel();
+            this.defaultValue = 0;
+            this.bottomArrows();
+            this.setLable();
+        },
+        updown: function(adder) {
+
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+
+    };
+
     Play_controls[Play_controlsLowLatency] = { //quality
         icons: "history",
         string: STR_LOW_LATENCY,
@@ -2819,8 +2881,8 @@ function Play_MakeControls() {
                     Android.EnableMultiStream();
                 } catch (e) {}
 
-                document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
-                PlayExtra_SetPanel(true);
+
+                Play_Multi_SetPanel();
                 if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
                 Play_MultiEnable = true;
@@ -2836,8 +2898,8 @@ function Play_MakeControls() {
                 try {
                     Android.DisableMultiStream();
                 } catch (e) {}
-                document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
-                PlayExtra_UnSetPanel(true);
+
+                Play_Multi_UnSetPanel();
             }
         }
     };

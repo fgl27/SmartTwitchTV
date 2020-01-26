@@ -266,6 +266,8 @@ function en_USLang() {
     STR_PLAYER_AUTO_BIG = "Main window";
     STR_PLAYER_AUTO_SMALLS = "Small window";
     STR_PLAYER_AUTO_ALL = "Both windows";
+    STR_PLAYER_MULTI_ALL = "All windows";
+    STR_PLAYER_WINDOW = "Window ";
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
     STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
     STR_PLAYER_BITRATE_SUMMARY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
