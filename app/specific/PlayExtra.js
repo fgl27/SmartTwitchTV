@@ -136,8 +136,6 @@ function PlayExtra_End(doSwitch) { // Called only by JAVA
     } // else if (doSwitch) Android.mSwitchPlayer(); // else if doSwitch switch small to big
 
     PlayExtra_PicturePicture = false;
-    ChatLive_Clear(1);
-    PlayExtra_HideChat();
     PlayExtra_UnSetPanel();
 
     Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
@@ -182,22 +180,24 @@ function PlayExtra_loadDataSuccess(responseText) {
     }
 }
 
-function PlayExtra_SetPanel(skipeFocus) {
+function PlayExtra_SetPanel() {
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
     document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
     document.getElementById('controls_' + Play_controlsAudio).style.display = '';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
-    if (!skipeFocus) Play_IconsResetFocus();
+    Play_IconsResetFocus();
 }
 
-function PlayExtra_UnSetPanel(skipeFocus) {
+function PlayExtra_UnSetPanel() {
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
     document.getElementById('controls_' + Play_controlsQuality).style.display = '';
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-    if (!skipeFocus) Play_IconsResetFocus();
+    document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+    Play_IconsResetFocus();
+    ChatLive_Clear(1);
     PlayExtra_HideChat();
 }
 
