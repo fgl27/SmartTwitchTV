@@ -31,7 +31,6 @@ function PlayExtra_KeyEnter() {
 
         if (Play_data.data[14] !== Main_values_Play_data[14] &&
             PlayExtra_data.data[14] !== Main_values_Play_data[14]) {
-            UserLiveFeed_Hide();
 
             Main_ready(function() {
                 PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
@@ -160,7 +159,7 @@ function PlayExtra_loadDataSuccess(responseText) {
         //            PlayExtra_loadDataRequest();
         //            return;
         //        }
-
+        UserLiveFeed_Hide(true);
         Android.SetAuto2(PlayExtra_data.AutoUrl);
         PlayExtra_data.qualities = Play_extractQualities(responseText);
         PlayExtra_state = Play_STATE_PLAYING;
