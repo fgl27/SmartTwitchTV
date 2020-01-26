@@ -429,9 +429,17 @@ function Play_CheckResume() { // Called only by JAVA
     else if (PlayClip_isOn) PlayClip_Resume();
 }
 
-function Play_CheckResumeForced(isPicturePicture) { // Called only by JAVA
+function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called only by JAVA
     Play_RefreshAutoTry = 0;
     PlayExtra_RefreshAutoTry = 0;
+    if (isMulti) {
+        Play_MultiStart(
+            position,
+            Play_MultiArray[position].data[6],
+            Play_MultiArray[position].data[1]
+        );
+        return;
+    }
 
     if (isPicturePicture) PlayExtra_RefreshAutoRequest(true);
     else Play_RefreshAutoRequest(true);
@@ -514,12 +522,26 @@ function Play_Resume() {
     Play_ShowPanelStatus(1);
 }
 
-function Play_ResumeAfterOnline(forced) {
-    if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+function Play_ResumeAfterOnline() {
+    if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
-        Play_state = Play_STATE_LOADING_TOKEN;
-        if (PlayExtra_PicturePicture) PlayExtra_Resume();
-        Play_loadData();
+        if (Play_MultiEnable) {
+
+            for (var i = 0; i < Play_MultiArray.length; i++) {
+                if (Play_MultiArray[i].data.length > 0) {
+                    Play_MultiStart(
+                        i,
+                        Play_MultiArray[i].data[6],
+                        Play_MultiArray[i].data[1]
+                    );
+                }
+            }
+
+        } else {
+            Play_state = Play_STATE_LOADING_TOKEN;
+            if (PlayExtra_PicturePicture) PlayExtra_Resume();
+            Play_loadData();
+        }
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -2758,7 +2780,8 @@ function Play_MakeControls() {
                     Android.EnableMultiStream();
                 } catch (e) {}
 
-                document.getElementById('controls_button_text_' + Play_controlsChatSide).style.opacity = "0";
+                document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
+                PlayExtra_SetPanel(true);
                 if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
                 Play_MultiEnable = true;
@@ -2774,7 +2797,8 @@ function Play_MakeControls() {
                 try {
                     Android.DisableMultiStream();
                 } catch (e) {}
-                document.getElementById('controls_button_text_' + Play_controlsChatSide).style.opacity = "1";
+                document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
+                PlayExtra_UnSetPanel(true);
             }
         }
     };

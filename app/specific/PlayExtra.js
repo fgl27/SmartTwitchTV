@@ -68,6 +68,7 @@ function PlayExtra_KeyEnter() {
 function PlayExtra_Resume() {
     // restart audio source position to where ther user has left it
     if (Main_IsNotBrowser) Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+    PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
     PlayExtra_state = Play_STATE_LOADING_TOKEN;
     PlayExtra_loadingDataTry = 0;
@@ -181,22 +182,22 @@ function PlayExtra_loadDataSuccess(responseText) {
     }
 }
 
-function PlayExtra_SetPanel() {
+function PlayExtra_SetPanel(skipeFocus) {
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
     document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
     document.getElementById('controls_' + Play_controlsAudio).style.display = '';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
-    Play_IconsResetFocus();
+    if (!skipeFocus) Play_IconsResetFocus();
 }
 
-function PlayExtra_UnSetPanel() {
+function PlayExtra_UnSetPanel(skipeFocus) {
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
     document.getElementById('controls_' + Play_controlsQuality).style.display = '';
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-    Play_IconsResetFocus();
+    if (!skipeFocus) Play_IconsResetFocus();
     PlayExtra_HideChat();
 }
 
