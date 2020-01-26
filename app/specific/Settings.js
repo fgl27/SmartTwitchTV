@@ -860,7 +860,7 @@ function Settings_CodecsShow() {
             temptitlecontent += STR_MAX_RES + codecsValue[2] + spacer;
             temptitlecontent += STR_MAX_BIT + codecsValue[3] + spacer;
             temptitlecontent += STR_MAX_LEVEL + codecsValue[5] + spacer;
-            temptitlecontent += STR_MAX_INSTANCES + ((codecsValue[6] > -1) ? codecsValue[6] : STR_MAX_INSTANCES_NOT) + STR_BR;
+            temptitlecontent += STR_MAX_INSTANCES + ((codecsValue[6] > -1) ? codecsValue[6] : STR_UNKNOWN) + STR_BR;
             for (j = 7; j < codecsValue.length; j++) {
                 temptitlecontent += (parseFloat(codecsValue[j].split(': ')[1]) > 0) ? codecsValue[j] + " fps" + spacer : "";
             }

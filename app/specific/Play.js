@@ -25,7 +25,6 @@ var Play_Status_Always_On = false;
 var Play_RefreshAutoTry = 0;
 var Play_SingleClickExit = 0;
 var Play_MultiEnable = false;
-var Play_MultiCount = 0;
 var Play_MultiIsFull = false;
 var Play_MultiArray = [];
 //var Play_SupportsSource = true;
@@ -2119,21 +2118,53 @@ function Play_Exit() {
     Play_shutdownStream();
 }
 
-function Play_MultiStartPrestart() {
+function Play_MultiEnd(position) {
+    Play_showWarningDialog(Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+    window.setTimeout(function() {
+        Play_HideWarningDialog();
+    }, 2000);
+    Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
+    Play_MultiIsFull = false;
+}
+
+function Play_MultiFirstClear() {
+    for (var i = 0; i < Play_MultiArray.length; i++) {
+        if (Play_MultiArray[i].data.length < 1) return i;
+    }
+    return 0;
+}
+
+function Play_MultiIsAlredyOPen(Id) {
+    for (var i = 0; i < Play_MultiArray.length; i++) {
+        if (Play_MultiArray[i].data.length > 0 && Play_MultiArray[i].data[14] === Id) {
+            UserLiveFeed_ResetFeedId();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function Play_MultiStartPrestart(position) {
+    console.log('Play_MultiStartPrestart pos ' + position);
+
     Play_MultiStartErroTry = 0;
     var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
     if (doc === null) UserLiveFeed_ResetFeedId();
     else {
+        doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        if (Play_MultiIsAlredyOPen(doc[14])) return;
+
         if (!Play_MultiIsFull) {
-            Play_MultiCount++;
-            if (Play_MultiCount > 2) Play_MultiIsFull = true;
+            position = ((position || position === 0) ? position : Play_MultiFirstClear());
+            if (position > 2) Play_MultiIsFull = true;
         }
-        Play_MultiArray[Play_MultiCount] = JSON.parse(JSON.stringify(Play_data_base));
-        Play_MultiArray[Play_MultiCount].data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
+        Play_MultiArray[position].data = doc;
         Play_MultiStart(
-            Play_MultiCount,
-            Play_MultiArray[Play_MultiCount].data[6],
-            Play_MultiArray[Play_MultiCount].data[1]
+            position,
+            Play_MultiArray[position].data[6],
+            Play_MultiArray[position].data[1]
         );
     }
 }
@@ -2733,10 +2764,11 @@ function Play_MakeControls() {
                 Play_MultiIsFull = false;
 
                 Play_MultiArray[0] = JSON.parse(JSON.stringify(Play_data));
-                if (PlayExtra_PicturePicture) {
-                    Play_MultiCount = 1;
-                    Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
-                } else Play_MultiCount = 0;
+                if (PlayExtra_PicturePicture) Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
+                else Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
+
+                Play_MultiArray[2] = JSON.parse(JSON.stringify(Play_data_base));
+                Play_MultiArray[3] = JSON.parse(JSON.stringify(Play_data_base));
             } else {
                 try {
                     Android.DisableMultiStream();

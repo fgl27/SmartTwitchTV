@@ -374,8 +374,8 @@ public class PlayerActivity extends Activity {
             player[position].addListener(new PlayerEventListener(position));
 
             player[position].addAnalyticsListener(
-                (position < 2) ? new AnalyticsEventListener(position) :
-                    new AnalyticsEventListenerMulti()
+                    (position < 2) ? new AnalyticsEventListener(position) :
+                            new AnalyticsEventListenerMulti()
             );
 
             PlayerView[position].setPlayer(player[position]);
@@ -1396,7 +1396,10 @@ public class PlayerActivity extends Activity {
     public void PlayerEventListenerClear(int position) {
         hideLoading(4);
         hideLoading(position);
-        if (PicturePicture) {
+        if (MultiStream) {
+            ClearPlayer(position);
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_MultiEnd(" + position + ")");
+        } else if (PicturePicture) {
             boolean mswitch = (mainPlayer == position);
 
             PicturePicture = false;
