@@ -2758,6 +2758,7 @@ function Play_MakeControls() {
                     Android.EnableMultiStream();
                 } catch (e) {}
 
+                document.getElementById('controls_button_text_' + Play_controlsChatSide).style.opacity = "0";
                 if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
                 Play_MultiEnable = true;
@@ -2773,6 +2774,7 @@ function Play_MakeControls() {
                 try {
                     Android.DisableMultiStream();
                 } catch (e) {}
+                document.getElementById('controls_button_text_' + Play_controlsChatSide).style.opacity = "1";
             }
         }
     };
