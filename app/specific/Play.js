@@ -2144,18 +2144,44 @@ function Play_Multi_SetPanel() {
     document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsAudio).style.display = '';
+    document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = '';
+    document.getElementById('controls_' + Play_controlsAudioMulti).style.display = '';
     ChatLive_Clear(1);
     PlayExtra_HideChat();
 }
 
 function Play_Multi_UnSetPanel() {
+    document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
     document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
     document.getElementById('controls_' + Play_controlsQuality).style.display = '';
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+    if (Play_MultiArray[1].data.length > 0) {
+        if (PlayExtra_PicturePicture) {
+            if (!Play_isFullScreen) {
+                ChatLive_Init(1);
+                PlayExtra_ShowChat();
+                if (!Play_isChatShown()) {
+                    Play_controls[Play_controlsChat].enterKey();
+                    Play_showChat();
+                    Play_ChatEnable = true;
+                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
+                    Play_controls[Play_controlsChat].setLable();
+                }
+            }
+        }
+    } else {
+        if (!Play_isFullScreen) {
+            Play_controls[Play_controlsChat].enterKey();
+            Play_showChat();
+            Play_ChatEnable = true;
+            Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
+            Play_controls[Play_controlsChat].setLable();
+        }
+        PlayExtra_PicturePicture = false;
+    }
 }
 
 function Play_MultiEnd(position) {
@@ -2258,7 +2284,7 @@ function Play_MultiStartSucess(xmlHttp, pos, streamer) {
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
         Play_MultiArray[pos].AutoUrl = theUrl;
-
+        UserLiveFeed_Hide(true);
         try {
             Android.StartMultiStream(pos, theUrl);
         } catch (e) {}
@@ -2293,6 +2319,33 @@ function Play_MultiStartQualityError(pos, theUrl) {
     }
 }
 
+var Play_MultiEnableKeyDownId;
+
+function Play_MultiEnableKeyDown() {
+    Play_controls[Play_controlsAudioMulti].defaultValue++;
+    if (Play_controls[Play_controlsAudioMulti].defaultValue < 4 &&
+        Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
+
+        Play_MultiEnableKeyDown();
+        return;
+    }
+
+    if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - 1))
+        Play_controls[Play_controlsAudioMulti].defaultValue = 0;
+
+    Play_controls[Play_controlsAudioMulti].enterKey();
+
+    Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+        Play_controls[Play_controlsAudioMulti].values[Play_controls[Play_controlsAudioMulti].defaultValue] +
+        ((Play_controls[Play_controlsAudioMulti].defaultValue < 4) ?
+            (STR_SPACE + Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data[1]) : ''));
+
+    window.clearTimeout(Play_MultiEnableKeyDownId);
+    Play_MultiEnableKeyDownId = window.setTimeout(function() {
+        Play_HideWarningDialog();
+    }, 1000);
+}
+
 function Play_handleKeyDown(e) {
     if (Play_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
@@ -2320,7 +2373,7 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos--;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
+                } else if ((Play_isFullScreen || Play_MultiEnable) && !Play_isPanelShown() && Play_isChatShown() &&
                     !PlayExtra_PicturePicture) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
@@ -2336,7 +2389,7 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter--;
                     if (Play_Endcounter < (Main_values.Play_isHost ? 1 : 2)) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
-                } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
+                } else if (PlayExtra_PicturePicture && Play_isFullScreen && !Play_MultiEnable) {
                     Play_PicturePicturePos++;
                     if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
 
@@ -2355,7 +2408,7 @@ function Play_handleKeyDown(e) {
                         UserLiveFeed_FeedAddFocus();
                     }
                 } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
-                    !PlayExtra_PicturePicture) {
+                    (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_controls[Play_controlsChat].enterKey(1);
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
@@ -2367,7 +2420,7 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter++;
                     if (Play_Endcounter > 3) Play_Endcounter = (Main_values.Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
-                } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
+                } else if (PlayExtra_PicturePicture && Play_isFullScreen && !Play_MultiEnable) {
                     Play_PicturePictureSize++;
                     if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
                     Android.mSwitchPlayerSize(Play_PicturePictureSize);
@@ -2406,9 +2459,10 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
                 } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
-                else if (Play_isFullScreen && Play_isChatShown() && !PlayExtra_PicturePicture) {
+                else if ((Play_isFullScreen || Play_MultiEnable) && Play_isChatShown() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_KeyChatSizeChage();
-                } else if (PlayExtra_PicturePicture) {
+                } else if (Play_MultiEnable) Play_MultiEnableKeyDown();
+                else if (PlayExtra_PicturePicture) {
                     if (Play_isFullScreen) {
                         if (Main_IsNotBrowser) Android.mSwitchPlayer();
                         PlayExtra_SwitchPlayer();
@@ -2504,14 +2558,15 @@ var Play_controlsQualityMulti = 8;
 var Play_controlsLowLatency = 9;
 var Play_MultiStream = 10;
 var Play_controlsAudio = 11;
-var Play_controlsChat = 12;
-var Play_controlsChatSide = 13;
-var Play_controlsChatForceDis = 14;
-var Play_controlsChatPos = 15;
-var Play_controlsChatSize = 16;
-var Play_controlsChatBright = 17;
-var Play_controlsChatFont = 18;
-var Play_controlsChatDelay = 19;
+var Play_controlsAudioMulti = 12;
+var Play_controlsChat = 13;
+var Play_controlsChatSide = 14;
+var Play_controlsChatForceDis = 15;
+var Play_controlsChatPos = 16;
+var Play_controlsChatSize = 17;
+var Play_controlsChatBright = 18;
+var Play_controlsChatFont = 19;
+var Play_controlsChatDelay = 20;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2831,7 +2886,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudio] = { //speed
+    Play_controls[Play_controlsAudio] = { //Audio
         icons: "sound",
         string: STR_AUDIO_SOURCE,
         values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
@@ -2868,7 +2923,42 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_MultiStream] = { //speed
+    Play_controls[Play_controlsAudioMulti] = { //Audio multi
+        icons: "sound",
+        string: STR_AUDIO_SOURCE,
+        values: [STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4, STR_PLAYER_MULTI_ALL],
+        defaultValue: 0,
+        opacity: 0,
+        enterKey: function() {
+
+            try {
+                Android.mSetPlayerAudioMulti(this.defaultValue);
+            } catch (e) {}
+
+            Play_hidePanel();
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        updown: function(adder) {
+
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
+    Play_controls[Play_MultiStream] = { //multi
         icons: "multi",
         string: '4 way multistream',
         values: null,
@@ -2879,21 +2969,25 @@ function Play_MakeControls() {
             if (Play_MultiEnable) {
                 try {
                     Android.EnableMultiStream();
+                    Play_hidePanel();
                 } catch (e) {}
-
 
                 Play_Multi_SetPanel();
                 if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
                 Play_MultiEnable = true;
                 Play_MultiIsFull = false;
+                Play_controls[Play_controlsAudioMulti].enterKey();
+
+                for (var i = 0; i < 4; i++) {
+                    Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
+                }
 
                 Play_MultiArray[0] = JSON.parse(JSON.stringify(Play_data));
                 if (PlayExtra_PicturePicture) Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
-                else Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
 
-                Play_MultiArray[2] = JSON.parse(JSON.stringify(Play_data_base));
-                Play_MultiArray[3] = JSON.parse(JSON.stringify(Play_data_base));
+                if (Play_isChatShown()) Play_controls[Play_controlsChat].enterKey();
+
             } else {
                 try {
                     Android.DisableMultiStream();
@@ -2911,7 +3005,7 @@ function Play_MakeControls() {
         defaultValue: null,
         opacity: 0,
         enterKey: function() {
-            if (!Play_isFullScreen) return;
+            if (!Play_isFullScreen && !Play_MultiEnable) return;
             if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
                 Play_showChat();
                 Play_ChatEnable = true;
