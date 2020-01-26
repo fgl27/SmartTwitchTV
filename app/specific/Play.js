@@ -2225,25 +2225,54 @@ function Play_MultiStartSucess(xmlHttp, pos, streamer) {
     console.log('Play_MultiStartSucess pos ' + pos + ' streamer ' + streamer);
     if (xmlHttp.status === 200) {
         Play_MultiStartErroTry = 0;
-        Play_tokenResponse = JSON.parse(xmlHttp.responseText);
+        var tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
-        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
+        if (!tokenResponse.hasOwnProperty('token') || !tokenResponse.hasOwnProperty('sig') ||
             xmlHttp.responseText.indexOf('"status":410') !== -1) {
             Play_MultiStartErro(pos, streamer);
             return;
         }
 
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + streamer +
-            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
+            '.m3u8?&token=' + encodeURIComponent(tokenResponse.token) + '&sig=' + tokenResponse.sig +
             '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
             '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+
+        Play_MultiArray[pos].AutoUrl = theUrl;
 
         try {
             Android.StartMultiStream(pos, theUrl);
         } catch (e) {}
 
+        if (pos < 2) {
+            Play_MultiStartErroTry = 0;
+            Play_MultiStartQuality(pos, theUrl);
+        }
     } else Play_MultiStartErro(pos, streamer);
+}
+
+function Play_MultiStartQuality(pos, theUrl) {
+
+    var xmlHttp;
+    try {
+        xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
+    } catch (e) {}
+
+    if (xmlHttp) {
+        Play_MultiArray[pos].qualities = Play_extractQualities(JSON.parse(xmlHttp).responseText);
+        console.log('Play_MultiStartQuality pos ' + pos);
+        console.log(Play_MultiArray[pos].qualities);
+    } else Play_MultiStartQualityError(pos, theUrl);
+
+}
+
+function Play_MultiStartQualityError(pos, theUrl) {
+    console.log('Play_MultiStartQualityError pos ' + pos);
+    if (Play_isOn) {
+        Play_MultiStartErroTry++;
+        if (Play_MultiStartErroTry < 5) Play_MultiStartQuality(pos, theUrl);
+    }
 }
 
 function Play_handleKeyDown(e) {
@@ -2707,7 +2736,17 @@ function Play_MakeControls() {
             if (Main_IsNotBrowser) {
                 Android.mSetlatency(Play_LowLatency);
 
-                if (PlayExtra_PicturePicture) {
+                if (Play_MultiEnable) {
+
+                    for (var i = 0; i < Play_MultiArray.length; i++) {
+                        if (Play_MultiArray[i].data.length > 0) {
+                            try {
+                                Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
+                            } catch (e) {}
+                        }
+                    }
+
+                } else if (PlayExtra_PicturePicture) {
                     Android.ResStartAuto(Play_data.AutoUrl, 1, 0);
                     Android.ResStartAuto2(PlayExtra_data.AutoUrl);
                 } else {
