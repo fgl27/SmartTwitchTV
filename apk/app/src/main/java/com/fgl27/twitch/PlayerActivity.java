@@ -389,7 +389,7 @@ public class PlayerActivity extends Activity {
         player[position].prepare();
 
         player[position].setPlayWhenReady(true);
-        if (PlayerNull) player[position].setVolume(0f);
+        //if (PlayerNull) player[position].setVolume(0f);
         KeepScreenOn(true);
     }
 
@@ -637,6 +637,8 @@ public class PlayerActivity extends Activity {
                 positions[0]
         );
         PlayerView[3].setLayoutParams(PlayerViewSizePos);
+
+        trackSelector[0].setParameters(trackSelectorParametersSmall);
     }
 
     public void UnSetMultiStream() {
@@ -648,6 +650,7 @@ public class PlayerActivity extends Activity {
 
         PlayerView[2].setVisibility(View.GONE);
         PlayerView[3].setVisibility(View.GONE);
+        trackSelector[0].setParameters(trackSelectorParameters);
     }
 
     @Override
@@ -1437,7 +1440,7 @@ public class PlayerActivity extends Activity {
                     else initializePlayer(position);
 
                 } else
-                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ")");//TODO revise this for multistream
+                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");//TODO revise this for multistream
 
             } else initializePlayer(position);
 
