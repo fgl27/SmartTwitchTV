@@ -26,7 +26,8 @@
         'Play_PlayerCheck': Play_PlayerCheck, //Play_PlayerCheck() func from app/specific/Play.js
         'Play_UpdateDuration': Play_UpdateDuration, //Play_UpdateDuration() func from app/specific/Play.js
         'Play_CheckResumeForced': Play_CheckResumeForced, //Play_CheckResumeForced() func from app/specific/Play.js
-        'PlayExtra_End': PlayExtra_End //PlayExtra_End() func from app/specific/PlayExtra.js
+        'PlayExtra_End': PlayExtra_End, //PlayExtra_End() func from app/specific/PlayExtra.js
+        'Play_MultiEnd': Play_MultiEnd // Play_MultiEndede() func from app/specific/Play.js
     };
 
     /** Expose `smartTwitchTV` */
