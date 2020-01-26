@@ -190,12 +190,15 @@ function PlayExtra_SetPanel() {
 }
 
 function PlayExtra_UnSetPanel() {
+    PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
     document.getElementById('controls_' + Play_controlsQuality).style.display = '';
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
     Play_IconsResetFocus();
     ChatLive_Clear(1);
     PlayExtra_HideChat();
