@@ -1516,12 +1516,28 @@ function processCode(pageUrl) {
     var code = '';
     code = pageUrl.match(/code=(\w+)/);
     if (code) {
+        CheckPage("?code=" + code);
         code = code[1];
         console.log('if code ' + code);
         Main_newUsercode = code;
     } else {
         console.log('else code ' + code);
+        CheckPage('');
         Main_newUsercode = 0;
+    }
+}
+
+//Redirect to assets if running from it
+function CheckPage(pageUrlCode) {
+    var PageUrl = null;
+    try {
+        PageUrl = Android.mPageUrl();
+    } catch (e) {}
+    if (PageUrl) {
+        if (window.location.href.indexOf('asset') === -1 && PageUrl.indexOf('asset') !== -1) {
+            window.location = PageUrl + pageUrlCode;
+            return;
+        }
     }
 }
 
