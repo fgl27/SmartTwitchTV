@@ -406,15 +406,13 @@ function Play_CheckIfIsLiveLink() {
         '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
         '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&p=' +
         Main_RandomInt();
-    //(Play_SupportsSource ? "&allow_source=true" : '') + '&p=' + Main_RandomInt();
 
     var xmlHttp;
     try {
         xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
     } catch (e) {}
 
-    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-    else {
+    if (!xmlHttp) {
         Play_CheckIfIsLiveLinkError();
         return;
     }
@@ -423,7 +421,7 @@ function Play_CheckIfIsLiveLink() {
     else Play_CheckIfIsLiveLinkError();
 }
 
-function Play_CheckResume() { // Called only by JAVA
+function Play_CheckResume() { // Called only by JAVAPlay_CheckIfIsLiveStartCallback
     if (Play_isOn) Play_Resume();
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
