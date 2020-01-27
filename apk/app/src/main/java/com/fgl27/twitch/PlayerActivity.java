@@ -889,6 +889,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void mloadUrl(String url) {
+            myHandler.post(() -> mwebview.loadUrl(url));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void mshowLoading(boolean show) {
             myHandler.post(() -> {
                 if (show) showLoading();
