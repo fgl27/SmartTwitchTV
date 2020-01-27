@@ -428,8 +428,7 @@ function Play_CheckResume() { // Called only by JAVAPlay_CheckIfIsLiveStartCallb
 }
 
 function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called only by JAVA
-    Play_RefreshAutoTry = 0;
-    PlayExtra_RefreshAutoTry = 0;
+
     if (isMulti) {
         Play_MultiStart(
             position,
@@ -438,6 +437,9 @@ function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called
         );
         return;
     }
+
+    Play_RefreshAutoTry = 0;
+    PlayExtra_RefreshAutoTry = 0;
 
     if (isPicturePicture) PlayExtra_RefreshAutoRequest(true);
     else Play_RefreshAutoRequest(true);
