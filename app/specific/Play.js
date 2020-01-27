@@ -2289,8 +2289,10 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
         xmlHttp = JSON.parse(xmlHttp);
 
         if (xmlHttp.status === 200) {
+
             Play_MultiArray[pos].AutoUrl = theUrl;
-            UserLiveFeed_Hide(true);
+            if (Play_MultiIsFull) UserLiveFeed_Hide(true);
+
             try {
                 Android.StartMultiStream(pos, theUrl);
             } catch (e) {}
