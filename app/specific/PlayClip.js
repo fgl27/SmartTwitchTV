@@ -210,7 +210,7 @@ function PlayClip_loadDataSuccessFake() {
     ];
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
-    Main_Set_history('clip');
+    Main_Set_history('clip', Main_values_Play_data);
 }
 
 function PlayClip_loadDataSuccess410() {
@@ -222,7 +222,7 @@ function PlayClip_loadDataSuccess410() {
 
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
-    Main_Set_history('clip');
+    Main_Set_history('clip', Main_values_Play_data);
 }
 
 function PlayClip_QualityGenerate(response) {
@@ -250,7 +250,7 @@ function PlayClip_QualityGenerate(response) {
 
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
-    Main_Set_history('clip');
+    Main_Set_history('clip', Main_values_Play_data);
 }
 
 function PlayClip_FrameRate(value) {

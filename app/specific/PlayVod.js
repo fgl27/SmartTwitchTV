@@ -195,7 +195,7 @@ function PlayVod_updateVodInfoPannel(response) {
     PlayVod_VodOffsetTemp = 0;
 
     Main_values_Play_data = ScreensObj_VodCellArray(response);
-    Main_Set_history('vod');
+    Main_Set_history('vod', Main_values_Play_data);
 
     ChannelVod_title = twemoji.parse(response.title, false, true);
 
@@ -420,7 +420,7 @@ function PlayVod_loadDataSuccessFake() {
     ];
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_qualityChanged();
-    if (PlayVod_HasVodInfo) Main_Set_history('vod');
+    if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
 }
 
 function PlayVod_loadDataSuccess(responseText) {
@@ -442,7 +442,7 @@ function PlayVod_loadDataSuccess(responseText) {
         PlayVod_state = Play_STATE_PLAYING;
         if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
         if (PlayVod_isOn) PlayVod_qualityChanged();
-        if (PlayVod_HasVodInfo) Main_Set_history('vod');
+        if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
     }
 }
 

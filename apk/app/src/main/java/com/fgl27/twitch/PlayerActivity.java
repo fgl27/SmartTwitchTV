@@ -1397,6 +1397,22 @@ public class PlayerActivity extends Activity {
                 initializePlayerMulti(mposition, mediaSourcesAuto[mposition]);
             });
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetAutoMulti(int position, String url) {
+            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
+            //For some reason maybe a twitch bug the vod expires in 20 hours not min
+            myHandler.post(() -> {
+
+                int mposition = position;
+                if (position == 0) mposition = mainPlayer;
+                else if (position == 1) mposition = mainPlayer ^ 1;
+
+                expires[mposition] = System.currentTimeMillis() + 18000;
+                mediaSourcesAuto[mposition] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+            });
+        }
     }
 
     // Basic EventListener for exoplayer
