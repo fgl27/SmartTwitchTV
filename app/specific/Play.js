@@ -703,7 +703,7 @@ function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id) {
         Play_MultiArray[pos].AutoUrl = theUrl;
 
         try {
-            Android.SetAutoMulti(pos, theUrl, id);
+            Android.SetAutoMulti(pos, theUrl);
         } catch (e) {}
 
         console.log('Play_RefreshMultiRequestSucess theUrl ' + theUrl);
@@ -711,7 +711,7 @@ function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id) {
         theUrl = Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I;
         Play_RefreshMultiGet(theUrl, 0, pos);
 
-    } else Play_RefreshMultiError(pos, streamer);
+    } else Play_RefreshMultiError(pos, streamer, id);
 }
 
 function Play_RefreshMultiError(pos, streamer, id) {
