@@ -2505,7 +2505,7 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos--;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1);
+                } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(-1);
                 else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
                     !PlayExtra_PicturePicture) {
                     Play_ChatPositions++;
@@ -2540,7 +2540,7 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos++;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
+                } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(1);
                 else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
                     (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_controls[Play_controlsChat].enterKey(1);
