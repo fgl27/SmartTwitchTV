@@ -48,8 +48,8 @@ import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     private static final int[] positions = {
             Gravity.RIGHT | Gravity.BOTTOM,//0
