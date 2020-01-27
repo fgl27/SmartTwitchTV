@@ -668,6 +668,7 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
 var Play_RefreshMultiTry = 0;
 
 function Play_RefreshMultiRequest(pos, streamer, id) {
+    console.log('Play_RefreshMultiRequest pos ' + pos + ' streamer ' + streamer);
     var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
     var xmlHttp;
@@ -681,6 +682,7 @@ function Play_RefreshMultiRequest(pos, streamer, id) {
 }
 
 function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id) {
+    console.log('Play_RefreshMultiRequestSucess pos ' + pos + ' streamer ' + streamer);
     if (xmlHttp.status === 200) {
 
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
@@ -702,6 +704,8 @@ function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id) {
             Android.SetAutoMulti(pos, theUrl, id);
         } catch (e) {}
 
+        console.log('Play_RefreshMultiRequestSucess theUrl ' + theUrl);
+
         theUrl = Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I;
         Play_RefreshMultiGet(theUrl, 0, pos);
 
@@ -716,6 +720,7 @@ function Play_RefreshMultiError(pos, streamer, id) {
 }
 
 function Play_RefreshMultiGet(theUrl, tryes, pos) {
+    console.log('Play_RefreshMultiGet pos ' + pos);
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -740,15 +745,18 @@ function Play_RefreshMultiGet(theUrl, tryes, pos) {
 }
 
 function Play_updateStreamInfoMultiValues(response, pos) {
+    console.log('Play_updateStreamInfoMultiValue pos ' + pos);
+    console.log(response);
     response = JSON.parse(response);
     if (response.stream !== null) {
         Play_MultiArray[pos].data[3] = response.stream.game;
 
-        if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
-            response.stream.channel.logo);
+        //if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
 
-        Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
-        Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+        if (!pos) {
+            Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
+            Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+        }
 
         Main_history_UpdateLive(
             response.stream._id,
@@ -771,7 +779,7 @@ function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
 
 //When update this also update PlayExtra_updateStreamInfo
 function Play_updateStreamInfo() {
-
+    console.log('Play_updateStreamInfo');
     if (Play_MultiEnable) {
         Play_RefreshMultiTry = 0;
         for (var i = 0; i < Play_MultiArray.length; i++) {
