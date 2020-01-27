@@ -505,12 +505,19 @@ public final class Tools {
         return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
+    //Deprecated in API level 29 but gives the path that I need and works on API 29
+    //as long one adds android:requestLegacyExternalStorage="true"to manifest
+    @SuppressWarnings("deprecation")
+    public static File getExternalSD() {
+        return Environment.getExternalStorageDirectory();
+    }
+
     public static class BackupJson extends AsyncTask< String, Void, Void > {
 
         @Override
         protected Void doInBackground(String...params) {
             File Dir = new File(
-                    Environment.getExternalStorageDirectory(),
+                    getExternalSD(),
                     String.format(Locale.US, "data/%s/Backup", params[0])
             );
 
@@ -537,7 +544,7 @@ public final class Tools {
     public static boolean HasBackupFile(String file, Context context) {
 
         File mFile = new File(
-                Environment.getExternalStorageDirectory(),
+                getExternalSD(),
                 String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
         );
 
@@ -547,7 +554,7 @@ public final class Tools {
     public static String RestoreBackupFile(String file, Context context) {
         try {
             File mFile = new File(
-                    Environment.getExternalStorageDirectory(),
+                    getExternalSD(),
                     String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
             );
 
