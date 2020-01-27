@@ -417,7 +417,7 @@ function Play_CheckIfIsLiveLink() {
         return;
     }
 
-    if (xmlHttp.status === 200) Play_CheckIfIsLiveStartCallback();
+    if (JSON.parse(xmlHttp).status === 200) Play_CheckIfIsLiveStartCallback();
     else Play_CheckIfIsLiveLinkError();
 }
 
@@ -445,9 +445,7 @@ function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called
 
 function Play_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Play_data.data[6] +
-        '/access_token?platform=_' +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
-            AddUser_UsernameArray[0].access_token : '');
+        '/access_token?platform=_';
 
     var xmlHttp;
 
@@ -466,11 +464,9 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
         //410 error
         if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
             xmlHttp.responseText.indexOf('"status":410') !== -1) {
-            Play_410ERROR = true;
             Play_RefreshAutoError(UseAndroid);
             return;
         }
-        Play_410ERROR = false;
 
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Play_data.data[6] +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
@@ -741,19 +737,16 @@ function Play_loadData() {
 
 //Some times the server is returning {"error":"Gone","status":410,"message":"this API has been removed."}
 //On those case we can't use user oauth_token to prevent the 410 error
-var Play_410ERROR = false;
+//var Play_410ERROR = false;
 
 function Play_loadDataRequest() {
     var theUrl, state = Play_state === Play_STATE_LOADING_TOKEN;
 
     if (state) {
         theUrl = 'https://api.twitch.tv/api/channels/' + Play_data.data[6] +
-            '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
-                AddUser_UsernameArray[0].access_token : '');
+            '/access_token?platform=_';
     } else {
         if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig')) {
-            Play_410ERROR = true;
             Play_loadDataError();
             return;
         }
@@ -768,8 +761,6 @@ function Play_loadDataRequest() {
         //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
         Play_data.AutoUrl = theUrl;
-
-        Play_410ERROR = false;
     }
 
     if (Main_IsNotBrowser) {
@@ -789,13 +780,8 @@ function Play_loadDataRequest() {
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
 
-            if (xmlHttp.responseText.indexOf('"status":410') !== -1) {
-                Play_410ERROR = true;
-                Play_loadDataError();
-            } else {
-                Play_410ERROR = false;
-                Play_loadDataSuccess(xmlHttp.responseText);
-            }
+            if (xmlHttp.responseText.indexOf('"status":410') !== -1) Play_loadDataError();
+            else Play_loadDataSuccess(xmlHttp.responseText);
 
         } else if (xmlHttp.status === 403 || xmlHttp.status === 404 ||
             xmlHttp.status === 410) { //forbidden access
@@ -2236,13 +2222,11 @@ function Play_MultiStartPrestart(position) {
 function Play_MultiStart(pos, streamer, display_name) {
     console.log('Play_MultiStart pos ' + pos + ' streamer ' + streamer);
 
-    var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_' +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
-            AddUser_UsernameArray[0].access_token : '');
+    var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
     var xmlHttp = Android.mreadUrlHLS(theUrl);
 
-    if (xmlHttp) Play_MultiStartSucess(JSON.parse(xmlHttp), pos, streamer);
+    if (xmlHttp) Play_MultiStartSucessToken(JSON.parse(xmlHttp), pos, streamer, display_name);
     else Play_MultiStartErro(pos, streamer, display_name);
 }
 
@@ -2253,25 +2237,28 @@ function Play_MultiStartErro(pos, streamer, display_name) {
     if (Play_isOn) {
         Play_MultiStartErroTry++;
         if (Play_MultiStartErroTry < 5) Play_MultiStart(pos, streamer, display_name);
-        else {
-            //restore in case update
-            Play_showWarningDialog(display_name + ' ' + STR_LIVE + STR_IS_OFFLINE);
-            window.setTimeout(function() {
-                Play_HideWarningDialog();
-            }, 2000);
-        }
+        else Play_MultiStartFail(pos, display_name);
     }
 }
 
-function Play_MultiStartSucess(xmlHttp, pos, streamer) {
-    console.log('Play_MultiStartSucess pos ' + pos + ' streamer ' + streamer);
+function Play_MultiStartFail(pos, display_name, string_fail_reason) {
+    console.log('Play_MultiStartErro pos ' + pos + ' display_name ' + display_name);
+    Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
+    Play_MultiIsFull = false;
+    Play_showWarningDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE));
+    window.setTimeout(function() {
+        Play_HideWarningDialog();
+    }, 2000);
+}
+
+function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name) {
+    console.log('Play_MultiStartSucessToken pos ' + pos + ' streamer ' + streamer);
     if (xmlHttp.status === 200) {
-        Play_MultiStartErroTry = 0;
         var tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
         if (!tokenResponse.hasOwnProperty('token') || !tokenResponse.hasOwnProperty('sig') ||
             xmlHttp.responseText.indexOf('"status":410') !== -1) {
-            Play_MultiStartErro(pos, streamer);
+            Play_MultiStartErro(pos, streamer, display_name);
             return;
         }
 
@@ -2281,39 +2268,50 @@ function Play_MultiStartSucess(xmlHttp, pos, streamer) {
             '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
             (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
 
-        Play_MultiArray[pos].AutoUrl = theUrl;
-        UserLiveFeed_Hide(true);
-        try {
-            Android.StartMultiStream(pos, theUrl);
-        } catch (e) {}
+        Play_MultiStartErroTry = 0;
+        Play_MultiStartQuality(pos, theUrl, display_name);
 
-        if (pos < 2) {
-            Play_MultiStartErroTry = 0;
-            Play_MultiStartQuality(pos, theUrl);
-        }
-    } else Play_MultiStartErro(pos, streamer);
+    } else if (xmlHttp.status === 403) { //forbidden access
+        Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
+    } else if (xmlHttp.status === 404) { //off line
+        Play_MultiStartFail(pos, display_name);
+    } else Play_MultiStartErro(pos, streamer, display_name);
 }
 
-function Play_MultiStartQuality(pos, theUrl) {
-
+function Play_MultiStartQuality(pos, theUrl, display_name) {
+    console.log('Play_MultiStartQuality pos ' + pos + ' display_name ' + display_name);
     var xmlHttp;
     try {
         xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
     } catch (e) {}
 
     if (xmlHttp) {
-        Play_MultiArray[pos].qualities = Play_extractQualities(JSON.parse(xmlHttp).responseText);
-        console.log('Play_MultiStartQuality pos ' + pos);
-        console.log(Play_MultiArray[pos].qualities);
-    } else Play_MultiStartQualityError(pos, theUrl);
+        xmlHttp = JSON.parse(xmlHttp);
 
+        if (xmlHttp.status === 200) {
+            Play_MultiArray[pos].AutoUrl = theUrl;
+            UserLiveFeed_Hide(true);
+            try {
+                Android.StartMultiStream(pos, theUrl);
+            } catch (e) {}
+
+            Play_MultiArray[pos].qualities = Play_extractQualities(xmlHttp.responseText);
+            console.log(Play_MultiArray[pos].qualities);
+        } else if (xmlHttp.status === 403) { //forbidden access
+            Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
+        } else if (xmlHttp.status === 404) { //off line
+            Play_MultiStartFail(pos, display_name);
+        } else Play_MultiStartQualityError(pos, theUrl, display_name);
+
+    } else Play_MultiStartQualityError(pos, theUrl, display_name);
 }
 
-function Play_MultiStartQualityError(pos, theUrl) {
+function Play_MultiStartQualityError(pos, theUrl, display_name) {
     console.log('Play_MultiStartQualityError pos ' + pos);
     if (Play_isOn) {
         Play_MultiStartErroTry++;
-        if (Play_MultiStartErroTry < 5) Play_MultiStartQuality(pos, theUrl);
+        if (Play_MultiStartErroTry < 5) Play_MultiStartQuality(pos, theUrl, display_name);
+        else Play_MultiStartFail(pos, display_name);
     }
 }
 
