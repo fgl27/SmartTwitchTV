@@ -1516,8 +1516,8 @@ function processCode(pageUrl) {
     var code = '';
     code = pageUrl.match(/code=(\w+)/);
     if (code) {
-        CheckPage("?code=" + code);
         code = code[1];
+        CheckPage("?code=" + code);
         console.log('if code ' + code);
         Main_newUsercode = code;
     } else {
@@ -1535,7 +1535,9 @@ function CheckPage(pageUrlCode) {
     } catch (e) {}
     if (PageUrl) {
         if (window.location.href.indexOf('asset') === -1 && PageUrl.indexOf('asset') !== -1) {
-            window.location = PageUrl + pageUrlCode;
+            try {
+                Android.mloadUrl(PageUrl + pageUrlCode);
+            } catch (e) {}
             return;
         }
     }
