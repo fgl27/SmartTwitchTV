@@ -173,7 +173,7 @@ function PlayExtra_loadDataSuccess(responseText) {
             ChatLive_Init(1);
             PlayExtra_ShowChat();
         }
-        Main_Set_history('live');
+        Main_Set_history('live', PlayExtra_data.data);
         Play_loadingInfoDataTry = 0;
         Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
     }
@@ -329,7 +329,7 @@ function PlayExtra_RefreshAutoRequest(UseAndroid) {
 
 function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
     if (xmlHttp.status === 200) {
-        PlayExtra_RefreshAutoTry = 0;
+
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
         if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||

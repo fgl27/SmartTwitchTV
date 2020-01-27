@@ -1654,13 +1654,13 @@ function Main_ReplaceLargeFont(text) {
     });
 }
 
-function Main_Set_history(type) {
+function Main_Set_history(type, Data) {
     if (type === 'live' && HistoryLive.histPosX[1]) return;
     if (type === 'vod' && HistoryVod.histPosX[1]) return;
     if (type === 'clip' && HistoryClip.histPosX[1]) return;
 
-    if (AddUser_IsUserSet() && Main_values_Play_data) {
-        var index = Main_history_Exist(type, Main_values_Play_data[7]);
+    if (AddUser_IsUserSet() && Data) {
+        var index = Main_history_Exist(type, Data[7]);
 
         if (index > -1) {
 
@@ -1668,10 +1668,10 @@ function Main_Set_history(type) {
             Main_values_History_data[AddUser_UsernameArray[0].id][type][index] = Screens_assign(
                 Main_values_History_data[AddUser_UsernameArray[0].id][type][index],
                 {
-                    data: Main_values_Play_data,
+                    data: Data,
                     date: new Date().getTime(),
-                    game: Main_values_Play_data[3],
-                    views: Main_values_Play_data[13],
+                    game: Data[3],
+                    views: Data[13],
                 }
             );
 
@@ -1691,13 +1691,13 @@ function Main_Set_history(type) {
 
             Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
                 {
-                    data: Main_values_Play_data,
+                    data: Data,
                     date: new Date().getTime(),
-                    name: Main_values_Play_data[6].toLowerCase(),
-                    game: Main_values_Play_data[3],
-                    id: Main_values_Play_data[7],
-                    views: Main_values_Play_data[13],
-                    created_at: new Date(Main_values_Play_data[12]).getTime(),
+                    name: Data[6].toLowerCase(),
+                    game: Data[3],
+                    id: Data[7],
+                    views: Data[13],
+                    created_at: new Date(Data[12]).getTime(),
                     watched: 0
                 }
             );

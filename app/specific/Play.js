@@ -459,7 +459,7 @@ function Play_RefreshAutoRequest(UseAndroid) {
 
 function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
     if (xmlHttp.status === 200) {
-        Play_RefreshAutoTry = 0;
+
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
         if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
@@ -592,8 +592,7 @@ function Play_updateStreamInfoStartValues(response) {
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 
         if (Play_data.isHost && Main_history_Exist('live', Play_data.data[14]) < 0) {
-            Main_values_Play_data = ScreensObj_LiveCellArray(response.stream);
-            Main_Set_history('live');
+            Main_Set_history('live', ScreensObj_LiveCellArray(response.stream));
         } else {
             Main_history_UpdateLive(
                 Play_data.data[7],
@@ -666,8 +665,128 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
     }
 }
 
+var Play_RefreshMultiTry = 0;
+
+function Play_RefreshMultiRequest(pos, streamer, id) {
+    var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
+
+    var xmlHttp;
+
+    try {
+        xmlHttp = Android.mreadUrlHLS(theUrl);
+    } catch (e) {}
+
+    if (xmlHttp) Play_RefreshMultiRequestSucess(JSON.parse(xmlHttp), pos, streamer, id);
+    else Play_RefreshMultiError(pos, streamer, id);
+}
+
+function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id) {
+    if (xmlHttp.status === 200) {
+
+        Play_tokenResponse = JSON.parse(xmlHttp.responseText);
+        //410 error
+        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
+            xmlHttp.responseText.indexOf('"status":410') !== -1) {
+            Play_RefreshMultiError(pos, streamer, id);
+            return;
+        }
+
+        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + streamer +
+            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
+            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
+            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
+
+        Play_MultiArray[pos].AutoUrl = theUrl;
+
+        try {
+            Android.SetAutoMulti(pos, theUrl, id);
+        } catch (e) {}
+
+        theUrl = Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I;
+        Play_RefreshMultiGet(theUrl, 0, pos);
+
+    } else Play_RefreshMultiError(pos, streamer);
+}
+
+function Play_RefreshMultiError(pos, streamer, id) {
+    if (Play_isOn) {
+        Play_RefreshMultiTry++;
+        if (Play_RefreshMultiTry < 5) Play_RefreshMultiRequest(pos, streamer, id);
+    }
+}
+
+function Play_RefreshMultiGet(theUrl, tryes, pos) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 5000;
+
+    for (var i = 0; i < 2; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Play_updateStreamInfoMultiValues(xmlHttp.responseText, pos);
+            } else {
+                Play_updateStreamInfoMultiError(theUrl, tryes, pos);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function Play_updateStreamInfoMultiValues(response, pos) {
+    response = JSON.parse(response);
+    if (response.stream !== null) {
+        Play_MultiArray[pos].data[3] = response.stream.game;
+
+        if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'),
+            response.stream.channel.logo);
+
+        Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
+        Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+
+        Main_history_UpdateLive(
+            response.stream._id,
+            response.stream.game,
+            response.stream.channel.status,
+            response.stream.viewers
+        );
+
+    }
+}
+
+function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
+    if (tryes < Play_loadingInfoDataTryMax) {
+        window.setTimeout(function() {
+            if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
+            //give a second for it retry as the TV may be on coming from resume
+        }, 2500);
+    }
+}
+
 //When update this also update PlayExtra_updateStreamInfo
 function Play_updateStreamInfo() {
+
+    if (Play_MultiEnable) {
+        Play_RefreshMultiTry = 0;
+        for (var i = 0; i < Play_MultiArray.length; i++) {
+            if (Play_MultiArray[i].data.length > 0) {
+                Play_RefreshMultiRequest(
+                    i,
+                    Play_MultiArray[i].data[6],
+                    Play_MultiArray[i].data[14]
+                );
+            }
+        }
+
+        return;
+    }
+
     Play_RefreshAutoTry = 0;
     Play_RefreshAutoRequest(false);
 
@@ -886,7 +1005,7 @@ function Play_loadDataSuccessFake() {
     ];
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
-    Main_Set_history('live');
+    Main_Set_history('live', Play_data.data);
 }
 
 function Play_loadDataSuccess(responseText) {
@@ -922,7 +1041,7 @@ function Play_loadDataSuccess(responseText) {
         UserLiveFeed_PreventHide = false;
         ChatLive_Playing = true;
 
-        if (!Play_data.isHost) Main_Set_history('live');
+        if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
     }
 }
 
@@ -2299,6 +2418,8 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
 
             Play_MultiArray[pos].qualities = Play_extractQualities(xmlHttp.responseText);
             console.log(Play_MultiArray[pos].qualities);
+
+            Main_Set_history('live', Play_MultiArray[pos].data);
         } else if (xmlHttp.status === 403) { //forbidden access
             Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
         } else if (xmlHttp.status === 404) { //off line
