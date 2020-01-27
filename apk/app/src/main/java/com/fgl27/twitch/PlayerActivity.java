@@ -48,6 +48,9 @@ import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
+    //public static final String PageUrl = "file:///android_asset/index.html";
+    public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+
     private static final int[] positions = {
             Gravity.RIGHT | Gravity.BOTTOM,//0
             Gravity.RIGHT | Gravity.CENTER,//1
@@ -863,10 +866,7 @@ public class PlayerActivity extends Activity {
             }
         });
 
-        //To load page from assets
-        //mwebview.loadUrl("file:///android_asset/index.html");
-        //To load page from githubio
-        mwebview.loadUrl("https://fgl27.github.io/SmartTwitchTV/release/index.min.html");
+        mwebview.loadUrl(PageUrl);
 
         mwebview.requestFocus();
     }
@@ -879,6 +879,12 @@ public class PlayerActivity extends Activity {
          */
         WebAppInterface(Context context) {
             mwebContext = context;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String mPageUrl() {
+            return PageUrl;
         }
 
         @SuppressWarnings("unused")//called by JS
