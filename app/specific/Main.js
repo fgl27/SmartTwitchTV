@@ -1107,8 +1107,6 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
     Play_data.data = Main_values_Play_data;
 
-    Play_data.data[6] = Main_values_Play_data[6];
-
     if (checkHistory) {
 
         var index = Main_history_Exist('live', Main_values_Play_data[7]);

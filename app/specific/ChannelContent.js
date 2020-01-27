@@ -354,10 +354,7 @@ function ChannelContent_keyEnter() {
         Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
             .getAttribute(Main_DataAttribute));
 
-        Play_data.data[6] = Main_values_Play_data[6];
-        Play_data.data[8] = Main_values_Play_data[8];
-
-        Play_data.data[1] = Main_values_Play_data[1];
+        Play_data.data = Main_values_Play_data;
 
         if (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1) {
             Main_values.Play_isHost = true;
@@ -365,9 +362,6 @@ function ChannelContent_keyEnter() {
             Play_data.data[1] = Play_data.data[1].split(STR_USER_HOSTING)[1];
             Play_data.data[14] = ChannelContent_TargetId;
         } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
-
-        var playing = document.getElementById('channel_content_cell0_5').textContent;
-        Play_data.data[3] = playing.indexOf(STR_PLAYING) !== -1 ? playing.split(STR_PLAYING)[1] : "";
 
         Main_ready(Main_openStream);
     }
