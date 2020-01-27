@@ -1119,7 +1119,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
             } else {//is live check is is really
 
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[3] + id);
-                else Main_OPenAsLive();
+                else Main_openStream();
 
                 return;
             }
@@ -1159,7 +1159,7 @@ function Main_CheckBroadcastIDStartSucess(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
         if (Main_values_Play_data[7] === response.stream._id) {
-            Main_OPenAsLive();
+            Main_openStream();
             return;
         }
     }
@@ -1183,18 +1183,12 @@ function Main_CheckBroadcastIDStartError() {
     if (Main_CheckBroadcastIDErrorTry < 5) {
         Main_CheckBroadcastIDStart();
         Main_CheckBroadcastIDErrorTry++;
-    } else Main_OPenAsLive();
-}
-
-function Main_OPenAsLive() {
-    Play_data.data[1] = Main_values_Play_data[1];
-    Play_data.data[3] = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
-    Main_openStream();
+    } else Main_openStream();
 }
 
 function Main_OPenAsVod(index) {
     if (!Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-        Main_OPenAsLive();
+        Main_openStream();
         return;
     }
 
