@@ -2315,19 +2315,22 @@ function Play_MultiStartQualityError(pos, theUrl, display_name) {
     }
 }
 
-var Play_MultiEnableKeyDownId;
+var Play_MultiEnableKeyRightLeftId;
 
-function Play_MultiEnableKeyDown() {
-    Play_controls[Play_controlsAudioMulti].defaultValue++;
-    if (Play_controls[Play_controlsAudioMulti].defaultValue < 4 &&
-        Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
-
-        Play_MultiEnableKeyDown();
-        return;
-    }
+function Play_MultiEnableKeyRightLeft(adder) {
+    Play_controls[Play_controlsAudioMulti].defaultValue += adder;
 
     if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - 1))
         Play_controls[Play_controlsAudioMulti].defaultValue = 0;
+    else if (Play_controls[Play_controlsAudioMulti].defaultValue < 0)
+        Play_controls[Play_controlsAudioMulti].defaultValue = (Play_controls[Play_controlsAudioMulti].values.length - 1);
+
+    if (Play_controls[Play_controlsAudioMulti].defaultValue < 4 &&
+        Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
+
+        Play_MultiEnableKeyRightLeft(adder);
+        return;
+    }
 
     Play_controls[Play_controlsAudioMulti].enterKey();
 
@@ -2336,8 +2339,8 @@ function Play_MultiEnableKeyDown() {
         ((Play_controls[Play_controlsAudioMulti].defaultValue < 4) ?
             (STR_SPACE + Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data[1]) : ''));
 
-    window.clearTimeout(Play_MultiEnableKeyDownId);
-    Play_MultiEnableKeyDownId = window.setTimeout(function() {
+    window.clearTimeout(Play_MultiEnableKeyRightLeftId);
+    Play_MultiEnableKeyRightLeftId = window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 1000);
 }
@@ -2369,7 +2372,8 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos--;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if ((Play_isFullScreen || Play_MultiEnable) && !Play_isPanelShown() && Play_isChatShown() &&
+                } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1);
+                else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
                     !PlayExtra_PicturePicture) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
@@ -2385,7 +2389,7 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter--;
                     if (Play_Endcounter < (Main_values.Play_isHost ? 1 : 2)) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
-                } else if (PlayExtra_PicturePicture && Play_isFullScreen && !Play_MultiEnable) {
+                } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePicturePos++;
                     if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
 
@@ -2403,7 +2407,8 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos++;
                         UserLiveFeed_FeedAddFocus();
                     }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
+                } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
+                else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
                     (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_controls[Play_controlsChat].enterKey(1);
                 } else if (Play_isPanelShown()) {
@@ -2416,7 +2421,7 @@ function Play_handleKeyDown(e) {
                     Play_Endcounter++;
                     if (Play_Endcounter > 3) Play_Endcounter = (Main_values.Play_isHost ? 1 : 2);
                     Play_EndIconsAddFocus();
-                } else if (PlayExtra_PicturePicture && Play_isFullScreen && !Play_MultiEnable) {
+                } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePictureSize++;
                     if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
                     Android.mSwitchPlayerSize(Play_PicturePictureSize);
@@ -2457,8 +2462,7 @@ function Play_handleKeyDown(e) {
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if ((Play_isFullScreen || Play_MultiEnable) && Play_isChatShown() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_KeyChatSizeChage();
-                } else if (Play_MultiEnable) Play_MultiEnableKeyDown();
-                else if (PlayExtra_PicturePicture) {
+                } else if (PlayExtra_PicturePicture && !Play_MultiEnable) {
                     if (Play_isFullScreen) {
                         if (Main_IsNotBrowser) Android.mSwitchPlayer();
                         PlayExtra_SwitchPlayer();
