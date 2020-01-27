@@ -115,7 +115,7 @@ function AddCode_requestTokensFail() {
         Main_SaveValues();
         Main_values.Main_Go = Main_Users;
         try {
-            window.location = Android.mPageUrl();
+            Android.mloadUrl(Android.mPageUrl());
         } catch (e) {
             window.location = AddCode_redirect_uri;
         }
@@ -170,7 +170,7 @@ function AddCode_CheckOauthTokenSucess(response) {
         if (Main_IsNotBrowser) Android.clearCookie();
         window.setTimeout(function() {
             try {
-                window.location = Android.mPageUrl();
+                Android.mloadUrl(Android.mPageUrl());
             } catch (e) {
                 window.location = AddCode_redirect_uri;
             }
@@ -185,7 +185,7 @@ function AddCode_CheckOauthTokenSucess(response) {
             Main_SaveValues();
             Main_values.Main_Go = Main_Users;
             try {
-                window.location = Android.mPageUrl();
+                Android.mloadUrl(Android.mPageUrl());
             } catch (e) {
                 window.location = AddCode_redirect_uri;
             }
