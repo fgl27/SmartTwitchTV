@@ -233,9 +233,7 @@ function PlayExtra_loadDataRequest() {
     var theUrl, state = PlayExtra_state === Play_STATE_LOADING_TOKEN;
 
     if (state) {
-        theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
-                AddUser_UsernameArray[0].access_token : '');
+        theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_';
     } else {
         theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_data.data[6] +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
@@ -278,11 +276,8 @@ function PlayExtra_loadDataRequest() {
 function PlayExtra_loadDataSuccessreadyState(xmlHttp) {
     if (xmlHttp.status === 200) {
 
-        if (xmlHttp.responseText.indexOf('"status":410') !== -1) {
-            Play_410ERROR = true;
-            PlayExtra_loadDataError();
-        } else {
-            Play_410ERROR = false;
+        if (xmlHttp.responseText.indexOf('"status":410') !== -1) PlayExtra_loadDataError();
+        else {
             Play_loadingDataTry = 0;
             PlayExtra_loadDataSuccess(xmlHttp.responseText);
         }
@@ -320,9 +315,7 @@ function PlayExtra_loadDataFail(Reason) {
 }
 
 function PlayExtra_RefreshAutoRequest(UseAndroid) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_' +
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
-            AddUser_UsernameArray[0].access_token : '');
+    var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_';
 
     var xmlHttp;
 
@@ -341,11 +334,9 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
         //410 error
         if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
             xmlHttp.responseText.indexOf('"status":410') !== -1) {
-            Play_410ERROR = true;
             PlayExtra_RefreshAutoError(UseAndroid);
             return;
         }
-        Play_410ERROR = false;
 
         var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_data.data[6] +
             '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
