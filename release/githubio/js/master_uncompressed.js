@@ -1090,7 +1090,7 @@
             Main_SaveValues();
             Main_values.Main_Go = Main_Users;
             try {
-                window.location = Android.mPageUrl();
+                Android.mloadUrl(Android.mPageUrl());
             } catch (e) {
                 window.location = AddCode_redirect_uri;
             }
@@ -1145,7 +1145,7 @@
             if (Main_IsNotBrowser) Android.clearCookie();
             window.setTimeout(function() {
                 try {
-                    window.location = Android.mPageUrl();
+                    Android.mloadUrl(Android.mPageUrl());
                 } catch (e) {
                     window.location = AddCode_redirect_uri;
                 }
@@ -1160,7 +1160,7 @@
                 Main_SaveValues();
                 Main_values.Main_Go = Main_Users;
                 try {
-                    window.location = Android.mPageUrl();
+                    Android.mloadUrl(Android.mPageUrl());
                 } catch (e) {
                     window.location = AddCode_redirect_uri;
                 }
@@ -4803,8 +4803,8 @@
         var code = '';
         code = pageUrl.match(/code=(\w+)/);
         if (code) {
-            CheckPage("?code=" + code);
             code = code[1];
+            CheckPage("?code=" + code);
             console.log('if code ' + code);
             Main_newUsercode = code;
         } else {
@@ -4822,7 +4822,9 @@
         } catch (e) {}
         if (PageUrl) {
             if (window.location.href.indexOf('asset') === -1 && PageUrl.indexOf('asset') !== -1) {
-                window.location = PageUrl + pageUrlCode;
+                try {
+                    Android.mloadUrl(PageUrl + pageUrlCode);
+                } catch (e) {}
                 return;
             }
         }
