@@ -1089,7 +1089,11 @@
             Main_newUsercode = 0;
             Main_SaveValues();
             Main_values.Main_Go = Main_Users;
-            window.location = AddCode_redirect_uri;
+            try {
+                window.location = Android.mPageUrl();
+            } catch (e) {
+                window.location = AddCode_redirect_uri;
+            }
         }, 4000);
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
@@ -1140,7 +1144,11 @@
             Main_showWarningDialog(STR_USER_CODE_OK);
             if (Main_IsNotBrowser) Android.clearCookie();
             window.setTimeout(function() {
-                window.location = AddCode_redirect_uri;
+                try {
+                    window.location = Android.mPageUrl();
+                } catch (e) {
+                    window.location = AddCode_redirect_uri;
+                }
             }, 3000);
         } else {
             AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
@@ -1151,7 +1159,11 @@
                 Main_newUsercode = 0;
                 Main_SaveValues();
                 Main_values.Main_Go = Main_Users;
-                window.location = AddCode_redirect_uri;
+                try {
+                    window.location = Android.mPageUrl();
+                } catch (e) {
+                    window.location = AddCode_redirect_uri;
+                }
             }, 4000);
         }
         return;
@@ -4791,12 +4803,28 @@
         var code = '';
         code = pageUrl.match(/code=(\w+)/);
         if (code) {
+            CheckPage("?code=" + code);
             code = code[1];
             console.log('if code ' + code);
             Main_newUsercode = code;
         } else {
             console.log('else code ' + code);
+            CheckPage('');
             Main_newUsercode = 0;
+        }
+    }
+
+    //Redirect to assets if running from it
+    function CheckPage(pageUrlCode) {
+        var PageUrl = null;
+        try {
+            PageUrl = Android.mPageUrl();
+        } catch (e) {}
+        if (PageUrl) {
+            if (window.location.href.indexOf('asset') === -1 && PageUrl.indexOf('asset') !== -1) {
+                window.location = PageUrl + pageUrlCode;
+                return;
+            }
         }
     }
 
