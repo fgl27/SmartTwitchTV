@@ -2282,6 +2282,8 @@ function Play_Multi_UnSetPanel() {
     Main_ShowElement('stream_info');
     Main_HideElement('stream_info_multi');
 
+    for (var i = 0; i < 4; i++) Play_MultiInfoReset(i);
+
     if (Play_MultiArray[1].data.length > 0) {
         if (PlayExtra_PicturePicture) {
             if (!Play_isFullScreen) {
@@ -2315,6 +2317,7 @@ function Play_MultiEnd(position) {
     }, 2000);
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiIsFull = false;
+    Play_MultiInfoReset(position);
 }
 
 function Play_MultiFirstClear() {
@@ -2498,6 +2501,17 @@ function Play_MultiEnableKeyRightLeft(adder) {
     }, 1000);
 }
 
+function Play_MultiInfoReset(pos) {
+    Play_MultiSetinfo(
+        pos,
+        '',
+        -1,
+        '',
+        false,
+        'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
+    );
+}
+
 function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo) {
     Main_textContent('stream_info_multi_name' + pos, displayname);
     document.getElementById('stream_info_multiimg' + pos).src = logo;
@@ -2506,9 +2520,12 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo) {
 
 function Play_MultiUpdateinfo(pos, game, views, is_rerun) {
     Main_textContent('stream_info_multi_game' + pos, game);
-    Main_innerHTML("stream_info_multi_views" + pos,
-        '<i class="icon-' + (!is_rerun ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(views));
+    if (views < 0) Main_textContent("stream_info_multi_views" + pos, '');
+    else {
+        Main_innerHTML("stream_info_multi_views" + pos,
+            '<i class="icon-' + (!is_rerun ? 'circle" style="color: red;' : 'refresh" style="') +
+            ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(views));
+    }
 }
 
 function Play_MultiSetpannelInfo() {
