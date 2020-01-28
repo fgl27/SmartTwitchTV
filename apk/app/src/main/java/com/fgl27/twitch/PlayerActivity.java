@@ -1572,12 +1572,13 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    //Simplet AnalyticsListener for multiplayer no need to be acount for all the data for all players
+    //Simple AnalyticsListener for multiplayer no need to be account for all the data for all players
     //as the only info show to the user is droppedFramesTotal for all players
     private class AnalyticsEventListenerMulti implements AnalyticsListener {
 
         @Override
         public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
+            droppedFrames[mainPlayer] += count;
             droppedFramesTotal += count;
         }
 
