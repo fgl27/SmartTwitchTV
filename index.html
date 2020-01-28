@@ -447,6 +447,11 @@
             white-space: normal;
         }
 
+        .stream_info_multi_div {
+            width: 35%;
+            display: inline-block;
+        }
+
         div.stream_thumbnail_channel {
             padding-bottom: 112%;
             background-color: #000000;
@@ -2393,17 +2398,90 @@
         </div>
         <div id="scene_channel_panel" class="screen_size scene_channel_panel">
             <div class="playerinfo">
-                <img id="stream_info_icon"
-                    style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 9.5%;"
-                    alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
                 <div id="stream_clock" class="playclock"></div>
-                <div class="playmaininfo">
-                    <div id="stream_info_name" class="class_bold" style="font-size: 160%; margin-bottom: 0.2em;"></div>
-                    <div id="stream_info_title"></div>
-                    <div id="stream_info_game"></div>
-                    <div id="stream_live_time" style="display: inline-block; width:auto;"></div>
-                    <div id="stream_live_viewers" style="display: inline-block; width:auto;"></div>
-                    <div id="stream_watching_time" class="playsideinfotext"></div>
+                <div id="stream_info">
+                    <img id="stream_info_icon"
+                        style="padding-left: 1%; padding-top: 1%; padding-bottom: 1%; display: inline-block; width: 9.5%;"
+                        alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
+                    <div class="playmaininfo">
+                        <div id="stream_info_name" class="class_bold" style="font-size: 160%; margin-bottom: 0.2em;">
+                        </div>
+                        <div id="stream_info_title"></div>
+                        <div id="stream_info_game"></div>
+                        <div id="stream_live_time" style="display: inline-block; width:auto;"></div>
+                        <div id="stream_live_viewers" style="display: inline-block; width:auto;"></div>
+                        <div id="stream_watching_time" class="playsideinfotext"></div>
+                    </div>
+                </div>
+                <div id="stream_info_multi" style="padding-top: 1.5%; padding-left: 2%;" class="hide">
+                    <div>
+                        <div class="stream_info_multi_div">
+                            <div class="side_panel_feed">
+                                <div class="side_panel_div" style="border: 0;">
+                                    <div style="width: 100%; padding-top: 2%;">
+                                        <div id="stream_info_multiimgholder0" class="side_panel_iner_div1"></div>
+                                        <div class="side_panel_iner_div2">
+                                            <div id="stream_info_multi_name0" class="side_panel_new_title"></div>
+                                            <div id="stream_info_multi_game0" class="side_panel_new_game"></div>
+                                        </div>
+                                        <div class="side_panel_iner_div3">
+                                            <div id="stream_info_multi_views0" style="text-align: center;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream_info_multi_div">
+                            <div class="side_panel_feed">
+                                <div class="side_panel_div" style="border: 0;">
+                                    <div style="width: 100%; padding-top: 2%;">
+                                        <div id="stream_info_multiimgholder1" class="side_panel_iner_div1"></div>
+                                        <div class="side_panel_iner_div2">
+                                            <div id="stream_info_multi_name1" class="side_panel_new_title"></div>
+                                            <div id="stream_info_multi_game1" class="side_panel_new_game"></div>
+                                        </div>
+                                        <div class="side_panel_iner_div3">
+                                            <div id="stream_info_multi_views1" style="text-align: center;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="stream_info_multi_div">
+                            <div class="side_panel_feed">
+                                <div class="side_panel_div" style="border: 0;">
+                                    <div style="width: 100%; padding-top: 2%;">
+                                        <div id="stream_info_multiimgholder2" class="side_panel_iner_div1"></div>
+                                        <div class="side_panel_iner_div2">
+                                            <div id="stream_info_multi_name2" class="side_panel_new_title"></div>
+                                            <div id="stream_info_multi_game2" class="side_panel_new_game"></div>
+                                        </div>
+                                        <div class="side_panel_iner_div3">
+                                            <div id="stream_info_multi_views2" style="text-align: center;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stream_info_multi_div">
+                            <div class="side_panel_feed">
+                                <div class="side_panel_div" style="border: 0;">
+                                    <div style="width: 100%; padding-top: 2%;">
+                                        <div id="stream_info_multiimgholder3" class="side_panel_iner_div1"></div>
+                                        <div class="side_panel_iner_div2">
+                                            <div id="stream_info_multi_name3" class="side_panel_new_title"></div>
+                                            <div id="stream_info_multi_game3" class="side_panel_new_game"></div>
+                                        </div>
+                                        <div class="side_panel_iner_div3">
+                                            <div id="stream_info_multi_views3" style="text-align: center;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="controls_holder" class="controls_holder">
@@ -2433,7 +2511,8 @@
                                 <div id="back_button_text_name" class="next_channel strokedeline"
                                     style="text-align: right;"></div>
                                 <div id="back_button_text_title" class="next_info strokedeline"
-                                    style="text-align: right;"></div>
+                                    style="text-align: right;">
+                                </div>
                             </div>
                             <i class="pause_button3d icon-back"></i>
                         </div>

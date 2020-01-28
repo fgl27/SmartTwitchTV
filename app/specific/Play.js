@@ -200,6 +200,7 @@ function Play_PreStart() {
     Main_innerHTML('user_feed_notify_img_holder',
         '<img id="user_feed_notify_img" alt="" class="notify_img" src="' + IMG_404_LOGO +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';" >');
+    Play_MultiSetpannelInfo();
 }
 
 function Play_SetQuality() {
@@ -753,12 +754,17 @@ function Play_updateStreamInfoMultiValues(response, pos) {
     if (response.stream !== null) {
         Play_MultiArray[pos].data[3] = response.stream.game;
 
-        //if (!Play_LoadLogoSucess) Play_LoadLogo(document.getElementById('stream_info_icon'), response.stream.channel.logo);
-
         if (!pos) {
             Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
             Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
         }
+
+        Play_MultiUpdateinfo(
+            pos,
+            response.stream.game,
+            response.stream.viewers,
+            Main_is_rerun(response.stream.broadcast_platform)
+        );
 
         Main_history_UpdateLive(
             response.stream._id,
@@ -2262,6 +2268,8 @@ function Play_Multi_SetPanel() {
     document.getElementById('controls_' + Play_controlsAudioMulti).style.display = '';
     ChatLive_Clear(1);
     PlayExtra_HideChat();
+    Main_HideElement('stream_info');
+    Main_ShowElement('stream_info_multi');
 }
 
 function Play_Multi_UnSetPanel() {
@@ -2271,6 +2279,9 @@ function Play_Multi_UnSetPanel() {
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+    Main_ShowElement('stream_info');
+    Main_HideElement('stream_info_multi');
+
     if (Play_MultiArray[1].data.length > 0) {
         if (PlayExtra_PicturePicture) {
             if (!Play_isFullScreen) {
@@ -2429,6 +2440,15 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
             Play_MultiArray[pos].qualities = Play_extractQualities(xmlHttp.responseText);
             console.log(Play_MultiArray[pos].qualities);
 
+            Play_MultiSetinfo(
+                pos,
+                Play_MultiArray[pos].data[3],
+                Play_MultiArray[pos].data[13],
+                Play_MultiArray[pos].data[1],
+                Play_MultiArray[pos].data[8],
+                Play_MultiArray[pos].data[9]
+            );
+
             Main_Set_history('live', Play_MultiArray[pos].data);
         } else if (xmlHttp.status === 403) { //forbidden access
             Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
@@ -2476,6 +2496,27 @@ function Play_MultiEnableKeyRightLeft(adder) {
     Play_MultiEnableKeyRightLeftId = window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 1000);
+}
+
+function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo) {
+    Main_textContent('stream_info_multi_name' + pos, displayname);
+    document.getElementById('stream_info_multiimg' + pos).src = logo;
+    Play_MultiUpdateinfo(pos, game, views, is_rerun);
+}
+
+function Play_MultiUpdateinfo(pos, game, views, is_rerun) {
+    Main_textContent('stream_info_multi_game' + pos, game);
+    Main_innerHTML("stream_info_multi_views" + pos,
+        '<i class="icon-' + (!is_rerun ? 'circle" style="color: red;' : 'refresh" style="') +
+        ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(views));
+}
+
+function Play_MultiSetpannelInfo() {
+    for (var i = 0; i < 4; i++) {
+        Main_innerHTML("stream_info_multiimgholder" + i,
+            '<img id="stream_info_multiimg' + i + '" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
+            'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+    }
 }
 
 function Play_handleKeyDown(e) {
@@ -3117,7 +3158,26 @@ function Play_MakeControls() {
                 }
 
                 Play_MultiArray[0] = JSON.parse(JSON.stringify(Play_data));
-                if (PlayExtra_PicturePicture) Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
+                Play_MultiSetinfo(
+                    0,
+                    Play_MultiArray[0].data[3],
+                    Play_MultiArray[0].data[13],
+                    Play_MultiArray[0].data[1],
+                    Play_MultiArray[0].data[8],
+                    Play_MultiArray[0].data[9]
+                );
+
+                if (PlayExtra_PicturePicture) {
+                    Play_MultiArray[1] = JSON.parse(JSON.stringify(PlayExtra_data));
+                    Play_MultiSetinfo(
+                        1,
+                        Play_MultiArray[1].data[3],
+                        Play_MultiArray[1].data[13],
+                        Play_MultiArray[1].data[1],
+                        Play_MultiArray[1].data[8],
+                        Play_MultiArray[1].data[9]
+                    );
+                }
 
                 if (Play_isChatShown()) Play_controls[Play_controlsChat].enterKey();
 
