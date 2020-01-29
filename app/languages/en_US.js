@@ -390,7 +390,7 @@ function en_USLang() {
     STR_MULTI_EMPTY = "Ended and/or empty";
     STR_4_WAY_MULTI = "4 way multistream'";
     STR_CONTROLS_MULTI_0 = "Multistream help:";
-    STR_CONTROLS_MULTI_1 = 'If you are having lag after enable multistream, try to lower the value of "Small player bitrate" in settings, accumulation of skipped frames or a constant buffering is a indication of too high bitrate or slow internet and';
+    STR_CONTROLS_MULTI_1 = 'If you are having lag issues after enable multistream, try to lower the value of "Small player bitrate" in settings, accumulation of skipped frames or constant buffering is a indication of too high bitrate or slow internet';
     STR_CONTROLS_MULTI_2 = "Add streams: open live feed key up and click on a live stream";
     STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from live feed and chose one to replace from the dialog";
     STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left";
