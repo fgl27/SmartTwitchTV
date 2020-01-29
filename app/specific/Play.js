@@ -2254,6 +2254,7 @@ function Play_Multi_SetPanel() {
     ChatLive_Clear(1);
     PlayExtra_HideChat();
     Main_HideElement('stream_info');
+    Main_ShowElement('dialog_multi_help');
     Main_ShowElement('stream_info_multi');
 }
 
@@ -2266,6 +2267,7 @@ function Play_Multi_UnSetPanel(shutdown) {
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
     Main_ShowElement('stream_info');
     Main_HideElement('stream_info_multi');
+    Main_HideElement('dialog_multi_help');
 
     for (var i = 0; i < 4; i++) Play_MultiInfoReset(i);
 
@@ -2373,7 +2375,10 @@ function Play_MultiStartPrestart(position) {
 
         if (!Play_MultiIsFull) {
             position = ((position || position === 0) ? position : Play_MultiFirstClear());
-            if (position > 2) Play_MultiIsFull = true;
+            if (position > 2) {
+                Play_MultiIsFull = true;
+                Main_HideElement('dialog_multi_help');
+            }
         }
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiArray[position].data = doc;

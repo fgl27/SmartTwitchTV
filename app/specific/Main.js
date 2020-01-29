@@ -511,6 +511,8 @@ function Main_SetStringsSecondary() {
     Main_textContent('dialog_thumb_opt_setting_name_1', STR_OPEN_GAME);
     Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
     Main_textContent('dialog_thumb_opt_setting_name_4', STR_GO_TO);
+
+    Main_innerHTML("dialog_multi_help", STR_CONTROLS_MULTI);
 }
 
 var Main_initClickDoc = [
