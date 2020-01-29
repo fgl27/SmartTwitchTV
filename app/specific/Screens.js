@@ -2,7 +2,7 @@
 var inUseObj = {};
 var Screens_clear = false;
 var Screens_KeyEnterID;
-var Screens_ScrollAnimationTimeout = 350; //Same time as animate_height_transition
+var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
 var Screens_SettingDoAnimations = true;
