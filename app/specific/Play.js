@@ -2296,7 +2296,6 @@ function Play_Multi_UnSetPanel(shutdown) {
                     Play_controls[Play_controlsChat].enterKey();
                     Play_showChat();
                     Play_ChatEnable = true;
-                    Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
                     Play_controls[Play_controlsChat].setLable();
                 }
             }
