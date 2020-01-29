@@ -85,6 +85,11 @@ new='                <category android:name="android.intent.category.LAUNCHER"/>
 sed  --in-place "s%$old%$new%g" app/src/main/AndroidManifest.xml
 
 if [ $BAPP == 1 ]; then
+	if [ "$2" == 1 ]; then
+		./gradlew clean
+		echo -e "\n The above is just the cleaning build start now\n";
+		rm -rf app/build/outputs/apk/**
+	fi;
 	if [ "$1" != 1 ]; then
 		./gradlew assembleDebug 2>&1 --warning-mode all | tee build_log.txt
 	else

@@ -507,7 +507,7 @@ public final class Tools {
 
     //Deprecated in API level 29 but gives the path that I need and works on API 29
     //as long one adds android:requestLegacyExternalStorage="true"to manifest
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "RedundantSuppression"})
     public static File getExternalSD() {
         return Environment.getExternalStorageDirectory();
     }

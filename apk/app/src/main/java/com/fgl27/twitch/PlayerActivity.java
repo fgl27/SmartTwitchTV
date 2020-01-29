@@ -344,7 +344,6 @@ public class PlayerActivity extends Activity {
     }
 
     private void initializePlayerMulti(int position, MediaSource mediaSource) {
-        boolean PlayerNull = false;
         if (IsonStop) {
             monStop();
             return;
@@ -357,7 +356,6 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setVisibility(View.VISIBLE);
 
         if (player[position] == null) {
-            PlayerNull = true;
             trackSelector[position] = new DefaultTrackSelector(this);
             trackSelector[position].setParameters(trackSelectorParametersSmall);
 
@@ -714,7 +712,7 @@ public class PlayerActivity extends Activity {
         IsonStop = true;
         int temp_AudioMulti = AudioMulti;
 
-        for(int i = 0; i < PlayerAcount; i++){ 
+        for(int i = 0; i < PlayerAcount; i++){
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             updateResumePosition(i);
             ClearPlayer(i);
@@ -1524,7 +1522,7 @@ public class PlayerActivity extends Activity {
                     else initializePlayer(position);
 
                 } else
-                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");//TODO revise this for multistream
+                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");
 
             } else initializePlayer(position);
 
