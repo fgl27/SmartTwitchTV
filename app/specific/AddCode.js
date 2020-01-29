@@ -483,11 +483,7 @@ function AddCode_RequestCheckFallowGame() {
     var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[0].name + '/follows/games/' +
         encodeURIComponent(Main_values.Main_gameSelected);
 
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mreadUrlHLS(theUrl);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {
@@ -495,24 +491,21 @@ function AddCode_RequestCheckFallowGame() {
         return;
     }
 
-    try {
-        xmlHttp = JSON.parse(xmlHttp.responseText);
+    xmlHttp = JSON.parse(xmlHttp.responseText);
 
-        if (xmlHttp.hasOwnProperty('status')) {
-            if (xmlHttp.status === 404) { //success no user doesnot fallows
-                AGame_fallowing = false;
-                AGame_setFallow();
-                return;
-            } else { // internet error
-                AddCode_CheckFallowGameError();
-                return;
-            }
-        } else {
-            AGame_fallowing = true;
+    if (xmlHttp.hasOwnProperty('status')) {
+        if (xmlHttp.status === 404) { //success no user doesnot fallows
+            AGame_fallowing = false;
             AGame_setFallow();
+            return;
+        } else { // internet error
+            AddCode_CheckFallowGameError();
+            return;
         }
-
-    } catch (e) {}
+    } else {
+        AGame_fallowing = true;
+        AGame_setFallow();
+    }
 }
 
 function AddCode_CheckFallowGameError() {
@@ -563,13 +556,9 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
 }
 
 function AddCode_BasereadwritedUrl(theUrl, Method, HeaderQuatity, access_token, callbackready) {
-    //remove the try after some app updates
-    try {
-        var xmlHttp = Android.mMethodUrl(theUrl, 5000, HeaderQuatity, access_token, null, null, Method);
+    var xmlHttp = Android.mMethodUrl(theUrl, 5000, HeaderQuatity, access_token, null, null, Method);
 
-        if (xmlHttp) callbackready(JSON.parse(xmlHttp));
-        else callbackready(xmlHttp);
-    } catch (e) {
-        AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackready);
-    }
+    if (xmlHttp) callbackready(JSON.parse(xmlHttp));
+    else callbackready(xmlHttp);
+
 }

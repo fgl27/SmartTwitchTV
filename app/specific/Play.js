@@ -357,11 +357,7 @@ function Play_CheckIfIsLiveStart(callback) {
 function Play_CheckIfIsLive() {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Play_CheckIfIsLiveStartChannel + '/access_token';
 
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mreadUrlHLS(theUrl);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) {
         xmlHttp = JSON.parse(xmlHttp);
@@ -408,10 +404,7 @@ function Play_CheckIfIsLiveLink() {
         '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&p=' +
         Main_RandomInt();
 
-    var xmlHttp;
-    try {
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
     if (!xmlHttp) {
         Play_CheckIfIsLiveLinkError();
@@ -450,11 +443,7 @@ function Play_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Play_data.data[6] +
         '/access_token?platform=_';
 
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mreadUrlHLS(theUrl);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
     else Play_RefreshAutoError(UseAndroid);
@@ -674,11 +663,7 @@ function Play_RefreshMultiRequest(pos, streamer, id) {
     console.log('Play_RefreshMultiRequest pos ' + pos + ' streamer ' + streamer);
     var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mreadUrlHLS(theUrl);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) Play_RefreshMultiRequestSucess(JSON.parse(xmlHttp), pos, streamer, id);
     else Play_RefreshMultiError(pos, streamer, id);
@@ -902,10 +887,8 @@ function Play_loadDataRequest() {
     if (Main_IsNotBrowser) {
         var xmlHttp;
 
-        try {
-            if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-            else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
-        } catch (e) {}
+        if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
+        else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
@@ -2463,10 +2446,7 @@ function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name) {
 
 function Play_MultiStartQuality(pos, theUrl, display_name) {
     console.log('Play_MultiStartQuality pos ' + pos + ' display_name ' + display_name);
-    var xmlHttp;
-    try {
-        xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
 
     if (xmlHttp) {
         xmlHttp = JSON.parse(xmlHttp);

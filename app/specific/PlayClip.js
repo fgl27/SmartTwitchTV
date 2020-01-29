@@ -160,11 +160,7 @@ function PlayClip_loadDataRequest() {
         postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
             '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
 
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout, 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
-    } catch (e) {}
+    var xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout, 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {
