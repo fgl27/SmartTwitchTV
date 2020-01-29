@@ -96,22 +96,7 @@ function PlayExtra_SwitchPlayer() {
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Play_loadingInfoDataTry = 0;
 
-    Play_loadChat();
-
-    //Restore info panel
-    Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[12], false, true));
-    Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_Lang);
-    var playing = (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : "");
-    Main_textContent("stream_info_game", playing);
-    Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[12]) + STR_SPACE + STR_VIEWER);
-    Play_LoadLogoSucess = true;
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
-    Play_created = Play_data.data[12];
-    Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
-    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-
-    //Restore info panel from web
-    Play_updateStreamInfoStart();
+    Play_UpdateMainStream();
 
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
