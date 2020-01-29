@@ -1297,7 +1297,7 @@ function Play_PreshutdownStream(closePlayer) {
 
     if (closePlayer) {
         Play_isOn = false;
-        if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
+        if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey(false);
     }
 
     if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide(true);
@@ -2098,6 +2098,7 @@ function Play_KeyReturn(is_vod) {
     if (Play_isEndDialogVisible()) Play_EndTextClear();
 
     if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
+    else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
     else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) UserLiveFeed_Hide();
     else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
         if (is_vod) PlayVod_hidePanel();
@@ -2272,7 +2273,7 @@ function Play_Multi_SetPanel() {
     Main_ShowElement('stream_info_multi');
 }
 
-function Play_Multi_UnSetPanel() {
+function Play_Multi_UnSetPanel(shutdown) {
     document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
     document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
     document.getElementById('controls_' + Play_controlsQuality).style.display = '';
@@ -2284,7 +2285,7 @@ function Play_Multi_UnSetPanel() {
 
     for (var i = 0; i < 4; i++) Play_MultiInfoReset(i);
 
-    if (Play_MultiArray[1].data.length > 0) {
+    if (Play_MultiArray[0].data.length > 0 && Play_MultiArray[1].data.length > 0) {
         if (PlayExtra_PicturePicture) {
             if (!Play_isFullScreen) {
                 ChatLive_Init(1);
@@ -2303,11 +2304,49 @@ function Play_Multi_UnSetPanel() {
             Play_controls[Play_controlsChat].enterKey();
             Play_showChat();
             Play_ChatEnable = true;
-            Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
             Play_controls[Play_controlsChat].setLable();
         }
         PlayExtra_PicturePicture = false;
     }
+
+    //Check if main player is open if not check if one is so it can be main
+    var lastopen = Play_MultiFirstAvaileble();
+    if (lastopen !== null) {
+        var name = Play_data.data[14];
+        Play_data = JSON.parse(JSON.stringify(Play_MultiArray[lastopen]));
+
+        if (name !== Play_data.data[14]) {
+            if (lastopen) Play_Start();
+            else Play_UpdateMainStream();
+        }
+
+    } else if (shutdown) Play_shutdownStream();
+}
+
+function Play_MultiFirstAvaileble() {
+    for (var i = 0; i < Play_MultiArray.length; i++) {
+        if (Play_MultiArray[i].data.length > 0) return i;
+    }
+    return null;
+}
+
+function Play_UpdateMainStream() {
+    Play_loadChat();
+
+    //Restore info panel
+    Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[12], false, true));
+    Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_Lang);
+    var playing = (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : "");
+    Main_textContent("stream_info_game", playing);
+    Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[12]) + STR_SPACE + STR_VIEWER);
+    Play_LoadLogoSucess = true;
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
+    Play_created = Play_data.data[12];
+    Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
+    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+
+    //Restore info panel from web
+    Play_updateStreamInfoStart();
 }
 
 function Play_MultiEnd(position) {
@@ -2545,24 +2584,57 @@ function Play_MultiSetpannelInfo() {
         'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 }
 
-function Play_MultiSetUpdateDialog() {
-    var doc = Play_CheckLiveThumb();
-    if (doc) {
-        for (var i = 0; i < 4; i++) {
-            Main_textContent('stream_dialog_multi_name' + i, Play_MultiArray[i].data[1]);
-            document.getElementById('stream_dialog_multiimg' + i).src = Play_MultiArray[i].data[9];
-            Main_innerHTML('stream_dialog_multi_game' + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
-            Main_innerHTML('stream_dialog_multi_title' + i, twemoji.parse(Play_MultiArray[i].data[2]));
-        }
-
-        Main_textContent('stream_dialog_multi_name-1', doc[1]);
-        document.getElementById('stream_dialog_multiimg-1').src = doc[9];
-        Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
-        Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
-
-        UserLiveFeed_Hide(true);
-        Main_ShowElement('dialog_multi');
+var Play_MultiDialogPos = 0;
+function Play_MultiSetUpdateDialog(doc) {
+    for (var i = 0; i < 4; i++) {
+        Main_textContent('stream_dialog_multi_name' + i, Play_MultiArray[i].data[1]);
+        document.getElementById('stream_dialog_multiimg' + i).src = Play_MultiArray[i].data[9];
+        Main_innerHTML('stream_dialog_multi_game' + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
+        Main_innerHTML('stream_dialog_multi_title' + i, twemoji.parse(Play_MultiArray[i].data[2]));
     }
+
+    Main_textContent('stream_dialog_multi_name-1', doc[1]);
+    document.getElementById('stream_dialog_multiimg-1').src = doc[9];
+    Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
+    Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
+
+    UserLiveFeed_Hide(true);
+    Play_MultiDialogPos = 0;
+    Play_MultiAddFocus();
+    Play_ShowMultiDialog();
+}
+
+function Play_MultiAddFocus() {
+    Main_AddClass('stream_dialog_multi_div' + Play_MultiDialogPos, 'side_panel_div_focused');
+    Play_setHideMultiDialog();
+}
+
+function Play_MultiRemoveFocus() {
+    Main_RemoveClass('stream_dialog_multi_div' + Play_MultiDialogPos, 'side_panel_div_focused');
+}
+
+function Play_ShowMultiDialog() {
+    Main_ShowElement('dialog_multi');
+}
+
+function Play_HideMultiDialog() {
+    Play_clearHideMultiDialog();
+    Main_HideElement('dialog_multi');
+    Play_MultiRemoveFocus();
+}
+
+function Play_MultiDialogVisible() {
+    return Main_isElementShowing('dialog_multi');
+}
+
+function Play_clearHideMultiDialog() {
+    window.clearTimeout(Play_HideMultiDialogID);
+}
+
+var Play_HideMultiDialogID;
+function Play_setHideMultiDialog() {
+    Play_clearHideMultiDialog();
+    Play_HideMultiDialogID = window.setTimeout(Play_HideMultiDialog, 10000);
 }
 
 var Play_CheckLiveThumbID;
@@ -2618,6 +2690,11 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos--;
                         UserLiveFeed_FeedAddFocus();
                     }
+                } else if (Play_MultiDialogVisible()) {
+                    Play_MultiRemoveFocus();
+                    Play_MultiDialogPos--;
+                    if (Play_MultiDialogPos < 0) Play_MultiDialogPos = 3;
+                    Play_MultiAddFocus();
                 } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(-1);
                 else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
                     !PlayExtra_PicturePicture) {
@@ -2653,6 +2730,11 @@ function Play_handleKeyDown(e) {
                         Play_FeedPos++;
                         UserLiveFeed_FeedAddFocus();
                     }
+                } else if (Play_MultiDialogVisible()) {
+                    Play_MultiRemoveFocus();
+                    Play_MultiDialogPos++;
+                    if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
+                    Play_MultiAddFocus();
                 } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(1);
                 else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
                     (!PlayExtra_PicturePicture || Play_MultiEnable)) {
@@ -2686,6 +2768,11 @@ function Play_handleKeyDown(e) {
                         } else PlayVod_IconsBottonFocus();
                     } else Play_BottomUpDown(1, 1);
                     Play_setHidePanel();
+                } else if (Play_MultiDialogVisible()) {
+                    Play_MultiRemoveFocus();
+                    Play_MultiDialogPos -= 2;
+                    if (Play_MultiDialogPos < 0) Play_MultiDialogPos += 4;
+                    Play_MultiAddFocus();
                 } else if (!UserLiveFeed_isFeedShow() && AddUser_UserIsSet()) UserLiveFeed_ShowFeed();
                 else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
@@ -2704,6 +2791,11 @@ function Play_handleKeyDown(e) {
                         PlayVod_IconsBottonFocus();
                     } else Play_BottomUpDown(1, -1);
                     Play_setHidePanel();
+                } else if (Play_MultiDialogVisible()) {
+                    Play_MultiRemoveFocus();
+                    Play_MultiDialogPos += 2;
+                    if (Play_MultiDialogPos > 3) Play_MultiDialogPos -= 4;
+                    Play_MultiAddFocus();
                 } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
                 else if ((Play_isFullScreen || Play_MultiEnable) && Play_isChatShown() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
@@ -2737,10 +2829,15 @@ function Play_handleKeyDown(e) {
                         if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
+                } else if (Play_MultiDialogVisible()) {
+                    Play_HideMultiDialog();
+                    Play_MultiStartPrestart(Play_MultiDialogPos);
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (Play_MultiEnable) {
-                        if (Play_MultiIsFull) Play_MultiSetUpdateDialog();
-                        else Play_MultiStartPrestart();
+                        if (Play_MultiIsFull) {
+                            var mdoc = Play_CheckLiveThumb();
+                            if (mdoc) Play_MultiSetUpdateDialog(mdoc);
+                        } else Play_MultiStartPrestart();
                     }
                     else {
                         document.body.removeEventListener("keydown", Play_handleKeyDown, false);
@@ -3211,7 +3308,7 @@ function Play_MakeControls() {
         string: '4 way multistream',
         values: null,
         opacity: 0,
-        enterKey: function() {
+        enterKey: function(shutdown) {
             console.log('Play_MultiStream');
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {
@@ -3267,7 +3364,7 @@ function Play_MakeControls() {
                     Android.DisableMultiStream();
                 } catch (e) {}
 
-                Play_Multi_UnSetPanel();
+                Play_Multi_UnSetPanel(shutdown);
             }
         }
     };
