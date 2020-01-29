@@ -763,7 +763,8 @@ function Play_updateStreamInfoMultiValues(response, pos) {
             pos,
             response.stream.game,
             response.stream.viewers,
-            Main_is_rerun(response.stream.broadcast_platform)
+            Main_is_rerun(response.stream.broadcast_platform),
+            twemoji.parse(response.stream.channel.status, false, true)
         );
 
         Main_history_UpdateLive(
