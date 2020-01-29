@@ -2290,6 +2290,7 @@ function Play_Multi_UnSetPanel(shutdown) {
             PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[1]));
 
             if (!Play_isFullScreen) {
+                Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
                 ChatLive_Init(1);
                 PlayExtra_ShowChat();
                 if (!Play_isChatShown()) {
@@ -2345,6 +2346,7 @@ function Play_UpdateMainStream() {
     Play_created = Play_data.data[12];
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+    Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
 
     //Restore info panel from web
     Play_updateStreamInfoStart();
