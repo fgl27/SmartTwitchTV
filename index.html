@@ -463,13 +463,18 @@
         }
 
         .dialog_multi_help {
+            width: 99% !important;
+            height: auto !important;
+            left: 0;
+            color: #FFFFFF;
+            font-size: 95%;
+        }
+
+        .dialog_multi_help_holder {
             width: 48% !important;
             height: 48% !important;
             top: 51%;
             left: 51%;
-            transform: translateY(0);
-            color: #FFFFFF;
-            font-size: 95%;
         }
 
         .stream_info_multi_diag_div,
@@ -2604,7 +2609,9 @@
                     <div id="dialog_os_text" class="about_text" style="font-size: 100%;"></div>
                 </div>
             </div>
-            <div id="dialog_multi_help" class="screens dialog_multi_help hide"></div>
+            <div id="dialog_multi_help" class="screens dialog_multi_help_holder hide">
+                <div id="dialog_multi_help_text" class="screens dialog_multi_help"></div>
+            </div>
             <div id="dialog_multi" class="screens dialog_multi hide">
                 <div class=" stream_info_multi_diag_div" style="padding: 0;">
                     <div class="side_panel_feed">
