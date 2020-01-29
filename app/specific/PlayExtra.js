@@ -24,43 +24,36 @@ function PlayExtra_ResetAudio() {
 function PlayExtra_KeyEnter() {
     PlayExtra_clear = true;
 
-    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-    if (doc === null) UserLiveFeed_ResetFeedId();
-    else {
-        Main_values_Play_data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+    var doc = Play_CheckLiveThumb();
+    if (doc) {
 
-        if (Play_data.data[14] !== Main_values_Play_data[14] &&
-            PlayExtra_data.data[14] !== Main_values_Play_data[14]) {
+        PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
 
-            Main_ready(function() {
-                PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
+        if (PlayExtra_WasPicturePicture) {
+            //PlayExtra_PicturePicture was alredy enable so save data and update live historyinfo
+            PlayExtra_updateStreamInfo();
+            PlayExtra_SavePlayData();
+        } else PlayExtra_Save_data.data = null;
 
-                if (PlayExtra_WasPicturePicture) {
-                    //PlayExtra_PicturePicture was alredy enable so save data and update live historyinfo
-                    PlayExtra_updateStreamInfo();
-                    PlayExtra_SavePlayData();
-                } else PlayExtra_Save_data.data = null;
+        PlayExtra_data.data = doc;
+        PlayExtra_data.watching_time = new Date().getTime();
 
-                PlayExtra_data.data = Main_values_Play_data;
-                PlayExtra_data.watching_time = new Date().getTime();
+        PlayExtra_PicturePicture = true;
+        Play_UserLiveFeedPressed = true;
 
-                PlayExtra_PicturePicture = true;
-                Play_UserLiveFeedPressed = true;
+        Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
 
-                Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+        if (Main_IsNotBrowser) {
+            //Not on auto mode for change to auto before start picture in picture
+            if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
-                if (Main_IsNotBrowser) {
-                    //Not on auto mode for change to auto before start picture in picture
-                    if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
+            Play_data.quality = "Auto";
+            Play_data.qualityPlaying = Play_data.quality;
+            PlayExtra_data.quality = "Auto";
+            PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
+        }
+        PlayExtra_Resume();
 
-                    Play_data.quality = "Auto";
-                    Play_data.qualityPlaying = Play_data.quality;
-                    PlayExtra_data.quality = "Auto";
-                    PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
-                }
-                PlayExtra_Resume();
-            });
-        } else UserLiveFeed_ResetFeedId();
     }
 }
 
