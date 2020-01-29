@@ -2287,6 +2287,8 @@ function Play_Multi_UnSetPanel(shutdown) {
 
     if (Play_MultiArray[0].data.length > 0 && Play_MultiArray[1].data.length > 0) {
         if (PlayExtra_PicturePicture) {
+            PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[1]));
+
             if (!Play_isFullScreen) {
                 ChatLive_Init(1);
                 PlayExtra_ShowChat();
@@ -2310,13 +2312,13 @@ function Play_Multi_UnSetPanel(shutdown) {
     }
 
     //Check if main player is open if not check if one is so it can be main
-    var lastopen = Play_MultiFirstAvaileble();
-    if (lastopen !== null) {
+    var First = Play_MultiFirstAvaileble();
+    if (First !== null) {
         var name = Play_data.data[14];
-        Play_data = JSON.parse(JSON.stringify(Play_MultiArray[lastopen]));
+        Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
         if (name !== Play_data.data[14]) {
-            if (lastopen) Play_Start();
+            if (First) Play_Start();
             else Play_UpdateMainStream();
         }
 
@@ -2338,7 +2340,7 @@ function Play_UpdateMainStream() {
     Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_Lang);
     var playing = (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : "");
     Main_textContent("stream_info_game", playing);
-    Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[12]) + STR_SPACE + STR_VIEWER);
+    Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
     Play_LoadLogoSucess = true;
     Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
     Play_created = Play_data.data[12];
@@ -2489,6 +2491,7 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
                 twemoji.parse(Play_MultiArray[pos].data[2])
             );
 
+            Play_MultiArray[pos].watching_time = new Date().getTime();
             Main_Set_history('live', Play_MultiArray[pos].data);
         } else if (xmlHttp.status === 403) { //forbidden access
             Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
