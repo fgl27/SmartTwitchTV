@@ -63,12 +63,7 @@ function AddUser_inputFocus() {
 }
 
 function AddUser_removeEventListener() {
-    if (!Main_isTV) {
-        //TODO remove the try after some itme of the app be released
-        try {
-            Android.mhideSystemUI();
-        } catch (e) {}
-    }
+    if (!Main_isTV) Android.mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
     if (Main_AddUserInput !== null) {
@@ -330,9 +325,7 @@ function AddUser_SaveUserArray() {
     var string = JSON.stringify(AddUser_UsernameArray);
     Main_setItem('AddUser_UsernameArray', string);
 
-    try {
-        if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
-    } catch (e) {}
+    if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
 }
 
 function AddUser_UserMakeOne(Position) {

@@ -241,10 +241,8 @@ function PlayExtra_loadDataRequest() {
 
     var xmlHttp;
     if (Main_IsNotBrowser) {
-        try {
-            if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-            else xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
-        } catch (e) {}
+        if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
+        else xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
 
         if (xmlHttp) {
             PlayExtra_loadDataSuccessreadyState(JSON.parse(xmlHttp));
@@ -310,11 +308,7 @@ function PlayExtra_loadDataFail(Reason) {
 function PlayExtra_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_';
 
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mreadUrlHLS(theUrl);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
     else PlayExtra_RefreshAutoError(UseAndroid);

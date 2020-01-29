@@ -301,10 +301,8 @@ function Main_initWindows() {
 
         //Backup at start as a backup may never be done yet
         if (Main_CanBackup) {
-            try {
-                Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-            } catch (e) {}
+            Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+            Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
         }
 
     } catch (e) {
@@ -339,12 +337,7 @@ function Main_initWindows() {
         //Disable googles OMX.google.h264.decoder if another codec is available
         //Check if at least one none google codec is available
         if (!Main_values.Codec_is_Check) {
-            var getcodec = null;
-            try {
-                getcodec = Android.getcodecCapabilities('avc');
-            } catch (e) {
-                getcodec = null;
-            }
+            var getcodec = Android.getcodecCapabilities('avc');
 
             if (getcodec !== null) {
 
@@ -367,9 +360,7 @@ function Main_initWindows() {
                         Main_setItem(codecsnames[0], 1);
                         Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
 
-                        try {
-                            Android.setBlackListMediaCodec(codecsnames.join());
-                        } catch (e) {}
+                        Android.setBlackListMediaCodec(codecsnames.join());
                     }
                 }
             }
@@ -1573,11 +1564,7 @@ function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 }
 
 function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mreadUrlHLS(theUrl);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {
@@ -1585,14 +1572,10 @@ function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
         return;
     }
 
-    try {
-
-        if (JSON.parse(xmlHttp.responseText).hasOwnProperty('status'))
-            calbackError();
-        else
-            callbackSucess(xmlHttp.responseText);
-
-    } catch (e) {}
+    if (JSON.parse(xmlHttp.responseText).hasOwnProperty('status'))
+        calbackError();
+    else
+        callbackSucess(xmlHttp.responseText);
 }
 
 function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
@@ -1853,9 +1836,7 @@ function Main_History_Sort(array, msort, direction) {
 function Main_setHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
     Main_setItem('Main_values_History_data', string);
-    try {
-        if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
-    } catch (e) {}
+    if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
 }
 
 function Main_Slice(arrayTocopy) {
