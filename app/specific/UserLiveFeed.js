@@ -296,7 +296,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
     // doc.appendChild(
     //     UserLiveFeed_CreatFeed(i++,
     //         [
-    //             "https://static-cdn.jtvnw.net/ttv-static/404_preview-640x360.jpg",
+    //             IMG_404_VIDEO,
     //             "ashlynn",
     //             "title",
     //             "game",
@@ -305,7 +305,7 @@ function UserLiveFeed_loadDataSuccess(responseText) {
     //             "ashlynn",
     //             10000000000,
     //             true,
-    //             "https://static-cdn.jtvnw.net/ttv-static/404_preview-640x360.jpg",
+    //             IMG_404_LOGO,
     //             true,
     //             "Since 11:04:36&nbsp;",
     //             "2020-01-25T09:49:05Z",

@@ -161,9 +161,9 @@ var Play_data_base = {
 var Play_data = JSON.parse(JSON.stringify(Play_data_base));
 var PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
 
-var Play_data_old = {};
-var PlayExtra_Save_data = {};
-var PlayExtra_data_old = {};
+var Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
+var PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
+var PlayExtra_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
 //Variable initialization end
 
@@ -947,7 +947,7 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
         Play_RestorePlayDataValues();
         Main_values.Play_WasPlaying = 0;
         Main_SaveValues();
-    } else if (Play_data_old.data !== null) Play_RestorePlayData(error_410);
+    } else if (Play_OlddataSet()) Play_RestorePlayData(error_410);
     else if (!PlayExtra_PicturePicture) {
 
         if (Isforbiden) Play_ForbiddenLive();
@@ -956,6 +956,9 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
     } else Play_CloseBigAndSwich(error_410);
 }
 
+function Play_OlddataSet() {
+    return Play_data_old.data.length > 0;
+}
 function Play_ForbiddenLive() {
     Play_HideBufferDialog();
     Play_showWarningDialog(STR_FORBIDDEN);
@@ -1036,7 +1039,7 @@ function Play_loadDataSuccess(responseText) {
         Play_data.qualities = Play_extractQualities(responseText);
         Play_state = Play_STATE_PLAYING;
         if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
-        Play_data_old.data = null;
+        Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
         if (Play_isOn) Play_qualityChanged();
         UserLiveFeed_PreventHide = false;
         ChatLive_Playing = true;
@@ -2227,7 +2230,7 @@ function Play_SavePlayData() {
 
 function Play_RestorePlayDataValues() {
     Play_data = JSON.parse(JSON.stringify(Play_data_old));
-    Play_data_old.data = null;
+    Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 }
 
 function Play_handleKeyUpClear() {
@@ -2424,10 +2427,10 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
         Play_HideWarningDialog();
     }, 2000);
 
-    if (Play_data_old.data !== null) {
+    if (Play_OlddataSet()) {
         Play_MultiIsFull = Play_MultiIsWasFull;
         Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_old));
-        Play_data_old.data = null;
+        Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     }
 }
 

@@ -31,9 +31,8 @@ function PlayExtra_KeyEnter() {
 
         if (PlayExtra_WasPicturePicture) {
             //PlayExtra_PicturePicture was alredy enable so save data and update live historyinfo
-            PlayExtra_updateStreamInfo();
             PlayExtra_SavePlayData();
-        } else PlayExtra_Save_data.data = null;
+        } else PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
 
         PlayExtra_data.data = doc;
         PlayExtra_data.watching_time = new Date().getTime();
@@ -78,7 +77,7 @@ function PlayExtra_RestorePlayData() {
     }, 2000);
 
     PlayExtra_data = JSON.parse(JSON.stringify(PlayExtra_Save_data));
-    PlayExtra_Save_data.data = null;
+    PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
 }
 
 function PlayExtra_SwitchPlayerStoreOld() {
@@ -158,7 +157,8 @@ function PlayExtra_loadDataSuccess(responseText) {
         PlayExtra_state = Play_STATE_PLAYING;
         PlayExtra_SetPanel();
         if (Play_isOn) PlayExtra_qualityChanged();
-        PlayExtra_Save_data.data = null;
+        PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
+        PlayExtra_updateStreamInfo();
         ChatLive_Playing = true;
 
         if (!Play_isFullScreen) {
@@ -289,7 +289,7 @@ function PlayExtra_loadDataError() {
 }
 
 function PlayExtra_loadDataFail(Reason) {
-    if (PlayExtra_Save_data.data === null) {
+    if (Play_data_old.data.length < 0) {
 
         PlayExtra_PicturePicture = false;
         PlayExtra_data.data[6] = '';
