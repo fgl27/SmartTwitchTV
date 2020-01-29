@@ -2372,13 +2372,15 @@ function Play_MultiStartPrestart(position) {
     Play_MultiStartErroTry = 0;
     var doc = Play_CheckLiveThumb();
     if (doc) {
-
+        position = ((position || position === 0) ? position : Play_MultiFirstClear());
         if (!Play_MultiIsFull) {
-            position = ((position || position === 0) ? position : Play_MultiFirstClear());
+
             if (position > 2) {
                 Play_MultiIsFull = true;
                 Main_HideElement('dialog_multi_help');
             }
+        } else {
+            Play_data_old = JSON.parse(JSON.stringify(Play_MultiArray[position]));
         }
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiArray[position].data = doc;
@@ -2413,6 +2415,7 @@ function Play_MultiStartErro(pos, streamer, display_name) {
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
+    var Play_MultiIsWasFull = Play_MultiIsFull;
     console.log('Play_MultiStartErro pos ' + pos + ' display_name ' + display_name);
     Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiIsFull = false;
@@ -2420,6 +2423,12 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
     window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 2000);
+
+    if (Play_data_old.data !== null) {
+        Play_MultiIsFull = Play_MultiIsWasFull;
+        Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_old));
+        Play_data_old.data = null;
+    }
 }
 
 function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name) {
