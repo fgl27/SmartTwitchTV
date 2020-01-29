@@ -2174,22 +2174,16 @@ function Play_handleKeyUp(e) {
 }
 
 function Play_OpenLiveFeedCheck() {
-    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-    if (doc === null) UserLiveFeed_ResetFeedId();
-    else Play_OpenLiveFeed(true, doc);
+    if (Play_CheckLiveThumb()) Play_OpenLiveFeed();
 }
 
-function Play_OpenLiveFeed(ResetFeed, doc) {
-    var selectedChannel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
-    if (Play_data.data[6] !== selectedChannel &&
-        PlayExtra_data.data[6] !== selectedChannel) {
-        Play_SavePlayData();
-        Play_PreshutdownStream(false);
+function Play_OpenLiveFeed() {
+    Play_SavePlayData();
+    Play_PreshutdownStream(false);
 
-        Main_values.Play_isHost = false;
-        Play_UserLiveFeedPressed = true;
-        Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
-    } else if (ResetFeed) UserLiveFeed_ResetFeedId();
+    Main_values.Play_isHost = false;
+    Play_UserLiveFeedPressed = true;
+    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
 }
 
 function Play_keyUpEnd() {
@@ -2342,11 +2336,8 @@ function Play_MultiStartPrestart(position) {
     console.log('Play_MultiStartPrestart pos ' + position);
 
     Play_MultiStartErroTry = 0;
-    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-    if (doc === null) UserLiveFeed_ResetFeedId();
-    else {
-        doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
-        if (Play_MultiIsAlredyOPen(doc[14])) return;
+    var doc = Play_CheckLiveThumb();
+    if (doc) {
 
         if (!Play_MultiIsFull) {
             position = ((position || position === 0) ? position : Play_MultiFirstClear());
@@ -2541,21 +2532,18 @@ function Play_MultiSetpannelInfo() {
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
     }
     Main_innerHTML("stream_dialog_multiimgholder-1",
-    '<img id="stream_dialog_multiimg-1" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
-    'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+        '<img id="stream_dialog_multiimg-1" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
+        'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 }
 
 function Play_MultiSetUpdateDialog() {
-    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-    if (doc === null) UserLiveFeed_ResetFeedId();
-    else {
+    var doc = Play_CheckLiveThumb();
+    if (doc) {
         for (var i = 0; i < 4; i++) {
             Main_textContent('stream_dialog_multi_name' + i, Play_MultiArray[i].data[1]);
             document.getElementById('stream_dialog_multiimg' + i).src = Play_MultiArray[i].data[9];
             Main_textContent('stream_dialog_multi_game' + i, Play_MultiArray[i].data[3]);
         }
-
-        doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
         Main_textContent('stream_dialog_multi_name-1', doc[1]);
         document.getElementById('stream_dialog_multiimg-1').src = doc[9];
@@ -2564,6 +2552,32 @@ function Play_MultiSetUpdateDialog() {
         UserLiveFeed_Hide(true);
         Main_ShowElement('dialog_multi');
     }
+}
+
+var Play_CheckLiveThumbID;
+function Play_CheckLiveThumb(PreventResetFeed) {
+
+    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos),
+        error = STR_STREAM_ERROR;
+
+    if (doc !== null) {
+        doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+        if (Play_MultiEnable) {
+            if (!Play_MultiIsAlredyOPen(doc[14])) return doc;
+        } else if (Play_data.data[14] !== doc[14] && PlayExtra_data.data[14] !== doc[14]) return doc;
+
+        error = STR_ALREDY_PLAYING;
+    }
+
+    Play_showWarningDialog(error);
+    window.clearTimeout(Play_CheckLiveThumbID);
+    Play_CheckLiveThumbID = window.setTimeout(function() {
+        Play_HideWarningDialog();
+    }, 1500);
+
+    if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
+    return null;
 }
 
 function Play_handleKeyDown(e) {
@@ -2700,11 +2714,10 @@ function Play_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(1);
                     else {
-                        var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
-                        if (doc !== null) {
+                        if (Play_CheckLiveThumb(true)) {
                             Play_EndDialogEnter = 1;
                             Play_EndUpclearCalback = Play_handleKeyDown;
-                            Play_OpenLiveFeed(false, doc);
+                            Play_OpenLiveFeed();
                         }
                     }
                 } else if (Play_isPanelShown()) {
