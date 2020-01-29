@@ -2603,8 +2603,8 @@ function Play_ShowMultiDialog() {
 }
 
 function Play_HideMultiDialog() {
-    Play_clearHideMultiDialog();
     Main_HideElement('dialog_multi');
+    Play_clearHideMultiDialog();
     Play_MultiRemoveFocus();
 }
 
