@@ -3310,7 +3310,7 @@ function Play_MakeControls() {
 
     Play_controls[Play_MultiStream] = { //multi
         icons: "multi",
-        string: '4 way multistream',
+        string: STR_4_WAY_MULTI,
         values: null,
         opacity: 0,
         enterKey: function(shutdown) {

@@ -388,4 +388,5 @@ function en_USLang() {
     STR_ALREDY_PLAYING = "Already playing this";
     STR_STREAM_ERROR = "Stream error";
     STR_MULTI_EMPTY = "Ended and/or empty";
+    STR_4_WAY_MULTI = "4 way multistream'";
 }
