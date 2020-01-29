@@ -53,6 +53,7 @@ function en_USLang() {
     STR_VIEWER = "Viewers";
     STR_EXIT_AGAIN = "Click again to exit!";
     STR_EXIT_AGAIN_PICTURE = "Click again to exit Picture in Picture!";
+    STR_EXIT_AGAIN_MULTI = "Click again to exit MultiStream!";
     STR_EXIT_MESSAGE = "Do you want to exit SmartTV Client for Twitch?";
     STR_EXIT = "Exit";
     STR_CLOSE = "Close";
@@ -386,4 +387,5 @@ function en_USLang() {
     STR_REPLACE_MULTI_ENTER = "Press enter to replace or back to exit without.";
     STR_ALREDY_PLAYING = "Already playing this";
     STR_STREAM_ERROR = "Stream error";
+    STR_MULTI_EMPTY = "Ended and/or empty";
 }

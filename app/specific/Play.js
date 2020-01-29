@@ -1295,7 +1295,10 @@ function Play_PreshutdownStream(closePlayer) {
         }
     }
 
-    if (closePlayer) Play_isOn = false;
+    if (closePlayer) {
+        Play_isOn = false;
+        if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
+    }
 
     if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide(true);
 
@@ -2105,7 +2108,8 @@ function Play_KeyReturn(is_vod) {
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
         } else if (Play_ExitDialogVisible() || Play_SingleClickExit) {
-            if (PlayExtra_PicturePicture) Play_CloseSmall();
+            if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
+            else if (PlayExtra_PicturePicture) Play_CloseSmall();
             else {
                 Play_CleanHideExit();
                 Play_hideChat();
@@ -2116,7 +2120,9 @@ function Play_KeyReturn(is_vod) {
             Play_HideWarningDialog();
             Play_showExitDialog();
         } else {
-            Main_textContent("play_dialog_exit_text", PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN);
+            var text = PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN;
+            text = Play_MultiEnable ? STR_EXIT_AGAIN_MULTI : text;
+            Main_textContent("play_dialog_exit_text", text);
             Play_showExitDialog();
         }
     }
@@ -2440,7 +2446,8 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
                 Play_MultiArray[pos].data[13],
                 Play_MultiArray[pos].data[1],
                 Play_MultiArray[pos].data[8],
-                Play_MultiArray[pos].data[9]
+                Play_MultiArray[pos].data[9],
+                twemoji.parse(Play_MultiArray[pos].data[2])
             );
 
             Main_Set_history('live', Play_MultiArray[pos].data);
@@ -2495,22 +2502,24 @@ function Play_MultiEnableKeyRightLeft(adder) {
 function Play_MultiInfoReset(pos) {
     Play_MultiSetinfo(
         pos,
-        '',
+        STR_SPACE,
         -1,
-        '',
+        STR_SPACE,
         false,
-        'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
+        IMG_404_LOGO,
+        STR_MULTI_EMPTY
     );
 }
 
-function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo) {
-    Main_textContent('stream_info_multi_name' + pos, displayname);
+function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title) {
+    Main_innerHTML('stream_info_multi_name' + pos, displayname);
     document.getElementById('stream_info_multiimg' + pos).src = logo;
-    Play_MultiUpdateinfo(pos, game, views, is_rerun);
+    Play_MultiUpdateinfo(pos, game, views, is_rerun, title);
 }
 
-function Play_MultiUpdateinfo(pos, game, views, is_rerun) {
-    Main_textContent('stream_info_multi_game' + pos, game);
+function Play_MultiUpdateinfo(pos, game, views, is_rerun, title) {
+    Main_innerHTML('stream_info_multi_title' + pos, title);
+    Main_innerHTML('stream_info_multi_game' + pos, game === '' ? STR_SPACE : game);
     if (views < 0) Main_textContent("stream_info_multi_views" + pos, '');
     else {
         Main_innerHTML("stream_info_multi_views" + pos,
@@ -2524,15 +2533,15 @@ function Play_MultiSetpannelInfo() {
     Main_textContent('stream_dialog_multi_end', STR_REPLACE_MULTI_ENTER);
     for (var i = 0; i < 4; i++) {
         Main_innerHTML("stream_info_multiimgholder" + i,
-            '<img id="stream_info_multiimg' + i + '" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
+            '<img id="stream_info_multiimg' + i + '" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 
         Main_innerHTML("stream_dialog_multiimgholder" + i,
-            '<img id="stream_dialog_multiimg' + i + '" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
+            '<img id="stream_dialog_multiimg' + i + '" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
     }
     Main_innerHTML("stream_dialog_multiimgholder-1",
-        '<img id="stream_dialog_multiimg-1" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
+        '<img id="stream_dialog_multiimg-1" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
         'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 }
 
@@ -2542,12 +2551,14 @@ function Play_MultiSetUpdateDialog() {
         for (var i = 0; i < 4; i++) {
             Main_textContent('stream_dialog_multi_name' + i, Play_MultiArray[i].data[1]);
             document.getElementById('stream_dialog_multiimg' + i).src = Play_MultiArray[i].data[9];
-            Main_textContent('stream_dialog_multi_game' + i, Play_MultiArray[i].data[3]);
+            Main_innerHTML('stream_dialog_multi_game' + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
+            Main_innerHTML('stream_dialog_multi_title' + i, twemoji.parse(Play_MultiArray[i].data[2]));
         }
 
         Main_textContent('stream_dialog_multi_name-1', doc[1]);
         document.getElementById('stream_dialog_multiimg-1').src = doc[9];
-        Main_textContent('stream_dialog_multi_game-1', doc[3]);
+        Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
+        Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
 
         UserLiveFeed_Hide(true);
         Main_ShowElement('dialog_multi');
@@ -3216,7 +3227,8 @@ function Play_MakeControls() {
                 Play_MultiIsFull = false;
                 Play_controls[Play_controlsAudioMulti].enterKey();
 
-                for (var i = 0; i < 4; i++) {
+                var i = 0;
+                for (i; i < 4; i++) {
                     Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
                 }
 
@@ -3227,7 +3239,8 @@ function Play_MakeControls() {
                     Play_MultiArray[0].data[13],
                     Play_MultiArray[0].data[1],
                     Play_MultiArray[0].data[8],
-                    Play_MultiArray[0].data[9]
+                    Play_MultiArray[0].data[9],
+                    twemoji.parse(Play_MultiArray[0].data[2])
                 );
 
                 if (PlayExtra_PicturePicture) {
@@ -3238,8 +3251,13 @@ function Play_MakeControls() {
                         Play_MultiArray[1].data[13],
                         Play_MultiArray[1].data[1],
                         Play_MultiArray[1].data[8],
-                        Play_MultiArray[1].data[9]
+                        Play_MultiArray[1].data[9],
+                        twemoji.parse(Play_MultiArray[1].data[2])
                     );
+                }
+
+                for (i = PlayExtra_PicturePicture ? 2 : 1; i < 4; i++) {
+                    Play_MultiInfoReset(i);
                 }
 
                 if (Play_isChatShown()) Play_controls[Play_controlsChat].enterKey();
