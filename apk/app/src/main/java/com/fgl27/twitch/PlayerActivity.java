@@ -681,7 +681,7 @@ public class PlayerActivity extends Activity {
             PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize);
         }
 
-        if (!PicturePicture || player[mainPlayer ^ 1] == null) {
+        if (!PicturePicture || player[mainPlayer ^ 1] == null || player[mainPlayer] == null) {
             PicturePicture = false;
             ClearPlayer(mainPlayer ^ 1);
             SwitchPlayerAudio(1);
@@ -1089,7 +1089,11 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetPlayerAudioMulti(int position) {
             myHandler.post(() -> {
-                AudioMulti = position;
+                int mposition = position;
+                if (position == 0) mposition = mainPlayer;
+                else if (position == 1) mposition = mainPlayer ^ 1;
+
+                AudioMulti = mposition;
                 SetPlayerAudioMulti();
             });
         }
