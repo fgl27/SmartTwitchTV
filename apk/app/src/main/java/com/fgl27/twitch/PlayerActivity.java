@@ -666,7 +666,8 @@ public class PlayerActivity extends Activity {
         );
         PlayerView[3].setLayoutParams(PlayerViewSizePos);
 
-        trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
+        if (trackSelector[mainPlayer] != null)
+            trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
     }
 
     public void UnSetMultiStream() {
@@ -687,7 +688,8 @@ public class PlayerActivity extends Activity {
 
         PlayerView[2].setVisibility(View.GONE);
         PlayerView[3].setVisibility(View.GONE);
-        trackSelector[mainPlayer].setParameters(trackSelectorParameters);
+        if (trackSelector[mainPlayer] != null)
+            trackSelector[mainPlayer].setParameters(trackSelectorParameters);
     }
 
     @Override
