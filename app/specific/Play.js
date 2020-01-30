@@ -25,7 +25,6 @@ var Play_Status_Always_On = false;
 var Play_RefreshAutoTry = 0;
 var Play_SingleClickExit = 0;
 var Play_MultiEnable = false;
-var Play_MultiIsFull = false;
 var Play_MultiArray = [];
 //var Play_SupportsSource = true;
 var Play_LowLatency = false;
@@ -1493,7 +1492,7 @@ function Play_VideoStatus(showLatency) {
         value[5] + STR_AVGMB + STR_BR + STR_DROOPED_FRAMES + value[0] + " (" + value[1] + STR_TODAY +
         STR_BR + STR_BUFFER_HEALT + Play_getBuffer(value[6]) +
         (showLatency ? (STR_BR + STR_LATENCY + Play_getBuffer(value[7])) : '') +
-        (Play_MultiEnable ? (STR_BR + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time))): ''));
+        (Play_MultiEnable ? (STR_BR + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time))) : ''));
 }
 
 function Play_getMbps(value) {
@@ -2352,7 +2351,6 @@ function Play_MultiEnd(position) {
         Play_HideWarningDialog();
     }, 2000);
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
-    Play_MultiIsFull = false;
     Play_MultiInfoReset(position);
 }
 
@@ -2374,6 +2372,13 @@ function Play_MultiIsAlredyOPen(Id) {
     return false;
 }
 
+function Play_MultiIsFull() {
+    return (Play_MultiArray[0].data.length > 0) &&
+        (Play_MultiArray[1].data.length > 0) &&
+        (Play_MultiArray[2].data.length > 0) &&
+        (Play_MultiArray[3].data.length > 0);
+}
+
 function Play_MultiStartPrestart(position) {
     console.log('Play_MultiStartPrestart pos ' + position);
 
@@ -2381,12 +2386,8 @@ function Play_MultiStartPrestart(position) {
     var doc = Play_CheckLiveThumb();
     if (doc) {
         position = ((position || position === 0) ? position : Play_MultiFirstClear());
-        if (!Play_MultiIsFull) {
-
-            if (position > 2) {
-                Play_MultiIsFull = true;
-                Main_HideElement('dialog_multi_help');
-            }
+        if (!Play_MultiIsFull()) {
+            if (position > 2) Main_HideElement('dialog_multi_help');
         } else {
             Play_data_old = JSON.parse(JSON.stringify(Play_MultiArray[position]));
         }
@@ -2423,17 +2424,14 @@ function Play_MultiStartErro(pos, streamer, display_name) {
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
-    var Play_MultiIsWasFull = Play_MultiIsFull;
     console.log('Play_MultiStartErro pos ' + pos + ' display_name ' + display_name);
     Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
-    Play_MultiIsFull = false;
     Play_showWarningDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE));
     window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 2000);
 
     if (Play_OlddataSet()) {
-        Play_MultiIsFull = Play_MultiIsWasFull;
         Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_old));
         Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     }
@@ -2476,7 +2474,7 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
         if (xmlHttp.status === 200) {
 
             Play_MultiArray[pos].AutoUrl = theUrl;
-            if (Play_MultiIsFull) UserLiveFeed_Hide(true);
+            if (Play_MultiIsFull()) UserLiveFeed_Hide(true);
 
             try {
                 Android.StartMultiStream(pos, theUrl);
@@ -2841,7 +2839,7 @@ function Play_handleKeyDown(e) {
                     Play_MultiStartPrestart(Play_MultiDialogPos);
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (Play_MultiEnable) {
-                        if (Play_MultiIsFull) {
+                        if (Play_MultiIsFull()) {
                             var mdoc = Play_CheckLiveThumb();
                             if (mdoc) Play_MultiSetUpdateDialog(mdoc);
                         } else Play_MultiStartPrestart();
@@ -3328,7 +3326,6 @@ function Play_MakeControls() {
                 if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
                 Play_MultiEnable = true;
-                Play_MultiIsFull = false;
                 Play_controls[Play_controlsAudioMulti].enterKey();
 
                 var i = 0;
