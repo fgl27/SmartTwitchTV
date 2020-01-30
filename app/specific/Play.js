@@ -2323,7 +2323,7 @@ function Play_UpdateMainStream() {
     Play_loadChat();
 
     //Restore info panel
-    Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[12], false, true));
+    Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[2], false, true));
     Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_Lang);
     var playing = (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : "");
     Main_textContent("stream_info_game", playing);
