@@ -447,9 +447,30 @@
             white-space: normal;
         }
 
+        .dialog_multi {
+            z-index: 2;
+            border-radius: 1em;
+            left: 15%;
+            width: 70% !important;
+            height: auto !important;
+            top: 50%;
+            text-align: center;
+            transform: translateY(-50%);
+            font-size: 135%;
+            background-color: rgba(0, 0, 0, 0.70) !important;
+            border: 0.1em solid #FFFFFF;
+        }
+
+        .stream_info_multi_diag_div,
         .stream_info_multi_div {
             width: 34%;
             display: inline-block;
+        }
+
+        .stream_info_multi_diag_div {
+            width: 45%;
+            padding: 2%;
+            padding-right: 2.5%;
         }
 
         div.stream_thumbnail_channel {
@@ -1659,6 +1680,7 @@
             color: #FFFFFF;
         }
 
+        div.multi_dialog_div,
         div.side_panel_div {
             width: 100%;
             height: 0;
@@ -1670,6 +1692,10 @@
             border-top: 0.05em solid;
             border-bottom: 0.05em solid;
             border-image: linear-gradient(#000000, #000000) 1;
+        }
+
+        div.multi_dialog_div {
+            border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
         }
 
         div.side_panel_div_focused {
@@ -1717,6 +1743,14 @@
             padding-left: 3%;
         }
 
+        .dialog_multi_title {
+            width: 100%;
+            text-align: center;
+            color: #FFFFFF;
+            font-family: 'Roboto-Bold';
+            font-size: 100%;
+        }
+
         div.notification_name,
         div.notification_game,
         div.side_panel_new_title,
@@ -1728,6 +1762,7 @@
             overflow: hidden;
             font-family: 'Roboto-Bold';
             font-size: 84%;
+            padding-left: 1%;
         }
 
         div.side_panel_new_game {
@@ -2547,6 +2582,79 @@
                 <div class="about_dialogs" style="width: 60%; margin-left: 20%;">
                     <div id="dialog_os_text" class="about_text" style="font-size: 100%;"></div>
                 </div>
+            </div>
+            <div id="dialog_multi" class="screens dialog_multi hide">
+                <div class=" stream_info_multi_diag_div" style="padding: 0;">
+                    <div class="side_panel_feed">
+                        <div class="multi_dialog_div">
+                            <div style="width: 100%; text-align: left;">
+                                <div id="stream_dialog_multiimgholder-1" class="side_panel_iner_div1"></div>
+                                <div class="side_panel_iner_div2">
+                                    <div id="stream_dialog_multi_name-1" class="side_panel_new_title"></div>
+                                    <div id="stream_dialog_multi_game-1" class="side_panel_new_game"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="stream_dialog_multi_title" class="dialog_multi_title"></div>
+                <div>
+                    <div class=" stream_info_multi_diag_div">
+                        <div class="side_panel_feed">
+                            <div class="multi_dialog_div side_panel_div_focused">
+                                <div style="width: 100%; text-align: left;">
+                                    <div id="stream_dialog_multiimgholder0" class="side_panel_iner_div1"></div>
+                                    <div class="side_panel_iner_div2">
+                                        <div id="stream_dialog_multi_name0" class="side_panel_new_title"></div>
+                                        <div id="stream_dialog_multi_game0" class="side_panel_new_game"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stream_info_multi_diag_div">
+                        <div class="side_panel_feed">
+                            <div class="multi_dialog_div">
+                                <div style="width: 100%; text-align: left;">
+                                    <div id="stream_dialog_multiimgholder1" class="side_panel_iner_div1"></div>
+                                    <div class="side_panel_iner_div2">
+                                        <div id="stream_dialog_multi_name1" class="side_panel_new_title"></div>
+                                        <div id="stream_dialog_multi_game1" class="side_panel_new_game"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="stream_info_multi_diag_div">
+                        <div class="side_panel_feed">
+                            <div class="multi_dialog_div">
+                                <div style="width: 100%; text-align: left;">
+                                    <div id="stream_dialog_multiimgholder2" class="side_panel_iner_div1"></div>
+                                    <div class="side_panel_iner_div2">
+                                        <div id="stream_dialog_multi_name2" class="side_panel_new_title"></div>
+                                        <div id="stream_dialog_multi_game2" class="side_panel_new_game"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stream_info_multi_diag_div">
+                        <div class="side_panel_feed">
+                            <div class="multi_dialog_div">
+                                <div style="width: 100%; text-align: left;">
+                                    <div id="stream_dialog_multiimgholder3" class="side_panel_iner_div1"></div>
+                                    <div class="side_panel_iner_div2">
+                                        <div id="stream_dialog_multi_name3" class="side_panel_new_title"></div>
+                                        <div id="stream_dialog_multi_game3" class="side_panel_new_game"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="stream_dialog_multi_end" class="dialog_multi_title" style="padding: 4%;"></div>
             </div>
             <div id="dialog_vod_start" class="dialogs hide"
                 style="z-index:3; font-size: 150%; height: 75%; margin-top: 25%;">

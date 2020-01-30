@@ -2529,10 +2529,40 @@ function Play_MultiUpdateinfo(pos, game, views, is_rerun) {
 }
 
 function Play_MultiSetpannelInfo() {
+    Main_textContent('stream_dialog_multi_title', STR_REPLACE_MULTI);
+    Main_textContent('stream_dialog_multi_end', STR_REPLACE_MULTI_ENTER);
     for (var i = 0; i < 4; i++) {
         Main_innerHTML("stream_info_multiimgholder" + i,
             '<img id="stream_info_multiimg' + i + '" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+
+        Main_innerHTML("stream_dialog_multiimgholder" + i,
+            '<img id="stream_dialog_multiimg' + i + '" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
+            'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+    }
+    Main_innerHTML("stream_dialog_multiimgholder-1",
+    '<img id="stream_dialog_multiimg-1" class="side_panel_channel_img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="' +
+    'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+}
+
+function Play_MultiSetUpdateDialog() {
+    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos);
+    if (doc === null) UserLiveFeed_ResetFeedId();
+    else {
+        for (var i = 0; i < 4; i++) {
+            Main_textContent('stream_dialog_multi_name' + i, Play_MultiArray[i].data[1]);
+            document.getElementById('stream_dialog_multiimg' + i).src = Play_MultiArray[i].data[9];
+            Main_textContent('stream_dialog_multi_game' + i, Play_MultiArray[i].data[3]);
+        }
+
+        doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+        Main_textContent('stream_dialog_multi_name-1', doc[1]);
+        document.getElementById('stream_dialog_multiimg-1').src = doc[9];
+        Main_textContent('stream_dialog_multi_game-1', doc[3]);
+
+        UserLiveFeed_Hide(true);
+        Main_ShowElement('dialog_multi');
     }
 }
 
@@ -2684,7 +2714,10 @@ function Play_handleKeyDown(e) {
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
-                    if (Play_MultiEnable) Play_MultiStartPrestart();
+                    if (Play_MultiEnable) {
+                        if (Play_MultiIsFull) Play_MultiSetUpdateDialog();
+                        else Play_MultiStartPrestart();
+                    }
                     else {
                         document.body.removeEventListener("keydown", Play_handleKeyDown, false);
                         document.body.addEventListener("keyup", Play_handleKeyUp, false);
