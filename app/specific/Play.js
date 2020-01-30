@@ -272,11 +272,9 @@ function Play_Start() {
     //reset channel logo to prevent another channel logo
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO_TEMP);
 
-    //past broadcast
+    document.getElementById('controls_' + Play_MultiStream).style.display = '';
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
-    //Chat delay
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
-
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
 
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();

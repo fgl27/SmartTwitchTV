@@ -938,7 +938,6 @@ function Screens_handleKeyDown(event) {
             if (!inUseObj.loadingData) inUseObj.key_exit();
             break;
         case KEY_LEFT:
-            //Main_History_Sort('live', 'name', 1);
             if (inUseObj.loadingData) break;
             if (!inUseObj.posX) Screens_OpenSidePanel();
             else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);

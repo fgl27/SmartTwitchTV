@@ -60,11 +60,9 @@ function PlayVod_Start() {
     Main_HideElement('progress_pause_holder');
     Main_ShowElement('progress_bar_div');
 
-    //past broadcast
+    document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
-    //Chat delay
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
-
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
