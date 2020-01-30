@@ -1876,6 +1876,9 @@ function Play_OpenChannel(PlayVodClip) {
     Main_values.Main_Go = Main_ChannelContent;
 
     if (PlayVodClip === 1) {
+        if (Play_MultiEnable) {
+            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
+        }
         Play_ClearPP();
         Main_values.Main_selectedChannel_id = Play_data.data[14];
         Main_values.Main_selectedChannel = Play_data.data[6];
@@ -1921,7 +1924,11 @@ function Play_OpenGame(PlayVodClip) {
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_aGame;
 
+    if (Play_MultiEnable) {
+        Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
+    }
     Main_values.Main_gameSelected = Play_data.data[3];
+
     Play_hideChat();
     if (PlayVodClip === 1) {
         Play_ClearPP();
@@ -2245,6 +2252,7 @@ function Play_Exit() {
     Play_CleanHideExit();
     Play_hideChat();
     PlayExtra_PicturePicture = false;
+    PlayExtra_PicturePicture = false;
     PlayExtra_data.data[6] = '';
     Play_shutdownStream();
 }
@@ -2389,6 +2397,7 @@ function Play_MultiStartPrestart(position) {
         if (!Play_MultiIsFull()) {
             if (position > 2) Main_HideElement('dialog_multi_help');
         } else {
+            Main_HideElement('dialog_multi_help');
             Play_data_old = JSON.parse(JSON.stringify(Play_MultiArray[position]));
         }
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
@@ -2425,16 +2434,18 @@ function Play_MultiStartErro(pos, streamer, display_name) {
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
     console.log('Play_MultiStartErro pos ' + pos + ' display_name ' + display_name);
-    Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
+
     Play_showWarningDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE));
     window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 2000);
 
     if (Play_OlddataSet()) {
+
         Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_old));
         Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-    }
+
+    } else Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
 }
 
 function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name) {
@@ -3325,7 +3336,6 @@ function Play_MakeControls() {
                 Play_Multi_SetPanel();
                 if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
 
-                Play_MultiEnable = true;
                 Play_controls[Play_controlsAudioMulti].enterKey();
 
                 var i = 0;
