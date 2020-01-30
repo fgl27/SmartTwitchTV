@@ -1492,7 +1492,8 @@ function Play_VideoStatus(showLatency) {
         " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +
         value[5] + STR_AVGMB + STR_BR + STR_DROOPED_FRAMES + value[0] + " (" + value[1] + STR_TODAY +
         STR_BR + STR_BUFFER_HEALT + Play_getBuffer(value[6]) +
-        (showLatency ? (STR_BR + STR_LATENCY + Play_getBuffer(value[7])) : ''));
+        (showLatency ? (STR_BR + STR_LATENCY + Play_getBuffer(value[7])) : '') +
+        (Play_MultiEnable ? (STR_BR + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time))): ''));
 }
 
 function Play_getMbps(value) {
