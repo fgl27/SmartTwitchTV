@@ -2130,14 +2130,18 @@ function Play_CloseBigAndSwich(error_410) {
         Play_HideWarningDialog();
     }, 2500);
 
-    if (Main_IsNotBrowser) Android.mSwitchPlayer();
-    PlayExtra_SwitchPlayer();
-    if (Main_IsNotBrowser) Android.mClearSmallPlayer();
-
     PlayExtra_PicturePicture = false;
-    PlayExtra_data.data[6] = '';
+    if (PlayExtra_data.data.length > 0) {
+        if (Main_IsNotBrowser) Android.mSwitchPlayer();
+        PlayExtra_SwitchPlayer();
+        if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+        
+        Play_CleanHideExit();
+    } else {
+        if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+        Play_CheckHostStart(error_410);
+    }
     PlayExtra_UnSetPanel();
-    Play_CleanHideExit();
 }
 
 function Play_CloseSmall() {
