@@ -133,7 +133,6 @@ function PlayExtra_End(doSwitch) { // Called only by JAVA
     window.setTimeout(function() {
         Play_HideWarningDialog();
     }, 2500);
-    PlayExtra_data.data[6] = '';
 }
 
 function PlayExtra_loadDataSuccess(responseText) {
@@ -292,7 +291,7 @@ function PlayExtra_loadDataFail(Reason) {
     if (Play_data_old.data.length < 0) {
 
         PlayExtra_PicturePicture = false;
-        PlayExtra_data.data[6] = '';
+        PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         ChatLive_Clear(1);
         Main_HideElement('chat_container2');
         if (Main_IsNotBrowser && !Play_isFullScreen) Android.mupdatesize(!Play_isFullScreen);
