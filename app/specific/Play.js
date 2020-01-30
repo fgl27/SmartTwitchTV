@@ -2135,7 +2135,7 @@ function Play_CloseBigAndSwich(error_410) {
         if (Main_IsNotBrowser) Android.mSwitchPlayer();
         PlayExtra_SwitchPlayer();
         if (Main_IsNotBrowser) Android.mClearSmallPlayer();
-        
+
         Play_CleanHideExit();
     } else {
         if (Main_IsNotBrowser) Android.mClearSmallPlayer();
@@ -2256,6 +2256,7 @@ function Play_Multi_SetPanel() {
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = '';
     document.getElementById('controls_' + Play_controlsAudioMulti).style.display = '';
+    UserLiveFeed_Unset();
     ChatLive_Clear(1);
     PlayExtra_HideChat();
     Main_HideElement('stream_info');
@@ -2270,6 +2271,7 @@ function Play_Multi_UnSetPanel(shutdown) {
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+    UserLiveFeed_SetHoldUp();
     Main_ShowElement('stream_info');
     Main_HideElement('stream_info_multi');
     Main_HideElement('dialog_multi_help');
