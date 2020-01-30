@@ -61,6 +61,7 @@ function PlayClip_Start() {
     PlayClip_SetOpenVod();
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
+    document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
