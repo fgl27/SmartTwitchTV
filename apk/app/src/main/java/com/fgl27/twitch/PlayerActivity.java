@@ -1213,7 +1213,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void setPlaybackSpeed(float value) {
             myHandler.post(() -> {
-                if (player[mainPlayer] != null)
+                if (MultiStream) {
+                    for(int i = 0; i < PlayerAcount; i++) {
+                        if (player[i] != null)
+                            player[i].setPlaybackParameters(new PlaybackParameters(value, 1.0f));  
+                    }
+                } else if (player[mainPlayer] != null)
                     player[mainPlayer].setPlaybackParameters(new PlaybackParameters(value, 1.0f));
             });
         }
