@@ -903,7 +903,7 @@ function Screens_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_PG_UP:
             //TODO improve this pg up and down so many unnecessary ifs
-            if (!inUseObj.loadingData && inUseObj.key_pgUp) {
+            if (inUseObj.key_pgUp) {
                 Screens_RemoveAllFocus();
                 if (inUseObj.screen === Main_UserChannels)
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgUpNext : inUseObj.key_pgUp);
@@ -918,7 +918,7 @@ function Screens_handleKeyDown(event) {
             }
             break;
         case KEY_PG_DOWN:
-            if (!inUseObj.loadingData && inUseObj.key_pgDown) {
+            if (inUseObj.key_pgDown) {
                 Screens_RemoveAllFocus();
                 if (inUseObj.screen === Main_usergames)
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgDownNext : inUseObj.key_pgDown);
@@ -935,10 +935,9 @@ function Screens_handleKeyDown(event) {
         case KEY_RETURN_Q:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            if (!inUseObj.loadingData) inUseObj.key_exit();
+            inUseObj.key_exit();
             break;
         case KEY_LEFT:
-            if (inUseObj.loadingData) break;
             if (!inUseObj.posX) Screens_OpenSidePanel();
             else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
@@ -1001,12 +1000,10 @@ function Screens_handleKeyDown(event) {
             Main_showExitDialog();
             break;
         case KEY_CHAT:
-            if (!inUseObj.loadingData) {
-                Screens_OpenSidePanel(AddUser_UserIsSet());
-                if (!AddUser_UserIsSet()) {
-                    Main_showWarningDialog(STR_NOKUSER_WARN);
-                    window.setTimeout(Main_HideWarningDialog, 2000);
-                }
+            Screens_OpenSidePanel(AddUser_UserIsSet());
+            if (!AddUser_UserIsSet()) {
+                Main_showWarningDialog(STR_NOKUSER_WARN);
+                window.setTimeout(Main_HideWarningDialog, 2000);
             }
             break;
         default:
