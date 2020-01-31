@@ -33,6 +33,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -86,13 +87,14 @@ public final class Tools {
 
     public static String readUrlHLS(Context context, String url) {
         try {
-            JsonObject JSON =
+            Response<String> result =
                     Ion.with(context)
                             .load(url)
-                            .asJsonObject()
+                            .asString()
+                            .withResponse()
                             .get();
-            if (JSON != null) {
-                return JsonObToString(200, JSON.toString());
+            if (result != null) {
+                return JsonObToString(result.getHeaders().code(), result.getResult());
             }
         } catch (InterruptedException e) {
             Log.w(TAG, "readUrlHLS InterruptedException ", e);
