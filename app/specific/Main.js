@@ -48,10 +48,6 @@ var Main_values = {
     "Main_gameSelected_id": '',
     "Main_OldgameSelected": null,
     "Play_isHost": false,
-    "Play_DisplaynameHost": '',
-    "Play_selectedChannelDisplayname": '',
-    "Play_selectedChannel": '',
-    "Play_gameSelected": '',
     "Users_AddcodePosition": 0,
     "Play_WasPlaying": 0,
     "ChannelVod_vodId": '',
@@ -127,8 +123,8 @@ var Main_TwithcV5Flag_I = '?api_version=5';
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
-var Main_stringVersion = '2.0';
-var Main_stringVersion_Min = '.108';
+var Main_stringVersion = '3.0';
+var Main_stringVersion_Min = '.109';
 var Main_minversion = '011920';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsNotBrowserVersion = '';
@@ -174,7 +170,8 @@ function Main_loadTranslations(language) {
                     'Play_PlayerCheck': Play_PlayerCheck,
                     'Play_UpdateDuration': Play_UpdateDuration,
                     'Play_CheckResumeForced': Play_CheckResumeForced,
-                    'PlayExtra_End': PlayExtra_End
+                    'PlayExtra_End': PlayExtra_End,
+                    'Play_MultiEnd': Play_MultiEnd
                 };
             }
             Main_IsNotBrowser = Android.getAndroid();
@@ -304,10 +301,8 @@ function Main_initWindows() {
 
         //Backup at start as a backup may never be done yet
         if (Main_CanBackup) {
-            try {
-                Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-            } catch (e) {}
+            Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+            Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
         }
 
     } catch (e) {
@@ -342,12 +337,7 @@ function Main_initWindows() {
         //Disable googles OMX.google.h264.decoder if another codec is available
         //Check if at least one none google codec is available
         if (!Main_values.Codec_is_Check) {
-            var getcodec = null;
-            try {
-                getcodec = Android.getcodecCapabilities('avc');
-            } catch (e) {
-                getcodec = null;
-            }
+            var getcodec = Android.getcodecCapabilities('avc');
 
             if (getcodec !== null) {
 
@@ -370,9 +360,7 @@ function Main_initWindows() {
                         Main_setItem(codecsnames[0], 1);
                         Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
 
-                        try {
-                            Android.setBlackListMediaCodec(codecsnames.join());
-                        } catch (e) {}
+                        Android.setBlackListMediaCodec(codecsnames.join());
                     }
                 }
             }
@@ -523,6 +511,8 @@ function Main_SetStringsSecondary() {
     Main_textContent('dialog_thumb_opt_setting_name_1', STR_OPEN_GAME);
     Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
     Main_textContent('dialog_thumb_opt_setting_name_4', STR_GO_TO);
+
+    Main_innerHTML("dialog_multi_help_text", STR_CONTROLS_MULTI);
 }
 
 var Main_initClickDoc = [
@@ -977,10 +967,12 @@ function Main_OpenSearch() {
 
 function Main_SaveValues() {
     Main_setItem('Main_values', JSON.stringify(Main_values));
+    Main_setItem('Play_data', JSON.stringify(Play_data));
 }
 
 function Main_RestoreValues() {
     Main_values = Screens_assign(Main_values, Main_getItemJson('Main_values', {}));
+    Play_data = Screens_assign(Play_data, Main_getItemJson('Play_data', {}));
 }
 
 var Main_ExitCurrentobj = {
@@ -1106,10 +1098,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
-
-    Main_values.Play_selectedChannel = Main_values_Play_data[6];
-    Main_values.Play_selectedChannel_id = Main_values_Play_data[14];
-    Main_values.IsRerun = Main_values_Play_data[8];
+    Play_data.data = Main_values_Play_data;
 
     if (checkHistory) {
 
@@ -1123,7 +1112,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
             } else {//is live check is is really
 
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[3] + id);
-                else Main_OPenAsLive();
+                else Main_openStream();
 
                 return;
             }
@@ -1134,11 +1123,9 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
 
     if (Main_values.Play_isHost) {
-        Main_values.Play_DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
-        Main_values.Play_selectedChannelDisplayname = Main_values.Play_DisplaynameHost.split(STR_USER_HOSTING)[1];
-    } else Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
-
-    Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
+        Play_data.Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
+        Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+    }
 
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
@@ -1157,7 +1144,7 @@ function Main_CheckBroadcastID(index, doc) {
 }
 
 function Main_CheckBroadcastIDStart() {
-    var theUrl = Main_kraken_api + 'streams/' + Main_values.Play_selectedChannel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
     BasexmlHttpGet(theUrl, 3000, 2, null, Main_CheckBroadcastIDStartSucess, Main_CheckBroadcastIDStartError, false);
 }
 
@@ -1165,7 +1152,7 @@ function Main_CheckBroadcastIDStartSucess(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
         if (Main_values_Play_data[7] === response.stream._id) {
-            Main_OPenAsLive();
+            Main_openStream();
             return;
         }
     }
@@ -1189,18 +1176,12 @@ function Main_CheckBroadcastIDStartError() {
     if (Main_CheckBroadcastIDErrorTry < 5) {
         Main_CheckBroadcastIDStart();
         Main_CheckBroadcastIDErrorTry++;
-    } else Main_OPenAsLive();
-}
-
-function Main_OPenAsLive() {
-    Main_values.Play_selectedChannelDisplayname = Main_values_Play_data[1];
-    Main_values.Play_gameSelected = (Main_values_Play_data[3] !== "" ? STR_PLAYING + Main_values_Play_data[3] : '');
-    Main_openStream();
+    } else Main_openStream();
 }
 
 function Main_OPenAsVod(index) {
     if (!Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-        Main_OPenAsLive();
+        Main_openStream();
         return;
     }
 
@@ -1246,9 +1227,9 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     PlayClip_DurationSeconds = parseInt(Main_values_Play_data[1]);
     Main_values.Main_selectedChannel_id = Main_values_Play_data[2];
 
-    Main_values.Play_gameSelected = Main_values_Play_data[3];
-    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
-    ChannelClip_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_PLAYING + Main_values.Play_gameSelected : "");
+    Play_data.data[3] = Main_values_Play_data[3];
+    if (Play_data.data[3] === null) Play_data.data[3] = "";
+    ChannelClip_game = (Play_data.data[3] !== "" && Play_data.data[3] !== null ? STR_PLAYING + Play_data.data[3] : "");
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[4];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[5];
@@ -1280,9 +1261,9 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
     ChannelVod_createdAt = Main_values_Play_data[2];
 
-    Main_values.Play_gameSelected = Main_values_Play_data[3];
-    if (Main_values.Play_gameSelected === null) Main_values.Play_gameSelected = "";
-    ChannelVod_game = (Main_values.Play_gameSelected !== "" && Main_values.Play_gameSelected !== null ? STR_STARTED + STR_PLAYING + Main_values.Play_gameSelected : "");
+    Play_data.data[3] = Main_values_Play_data[3];
+    if (Play_data.data[3] === null) Play_data.data[3] = "";
+    ChannelVod_game = (Play_data.data[3] !== "" && Play_data.data[3] !== null ? STR_STARTED + STR_PLAYING + Play_data.data[3] : "");
 
     ChannelVod_views = Main_values_Play_data[4];
 
@@ -1585,11 +1566,7 @@ function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 }
 
 function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mreadUrlHLS(theUrl);
-    } catch (e) {}
+    var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {
@@ -1597,14 +1574,10 @@ function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
         return;
     }
 
-    try {
-
-        if (JSON.parse(xmlHttp.responseText).hasOwnProperty('status'))
-            calbackError();
-        else
-            callbackSucess(xmlHttp.responseText);
-
-    } catch (e) {}
+    if (JSON.parse(xmlHttp.responseText).hasOwnProperty('status'))
+        calbackError();
+    else
+        callbackSucess(xmlHttp.responseText);
 }
 
 function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
@@ -1666,13 +1639,13 @@ function Main_ReplaceLargeFont(text) {
     });
 }
 
-function Main_Set_history(type) {
+function Main_Set_history(type, Data) {
     if (type === 'live' && HistoryLive.histPosX[1]) return;
     if (type === 'vod' && HistoryVod.histPosX[1]) return;
     if (type === 'clip' && HistoryClip.histPosX[1]) return;
 
-    if (AddUser_IsUserSet() && Main_values_Play_data) {
-        var index = Main_history_Exist(type, Main_values_Play_data[7]);
+    if (AddUser_IsUserSet() && Data) {
+        var index = Main_history_Exist(type, Data[7]);
 
         if (index > -1) {
 
@@ -1680,10 +1653,10 @@ function Main_Set_history(type) {
             Main_values_History_data[AddUser_UsernameArray[0].id][type][index] = Screens_assign(
                 Main_values_History_data[AddUser_UsernameArray[0].id][type][index],
                 {
-                    data: Main_values_Play_data,
+                    data: Data,
                     date: new Date().getTime(),
-                    game: Main_values_Play_data[3],
-                    views: Main_values_Play_data[13],
+                    game: Data[3],
+                    views: Data[13],
                 }
             );
 
@@ -1703,13 +1676,13 @@ function Main_Set_history(type) {
 
             Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
                 {
-                    data: Main_values_Play_data,
+                    data: Data,
                     date: new Date().getTime(),
-                    name: Main_values_Play_data[6].toLowerCase(),
-                    game: Main_values_Play_data[3],
-                    id: Main_values_Play_data[7],
-                    views: Main_values_Play_data[13],
-                    created_at: new Date(Main_values_Play_data[12]).getTime(),
+                    name: Data[6].toLowerCase(),
+                    game: Data[3],
+                    id: Data[7],
+                    views: Data[13],
+                    created_at: new Date(Data[12]).getTime(),
                     watched: 0
                 }
             );
@@ -1865,9 +1838,7 @@ function Main_History_Sort(array, msort, direction) {
 function Main_setHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
     Main_setItem('Main_values_History_data', string);
-    try {
-        if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
-    } catch (e) {}
+    if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
 }
 
 function Main_Slice(arrayTocopy) {

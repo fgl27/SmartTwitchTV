@@ -34,8 +34,8 @@ function ChatLive_Init(chat_number) {
 
 
     ChatLive_Id[chat_number] = (new Date()).getTime();
-    ChatLive_selectedChannel_id[chat_number] = !chat_number ? Main_values.Play_selectedChannel_id : PlayExtra_selectedChannel_id;
-    ChatLive_selectedChannel[chat_number] = !chat_number ? Main_values.Play_selectedChannel : PlayExtra_selectedChannel;
+    ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
+    ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
     ChatLive_loadBadgesChannel(ChatLive_Id[chat_number], ChatLive_loadBadgesChannelSuccess, chat_number);
 
 }
@@ -166,20 +166,23 @@ function ChatLive_loadCheersChannelError(chat_number) {
 function ChatLive_loadCheersChannelSuccess(data, chat_number) {
     cheers[ChatLive_selectedChannel_id[chat_number]] = {};
 
-    data.actions.forEach(
-        function(action) {
+    try {
+        data.actions.forEach(
+            function(action) {
 
-            cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix] = {};
+                cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix] = {};
 
-            action.tiers.forEach(
-                function(tier) {
-                    cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = tier.images.light.animated['4'];
-                }
-            );
-        }
-    );
+                action.tiers.forEach(
+                    function(tier) {
+                        cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = tier.images.light.animated['4'];
+                    }
+                );
+            }
+        );
 
-    extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]] = 1;
+        extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]] = 1;
+    } catch (e) {}
+
 }
 
 function ChatLive_loadEmotesChannelffz(chat_number) {
@@ -289,7 +292,7 @@ function ChatLive_loadChatRequest(chat_number) {
             case "JOIN":
                 ChatLive_loaded[chat_number] = true;
                 var div = '&nbsp;<span class="message">' + STR_BR + STR_LOADING_CHAT +
-                    (!chat_number ? Main_values.Play_selectedChannelDisplayname : PlayExtra_selectedChannelDisplayname) + ' ' + STR_LIVE + '</span>';
+                    (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ' + STR_LIVE + '</span>';
 
                 if (Play_ChatDelayPosition) {
                     var stringSec = STR_SECOND;

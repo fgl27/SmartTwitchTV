@@ -481,38 +481,26 @@ function AddCode_CheckFallowGame() {
 
 function AddCode_RequestCheckFallowGame() {
     var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[0].name + '/follows/games/' +
-        encodeURIComponent(Main_values.Main_gameSelected);
+        encodeURIComponent(Main_values.Main_gameSelected) + Main_TwithcV5Flag_I;
 
-    var xmlHttp;
+    AddCode_BasexmlHttpGetBack(theUrl, 'GET', 2, null, AddCode_CheckFallowGameReady);
+}
 
-    try {
-        xmlHttp = Android.mreadUrlHLS(theUrl);
-    } catch (e) {}
-
-    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-    else {
-        AddCode_CheckFallowGameError();
-        return;
-    }
-
-    try {
-        xmlHttp = JSON.parse(xmlHttp.responseText);
-
-        if (xmlHttp.hasOwnProperty('status')) {
-            if (xmlHttp.status === 404) { //success no user doesnot fallows
-                AGame_fallowing = false;
-                AGame_setFallow();
-                return;
-            } else { // internet error
-                AddCode_CheckFallowGameError();
-                return;
-            }
-        } else {
+function AddCode_CheckFallowGameReady(xmlHttp) {
+    if (xmlHttp.readyState === 4) {
+        if (xmlHttp.status === 200) { //success yes user fallows
             AGame_fallowing = true;
             AGame_setFallow();
+            return;
+        } else if (xmlHttp.status === 404) { //success no user doesnot fallows
+            AGame_fallowing = false;
+            AGame_setFallow();
+            return;
+        } else { // internet error
+            AddCode_CheckFallowGameError();
+            return;
         }
-
-    } catch (e) {}
+    }
 }
 
 function AddCode_CheckFallowGameError() {
@@ -563,13 +551,29 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
 }
 
 function AddCode_BasereadwritedUrl(theUrl, Method, HeaderQuatity, access_token, callbackready) {
-    //remove the try after some app updates
-    try {
-        var xmlHttp = Android.mMethodUrl(theUrl, 5000, HeaderQuatity, access_token, null, null, Method);
+    var xmlHttp = Android.mMethodUrl(theUrl, 5000, HeaderQuatity, access_token, null, null, Method);
 
-        if (xmlHttp) callbackready(JSON.parse(xmlHttp));
-        else callbackready(xmlHttp);
-    } catch (e) {
-        AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackready);
-    }
+    if (xmlHttp) callbackready(JSON.parse(xmlHttp));
+    else callbackready(xmlHttp);
+
+}
+
+function AddCode_BasexmlHttpGetBack(theUrl, type, HeaderQuatity, access_token, callbackready) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open(type, theUrl, true);
+    xmlHttp.timeout = AddCode_loadingDataTimeout;
+
+    Main_Headers_Back[2][1] = access_token;
+
+    for (var i = 0; i < HeaderQuatity; i++)
+        xmlHttp.setRequestHeader(Main_Headers_Back[i][0], Main_Headers_Back[i][1]);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        callbackready(xmlHttp);
+    };
+
+    xmlHttp.send(null);
 }

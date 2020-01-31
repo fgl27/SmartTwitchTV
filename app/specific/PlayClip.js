@@ -61,6 +61,7 @@ function PlayClip_Start() {
     PlayClip_SetOpenVod();
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
+    document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
@@ -110,7 +111,7 @@ function PlayClip_Start() {
         Play_controls[Play_controlsOpenVod].setLable('');
     }
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
-    Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
+    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 }
 
 function PlayClip_updateVodInfo() {
@@ -160,11 +161,7 @@ function PlayClip_loadDataRequest() {
         postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
             '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
 
-    var xmlHttp;
-
-    try {
-        xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout, 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
-    } catch (e) {}
+    var xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout, 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {
@@ -210,7 +207,7 @@ function PlayClip_loadDataSuccessFake() {
     ];
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
-    Main_Set_history('clip');
+    Main_Set_history('clip', Main_values_Play_data);
 }
 
 function PlayClip_loadDataSuccess410() {
@@ -222,7 +219,7 @@ function PlayClip_loadDataSuccess410() {
 
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
-    Main_Set_history('clip');
+    Main_Set_history('clip', Main_values_Play_data);
 }
 
 function PlayClip_QualityGenerate(response) {
@@ -250,7 +247,7 @@ function PlayClip_QualityGenerate(response) {
 
     PlayClip_state = PlayClip_STATE_PLAYING;
     PlayClip_qualityChanged();
-    Main_Set_history('clip');
+    Main_Set_history('clip', Main_values_Play_data);
 }
 
 function PlayClip_FrameRate(value) {

@@ -53,6 +53,7 @@ function en_USLang() {
     STR_VIEWER = "Viewers";
     STR_EXIT_AGAIN = "Click again to exit!";
     STR_EXIT_AGAIN_PICTURE = "Click again to exit Picture in Picture!";
+    STR_EXIT_AGAIN_MULTI = "Click again to exit MultiStream!";
     STR_EXIT_MESSAGE = "Do you want to exit SmartTV Client for Twitch?";
     STR_EXIT = "Exit";
     STR_CLOSE = "Close";
@@ -266,11 +267,13 @@ function en_USLang() {
     STR_PLAYER_AUTO_BIG = "Main window";
     STR_PLAYER_AUTO_SMALLS = "Small window";
     STR_PLAYER_AUTO_ALL = "Both windows";
+    STR_PLAYER_MULTI_ALL = "All windows";
+    STR_PLAYER_WINDOW = "Window ";
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
     STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
     STR_PLAYER_BITRATE_SUMMARY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
-    STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode)";
+    STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
     STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
     STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
     STR_AUDIO_SOURCE = "Audio source";
@@ -337,6 +340,8 @@ function en_USLang() {
     STR_MAX_BIT = "Max bitrate: ";
     STR_MAX_LEVEL = "Max level: ";
     STR_MAX_FPS = "Max fps per resolution:";
+    STR_MAX_INSTANCES = "Max instances: ";
+    STR_UNKNOWN = "Unknown";
     STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
     STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
@@ -378,4 +383,17 @@ function en_USLang() {
     STR_CHECK_HISTORY = "Checking fallow status";
     STR_REFRESH_DELETE = "Refresh the screen after delete to see the change.";
     STR_THUMB_OPTIONS_TOP = "Hold right for thumbnail options";
+    STR_REPLACE_MULTI = "Choose with to replace by the above?";
+    STR_REPLACE_MULTI_ENTER = "Press enter to replace or back to exit without.";
+    STR_ALREDY_PLAYING = "Already playing this";
+    STR_STREAM_ERROR = "Stream error";
+    STR_MULTI_EMPTY = "Ended and/or empty";
+    STR_4_WAY_MULTI = "4 way multistream'";
+    STR_CONTROLS_MULTI_0 = "Multistream help:";
+    STR_CONTROLS_MULTI_1 = 'If you are having lag issues after enable multistream, try to lower the value of "Small player bitrate" in settings, accumulation of skipped frames or constant buffering is a indication of too high bitrate or slow internet';
+    STR_CONTROLS_MULTI_2 = "Add streams: open live feed key up and click on a live stream";
+    STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from live feed and chose one to replace from the dialog";
+    STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left";
+    STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
+    STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
 }
