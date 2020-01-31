@@ -44,15 +44,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
@@ -130,17 +124,11 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                final Charset mresponseCharset = mresponseCharset(urlConnection.getContentType());
-
-                if (mresponseCharset != null) {
-                    byte[] responseBytes;
-
-                    if (status != HttpURLConnection.HTTP_OK)
-                        responseBytes = readFully(urlConnection.getErrorStream());
-                    else responseBytes = readFully(urlConnection.getInputStream());
-
-                    return JsonObToString(status, new String(responseBytes, mresponseCharset));
-                } else return JsonObToString(status, "fail");
+                return JsonObToString(status, new String(
+                        status != HttpURLConnection.HTTP_OK ?
+                                readFully(urlConnection.getErrorStream()) : readFully(urlConnection.getInputStream()),
+                        StandardCharsets.UTF_8)
+                );
             } else {
                 return null;
             }
@@ -187,17 +175,11 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                final Charset mresponseCharset = mresponseCharset(urlConnection.getContentType());
-
-                if (mresponseCharset != null) {
-                    byte[] responseBytes;
-
-                    if (status != HttpURLConnection.HTTP_OK)
-                        responseBytes = readFully(urlConnection.getErrorStream());
-                    else responseBytes = readFully(urlConnection.getInputStream());
-
-                    return JsonObToString(status, new String(responseBytes, mresponseCharset));
-                } else return JsonObToString(status, "fail");
+                return JsonObToString(status, new String(
+                        status != HttpURLConnection.HTTP_OK ?
+                                readFully(urlConnection.getErrorStream()) : readFully(urlConnection.getInputStream()),
+                        StandardCharsets.UTF_8)
+                );
             } else {
                 return null;
             }
@@ -212,77 +194,16 @@ public final class Tools {
 
     private static byte[] readFully(InputStream in) throws IOException {
         try {
-            return readFullyNoClose(in);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int count;
+            while ((count = in.read(buffer)) != -1) {
+                bytes.write(buffer, 0, count);
+            }
+            return bytes.toByteArray();
         } finally {
             in.close();
         }
-    }
-
-    // Returns a byte[] containing the remainder of 'in'.
-
-    private static byte[] readFullyNoClose(InputStream in) throws IOException {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int count;
-        while ((count = in.read(buffer)) != -1) {
-            bytes.write(buffer, 0, count);
-        }
-        return bytes.toByteArray();
-    }
-
-    /**
-     * Returns the response charset of a HTTP response based on the {@code Content-Type} of
-     * the response (see RFC 7230). If the {@code Content-Type} header is missing or invalid,
-     * the response is assumed to be encoded as {@code UTF-8}. Note that a charset usually
-     * makes sense only for {@code "text/plain"} and other "text based" responses.
-     *
-     * @throws IllegalCharsetNameException if the response specified charset is illegal.
-     * @throws UnsupportedCharsetException if the response specified charset is unsupported.
-     */
-    private static Charset responseCharset(String contentTypeHeader)
-            throws IllegalCharsetNameException, UnsupportedCharsetException {
-        Charset responseCharset = StandardCharsets.UTF_8;
-        if (contentTypeHeader != null) {
-            Map<String, String> contentTypeParams = parseContentTypeParameters(contentTypeHeader);
-            String charsetParameter = contentTypeParams.get("charset");
-            if (charsetParameter != null) {
-                responseCharset = Charset.forName(charsetParameter);
-            }
-        }
-        return responseCharset;
-    }
-
-    /**
-     * Parse content-type parameters. The format of this header is roughly :
-     * {@code type/subtype; param1=value1; param2=value2 ...} where each of the
-     * parameters are optional. Parsing is lenient, malformed parameters are ignored.
-     * <p>
-     * Parameter keys & values are trimmed of whitespace and keys are converted to
-     * lower case.
-     */
-    private static Map<String, String> parseContentTypeParameters(String contentTypeHeader) {
-        Map<String, String> parameters = Collections.emptyMap();
-        String[] fields = contentTypeHeader.split(";");
-        if (fields.length > 1) {
-            parameters = new HashMap<>();
-            // Ignore the first element in the array (the type/subtype).
-            for (int i = 1; i < fields.length; ++i) {
-                final String parameter = fields[i];
-                if (!parameter.isEmpty()) {
-                    final String[] components = parameter.split("=");
-                    if (components.length != 2) {
-                        continue;
-                    }
-                    final String key = components[0].trim().toLowerCase(Locale.US);
-                    final String value = components[1].trim();
-                    if (key.isEmpty() || value.isEmpty()) {
-                        continue;
-                    }
-                    parameters.put(key, value);
-                }
-            }
-        }
-        return parameters;
     }
 
     public static boolean isCodecSupported(String name) {
@@ -391,18 +312,6 @@ public final class Tools {
         } catch (Exception e) {
             Log.w(TAG, "codecframeRate Exception width " + width + " height " + height, e);
             return 0.0;
-        }
-    }
-
-    private static Charset mresponseCharset(String getContentType) {
-        try {
-            return responseCharset(getContentType);
-        } catch (UnsupportedCharsetException e) {
-            Log.i(TAG, "mresponseCharset Unsupported response charset", e);
-            return null;
-        } catch (IllegalCharsetNameException e) {
-            Log.i(TAG, "mresponseCharset Illegal response charset", e);
-            return null;
         }
     }
 
