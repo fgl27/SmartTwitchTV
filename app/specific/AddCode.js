@@ -481,20 +481,18 @@ function AddCode_CheckFallowGame() {
 
 function AddCode_RequestCheckFallowGame() {
     var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[0].name + '/follows/games/' +
-        encodeURIComponent(Main_values.Main_gameSelected);
+        encodeURIComponent(Main_values.Main_gameSelected) + Main_TwithcV5Flag_I;
 
-    var xmlHttp = Android.mreadUrlHLS(theUrl);
+    AddCode_BasexmlHttpGetBack(theUrl, 'GET', 2, null, AddCode_CheckFallowGameReady);
+}
 
-    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-    else {
-        AddCode_CheckFallowGameError();
-        return;
-    }
-
-    xmlHttp = JSON.parse(xmlHttp.responseText);
-
-    if (xmlHttp.hasOwnProperty('status')) {
-        if (xmlHttp.status === 404) { //success no user doesnot fallows
+function AddCode_CheckFallowGameReady(xmlHttp) {
+    if (xmlHttp.readyState === 4) {
+        if (xmlHttp.status === 200) { //success yes user fallows
+            AGame_fallowing = true;
+            AGame_setFallow();
+            return;
+        } else if (xmlHttp.status === 404) { //success no user doesnot fallows
             AGame_fallowing = false;
             AGame_setFallow();
             return;
@@ -502,9 +500,6 @@ function AddCode_RequestCheckFallowGame() {
             AddCode_CheckFallowGameError();
             return;
         }
-    } else {
-        AGame_fallowing = true;
-        AGame_setFallow();
     }
 }
 
@@ -561,4 +556,24 @@ function AddCode_BasereadwritedUrl(theUrl, Method, HeaderQuatity, access_token, 
     if (xmlHttp) callbackready(JSON.parse(xmlHttp));
     else callbackready(xmlHttp);
 
+}
+
+function AddCode_BasexmlHttpGetBack(theUrl, type, HeaderQuatity, access_token, callbackready) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open(type, theUrl, true);
+    xmlHttp.timeout = AddCode_loadingDataTimeout;
+
+    Main_Headers_Back[2][1] = access_token;
+
+    for (var i = 0; i < HeaderQuatity; i++)
+        xmlHttp.setRequestHeader(Main_Headers_Back[i][0], Main_Headers_Back[i][1]);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        callbackready(xmlHttp);
+    };
+
+    xmlHttp.send(null);
 }
