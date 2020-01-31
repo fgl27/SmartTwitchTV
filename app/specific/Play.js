@@ -657,7 +657,6 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
 var Play_RefreshMultiTry = 0;
 
 function Play_RefreshMultiRequest(pos, streamer, id) {
-    console.log('Play_RefreshMultiRequest pos ' + pos + ' streamer ' + streamer);
     var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
     var xmlHttp = Android.mreadUrlHLS(theUrl);
@@ -667,7 +666,6 @@ function Play_RefreshMultiRequest(pos, streamer, id) {
 }
 
 function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id) {
-    console.log('Play_RefreshMultiRequestSucess pos ' + pos + ' streamer ' + streamer);
     if (xmlHttp.status === 200) {
 
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
@@ -689,8 +687,6 @@ function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id) {
             Android.SetAutoMulti(pos, theUrl);
         } catch (e) {}
 
-        console.log('Play_RefreshMultiRequestSucess theUrl ' + theUrl);
-
         theUrl = Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I;
         Play_RefreshMultiGet(theUrl, 0, pos);
 
@@ -705,7 +701,6 @@ function Play_RefreshMultiError(pos, streamer, id) {
 }
 
 function Play_RefreshMultiGet(theUrl, tryes, pos) {
-    console.log('Play_RefreshMultiGet pos ' + pos);
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -730,8 +725,6 @@ function Play_RefreshMultiGet(theUrl, tryes, pos) {
 }
 
 function Play_updateStreamInfoMultiValues(response, pos) {
-    console.log('Play_updateStreamInfoMultiValue pos ' + pos);
-    console.log(response);
     response = JSON.parse(response);
     if (response.stream !== null) {
         Play_MultiArray[pos].data[3] = response.stream.game;
@@ -770,7 +763,6 @@ function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
 
 //When update this also update PlayExtra_updateStreamInfo
 function Play_updateStreamInfo() {
-    console.log('Play_updateStreamInfo');
     if (Play_MultiEnable) {
         Play_RefreshMultiTry = 0;
         for (var i = 0; i < Play_MultiArray.length; i++) {
@@ -2388,8 +2380,6 @@ function Play_MultiIsFull() {
 }
 
 function Play_MultiStartPrestart(position) {
-    console.log('Play_MultiStartPrestart pos ' + position);
-
     Play_MultiStartErroTry = 0;
     var doc = Play_CheckLiveThumb();
     if (doc) {
@@ -2411,8 +2401,6 @@ function Play_MultiStartPrestart(position) {
 }
 
 function Play_MultiStart(pos, streamer, display_name) {
-    console.log('Play_MultiStart pos ' + pos + ' streamer ' + streamer);
-
     var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
     var xmlHttp = Android.mreadUrlHLS(theUrl);
@@ -2424,7 +2412,6 @@ function Play_MultiStart(pos, streamer, display_name) {
 var Play_MultiStartErroTry = 0;
 
 function Play_MultiStartErro(pos, streamer, display_name) {
-    console.log('Play_MultiStartErro pos ' + pos + ' streamer ' + streamer);
     if (Play_isOn) {
         Play_MultiStartErroTry++;
         if (Play_MultiStartErroTry < 5) Play_MultiStart(pos, streamer, display_name);
@@ -2433,8 +2420,6 @@ function Play_MultiStartErro(pos, streamer, display_name) {
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
-    console.log('Play_MultiStartErro pos ' + pos + ' display_name ' + display_name);
-
     Play_showWarningDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE));
     window.setTimeout(function() {
         Play_HideWarningDialog();
@@ -2449,7 +2434,6 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
 }
 
 function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name) {
-    console.log('Play_MultiStartSucessToken pos ' + pos + ' streamer ' + streamer);
     if (xmlHttp.status === 200) {
         var tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
@@ -2476,7 +2460,6 @@ function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name) {
 }
 
 function Play_MultiStartQuality(pos, theUrl, display_name) {
-    console.log('Play_MultiStartQuality pos ' + pos + ' display_name ' + display_name);
     var xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
 
     if (xmlHttp) {
@@ -2492,7 +2475,6 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
             } catch (e) {}
 
             Play_MultiArray[pos].qualities = Play_extractQualities(xmlHttp.responseText);
-            console.log(Play_MultiArray[pos].qualities);
 
             Play_MultiSetinfo(
                 pos,
@@ -2516,7 +2498,6 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
 }
 
 function Play_MultiStartQualityError(pos, theUrl, display_name) {
-    console.log('Play_MultiStartQualityError pos ' + pos);
     if (Play_isOn) {
         Play_MultiStartErroTry++;
         if (Play_MultiStartErroTry < 5) Play_MultiStartQuality(pos, theUrl, display_name);
@@ -3325,7 +3306,6 @@ function Play_MakeControls() {
         values: null,
         opacity: 0,
         enterKey: function(shutdown) {
-            console.log('Play_MultiStream');
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {
                 try {
