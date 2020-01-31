@@ -33,6 +33,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.gson.JsonObject;
 import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,15 +45,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
@@ -92,13 +87,14 @@ public final class Tools {
 
     public static String readUrlHLS(Context context, String url) {
         try {
-            JsonObject JSON =
+            Response<String> result =
                     Ion.with(context)
                             .load(url)
-                            .asJsonObject()
+                            .asString()
+                            .withResponse()
                             .get();
-            if (JSON != null) {
-                return JsonObToString(200, JSON.toString());
+            if (result != null) {
+                return JsonObToString(result.getHeaders().code(), result.getResult());
             }
         } catch (InterruptedException e) {
             Log.w(TAG, "readUrlHLS InterruptedException ", e);
@@ -130,17 +126,11 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                final Charset mresponseCharset = mresponseCharset(urlConnection.getContentType());
-
-                if (mresponseCharset != null) {
-                    byte[] responseBytes;
-
-                    if (status != HttpURLConnection.HTTP_OK)
-                        responseBytes = readFully(urlConnection.getErrorStream());
-                    else responseBytes = readFully(urlConnection.getInputStream());
-
-                    return JsonObToString(status, new String(responseBytes, mresponseCharset));
-                } else return JsonObToString(status, "fail");
+                return JsonObToString(status, new String(
+                        status != HttpURLConnection.HTTP_OK ?
+                                readFully(urlConnection.getErrorStream()) : readFully(urlConnection.getInputStream()),
+                        StandardCharsets.UTF_8)
+                );
             } else {
                 return null;
             }
@@ -187,17 +177,11 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                final Charset mresponseCharset = mresponseCharset(urlConnection.getContentType());
-
-                if (mresponseCharset != null) {
-                    byte[] responseBytes;
-
-                    if (status != HttpURLConnection.HTTP_OK)
-                        responseBytes = readFully(urlConnection.getErrorStream());
-                    else responseBytes = readFully(urlConnection.getInputStream());
-
-                    return JsonObToString(status, new String(responseBytes, mresponseCharset));
-                } else return JsonObToString(status, "fail");
+                return JsonObToString(status, new String(
+                        status != HttpURLConnection.HTTP_OK ?
+                                readFully(urlConnection.getErrorStream()) : readFully(urlConnection.getInputStream()),
+                        StandardCharsets.UTF_8)
+                );
             } else {
                 return null;
             }
@@ -212,77 +196,16 @@ public final class Tools {
 
     private static byte[] readFully(InputStream in) throws IOException {
         try {
-            return readFullyNoClose(in);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int count;
+            while ((count = in.read(buffer)) != -1) {
+                bytes.write(buffer, 0, count);
+            }
+            return bytes.toByteArray();
         } finally {
             in.close();
         }
-    }
-
-    // Returns a byte[] containing the remainder of 'in'.
-
-    private static byte[] readFullyNoClose(InputStream in) throws IOException {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int count;
-        while ((count = in.read(buffer)) != -1) {
-            bytes.write(buffer, 0, count);
-        }
-        return bytes.toByteArray();
-    }
-
-    /**
-     * Returns the response charset of a HTTP response based on the {@code Content-Type} of
-     * the response (see RFC 7230). If the {@code Content-Type} header is missing or invalid,
-     * the response is assumed to be encoded as {@code UTF-8}. Note that a charset usually
-     * makes sense only for {@code "text/plain"} and other "text based" responses.
-     *
-     * @throws IllegalCharsetNameException if the response specified charset is illegal.
-     * @throws UnsupportedCharsetException if the response specified charset is unsupported.
-     */
-    private static Charset responseCharset(String contentTypeHeader)
-            throws IllegalCharsetNameException, UnsupportedCharsetException {
-        Charset responseCharset = StandardCharsets.UTF_8;
-        if (contentTypeHeader != null) {
-            Map<String, String> contentTypeParams = parseContentTypeParameters(contentTypeHeader);
-            String charsetParameter = contentTypeParams.get("charset");
-            if (charsetParameter != null) {
-                responseCharset = Charset.forName(charsetParameter);
-            }
-        }
-        return responseCharset;
-    }
-
-    /**
-     * Parse content-type parameters. The format of this header is roughly :
-     * {@code type/subtype; param1=value1; param2=value2 ...} where each of the
-     * parameters are optional. Parsing is lenient, malformed parameters are ignored.
-     * <p>
-     * Parameter keys & values are trimmed of whitespace and keys are converted to
-     * lower case.
-     */
-    private static Map<String, String> parseContentTypeParameters(String contentTypeHeader) {
-        Map<String, String> parameters = Collections.emptyMap();
-        String[] fields = contentTypeHeader.split(";");
-        if (fields.length > 1) {
-            parameters = new HashMap<>();
-            // Ignore the first element in the array (the type/subtype).
-            for (int i = 1; i < fields.length; ++i) {
-                final String parameter = fields[i];
-                if (!parameter.isEmpty()) {
-                    final String[] components = parameter.split("=");
-                    if (components.length != 2) {
-                        continue;
-                    }
-                    final String key = components[0].trim().toLowerCase(Locale.US);
-                    final String value = components[1].trim();
-                    if (key.isEmpty() || value.isEmpty()) {
-                        continue;
-                    }
-                    parameters.put(key, value);
-                }
-            }
-        }
-        return parameters;
     }
 
     public static boolean isCodecSupported(String name) {
@@ -325,6 +248,7 @@ public final class Tools {
         int position;
         int lowerWidth;
         int UperWidth;
+        int Instances;
 
         for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos()) {
             if (!codec.isEncoder()) {
@@ -333,6 +257,10 @@ public final class Tools {
                         try {
                             MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
                             MediaCodecInfo.VideoCapabilities videoCapabilities = codecCapabilities.getVideoCapabilities();
+
+                            if (Build.VERSION.SDK_INT >= 23) {
+                                Instances = codecCapabilities.getMaxSupportedInstances();
+                            } else Instances = -1;
 
                             MediaCodecInfo.CodecProfileLevel[] profile = codecCapabilities.profileLevels;
 
@@ -343,8 +271,8 @@ public final class Tools {
                                         (position > 0) ? AvcLevels[position] : "Unknown level " + profile[profile.length - 1].level);
                             } else {
                                 info = String.format(Locale.US, "%d,%d",
-                                        profile[profile.length - 1].profile,
-                                        profile[profile.length - 1].level);
+                                        profile[profile.length - 1].profile,//4
+                                        profile[profile.length - 1].level);//5
                             }
 
                             lowerWidth = videoCapabilities.getSupportedWidths().getLower();
@@ -352,20 +280,21 @@ public final class Tools {
 
                             values.append((values.length() == 0) ? "" : "|").append(String.format(Locale.US,
                                     //"type %s,codec %s,Max res %dx%d,Max bit %d Mbps,Max level %s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
-                                    "%s,%s,%dx%d,%d Mbps,%s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
-                                    type,
-                                    codec.getName(),
-                                    videoCapabilities.getSupportedWidths().getUpper(),
-                                    videoCapabilities.getSupportedHeights().getUpper(),
-                                    videoCapabilities.getBitrateRange().getUpper() / 1000000,
-                                    info,
-                                    codecframeRate(videoCapabilities, 240, 160, lowerWidth, UperWidth),
-                                    codecframeRate(videoCapabilities, 480, 360, lowerWidth, UperWidth),
-                                    codecframeRate(videoCapabilities, 640, 480, lowerWidth, UperWidth),
-                                    codecframeRate(videoCapabilities, 1280, 720, lowerWidth, UperWidth),
-                                    codecframeRate(videoCapabilities, 1920, 1080, lowerWidth, UperWidth),
-                                    codecframeRate(videoCapabilities, 2560, 1440, lowerWidth, UperWidth),
-                                    codecframeRate(videoCapabilities, 3840, 2160, lowerWidth, UperWidth)));
+                                    "%s,%s,%dx%d,%d Mbps,%s,%d,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
+                                    type,//0
+                                    codec.getName(),//1
+                                    videoCapabilities.getSupportedWidths().getUpper(),//2
+                                    videoCapabilities.getSupportedHeights().getUpper(),//2
+                                    videoCapabilities.getBitrateRange().getUpper() / 1000000,//3
+                                    info,//4 & 5
+                                    Instances,//6
+                                    codecframeRate(videoCapabilities, 240, 160, lowerWidth, UperWidth),//7
+                                    codecframeRate(videoCapabilities, 480, 360, lowerWidth, UperWidth),//8
+                                    codecframeRate(videoCapabilities, 640, 480, lowerWidth, UperWidth),//9
+                                    codecframeRate(videoCapabilities, 1280, 720, lowerWidth, UperWidth),//10
+                                    codecframeRate(videoCapabilities, 1920, 1080, lowerWidth, UperWidth),//11
+                                    codecframeRate(videoCapabilities, 2560, 1440, lowerWidth, UperWidth),//12
+                                    codecframeRate(videoCapabilities, 3840, 2160, lowerWidth, UperWidth)));//13
 
                         } catch (Exception e) {
                             Log.w(TAG, "codecCapabilities Exception ", e);
@@ -385,18 +314,6 @@ public final class Tools {
         } catch (Exception e) {
             Log.w(TAG, "codecframeRate Exception width " + width + " height " + height, e);
             return 0.0;
-        }
-    }
-
-    private static Charset mresponseCharset(String getContentType) {
-        try {
-            return responseCharset(getContentType);
-        } catch (UnsupportedCharsetException e) {
-            Log.i(TAG, "mresponseCharset Unsupported response charset", e);
-            return null;
-        } catch (IllegalCharsetNameException e) {
-            Log.i(TAG, "mresponseCharset Illegal response charset", e);
-            return null;
         }
     }
 
@@ -499,12 +416,19 @@ public final class Tools {
         return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
     }
 
+    //Deprecated in API level 29 but gives the path that I need and works on API 29
+    //as long one adds android:requestLegacyExternalStorage="true"to manifest
+    @SuppressWarnings({"deprecation", "RedundantSuppression"})
+    public static File getExternalSD() {
+        return Environment.getExternalStorageDirectory();
+    }
+
     public static class BackupJson extends AsyncTask< String, Void, Void > {
 
         @Override
         protected Void doInBackground(String...params) {
             File Dir = new File(
-                    Environment.getExternalStorageDirectory(),
+                    getExternalSD(),
                     String.format(Locale.US, "data/%s/Backup", params[0])
             );
 
@@ -531,7 +455,7 @@ public final class Tools {
     public static boolean HasBackupFile(String file, Context context) {
 
         File mFile = new File(
-                Environment.getExternalStorageDirectory(),
+                getExternalSD(),
                 String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
         );
 
@@ -541,7 +465,7 @@ public final class Tools {
     public static String RestoreBackupFile(String file, Context context) {
         try {
             File mFile = new File(
-                    Environment.getExternalStorageDirectory(),
+                    getExternalSD(),
                     String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
             );
 

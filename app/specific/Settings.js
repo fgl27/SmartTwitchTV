@@ -549,10 +549,7 @@ function Settings_SetDefault(position) {
 }
 
 function Settings_PP_Workaround() {
-    //TODO remove the try after some itme of the app be released
-    try {
-        Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
-    } catch (e) {}
+    Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
 }
 
 function Settings_DpadOpacity() {
@@ -713,11 +710,11 @@ function Settings_ScrollTable() {
         if (Settings_Obj_default("app_animations")) {
             var position = doc.scrollTop;
             doc.scrollTop = 0;
-            scrollTo(doc, position, 450);
+            scrollTo(doc, position, 400);
         }
     } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
         doc = document.getElementById('settings_scroll');
-        if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 450);
+        if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 400);
         else doc.scrollTop = 0;
     }
 
@@ -817,18 +814,9 @@ function Settings_CodecsShow() {
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
 
     if (!Settings_CodecsValue) {
-        //TODO remove the try after some itme of the app be released
-        try {
-            Settings_CodecsValue = '';
-            Settings_CodecsValue = Android.getcodecCapabilities('avc');
-        } catch (e) {
-            if (Main_IsNotBrowser) {
-                document.body.addEventListener("keydown", Settings_handleKeyDownCodecs, false);
-                return;
-            }
-        }
 
-        if (!Main_IsNotBrowser) Settings_CodecsValue = "video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73|video/avc,OMX.google.h264.decoder,4080x4080,48 Mbps,8,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68|video/avc,OMX.chico.h264.decoder,4080x4080,48 Mbps,8,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68";
+        if (!Main_IsNotBrowser) Settings_CodecsValue = "video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,32,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73|video/avc,OMX.google.h264.decoder,4080x4080,48 Mbps,8,5.2,32,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68|video/avc,OMX.chico.h264.decoder,4080x4080,48 Mbps,8,5.2,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68";
+        else Settings_CodecsValue = Android.getcodecCapabilities('avc');
 
         var dialogContent = '',
             codecs = Settings_CodecsValue.split('|'),
@@ -859,8 +847,9 @@ function Settings_CodecsShow() {
             temptitlecontent = "";
             temptitlecontent += STR_MAX_RES + codecsValue[2] + spacer;
             temptitlecontent += STR_MAX_BIT + codecsValue[3] + spacer;
-            temptitlecontent += STR_MAX_LEVEL + codecsValue[5] + STR_BR + STR_MAX_FPS + STR_BR;
-            for (j = 6; j < codecsValue.length; j++) {
+            temptitlecontent += STR_MAX_LEVEL + codecsValue[5] + spacer;
+            temptitlecontent += STR_MAX_INSTANCES + ((codecsValue[6] > -1) ? codecsValue[6] : STR_UNKNOWN) + STR_BR;
+            for (j = 7; j < codecsValue.length; j++) {
                 temptitlecontent += (parseFloat(codecsValue[j].split(': ')[1]) > 0) ? codecsValue[j] + " fps" + spacer : "";
             }
 
@@ -981,8 +970,5 @@ function Settings_CodecsRigthLeft(offset) {
 }
 
 function Settings_CodecsSet() {
-    //TODO remove the try after some itme of the app be released
-    try {
-        Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
-    } catch (e) {}
+    if (Main_IsNotBrowser) Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
 }

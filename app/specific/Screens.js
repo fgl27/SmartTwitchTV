@@ -415,15 +415,19 @@ function Screens_loadDataSuccessFinish() {
                 Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
                 Main_ready(function() {
-                    if (Main_values.Play_WasPlaying === 1) Main_openStream();
-                    else {
+                    if (Main_values.Play_WasPlaying === 1) {
+                        if (Play_data.data.length > 0) {
+                            Main_openStream();
+                            Main_SwitchScreen(true);
+                        } else Main_SwitchScreen(false);
+                    } else {
                         if (!Main_values.vodOffset) Main_values.vodOffset = 1;
                         ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
 
                         Main_openVod();
+                        Main_SwitchScreen(true);
                     }
 
-                    Main_SwitchScreen(true);
                     window.setTimeout(function() {
                         if (!Play_IsWarning) Play_HideWarningDialog();
                     }, 3000);
@@ -899,7 +903,7 @@ function Screens_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_PG_UP:
             //TODO improve this pg up and down so many unnecessary ifs
-            if (!inUseObj.loadingData && inUseObj.key_pgUp) {
+            if (inUseObj.key_pgUp) {
                 Screens_RemoveAllFocus();
                 if (inUseObj.screen === Main_UserChannels)
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgUpNext : inUseObj.key_pgUp);
@@ -914,7 +918,7 @@ function Screens_handleKeyDown(event) {
             }
             break;
         case KEY_PG_DOWN:
-            if (!inUseObj.loadingData && inUseObj.key_pgDown) {
+            if (inUseObj.key_pgDown) {
                 Screens_RemoveAllFocus();
                 if (inUseObj.screen === Main_usergames)
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgDownNext : inUseObj.key_pgDown);
@@ -931,11 +935,9 @@ function Screens_handleKeyDown(event) {
         case KEY_RETURN_Q:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            if (!inUseObj.loadingData) inUseObj.key_exit();
+            inUseObj.key_exit();
             break;
         case KEY_LEFT:
-            //Main_History_Sort('live', 'name', 1);
-            if (inUseObj.loadingData) break;
             if (!inUseObj.posX) Screens_OpenSidePanel();
             else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             break;
@@ -998,12 +1000,10 @@ function Screens_handleKeyDown(event) {
             Main_showExitDialog();
             break;
         case KEY_CHAT:
-            if (!inUseObj.loadingData) {
-                Screens_OpenSidePanel(AddUser_UserIsSet());
-                if (!AddUser_UserIsSet()) {
-                    Main_showWarningDialog(STR_NOKUSER_WARN);
-                    window.setTimeout(Main_HideWarningDialog, 2000);
-                }
+            Screens_OpenSidePanel(AddUser_UserIsSet());
+            if (!AddUser_UserIsSet()) {
+                Main_showWarningDialog(STR_NOKUSER_WARN);
+                window.setTimeout(Main_HideWarningDialog, 2000);
             }
             break;
         default:
@@ -1744,8 +1744,8 @@ function Screens_OpenScreen() {
 }
 
 function Screens_OpenGame() {
-    Main_values.Play_gameSelected = (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : '');
-    if (Main_values.Play_gameSelected === '') {
+    Play_data.data[3] = (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : '');
+    if (Play_data.data[3] === '') {
 
         Main_showWarningDialog(STR_NO_GAME);
         window.setTimeout(Main_HideWarningDialog, 2000);
@@ -1760,7 +1760,7 @@ function Screens_OpenGame() {
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_aGame;
 
-    Main_values.Main_gameSelected = Main_values.Play_gameSelected;
+    Main_values.Main_gameSelected = Play_data.data[3];
     Main_ReStartScreens();
 }
 

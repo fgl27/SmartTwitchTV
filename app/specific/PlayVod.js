@@ -60,11 +60,9 @@ function PlayVod_Start() {
     Main_HideElement('progress_pause_holder');
     Main_ShowElement('progress_bar_div');
 
-    //past broadcast
+    document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
-    //Chat delay
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
-
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
@@ -145,7 +143,7 @@ function PlayVod_PosStart() {
     document.body.removeEventListener("keyup", Main_handleKeyUp);
 
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
-    Play_controls[Play_controlsGameCont].setLable(Main_values.Play_gameSelected);
+    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 }
 
 function PlayVod_PrepareLoad() {
@@ -195,7 +193,7 @@ function PlayVod_updateVodInfoPannel(response) {
     PlayVod_VodOffsetTemp = 0;
 
     Main_values_Play_data = ScreensObj_VodCellArray(response);
-    Main_Set_history('vod');
+    Main_Set_history('vod', Main_values_Play_data);
 
     ChannelVod_title = twemoji.parse(response.title, false, true);
 
@@ -300,12 +298,9 @@ function PlayVod_loadDataRequest() {
         state = PlayVod_state === Play_STATE_LOADING_TOKEN;
 
     if (state) {
-        theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_' +
-            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !Play_410ERROR ? '&oauth_token=' +
-                AddUser_UsernameArray[0].access_token : '');
+        theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_';
     } else {
         if (!PlayVod_tokenResponse.hasOwnProperty('token') || !PlayVod_tokenResponse.hasOwnProperty('sig')) {
-            Play_410ERROR = true;
             PlayVod_loadDataError();
             return;
         }
@@ -319,17 +314,14 @@ function PlayVod_loadDataRequest() {
 
         PlayVod_autoUrl = theUrl;
 
-        Play_410ERROR = false;
     }
 
 
     if (Main_IsNotBrowser) {
         var xmlHttp;
 
-        try {
-            if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-            else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
-        } catch (e) {}
+        if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
+        else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
@@ -343,13 +335,8 @@ function PlayVod_loadDataRequest() {
 
 function PlayVod_loadDataEnd(xmlHttp) {
     if (xmlHttp.status === 200) {
-        if (xmlHttp.responseText.indexOf('"status":410') !== -1) {
-            Play_410ERROR = true;
-            PlayVod_loadDataError();
-        } else {
-            Play_410ERROR = false;
-            PlayVod_loadDataSuccess(xmlHttp.responseText);
-        }
+        if (xmlHttp.responseText.indexOf('"status":410') !== -1) PlayVod_loadDataError();
+        else PlayVod_loadDataSuccess(xmlHttp.responseText);
     } else if (xmlHttp.status === 410) {
         //410 = api v3 is gone use v5 bug
         PlayVod_410Error();
@@ -429,7 +416,7 @@ function PlayVod_loadDataSuccessFake() {
     ];
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_qualityChanged();
-    if (PlayVod_HasVodInfo) Main_Set_history('vod');
+    if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
 }
 
 function PlayVod_loadDataSuccess(responseText) {
@@ -451,7 +438,7 @@ function PlayVod_loadDataSuccess(responseText) {
         PlayVod_state = Play_STATE_PLAYING;
         if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
         if (PlayVod_isOn) PlayVod_qualityChanged();
-        if (PlayVod_HasVodInfo) Main_Set_history('vod');
+        if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
     }
 }
 
