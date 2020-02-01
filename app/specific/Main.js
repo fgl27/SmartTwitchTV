@@ -1653,7 +1653,7 @@ function Main_Set_history(type, Data) {
             Main_values_History_data[AddUser_UsernameArray[0].id][type][index] = Screens_assign(
                 Main_values_History_data[AddUser_UsernameArray[0].id][type][index],
                 {
-                    data: Data,
+                    data: Main_Slice(Data),
                     date: new Date().getTime(),
                     game: Data[3],
                     views: Data[13],
@@ -1676,7 +1676,7 @@ function Main_Set_history(type, Data) {
 
             Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
                 {
-                    data: Data,
+                    data: Main_Slice(Data),
                     date: new Date().getTime(),
                     name: Data[6].toLowerCase(),
                     game: Data[3],
