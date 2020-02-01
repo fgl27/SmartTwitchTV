@@ -633,7 +633,6 @@ function Play_updateVodInfoError(Channel_id, BroadcastID, tryes) {
             if (Play_isOn) Play_updateVodInfo(Channel_id, BroadcastID, tryes);
         }, 500);
     }
-    Play_loadingInfoDataTry++;
 }
 
 function Play_updateVodInfoSuccess(response, BroadcastID) {
@@ -2505,6 +2504,7 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
                 Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
                 Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
             }
+            Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
         } else if (xmlHttp.status === 403) { //forbidden access
             Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
         } else if (xmlHttp.status === 404) { //off line
