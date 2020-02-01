@@ -8775,6 +8775,8 @@
                 if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
                     Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
                     Play_loadChat();
+                    Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
+                    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
                 }
             } else if (xmlHttp.status === 403) { //forbidden access
                 Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
