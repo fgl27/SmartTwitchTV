@@ -1271,8 +1271,6 @@ function Play_PreshutdownStream(closePlayer) {
 
     Play_ClearPlay(closePlayer);
     Play_ClearPlayer();
-
-    Play_data.data[14] = '';
 }
 
 function Play_exitMain() {
