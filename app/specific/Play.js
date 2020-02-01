@@ -1135,7 +1135,7 @@ function Play_onPlayer() {
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
-    Play_loadChat();
+    ChatLive_Init(0);
 }
 
 function Play_SetHtmlQuality(element) {
@@ -1151,15 +1151,6 @@ function Play_SetHtmlQuality(element) {
     quality_string += Play_data.quality.indexOf('Auto') === -1 ? Play_data.qualities[Play_data.qualityIndex].band + Play_data.qualities[Play_data.qualityIndex].codec : "";
 
     Main_innerHTML(element, quality_string);
-}
-
-function Play_loadChat() {
-    if (Main_values.Play_ChatForceDisable) {
-        Chat_Disable();
-        return;
-    }
-
-    ChatLive_Init(0);
 }
 
 //called by android PlayerActivity
@@ -2326,7 +2317,7 @@ function Play_MultiFirstAvaileble() {
 }
 
 function Play_UpdateMainStream() {
-    Play_loadChat();
+    ChatLive_Init(0);
 
     //Restore info panel
     Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[2], false, true));
@@ -2492,7 +2483,7 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
             //reset chat is pos 0 changed
             if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
-                Play_loadChat();
+                ChatLive_Init(0);
                 Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
                 Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
             }
