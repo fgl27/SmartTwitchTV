@@ -14412,7 +14412,8 @@
 
             },
             addCell: function(cell) {
-                if (!this.idObject[cell.data[7]]) {
+                //cell.data[14] check here to a bug that introduce emtpy values todo maybe can be removed ins some months
+                if (!this.idObject[cell.data[7]] && cell.data[14] !== '') {
 
                     this.itemsCount++;
                     this.idObject[cell.data[7]] = 1;
