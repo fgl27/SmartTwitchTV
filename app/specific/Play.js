@@ -3438,7 +3438,7 @@ function Play_MakeControls() {
 
             if (PlayVodClip === 1) {
                 ChatLive_Init(0);
-                if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLive_Init(1);
+                if (PlayExtra_PicturePicture && !Play_isFullScreen && !Play_MultiEnable) ChatLive_Init(1);
             } else Chat_Init();
 
             this.setLable();
