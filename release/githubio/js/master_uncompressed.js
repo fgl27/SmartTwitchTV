@@ -5162,10 +5162,15 @@
     }
 
     function Main_Slice(arrayTocopy) {
-        var array = [];
+        var array;
         //slice may crash RangeError: Maximum call stack size exceeded
-        for (var i = 0; i < arrayTocopy.length; i++) {
-            array.push(arrayTocopy[i]);
+        try {
+            array = arrayTocopy.slice();
+        } catch (e) {
+            array = [];
+            for (var i = 0; i < arrayTocopy.length; i++) {
+                array.push(arrayTocopy[i]);
+            }
         }
         return array;
     }
