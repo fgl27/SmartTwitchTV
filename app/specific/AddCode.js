@@ -52,8 +52,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
 }
 
 function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK) {
-    tryes++;
-    if (tryes < 5) AddCode_refreshTokens(position, tryes, callbackFuncOK, callbackFuncNOK);
+    if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK);
     else if (callbackFuncNOK) callbackFuncNOK();
 }
 
@@ -232,8 +231,7 @@ function AddCode_Refreshtimeout(position, time) {
 }
 
 function AddCode_CheckTokenError(position, tryes) {
-    tryes++;
-    if (tryes < AddCode_loadingDataTryMax) AddCode_CheckToken(position, tryes);
+    if (tryes < AddCode_loadingDataTryMax) AddCode_CheckToken(position, tryes + 1);
 }
 
 function AddCode_CheckFallow() {
