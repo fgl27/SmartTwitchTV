@@ -6778,8 +6778,7 @@
         Play_RefreshAutoTry = 0;
         Play_loadingInfoDataTimeout = 3000;
         Play_RestoreFromResume = true;
-        if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
-        else Play_updateStreamInfo();
+        Play_updateStreamInfoStart();
         Play_ResumeAfterOnlineCounter = 0;
 
         window.clearInterval(Play_ResumeAfterOnlineId);
@@ -6919,7 +6918,6 @@
                 if (Play_isOn) Play_updateVodInfo(Channel_id, BroadcastID, tryes);
             }, 500);
         }
-        Play_loadingInfoDataTry++;
     }
 
     function Play_updateVodInfoSuccess(response, BroadcastID) {
@@ -8792,6 +8790,7 @@
                     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
                     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
                 }
+                Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
             } else if (xmlHttp.status === 403) { //forbidden access
                 Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
             } else if (xmlHttp.status === 404) { //off line
