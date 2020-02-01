@@ -6790,7 +6790,7 @@
         if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
             window.clearInterval(Play_ResumeAfterOnlineId);
             if (Play_MultiEnable) {
-
+                Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
                         Play_MultiStart(
@@ -7553,8 +7553,6 @@
 
         Play_ClearPlay(closePlayer);
         Play_ClearPlayer();
-
-        Play_data.data[14] = '';
     }
 
     function Play_exitMain() {
@@ -8275,7 +8273,7 @@
     function Play_PannelEndStart(PlayVodClip) { // Called only by JAVA
         if (PlayVodClip === 1) { //live
             PlayExtra_PicturePicture = false;
-            PlayExtra_data.data[6] = '';
+            PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
             Play_CheckHostStart();
         } else {
             Play_PlayEndStart(PlayVodClip);
@@ -8625,6 +8623,11 @@
         }, 2000);
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiInfoReset(position);
+        if (!Play_MultiHasOne()) {
+            PlayExtra_PicturePicture = false;
+            PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+            Play_CheckHostStart();
+        }
     }
 
     function Play_MultiFirstClear() {
@@ -8649,6 +8652,13 @@
         return (Play_MultiArray[0].data.length > 0) &&
             (Play_MultiArray[1].data.length > 0) &&
             (Play_MultiArray[2].data.length > 0) &&
+            (Play_MultiArray[3].data.length > 0);
+    }
+
+    function Play_MultiHasOne() {
+        return (Play_MultiArray[0].data.length > 0) ||
+            (Play_MultiArray[1].data.length > 0) ||
+            (Play_MultiArray[2].data.length > 0) ||
             (Play_MultiArray[3].data.length > 0);
     }
 
@@ -8703,7 +8713,15 @@
             Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_old));
             Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
-        } else Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
+        } else {
+            Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
+            Play_MultiInfoReset(pos);
+            if (!Play_MultiHasOne()) {
+                PlayExtra_PicturePicture = false;
+                PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+                Play_CheckHostStart();
+            }
+        }
     }
 
     function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name) {
