@@ -492,8 +492,7 @@ function Play_Resume() {
     Play_RefreshAutoTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_RestoreFromResume = true;
-    if (!Play_LoadLogoSucess) Play_updateStreamInfoStart();
-    else Play_updateStreamInfo();
+    Play_updateStreamInfoStart();
     Play_ResumeAfterOnlineCounter = 0;
 
     window.clearInterval(Play_ResumeAfterOnlineId);
