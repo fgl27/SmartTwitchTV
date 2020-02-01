@@ -2488,6 +2488,12 @@ function Play_MultiStartQuality(pos, theUrl, display_name) {
 
             Play_MultiArray[pos].watching_time = new Date().getTime();
             Main_Set_history('live', Play_MultiArray[pos].data);
+
+            //reset chat is pos 0 changed
+            if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
+                Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
+                Play_loadChat();
+            }
         } else if (xmlHttp.status === 403) { //forbidden access
             Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
         } else if (xmlHttp.status === 404) { //off line
