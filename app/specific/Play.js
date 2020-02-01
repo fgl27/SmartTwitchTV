@@ -694,7 +694,7 @@ function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id) {
 function Play_RefreshMultiError(pos, streamer, id) {
     if (Play_isOn) {
         Play_RefreshMultiTry++;
-        if (Play_RefreshMultiTry < 5) Play_RefreshMultiRequest(pos, streamer, id);
+        if (Play_RefreshMultiTry < 5 && Play_MultiArray[pos].data.length > 0) Play_RefreshMultiRequest(pos, streamer, id);
     }
 }
 
