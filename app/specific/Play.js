@@ -3323,7 +3323,11 @@ function Play_MakeControls() {
                 } catch (e) {}
 
                 Play_Multi_SetPanel();
-                if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
+                if (Play_data.quality.indexOf("Auto") === -1) {
+                    Play_data.quality = "Auto";
+                    Play_data.qualityPlaying = Play_data.quality;
+                    Android.StartAuto(1, 0);
+                }
 
                 Play_controls[Play_controlsAudioMulti].enterKey();
 
