@@ -311,7 +311,6 @@ function Play_Start() {
     }
     Play_PlayerPanelOffset = -5;
     Play_updateStreamInfoErrorTry = 0;
-    Play_loadingInfoDataTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_isLive = true;
     Play_tokenResponse = 0;
@@ -320,8 +319,8 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    Play_updateStreamInfoStart();
     Play_loadData();
+    Play_UpdateMainStream(true);
     document.body.removeEventListener("keyup", Main_handleKeyUp);
 
     window.clearInterval(Play_streamInfoTimerId);
@@ -489,17 +488,16 @@ function Play_Resume() {
     ChatLive_Playing = true;
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
     Play_showBufferDialog();
-    Play_loadingInfoDataTry = 0;
     Play_RefreshAutoTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_RestoreFromResume = true;
-    Play_updateStreamInfoStart();
     Play_ResumeAfterOnlineCounter = 0;
 
     window.clearInterval(Play_ResumeAfterOnlineId);
     if (navigator.onLine) Play_ResumeAfterOnline();
     else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
 
+    Play_UpdateMainStream(true);
     window.clearInterval(Play_streamInfoTimerId);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
     Play_ShowPanelStatus(1);
@@ -2207,7 +2205,7 @@ function Play_RestorePlayData(error_410) {
     Play_RestorePlayDataValues();
 
     Main_SaveValues();
-    Play_updateStreamInfoStart();
+    Play_UpdateMainStream(true);
 }
 
 function Play_SavePlayData() {
@@ -2310,14 +2308,13 @@ function Play_MultiFirstAvaileble() {
     return null;
 }
 
-function Play_UpdateMainStream() {
-    ChatLive_Init(0);
+function Play_UpdateMainStream(startChat) {
+    if (!startChat) ChatLive_Init(0);
 
     //Restore info panel
     Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[2], false, true));
     Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_Lang);
-    var playing = (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : "");
-    Main_textContent("stream_info_game", playing);
+    Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
     Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
     Play_LoadLogoSucess = true;
     Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
@@ -2327,6 +2324,7 @@ function Play_UpdateMainStream() {
     Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
 
     //Restore info panel from web
+    Play_loadingInfoDataTry = 0;
     Play_updateStreamInfoStart();
 }
 
