@@ -95,6 +95,8 @@ if [ $BAPP == 1 ]; then
 	else
 		./gradlew clean
 		echo -e "\n The above is just the cleaning build start now\n";
+		rm -rf app/src/main/assets/app
+		rm -rf app/src/main/assets/index.html
 		rm -rf app/build/outputs/apk/**
 		./gradlew build -x test 2>&1 --warning-mode all | tee build_log.txt
 	fi;
