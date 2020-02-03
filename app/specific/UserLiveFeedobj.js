@@ -1,7 +1,10 @@
 var UserLiveFeedobj_loadErrorCallback;
 
-var UserLiveFeedobj_UserLivePos = 0;
-var UserLiveFeedobj_LivePos = -1;
+var UserLiveFeedobj_FeaturedPos = 0;
+var UserLiveFeedobj_LivePos = 1;
+var UserLiveFeedobj_UserLivePos = 2;
+var UserLiveFeedobj_MAX = UserLiveFeedobj_UserLivePos;
+var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_UserLivePos;
 
 
 function UserLiveFeedobj_StartDefault(pos) {
@@ -387,36 +390,9 @@ function UserLiveFeedobj_HideFeed() {
     Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div, 'opacity_zero');
 }
 
-function UserLiveFeedobj_Live() {
-    console.log('UserLiveFeedobj_Live');
-    UserLiveFeedobj_StartDefault(UserLiveFeedobj_LivePos);
-    UserLiveFeedobj_loadLive();
-}
-
-function UserLiveFeedobj_loadLive() {
-    var theUrl = Main_kraken_api + 'streams?limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
-        Main_TwithcV5Flag;
-    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadLive;
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError, false);
-}
-
-function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
-    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_LivePos);
-}
-
-function UserLiveFeedobj_ShowLive(PreventAddfocus) {
-    console.log('UserLiveFeedobj_ShowLive');
-    Main_innerHTML('feed_end', 'Live');
-    UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_LivePos);
-}
-
-function UserLiveFeedobj_HideLive() {
-    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_LivePos].div, 'opacity_zero');
-}
-
 function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
 
-    var response = JSON.parse(responseText).streams,
+    var response = JSON.parse(responseText)[UserLiveFeed_obj[pos].StreamType],
         response_items = response.length,
         stream, id, mArray,
         doc = document.getElementById(UserLiveFeed_obj[pos].div),
@@ -425,7 +401,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
     if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
 
     for (i; i < response_items; i++) {
-        stream = response[i];
+        stream = UserLiveFeed_obj[pos].cell(response[i]);
         id = stream.channel._id;
         if (!UserLiveFeed_idObject[pos][id]) {
 
@@ -467,5 +443,75 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
     //     )
     // );
 
-    UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_LivePos);
+    UserLiveFeed_loadDataSuccessFinish(true, pos);
 }
+
+//Live Start
+function UserLiveFeedobj_Live() {
+    console.log('UserLiveFeedobj_Live');
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_LivePos);
+    UserLiveFeedobj_loadLive();
+}
+
+function UserLiveFeedobj_loadLive() {
+    var theUrl = Main_kraken_api + 'streams?limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
+        Main_TwithcV5Flag;
+
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadLive;
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError, false);
+}
+
+function UserLiveFeedobj_LiveCell(cell) {
+    return cell;
+}
+
+function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
+    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_LivePos);
+}
+
+function UserLiveFeedobj_ShowLive(PreventAddfocus) {
+    console.log('UserLiveFeedobj_ShowLive');
+    Main_innerHTML('feed_end', 'Live');
+    UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_LivePos);
+}
+
+function UserLiveFeedobj_HideLive() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_LivePos].div, 'opacity_zero');
+}
+
+//Live end
+
+//Featured Start
+function UserLiveFeedobj_Featured() {
+    console.log('UserLiveFeedobj_Live');
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_FeaturedPos);
+    UserLiveFeedobj_loadFeatured();
+}
+
+function UserLiveFeedobj_loadFeatured() {
+    var theUrl = Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+        AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
+
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadFeatured;
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess, UserLiveFeedobj_loadDataError, false);
+}
+
+function UserLiveFeedobj_FeaturedCell(cell) {
+    return cell.stream;
+}
+
+function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
+    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_FeaturedPos);
+}
+
+function UserLiveFeedobj_ShowFeatured(PreventAddfocus) {
+    console.log('UserLiveFeedobj_ShowLive');
+    Main_innerHTML('feed_end', 'Featured');
+    UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_FeaturedPos);
+}
+
+function UserLiveFeedobj_HideFeatured() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div, 'opacity_zero');
+}
+
+//Featured end
