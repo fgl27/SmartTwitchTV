@@ -338,6 +338,10 @@ var Play_CheckIfIsLiveStartCallback = 0;
 
 function Play_CheckIfIsLiveStart(callback) {
     if (Main_ThumbOpenIsNull(Play_FeedPos, UserLiveFeed_ids[0])) return;
+    else if (!Main_IsNotBrowser) {
+        callback();
+        return;
+    }
     Play_showBufferDialog();
 
     Play_CheckIfIsLiveStartCounter = 0;
