@@ -1636,6 +1636,8 @@ function Main_SetThumb() {
 }
 
 function Main_ReplaceLargeFont(text) {
+    if (!text) return '';
+
     return text.replace(/[^\x00-\x7F]/g, function(match) {
         return '<span style="font-size: 0.8em;">' + match + '</span>';
     });
