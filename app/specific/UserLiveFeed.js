@@ -26,7 +26,7 @@ var UserLiveFeed_NotifyRunning = false;
 var UserLiveFeed_NotifyTimeout = 3000;
 
 var UserLiveFeed_FeedPosY = [];
-var UserLiveFeed_FeedPosX = 0;
+var UserLiveFeed_FeedPosX = 2;
 var UserLiveFeed_itemsCount = [];
 var UserLiveFeed_obj = {};
 
@@ -51,18 +51,30 @@ function UserLiveFeed_StartLoadPos(PreventAddfocus, pos) {
 }
 
 function UserLiveFeed_Prepare() {
+    //User live
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos] = {};
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].load = UserLiveFeedobj_CheckToken;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].show = UserLiveFeedobj_ShowFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = 'user_feed_scroll';
 
+    //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos] = {};
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].show = UserLiveFeedobj_ShowLive;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].hide = UserLiveFeedobj_HideLive;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].div = 'live_feed_scroll';
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
 
+    //Featured
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos] = {};
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].load = UserLiveFeedobj_Featured;
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].show = UserLiveFeedobj_ShowFeatured;
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].hide = UserLiveFeedobj_HideFeatured;
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div = 'featured_feed_scroll';
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
 }
 
 function UserLiveFeed_RefreshLive(PreventAddfocus) {
@@ -269,7 +281,7 @@ function UserLiveFeed_KeyUpDown(Adder) {
     if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
 
         var NextPos = UserLiveFeed_FeedPosX + Adder;
-        if (NextPos > 0 || NextPos < -1) return;
+        if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) return;
 
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = NextPos;
