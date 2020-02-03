@@ -1,33 +1,45 @@
+var UserLiveFeedobj_loadErrorCallback;
+
 var UserLiveFeedobj_UserLivePos = 0;
+var UserLiveFeedobj_LivePos = -1;
 
-function UserLiveFeedobj_CheckToken() {
 
-    if (UserLiveFeed_status[UserLiveFeed_FeedPosX]) {
-        if (UserLiveFeed_ThumbNull(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0]))
-            UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
-
-        if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
-            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+function UserLiveFeedobj_StartDefault(pos) {
+    if (UserLiveFeed_status[pos]) {
+        if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
+            UserLiveFeed_LastPos[pos] = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[6];
     } else {
-        UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = null;
-        UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] = null;
+        UserSidePannel_LastPos[pos] = null;
+        UserLiveFeed_LastPos[pos] = null;
     }
 
+    UserLiveFeed_itemsCount[pos] = 0;
+    Main_empty(UserLiveFeed_obj[pos].div);
+    if (UserLiveFeed_isFeedShow()) Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
+    UserLiveFeed_status[pos] = false;
+    document.getElementById(UserLiveFeed_obj[pos].div).style.left = "0.125em";
+    UserLiveFeed_FeedPosY[pos] = 0;
+    UserLiveFeed_idObject[pos] = {};
+
     Main_updateclock();
-    UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos] = 0;
+    Main_ShowElement('dialog_loading_side_feed');
+}
+
+function UserLiveFeedobj_CheckToken() {
+    if (UserLiveFeed_status[UserLiveFeed_FeedPosX]) {
+        if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
+            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+    }
     UserLiveFeed_PreloadImgs = [];
-    Main_empty('user_feed_scroll');
     Sidepannel_PosFeed = 0;
     Main_empty('side_panel_holder');
     document.getElementById('side_panel_warn').style.display = 'none';
     Main_HideElement('side_panel_feed_thumb');
-    UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
-    document.getElementById('user_feed_scroll').style.left = "0.125em";
-    Main_ShowElement('dialog_loading_side_feed');
     UserLiveFeed_loadChannelOffsset = 0;
     UserLiveFeed_followerChannels = '';
-    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = 0;
-    UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos] = {};
+
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserLivePos);
+
     UserLiveFeed_token = AddUser_UsernameArray[0].access_token;
     if (UserLiveFeed_token) {
         UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
@@ -48,7 +60,7 @@ function UserLiveFeedobj_loadDataPrepare() {
 function UserLiveFeedobj_loadChannels() {
     var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
-
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannels;
     BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError, false);
 }
 
@@ -56,10 +68,10 @@ function UserLiveFeedobj_loadDataError() {
     UserLiveFeed_loadingDataTry++;
     if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
         UserLiveFeed_loadingDataTimeout += 500;
-        UserLiveFeedobj_loadChannels();
+        UserLiveFeedobj_loadErrorCallback();
     } else {
         UserLiveFeed_loadingData = false;
-        if (!UserLiveFeed_GetSize()) {
+        if (!UserLiveFeed_GetSize(UserLiveFeedobj_UserLivePos)) {
             Main_HideElement('dialog_loading_feed');
             Main_HideElement('dialog_loading_side_feed');
             if (UserLiveFeed_isFeedShow()) {
@@ -94,7 +106,7 @@ function UserLiveFeedobj_loadChannelLive(responseText) {
     } else { // end
         UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
         UserLiveFeedobj_loadDataPrepare();
-        Main_ready(UserLiveFeedobj_loadChannelUserLive);
+        UserLiveFeedobj_loadChannelUserLive();
     }
 }
 
@@ -108,6 +120,7 @@ function UserLiveFeedobj_loadChannelUserLive() {
     }
     theUrl += 'limit=100&offset=0&stream_type=all' + Main_TwithcV5Flag;
 
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannelUserLive;
     UserLiveFeedobj_loadChannelUserLiveGet(theUrl);
 }
 
@@ -131,7 +144,7 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
                 // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
                 AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
             } else {
-                UserLiveFeedobj_loadDataErrorLive();
+                UserLiveFeedobj_loadDataError();
             }
         }
     };
@@ -141,25 +154,7 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
 function UserLiveFeedobj_loadDataRefreshTokenError() {
     if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
-    else UserLiveFeedobj_loadDataErrorLive();
-}
-
-function UserLiveFeedobj_loadDataErrorLive() {
-    UserLiveFeed_loadingDataTry++;
-    if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
-        UserLiveFeed_loadingDataTimeout += 500;
-        UserLiveFeedobj_loadChannelUserLive();
-    } else {
-        UserLiveFeed_loadingData = false;
-        Main_HideElement('dialog_loading_feed');
-        Main_HideElement('dialog_loading_side_feed');
-        if (UserLiveFeed_isFeedShow()) {
-            Play_showWarningDialog(STR_REFRESH_PROBLEM);
-            window.setTimeout(function() {
-                Play_HideWarningDialog();
-            }, 2000);
-        }
-    }
+    else UserLiveFeedobj_loadDataError();
 }
 
 function UserLiveFeedobj_loadDataSuccess(responseText) {
@@ -168,7 +163,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         response_items = response.length,
         sorting = Settings_Obj_default('live_feed_sort'),
         stream, id, mArray,
-        doc = document.getElementById("user_feed_scroll"),
+        doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div),
         docside = document.getElementById("side_panel_holder"),
         i = 0;
 
@@ -178,7 +173,6 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
         UserLiveFeed_CheckNotifycation = false;
     }
-
 
     var sorting_type1 = Settings_FeedSort[sorting][0],
         sorting_type2 = Settings_FeedSort[sorting][1],
@@ -238,7 +232,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]++;
             doc.appendChild(
                 UserLiveFeed_CreatFeed(
-                    i, mArray
+                    UserLiveFeedobj_UserLivePos + '_' + i, mArray
                 )
             );
 
@@ -279,8 +273,6 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
     UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
 }
-
-
 
 function UserLiveFeedobj_LiveNotification() {
     if (UserLiveFeed_NotifyRunning || !UserLiveFeed_Notify ||
@@ -365,24 +357,115 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
 }
 
 function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
+    console.log('UserLiveFeedobj_ShowFeed');
+    Main_innerHTML('feed_end', 'User Live');
     var hasuser = AddUser_UserIsSet();
 
     if (hasuser) {
-        if (Play_FeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+        UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserLivePos, (Play_FeedOldUserName !== AddUser_UsernameArray[0].name));
         Play_FeedOldUserName = AddUser_UsernameArray[0].name;
     }
+}
 
-    if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+function UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, pos, forceRefressh) {
+    if (Main_isElementShowing('scene2') && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show(PreventAddfocus);
 
-    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad(PreventAddfocus);
+    if (!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0] || forceRefressh) && !UserLiveFeed_loadingData)
+        UserLiveFeed_StartLoad(PreventAddfocus);
+    else {
+        Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
 
-    if (hasuser) {
-        if (Main_isElementShowing('scene2')) UserLiveFeed_Show(PreventAddfocus);
-
-        if (!PreventAddfocus) UserLiveFeed_FeedAddFocus(true, UserLiveFeedobj_UserLivePos);
+        if (!PreventAddfocus) UserLiveFeed_FeedAddFocus(true, pos);
         else {
-            UserLiveFeed_FeedRemoveFocus(UserLiveFeedobj_UserLivePos);
-            UserLiveFeed_FeedSetPos(true, UserLiveFeedobj_UserLivePos);
+            UserLiveFeed_FeedRemoveFocus(pos);
+            UserLiveFeed_FeedSetPos(true, pos);
         }
     }
+}
+
+function UserLiveFeedobj_HideFeed() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div, 'opacity_zero');
+}
+
+function UserLiveFeedobj_Live() {
+    console.log('UserLiveFeedobj_Live');
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_LivePos);
+    UserLiveFeedobj_loadLive();
+}
+
+function UserLiveFeedobj_loadLive() {
+    var theUrl = Main_kraken_api + 'streams?limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
+        Main_TwithcV5Flag;
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadLive;
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError, false);
+}
+
+function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
+    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_LivePos);
+}
+
+function UserLiveFeedobj_ShowLive(PreventAddfocus) {
+    console.log('UserLiveFeedobj_ShowLive');
+    Main_innerHTML('feed_end', 'Live');
+    UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_LivePos);
+}
+
+function UserLiveFeedobj_HideLive() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_LivePos].div, 'opacity_zero');
+}
+
+function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
+
+    var response = JSON.parse(responseText).streams,
+        response_items = response.length,
+        stream, id, mArray,
+        doc = document.getElementById(UserLiveFeed_obj[pos].div),
+        i = 0;
+
+    if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+
+    for (i; i < response_items; i++) {
+        stream = response[i];
+        id = stream.channel._id;
+        if (!UserLiveFeed_idObject[pos][id]) {
+
+            UserLiveFeed_idObject[pos][id] = 1;
+            mArray = ScreensObj_LiveCellArray(stream);
+            UserLiveFeed_PreloadImgs.push(mArray[0]);
+
+            if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
+                UserLiveFeed_FeedPosY[pos] = i;
+
+            UserLiveFeed_itemsCount[pos]++;
+            doc.appendChild(
+                UserLiveFeed_CreatFeed(
+                    pos + '_' + i, mArray
+                )
+            );
+
+        }
+    }
+
+    // doc.appendChild(
+    //     UserLiveFeed_CreatFeed(pos + '_' + (i + 1),
+    //         [
+    //             IMG_404_VIDEO,
+    //             "ashlynn",
+    //             "title",
+    //             "game",
+    //             "for 1000 Viewers",
+    //             "720p30 [EN]",
+    //             "ashlynn",
+    //             10000000000,
+    //             true,
+    //             IMG_404_LOGO,
+    //             true,
+    //             "Since 11:04:36&nbsp;",
+    //             "2020-01-25T09:49:05Z",
+    //             1000,
+    //             35618666]
+    //     )
+    // );
+
+    UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_LivePos);
 }

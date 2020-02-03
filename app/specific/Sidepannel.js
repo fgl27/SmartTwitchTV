@@ -226,7 +226,7 @@ function Sidepannel_ShowFeed() {
 
     if (!UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
 
-    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
 
     if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_AddFocusFeed(true);
@@ -423,7 +423,7 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_REFRESH:
         case KEY_LEFT:
-            if (!UserLiveFeed_loadingData) UserLiveFeed_FeedRefresh();
+            if (!UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
             break;
         case KEY_PG_UP:
         case KEY_UP:

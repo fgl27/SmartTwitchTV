@@ -506,7 +506,7 @@ function PlayClip_OpenVod() {
 
 function PlayClip_OpenLiveStream() {
     PlayClip_PreshutdownStream(true);
-    Main_OpenLiveStream(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, PlayClip_handleKeyDown);
+    Main_OpenLiveStream(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, PlayClip_handleKeyDown);
 }
 
 function PlayClip_handleKeyDown(e) {
@@ -587,7 +587,7 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_showPanel();
                 break;
             case KEY_UP:
-                if (Play_isEndDialogVisible()) {
+                if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
                     Play_EndTextClear();
                     document.body.removeEventListener("keydown", PlayClip_handleKeyDown, false);
                     document.body.addEventListener("keyup", Play_handleKeyUp, false);
@@ -602,7 +602,6 @@ function PlayClip_handleKeyDown(e) {
                     } else Play_BottomUpDown(3, 1);
                     PlayClip_setHidePanel();
                 } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
-                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
                 else PlayClip_showPanel();
                 break;
             case KEY_DOWN:
@@ -614,7 +613,7 @@ function PlayClip_handleKeyDown(e) {
                         PlayVod_IconsBottonFocus();
                     } else Play_BottomUpDown(3, -1);
                     PlayClip_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
+                } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                 else if (Play_isFullScreen && Play_isChatShown()) {
                     Play_KeyChatSizeChage();
                 } else PlayClip_showPanel();
@@ -626,7 +625,7 @@ function PlayClip_handleKeyDown(e) {
                         Play_EndDialogEnter = 3;
                         Play_EndUpclearCalback = PlayClip_handleKeyDown;
                         Play_SavePlayData();
-                        Main_OpenLiveStream(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
+                        Main_OpenLiveStream(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
                     }
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
