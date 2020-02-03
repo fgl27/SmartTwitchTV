@@ -603,7 +603,7 @@ function Settings_SetAnimations() {
         }
     );
 
-    UserLiveFeed_FeedRemoveFocus();
+    UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
 
     array = document.getElementsByClassName(Main_classThumb);
 

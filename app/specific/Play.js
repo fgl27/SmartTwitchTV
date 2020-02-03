@@ -11,7 +11,6 @@ var Play_ChatPositionsBF;
 var Play_ChatEnableBF;
 var Play_ChatSizeValueBF;
 var Play_FeedOldUserName = '';
-var Play_FeedPos = 0;
 var Play_Buffer = 2000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;
@@ -337,7 +336,7 @@ var Play_CheckIfIsLiveStartChannel = 0;
 var Play_CheckIfIsLiveStartCallback = 0;
 
 function Play_CheckIfIsLiveStart(callback) {
-    if (Main_ThumbOpenIsNull(Play_FeedPos, UserLiveFeed_ids[0])) return;
+    if (Main_ThumbOpenIsNull(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0])) return;
     else if (!Main_IsNotBrowser) {
         callback();
         return;
@@ -346,9 +345,9 @@ function Play_CheckIfIsLiveStart(callback) {
 
     Play_CheckIfIsLiveStartCounter = 0;
     Play_CheckIfIsLiveStartCallback = callback;
-    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[6];
+    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
-    Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
+    Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
 
     Play_CheckIfIsLive();
 }
@@ -437,7 +436,7 @@ function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called
     PlayExtra_RefreshAutoTry = 0;
 
     if (isPicturePicture) PlayExtra_RefreshAutoRequest(true);
-    else Play_RefreshAutoRequest(true);
+    else if (!Main_IsNotBrowser) Play_RefreshAutoRequest(true);
 }
 
 function Play_RefreshAutoRequest(UseAndroid) {
@@ -2165,7 +2164,7 @@ function Play_OpenLiveFeed() {
 
     Main_values.Play_isHost = false;
     Play_UserLiveFeedPressed = true;
-    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+    Main_OpenLiveStream(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
 }
 
 function Play_keyUpEnd() {
@@ -2187,7 +2186,7 @@ function Play_EndDialogUpDown() {
     if (Play_EndFocus) {
         Play_EndFocus = false;
         Play_EndIconsRemoveFocus();
-        UserLiveFeed_FeedAddFocus();
+        UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX);
     } else {
         Play_EndFocus = true;
         UserLiveFeed_FeedRemoveFocus();
@@ -2648,7 +2647,7 @@ function Play_setHideMultiDialog() {
 var Play_CheckLiveThumbID;
 function Play_CheckLiveThumb(PreventResetFeed) {
 
-    var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos),
+    var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
         error = STR_STREAM_ERROR;
 
     if (doc !== null) {
@@ -2692,13 +2691,8 @@ function Play_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                    if (Screens_ChangeFocusAnimationFinished && Play_FeedPos && !UserLiveFeed_loadingData) {
-                        UserLiveFeed_FeedRemoveFocus();
-                        Play_FeedPos--;
-                        UserLiveFeed_FeedAddFocus();
-                    }
-                } else if (Play_MultiDialogVisible()) {
+                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
+                else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
                     Play_MultiDialogPos--;
                     if (Play_MultiDialogPos < 0) Play_MultiDialogPos = 3;
@@ -2731,14 +2725,8 @@ function Play_handleKeyDown(e) {
                 }
                 break;
             case KEY_RIGHT:
-                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                    if (Screens_ChangeFocusAnimationFinished &&
-                        Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
-                        UserLiveFeed_FeedRemoveFocus();
-                        Play_FeedPos++;
-                        UserLiveFeed_FeedAddFocus();
-                    }
-                } else if (Play_MultiDialogVisible()) {
+                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
+                else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
                     Play_MultiDialogPos++;
                     if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
