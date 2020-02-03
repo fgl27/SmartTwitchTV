@@ -4448,7 +4448,7 @@
         Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
 
         if (Main_values.Play_isHost) {
-            Play_data.Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
+            Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
             Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
         }
 
@@ -6622,6 +6622,10 @@
 
     function Play_CheckIfIsLiveStart(callback) {
         if (Main_ThumbOpenIsNull(Play_FeedPos, UserLiveFeed_ids[0])) return;
+        else if (!Main_IsNotBrowser) {
+            callback();
+            return;
+        }
         Play_showBufferDialog();
 
         Play_CheckIfIsLiveStartCounter = 0;
@@ -8539,7 +8543,7 @@
         document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
         document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
         document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
-        UserLiveFeed_SetHoldUp();
+        UserLiveFeed_SetFeedPicText();
         Main_ShowElement('stream_info');
         Main_HideElement('stream_info_multi');
         Main_HideElement('dialog_multi_help');
