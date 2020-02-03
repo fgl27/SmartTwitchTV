@@ -830,7 +830,7 @@ function PlayVod_DialogPressed(fromStart) {
 
 function PlayVod_OpenLiveStream() {
     PlayVod_PreshutdownStream(true);
-    Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, PlayVod_handleKeyDown);
+    Main_OpenLiveStream(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, PlayVod_handleKeyDown);
 }
 
 function PlayVod_handleKeyDown(e) {
@@ -856,13 +856,8 @@ function PlayVod_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                    if (Play_FeedPos && !UserLiveFeed_loadingData) {
-                        UserLiveFeed_FeedRemoveFocus();
-                        Play_FeedPos--;
-                        UserLiveFeed_FeedAddFocus();
-                    }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
+                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
+                else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                     Play_ChatPositions++;
                     Play_ChatPosition();
                     Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
@@ -890,13 +885,8 @@ function PlayVod_handleKeyDown(e) {
                 } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_RIGHT:
-                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                    if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
-                        UserLiveFeed_FeedRemoveFocus();
-                        Play_FeedPos++;
-                        UserLiveFeed_FeedAddFocus();
-                    }
-                } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
+                else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
                     Play_controls[Play_controlsChat].enterKey(2);
                 } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
@@ -961,7 +951,7 @@ function PlayVod_handleKeyDown(e) {
                         Play_EndDialogEnter = 2;
                         Play_EndUpclearCalback = PlayVod_handleKeyDown;
                         Play_SavePlayData();
-                        Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                        Main_OpenLiveStream(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
                     }
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
