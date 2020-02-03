@@ -2254,7 +2254,7 @@ function Play_Multi_UnSetPanel(shutdown) {
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
-    UserLiveFeed_SetHoldUp();
+    UserLiveFeed_SetFeedPicText();
     Main_ShowElement('stream_info');
     Main_HideElement('stream_info_multi');
     Main_HideElement('dialog_multi_help');
