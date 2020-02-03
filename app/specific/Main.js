@@ -1123,7 +1123,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
 
     if (Main_values.Play_isHost) {
-        Play_data.Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
+        Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
         Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
     }
 
