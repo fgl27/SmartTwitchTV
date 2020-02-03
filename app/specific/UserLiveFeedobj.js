@@ -1,11 +1,15 @@
 var UserLiveFeedobj_loadErrorCallback;
 
+//Global
 var UserLiveFeedobj_FeaturedPos = 0;
-var UserLiveFeedobj_LivePos = 1;
-var UserLiveFeedobj_UserLivePos = 2;
+var UserLiveFeedobj_CurrentGamePos = 1;
+var UserLiveFeedobj_LivePos = 2;
+//User
+var UserLiveFeedobj_UserLivePos = 3;
+
+var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos;
 var UserLiveFeedobj_MAX = UserLiveFeedobj_UserLivePos;
 var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_UserLivePos;
-
 
 function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {
@@ -360,7 +364,6 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
 }
 
 function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
-    console.log('UserLiveFeedobj_ShowFeed');
     Main_innerHTML('feed_end', 'User Live');
     var hasuser = AddUser_UserIsSet();
 
@@ -373,7 +376,7 @@ function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
 function UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, pos, forceRefressh) {
     if (Main_isElementShowing('scene2') && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show(PreventAddfocus);
 
-    if (!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0] || forceRefressh) && !UserLiveFeed_loadingData)
+    if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData)
         UserLiveFeed_StartLoad(PreventAddfocus);
     else {
         Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
@@ -448,7 +451,6 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
 
 //Live Start
 function UserLiveFeedobj_Live() {
-    console.log('UserLiveFeedobj_Live');
     UserLiveFeedobj_StartDefault(UserLiveFeedobj_LivePos);
     UserLiveFeedobj_loadLive();
 }
@@ -470,7 +472,6 @@ function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
 }
 
 function UserLiveFeedobj_ShowLive(PreventAddfocus) {
-    console.log('UserLiveFeedobj_ShowLive');
     Main_innerHTML('feed_end', 'Live');
     UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_LivePos);
 }
@@ -483,7 +484,6 @@ function UserLiveFeedobj_HideLive() {
 
 //Featured Start
 function UserLiveFeedobj_Featured() {
-    console.log('UserLiveFeedobj_Live');
     UserLiveFeedobj_StartDefault(UserLiveFeedobj_FeaturedPos);
     UserLiveFeedobj_loadFeatured();
 }
@@ -505,7 +505,6 @@ function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
 }
 
 function UserLiveFeedobj_ShowFeatured(PreventAddfocus) {
-    console.log('UserLiveFeedobj_ShowLive');
     Main_innerHTML('feed_end', 'Featured');
     UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_FeaturedPos);
 }
@@ -513,5 +512,38 @@ function UserLiveFeedobj_ShowFeatured(PreventAddfocus) {
 function UserLiveFeedobj_HideFeatured() {
     Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div, 'opacity_zero');
 }
-
 //Featured end
+
+//Current game Start
+function UserLiveFeedobj_CurrentGame() {
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+    UserLiveFeedobj_loadCurrentGame();
+}
+
+function UserLiveFeedobj_loadCurrentGame() {
+    var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
+        '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
+
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess, UserLiveFeedobj_loadDataError, false);
+}
+
+function UserLiveFeedobj_CurrentGameCell(cell) {
+    return cell;
+}
+
+function UserLiveFeedobj_loadDataCurrentGameSuccess(responseText) {
+    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_CurrentGamePos);
+}
+
+var UserLiveFeedobj_CurrentGameName = '';
+function UserLiveFeedobj_ShowCurrentGame(PreventAddfocus) {
+    Main_innerHTML('feed_end', 'Agame');
+    UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_CurrentGamePos, (UserLiveFeedobj_CurrentGameName !== Play_data.data[3]));
+    UserLiveFeedobj_CurrentGameName = Play_data.data[3];
+}
+
+function UserLiveFeedobj_HideCurrentGame() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div, 'opacity_zero');
+}
+//Current game end
