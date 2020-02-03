@@ -55,6 +55,13 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = 'user_feed_scroll';
 
+    //User live
+    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos] = {};
+    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].hide = UserLiveFeedobj_HideUserHost;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = 'user_host_scroll';
+
     //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos] = {};
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
@@ -207,7 +214,9 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos) {
 
     if (!UserLiveFeed_PreventAddfocus) {
         Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
-    } else UserLiveFeed_PreventAddfocus = false;
+    } else {
+        UserLiveFeed_PreventAddfocus = false;
+    }
 
     UserLiveFeed_FeedSetPos(skipAnimation, pos);
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
