@@ -26,7 +26,6 @@ var UserLiveFeed_NotifyRunning = false;
 var UserLiveFeed_NotifyTimeout = 3000;
 
 var UserLiveFeed_FeedPosY = [];
-var UserLiveFeed_FeedPosX = 2;
 var UserLiveFeed_itemsCount = [];
 var UserLiveFeed_obj = {};
 
@@ -35,12 +34,10 @@ var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayna
 var UserLiveFeed_side_ids = ['usf_thumbdiv', 'usf_img', 'usf_infodiv', 'usf_displayname', 'usf_streamtitle', 'usf_streamgame', 'usf_viwers', 'usf_quality', 'usf_cell', 'ulempty_', 'user_live_scroll'];
 
 function UserLiveFeed_StartLoad(PreventAddfocus) {
-    console.log('UserLiveFeed_StartLoad');
     UserLiveFeed_StartLoadPos(PreventAddfocus, UserLiveFeed_FeedPosX);
 }
 
 function UserLiveFeed_StartLoadPos(PreventAddfocus, pos) {
-    console.log('UserLiveFeed_StartLoadPos');
     UserLiveFeed_clearHideFeed();
 
     UserLiveFeed_CounterDialogRst();
@@ -67,6 +64,15 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
 
+    //Current Game
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos] = {};
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].load = UserLiveFeedobj_CurrentGame;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].show = UserLiveFeedobj_ShowCurrentGame;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].hide = UserLiveFeedobj_HideCurrentGame;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div = 'current_game_feed_scroll';
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'streams';
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
+
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos] = {};
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].load = UserLiveFeedobj_Featured;
@@ -75,10 +81,11 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div = 'featured_feed_scroll';
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
+
+    if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 }
 
 function UserLiveFeed_RefreshLive(PreventAddfocus) {
-    console.log('UserLiveFeed_RefreshLive');
     if (AddUser_UserIsSet()) {
         UserLiveFeed_PreventAddfocus = PreventAddfocus;
         UserLiveFeedobj_loadDataPrepare();
@@ -282,10 +289,20 @@ function UserLiveFeed_KeyUpDown(Adder) {
 
         var NextPos = UserLiveFeed_FeedPosX + Adder;
         if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) return;
+        if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
+            UserLiveFeed_KeyUpDown(Adder);
+            Play_IsWarning = true;
+            Play_showWarningDialog(STR_NO_GAME);
+            window.clearTimeout(Play_OpenGameId);
+            Play_OpenGameId = window.setTimeout(function() {
+                Play_IsWarning = false;
+                Play_HideWarningDialog();
+            }, 2000);
+            return;
+        }
 
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = NextPos;
-        console.log('UserLiveFeed_FeedPosX ' + UserLiveFeed_FeedPosX);
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
     }
     UserLiveFeed_ResetFeedId();

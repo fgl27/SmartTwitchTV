@@ -336,7 +336,7 @@ var Play_CheckIfIsLiveStartChannel = 0;
 var Play_CheckIfIsLiveStartCallback = 0;
 
 function Play_CheckIfIsLiveStart(callback) {
-    if (Main_ThumbOpenIsNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0])) return;
+    if (Main_ThumbOpenIsNull(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0])) return;
     else if (!Main_IsNotBrowser) {
         callback();
         return;
@@ -345,9 +345,9 @@ function Play_CheckIfIsLiveStart(callback) {
 
     Play_CheckIfIsLiveStartCounter = 0;
     Play_CheckIfIsLiveStartCallback = callback;
-    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
-    Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
+    Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
 
     Play_CheckIfIsLive();
 }
@@ -1882,12 +1882,14 @@ function Play_OpenSearch(PlayVodClip) {
     Main_OpenSearch();
 }
 
+var Play_OpenGameId;
 function Play_OpenGame(PlayVodClip) {
     if (Play_data.data[3] === '') {
         Play_clearHidePanel();
         Play_IsWarning = true;
         Play_showWarningDialog(STR_NO_GAME);
-        window.setTimeout(function() {
+        window.clearTimeout(Play_OpenGameId);
+        Play_OpenGameId = window.setTimeout(function() {
             Play_IsWarning = false;
             Play_HideWarningDialog();
         }, 2000);
@@ -2167,7 +2169,7 @@ function Play_OpenLiveFeed() {
 
     Main_values.Play_isHost = false;
     Play_UserLiveFeedPressed = true;
-    Main_OpenLiveStream(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
+    Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
 }
 
 function Play_keyUpEnd() {
@@ -2322,6 +2324,7 @@ function Play_UpdateMainStream(startChat) {
     Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_Lang);
     Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
     Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
+    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
     Play_LoadLogoSucess = true;
     Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
     Play_created = Play_data.data[12];
@@ -2650,7 +2653,7 @@ function Play_setHideMultiDialog() {
 var Play_CheckLiveThumbID;
 function Play_CheckLiveThumb(PreventResetFeed) {
 
-    var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
+    var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
         error = STR_STREAM_ERROR;
 
     if (doc !== null) {

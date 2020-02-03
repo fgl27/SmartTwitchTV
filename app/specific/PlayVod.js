@@ -830,7 +830,7 @@ function PlayVod_DialogPressed(fromStart) {
 
 function PlayVod_OpenLiveStream() {
     PlayVod_PreshutdownStream(true);
-    Main_OpenLiveStream(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, PlayVod_handleKeyDown);
+    Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, PlayVod_handleKeyDown);
 }
 
 function PlayVod_handleKeyDown(e) {
@@ -950,7 +950,7 @@ function PlayVod_handleKeyDown(e) {
                         Play_EndDialogEnter = 2;
                         Play_EndUpclearCalback = PlayVod_handleKeyDown;
                         Play_SavePlayData();
-                        Main_OpenLiveStream(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
+                        Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
                     }
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
