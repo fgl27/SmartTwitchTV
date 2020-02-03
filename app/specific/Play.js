@@ -336,7 +336,7 @@ var Play_CheckIfIsLiveStartChannel = 0;
 var Play_CheckIfIsLiveStartCallback = 0;
 
 function Play_CheckIfIsLiveStart(callback) {
-    if (Main_ThumbOpenIsNull(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0])) return;
+    if (Main_ThumbOpenIsNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0])) return;
     else if (!Main_IsNotBrowser) {
         callback();
         return;
@@ -345,9 +345,9 @@ function Play_CheckIfIsLiveStart(callback) {
 
     Play_CheckIfIsLiveStartCounter = 0;
     Play_CheckIfIsLiveStartCallback = callback;
-    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
-    Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
+    Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
 
     Play_CheckIfIsLive();
 }
@@ -436,7 +436,7 @@ function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called
     PlayExtra_RefreshAutoTry = 0;
 
     if (isPicturePicture) PlayExtra_RefreshAutoRequest(true);
-    else if (!Main_IsNotBrowser) Play_RefreshAutoRequest(true);
+    else if (Main_IsNotBrowser) Play_RefreshAutoRequest(true);
 }
 
 function Play_RefreshAutoRequest(UseAndroid) {
@@ -776,7 +776,7 @@ function Play_updateStreamInfo() {
     }
 
     Play_RefreshAutoTry = 0;
-    Play_RefreshAutoRequest(false);
+    if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
 
     if (PlayExtra_PicturePicture) {
         PlayExtra_RefreshAutoTry = 0;
@@ -2150,7 +2150,10 @@ function Play_handleKeyUp(e) {
         if (!PlayExtra_clear) Play_OpenLiveFeedCheck();
     } else if (e.keyCode === KEY_UP) {
         Play_handleKeyUpEndClear();
-        if (!Play_EndUpclear) Play_EndDialogUpDown();
+        if (!Play_EndUpclear) {
+            if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
+            else UserLiveFeed_KeyUpDown(-1);
+        }
     }
 }
 
@@ -2164,7 +2167,7 @@ function Play_OpenLiveFeed() {
 
     Main_values.Play_isHost = false;
     Play_UserLiveFeedPressed = true;
-    Main_OpenLiveStream(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
+    Main_OpenLiveStream(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
 }
 
 function Play_keyUpEnd() {
@@ -2647,7 +2650,7 @@ function Play_setHideMultiDialog() {
 var Play_CheckLiveThumbID;
 function Play_CheckLiveThumb(PreventResetFeed) {
 
-    var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
+    var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
         error = STR_STREAM_ERROR;
 
     if (doc !== null) {
@@ -2770,14 +2773,14 @@ function Play_handleKeyDown(e) {
                     if (Play_MultiDialogPos < 0) Play_MultiDialogPos += 4;
                     Play_MultiAddFocus();
                 } else if (!UserLiveFeed_isFeedShow() && AddUser_UserIsSet()) UserLiveFeed_ShowFeed();
-                else if (Play_isEndDialogVisible()) {
+                else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
                     Play_EndTextClear();
                     document.body.removeEventListener("keydown", Play_handleKeyDown, false);
                     document.body.addEventListener("keyup", Play_handleKeyUp, false);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
                     Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);
-                } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                }
                 break;
             case KEY_DOWN:
                 if (Play_isPanelShown()) {
@@ -2793,7 +2796,7 @@ function Play_handleKeyDown(e) {
                     if (Play_MultiDialogPos > 3) Play_MultiDialogPos -= 4;
                     Play_MultiAddFocus();
                 } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
-                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
+                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                 else if ((Play_isFullScreen || Play_MultiEnable) && Play_isChatShown() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_KeyChatSizeChage();
                 } else if (PlayExtra_PicturePicture && !Play_MultiEnable) {

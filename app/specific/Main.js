@@ -425,6 +425,7 @@ function Main_initWindows() {
 
 function Main_SetStringsMain(isStarting) {
     Main_updateclock();
+    UserLiveFeed_Prepare();
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -1385,7 +1386,7 @@ function Main_updateUserFeed() {
         window.setTimeout(function() {
             if (!document.hidden && !UserLiveFeed_isFeedShow() && !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
                 Play_FeedOldUserName = AddUser_UsernameArray[0].name;
-                UserLiveFeed_StartLoad();
+                UserLiveFeed_RefreshLive();
             }
         }, 15000);
     }
