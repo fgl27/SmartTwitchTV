@@ -261,6 +261,10 @@ function UserLiveFeed_Unset() {
     Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP);
 }
 
+function UserLiveFeed_SetMulti() {
+    Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP + STR_MULTI_TITLE);
+}
+
 function UserLiveFeed_SetHoldUp() {
     Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP + STR_FEED_END_DIALOG);
 }

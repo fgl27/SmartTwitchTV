@@ -2247,7 +2247,7 @@ function Play_Multi_SetPanel() {
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = '';
     document.getElementById('controls_' + Play_controlsAudioMulti).style.display = '';
-    UserLiveFeed_Unset();
+    UserLiveFeed_SetMulti();
     ChatLive_Clear(1);
     PlayExtra_HideChat();
     Main_HideElement('stream_info');
