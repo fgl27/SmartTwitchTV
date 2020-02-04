@@ -1622,6 +1622,8 @@ var Main_Headers_Back = [
     [Main_Authorization, null]
 ];
 
+var Main_VideoSizeLiveFeed = "352x198";
+
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
 var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
 var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
