@@ -63,7 +63,7 @@ function AddUser_inputFocus() {
 }
 
 function AddUser_removeEventListener() {
-    if (!Main_isTV) Android.mhideSystemUI();
+    if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
     if (Main_AddUserInput !== null) {
