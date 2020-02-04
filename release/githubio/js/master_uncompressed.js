@@ -17209,7 +17209,9 @@
         var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
         UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannels;
-        BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
+
+        if (Main_IsNotBrowser && UserLiveFeed_isFeedShow()) BaseAndroidhttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
+        else BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
     }
 
     function UserLiveFeedobj_loadDataError() {
@@ -17273,31 +17275,46 @@
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
+        var xmlHttp;
 
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
+        if (Main_IsNotBrowser && UserLiveFeed_isFeedShow()) {
+            xmlHttp = Android.mreadUrl(theUrl, UserLiveFeed_loadingDataTimeout, UserLiveFeed_token ? 3 : 2, UserLiveFeed_token);
 
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
-                } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                    //Token has change or because is new or because it is invalid because user delete in twitch settings
-                    // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-                    AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
-                } else {
-                    UserLiveFeedobj_loadDataError();
-                }
+            if (xmlHttp) UserLiveFeedobj_loadChannelUserLiveGetEnd(JSON.parse(xmlHttp));
+            else {
+                UserLiveFeedobj_loadDataError();
+                return;
             }
-        };
 
-        xmlHttp.send(null);
+        } else {
+            xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", theUrl, true);
+            xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
+
+            xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+            xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+            if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
+
+            xmlHttp.ontimeout = function() {};
+
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
+            };
+
+            xmlHttp.send(null);
+        }
+    }
+
+    function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
+        if (xmlHttp.status === 200) {
+            UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
+        } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+            //Token has change or because is new or because it is invalid because user delete in twitch settings
+            // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
+            AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+        } else {
+            UserLiveFeedobj_loadDataError();
+        }
     }
 
     function UserLiveFeedobj_loadDataRefreshTokenError() {
