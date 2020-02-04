@@ -425,6 +425,7 @@ function Main_initWindows() {
 
 function Main_SetStringsMain(isStarting) {
     Main_updateclock();
+    UserLiveFeed_Prepare();
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -1120,7 +1121,8 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
         }
     }
 
-    Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
+    Main_values.Play_isHost = ((Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed) ||
+        ((UserLiveFeed_FeedPosX === UserLiveFeedobj_UserHostPos) && Play_UserLiveFeedPressed);
 
     if (Main_values.Play_isHost) {
         Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
@@ -1384,8 +1386,7 @@ function Main_updateUserFeed() {
     if (AddUser_UserIsSet()) {
         window.setTimeout(function() {
             if (!document.hidden && !UserLiveFeed_isFeedShow() && !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
-                Play_FeedOldUserName = AddUser_UsernameArray[0].name;
-                UserLiveFeed_StartLoad();
+                UserLiveFeed_RefreshLive();
             }
         }, 15000);
     }
@@ -1634,6 +1635,8 @@ function Main_SetThumb() {
 }
 
 function Main_ReplaceLargeFont(text) {
+    if (!text) return '';
+
     return text.replace(/[^\x00-\x7F]/g, function(match) {
         return '<span style="font-size: 0.8em;">' + match + '</span>';
     });

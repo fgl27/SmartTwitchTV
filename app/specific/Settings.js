@@ -589,8 +589,7 @@ function Settings_SetAnimations() {
             'user_feed_scroll_ani',
             'side_panel_fix',
             'side_panel_movel',
-            'side_panel',
-            'user_feed'
+            'side_panel'
         ],
         animate = Settings_Obj_default("app_animations"),
         mtransition = animate ? '' : 'none';
@@ -603,7 +602,7 @@ function Settings_SetAnimations() {
         }
     );
 
-    UserLiveFeed_FeedRemoveFocus();
+    UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
 
     array = document.getElementsByClassName(Main_classThumb);
 
