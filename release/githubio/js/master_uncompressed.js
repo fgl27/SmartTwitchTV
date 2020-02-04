@@ -394,7 +394,9 @@
     var STR_CONTROLS_MULTI_3;
     var STR_CONTROLS_MULTI_4;
     var STR_CONTROLS_MULTI_5;
-    var STR_CONTROLS_MULTI_6; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_CONTROLS_MULTI_6;
+    var STR_CURR_GAME;
+    var STR_FEED_END_DIALOG; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -913,6 +915,8 @@
         STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left";
         STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
         STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
+        STR_CURR_GAME = 'Current Game';
+        STR_FEED_END_DIALOG = ', Press back to go back to top menu';
     }
     //Spacing for release maker not trow erros from jshint
     var IMG_404_GAME = "data:image/png;base64,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";
@@ -1660,7 +1664,7 @@
     }
 
     function AddUser_removeEventListener() {
-        if (!Main_isTV) Android.mhideSystemUI();
+        if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
 
         Main_RemoveClass('scenefeed', 'avoidclicks');
         if (Main_AddUserInput !== null) {
@@ -3749,6 +3753,7 @@
 
     function Main_SetStringsMain(isStarting) {
         Main_updateclock();
+        UserLiveFeed_Prepare();
 
         //set top bar labels
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -4445,7 +4450,8 @@
             }
         }
 
-        Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
+        Main_values.Play_isHost = ((Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed) ||
+            ((UserLiveFeed_FeedPosX === UserLiveFeedobj_UserHostPos) && Play_UserLiveFeedPressed);
 
         if (Main_values.Play_isHost) {
             Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
@@ -4708,8 +4714,7 @@
         if (AddUser_UserIsSet()) {
             window.setTimeout(function() {
                 if (!document.hidden && !UserLiveFeed_isFeedShow() && !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
-                    Play_FeedOldUserName = AddUser_UsernameArray[0].name;
-                    UserLiveFeed_StartLoad();
+                    UserLiveFeed_RefreshLive();
                 }
             }, 15000);
         }
@@ -4958,6 +4963,8 @@
     }
 
     function Main_ReplaceLargeFont(text) {
+        if (!text) return '';
+
         return text.replace(/[^\x00-\x7F]/g, function(match) {
             return '<span style="font-size: 0.8em;">' + match + '</span>';
         });
@@ -5269,7 +5276,7 @@
         PlayClip_TimeToJump = 0;
         PlayClip_isOn = true;
 
-        if (!PlayClip_replay) PlayClip_loadData();
+        if (!PlayClip_replay) PlayClip_loadData(); //Play_PlayEndStart(3);
         else PlayClip_qualityChanged();
         PlayClip_replay = false;
 
@@ -5494,7 +5501,7 @@
         if (closePlayer) PlayClip_isOn = false;
         Chat_Clear();
         Play_ClearPlayer();
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide();
         PlayClip_qualities = [];
         document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
         ChannelVod_vodOffset = 0;
@@ -5679,7 +5686,7 @@
 
     function PlayClip_OpenLiveStream() {
         PlayClip_PreshutdownStream(true);
-        Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, PlayClip_handleKeyDown);
+        Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, PlayClip_handleKeyDown);
     }
 
     function PlayClip_handleKeyDown(e) {
@@ -5705,13 +5712,8 @@
         } else {
             switch (e.keyCode) {
                 case KEY_LEFT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                        if (Play_FeedPos && !UserLiveFeed_loadingData) {
-                            UserLiveFeed_FeedRemoveFocus();
-                            Play_FeedPos--;
-                            UserLiveFeed_FeedAddFocus();
-                        }
-                    } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
+                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
+                    else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                         Play_ChatPositions++;
                         Play_ChatPosition();
                         Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
@@ -5739,13 +5741,8 @@
                     } else PlayClip_showPanel();
                     break;
                 case KEY_RIGHT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                        if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
-                            UserLiveFeed_FeedRemoveFocus();
-                            Play_FeedPos++;
-                            UserLiveFeed_FeedAddFocus();
-                        }
-                    } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
+                    else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
                         Play_controls[Play_controlsChat].enterKey(3);
                     } else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
@@ -5770,7 +5767,7 @@
                     } else PlayClip_showPanel();
                     break;
                 case KEY_UP:
-                    if (Play_isEndDialogVisible()) {
+                    if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
                         Play_EndTextClear();
                         document.body.removeEventListener("keydown", PlayClip_handleKeyDown, false);
                         document.body.addEventListener("keyup", Play_handleKeyUp, false);
@@ -5785,11 +5782,10 @@
                         } else Play_BottomUpDown(3, 1);
                         PlayClip_setHidePanel();
                     } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
-                    else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
                     else PlayClip_showPanel();
                     break;
                 case KEY_DOWN:
-                    if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
+                    if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
                     else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
@@ -5797,7 +5793,7 @@
                             PlayVod_IconsBottonFocus();
                         } else Play_BottomUpDown(3, -1);
                         PlayClip_setHidePanel();
-                    } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
+                    } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                     else if (Play_isFullScreen && Play_isChatShown()) {
                         Play_KeyChatSizeChage();
                     } else PlayClip_showPanel();
@@ -5809,7 +5805,7 @@
                             Play_EndDialogEnter = 3;
                             Play_EndUpclearCalback = PlayClip_handleKeyDown;
                             Play_SavePlayData();
-                            Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                            Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
                         }
                     } else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
@@ -5830,7 +5826,11 @@
                 case KEY_RETURN:
                     if (Play_isEndDialogVisible()) Play_EndTextClear();
 
-                    if (Play_isPanelShown()) PlayClip_hidePanel();
+                    if (Play_isEndDialogVisible() && !Play_EndFocus) {
+                        Play_EndFocus = true;
+                        UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+                        Play_EndIconsAddFocus();
+                    } else if (Play_isPanelShown()) PlayClip_hidePanel();
                     else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) UserLiveFeed_Hide();
                     else {
                         if (Play_ExitDialogVisible() || Play_SingleClickExit) {
@@ -6057,7 +6057,7 @@
             //            PlayExtra_loadDataRequest();
             //            return;
             //        }
-            UserLiveFeed_Hide(true);
+            UserLiveFeed_Hide();
             Android.SetAuto2(PlayExtra_data.AutoUrl);
             PlayExtra_data.qualities = Play_extractQualities(responseText);
             PlayExtra_state = Play_STATE_PLAYING;
@@ -6294,8 +6294,6 @@
     var Play_ChatPositionsBF;
     var Play_ChatEnableBF;
     var Play_ChatSizeValueBF;
-    var Play_FeedOldUserName = '';
-    var Play_FeedPos = 0;
     var Play_Buffer = 2000;
     var Play_CurrentSpeed = 3;
     var Play_PicturePicturePos = 4;
@@ -6621,7 +6619,7 @@
     var Play_CheckIfIsLiveStartCallback = 0;
 
     function Play_CheckIfIsLiveStart(callback) {
-        if (Main_ThumbOpenIsNull(Play_FeedPos, UserLiveFeed_ids[0])) return;
+        if (Main_ThumbOpenIsNull(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0])) return;
         else if (!Main_IsNotBrowser) {
             callback();
             return;
@@ -6630,9 +6628,9 @@
 
         Play_CheckIfIsLiveStartCounter = 0;
         Play_CheckIfIsLiveStartCallback = callback;
-        Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[6];
+        Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
-        Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + Play_FeedPos).textContent;
+        Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
 
         Play_CheckIfIsLive();
     }
@@ -6721,7 +6719,7 @@
         PlayExtra_RefreshAutoTry = 0;
 
         if (isPicturePicture) PlayExtra_RefreshAutoRequest(true);
-        else Play_RefreshAutoRequest(true);
+        else if (Main_IsNotBrowser) Play_RefreshAutoRequest(true);
     }
 
     function Play_RefreshAutoRequest(UseAndroid) {
@@ -6770,7 +6768,7 @@
     }
 
     function Play_Resume() {
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide();
         Play_data.watching_time = new Date().getTime();
         Play_isOn = true;
         ChatLive_Playing = true;
@@ -7061,7 +7059,7 @@
         }
 
         Play_RefreshAutoTry = 0;
-        Play_RefreshAutoRequest(false);
+        if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
 
         if (PlayExtra_PicturePicture) {
             PlayExtra_RefreshAutoTry = 0;
@@ -7290,7 +7288,7 @@
             Play_loadData();
         } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
 
-            UserLiveFeed_Hide(true);
+            UserLiveFeed_Hide();
 
             if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
             else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
@@ -7550,7 +7548,7 @@
             if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey(false);
         }
 
-        if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide(true);
+        if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide();
 
         Play_ClearPlay(closePlayer);
         Play_ClearPlayer();
@@ -8064,7 +8062,7 @@
 
         if (canhide) {
             Play_HideEndDialog();
-            UserLiveFeed_Hide(true);
+            UserLiveFeed_Hide();
             UserLiveFeed_PreventHide = false;
         }
         Play_EndDialogEnter = 0;
@@ -8168,12 +8166,15 @@
         Main_OpenSearch();
     }
 
+    var Play_OpenGameId;
+
     function Play_OpenGame(PlayVodClip) {
         if (Play_data.data[3] === '') {
             Play_clearHidePanel();
             Play_IsWarning = true;
             Play_showWarningDialog(STR_NO_GAME);
-            window.setTimeout(function() {
+            window.clearTimeout(Play_OpenGameId);
+            Play_OpenGameId = window.setTimeout(function() {
                 Play_IsWarning = false;
                 Play_HideWarningDialog();
             }, 2000);
@@ -8353,7 +8354,11 @@
     function Play_KeyReturn(is_vod) {
         if (Play_isEndDialogVisible()) Play_EndTextClear();
 
-        if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
+        if (Play_isEndDialogVisible() && !Play_EndFocus) {
+            Play_EndFocus = true;
+            UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+            Play_EndIconsAddFocus();
+        } else if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
         else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
         else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) UserLiveFeed_Hide();
         else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
@@ -8436,8 +8441,23 @@
             if (!PlayExtra_clear) Play_OpenLiveFeedCheck();
         } else if (e.keyCode === KEY_UP) {
             Play_handleKeyUpEndClear();
-            if (!Play_EndUpclear) Play_EndDialogUpDown();
+            if (!Play_EndUpclear) {
+                if (Play_isEndDialogVisible()) Play_EndDialogUpDown(-1);
+                else UserLiveFeed_KeyUpDown(-1);
+            }
         }
+    }
+
+    function Play_EndDialogUpDown(adder) {
+
+        Play_EndTextClear();
+        if (UserLiveFeed_loadingData) return;
+
+        if (Play_EndFocus) {
+            Play_EndFocus = false;
+            Play_EndIconsRemoveFocus();
+            UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX);
+        } else UserLiveFeed_KeyUpDown(adder);
     }
 
     function Play_OpenLiveFeedCheck() {
@@ -8450,7 +8470,7 @@
 
         Main_values.Play_isHost = false;
         Play_UserLiveFeedPressed = true;
-        Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+        Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
     }
 
     function Play_keyUpEnd() {
@@ -8462,22 +8482,6 @@
         window.clearTimeout(Play_EndUpclearID);
         document.body.removeEventListener("keyup", Play_handleKeyUp);
         document.body.addEventListener("keydown", Play_EndUpclearCalback, false);
-    }
-
-    function Play_EndDialogUpDown() {
-
-        Play_EndTextClear();
-        if (UserLiveFeed_loadingData || !AddUser_UserIsSet()) return;
-
-        if (Play_EndFocus) {
-            Play_EndFocus = false;
-            Play_EndIconsRemoveFocus();
-            UserLiveFeed_FeedAddFocus();
-        } else {
-            Play_EndFocus = true;
-            UserLiveFeed_FeedRemoveFocus();
-            Play_EndIconsAddFocus();
-        }
     }
 
     function Play_RestorePlayData(error_410) {
@@ -8582,10 +8586,12 @@
             var name = Play_data.data[14];
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
-            if (name !== Play_data.data[14]) {
-                if (First) Play_Start();
-                else Play_UpdateMainStream();
+            if (name !== Play_data.data[14] && First) {
+                Play_Start();
+                return;
             }
+
+            Play_UpdateMainStream();
 
         } else if (shutdown) Play_shutdownStream();
     }
@@ -8605,6 +8611,7 @@
         Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_Lang);
         Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
         Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
+        Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
         Play_LoadLogoSucess = true;
         Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
         Play_created = Play_data.data[12];
@@ -8756,7 +8763,7 @@
             if (xmlHttp.status === 200) {
 
                 Play_MultiArray[pos].AutoUrl = theUrl;
-                if (Play_MultiIsFull()) UserLiveFeed_Hide(true);
+                if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
                 try {
                     Android.StartMultiStream(pos, theUrl);
@@ -8777,12 +8784,17 @@
                 Play_MultiArray[pos].watching_time = new Date().getTime();
                 Main_Set_history('live', Play_MultiArray[pos].data);
 
-                //reset chat is pos 0 changed
+                //reset chat and fallow icon if pos 0 changed
                 if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
                     Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
                     ChatLive_Init(0);
                     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
                     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+                    if (AddUser_UserIsSet()) {
+                        AddCode_PlayRequest = true;
+                        AddCode_Channel_id = Play_data.data[14];
+                        AddCode_CheckFallow();
+                    }
                 }
                 Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
             } else if (xmlHttp.status === 403) { //forbidden access
@@ -8844,6 +8856,15 @@
     }
 
     function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title) {
+
+        Play_MultiArray[pos].isHost = displayname.indexOf(STR_USER_HOSTING) !== -1;
+
+        if (Play_MultiArray[pos].isHost) {
+            Play_MultiArray[pos].DisplaynameHost = displayname;
+            Play_MultiArray[pos].data[1] = displayname.split(STR_USER_HOSTING)[1];
+            displayname = Play_MultiArray[pos].data[1];
+        }
+
         Main_innerHTML('stream_info_multi_name' + pos, displayname);
         document.getElementById('stream_info_multiimg' + pos).src = logo;
         Play_MultiUpdateinfo(pos, game, views, is_rerun, title);
@@ -8887,12 +8908,12 @@
             Main_innerHTML('stream_dialog_multi_title' + i, twemoji.parse(Play_MultiArray[i].data[2]));
         }
 
-        Main_textContent('stream_dialog_multi_name-1', doc[1]);
+        Main_textContent('stream_dialog_multi_name-1', (doc[1].indexOf(STR_USER_HOSTING) !== -1 ? doc[1].split(STR_USER_HOSTING)[1] : doc[1]));
         document.getElementById('stream_dialog_multiimg-1').src = doc[9];
         Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
         Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
 
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide();
         Play_MultiDialogPos = 0;
         Play_MultiAddFocus();
         Play_ShowMultiDialog();
@@ -8936,7 +8957,7 @@
 
     function Play_CheckLiveThumb(PreventResetFeed) {
 
-        var doc = document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos),
+        var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
             error = STR_STREAM_ERROR;
 
         if (doc !== null) {
@@ -8980,13 +9001,8 @@
         } else {
             switch (e.keyCode) {
                 case KEY_LEFT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                        if (Screens_ChangeFocusAnimationFinished && Play_FeedPos && !UserLiveFeed_loadingData) {
-                            UserLiveFeed_FeedRemoveFocus();
-                            Play_FeedPos--;
-                            UserLiveFeed_FeedAddFocus();
-                        }
-                    } else if (Play_MultiDialogVisible()) {
+                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
+                    else if (Play_MultiDialogVisible()) {
                         Play_MultiRemoveFocus();
                         Play_MultiDialogPos--;
                         if (Play_MultiDialogPos < 0) Play_MultiDialogPos = 3;
@@ -9019,14 +9035,8 @@
                     }
                     break;
                 case KEY_RIGHT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                        if (Screens_ChangeFocusAnimationFinished &&
-                            Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
-                            UserLiveFeed_FeedRemoveFocus();
-                            Play_FeedPos++;
-                            UserLiveFeed_FeedAddFocus();
-                        }
-                    } else if (Play_MultiDialogVisible()) {
+                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
+                    else if (Play_MultiDialogVisible()) {
                         Play_MultiRemoveFocus();
                         Play_MultiDialogPos++;
                         if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
@@ -9069,15 +9079,15 @@
                         Play_MultiDialogPos -= 2;
                         if (Play_MultiDialogPos < 0) Play_MultiDialogPos += 4;
                         Play_MultiAddFocus();
-                    } else if (!UserLiveFeed_isFeedShow() && AddUser_UserIsSet()) UserLiveFeed_ShowFeed();
-                    else if (Play_isEndDialogVisible()) {
+                    } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
+                    else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
                         Play_EndTextClear();
                         document.body.removeEventListener("keydown", Play_handleKeyDown, false);
                         document.body.addEventListener("keyup", Play_handleKeyUp, false);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = Play_handleKeyDown;
                         Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);
-                    } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                    }
                     break;
                 case KEY_DOWN:
                     if (Play_isPanelShown()) {
@@ -9092,8 +9102,8 @@
                         Play_MultiDialogPos += 2;
                         if (Play_MultiDialogPos > 3) Play_MultiDialogPos -= 4;
                         Play_MultiAddFocus();
-                    } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
-                    else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
+                    } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
+                    else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                     else if ((Play_isFullScreen || Play_MultiEnable) && Play_isChatShown() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                         Play_KeyChatSizeChage();
                     } else if (PlayExtra_PicturePicture && !Play_MultiEnable) {
@@ -10296,7 +10306,7 @@
     }
 
     function PlayVod_Resume() {
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide();
         PlayVod_isOn = true;
         Play_showBufferDialog();
         Play_ResumeAfterOnlineCounter = 0;
@@ -10609,7 +10619,7 @@
         window.clearInterval(PlayVod_updateStreamInfId);
         Main_values.Play_WasPlaying = 0;
         Chat_Clear();
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide();
         Play_ClearPlayer();
         PlayVod_ClearVod();
     }
@@ -10886,7 +10896,7 @@
 
     function PlayVod_OpenLiveStream() {
         PlayVod_PreshutdownStream(true);
-        Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, PlayVod_handleKeyDown);
+        Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, PlayVod_handleKeyDown);
     }
 
     function PlayVod_handleKeyDown(e) {
@@ -10912,13 +10922,8 @@
         } else {
             switch (e.keyCode) {
                 case KEY_LEFT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                        if (Play_FeedPos && !UserLiveFeed_loadingData) {
-                            UserLiveFeed_FeedRemoveFocus();
-                            Play_FeedPos--;
-                            UserLiveFeed_FeedAddFocus();
-                        }
-                    } else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
+                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
+                    else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown()) {
                         Play_ChatPositions++;
                         Play_ChatPosition();
                         Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
@@ -10946,13 +10951,8 @@
                     } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_RIGHT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                        if (Play_FeedPos < (UserLiveFeed_GetSize() - 1) && !UserLiveFeed_loadingData) {
-                            UserLiveFeed_FeedRemoveFocus();
-                            Play_FeedPos++;
-                            UserLiveFeed_FeedAddFocus();
-                        }
-                    } else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
+                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
+                    else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible()) {
                         Play_controls[Play_controlsChat].enterKey(2);
                     } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
@@ -10977,7 +10977,7 @@
                     } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_UP:
-                    if (Play_isEndDialogVisible()) {
+                    if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
                         Play_EndTextClear();
                         document.body.removeEventListener("keydown", PlayVod_handleKeyDown, false);
                         document.body.addEventListener("keyup", Play_handleKeyUp, false);
@@ -10992,11 +10992,10 @@
                         } else Play_BottomUpDown(2, 1);
                         PlayVod_setHidePanel();
                     } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
-                    else if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
                     else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_DOWN:
-                    if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
+                    if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
                     else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
@@ -11004,7 +11003,7 @@
                             PlayVod_IconsBottonFocus();
                         } else Play_BottomUpDown(2, -1);
                         PlayVod_setHidePanel();
-                    } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_Hide();
+                    } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                     else if (Play_isFullScreen && Play_isChatShown()) {
                         Play_KeyChatSizeChage();
                     } else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
@@ -11017,7 +11016,7 @@
                             Play_EndDialogEnter = 2;
                             Play_EndUpclearCalback = PlayVod_handleKeyDown;
                             Play_SavePlayData();
-                            Main_OpenLiveStream(Play_FeedPos, UserLiveFeed_ids, Play_handleKeyDown);
+                            Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
                         }
                     } else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
@@ -14893,7 +14892,7 @@
     }
 
     function Search_RemoveinputFocus(EnaKeydown) {
-        if (!Main_isTV) Android.mhideSystemUI();
+        if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
 
         Main_RemoveClass('scenefeed', 'avoidclicks');
         Main_SearchInput.blur();
@@ -15539,8 +15538,7 @@
                 'user_feed_scroll_ani',
                 'side_panel_fix',
                 'side_panel_movel',
-                'side_panel',
-                'user_feed'
+                'side_panel'
             ],
             animate = Settings_Obj_default("app_animations"),
             mtransition = animate ? '' : 'none';
@@ -15553,7 +15551,7 @@
             }
         );
 
-        UserLiveFeed_FeedRemoveFocus();
+        UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
 
         array = document.getElementsByClassName(Main_classThumb);
 
@@ -16473,14 +16471,16 @@
         Sidepannel_HideMain(true);
     }
 
+    var Sidepannel_FeedOldUserName = '';
+
     function Sidepannel_ShowFeed() {
         Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-        if (Play_FeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status = false;
-        Play_FeedOldUserName = AddUser_UsernameArray[0].name;
+        if (Sidepannel_FeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+        Sidepannel_FeedOldUserName = AddUser_UsernameArray[0].name;
 
-        if (!UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
+        if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_0', UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
 
-        if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+        if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
 
         if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
             Sidepannel_AddFocusFeed(true);
@@ -16677,7 +16677,7 @@
                 break;
             case KEY_REFRESH:
             case KEY_LEFT:
-                if (!UserLiveFeed_loadingData) UserLiveFeed_FeedRefresh();
+                if (!UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
                 break;
             case KEY_PG_UP:
             case KEY_UP:
@@ -16805,16 +16805,17 @@
     }
     //Spacing for reease maker not trow erros frm jshint
     var UserLiveFeed_loadingData = false;
+    var UserLiveFeed_loadingDataId;
     var UserLiveFeed_loadingDataTry = 0;
     var UserLiveFeed_loadingDataTimeout = 3500;
     var UserLiveFeed_loadChannelOffsset = 0;
     var UserLiveFeed_loadingDataTryMax = 5;
     var UserLiveFeed_dataEnded = false;
     var UserLiveFeed_followerChannels = '';
-    var UserLiveFeed_idObject = {};
-    var UserLiveFeed_status = false;
-    var UserLiveFeed_LastPos = null;
-    var UserSidePannel_LastPos = null;
+    var UserLiveFeed_idObject = [];
+    var UserLiveFeed_status = [];
+    var UserLiveFeed_LastPos = [];
+    var UserSidePannel_LastPos = [];
     var UserLiveFeed_token = null;
     var UserLiveFeed_Feedid;
     var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
@@ -16829,80 +16830,380 @@
     var UserLiveFeed_NotifyRunning = false;
     var UserLiveFeed_NotifyTimeout = 3000;
 
+    var UserLiveFeed_FeedPosY = [];
+    var UserLiveFeed_itemsCount = [];
+    var UserLiveFeed_obj = {};
+
     var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
     var UserLiveFeed_side_ids = ['usf_thumbdiv', 'usf_img', 'usf_infodiv', 'usf_displayname', 'usf_streamtitle', 'usf_streamgame', 'usf_viwers', 'usf_quality', 'usf_cell', 'ulempty_', 'user_live_scroll'];
 
     function UserLiveFeed_StartLoad(PreventAddfocus) {
+        UserLiveFeed_StartLoadPos(PreventAddfocus, UserLiveFeed_FeedPosX);
+    }
+
+    function UserLiveFeed_StartLoadPos(PreventAddfocus, pos) {
+        UserLiveFeed_clearHideFeed();
+
+        UserLiveFeed_CounterDialogRst();
+        UserLiveFeed_PreventAddfocus = PreventAddfocus;
+        Main_ShowElement('dialog_loading_feed');
+        UserLiveFeedobj_loadDataPrepare();
+        UserLiveFeed_obj[pos].load();
+    }
+
+    function UserLiveFeed_Prepare() {
+        //User live
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos] = {};
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].load = UserLiveFeedobj_CheckToken;
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].show = UserLiveFeedobj_ShowFeed;
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = 'user_feed_scroll';
+
+        //User live
+        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos] = {};
+        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
+        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
+        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].hide = UserLiveFeedobj_HideUserHost;
+        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = 'user_host_scroll';
+
+        //Live
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos] = {};
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].show = UserLiveFeedobj_ShowLive;
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].hide = UserLiveFeedobj_HideLive;
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].div = 'live_feed_scroll';
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
+
+        //Current Game
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos] = {};
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].load = UserLiveFeedobj_CurrentGame;
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].show = UserLiveFeedobj_ShowCurrentGame;
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].hide = UserLiveFeedobj_HideCurrentGame;
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div = 'current_game_feed_scroll';
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'streams';
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
+
+        //Featured
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos] = {};
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].load = UserLiveFeedobj_Featured;
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].show = UserLiveFeedobj_ShowFeatured;
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].hide = UserLiveFeedobj_HideFeatured;
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div = 'featured_feed_scroll';
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
+
+        if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
+    }
+
+    function UserLiveFeed_RefreshLive(PreventAddfocus) {
         if (AddUser_UserIsSet()) {
-            UserLiveFeed_clearHideFeed();
-
-            if (UserLiveFeed_status) {
-                if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
-                    UserLiveFeed_LastPos = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + Play_FeedPos).getAttribute(Main_DataAttribute))[6];
-
-                if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
-                    UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
-            } else {
-                UserSidePannel_LastPos = null;
-                UserLiveFeed_LastPos = null;
-            }
-
-            UserLiveFeed_PreloadImgs = [];
             UserLiveFeed_PreventAddfocus = PreventAddfocus;
-            Main_empty('user_feed_scroll');
-            Main_HideElement('side_panel_feed_thumb');
-            Sidepannel_PosFeed = 0;
-            Main_empty('side_panel_holder');
-            document.getElementById('side_panel_warn').style.display = 'none';
-            UserLiveFeed_status = false;
-            document.getElementById('user_feed_scroll').style.left = "0.125em";
-            Main_ShowElement('dialog_loading_feed');
-            Main_ShowElement('dialog_loading_side_feed');
-            UserLiveFeed_loadChannelOffsset = 0;
-            UserLiveFeed_followerChannels = '';
-            Play_FeedPos = 0;
-            UserLiveFeed_idObject = {};
-            Main_updateclock();
-
-            UserLiveFeed_loadDataPrepare();
-            UserLiveFeed_CheckToken();
+            UserLiveFeedobj_loadDataPrepare();
+            UserLiveFeedobj_CheckToken();
         }
     }
 
-    function UserLiveFeed_CheckToken() {
+    function UserLiveFeed_CounterDialogRst() {
+        Main_empty('feed_counter');
+    }
+
+    function UserLiveFeed_CounterDialog(pos, total) {
+        if (total > 0) Main_textContent('feed_counter', (pos + 1) + '/' + (total));
+        else UserLiveFeed_CounterDialogRst();
+    }
+
+    function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
+        UserLiveFeed_loadingData = false;
+        UserLiveFeed_status[pos] = true;
+        Main_ready(function() {
+            Main_HideElement('dialog_loading_feed');
+            Main_HideElement('dialog_loading_side_feed');
+            Sidepannel_AddFocusFeed(true);
+            UserLiveFeed_FeedAddFocus(true, pos);
+            window.setTimeout(Sidepannel_PreloadImgs, 10);
+
+            if (ShowNotifications) {
+                //The app just started or user change don't nottify
+                if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
+                else {
+                    UserLiveFeed_NotifyLiveidObject = [];
+                    UserLiveFeed_CheckNotifycation = true;
+                }
+            }
+        });
+    }
+
+    function UserLiveFeed_GetSize(pos) {
+        return UserLiveFeed_itemsCount[pos];
+    }
+
+    function UserLiveFeed_CreatFeed(id, data) {
+        var ishosting = data[1].indexOf(STR_USER_HOSTING) !== -1,
+            div = document.createElement('div');
+
+        div.setAttribute('id', UserLiveFeed_ids[8] + id);
+        div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
+        div.className = 'user_feed_thumb';
+        div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
+            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + data[0].replace("{width}x{height}", Main_VideoSize) +
+            Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
+            '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
+            '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_info_live_name"' +
+            (ishosting ? ' style="max-height: 2.4em; overflow: hidden; white-space: normal;' : '') + '">' + Main_ReplaceLargeFont(data[1]) + '</div>' +
+            '<div id="' + UserLiveFeed_ids[4] + id + '"class="stream_info_live_title" ' + (ishosting ? 'style="max-height: 1.2em;"' : '') +
+            '>' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div><div style="line-height: 1.6ch;"><div id="' +
+            UserLiveFeed_ids[5] + id + '"class="stream_info_live" style="width: 70.75%; display: inline-block;">' + data[3] +
+            '</div><div "class="stream_info_live " style="width:29%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
+            '<i class="icon-' + (!data[8] ? 'circle" style="color: ' + (ishosting ? '#FED000' : 'red') + ';' : 'refresh" style="') + ' font-size: 75%; "></i>' +
+            STR_SPACE + Main_addCommas(data[13]) + '</div></div></span></div></div>';
+
+        return div;
+    }
+
+    function UserLiveFeed_isFeedShow() {
+        return document.getElementById('user_feed').className.indexOf('user_feed_hide') === -1;
+    }
+
+    function UserLiveFeed_ShowFeed(PreventAddfocus) {
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].show(PreventAddfocus);
+    }
+
+    function UserLiveFeed_Show() {
+        Main_RemoveClass('user_feed', 'user_feed_hide');
+    }
+
+    function UserLiveFeed_Hide() {
+        Main_AddClass('user_feed', 'user_feed_hide');
+    }
+
+    function UserLiveFeed_ResetFeedId() {
+        UserLiveFeed_clearHideFeed();
+        if (!UserLiveFeed_PreventHide) UserLiveFeed_setHideFeed();
+    }
+
+    function UserLiveFeed_clearHideFeed() {
+        window.clearTimeout(UserLiveFeed_Feedid);
+    }
+
+    function UserLiveFeed_setHideFeed() {
+        if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
+    }
+
+    function UserLiveFeed_FeedRefresh(PreventAddfocus) {
+        UserLiveFeed_clearHideFeed();
+        if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad(PreventAddfocus);
+        else {
+            window.clearTimeout(UserLiveFeed_loadingDataId);
+            UserLiveFeed_loadingDataId = window.setTimeout(function() {
+                UserLiveFeed_loadingData = false;
+            }, 15000);
+        }
+    }
+
+    function UserLiveFeed_FeedAddFocus(skipAnimation, pos) {
+        if (!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) return;
+
+        if (!UserLiveFeed_PreventAddfocus) {
+            Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
+        } else {
+            UserLiveFeed_PreventAddfocus = false;
+        }
+
+        UserLiveFeed_FeedSetPos(skipAnimation, pos);
+        UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+        UserLiveFeed_ResetFeedId();
+    }
+
+    function UserLiveFeed_FeedRemoveFocus(pos) {
+        if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
+            Main_RemoveClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
+    }
+
+    function UserLiveFeed_FeedGetPos(pos) {
+        var position = 0;
+
+        if (UserLiveFeed_FeedPosY[pos] < 3) position = 2.5;
+        else if (UserLiveFeed_ThumbNull((pos + '_' + (UserLiveFeed_FeedPosY[pos] + 2)), UserLiveFeed_ids[0]))
+            position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 2)).offsetLeft * -1);
+        else if (UserLiveFeed_ThumbNull(pos + '_' + (UserLiveFeed_FeedPosY[pos] + 1), UserLiveFeed_ids[0]))
+            position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 3)).offsetLeft * -1);
+        else position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] > 3 ? 4 : 3))).offsetLeft * -1);
+
+        return position;
+    }
+
+    function UserLiveFeed_FeedSetPos(skipAnimation, pos) {
+        var position = UserLiveFeed_FeedGetPos(pos);
+        var doc = document.getElementById(UserLiveFeed_obj[pos].div);
+
+        if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+            !Screens_ChangeFocusAnimationFast) {
+            Screens_ChangeFocusAnimationFinished = false;
+            Screens_ChangeFocusAnimationFast = true;
+
+            doc.style.transition = '';
+            doc.classList.add('user_feed_scroll_ani');
+
+            window.setTimeout(function() {
+                Screens_ChangeFocusAnimationFinished = true;
+            }, 200); //Same value as user_feed_scroll_ani
+        } else {
+            if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
+            doc.style.transition = 'none';
+            doc.classList.remove('user_feed_scroll_ani');
+        }
+
+        if (position) doc.style.left = (position / BodyfontSize) + "em";
+    }
+
+    function UserLiveFeed_ThumbNull(y, thumbnail) {
+        return document.getElementById(thumbnail + y) !== null;
+    }
+
+    function UserLiveFeed_SetFeedPicText() {
+        Main_innerHTML('icon_feed_refresh', '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE + STR_SPACE + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_PICTURE_LIVE_FEED + '</div>');
+    }
+
+    function UserLiveFeed_Unset() {
+        Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP);
+    }
+
+    function UserLiveFeed_SetHoldUp() {
+        Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP + STR_FEED_END_DIALOG);
+    }
+
+    function UserLiveFeed_KeyRightLeft(Adder) {
+        if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
+            var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
+            if (NextPos > (UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1) || NextPos < 0) return;
+
+            UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+            UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] = NextPos;
+            UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX);
+        }
+        UserLiveFeed_ResetFeedId();
+    }
+
+    function UserLiveFeed_KeyUpDown(Adder) {
+        if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
+
+            var NextPos = UserLiveFeed_FeedPosX + Adder;
+            if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) {
+                if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
+                    Play_IsWarning = true;
+                    Play_showWarningDialog(STR_NOKUSER_WARN);
+                    window.clearTimeout(Play_OpenGameId);
+                    Play_OpenGameId = window.setTimeout(function() {
+                        Play_IsWarning = false;
+                        Play_HideWarningDialog();
+                    }, 2000);
+                }
+                return;
+            }
+
+            if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
+                UserLiveFeed_KeyUpDown(Adder);
+                Play_IsWarning = true;
+                Play_showWarningDialog(STR_NO_GAME);
+                window.clearTimeout(Play_OpenGameId);
+                Play_OpenGameId = window.setTimeout(function() {
+                    Play_IsWarning = false;
+                    Play_HideWarningDialog();
+                }, 2000);
+                return;
+            }
+
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+            UserLiveFeed_FeedPosX = NextPos;
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
+        }
+        UserLiveFeed_ResetFeedId();
+    }
+    var UserLiveFeedobj_loadErrorCallback;
+
+    //Global
+    var UserLiveFeedobj_FeaturedPos = 0;
+    var UserLiveFeedobj_CurrentGamePos = 1;
+    var UserLiveFeedobj_LivePos = 2;
+    //User
+    var UserLiveFeedobj_UserLivePos = 3;
+    var UserLiveFeedobj_UserHostPos = 4;
+
+    var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos; //Default pos
+    var UserLiveFeedobj_MAX = UserLiveFeedobj_UserHostPos;
+    var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
+
+    function UserLiveFeedobj_StartDefault(pos) {
+        if (UserLiveFeed_status[pos]) {
+            if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
+                UserLiveFeed_LastPos[pos] = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[6];
+        } else {
+            UserSidePannel_LastPos[pos] = null;
+            UserLiveFeed_LastPos[pos] = null;
+        }
+
+        UserLiveFeed_itemsCount[pos] = 0;
+        Main_empty(UserLiveFeed_obj[pos].div);
+        if (UserLiveFeed_isFeedShow()) Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
+        UserLiveFeed_status[pos] = false;
+        document.getElementById(UserLiveFeed_obj[pos].div).style.left = "0.125em";
+        UserLiveFeed_FeedPosY[pos] = 0;
+        UserLiveFeed_idObject[pos] = {};
+
+        Main_updateclock();
+        Main_ShowElement('dialog_loading_side_feed');
+    }
+
+    function UserLiveFeedobj_CheckToken() {
+        if (UserLiveFeed_status[UserLiveFeed_FeedPosX]) {
+            if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
+                UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+        }
+        UserLiveFeed_PreloadImgs = [];
+        Sidepannel_PosFeed = 0;
+        Main_empty('side_panel_holder');
+        document.getElementById('side_panel_warn').style.display = 'none';
+        Main_HideElement('side_panel_feed_thumb');
+        UserLiveFeed_loadChannelOffsset = 0;
+        UserLiveFeed_followerChannels = '';
+
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserLivePos);
+
         UserLiveFeed_token = AddUser_UsernameArray[0].access_token;
         if (UserLiveFeed_token) {
             UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
-            UserLiveFeed_loadChannelUserLive();
+            UserLiveFeedobj_loadChannelUserLive();
         } else {
-            UserLiveFeed_loadDataPrepare();
+            UserLiveFeedobj_loadDataPrepare();
             UserLiveFeed_token = null;
-            UserLiveFeed_loadChannels();
+            UserLiveFeedobj_loadChannels();
         }
     }
 
-    function UserLiveFeed_loadDataPrepare() {
+    function UserLiveFeedobj_loadDataPrepare() {
         UserLiveFeed_loadingData = true;
         UserLiveFeed_loadingDataTry = 0;
         UserLiveFeed_loadingDataTimeout = 3500;
     }
 
-    function UserLiveFeed_loadChannels() {
+    function UserLiveFeedobj_loadChannels() {
         var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
-
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeed_loadChannelLive, UserLiveFeed_loadDataError, false);
+        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannels;
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
     }
 
-    function UserLiveFeed_loadDataError() {
+    function UserLiveFeedobj_loadDataError() {
         UserLiveFeed_loadingDataTry++;
         if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
             UserLiveFeed_loadingDataTimeout += 500;
-            UserLiveFeed_loadChannels();
+            UserLiveFeedobj_loadErrorCallback();
         } else {
             UserLiveFeed_loadingData = false;
-            if (!UserLiveFeed_GetSize()) {
+            if (!UserLiveFeed_GetSize(UserLiveFeedobj_UserLivePos)) {
                 Main_HideElement('dialog_loading_feed');
                 Main_HideElement('dialog_loading_side_feed');
                 if (UserLiveFeed_isFeedShow()) {
@@ -16913,12 +17214,12 @@
                 }
             } else {
                 UserLiveFeed_dataEnded = true;
-                UserLiveFeed_loadDataSuccessFinish();
+                UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserLivePos);
             }
         }
     }
 
-    function UserLiveFeed_loadChannelLive(responseText) {
+    function UserLiveFeedobj_loadChannelLive(responseText) {
         var response = JSON.parse(responseText).follows,
             response_items = response.length;
 
@@ -16932,16 +17233,16 @@
             }
 
             UserLiveFeed_loadChannelOffsset += response_items;
-            UserLiveFeed_loadDataPrepare();
-            UserLiveFeed_loadChannels();
+            UserLiveFeedobj_loadDataPrepare();
+            UserLiveFeedobj_loadChannels();
         } else { // end
             UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
-            UserLiveFeed_loadDataPrepare();
-            Main_ready(UserLiveFeed_loadChannelUserLive);
+            UserLiveFeedobj_loadDataPrepare();
+            UserLiveFeedobj_loadChannelUserLive();
         }
     }
 
-    function UserLiveFeed_loadChannelUserLive() {
+    function UserLiveFeedobj_loadChannelUserLive() {
         var theUrl = Main_kraken_api + 'streams/';
 
         if (UserLiveFeed_token) {
@@ -16951,10 +17252,11 @@
         }
         theUrl += 'limit=100&offset=0&stream_type=all' + Main_TwithcV5Flag;
 
-        UserLiveFeed_loadChannelUserLiveGet(theUrl);
+        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannelUserLive;
+        UserLiveFeedobj_loadChannelUserLiveGet(theUrl);
     }
 
-    function UserLiveFeed_loadChannelUserLiveGet(theUrl) {
+    function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
@@ -16968,13 +17270,13 @@
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    UserLiveFeed_loadDataSuccess(xmlHttp.responseText);
+                    UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
                 } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                     //Token has change or because is new or because it is invalid because user delete in twitch settings
                     // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-                    AddCode_refreshTokens(0, 0, UserLiveFeed_CheckToken, UserLiveFeed_loadDataRefreshTokenError);
+                    AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
                 } else {
-                    UserLiveFeed_loadDataErrorLive();
+                    UserLiveFeedobj_loadDataError();
                 }
             }
         };
@@ -16982,46 +17284,27 @@
         xmlHttp.send(null);
     }
 
-    function UserLiveFeed_loadDataRefreshTokenError() {
-        if (!AddUser_UsernameArray[0].access_token) UserLiveFeed_CheckToken();
-        else UserLiveFeed_loadDataErrorLive();
+    function UserLiveFeedobj_loadDataRefreshTokenError() {
+        if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
+        else UserLiveFeedobj_loadDataError();
     }
 
-    function UserLiveFeed_loadDataErrorLive() {
-        UserLiveFeed_loadingDataTry++;
-        if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
-            UserLiveFeed_loadingDataTimeout += 500;
-            UserLiveFeed_loadChannelUserLive();
-        } else {
-            UserLiveFeed_loadingData = false;
-            Main_HideElement('dialog_loading_feed');
-            Main_HideElement('dialog_loading_side_feed');
-            if (UserLiveFeed_isFeedShow()) {
-                Play_showWarningDialog(STR_REFRESH_PROBLEM);
-                window.setTimeout(function() {
-                    Play_HideWarningDialog();
-                }, 2000);
-            }
-        }
-    }
-
-    function UserLiveFeed_loadDataSuccess(responseText) {
+    function UserLiveFeedobj_loadDataSuccess(responseText) {
 
         var response = JSON.parse(responseText).streams,
             response_items = response.length,
             sorting = Settings_Obj_default('live_feed_sort'),
             stream, id, mArray,
-            doc = document.getElementById("user_feed_scroll"),
+            doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div),
             docside = document.getElementById("side_panel_holder"),
             i = 0;
 
-        if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+        //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
 
         if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
             UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
             UserLiveFeed_CheckNotifycation = false;
         }
-
 
         var sorting_type1 = Settings_FeedSort[sorting][0],
             sorting_type2 = Settings_FeedSort[sorting][1],
@@ -17058,9 +17341,9 @@
         for (i; i < response_items; i++) {
             stream = response[i];
             id = stream.channel._id;
-            if (!UserLiveFeed_idObject[id]) {
+            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id]) {
 
-                UserLiveFeed_idObject[id] = 1;
+                UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = 1;
                 mArray = ScreensObj_LiveCellArray(stream);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
@@ -17075,28 +17358,30 @@
                     });
                 }
 
-                if (UserLiveFeed_LastPos !== null && UserLiveFeed_LastPos === stream.channel.name)
-                    Play_FeedPos = i;
+                if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
+                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
                 doc.appendChild(
                     UserLiveFeed_CreatFeed(
-                        i, mArray
+                        UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos], mArray
                     )
                 );
 
-                if (UserSidePannel_LastPos !== null && UserSidePannel_LastPos === stream.channel.name)
-                    Sidepannel_PosFeed = i;
+                if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
+                    Sidepannel_PosFeed = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
                 docside.appendChild(
-                    UserLiveFeed_CreatSideFeed(
-                        i, mArray
+                    UserLiveFeedobj_CreatSideFeed(
+                        UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
+                        mArray
                     )
                 );
 
+                UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]++;
             }
         }
 
-        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject));
+        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
 
         // doc.appendChild(
         //     UserLiveFeed_CreatFeed(i++,
@@ -17119,29 +17404,10 @@
         //     )
         // );
 
-        UserLiveFeed_loadDataSuccessFinish();
+        UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
     }
 
-    function UserLiveFeed_loadDataSuccessFinish() {
-        UserLiveFeed_loadingData = false;
-        UserLiveFeed_status = true;
-        Main_ready(function() {
-            Main_HideElement('dialog_loading_feed');
-            Main_HideElement('dialog_loading_side_feed');
-            Sidepannel_AddFocusFeed(true);
-            UserLiveFeed_FeedAddFocus(true);
-            window.setTimeout(Sidepannel_PreloadImgs, 10);
-
-            //The app just started or user change don't nottify
-            if (UserLiveFeed_CheckNotifycation) UserLiveFeed_LiveNotification();
-            else {
-                UserLiveFeed_NotifyLiveidObject = [];
-                UserLiveFeed_CheckNotifycation = true;
-            }
-        });
-    }
-
-    function UserLiveFeed_LiveNotification() {
+    function UserLiveFeedobj_LiveNotification() {
         if (UserLiveFeed_NotifyRunning || !UserLiveFeed_Notify ||
             !UserLiveFeed_NotifyLiveidObject.length) {
             UserLiveFeed_NotifyLiveidObject = [];
@@ -17149,29 +17415,29 @@
         }
 
         UserLiveFeed_NotifyRunning = true;
-        UserLiveFeed_LiveNotificationShow(0);
+        UserLiveFeedobj_LiveNotificationShow(0);
     }
 
-    function UserLiveFeed_LiveNotificationShow(position) {
+    function UserLiveFeedobj_LiveNotificationShow(position) {
         var img = document.getElementById('user_feed_notify_img');
 
         img.onload = function() {
             this.onload = null;
             this.onerror = null;
-            UserLiveFeed_LiveNotificationOnload(position);
+            UserLiveFeedobj_LiveNotificationOnload(position);
         };
 
         img.onerror = function() {
             this.onerror = null;
             this.onload = null;
             this.src = IMG_404_LOGO;
-            UserLiveFeed_LiveNotificationOnload(position);
+            UserLiveFeedobj_LiveNotificationOnload(position);
         };
 
         img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
     }
 
-    function UserLiveFeed_LiveNotificationOnload(position) {
+    function UserLiveFeedobj_LiveNotificationOnload(position) {
         Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
 
         Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
@@ -17181,17 +17447,17 @@
             Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
 
             window.setTimeout(function() {
-                UserLiveFeed_LiveNotificationHide(position);
+                UserLiveFeedobj_LiveNotificationHide(position);
             }, UserLiveFeed_NotifyTimeout);
         });
     }
 
-    function UserLiveFeed_LiveNotificationHide(position) {
+    function UserLiveFeedobj_LiveNotificationHide(position) {
         Main_AddClass('user_feed_notify', 'user_feed_notify_hide');
 
         if (position < (UserLiveFeed_NotifyLiveidObject.length - 1)) {
             window.setTimeout(function() {
-                UserLiveFeed_LiveNotificationShow(position + 1);
+                UserLiveFeedobj_LiveNotificationShow(position + 1);
             }, 800);
         } else {
             UserLiveFeed_NotifyRunning = false;
@@ -17199,32 +17465,7 @@
         }
     }
 
-    function UserLiveFeed_GetSize() {
-        return document.getElementById('user_feed_scroll').getElementsByClassName('user_feed_thumb').length;
-    }
-
-    function UserLiveFeed_CreatFeed(id, data) {
-        var div = document.createElement('div');
-        div.setAttribute('id', UserLiveFeed_ids[8] + id);
-        div.setAttribute(Main_DataAttribute, JSON.stringify(data));
-
-        div.className = 'user_feed_thumb';
-        div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
-            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + data[0].replace("{width}x{height}", Main_VideoSize) +
-            Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
-            '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
-            '<div style="line-height: 1.6ch;"><div id="' + UserLiveFeed_ids[3] + id +
-            '" class="stream_info_live_name" style="width: 63%; display: inline-block;">' + Main_ReplaceLargeFont(data[1]) + '</div>' +
-            '<div "class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
-            '<i class="icon-' + (!data[8] ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' +
-            STR_SPACE + Main_addCommas(data[13]) + '</div></div><div id="' + UserLiveFeed_ids[4] + id +
-            '"class="stream_info_live_title">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div><div id="' +
-            UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + data[3] + '</div></span></div></div>';
-
-        return div;
-    }
-
-    function UserLiveFeed_CreatSideFeed(id, data) {
+    function UserLiveFeedobj_CreatSideFeed(id, data) {
 
         var div = document.createElement('div');
         div.setAttribute('id', UserLiveFeed_side_ids[8] + id);
@@ -17248,147 +17489,309 @@
         return div;
     }
 
-    function UserLiveFeed_isFeedShow() {
-        return document.getElementById('user_feed').className.indexOf('user_feed_hide') === -1;
+    var UserLiveFeedobj_LiveFeedOldUserName = '';
+
+    function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
+        Main_innerHTML('feed_end',
+            STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+            STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+            UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE) +
+            UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+
+        if (AddUser_UserIsSet()) {
+            UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserLivePos, (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name));
+            UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
+        }
     }
 
-    function UserLiveFeed_ShowFeed(PreventAddfocus) {
-        var hasuser = AddUser_UserIsSet();
+    function UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, pos, forceRefressh) {
+        if (Main_isElementShowing('scene2') && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
-        if (hasuser) {
-            if (Play_FeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status = false;
-            Play_FeedOldUserName = AddUser_UsernameArray[0].name;
-        }
+        if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData)
+            UserLiveFeed_StartLoad(PreventAddfocus);
+        else {
+            Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
 
-        if (!hasuser || !UserLiveFeed_ThumbNull(0, UserLiveFeed_ids[0])) UserLiveFeed_status = false;
-
-        if (!UserLiveFeed_status && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad(PreventAddfocus);
-
-        if (hasuser) {
-            if (Main_isElementShowing('scene2')) UserLiveFeed_Show(PreventAddfocus);
-
-            if (!PreventAddfocus) UserLiveFeed_FeedAddFocus(true);
+            if (!PreventAddfocus) UserLiveFeed_FeedAddFocus(true, pos);
             else {
-                UserLiveFeed_FeedRemoveFocus();
-                UserLiveFeed_FeedSetPos(true);
+                UserLiveFeed_FeedRemoveFocus(pos);
+                UserLiveFeed_FeedSetPos(true, pos);
             }
         }
     }
 
-    function UserLiveFeed_Show(notransition) {
-        if (notransition) {
-            var doc = document.getElementById('user_feed');
-            doc.style.transition = 'none';
-            doc.classList.remove('user_feed_hide');
-            Main_ready(function() {
-                if (Settings_Obj_default("app_animations")) doc.style.transition = '';
-            });
-        } else Main_RemoveClass('user_feed', 'user_feed_hide');
+    function UserLiveFeedobj_HideFeed() {
+        Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div, 'opacity_zero');
     }
 
-    function UserLiveFeed_Hide(notransition) {
-        if (notransition) {
-            var doc = document.getElementById('user_feed');
-            doc.style.transition = 'none';
-            doc.classList.add('user_feed_hide');
-            Main_ready(function() {
-                if (Settings_Obj_default("app_animations")) doc.style.transition = '';
-            });
-        } else Main_AddClass('user_feed', 'user_feed_hide');
+    function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
+
+        var response = JSON.parse(responseText)[UserLiveFeed_obj[pos].StreamType],
+            response_items = response.length,
+            stream, id, mArray,
+            doc = document.getElementById(UserLiveFeed_obj[pos].div),
+            i = 0;
+
+        //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+
+        for (i; i < response_items; i++) {
+            stream = UserLiveFeed_obj[pos].cell(response[i]);
+            id = stream.channel._id;
+            if (!UserLiveFeed_idObject[pos][id]) {
+
+                UserLiveFeed_idObject[pos][id] = 1;
+                mArray = ScreensObj_LiveCellArray(stream);
+
+                if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
+                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
+
+
+                doc.appendChild(
+                    UserLiveFeed_CreatFeed(
+                        pos + '_' + UserLiveFeed_itemsCount[pos], mArray
+                    )
+                );
+                UserLiveFeed_itemsCount[pos]++;
+            }
+        }
+
+        // doc.appendChild(
+        //     UserLiveFeed_CreatFeed(pos + '_' + (i + 1),
+        //         [
+        //             IMG_404_VIDEO,
+        //             "ashlynn",
+        //             "title",
+        //             "game",
+        //             "for 1000 Viewers",
+        //             "720p30 [EN]",
+        //             "ashlynn",
+        //             10000000000,
+        //             true,
+        //             IMG_404_LOGO,
+        //             true,
+        //             "Since 11:04:36&nbsp;",
+        //             "2020-01-25T09:49:05Z",
+        //             1000,
+        //             35618666]
+        //     )
+        // );
+
+        UserLiveFeed_loadDataSuccessFinish(true, pos);
     }
 
-    function UserLiveFeed_ResetFeedId() {
-        UserLiveFeed_clearHideFeed();
-        if (!UserLiveFeed_PreventHide) UserLiveFeed_setHideFeed();
+    //Live Start
+    function UserLiveFeedobj_Live() {
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_LivePos);
+        UserLiveFeedobj_loadLive();
     }
 
-    function UserLiveFeed_clearHideFeed() {
-        window.clearTimeout(UserLiveFeed_Feedid);
+    function UserLiveFeedobj_loadLive() {
+        var theUrl = Main_kraken_api + 'streams?limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
+            Main_TwithcV5Flag;
+
+        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadLive;
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError);
     }
 
-    function UserLiveFeed_setHideFeed() {
-        if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
+    function UserLiveFeedobj_LiveCell(cell) {
+        return cell;
     }
 
-    function UserLiveFeed_FeedRefresh(PreventAddfocus) {
-        UserLiveFeed_clearHideFeed();
-        if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad(PreventAddfocus);
-        else {
-            window.setTimeout(function() {
-                UserLiveFeed_loadingData = false;
-            }, 15000);
+    function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
+        UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_LivePos);
+    }
+
+    function UserLiveFeedobj_ShowLive(PreventAddfocus) {
+        Main_innerHTML('feed_end',
+            STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+            UserLiveFeedobj_BottonText(STR_LIVE) +
+            UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
+            UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+
+        UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_LivePos);
+    }
+
+    function UserLiveFeedobj_HideLive() {
+        Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_LivePos].div, 'opacity_zero');
+    }
+
+    //Live end
+
+    //Featured Start
+    function UserLiveFeedobj_Featured() {
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_FeaturedPos);
+        UserLiveFeedobj_loadFeatured();
+    }
+
+    function UserLiveFeedobj_loadFeatured() {
+        var theUrl = Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+            AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
+
+        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadFeatured;
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess, UserLiveFeedobj_loadDataError);
+    }
+
+    function UserLiveFeedobj_FeaturedCell(cell) {
+        return cell.stream;
+    }
+
+    function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
+        UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_FeaturedPos);
+    }
+
+    function UserLiveFeedobj_ShowFeatured(PreventAddfocus) {
+        Main_innerHTML('feed_end',
+            UserLiveFeedobj_BottonText(STR_FEATURED) +
+            UserLiveFeedobj_BottonIcon(0) + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) +
+            UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
+            UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
+            UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+
+        UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_FeaturedPos);
+    }
+
+    function UserLiveFeedobj_HideFeatured() {
+        Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div, 'opacity_zero');
+    }
+    //Featured end
+
+    //Current game Start
+    function UserLiveFeedobj_CurrentGame() {
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+        UserLiveFeedobj_loadCurrentGame();
+    }
+
+    function UserLiveFeedobj_loadCurrentGame() {
+        var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
+            '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
+
+        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess, UserLiveFeedobj_loadDataError);
+    }
+
+    function UserLiveFeedobj_CurrentGameCell(cell) {
+        return cell;
+    }
+
+    function UserLiveFeedobj_loadDataCurrentGameSuccess(responseText) {
+        UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_CurrentGamePos);
+    }
+
+    var UserLiveFeedobj_CurrentGameName = '';
+
+    function UserLiveFeedobj_ShowCurrentGame(PreventAddfocus) {
+        Main_innerHTML('feed_end',
+            STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+            UserLiveFeedobj_BottonText(Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) +
+            UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
+            UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
+            UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+
+        UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_CurrentGamePos, (UserLiveFeedobj_CurrentGameName !== Play_data.data[3]));
+        UserLiveFeedobj_CurrentGameName = Play_data.data[3];
+    }
+
+    function UserLiveFeedobj_HideCurrentGame() {
+        Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div, 'opacity_zero');
+    }
+    //Current game end
+
+    //User Host Start
+    function UserLiveFeedobj_UserHost() {
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHostPos);
+        UserLiveFeedobj_loadUserHost();
+    }
+
+    function UserLiveFeedobj_loadUserHost() {
+        var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) +
+            '/followed/hosting?limit=100';
+
+        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserHost;
+        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError, false);
+    }
+
+    function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
+        var response = JSON.parse(responseText).hosts,
+            response_items = response.length,
+            stream, id,
+            doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div),
+            i = 0;
+
+        //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+
+        for (i; i < response_items; i++) {
+            stream = response[i];
+            id = stream.target._id + '' + stream._id;
+
+            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id]) {
+
+                UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id] = 1;
+
+                if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
+                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
+
+                doc.appendChild(
+                    UserLiveFeed_CreatFeed(
+                        UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos],
+                        [
+                            stream.target.preview_urls.template, //0
+                            stream.display_name + STR_USER_HOSTING + stream.target.channel.display_name, //1
+                            stream.target.title, //2
+                            stream.target.meta_game, //3
+                            STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
+                            Main_addCommas(stream.target.viewers) + STR_SPACE + STR_VIEWER, //4
+                            '', //5 quality
+                            stream.target.channel.name, //6
+                            '', //7 broadcast id
+                            false, //8
+                            stream.target.channel.logo, //9
+                            '', //10 partner
+                            '', //11 stream creat at string
+                            '', //12 stream creat at
+                            stream.target.viewers, //13
+                            stream.target._id //14
+                        ]
+                    )
+                );
+                UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]++;
+            }
+        }
+
+        UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserHostPos);
+    }
+
+    var UserLiveFeedobj_HostFeedOldUserName = '';
+
+    function UserLiveFeedobj_ShowUserHost(PreventAddfocus) {
+        Main_innerHTML('feed_end',
+            STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+            STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+            STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+            UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS));
+
+        if (AddUser_UserIsSet()) {
+            UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserHostPos, (UserLiveFeedobj_HostFeedOldUserName !== AddUser_UsernameArray[0].name));
+            UserLiveFeedobj_HostFeedOldUserName = AddUser_UsernameArray[0].name;
         }
     }
 
-    function UserLiveFeed_FeedAddFocus(skipAnimation) {
-        UserLiveFeed_ResetFeedId();
-        if (!UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0])) return;
+    function UserLiveFeedobj_HideUserHost() {
+        Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div, 'opacity_zero');
+    }
+    //User Host end
 
-        if (!UserLiveFeed_PreventAddfocus) {
-            Main_AddClass(UserLiveFeed_ids[0] + Play_FeedPos, UserLiveFeed_FocusClass);
-        } else UserLiveFeed_PreventAddfocus = false;
 
-        UserLiveFeed_FeedSetPos(skipAnimation);
+    function UserLiveFeedobj_BottonIcon(up) {
+        return STR_SPACE + '<i  class="icon-' + (up ? 'key-up' : 'key-down') +
+            ' class_bold strokicon" style="vertical-align: middle; color:' + (up ? '#FED000' : 'red') + ';"></i>' + STR_SPACE;
     }
 
-    function UserLiveFeed_FeedRemoveFocus() {
-        if (UserLiveFeed_ThumbNull(Play_FeedPos, UserLiveFeed_ids[0]))
-            Main_RemoveClass(UserLiveFeed_ids[0] + Play_FeedPos, UserLiveFeed_FocusClass);
-    }
-
-    function UserLiveFeed_FeedGetPos() {
-        var position = 0;
-
-        if (Play_FeedPos < 3) position = 2.5;
-        else if (UserLiveFeed_ThumbNull((Play_FeedPos + 2), UserLiveFeed_ids[0]))
-            position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 2)).offsetLeft * -1);
-        else if (UserLiveFeed_ThumbNull((Play_FeedPos + 1), UserLiveFeed_ids[0]))
-            position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - 3)).offsetLeft * -1);
-        else position = (document.getElementById(UserLiveFeed_ids[8] + (Play_FeedPos - (Play_FeedPos > 3 ? 4 : 3))).offsetLeft * -1);
-
-        return position;
-    }
-
-    function UserLiveFeed_FeedSetPos(skipAnimation) {
-        var position = UserLiveFeed_FeedGetPos();
-        var doc = document.getElementById('user_feed_scroll');
-
-        if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-            !Screens_ChangeFocusAnimationFast) {
-            Screens_ChangeFocusAnimationFinished = false;
-            Screens_ChangeFocusAnimationFast = true;
-
-            doc.style.transition = '';
-            doc.classList.add('user_feed_scroll_ani');
-
-            window.setTimeout(function() {
-                Screens_ChangeFocusAnimationFinished = true;
-            }, 200); //Same value as user_feed_scroll_ani
-        } else {
-            if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
-            doc.style.transition = 'none';
-            doc.classList.remove('user_feed_scroll_ani');
-        }
-
-        if (position) doc.style.left = (position / BodyfontSize) + "em";
-    }
-
-    function UserLiveFeed_ThumbNull(y, thumbnail) {
-        return document.getElementById(thumbnail + y) !== null;
-    }
-
-    function UserLiveFeed_SetFeedPicText() {
-        Main_innerHTML('icon_feed_refresh', '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_REFRESH + ':' + STR_UP + STR_SPACE + STR_SPACE + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_PICTURE_LIVE_FEED + '</div>');
-    }
-
-    function UserLiveFeed_Unset() {
-        Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_UP);
-    }
-
-    function UserLiveFeed_SetHoldUp() {
-        Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP);
-    }
-    //Variable initialization
+    function UserLiveFeedobj_BottonText(text) {
+        return '<span style="font-size: 150%; font-family: \'Roboto-Bold\'; color:#00a94b;">' + text + '</span>';
+    } //Variable initialization
     var Users_cursorY = 0;
     var Users_cursorX = 0;
     var Users_ColoumnsCount = 8;
