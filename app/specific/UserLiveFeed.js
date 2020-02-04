@@ -285,9 +285,10 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 function UserLiveFeed_KeyUpDown(Adder) {
     if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
 
-        var NextPos = UserLiveFeed_FeedPosX + Adder;
-        if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) {
-            if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
+        var NextPos = UserLiveFeed_FeedPosX + Adder,
+            userSet = AddUser_UserIsSet();
+        if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) {
+            if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) && !userSet) {
                 Play_IsWarning = true;
                 Play_showWarningDialog(STR_NOKUSER_WARN);
                 window.clearTimeout(Play_OpenGameId);
