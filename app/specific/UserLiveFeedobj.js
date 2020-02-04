@@ -368,7 +368,7 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
 function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        STR_CURR_GAME + UserLiveFeedobj_BottonIcon(1) +
+        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
         STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
         UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE) +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -479,7 +479,7 @@ function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
 function UserLiveFeedobj_ShowLive(PreventAddfocus) {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        STR_CURR_GAME + UserLiveFeedobj_BottonIcon(1) +
+        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
         UserLiveFeedobj_BottonText(STR_LIVE) +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -518,7 +518,7 @@ function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
 function UserLiveFeedobj_ShowFeatured(PreventAddfocus) {
     Main_innerHTML('feed_end',
         UserLiveFeedobj_BottonText(STR_FEATURED) +
-        UserLiveFeedobj_BottonIcon(0) + STR_CURR_GAME +
+        UserLiveFeedobj_BottonIcon(0) + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) +
         UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -602,7 +602,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
 
             UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id] = 1;
 
-            if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.name)
+            if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
                 UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
 
             doc.appendChild(
@@ -638,7 +638,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
 function UserLiveFeedobj_ShowUserHost(PreventAddfocus) {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        STR_CURR_GAME + UserLiveFeedobj_BottonIcon(1) +
+        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
         STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
         STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
         UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS));

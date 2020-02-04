@@ -267,7 +267,7 @@ function UserLiveFeed_Unset() {
 }
 
 function UserLiveFeed_SetHoldUp() {
-    Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP);
+    Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP + STR_FEED_END_DIALOG);
 }
 
 function UserLiveFeed_KeyRightLeft(Adder) {

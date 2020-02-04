@@ -929,7 +929,7 @@ function PlayVod_handleKeyDown(e) {
                 else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_DOWN:
-                if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
+                if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
                 else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {

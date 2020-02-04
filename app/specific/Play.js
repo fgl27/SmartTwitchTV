@@ -2069,7 +2069,11 @@ function Play_setFallow() {
 function Play_KeyReturn(is_vod) {
     if (Play_isEndDialogVisible()) Play_EndTextClear();
 
-    if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
+    if (Play_isEndDialogVisible() && !Play_EndFocus) {
+        Play_EndFocus = true;
+        UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+        Play_EndIconsAddFocus();
+    } else if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
     else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
     else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) UserLiveFeed_Hide();
     else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
@@ -2153,10 +2157,22 @@ function Play_handleKeyUp(e) {
     } else if (e.keyCode === KEY_UP) {
         Play_handleKeyUpEndClear();
         if (!Play_EndUpclear) {
-            if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
+            if (Play_isEndDialogVisible()) Play_EndDialogUpDown(-1);
             else UserLiveFeed_KeyUpDown(-1);
         }
     }
+}
+
+function Play_EndDialogUpDown(adder) {
+
+    Play_EndTextClear();
+    if (UserLiveFeed_loadingData) return;
+
+    if (Play_EndFocus) {
+        Play_EndFocus = false;
+        Play_EndIconsRemoveFocus();
+        UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX);
+    } else UserLiveFeed_KeyUpDown(adder);
 }
 
 function Play_OpenLiveFeedCheck() {
@@ -2181,22 +2197,6 @@ function Play_handleKeyUpEndClear() {
     window.clearTimeout(Play_EndUpclearID);
     document.body.removeEventListener("keyup", Play_handleKeyUp);
     document.body.addEventListener("keydown", Play_EndUpclearCalback, false);
-}
-
-function Play_EndDialogUpDown() {
-
-    Play_EndTextClear();
-    if (UserLiveFeed_loadingData || !AddUser_UserIsSet()) return;
-
-    if (Play_EndFocus) {
-        Play_EndFocus = false;
-        Play_EndIconsRemoveFocus();
-        UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX);
-    } else {
-        Play_EndFocus = true;
-        UserLiveFeed_FeedRemoveFocus();
-        Play_EndIconsAddFocus();
-    }
 }
 
 function Play_RestorePlayData(error_410) {
@@ -2799,7 +2799,7 @@ function Play_handleKeyDown(e) {
                     Play_MultiDialogPos += 2;
                     if (Play_MultiDialogPos > 3) Play_MultiDialogPos -= 4;
                     Play_MultiAddFocus();
-                } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown();
+                } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                 else if ((Play_isFullScreen || Play_MultiEnable) && Play_isChatShown() && (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_KeyChatSizeChage();
