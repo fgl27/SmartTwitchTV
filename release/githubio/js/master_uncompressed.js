@@ -3454,7 +3454,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.109';
+    var Main_stringVersion_Min = '.110';
     var Main_minversion = '020320';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -16849,7 +16849,7 @@
         UserLiveFeed_clearHideFeed();
 
         UserLiveFeed_CounterDialogRst();
-        Main_ShowElement('dialog_loading_feed');
+        UserLiveFeed_Showloading(true);
         UserLiveFeedobj_loadDataPrepare();
         UserLiveFeed_obj[pos].load();
     }
@@ -16919,7 +16919,7 @@
         UserLiveFeed_loadingData = false;
         UserLiveFeed_status[pos] = true;
         Main_ready(function() {
-            Main_HideElement('dialog_loading_feed');
+            UserLiveFeed_Showloading(false);
             Main_HideElement('dialog_loading_side_feed');
             Sidepannel_AddFocusFeed(true);
             UserLiveFeed_FeedAddFocus(true, pos);
@@ -17121,6 +17121,20 @@
         }
         UserLiveFeed_ResetFeedId();
     }
+
+    function UserLiveFeed_Showloading(show) {
+        if (Main_IsNotBrowser) {
+            try {
+                Android.mshowLoadingBotton(show);
+            } catch (e) {
+                if (show) Main_ShowElement('dialog_loading_feed');
+                else Main_HideElement('dialog_loading_feed');
+            }
+        } else {
+            if (show) Main_ShowElement('dialog_loading_feed');
+            else Main_HideElement('dialog_loading_feed');
+        }
+    }
     var UserLiveFeedobj_loadErrorCallback;
 
     //Global
@@ -17192,7 +17206,7 @@
         var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
         UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannels;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
+        BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
     }
 
     function UserLiveFeedobj_loadDataError() {
@@ -17203,7 +17217,7 @@
         } else {
             UserLiveFeed_loadingData = false;
             if (!UserLiveFeed_GetSize(UserLiveFeedobj_UserLivePos)) {
-                Main_HideElement('dialog_loading_feed');
+                UserLiveFeed_Showloading(false);
                 Main_HideElement('dialog_loading_side_feed');
                 if (UserLiveFeed_isFeedShow()) {
                     Play_showWarningDialog(STR_REFRESH_PROBLEM);
@@ -17586,7 +17600,7 @@
             Main_TwithcV5Flag;
 
         UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadLive;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError);
+        BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError);
     }
 
     function UserLiveFeedobj_LiveCell(cell) {
@@ -17625,7 +17639,7 @@
             AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
 
         UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadFeatured;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess, UserLiveFeedobj_loadDataError);
+        BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess, UserLiveFeedobj_loadDataError);
     }
 
     function UserLiveFeedobj_FeaturedCell(cell) {
@@ -17663,7 +17677,7 @@
             '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
         UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess, UserLiveFeedobj_loadDataError);
+        BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess, UserLiveFeedobj_loadDataError);
     }
 
     function UserLiveFeedobj_CurrentGameCell(cell) {
@@ -17704,7 +17718,7 @@
             '/followed/hosting?limit=100';
 
         UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserHost;
-        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError, false);
+        BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError, false);
     }
 
     function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
