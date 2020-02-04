@@ -17571,7 +17571,7 @@
         //     )
         // );
 
-        UserLiveFeed_loadDataSuccessFinish(true, pos);
+        UserLiveFeed_loadDataSuccessFinish(false, pos);
     }
 
     //Live Start
@@ -17753,7 +17753,7 @@
             }
         }
 
-        UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserHostPos);
+        UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
     }
 
     var UserLiveFeedobj_HostFeedOldUserName = '';
