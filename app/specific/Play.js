@@ -1053,7 +1053,7 @@ function Play_extractQualities(input) {
                 'url': 'Auto_url'
             });
             if (TempId.indexOf('ource') === -1) TempId = TempId + ' | source';
-            else TempId = TempId.replace('(', ' | ').replace(')', '');
+            else if(TempId) TempId = TempId.replace('(', ' | ').replace(')', '');
             result.push({
                 'id': TempId,
                 'band': Band,

@@ -227,11 +227,13 @@ function ChatLive_loadEmotesChannelffzSuccess(data, chat_number) {
 
 function ChatLive_loadEmotesbbtv(data) {
     data.emotes.forEach(function(emote) {
-        extraEmotes[emote.code] = {
-            code: emote.code,
-            id: emote.id,
-            '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
-        };
+        if (data.urlTemplate) {
+            extraEmotes[emote.code] = {
+                code: emote.code,
+                id: emote.id,
+                '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
+            };
+        }
     });
 }
 
