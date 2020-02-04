@@ -10,7 +10,7 @@ var UserLiveFeedobj_UserHostPos = 4;
 
 var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos;//Default pos
 var UserLiveFeedobj_MAX = UserLiveFeedobj_UserHostPos;
-var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_UserLivePos;
+var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 
 function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {

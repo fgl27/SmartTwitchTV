@@ -286,7 +286,19 @@ function UserLiveFeed_KeyUpDown(Adder) {
     if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
 
         var NextPos = UserLiveFeed_FeedPosX + Adder;
-        if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) return;
+        if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) {
+            if (NextPos > (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
+                Play_IsWarning = true;
+                Play_showWarningDialog(STR_NOKUSER_WARN);
+                window.clearTimeout(Play_OpenGameId);
+                Play_OpenGameId = window.setTimeout(function() {
+                    Play_IsWarning = false;
+                    Play_HideWarningDialog();
+                }, 2000);
+            }
+            return;
+        }
+
         if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
             UserLiveFeed_KeyUpDown(Adder);
             Play_IsWarning = true;
