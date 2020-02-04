@@ -2498,12 +2498,17 @@ function Play_MultiStartQuality(pos, theUrl, display_name, tryes) {
             Play_MultiArray[pos].watching_time = new Date().getTime();
             Main_Set_history('live', Play_MultiArray[pos].data);
 
-            //reset chat is pos 0 changed
+            //reset chat and fallow icon if pos 0 changed
             if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
                 ChatLive_Init(0);
                 Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
                 Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+                if (AddUser_UserIsSet()) {
+                    AddCode_PlayRequest = true;
+                    AddCode_Channel_id = Play_data.data[14];
+                    AddCode_CheckFallow();
+                }
             }
             Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
         } else if (xmlHttp.status === 403) { //forbidden access
