@@ -2273,6 +2273,7 @@ function Play_Multi_UnSetPanel(shutdown) {
         if (PlayExtra_PicturePicture) {
             PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[1]));
             PlayExtra_SetPanel();
+            Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
             if (!Play_isFullScreen) {
                 Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
                 ChatLive_Init(1);
