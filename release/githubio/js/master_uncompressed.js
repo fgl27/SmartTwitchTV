@@ -2676,11 +2676,13 @@
 
     function ChatLive_loadEmotesbbtv(data) {
         data.emotes.forEach(function(emote) {
-            extraEmotes[emote.code] = {
-                code: emote.code,
-                id: emote.id,
-                '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
-            };
+            if (data.urlTemplate) {
+                extraEmotes[emote.code] = {
+                    code: emote.code,
+                    id: emote.id,
+                    '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
+                };
+            }
         });
     }
 
@@ -3453,7 +3455,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.109';
-    var Main_minversion = '020220';
+    var Main_minversion = '020320';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -4107,6 +4109,7 @@
     }
 
     function Main_addCommas(value) {
+        if (!value) return value;
         return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
@@ -7338,7 +7341,7 @@
                     'url': 'Auto_url'
                 });
                 if (TempId.indexOf('ource') === -1) TempId = TempId + ' | source';
-                else TempId = TempId.replace('(', ' | ').replace(')', '');
+                else if (TempId) TempId = TempId.replace('(', ' | ').replace(')', '');
                 result.push({
                     'id': TempId,
                     'band': Band,
