@@ -14,7 +14,6 @@ var UserSidePannel_LastPos = [];
 var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
 var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
-var UserLiveFeed_PreventAddfocus = false;
 var UserLiveFeed_PreventHide = false;
 
 var UserLiveFeed_CheckNotifycation = false;
@@ -33,15 +32,14 @@ var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayna
 
 var UserLiveFeed_side_ids = ['usf_thumbdiv', 'usf_img', 'usf_infodiv', 'usf_displayname', 'usf_streamtitle', 'usf_streamgame', 'usf_viwers', 'usf_quality', 'usf_cell', 'ulempty_', 'user_live_scroll'];
 
-function UserLiveFeed_StartLoad(PreventAddfocus) {
-    UserLiveFeed_StartLoadPos(PreventAddfocus, UserLiveFeed_FeedPosX);
+function UserLiveFeed_StartLoad() {
+    UserLiveFeed_StartLoadPos(UserLiveFeed_FeedPosX);
 }
 
-function UserLiveFeed_StartLoadPos(PreventAddfocus, pos) {
+function UserLiveFeed_StartLoadPos(pos) {
     UserLiveFeed_clearHideFeed();
 
     UserLiveFeed_CounterDialogRst();
-    UserLiveFeed_PreventAddfocus = PreventAddfocus;
     Main_ShowElement('dialog_loading_feed');
     UserLiveFeedobj_loadDataPrepare();
     UserLiveFeed_obj[pos].load();
@@ -92,9 +90,8 @@ function UserLiveFeed_Prepare() {
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 }
 
-function UserLiveFeed_RefreshLive(PreventAddfocus) {
+function UserLiveFeed_RefreshLive() {
     if (AddUser_UserIsSet()) {
-        UserLiveFeed_PreventAddfocus = PreventAddfocus;
         UserLiveFeedobj_loadDataPrepare();
         UserLiveFeedobj_CheckToken();
     }
@@ -162,8 +159,8 @@ function UserLiveFeed_isFeedShow() {
     return document.getElementById('user_feed').className.indexOf('user_feed_hide') === -1;
 }
 
-function UserLiveFeed_ShowFeed(PreventAddfocus) {
-    UserLiveFeed_obj[UserLiveFeed_FeedPosX].show(PreventAddfocus);
+function UserLiveFeed_ShowFeed() {
+    UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
 }
 
 function UserLiveFeed_Show() {
@@ -187,9 +184,9 @@ function UserLiveFeed_setHideFeed() {
     if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
 }
 
-function UserLiveFeed_FeedRefresh(PreventAddfocus) {
+function UserLiveFeed_FeedRefresh() {
     UserLiveFeed_clearHideFeed();
-    if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad(PreventAddfocus);
+    if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
         window.clearTimeout(UserLiveFeed_loadingDataId);
         UserLiveFeed_loadingDataId = window.setTimeout(function() {
@@ -201,11 +198,8 @@ function UserLiveFeed_FeedRefresh(PreventAddfocus) {
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos) {
     if (!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) return;
 
-    if (!UserLiveFeed_PreventAddfocus) {
+    if (!Play_isEndDialogVisible() || !Play_EndFocus)
         Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
-    } else {
-        UserLiveFeed_PreventAddfocus = false;
-    }
 
     UserLiveFeed_FeedSetPos(skipAnimation, pos);
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
