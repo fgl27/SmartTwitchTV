@@ -8563,7 +8563,7 @@
         if (Play_MultiArray[0].data.length > 0 && Play_MultiArray[1].data.length > 0) {
             if (PlayExtra_PicturePicture) {
                 PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[1]));
-
+                PlayExtra_SetPanel();
                 if (!Play_isFullScreen) {
                     Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
                     ChatLive_Init(1);
