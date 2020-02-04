@@ -396,7 +396,8 @@
     var STR_CONTROLS_MULTI_5;
     var STR_CONTROLS_MULTI_6;
     var STR_CURR_GAME;
-    var STR_FEED_END_DIALOG; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_FEED_END_DIALOG;
+    var STR_MULTI_TITLE; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -915,6 +916,8 @@
         STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left";
         STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
         STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
+        STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
+        STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
         STR_CURR_GAME = 'Current Game';
         STR_FEED_END_DIALOG = ', Press back to go back to top menu';
     }
@@ -8538,7 +8541,7 @@
         document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
         document.getElementById('controls_' + Play_controlsQualityMulti).style.display = '';
         document.getElementById('controls_' + Play_controlsAudioMulti).style.display = '';
-        UserLiveFeed_Unset();
+        UserLiveFeed_SetMulti();
         ChatLive_Clear(1);
         PlayExtra_HideChat();
         Main_HideElement('stream_info');
@@ -17068,6 +17071,10 @@
 
     function UserLiveFeed_Unset() {
         Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP);
+    }
+
+    function UserLiveFeed_SetMulti() {
+        Main_IconLoad('icon_feed_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_HOLD_UP + STR_MULTI_TITLE);
     }
 
     function UserLiveFeed_SetHoldUp() {
