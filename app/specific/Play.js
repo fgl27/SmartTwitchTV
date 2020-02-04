@@ -2300,10 +2300,12 @@ function Play_Multi_UnSetPanel(shutdown) {
         var name = Play_data.data[14];
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
-        if (name !== Play_data.data[14]) {
-            if (First) Play_Start();
-            else Play_UpdateMainStream();
+        if (name !== Play_data.data[14] && First) {
+            Play_Start();
+            return;
         }
+
+        Play_UpdateMainStream();
 
     } else if (shutdown) Play_shutdownStream();
 }
@@ -2563,8 +2565,16 @@ function Play_MultiInfoReset(pos) {
 }
 
 function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title) {
-    Main_innerHTML('stream_info_multi_name' + pos,
-        (displayname.indexOf(STR_USER_HOSTING) !== -1 ? displayname.split(STR_USER_HOSTING)[1] : displayname));
+
+    Play_MultiArray[pos].isHost = displayname.indexOf(STR_USER_HOSTING) !== -1;
+
+    if (Play_MultiArray[pos].isHost) {
+        Play_MultiArray[pos].DisplaynameHost = displayname;
+        Play_MultiArray[pos].data[1] = displayname.split(STR_USER_HOSTING)[1];
+        displayname = Play_MultiArray[pos].data[1];
+    }
+
+    Main_innerHTML('stream_info_multi_name' + pos, displayname);
     document.getElementById('stream_info_multiimg' + pos).src = logo;
     Play_MultiUpdateinfo(pos, game, views, is_rerun, title);
 }
@@ -2606,7 +2616,7 @@ function Play_MultiSetUpdateDialog(doc) {
         Main_innerHTML('stream_dialog_multi_title' + i, twemoji.parse(Play_MultiArray[i].data[2]));
     }
 
-    Main_textContent('stream_dialog_multi_name-1', doc[1]);
+    Main_textContent('stream_dialog_multi_name-1', (doc[1].indexOf(STR_USER_HOSTING) !== -1 ? doc[1].split(STR_USER_HOSTING)[1] : doc[1]));
     document.getElementById('stream_dialog_multiimg-1').src = doc[9];
     Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
