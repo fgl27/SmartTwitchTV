@@ -778,6 +778,7 @@ function Main_isControlsDialogShown() {
 }
 
 function Main_addCommas(value) {
+    if (!value) return value;
     return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
