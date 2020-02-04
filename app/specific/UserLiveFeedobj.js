@@ -366,7 +366,12 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
 }
 
 function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
-    Main_innerHTML('feed_end', 'User Live');
+    Main_innerHTML('feed_end',
+        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+        STR_CURR_GAME + UserLiveFeedobj_BottonIcon(1) +
+        STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+        UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE) +
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
 
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserLivePos, (Play_FeedOldUserName !== AddUser_UsernameArray[0].name));
@@ -472,7 +477,13 @@ function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
 }
 
 function UserLiveFeedobj_ShowLive(PreventAddfocus) {
-    Main_innerHTML('feed_end', 'Live');
+    Main_innerHTML('feed_end',
+        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+        STR_CURR_GAME + UserLiveFeedobj_BottonIcon(1) +
+        UserLiveFeedobj_BottonText(STR_LIVE) +
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+
     UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_LivePos);
 }
 
@@ -505,7 +516,13 @@ function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
 }
 
 function UserLiveFeedobj_ShowFeatured(PreventAddfocus) {
-    Main_innerHTML('feed_end', 'Featured');
+    Main_innerHTML('feed_end',
+        UserLiveFeedobj_BottonText(STR_FEATURED) +
+        UserLiveFeedobj_BottonIcon(0) + STR_CURR_GAME +
+        UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+
     UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_FeaturedPos);
 }
 
@@ -538,7 +555,13 @@ function UserLiveFeedobj_loadDataCurrentGameSuccess(responseText) {
 
 var UserLiveFeedobj_CurrentGameName = '';
 function UserLiveFeedobj_ShowCurrentGame(PreventAddfocus) {
-    Main_innerHTML('feed_end', 'Agame');
+    Main_innerHTML('feed_end',
+        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+        UserLiveFeedobj_BottonText(Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) +
+        UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+
     UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_CurrentGamePos, (UserLiveFeedobj_CurrentGameName !== Play_data.data[3]));
     UserLiveFeedobj_CurrentGameName = Play_data.data[3];
 }
@@ -613,7 +636,13 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
 }
 
 function UserLiveFeedobj_ShowUserHost(PreventAddfocus) {
-    Main_innerHTML('feed_end', 'User Host');
+    Main_innerHTML('feed_end',
+        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+        STR_CURR_GAME + UserLiveFeedobj_BottonIcon(1) +
+        STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+        STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+        UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS));
+
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserHostPos, (Play_FeedOldUserName !== AddUser_UsernameArray[0].name));
         Play_FeedOldUserName = AddUser_UsernameArray[0].name;
@@ -624,3 +653,13 @@ function UserLiveFeedobj_HideUserHost() {
     Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div, 'opacity_zero');
 }
 //User Host end
+
+
+function UserLiveFeedobj_BottonIcon(up) {
+    return STR_SPACE + '<i  class="icon-' + (up ? 'key-up' : 'key-down') +
+        ' class_bold strokicon" style="vertical-align: middle; color:' + (up ? '#FED000' : 'red') + ';"></i>' + STR_SPACE;
+}
+
+function UserLiveFeedobj_BottonText(text) {
+    return '<span style="font-size: 150%; font-family: \'Roboto-Bold\'; color:#00a94b;">' + text + '</span>';
+}
