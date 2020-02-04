@@ -2564,7 +2564,8 @@ function Play_MultiInfoReset(pos) {
 }
 
 function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title) {
-    Main_innerHTML('stream_info_multi_name' + pos, displayname);
+    Main_innerHTML('stream_info_multi_name' + pos,
+        (displayname.indexOf(STR_USER_HOSTING) !== -1 ? displayname.split(STR_USER_HOSTING)[1] : displayname));
     document.getElementById('stream_info_multiimg' + pos).src = logo;
     Play_MultiUpdateinfo(pos, game, views, is_rerun, title);
 }
