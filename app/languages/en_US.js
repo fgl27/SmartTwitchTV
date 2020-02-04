@@ -397,4 +397,5 @@ function en_USLang() {
     STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
     STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
     STR_CURR_GAME = 'Current Game';
+    STR_FEED_END_DIALOG = ', Press back to go back to top menu';
 }
