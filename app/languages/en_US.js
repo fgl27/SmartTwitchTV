@@ -396,6 +396,8 @@ function en_USLang() {
     STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left";
     STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
     STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
+    STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
+    STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
     STR_CURR_GAME = 'Current Game';
     STR_FEED_END_DIALOG = ', Press back to go back to top menu';
 }
