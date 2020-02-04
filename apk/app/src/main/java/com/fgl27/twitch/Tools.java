@@ -10,7 +10,6 @@ import android.content.res.Configuration;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
@@ -423,33 +422,26 @@ public final class Tools {
         return Environment.getExternalStorageDirectory();
     }
 
-    public static class BackupJson extends AsyncTask< String, Void, Void > {
+    public static void BackupJson(String app_name, String file, String file_content) {
+        File Dir = new File(
+                getExternalSD(),
+                String.format(Locale.US, "data/%s/Backup", app_name)
+        );
 
-        @Override
-        protected Void doInBackground(String...params) {
-            File Dir = new File(
-                    getExternalSD(),
-                    String.format(Locale.US, "data/%s/Backup", params[0])
-            );
-
-            boolean isDirCreated= Dir.exists();
-            if (!isDirCreated) {
-                isDirCreated = Dir.mkdirs();
-            }
-
-            if(isDirCreated) {
-                try {
-                    FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() +  "/" + params[1], false);
-                    mWriter.write(params[2]);
-                    mWriter.close();
-                } catch (IOException e) {
-                    Log.w(TAG, "BackupJson IOException ", e);
-                }
-            }
-
-            return null;
+        boolean isDirCreated= Dir.exists();
+        if (!isDirCreated) {
+            isDirCreated = Dir.mkdirs();
         }
 
+        if(isDirCreated) {
+            try {
+                FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() +  "/" + file, false);
+                mWriter.write(file_content);
+                mWriter.close();
+            } catch (IOException e) {
+                Log.w(TAG, "BackupJson IOException ", e);
+            }
+        }
     }
 
     public static boolean HasBackupFile(String file, Context context) {
