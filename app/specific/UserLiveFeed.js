@@ -166,26 +166,12 @@ function UserLiveFeed_ShowFeed(PreventAddfocus) {
     UserLiveFeed_obj[UserLiveFeed_FeedPosX].show(PreventAddfocus);
 }
 
-function UserLiveFeed_Show(notransition) {
-    if (notransition) {
-        var doc = document.getElementById('user_feed');
-        doc.style.transition = 'none';
-        doc.classList.remove('user_feed_hide');
-        Main_ready(function() {
-            if (Settings_Obj_default("app_animations")) doc.style.transition = '';
-        });
-    } else Main_RemoveClass('user_feed', 'user_feed_hide');
+function UserLiveFeed_Show() {
+    Main_RemoveClass('user_feed', 'user_feed_hide');
 }
 
-function UserLiveFeed_Hide(notransition) {
-    if (notransition) {
-        var doc = document.getElementById('user_feed');
-        doc.style.transition = 'none';
-        doc.classList.add('user_feed_hide');
-        Main_ready(function() {
-            if (Settings_Obj_default("app_animations")) doc.style.transition = '';
-        });
-    } else Main_AddClass('user_feed', 'user_feed_hide');
+function UserLiveFeed_Hide() {
+    Main_AddClass('user_feed', 'user_feed_hide');
 }
 
 function UserLiveFeed_ResetFeedId() {

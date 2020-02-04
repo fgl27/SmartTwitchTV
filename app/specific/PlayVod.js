@@ -240,7 +240,7 @@ function PlayVod_updateVodInfoPannel(response) {
 }
 
 function PlayVod_Resume() {
-    UserLiveFeed_Hide(true);
+    UserLiveFeed_Hide();
     PlayVod_isOn = true;
     Play_showBufferDialog();
     Play_ResumeAfterOnlineCounter = 0;
@@ -553,7 +553,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     window.clearInterval(PlayVod_updateStreamInfId);
     Main_values.Play_WasPlaying = 0;
     Chat_Clear();
-    UserLiveFeed_Hide(true);
+    UserLiveFeed_Hide();
     Play_ClearPlayer();
     PlayVod_ClearVod();
 }

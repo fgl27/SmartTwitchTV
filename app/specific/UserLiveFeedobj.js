@@ -375,7 +375,7 @@ function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
 }
 
 function UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, pos, forceRefressh) {
-    if (Main_isElementShowing('scene2') && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show(PreventAddfocus);
+    if (Main_isElementShowing('scene2') && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
     if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData)
         UserLiveFeed_StartLoad(PreventAddfocus);
