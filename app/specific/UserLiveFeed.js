@@ -40,7 +40,7 @@ function UserLiveFeed_StartLoadPos(pos) {
     UserLiveFeed_clearHideFeed();
 
     UserLiveFeed_CounterDialogRst();
-    Main_ShowElement('dialog_loading_feed');
+    UserLiveFeed_Showloading(true);
     UserLiveFeedobj_loadDataPrepare();
     UserLiveFeed_obj[pos].load();
 }
@@ -110,7 +110,7 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     UserLiveFeed_loadingData = false;
     UserLiveFeed_status[pos] = true;
     Main_ready(function() {
-        Main_HideElement('dialog_loading_feed');
+        UserLiveFeed_Showloading(false);
         Main_HideElement('dialog_loading_side_feed');
         Sidepannel_AddFocusFeed(true);
         UserLiveFeed_FeedAddFocus(true, pos);
@@ -311,4 +311,18 @@ function UserLiveFeed_KeyUpDown(Adder) {
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
     }
     UserLiveFeed_ResetFeedId();
+}
+
+function UserLiveFeed_Showloading(show) {
+    if (Main_IsNotBrowser) {
+        try {
+            Android.mshowLoadingBotton(show);
+        } catch (e) {
+            if (show) Main_ShowElement('dialog_loading_feed');
+            else Main_HideElement('dialog_loading_feed');
+        }
+    } else {
+        if (show) Main_ShowElement('dialog_loading_feed');
+        else Main_HideElement('dialog_loading_feed');
+    }
 }

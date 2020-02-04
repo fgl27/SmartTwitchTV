@@ -158,7 +158,7 @@ public class PlayerActivity extends Activity {
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcount];
     public int[] PlayerCheckCounter = new int[PlayerAcount];
 
-    private ProgressBar[] loadingView = new ProgressBar[PlayerAcount + 1];
+    private ProgressBar[] loadingView = new ProgressBar[PlayerAcount + 2];
 
     public int[] droppedFrames = new int[2];
     public long[] conSpeed = new long[2];
@@ -217,7 +217,7 @@ public class PlayerActivity extends Activity {
                     3,
                     false);
 
-            DefaultSizeFrame();
+            SetDefaultSizeFrame();
 
             VideoHolder = findViewById(R.id.videoholder);
 
@@ -232,14 +232,24 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private void DefaultSizeFrame() {
+    private void SetDefaultSizeFrame() {
         Display display = getWindowManager().getDefaultDisplay();
+        float density = this.getResources().getDisplayMetrics().density;
         Point size = new Point();
         display.getSize(size);
 
         float Scale = (float) size.y / 1080.0f;
-        int DefaultSize = Math.round(40 * this.getResources().getDisplayMetrics().density * Scale);
+        float Scaledensity = density / 2.0f;
+
+        int DefaultSize = Math.round(40 * density * Scale / Scaledensity);
         DefaultSizeFrame = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
+
+        loadingView[5] = findViewById(R.id.loading2);
+        FrameLayout.LayoutParams defaultSizeFrameBottom = (FrameLayout.LayoutParams) loadingView[5].getLayoutParams();
+        defaultSizeFrameBottom.width = DefaultSize;
+        defaultSizeFrameBottom.height = DefaultSize;
+        defaultSizeFrameBottom.bottomMargin = (int)(size.x / 20 * density / Scaledensity);
+        loadingView[5].setLayoutParams(defaultSizeFrameBottom);
     }
 
     public void setPlayer(boolean surface_view) {
@@ -532,6 +542,10 @@ public class PlayerActivity extends Activity {
 
     private void showLoading() {
         loadingView[4].setVisibility(View.VISIBLE);
+    }
+
+    private void showLoadingBotton() {
+        loadingView[5].setVisibility(View.VISIBLE);
     }
 
     private void hideLoading(int position) {
@@ -899,6 +913,15 @@ public class PlayerActivity extends Activity {
             myHandler.post(() -> {
                 if (show) showLoading();
                 else hideLoading(4);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mshowLoadingBotton(boolean show) {
+            myHandler.post(() -> {
+                if (show) showLoadingBotton();
+                else hideLoading(5);
             });
         }
 
