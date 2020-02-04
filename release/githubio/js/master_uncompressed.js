@@ -4952,6 +4952,8 @@
         [Main_Authorization, null]
     ];
 
+    var Main_VideoSizeLiveFeed = "352x198";
+
     var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
     var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
     var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
@@ -16949,7 +16951,8 @@
 
         div.className = 'user_feed_thumb';
         div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
-            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + data[0].replace("{width}x{height}", Main_VideoSizeAll[0]) +
+            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' +
+            data[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) +
             Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
             '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
             '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_info_live_name"' +
