@@ -48,8 +48,8 @@ import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     private static final int[] positions = {
             Gravity.RIGHT | Gravity.BOTTOM,//0
@@ -624,17 +624,21 @@ public class PlayerActivity extends Activity {
         AudioSource = pos;
         if (pos >= 2) {//both
             AudioMulti = 4;
-            if (player[0] != null) player[0].setVolume(1f);
-            if (player[1] != null) player[1].setVolume(1f);
+            SetAudio(0, 1f);
+            SetAudio(1, 1f);
         } else if (pos == 1) {//Main
             AudioMulti = 0;
-            if (player[mainPlayer] != null) player[mainPlayer].setVolume(1f);
-            if (player[mainPlayer ^ 1] != null) player[mainPlayer ^ 1].setVolume(0f);
+            SetAudio(mainPlayer, 1f);
+            SetAudio(mainPlayer ^ 1, 0f);
         } else {//Small
             AudioMulti = 1;
-            if (player[mainPlayer] != null) player[mainPlayer].setVolume(0f);
-            if (player[mainPlayer ^ 1] != null) player[mainPlayer ^ 1].setVolume(1f);
+            SetAudio(mainPlayer, 0f);
+            SetAudio(mainPlayer ^ 1, 1f);
         }
+    }
+
+    public void SetAudio(int pos, float volume) {
+        if (player[pos] != null) player[pos].setVolume(volume);
     }
 
     public void UpdadeSizePosSmall(int pos) {
@@ -1106,6 +1110,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerAudio(int position) {
             myHandler.post(() -> SwitchPlayerAudio(position));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mSetAudio(int position, float volume) {
+            myHandler.post(() -> SetAudio(position, volume));
         }
 
         @SuppressWarnings("unused")//called by JS
