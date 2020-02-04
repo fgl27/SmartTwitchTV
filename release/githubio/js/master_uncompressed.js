@@ -16923,9 +16923,9 @@
             Main_HideElement('dialog_loading_side_feed');
             Sidepannel_AddFocusFeed(true);
             UserLiveFeed_FeedAddFocus(true, pos);
-            window.setTimeout(Sidepannel_PreloadImgs, 10);
 
             if (ShowNotifications) {
+                window.setTimeout(Sidepannel_PreloadImgs, 10);
                 //The app just started or user change don't nottify
                 if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
                 else {
@@ -16949,7 +16949,7 @@
 
         div.className = 'user_feed_thumb';
         div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
-            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + data[0].replace("{width}x{height}", Main_VideoSize) +
+            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' + data[0].replace("{width}x{height}", Main_VideoSizeAll[0]) +
             Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
             '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
             '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_info_live_name"' +
