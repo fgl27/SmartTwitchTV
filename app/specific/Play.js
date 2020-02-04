@@ -1637,8 +1637,9 @@ function Play_showEndDialog() {
     Play_EndFocus = true;
     UserLiveFeed_PreventHide = true;
     UserLiveFeed_clearHideFeed();
-    UserLiveFeed_ShowFeed(true);
+    UserLiveFeed_ShowFeed();
     Main_values.Play_WasPlaying = 0;
+    UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
     Main_SaveValues();
 }
 
