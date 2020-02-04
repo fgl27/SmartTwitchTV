@@ -925,7 +925,7 @@ function PlayVod_handleKeyDown(e) {
                         PlayVod_IconsBottonFocus();
                     } else Play_BottomUpDown(2, 1);
                     PlayVod_setHidePanel();
-                } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
+                } else if (!UserLiveFeed_isFeedShow() && !Play_isVodDialogVisible()) UserLiveFeed_ShowFeed();
                 else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_DOWN:
