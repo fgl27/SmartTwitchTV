@@ -16477,12 +16477,10 @@
         Sidepannel_HideMain(true);
     }
 
-    var Sidepannel_FeedOldUserName = '';
-
     function Sidepannel_ShowFeed() {
         Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-        if (Sidepannel_FeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
-        Sidepannel_FeedOldUserName = AddUser_UsernameArray[0].name;
+        if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+        UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
 
         if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_0', UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
 
