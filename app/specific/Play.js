@@ -10,7 +10,6 @@ var Play_isFullScreen = true;
 var Play_ChatPositionsBF;
 var Play_ChatEnableBF;
 var Play_ChatSizeValueBF;
-var Play_FeedOldUserName = '';
 var Play_Buffer = 2000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;

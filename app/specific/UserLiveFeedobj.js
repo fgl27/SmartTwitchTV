@@ -365,6 +365,7 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
     return div;
 }
 
+var UserLiveFeedobj_LiveFeedOldUserName = '';
 function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
@@ -374,8 +375,8 @@ function UserLiveFeedobj_ShowFeed(PreventAddfocus) {
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
 
     if (AddUser_UserIsSet()) {
-        UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserLivePos, (Play_FeedOldUserName !== AddUser_UsernameArray[0].name));
-        Play_FeedOldUserName = AddUser_UsernameArray[0].name;
+        UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserLivePos, (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name));
+        UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
     }
 }
 
@@ -635,6 +636,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
     UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserHostPos);
 }
 
+var UserLiveFeedobj_HostFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserHost(PreventAddfocus) {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
@@ -644,8 +646,8 @@ function UserLiveFeedobj_ShowUserHost(PreventAddfocus) {
         UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS));
 
     if (AddUser_UserIsSet()) {
-        UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserHostPos, (Play_FeedOldUserName !== AddUser_UsernameArray[0].name));
-        Play_FeedOldUserName = AddUser_UsernameArray[0].name;
+        UserLiveFeedobj_ShowFeedCheck(PreventAddfocus, UserLiveFeedobj_UserHostPos, (UserLiveFeedobj_HostFeedOldUserName !== AddUser_UsernameArray[0].name));
+        UserLiveFeedobj_HostFeedOldUserName = AddUser_UsernameArray[0].name;
     }
 }
 
