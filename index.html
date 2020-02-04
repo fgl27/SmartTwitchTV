@@ -671,11 +671,10 @@
         div.user_feed {
             z-index: -1;
             position: absolute;
-            bottom: 0.1%;
-            height: 35%;
+            bottom: 0;
+            height: 37%;
             width: 100%;
             overflow: hidden;
-            transition: bottom 0.25s ease-in-out;
         }
 
         div.user_feed_hide {
@@ -688,10 +687,11 @@
             bottom: 0;
             height: auto;
             white-space: nowrap;
+            bottom: 7%;
         }
 
         div.user_feed_scroll_ani {
-            transition: left 0.2s ease-in-out;
+            transition: left 0.15s ease-in-out;
         }
 
         /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
@@ -830,6 +830,10 @@
         div.scene_channel_panel {
             position: absolute;
             z-index: 2;
+            opacity: 0;
+        }
+
+        .opacity_zero {
             opacity: 0;
         }
 
@@ -1902,6 +1906,7 @@
     <script src="app/specific/Search.js" defer></script>
     <script src="app/specific/Users.js" defer></script>
     <script src="app/specific/UserLiveFeed.js" defer></script>
+    <script src="app/specific/UserLiveFeedobj.js" defer></script>
     <script src="app/specific/Screens.js" defer></script>
     <script src="app/specific/Sidepannel.js" defer></script>
     <script src="app/general/resize.js" defer></script>
@@ -2709,7 +2714,7 @@
             <div id="dialog_end_stream" class="dialogs hide"
                 style="z-index:4; font-size: 150%; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
                 <div id="dialog_end_stream_text" class="strokedeline"
-                    style="margin-top: 15%; font-size: 145%; padding-bottom: 1%;">
+                    style="margin-top: 13%; font-size: 145%; padding-bottom: 1%;">
                 </div>
                 <!-- next-->
                 <div id="dialog_end_-1" class="dialog_end_icons hide">
@@ -2765,7 +2770,7 @@
                     <div></div>
                 </div>
             </div>
-            <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 11%;">
+            <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 9%;">
                 <div id="play_dialog_exit_text" class="strokedelinebig" style="font-size: 230%;"></div>
             </div>
             <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 10%;">
@@ -2787,9 +2792,9 @@
                 </div>
             </div>
         </div>
-        <div id="user_feed" class="user_feed user_feed_hide">
-            <div id="icon_feed_refresh" class="icon_feed_refresh">
-            </div>
+        <div id="user_feed" class="user_feed user_feed_hide"
+            style="background: linear-gradient(to top, black, rgba(0, 0, 0, 0.3));">
+            <div id="icon_feed_refresh" class="icon_feed_refresh" style="font-family: 'Roboto';"></div>
             <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                 <div class="loading">
                     <div></div>
@@ -2798,8 +2803,15 @@
                     <div></div>
                 </div>
             </div>
-            <div id="user_feed_scroll" class="user_feed_scroll user_feed_scroll_ani">
-            </div>
+            <div id="featured_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
+            <div id="current_game_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
+            <div id="live_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
+            <div id="user_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
+            <div id="user_host_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
+
+            <div id="feed_end" class="icon_feed_refresh strokedelinebig" style="position: absolute; bottom: 0;"></div>
+            <div id="feed_counter" class="icon_feed_refresh strokedelinebig"
+                style="position: absolute; bottom: 0; text-align: right; margin-left: 0;"></div>
         </div>
         <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">
             <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt=""
