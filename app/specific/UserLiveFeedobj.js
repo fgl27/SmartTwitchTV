@@ -583,7 +583,7 @@ function UserLiveFeedobj_loadUserHost() {
         '/followed/hosting?limit=100';
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserHost;
-    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError, false);
+    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError, false);
 }
 
 function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
