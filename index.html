@@ -671,7 +671,7 @@
         div.user_feed {
             z-index: -1;
             position: absolute;
-            bottom: 0.1%;
+            bottom: 0;
             height: 37%;
             width: 100%;
             overflow: hidden;
@@ -2793,7 +2793,8 @@
                 </div>
             </div>
         </div>
-        <div id="user_feed" class="user_feed user_feed_hide">
+        <div id="user_feed" class="user_feed user_feed_hide"
+            style="background: linear-gradient(to top, black, rgba(0, 0, 0, 0.3));">
             <div id="icon_feed_refresh" class="icon_feed_refresh"></div>
             <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                 <div class="loading">
@@ -2809,8 +2810,8 @@
             <div id="user_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
             <div id="user_host_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
 
-            <div id="feed_end" class="icon_feed_refresh" style="position: absolute; bottom: 0;"></div>
-            <div id="feed_counter" class="icon_feed_refresh"
+            <div id="feed_end" class="icon_feed_refresh strokedelinebig" style="position: absolute; bottom: 0;"></div>
+            <div id="feed_counter" class="icon_feed_refresh strokedelinebig"
                 style="position: absolute; bottom: 0; text-align: right; margin-left: 0;"></div>
         </div>
         <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">
