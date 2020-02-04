@@ -485,7 +485,7 @@ function Play_RefreshAutoError(UseAndroid) {
 }
 
 function Play_Resume() {
-    UserLiveFeed_Hide(true);
+    UserLiveFeed_Hide();
     Play_data.watching_time = new Date().getTime();
     Play_isOn = true;
     ChatLive_Playing = true;
@@ -1004,7 +1004,7 @@ function Play_loadDataSuccess(responseText) {
         Play_loadData();
     } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
 
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide();
 
         if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
         else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
@@ -1264,7 +1264,7 @@ function Play_PreshutdownStream(closePlayer) {
         if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey(false);
     }
 
-    if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide(true);
+    if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide();
 
     Play_ClearPlay(closePlayer);
     Play_ClearPlayer();
@@ -1778,7 +1778,7 @@ function Play_EndDialogPressed(PlayVodClip) {
 
     if (canhide) {
         Play_HideEndDialog();
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide();
         UserLiveFeed_PreventHide = false;
     }
     Play_EndDialogEnter = 0;
@@ -2476,7 +2476,7 @@ function Play_MultiStartQuality(pos, theUrl, display_name, tryes) {
         if (xmlHttp.status === 200) {
 
             Play_MultiArray[pos].AutoUrl = theUrl;
-            if (Play_MultiIsFull()) UserLiveFeed_Hide(true);
+            if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
             try {
                 Android.StartMultiStream(pos, theUrl);
@@ -2611,7 +2611,7 @@ function Play_MultiSetUpdateDialog(doc) {
     Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
 
-    UserLiveFeed_Hide(true);
+    UserLiveFeed_Hide();
     Play_MultiDialogPos = 0;
     Play_MultiAddFocus();
     Play_ShowMultiDialog();
