@@ -16971,6 +16971,13 @@
         }
     }
 
+    function UserLiveFeed_LoadImgPush(pos, url, id) {
+        UserLiveFeed_ImgObj[pos].push({
+            id: UserLiveFeed_ids[1] + id,
+            url: url.replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+        });
+    }
+
     function UserLiveFeed_RefreshLive() {
         if (AddUser_UserIsSet()) {
             UserLiveFeedobj_loadDataPrepare();
@@ -17465,10 +17472,7 @@
                     });
                 }
                 obj_id = UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
-                UserLiveFeed_ImgObj[UserLiveFeedobj_UserLivePos].push({
-                    id: UserLiveFeed_ids[1] + obj_id,
-                    url: mArray[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
-                });
+                UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserLivePos, mArray[0], obj_id);
 
                 if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
                     UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
@@ -17654,10 +17658,7 @@
                 mArray = ScreensObj_LiveCellArray(stream);
 
                 obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
-                UserLiveFeed_ImgObj[pos].push({
-                    id: UserLiveFeed_ids[1] + obj_id,
-                    url: mArray[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
-                });
+                UserLiveFeed_LoadImgPush(pos, mArray[0], obj_id);
 
                 if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
                     UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
@@ -17850,10 +17851,7 @@
                     UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
 
                 obj_id = UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
-                UserLiveFeed_ImgObj[UserLiveFeedobj_UserHostPos].push({
-                    id: UserLiveFeed_ids[1] + obj_id,
-                    url: stream.target.preview_urls.template.replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
-                });
+                UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserHostPos, stream.target.preview_urls.template, obj_id);
 
                 doc.appendChild(
                     UserLiveFeed_CreatFeed(
