@@ -155,6 +155,13 @@ function UserLiveFeed_LoadImg(pos) {
     }
 }
 
+function UserLiveFeed_LoadImgPush(pos, url, id) {
+    UserLiveFeed_ImgObj[pos].push({
+        id: UserLiveFeed_ids[1] + id,
+        url: url.replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+    });
+}
+
 function UserLiveFeed_RefreshLive() {
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_loadDataPrepare();
