@@ -16840,6 +16840,8 @@
     var UserLiveFeed_FeedPosY = [];
     var UserLiveFeed_itemsCount = [];
     var UserLiveFeed_obj = {};
+    var ImageLoaderWorker;
+    var UserLiveFeed_ImgObj = [];
 
     var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
@@ -16901,6 +16903,72 @@
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
 
         if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
+
+        UserLiveFeed_Setworker();
+    }
+
+    function UserLiveFeed_Setworker() {
+        //Adapted from https://dev.to/trezy/loading-images-with-web-workers-49ap
+        var blobURL = URL.createObjectURL(new Blob(['(',
+
+            function() {
+                this.addEventListener('message',
+                    function(event) {
+                        var onload = function(obj) {
+                            if (obj.status !== 200) obj.response = null;
+
+                            this.postMessage({
+                                url: obj.mData.url,
+                                blob: obj.response,
+                                element: obj.mData.id,
+                            });
+                        };
+
+                        var xmlHttp = new XMLHttpRequest();
+                        xmlHttp.responseType = 'blob';
+                        xmlHttp.mData = event.data;
+
+                        xmlHttp.onreadystatechange = function() {
+                            if (xmlHttp.readyState === 4) {
+                                onload(xmlHttp);
+                            }
+                        };
+
+                        xmlHttp.open('GET', xmlHttp.mData.url, true);
+                        xmlHttp.timeout = 3000;
+                        xmlHttp.ontimeout = function() {};
+                        xmlHttp.send();
+                    }
+                );
+
+            }.toString(),
+
+            ')()'
+        ], {
+            type: 'application/javascript'
+        }));
+
+        ImageLoaderWorker = new Worker(blobURL);
+
+        ImageLoaderWorker.addEventListener('message',
+            function(event) {
+                var imageData = event.data,
+                    imageElement = document.getElementById(imageData.element),
+                    objectURL = imageData.blob ? URL.createObjectURL(imageData.blob) : imageData.url;
+
+                imageElement.onload = function() {
+                    this.onload = null;
+                    URL.revokeObjectURL(objectURL);
+                };
+                imageElement.setAttribute('src', objectURL);
+            }
+        );
+    }
+
+    function UserLiveFeed_LoadImg(pos) {
+        for (var i = 0; i < UserLiveFeed_ImgObj[pos].length; i++) {
+            ImageLoaderWorker.postMessage(UserLiveFeed_ImgObj[pos][i]);
+        }
     }
 
     function UserLiveFeed_RefreshLive() {
@@ -16953,9 +17021,8 @@
 
         div.className = 'user_feed_thumb';
         div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
-            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' +
-            data[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) +
-            Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
+            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id +
+            '" alt="" class="stream_img" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
             '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
             '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_info_live_name"' +
             (ishosting ? ' style="max-height: 2.4em; overflow: hidden; white-space: normal;' : '') + '">' + Main_ReplaceLargeFont(data[1]) + '</div>' +
@@ -17167,6 +17234,7 @@
             UserLiveFeed_LastPos[pos] = null;
         }
 
+        UserLiveFeed_ImgObj[pos] = [];
         UserLiveFeed_itemsCount[pos] = 0;
         Main_empty(UserLiveFeed_obj[pos].div);
         if (UserLiveFeed_isFeedShow()) Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
@@ -17333,7 +17401,7 @@
         var response = JSON.parse(responseText).streams,
             response_items = response.length,
             sorting = Settings_Obj_default('live_feed_sort'),
-            stream, id, mArray,
+            stream, id, mArray, obj_id,
             doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div),
             docside = document.getElementById("side_panel_holder"),
             i = 0;
@@ -17396,13 +17464,19 @@
                         rerun: mArray[8],
                     });
                 }
+                obj_id = UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
+                UserLiveFeed_ImgObj[UserLiveFeedobj_UserLivePos].push({
+                    id: UserLiveFeed_ids[1] + obj_id,
+                    url: mArray[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+                });
 
                 if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
                     UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
                 doc.appendChild(
                     UserLiveFeed_CreatFeed(
-                        UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos], mArray
+                        obj_id,
+                        mArray
                     )
                 );
 
@@ -17444,6 +17518,7 @@
         // );
 
         UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
+        UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
     }
 
     function UserLiveFeedobj_LiveNotification() {
@@ -17564,7 +17639,7 @@
 
         var response = JSON.parse(responseText)[UserLiveFeed_obj[pos].StreamType],
             response_items = response.length,
-            stream, id, mArray,
+            stream, id, mArray, obj_id,
             doc = document.getElementById(UserLiveFeed_obj[pos].div),
             i = 0;
 
@@ -17578,13 +17653,19 @@
                 UserLiveFeed_idObject[pos][id] = 1;
                 mArray = ScreensObj_LiveCellArray(stream);
 
+                obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
+                UserLiveFeed_ImgObj[pos].push({
+                    id: UserLiveFeed_ids[1] + obj_id,
+                    url: mArray[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+                });
+
                 if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
                     UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
 
-
                 doc.appendChild(
                     UserLiveFeed_CreatFeed(
-                        pos + '_' + UserLiveFeed_itemsCount[pos], mArray
+                        obj_id,
+                        mArray
                     )
                 );
                 UserLiveFeed_itemsCount[pos]++;
@@ -17613,6 +17694,7 @@
         // );
 
         UserLiveFeed_loadDataSuccessFinish(false, pos);
+        UserLiveFeed_LoadImg(pos);
     }
 
     //Live Start
@@ -17750,7 +17832,7 @@
     function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
         var response = JSON.parse(responseText).hosts,
             response_items = response.length,
-            stream, id,
+            stream, id, obj_id,
             doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div),
             i = 0;
 
@@ -17767,9 +17849,15 @@
                 if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
                     UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
 
+                obj_id = UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
+                UserLiveFeed_ImgObj[UserLiveFeedobj_UserHostPos].push({
+                    id: UserLiveFeed_ids[1] + obj_id,
+                    url: stream.target.preview_urls.template.replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+                });
+
                 doc.appendChild(
                     UserLiveFeed_CreatFeed(
-                        UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos],
+                        obj_id,
                         [
                             stream.target.preview_urls.template, //0
                             stream.display_name + STR_USER_HOSTING + stream.target.channel.display_name, //1
@@ -17795,6 +17883,7 @@
         }
 
         UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
+        UserLiveFeed_LoadImg(UserLiveFeedobj_UserHostPos);
     }
 
     var UserLiveFeedobj_HostFeedOldUserName = '';
@@ -17826,7 +17915,8 @@
 
     function UserLiveFeedobj_BottonText(text) {
         return '<span style="font-size: 150%; font-family: \'Roboto-Bold\'; color:#00a94b;">' + text + '</span>';
-    } //Variable initialization
+    }
+    //Variable initialization
     var Users_cursorY = 0;
     var Users_cursorX = 0;
     var Users_ColoumnsCount = 8;
