@@ -107,7 +107,7 @@ function UserLiveFeed_Setworker() {
                         this.postMessage({
                             url: obj.mData.url,
                             blob: obj.response,
-                            element: obj.mData.id,
+                            id: obj.mData.id,
                         });
                     };
 
@@ -137,7 +137,7 @@ function UserLiveFeed_Setworker() {
     ImageLoaderWorker.addEventListener('message',
         function(event) {
             var imageData = event.data,
-                imageElement = document.getElementById(imageData.element),
+                imageElement = document.getElementById(imageData.id),
                 objectURL = imageData.blob ? URL.createObjectURL(imageData.blob) : imageData.url;
 
             imageElement.onload = function() {
