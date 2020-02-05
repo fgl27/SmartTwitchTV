@@ -27,7 +27,6 @@ var UserLiveFeed_NotifyTimeout = 3000;
 var UserLiveFeed_FeedPosY = [];
 var UserLiveFeed_itemsCount = [];
 var UserLiveFeed_obj = {};
-var lazyLoadInstance;
 
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
@@ -89,7 +88,6 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
-    lazyLoadInstance = new LazyLoad();
 }
 
 function UserLiveFeed_RefreshLive() {
@@ -142,7 +140,7 @@ function UserLiveFeed_CreatFeed(id, data) {
 
     div.className = 'user_feed_thumb';
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
-        '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="lazy stream_img" data-src="' +
+        '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' +
         data[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) +
         Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
         '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
@@ -207,7 +205,6 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos) {
     UserLiveFeed_FeedSetPos(skipAnimation, pos);
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
-    lazyLoadInstance.update();
 }
 
 function UserLiveFeed_FeedRemoveFocus(pos) {
