@@ -21,6 +21,7 @@ function UserLiveFeedobj_StartDefault(pos) {
         UserLiveFeed_LastPos[pos] = null;
     }
 
+    UserLiveFeed_ImgObj[pos] = [];
     UserLiveFeed_itemsCount[pos] = 0;
     Main_empty(UserLiveFeed_obj[pos].div);
     if (UserLiveFeed_isFeedShow()) Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
@@ -188,7 +189,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     var response = JSON.parse(responseText).streams,
         response_items = response.length,
         sorting = Settings_Obj_default('live_feed_sort'),
-        stream, id, mArray,
+        stream, id, mArray, obj_id,
         doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div),
         docside = document.getElementById("side_panel_holder"),
         i = 0;
@@ -251,13 +252,19 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                     rerun: mArray[8],
                 });
             }
+            obj_id = UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
+            UserLiveFeed_ImgObj[UserLiveFeedobj_UserLivePos].push({
+                id: UserLiveFeed_ids[1] + obj_id,
+                url: mArray[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+            });
 
             if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
                 UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
             doc.appendChild(
                 UserLiveFeed_CreatFeed(
-                    UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos], mArray
+                    obj_id,
+                    mArray
                 )
             );
 
@@ -299,6 +306,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     // );
 
     UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
+    UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
 }
 
 function UserLiveFeedobj_LiveNotification() {
@@ -418,7 +426,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
 
     var response = JSON.parse(responseText)[UserLiveFeed_obj[pos].StreamType],
         response_items = response.length,
-        stream, id, mArray,
+        stream, id, mArray, obj_id,
         doc = document.getElementById(UserLiveFeed_obj[pos].div),
         i = 0;
 
@@ -432,13 +440,19 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
             UserLiveFeed_idObject[pos][id] = 1;
             mArray = ScreensObj_LiveCellArray(stream);
 
+            obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
+            UserLiveFeed_ImgObj[pos].push({
+                id: UserLiveFeed_ids[1] + obj_id,
+                url: mArray[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+            });
+
             if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
                 UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
 
-
             doc.appendChild(
                 UserLiveFeed_CreatFeed(
-                    pos + '_' + UserLiveFeed_itemsCount[pos], mArray
+                    obj_id,
+                    mArray
                 )
             );
             UserLiveFeed_itemsCount[pos]++;
@@ -467,6 +481,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
     // );
 
     UserLiveFeed_loadDataSuccessFinish(false, pos);
+    UserLiveFeed_LoadImg(pos);
 }
 
 //Live Start
@@ -603,7 +618,7 @@ function UserLiveFeedobj_loadUserHost() {
 function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
     var response = JSON.parse(responseText).hosts,
         response_items = response.length,
-        stream, id,
+        stream, id, obj_id,
         doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div),
         i = 0;
 
@@ -620,9 +635,15 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
             if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
                 UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
 
+            obj_id = UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
+            UserLiveFeed_ImgObj[UserLiveFeedobj_UserHostPos].push({
+                id: UserLiveFeed_ids[1] + obj_id,
+                url: stream.target.preview_urls.template.replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+            });
+
             doc.appendChild(
                 UserLiveFeed_CreatFeed(
-                    UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos],
+                    obj_id,
                     [
                         stream.target.preview_urls.template,//0
                         stream.display_name + STR_USER_HOSTING + stream.target.channel.display_name,//1
@@ -648,6 +669,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
     }
 
     UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
+    UserLiveFeed_LoadImg(UserLiveFeedobj_UserHostPos);
 }
 
 var UserLiveFeedobj_HostFeedOldUserName = '';

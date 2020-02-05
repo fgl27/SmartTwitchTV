@@ -27,6 +27,8 @@ var UserLiveFeed_NotifyTimeout = 3000;
 var UserLiveFeed_FeedPosY = [];
 var UserLiveFeed_itemsCount = [];
 var UserLiveFeed_obj = {};
+var ImageLoaderWorker;
+var UserLiveFeed_ImgObj = [];
 
 var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
 
@@ -88,6 +90,69 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
+
+    UserLiveFeed_Setworker();
+}
+
+function UserLiveFeed_Setworker() {
+    //Adapted from https://dev.to/trezy/loading-images-with-web-workers-49ap
+    var blobURL = URL.createObjectURL(new Blob(['(',
+
+        function() {
+            this.addEventListener('message',
+                function(event) {
+                    var onload = function(obj) {
+                        if (obj.status !== 200) obj.response = null;
+
+                        this.postMessage({
+                            url: obj.mData.url,
+                            blob: obj.response,
+                            element: obj.mData.id,
+                        });
+                    };
+
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.responseType = 'blob';
+                    xmlHttp.mData = event.data;
+
+                    xmlHttp.onreadystatechange = function() {
+                        if (xmlHttp.readyState === 4) {
+                            onload(xmlHttp);
+                        }
+                    };
+
+                    xmlHttp.open('GET', xmlHttp.mData.url, true);
+                    xmlHttp.timeout = 3000;
+                    xmlHttp.ontimeout = function() {};
+                    xmlHttp.send();
+                }
+            );
+
+        }.toString(),
+
+        ')()'], {type: 'application/javascript'}));
+
+    ImageLoaderWorker = new Worker(blobURL);
+
+    ImageLoaderWorker.addEventListener('message',
+        function(event) {
+            var imageData = event.data,
+                imageElement = document.getElementById(imageData.element),
+                objectURL = imageData.blob ? URL.createObjectURL(imageData.blob) : imageData.url;
+
+            imageElement.onload = function() {
+                this.onload = null;
+                URL.revokeObjectURL(objectURL);
+            };
+            imageElement.setAttribute('src', objectURL);
+        }
+    );
+}
+
+function UserLiveFeed_LoadImg(pos) {
+    for (var i = 0; i < UserLiveFeed_ImgObj[pos].length; i++) {
+        ImageLoaderWorker.postMessage(UserLiveFeed_ImgObj[pos][i]);
+    }
 }
 
 function UserLiveFeed_RefreshLive() {
@@ -140,9 +205,8 @@ function UserLiveFeed_CreatFeed(id, data) {
 
     div.className = 'user_feed_thumb';
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
-        '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" alt="" class="stream_img" src="' +
-        data[0].replace("{width}x{height}", Main_VideoSizeLiveFeed) +
-        Main_randomimg + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
+        '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id +
+        '" alt="" class="stream_img" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
         '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
         '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_info_live_name"' +
         (ishosting ? ' style="max-height: 2.4em; overflow: hidden; white-space: normal;' : '') + '">' + Main_ReplaceLargeFont(data[1]) + '</div>' +
