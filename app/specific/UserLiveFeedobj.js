@@ -301,12 +301,20 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
 }
 
+var UserLiveFeedobj_LiveNotificationClearId;
 function UserLiveFeedobj_LiveNotification() {
-    if (UserLiveFeed_NotifyRunning || !UserLiveFeed_Notify ||
-        !UserLiveFeed_NotifyLiveidObject.length) {
-        UserLiveFeed_NotifyLiveidObject = [];
+    if (UserLiveFeed_NotifyRunning || !UserLiveFeed_NotifyLiveidObject.length) {
+        if (!UserLiveFeed_Notify) UserLiveFeed_NotifyLiveidObject = [];
+
         return;
     }
+
+    //Reset notifications after 2 times the time it takes just in case imf load and error fail some how
+    window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
+    UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(function() {
+        UserLiveFeed_NotifyRunning = false;
+        UserLiveFeed_NotifyLiveidObject = [];
+    }, ((UserLiveFeed_NotifyTimeout + 1000) * 2 * UserLiveFeed_NotifyLiveidObject.length));
 
     UserLiveFeed_NotifyRunning = true;
     UserLiveFeedobj_LiveNotificationShow(0);
@@ -331,6 +339,7 @@ function UserLiveFeedobj_LiveNotificationShow(position) {
     img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
 }
 
+var UserLiveFeedobj_LiveNotificationHideId;
 function UserLiveFeedobj_LiveNotificationOnload(position) {
     Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
 
@@ -340,20 +349,24 @@ function UserLiveFeedobj_LiveNotificationOnload(position) {
     Main_ready(function() {
         Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
 
-        window.setTimeout(function() {
+        window.clearTimeout(UserLiveFeedobj_LiveNotificationHideId);
+        UserLiveFeedobj_LiveNotificationHideId = window.setTimeout(function() {
             UserLiveFeedobj_LiveNotificationHide(position);
         }, UserLiveFeed_NotifyTimeout);
     });
 }
 
+var UserLiveFeedobj_LiveNotificationShowId;
 function UserLiveFeedobj_LiveNotificationHide(position) {
     Main_AddClass('user_feed_notify', 'user_feed_notify_hide');
 
     if (position < (UserLiveFeed_NotifyLiveidObject.length - 1)) {
-        window.setTimeout(function() {
+        window.clearTimeout(UserLiveFeedobj_LiveNotificationShowId);
+        UserLiveFeedobj_LiveNotificationShowId = window.setTimeout(function() {
             UserLiveFeedobj_LiveNotificationShow(position + 1);
         }, 800);
     } else {
+        window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
         UserLiveFeed_NotifyRunning = false;
         UserLiveFeed_NotifyLiveidObject = [];
     }
