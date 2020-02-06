@@ -214,9 +214,9 @@ function UserLiveFeed_GetSize(pos) {
     return UserLiveFeed_itemsCount[pos];
 }
 
-function UserLiveFeed_CreatFeed(id, data) {
-    var ishosting = data[1].indexOf(STR_USER_HOSTING) !== -1,
-        div = document.createElement('div');
+function UserLiveFeed_CreatFeed(id, data, ishosting) {
+    if (!data[1]) data[1] = data[6];
+    var div = document.createElement('div');
 
     div.setAttribute('id', UserLiveFeed_ids[8] + id);
     div.setAttribute(Main_DataAttribute, JSON.stringify(data));
