@@ -11324,7 +11324,7 @@
     }
 
     function Screens_createCellChannel(id, idArray, valuesArray) {
-        Screens_PreloadImgsArray.push(valuesArray[0]);
+        Screens_PreloadImgsArray.push(valuesArray[2]);
 
         return Screens_createCell(
             idArray[8] + id,
@@ -13363,7 +13363,7 @@
             },
             label_init: function() {
                 this.SetPeriod();
-                Sidepannel_SetTopOpacity(this.screen);
+                ScreensObj_TopLableUserInit();
             },
             SetPeriod: function() {
                 Main_setItem('UserVod_periodPos', this.periodPos);
