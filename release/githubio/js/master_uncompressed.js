@@ -4907,10 +4907,11 @@
             return;
         }
 
-        if (JSON.parse(xmlHttp.responseText).hasOwnProperty('status'))
-            calbackError();
-        else
+        if (xmlHttp.status === 200) {
             callbackSucess(xmlHttp.responseText);
+        } else {
+            calbackError();
+        }
     }
 
     function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
@@ -11238,6 +11239,7 @@
 
     function Screens_loadDatafail() {
         inUseObj.loadingData = false;
+        inUseObj.loadingDataTry = 0;
         if (!inUseObj.itemsCount) {
             Sidepannel_SetTopOpacity(Main_values.Main_Go);
             inUseObj.FirstLoad = false;
@@ -11322,6 +11324,8 @@
     }
 
     function Screens_createCellChannel(id, idArray, valuesArray) {
+        Screens_PreloadImgsArray.push(valuesArray[0]);
+
         return Screens_createCell(
             idArray[8] + id,
             valuesArray,
@@ -11336,6 +11340,8 @@
     }
 
     function Screens_createCellGame(id, idArray, valuesArray) {
+        Screens_PreloadImgsArray.push(valuesArray[0]);
+
         return Screens_createCell(
             idArray[5] + id,
             valuesArray,
@@ -11352,6 +11358,8 @@
 
     function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_until) {
         var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
+        //Clips images fails with CORS
+        Screens_PreloadImgsArray.push(valuesArray[15]);
 
         return Screens_createCell(
             idArray[8] + id,
@@ -11379,6 +11387,8 @@
     }
 
     function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until) {
+        Screens_PreloadImgsArray.push(valuesArray[0]);
+
         return Screens_createCell(
             idArray[8] + id,
             valuesArray,
@@ -11406,14 +11416,19 @@
 
     //TODO uncomplicate this ifs
     function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodimg, force_VOD) {
-        var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
+
+        if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
+
+        var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1,
+            image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
+
+        Screens_PreloadImgsArray.push(image);
 
         return Screens_createCell(
             idArray[8] + id,
             valuesArray,
             '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-            idArray[1] + id + '" class="stream_img" alt="" src="' +
-            (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)) +
+            idArray[1] + id + '" class="stream_img" alt="" src="' + image +
             (Extra_vodimg ?
                 ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + inUseObj.img_404 +
                     '\';};this.src=\'' + Extra_vodimg + '\';' +
@@ -11537,6 +11552,7 @@
         } else {
             Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
         }
+        Screens_PreloadImgs();
     }
 
     function Screens_handleKeyControls(event) {
@@ -12907,7 +12923,18 @@
             Main_History[Main_HistoryPos]
         ];
     }
-    //Spacing for reease maker not trow erros frm jshint
+
+    var Screens_PreloadImgsArray = [];
+
+    function Screens_PreloadImgs() {
+        for (var i = 0; i < Screens_PreloadImgsArray.length; i++) {
+            ImageLoaderWorker.postMessage({
+                id: 'image_temp',
+                url: Screens_PreloadImgsArray[i]
+            });
+        }
+        Screens_PreloadImgsArray = [];
+    } //Spacing for reease maker not trow erros frm jshint
     var Main_ItemsLimitMax = 100;
 
     var ChannelClip_game = '';
@@ -16279,12 +16306,13 @@
     }
 
     function Sidepannel_KeyEnterUser() {
-        var hidepanel = true;
         if (Main_values.Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
             Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
             window.setTimeout(Main_HideWarningDialog, 5000);
             return;
         }
+
+        if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
 
         if (Main_values.Sidepannel_Pos === 2) {
             Main_values.Sidepannel_IsUser = false;
@@ -16297,7 +16325,7 @@
                 Sidepannel_SetTopOpacity(Main_values.Main_Go);
                 Sidepannel_AddFocusMain();
             }
-            hidepanel = false;
+
         } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
         else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
         else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
@@ -16319,7 +16347,6 @@
         } else if (Main_values.Sidepannel_Pos === 9) Sidepannel_Go(Main_History[Main_HistoryPos]);
         else Sidepannel_KeyEnterBase();
 
-        if (hidepanel) Sidepannel_Hide();
     }
 
     function Sidepannel_MainISuser() {
@@ -16358,7 +16385,7 @@
             return;
         }
 
-        var hidepanel = true;
+        if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
 
         if (Main_values.Sidepannel_Pos === 2) {
             if (AddUser_IsUserSet()) {
@@ -16374,15 +16401,12 @@
                 Main_showWarningDialog(STR_NOKUSER_WARN);
                 window.setTimeout(Main_HideWarningDialog, 2000);
             }
-            hidepanel = false;
         } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
         else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
         else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
         else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
         else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
         else Sidepannel_KeyEnterBase();
-
-        if (hidepanel) Sidepannel_Hide();
     }
 
     function Sidepannel_Go(GoTo) {
@@ -16456,7 +16480,6 @@
     function Sidepannel_Hide() {
         Sidepannel_HideMain();
         Sidepannel_RemoveFocusMain();
-        Sidepannel_SetTopOpacity(Main_values.Main_Go);
         Main_ShowElement('side_panel_fix');
         document.getElementById('side_panel_fix').style.marginLeft = '';
         Main_AddClass('side_panel', 'side_panel_hide');
