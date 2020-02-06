@@ -11359,7 +11359,7 @@
     function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_until) {
         var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
         //Clips images fails with CORS
-        Screens_PreloadImgsArray.push(valuesArray[15]);
+        //Screens_PreloadImgsArray.push(valuesArray[15]);
 
         return Screens_createCell(
             idArray[8] + id,
