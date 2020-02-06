@@ -71,10 +71,7 @@ function PlayExtra_SavePlayData() {
 }
 
 function PlayExtra_RestorePlayData() {
-    Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
-    window.setTimeout(function() {
-        Play_HideWarningDialog();
-    }, 2000);
+    Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
     PlayExtra_data = JSON.parse(JSON.stringify(PlayExtra_Save_data));
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -129,10 +126,7 @@ function PlayExtra_End(doSwitch) { // Called only by JAVA
     PlayExtra_PicturePicture = false;
     PlayExtra_UnSetPanel();
 
-    Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
-    window.setTimeout(function() {
-        Play_HideWarningDialog();
-    }, 2500);
+    Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 }
 
 function PlayExtra_loadDataSuccess(responseText) {
@@ -297,10 +291,7 @@ function PlayExtra_loadDataFail(Reason) {
         if (Main_IsNotBrowser && !Play_isFullScreen) Android.mupdatesize(!Play_isFullScreen);
 
         Play_HideBufferDialog();
-        Play_showWarningDialog(Reason);
-        window.setTimeout(function() {
-            Play_HideWarningDialog();
-        }, 2500);
+        Play_showWarningDialog(Reason, 2500);
     } else PlayExtra_RestorePlayData();
 }
 

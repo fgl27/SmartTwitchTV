@@ -24,7 +24,6 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_ImgObj[pos] = [];
     UserLiveFeed_itemsCount[pos] = 0;
     Main_empty(UserLiveFeed_obj[pos].div);
-    if (UserLiveFeed_isFeedShow()) Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
     UserLiveFeed_status[pos] = false;
     document.getElementById(UserLiveFeed_obj[pos].div).style.left = "0.125em";
     UserLiveFeed_FeedPosY[pos] = 0;
@@ -32,6 +31,7 @@ function UserLiveFeedobj_StartDefault(pos) {
 
     Main_updateclock();
     Main_ShowElement('dialog_loading_side_feed');
+    if (UserLiveFeed_isFeedShow()) Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
 }
 
 function UserLiveFeedobj_CheckToken() {
@@ -69,6 +69,7 @@ function UserLiveFeedobj_loadDataPrepare() {
 function UserLiveFeedobj_loadChannels() {
     var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
+
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannels;
 
     if (Main_IsNotBrowser && UserLiveFeed_isFeedShow()) BaseAndroidhttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
@@ -82,19 +83,10 @@ function UserLiveFeedobj_loadDataError() {
         UserLiveFeedobj_loadErrorCallback();
     } else {
         UserLiveFeed_loadingData = false;
-        if (!UserLiveFeed_GetSize(UserLiveFeedobj_UserLivePos)) {
-            UserLiveFeed_Showloading(false);
-            Main_HideElement('dialog_loading_side_feed');
-            if (UserLiveFeed_isFeedShow()) {
-                Play_showWarningDialog(STR_REFRESH_PROBLEM);
-                window.setTimeout(function() {
-                    Play_HideWarningDialog();
-                }, 2000);
-            }
-        } else {
-            UserLiveFeed_dataEnded = true;
-            UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserLivePos);
-        }
+        UserLiveFeed_Showloading(false);
+        Main_HideElement('dialog_loading_side_feed');
+
+        if (UserLiveFeed_isFeedShow()) Play_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
     }
 }
 
@@ -406,11 +398,9 @@ function UserLiveFeedobj_ShowFeed() {
 function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
     if (Main_isElementShowing('scene2') && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
-    if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData)
-        UserLiveFeed_StartLoad();
+    if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
         Main_RemoveClass(UserLiveFeed_obj[pos].div, 'opacity_zero');
-
         UserLiveFeed_FeedAddFocus(true, pos);
     }
 }
@@ -606,7 +596,7 @@ function UserLiveFeedobj_loadUserHost() {
         '/followed/hosting?limit=100';
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserHost;
-    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError, false);
+    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {

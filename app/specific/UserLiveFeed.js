@@ -5,7 +5,6 @@ var UserLiveFeed_loadingDataTry = 0;
 var UserLiveFeed_loadingDataTimeout = 3500;
 var UserLiveFeed_loadChannelOffsset = 0;
 var UserLiveFeed_loadingDataTryMax = 5;
-var UserLiveFeed_dataEnded = false;
 var UserLiveFeed_followerChannels = '';
 var UserLiveFeed_idObject = [];
 var UserLiveFeed_status = [];
@@ -181,22 +180,21 @@ function UserLiveFeed_CounterDialog(pos, total) {
 function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     UserLiveFeed_loadingData = false;
     UserLiveFeed_status[pos] = true;
-    Main_ready(function() {
-        UserLiveFeed_Showloading(false);
-        Main_HideElement('dialog_loading_side_feed');
-        Sidepannel_AddFocusFeed(true);
-        UserLiveFeed_FeedAddFocus(true, pos);
 
-        if (ShowNotifications) {
-            window.setTimeout(Sidepannel_PreloadImgs, 10);
-            //The app just started or user change don't nottify
-            if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
-            else {
-                UserLiveFeed_NotifyLiveidObject = [];
-                UserLiveFeed_CheckNotifycation = true;
-            }
+    UserLiveFeed_Showloading(false);
+    Main_HideElement('dialog_loading_side_feed');
+    Sidepannel_AddFocusFeed(true);
+    UserLiveFeed_FeedAddFocus(true, pos);
+
+    if (ShowNotifications) {
+        window.setTimeout(Sidepannel_PreloadImgs, 10);
+        //The app just started or user change don't nottify
+        if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
+        else {
+            UserLiveFeed_NotifyLiveidObject = [];
+            UserLiveFeed_CheckNotifycation = true;
         }
-    });
+    }
 }
 
 function UserLiveFeed_GetSize(pos) {
@@ -360,12 +358,7 @@ function UserLiveFeed_KeyUpDown(Adder) {
         if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) {
             if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) && !userSet) {
                 Play_IsWarning = true;
-                Play_showWarningDialog(STR_NOKUSER_WARN);
-                window.clearTimeout(Play_OpenGameId);
-                Play_OpenGameId = window.setTimeout(function() {
-                    Play_IsWarning = false;
-                    Play_HideWarningDialog();
-                }, 2000);
+                Play_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             return;
         }
@@ -373,12 +366,7 @@ function UserLiveFeed_KeyUpDown(Adder) {
         if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
             UserLiveFeed_KeyUpDown(Adder);
             Play_IsWarning = true;
-            Play_showWarningDialog(STR_NO_GAME);
-            window.clearTimeout(Play_OpenGameId);
-            Play_OpenGameId = window.setTimeout(function() {
-                Play_IsWarning = false;
-                Play_HideWarningDialog();
-            }, 2000);
+            Play_showWarningDialog(STR_NO_GAME, 2000);
             return;
         }
 

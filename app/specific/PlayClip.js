@@ -496,11 +496,7 @@ function PlayClip_OpenVod() {
     } else {
         Play_clearHidePanel();
         Play_IsWarning = true;
-        Play_showWarningDialog(STR_NO_BROADCAST_WARNING);
-        window.setTimeout(function() {
-            Play_IsWarning = false;
-            Play_HideWarningDialog();
-        }, 2000);
+        Play_showWarningDialog(STR_NO_BROADCAST_WARNING, 2000);
     }
 }
 
