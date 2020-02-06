@@ -16965,7 +16965,6 @@
         UserLiveFeed_FeedAddFocus(true, pos);
 
         if (ShowNotifications) {
-            window.setTimeout(Sidepannel_PreloadImgs, 10);
             //The app just started or user change don't nottify
             if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
             else {
@@ -17472,6 +17471,7 @@
         UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
         UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
         UserLiveFeed_LoadImgSide();
+        Sidepannel_PreloadImgs();
     }
 
     var UserLiveFeedobj_LiveNotificationClearId;
