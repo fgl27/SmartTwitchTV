@@ -161,6 +161,20 @@ function UserLiveFeed_LoadImgPush(pos, url, id) {
     });
 }
 
+var UserLiveFeed_ImgSideObj = [];
+function UserLiveFeed_LoadImgSidePush(url, id) {
+    UserLiveFeed_ImgSideObj.push({
+        id: id,
+        url: url
+    });
+}
+
+function UserLiveFeed_LoadImgSide() {
+    for (var i = 0; i < UserLiveFeed_ImgSideObj.length; i++) {
+        ImageLoaderWorker.postMessage(UserLiveFeed_ImgSideObj[i]);
+    }
+}
+
 function UserLiveFeed_RefreshLive() {
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_loadDataPrepare();
