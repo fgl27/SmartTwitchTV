@@ -16438,8 +16438,8 @@
         if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
 
         if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
+            Sidepannel_PreloadImgs();
             Sidepannel_AddFocusFeed(true);
-            window.setTimeout(Sidepannel_PreloadImgs, 10);
         }
     }
 
