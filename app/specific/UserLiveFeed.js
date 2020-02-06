@@ -355,20 +355,19 @@ function UserLiveFeed_KeyUpDown(Adder) {
 
         var NextPos = UserLiveFeed_FeedPosX + Adder,
             userSet = AddUser_UserIsSet();
-        if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) {
-            if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) && !userSet) {
-                Play_IsWarning = true;
-                Play_showWarningDialog(STR_NOKUSER_WARN, 2000);
-            }
-            return;
+
+        if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
+            NextPos = 0;
+            if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
+        } else if (NextPos < 0) {
+            NextPos = userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user;
+            if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
         }
 
         if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = NextPos;
             UserLiveFeed_KeyUpDown(Adder);
-            Play_IsWarning = true;
-            Play_showWarningDialog(STR_NO_GAME, 2000);
             return;
         }
 

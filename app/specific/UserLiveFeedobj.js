@@ -387,7 +387,7 @@ var UserLiveFeedobj_LiveFeedOldUserName = '';
 function UserLiveFeedobj_ShowFeed() {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
         STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
         UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE) +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -496,7 +496,7 @@ function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
 function UserLiveFeedobj_ShowLive() {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
         UserLiveFeedobj_BottonText(STR_LIVE) +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -535,7 +535,7 @@ function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
 function UserLiveFeedobj_ShowFeatured() {
     Main_innerHTML('feed_end',
         UserLiveFeedobj_BottonText(STR_FEATURED) +
-        UserLiveFeedobj_BottonIcon(0) + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) +
+        UserLiveFeedobj_BottonIcon(0) + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) +
         UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -574,7 +574,7 @@ var UserLiveFeedobj_CurrentGameName = '';
 function UserLiveFeedobj_ShowCurrentGame() {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        UserLiveFeedobj_BottonText(Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) +
+        UserLiveFeedobj_BottonText(Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) +
         UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -660,7 +660,7 @@ var UserLiveFeedobj_HostFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserHost() {
     Main_innerHTML('feed_end',
         STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
         STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
         STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
         UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS));
