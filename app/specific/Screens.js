@@ -268,7 +268,7 @@ function Screens_createCell(id_attribute, Data_content, html_content) {
 }
 
 function Screens_createCellChannel(id, idArray, valuesArray) {
-    Screens_PreloadImgsArray.push(valuesArray[0]);
+    Screens_PreloadImgsArray.push(valuesArray[2]);
 
     return Screens_createCell(
         idArray[8] + id,
