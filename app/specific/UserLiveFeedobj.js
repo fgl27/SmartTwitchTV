@@ -661,7 +661,8 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
                         '',//12 stream creat at
                         stream.target.viewers,//13
                         stream.target._id//14
-                    ]
+                    ],
+                    true
                 )
             );
             UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]++;
