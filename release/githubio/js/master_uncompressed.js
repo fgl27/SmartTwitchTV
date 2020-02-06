@@ -395,7 +395,6 @@
     var STR_CONTROLS_MULTI_4;
     var STR_CONTROLS_MULTI_5;
     var STR_CONTROLS_MULTI_6;
-    var STR_CURR_GAME;
     var STR_FEED_END_DIALOG;
     var STR_MULTI_TITLE; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
@@ -918,7 +917,6 @@
         STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
         STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
         STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
-        STR_CURR_GAME = 'Current Game';
         STR_FEED_END_DIALOG = ', Press back to go back to top menu';
     }
     //Spacing for release maker not trow erros from jshint
@@ -17116,20 +17114,19 @@
 
             var NextPos = UserLiveFeed_FeedPosX + Adder,
                 userSet = AddUser_UserIsSet();
-            if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) || NextPos < 0) {
-                if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) && !userSet) {
-                    Play_IsWarning = true;
-                    Play_showWarningDialog(STR_NOKUSER_WARN, 2000);
-                }
-                return;
+
+            if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
+                NextPos = 0;
+                if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
+            } else if (NextPos < 0) {
+                NextPos = userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user;
+                if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
             }
 
             if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
                 UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
                 UserLiveFeed_FeedPosX = NextPos;
                 UserLiveFeed_KeyUpDown(Adder);
-                Play_IsWarning = true;
-                Play_showWarningDialog(STR_NO_GAME, 2000);
                 return;
             }
 
@@ -17542,7 +17539,7 @@
     function UserLiveFeedobj_ShowFeed() {
         Main_innerHTML('feed_end',
             STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
             STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
             UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE) +
             UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -17651,7 +17648,7 @@
     function UserLiveFeedobj_ShowLive() {
         Main_innerHTML('feed_end',
             STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
             UserLiveFeedobj_BottonText(STR_LIVE) +
             UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
             UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -17690,7 +17687,7 @@
     function UserLiveFeedobj_ShowFeatured() {
         Main_innerHTML('feed_end',
             UserLiveFeedobj_BottonText(STR_FEATURED) +
-            UserLiveFeedobj_BottonIcon(0) + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) +
+            UserLiveFeedobj_BottonIcon(0) + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) +
             UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
             UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
             UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -17730,7 +17727,7 @@
     function UserLiveFeedobj_ShowCurrentGame() {
         Main_innerHTML('feed_end',
             STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-            UserLiveFeedobj_BottonText(Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) +
+            UserLiveFeedobj_BottonText(Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) +
             UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
             UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
             UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
@@ -17817,7 +17814,7 @@
     function UserLiveFeedobj_ShowUserHost() {
         Main_innerHTML('feed_end',
             STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_CURR_GAME) + UserLiveFeedobj_BottonIcon(1) +
+            (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
             STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
             STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
             UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS));
