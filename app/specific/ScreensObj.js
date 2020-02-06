@@ -427,7 +427,7 @@ function ScreensObj_InitUserVod() {
         },
         label_init: function() {
             this.SetPeriod();
-            Sidepannel_SetTopOpacity(this.screen);
+            ScreensObj_TopLableUserInit();
         },
         SetPeriod: function() {
             Main_setItem('UserVod_periodPos', this.periodPos);
