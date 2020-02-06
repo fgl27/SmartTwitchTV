@@ -17239,7 +17239,10 @@
             UserLiveFeed_Showloading(false);
             Main_HideElement('dialog_loading_side_feed');
 
-            if (UserLiveFeed_isFeedShow()) Play_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
+            if (UserLiveFeed_isFeedShow()) {
+                Main_innerHTML(UserLiveFeed_obj[UserLiveFeed_FeedPosX].div,
+                    '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + STR_REFRESH_PROBLEM + '</div>');
+            }
         }
     }
 
