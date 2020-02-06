@@ -302,6 +302,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
     UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
     UserLiveFeed_LoadImgSide();
+    Sidepannel_PreloadImgs();
 }
 
 var UserLiveFeedobj_LiveNotificationClearId;
