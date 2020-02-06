@@ -359,7 +359,7 @@ function ChannelContent_keyEnter() {
         if (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1) {
             Main_values.Play_isHost = true;
             Play_data.DisplaynameHost = Play_data.data[1];
-            Play_data.data[1] = Play_data.data[1].split(STR_USER_HOSTING)[1];
+            Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
             Play_data.data[14] = ChannelContent_TargetId;
         } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
 
