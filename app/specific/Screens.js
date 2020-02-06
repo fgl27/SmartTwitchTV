@@ -360,6 +360,9 @@ function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until
 
 //TODO uncomplicate this ifs
 function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodimg, force_VOD) {
+
+    if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
+
     var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1,
         image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
