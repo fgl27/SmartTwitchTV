@@ -201,7 +201,6 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     UserLiveFeed_FeedAddFocus(true, pos);
 
     if (ShowNotifications) {
-        window.setTimeout(Sidepannel_PreloadImgs, 10);
         //The app just started or user change don't nottify
         if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
         else {
