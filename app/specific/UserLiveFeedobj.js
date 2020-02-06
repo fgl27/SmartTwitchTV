@@ -39,6 +39,7 @@ function UserLiveFeedobj_CheckToken() {
         if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
             UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
     }
+    UserLiveFeed_ImgSideObj = [];
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
     Main_empty('side_panel_holder');
@@ -263,6 +264,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
                 Sidepannel_PosFeed = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
+            UserLiveFeed_LoadImgSidePush(mArray[9], UserLiveFeed_side_ids[1] + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]);
             docside.appendChild(
                 UserLiveFeedobj_CreatSideFeed(
                     UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
@@ -299,6 +301,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
     UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
     UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
+    UserLiveFeed_LoadImgSide();
 }
 
 var UserLiveFeedobj_LiveNotificationClearId;
@@ -384,8 +387,7 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
         '" style="width: 100%;"><div id="' + UserLiveFeed_side_ids[3] + id +
         '" style="display: none;">' + data[1] +
         '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
-        '" class="side_panel_channel_img" src="' + data[9] +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
+        '" class="side_panel_channel_img" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
         '\';"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
         '" class="side_panel_new_title">' + Main_ReplaceLargeFont(data[1]) + '</div><div id="' +
         UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + data[3] +
