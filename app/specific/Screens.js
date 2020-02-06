@@ -268,6 +268,8 @@ function Screens_createCell(id_attribute, Data_content, html_content) {
 }
 
 function Screens_createCellChannel(id, idArray, valuesArray) {
+    Screens_PreloadImgsArray.push(valuesArray[0]);
+
     return Screens_createCell(
         idArray[8] + id,
         valuesArray,
@@ -282,6 +284,8 @@ function Screens_createCellChannel(id, idArray, valuesArray) {
 }
 
 function Screens_createCellGame(id, idArray, valuesArray) {
+    Screens_PreloadImgsArray.push(valuesArray[0]);
+
     return Screens_createCell(
         idArray[5] + id,
         valuesArray,
@@ -298,6 +302,8 @@ function Screens_createCellGame(id, idArray, valuesArray) {
 
 function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_until) {
     var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
+    //Clips images fails with CORS
+    Screens_PreloadImgsArray.push(valuesArray[15]);
 
     return Screens_createCell(
         idArray[8] + id,
@@ -325,6 +331,8 @@ function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_unti
 }
 
 function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until) {
+    Screens_PreloadImgsArray.push(valuesArray[0]);
+
     return Screens_createCell(
         idArray[8] + id,
         valuesArray,
@@ -352,14 +360,16 @@ function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until
 
 //TODO uncomplicate this ifs
 function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodimg, force_VOD) {
-    var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1;
+    var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1,
+        image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
+
+    Screens_PreloadImgsArray.push(image);
 
     return Screens_createCell(
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
-        idArray[1] + id + '" class="stream_img" alt="" src="' +
-        (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)) +
+        idArray[1] + id + '" class="stream_img" alt="" src="' + image +
         (Extra_vodimg ?
             ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + inUseObj.img_404 +
                 '\';};this.src=\'' + Extra_vodimg + '\';' +
@@ -483,6 +493,7 @@ function Screens_loadDataSuccessFinish() {
     } else {
         Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
     }
+    Screens_PreloadImgs();
 }
 
 function Screens_handleKeyControls(event) {
@@ -1851,4 +1862,15 @@ function Screens_ThumbOptionSetArrowArray() {
         Main_UserVod,
         Main_UserChannels,
         Main_History[Main_HistoryPos]];
+}
+
+var Screens_PreloadImgsArray = [];
+function Screens_PreloadImgs() {
+    for (var i = 0; i < Screens_PreloadImgsArray.length; i++) {
+        ImageLoaderWorker.postMessage({
+            id: 'image_temp',
+            url: Screens_PreloadImgsArray[i]
+        });
+    }
+    Screens_PreloadImgsArray = [];
 }
