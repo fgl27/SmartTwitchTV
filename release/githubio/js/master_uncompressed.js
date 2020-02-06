@@ -16266,8 +16266,12 @@
     }
 
     function Sidepannel_PreloadImgs() {
-        for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++)
-            new Image().src = UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
+        for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++) {
+            ImageLoaderWorker.postMessage({
+                id: 'image_temp',
+                url: UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
+            });
+        }
     }
 
     function Sidepannel_GetSize() {
@@ -16920,6 +16924,21 @@
         });
     }
 
+    var UserLiveFeed_ImgSideObj = [];
+
+    function UserLiveFeed_LoadImgSidePush(url, id) {
+        UserLiveFeed_ImgSideObj.push({
+            id: id,
+            url: url
+        });
+    }
+
+    function UserLiveFeed_LoadImgSide() {
+        for (var i = 0; i < UserLiveFeed_ImgSideObj.length; i++) {
+            ImageLoaderWorker.postMessage(UserLiveFeed_ImgSideObj[i]);
+        }
+    }
+
     function UserLiveFeed_RefreshLive() {
         if (AddUser_UserIsSet()) {
             UserLiveFeedobj_loadDataPrepare();
@@ -17191,6 +17210,7 @@
             if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
                 UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
         }
+        UserLiveFeed_ImgSideObj = [];
         UserLiveFeed_PreloadImgs = [];
         Sidepannel_PosFeed = 0;
         Main_empty('side_panel_holder');
@@ -17414,6 +17434,7 @@
                 if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
                     Sidepannel_PosFeed = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
+                UserLiveFeed_LoadImgSidePush(mArray[9], UserLiveFeed_side_ids[1] + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]);
                 docside.appendChild(
                     UserLiveFeedobj_CreatSideFeed(
                         UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
@@ -17450,6 +17471,7 @@
 
         UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
         UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
+        UserLiveFeed_LoadImgSide();
     }
 
     var UserLiveFeedobj_LiveNotificationClearId;
@@ -17538,8 +17560,7 @@
             '" style="width: 100%;"><div id="' + UserLiveFeed_side_ids[3] + id +
             '" style="display: none;">' + data[1] +
             '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
-            '" class="side_panel_channel_img" src="' + data[9] +
-            '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
+            '" class="side_panel_channel_img" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
             '\';"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
             '" class="side_panel_new_title">' + Main_ReplaceLargeFont(data[1]) + '</div><div id="' +
             UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + data[3] +
