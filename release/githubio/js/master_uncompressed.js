@@ -17125,6 +17125,8 @@
             }
 
             if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+                UserLiveFeed_FeedPosX = NextPos;
                 UserLiveFeed_KeyUpDown(Adder);
                 Play_IsWarning = true;
                 Play_showWarningDialog(STR_NO_GAME, 2000);
