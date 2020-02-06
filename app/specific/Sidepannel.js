@@ -79,43 +79,42 @@ function Sidepannel_KeyEnterUser() {
         window.setTimeout(Main_HideWarningDialog, 5000);
         return;
     }
+
     if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
 
-    //Sidepannel_Hide scenario must end before we run open screen and related to avoid values overwrite by Sidepannel_SetTopOpacity
-    Main_ready(function() {
-        if (Main_values.Sidepannel_Pos === 2) {
-            Main_values.Sidepannel_IsUser = false;
-            Sidepannel_SetDefaultLables();
-            Sidepannel_UnSetTopOpacity();
+    if (Main_values.Sidepannel_Pos === 2) {
+        Main_values.Sidepannel_IsUser = false;
+        Sidepannel_SetDefaultLables();
+        Sidepannel_UnSetTopOpacity();
 
-            if (!Sidepannel_MainISuser()) {
-                Sidepannel_RemoveFocusMain();
-                Main_values.Sidepannel_Pos++;
-                Sidepannel_SetTopOpacity(Main_values.Main_Go);
-                Sidepannel_AddFocusMain();
-            }
+        if (!Sidepannel_MainISuser()) {
+            Sidepannel_RemoveFocusMain();
+            Main_values.Sidepannel_Pos++;
+            Sidepannel_SetTopOpacity(Main_values.Main_Go);
+            Sidepannel_AddFocusMain();
+        }
 
-        } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
-        else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
-        else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
-        else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_UserVod);
-        else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_UserChannels);
-        else if (Main_values.Sidepannel_Pos === 8) {
-            Main_values.Main_selectedChannel_id = AddUser_UsernameArray[0].id;
-            Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : AddUser_UsernameArray[0].name;
-            Main_values.Main_selectedChannel = AddUser_UsernameArray[0].name;
+    } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
+    else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
+    else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
+    else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_UserVod);
+    else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_UserChannels);
+    else if (Main_values.Sidepannel_Pos === 8) {
+        Main_values.Main_selectedChannel_id = AddUser_UsernameArray[0].id;
+        Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : AddUser_UsernameArray[0].name;
+        Main_values.Main_selectedChannel = AddUser_UsernameArray[0].name;
 
-            Main_values.Main_BeforeChannel = Main_values.Main_Go;
-            Main_values.Main_Go = Main_ChannelContent;
-            Main_values.Main_BeforeChannelisSet = true;
-            AddCode_IsFallowing = false;
-            ChannelContent_UserChannels = false;
-            Main_ExitCurrent(Main_values.Main_BeforeChannel);
-            Main_values.My_channel = true;
-            Main_SwitchScreen();
-        } else if (Main_values.Sidepannel_Pos === 9) Sidepannel_Go(Main_History[Main_HistoryPos]);
-        else Sidepannel_KeyEnterBase();
-    });
+        Main_values.Main_BeforeChannel = Main_values.Main_Go;
+        Main_values.Main_Go = Main_ChannelContent;
+        Main_values.Main_BeforeChannelisSet = true;
+        AddCode_IsFallowing = false;
+        ChannelContent_UserChannels = false;
+        Main_ExitCurrent(Main_values.Main_BeforeChannel);
+        Main_values.My_channel = true;
+        Main_SwitchScreen();
+    } else if (Main_values.Sidepannel_Pos === 9) Sidepannel_Go(Main_History[Main_HistoryPos]);
+    else Sidepannel_KeyEnterBase();
+
 }
 
 function Sidepannel_MainISuser() {
@@ -154,7 +153,7 @@ function Sidepannel_KeyEnter() {
         return;
     }
 
-    var hidepanel = true;
+    if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
 
     if (Main_values.Sidepannel_Pos === 2) {
         if (AddUser_IsUserSet()) {
@@ -170,15 +169,12 @@ function Sidepannel_KeyEnter() {
             Main_showWarningDialog(STR_NOKUSER_WARN);
             window.setTimeout(Main_HideWarningDialog, 2000);
         }
-        hidepanel = false;
     } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
     else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
     else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
     else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
     else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
     else Sidepannel_KeyEnterBase();
-
-    if (hidepanel) Sidepannel_Hide();
 }
 
 function Sidepannel_Go(GoTo) {
@@ -252,7 +248,6 @@ function Sidepannel_HideMain(hideAll) {
 function Sidepannel_Hide() {
     Sidepannel_HideMain();
     Sidepannel_RemoveFocusMain();
-    Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_ShowElement('side_panel_fix');
     document.getElementById('side_panel_fix').style.marginLeft = '';
     Main_AddClass('side_panel', 'side_panel_hide');
