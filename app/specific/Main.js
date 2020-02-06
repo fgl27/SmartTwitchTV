@@ -1576,10 +1576,11 @@ function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
         return;
     }
 
-    if (JSON.parse(xmlHttp.responseText).hasOwnProperty('status'))
-        calbackError();
-    else
+    if (xmlHttp.status === 200) {
         callbackSucess(xmlHttp.responseText);
+    } else {
+        calbackError();
+    }
 }
 
 function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {

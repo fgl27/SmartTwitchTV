@@ -183,6 +183,7 @@ function Screens_loadDataError() {
 
 function Screens_loadDatafail() {
     inUseObj.loadingData = false;
+    inUseObj.loadingDataTry = 0;
     if (!inUseObj.itemsCount) {
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
         inUseObj.FirstLoad = false;
