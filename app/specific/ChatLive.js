@@ -347,7 +347,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
             tags.badges.split(',').forEach(function(badge) {
                 badge = badge.split('/');
 
-                div += '<span class="' + badge[0] + (badge[0].indexOf('subscriber') !== -1 ? chat_number : "") + '-' + badge[1] + ' tag"></span>';
+                div += '<span class="' + badge[0] + (Main_A_includes_B(badge[0], 'subscriber') ? chat_number : "") + '-' + badge[1] + ' tag"></span>';
             });
         }
     }
@@ -356,7 +356,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     var mmessage = message.params[1];
     //For some bug on the chat implementation some message comes with the raw message of the next message
     //Remove the next to fix current... next will be lost as is not correctly formated
-    if (mmessage.indexOf('PRIVMSG') !== -1) mmessage = mmessage.split('@badge-info=')[0];
+    if (Main_A_includes_B(mmessage, 'PRIVMSG')) mmessage = mmessage.split('@badge-info=')[0];
 
     if (/^\x01ACTION.*\x01$/.test(mmessage)) {
         action = true;

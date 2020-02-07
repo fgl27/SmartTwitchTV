@@ -39,7 +39,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
             } else {
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.message) {
-                    if (response.message.indexOf('Invalid refresh token') !== -1) {
+                    if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
                         AddCode_requestTokensFailRunning(position);
                         if (callbackFuncNOK) callbackFuncNOK();
                     } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
@@ -73,9 +73,9 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
 
 //Check if has all scopes, in canse they change
 function AddCode_TokensCheckScope(scope) {
-    if (scope.indexOf("user_read") === -1) return false;
-    if (scope.indexOf("user_follows_edit") === -1) return false;
-    if (scope.indexOf("user_subscriptions") === -1) return false;
+    if (!Main_A_includes_B(scope, 'user_read')) return false;
+    if (!Main_A_includes_B(scope, 'user_follows_edit')) return false;
+    if (!Main_A_includes_B(scope, 'user_subscriptions')) return false;
 
     return true;
 }
@@ -157,8 +157,7 @@ function AddCode_CheckOauthTokenReady(xmlHttp) {
 
 function AddCode_CheckOauthTokenSucess(response) {
     var token = JSON.parse(response);
-    if (token.login &&
-        token.login.indexOf(AddUser_UsernameArray[Main_values.Users_AddcodePosition].name) !== -1) {
+    if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
         AddUser_SaveUserArray();
         Main_newUsercode = 0;
         Main_HideLoadDialog();
@@ -267,7 +266,7 @@ function AddCode_RequestCheckFallowOK() {
 function AddCode_RequestCheckFallowNOK(response) {
     response = JSON.parse(response);
     if (response.error) {
-        if ((response.error + '').indexOf('Not Found') !== -1) {
+        if (Main_A_includes_B((response.error + ''), 'Not Found')) {
             AddCode_IsFallowing = false;
             if (AddCode_PlayRequest) Play_setFallow();
             else ChannelContent_setFallow();
@@ -368,7 +367,7 @@ function AddCode_RequestCheckSubReady(xmlHttp) {
         } else if (xmlHttp.status === 404) { //success no user is not a sub
             var response = JSON.parse(xmlHttp.responseText);
             if (response.error) {
-                if ((response.error + '').indexOf('Not Found') !== -1) {
+                if (Main_A_includes_B((response.error + ''), 'Not Found')) {
                     AddCode_RequestCheckSubfail();
                 } else AddCode_RequestCheckSubError();
             } else AddCode_RequestCheckSubError();
@@ -452,7 +451,7 @@ function AddCode_UnFallowGameEnd(xmlHttp) {
         if (xmlHttp.status === 204) { // success we now unfallow the game
             AGame_fallowing = false;
             AGame_setFallow();
-        } else if (JSON.parse(xmlHttp.responseText).message.indexOf('does not follow') !== -1) {
+        } else if (Main_A_includes_B(JSON.parse(xmlHttp.responseText).message, 'does not follow')) {
             AGame_fallowing = false;
             AGame_setFallow();
         } else AddCode_UnFallowGameRequestError();

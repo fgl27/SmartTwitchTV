@@ -16,7 +16,7 @@ window.parseIRC = function(data) {
     // http://ircv3.atheme.org/specification/message-tags-3.2
 
     if (data.charCodeAt(0) === 64) {
-        nextspace = data.indexOf(' ');
+        nextspace = data ? data.indexOf(' ') : -1;
 
         if (nextspace === -1) {
             // Malformed IRC message.
@@ -45,7 +45,7 @@ window.parseIRC = function(data) {
     // with a colon.
 
     if (data.charCodeAt(position) === 58) {
-        nextspace = data.indexOf(' ', position);
+        nextspace = data ? data.indexOf(' ', position) : -1;
 
         // If there's nothing after the prefix, deem this message to be
         // malformed.
@@ -63,7 +63,7 @@ window.parseIRC = function(data) {
         }
     }
 
-    nextspace = data.indexOf(' ', position);
+    nextspace = data ? data.indexOf(' ', position) : -1;
 
     // If there's no more whitespace left, extract everything from the
     // current position to the end of the string as the command.
@@ -88,7 +88,7 @@ window.parseIRC = function(data) {
     }
 
     while (position < data.length) {
-        nextspace = data.indexOf(' ', position);
+        nextspace = data ? data.indexOf(' ', position) : -1;
 
         // If the character is a colon, we've got a trailing parameter.
         // At this point, there are no extra params, so we push everything

@@ -363,7 +363,7 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodi
 
     if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
 
-    var ishosting = valuesArray[1].indexOf(STR_USER_HOSTING) !== -1,
+    var ishosting = Main_A_includes_B(valuesArray[1], STR_USER_HOSTING),
         image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
     Screens_PreloadImgsArray.push(image);
@@ -1507,7 +1507,7 @@ function Screens_ThumbOptionStringSet() {
     Main_textContent('dialog_thumb_opt_val_2', '...');
 
     if (inUseObj.screenType < 2) {
-        Main_values.Play_isHost = (Screens_values_Play_data[1].indexOf(STR_USER_HOSTING) !== -1);
+        Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTING);
 
         if (Main_values.Play_isHost) {
             Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1].split(STR_USER_HOSTING)[1]);
@@ -1603,7 +1603,7 @@ function Screens_ThumbOptionhandleKeyDown(event) {
             break;
         case KEY_UP:
             if (Screens_ThumbOptionSpecial) break;
-            var lower = document.getElementById('dialog_thumb_opt_setting_-1').className.indexOf('hideimp') === -1 ? -1 : 0;
+            var lower = !Main_A_includes_B(document.getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : 0;
             Screens_clearTODialogId();
             Screens_SeTODialogId();
             Screens_ThumbOptionPosY--;
@@ -1788,7 +1788,7 @@ function Screens_OpenChannel() {
     if (inUseObj.screenType < 2) {
         Main_values.Main_selectedChannel_id = Screens_values_Play_data[14];
 
-        Main_values.Play_isHost = (Screens_values_Play_data[1].indexOf(STR_USER_HOSTING) !== -1);
+        Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTING);
 
         if (Main_values.Play_isHost) {
             Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1].split(STR_USER_HOSTING)[1];

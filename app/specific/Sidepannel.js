@@ -29,7 +29,7 @@ function Sidepannel_RemoveFocusFeed() {
 }
 
 function Sidepannel_isShowing() {
-    return document.getElementById('side_panel').className.indexOf('side_panel_hide') === -1;
+    return !Main_A_includes_B(document.getElementById('side_panel').className, 'side_panel_hide');
 }
 
 function Sidepannel_UpdateThumb() {

@@ -355,7 +355,7 @@ function ChannelContent_keyEnter() {
             .getAttribute(Main_DataAttribute));
 
         Play_data.data = Main_values_Play_data;
-        Main_values.Play_isHost = (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1);
+        Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
 
         if (Main_values.Play_isHost) {
             Play_data.DisplaynameHost = Play_data.data[1];

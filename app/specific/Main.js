@@ -160,7 +160,7 @@ function Main_loadTranslations(language) {
 
     Main_ready(function() {
         try {
-            if (window.location.href.indexOf('asset') !== -1) {
+            if (Main_A_includes_B(window.location.href, 'asset')) {
                 //Same as in smartTwitchTV/release/api.js
                 //The app is running from assets need to expose smartTwitchTV
                 smartTwitchTV = {
@@ -207,13 +207,13 @@ function Main_loadTranslations(language) {
         //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
         //else Settings_CheckLang(lang);
 
-        //if (lang.indexOf('pt_') !== -1) pt_BRLang();
-        //else if (lang.indexOf('it_') !== -1) it_ITLang();
+        //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
+        //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
 
         console.log("language is " + language);
         DefaultLang();
 
-        if (window.location.href.indexOf('code') !== -1) processCode(window.location.href);
+        if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
@@ -317,9 +317,13 @@ function Main_initWindows() {
         if (!Main_values.DeviceCheck) {
 
             Main_values.DeviceCheck = true;
+            var device = Android.getDevice();
+            var Manufacturer = Android.getManufacturer();
+            device = device ? device.toLowerCase() : "";
+            Manufacturer = Manufacturer ? Manufacturer.toLowerCase() : "";
 
-            if ((Android.getDevice()).toLowerCase().indexOf('shield android tv') !== -1 ||
-                (Android.getManufacturer()).toLowerCase().indexOf('nvidia') !== -1) {
+            if (Main_A_includes_B(device, 'shield android tv') ||
+                Main_A_includes_B(Manufacturer, 'nvidia')) {
                 //Some devices are very slow and are affected by some app default setting Nvidia shield is not
 
                 //bitrate to max possible
@@ -351,7 +355,7 @@ function Main_initWindows() {
 
                     for (var i = 0; i < codecs.length; i++) {
                         codecsValue = codecs[i].split(',');
-                        if (codecsValue[1].toLowerCase().indexOf('google') !== -1)
+                        if (Main_A_includes_B(codecsValue[1] ? codecsValue[1].toLowerCase() : "", 'google'))
                             codecsnames.push(codecsValue[1]);
                     }
 
@@ -627,7 +631,7 @@ function Main_ShowElement(element) {
 }
 
 function Main_isElementShowing(element) {
-    return document.getElementById(element).className.indexOf('hide') === -1;
+    return !Main_A_includes_B(document.getElementById(element).className, 'hide');
 }
 
 function Main_AddClass(element, mclass) {
@@ -795,7 +799,7 @@ function Main_videoqualitylang(video_height, average_fps, language) {
 }
 
 function Main_is_rerun(content) {
-    return ((content + '').indexOf('live') === -1);
+    return !Main_A_includes_B(content + '', 'live');
 }
 
 function Main_ThumbNull(y, x, thumbnail) {
@@ -1109,7 +1113,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
 
         if (index > -1) {
 
-            if (document.getElementById(idsArray[1] + id).src.indexOf('s3_vods') !== -1) {
+            if (Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
                 Main_OPenAsVod(index);
                 return;
             } else {//is live check is is really
@@ -1123,7 +1127,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
         }
     }
 
-    Main_values.Play_isHost = (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1);
+    Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
 
     if (Main_values.Play_isHost) {
         Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
@@ -1517,7 +1521,7 @@ function CheckPage(pageUrlCode) {
         PageUrl = Android.mPageUrl();
     } catch (e) {}
     if (PageUrl) {
-        if (window.location.href.indexOf('asset') === -1 && PageUrl.indexOf('asset') !== -1) {
+        if (Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
             try {
                 Android.mloadUrl(PageUrl + pageUrlCode);
             } catch (e) {}
@@ -1685,7 +1689,7 @@ function Main_Set_history(type, Data) {
                 {
                     data: Main_Slice(Data),
                     date: new Date().getTime(),
-                    name: Data[6].toLowerCase(),
+                    name: Data[6] ? Data[6].toLowerCase() : "",
                     game: Data[3],
                     id: Data[7],
                     views: Data[13],
@@ -1889,10 +1893,10 @@ function Main_A_includes_B(A, B) {
     return A ? A.includes(B) : false;
 }
 
-function Main_A_equals_B(A, B) {
+function Main_A_equals_B(A, B) {// jshint ignore:line
     return A === B;
 }
 
-function Main_A_equals_B_No_Case(A, B) {
+function Main_A_equals_B_No_Case(A, B) {// jshint ignore:line
     return (A ? A.toLowerCase() : null) === (B ? B.toLowerCase() : null);
 }

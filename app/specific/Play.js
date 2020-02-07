@@ -450,7 +450,7 @@ function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
         if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-            xmlHttp.responseText.indexOf('"status":410') !== -1) {
+            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
             Play_RefreshAutoError(UseAndroid);
             return;
         }
@@ -636,7 +636,7 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
     response = JSON.parse(response).videos;
 
     for (var i = 0; i < response.length; i++) {
-        if (response[i].status.indexOf('recording') !== -1) {
+        if (Main_A_includes_B(response[i].status, 'recording')) {
 
             Main_history_UpdateLiveVod(
                 BroadcastID,
@@ -665,7 +665,7 @@ function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id, tryes) {
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
         if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-            xmlHttp.responseText.indexOf('"status":410') !== -1) {
+            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
             Play_RefreshMultiError(pos, streamer, id, tryes);
             return;
         }
@@ -880,7 +880,7 @@ function Play_loadDataRequest() {
         if (xmlHttp.status === 200) {
             Play_loadingDataTry = 0;
 
-            if (xmlHttp.responseText.indexOf('"status":410') !== -1) Play_loadDataError();
+            if (Main_A_includes_B(xmlHttp.responseText, '"status":410')) Play_loadDataError();
             else Play_loadDataSuccess(xmlHttp.responseText);
 
         } else if (xmlHttp.status === 403 || xmlHttp.status === 404 ||
@@ -1009,7 +1009,7 @@ function Play_loadDataSuccess(responseText) {
         Play_HideEndDialog();
 
         //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-        //        if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+        //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
         //            Play_SupportsSource = false;
         //            Play_loadData();
         //            return;
@@ -1046,7 +1046,7 @@ function Play_extractQualities(input) {
                 'codec': 'avc',
                 'url': 'Auto_url'
             });
-            if (TempId.indexOf('ource') === -1) TempId = TempId + ' | source';
+            if (!Main_A_includes_B(TempId, 'ource')) TempId = TempId + ' | source';
             else if (TempId) TempId = TempId.replace('(', ' | ').replace(')', '');
             result.push({
                 'id': TempId,
@@ -1073,9 +1073,9 @@ function Play_extractBand(input) {
 }
 
 function Play_extractCodec(input) {
-    if (input.indexOf('avc') !== -1) return ' | avc';
-    else if (input.indexOf('vp9') !== -1) return ' | vp9';
-    else if (input.indexOf('mp4') !== -1) return ' | mp4';
+    if (Main_A_includes_B(input, 'avc')) return ' | avc';
+    else if (Main_A_includes_B(input, 'vp9')) return ' | vp9';
+    else if (Main_A_includes_B(input, 'mp4')) return ' | mp4';
     return '';
 }
 
@@ -1098,7 +1098,7 @@ function Play_qualityChanged() {
             Play_data.qualityIndex = i;
             Play_playingUrl = Play_data.qualities[i].url;
             break;
-        } else if (Play_data.qualities[i].id.indexOf(Play_data.quality) !== -1) { //make shore to set a value before break out
+        } else if (Main_A_includes_B(Play_data.qualities[i].id, Play_data.quality)) { //make shore to set a value before break out
             Play_data.qualityIndex = i;
             Play_playingUrl = Play_data.qualities[i].url;
         }
@@ -1118,7 +1118,7 @@ function Play_onPlayer() {
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        if (Play_data.quality.indexOf("Auto") !== -1 || PlayExtra_PicturePicture) Android.StartAuto(1, 0);
+        if (Main_A_includes_B(Play_data.quality, 'Auto') || PlayExtra_PicturePicture) Android.StartAuto(1, 0);
         else Android.startVideo(Play_playingUrl, 1);
     }
 
@@ -1135,10 +1135,10 @@ function Play_SetHtmlQuality(element) {
 
     var quality_string = '';
 
-    if (Play_data.quality.indexOf('source') !== -1) quality_string = Play_data.quality.replace("source", STR_SOURCE);
+    if (Main_A_includes_B(Play_data.quality, 'source')) quality_string = Play_data.quality.replace("source", STR_SOURCE);
     else quality_string = Play_data.quality;
 
-    quality_string += Play_data.quality.indexOf('Auto') === -1 ? Play_data.qualities[Play_data.qualityIndex].band + Play_data.qualities[Play_data.qualityIndex].codec : "";
+    quality_string += !Main_A_includes_B(Play_data.quality, 'Auto') ? Play_data.qualities[Play_data.qualityIndex].band + Play_data.qualities[Play_data.qualityIndex].codec : "";
 
     Main_innerHTML(element, quality_string);
 }
@@ -1419,8 +1419,8 @@ function Play_ShowPanelStatus(mwhocall) {
 function Play_UpdateStatus(mwhocall) {
     var isLive = mwhocall === 1;
 
-    if (isLive && Play_data.qualityPlaying.indexOf("Auto") !== -1) Play_getVideoQuality(false, Play_SetHtmlQuality);
-    else if (mwhocall === 2 && PlayVod_qualityPlaying.indexOf("Auto") !== -1) Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
+    if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(false, Play_SetHtmlQuality);
+    else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying.qualityPlaying, 'Auto')) Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
 
     Play_VideoStatus(isLive);
 }
@@ -1431,7 +1431,7 @@ function Play_showPanel() {
     Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality);
     PlayExtra_ResetSpeed();
     PlayExtra_ResetAudio();
-    if (Play_data.qualityPlaying.indexOf("Auto") === -1) Play_SetHtmlQuality('stream_quality');
+    if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
     PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
@@ -1447,11 +1447,11 @@ function Play_RefreshWatchingtime() {
         STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
 
     Main_innerHTML("stream_live_time", STR_SINCE +
-        (('00:00').indexOf(Play_created) !== -1 ? '00:00' : Play_streamLiveAt(Play_created)));
+        (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_created)));
 
     if (!Play_Status_Always_On) {
         if (Main_IsNotBrowser) {
-            if (Play_data.qualityPlaying.indexOf("Auto") !== -1) Play_getVideoQuality(false, Play_SetHtmlQuality);
+            if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(false, Play_SetHtmlQuality);
             Play_VideoStatus(true);
         } else Play_VideoStatusTest();
     }
@@ -1967,7 +1967,7 @@ function Play_qualityIndexReset() {
         if (Play_data.qualities[i].id === Play_data.quality) {
             Play_data.qualityIndex = i;
             break;
-        } else if (Play_data.qualities[i].id.indexOf(Play_data.quality) !== -1) { //make shore to set a value before break out
+        } else if (Main_A_includes_B(Play_data.qualities[i].id, Play_data.quality)) { //make shore to set a value before break out
             Play_data.qualityIndex = i;
         }
     }
@@ -2423,7 +2423,7 @@ function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name, tryes)
         var tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
         if (!tokenResponse.hasOwnProperty('token') || !tokenResponse.hasOwnProperty('sig') ||
-            xmlHttp.responseText.indexOf('"status":410') !== -1) {
+            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
             Play_MultiStartErro(pos, streamer, display_name, tryes);
             return;
         }
@@ -2540,7 +2540,7 @@ function Play_MultiInfoReset(pos) {
 
 function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title) {
 
-    Play_MultiArray[pos].isHost = displayname.indexOf(STR_USER_HOSTING) !== -1;
+    Play_MultiArray[pos].isHost = Main_A_includes_B(displayname, STR_USER_HOSTING);
 
     if (Play_MultiArray[pos].isHost) {
         Play_MultiArray[pos].DisplaynameHost = displayname;
@@ -2590,7 +2590,7 @@ function Play_MultiSetUpdateDialog(doc) {
         Main_innerHTML('stream_dialog_multi_title' + i, twemoji.parse(Play_MultiArray[i].data[2]));
     }
 
-    Main_textContent('stream_dialog_multi_name-1', (doc[1].indexOf(STR_USER_HOSTING) !== -1 ? doc[1].split(STR_USER_HOSTING)[1] : doc[1]));
+    Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(doc[1], STR_USER_HOSTING) ? doc[1].split(STR_USER_HOSTING)[1] : doc[1]));
     document.getElementById('stream_dialog_multiimg-1').src = doc[9];
     Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
@@ -3193,7 +3193,7 @@ function Play_MakeControls() {
                     Android.ResStartAuto(Play_data.AutoUrl, 1, 0);
                     Android.ResStartAuto2(PlayExtra_data.AutoUrl);
                 } else {
-                    if (Play_data.quality.indexOf("Auto") !== -1) Android.SetAuto(Play_data.AutoUrl);
+                    if (Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetAuto(Play_data.AutoUrl);
                     Play_onPlayer();
                 }
 
@@ -3295,7 +3295,7 @@ function Play_MakeControls() {
                 } catch (e) {}
 
                 Play_Multi_SetPanel();
-                if (Play_data.quality.indexOf("Auto") === -1) {
+                if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                     Play_data.quality = "Auto";
                     Play_data.qualityPlaying = Play_data.quality;
                     Android.StartAuto(1, 0);

@@ -279,7 +279,7 @@ function Languages_Setarrows(position) {
 
 function Languages_HideShowAll() {
     for (var key in Languages_value) {
-        if (key.indexOf('All') === -1) {
+        if (!Main_A_includes_B(key, 'All')) {
             document.getElementById(key + '_div').style.display = Languages_Obj_default('All') ? 'none' : 'inline-block';
         }
     }
@@ -299,7 +299,7 @@ function Languages_handleKeyDown(event) {
                 Languages_value[key].defaultValue -= 1;
                 Languages_ChangeSettigs(Languages_cursorY);
                 Main_RemoveClass(Languages_value_keys[Languages_cursorY], 'red_text');
-                if (key.indexOf('All') !== -1) Languages_HideShowAll();
+                if (Main_A_includes_B(key, 'All')) Languages_HideShowAll();
             }
             break;
         case KEY_RIGHT:
@@ -308,7 +308,7 @@ function Languages_handleKeyDown(event) {
                 Languages_value[key].defaultValue += 1;
                 Languages_ChangeSettigs(Languages_cursorY);
                 Main_AddClass(Languages_value_keys[Languages_cursorY], 'red_text');
-                if (key.indexOf('All') !== -1) Languages_HideShowAll();
+                if (Main_A_includes_B(key, 'All')) Languages_HideShowAll();
             }
             break;
         case KEY_UP:
