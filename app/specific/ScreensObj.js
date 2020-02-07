@@ -160,7 +160,7 @@ var Base_Vod_obj = {
     Vod_newImg: new Image(),
     AnimateThumb: ScreensObj_AnimateThumbId,
     addCellBase: function(cell, thubnail) {
-        if (!this.idObject[cell._id] && (thubnail + '').indexOf('404_processing') === -1) {
+        if (!this.idObject[cell._id] && !Main_A_includes_B(thubnail + '', '404_processing')) {
 
             cell.preview.template = thubnail;
 
@@ -318,7 +318,7 @@ function ScreensObj_InitChannelVod() {
 
         // video content can be null sometimes, in that case the preview will be 404_processing
         // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
-        if (!this.row_id && (thumbnail + '').indexOf('404_processing') !== -1)
+        if (!this.row_id && Main_A_includes_B(thumbnail, '404_processing'))
             thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
 
         this.addCellBase(cell, thumbnail);
@@ -646,7 +646,7 @@ function ScreensObj_InitUserLive() {
 
                 for (x; x < response_items; x++) {
                     ChannelTemp = response[x].channel._id + ',';
-                    if (this.followerChannels.indexOf(ChannelTemp) === -1) this.followerChannels += ChannelTemp;
+                    if (!Main_A_includes_B(this.followerChannels, ChannelTemp)) this.followerChannels += ChannelTemp;
                 }
 
                 this.loadChannelOffsset += response_items;

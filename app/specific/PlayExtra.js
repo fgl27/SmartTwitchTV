@@ -44,7 +44,7 @@ function PlayExtra_KeyEnter() {
 
         if (Main_IsNotBrowser) {
             //Not on auto mode for change to auto before start picture in picture
-            if (Play_data.quality.indexOf("Auto") === -1) Android.StartAuto(1, 0);
+            if (!Main_A_includes_B(Play_data.quality, 'Auto')) Android.StartAuto(1, 0);
 
             Play_data.quality = "Auto";
             Play_data.qualityPlaying = Play_data.quality;
@@ -138,7 +138,7 @@ function PlayExtra_loadDataSuccess(responseText) {
     } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) {
 
         //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-        //        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+        //        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
         //            PlayExtra_SupportsSource = false;
         //            PlayExtra_loadingDataTry = 0;
         //            PlayExtra_loadDataRequest();
@@ -260,7 +260,7 @@ function PlayExtra_loadDataRequest() {
 function PlayExtra_loadDataSuccessreadyState(xmlHttp) {
     if (xmlHttp.status === 200) {
 
-        if (xmlHttp.responseText.indexOf('"status":410') !== -1) PlayExtra_loadDataError();
+        if (Main_A_includes_B(xmlHttp.responseText, '"status":410')) PlayExtra_loadDataError();
         else {
             Play_loadingDataTry = 0;
             PlayExtra_loadDataSuccess(xmlHttp.responseText);
@@ -310,7 +310,7 @@ function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
         Play_tokenResponse = JSON.parse(xmlHttp.responseText);
         //410 error
         if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-            xmlHttp.responseText.indexOf('"status":410') !== -1) {
+            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
             PlayExtra_RefreshAutoError(UseAndroid);
             return;
         }

@@ -678,15 +678,15 @@ function Settings_SetBuffers(whocall) {
 }
 
 //function Settings_CheckLang(lang) {
-//    if (lang.indexOf('en_') !== -1) Settings_value.general_lang.defaultValue = 0;
-//    else if (lang.indexOf('it_') !== -1) Settings_value.general_lang.defaultValue = 1;
-//    else if (lang.indexOf('pt_') !== -1) Settings_value.general_lang.defaultValue = 2;
+//    if (Main_A_includes_B(lang, 'en_')) Settings_value.general_lang.defaultValue = 0;
+//    else if (Main_A_includes_B(lang, 'it_')) Settings_value.general_lang.defaultValue = 1;
+//    else if (Main_A_includes_B(lang, 'pt_')) Settings_value.general_lang.defaultValue = 2;
 //}
 
 //function Settings_SetLang(lang) {
-//    if (lang.indexOf('en_') !== -1) en_USLang();
-//else if (lang.indexOf('it_') !== -1) it_ITLang();
-//else if (lang.indexOf('pt_') !== -1) pt_BRLang();
+//    if (Main_A_includes_B(lang, 'en_')) en_USLang();
+//else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
+//else if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
 //    DefaultLang();
 //    Main_SetStringsMain(false);
 //    Main_SetStringsSecondary();
@@ -796,7 +796,7 @@ function Settings_handleKeyDown(event) {
             break;
         case KEY_ENTER:
             if (!Settings_cursorY) Languages_init();
-            else if (Settings_value_keys[Settings_cursorY].indexOf('blocked_codecs') !== -1) Settings_CodecsShow();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
             break;
         default:
             break;

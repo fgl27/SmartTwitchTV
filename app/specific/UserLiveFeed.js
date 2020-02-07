@@ -239,7 +239,7 @@ function UserLiveFeed_CreatFeed(id, data, ishosting) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return document.getElementById('user_feed').className.indexOf('user_feed_hide') === -1;
+    return !Main_A_includes_B(document.getElementById('user_feed').className, 'user_feed_hide');
 }
 
 function UserLiveFeed_ShowFeed() {

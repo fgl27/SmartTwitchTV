@@ -264,7 +264,7 @@ function PlayClip_qualityChanged() {
             PlayClip_qualityIndex = i;
             PlayClip_playingUrl = PlayClip_qualities[i].url;
             break;
-        } else if (PlayClip_qualities[i].id.indexOf(PlayClip_quality) !== -1) { //make shore to set a value before break out
+        } else if (Main_A_includes_B(PlayClip_qualities[i].id, PlayClip_quality)) { //make shore to set a value before break out
             PlayClip_qualityIndex = i;
             PlayClip_playingUrl = PlayClip_qualities[i].url;
         }
@@ -436,7 +436,7 @@ function PlayClip_RefreshProgressBarr() {
 
             var value = Android.getVideoQuality();
 
-            if (PlayClip_quality.indexOf("Auto") !== -1 && value !== null && value !== undefined) {
+            if (Main_A_includes_B(PlayClip_quality, 'Auto') && value !== null && value !== undefined) {
                 value = value.split(',');
 
                 for (var i = 0; i < 2; i++) {
@@ -457,7 +457,7 @@ function PlayClip_qualityIndexReset() {
         if (PlayClip_qualities[i].id === PlayClip_quality) {
             PlayClip_qualityIndex = i;
             break;
-        } else if (PlayClip_qualities[i].id.indexOf(PlayClip_quality) !== -1) { //make shore to set a value before break out
+        } else if (Main_A_includes_B(PlayClip_qualities[i].id, PlayClip_quality)) { //make shore to set a value before break out
             PlayClip_qualityIndex = i;
         }
     }
@@ -473,7 +473,7 @@ function PlayClip_SetHtmlQuality(element) {
     PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
 
     var quality_string = PlayClip_quality;
-    if (PlayClip_quality.indexOf('source') !== -1) quality_string = quality_string.replace("source", STR_SOURCE);
+    if (Main_A_includes_B(PlayClip_quality, 'source')) quality_string = quality_string.replace("source", STR_SOURCE);
 
     Main_textContent(element, PlayClip_quality);
 }

@@ -104,7 +104,7 @@ function UserLiveFeedobj_loadChannelLive(responseText) {
 
         for (x; x < response_items; x++) {
             ChannelTemp = response[x].channel._id + ',';
-            if (UserLiveFeed_followerChannels.indexOf(ChannelTemp) === -1) UserLiveFeed_followerChannels += ChannelTemp;
+            if (!Main_A_includes_B(UserLiveFeed_followerChannels, ChannelTemp)) UserLiveFeed_followerChannels += ChannelTemp;
         }
 
         UserLiveFeed_loadChannelOffsset += response_items;

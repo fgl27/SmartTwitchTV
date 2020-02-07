@@ -335,7 +335,7 @@ function PlayVod_loadDataRequest() {
 
 function PlayVod_loadDataEnd(xmlHttp) {
     if (xmlHttp.status === 200) {
-        if (xmlHttp.responseText.indexOf('"status":410') !== -1) PlayVod_loadDataError();
+        if (Main_A_includes_B(xmlHttp.responseText, '"status":410')) PlayVod_loadDataError();
         else PlayVod_loadDataSuccess(xmlHttp.responseText);
     } else if (xmlHttp.status === 410) {
         //410 = api v3 is gone use v5 bug
@@ -427,7 +427,7 @@ function PlayVod_loadDataSuccess(responseText) {
     } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) {
 
         //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-        //        if (!Main_SupportsAvc1High && Play_SupportsSource && responseText.indexOf('avc1.640034') !== -1) {
+        //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034)) {
         //            Play_SupportsSource = false;
         //            PlayVod_loadData();
         //            return;
@@ -489,7 +489,7 @@ function PlayVod_qualityChanged() {
             PlayVod_qualityIndex = i;
             PlayVod_playingUrl = PlayVod_qualities[i].url;
             break;
-        } else if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) { //make shore to set a value before break out
+        } else if (Main_A_includes_B(PlayVod_qualities[i].id, PlayVod_quality)) { //make shore to set a value before break out
             PlayVod_qualityIndex = i;
             PlayVod_playingUrl = PlayVod_qualities[i].url;
         }
@@ -524,7 +524,7 @@ function PlayVod_onPlayer() {
 
 function PlayVod_onPlayerStartPlay(time) {
     if (PlayVod_isOn) {
-        if (PlayVod_quality.indexOf("Auto") !== -1) Android.StartAuto(2, PlayVod_replay ? -1 : time);
+        if (Main_A_includes_B(PlayVod_quality, "Auto")) Android.StartAuto(2, PlayVod_replay ? -1 : time);
         else Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
     }
 }
@@ -592,7 +592,7 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_IconsBottonResetFocus();
         PlayVod_qualityIndexReset();
         Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality);
-        if (PlayVod_qualityPlaying.indexOf("Auto") === -1) PlayVod_SetHtmlQuality('stream_quality');
+        if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality('stream_quality');
         Play_clearHidePanel();
         PlayExtra_ResetSpeed();
         PlayVod_setHidePanel();
@@ -604,7 +604,7 @@ function PlayVod_RefreshProgressBarr(show) {
     if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
 
     if (!Play_Status_Always_On) {
-        if (Main_IsNotBrowser && PlayVod_qualityPlaying.indexOf("Auto") !== -1 && show)
+        if (Main_IsNotBrowser && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
             Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
 
         if (Main_IsNotBrowser) Play_VideoStatus(false);
@@ -664,7 +664,7 @@ function PlayVod_qualityIndexReset() {
         if (PlayVod_qualities[i].id === PlayVod_quality) {
             PlayVod_qualityIndex = i;
             break;
-        } else if (PlayVod_qualities[i].id.indexOf(PlayVod_quality) !== -1) { //make shore to set a value before break out
+        } else if (Main_A_includes_B(PlayVod_qualities[i].id, PlayVod_qualities[i].id)) { //make shore to set a value before break out
             PlayVod_qualityIndex = i;
         }
     }
@@ -676,10 +676,10 @@ function PlayVod_SetHtmlQuality(element) {
     PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
 
     var quality_string = '';
-    if (PlayVod_quality.indexOf('source') !== -1) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
+    if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
     else quality_string = PlayVod_quality;
 
-    quality_string += PlayVod_quality.indexOf('Auto') === -1 ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
+    quality_string += !Main_A_includes_B(PlayVod_quality, 'Auto') ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
 
     Main_textContent(element, quality_string);
 }

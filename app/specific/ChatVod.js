@@ -202,7 +202,7 @@ function Chat_loadChatSuccess(responseText, id) {
         //Add badges
         if (mmessage.hasOwnProperty('user_badges')) {
             mmessage.user_badges.forEach(function(badges) {
-                div += '<span class="' + badges._id + (badges._id.indexOf('subscriber') !== -1 ? "0-" : "-") + badges.version + ' tag"></span>';
+                div += '<span class="' + badges._id + (Main_A_includes_B(badges._id, 'subscriber') ? "0-" : "-") + badges.version + ' tag"></span>';
             });
         }
 

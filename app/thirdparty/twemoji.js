@@ -152,7 +152,7 @@ var twemoji = (function(
      * @return  string    the code point
      */
     function grabTheRightIcon(rawText) {
-        var unicodeSurrogates = rawText.indexOf(U200D) < 0 ? rawText.replace(UFE0Fg, '') : rawText,
+        var unicodeSurrogates = rawText ? (rawText.indexOf(U200D) < 0 ? rawText.replace(UFE0Fg, '') : rawText) : rawText,
             r = [],
             c = 0,
             p = 0,
