@@ -426,6 +426,7 @@ function Main_initWindows() {
 function Main_SetStringsMain(isStarting) {
     Main_updateclock();
     UserLiveFeed_Prepare();
+    Main_Setworker();
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -1860,4 +1861,27 @@ function Main_Slice(arrayTocopy) {
         }
     }
     return array;
+}
+
+var Main_ImageLoaderWorker;
+function Main_Setworker() {
+    var blobURL = URL.createObjectURL(new Blob(['(',
+
+        function() {
+            this.addEventListener('message',
+                function(event) {
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.responseType = 'blob';
+                    xmlHttp.open('GET', event.data, true);
+                    xmlHttp.timeout = 3000;
+                    xmlHttp.ontimeout = function() {};
+                    xmlHttp.send();
+                }
+            );
+
+        }.toString(),
+
+        ')()'], {type: 'application/javascript'}));
+
+    Main_ImageLoaderWorker = new Worker(blobURL);
 }

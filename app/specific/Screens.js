@@ -1870,10 +1870,9 @@ function Screens_ThumbOptionSetArrowArray() {
 var Screens_PreloadImgsArray = [];
 function Screens_PreloadImgs() {
     for (var i = 0; i < Screens_PreloadImgsArray.length; i++) {
-        ImageLoaderWorker.postMessage({
-            id: 'image_temp',
-            url: Screens_PreloadImgsArray[i]
-        });
+        Main_ImageLoaderWorker.postMessage(
+            Screens_PreloadImgsArray[i]
+        );
     }
     Screens_PreloadImgsArray = [];
 }

@@ -62,10 +62,9 @@ function Sidepannel_partnerIcon(name, partner, isrerun) {
 
 function Sidepannel_PreloadImgs() {
     for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++) {
-        ImageLoaderWorker.postMessage({
-            id: 'image_temp',
-            url: UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
-        });
+        Main_ImageLoaderWorker.postMessage(
+            UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
+        );
     }
 }
 
