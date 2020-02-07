@@ -16945,11 +16945,13 @@
                     imageElement = document.getElementById(imageData.id),
                     objectURL = imageData.blob ? URL.createObjectURL(imageData.blob) : imageData.url;
 
-                imageElement.onload = function() {
-                    this.onload = null;
-                    URL.revokeObjectURL(objectURL);
-                };
-                imageElement.setAttribute('src', objectURL);
+                if (imageElement) {
+                    imageElement.onload = function() {
+                        this.onload = null;
+                        URL.revokeObjectURL(objectURL);
+                    };
+                    imageElement.setAttribute('src', objectURL);
+                }
             }
         );
     }
