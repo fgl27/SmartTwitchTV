@@ -320,7 +320,7 @@ function ScreensObj_InitChannelVod() {
 
         // video content can be null sometimes, in that case the preview will be 404_processing
         // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
-        if (!this.row_id && Main_A_includes_B(thumbnail, '404_processing'))
+        if (!this.row_id && Main_A_includes_B(thumbnail + '', '404_processing'))
             thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
 
         this.addCellBase(cell, thumbnail);
