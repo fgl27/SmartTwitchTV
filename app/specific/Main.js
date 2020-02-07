@@ -1884,3 +1884,15 @@ function Main_Setworker() {
 
     Main_ImageLoaderWorker = new Worker(blobURL);
 }
+
+function Main_A_includes_B(A, B) {
+    return A ? A.includes(B) : false;
+}
+
+function Main_A_equals_B(A, B) {
+    return A === B;
+}
+
+function Main_A_equals_B_No_Case(A, B) {
+    return (A ? A.toLowerCase() : null) === (B ? B.toLowerCase() : null);
+}
