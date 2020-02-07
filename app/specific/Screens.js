@@ -156,7 +156,7 @@ function Screens_loadDataRequestStart() {
 function Screens_loadDataPrepare() {
     inUseObj.loadingData = true;
     inUseObj.loadingDataTry = 0;
-    inUseObj.loadingDataTimeout = 3500;
+    inUseObj.loadingDataTimeout = DefaultloadingDataTimeout;
 }
 
 function Screens_loadDataRequest() {
