@@ -1123,8 +1123,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
         }
     }
 
-    Main_values.Play_isHost = ((Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed) ||
-        ((UserLiveFeed_FeedPosX === UserLiveFeedobj_UserHostPos) && Play_UserLiveFeedPressed);
+    Main_values.Play_isHost = (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1);
 
     if (Main_values.Play_isHost) {
         Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
