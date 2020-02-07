@@ -2312,9 +2312,9 @@
                 .getAttribute(Main_DataAttribute));
 
             Play_data.data = Main_values_Play_data;
+            Main_values.Play_isHost = (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1);
 
-            if (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1) {
-                Main_values.Play_isHost = true;
+            if (Main_values.Play_isHost) {
                 Play_data.DisplaynameHost = Play_data.data[1];
                 Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
                 Play_data.data[14] = ChannelContent_TargetId;
