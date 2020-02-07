@@ -1521,7 +1521,7 @@ function CheckPage(pageUrlCode) {
         PageUrl = Android.mPageUrl();
     } catch (e) {}
     if (PageUrl) {
-        if (Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
+        if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
             try {
                 Android.mloadUrl(PageUrl + pageUrlCode);
             } catch (e) {}
