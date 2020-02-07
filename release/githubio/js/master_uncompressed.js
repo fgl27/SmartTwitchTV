@@ -4445,7 +4445,7 @@
             if (index > -1) {
 
                 if (Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
-                    Main_OPenAsVod(index);
+                    Main_CheckBroadcastID(index, idsArray[3] + id);
                     return;
                 } else { //is live check is is really
 
@@ -10246,7 +10246,7 @@
         ChannelVod_DurationSeconds = parseInt(response.length);
 
         if (ChannelVod_DurationSeconds < PlayVod_VodOffsetTemp) {
-            Android.mseekTo(0);
+            if (Main_IsNotBrowser) Android.mseekTo(0);
             Main_values.vodOffset = 0;
             Chat_offset = 0;
             Chat_Init();
