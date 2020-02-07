@@ -1114,7 +1114,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
         if (index > -1) {
 
             if (Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
-                Main_OPenAsVod(index);
+                Main_CheckBroadcastID(index, idsArray[3] + id);
                 return;
             } else {//is live check is is really
 
