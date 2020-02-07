@@ -185,7 +185,7 @@ function PlayVod_updateVodInfoPannel(response) {
     ChannelVod_DurationSeconds = parseInt(response.length);
 
     if (ChannelVod_DurationSeconds < PlayVod_VodOffsetTemp) {
-        Android.mseekTo(0);
+        if (Main_IsNotBrowser) Android.mseekTo(0);
         Main_values.vodOffset = 0;
         Chat_offset = 0;
         Chat_Init();
