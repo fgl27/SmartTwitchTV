@@ -4455,8 +4455,7 @@
             }
         }
 
-        Main_values.Play_isHost = ((Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed) ||
-            ((UserLiveFeed_FeedPosX === UserLiveFeedobj_UserHostPos) && Play_UserLiveFeedPressed);
+        Main_values.Play_isHost = (Play_data.data[1].indexOf(STR_USER_HOSTING) !== -1);
 
         if (Main_values.Play_isHost) {
             Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
@@ -12590,7 +12589,7 @@
         Main_textContent('dialog_thumb_opt_val_2', '...');
 
         if (inUseObj.screenType < 2) {
-            Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
+            Main_values.Play_isHost = (Screens_values_Play_data[1].indexOf(STR_USER_HOSTING) !== -1);
 
             if (Main_values.Play_isHost) {
                 Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1].split(STR_USER_HOSTING)[1]);
@@ -12871,7 +12870,7 @@
         if (inUseObj.screenType < 2) {
             Main_values.Main_selectedChannel_id = Screens_values_Play_data[14];
 
-            Main_values.Play_isHost = (Main_values.Main_Go === Main_UserHost) && !Play_UserLiveFeedPressed;
+            Main_values.Play_isHost = (Screens_values_Play_data[1].indexOf(STR_USER_HOSTING) !== -1);
 
             if (Main_values.Play_isHost) {
                 Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1].split(STR_USER_HOSTING)[1];
