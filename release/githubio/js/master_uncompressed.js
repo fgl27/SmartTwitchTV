@@ -3757,6 +3757,7 @@
     function Main_SetStringsMain(isStarting) {
         Main_updateclock();
         UserLiveFeed_Prepare();
+        Main_Setworker();
 
         //set top bar labels
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -5186,7 +5187,33 @@
         }
         return array;
     }
-    //Variable initialization
+
+    var Main_ImageLoaderWorker;
+
+    function Main_Setworker() {
+        var blobURL = URL.createObjectURL(new Blob(['(',
+
+            function() {
+                this.addEventListener('message',
+                    function(event) {
+                        var xmlHttp = new XMLHttpRequest();
+                        xmlHttp.responseType = 'blob';
+                        xmlHttp.open('GET', event.data, true);
+                        xmlHttp.timeout = 3000;
+                        xmlHttp.ontimeout = function() {};
+                        xmlHttp.send();
+                    }
+                );
+
+            }.toString(),
+
+            ')()'
+        ], {
+            type: 'application/javascript'
+        }));
+
+        Main_ImageLoaderWorker = new Worker(blobURL);
+    } //Variable initialization
     var PlayClip_IsJumping = false;
     var PlayClip_jumpCount = 0;
     var PlayClip_TimeToJump = 0;
@@ -12928,10 +12955,9 @@
 
     function Screens_PreloadImgs() {
         for (var i = 0; i < Screens_PreloadImgsArray.length; i++) {
-            ImageLoaderWorker.postMessage({
-                id: 'image_temp',
-                url: Screens_PreloadImgsArray[i]
-            });
+            Main_ImageLoaderWorker.postMessage(
+                Screens_PreloadImgsArray[i]
+            );
         }
         Screens_PreloadImgsArray = [];
     } //Spacing for reease maker not trow erros frm jshint
@@ -16294,10 +16320,9 @@
 
     function Sidepannel_PreloadImgs() {
         for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++) {
-            ImageLoaderWorker.postMessage({
-                id: 'image_temp',
-                url: UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
-            });
+            Main_ImageLoaderWorker.postMessage(
+                UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
+            );
         }
     }
 
