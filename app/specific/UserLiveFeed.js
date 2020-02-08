@@ -54,12 +54,28 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = 'user_feed_scroll';
 
-    //User live
+    //User Host
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos] = {};
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].hide = UserLiveFeedobj_HideUserHost;
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = 'user_host_scroll';
+
+    //User a game
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos] = {};
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].load = UserLiveFeedobj_CurrentUserAGame;
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].show = UserLiveFeedobj_ShowCurrentUserAGame;
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].hide = UserLiveFeedobj_HideCurrentUserAGame;
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div = 'user_agames_scroll';
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
+
+    //User Games
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos] = {};
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].load = UserLiveFeedobj_UserGames;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].show = UserLiveFeedobj_ShowUserGames;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].hide = UserLiveFeedobj_HideUserGames;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = 'user_games_scroll';
 
     //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos] = {};
@@ -91,6 +107,7 @@ function UserLiveFeed_Prepare() {
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
     UserLiveFeed_Setworker();
+    Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES);
 }
 
 function UserLiveFeed_Setworker() {
@@ -160,6 +177,13 @@ function UserLiveFeed_LoadImgPush(pos, url, id) {
     UserLiveFeed_ImgObj[pos].push({
         id: UserLiveFeed_ids[1] + id,
         url: url.replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+    });
+}
+
+function UserLiveFeed_LoadImgPushGame(pos, url, id) {
+    UserLiveFeed_ImgObj[pos].push({
+        id: UserLiveFeed_ids[1] + id,
+        url: url.replace("{width}x{height}", Main_GameSize)
     });
 }
 
@@ -297,6 +321,7 @@ function UserLiveFeed_FeedRemoveFocus(pos) {
 }
 
 function UserLiveFeed_FeedGetPos(pos) {
+    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos) return UserLiveFeed_FeedGetPosGame(pos);
     var position = 0;
 
     if (UserLiveFeed_FeedPosY[pos] < 3) position = 2.5;
@@ -305,6 +330,30 @@ function UserLiveFeed_FeedGetPos(pos) {
     else if (UserLiveFeed_ThumbNull(pos + '_' + (UserLiveFeed_FeedPosY[pos] + 1), UserLiveFeed_ids[0]))
         position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 3)).offsetLeft * -1);
     else position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] > 3 ? 4 : 3))).offsetLeft * -1);
+
+    return position;
+}
+
+function UserLiveFeed_FeedGetPosGame(pos) {
+    var position = 0;
+
+    if (UserLiveFeed_FeedPosY[pos] < 5)
+        position = 2.5;
+    else if (UserLiveFeed_ThumbNull((pos + '_' + (UserLiveFeed_FeedPosY[pos] + 4)), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 4)).offsetLeft * -1);
+    else if (UserLiveFeed_ThumbNull(pos + '_' + (UserLiveFeed_FeedPosY[pos] + 3), UserLiveFeed_ids[0]))
+        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 4)).offsetLeft * -1);
+    else {
+        var lessPos = 5;
+        var total = UserLiveFeed_GetSize(UserLiveFeed_FeedPosX);
+
+        if (total < 8) {
+            lessPos = UserLiveFeed_FeedPosY[pos];
+        } else if (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] > 5) {
+            lessPos = lessPos + (3 - (total - UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+        }
+        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - lessPos)).offsetLeft * -1);
+    }
 
     return position;
 }
@@ -366,6 +415,7 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 }
 
 function UserLiveFeed_KeyUpDown(Adder) {
+    UserLiveFeed_ResetFeedId();
     if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
 
         var NextPos = UserLiveFeed_FeedPosX + Adder,
@@ -386,9 +436,48 @@ function UserLiveFeed_KeyUpDown(Adder) {
             return;
         }
 
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos && Adder === -1) {
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+            UserLiveFeed_FeedPosX = NextPos;
+            UserLiveFeed_KeyUpDown(Adder);
+            return;
+        }
+
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = NextPos;
+
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos && UserLiveFeedobj_CurrentUserAGameEnable) {
+            UserLiveFeed_FeedPosX = UserLiveFeedobj_UserAGamesPos;
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
+            return;
+        }
+        Main_HideElement('icon_feed_back');
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
+    }
+}
+
+function UserLiveFeed_KeyEnter(pos) {
+    if (pos === UserLiveFeedobj_UserGamesPos) {
+        var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+        if (doc !== null) UserLiveFeedobj_CurrentUserAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
+
+        if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
+            Play_showWarningDialog(STR_NO_GAME, 1000);
+            return;
+        }
+
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+        UserLiveFeed_FeedPosX = UserLiveFeedobj_UserAGamesPos;
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
+        UserLiveFeedobj_CurrentUserAGameEnable = true;
+
+    } else if (pos === UserLiveFeedobj_UserAGamesPos) {
+        Main_HideElement('icon_feed_back');
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+        UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
+        UserLiveFeedobj_CurrentUserAGameEnable = false;
+
     }
     UserLiveFeed_ResetFeedId();
 }
