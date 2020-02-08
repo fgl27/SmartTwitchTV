@@ -1026,13 +1026,8 @@ var Base_Game_obj = {
         Main_SwitchScreenAction();
     },
     setMax: function(tempObj) {
-        if (this.useHelix) {
-            if (tempObj.pagination.cursor) this.after = tempObj.pagination.cursor;
-            else this.dataEnded = true;
-        } else {
-            this.MaxOffset = tempObj._total;
-            if (this.data.length >= this.MaxOffset) this.dataEnded = true;
-        }
+        this.MaxOffset = tempObj._total;
+        if (this.data.length >= this.MaxOffset) this.dataEnded = true;
     },
     addCell: function(cell) {
         var hasLive = this.isLive || this.screen === Main_games;
@@ -1065,11 +1060,10 @@ function ScreensObj_InitGame() {
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         object: 'top',
-        useHelix: false,
         base_url: Main_kraken_api + 'games/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
-            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset && !this.useHelix) this.dataEnded = true;
-            this.url = this.base_url + (this.useHelix ? '&after=' + this.after : '&offset=' + this.offset);
+            if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+            this.url = this.base_url + '&offset=' + this.offset;
         },
         label_init: function() {
             Sidepannel_SetDefaultLables();
@@ -1077,38 +1071,7 @@ function ScreensObj_InitGame() {
             Sidepannel_SetTopOpacity(this.screen);
 
             ScreensObj_SetTopLable(STR_GAMES);
-        },
-        setHelix: function() {
-            this.useHelix = true;
-            this.base_url = 'https://api.twitch.tv/helix/games/top?first=' + Main_ItemsLimitMax;
-            this.object = 'data';
-            this.forceResetHelix = false;
-            this.addCell = function(cell) {
-                if (!this.idObject[cell.id]) {
-
-                    this.itemsCount++;
-                    this.idObject[cell.id] = 1;
-
-                    this.row.appendChild(
-                        Screens_createCellGame(
-                            this.row_id + '_' + this.coloumn_id,
-                            this.ids, [cell.box_art_url.replace("{width}x{height}", Main_GameSize),
-                            cell.name,
-                            '',
-                            cell._id
-                        ]));
-
-                    this.coloumn_id++;
-                }
-            };
-            Screens_StartLoad();
-        },
-        resetHelix: function() {
-            this.useHelix = false;
-            this.base_url = Main_kraken_api + 'games/top?limit=' + Main_ItemsLimitMax;
-            this.object = 'top';
-            this.addCell = Base_Game_obj.addCell;
-        },
+        }
     }, Base_obj);
 
     Game = Screens_assign(Game, Base_Game_obj);

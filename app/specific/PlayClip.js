@@ -116,7 +116,7 @@ function PlayClip_Start() {
 
 function PlayClip_updateVodInfo() {
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError, false);
+    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError);
 }
 
 function PlayClip_updateVodInfoSucess(response) {

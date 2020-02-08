@@ -1549,8 +1549,6 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
         callbackSucess(xmlHttp.responseText);
     } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
         AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
-    } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
-        inUseObj.setHelix();
     } else {
         calbackError();
     }
@@ -1610,8 +1608,6 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
                 callbackSucess(xmlHttp.responseText);
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                 AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
-            } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
-                inUseObj.setHelix();
             } else {
                 calbackError();
             }
