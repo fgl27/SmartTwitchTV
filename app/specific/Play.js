@@ -2059,8 +2059,10 @@ function Play_KeyReturn(is_vod) {
         Play_EndIconsAddFocus();
     } else if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
     else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
-    else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) UserLiveFeed_Hide();
-    else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+    else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) {
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+        else UserLiveFeed_Hide();
+    } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
         if (is_vod) PlayVod_hidePanel();
         else Play_hidePanel();
     } else {
@@ -2814,7 +2816,8 @@ function Play_handleKeyDown(e) {
                     Play_HideMultiDialog();
                     Play_MultiStartPrestart(Play_MultiDialogPos);
                 } else if (UserLiveFeed_isFeedShow()) {
-                    if (Play_MultiEnable) {
+                    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    else if (Play_MultiEnable) {
                         if (Play_MultiIsFull()) {
                             var mdoc = Play_CheckLiveThumb();
                             if (mdoc) Play_MultiSetUpdateDialog(mdoc);

@@ -197,6 +197,7 @@
             font-size: 82%;
         }
 
+        div.stream_thumbnail_game_feed,
         div.stream_thumbnail_game,
         div.stream_thumbnail_clip,
         div.stream_thumbnail_live,
@@ -294,12 +295,18 @@
             padding-bottom: 0.2%;
         }
 
+        div.stream_thumbnail_game_feed,
         div.stream_thumbnail_game {
             padding-bottom: 164%;
             font-size: 80%;
             background-color: #000000;
             color: #FFFFFF;
             border: 0.06em solid rgba(0, 0, 0, 0);
+        }
+
+        div.stream_thumbnail_game_feed {
+            padding-bottom: 172%;
+            font-size: 82%;
         }
 
         div.stream_thumbnail_live_holder {
@@ -672,22 +679,27 @@
             z-index: -1;
             position: absolute;
             bottom: 0;
-            height: 37%;
+            height: 41%;
             width: 100%;
             overflow: hidden;
         }
 
         div.user_feed_hide {
-            bottom: -40%;
+            bottom: -43%;
         }
 
+        div.user_feed_scroll_game,
         div.user_feed_scroll {
             position: absolute;
             width: 100%;
             bottom: 0;
             height: auto;
             white-space: nowrap;
-            bottom: 7%;
+            bottom: 8%;
+        }
+
+        div.user_feed_scroll_game {
+            bottom: 5.5%;
         }
 
         div.user_feed_scroll_ani {
@@ -696,10 +708,16 @@
 
         /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
 
+        div.user_feed_thumb_game,
         div.user_feed_thumb {
             width: 19.22%;
             display: inline-block;
             padding: 0.355%;
+        }
+
+        div.user_feed_thumb_game {
+            width: 11%;
+            padding-right: 1.1%;
         }
 
         div.input_text_box {
@@ -2795,6 +2813,7 @@
         <div id="user_feed" class="user_feed user_feed_hide"
             style="background: linear-gradient(to top, black, rgba(0, 0, 0, 0.3));">
             <div id="icon_feed_refresh" class="icon_feed_refresh" style="font-family: 'Roboto';"></div>
+            <div id="icon_feed_back" class="icon_feed_refresh hide" style="font-family: 'Roboto';"></div>
             <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                 <div class="loading">
                     <div></div>
@@ -2808,6 +2827,8 @@
             <div id="live_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
             <div id="user_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
             <div id="user_host_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
+            <div id="user_games_scroll" class="user_feed_scroll_game user_feed_scroll_ani opacity_zero"></div>
+            <div id="user_agames_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
 
             <div id="feed_end" class="icon_feed_refresh strokedelinebig" style="position: absolute; bottom: 0;"></div>
             <div id="feed_counter" class="icon_feed_refresh strokedelinebig"

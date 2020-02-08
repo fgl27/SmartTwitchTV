@@ -7,9 +7,11 @@ var UserLiveFeedobj_LivePos = 2;
 //User
 var UserLiveFeedobj_UserLivePos = 3;
 var UserLiveFeedobj_UserHostPos = 4;
+var UserLiveFeedobj_UserGamesPos = 5;
+var UserLiveFeedobj_UserAGamesPos = 6;
 
-var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos;//Default pos
-var UserLiveFeedobj_MAX = UserLiveFeedobj_UserHostPos;
+var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;//Default pos
+var UserLiveFeedobj_MAX = UserLiveFeedobj_UserGamesPos;
 var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 
 function UserLiveFeedobj_StartDefault(pos) {
@@ -406,7 +408,9 @@ function UserLiveFeedobj_ShowFeed() {
         (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
         STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
         UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE) +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS +
+        UserLiveFeedobj_BottonIcon(0) +
+        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
 
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserLivePos, (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name));
@@ -515,7 +519,9 @@ function UserLiveFeedobj_ShowLive() {
         (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
         UserLiveFeedobj_BottonText(STR_LIVE) +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS +
+        UserLiveFeedobj_BottonIcon(0) +
+        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
 
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_LivePos);
 }
@@ -554,7 +560,9 @@ function UserLiveFeedobj_ShowFeatured() {
         UserLiveFeedobj_BottonIcon(0) + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) +
         UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS +
+        UserLiveFeedobj_BottonIcon(0) +
+        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
 
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_FeaturedPos);
 }
@@ -593,7 +601,9 @@ function UserLiveFeedobj_ShowCurrentGame() {
         UserLiveFeedobj_BottonText(Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) +
         UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
         UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS +
+        UserLiveFeedobj_BottonIcon(0) +
+        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
 
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_CurrentGamePos, (UserLiveFeedobj_CurrentGameName !== Play_data.data[3]));
     UserLiveFeedobj_CurrentGameName = Play_data.data[3];
@@ -680,7 +690,9 @@ function UserLiveFeedobj_ShowUserHost() {
         (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
         STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
         STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
-        UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS));
+        UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS) +
+        UserLiveFeedobj_BottonIcon(0) +
+        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
 
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHostPos, (UserLiveFeedobj_HostFeedOldUserName !== AddUser_UsernameArray[0].name));
@@ -693,6 +705,152 @@ function UserLiveFeedobj_HideUserHost() {
 }
 //User Host end
 
+//Base game fun
+function UserLiveFeedobj_CreatGameFeed(id, data) {
+    var div = document.createElement('div');
+    data[6] = data[0];//To make UserLiveFeed_LastPos work
+
+    div.setAttribute('id', UserLiveFeed_ids[8] + id);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
+    div.className = 'user_feed_thumb_game';
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_game_feed"><div class="stream_thumbnail_live_game"><img id="' +
+        UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" onerror="this.onerror=null;this.src=\'' +
+        IMG_404_GAME + '\';"></div><div id="' +
+        UserLiveFeed_ids[2] + id +
+        '" class="stream_thumbnail_game_text_holder"><span class="stream_spam_text_holder"><div id="<div id="' +
+        UserLiveFeed_ids[3] + id + '" class="stream_info_game_name">' + data[0] + '</div>' +
+        (data[1] !== '' ? '<div id="' + UserLiveFeed_ids[4] + id +
+            '"class="stream_info_live" style="width: 100%; display: inline-block;">' + data[1] +
+            '</div>' : '') + '</div></span></div>';
+
+    return div;
+}
+
+function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
+    var response = JSON.parse(responseText)[type],
+        response_items = response.length,
+        cell, game, obj_id,
+        doc = document.getElementById(UserLiveFeed_obj[pos].div),
+        i = 0;
+
+    //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+    for (i; i < response_items; i++) {
+        cell = response[i];
+        game = cell.game;
+
+        if (!UserLiveFeed_idObject[pos][game._id]) {
+
+            UserLiveFeed_idObject[pos][game._id] = 1;
+
+            if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === game.name)
+                UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
+
+            obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
+            UserLiveFeed_LoadImgPushGame(pos, game.box.template, obj_id);
+
+            doc.appendChild(
+                UserLiveFeedobj_CreatGameFeed(
+                    obj_id,
+                    [
+                        game.name,
+                        Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
+                        Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,
+                        game._id
+                    ]
+                )
+            );
+            UserLiveFeed_itemsCount[pos]++;
+        }
+    }
+
+    UserLiveFeed_loadDataSuccessFinish(false, pos);
+    UserLiveFeed_LoadImg(pos);
+}
+//Base game fun
+
+//User Games Start
+function UserLiveFeedobj_UserGames() {
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserGamesPos);
+    UserLiveFeedobj_loadUserGames();
+}
+
+function UserLiveFeedobj_loadUserGames() {
+    var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=200';//follows
+    //var theUrl = Main_kraken_api + 'games/top?limit=100';//top
+
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserGames;
+    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserGamesSuccess, UserLiveFeedobj_loadDataError);
+}
+
+function UserLiveFeedobj_loadDataUserGamesSuccess(responseText) {
+    UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, UserLiveFeedobj_UserGamesPos, 'follows');
+}
+
+var UserLiveFeedobj_GamesFeedOldUserName = '';
+function UserLiveFeedobj_ShowUserGames() {
+    Main_innerHTML('feed_end',
+        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
+        STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+        STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+        STR_USER + STR_SPACE + STR_LIVE_HOSTS + UserLiveFeedobj_BottonIcon(1) +
+        UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_GAMES));
+
+    if (AddUser_UserIsSet()) {
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserGamesPos, (UserLiveFeedobj_GamesFeedOldUserName !== AddUser_UsernameArray[0].name));
+        UserLiveFeedobj_GamesFeedOldUserName = AddUser_UsernameArray[0].name;
+    }
+}
+
+function UserLiveFeedobj_HideUserGames() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div, 'opacity_zero');
+}
+//User Games end
+
+//Current user a game Start
+var UserLiveFeedobj_CurrentUserAGameEnable = false;
+function UserLiveFeedobj_CurrentUserAGame() {
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserAGamesPos);
+    UserLiveFeedobj_loadCurrentUserAGame();
+}
+
+function UserLiveFeedobj_loadCurrentUserAGame() {
+    var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
+        '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
+
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
+    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess, UserLiveFeedobj_loadDataError);
+}
+
+function UserLiveFeedobj_CurrentUserGameCell(cell) {
+    return cell;
+}
+
+function UserLiveFeedobj_loadDataCurrentUserGameSuccess(responseText) {
+    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_UserAGamesPos);
+}
+
+var UserLiveFeedobj_CurrentUserAGameName = '';
+var UserLiveFeedobj_CurrentUserAGameNameEnter = null;
+function UserLiveFeedobj_ShowCurrentUserAGame() {
+    Main_innerHTML('feed_end',
+        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
+        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
+        STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+        STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
+        STR_USER + STR_SPACE + STR_LIVE_HOSTS + UserLiveFeedobj_BottonIcon(1) +
+        UserLiveFeedobj_BottonText(UserLiveFeedobj_CurrentUserAGameNameEnter));
+
+    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, (UserLiveFeedobj_CurrentUserAGameName !== UserLiveFeedobj_CurrentUserAGameNameEnter));
+    UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
+    Main_ShowElement('icon_feed_back');
+}
+
+function UserLiveFeedobj_HideCurrentUserAGame() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div, 'opacity_zero');
+}
+//urrent user a game end
 
 function UserLiveFeedobj_BottonIcon(up) {
     return STR_SPACE + '<i  class="icon-' + (up ? 'key-up' : 'key-down') +
