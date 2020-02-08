@@ -1046,7 +1046,7 @@
         AddCode_requestTokens();
     }
 
-    function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
+    function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, obj) {
         var xmlHttp = new XMLHttpRequest();
 
         var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
@@ -1061,15 +1061,15 @@
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc);
+                    AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, obj);
                 } else {
                     var response = JSON.parse(xmlHttp.responseText);
                     if (response.message) {
                         if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
                             AddCode_requestTokensFailRunning(position);
-                            if (callbackFuncNOK) callbackFuncNOK();
-                        } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
-                    } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
+                            if (callbackFuncNOK) callbackFuncNOK(obj);
+                        } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
+                    } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                 }
             }
         };
@@ -1077,12 +1077,12 @@
         xmlHttp.send(null);
     }
 
-    function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK) {
-        if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK);
-        else if (callbackFuncNOK) callbackFuncNOK();
+    function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, obj) {
+        if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, obj);
+        else if (callbackFuncNOK) callbackFuncNOK(obj);
     }
 
-    function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
+    function AddCode_refreshTokensSucess(responseText, position, callbackFunc, obj) {
         var response = JSON.parse(responseText);
         if (AddCode_TokensCheckScope(response.scope)) {
             AddUser_UsernameArray[position].access_token = response.access_token;
@@ -1094,7 +1094,7 @@
 
         } else AddCode_requestTokensFailRunning(position);
 
-        if (callbackFunc) callbackFunc();
+        if (callbackFunc) callbackFunc(obj);
     }
 
     //Check if has all scopes, in canse they change
@@ -2119,7 +2119,7 @@
         var channel = JSON.parse(responseText);
         ChannelContent_offline_image = channel.video_banner;
         ChannelContent_offline_image = ChannelContent_offline_image ? ChannelContent_offline_image.replace("1920x1080", Main_VideoSize) : ChannelContent_offline_image;
-        ChannelContent_profile_banner = channel.profile_banner;
+        ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
         ChannelContent_selectedChannelViews = channel.views;
         ChannelContent_selectedChannelFallower = channel.followers;
         ChannelContent_description = channel.description;
@@ -2219,7 +2219,8 @@
 
     function ChannelContent_createCellOffline() {
         ChannelContent_isoffline = true;
-        Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' + ChannelContent_offline_image + Main_randomimg +
+        Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' +
+            (ChannelContent_offline_image ? (ChannelContent_offline_image + Main_randomimg) : IMG_404_VIDEO) +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
             '\';"></div><div class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder" style="font-size: 150%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
             Main_values.Main_selectedChannelDisplayname + '</div><div class="stream_info_live" style="width:0%; float: right; text-align: right; display: inline-block;"></div></div>' +
@@ -4861,28 +4862,26 @@
     }
 
     //Basic XMLHttpRequest thatonly returns error or 200 status
-    function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-        if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
-        else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+    function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+        if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
+        else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
     }
 
-    function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+    function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
         var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
-            calbackError();
+            calbackError(obj);
             return;
         }
 
         if (xmlHttp.status === 200) {
-            callbackSucess(xmlHttp.responseText);
+            callbackSucess(xmlHttp.responseText, obj);
         } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-            AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
-        } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
-            inUseObj.setHelix();
+            AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
         } else {
-            calbackError();
+            calbackError(obj);
         }
     }
 
@@ -4892,36 +4891,36 @@
         [Main_Authorization, null]
     ];
 
-    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers);
+    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, obj);
     }
 
-    function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-        if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError);
-        else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+    function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+        if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj);
+        else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
     }
 
-    function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
+    function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj) {
         var xmlHttp = Android.mreadUrlHLS(theUrl);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
-            calbackError();
+            calbackError(obj);
             return;
         }
 
         if (xmlHttp.status === 200) {
-            callbackSucess(xmlHttp.responseText);
+            callbackSucess(xmlHttp.responseText, obj);
         } else {
-            calbackError();
+            calbackError(obj);
         }
     }
 
-    function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back);
+    function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back, obj);
     }
 
-    function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray) {
+    function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, obj) {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
@@ -4937,13 +4936,11 @@
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    callbackSucess(xmlHttp.responseText);
+                    callbackSucess(xmlHttp.responseText, obj);
                 } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                    AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
-                } else if (xmlHttp.status === 410 && inUseObj.screen === Main_games) {
-                    inUseObj.setHelix();
+                    AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
                 } else {
-                    calbackError();
+                    calbackError(obj);
                 }
             }
         };
@@ -5345,7 +5342,7 @@
 
     function PlayClip_updateVodInfo() {
         var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-        BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError, false);
+        BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError);
     }
 
     function PlayClip_updateVodInfoSucess(response) {
@@ -11242,62 +11239,62 @@
         inUseObj.data_cursor = 0;
         inUseObj.dataEnded = false;
         Main_CounterDialogRst();
-        Screens_loadDataRequestStart();
+        Screens_loadDataRequestStart(inUseObj);
     }
 
-    function Screens_loadDataRequestStart() {
-        Screens_loadDataPrepare();
-        Screens_loadDataRequest();
+    function Screens_loadDataRequestStart(obj) {
+        Screens_loadDataPrepare(obj);
+        Screens_loadDataRequest(obj);
     }
 
-    function Screens_loadDataPrepare() {
-        inUseObj.loadingData = true;
-        inUseObj.loadingDataTry = 0;
-        inUseObj.loadingDataTimeout = DefaultloadingDataTimeout;
+    function Screens_loadDataPrepare(obj) {
+        obj.loadingData = true;
+        obj.loadingDataTry = 0;
+        obj.loadingDataTimeout = DefaultloadingDataTimeout;
     }
 
-    function Screens_loadDataRequest() {
-        inUseObj.set_url();
-        if (inUseObj.isHistory)
-            inUseObj.history_concatenate();
-        else if (inUseObj.use_hls)
-            BasehttpHlsGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
-        else if (Main_IsNotBrowser && !inUseObj.itemsCount && Screens_ForceSync)
-            BaseAndroidhttpGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError);
+    function Screens_loadDataRequest(obj) {
+        obj.set_url();
+        if (obj.isHistory)
+            obj.history_concatenate();
+        else if (obj.use_hls)
+            BasehttpHlsGet(obj.url + Main_TwithcV5Flag, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
+        else if (Main_IsNotBrowser && !obj.itemsCount && Screens_ForceSync)
+            BaseAndroidhttpGet(obj.url + Main_TwithcV5Flag, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
         else
-            BasexmlHttpGet(inUseObj.url + Main_TwithcV5Flag, inUseObj.loadingDataTimeout, inUseObj.HeaderQuatity, inUseObj.token, Screens_concatenate, Screens_loadDataError, false);
+            BasexmlHttpGet(obj.url + Main_TwithcV5Flag, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
 
         Screens_ForceSync = true;
     }
 
-    function Screens_loadDataError() {
-        inUseObj.loadingDataTry++;
-        if (inUseObj.loadingDataTry < inUseObj.loadingDataTryMax) {
-            inUseObj.loadingDataTimeout += 500;
-            Screens_loadDataRequest();
-        } else Screens_loadDatafail();
+    function Screens_loadDataError(obj) {
+        obj.loadingDataTry++;
+        if (obj.loadingDataTry < obj.loadingDataTryMax) {
+            obj.loadingDataTimeout += 500;
+            Screens_loadDataRequest(obj);
+        } else Screens_loadDatafail(obj);
     }
 
-    function Screens_loadDatafail() {
-        inUseObj.loadingData = false;
-        inUseObj.loadingDataTry = 0;
-        if (!inUseObj.itemsCount) {
+    function Screens_loadDatafail(obj) {
+        obj.loadingData = false;
+        obj.loadingDataTry = 0;
+        if (!obj.itemsCount) {
             Sidepannel_SetTopOpacity(Main_values.Main_Go);
-            inUseObj.FirstLoad = false;
+            obj.FirstLoad = false;
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
-            inUseObj.key_exit();
+            obj.key_exit();
             Main_ShowElement('topbar');
             Main_ShowElement('side_panel_new_holder');
-        } else inUseObj.dataEnded = true;
+        } else obj.dataEnded = true;
     }
 
-    function Screens_concatenate(responseText) {
-        inUseObj.concatenate(responseText);
+    function Screens_concatenate(responseText, obj) {
+        obj.concatenate(responseText);
     }
 
-    function Screens_loadDataSuccess() {
-        var response_items = (inUseObj.data.length - inUseObj.data_cursor);
+    function Screens_loadDataSuccess(obj) {
+        var response_items = (obj.data.length - obj.data_cursor);
 
         //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColoumnsCount,
         //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
@@ -11306,50 +11303,50 @@
 
         //appendDiv doesn't applies if the content end and we have less then ColoumnsCount to add for the last row
 
-        //var appendDiv = !inUseObj.coloumn_id;
-        if (response_items > inUseObj.ItemsLimit) response_items = inUseObj.ItemsLimit;
-        else if (!inUseObj.loadingData) inUseObj.dataEnded = true;
+        //var appendDiv = !obj.coloumn_id;
+        if (response_items > obj.ItemsLimit) response_items = obj.ItemsLimit;
+        else if (!obj.loadingData) obj.dataEnded = true;
 
-        if (inUseObj.HasSwitches && !inUseObj.TopRowCreated) inUseObj.addSwitches();
+        if (obj.HasSwitches && !obj.TopRowCreated) obj.addSwitches();
 
         if (response_items) {
 
-            if (!inUseObj.row_id) {
-                inUseObj.row = document.createElement('div');
-                if (inUseObj.rowClass) inUseObj.row.classList.add(inUseObj.rowClass);
-                inUseObj.row.id = inUseObj.ids[12] + inUseObj.row_id;
+            if (!obj.row_id) {
+                obj.row = document.createElement('div');
+                if (obj.rowClass) obj.row.classList.add(obj.rowClass);
+                obj.row.id = obj.ids[12] + obj.row_id;
             }
 
-            var response_rows = Math.ceil(response_items / inUseObj.ColoumnsCount);
+            var response_rows = Math.ceil(response_items / obj.ColoumnsCount);
 
-            var max_row = inUseObj.row_id + response_rows;
+            var max_row = obj.row_id + response_rows;
 
-            for (inUseObj.row_id; inUseObj.row_id < max_row;) {
+            for (obj.row_id; obj.row_id < max_row;) {
 
-                if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
-                    inUseObj.row = document.createElement('div');
-                    if (inUseObj.rowClass) inUseObj.row.classList.add(inUseObj.rowClass);
-                    inUseObj.row.id = inUseObj.ids[12] + inUseObj.row_id;
-                    inUseObj.coloumn_id = 0;
+                if (obj.coloumn_id === obj.ColoumnsCount) {
+                    obj.row = document.createElement('div');
+                    if (obj.rowClass) obj.row.classList.add(obj.rowClass);
+                    obj.row.id = obj.ids[12] + obj.row_id;
+                    obj.coloumn_id = 0;
                 }
 
-                for (inUseObj.coloumn_id; inUseObj.coloumn_id < inUseObj.ColoumnsCount && inUseObj.data_cursor < inUseObj.data.length; inUseObj.data_cursor++) {
+                for (obj.coloumn_id; obj.coloumn_id < obj.ColoumnsCount && obj.data_cursor < obj.data.length; obj.data_cursor++) {
                     //TODO understand and fix before the code reaches this point way a cell is undefined some times
-                    if (inUseObj.data[inUseObj.data_cursor]) inUseObj.addCell(inUseObj.data[inUseObj.data_cursor]);
+                    if (obj.data[obj.data_cursor]) obj.addCell(obj.data[obj.data_cursor]);
                 }
 
-                //doc.appendChild(inUseObj.row);
-                if (inUseObj.coloumn_id === inUseObj.ColoumnsCount) {
-                    inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
-                    inUseObj.row_id++;
-                } else if (inUseObj.data_cursor >= inUseObj.data.length) {
-                    if (inUseObj.row.innerHTML !== '') inUseObj.Cells[inUseObj.row_id] = inUseObj.row;
+                //doc.appendChild(obj.row);
+                if (obj.coloumn_id === obj.ColoumnsCount) {
+                    obj.Cells[obj.row_id] = obj.row;
+                    obj.row_id++;
+                } else if (obj.data_cursor >= obj.data.length) {
+                    if (obj.row.innerHTML !== '') obj.Cells[obj.row_id] = obj.row;
                     break;
                 }
             }
         }
-        inUseObj.emptyContent = !response_items && !inUseObj.status;
-        Screens_loadDataSuccessFinish();
+        obj.emptyContent = !response_items && !obj.status;
+        Screens_loadDataSuccessFinish(obj);
     }
 
     function Screens_createCell(id_attribute, Data_content, html_content) {
@@ -11488,19 +11485,19 @@
             '</span></div></div>');
     }
 
-    function Screens_loadDataSuccessFinish() {
-        if (!inUseObj.status) {
+    function Screens_loadDataSuccessFinish(obj) {
+        if (!obj.status) {
             if (Main_values.Main_Go === Main_aGame) AGame_Checkfallow();
 
-            if (inUseObj.emptyContent) Main_showWarningDialog(inUseObj.empty_str());
+            if (obj.emptyContent) Main_showWarningDialog(obj.empty_str());
             else {
-                inUseObj.status = true;
-                var doc = document.getElementById(inUseObj.table);
-                for (var i = 0; i < (inUseObj.Cells.length < inUseObj.visiblerows ? inUseObj.Cells.length : inUseObj.visiblerows); i++)
-                    doc.appendChild(inUseObj.Cells[i]);
+                obj.status = true;
+                var doc = document.getElementById(obj.table);
+                for (var i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++)
+                    doc.appendChild(obj.Cells[i]);
 
             }
-            inUseObj.FirstLoad = false;
+            obj.FirstLoad = false;
             //TODO improve this check
             if (Main_FirstRun) {
                 //Force reset some values as I have reset the Never_run_new value and some things may crash
@@ -11510,7 +11507,7 @@
                 }
                 Screens_ForceSync = false;
 
-                if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying && inUseObj.status) {
+                if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying && obj.status) {
 
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
@@ -11537,7 +11534,7 @@
                     });
                 } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
                     Main_GoBefore !== Main_Search) {
-                    Main_HideElement(inUseObj.ids[10]);
+                    Main_HideElement(obj.ids[10]);
                     Main_ready(function() {
                         Main_ExitCurrent(Main_values.Main_Go);
                         Main_values.Main_Go = Main_GoBefore;
@@ -11581,8 +11578,9 @@
                 Main_SaveValues();
                 Screens_loadDataSuccessFinishEnd();
             }
-        } else {
-            Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+        } else if (Main_isElementShowing(obj.ids[10])) {
+            Main_CounterDialog(obj.posX, obj.posY, obj.ColoumnsCount, obj.itemsCount);
+            Screens_addFocus(true);
         }
     }
 
@@ -11640,7 +11638,7 @@
 
         //Load more as the data is getting used
         if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
-            Screens_loadDataRequestStart();
+            Screens_loadDataRequestStart(inUseObj);
         } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
             inUseObj.loadDataSuccess();
         }
@@ -13030,7 +13028,9 @@
         data: null,
         token: null,
         data_cursor: 0,
-        loadDataSuccess: Screens_loadDataSuccess,
+        loadDataSuccess: function() {
+            Screens_loadDataSuccess(this);
+        },
         addrow: Screens_addrow,
         key_exit: function(goSidepanel) { //TODO overwrite this on if object
             Screens_RemoveAllFocus();
@@ -13612,7 +13612,7 @@
                     this.followerChannels = this.followerChannels.slice(0, -1);
                     this.followerChannelsDone = true;
                 }
-                Screens_loadDataRequest();
+                Screens_loadDataRequest(this);
             }
         };
     }
@@ -13981,13 +13981,8 @@
             Main_SwitchScreenAction();
         },
         setMax: function(tempObj) {
-            if (this.useHelix) {
-                if (tempObj.pagination.cursor) this.after = tempObj.pagination.cursor;
-                else this.dataEnded = true;
-            } else {
-                this.MaxOffset = tempObj._total;
-                if (this.data.length >= this.MaxOffset) this.dataEnded = true;
-            }
+            this.MaxOffset = tempObj._total;
+            if (this.data.length >= this.MaxOffset) this.dataEnded = true;
         },
         addCell: function(cell) {
             var hasLive = this.isLive || this.screen === Main_games;
@@ -14020,11 +14015,10 @@
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             object: 'top',
-            useHelix: false,
             base_url: Main_kraken_api + 'games/top?limit=' + Main_ItemsLimitMax,
             set_url: function() {
-                if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset && !this.useHelix) this.dataEnded = true;
-                this.url = this.base_url + (this.useHelix ? '&after=' + this.after : '&offset=' + this.offset);
+                if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+                this.url = this.base_url + '&offset=' + this.offset;
             },
             label_init: function() {
                 Sidepannel_SetDefaultLables();
@@ -14032,38 +14026,7 @@
                 Sidepannel_SetTopOpacity(this.screen);
 
                 ScreensObj_SetTopLable(STR_GAMES);
-            },
-            setHelix: function() {
-                this.useHelix = true;
-                this.base_url = 'https://api.twitch.tv/helix/games/top?first=' + Main_ItemsLimitMax;
-                this.object = 'data';
-                this.forceResetHelix = false;
-                this.addCell = function(cell) {
-                    if (!this.idObject[cell.id]) {
-
-                        this.itemsCount++;
-                        this.idObject[cell.id] = 1;
-
-                        this.row.appendChild(
-                            Screens_createCellGame(
-                                this.row_id + '_' + this.coloumn_id,
-                                this.ids, [cell.box_art_url.replace("{width}x{height}", Main_GameSize),
-                                    cell.name,
-                                    '',
-                                    cell._id
-                                ]));
-
-                        this.coloumn_id++;
-                    }
-                };
-                Screens_StartLoad();
-            },
-            resetHelix: function() {
-                this.useHelix = false;
-                this.base_url = Main_kraken_api + 'games/top?limit=' + Main_ItemsLimitMax;
-                this.object = 'top';
-                this.addCell = Base_Game_obj.addCell;
-            },
+            }
         }, Base_obj);
 
         Game = Screens_assign(Game, Base_Game_obj);
