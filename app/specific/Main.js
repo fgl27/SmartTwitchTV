@@ -1531,26 +1531,26 @@ function CheckPage(pageUrlCode) {
 }
 
 //Basic XMLHttpRequest thatonly returns error or 200 status
-function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-    if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
-    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+    if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
+    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
 }
 
-function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
+function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
     var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {
-        calbackError();
+        calbackError(obj);
         return;
     }
 
     if (xmlHttp.status === 200) {
-        callbackSucess(xmlHttp.responseText);
+        callbackSucess(xmlHttp.responseText, obj);
     } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-        AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
+        AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
     } else {
-        calbackError();
+        calbackError(obj);
     }
 }
 
@@ -1560,36 +1560,36 @@ var Main_Headers = [
     [Main_Authorization, null]
 ];
 
-function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers);
+function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, obj);
 }
 
-function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-    if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError);
-    else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError);
+function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+    if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj);
+    else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
 }
 
-function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError) {
+function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj) {
     var xmlHttp = Android.mreadUrlHLS(theUrl);
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {
-        calbackError();
+        calbackError(obj);
         return;
     }
 
     if (xmlHttp.status === 200) {
-        callbackSucess(xmlHttp.responseText);
+        callbackSucess(xmlHttp.responseText, obj);
     } else {
-        calbackError();
+        calbackError(obj);
     }
 }
 
-function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError) {
-    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back);
+function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back, obj);
 }
 
-function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray) {
+function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, obj) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -1605,11 +1605,11 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText);
+                callbackSucess(xmlHttp.responseText, obj);
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail);
+                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
             } else {
-                calbackError();
+                calbackError(obj);
             }
         }
     };

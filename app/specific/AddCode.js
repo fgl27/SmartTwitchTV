@@ -20,7 +20,7 @@ function AddCode_CheckNewCode(code) {
     AddCode_requestTokens();
 }
 
-function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
+function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, obj) {
     var xmlHttp = new XMLHttpRequest();
 
     var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
@@ -35,15 +35,15 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
-                AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc);
+                AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, obj);
             } else {
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.message) {
                     if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
                         AddCode_requestTokensFailRunning(position);
-                        if (callbackFuncNOK) callbackFuncNOK();
-                    } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
-                } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK);
+                        if (callbackFuncNOK) callbackFuncNOK(obj);
+                    } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
+                } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
             }
         }
     };
@@ -51,12 +51,12 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK) {
     xmlHttp.send(null);
 }
 
-function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK) {
-    if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK);
-    else if (callbackFuncNOK) callbackFuncNOK();
+function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, obj) {
+    if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, obj);
+    else if (callbackFuncNOK) callbackFuncNOK(obj);
 }
 
-function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
+function AddCode_refreshTokensSucess(responseText, position, callbackFunc, obj) {
     var response = JSON.parse(responseText);
     if (AddCode_TokensCheckScope(response.scope)) {
         AddUser_UsernameArray[position].access_token = response.access_token;
@@ -68,7 +68,7 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc) {
 
     } else AddCode_requestTokensFailRunning(position);
 
-    if (callbackFunc) callbackFunc();
+    if (callbackFunc) callbackFunc(obj);
 }
 
 //Check if has all scopes, in canse they change
