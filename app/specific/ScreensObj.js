@@ -75,7 +75,9 @@ var Base_obj = {
     data: null,
     token: null,
     data_cursor: 0,
-    loadDataSuccess: Screens_loadDataSuccess,
+    loadDataSuccess: function() {
+        Screens_loadDataSuccess(this);
+    },
     addrow: Screens_addrow,
     key_exit: function(goSidepanel) {//TODO overwrite this on if object
         Screens_RemoveAllFocus();
@@ -657,7 +659,7 @@ function ScreensObj_InitUserLive() {
                 this.followerChannels = this.followerChannels.slice(0, -1);
                 this.followerChannelsDone = true;
             }
-            Screens_loadDataRequest();
+            Screens_loadDataRequest(this);
         }
     };
 }
