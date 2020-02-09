@@ -2806,7 +2806,9 @@ function Play_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(1);
                     else {
-                        if (Play_CheckLiveThumb(true)) {
+                        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
+                            UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                        else if (Play_CheckLiveThumb(true)) {
                             Play_EndDialogEnter = 1;
                             Play_EndUpclearCalback = Play_handleKeyDown;
                             Play_OpenLiveFeed();
