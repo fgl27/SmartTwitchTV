@@ -506,7 +506,7 @@ function Play_ResumeAfterOnline() {
         window.clearInterval(Play_ResumeAfterOnlineId);
         if (Play_MultiEnable) {
             Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
+            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
             for (var i = 0; i < Play_MultiArray.length; i++) {
                 if (Play_MultiArray[i].data.length > 0) {
                     Play_MultiStart(
@@ -1853,7 +1853,7 @@ function Play_OpenChannel(PlayVodClip) {
 
     if (PlayVodClip === 1) {
         if (Play_MultiEnable) {
-            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
+            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
         }
         Play_ClearPP();
         Main_values.Main_selectedChannel_id = Play_data.data[14];
@@ -1897,7 +1897,7 @@ function Play_OpenGame(PlayVodClip) {
     Main_values.Main_Go = Main_aGame;
 
     if (Play_MultiEnable) {
-        Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
+        Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
     }
     Main_values.Main_gameSelected = Play_data.data[3];
     Main_values.Main_gameSelected_id = null;
@@ -2284,7 +2284,7 @@ function Play_Multi_UnSetPanel(shutdown) {
     }
 
     //Check if main player is open if not check if one is so it can be main
-    var First = Play_MultiFirstAvaileble();
+    var First = Play_MultiFirstAvailable();
     if (First !== null) {
         var name = Play_data.data[14];
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
@@ -2299,7 +2299,7 @@ function Play_Multi_UnSetPanel(shutdown) {
     } else if (shutdown) Play_shutdownStream();
 }
 
-function Play_MultiFirstAvaileble() {
+function Play_MultiFirstAvailable() {
     for (var i = 0; i < Play_MultiArray.length; i++) {
         if (Play_MultiArray[i].data.length > 0) return i;
     }
