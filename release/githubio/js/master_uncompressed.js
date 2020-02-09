@@ -6862,7 +6862,7 @@
             window.clearInterval(Play_ResumeAfterOnlineId);
             if (Play_MultiEnable) {
                 Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-                Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
+                Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
                         Play_MultiStart(
@@ -7123,20 +7123,19 @@
                     );
                 }
             }
+        } else {
 
-            return;
+            Play_RefreshAutoTry = 0;
+            if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
+
+            if (PlayExtra_PicturePicture) {
+                PlayExtra_RefreshAutoTry = 0;
+                PlayExtra_RefreshAutoRequest(false);
+            }
+
+            var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
+            BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
         }
-
-        Play_RefreshAutoTry = 0;
-        if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
-
-        if (PlayExtra_PicturePicture) {
-            PlayExtra_RefreshAutoTry = 0;
-            PlayExtra_RefreshAutoRequest(false);
-        }
-
-        var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-        BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
     }
 
     function Play_updateStreamInfoValues(response) {
@@ -8211,7 +8210,7 @@
 
         if (PlayVodClip === 1) {
             if (Play_MultiEnable) {
-                Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
+                Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
             }
             Play_ClearPP();
             Main_values.Main_selectedChannel_id = Play_data.data[14];
@@ -8255,7 +8254,7 @@
         Main_values.Main_Go = Main_aGame;
 
         if (Play_MultiEnable) {
-            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
+            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
         }
         Main_values.Main_gameSelected = Play_data.data[3];
         Main_values.Main_gameSelected_id = null;
@@ -8642,7 +8641,7 @@
         }
 
         //Check if main player is open if not check if one is so it can be main
-        var First = Play_MultiFirstAvaileble();
+        var First = Play_MultiFirstAvailable();
         if (First !== null) {
             var name = Play_data.data[14];
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
@@ -8657,7 +8656,7 @@
         } else if (shutdown) Play_shutdownStream();
     }
 
-    function Play_MultiFirstAvaileble() {
+    function Play_MultiFirstAvailable() {
         for (var i = 0; i < Play_MultiArray.length; i++) {
             if (Play_MultiArray[i].data.length > 0) return i;
         }
