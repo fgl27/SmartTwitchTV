@@ -1273,6 +1273,7 @@ function Play_exitMain() {
     PlayExtra_HideChat();
     UserLiveFeed_PreventHide = false;
     PlayVod_ProgresBarrUpdate(0, 0);
+    Play_HideBufferDialog();
     Main_ShowElement('scene1');
     Main_HideElement('scene2');
     Main_ReStartScreens();
@@ -2288,12 +2289,8 @@ function Play_Multi_UnSetPanel(shutdown) {
         var name = Play_data.data[14];
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
-        if (name !== Play_data.data[14] && First) {
-            Play_Start();
-            return;
-        }
-
-        Play_UpdateMainStream();
+        if (name !== Play_data.data[14] && First) Play_Start();
+        else Play_UpdateMainStream();
 
     } else if (shutdown) Play_shutdownStream();
 }
