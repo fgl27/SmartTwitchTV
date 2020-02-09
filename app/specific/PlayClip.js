@@ -618,10 +618,14 @@ function PlayClip_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(3);
                     else {
-                        Play_EndDialogEnter = 3;
-                        Play_EndUpclearCalback = PlayClip_handleKeyDown;
-                        Play_SavePlayData();
-                        Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
+                        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
+                            UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                        else {
+                            Play_EndDialogEnter = 3;
+                            Play_EndUpclearCalback = PlayClip_handleKeyDown;
+                            Play_SavePlayData();
+                            Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
+                        }
                     }
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
