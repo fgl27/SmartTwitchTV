@@ -964,7 +964,11 @@ function PlayVod_handleKeyDown(e) {
                         if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                     } else Play_BottomOptionsPressed(2);
                     PlayVod_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                } else if (UserLiveFeed_isFeedShow()) {
+                    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
+                        UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    else Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                }
                 else PlayVod_showPanel(true);
                 break;
             case KEY_STOP:
