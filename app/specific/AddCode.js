@@ -392,7 +392,33 @@ function AddCode_RequestCheckSubfail() {
 
 function AddCode_FallowGame() {
     AddCode_loadingDataTry = 0;
-    AddCode_RequestFallowGame();
+    if (Main_values.Main_gameSelected_id) AddCode_RequestFallowGame();
+    else AddCode_GetGameId();
+}
+
+function AddCode_GetGameId() {
+    var theUrl = 'https://api.twitch.tv/helix/games?name=' +
+        Main_values.Main_gameSelected;
+
+    AddCode_BasexmlHttpGet(theUrl, 'GET', 2, null, AddCode_GetGameIdReady);
+}
+
+function AddCode_GetGameIdReady(xmlHttp) {
+    if (xmlHttp.readyState === 4) {
+        if (xmlHttp.status === 200) { //success we now fallow the game
+            Main_values.Main_gameSelected_id = JSON.parse(xmlHttp.responseText).data[0].id;
+            AddCode_loadingDataTry = 0;
+            AddCode_RequestFallowGame();
+            return;
+        } else { // internet error
+            AddCode_GetGameIdError();
+        }
+    }
+}
+
+function AddCode_GetGameIdError() {
+    AddCode_loadingDataTry++;
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_GetGameId();
 }
 
 function AddCode_RequestFallowGame() {

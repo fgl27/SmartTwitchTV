@@ -1899,6 +1899,7 @@ function Play_OpenGame(PlayVodClip) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
     }
     Main_values.Main_gameSelected = Play_data.data[3];
+    Main_values.Main_gameSelected_id = null;
 
     Play_hideChat();
     if (PlayVodClip === 1) {
