@@ -342,7 +342,8 @@ function UserLiveFeed_FeedRemoveFocus(pos) {
 }
 
 function UserLiveFeed_FeedGetPos(pos) {
-    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos) return UserLiveFeed_FeedGetPosGame(pos);
+    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
+        UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) return UserLiveFeed_FeedGetPosGame(pos);
     var position = 0;
 
     if (UserLiveFeed_FeedPosY[pos] < 3) position = 2.5;
