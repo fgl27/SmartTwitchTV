@@ -6861,6 +6861,7 @@
         if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
             window.clearInterval(Play_ResumeAfterOnlineId);
             if (Play_MultiEnable) {
+                Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvaileble()]));
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
@@ -8690,6 +8691,7 @@
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiInfoReset(position);
         if (!Play_MultiHasOne()) {
+            Play_MultiEnable = false;
             PlayExtra_PicturePicture = false;
             PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
             Play_CheckHostStart();
@@ -8769,7 +8771,6 @@
         Play_showWarningDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE), 2000);
 
         if (Play_OlddataSet()) {
-
             Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_old));
             Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
@@ -8777,6 +8778,7 @@
             Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
             Play_MultiInfoReset(pos);
             if (!Play_MultiHasOne()) {
+                Play_MultiEnable = false;
                 PlayExtra_PicturePicture = false;
                 PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
                 Play_CheckHostStart();
@@ -8994,6 +8996,40 @@
     function Play_clearHideMultiDialog() {
         window.clearTimeout(Play_HideMultiDialogID);
     }
+
+    // function Play_FakeMulti() {
+    //     Play_MultiEnable = true;
+    //     var i = 0;
+    //     for (i; i < 4; i++) {
+    //         Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
+    //         Play_MultiArray[i].data = [
+    //             IMG_404_VIDEO,
+    //             "ashlynn",
+    //             "title",
+    //             "game",
+    //             "for 67,094&nbsp;Viewers",
+    //             "720p30 [EN]",
+    //             "ashlynn",
+    //             616702257,
+    //             false,
+    //             "https://static-cdn.jtvnw.net/jtv_user_pictures/9a67eb66-66b8-47fa-b388-61f2f74ce213-profile_image-300x300.png",
+    //             true,
+    //             "Since 11:04:36&nbsp;",
+    //             "2020-01-25T09:49:05Z",
+    //             67094,
+    //             213749122];
+
+    //         Play_MultiSetinfo(
+    //             i,
+    //             Play_MultiArray[i].data[3],
+    //             Play_MultiArray[i].data[13],
+    //             Play_MultiArray[i].data[1],
+    //             Play_MultiArray[i].data[8],
+    //             Play_MultiArray[i].data[9],
+    //             twemoji.parse(Play_MultiArray[i].data[2])
+    //         );
+    //     }
+    // }
 
     var Play_HideMultiDialogID;
 
