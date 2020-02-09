@@ -878,12 +878,13 @@ function UserLiveFeedobj_HideCurrentAGame() {
 //Current a game end
 
 function UserLiveFeedobj_SetBottomText(pos) {
-    for (var i = 0; i < 7; i++)
+    var i = 0;
+    for (i; i < 7; i++)
         Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
 
     Main_AddClass('feed_end_' + pos, 'feed_end_name_focus');
 
-    for (var i = 0; i < 6; i++) {
+    for (i = 0; i < 6; i++) {
         if (i < pos) {
             Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_up');
             Main_AddClass('feed_end_icon_' + i, 'feed_end_icon_down');
