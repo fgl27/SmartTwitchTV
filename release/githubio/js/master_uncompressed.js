@@ -5898,16 +5898,23 @@
                 case KEY_RETURN_Q:
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
-                    if (Play_isEndDialogVisible()) Play_EndTextClear();
+                    if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
+                        Play_EndTextClear();
 
-                    if (Play_isEndDialogVisible() && !Play_EndFocus) {
-                        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
-                            UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else {
-                            Play_EndFocus = true;
+                        if (!Play_EndFocus) {
+                            if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
+                                UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                            else {
+                                Play_EndFocus = true;
+                                UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+                                Play_EndIconsAddFocus();
+                            }
+                        } else {
                             UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
                             Play_EndIconsAddFocus();
+                            Play_showExitDialog();
                         }
+
                     } else if (Play_isPanelShown()) PlayClip_hidePanel();
                     else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) {
                         if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
@@ -8411,18 +8418,24 @@
     }
 
     function Play_KeyReturn(is_vod) {
-        if (Play_isEndDialogVisible()) Play_EndTextClear();
+        if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
+            Play_EndTextClear();
 
-        if (Play_isEndDialogVisible() && !Play_EndFocus) {
-            if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
-                UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-            else {
-                Play_EndFocus = true;
+            if (!Play_EndFocus) {
+                if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
+                    UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                else {
+                    Play_EndFocus = true;
+                    UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+                    Play_EndIconsAddFocus();
+                }
+            } else {
                 UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
                 Play_EndIconsAddFocus();
+                Play_showExitDialog();
             }
-        } else if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
-        else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
+
+        } else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
         else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) {
             if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
                 UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
@@ -8520,6 +8533,7 @@
             Play_EndFocus = false;
             Play_EndIconsRemoveFocus();
             UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX);
+            Play_CleanHideExit();
         } else UserLiveFeed_KeyUpDown(adder);
     }
 
