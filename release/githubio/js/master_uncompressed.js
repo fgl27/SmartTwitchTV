@@ -4982,8 +4982,6 @@
         [Main_Authorization, null]
     ];
 
-    var Main_VideoSizeLiveFeed = "352x198";
-
     var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
     var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
     var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
@@ -17025,7 +17023,7 @@
     function UserLiveFeed_LoadImgPush(pos, url, id) {
         UserLiveFeed_ImgObj[pos].push({
             id: UserLiveFeed_ids[1] + id,
-            url: url.replace("{width}x{height}", Main_VideoSizeLiveFeed) + Main_randomimg
+            url: url.replace("{width}x{height}", Main_VideoSize) + Main_randomimg
         });
     }
 
