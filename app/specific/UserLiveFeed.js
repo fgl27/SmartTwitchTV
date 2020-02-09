@@ -309,7 +309,7 @@ function UserLiveFeed_clearHideFeed() {
 }
 
 function UserLiveFeed_setHideFeed() {
-    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
+    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 10000);
 }
 
 function UserLiveFeed_FeedRefresh() {
