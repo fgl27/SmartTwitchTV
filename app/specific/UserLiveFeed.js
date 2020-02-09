@@ -84,14 +84,14 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].load = UserLiveFeedobj_UserGames;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].show = UserLiveFeedobj_ShowUserGames;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].hide = UserLiveFeedobj_HideUserGames;
-    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = 'games_scroll';
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = 'user_games_scroll';
 
     //Games
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos] = {};
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].load = UserLiveFeedobj_Games;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].show = UserLiveFeedobj_ShowGames;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].hide = UserLiveFeedobj_HideGames;
-    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div = 'user_games_scroll';
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div = 'games_scroll';
 
     //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos] = {};
@@ -360,7 +360,7 @@ function UserLiveFeed_FeedGetPosGame(pos) {
     var position = 0;
 
     if (UserLiveFeed_FeedPosY[pos] < 5)
-        position = 2.5;
+        position = 0;
     else if (UserLiveFeed_ThumbNull((pos + '_' + (UserLiveFeed_FeedPosY[pos] + 4)), UserLiveFeed_ids[0]))
         position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 4)).offsetLeft * -1);
     else if (UserLiveFeed_ThumbNull(pos + '_' + (UserLiveFeed_FeedPosY[pos] + 3), UserLiveFeed_ids[0]))
@@ -377,7 +377,7 @@ function UserLiveFeed_FeedGetPosGame(pos) {
         position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - lessPos)).offsetLeft * -1);
     }
 
-    return position;
+    return position + 2.5;
 }
 
 function UserLiveFeed_FeedSetPos(skipAnimation, pos) {
