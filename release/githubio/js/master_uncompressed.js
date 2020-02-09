@@ -17281,6 +17281,7 @@
     }
 
     function UserLiveFeed_KeyRightLeft(Adder) {
+        UserLiveFeed_ResetFeedId();
         if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
             var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
             if (NextPos > (UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1) || NextPos < 0) return;
@@ -17289,7 +17290,6 @@
             UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] = NextPos;
             UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX);
         }
-        UserLiveFeed_ResetFeedId();
     }
 
     function UserLiveFeed_KeyUpDown(Adder) {
