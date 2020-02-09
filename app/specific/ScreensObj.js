@@ -1120,6 +1120,7 @@ function ScreensObj_InitUserGames() {
     }, Base_obj);
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
+    UserGames.HeaderQuatity = 1;
 }
 
 function ScreensObj_InitSearchGames() {

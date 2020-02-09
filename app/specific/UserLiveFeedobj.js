@@ -748,10 +748,9 @@ function UserLiveFeedobj_UserGames() {
 
 function UserLiveFeedobj_loadUserGames() {
     var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=150';//follows
-    //var theUrl = Main_kraken_api + 'games/top?limit=100';//top
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserGames;
-    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserGamesSuccess, UserLiveFeedobj_loadDataError);
+    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 1, null, UserLiveFeedobj_loadDataUserGamesSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_loadDataUserGamesSuccess(responseText) {

@@ -1580,6 +1580,10 @@ function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj) {
 
     if (xmlHttp.status === 200) {
         callbackSucess(xmlHttp.responseText, obj);
+    } else if (xmlHttp.status === 500) {
+        if (Main_isElementShowing('scene1') && obj.screen === Main_usergames)
+            obj.key_refresh();
+        else calbackError(obj);
     } else {
         calbackError(obj);
     }
@@ -1608,6 +1612,10 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
                 callbackSucess(xmlHttp.responseText, obj);
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                 AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
+            } else if (xmlHttp.status === 500) {
+                if (Main_isElementShowing('scene1') && obj.screen === Main_usergames)
+                    obj.key_refresh();
+                else calbackError(obj);
             } else {
                 calbackError(obj);
             }
