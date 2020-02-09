@@ -68,14 +68,30 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].hide = UserLiveFeedobj_HideCurrentUserAGame;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div = 'user_agames_scroll';
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
+
+    //a game
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos] = {};
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].load = UserLiveFeedobj_CurrentAGame;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].show = UserLiveFeedobj_ShowCurrentAGame;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].hide = UserLiveFeedobj_HideCurrentAGame;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div = 'agame_feed_scroll';
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].StreamType = 'streams';
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos] = {};
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].load = UserLiveFeedobj_UserGames;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].show = UserLiveFeedobj_ShowUserGames;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].hide = UserLiveFeedobj_HideUserGames;
-    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = 'user_games_scroll';
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = 'games_scroll';
+
+    //Games
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos] = {};
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].load = UserLiveFeedobj_Games;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].show = UserLiveFeedobj_ShowGames;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].hide = UserLiveFeedobj_HideGames;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div = 'user_games_scroll';
 
     //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos] = {};
@@ -108,6 +124,11 @@ function UserLiveFeed_Prepare() {
 
     UserLiveFeed_Setworker();
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES);
+
+    Main_innerHTML('feed_end_1', STR_FEATURED);
+    Main_innerHTML('feed_end_3', STR_LIVE);
+    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
+    Main_innerHTML('feed_end_5', STR_USER + STR_SPACE + STR_LIVE_HOSTS);
 }
 
 function UserLiveFeed_Setworker() {
@@ -421,11 +442,11 @@ function UserLiveFeed_KeyUpDown(Adder) {
         var NextPos = UserLiveFeed_FeedPosX + Adder,
             userSet = AddUser_UserIsSet();
 
-        if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
-            NextPos = 0;
+        if (NextPos > (userSet ? (UserLiveFeedobj_CurrentUserAGameEnable ? (UserLiveFeedobj_MAX + 1) : UserLiveFeedobj_MAX) : UserLiveFeedobj_MAX_No_user)) {
+            NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
             if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
-        } else if (NextPos < 0) {
-            NextPos = userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user;
+        } else if (NextPos < (UserLiveFeedobj_CurrentAGameEnable ? 0 : 1)) {
+            NextPos = userSet ? (UserLiveFeedobj_CurrentUserAGameEnable ? (UserLiveFeedobj_MAX + 1) : UserLiveFeedobj_MAX) : UserLiveFeedobj_MAX_No_user;
             if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
         }
 
@@ -443,6 +464,13 @@ function UserLiveFeed_KeyUpDown(Adder) {
             return;
         }
 
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos && Adder === 1) {
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+            UserLiveFeed_FeedPosX = NextPos;
+            UserLiveFeed_KeyUpDown(Adder);
+            return;
+        }
+
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = NextPos;
 
@@ -450,33 +478,61 @@ function UserLiveFeed_KeyUpDown(Adder) {
             UserLiveFeed_FeedPosX = UserLiveFeedobj_UserAGamesPos;
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
             return;
+        } else if (UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos && UserLiveFeedobj_CurrentAGameEnable) {
+            UserLiveFeed_FeedPosX = UserLiveFeedobj_AGamesPos;
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
+            return;
         }
+
         Main_HideElement('icon_feed_back');
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
     }
 }
 
 function UserLiveFeed_KeyEnter(pos) {
+    var doc;
     if (pos === UserLiveFeedobj_UserGamesPos) {
-        var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+        doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
         if (doc !== null) UserLiveFeedobj_CurrentUserAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
         if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
             Play_showWarningDialog(STR_NO_GAME, 1000);
             return;
         }
-
+        UserLiveFeedobj_CurrentUserAGameEnable = true;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = UserLiveFeedobj_UserAGamesPos;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
-        UserLiveFeedobj_CurrentUserAGameEnable = true;
 
     } else if (pos === UserLiveFeedobj_UserAGamesPos) {
+
         Main_HideElement('icon_feed_back');
+        UserLiveFeedobj_CurrentUserAGameEnable = false;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
-        UserLiveFeedobj_CurrentUserAGameEnable = false;
+
+    } else if (pos === UserLiveFeedobj_GamesPos) {
+        doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+        if (doc !== null) UserLiveFeedobj_CurrentAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
+
+        if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentAGameNameEnter, '')) {
+            Play_showWarningDialog(STR_NO_GAME, 1000);
+            return;
+        }
+
+        UserLiveFeedobj_CurrentAGameEnable = true;
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+        UserLiveFeed_FeedPosX = UserLiveFeedobj_AGamesPos;
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
+
+    } else if (pos === UserLiveFeedobj_AGamesPos) {
+
+        Main_HideElement('icon_feed_back');
+        UserLiveFeedobj_CurrentAGameEnable = false;
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+        UserLiveFeed_FeedPosX = UserLiveFeedobj_GamesPos;
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
 
     }
     UserLiveFeed_ResetFeedId();
