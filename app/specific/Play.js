@@ -2055,9 +2055,13 @@ function Play_KeyReturn(is_vod) {
     if (Play_isEndDialogVisible()) Play_EndTextClear();
 
     if (Play_isEndDialogVisible() && !Play_EndFocus) {
-        Play_EndFocus = true;
-        UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
-        Play_EndIconsAddFocus();
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
+            UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+        else {
+            Play_EndFocus = true;
+            UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+            Play_EndIconsAddFocus();
+        }
     } else if (Play_isEndDialogVisible() && !Play_ExitDialogVisible() && !Play_SingleClickExit) Play_showExitDialog();
     else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
     else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) {
