@@ -8688,6 +8688,7 @@
         Play_MultiInfoReset(position);
         if (!Play_MultiHasOne()) {
             Play_MultiEnable = false;
+            Android.DisableMultiStream();
             PlayExtra_PicturePicture = false;
             PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
             Play_CheckHostStart();
@@ -8775,6 +8776,7 @@
             Play_MultiInfoReset(pos);
             if (!Play_MultiHasOne()) {
                 Play_MultiEnable = false;
+                Android.DisableMultiStream();
                 PlayExtra_PicturePicture = false;
                 PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
                 Play_CheckHostStart();
@@ -9692,10 +9694,8 @@
             enterKey: function(shutdown) {
                 Play_MultiEnable = !Play_MultiEnable;
                 if (Play_MultiEnable) {
-                    try {
-                        Android.EnableMultiStream();
-                        Play_hidePanel();
-                    } catch (e) {}
+                    Android.EnableMultiStream();
+                    Play_hidePanel();
 
                     Play_Multi_SetPanel();
                     if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
@@ -9742,10 +9742,7 @@
                     if (Play_isChatShown()) Play_controls[Play_controlsChat].enterKey();
 
                 } else {
-                    try {
-                        Android.DisableMultiStream();
-                    } catch (e) {}
-
+                    Android.DisableMultiStream();
                     Play_Multi_UnSetPanel(shutdown);
                 }
             }
