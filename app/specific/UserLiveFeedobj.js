@@ -1,14 +1,16 @@
 var UserLiveFeedobj_loadErrorCallback;
 
 //Global
-var UserLiveFeedobj_FeaturedPos = 0;
-var UserLiveFeedobj_CurrentGamePos = 1;
-var UserLiveFeedobj_LivePos = 2;
+var UserLiveFeedobj_AGamesPos = 0;
+var UserLiveFeedobj_GamesPos = 1;
+var UserLiveFeedobj_FeaturedPos = 2;
+var UserLiveFeedobj_CurrentGamePos = 3;
+var UserLiveFeedobj_LivePos = 4;
 //User
-var UserLiveFeedobj_UserLivePos = 3;
-var UserLiveFeedobj_UserHostPos = 4;
-var UserLiveFeedobj_UserGamesPos = 5;
-var UserLiveFeedobj_UserAGamesPos = 6;
+var UserLiveFeedobj_UserLivePos = 5;
+var UserLiveFeedobj_UserHostPos = 6;
+var UserLiveFeedobj_UserGamesPos = 7;
+var UserLiveFeedobj_UserAGamesPos = 8;
 
 var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;//Default pos
 var UserLiveFeedobj_MAX = UserLiveFeedobj_UserGamesPos;
@@ -403,14 +405,7 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
 
 var UserLiveFeedobj_LiveFeedOldUserName = '';
 function UserLiveFeedobj_ShowFeed() {
-    Main_innerHTML('feed_end',
-        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
-        STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
-        UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE) +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS +
-        UserLiveFeedobj_BottonIcon(0) +
-        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
+    UserLiveFeedobj_SetBottomText(4);
 
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserLivePos, (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name));
@@ -514,14 +509,7 @@ function UserLiveFeedobj_loadDataLiveSuccess(responseText) {
 }
 
 function UserLiveFeedobj_ShowLive() {
-    Main_innerHTML('feed_end',
-        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
-        UserLiveFeedobj_BottonText(STR_LIVE) +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS +
-        UserLiveFeedobj_BottonIcon(0) +
-        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
+    UserLiveFeedobj_SetBottomText(3);
 
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_LivePos);
 }
@@ -555,14 +543,7 @@ function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
 }
 
 function UserLiveFeedobj_ShowFeatured() {
-    Main_innerHTML('feed_end',
-        UserLiveFeedobj_BottonText(STR_FEATURED) +
-        UserLiveFeedobj_BottonIcon(0) + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) +
-        UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS +
-        UserLiveFeedobj_BottonIcon(0) +
-        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
+    UserLiveFeedobj_SetBottomText(1);
 
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_FeaturedPos);
 }
@@ -596,14 +577,7 @@ function UserLiveFeedobj_loadDataCurrentGameSuccess(responseText) {
 
 var UserLiveFeedobj_CurrentGameName = '';
 function UserLiveFeedobj_ShowCurrentGame() {
-    Main_innerHTML('feed_end',
-        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        UserLiveFeedobj_BottonText(Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) +
-        UserLiveFeedobj_BottonIcon(0) + STR_LIVE +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE +
-        UserLiveFeedobj_BottonIcon(0) + STR_USER + STR_SPACE + STR_LIVE_HOSTS +
-        UserLiveFeedobj_BottonIcon(0) +
-        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
+    UserLiveFeedobj_SetBottomText(2);
 
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_CurrentGamePos, (UserLiveFeedobj_CurrentGameName !== Play_data.data[3]));
     UserLiveFeedobj_CurrentGameName = Play_data.data[3];
@@ -685,14 +659,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
 
 var UserLiveFeedobj_HostFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserHost() {
-    Main_innerHTML('feed_end',
-        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
-        STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
-        STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
-        UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_LIVE_HOSTS) +
-        UserLiveFeedobj_BottonIcon(0) +
-        (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameName : (STR_USER + STR_SPACE + STR_GAMES)));
+    UserLiveFeedobj_SetBottomText(5);
 
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHostPos, (UserLiveFeedobj_HostFeedOldUserName !== AddUser_UsernameArray[0].name));
@@ -789,13 +756,7 @@ function UserLiveFeedobj_loadDataUserGamesSuccess(responseText) {
 
 var UserLiveFeedobj_GamesFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserGames() {
-    Main_innerHTML('feed_end',
-        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
-        STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
-        STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
-        STR_USER + STR_SPACE + STR_LIVE_HOSTS + UserLiveFeedobj_BottonIcon(1) +
-        UserLiveFeedobj_BottonText(STR_USER + STR_SPACE + STR_GAMES));
+    UserLiveFeedobj_SetBottomText(6);
 
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserGamesPos, (UserLiveFeedobj_GamesFeedOldUserName !== AddUser_UsernameArray[0].name));
@@ -834,13 +795,7 @@ function UserLiveFeedobj_loadDataCurrentUserGameSuccess(responseText) {
 var UserLiveFeedobj_CurrentUserAGameName = '';
 var UserLiveFeedobj_CurrentUserAGameNameEnter = null;
 function UserLiveFeedobj_ShowCurrentUserAGame() {
-    Main_innerHTML('feed_end',
-        STR_FEATURED + UserLiveFeedobj_BottonIcon(1) +
-        (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + UserLiveFeedobj_BottonIcon(1) +
-        STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
-        STR_USER + STR_SPACE + STR_LIVE + UserLiveFeedobj_BottonIcon(1) +
-        STR_USER + STR_SPACE + STR_LIVE_HOSTS + UserLiveFeedobj_BottonIcon(1) +
-        UserLiveFeedobj_BottonText(UserLiveFeedobj_CurrentUserAGameNameEnter));
+    UserLiveFeedobj_SetBottomText(6);
 
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, (UserLiveFeedobj_CurrentUserAGameName !== UserLiveFeedobj_CurrentUserAGameNameEnter));
     UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
@@ -850,13 +805,80 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
 function UserLiveFeedobj_HideCurrentUserAGame() {
     Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div, 'opacity_zero');
 }
-//urrent user a game end
+//Current user a game end
 
-function UserLiveFeedobj_BottonIcon(up) {
-    return STR_SPACE + '<i  class="icon-' + (up ? 'key-up' : 'key-down') +
-        ' class_bold strokicon" style="vertical-align: middle; color:' + (up ? '#FED000' : 'red') + ';"></i>' + STR_SPACE;
+//Games Start
+function UserLiveFeedobj_Games() {
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_GamesPos);
+    UserLiveFeedobj_loadGames();
 }
 
-function UserLiveFeedobj_BottonText(text) {
-    return '<span style="font-size: 150%; font-family: \'Roboto-Bold\'; color:#00a94b;">' + text + '</span>';
+function UserLiveFeedobj_loadGames() {
+    var theUrl = Main_kraken_api + 'games/top?limit=100';//top
+
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadGames;
+    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataGamesSuccess, UserLiveFeedobj_loadDataError);
+}
+
+function UserLiveFeedobj_loadDataGamesSuccess(responseText) {
+    UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, UserLiveFeedobj_GamesPos, 'top');
+}
+
+function UserLiveFeedobj_ShowGames() {
+    UserLiveFeedobj_SetBottomText(0);
+
+    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_GamesPos);
+}
+
+function UserLiveFeedobj_HideGames() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div, 'opacity_zero');
+}
+//Games end
+
+//Current a game Start
+var UserLiveFeedobj_CurrentAGameEnable = false;
+function UserLiveFeedobj_CurrentAGame() {
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_AGamesPos);
+    UserLiveFeedobj_loadCurrentAGame();
+}
+
+function UserLiveFeedobj_loadCurrentAGame() {
+    var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
+        '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
+
+    UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
+    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess, UserLiveFeedobj_loadDataError);
+}
+
+function UserLiveFeedobj_CurrentAGameCell(cell) {
+    return cell;
+}
+
+function UserLiveFeedobj_loadDataCurrentAGameSuccess(responseText) {
+    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_AGamesPos);
+}
+
+var UserLiveFeedobj_CurrentAGameName = '';
+var UserLiveFeedobj_CurrentAGameNameEnter = null;
+function UserLiveFeedobj_ShowCurrentAGame() {
+    UserLiveFeedobj_SetBottomText(0);
+
+    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, (UserLiveFeedobj_CurrentAGameName !== UserLiveFeedobj_CurrentAGameNameEnter));
+    UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
+    Main_ShowElement('icon_feed_back');
+}
+
+function UserLiveFeedobj_HideCurrentAGame() {
+    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div, 'opacity_zero');
+}
+//Current a game end
+
+function UserLiveFeedobj_SetBottomText(pos) {
+    for (var i = 0; i < 7; i++)
+        Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
+
+    Main_AddClass('feed_end_' + pos, 'feed_end_name_focus');
+    Main_textContent('feed_end_0', UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : (STR_GAMES));
+    Main_textContent('feed_end_2', Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME);
+    Main_innerHTML('feed_end_6', UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES));
 }

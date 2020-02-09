@@ -41,6 +41,34 @@
             font-family: 'Roboto-Bold';
         }
 
+        .feed_end_name {
+            transform: translate(0, 29%);
+            display: inline-block;
+            max-width: 20%;
+            width: auto;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .feed_end_name_focus {
+            font-size: 115%;
+            font-family: 'Roboto-Bold';
+            color: #00a94b;
+        }
+
+        .feed_end_icon_down,
+        .feed_end_icon_up {
+            transform: translate(0, 8%);
+            display: inline-block;
+            vertical-align: middle;
+            color: #FED000 !important;
+        }
+
+        .feed_end_icon_down {
+            color: #FF0000 !important;
+        }
+
         div.screen_size,
         div.feed_screen,
         div.screens {
@@ -2822,6 +2850,8 @@
                     <div></div>
                 </div>
             </div>
+            <div id="agame_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
+            <div id="games_scroll" class="user_feed_scroll_game user_feed_scroll_ani opacity_zero"></div>
             <div id="featured_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
             <div id="current_game_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
             <div id="live_feed_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
@@ -2829,8 +2859,21 @@
             <div id="user_host_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
             <div id="user_games_scroll" class="user_feed_scroll_game user_feed_scroll_ani opacity_zero"></div>
             <div id="user_agames_scroll" class="user_feed_scroll user_feed_scroll_ani opacity_zero"></div>
-
-            <div id="feed_end" class="icon_feed_refresh strokedelinebig" style="position: absolute; bottom: 0;"></div>
+            <div id="feed_end" class="icon_feed_refresh strokedelinebig" style="position: absolute; bottom: 0;">
+                <div id="feed_end_0" class="feed_end_name feed_end_name_focus"></div>
+                <i id="feed_end_icon_0" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
+                <div id="feed_end_1" class="feed_end_name"></div>
+                <i id="feed_end_icon_1" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
+                <div id="feed_end_2" class="feed_end_name"></div>
+                <i id="feed_end_icon_2" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
+                <div id="feed_end_3" class="feed_end_name"></div>
+                <i id="feed_end_icon_3" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
+                <div id="feed_end_4" class="feed_end_name"></div>
+                <i id="feed_end_icon_4" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
+                <div id="feed_end_5" class="feed_end_name"></div>
+                <i id="feed_end_icon_5" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
+                <div id="feed_end_6" class="feed_end_name"></div>
+            </div>
             <div id="feed_counter" class="icon_feed_refresh strokedelinebig"
                 style="position: absolute; bottom: 0; text-align: right; margin-left: 0;"></div>
         </div>
