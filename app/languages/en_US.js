@@ -399,5 +399,5 @@ function en_USLang() {
     STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
     STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
     STR_FEED_END_DIALOG = ', Press back to go back to top menu';
-    STR_BACK_USER_GAMES = ' Press back key to User games';
+    STR_BACK_USER_GAMES = ' Press back key to ';
 }
