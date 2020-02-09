@@ -767,20 +767,19 @@ function Play_updateStreamInfo() {
                 );
             }
         }
+    } else {
 
-        return;
+        Play_RefreshAutoTry = 0;
+        if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
+
+        if (PlayExtra_PicturePicture) {
+            PlayExtra_RefreshAutoTry = 0;
+            PlayExtra_RefreshAutoRequest(false);
+        }
+
+        var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
+        BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
     }
-
-    Play_RefreshAutoTry = 0;
-    if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
-
-    if (PlayExtra_PicturePicture) {
-        PlayExtra_RefreshAutoTry = 0;
-        PlayExtra_RefreshAutoRequest(false);
-    }
-
-    var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
 }
 
 function Play_updateStreamInfoValues(response) {
