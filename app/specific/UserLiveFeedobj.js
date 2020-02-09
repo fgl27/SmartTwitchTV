@@ -12,7 +12,7 @@ var UserLiveFeedobj_UserHostPos = 6;
 var UserLiveFeedobj_UserGamesPos = 7;
 var UserLiveFeedobj_UserAGamesPos = 8;
 
-var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;//Default pos
+var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos;//Default pos
 var UserLiveFeedobj_MAX = UserLiveFeedobj_UserGamesPos;
 var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 
