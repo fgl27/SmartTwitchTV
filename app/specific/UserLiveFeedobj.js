@@ -878,7 +878,25 @@ function UserLiveFeedobj_SetBottomText(pos) {
         Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
 
     Main_AddClass('feed_end_' + pos, 'feed_end_name_focus');
+
+    for (var i = 0; i < 6; i++) {
+        if (i < pos) {
+            Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_up');
+            Main_AddClass('feed_end_icon_' + i, 'feed_end_icon_down');
+
+            Main_RemoveClass('feed_end_icon_' + i, 'icon-key-down');
+            Main_AddClass('feed_end_icon_' + i, 'icon-key-up');
+        } else {
+            Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_down');
+            Main_AddClass('feed_end_icon_' + i, 'feed_end_icon_up');
+
+            Main_RemoveClass('feed_end_icon_' + i, 'icon-key-up');
+            Main_AddClass('feed_end_icon_' + i, 'icon-key-down');
+        }
+    }
+
     Main_textContent('feed_end_0', UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : (STR_GAMES));
     Main_textContent('feed_end_2', Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME);
     Main_innerHTML('feed_end_6', UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES));
+
 }
