@@ -4939,6 +4939,10 @@
 
         if (xmlHttp.status === 200) {
             callbackSucess(xmlHttp.responseText, obj);
+        } else if (xmlHttp.status === 500) {
+            if (Main_isElementShowing('scene1') && obj.screen === Main_usergames)
+                obj.key_refresh();
+            else calbackError(obj);
         } else {
             calbackError(obj);
         }
@@ -4967,6 +4971,10 @@
                     callbackSucess(xmlHttp.responseText, obj);
                 } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                     AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
+                } else if (xmlHttp.status === 500) {
+                    if (Main_isElementShowing('scene1') && obj.screen === Main_usergames)
+                        obj.key_refresh();
+                    else calbackError(obj);
                 } else {
                     calbackError(obj);
                 }
@@ -11360,7 +11368,7 @@
         if (obj.isHistory)
             obj.history_concatenate();
         else if (obj.use_hls)
-            BasehttpHlsGet(obj.url + Main_TwithcV5Flag, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
+            BasehttpHlsGet(obj.url, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
         else if (Main_IsNotBrowser && !obj.itemsCount && Screens_ForceSync)
             BaseAndroidhttpGet(obj.url + Main_TwithcV5Flag, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
         else
@@ -14175,6 +14183,7 @@
         }, Base_obj);
 
         UserGames = Screens_assign(UserGames, Base_Game_obj);
+        UserGames.HeaderQuatity = 1;
     }
 
     function ScreensObj_InitSearchGames() {
@@ -18177,10 +18186,9 @@
 
     function UserLiveFeedobj_loadUserGames() {
         var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=150'; //follows
-        //var theUrl = Main_kraken_api + 'games/top?limit=100';//top
 
         UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserGames;
-        BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserGamesSuccess, UserLiveFeedobj_loadDataError);
+        BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 1, null, UserLiveFeedobj_loadDataUserGamesSuccess, UserLiveFeedobj_loadDataError);
     }
 
     function UserLiveFeedobj_loadDataUserGamesSuccess(responseText) {
