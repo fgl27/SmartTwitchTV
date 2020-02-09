@@ -495,7 +495,7 @@ function Play_Resume() {
     if (navigator.onLine) Play_ResumeAfterOnline();
     else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
 
-    Play_UpdateMainStream(true);
+    if (!Play_MultiEnable) Play_UpdateMainStream(true);
     window.clearInterval(Play_streamInfoTimerId);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
     Play_ShowPanelStatus(1);
