@@ -3484,7 +3484,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.110';
-    var Main_minversion = '020820';
+    var Main_minversion = '020920';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -17181,7 +17181,7 @@
     }
 
     function UserLiveFeed_setHideFeed() {
-        if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 5500);
+        if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = window.setTimeout(UserLiveFeed_Hide, 10000);
     }
 
     function UserLiveFeed_FeedRefresh() {
