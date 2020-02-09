@@ -902,8 +902,8 @@ function UserLiveFeedobj_SetBottomText(pos) {
         }
     }
 
-    Main_textContent('feed_end_0', UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : (STR_GAMES));
-    Main_textContent('feed_end_2', Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME);
-    Main_innerHTML('feed_end_6', UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES));
+    Main_innerHTML('feed_end_0', STR_SPACE + (UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : (STR_GAMES)) + STR_SPACE);
+    Main_innerHTML('feed_end_2', STR_SPACE + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + STR_SPACE);
+    Main_innerHTML('feed_end_6', STR_SPACE + (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES)) + STR_SPACE);
 
 }
