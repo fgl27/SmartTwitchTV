@@ -123,10 +123,10 @@ function UserLiveFeed_Prepare() {
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
     UserLiveFeed_Setworker();
-    Main_innerHTML('feed_end_1', STR_FEATURED);
-    Main_innerHTML('feed_end_3', STR_LIVE);
-    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
-    Main_innerHTML('feed_end_5', STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+    Main_innerHTML('feed_end_1', STR_SPACE + STR_FEATURED + STR_SPACE);
+    Main_innerHTML('feed_end_3', STR_SPACE + STR_LIVE + STR_SPACE);
+    Main_innerHTML('feed_end_4', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE + STR_SPACE);
+    Main_innerHTML('feed_end_5', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE_HOSTS + STR_SPACE);
 }
 
 function UserLiveFeed_Setworker() {
