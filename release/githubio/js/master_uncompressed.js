@@ -5883,8 +5883,11 @@
                         } else if (PlayVod_PanelY === 1) PlayClip_Enter();
                         else Play_BottomOptionsPressed(3);
                         PlayClip_setHidePanel();
-                    } else if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayClip_OpenLiveStream);
-                    else PlayClip_showPanel();
+                    } else if (UserLiveFeed_isFeedShow()) {
+                        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
+                            UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                        else Play_CheckIfIsLiveStart(PlayClip_OpenLiveStream);
+                    } else PlayClip_showPanel();
                     break;
                 case KEY_STOP:
                     Play_CleanHideExit();
@@ -5900,8 +5903,11 @@
                         UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
                         Play_EndIconsAddFocus();
                     } else if (Play_isPanelShown()) PlayClip_hidePanel();
-                    else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) UserLiveFeed_Hide();
-                    else {
+                    else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) {
+                        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
+                            UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                        else UserLiveFeed_Hide();
+                    } else {
                         if (Play_ExitDialogVisible() || Play_SingleClickExit) {
                             Play_CleanHideExit();
                             PlayClip_shutdownStream();
@@ -11056,8 +11062,11 @@
                             if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                         } else Play_BottomOptionsPressed(2);
                         PlayVod_setHidePanel();
-                    } else if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
-                    else PlayVod_showPanel(true);
+                    } else if (UserLiveFeed_isFeedShow()) {
+                        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
+                            UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                        else Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                    } else PlayVod_showPanel(true);
                     break;
                 case KEY_STOP:
                     Play_CleanHideExit();
