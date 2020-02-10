@@ -483,7 +483,7 @@ function Screens_loadDataSuccessFinish(obj) {
         } else {
             Screens_addFocus(true);
             Main_SaveValues();
-            Screens_loadDataSuccessFinishEnd();
+            Main_HideLoadDialog();
         }
     } else if (Main_isElementShowing(obj.ids[10])) {
         Main_CounterDialog(obj.posX, obj.posY, obj.ColoumnsCount, obj.itemsCount);
