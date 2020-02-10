@@ -135,7 +135,7 @@
         .animate_height_transition_games,
         .animate_height_transition {
             height: 47vh;
-            transition: height 0.35s ease-in-out;
+            transition: height 0.35s linear;
         }
 
         .animate_height_transition_games {
@@ -147,7 +147,9 @@
         }
 
         .side_panel_holder_ani {
-            transition: margin-top 0.2s ease-in-out;
+            transform: none;
+            transition: transform 200ms linear;
+            will-change: transform;
         }
 
         div.screen_holder,
@@ -158,7 +160,7 @@
             width: 100%;
             position: absolute;
             top: 6.9%;
-            transition: top 0.25s ease-in-out;
+            transition: top 0.25s linear;
         }
 
         div.screen_holder_switch {
@@ -262,7 +264,7 @@
 
         div.feed_thumbnail_focused {
             /* same animation time as user_feed_scroll_ani*/
-            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+            transition: background-color 0.2s linear, color 0.2s linear, border-color 0.2s linear;
         }
 
         div.stream_thumbnail_focused_no_ani,
@@ -274,7 +276,7 @@
 
         div.stream_thumbnail_focused {
             /* same animation time as animate_height_transition*/
-            transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out, border-color 0.35s ease-in-out;
+            transition: background-color 0.35s linear, color 0.35s linear, border-color 0.35s linear;
         }
 
         div.stream_switch_focused {
@@ -682,7 +684,7 @@
         }
 
         div.scenefeed_background {
-            transition: background 0.3s ease-in-out;
+            transition: background 0.3s linear;
             background: rgba(0, 0, 0, 0.75);
         }
 
@@ -696,11 +698,13 @@
             background: #000000;
             border: 0.06em solid;
             border-color: #ebebeb !important;
-            transition: margin-top 0.3s ease-in-out;
+            transform: none;
+            transition: transform 300ms linear;
+            will-change: transform;
         }
 
         div.user_feed_notify_hide {
-            margin-top: -20%;
+            transform: translateY(-120%);
         }
 
         div.user_feed {
@@ -724,14 +728,13 @@
             height: auto;
             white-space: nowrap;
             bottom: 8%;
+            transform: none;
+            transition: transform 200ms linear;
+            will-change: transform;
         }
 
         div.user_feed_scroll_game {
             bottom: 4%;
-        }
-
-        div.user_feed_scroll_ani {
-            transition: left 0.15s ease-in-out;
         }
 
         /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
@@ -1043,7 +1046,9 @@
             width: 5%;
             margin-left: -1%;
             overflow: hidden;
-            transition: margin-left 0.25s ease-in-out;
+            transform: none;
+            transition: transform 250ms linear;
+            will-change: transform;
         }
 
         div.side_panel_fix {
@@ -1162,17 +1167,19 @@
             left: -1%;
             height: 100%;
             width: 25.5%;
-            transition: margin-left 0.25s ease-in-out;
             overflow: hidden;
+            transform: none;
+            transition: transform 250ms linear;
+            will-change: transform;
+        }
+
+        div.side_panel_hide {
+            transform: translateX(-100%);
         }
 
         div.side_panel_border {
             border-right: 0.11em solid;
             border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
-        }
-
-        div.side_panel_hide {
-            margin-left: -31.5%;
         }
 
         .side_panel_icons {
@@ -2825,7 +2832,7 @@
         </div>
     </div>
     <div id="scenefeed" class="feed_screen">
-        <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide" style="margin-top: -20%;">
+        <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide" style="transform: translateY(-120%);">
             <div id="user_feed_notify_content" class="side_panel_not">
                 <div id="user_feed_notify_main" class="class_bold" style="text-align: center;"></div>
                 <div>
@@ -2893,7 +2900,7 @@
             </div>
         </div>
         <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide"
-            style="margin-left: -31.5%;">
+            style="transform: translateX(-100%);">
             <div id="side_panel_new" style="width: 100%; position: absolute;">
                 <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
                     <div id="dialog_loading_side_feed" class="side_panel_dialog hide">

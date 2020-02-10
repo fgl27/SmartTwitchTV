@@ -192,6 +192,7 @@ function Screens_loadDatafail(obj) {
         obj.key_exit();
         Main_ShowElement('topbar');
         Main_ShowElement('side_panel_new_holder');
+        AddUser_UpdateSidepanelAfterShow();
     } else obj.dataEnded = true;
 }
 
@@ -516,6 +517,7 @@ function Screens_loadDataSuccessFinishEnd() {
     Main_HideLoadDialog();
     Main_ShowElement('topbar');
     Main_ShowElement('side_panel_new_holder');
+    AddUser_UpdateSidepanelAfterShow();
 
     if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLables();
     else Sidepannel_SetDefaultLables();

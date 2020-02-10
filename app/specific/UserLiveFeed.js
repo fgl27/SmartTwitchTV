@@ -388,18 +388,16 @@ function UserLiveFeed_FeedSetPos(skipAnimation, pos) {
         Screens_ChangeFocusAnimationFast = true;
 
         doc.style.transition = '';
-        doc.classList.add('user_feed_scroll_ani');
 
         window.setTimeout(function() {
             Screens_ChangeFocusAnimationFinished = true;
-        }, 200); //Same value as user_feed_scroll_ani
+        }, 200); //Same value as user_feed_scroll
     } else {
         if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
         doc.style.transition = 'none';
-        doc.classList.remove('user_feed_scroll_ani');
     }
 
-    if (position) doc.style.left = (position / BodyfontSize) + "em";
+    if (position) doc.style.transform = 'translateX(' + (position / BodyfontSize) + "em)";
 }
 
 function UserLiveFeed_ThumbNull(y, thumbnail) {
