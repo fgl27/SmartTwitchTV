@@ -4008,23 +4008,43 @@
     }
 
     function Main_isElementShowing(element) {
-        return !Main_A_includes_B(document.getElementById(element).className, 'hide');
+        return Main_isElementShowingWithEle(document.getElementById(element));
+    }
+
+    function Main_isElementShowingWithEle(element) {
+        return !Main_A_includes_B(element.className, 'hide');
     }
 
     function Main_AddClass(element, mclass) {
-        document.getElementById(element).classList.add(mclass);
+        Main_AddClassWitEle(document.getElementById(element), mclass);
+    }
+
+    function Main_AddClassWitEle(element, mclass) {
+        element.classList.add(mclass);
     }
 
     function Main_RemoveClass(element, mclass) {
-        document.getElementById(element).classList.remove(mclass);
+        Main_RemoveClassWithEle(document.getElementById(element), mclass);
+    }
+
+    function Main_RemoveClassWithEle(element, mclass) {
+        element.classList.remove(mclass);
     }
 
     function Main_innerHTML(div, value) {
-        document.getElementById(div).innerHTML = value;
+        Main_innerHTMLWithEle(document.getElementById(div), value);
+    }
+
+    function Main_innerHTMLWithEle(ele, value) {
+        ele.innerHTML = value;
     }
 
     function Main_textContent(div, value) {
-        document.getElementById(div).textContent = value;
+        Main_textContentWithEle(document.getElementById(div), value);
+    }
+
+    function Main_textContentWithEle(ele, value) {
+        ele.textContent = value;
     }
 
     function Main_replaceClassEmoji(div) {
@@ -6421,6 +6441,7 @@
     var Play_EndUpclearID;
     var Play_EndUpclearCalback;
     var Play_EndDialogEnter = 0;
+    var Play_PannelId;
 
     var Play_streamInfoTimerId = null;
     var Play_tokenResponse = 0;
@@ -6558,6 +6579,7 @@
     function Play_PreStart() {
         Play_chat_container = document.getElementById("chat_container");
         Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
+        Play_PannelId = document.getElementById("scene_channel_panel");
 
         Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
         Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 2);
@@ -7767,7 +7789,7 @@
     }
 
     function Play_isPanelShown() {
-        return document.getElementById("scene_channel_panel").style.opacity === '1';
+        return Play_PannelId.style.opacity === '1';
     }
 
     function Play_hidePanel() {
@@ -7779,13 +7801,13 @@
     }
 
     function Play_ForceShowPannel() {
-        document.getElementById("scene_channel_panel").style.opacity = "1";
+        Play_PannelId.style.opacity = "1";
         if (!Play_Status_Always_On) Main_ShowElement('playsideinfo');
         else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
     }
 
     function Play_ForceHidePannel() {
-        document.getElementById("scene_channel_panel").style.opacity = "0";
+        Play_PannelId.style.opacity = "0";
         if (!Play_Status_Always_On) Main_HideElement('playsideinfo');
         else Main_AddClass('playsideinfo', 'playsideinfofocus');
     }
@@ -16927,6 +16949,7 @@
     var UserLiveFeed_Notify = true;
     var UserLiveFeed_NotifyRunning = false;
     var UserLiveFeed_NotifyTimeout = 3000;
+    var UserLiveFeed_FeedId;
 
     var UserLiveFeed_FeedPosY = [];
     var UserLiveFeed_itemsCount = [];
@@ -17035,6 +17058,7 @@
 
         Sidepannel_ScroolDoc = document.getElementById("side_panel_holder");
         Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
+        UserLiveFeed_FeedId = document.getElementById('user_feed');
     }
 
     function UserLiveFeed_Setworker() {
@@ -17196,7 +17220,7 @@
     }
 
     function UserLiveFeed_isFeedShow() {
-        return !Main_A_includes_B(document.getElementById('user_feed').className, 'user_feed_hide');
+        return !Main_A_includes_B(UserLiveFeed_FeedId.className, 'user_feed_hide');
     }
 
     function UserLiveFeed_ShowFeed() {
@@ -17204,11 +17228,11 @@
     }
 
     function UserLiveFeed_Show() {
-        Main_RemoveClass('user_feed', 'user_feed_hide');
+        Main_RemoveClassWithEle(UserLiveFeed_FeedId, 'user_feed_hide');
     }
 
     function UserLiveFeed_Hide() {
-        Main_AddClass('user_feed', 'user_feed_hide');
+        Main_AddClassWitEle(UserLiveFeed_FeedId, 'user_feed_hide');
     }
 
     function UserLiveFeed_ResetFeedId() {
@@ -17554,15 +17578,18 @@
             Main_HideElement('dialog_loading_side_feed');
 
             if (UserLiveFeed_isFeedShow()) {
-                UserLiveFeed_obj[UserLiveFeed_FeedPosX].div.innerHTML =
-                    '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + STR_REFRESH_PROBLEM + '</div>';
+                UserLiveFeedobj_HooderDiv(UserLiveFeed_FeedPosX, STR_REFRESH_PROBLEM);
             }
         }
     }
 
     function UserLiveFeedobj_Empty(pos) {
-        UserLiveFeed_obj[pos].div.innerHTML =
-            '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + STR_NO_LIVE_CONTENT + '</div>';
+        UserLiveFeedobj_HooderDiv(pos, STR_NO_LIVE_CONTENT);
+    }
+
+    function UserLiveFeedobj_HooderDiv(pos, text) {
+        Main_innerHTMLWithEle(UserLiveFeed_obj[pos].div,
+            '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + text + '</div>');
     }
 
     function UserLiveFeedobj_loadChannelLive(responseText) {
