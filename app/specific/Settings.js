@@ -127,6 +127,14 @@ var Settings_FeedSort = [
     [null, 'created_at', 1]
 ];
 
+var Settings_FeedSortHost = JSON.parse(JSON.stringify(Settings_FeedSort));
+Settings_FeedSortHost[4][1] = 'meta_game';
+Settings_FeedSortHost[5][1] = 'meta_game';
+
+var Settings_FeedSortGames = JSON.parse(JSON.stringify(Settings_FeedSort));
+Settings_FeedSortGames[2][0] = 'game';
+Settings_FeedSortGames[3][0] = 'game';
+
 function Settings_GenerateClock() {
     var clock = [],
         time = 43200,
