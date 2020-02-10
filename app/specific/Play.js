@@ -1421,8 +1421,7 @@ function Play_UpdateStatus(mwhocall) {
     var isLive = mwhocall === 1;
 
     if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(false, Play_SetHtmlQuality);
-    else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying.qualityPlaying, 'Auto')) Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
-
+    else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
     Play_VideoStatus(isLive);
 }
 
