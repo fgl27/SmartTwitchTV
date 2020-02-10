@@ -49,6 +49,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            will-change: color;
         }
 
         .feed_end_name_focus {
@@ -136,6 +137,7 @@
         .animate_height_transition {
             height: 47vh;
             transition: height 0.35s linear;
+            will-change: height;
         }
 
         .animate_height_transition_games {
@@ -161,6 +163,7 @@
             position: absolute;
             top: 6.9%;
             transition: top 0.25s linear;
+            will-change: top, display;
         }
 
         div.screen_holder_switch {
@@ -238,6 +241,7 @@
             height: 0;
             position: relative;
             border: 0.06em solid rgba(0, 0, 0, 0);
+            will-change: background-color, color, border-color;
         }
 
         div.stream_thumbnail_clip {
@@ -277,6 +281,7 @@
         div.stream_thumbnail_focused {
             /* same animation time as animate_height_transition*/
             transition: background-color 0.35s linear, color 0.35s linear, border-color 0.35s linear;
+            will-change: background-color, color, border-color;
         }
 
         div.stream_switch_focused {
@@ -686,6 +691,7 @@
         div.scenefeed_background {
             transition: background 0.3s linear;
             background: rgba(0, 0, 0, 0.75);
+            will-change: background;
         }
 
         div.user_feed_notify {
@@ -730,7 +736,7 @@
             bottom: 8%;
             transform: none;
             transition: transform 200ms linear;
-            will-change: transform;
+            will-change: transform, display, opacity;
         }
 
         div.user_feed_scroll_game {
@@ -880,6 +886,7 @@
             position: absolute;
             z-index: 2;
             opacity: 0;
+            will-change: opacity;
         }
 
         .opacity_zero {

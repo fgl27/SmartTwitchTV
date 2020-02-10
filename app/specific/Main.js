@@ -631,23 +631,43 @@ function Main_ShowElement(element) {
 }
 
 function Main_isElementShowing(element) {
-    return !Main_A_includes_B(document.getElementById(element).className, 'hide');
+    return Main_isElementShowingWithEle(document.getElementById(element));
+}
+
+function Main_isElementShowingWithEle(element) {
+    return !Main_A_includes_B(element.className, 'hide');
 }
 
 function Main_AddClass(element, mclass) {
-    document.getElementById(element).classList.add(mclass);
+    Main_AddClassWitEle(document.getElementById(element), mclass);
+}
+
+function Main_AddClassWitEle(element, mclass) {
+    element.classList.add(mclass);
 }
 
 function Main_RemoveClass(element, mclass) {
-    document.getElementById(element).classList.remove(mclass);
+    Main_RemoveClassWithEle(document.getElementById(element), mclass);
+}
+
+function Main_RemoveClassWithEle(element, mclass) {
+    element.classList.remove(mclass);
 }
 
 function Main_innerHTML(div, value) {
-    document.getElementById(div).innerHTML = value;
+    Main_innerHTMLWithEle(document.getElementById(div), value);
+}
+
+function Main_innerHTMLWithEle(ele, value) {
+    ele.innerHTML = value;
 }
 
 function Main_textContent(div, value) {
-    document.getElementById(div).textContent = value;
+    Main_textContentWithEle(document.getElementById(div), value);
+}
+
+function Main_textContentWithEle(ele, value) {
+    ele.textContent = value;
 }
 
 function Main_replaceClassEmoji(div) {

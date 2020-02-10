@@ -22,6 +22,7 @@ var UserLiveFeed_PreloadImgs = [];
 var UserLiveFeed_Notify = true;
 var UserLiveFeed_NotifyRunning = false;
 var UserLiveFeed_NotifyTimeout = 3000;
+var UserLiveFeed_FeedId;
 
 var UserLiveFeed_FeedPosY = [];
 var UserLiveFeed_itemsCount = [];
@@ -130,6 +131,7 @@ function UserLiveFeed_Prepare() {
 
     Sidepannel_ScroolDoc = document.getElementById("side_panel_holder");
     Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
+    UserLiveFeed_FeedId = document.getElementById('user_feed');
 }
 
 function UserLiveFeed_Setworker() {
@@ -287,7 +289,7 @@ function UserLiveFeed_CreatFeed(id, data, ishosting) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return !Main_A_includes_B(document.getElementById('user_feed').className, 'user_feed_hide');
+    return !Main_A_includes_B(UserLiveFeed_FeedId.className, 'user_feed_hide');
 }
 
 function UserLiveFeed_ShowFeed() {
@@ -295,11 +297,11 @@ function UserLiveFeed_ShowFeed() {
 }
 
 function UserLiveFeed_Show() {
-    Main_RemoveClass('user_feed', 'user_feed_hide');
+    Main_RemoveClassWithEle(UserLiveFeed_FeedId, 'user_feed_hide');
 }
 
 function UserLiveFeed_Hide() {
-    Main_AddClass('user_feed', 'user_feed_hide');
+    Main_AddClassWitEle(UserLiveFeed_FeedId, 'user_feed_hide');
 }
 
 function UserLiveFeed_ResetFeedId() {

@@ -93,15 +93,18 @@ function UserLiveFeedobj_loadDataError() {
         Main_HideElement('dialog_loading_side_feed');
 
         if (UserLiveFeed_isFeedShow()) {
-            UserLiveFeed_obj[UserLiveFeed_FeedPosX].div.innerHTML =
-                '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + STR_REFRESH_PROBLEM + '</div>';
+            UserLiveFeedobj_HooderDiv(UserLiveFeed_FeedPosX, STR_REFRESH_PROBLEM);
         }
     }
 }
 
 function UserLiveFeedobj_Empty(pos) {
-    UserLiveFeed_obj[pos].div.innerHTML =
-        '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + STR_NO_LIVE_CONTENT + '</div>';
+    UserLiveFeedobj_HooderDiv(pos, STR_NO_LIVE_CONTENT);
+}
+
+function UserLiveFeedobj_HooderDiv(pos, text) {
+    Main_innerHTMLWithEle(UserLiveFeed_obj[pos].div,
+        '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + text + '</div>');
 }
 
 function UserLiveFeedobj_loadChannelLive(responseText) {
