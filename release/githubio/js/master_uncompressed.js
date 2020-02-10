@@ -6441,7 +6441,7 @@
     var Play_EndUpclearID;
     var Play_EndUpclearCalback;
     var Play_EndDialogEnter = 0;
-    var Play_PannelId;
+    var Play_PanneInfoDoclId;
 
     var Play_streamInfoTimerId = null;
     var Play_tokenResponse = 0;
@@ -6579,7 +6579,7 @@
     function Play_PreStart() {
         Play_chat_container = document.getElementById("chat_container");
         Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
-        Play_PannelId = document.getElementById("scene_channel_panel");
+        Play_PanneInfoDoclId = document.getElementById("scene_channel_panel");
 
         Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
         Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 2);
@@ -7789,7 +7789,7 @@
     }
 
     function Play_isPanelShown() {
-        return Play_PannelId.style.opacity === '1';
+        return Play_PanneInfoDoclId.style.opacity === '1';
     }
 
     function Play_hidePanel() {
@@ -7801,13 +7801,13 @@
     }
 
     function Play_ForceShowPannel() {
-        Play_PannelId.style.opacity = "1";
+        Play_PanneInfoDoclId.style.opacity = "1";
         if (!Play_Status_Always_On) Main_ShowElement('playsideinfo');
         else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
     }
 
     function Play_ForceHidePannel() {
-        Play_PannelId.style.opacity = "0";
+        Play_PanneInfoDoclId.style.opacity = "0";
         if (!Play_Status_Always_On) Main_HideElement('playsideinfo');
         else Main_AddClass('playsideinfo', 'playsideinfofocus');
     }
@@ -16949,7 +16949,7 @@
     var UserLiveFeed_Notify = true;
     var UserLiveFeed_NotifyRunning = false;
     var UserLiveFeed_NotifyTimeout = 3000;
-    var UserLiveFeed_FeedId;
+    var UserLiveFeed_FeedHolderDocId;
 
     var UserLiveFeed_FeedPosY = [];
     var UserLiveFeed_itemsCount = [];
@@ -17058,7 +17058,7 @@
 
         Sidepannel_ScroolDoc = document.getElementById("side_panel_holder");
         Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
-        UserLiveFeed_FeedId = document.getElementById('user_feed');
+        UserLiveFeed_FeedHolderDocId = document.getElementById('user_feed');
     }
 
     function UserLiveFeed_Setworker() {
@@ -17220,7 +17220,7 @@
     }
 
     function UserLiveFeed_isFeedShow() {
-        return !Main_A_includes_B(UserLiveFeed_FeedId.className, 'user_feed_hide');
+        return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'user_feed_hide');
     }
 
     function UserLiveFeed_ShowFeed() {
@@ -17228,11 +17228,11 @@
     }
 
     function UserLiveFeed_Show() {
-        Main_RemoveClassWithEle(UserLiveFeed_FeedId, 'user_feed_hide');
+        Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     }
 
     function UserLiveFeed_Hide() {
-        Main_AddClassWitEle(UserLiveFeed_FeedId, 'user_feed_hide');
+        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     }
 
     function UserLiveFeed_ResetFeedId() {
