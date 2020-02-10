@@ -400,4 +400,5 @@ function en_USLang() {
     STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
     STR_FEED_END_DIALOG = ', Press back to go back to top menu';
     STR_BACK_USER_GAMES = ' Press back key to ';
+    STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
 }
