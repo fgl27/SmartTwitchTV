@@ -79,8 +79,7 @@ function UserLiveFeedobj_loadChannels() {
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannels;
 
-    if (Main_IsNotBrowser && UserLiveFeed_isFeedShow()) BaseAndroidhttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
-    else BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_loadDataError() {
@@ -138,35 +137,21 @@ function UserLiveFeedobj_loadChannelUserLive() {
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
-    var xmlHttp;
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
 
-    if (Main_IsNotBrowser && UserLiveFeed_isFeedShow()) {
-        xmlHttp = Android.mreadUrl(theUrl, UserLiveFeed_loadingDataTimeout, UserLiveFeed_token ? 3 : 2, UserLiveFeed_token);
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
 
-        if (xmlHttp) UserLiveFeedobj_loadChannelUserLiveGetEnd(JSON.parse(xmlHttp));
-        else {
-            UserLiveFeedobj_loadDataError();
-            return;
-        }
+    xmlHttp.ontimeout = function() {};
 
-    }
-    else {
-        xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
+    };
 
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
-
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
-        };
-
-        xmlHttp.send(null);
-    }
+    xmlHttp.send(null);
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
@@ -495,7 +480,7 @@ function UserLiveFeedobj_loadLive() {
         Main_TwithcV5Flag;
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadLive;
-    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError);
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_LiveCell(cell) {
@@ -529,7 +514,7 @@ function UserLiveFeedobj_loadFeatured() {
         AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadFeatured;
-    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess, UserLiveFeedobj_loadDataError);
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_FeaturedCell(cell) {
@@ -562,7 +547,7 @@ function UserLiveFeedobj_loadCurrentGame() {
         '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
-    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess, UserLiveFeedobj_loadDataError);
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_CurrentGameCell(cell) {
@@ -597,7 +582,7 @@ function UserLiveFeedobj_loadUserHost() {
         '/followed/hosting?limit=100';
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserHost;
-    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError);
+    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
@@ -742,7 +727,7 @@ function UserLiveFeedobj_loadUserGames() {
     var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=150';//follows
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserGames;
-    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 1, null, UserLiveFeedobj_loadDataUserGamesSuccess, UserLiveFeedobj_loadDataError);
+    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 1, null, UserLiveFeedobj_loadDataUserGamesSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_loadDataUserGamesSuccess(responseText) {
@@ -776,7 +761,7 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
-    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess, UserLiveFeedobj_loadDataError);
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_CurrentUserGameCell(cell) {
@@ -813,7 +798,7 @@ function UserLiveFeedobj_loadGames() {
     var theUrl = Main_kraken_api + 'games/top?limit=100';//top
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadGames;
-    BasehttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataGamesSuccess, UserLiveFeedobj_loadDataError);
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataGamesSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_loadDataGamesSuccess(responseText) {
@@ -843,7 +828,7 @@ function UserLiveFeedobj_loadCurrentAGame() {
         '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
     UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
-    BasehttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess, UserLiveFeedobj_loadDataError);
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess, UserLiveFeedobj_loadDataError);
 }
 
 function UserLiveFeedobj_CurrentAGameCell(cell) {
