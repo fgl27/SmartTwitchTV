@@ -586,7 +586,6 @@ function Settings_SetAnimations() {
             'side_panel_holder_ani',
             'scenefeed_background',
             'user_feed_notify',
-            'user_feed_scroll_ani',
             'side_panel_fix',
             'side_panel_movel',
             'side_panel'

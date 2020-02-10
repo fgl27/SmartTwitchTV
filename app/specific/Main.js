@@ -406,8 +406,8 @@ function Main_initWindows() {
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Screens_InitScreens();
 
-        document.getElementById("side_panel").style.marginLeft = '';
-        document.getElementById("user_feed_notify").style.marginTop = '';
+        document.getElementById("side_panel").style.transform = '';
+        document.getElementById("user_feed_notify").style.transform = '';
 
         Main_checkVersion();
 

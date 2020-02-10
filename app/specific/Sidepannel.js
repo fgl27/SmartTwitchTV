@@ -8,6 +8,9 @@ var Sidepannel_MoveldefaultMargin = 13.5;
 var Sidepannel_FixdefaultMargin = 5;
 var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
 
+var Sidepannel_FixDiv;
+var Sidepannel_MovelDiv;
+
 function Sidepannel_AddFocusMain() {
     Main_AddClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
 }
@@ -201,16 +204,6 @@ function Sidepannel_Start(callback, forceFeed) {
     } else Sidepannel_StartMain();
 }
 
-function Sidepannel_StartMain() {
-    Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-    Sidepannel_IsMain = true;
-    Main_ShowElement('side_panel_fix');
-    document.getElementById('side_panel_movel').style.marginLeft = 0;
-    document.getElementById('side_panel_fix').style.marginLeft = '';
-    document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
-    Sidepannel_AddFocusMain();
-}
-
 function Sidepannel_StartFeed() {
     Sidepannel_IsMain = false;
     document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
@@ -234,21 +227,33 @@ function Sidepannel_ShowFeed() {
     }
 }
 
+function Sidepannel_StartMain() {
+    Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+    Sidepannel_IsMain = true;
+    Main_ShowElement('side_panel_fix');
+    Sidepannel_MovelDiv.style.transform = 'translateX(' + Sidepannel_FixdefaultMargin + '%)';
+    Sidepannel_FixDiv.style.marginLeft = '';
+    document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
+    Sidepannel_AddFocusMain();
+}
+
 function Sidepannel_HideMain(hideAll) {
     var size = AddUser_UsernameArray[0] ? AddUser_UsernameArray[0].display_name.length : STR_USER_ADD;
     size = (size > 11 ? size - 11 : 0);
 
-    if (hideAll) document.getElementById('side_panel_fix').style.marginLeft = '-' + Sidepannel_FixdefaultMargin + '%';
+    if (hideAll) Sidepannel_FixDiv.style.marginLeft = '-' + Sidepannel_FixdefaultMargin + '%';
 
-    document.getElementById('side_panel_movel').style.marginLeft =
-        'calc(-' + (hideAll ? (Sidepannel_MoveldefaultWidth + 0.5) : Sidepannel_MoveldefaultMargin) + '% - ' + size + 'ch)';
+    var pos = hideAll ? Sidepannel_MovelDiv.offsetWidth :
+        (Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth);
+
+    Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
 }
 
 function Sidepannel_Hide() {
     Sidepannel_HideMain();
     Sidepannel_RemoveFocusMain();
     Main_ShowElement('side_panel_fix');
-    document.getElementById('side_panel_fix').style.marginLeft = '';
+    Sidepannel_FixDiv.style.marginLeft = '';
     Main_AddClass('side_panel', 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
     Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
@@ -371,15 +376,15 @@ function Sidepannel_SetIcons(div, icon) {
 }
 
 function Sidepannel_Scroll(skipAnimation) {
-    var value = '0%', //default
+    var value = '0', //default
         center = 6,
         doc = document.getElementById('side_panel_holder');
 
     if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
-            value = (-18.115 * (Sidepannel_PosFeed - center)) + '%';
+            value = document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - center)).offsetTop;
         else if (((Sidepannel_GetSize() - center) - center) > 0) //if we are in the 7 left
-            value = (-18.115 * (Sidepannel_GetSize() - (center * 2))) + '%';
+            value = document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
     }
 
     if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
@@ -388,7 +393,6 @@ function Sidepannel_Scroll(skipAnimation) {
         Screens_ChangeFocusAnimationFast = true;
 
         doc.style.transition = '';
-        doc.classList.add('side_panel_holder_ani');
 
         window.setTimeout(function() {
             Screens_ChangeFocusAnimationFinished = true;
@@ -397,11 +401,9 @@ function Sidepannel_Scroll(skipAnimation) {
     } else {
         if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
         doc.style.transition = 'none';
-        doc.classList.remove('side_panel_holder_ani');
     }
 
-    doc.style.marginTop = value;
-
+    doc.style.transform = 'translateY(-' + (value / BodyfontSize) + 'em)';
 }
 
 function Sidepannel_handleKeyDown(event) {

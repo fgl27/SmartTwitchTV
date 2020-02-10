@@ -172,6 +172,9 @@ function AddUser_loadDataNoUser() {
 }
 
 function AddUser_RestoreUsers() {
+    Sidepannel_FixDiv = document.getElementById('side_panel_fix');
+    Sidepannel_MovelDiv = document.getElementById('side_panel_movel');
+
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
 
@@ -206,19 +209,31 @@ function AddUser_UpdateSidepanelDefault() {
     AddUser_UpdateSidepanelSize(IMG_404_LOGO, STR_USER_ADD);
 }
 
+function AddUser_UpdateSidepanelAfterShow() {
+    if (AddUser_IsUserSet()) AddUser_UpdateSidepanel();
+    else AddUser_UpdateSidepanelDefault();
+}
+
 function AddUser_UpdateSidepanelSize(logo, username) {
     Main_innerHTML("side_panel_new_0_img",
         '<img class="side_panel_new_img" alt="" src="' +
         logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';">');
     Sidepannel_SetUserlable(username);
 
-    var size = username.length,
-        doc = document.getElementById('side_panel_movel');
+    var size = username.lengthdoc = document.getElementById('side_panel_movel');
 
     size = (size > 11 ? size - 11 : 0);
 
-    doc.style.marginLeft = 'calc(-' + Sidepannel_MoveldefaultMargin + '% - ' + size + 'ch)';
-    doc.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
+    Sidepannel_MovelDiv.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
+
+    var pos = Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth;
+
+    if (pos) Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + 'em)';
+    else {
+        var newsize = document.body.offsetWidth;
+        newsize = (newsize / 100 * (Sidepannel_MoveldefaultWidth + size)) - (newsize / 100 * 5);
+        Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
+    }
 }
 
 function AddUser_UserIsSet() {
