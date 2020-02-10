@@ -6004,14 +6004,20 @@
                     Play_controls[Play_controlsChat].enterKey(3);
                     break;
                 case KEY_PG_UP:
-                    Play_Panelcounter = Play_controlsChatPos;
-                    Play_BottomUpDown(3, 1);
-                    Play_Panelcounter = Play_controlsDefault;
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
+                    else {
+                        Play_Panelcounter = Play_controlsChatPos;
+                        Play_BottomUpDown(3, 1);
+                        Play_Panelcounter = Play_controlsDefault;
+                    }
                     break;
                 case KEY_PG_DOWN:
-                    Play_Panelcounter = Play_controlsChatPos;
-                    Play_BottomUpDown(3, -1);
-                    Play_Panelcounter = Play_controlsDefault;
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
+                    else {
+                        Play_Panelcounter = Play_controlsChatPos;
+                        Play_BottomUpDown(3, -1);
+                        Play_Panelcounter = Play_controlsDefault;
+                    }
                     break;
                 case KEY_MEDIA_FAST_FORWARD:
                     if (!Play_isEndDialogVisible()) PlayClip_FastBackForward(1);
@@ -9322,14 +9328,20 @@
                     Play_controls[Play_controlsChat].enterKey(1);
                     break;
                 case KEY_PG_UP:
-                    Play_Panelcounter = Play_controlsChatPos;
-                    Play_BottomUpDown(1, 1);
-                    Play_Panelcounter = Play_controlsDefault;
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
+                    else {
+                        Play_Panelcounter = Play_controlsChatPos;
+                        Play_BottomUpDown(1, 1);
+                        Play_Panelcounter = Play_controlsDefault;
+                    }
                     break;
                 case KEY_PG_DOWN:
-                    Play_Panelcounter = Play_controlsChatPos;
-                    Play_BottomUpDown(1, -1);
-                    Play_Panelcounter = Play_controlsDefault;
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
+                    else {
+                        Play_Panelcounter = Play_controlsChatPos;
+                        Play_BottomUpDown(1, -1);
+                        Play_Panelcounter = Play_controlsDefault;
+                    }
                     break;
                 default:
                     break;
@@ -11212,14 +11224,20 @@
                     Play_controls[Play_controlsChat].enterKey(2);
                     break;
                 case KEY_PG_UP:
-                    Play_Panelcounter = Play_controlsChatPos;
-                    Play_BottomUpDown(2, 1);
-                    Play_Panelcounter = Play_controlsDefault;
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
+                    else {
+                        Play_Panelcounter = Play_controlsChatPos;
+                        Play_BottomUpDown(2, 1);
+                        Play_Panelcounter = Play_controlsDefault;
+                    }
                     break;
                 case KEY_PG_DOWN:
-                    Play_Panelcounter = Play_controlsChatPos;
-                    Play_BottomUpDown(2, -1);
-                    Play_Panelcounter = Play_controlsDefault;
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
+                    else {
+                        Play_Panelcounter = Play_controlsChatPos;
+                        Play_BottomUpDown(2, -1);
+                        Play_Panelcounter = Play_controlsDefault;
+                    }
                     break;
                 case KEY_MEDIA_FAST_FORWARD:
                     if (!Play_isEndDialogVisible()) PlayVod_FastBackForward(1);
