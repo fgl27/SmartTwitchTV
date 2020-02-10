@@ -27,17 +27,16 @@ function UserLiveFeedobj_StartDefault(pos) {
 
     UserLiveFeed_ImgObj[pos] = [];
     UserLiveFeed_itemsCount[pos] = 0;
-    Main_empty(UserLiveFeed_obj[pos].div);
+    Main_emptyWithEle(UserLiveFeed_obj[pos].div);
     UserLiveFeed_status[pos] = false;
-    document.getElementById(UserLiveFeed_obj[pos].div).style.left = "0.125em";
+    UserLiveFeed_obj[pos].div.style.left = "0.125em";
     UserLiveFeed_FeedPosY[pos] = 0;
     UserLiveFeed_idObject[pos] = {};
 
     Main_updateclock();
     Main_ShowElement('dialog_loading_side_feed');
     if (UserLiveFeed_isFeedShow()) {
-        Main_RemoveClass(UserLiveFeed_obj[pos].div,
-            pos === UserLiveFeedobj_UserLivePos ? 'opacity_zero' : 'hide');
+        UserLiveFeed_obj[pos].div.classList.remove(pos === UserLiveFeedobj_UserLivePos ? 'opacity_zero' : 'hide');
     }
 }
 
@@ -193,8 +192,6 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         response_items = response.length,
         sorting = Settings_Obj_default('live_feed_sort'),
         stream, id, mArray, obj_id,
-        doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div),
-        docside = document.getElementById("side_panel_holder"),
         i = 0;
 
     //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
@@ -261,7 +258,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
                 UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
-            doc.appendChild(
+            UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.appendChild(
                 UserLiveFeed_CreatFeed(
                     obj_id,
                     mArray
@@ -272,7 +269,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 Sidepannel_PosFeed = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
             UserLiveFeed_LoadImgSidePush(mArray[9], UserLiveFeed_side_ids[1] + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]);
-            docside.appendChild(
+            Sidepannel_ScroolDoc.appendChild(
                 UserLiveFeedobj_CreatSideFeed(
                     UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
                     mArray
@@ -285,7 +282,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
     UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
 
-    // doc.appendChild(
+    // UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.appendChild(
     //     UserLiveFeed_CreatFeed(i++,
     //         [
     //             IMG_404_VIDEO,
@@ -332,22 +329,20 @@ function UserLiveFeedobj_LiveNotification() {
 }
 
 function UserLiveFeedobj_LiveNotificationShow(position) {
-    var img = document.getElementById('user_feed_notify_img');
-
-    img.onload = function() {
+    Sidepannel_Notify_img.onload = function() {
         this.onload = null;
         this.onerror = null;
         UserLiveFeedobj_LiveNotificationOnload(position);
     };
 
-    img.onerror = function() {
+    Sidepannel_Notify_img.onerror = function() {
         this.onerror = null;
         this.onload = null;
         this.src = IMG_404_LOGO;
         UserLiveFeedobj_LiveNotificationOnload(position);
     };
 
-    img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
+    Sidepannel_Notify_img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
 }
 
 var UserLiveFeedobj_LiveNotificationHideId;
@@ -421,14 +416,14 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
     if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
-        Main_RemoveClass(UserLiveFeed_obj[pos].div,
-            pos === UserLiveFeedobj_UserLivePos ? 'opacity_zero' : 'hide');
+        UserLiveFeed_obj[pos].div.classList.remove(pos === UserLiveFeedobj_UserLivePos ? 'opacity_zero' : 'hide');
+
         UserLiveFeed_FeedAddFocus(true, pos);
     }
 }
 
 function UserLiveFeedobj_HideFeed() {
-    Main_AddClass(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div, 'opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.classList.add('opacity_zero');
 }
 
 function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
@@ -436,7 +431,6 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
     var response = JSON.parse(responseText)[UserLiveFeed_obj[pos].StreamType],
         response_items = response.length,
         stream, id, mArray, obj_id,
-        doc = document.getElementById(UserLiveFeed_obj[pos].div),
         i = 0;
 
     //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
@@ -455,7 +449,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
             if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
                 UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
 
-            doc.appendChild(
+            UserLiveFeed_obj[pos].div.appendChild(
                 UserLiveFeed_CreatFeed(
                     obj_id,
                     mArray
@@ -519,7 +513,7 @@ function UserLiveFeedobj_ShowLive() {
 }
 
 function UserLiveFeedobj_HideLive() {
-    Main_HideElement(UserLiveFeed_obj[UserLiveFeedobj_LivePos].div);
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].div.classList.add('hide');
 }
 
 //Live end
@@ -553,7 +547,7 @@ function UserLiveFeedobj_ShowFeatured() {
 }
 
 function UserLiveFeedobj_HideFeatured() {
-    Main_HideElement(UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div);
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div.classList.add('hide');
 }
 //Featured end
 
@@ -588,7 +582,7 @@ function UserLiveFeedobj_ShowCurrentGame() {
 }
 
 function UserLiveFeedobj_HideCurrentGame() {
-    Main_HideElement(UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div);
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div.classList.add('hide');
 }
 //Current game end
 
@@ -610,7 +604,6 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
     var response = JSON.parse(responseText).hosts,
         response_items = response.length,
         stream, id, obj_id,
-        doc = document.getElementById(UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div),
         i = 0;
 
     //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
@@ -629,7 +622,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
             obj_id = UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
             UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserHostPos, stream.target.preview_urls.template, obj_id);
 
-            doc.appendChild(
+            UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.appendChild(
                 UserLiveFeed_CreatFeed(
                     obj_id,
                     [
@@ -672,7 +665,7 @@ function UserLiveFeedobj_ShowUserHost() {
 }
 
 function UserLiveFeedobj_HideUserHost() {
-    Main_HideElement(UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div);
+    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.classList.add('hide');
 }
 //User Host end
 
@@ -702,7 +695,6 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
     var response = JSON.parse(responseText)[type],
         response_items = response.length,
         cell, game, obj_id,
-        doc = document.getElementById(UserLiveFeed_obj[pos].div),
         i = 0;
 
     //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
@@ -720,7 +712,7 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
             obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
             UserLiveFeed_LoadImgPushGame(pos, game.box.template, obj_id);
 
-            doc.appendChild(
+            UserLiveFeed_obj[pos].div.appendChild(
                 UserLiveFeedobj_CreatGameFeed(
                     obj_id,
                     [
@@ -768,7 +760,7 @@ function UserLiveFeedobj_ShowUserGames() {
 }
 
 function UserLiveFeedobj_HideUserGames() {
-    Main_HideElement(UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div);
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div.classList.add('hide');
 }
 //User Games end
 
@@ -807,7 +799,7 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
 }
 
 function UserLiveFeedobj_HideCurrentUserAGame() {
-    Main_HideElement(UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div);
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('hide');
 }
 //Current user a game end
 
@@ -835,7 +827,7 @@ function UserLiveFeedobj_ShowGames() {
 }
 
 function UserLiveFeedobj_HideGames() {
-    Main_HideElement(UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div);
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div.classList.add('hide');
 }
 //Games end
 
@@ -874,7 +866,7 @@ function UserLiveFeedobj_ShowCurrentAGame() {
 }
 
 function UserLiveFeedobj_HideCurrentAGame() {
-    Main_HideElement(UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div);
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('hide');
 }
 //Current a game end
 
