@@ -399,6 +399,7 @@ function Main_initWindows() {
     Main_ready(function() {
         Chat_Preinit();
         Play_PreStart();
+        UserLiveFeed_Prepare();
 
         if (AddUser_UserIsSet()) {
             Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
@@ -429,7 +430,6 @@ function Main_initWindows() {
 
 function Main_SetStringsMain(isStarting) {
     Main_updateclock();
-    UserLiveFeed_Prepare();
     Main_Setworker();
 
     //set top bar labels
@@ -1059,7 +1059,10 @@ function Main_needUpdate(version) {
 }
 
 function Main_empty(el) {
-    el = document.getElementById(el);
+    Main_emptyWithEle(document.getElementById(el));
+}
+
+function Main_emptyWithEle(el) {
     while (el.firstChild) el.removeChild(el.firstChild);
 }
 

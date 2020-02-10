@@ -10,6 +10,8 @@ var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_Fi
 
 var Sidepannel_FixDiv;
 var Sidepannel_MovelDiv;
+var Sidepannel_ScroolDoc;
+var Sidepannel_Notify_img;
 
 function Sidepannel_AddFocusMain() {
     Main_AddClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
@@ -72,7 +74,7 @@ function Sidepannel_PreloadImgs() {
 }
 
 function Sidepannel_GetSize() {
-    return document.getElementById('side_panel_holder').getElementsByClassName('side_panel_feed').length;
+    return Sidepannel_ScroolDoc.getElementsByClassName('side_panel_feed').length;
 }
 
 function Sidepannel_KeyEnterUser() {
@@ -377,8 +379,7 @@ function Sidepannel_SetIcons(div, icon) {
 
 function Sidepannel_Scroll(skipAnimation) {
     var value = '0', //default
-        center = 6,
-        doc = document.getElementById('side_panel_holder');
+        center = 6;
 
     if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
@@ -392,7 +393,7 @@ function Sidepannel_Scroll(skipAnimation) {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
 
-        doc.style.transition = '';
+        Sidepannel_ScroolDoc.style.transition = '';
 
         window.setTimeout(function() {
             Screens_ChangeFocusAnimationFinished = true;
@@ -400,10 +401,10 @@ function Sidepannel_Scroll(skipAnimation) {
 
     } else {
         if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
-        doc.style.transition = 'none';
+        Sidepannel_ScroolDoc.style.transition = 'none';
     }
 
-    doc.style.transform = 'translateY(-' + (value / BodyfontSize) + 'em)';
+    Sidepannel_ScroolDoc.style.transform = 'translateY(-' + (value / BodyfontSize) + 'em)';
 }
 
 function Sidepannel_handleKeyDown(event) {
