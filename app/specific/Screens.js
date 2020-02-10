@@ -185,14 +185,11 @@ function Screens_loadDatafail(obj) {
     obj.loadingData = false;
     obj.loadingDataTry = 0;
     if (!obj.itemsCount) {
-        Sidepannel_SetTopOpacity(Main_values.Main_Go);
         obj.FirstLoad = false;
-        Main_HideLoadDialog();
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
         obj.key_exit();
-        Main_ShowElement('topbar');
-        Main_ShowElement('side_panel_new_holder');
-        AddUser_UpdateSidepanelAfterShow();
+        if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
+        else Main_HideLoadDialog();
     } else obj.dataEnded = true;
 }
 
