@@ -10276,7 +10276,7 @@
             Main_replaceClassEmoji('stream_info_title');
         }
 
-        PlayVod_VodIdex = Main_history_Exist('vod', Main_values.ChannelVod_vodId);
+        PlayVod_VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Main_values.ChannelVod_vodId) : -1;
         PlayVod_VodOffset = (PlayVod_VodIdex > -1) ?
             Main_values_History_data[AddUser_UsernameArray[0].id].vod[PlayVod_VodIdex].watched : 0;
 
