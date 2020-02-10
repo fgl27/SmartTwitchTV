@@ -397,7 +397,8 @@
     var STR_CONTROLS_MULTI_6;
     var STR_FEED_END_DIALOG;
     var STR_MULTI_TITLE;
-    var STR_BACK_USER_GAMES; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_BACK_USER_GAMES;
+    var STR_NO_LIVE_CONTENT; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -920,6 +921,7 @@
         STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
         STR_FEED_END_DIALOG = ', Press back to go back to top menu';
         STR_BACK_USER_GAMES = ' Press back key to ';
+        STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
     }
     //Spacing for release maker not trow erros from jshint
     var IMG_404_GAME = "data:image/png;base64,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";
@@ -17555,10 +17557,15 @@
             Main_HideElement('dialog_loading_side_feed');
 
             if (UserLiveFeed_isFeedShow()) {
-                Main_innerHTML(UserLiveFeed_obj[UserLiveFeed_FeedPosX].div,
-                    '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + STR_REFRESH_PROBLEM + '</div>');
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].div.innerHTML =
+                    '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + STR_REFRESH_PROBLEM + '</div>';
             }
         }
+    }
+
+    function UserLiveFeedobj_Empty(pos) {
+        UserLiveFeed_obj[pos].div.innerHTML =
+            '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + STR_NO_LIVE_CONTENT + '</div>';
     }
 
     function UserLiveFeedobj_loadChannelLive(responseText) {
@@ -17642,92 +17649,93 @@
             i = 0;
 
         //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
-
-        if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
-            UserLiveFeed_CheckNotifycation = false;
-        }
-
-        var sorting_type1 = Settings_FeedSort[sorting][0],
-            sorting_type2 = Settings_FeedSort[sorting][1],
-            sorting_direction = Settings_FeedSort[sorting][2];
-
-        if (sorting_direction) {
-            //A-Z
-            if (sorting_type1) {
-                response.sort(function(a, b) {
-                    return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
-                        (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
-                });
-            } else {
-                response.sort(function(a, b) {
-                    return (a[sorting_type2] < b[sorting_type2] ? -1 :
-                        (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
-                });
+        if (response.length) {
+            if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
+                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
+                UserLiveFeed_CheckNotifycation = false;
             }
-        } else {
-            //Z-A
-            if (sorting_type1) {
-                response.sort(function(a, b) {
-                    return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
-                        (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
-                });
-            } else {
-                response.sort(function(a, b) {
-                    return (a[sorting_type2] > b[sorting_type2] ? -1 :
-                        (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
-                });
-            }
-        }
 
-        for (i; i < response_items; i++) {
-            stream = response[i];
-            id = stream.channel._id;
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id]) {
+            var sorting_type1 = Settings_FeedSort[sorting][0],
+                sorting_type2 = Settings_FeedSort[sorting][1],
+                sorting_direction = Settings_FeedSort[sorting][2];
 
-                UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = 1;
-                mArray = ScreensObj_LiveCellArray(stream);
-                UserLiveFeed_PreloadImgs.push(mArray[0]);
-
-                //Check if was live if not notificate
-                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][id]) {
-                    UserLiveFeed_NotifyLiveidObject.push({
-                        name: mArray[1],
-                        logo: mArray[9],
-                        title: Main_ReplaceLargeFont(twemoji.parse(mArray[2])),
-                        game: mArray[3],
-                        rerun: mArray[8],
+            if (sorting_direction) {
+                //A-Z
+                if (sorting_type1) {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
+                            (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
+                    });
+                } else {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type2] < b[sorting_type2] ? -1 :
+                            (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
                     });
                 }
-                obj_id = UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
-                UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserLivePos, mArray[0], obj_id);
-
-                if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
-                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
-
-                UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.appendChild(
-                    UserLiveFeed_CreatFeed(
-                        obj_id,
-                        mArray
-                    )
-                );
-
-                if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
-                    Sidepannel_PosFeed = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
-
-                UserLiveFeed_LoadImgSidePush(mArray[9], UserLiveFeed_side_ids[1] + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]);
-                Sidepannel_ScroolDoc.appendChild(
-                    UserLiveFeedobj_CreatSideFeed(
-                        UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
-                        mArray
-                    )
-                );
-
-                UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]++;
+            } else {
+                //Z-A
+                if (sorting_type1) {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
+                            (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
+                    });
+                } else {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type2] > b[sorting_type2] ? -1 :
+                            (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
+                    });
+                }
             }
-        }
 
-        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+            for (i; i < response_items; i++) {
+                stream = response[i];
+                id = stream.channel._id;
+                if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id]) {
+
+                    UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = 1;
+                    mArray = ScreensObj_LiveCellArray(stream);
+                    UserLiveFeed_PreloadImgs.push(mArray[0]);
+
+                    //Check if was live if not notificate
+                    if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][id]) {
+                        UserLiveFeed_NotifyLiveidObject.push({
+                            name: mArray[1],
+                            logo: mArray[9],
+                            title: Main_ReplaceLargeFont(twemoji.parse(mArray[2])),
+                            game: mArray[3],
+                            rerun: mArray[8],
+                        });
+                    }
+                    obj_id = UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
+                    UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserLivePos, mArray[0], obj_id);
+
+                    if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
+                        UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
+
+                    UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.appendChild(
+                        UserLiveFeed_CreatFeed(
+                            obj_id,
+                            mArray
+                        )
+                    );
+
+                    if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
+                        Sidepannel_PosFeed = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
+
+                    UserLiveFeed_LoadImgSidePush(mArray[9], UserLiveFeed_side_ids[1] + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]);
+                    Sidepannel_ScroolDoc.appendChild(
+                        UserLiveFeedobj_CreatSideFeed(
+                            UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
+                            mArray
+                        )
+                    );
+
+                    UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]++;
+                }
+            }
+
+            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+        } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
         // UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.appendChild(
         //     UserLiveFeed_CreatFeed(i++,
@@ -17883,86 +17891,88 @@
             stream, id, mArray, obj_id,
             i = 0;
 
-        if (pos === UserLiveFeedobj_FeaturedPos) {
-            var sorting = Settings_Obj_default('live_feed_sort');
+        if (response.length) {
+            if (pos === UserLiveFeedobj_FeaturedPos) {
+                var sorting = Settings_Obj_default('live_feed_sort');
 
-            var sorting_type1 = Settings_FeedSort[sorting][0],
-                sorting_type2 = Settings_FeedSort[sorting][1],
-                sorting_direction = Settings_FeedSort[sorting][2];
+                var sorting_type1 = Settings_FeedSort[sorting][0],
+                    sorting_type2 = Settings_FeedSort[sorting][1],
+                    sorting_direction = Settings_FeedSort[sorting][2];
 
-            if (sorting_direction) {
-                //A-Z
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ? -1 :
-                            (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
+                if (sorting_direction) {
+                    //A-Z
+                    if (sorting_type1) {
+                        response.sort(function(a, b) {
+                            return (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ? -1 :
+                                (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ? 1 : 0));
+                        });
+                    } else {
+                        response.sort(function(a, b) {
+                            return (a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 :
+                                (a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0));
+                        });
+                    }
                 } else {
-                    response.sort(function(a, b) {
-                        return (a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 :
-                            (a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0));
-                    });
-                }
-            } else {
-                //Z-A
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ? -1 :
-                            (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 :
-                            (a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0));
-                    });
+                    //Z-A
+                    if (sorting_type1) {
+                        response.sort(function(a, b) {
+                            return (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ? -1 :
+                                (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ? 1 : 0));
+                        });
+                    } else {
+                        response.sort(function(a, b) {
+                            return (a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 :
+                                (a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0));
+                        });
+                    }
                 }
             }
-        }
 
-        for (i; i < response_items; i++) {
-            stream = UserLiveFeed_obj[pos].cell(response[i]);
-            id = stream.channel._id;
-            if (!UserLiveFeed_idObject[pos][id]) {
+            for (i; i < response_items; i++) {
+                stream = UserLiveFeed_obj[pos].cell(response[i]);
+                id = stream.channel._id;
+                if (!UserLiveFeed_idObject[pos][id]) {
 
-                UserLiveFeed_idObject[pos][id] = 1;
-                mArray = ScreensObj_LiveCellArray(stream);
+                    UserLiveFeed_idObject[pos][id] = 1;
+                    mArray = ScreensObj_LiveCellArray(stream);
 
-                obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
-                UserLiveFeed_LoadImgPush(pos, mArray[0], obj_id);
+                    obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
+                    UserLiveFeed_LoadImgPush(pos, mArray[0], obj_id);
 
-                if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
-                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
+                    if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
+                        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
 
-                UserLiveFeed_obj[pos].div.appendChild(
-                    UserLiveFeed_CreatFeed(
-                        obj_id,
-                        mArray
-                    )
-                );
-                UserLiveFeed_itemsCount[pos]++;
+                    UserLiveFeed_obj[pos].div.appendChild(
+                        UserLiveFeed_CreatFeed(
+                            obj_id,
+                            mArray
+                        )
+                    );
+                    UserLiveFeed_itemsCount[pos]++;
+                }
             }
-        }
 
-        // doc.appendChild(
-        //     UserLiveFeed_CreatFeed(pos + '_' + (i + 1),
-        //         [
-        //             IMG_404_VIDEO,
-        //             "ashlynn",
-        //             "title",
-        //             "game",
-        //             "for 1000 Viewers",
-        //             "720p30 [EN]",
-        //             "ashlynn",
-        //             10000000000,
-        //             true,
-        //             IMG_404_LOGO,
-        //             true,
-        //             "Since 11:04:36&nbsp;",
-        //             "2020-01-25T09:49:05Z",
-        //             1000,
-        //             35618666]
-        //     )
-        // );
+            // doc.appendChild(
+            //     UserLiveFeed_CreatFeed(pos + '_' + (i + 1),
+            //         [
+            //             IMG_404_VIDEO,
+            //             "ashlynn",
+            //             "title",
+            //             "game",
+            //             "for 1000 Viewers",
+            //             "720p30 [EN]",
+            //             "ashlynn",
+            //             10000000000,
+            //             true,
+            //             IMG_404_LOGO,
+            //             true,
+            //             "Since 11:04:36&nbsp;",
+            //             "2020-01-25T09:49:05Z",
+            //             1000,
+            //             35618666]
+            //     )
+            // );
+        } else UserLiveFeedobj_Empty(pos);
 
         UserLiveFeed_loadDataSuccessFinish(false, pos);
         UserLiveFeed_LoadImg(pos);
@@ -18092,79 +18102,82 @@
             sorting = Settings_Obj_default('live_feed_sort'),
             i = 0;
 
-        var sorting_type1 = Settings_FeedSortHost[sorting][0],
-            sorting_type2 = Settings_FeedSortHost[sorting][1],
-            sorting_direction = Settings_FeedSortHost[sorting][2];
+        if (response.length) {
 
-        if (sorting_direction) {
-            //A-Z
-            if (sorting_type1) {
-                response.sort(function(a, b) {
-                    return (a[sorting_type2] < b[sorting_type2] ? -1 :
-                        (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
-                });
+            var sorting_type1 = Settings_FeedSortHost[sorting][0],
+                sorting_type2 = Settings_FeedSortHost[sorting][1],
+                sorting_direction = Settings_FeedSortHost[sorting][2];
+
+            if (sorting_direction) {
+                //A-Z
+                if (sorting_type1) {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type2] < b[sorting_type2] ? -1 :
+                            (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
+                    });
+                } else {
+                    response.sort(function(a, b) {
+                        return (a.target[sorting_type2] < b.target[sorting_type2] ? -1 :
+                            (a.target[sorting_type2] > b.target[sorting_type2] ? 1 : 0));
+                    });
+                }
             } else {
-                response.sort(function(a, b) {
-                    return (a.target[sorting_type2] < b.target[sorting_type2] ? -1 :
-                        (a.target[sorting_type2] > b.target[sorting_type2] ? 1 : 0));
-                });
+                //Z-A
+                if (sorting_type1) {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type2] > b[sorting_type2] ? -1 :
+                            (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
+                    });
+                } else {
+                    response.sort(function(a, b) {
+                        return (a.target[sorting_type2] > b.target[sorting_type2] ? -1 :
+                            (a.target[sorting_type2] < b.target[sorting_type2] ? 1 : 0));
+                    });
+                }
             }
-        } else {
-            //Z-A
-            if (sorting_type1) {
-                response.sort(function(a, b) {
-                    return (a[sorting_type2] > b[sorting_type2] ? -1 :
-                        (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
-                });
-            } else {
-                response.sort(function(a, b) {
-                    return (a.target[sorting_type2] > b.target[sorting_type2] ? -1 :
-                        (a.target[sorting_type2] < b.target[sorting_type2] ? 1 : 0));
-                });
+
+            for (i; i < response_items; i++) {
+                stream = response[i];
+                id = stream.target._id + '' + stream._id;
+
+                if (!UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id]) {
+
+                    UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id] = 1;
+
+                    if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
+                        UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
+
+                    obj_id = UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
+                    UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserHostPos, stream.target.preview_urls.template, obj_id);
+
+                    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.appendChild(
+                        UserLiveFeed_CreatFeed(
+                            obj_id,
+                            [
+                                stream.target.preview_urls.template, //0
+                                stream.display_name + STR_USER_HOSTING + stream.target.channel.display_name, //1
+                                stream.target.title, //2
+                                stream.target.meta_game, //3
+                                STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
+                                Main_addCommas(stream.target.viewers) + STR_SPACE + STR_VIEWER, //4
+                                '', //5 quality
+                                stream.target.channel.name, //6
+                                '', //7 broadcast id
+                                false, //8
+                                stream.target.channel.logo, //9
+                                '', //10 partner
+                                '', //11 stream creat at string
+                                '', //12 stream creat at
+                                stream.target.viewers, //13
+                                stream.target._id //14
+                            ],
+                            true
+                        )
+                    );
+                    UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]++;
+                }
             }
-        }
-
-        for (i; i < response_items; i++) {
-            stream = response[i];
-            id = stream.target._id + '' + stream._id;
-
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id]) {
-
-                UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id] = 1;
-
-                if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
-                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
-
-                obj_id = UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
-                UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserHostPos, stream.target.preview_urls.template, obj_id);
-
-                UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.appendChild(
-                    UserLiveFeed_CreatFeed(
-                        obj_id,
-                        [
-                            stream.target.preview_urls.template, //0
-                            stream.display_name + STR_USER_HOSTING + stream.target.channel.display_name, //1
-                            stream.target.title, //2
-                            stream.target.meta_game, //3
-                            STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
-                            Main_addCommas(stream.target.viewers) + STR_SPACE + STR_VIEWER, //4
-                            '', //5 quality
-                            stream.target.channel.name, //6
-                            '', //7 broadcast id
-                            false, //8
-                            stream.target.channel.logo, //9
-                            '', //10 partner
-                            '', //11 stream creat at string
-                            '', //12 stream creat at
-                            stream.target.viewers, //13
-                            stream.target._id //14
-                        ],
-                        true
-                    )
-                );
-                UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]++;
-            }
-        }
+        } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserHostPos);
 
         UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
         UserLiveFeed_LoadImg(UserLiveFeedobj_UserHostPos);
@@ -18214,71 +18227,74 @@
             cell, game, obj_id,
             i = 0;
 
-        if (pos === UserLiveFeedobj_UserGamesPos) {
-            var sorting = Settings_Obj_default('live_feed_sort');
+        if (response.length) {
 
-            var sorting_type1 = Settings_FeedSortGames[sorting][0],
-                sorting_type2 = Settings_FeedSortGames[sorting][1],
-                sorting_direction = Settings_FeedSortGames[sorting][2];
+            if (pos === UserLiveFeedobj_UserGamesPos) {
+                var sorting = Settings_Obj_default('live_feed_sort');
 
-            if (sorting_direction) {
-                //A-Z
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
-                            (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
+                var sorting_type1 = Settings_FeedSortGames[sorting][0],
+                    sorting_type2 = Settings_FeedSortGames[sorting][1],
+                    sorting_direction = Settings_FeedSortGames[sorting][2];
+
+                if (sorting_direction) {
+                    //A-Z
+                    if (sorting_type1) {
+                        response.sort(function(a, b) {
+                            return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
+                                (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
+                        });
+                    } else {
+                        response.sort(function(a, b) {
+                            return (a[sorting_type2] < b[sorting_type2] ? -1 :
+                                (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
+                        });
+                    }
                 } else {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type2] < b[sorting_type2] ? -1 :
-                            (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
-                    });
-                }
-            } else {
-                //Z-A
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
-                            (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type2] > b[sorting_type2] ? -1 :
-                            (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
-                    });
+                    //Z-A
+                    if (sorting_type1) {
+                        response.sort(function(a, b) {
+                            return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
+                                (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
+                        });
+                    } else {
+                        response.sort(function(a, b) {
+                            return (a[sorting_type2] > b[sorting_type2] ? -1 :
+                                (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
+                        });
+                    }
                 }
             }
-        }
 
-        //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
-        for (i; i < response_items; i++) {
-            cell = response[i];
-            game = cell.game;
+            //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+            for (i; i < response_items; i++) {
+                cell = response[i];
+                game = cell.game;
 
-            if (!UserLiveFeed_idObject[pos][game._id]) {
+                if (!UserLiveFeed_idObject[pos][game._id]) {
 
-                UserLiveFeed_idObject[pos][game._id] = 1;
+                    UserLiveFeed_idObject[pos][game._id] = 1;
 
-                if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === game.name)
-                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
+                    if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === game.name)
+                        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
 
-                obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
-                UserLiveFeed_LoadImgPushGame(pos, game.box.template, obj_id);
+                    obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
+                    UserLiveFeed_LoadImgPushGame(pos, game.box.template, obj_id);
 
-                UserLiveFeed_obj[pos].div.appendChild(
-                    UserLiveFeedobj_CreatGameFeed(
-                        obj_id,
-                        [
-                            game.name,
-                            Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,
-                            game._id
-                        ]
-                    )
-                );
-                UserLiveFeed_itemsCount[pos]++;
+                    UserLiveFeed_obj[pos].div.appendChild(
+                        UserLiveFeedobj_CreatGameFeed(
+                            obj_id,
+                            [
+                                game.name,
+                                Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
+                                Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,
+                                game._id
+                            ]
+                        )
+                    );
+                    UserLiveFeed_itemsCount[pos]++;
+                }
             }
-        }
+        } else UserLiveFeedobj_Empty(pos);
 
         UserLiveFeed_loadDataSuccessFinish(false, pos);
         UserLiveFeed_LoadImg(pos);
