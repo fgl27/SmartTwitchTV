@@ -447,8 +447,8 @@ public class PlayerActivity extends Activity {
 
         releasePlayer(position);
 
-        //Both players are close enable screen saver
-        if (player[0] == null && player[1] == null)
+        //All players are close enable screen saver
+        if (player[0] == null && player[1] == null && player[2] == null && player[3] == null)
             KeepScreenOn(false);
     }
 
