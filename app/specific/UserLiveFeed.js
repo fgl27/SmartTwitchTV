@@ -176,17 +176,19 @@ function UserLiveFeed_Setworker() {
 
     ImageLoaderWorker.addEventListener('message',
         function(event) {
-            var imageData = event.data,
-                imageElement = document.getElementById(imageData.id),
-                objectURL = imageData.blob ? URL.createObjectURL(imageData.blob) : imageData.url;
+            Main_ready(function() {
+                var imageData = event.data,
+                    imageElement = document.getElementById(imageData.id),
+                    objectURL = imageData.blob ? URL.createObjectURL(imageData.blob) : imageData.url;
 
-            if (imageElement) {
-                imageElement.onload = function() {
-                    this.onload = null;
-                    URL.revokeObjectURL(objectURL);
-                };
-                imageElement.setAttribute('src', objectURL);
-            }
+                if (imageElement) {
+                    imageElement.onload = function() {
+                        this.onload = null;
+                        URL.revokeObjectURL(objectURL);
+                    };
+                    imageElement.setAttribute('src', objectURL);
+                }
+            });
         }
     );
 }
