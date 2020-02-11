@@ -16537,6 +16537,7 @@
     var Sidepannel_FixDiv;
     var Sidepannel_MovelDiv;
     var Sidepannel_ScroolDoc;
+    var Sidepannel_SidepannelDoc;
     var Sidepannel_Notify_img;
 
     function Sidepannel_AddFocusMain() {
@@ -16560,7 +16561,7 @@
     }
 
     function Sidepannel_isShowing() {
-        return !Main_A_includes_B(document.getElementById('side_panel').className, 'side_panel_hide');
+        return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
     }
 
     function Sidepannel_UpdateThumb() {
@@ -16735,7 +16736,7 @@
     function Sidepannel_StartFeed() {
         Sidepannel_IsMain = false;
         document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
-        Main_RemoveClass('side_panel', 'side_panel_hide');
+        Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
         Sidepannel_ShowFeed();
         Sidepannel_HideMain(true);
     }
@@ -16782,7 +16783,7 @@
         Sidepannel_RemoveFocusMain();
         Main_ShowElement('side_panel_fix');
         Sidepannel_FixDiv.style.marginLeft = '';
-        Main_AddClass('side_panel', 'side_panel_hide');
+        Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
         Main_HideElement('side_panel_feed_thumb');
         Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
@@ -16943,7 +16944,7 @@
                 Main_SwitchScreenAction();
                 break;
             case KEY_RIGHT:
-                Main_AddClass('side_panel', 'side_panel_hide');
+                Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
                 Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
                 Main_HideElement('side_panel_feed_thumb');
                 document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
@@ -16974,14 +16975,13 @@
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
                 if (!UserLiveFeed_loadingData) {
-                    var doc = document.getElementById("side_panel");
-                    doc.style.transition = 'none';
+                    Sidepannel_SidepannelDoc.style.transition = 'none';
                     Sidepannel_Hide();
                     Main_values.Play_isHost = false;
                     Play_UserLiveFeedPressed = true;
                     Main_ready(function() {
                         Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
-                        if (Settings_Obj_default("app_animations")) doc.style.transition = '';
+                        if (Settings_Obj_default("app_animations")) Sidepannel_SidepannelDoc.style.transition = '';
                     });
                 }
                 break;
@@ -17208,7 +17208,8 @@
         Main_innerHTML('feed_end_4', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE + STR_SPACE);
         Main_innerHTML('feed_end_5', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE_HOSTS + STR_SPACE);
 
-        Sidepannel_ScroolDoc = document.getElementById("side_panel_holder");
+        Sidepannel_ScroolDoc = document.getElementById('side_panel_holder');
+        Sidepannel_SidepannelDoc = document.getElementById('side_panel');
         Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
         UserLiveFeed_FeedHolderDocId = document.getElementById('user_feed');
     }
