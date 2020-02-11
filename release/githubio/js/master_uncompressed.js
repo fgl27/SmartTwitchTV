@@ -4227,137 +4227,279 @@
         });
     }
 
-    function Main_RemoveKeys() {
-
-        if (Main_values.Main_Go === Main_ChannelContent) document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
-        else if (Main_values.Main_Go === Main_Users) document.body.removeEventListener("keydown", Users_handleKeyDown);
-        else {
-            if (Main_values.Main_Go === Main_Live) inUseObj = Live;
-            else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
-            else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
-            else if (Main_values.Main_Go === Main_games) inUseObj = Game;
-            else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
-            else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
-            else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
-            else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
-            else if (Main_values.Main_Go === Main_usergames) inUseObj = UserGames;
-            else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
-            else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
-            else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
-            else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
-            else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
-            else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
-            else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
-            else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
-            else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
-            else if (Main_values.Main_Go === Main_HistoryLive) inUseObj = HistoryLive;
-            else if (Main_values.Main_Go === Main_HistoryVod) inUseObj = HistoryVod;
-            else if (Main_values.Main_Go === Main_HistoryClip) inUseObj = HistoryClip;
-
-            document.body.removeEventListener("keydown", Screens_handleKeyDown);
-        }
-    }
-
     var Main_Switchobj = {
         // way not?... 'computed property names' is only available in ES6 (use 'esversion: 6').
         //    [Main_Users]: Users_init
     };
 
-    Main_Switchobj[Main_Users] = Users_init;
-    Main_Switchobj[Main_ChannelContent] = ChannelContent_init;
-
-    Main_Switchobj[Main_SearchChannels] = function() {
-        inUseObj = SearchChannels;
-        Screens_init();
+    Main_Switchobj[Main_Users] = {
+        obj: function() {},
+        start_fun: Users_StartLoad,
+        init_fun: Users_init,
+        key_fun: Users_handleKeyDown,
+        exit_fun: Users_exit
+    };
+    Main_Switchobj[Main_ChannelContent] = {
+        obj: function() {},
+        start_fun: ChannelContent_StartLoad,
+        init_fun: ChannelContent_init,
+        key_fun: ChannelContent_handleKeyDown,
+        exit_fun: ChannelContent_exit
     };
 
-    Main_Switchobj[Main_SearchLive] = function() {
-        inUseObj = SearchLive;
-        Screens_init();
+    Main_Switchobj[Main_SearchChannels] = {
+        obj: function() {
+            inUseObj = SearchChannels;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-
-    Main_Switchobj[Main_SearchGames] = function() {
-        inUseObj = SearchGames;
-        Screens_init();
+    Main_Switchobj[Main_SearchLive] = {
+        obj: function() {
+            inUseObj = SearchLive;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-
-    Main_Switchobj[Main_UserChannels] = function() {
-        inUseObj = UserChannels;
-        Screens_init();
+    Main_Switchobj[Main_SearchGames] = {
+        obj: function() {
+            inUseObj = SearchGames;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-
-    Main_Switchobj[Main_UserLive] = function() {
-        inUseObj = UserLive;
-        Screens_init();
+    Main_Switchobj[Main_UserChannels] = {
+        obj: function() {
+            inUseObj = UserChannels;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-
-    Main_Switchobj[Main_UserHost] = function() {
-        inUseObj = UserHost;
-        Screens_init();
+    Main_Switchobj[Main_UserLive] = {
+        obj: function() {
+            inUseObj = UserLive;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-
-    Main_Switchobj[Main_usergames] = function() {
-        inUseObj = UserGames;
-        Screens_init();
+    Main_Switchobj[Main_UserHost] = {
+        obj: function() {
+            inUseObj = UserHost;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-
-    Main_Switchobj[Main_ChannelVod] = function() {
-        inUseObj = ChannelVod;
-        Screens_init();
+    Main_Switchobj[Main_usergames] = {
+        obj: function() {
+            inUseObj = UserGames;
+        },
+        start_fun: function() {
+            this.obj();
+            if (!UserGames.loadingData) UserGames.key_refresh();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_UserVod] = function() {
-        inUseObj = UserVod;
-        Screens_init();
+    Main_Switchobj[Main_ChannelVod] = {
+        obj: function() {
+            inUseObj = ChannelVod;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_Live] = function() {
-        inUseObj = Live;
-        Screens_init();
+    Main_Switchobj[Main_UserVod] = {
+        obj: function() {
+            inUseObj = UserVod;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_Featured] = function() {
-        inUseObj = Featured;
-        Screens_init();
+    Main_Switchobj[Main_Live] = {
+        obj: function() {
+            inUseObj = Live;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_AGameClip] = function() {
-        inUseObj = AGameClip;
-        Screens_init();
+    Main_Switchobj[Main_Featured] = {
+        obj: function() {
+            inUseObj = Featured;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_AGameVod] = function() {
-        inUseObj = AGameVod;
-        Screens_init();
+    Main_Switchobj[Main_AGameClip] = {
+        obj: function() {
+            inUseObj = AGameClip;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_Clip] = function() {
-        inUseObj = Clip;
-        Screens_init();
+    Main_Switchobj[Main_AGameVod] = {
+        obj: function() {
+            inUseObj = AGameVod;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_Vod] = function() {
-        inUseObj = Vod;
-        Screens_init();
+    Main_Switchobj[Main_Clip] = {
+        obj: function() {
+            inUseObj = Clip;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_ChannelClip] = function() {
-        inUseObj = ChannelClip;
-        Screens_init();
+    Main_Switchobj[Main_Vod] = {
+        obj: function() {
+            inUseObj = Vod;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_aGame] = function() {
-        inUseObj = AGame;
-        Screens_init();
+    Main_Switchobj[Main_ChannelClip] = {
+        obj: function() {
+            inUseObj = ChannelClip;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_games] = function() {
-        inUseObj = Game;
-        Screens_init();
+    Main_Switchobj[Main_aGame] = {
+        obj: function() {
+            inUseObj = AGame;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_HistoryLive] = function() {
-        inUseObj = HistoryLive;
-        Screens_init();
+    Main_Switchobj[Main_games] = {
+        obj: function() {
+            inUseObj = Game;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_HistoryVod] = function() {
-        inUseObj = HistoryVod;
-        Screens_init();
+    Main_Switchobj[Main_HistoryLive] = {
+        obj: function() {
+            inUseObj = HistoryLive;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-    Main_Switchobj[Main_HistoryClip] = function() {
-        inUseObj = HistoryClip;
-        Screens_init();
+    Main_Switchobj[Main_HistoryVod] = {
+        obj: function() {
+            inUseObj = HistoryVod;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit
     };
-
+    Main_Switchobj[Main_HistoryClip] = {
+        obj: function() {
+            inUseObj = HistoryClip;
+        },
+        start_fun: function() {
+            this.obj();
+            Screens_StartLoad();
+        },
+        init_fun: Screens_init,
+        key_fun: Screens_handleKeyDown,
+        exit_fun: Screens_exit,
+    };
 
     function Main_SwitchScreenAction(removekey) {
         Main_HideWarningDialog();
@@ -4366,10 +4508,15 @@
 
         Main_CounterDialogRst();
 
-        if (Main_Switchobj[Main_values.Main_Go]) Main_Switchobj[Main_values.Main_Go]();
-        else Main_Switchobj[1]();
+        if (Main_Switchobj[Main_values.Main_Go]) {
+            Main_Switchobj[Main_values.Main_Go].obj();
+            Main_Switchobj[Main_values.Main_Go].init_fun();
+        } else {
+            Main_Switchobj[1].obj();
+            Main_Switchobj[1].init_fun();
+        }
 
-        if (removekey) Main_RemoveKeys();
+        if (removekey) document.body.removeEventListener("keydown", Main_Switchobj[Main_HistoryClip].key_fun);
     }
 
     function Main_OpenSearch() {
@@ -4391,37 +4538,8 @@
         Play_data = Screens_assign(Play_data, Main_getItemJson('Play_data', {}));
     }
 
-    var Main_ExitCurrentobj = {
-        // way not?... 'computed property names' is only available in ES6 (use 'esversion: 6').
-        //    [Main_Users]: Users_exit
-    };
-    Main_ExitCurrentobj[Main_Users] = Users_exit;
-    Main_ExitCurrentobj[Main_ChannelContent] = ChannelContent_exit;
-
-    Main_ExitCurrentobj[Main_SearchChannels] = Screens_exit;
-    Main_ExitCurrentobj[Main_SearchLive] = Screens_exit;
-    Main_ExitCurrentobj[Main_SearchGames] = Screens_exit;
-    Main_ExitCurrentobj[Main_UserChannels] = Screens_exit;
-    Main_ExitCurrentobj[Main_UserLive] = Screens_exit;
-    Main_ExitCurrentobj[Main_UserHost] = Screens_exit;
-    Main_ExitCurrentobj[Main_usergames] = Screens_exit;
-    Main_ExitCurrentobj[Main_ChannelVod] = Screens_exit;
-    Main_ExitCurrentobj[Main_UserVod] = Screens_exit;
-    Main_ExitCurrentobj[Main_Live] = Screens_exit;
-    Main_ExitCurrentobj[Main_Featured] = Screens_exit;
-    Main_ExitCurrentobj[Main_AGameClip] = Screens_exit;
-    Main_ExitCurrentobj[Main_AGameVod] = Screens_exit;
-    Main_ExitCurrentobj[Main_Clip] = Screens_exit;
-    Main_ExitCurrentobj[Main_Vod] = Screens_exit;
-    Main_ExitCurrentobj[Main_ChannelClip] = Screens_exit;
-    Main_ExitCurrentobj[Main_aGame] = Screens_exit;
-    Main_ExitCurrentobj[Main_games] = Screens_exit;
-    Main_ExitCurrentobj[Main_HistoryLive] = Screens_exit;
-    Main_ExitCurrentobj[Main_HistoryVod] = Screens_exit;
-    Main_ExitCurrentobj[Main_HistoryClip] = Screens_exit;
-
     function Main_ExitCurrent(ExitCurrent) {
-        if (Main_ExitCurrentobj[ExitCurrent]) Main_ExitCurrentobj[ExitCurrent]();
+        if (Main_Switchobj[ExitCurrent].exit_fun) Main_Switchobj[ExitCurrent].exit_fun();
         if (Main_isElementShowing('settings_holder')) Settings_exit();
     }
 
@@ -4874,35 +4992,7 @@
 
         Main_CounterDialogRst();
 
-        if (Main_values.Main_Go === Main_ChannelContent) ChannelContent_StartLoad();
-        else if (Main_values.Main_Go === Main_Users) Users_StartLoad();
-        else if (Main_values.Main_Go === Main_usergames) {
-            inUseObj = UserGames;
-            if (!inUseObj.loadingData) inUseObj.key_refresh();
-        } else {
-            if (Main_values.Main_Go === Main_Live) inUseObj = Live;
-            else if (Main_values.Main_Go === Main_Featured) inUseObj = Featured;
-            else if (Main_values.Main_Go === Main_aGame) inUseObj = AGame;
-            else if (Main_values.Main_Go === Main_games) inUseObj = Game;
-            else if (Main_values.Main_Go === Main_Vod) inUseObj = Vod;
-            else if (Main_values.Main_Go === Main_Clip) inUseObj = Clip;
-            else if (Main_values.Main_Go === Main_AGameClip) inUseObj = AGameClip;
-            else if (Main_values.Main_Go === Main_ChannelClip) inUseObj = ChannelClip;
-            else if (Main_values.Main_Go === Main_AGameVod) inUseObj = AGameVod;
-            else if (Main_values.Main_Go === Main_UserVod) inUseObj = UserVod;
-            else if (Main_values.Main_Go === Main_ChannelVod) inUseObj = ChannelVod;
-            else if (Main_values.Main_Go === Main_UserHost) inUseObj = UserHost;
-            else if (Main_values.Main_Go === Main_UserLive) inUseObj = UserLive;
-            else if (Main_values.Main_Go === Main_UserChannels) inUseObj = UserChannels;
-            else if (Main_values.Main_Go === Main_SearchGames) inUseObj = SearchGames;
-            else if (Main_values.Main_Go === Main_SearchLive) inUseObj = SearchLive;
-            else if (Main_values.Main_Go === Main_SearchChannels) inUseObj = SearchChannels;
-            else if (Main_values.Main_Go === Main_HistoryLive) inUseObj = HistoryLive;
-            else if (Main_values.Main_Go === Main_HistoryVod) inUseObj = HistoryVod;
-            else if (Main_values.Main_Go === Main_HistoryClip) inUseObj = HistoryClip;
-
-            Screens_StartLoad();
-        }
+        Main_Switchobj[Main_values.Main_Go].start_fun();
     }
 
     function Main_setItem(item, value) {
