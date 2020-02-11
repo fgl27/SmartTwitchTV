@@ -5041,16 +5041,13 @@
 
     //Redirect to assets if running from it
     function CheckPage(pageUrlCode) {
-        var PageUrl = null;
-        try {
-            PageUrl = Android.mPageUrl();
-        } catch (e) {}
-        if (PageUrl) {
-            if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
-                try {
+        if (Main_IsNotBrowser) {
+            var PageUrl = Android.mPageUrl();
+            if (PageUrl) {
+                if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
                     Android.mloadUrl(PageUrl + pageUrlCode);
-                } catch (e) {}
-                return;
+                    return;
+                }
             }
         }
     }
@@ -5373,6 +5370,7 @@
         if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
     }
 
+    //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
     function Main_Slice(arrayTocopy) {
         var array;
         //slice may crash RangeError: Maximum call stack size exceeded
@@ -7222,9 +7220,7 @@
 
             Play_MultiArray[pos].AutoUrl = theUrl;
 
-            try {
-                Android.SetAutoMulti(pos, theUrl);
-            } catch (e) {}
+            Android.SetAutoMulti(pos, theUrl);
 
             theUrl = Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I;
             Play_RefreshMultiGet(theUrl, 0, pos);
@@ -9011,9 +9007,7 @@
                 Play_MultiArray[pos].AutoUrl = theUrl;
                 if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
-                try {
-                    Android.StartMultiStream(pos, theUrl);
-                } catch (e) {}
+                Android.StartMultiStream(pos, theUrl);
 
                 Play_MultiArray[pos].qualities = Play_extractQualities(xmlHttp.responseText);
 
@@ -9736,9 +9730,7 @@
 
                     for (var i = 0; i < Play_MultiArray.length; i++) {
                         if (Play_MultiArray[i].data.length > 0) {
-                            try {
-                                Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
-                            } catch (e) {}
+                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
                         }
                     }
                 } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl);
@@ -9785,9 +9777,7 @@
 
                         for (var i = 0; i < Play_MultiArray.length; i++) {
                             if (Play_MultiArray[i].data.length > 0) {
-                                try {
-                                    Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
-                                } catch (e) {}
+                                Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
                             }
                         }
 
@@ -9856,9 +9846,7 @@
             opacity: 0,
             enterKey: function() {
 
-                try {
-                    Android.mSetPlayerAudioMulti(this.defaultValue);
-                } catch (e) {}
+                Android.mSetPlayerAudioMulti(this.defaultValue);
 
                 Play_hidePanel();
 
