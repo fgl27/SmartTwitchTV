@@ -1665,11 +1665,13 @@ function processCode(pageUrl) {
 
 //Redirect to assets if running from it
 function CheckPage(pageUrlCode) {
-    var PageUrl = Android.mPageUrl();
-    if (PageUrl) {
-        if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
-            Android.mloadUrl(PageUrl + pageUrlCode);
-            return;
+    if (Main_IsNotBrowser) {
+        var PageUrl = Android.mPageUrl();
+        if (PageUrl) {
+            if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
+                Android.mloadUrl(PageUrl + pageUrlCode);
+                return;
+            }
         }
     }
 }
