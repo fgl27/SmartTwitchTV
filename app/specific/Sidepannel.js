@@ -11,6 +11,7 @@ var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_Fi
 var Sidepannel_FixDiv;
 var Sidepannel_MovelDiv;
 var Sidepannel_ScroolDoc;
+var Sidepannel_SidepannelDoc;
 var Sidepannel_Notify_img;
 
 function Sidepannel_AddFocusMain() {
@@ -34,7 +35,7 @@ function Sidepannel_RemoveFocusFeed() {
 }
 
 function Sidepannel_isShowing() {
-    return !Main_A_includes_B(document.getElementById('side_panel').className, 'side_panel_hide');
+    return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
 }
 
 function Sidepannel_UpdateThumb() {
@@ -209,7 +210,7 @@ function Sidepannel_Start(callback, forceFeed) {
 function Sidepannel_StartFeed() {
     Sidepannel_IsMain = false;
     document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
-    Main_RemoveClass('side_panel', 'side_panel_hide');
+    Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     Sidepannel_ShowFeed();
     Sidepannel_HideMain(true);
 }
@@ -256,7 +257,7 @@ function Sidepannel_Hide() {
     Sidepannel_RemoveFocusMain();
     Main_ShowElement('side_panel_fix');
     Sidepannel_FixDiv.style.marginLeft = '';
-    Main_AddClass('side_panel', 'side_panel_hide');
+    Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     Main_HideElement('side_panel_feed_thumb');
     Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
@@ -417,7 +418,7 @@ function Sidepannel_handleKeyDown(event) {
             Main_SwitchScreenAction();
             break;
         case KEY_RIGHT:
-            Main_AddClass('side_panel', 'side_panel_hide');
+            Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
             Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
             Main_HideElement('side_panel_feed_thumb');
             document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
@@ -448,14 +449,13 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
             if (!UserLiveFeed_loadingData) {
-                var doc = document.getElementById("side_panel");
-                doc.style.transition = 'none';
+                Sidepannel_SidepannelDoc.style.transition = 'none';
                 Sidepannel_Hide();
                 Main_values.Play_isHost = false;
                 Play_UserLiveFeedPressed = true;
                 Main_ready(function() {
                     Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
-                    if (Settings_Obj_default("app_animations")) doc.style.transition = '';
+                    if (Settings_Obj_default("app_animations")) Sidepannel_SidepannelDoc.style.transition = '';
                 });
             }
             break;
