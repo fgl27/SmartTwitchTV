@@ -1470,42 +1470,40 @@ public class PlayerActivity extends Activity {
         }
 
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, @Player.State int playbackState) {
+        public void onPlaybackStateChanged(@Player.State int playbackState) {
             myHandler.post(() -> {
                 hideLoading(4);
-                if (playWhenReady) {
-                    if (playbackState == Player.STATE_ENDED) {
-                        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                        if (player[position] != null) {
-                            player[position].setPlayWhenReady(false);
-                        }
-                        PlayerEventListenerClear(position);
-                    } else if (playbackState == Player.STATE_BUFFERING) {
-                        //Use the player buffer as a player check state to prevent be buffering for ever
-                        //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
-                        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                        PlayerCheckHandler[position].postDelayed(() -> {
-                            //Player was released or is on pause
-                            if (player[position] == null || !player[position].isPlaying())
-                                return;
+                if (playbackState == Player.STATE_ENDED) {
+                    PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                    if (player[position] != null) {
+                        player[position].setPlayWhenReady(false);
+                    }
+                    PlayerEventListenerClear(position);
+                } else if (playbackState == Player.STATE_BUFFERING) {
+                    //Use the player buffer as a player check state to prevent be buffering for ever
+                    //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
+                    PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                    PlayerCheckHandler[position].postDelayed(() -> {
+                        //Player was released or is on pause
+                        if (player[position] == null || !player[position].isPlaying())
+                            return;
 
-                            PlayerEventListenerCheckCounter(position, false);
-                        }, delayms);
-                    } else if (playbackState == Player.STATE_READY) {
-                        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                        PlayerCheckCounter[position] = 0;
+                        PlayerEventListenerCheckCounter(position, false);
+                    }, delayms);
+                } else if (playbackState == Player.STATE_READY) {
+                    PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                    PlayerCheckCounter[position] = 0;
 
-                        //If other not playing just play it so they stay close to sync
-                        int otherplayer = position ^ 1;
-                        if (player[otherplayer] != null) {
-                            if (!player[otherplayer].isPlaying())
-                                player[otherplayer].setPlayWhenReady(true);
-                        }
+                    //If other not playing just play it so they stay close to sync
+                    int otherplayer = position ^ 1;
+                    if (player[otherplayer] != null) {
+                        if (!player[otherplayer].isPlaying())
+                            player[otherplayer].setPlayWhenReady(true);
+                    }
 
-                        if (mwhocall > 1) {
-                            mwebview.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" +
-                                    mwhocall + "," + player[position].getDuration() + ")");
-                        }
+                    if (mwhocall > 1) {
+                        mwebview.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" +
+                                mwhocall + "," + player[position].getDuration() + ")");
                     }
                 }
             });
