@@ -129,7 +129,8 @@ function UserLiveFeed_Prepare() {
     Main_innerHTML('feed_end_4', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE + STR_SPACE);
     Main_innerHTML('feed_end_5', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE_HOSTS + STR_SPACE);
 
-    Sidepannel_ScroolDoc = document.getElementById("side_panel_holder");
+    Sidepannel_ScroolDoc = document.getElementById('side_panel_holder');
+    Sidepannel_SidepannelDoc = document.getElementById('side_panel');
     Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
     UserLiveFeed_FeedHolderDocId = document.getElementById('user_feed');
 }
