@@ -3516,6 +3516,8 @@
     var Main_CanBackup = false;
     var Main_UserBackupFile = 'user.json';
     var Main_HistoryBackupFile = 'history.json';
+    var Main_Scene1Doc;
+    var Main_Scene2Doc;
     //Variable initialization end
 
     // this function will be called only once the first time the app startup
@@ -3593,6 +3595,8 @@
 
             Main_SearchInput = document.getElementById("search_input");
             Main_AddUserInput = document.getElementById("user_input");
+            Main_Scene1Doc = document.getElementById('scene1');
+            Main_Scene2Doc = document.getElementById('scene2');
 
             Main_RestoreValues();
 
@@ -4000,11 +4004,19 @@
     }
 
     function Main_HideElement(element) {
-        document.getElementById(element).classList.add('hide');
+        Main_HideElementWithEle(document.getElementById(element));
+    }
+
+    function Main_HideElementWithEle(element) {
+        element.classList.add('hide');
     }
 
     function Main_ShowElement(element) {
-        document.getElementById(element).classList.remove('hide');
+        Main_ShowElementWithEle(document.getElementById(element));
+    }
+
+    function Main_ShowElementWithEle(element) {
+        element.classList.remove('hide');
     }
 
     function Main_isElementShowing(element) {
@@ -4585,6 +4597,30 @@
         } else Main_openStream();
     }
 
+    function Main_showScene1Doc() {
+        Main_ShowElementWithEle(Main_Scene1Doc);
+    }
+
+    function Main_hideScene1Doc() {
+        Main_HideElementWithEle(Main_Scene1Doc);
+    }
+
+    function Main_isScene1DocShown() {
+        return Main_isElementShowingWithEle(Main_Scene1Doc);
+    }
+
+    function Main_showScene2Doc() {
+        Main_ShowElementWithEle(Main_Scene2Doc);
+    }
+
+    function Main_hideScene2Doc() {
+        Main_HideElementWithEle(Main_Scene2Doc);
+    }
+
+    function Main_isScene2DocShown() {
+        return Main_isElementShowingWithEle(Main_Scene2Doc);
+    }
+
     function Main_OPenAsVod(index) {
         if (!Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
             Main_openStream();
@@ -4617,8 +4653,8 @@
     function Main_openStream() {
         document.body.removeEventListener("keydown", Play_handleKeyDown);
         document.body.addEventListener("keydown", Play_handleKeyDown, false);
-        Main_HideElement('scene1');
-        Main_ShowElement('scene2');
+        Main_hideScene1Doc();
+        Main_showScene2Doc();
         Play_hidePanel();
         if (!Play_EndDialogEnter) Play_HideEndDialog();
         Main_ready(Play_Start);
@@ -4651,8 +4687,8 @@
         ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
         document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
-        Main_HideElement('scene1');
-        Main_ShowElement('scene2');
+        Main_hideScene1Doc();
+        Main_showScene2Doc();
         Play_hideChat();
         Play_HideWarningDialog();
         Play_CleanHideExit();
@@ -4691,8 +4727,8 @@
 
     function Main_openVod() {
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
-        Main_HideElement('scene1');
-        Main_ShowElement('scene2');
+        Main_hideScene1Doc();
+        Main_showScene2Doc();
         PlayVod_hidePanel();
         Play_hideChat();
         Play_CleanHideExit();
@@ -4980,7 +5016,7 @@
         if (xmlHttp.status === 200) {
             callbackSucess(xmlHttp.responseText, obj);
         } else if (xmlHttp.status === 500) {
-            if (Main_isElementShowing('scene1') && obj.screen === Main_usergames)
+            if (Main_isScene1DocShown() && obj.screen === Main_usergames)
                 obj.key_refresh();
             else calbackError(obj);
         } else {
@@ -5012,7 +5048,7 @@
                 } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                     AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
                 } else if (xmlHttp.status === 500) {
-                    if (Main_isElementShowing('scene1') && obj.screen === Main_usergames)
+                    if (Main_isScene1DocShown() && obj.screen === Main_usergames)
                         obj.key_refresh();
                     else calbackError(obj);
                 } else {
@@ -6651,7 +6687,6 @@
             Play_ChatSizeValue = Play_MaxChatSizeValue;
             Play_ChatPositionConvert(true);
             Play_ChatSize(false);
-            if (Chat_div[0]) Chat_div[0].scrollTop = Chat_div[0].scrollHeight;
         }
 
         if (PlayExtra_PicturePicture) {
@@ -7694,8 +7729,8 @@
         UserLiveFeed_PreventHide = false;
         PlayVod_ProgresBarrUpdate(0, 0);
         Play_HideBufferDialog();
-        Main_ShowElement('scene1');
-        Main_HideElement('scene2');
+        Main_showScene1Doc();
+        Main_hideScene2Doc();
         Main_ReStartScreens();
     }
 
@@ -7937,18 +7972,18 @@
     function Play_showChat() {
         Play_ChatPosition();
         Play_ChatBackgroundChange(false);
-        Main_ShowElement('chat_container');
+        Main_ShowElementWithEle(Play_chat_container);
 
         Play_controls[Play_controlsChat].setLable();
     }
 
     function Play_hideChat() {
-        Main_HideElement('chat_container');
+        Main_HideElementWithEle(Play_chat_container);
         Play_controls[Play_controlsChat].setLable();
     }
 
     function Play_isChatShown() {
-        return Main_isElementShowing('chat_container');
+        return Main_isElementShowingWithEle(Play_chat_container);
     }
 
     function Play_getQualitiesCount() {
@@ -7963,9 +7998,6 @@
 
         if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue].percentage);
 
-        window.setTimeout(function() {
-            if (Chat_div) Chat_div.scrollTop = Chat_div.scrollHeight;
-        }, 500);
         Main_setItem('ChatSizeValue', Play_ChatSizeValue);
     }
 
@@ -8294,8 +8326,8 @@
 
         Main_values.Play_WasPlaying = 0;
         PlayVod_ProgresBarrUpdate(0, 0);
-        Main_ShowElement('scene1');
-        Main_HideElement('scene2');
+        Main_showScene1Doc();
+        Main_hideScene2Doc();
         document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Main_OpenSearch();
     }
@@ -11356,7 +11388,7 @@
         inUseObj.label_init();
 
         document.body.addEventListener("keydown", Screens_handleKeyDown, false);
-        Main_ShowElement(inUseObj.ids[10]);
+        Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
         if (inUseObj.status) {
             Main_YRst(inUseObj.posY);
@@ -11369,7 +11401,7 @@
         Main_addFocusVideoOffset = 0;
         if (inUseObj.label_exit) inUseObj.label_exit();
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
-        Main_HideElement(inUseObj.ids[10]);
+        Main_HideElementWithEle(inUseObj.ScrollDoc);
         Main_HideWarningDialog();
         Screens_ClearAnimation();
     }
@@ -11701,7 +11733,7 @@
                     });
                 } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
                     Main_GoBefore !== Main_Search) {
-                    Main_HideElement(obj.ids[10]);
+                    Main_HideElementWithEle(obj.ScrollDoc);
                     Main_ready(function() {
                         Main_ExitCurrent(Main_values.Main_Go);
                         Main_values.Main_Go = Main_GoBefore;
@@ -11745,7 +11777,7 @@
                 Main_SaveValues();
                 Main_HideLoadDialog();
             }
-        } else if (Main_isElementShowing(obj.ids[10])) {
+        } else if (Main_isElementShowingWithEle(obj.ScrollDoc)) {
             Main_CounterDialog(obj.posX, obj.posY, obj.ColoumnsCount, obj.itemsCount);
             Screens_addFocus(true);
         }
@@ -11797,7 +11829,7 @@
         if (inUseObj.posY < 0) {
             Screens_addFocusFallow();
             //Reset screen position
-            document.getElementById(inUseObj.ids[10]).style.top = '';
+            inUseObj.ScrollDoc.style.top = '';
             if (!inUseObj.emptyContent)
                 Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
@@ -12301,7 +12333,7 @@
             Main_AddClass(inUseObj.ids[0] + '0_' + inUseObj.posX, Main_classThumb);
         }
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
-        Main_HideElement(inUseObj.ids[10]);
+        Main_HideElementWithEle(inUseObj.ScrollDoc);
     }
 
     function AGame_fallow() {
@@ -13199,6 +13231,9 @@
         loadDataSuccess: function() {
             Screens_loadDataSuccess(this);
         },
+        Set_Scroll: function() {
+            this.ScrollDoc = document.getElementById(this.ids[10]);
+        },
         addrow: Screens_addrow,
         key_exit: function(goSidepanel) { //TODO overwrite this on if object
             Screens_RemoveAllFocus();
@@ -13360,6 +13395,7 @@
         }, Base_obj);
 
         Vod = Screens_assign(Vod, Base_Vod_obj);
+        Vod.Set_Scroll();
     }
 
     function ScreensObj_InitChannelVod() {
@@ -13448,6 +13484,7 @@
 
             this.addCellBase(cell, thumbnail);
         };
+        ChannelVod.Set_Scroll();
     }
 
     function ScreensObj_InitAGameVod() {
@@ -13503,6 +13540,7 @@
         }, Base_obj);
 
         AGameVod = Screens_assign(AGameVod, Base_Vod_obj);
+        AGameVod.Set_Scroll();
     }
 
     function ScreensObj_InitUserVod() {
@@ -13563,6 +13601,7 @@
         }, Base_obj);
 
         UserVod = Screens_assign(UserVod, Base_Vod_obj);
+        UserVod.Set_Scroll();
     }
 
     var Base_Live_obj = {
@@ -13636,6 +13675,7 @@
         }, Base_obj);
 
         Live = Screens_assign(Live, Base_Live_obj);
+        Live.Set_Scroll();
     }
 
     function ScreensObj_InitSearchLive() {
@@ -13676,6 +13716,7 @@
             if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined' ||
                 (this.data.length < Main_ItemsLimitMax)) this.dataEnded = true;
         };
+        SearchLive.Set_Scroll();
     }
 
     function ScreensObj_InitUserLive() {
@@ -13783,6 +13824,7 @@
                 Screens_loadDataRequest(this);
             }
         };
+        UserLive.Set_Scroll();
     }
 
     function ScreensObj_InitUserHost() {
@@ -13848,6 +13890,7 @@
                 this.coloumn_id++;
             }
         };
+        UserHost.Set_Scroll();
     }
 
     function ScreensObj_InitAGame() {
@@ -13895,6 +13938,7 @@
         }, Base_obj);
 
         AGame = Screens_assign(AGame, Base_Live_obj);
+        AGame.Set_Scroll();
     }
 
     function ScreensObj_InitFeatured() {
@@ -13930,6 +13974,7 @@
             cell = cell.stream;
             this.addCellTemp(cell);
         };
+        Featured.Set_Scroll();
     }
 
     var Base_Clip_obj = {
@@ -14050,6 +14095,7 @@
         }, Base_obj);
 
         Clip = Screens_assign(Clip, Base_Clip_obj);
+        Clip.Set_Scroll();
     }
 
     function ScreensObj_InitChannelClip() {
@@ -14084,6 +14130,7 @@
         }, Base_obj);
 
         ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
+        ChannelClip.Set_Scroll();
     }
 
     function ScreensObj_InitAGameClip() {
@@ -14114,6 +14161,7 @@
         }, Base_obj);
 
         AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
+        AGameClip.Set_Scroll();
     }
 
     var Base_Game_obj = {
@@ -14144,7 +14192,7 @@
 
             Main_addFocusVideoOffset = 0;
             document.body.removeEventListener("keydown", Screens_handleKeyDown);
-            Main_HideElement(this.ids[10]);
+            Main_HideElementWithEle(this.ScrollDoc);
 
             Main_SwitchScreenAction();
         },
@@ -14198,6 +14246,7 @@
         }, Base_obj);
 
         Game = Screens_assign(Game, Base_Game_obj);
+        Game.Set_Scroll();
     }
 
     function ScreensObj_InitUserGames() {
@@ -14242,6 +14291,7 @@
 
         UserGames = Screens_assign(UserGames, Base_Game_obj);
         UserGames.HeaderQuatity = 1;
+        UserGames.Set_Scroll();
     }
 
     function ScreensObj_InitSearchGames() {
@@ -14277,6 +14327,7 @@
 
         SearchGames = Screens_assign(SearchGames, Base_Game_obj);
         SearchGames.ItemsLimit = 100;
+        SearchGames.Set_Scroll();
     }
 
     var Base_Channel_obj = {
@@ -14361,6 +14412,7 @@
         UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
         UserChannels.addrow = Screens_addrowChannel;
         UserChannels.visiblerows = 5;
+        UserChannels.Set_Scroll();
     }
 
     function ScreensObj_InitSearchChannels() {
@@ -14415,6 +14467,7 @@
         SearchChannels = Screens_assign(SearchChannels, Base_Channel_obj);
         SearchChannels.addrow = Screens_addrowChannel;
         SearchChannels.visiblerows = 5;
+        SearchChannels.Set_Scroll();
     }
 
     var Base_History_obj = {
@@ -14498,7 +14551,7 @@
                 Main_AddClass(this.ids[0] + '0_' + this.posX, Main_classThumb);
             }
             document.body.removeEventListener("keydown", Screens_handleKeyDown);
-            Main_HideElement(this.ids[10]);
+            Main_HideElementWithEle(this.ScrollDoc);
         },
         sethistMainDialog: function() {
             this.Upsorting();
@@ -14599,6 +14652,7 @@
 
         HistoryLive = Screens_assign(HistoryLive, Base_History_obj);
         HistoryLive.Upsorting();
+        HistoryLive.Set_Scroll();
     }
 
     function ScreensObj_HistoryVod() {
@@ -14688,6 +14742,7 @@
             Screens_addFocusVideo(y, x, idArray, forceScroll);
         };
         HistoryVod.Upsorting();
+        HistoryVod.Set_Scroll();
     }
 
     function ScreensObj_HistoryClip() {
@@ -14770,6 +14825,7 @@
 
         HistoryClip = Screens_assign(HistoryClip, Base_History_obj);
         HistoryClip.Upsorting();
+        HistoryClip.Set_Scroll();
     }
 
     function ScreensObj_addSwitches(StringsArray) {
@@ -17913,7 +17969,7 @@
     }
 
     function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
-        if (Main_isElementShowing('scene2') && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
+        if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
         if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
         else {
