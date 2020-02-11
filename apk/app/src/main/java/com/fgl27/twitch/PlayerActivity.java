@@ -1475,7 +1475,9 @@ public class PlayerActivity extends Activity {
                 if (playWhenReady) {
                     if (playbackState == Player.STATE_ENDED) {
                         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                        player[position].setPlayWhenReady(false);
+                        if (player[position] != null) {
+                            player[position].setPlayWhenReady(false);
+                        }
                         PlayerEventListenerClear(position);
                     } else if (playbackState == Player.STATE_BUFFERING) {
                         //Use the player buffer as a player check state to prevent be buffering for ever
@@ -1542,7 +1544,9 @@ public class PlayerActivity extends Activity {
     public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
         //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
-        player[position].setPlayWhenReady(false);
+        if (player[position] != null) {
+            player[position].setPlayWhenReady(false);
+        }
         showLoading();
 
         PlayerCheckCounter[position]++;
