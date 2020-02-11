@@ -528,8 +528,9 @@ public class PlayerActivity extends Activity {
     }
 
     public void KeepScreenOn(boolean keepOn) {
-        //On android 6 this seems to cause a excepetion
+        //On android 6 this seems to cause a exception
         //Didn't manage to catch it on a device I own
+        //after this try was added no more reports
         try {
             if (keepOn)
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
