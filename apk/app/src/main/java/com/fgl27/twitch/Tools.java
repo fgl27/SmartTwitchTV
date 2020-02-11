@@ -401,15 +401,6 @@ public final class Tools {
             return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
     }
 
-    //https://exoplayer.dev/shrinking.html
-    private static class Mp4ExtractorsFactory implements ExtractorsFactory {
-        @Override
-        @NonNull
-        public Extractor[] createExtractors() {
-            return new Extractor[]{new Mp4Extractor()};
-        }
-    }
-
     public static boolean deviceIsTV(@NonNull Context context) {
         UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
         return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
@@ -428,14 +419,14 @@ public final class Tools {
                 String.format(Locale.US, "data/%s/Backup", app_name)
         );
 
-        boolean isDirCreated= Dir.exists();
+        boolean isDirCreated = Dir.exists();
         if (!isDirCreated) {
             isDirCreated = Dir.mkdirs();
         }
 
-        if(isDirCreated) {
+        if (isDirCreated) {
             try {
-                FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() +  "/" + file, false);
+                FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() + "/" + file, false);
                 mWriter.write(file_content);
                 mWriter.close();
             } catch (IOException e) {
@@ -464,8 +455,8 @@ public final class Tools {
             StringBuilder data = new StringBuilder();
             Scanner mReader = new Scanner(mFile);
 
-            while (mReader .hasNextLine()) {
-                data.append(mReader .nextLine());
+            while (mReader.hasNextLine()) {
+                data.append(mReader.nextLine());
             }
 
             mReader.close();
@@ -482,5 +473,14 @@ public final class Tools {
             return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_GRANTED;
         } else return true;
+    }
+
+    //https://exoplayer.dev/shrinking.html
+    private static class Mp4ExtractorsFactory implements ExtractorsFactory {
+        @Override
+        @NonNull
+        public Extractor[] createExtractors() {
+            return new Extractor[]{new Mp4Extractor()};
+        }
     }
 }

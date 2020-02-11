@@ -9,28 +9,6 @@ import android.os.Looper;
  */
 public final class HVTHandler {
 
-    private static class NotifyRunnable implements Runnable {
-        private final Runnable mRunnable;
-        private boolean mFinished = false;
-
-        private NotifyRunnable(final Runnable r) {
-            mRunnable = r;
-        }
-
-        private boolean isFinished() {
-            return mFinished;
-        }
-
-        @Override
-        public void run() {
-            synchronized (this) {
-                mRunnable.run();
-                mFinished = true;
-                this.notifyAll();
-            }
-        }
-    }
-
     /**
      * Posts a runnable on a handler's thread and returns a RunnableResult object that can be used to
      * get a return value.
@@ -52,6 +30,28 @@ public final class HVTHandler {
             handler.post(runnable);
         }
         return result;
+    }
+
+    private static class NotifyRunnable implements Runnable {
+        private final Runnable mRunnable;
+        private boolean mFinished = false;
+
+        private NotifyRunnable(final Runnable r) {
+            mRunnable = r;
+        }
+
+        private boolean isFinished() {
+            return mFinished;
+        }
+
+        @Override
+        public void run() {
+            synchronized (this) {
+                mRunnable.run();
+                mFinished = true;
+                this.notifyAll();
+            }
+        }
     }
 
     /**

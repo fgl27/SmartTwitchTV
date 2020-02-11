@@ -31,9 +31,9 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
                 mimeType, requiresSecureDecoder, requiresTunnelingDecoder);
         // filter codecs based on blacklist template
         List<MediaCodecInfo> filteredCodecInfos = new ArrayList<>();
-        for (MediaCodecInfo codecInfo: codecInfos) {
+        for (MediaCodecInfo codecInfo : codecInfos) {
             boolean blacklisted = false;
-            for (String blackListedCodec: BLACKLISTEDCODECS) {
+            for (String blackListedCodec : BLACKLISTEDCODECS) {
                 if (codecInfo != null && codecInfo.name.toLowerCase(Locale.US).contains(blackListedCodec.toLowerCase(Locale.US))) {
                     blacklisted = true;
                     break;
