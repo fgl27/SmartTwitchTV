@@ -679,9 +679,7 @@ function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id, tryes) {
 
         Play_MultiArray[pos].AutoUrl = theUrl;
 
-        try {
-            Android.SetAutoMulti(pos, theUrl);
-        } catch (e) {}
+        Android.SetAutoMulti(pos, theUrl);
 
         theUrl = Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I;
         Play_RefreshMultiGet(theUrl, 0, pos);
@@ -2466,9 +2464,7 @@ function Play_MultiStartQuality(pos, theUrl, display_name, tryes) {
             Play_MultiArray[pos].AutoUrl = theUrl;
             if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
-            try {
-                Android.StartMultiStream(pos, theUrl);
-            } catch (e) {}
+            Android.StartMultiStream(pos, theUrl);
 
             Play_MultiArray[pos].qualities = Play_extractQualities(xmlHttp.responseText);
 
@@ -3190,9 +3186,7 @@ function Play_MakeControls() {
 
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
-                        try {
-                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
-                        } catch (e) {}
+                        Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
                     }
                 }
             } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl);
@@ -3239,9 +3233,7 @@ function Play_MakeControls() {
 
                     for (var i = 0; i < Play_MultiArray.length; i++) {
                         if (Play_MultiArray[i].data.length > 0) {
-                            try {
-                                Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
-                            } catch (e) {}
+                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
                         }
                     }
 
@@ -3310,9 +3302,7 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
 
-            try {
-                Android.mSetPlayerAudioMulti(this.defaultValue);
-            } catch (e) {}
+            Android.mSetPlayerAudioMulti(this.defaultValue);
 
             Play_hidePanel();
 

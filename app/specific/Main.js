@@ -1665,15 +1665,10 @@ function processCode(pageUrl) {
 
 //Redirect to assets if running from it
 function CheckPage(pageUrlCode) {
-    var PageUrl = null;
-    try {
-        PageUrl = Android.mPageUrl();
-    } catch (e) {}
+    var PageUrl = Android.mPageUrl();
     if (PageUrl) {
         if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
-            try {
-                Android.mloadUrl(PageUrl + pageUrlCode);
-            } catch (e) {}
+            Android.mloadUrl(PageUrl + pageUrlCode);
             return;
         }
     }
@@ -2003,6 +1998,7 @@ function Main_setHistoryItem() {
     if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
 }
 
+//Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
 function Main_Slice(arrayTocopy) {
     var array;
     //slice may crash RangeError: Maximum call stack size exceeded
