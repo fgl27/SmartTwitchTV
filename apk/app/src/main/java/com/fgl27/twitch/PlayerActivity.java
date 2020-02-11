@@ -50,7 +50,7 @@ public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
     //public static final String PageUrl = "file:///android_asset/index.html";
     public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
-
+    public static final int PlayerAcount = 4;
     private static final int[] positions = {
             Gravity.RIGHT | Gravity.BOTTOM,//0
             Gravity.RIGHT | Gravity.CENTER,//1
@@ -61,9 +61,6 @@ public class PlayerActivity extends Activity {
             Gravity.LEFT | Gravity.BOTTOM,//6
             Gravity.CENTER | Gravity.BOTTOM//7
     };
-
-    public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
-
     public final int[] keys = {//same order as Main_initClickDoc /smartTwitchTV/app/specific/Main.js
             KeyEvent.KEYCODE_DPAD_UP,//0
             KeyEvent.KEYCODE_DPAD_DOWN,//1
@@ -94,12 +91,9 @@ public class PlayerActivity extends Activity {
             R.id.player_view3_texture_view,//2
             R.id.player_view4_texture_view//3
     };
-
+    public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     public String[] BLACKLISTEDCODECS = null;
-
     public int DefaultPositions = 0;
-
-    public static final int PlayerAcount = 4;
     public PlayerView[] PlayerView = new PlayerView[PlayerAcount];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAcount];
     public DataSource.Factory dataSourceFactory;
@@ -111,22 +105,42 @@ public class PlayerActivity extends Activity {
     public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
     public int mainPlayerBandwidth = Integer.MAX_VALUE;
     public int smallPlayerBandwidth = 3000000;
-
-    private LoadControl[] loadControl = new LoadControl[PlayerAcount];
-
     public long mResumePosition;
     public int mwhocall = 1;
-
-    private Uri uri;
-    private MediaSource mediaurireset;
-
     //The mediaSources stored to be used when changing from auto to source 720 etc etc
     public MediaSource[] mediaSourcesAuto = new MediaSource[PlayerAcount];
     public long[] expires = new long[PlayerAcount];
-
     //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
     public MediaSource[] mediaSourcePlaying = new MediaSource[PlayerAcount];
-
+    public WebView mwebview;
+    public boolean PicturePicture;
+    public boolean deviceIsTV;
+    public boolean MultiStream;
+    public boolean isSizechat;
+    public int heightDefault = 0;
+    public int mwidthDefault = 0;
+    public int heightChat = 0;
+    public int mwidthChat = 0;
+    public int mainPlayer = 0;
+    public int playerDivider = 3;
+    public int AudioSource = 1;
+    public int AudioMulti = 0;//window 0
+    public Handler myHandler;
+    public Handler[] PlayerCheckHandler = new Handler[PlayerAcount];
+    public int[] PlayerCheckCounter = new int[PlayerAcount];
+    public int[] droppedFrames = new int[2];
+    public long[] conSpeed = new long[2];
+    public long[] netActivity = new long[2];
+    public long droppedFramesTotal = 0L;
+    public float conSpeedAVG = 0f;
+    public float netActivityAVG = 0f;
+    public long netcounter = 0L;
+    public long speedcounter = 0L;
+    public boolean IsIN5050 = false;
+    public boolean mLowLatency = false;
+    private LoadControl[] loadControl = new LoadControl[PlayerAcount];
+    private Uri uri;
+    private MediaSource mediaurireset;
     private FrameLayout.LayoutParams DefaultSizeFrame;
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
     private FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
@@ -134,46 +148,11 @@ public class PlayerActivity extends Activity {
     private FrameLayout.LayoutParams PlayerViewDefaultSizePP;
     private FrameLayout.LayoutParams PlayerViewDefaultSizeChatPP;
     private FrameLayout VideoHolder;
-
-    public WebView mwebview;
-
     private boolean onCreateReady;
     private boolean IsonStop;
-    public boolean PicturePicture;
-    public boolean deviceIsTV;
-    public boolean MultiStream;
-    public boolean isSizechat;
-
-    public int heightDefault = 0;
-    public int mwidthDefault = 0;
-    public int heightChat = 0;
-    public int mwidthChat = 0;
-
-    public int mainPlayer = 0;
-    public int playerDivider = 3;
-    public int AudioSource = 1;
-    public int AudioMulti = 0;//window 0
-
-    public Handler myHandler;
-    public Handler[] PlayerCheckHandler = new Handler[PlayerAcount];
-    public int[] PlayerCheckCounter = new int[PlayerAcount];
-
     private ProgressBar[] loadingView = new ProgressBar[PlayerAcount + 2];
-
-    public int[] droppedFrames = new int[2];
-    public long[] conSpeed = new long[2];
-    public long[] netActivity = new long[2];
-
-    public long droppedFramesTotal = 0L;
-    public float conSpeedAVG = 0f;
-    public float netActivityAVG = 0f;
-    public long netcounter = 0L;
-    public long speedcounter = 0L;
-
     private boolean alredystarted;
     private boolean shouldCallJavaCheck;
-    public boolean IsIN5050 = false;
-    public boolean mLowLatency = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +167,7 @@ public class PlayerActivity extends Activity {
 
             myHandler = new Handler(Looper.getMainLooper());
 
-            for(int i = 0; i < PlayerAcount; i++) {
+            for (int i = 0; i < PlayerAcount; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
             }
 
@@ -248,38 +227,38 @@ public class PlayerActivity extends Activity {
         FrameLayout.LayoutParams defaultSizeFrameBottom = (FrameLayout.LayoutParams) loadingView[5].getLayoutParams();
         defaultSizeFrameBottom.width = DefaultSize;
         defaultSizeFrameBottom.height = DefaultSize;
-        defaultSizeFrameBottom.bottomMargin = (int)(size.x / 20 * density / Scaledensity);
+        defaultSizeFrameBottom.bottomMargin = (int) (size.x / 20 * density / Scaledensity);
         loadingView[5].setLayoutParams(defaultSizeFrameBottom);
     }
 
     public void setPlayer(boolean surface_view) {
         //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
-        if (surface_view){
-            for(int i = 0; i < PlayerAcount; i++) {
+        if (surface_view) {
+            for (int i = 0; i < PlayerAcount; i++) {
                 PlayerView[i] = findViewById(idtexture[i]);
                 PlayerView[i].setVisibility(View.GONE);
                 PlayerView[i] = findViewById(idsurface[i]);
             }
 
             PlayerView[0].setVisibility(View.VISIBLE);
-            for(int i = 1; i < 4; i++){
+            for (int i = 1; i < 4; i++) {
                 PlayerView[i].setVisibility(View.GONE);
             }
         } else {
 
-            for(int i = 0; i < PlayerAcount; i++) {
+            for (int i = 0; i < PlayerAcount; i++) {
                 PlayerView[i] = findViewById(idsurface[i]);
                 PlayerView[i].setVisibility(View.GONE);
                 PlayerView[i] = findViewById(idtexture[i]);
             }
 
             PlayerView[0].setVisibility(View.VISIBLE);
-            for(int i = 1; i < 4; i++) {
+            for (int i = 1; i < 4; i++) {
                 PlayerView[i].setVisibility(View.GONE);
             }
         }
 
-        for(int i = 0; i < PlayerAcount; i++) {
+        for (int i = 0; i < PlayerAcount; i++) {
             loadingView[i] = PlayerView[i].findViewById(R.id.exo_buffering);
             loadingView[i].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
             loadingView[i].setBackgroundResource(R.drawable.shadow);
@@ -426,7 +405,7 @@ public class PlayerActivity extends Activity {
 
         if (mainPlayer != position && !MultiStream) SwitchPlayerAudio(1);
         else if (AudioMulti != 4 && AudioMulti == position) {
-            for(int i = 0; i < PlayerAcount; i++) {
+            for (int i = 0; i < PlayerAcount; i++) {
                 if (i != position && player[i] != null) {
                     AudioMulti = i;
                     player[i].setVolume(1f);
@@ -484,7 +463,7 @@ public class PlayerActivity extends Activity {
         shouldCallJavaCheck = false;
         AudioSource = 1;
 
-        for(int i = 0; i < PlayerAcount; i++) {
+        for (int i = 0; i < PlayerAcount; i++) {
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             mediaSourcePlaying[i] = null;
             mediaSourcesAuto[i] = null;
@@ -648,7 +627,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void SetPlayerAudioMulti() {
-        for(int i = 0; i < PlayerAcount; i++) {
+        for (int i = 0; i < PlayerAcount; i++) {
             if (player[i] != null) {
                 if (AudioMulti == 4 || AudioMulti == i) player[i].setVolume(1f);
                 else player[i].setVolume(0f);
@@ -733,7 +712,7 @@ public class PlayerActivity extends Activity {
         IsonStop = true;
         int temp_AudioMulti = AudioMulti;
 
-        for(int i = 0; i < PlayerAcount; i++){
+        for (int i = 0; i < PlayerAcount; i++) {
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             updateResumePosition(i);
             ClearPlayer(i);
@@ -750,7 +729,7 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        for(int i = 0; i < PlayerAcount; i++) {
+        for (int i = 0; i < PlayerAcount; i++) {
             ClearPlayer(i);
         }
     }
@@ -888,6 +867,85 @@ public class PlayerActivity extends Activity {
         mwebview.loadUrl(PageUrl);
 
         mwebview.requestFocus();
+    }
+
+    public void PlayerEventListenerClear(int position) {
+        hideLoading(4);
+        hideLoading(position);
+        if (MultiStream) {
+            ClearPlayer(position);
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_MultiEnd(" + position + ")");
+        } else if (PicturePicture) {
+            boolean mswitch = (mainPlayer == position);
+
+            PicturePicture = false;
+
+            if (mswitch) SwitchPlayer();
+
+            ClearPlayer(position);
+            AudioSource = 1;
+
+            mwebview.loadUrl("javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")");
+
+        } else mwebview.loadUrl("javascript:smartTwitchTV.Play_PannelEndStart(" + mwhocall + ")");
+    }
+
+    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+        //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
+        if (player[position] != null) {
+            player[position].setPlayWhenReady(false);
+        }
+        showLoading();
+
+        PlayerCheckCounter[position]++;
+        if (PlayerCheckCounter[position] < 4 &&
+                (mainPlayer != position || mediaSourcePlaying[position] != null)) {
+
+            //this is small screen  or is in auto mode check before restart it
+            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
+            else updateResumePosition(position);
+
+            if (mwhocall == 1) {
+                //ask java to reset the qualities only if time expired
+                if (expires[position] < System.currentTimeMillis()) {
+                    mediaSourcePlaying[position] = mediaSourcesAuto[position];
+
+                    if (MultiStream) initializePlayerMulti(position, mediaSourcePlaying[position]);
+                    else initializePlayer(position);
+
+                } else
+                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");
+
+            } else initializePlayer(position);
+
+        } else if (PlayerCheckCounter[position] > 3) {
+
+            // try == 3 Give up internet is probably down or something related
+            PlayerEventListenerClear(position);
+
+        } else if (PlayerCheckCounter[position] > 1) {
+
+            // Second if not in auto mode use js to check if is possible to drop quality
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_PlayerCheck(" + mwhocall + ")");
+
+        } else {
+            //First try and not auto mode only restart the player
+            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
+            else updateResumePosition(position);
+
+            initializePlayer(position);
+        }
+    }
+
+    @TargetApi(23)
+    private void check_writeexternalstorage() {
+        if (!Tools.WR_storage(this)) {
+            requestPermissions(new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    123);
+        }
     }
 
     public class WebAppInterface {
@@ -1223,7 +1281,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void play(boolean play) {
             myHandler.post(() -> {
-                for(int i = 0; i < PlayerAcount; i++) {
+                for (int i = 0; i < PlayerAcount; i++) {
                     if (player[i] != null) player[i].setPlayWhenReady(play);
                 }
                 KeepScreenOn(play);
@@ -1248,7 +1306,7 @@ public class PlayerActivity extends Activity {
         public void setPlaybackSpeed(float value) {
             myHandler.post(() -> {
                 if (MultiStream) {
-                    for(int i = 0; i < PlayerAcount; i++) {
+                    for (int i = 0; i < PlayerAcount; i++) {
                         if (player[i] != null)
                             player[i].setPlaybackParameters(new PlaybackParameters(value, 1.0f));
                     }
@@ -1519,75 +1577,6 @@ public class PlayerActivity extends Activity {
 
     }
 
-    public void PlayerEventListenerClear(int position) {
-        hideLoading(4);
-        hideLoading(position);
-        if (MultiStream) {
-            ClearPlayer(position);
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_MultiEnd(" + position + ")");
-        } else if (PicturePicture) {
-            boolean mswitch = (mainPlayer == position);
-
-            PicturePicture = false;
-
-            if (mswitch) SwitchPlayer();
-
-            ClearPlayer(position);
-            AudioSource = 1;
-
-            mwebview.loadUrl("javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")");
-
-        } else mwebview.loadUrl("javascript:smartTwitchTV.Play_PannelEndStart(" + mwhocall + ")");
-    }
-
-    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
-        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-        //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
-        if (player[position] != null) {
-            player[position].setPlayWhenReady(false);
-        }
-        showLoading();
-
-        PlayerCheckCounter[position]++;
-        if (PlayerCheckCounter[position] < 4 &&
-                (mainPlayer != position || mediaSourcePlaying[position] != null)) {
-
-            //this is small screen  or is in auto mode check before restart it
-            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
-            else updateResumePosition(position);
-
-            if (mwhocall == 1) {
-                //ask java to reset the qualities only if time expired
-                if (expires[position] < System.currentTimeMillis()) {
-                    mediaSourcePlaying[position] = mediaSourcesAuto[position];
-
-                    if (MultiStream) initializePlayerMulti(position, mediaSourcePlaying[position]);
-                    else initializePlayer(position);
-
-                } else
-                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");
-
-            } else initializePlayer(position);
-
-        } else if (PlayerCheckCounter[position] > 3) {
-
-            // try == 3 Give up internet is probably down or something related
-            PlayerEventListenerClear(position);
-
-        } else if (PlayerCheckCounter[position] > 1) {
-
-            // Second if not in auto mode use js to check if is possible to drop quality
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_PlayerCheck(" + mwhocall + ")");
-
-        } else {
-            //First try and not auto mode only restart the player
-            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
-            else updateResumePosition(position);
-
-            initializePlayer(position);
-        }
-    }
-
     private class AnalyticsEventListener implements AnalyticsListener {
 
         private int position;
@@ -1627,15 +1616,5 @@ public class PlayerActivity extends Activity {
             droppedFramesTotal += count;
         }
 
-    }
-
-    @TargetApi(23)
-    private void check_writeexternalstorage() {
-        if (!Tools.WR_storage(this)) {
-            requestPermissions(new String[] {
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    },
-                    123);
-        }
     }
 }
