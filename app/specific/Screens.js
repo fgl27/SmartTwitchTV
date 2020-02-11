@@ -93,7 +93,7 @@ function Screens_init() {
     inUseObj.label_init();
 
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
-    Main_ShowElement(inUseObj.ids[10]);
+    Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
     if (inUseObj.status) {
         Main_YRst(inUseObj.posY);
@@ -106,7 +106,7 @@ function Screens_exit() {
     Main_addFocusVideoOffset = 0;
     if (inUseObj.label_exit) inUseObj.label_exit();
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    Main_HideElement(inUseObj.ids[10]);
+    Main_HideElementWithEle(inUseObj.ScrollDoc);
     Main_HideWarningDialog();
     Screens_ClearAnimation();
 }
@@ -438,7 +438,7 @@ function Screens_loadDataSuccessFinish(obj) {
                 });
             } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
                 Main_GoBefore !== Main_Search) {
-                Main_HideElement(obj.ids[10]);
+                Main_HideElementWithEle(obj.ScrollDoc);
                 Main_ready(function() {
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
@@ -482,7 +482,7 @@ function Screens_loadDataSuccessFinish(obj) {
             Main_SaveValues();
             Main_HideLoadDialog();
         }
-    } else if (Main_isElementShowing(obj.ids[10])) {
+    } else if (Main_isElementShowingWithEle(obj.ScrollDoc)) {
         Main_CounterDialog(obj.posX, obj.posY, obj.ColoumnsCount, obj.itemsCount);
         Screens_addFocus(true);
     }
@@ -534,7 +534,7 @@ function Screens_addFocus(forceScroll) {
     if (inUseObj.posY < 0) {
         Screens_addFocusFallow();
         //Reset screen position
-        document.getElementById(inUseObj.ids[10]).style.top = '';
+        inUseObj.ScrollDoc.style.top = '';
         if (!inUseObj.emptyContent)
             Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
@@ -1038,7 +1038,7 @@ function AGame_headerOptionsExit() {
         Main_AddClass(inUseObj.ids[0] + '0_' + inUseObj.posX, Main_classThumb);
     }
     document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    Main_HideElement(inUseObj.ids[10]);
+    Main_HideElementWithEle(inUseObj.ScrollDoc);
 }
 
 function AGame_fallow() {

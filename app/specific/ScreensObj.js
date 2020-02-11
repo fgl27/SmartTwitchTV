@@ -78,6 +78,9 @@ var Base_obj = {
     loadDataSuccess: function() {
         Screens_loadDataSuccess(this);
     },
+    Set_Scroll: function() {
+        this.ScrollDoc = document.getElementById(this.ids[10]);
+    },
     addrow: Screens_addrow,
     key_exit: function(goSidepanel) {//TODO overwrite this on if object
         Screens_RemoveAllFocus();
@@ -239,6 +242,7 @@ function ScreensObj_InitVod() {
     }, Base_obj);
 
     Vod = Screens_assign(Vod, Base_Vod_obj);
+    Vod.Set_Scroll();
 }
 
 function ScreensObj_InitChannelVod() {
@@ -327,6 +331,7 @@ function ScreensObj_InitChannelVod() {
 
         this.addCellBase(cell, thumbnail);
     };
+    ChannelVod.Set_Scroll();
 }
 
 function ScreensObj_InitAGameVod() {
@@ -382,6 +387,7 @@ function ScreensObj_InitAGameVod() {
     }, Base_obj);
 
     AGameVod = Screens_assign(AGameVod, Base_Vod_obj);
+    AGameVod.Set_Scroll();
 }
 
 function ScreensObj_InitUserVod() {
@@ -442,6 +448,7 @@ function ScreensObj_InitUserVod() {
     }, Base_obj);
 
     UserVod = Screens_assign(UserVod, Base_Vod_obj);
+    UserVod.Set_Scroll();
 }
 
 var Base_Live_obj = {
@@ -515,6 +522,7 @@ function ScreensObj_InitLive() {
     }, Base_obj);
 
     Live = Screens_assign(Live, Base_Live_obj);
+    Live.Set_Scroll();
 }
 
 function ScreensObj_InitSearchLive() {
@@ -555,6 +563,7 @@ function ScreensObj_InitSearchLive() {
         if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined' ||
             (this.data.length < Main_ItemsLimitMax)) this.dataEnded = true;
     };
+    SearchLive.Set_Scroll();
 }
 
 function ScreensObj_InitUserLive() {
@@ -662,6 +671,7 @@ function ScreensObj_InitUserLive() {
             Screens_loadDataRequest(this);
         }
     };
+    UserLive.Set_Scroll();
 }
 
 function ScreensObj_InitUserHost() {
@@ -727,6 +737,7 @@ function ScreensObj_InitUserHost() {
             this.coloumn_id++;
         }
     };
+    UserHost.Set_Scroll();
 }
 
 function ScreensObj_InitAGame() {
@@ -774,6 +785,7 @@ function ScreensObj_InitAGame() {
     }, Base_obj);
 
     AGame = Screens_assign(AGame, Base_Live_obj);
+    AGame.Set_Scroll();
 }
 
 function ScreensObj_InitFeatured() {
@@ -809,6 +821,7 @@ function ScreensObj_InitFeatured() {
         cell = cell.stream;
         this.addCellTemp(cell);
     };
+    Featured.Set_Scroll();
 }
 
 var Base_Clip_obj = {
@@ -929,6 +942,7 @@ function ScreensObj_InitClip() {
     }, Base_obj);
 
     Clip = Screens_assign(Clip, Base_Clip_obj);
+    Clip.Set_Scroll();
 }
 
 function ScreensObj_InitChannelClip() {
@@ -963,6 +977,7 @@ function ScreensObj_InitChannelClip() {
     }, Base_obj);
 
     ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
+    ChannelClip.Set_Scroll();
 }
 
 function ScreensObj_InitAGameClip() {
@@ -993,6 +1008,7 @@ function ScreensObj_InitAGameClip() {
     }, Base_obj);
 
     AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
+    AGameClip.Set_Scroll();
 }
 
 var Base_Game_obj = {
@@ -1023,7 +1039,7 @@ var Base_Game_obj = {
 
         Main_addFocusVideoOffset = 0;
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
-        Main_HideElement(this.ids[10]);
+        Main_HideElementWithEle(this.ScrollDoc);
 
         Main_SwitchScreenAction();
     },
@@ -1077,6 +1093,7 @@ function ScreensObj_InitGame() {
     }, Base_obj);
 
     Game = Screens_assign(Game, Base_Game_obj);
+    Game.Set_Scroll();
 }
 
 function ScreensObj_InitUserGames() {
@@ -1121,6 +1138,7 @@ function ScreensObj_InitUserGames() {
 
     UserGames = Screens_assign(UserGames, Base_Game_obj);
     UserGames.HeaderQuatity = 1;
+    UserGames.Set_Scroll();
 }
 
 function ScreensObj_InitSearchGames() {
@@ -1156,6 +1174,7 @@ function ScreensObj_InitSearchGames() {
 
     SearchGames = Screens_assign(SearchGames, Base_Game_obj);
     SearchGames.ItemsLimit = 100;
+    SearchGames.Set_Scroll();
 }
 
 var Base_Channel_obj = {
@@ -1240,6 +1259,7 @@ function ScreensObj_InitUserChannels() {
     UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
     UserChannels.addrow = Screens_addrowChannel;
     UserChannels.visiblerows = 5;
+    UserChannels.Set_Scroll();
 }
 
 function ScreensObj_InitSearchChannels() {
@@ -1294,6 +1314,7 @@ function ScreensObj_InitSearchChannels() {
     SearchChannels = Screens_assign(SearchChannels, Base_Channel_obj);
     SearchChannels.addrow = Screens_addrowChannel;
     SearchChannels.visiblerows = 5;
+    SearchChannels.Set_Scroll();
 }
 
 var Base_History_obj = {
@@ -1375,7 +1396,7 @@ var Base_History_obj = {
             Main_AddClass(this.ids[0] + '0_' + this.posX, Main_classThumb);
         }
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
-        Main_HideElement(this.ids[10]);
+        Main_HideElementWithEle(this.ScrollDoc);
     },
     sethistMainDialog: function() {
         this.Upsorting();
@@ -1476,6 +1497,7 @@ function ScreensObj_HistoryLive() {
 
     HistoryLive = Screens_assign(HistoryLive, Base_History_obj);
     HistoryLive.Upsorting();
+    HistoryLive.Set_Scroll();
 }
 
 function ScreensObj_HistoryVod() {
@@ -1565,6 +1587,7 @@ function ScreensObj_HistoryVod() {
         Screens_addFocusVideo(y, x, idArray, forceScroll);
     };
     HistoryVod.Upsorting();
+    HistoryVod.Set_Scroll();
 }
 
 function ScreensObj_HistoryClip() {
@@ -1647,6 +1670,7 @@ function ScreensObj_HistoryClip() {
 
     HistoryClip = Screens_assign(HistoryClip, Base_History_obj);
     HistoryClip.Upsorting();
+    HistoryClip.Set_Scroll();
 }
 
 function ScreensObj_addSwitches(StringsArray) {

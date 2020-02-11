@@ -140,6 +140,8 @@ var Main_DoRestore = true;
 var Main_CanBackup = false;
 var Main_UserBackupFile = 'user.json';
 var Main_HistoryBackupFile = 'history.json';
+var Main_Scene1Doc;
+var Main_Scene2Doc;
 //Variable initialization end
 
 // this function will be called only once the first time the app startup
@@ -217,6 +219,8 @@ function Main_loadTranslations(language) {
 
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
+        Main_Scene1Doc = document.getElementById('scene1');
+        Main_Scene2Doc = document.getElementById('scene2');
 
         Main_RestoreValues();
 
@@ -623,11 +627,19 @@ function Main_IconLoad(lable, icon, string) {
 }
 
 function Main_HideElement(element) {
-    document.getElementById(element).classList.add('hide');
+    Main_HideElementWithEle(document.getElementById(element));
+}
+
+function Main_HideElementWithEle(element) {
+    element.classList.add('hide');
 }
 
 function Main_ShowElement(element) {
-    document.getElementById(element).classList.remove('hide');
+    Main_ShowElementWithEle(document.getElementById(element));
+}
+
+function Main_ShowElementWithEle(element) {
+    element.classList.remove('hide');
 }
 
 function Main_isElementShowing(element) {
@@ -1209,6 +1221,30 @@ function Main_CheckBroadcastIDStartError() {
     } else Main_openStream();
 }
 
+function Main_showScene1Doc() {
+    Main_ShowElementWithEle(Main_Scene1Doc);
+}
+
+function Main_hideScene1Doc() {
+    Main_HideElementWithEle(Main_Scene1Doc);
+}
+
+function Main_isScene1DocShown() {
+    return Main_isElementShowingWithEle(Main_Scene1Doc);
+}
+
+function Main_showScene2Doc() {
+    Main_ShowElementWithEle(Main_Scene2Doc);
+}
+
+function Main_hideScene2Doc() {
+    Main_HideElementWithEle(Main_Scene2Doc);
+}
+
+function Main_isScene2DocShown() {
+    return Main_isElementShowingWithEle(Main_Scene2Doc);
+}
+
 function Main_OPenAsVod(index) {
     if (!Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
         Main_openStream();
@@ -1241,8 +1277,8 @@ function Main_OPenAsVod(index) {
 function Main_openStream() {
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
-    Main_HideElement('scene1');
-    Main_ShowElement('scene2');
+    Main_hideScene1Doc();
+    Main_showScene2Doc();
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
     Main_ready(Play_Start);
@@ -1275,8 +1311,8 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
-    Main_HideElement('scene1');
-    Main_ShowElement('scene2');
+    Main_hideScene1Doc();
+    Main_showScene2Doc();
     Play_hideChat();
     Play_HideWarningDialog();
     Play_CleanHideExit();
@@ -1315,8 +1351,8 @@ function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
 
 function Main_openVod() {
     document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
-    Main_HideElement('scene1');
-    Main_ShowElement('scene2');
+    Main_hideScene1Doc();
+    Main_showScene2Doc();
     PlayVod_hidePanel();
     Play_hideChat();
     Play_CleanHideExit();
@@ -1604,7 +1640,7 @@ function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj) {
     if (xmlHttp.status === 200) {
         callbackSucess(xmlHttp.responseText, obj);
     } else if (xmlHttp.status === 500) {
-        if (Main_isElementShowing('scene1') && obj.screen === Main_usergames)
+        if (Main_isScene1DocShown() && obj.screen === Main_usergames)
             obj.key_refresh();
         else calbackError(obj);
     } else {
@@ -1636,7 +1672,7 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
                 AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
             } else if (xmlHttp.status === 500) {
-                if (Main_isElementShowing('scene1') && obj.screen === Main_usergames)
+                if (Main_isScene1DocShown() && obj.screen === Main_usergames)
                     obj.key_refresh();
                 else calbackError(obj);
             } else {

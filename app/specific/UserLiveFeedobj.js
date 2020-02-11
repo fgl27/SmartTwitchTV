@@ -406,7 +406,7 @@ function UserLiveFeedobj_ShowFeed() {
 }
 
 function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
-    if (Main_isElementShowing('scene2') && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
+    if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
     if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
