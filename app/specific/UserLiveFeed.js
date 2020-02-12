@@ -300,6 +300,7 @@ function UserLiveFeed_ShowFeed() {
 }
 
 function UserLiveFeed_Show() {
+    if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
 }
 
