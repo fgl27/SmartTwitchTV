@@ -2519,6 +2519,7 @@
 
     function ChatLive_Init(chat_number) {
         ChatLive_Clear(chat_number);
+        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
         if (Main_values.Play_ChatForceDisable) {
             Chat_Disable();
             return;
@@ -3011,6 +3012,7 @@
     function Chat_Init() {
         Chat_JustStarted = true;
         Chat_Clear();
+        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
         if (!Main_IsNotBrowser || Main_values.Play_ChatForceDisable) {
             Chat_Disable();
             return;
@@ -4734,6 +4736,7 @@
 
     function Main_hideScene2Doc() {
         Main_HideElementWithEle(Main_Scene2Doc);
+        Main_HideElementWithEle(UserLiveFeed_FeedHolderDocId);
     }
 
     function Main_isScene2DocShown() {
@@ -4770,9 +4773,9 @@
     }
 
     function Main_openStream() {
+        Main_hideScene1Doc();
         document.body.removeEventListener("keydown", Play_handleKeyDown);
         document.body.addEventListener("keydown", Play_handleKeyDown, false);
-        Main_hideScene1Doc();
         Main_showScene2Doc();
         Play_hidePanel();
         if (!Play_EndDialogEnter) Play_HideEndDialog();
@@ -4781,6 +4784,7 @@
 
     function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
+        Main_hideScene1Doc();
         document.body.removeEventListener("keydown", handleKeyDownFunction);
         Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
@@ -4806,7 +4810,6 @@
         ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
         document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
-        Main_hideScene1Doc();
         Main_showScene2Doc();
         Play_hideChat();
         Play_HideWarningDialog();
@@ -4845,8 +4848,8 @@
     }
 
     function Main_openVod() {
-        document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
         Main_hideScene1Doc();
+        document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
         Main_showScene2Doc();
         PlayVod_hidePanel();
         Play_hideChat();
@@ -8532,6 +8535,7 @@
     }
 
     function Play_CheckHostStart(error_410) {
+        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
         if (error_410) {
             Play_IsWarning = true;
             Play_showWarningDialog(STR_410_ERROR);
@@ -17391,6 +17395,7 @@
     }
 
     function UserLiveFeed_Show() {
+        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
         Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     }
 
