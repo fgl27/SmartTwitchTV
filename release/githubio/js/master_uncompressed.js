@@ -4715,10 +4715,12 @@
     }
 
     function Main_showScene1Doc() {
+        Main_Scene1Doc.style.opacity = "1";
         Main_ShowElementWithEle(Main_Scene1Doc);
     }
 
     function Main_hideScene1Doc() {
+        Main_Scene1Doc.style.opacity = "0";
         Main_HideElementWithEle(Main_Scene1Doc);
     }
 
@@ -4732,7 +4734,6 @@
 
     function Main_hideScene2Doc() {
         Main_HideElementWithEle(Main_Scene2Doc);
-        Main_HideElementWithEle(UserLiveFeed_FeedHolderDocId);
     }
 
     function Main_isScene2DocShown() {
@@ -4775,12 +4776,7 @@
         Main_showScene2Doc();
         Play_hidePanel();
         if (!Play_EndDialogEnter) Play_HideEndDialog();
-        Main_ready(function() {
-            Play_Start();
-            Main_ready(function() {
-                Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
-            });
-        });
+        Main_ready(Play_Start);
     }
 
     function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
@@ -4815,15 +4811,10 @@
         Play_hideChat();
         Play_HideWarningDialog();
         Play_CleanHideExit();
-        Main_ready(function() {
-            PlayClip_Start();
-            Main_ready(function() {
-                Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
-            });
-        });
+        Main_ready(PlayClip_Start);
     }
 
-    function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
+    function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         document.body.removeEventListener("keydown", handleKeyDownFunction);
         Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
@@ -4860,12 +4851,7 @@
         PlayVod_hidePanel();
         Play_hideChat();
         Play_CleanHideExit();
-        Main_ready(function() {
-            PlayVod_Start();
-            Main_ready(function() {
-                Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
-            });
-        });
+        Main_ready(PlayVod_Start);
     }
 
     function Main_ScrollTable(id, position) {
@@ -13470,7 +13456,7 @@
                         Screens_StartLoad();
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else Screens_PeriodStart();
-                } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -13533,7 +13519,7 @@
                         this.SetPeriod();
                         Screens_StartLoad();
                     } else Screens_OffSetStart();
-                } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
             },
             SwitchesIcons: ['movie-play', 'history', 'offset'],
             addSwitches: function() {
@@ -13615,7 +13601,7 @@
                         Screens_StartLoad();
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else Screens_PeriodStart();
-                } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -13677,7 +13663,7 @@
                         this.SetPeriod();
                         Screens_StartLoad();
                     }
-                } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -14801,7 +14787,7 @@
                         this.history_exit();
                         Main_SwitchScreenAction();
                     } else Screens_histStart();
-                } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
             },
             addCell: function(cell) {
