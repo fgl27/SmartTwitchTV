@@ -8057,18 +8057,18 @@
     function Play_showChat() {
         Play_ChatPosition();
         Play_ChatBackgroundChange(false);
-        Main_ShowElementWithEle(Play_chat_container);
+        Play_chat_container.classList.remove('opacity_zero');
 
         Play_controls[Play_controlsChat].setLable();
     }
 
     function Play_hideChat() {
-        Main_HideElementWithEle(Play_chat_container);
+        Play_chat_container.classList.add('opacity_zero');
         Play_controls[Play_controlsChat].setLable();
     }
 
     function Play_isChatShown() {
-        return Main_isElementShowingWithEle(Play_chat_container);
+        return !Main_A_includes_B(Play_chat_container.className, 'opacity_zero');
     }
 
     function Play_getQualitiesCount() {
