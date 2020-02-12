@@ -275,10 +275,10 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     UserLiveFeed_loadingData = false;
     UserLiveFeed_status[pos] = true;
 
-    UserLiveFeed_Showloading(false);
     Main_HideElement('dialog_loading_side_feed');
     Sidepannel_AddFocusFeed(true);
     UserLiveFeed_FeedAddFocus(true, pos);
+    UserLiveFeed_Showloading(false);
 
     if (ShowNotifications) {
         //The app just started or user change don't nottify

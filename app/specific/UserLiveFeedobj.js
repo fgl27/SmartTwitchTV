@@ -297,10 +297,12 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     //     )
     // );
 
-    UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
-    UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
-    UserLiveFeed_LoadImgSide();
-    Sidepannel_PreloadImgs();
+    window.setTimeout(function() {
+        UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
+        UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
+        UserLiveFeed_LoadImgSide();
+        Sidepannel_PreloadImgs();
+    }, 25);
 }
 
 var UserLiveFeedobj_LiveNotificationClearId;
@@ -509,8 +511,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
         // );
     } else UserLiveFeedobj_Empty(pos);
 
-    UserLiveFeed_loadDataSuccessFinish(false, pos);
-    UserLiveFeed_LoadImg(pos);
+    window.setTimeout(function() {
+        UserLiveFeed_loadDataSuccessFinish(false, pos);
+        UserLiveFeed_LoadImg(pos);
+    }, 25);
 }
 
 //Live Start
@@ -725,8 +729,10 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
         }
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserHostPos);
 
-    UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
-    UserLiveFeed_LoadImg(UserLiveFeedobj_UserHostPos);
+    window.setTimeout(function() {
+        UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
+        UserLiveFeed_LoadImg(UserLiveFeedobj_UserHostPos);
+    }, 25);
 }
 
 var UserLiveFeedobj_HostFeedOldUserName = '';
@@ -841,8 +847,10 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
         }
     } else UserLiveFeedobj_Empty(pos);
 
-    UserLiveFeed_loadDataSuccessFinish(false, pos);
-    UserLiveFeed_LoadImg(pos);
+    window.setTimeout(function() {
+        UserLiveFeed_loadDataSuccessFinish(false, pos);
+        UserLiveFeed_LoadImg(pos);
+    }, 25);
 }
 //Base game fun
 
