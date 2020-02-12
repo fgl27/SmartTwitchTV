@@ -2519,7 +2519,7 @@
 
     function ChatLive_Init(chat_number) {
         ChatLive_Clear(chat_number);
-        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        UserLiveFeed_ShowIfhide();
         if (Main_values.Play_ChatForceDisable) {
             Chat_Disable();
             return;
@@ -3012,7 +3012,7 @@
     function Chat_Init() {
         Chat_JustStarted = true;
         Chat_Clear();
-        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        UserLiveFeed_ShowIfhide();
         if (!Main_IsNotBrowser || Main_values.Play_ChatForceDisable) {
             Chat_Disable();
             return;
@@ -3343,7 +3343,7 @@
     }
 
     function Chat_NoVod() {
-        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        UserLiveFeed_ShowIfhide();
         Chat_Clear();
         Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
     }
@@ -4780,7 +4780,7 @@
         Main_showScene2Doc();
         Play_hidePanel();
         if (!Play_EndDialogEnter) Play_HideEndDialog();
-        Main_ready(Play_Start);
+        window.setTimeout(Play_Start, 25);
     }
 
     function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
@@ -4815,7 +4815,7 @@
         Play_hideChat();
         Play_HideWarningDialog();
         Play_CleanHideExit();
-        Main_ready(PlayClip_Start);
+        window.setTimeout(PlayClip_Start, 25);
     }
 
     function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
@@ -4855,7 +4855,7 @@
         PlayVod_hidePanel();
         Play_hideChat();
         Play_CleanHideExit();
-        Main_ready(PlayVod_Start);
+        window.setTimeout(PlayVod_Start, 25);
     }
 
     function Main_ScrollTable(id, position) {
@@ -17146,6 +17146,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].show = UserLiveFeedobj_ShowFeed;
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = document.getElementById('user_feed_scroll');
+        UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_UserLivePos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos] = 0;
 
         //User Host
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos] = {};
@@ -17153,6 +17156,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].hide = UserLiveFeedobj_HideUserHost;
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = document.getElementById('user_host_scroll');
+        UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_UserHostPos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos] = 0;
 
         //User a game
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos] = {};
@@ -17162,6 +17168,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div = document.getElementById('user_agames_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
+        UserLiveFeed_idObject[UserLiveFeedobj_UserAGamesPos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_UserAGamesPos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_UserAGamesPos] = 0;
 
         //a game
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos] = {};
@@ -17171,6 +17180,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div = document.getElementById('agame_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
+        UserLiveFeed_idObject[UserLiveFeedobj_AGamesPos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_AGamesPos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_AGamesPos] = 0;
 
         //User Games
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos] = {};
@@ -17178,6 +17190,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].show = UserLiveFeedobj_ShowUserGames;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].hide = UserLiveFeedobj_HideUserGames;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = document.getElementById('user_games_scroll');
+        UserLiveFeed_idObject[UserLiveFeedobj_UserGamesPos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_UserGamesPos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_UserGamesPos] = 0;
 
         //Games
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos] = {};
@@ -17185,6 +17200,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].show = UserLiveFeedobj_ShowGames;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].hide = UserLiveFeedobj_HideGames;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div = document.getElementById('games_scroll');
+        UserLiveFeed_idObject[UserLiveFeedobj_GamesPos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_GamesPos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_GamesPos] = 0;
 
         //Live
         UserLiveFeed_obj[UserLiveFeedobj_LivePos] = {};
@@ -17194,6 +17212,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].div = document.getElementById('live_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
+        UserLiveFeed_idObject[UserLiveFeedobj_LivePos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_LivePos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_LivePos] = 0;
 
         //Current Game
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos] = {};
@@ -17203,6 +17224,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div = document.getElementById('current_game_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
+        UserLiveFeed_idObject[UserLiveFeedobj_CurrentGamePos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_CurrentGamePos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_CurrentGamePos] = 0;
 
         //Featured
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos] = {};
@@ -17212,6 +17236,9 @@
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div = document.getElementById('featured_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
+        UserLiveFeed_idObject[UserLiveFeedobj_FeaturedPos] = {};
+        UserLiveFeed_ImgObj[UserLiveFeedobj_FeaturedPos] = [];
+        UserLiveFeed_itemsCount[UserLiveFeedobj_FeaturedPos] = 0;
 
         if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
@@ -17402,6 +17429,15 @@
 
     function UserLiveFeed_Hide() {
         Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+    }
+
+    var UserLiveFeed_ShowIfhideId;
+
+    function UserLiveFeed_ShowIfhide() {
+        window.clearTimeout(UserLiveFeed_ShowIfhideId);
+        UserLiveFeed_ShowIfhideId = window.setTimeout(function() {
+            if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        }, 1000);
     }
 
     function UserLiveFeed_ResetFeedId() {
@@ -17679,13 +17715,13 @@
             UserLiveFeed_LastPos[pos] = null;
         }
 
+        UserLiveFeed_idObject[pos] = {};
         UserLiveFeed_ImgObj[pos] = [];
         UserLiveFeed_itemsCount[pos] = 0;
         Main_emptyWithEle(UserLiveFeed_obj[pos].div);
         UserLiveFeed_status[pos] = false;
         UserLiveFeed_obj[pos].div.style.left = "0.125em";
         UserLiveFeed_FeedPosY[pos] = 0;
-        UserLiveFeed_idObject[pos] = {};
 
         Main_updateclock();
         Main_ShowElement('dialog_loading_side_feed');
