@@ -340,7 +340,7 @@ function UserLiveFeed_ShowIfhide() {
     window.clearTimeout(UserLiveFeed_ShowIfhideId);
     UserLiveFeed_ShowIfhideId = window.setTimeout(function() {
         if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
-    }, 1000);
+    }, 500);
 }
 
 function UserLiveFeed_ResetFeedId() {
