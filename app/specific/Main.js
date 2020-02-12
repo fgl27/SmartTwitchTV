@@ -1353,7 +1353,6 @@ function Main_isScene1DocShown() {
 
 function Main_showScene2Doc() {
     Main_ShowElementWithEle(Main_Scene2Doc);
-    Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
 }
 
 function Main_hideScene2Doc() {
@@ -1402,6 +1401,10 @@ function Main_openStream() {
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
     Main_ready(Play_Start);
+    Main_ready(function() {
+        Play_Start();
+        Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+    });
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
@@ -1436,7 +1439,10 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_hideChat();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    Main_ready(PlayClip_Start);
+    Main_ready(function() {
+        PlayClip_Start();
+        Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+    });
 }
 
 function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
@@ -1476,7 +1482,10 @@ function Main_openVod() {
     PlayVod_hidePanel();
     Play_hideChat();
     Play_CleanHideExit();
-    Main_ready(PlayVod_Start);
+    Main_ready(function() {
+        PlayVod_Start();
+        Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+    });
 }
 
 function Main_ScrollTable(id, position) {
