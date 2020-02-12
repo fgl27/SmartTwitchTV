@@ -217,7 +217,7 @@ function ScreensObj_InitVod() {
                     Screens_StartLoad();
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else Screens_PeriodStart();
-            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -280,7 +280,7 @@ function ScreensObj_InitChannelVod() {
                     this.SetPeriod();
                     Screens_StartLoad();
                 } else Screens_OffSetStart();
-            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         SwitchesIcons: ['movie-play', 'history', 'offset'],
         addSwitches: function() {
@@ -362,7 +362,7 @@ function ScreensObj_InitAGameVod() {
                     Screens_StartLoad();
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else Screens_PeriodStart();
-            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -424,7 +424,7 @@ function ScreensObj_InitUserVod() {
                     this.SetPeriod();
                     Screens_StartLoad();
                 }
-            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -1546,7 +1546,7 @@ function ScreensObj_HistoryVod() {
                     this.history_exit();
                     Main_SwitchScreenAction();
                 } else Screens_histStart();
-            } else Main_OpenVod(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
         },
         addCell: function(cell) {
