@@ -1340,10 +1340,12 @@ function Main_CheckBroadcastIDStartError() {
 }
 
 function Main_showScene1Doc() {
+    Main_Scene1Doc.style.opacity = "1";
     Main_ShowElementWithEle(Main_Scene1Doc);
 }
 
 function Main_hideScene1Doc() {
+    Main_Scene1Doc.style.opacity = "0";
     Main_HideElementWithEle(Main_Scene1Doc);
 }
 
@@ -1357,7 +1359,6 @@ function Main_showScene2Doc() {
 
 function Main_hideScene2Doc() {
     Main_HideElementWithEle(Main_Scene2Doc);
-    Main_HideElementWithEle(UserLiveFeed_FeedHolderDocId);
 }
 
 function Main_isScene2DocShown() {
@@ -1400,12 +1401,7 @@ function Main_openStream() {
     Main_showScene2Doc();
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
-    Main_ready(function() {
-        Play_Start();
-        Main_ready(function() {
-            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
-        });
-    });
+    Main_ready(Play_Start);
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
@@ -1440,15 +1436,10 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_hideChat();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    Main_ready(function() {
-        PlayClip_Start();
-        Main_ready(function() {
-            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
-        });
-    });
+    Main_ready(PlayClip_Start);
 }
 
-function Main_OpenVod(id, idsArray, handleKeyDownFunction) {
+function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
@@ -1485,12 +1476,7 @@ function Main_openVod() {
     PlayVod_hidePanel();
     Play_hideChat();
     Play_CleanHideExit();
-    Main_ready(function() {
-        PlayVod_Start();
-        Main_ready(function() {
-            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
-        });
-    });
+    Main_ready(PlayVod_Start);
 }
 
 function Main_ScrollTable(id, position) {
