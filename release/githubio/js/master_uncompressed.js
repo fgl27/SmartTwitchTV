@@ -4940,12 +4940,9 @@
     }
 
     function Main_updateUserFeed() {
-        if (AddUser_UserIsSet()) {
-            window.setTimeout(function() {
-                if (!document.hidden && !UserLiveFeed_isFeedShow() && !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
-                    UserLiveFeed_RefreshLive();
-                }
-            }, 15000);
+        if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
+            !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
+            UserLiveFeed_RefreshLive();
         }
     }
 
