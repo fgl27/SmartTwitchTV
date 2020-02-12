@@ -4775,10 +4775,11 @@
         Main_showScene2Doc();
         Play_hidePanel();
         if (!Play_EndDialogEnter) Play_HideEndDialog();
-        Main_ready(Play_Start);
         Main_ready(function() {
             Play_Start();
-            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+            Main_ready(function() {
+                Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+            });
         });
     }
 
@@ -4816,7 +4817,9 @@
         Play_CleanHideExit();
         Main_ready(function() {
             PlayClip_Start();
-            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+            Main_ready(function() {
+                Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+            });
         });
     }
 
@@ -4859,7 +4862,9 @@
         Play_CleanHideExit();
         Main_ready(function() {
             PlayVod_Start();
-            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+            Main_ready(function() {
+                Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+            });
         });
     }
 
