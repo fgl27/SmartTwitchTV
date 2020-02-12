@@ -17369,10 +17369,10 @@
         UserLiveFeed_loadingData = false;
         UserLiveFeed_status[pos] = true;
 
-        UserLiveFeed_Showloading(false);
         Main_HideElement('dialog_loading_side_feed');
         Sidepannel_AddFocusFeed(true);
         UserLiveFeed_FeedAddFocus(true, pos);
+        UserLiveFeed_Showloading(false);
 
         if (ShowNotifications) {
             //The app just started or user change don't nottify
@@ -17985,10 +17985,12 @@
         //     )
         // );
 
-        UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
-        UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
-        UserLiveFeed_LoadImgSide();
-        Sidepannel_PreloadImgs();
+        window.setTimeout(function() {
+            UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
+            UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
+            UserLiveFeed_LoadImgSide();
+            Sidepannel_PreloadImgs();
+        }, 25);
     }
 
     var UserLiveFeedobj_LiveNotificationClearId;
@@ -18201,8 +18203,10 @@
             // );
         } else UserLiveFeedobj_Empty(pos);
 
-        UserLiveFeed_loadDataSuccessFinish(false, pos);
-        UserLiveFeed_LoadImg(pos);
+        window.setTimeout(function() {
+            UserLiveFeed_loadDataSuccessFinish(false, pos);
+            UserLiveFeed_LoadImg(pos);
+        }, 25);
     }
 
     //Live Start
@@ -18418,8 +18422,10 @@
             }
         } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserHostPos);
 
-        UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
-        UserLiveFeed_LoadImg(UserLiveFeedobj_UserHostPos);
+        window.setTimeout(function() {
+            UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
+            UserLiveFeed_LoadImg(UserLiveFeedobj_UserHostPos);
+        }, 25);
     }
 
     var UserLiveFeedobj_HostFeedOldUserName = '';
@@ -18535,8 +18541,10 @@
             }
         } else UserLiveFeedobj_Empty(pos);
 
-        UserLiveFeed_loadDataSuccessFinish(false, pos);
-        UserLiveFeed_LoadImg(pos);
+        window.setTimeout(function() {
+            UserLiveFeed_loadDataSuccessFinish(false, pos);
+            UserLiveFeed_LoadImg(pos);
+        }, 25);
     }
     //Base game fun
 
