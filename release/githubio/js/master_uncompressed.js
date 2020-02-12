@@ -3500,7 +3500,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.111';
-    var Main_minversion = '021120';
+    var Main_minversion = '021220';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
