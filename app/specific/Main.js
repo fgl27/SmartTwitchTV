@@ -1353,10 +1353,12 @@ function Main_isScene1DocShown() {
 
 function Main_showScene2Doc() {
     Main_ShowElementWithEle(Main_Scene2Doc);
+    Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
 }
 
 function Main_hideScene2Doc() {
     Main_HideElementWithEle(Main_Scene2Doc);
+    Main_HideElementWithEle(UserLiveFeed_FeedHolderDocId);
 }
 
 function Main_isScene2DocShown() {
