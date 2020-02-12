@@ -2527,7 +2527,6 @@
 
         ChatLive_loaded[chat_number] = false;
 
-
         ChatLive_Id[chat_number] = (new Date()).getTime();
         ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
         ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
@@ -7022,6 +7021,7 @@
     }
 
     function Play_Resume() {
+        //Play_FakeMulti();
         UserLiveFeed_Hide();
         Play_data.watching_time = new Date().getTime();
         Play_isOn = true;
@@ -8787,7 +8787,7 @@
         Main_ShowElement('stream_info_multi');
     }
 
-    function Play_Multi_UnSetPanelDivs() {
+    function Play_Multi_UnSetPanelDivs(checkChat) {
         document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
         document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
         document.getElementById('controls_' + Play_controlsQuality).style.display = '';
@@ -8798,6 +8798,15 @@
         Main_ShowElement('stream_info');
         Main_HideElement('stream_info_multi');
         Main_HideElement('dialog_multi_help');
+        if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
+    }
+
+    function Play_Multi_UnSetPanelDivsCheckChat() {
+        if (!Play_isFullScreen) {
+            Play_controls[Play_controlsChat].enterKey();
+            Play_ChatEnable = true;
+            Play_showChat();
+        }
     }
 
     function Play_Multi_UnSetPanel(shutdown) {
@@ -8820,14 +8829,9 @@
                         Play_controls[Play_controlsChat].setLable();
                     }
                 }
-            }
+            } else Play_Multi_UnSetPanelDivsCheckChat();
         } else {
-            if (!Play_isFullScreen) {
-                Play_controls[Play_controlsChat].enterKey();
-                Play_showChat();
-                Play_ChatEnable = true;
-                Play_controls[Play_controlsChat].setLable();
-            }
+            Play_Multi_UnSetPanelDivsCheckChat();
             PlayExtra_PicturePicture = false;
         }
 
@@ -8838,7 +8842,7 @@
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
             if (name !== Play_data.data[14] && First) Play_Start();
-            else Play_UpdateMainStream();
+            else Play_UpdateMainStream(name === Play_data.data[14]);
 
         } else if (shutdown) Play_shutdownStream();
     }
@@ -8879,7 +8883,7 @@
         if (!Play_MultiHasOne()) {
             Play_MultiEnable = false;
             Android.DisableMultiStream();
-            Play_Multi_UnSetPanelDivs();
+            Play_Multi_UnSetPanelDivs(true);
             PlayExtra_PicturePicture = false;
             PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
             Play_CheckHostStart();
@@ -8968,7 +8972,7 @@
             if (!Play_MultiHasOne()) {
                 Play_MultiEnable = false;
                 Android.DisableMultiStream();
-                Play_Multi_UnSetPanelDivs();
+                Play_Multi_UnSetPanelDivs(true);
                 PlayExtra_PicturePicture = false;
                 PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
                 Play_CheckHostStart();
