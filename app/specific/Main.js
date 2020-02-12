@@ -1402,7 +1402,9 @@ function Main_openStream() {
     if (!Play_EndDialogEnter) Play_HideEndDialog();
     Main_ready(function() {
         Play_Start();
-        Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        Main_ready(function() {
+            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        });
     });
 }
 
@@ -1440,7 +1442,9 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_CleanHideExit();
     Main_ready(function() {
         PlayClip_Start();
-        Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        Main_ready(function() {
+            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        });
     });
 }
 
@@ -1483,7 +1487,9 @@ function Main_openVod() {
     Play_CleanHideExit();
     Main_ready(function() {
         PlayVod_Start();
-        Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        Main_ready(function() {
+            Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+        });
     });
 }
 
