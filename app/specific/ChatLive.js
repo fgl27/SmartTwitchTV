@@ -32,7 +32,6 @@ function ChatLive_Init(chat_number) {
 
     ChatLive_loaded[chat_number] = false;
 
-
     ChatLive_Id[chat_number] = (new Date()).getTime();
     ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
     ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
