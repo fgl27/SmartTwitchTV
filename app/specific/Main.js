@@ -1359,6 +1359,7 @@ function Main_showScene2Doc() {
 
 function Main_hideScene2Doc() {
     Main_HideElementWithEle(Main_Scene2Doc);
+    Main_HideElementWithEle(UserLiveFeed_FeedHolderDocId);
 }
 
 function Main_isScene2DocShown() {
@@ -1395,9 +1396,9 @@ function Main_OPenAsVod(index) {
 }
 
 function Main_openStream() {
+    Main_hideScene1Doc();
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
-    Main_hideScene1Doc();
     Main_showScene2Doc();
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
@@ -1406,6 +1407,7 @@ function Main_openStream() {
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
+    Main_hideScene1Doc();
     document.body.removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
@@ -1431,7 +1433,6 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
     document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
-    Main_hideScene1Doc();
     Main_showScene2Doc();
     Play_hideChat();
     Play_HideWarningDialog();
@@ -1470,8 +1471,8 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
 }
 
 function Main_openVod() {
-    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
     Main_hideScene1Doc();
+    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
     Main_showScene2Doc();
     PlayVod_hidePanel();
     Play_hideChat();

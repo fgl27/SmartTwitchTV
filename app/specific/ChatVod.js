@@ -38,6 +38,7 @@ function Chat_Preinit() {
 function Chat_Init() {
     Chat_JustStarted = true;
     Chat_Clear();
+    if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
     if (!Main_IsNotBrowser || Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
