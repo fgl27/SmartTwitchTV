@@ -1402,7 +1402,7 @@ function Main_openStream() {
     Main_showScene2Doc();
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
-    Main_ready(Play_Start);
+    window.setTimeout(Play_Start, 25);
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
@@ -1437,7 +1437,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_hideChat();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    Main_ready(PlayClip_Start);
+    window.setTimeout(PlayClip_Start, 25);
 }
 
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
@@ -1477,7 +1477,7 @@ function Main_openVod() {
     PlayVod_hidePanel();
     Play_hideChat();
     Play_CleanHideExit();
-    Main_ready(PlayVod_Start);
+    window.setTimeout(PlayVod_Start, 25);
 }
 
 function Main_ScrollTable(id, position) {

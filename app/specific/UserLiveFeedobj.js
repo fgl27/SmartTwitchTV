@@ -25,13 +25,13 @@ function UserLiveFeedobj_StartDefault(pos) {
         UserLiveFeed_LastPos[pos] = null;
     }
 
+    UserLiveFeed_idObject[pos] = {};
     UserLiveFeed_ImgObj[pos] = [];
     UserLiveFeed_itemsCount[pos] = 0;
     Main_emptyWithEle(UserLiveFeed_obj[pos].div);
     UserLiveFeed_status[pos] = false;
     UserLiveFeed_obj[pos].div.style.left = "0.125em";
     UserLiveFeed_FeedPosY[pos] = 0;
-    UserLiveFeed_idObject[pos] = {};
 
     Main_updateclock();
     Main_ShowElement('dialog_loading_side_feed');
