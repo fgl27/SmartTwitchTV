@@ -1400,7 +1400,6 @@ function Main_openStream() {
     Main_showScene2Doc();
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
-    Main_ready(Play_Start);
     Main_ready(function() {
         Play_Start();
         Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
