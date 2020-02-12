@@ -17688,8 +17688,6 @@
             else Main_HideElement('dialog_loading_feed');
         }
     }
-    var UserLiveFeedobj_loadErrorCallback;
-
     //Global
     var UserLiveFeedobj_AGamesPos = 0;
     var UserLiveFeedobj_GamesPos = 1;
@@ -17767,23 +17765,26 @@
         var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannels;
-
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive, UserLiveFeedobj_loadDataError);
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+            }
+        );
     }
 
-    function UserLiveFeedobj_loadDataError() {
+    function UserLiveFeedobj_loadDataError(pos) {
         UserLiveFeed_loadingDataTry++;
         if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
             UserLiveFeed_loadingDataTimeout += 500;
-            UserLiveFeedobj_loadErrorCallback();
+            UserLiveFeed_obj[pos].load();
         } else {
+            UserLiveFeed_loadingDataTry = 0;
             UserLiveFeed_loadingData = false;
             UserLiveFeed_Showloading(false);
             Main_HideElement('dialog_loading_side_feed');
 
             if (UserLiveFeed_isFeedShow()) {
-                UserLiveFeedobj_HooderDiv(UserLiveFeed_FeedPosX, STR_REFRESH_PROBLEM);
+                UserLiveFeedobj_HooderDiv(pos, STR_REFRESH_PROBLEM);
             }
         }
     }
@@ -17830,7 +17831,6 @@
         }
         theUrl += 'limit=100&offset=0&stream_type=all' + Main_TwithcV5Flag;
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadChannelUserLive;
         UserLiveFeedobj_loadChannelUserLiveGet(theUrl);
     }
 
@@ -17860,13 +17860,13 @@
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
             AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
         } else {
-            UserLiveFeedobj_loadDataError();
+            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
         }
     }
 
     function UserLiveFeedobj_loadDataRefreshTokenError() {
         if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
-        else UserLiveFeedobj_loadDataError();
+        else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
     }
 
     function UserLiveFeedobj_loadDataSuccess(responseText) {
@@ -18217,8 +18217,11 @@
         var theUrl = Main_kraken_api + 'streams?limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
             Main_TwithcV5Flag;
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadLive;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess, UserLiveFeedobj_loadDataError);
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_LivePos);
+            }
+        );
     }
 
     function UserLiveFeedobj_LiveCell(cell) {
@@ -18251,8 +18254,11 @@
         var theUrl = Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadFeatured;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess, UserLiveFeedobj_loadDataError);
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_FeaturedPos);
+            }
+        );
     }
 
     function UserLiveFeedobj_FeaturedCell(cell) {
@@ -18284,8 +18290,11 @@
         var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
             '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess, UserLiveFeedobj_loadDataError);
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_CurrentGamePos);
+            }
+        );
     }
 
     function UserLiveFeedobj_CurrentGameCell(cell) {
@@ -18320,8 +18329,11 @@
         var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) +
             '/followed/hosting?limit=100';
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserHost;
-        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess, UserLiveFeedobj_loadDataError);
+        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserHostPos);
+            }
+        );
     }
 
     function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
@@ -18539,8 +18551,11 @@
     function UserLiveFeedobj_loadUserGames() {
         var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=150'; //follows
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadUserGames;
-        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 1, null, UserLiveFeedobj_loadDataUserGamesSuccess, UserLiveFeedobj_loadDataError);
+        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 1, null, UserLiveFeedobj_loadDataUserGamesSuccess,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserGamesPos);
+            }
+        );
     }
 
     function UserLiveFeedobj_loadDataUserGamesSuccess(responseText) {
@@ -18575,8 +18590,11 @@
         var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
             '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess, UserLiveFeedobj_loadDataError);
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserAGamesPos);
+            }
+        );
     }
 
     function UserLiveFeedobj_CurrentUserGameCell(cell) {
@@ -18613,8 +18631,11 @@
     function UserLiveFeedobj_loadGames() {
         var theUrl = Main_kraken_api + 'games/top?limit=100'; //top
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadGames;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataGamesSuccess, UserLiveFeedobj_loadDataError);
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataGamesSuccess,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_GamesPos);
+            }
+        );
     }
 
     function UserLiveFeedobj_loadDataGamesSuccess(responseText) {
@@ -18644,8 +18665,11 @@
         var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
             '&limit=100' + (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-        UserLiveFeedobj_loadErrorCallback = UserLiveFeedobj_loadCurrentGame;
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess, UserLiveFeedobj_loadDataError);
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess,
+            function() {
+                UserLiveFeedobj_loadDataError(UserLiveFeedobj_AGamesPos);
+            }
+        );
     }
 
     function UserLiveFeedobj_CurrentAGameCell(cell) {
