@@ -24,7 +24,7 @@ var ChatLive_selectedChannel = [];
 
 function ChatLive_Init(chat_number) {
     ChatLive_Clear(chat_number);
-    if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
+    UserLiveFeed_ShowIfhide();
     if (Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
