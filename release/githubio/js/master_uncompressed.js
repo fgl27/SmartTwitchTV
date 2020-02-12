@@ -17676,7 +17676,7 @@
         Main_updateclock();
         Main_ShowElement('dialog_loading_side_feed');
         if (UserLiveFeed_isFeedShow()) {
-            UserLiveFeed_obj[pos].div.classList.remove(pos === UserLiveFeedobj_UserLivePos ? 'opacity_zero' : 'hide');
+            UserLiveFeed_obj[pos].div.classList.remove('opacity_zero');
         }
     }
 
@@ -18054,7 +18054,7 @@
 
         if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
         else {
-            UserLiveFeed_obj[pos].div.classList.remove(pos === UserLiveFeedobj_UserLivePos ? 'opacity_zero' : 'hide');
+            UserLiveFeed_obj[pos].div.classList.remove('opacity_zero');
 
             UserLiveFeed_FeedAddFocus(true, pos);
         }
@@ -18186,7 +18186,7 @@
     }
 
     function UserLiveFeedobj_HideLive() {
-        UserLiveFeed_obj[UserLiveFeedobj_LivePos].div.classList.add('hide');
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].div.classList.add('opacity_zero');
     }
 
     //Live end
@@ -18220,7 +18220,7 @@
     }
 
     function UserLiveFeedobj_HideFeatured() {
-        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div.classList.add('hide');
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div.classList.add('opacity_zero');
     }
     //Featured end
 
@@ -18256,7 +18256,7 @@
     }
 
     function UserLiveFeedobj_HideCurrentGame() {
-        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div.classList.add('hide');
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div.classList.add('opacity_zero');
     }
     //Current game end
 
@@ -18374,7 +18374,7 @@
     }
 
     function UserLiveFeedobj_HideUserHost() {
-        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.classList.add('hide');
+        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.classList.add('opacity_zero');
     }
     //User Host end
 
@@ -18509,7 +18509,7 @@
     }
 
     function UserLiveFeedobj_HideUserGames() {
-        UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div.classList.add('hide');
+        UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div.classList.add('opacity_zero');
     }
     //User Games end
 
@@ -18550,7 +18550,7 @@
     }
 
     function UserLiveFeedobj_HideCurrentUserAGame() {
-        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('hide');
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('opacity_zero');
     }
     //Current user a game end
 
@@ -18578,7 +18578,7 @@
     }
 
     function UserLiveFeedobj_HideGames() {
-        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div.classList.add('hide');
+        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div.classList.add('opacity_zero');
     }
     //Games end
 
@@ -18619,7 +18619,7 @@
     }
 
     function UserLiveFeedobj_HideCurrentAGame() {
-        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('hide');
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('opacity_zero');
     }
     //Current a game end
 
