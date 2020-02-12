@@ -3343,6 +3343,7 @@
     }
 
     function Chat_NoVod() {
+        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
         Chat_Clear();
         Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
     }
@@ -5461,13 +5462,6 @@
         Play_showBufferDialog();
         Play_HideEndDialog();
 
-        PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
-        Chat_title = STR_CLIP + '.';
-        if (PlayClip_HasVOD) {
-            Chat_offset = ChannelVod_vodOffset;
-            Chat_Init();
-        } else Chat_NoVod();
-
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
         Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
         Main_innerHTML("stream_info_title", ChannelClip_title);
@@ -5523,6 +5517,13 @@
         if (!PlayClip_replay) PlayClip_loadData(); //Play_PlayEndStart(3);
         else PlayClip_qualityChanged();
         PlayClip_replay = false;
+
+        PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
+        Chat_title = STR_CLIP + '.';
+        if (PlayClip_HasVOD) {
+            Chat_offset = ChannelVod_vodOffset;
+            Chat_Init();
+        } else Chat_NoVod();
 
         document.body.removeEventListener("keyup", Main_handleKeyUp);
 
