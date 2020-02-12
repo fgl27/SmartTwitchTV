@@ -4718,12 +4718,10 @@
     }
 
     function Main_showScene1Doc() {
-        Main_Scene1Doc.style.opacity = "1";
         Main_ShowElementWithEle(Main_Scene1Doc);
     }
 
     function Main_hideScene1Doc() {
-        Main_Scene1Doc.style.opacity = "0";
         Main_HideElementWithEle(Main_Scene1Doc);
     }
 
@@ -4737,7 +4735,7 @@
 
     function Main_hideScene2Doc() {
         Main_HideElementWithEle(Main_Scene2Doc);
-        Main_HideElementWithEle(UserLiveFeed_FeedHolderDocId);
+        if (Settings_Obj_default("app_animations")) Main_HideElementWithEle(UserLiveFeed_FeedHolderDocId);
     }
 
     function Main_isScene2DocShown() {
@@ -17437,7 +17435,7 @@
         window.clearTimeout(UserLiveFeed_ShowIfhideId);
         UserLiveFeed_ShowIfhideId = window.setTimeout(function() {
             if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
-        }, 1000);
+        }, 500);
     }
 
     function UserLiveFeed_ResetFeedId() {
