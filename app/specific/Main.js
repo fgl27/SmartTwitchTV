@@ -535,15 +535,10 @@ var Main_isTV;
 
 function Main_initClick() {
     if (Main_IsNotBrowser) {
-        //TODO remove the try after some itme of the app be released
-        try {
-            Main_isTV = Android.deviceIsTV();
-            //Only show virtual d-pad on none TV devices
-            if (Main_isTV) return;
-        } catch (e) {
-            return;
-        }
-    }
+        Main_isTV = Android.deviceIsTV();
+        //Only show virtual d-pad on none TV devices
+        if (Main_isTV) return;
+    } else return;
 
     Main_ShowElement('scenekeys');
     Main_scenekeysDoc = document.getElementById('scenekeys');
@@ -1357,7 +1352,6 @@ function Main_showScene2Doc() {
 
 function Main_hideScene2Doc() {
     Main_HideElementWithEle(Main_Scene2Doc);
-    if (Settings_Obj_default("app_animations")) Main_HideElementWithEle(UserLiveFeed_FeedHolderDocId);
 }
 
 function Main_isScene2DocShown() {
