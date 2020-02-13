@@ -69,6 +69,11 @@ function Sidepannel_partnerIcon(name, partner, isrerun) {
 function Sidepannel_PreloadImgs() {
     if (!Sidepannel_isShowing()) return;
 
+    Main_ImageLoaderWorker.postMessage(
+        UserLiveFeed_PreloadImgs[Sidepannel_PosFeed].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
+    );
+    UserLiveFeed_PreloadImgs.splice(Sidepannel_PosFeed, 1);
+
     for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++) {
         Main_ImageLoaderWorker.postMessage(
             UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
