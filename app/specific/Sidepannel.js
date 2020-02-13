@@ -54,7 +54,7 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
     Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
 
-    if (Main_isElementShowing('side_panel_feed_holder') && Sidepannel_isShowing())
+    if (Sidepannel_isShowing())
         Main_ShowElement('side_panel_feed_thumb');
 }
 
@@ -67,6 +67,8 @@ function Sidepannel_partnerIcon(name, partner, isrerun) {
 }
 
 function Sidepannel_PreloadImgs() {
+    if (!Sidepannel_isShowing()) return;
+
     for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++) {
         Main_ImageLoaderWorker.postMessage(
             UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
