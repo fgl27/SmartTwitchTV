@@ -161,7 +161,7 @@
             width: 100%;
             position: absolute;
             top: 6.9%;
-            transition: top 0.25s linear;
+            transition: top 0.35s linear;
         }
 
         div.screen_holder_switch {
@@ -250,6 +250,7 @@
         div.stream_thumbnail_player_feed {
             /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 84.5%;
+            width: 95.75%;
             background-repeat: no-repeat;
             background: #000000;
             color: #FFFFFF;
@@ -300,10 +301,15 @@
             color: #FFFFFF;
         }
 
+        div.stream_thumbnail_feed_game,
         div.stream_thumbnail_live_game {
             width: 100%;
             background-color: #000000;
             padding-bottom: 139.7%;
+        }
+
+        div.stream_thumbnail_feed_game {
+            width: 100%;
         }
 
         div.stream_thumbnail_live_img {
@@ -336,8 +342,9 @@
         }
 
         div.stream_thumbnail_game_feed {
-            padding-bottom: 172%;
+            padding-bottom: 156%;
             font-size: 82%;
+            width: 90%;
         }
 
         div.stream_thumbnail_live_holder {
@@ -727,26 +734,26 @@
             position: absolute;
             width: 100%;
             bottom: 0;
+            left: 0.25em;
             height: auto;
             white-space: nowrap;
             bottom: 8%;
             transform: none;
-            transition: transform 200ms linear;
+            transition: transform 250ms linear;
             will-change: transform;
         }
 
         div.user_feed_scroll_game {
-            bottom: 4%;
+            bottom: 5%;
         }
 
         /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
 
         div.user_feed_thumb_game,
         div.user_feed_thumb {
-            width: 19.22%;
+            width: 19.95%;
             display: inline-block;
-            padding: 0.355%;
-            transition: width 0.2s linear;
+            transition: width 250ms linear;
             will-change: width;
         }
 
@@ -755,8 +762,7 @@
         }
 
         div.user_feed_thumb_game {
-            width: 11.25%;
-            padding-right: 0.9%;
+            width: 12.525%;
         }
 
         div.input_text_box {

@@ -28,7 +28,6 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_itemsCount[pos] = 0;
     Main_emptyWithEle(UserLiveFeed_obj[pos].div);
     UserLiveFeed_status[pos] = false;
-    UserLiveFeed_obj[pos].div.style.left = "0.125em";
     UserLiveFeed_FeedPosY[pos] = 0;
 
     Main_ShowElement('dialog_loading_side_feed');
@@ -660,7 +659,7 @@ function UserLiveFeedobj_CreatGameFeed(id, data) {
 
     div.className = 'user_feed_thumb_game';
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
-        '" class="stream_thumbnail_game_feed"><div class="stream_thumbnail_live_game"><img id="' +
+        '" class="stream_thumbnail_game_feed"><div class="stream_thumbnail_feed_game"><img id="' +
         UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' +
         data[3].replace("{width}x{height}", Main_GameSize) +
         '" onerror="this.onerror=null;this.src=\'' +
