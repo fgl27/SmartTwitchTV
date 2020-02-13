@@ -31,7 +31,6 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].div.style.left = "0.125em";
     UserLiveFeed_FeedPosY[pos] = 0;
 
-    Main_updateclock();
     Main_ShowElement('dialog_loading_side_feed');
     if (UserLiveFeed_isFeedShow()) {
         UserLiveFeed_obj[pos].div.classList.remove('hide');
