@@ -561,6 +561,7 @@ function Settings_PP_Workaround() {
 }
 
 function Settings_DpadOpacity() {
+    if (!Main_IsNotBrowser) return;
     Main_clearHideButtons();
     Main_setHideButtons();
     Main_scenekeysDoc.style.opacity = Settings_Obj_default("dpad_opacity") * 0.05;
@@ -574,6 +575,7 @@ var Settings_DpadPOsitions = [
 ];
 
 function Settings_DpadPOsition() {
+    if (!Main_IsNotBrowser) return;
     Settings_DpadOpacity();
     Main_clearHideButtons();
     Main_setHideButtons();

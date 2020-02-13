@@ -34,7 +34,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     Main_updateclock();
     Main_ShowElement('dialog_loading_side_feed');
     if (UserLiveFeed_isFeedShow()) {
-        UserLiveFeed_obj[pos].div.classList.remove('opacity_zero');
+        UserLiveFeed_obj[pos].div.classList.remove('hide');
     }
 }
 
@@ -313,12 +313,14 @@ function UserLiveFeedobj_LiveNotification() {
         return;
     }
 
+    Main_ShowElement('user_feed_notify');
+
     //Reset notifications after 2 times the time it takes just in case imf load and error fail some how
     window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
-    UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(function() {
-        UserLiveFeed_NotifyRunning = false;
-        UserLiveFeed_NotifyLiveidObject = [];
-    }, ((UserLiveFeed_NotifyTimeout + 1000) * 2 * UserLiveFeed_NotifyLiveidObject.length));
+    UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(
+        UserLiveFeedobj_LiveNotificationClear,
+        ((UserLiveFeed_NotifyTimeout + 1000) * 2 * UserLiveFeed_NotifyLiveidObject.length)
+    );
 
     UserLiveFeed_NotifyRunning = true;
     UserLiveFeedobj_LiveNotificationShow(0);
@@ -367,13 +369,15 @@ function UserLiveFeedobj_LiveNotificationHide(position) {
         UserLiveFeedobj_LiveNotificationShowId = window.setTimeout(function() {
             UserLiveFeedobj_LiveNotificationShow(position + 1);
         }, 800);
-    } else {
-        window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
-        UserLiveFeed_NotifyRunning = false;
-        UserLiveFeed_NotifyLiveidObject = [];
-    }
+    } else UserLiveFeedobj_LiveNotificationClear();
 }
 
+function UserLiveFeedobj_LiveNotificationClear() {
+    window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
+    UserLiveFeed_NotifyRunning = false;
+    UserLiveFeed_NotifyLiveidObject = [];
+    Main_HideElement('user_feed_notify');
+}
 function UserLiveFeedobj_CreatSideFeed(id, data) {
 
     var div = document.createElement('div');
@@ -412,14 +416,14 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
     if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
-        UserLiveFeed_obj[pos].div.classList.remove('opacity_zero');
+        UserLiveFeed_obj[pos].div.classList.remove('hide');
 
         UserLiveFeed_FeedAddFocus(true, pos);
     }
 }
 
 function UserLiveFeedobj_HideFeed() {
-    UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.classList.add('hide');
 }
 
 function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
@@ -549,7 +553,7 @@ function UserLiveFeedobj_ShowLive() {
 }
 
 function UserLiveFeedobj_HideLive() {
-    UserLiveFeed_obj[UserLiveFeedobj_LivePos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].div.classList.add('hide');
 }
 
 //Live end
@@ -586,7 +590,7 @@ function UserLiveFeedobj_ShowFeatured() {
 }
 
 function UserLiveFeedobj_HideFeatured() {
-    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div.classList.add('hide');
 }
 //Featured end
 
@@ -624,7 +628,7 @@ function UserLiveFeedobj_ShowCurrentGame() {
 }
 
 function UserLiveFeedobj_HideCurrentGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div.classList.add('hide');
 }
 //Current game end
 
@@ -746,7 +750,7 @@ function UserLiveFeedobj_ShowUserHost() {
 }
 
 function UserLiveFeedobj_HideUserHost() {
-    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.classList.add('hide');
 }
 //User Host end
 
@@ -885,7 +889,7 @@ function UserLiveFeedobj_ShowUserGames() {
 }
 
 function UserLiveFeedobj_HideUserGames() {
-    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div.classList.add('hide');
 }
 //User Games end
 
@@ -927,7 +931,7 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
 }
 
 function UserLiveFeedobj_HideCurrentUserAGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('hide');
 }
 //Current user a game end
 
@@ -958,7 +962,7 @@ function UserLiveFeedobj_ShowGames() {
 }
 
 function UserLiveFeedobj_HideGames() {
-    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div.classList.add('hide');
 }
 //Games end
 
@@ -1000,7 +1004,7 @@ function UserLiveFeedobj_ShowCurrentAGame() {
 }
 
 function UserLiveFeedobj_HideCurrentAGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('opacity_zero');
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('hide');
 }
 //Current a game end
 

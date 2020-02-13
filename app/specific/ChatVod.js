@@ -38,7 +38,6 @@ function Chat_Preinit() {
 function Chat_Init() {
     Chat_JustStarted = true;
     Chat_Clear();
-    UserLiveFeed_ShowIfhide();
     if (!Main_IsNotBrowser || Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
@@ -369,7 +368,6 @@ function Chat_loadChatNextError(id) {
 }
 
 function Chat_NoVod() {
-    UserLiveFeed_ShowIfhide();
     Chat_Clear();
     Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
 }
