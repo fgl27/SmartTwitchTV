@@ -28,9 +28,22 @@ var UserLiveFeed_FeedPosY = [];
 var UserLiveFeed_itemsCount = [];
 var UserLiveFeed_obj = {};
 var ImageLoaderWorker;
-var UserLiveFeed_ImgObj = [];
+var UserLiveFeed_cell = [];
+var UserLiveFeed_cellVisible = [];
 
-var UserLiveFeed_ids = ['ulf_thumbdiv', 'ulf_img', 'ulf_infodiv', 'ulf_displayname', 'ulf_streamtitle', 'ulf_streamgame', 'ulf_viwers', 'ulf_quality', 'ulf_cell', 'ulempty_', 'user_live_scroll'];
+var UserLiveFeed_ids = [
+    'ulf_thumbdiv',//0
+    'ulf_img',//1
+    'ulf_infodiv',//2
+    'ulf_displayname',//3
+    'ulf_streamtitle',//4
+    'ulf_streamgame',//5
+    'ulf_viwers',//6
+    'ulf_quality',//7
+    'ulf_cell',//8
+    'ulempty_',//9
+    'user_live_scroll'//10
+];
 
 var UserLiveFeed_side_ids = ['usf_thumbdiv', 'usf_img', 'usf_infodiv', 'usf_displayname', 'usf_streamtitle', 'usf_streamgame', 'usf_viwers', 'usf_quality', 'usf_cell', 'ulempty_', 'user_live_scroll'];
 
@@ -52,8 +65,12 @@ function UserLiveFeed_Prepare() {
     for (var i = 0; i < (UserLiveFeedobj_UserAGamesPos + 1); i++) {
         UserLiveFeed_obj[i] = {};
         UserLiveFeed_idObject[i] = {};
-        UserLiveFeed_ImgObj[i] = [];
         UserLiveFeed_itemsCount[i] = 0;
+        UserLiveFeed_cell[i] = [];
+        UserLiveFeed_cellVisible[i] = 7;
+        UserLiveFeed_obj[i].AddCell = UserLiveFeed_FeedAddCellVideo;
+        UserLiveFeed_obj[i].min = 3;
+        UserLiveFeed_obj[i].IsGame = false;
     }
 
     //User live
@@ -89,12 +106,20 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].show = UserLiveFeedobj_ShowUserGames;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].hide = UserLiveFeedobj_HideUserGames;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = document.getElementById('user_games_scroll');
+    UserLiveFeed_cellVisible[UserLiveFeedobj_UserGamesPos] = 10;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].min = 5;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].IsGame = true;
 
     //Games
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].load = UserLiveFeedobj_Games;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].show = UserLiveFeedobj_ShowGames;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].hide = UserLiveFeedobj_HideGames;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div = document.getElementById('games_scroll');
+    UserLiveFeed_cellVisible[UserLiveFeedobj_GamesPos] = 10;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].min = 5;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].IsGame = true;
 
     //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
@@ -193,40 +218,6 @@ function UserLiveFeed_Setworker() {
     );
 }
 
-function UserLiveFeed_LoadImg(pos) {
-    for (var i = 0; i < UserLiveFeed_ImgObj[pos].length; i++) {
-        ImageLoaderWorker.postMessage(UserLiveFeed_ImgObj[pos][i]);
-    }
-}
-
-function UserLiveFeed_LoadImgPush(pos, url, id) {
-    UserLiveFeed_ImgObj[pos].push({
-        id: UserLiveFeed_ids[1] + id,
-        url: url.replace("{width}x{height}", Main_VideoSize) + Main_randomimg
-    });
-}
-
-function UserLiveFeed_LoadImgPushGame(pos, url, id) {
-    UserLiveFeed_ImgObj[pos].push({
-        id: UserLiveFeed_ids[1] + id,
-        url: url.replace("{width}x{height}", Main_GameSize)
-    });
-}
-
-var UserLiveFeed_ImgSideObj = [];
-function UserLiveFeed_LoadImgSidePush(url, id) {
-    UserLiveFeed_ImgSideObj.push({
-        id: id,
-        url: url
-    });
-}
-
-function UserLiveFeed_LoadImgSide() {
-    for (var i = 0; i < UserLiveFeed_ImgSideObj.length; i++) {
-        ImageLoaderWorker.postMessage(UserLiveFeed_ImgSideObj[i]);
-    }
-}
-
 function UserLiveFeed_RefreshLive() {
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_loadDataPrepare();
@@ -247,9 +238,20 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     UserLiveFeed_loadingData = false;
     UserLiveFeed_status[pos] = true;
 
+    var len = UserLiveFeed_cell[pos].length;
+    if (len) {
+        var min = UserLiveFeed_FeedPosY[pos] - UserLiveFeed_obj[pos].min;
+        min = (min < 0 ? 0 : min);
+        if (min && UserLiveFeed_cellVisible[pos] > (len - min)) min = len - UserLiveFeed_cellVisible[pos];
+
+        for (var i = min; i < (len < (UserLiveFeed_cellVisible[pos] + min) ? len : (UserLiveFeed_cellVisible[pos] + min)); i++) {
+            UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
+        }
+    }
+
     Main_HideElement('dialog_loading_side_feed');
     Sidepannel_AddFocusFeed(true);
-    UserLiveFeed_FeedAddFocus(true, pos);
+    UserLiveFeed_FeedAddFocus(true, pos, 1);
     UserLiveFeed_Showloading(false);
 
     if (ShowNotifications) {
@@ -266,32 +268,8 @@ function UserLiveFeed_GetSize(pos) {
     return UserLiveFeed_itemsCount[pos];
 }
 
-function UserLiveFeed_CreatFeed(id, data, ishosting) {
-    if (!data[1]) data[1] = data[6];
-    var div = document.createElement('div');
-
-    div.setAttribute('id', UserLiveFeed_ids[8] + id);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
-
-    div.className = 'user_feed_thumb';
-    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
-        '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id +
-        '" alt="" class="stream_img" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
-        '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
-        '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_info_live_name"' +
-        (ishosting ? ' style="max-height: 2.4em; overflow: hidden; white-space: normal;' : '') + '">' + Main_ReplaceLargeFont(data[1]) + '</div>' +
-        '<div id="' + UserLiveFeed_ids[4] + id + '"class="stream_info_live_title" ' + (ishosting ? 'style="max-height: 1.2em;"' : '') +
-        '>' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div><div style="line-height: 1.6ch;"><div id="' +
-        UserLiveFeed_ids[5] + id + '"class="stream_info_live" style="width: 70.75%; display: inline-block;">' + data[3] +
-        '</div><div "class="stream_info_live " style="width:29%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
-        '<i class="icon-' + (!data[8] ? 'circle" style="color: ' + (ishosting ? '#FED000' : 'red') + ';' : 'refresh" style="') + ' font-size: 75%; "></i>' +
-        STR_SPACE + Main_addCommas(data[13]) + '</div></div></span></div></div>';
-
-    return div;
-}
-
 function UserLiveFeed_isFeedShow() {
-    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'user_feed_hide');
+    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'hide');
 }
 
 function UserLiveFeed_ShowFeed() {
@@ -299,11 +277,11 @@ function UserLiveFeed_ShowFeed() {
 }
 
 function UserLiveFeed_Show() {
-    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'hide');
 }
 
 function UserLiveFeed_Hide() {
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'hide');
 }
 
 function UserLiveFeed_ResetFeedId() {
@@ -330,15 +308,143 @@ function UserLiveFeed_FeedRefresh() {
     }
 }
 
-function UserLiveFeed_FeedAddFocus(skipAnimation, pos) {
+function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
+
     if (!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) return;
 
     if (!Play_isEndDialogVisible() || !Play_EndFocus)
         Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
 
-    UserLiveFeed_FeedSetPos(skipAnimation, pos);
+    if (Adder) {
+        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+            if (Adder > 0) {
+                if (UserLiveFeed_FeedPosY[pos] < 6 || UserLiveFeed_FeedPosY[pos] > (UserLiveFeed_GetSize(pos) - 5)) {
+                    UserLiveFeed_FeedSetPos(skipAnimation, pos);
+                }
+            } else {
+                if (UserLiveFeed_FeedPosY[pos] < 5 || UserLiveFeed_FeedPosY[pos] === (UserLiveFeed_GetSize(pos) - 5)) {
+                    UserLiveFeed_FeedSetPos(skipAnimation, pos);
+                }
+            }
+        } else {
+            if (Adder > 0) {
+                if (UserLiveFeed_FeedPosY[pos] < 4 || UserLiveFeed_FeedPosY[pos] > (UserLiveFeed_GetSize(pos) - 4)) {
+                    UserLiveFeed_FeedSetPos(skipAnimation, pos);
+                }
+            } else {
+                if (UserLiveFeed_FeedPosY[pos] < 3 || UserLiveFeed_FeedPosY[pos] === (UserLiveFeed_GetSize(pos) - 4)) {
+                    UserLiveFeed_FeedSetPos(skipAnimation, pos);
+                }
+            }
+        }
+    } else UserLiveFeed_FeedSetPos(skipAnimation, pos);
+
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
+}
+
+function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
+    var eleIdPos, eleRemoveIdPos;
+    if (Adder > 0) { // right
+        if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
+            UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 3]);
+
+            eleRemoveIdPos = pos + '_' + (x - 4);
+
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).classList.add('animate_width');
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+                    Screens_ChangeFocusAnimationFinished = true;
+                }, 200);//Same value as user_feed_scroll
+
+            } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+        }
+    } else { // Left
+        if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
+            eleIdPos = pos + '_' + (x - 3);
+            eleRemoveIdPos = pos + '_' + (x + 4);
+
+            UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
+            document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.add('animate_width');
+
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                Main_ready(function() {
+                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.remove('animate_width');
+                });
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+                    Screens_ChangeFocusAnimationFinished = true;
+                }, 200);
+            } else {
+                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.remove('animate_width');
+                Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+            }
+        }
+    }
+
+}
+
+function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
+    var eleIdPos, eleRemoveIdPos;
+    if (Adder > 0) { // right
+        if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
+            UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 4]);
+
+            eleRemoveIdPos = pos + '_' + (x - 6);
+
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).classList.add('animate_width');
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+                    Screens_ChangeFocusAnimationFinished = true;
+                }, 200);//Same value as user_feed_scroll
+
+            } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+        }
+    } else { // Left
+        if (x > 4 && UserLiveFeed_cell[pos].length > (x + 4)) {
+            eleIdPos = pos + '_' + (x - 5);
+            eleRemoveIdPos = pos + '_' + (x + 5);
+
+            UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
+            document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.add('animate_width');
+
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                Main_ready(function() {
+                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.remove('animate_width');
+                });
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+                    Screens_ChangeFocusAnimationFinished = true;
+                }, 200);
+            } else {
+                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.remove('animate_width');
+                Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+            }
+        }
+    }
+
 }
 
 function UserLiveFeed_FeedRemoveFocus(pos) {
@@ -347,8 +453,7 @@ function UserLiveFeed_FeedRemoveFocus(pos) {
 }
 
 function UserLiveFeed_FeedGetPos(pos) {
-    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
-        UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) return UserLiveFeed_FeedGetPosGame(pos);
+    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) return UserLiveFeed_FeedGetPosGame(pos);
     var position = 0;
 
     if (UserLiveFeed_FeedPosY[pos] < 3) position = 2.5;
@@ -356,7 +461,8 @@ function UserLiveFeed_FeedGetPos(pos) {
         position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 2)).offsetLeft * -1);
     else if (UserLiveFeed_ThumbNull(pos + '_' + (UserLiveFeed_FeedPosY[pos] + 1), UserLiveFeed_ids[0]))
         position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 3)).offsetLeft * -1);
-    else position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] > 3 ? 4 : 3))).offsetLeft * -1);
+    else
+        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] > 3 ? 4 : 3))).offsetLeft * -1);
 
     return position;
 }
@@ -434,7 +540,9 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 
         UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
         UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] = NextPos;
-        UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX);
+        UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX, Adder);
+
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].AddCell(Adder, UserLiveFeed_FeedPosX, NextPos);
     }
 }
 

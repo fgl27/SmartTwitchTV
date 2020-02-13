@@ -222,7 +222,7 @@ function Sidepannel_ShowFeed() {
     if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
     UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
 
-    if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_0', UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+    if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
 
     if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
 

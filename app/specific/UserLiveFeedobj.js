@@ -23,8 +23,8 @@ function UserLiveFeedobj_StartDefault(pos) {
         UserLiveFeed_LastPos[pos] = null;
     }
 
+    UserLiveFeed_cell[pos] = [];
     UserLiveFeed_idObject[pos] = {};
-    UserLiveFeed_ImgObj[pos] = [];
     UserLiveFeed_itemsCount[pos] = 0;
     Main_emptyWithEle(UserLiveFeed_obj[pos].div);
     UserLiveFeed_status[pos] = false;
@@ -43,7 +43,6 @@ function UserLiveFeedobj_CheckToken() {
         if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
             UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
     }
-    UserLiveFeed_ImgSideObj = [];
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
     Main_empty('side_panel_holder');
@@ -179,132 +178,6 @@ function UserLiveFeedobj_loadDataRefreshTokenError() {
     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
 }
 
-function UserLiveFeedobj_loadDataSuccess(responseText) {
-
-    var response = JSON.parse(responseText).streams,
-        response_items = response.length,
-        sorting = Settings_Obj_default('live_feed_sort'),
-        stream, id, mArray, obj_id,
-        i = 0;
-
-    //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
-    if (response.length) {
-        if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
-            UserLiveFeed_CheckNotifycation = false;
-        }
-
-        var sorting_type1 = Settings_FeedSort[sorting][0],
-            sorting_type2 = Settings_FeedSort[sorting][1],
-            sorting_direction = Settings_FeedSort[sorting][2];
-
-        if (sorting_direction) {
-            //A-Z
-            if (sorting_type1) {
-                response.sort(function(a, b) {
-                    return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
-                        (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
-                });
-            } else {
-                response.sort(function(a, b) {
-                    return (a[sorting_type2] < b[sorting_type2] ? -1 :
-                        (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
-                });
-            }
-        } else {
-            //Z-A
-            if (sorting_type1) {
-                response.sort(function(a, b) {
-                    return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
-                        (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
-                });
-            } else {
-                response.sort(function(a, b) {
-                    return (a[sorting_type2] > b[sorting_type2] ? -1 :
-                        (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
-                });
-            }
-        }
-
-        for (i; i < response_items; i++) {
-            stream = response[i];
-            id = stream.channel._id;
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id]) {
-
-                UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = 1;
-                mArray = ScreensObj_LiveCellArray(stream);
-                UserLiveFeed_PreloadImgs.push(mArray[0]);
-
-                //Check if was live if not notificate
-                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][id]) {
-                    UserLiveFeed_NotifyLiveidObject.push({
-                        name: mArray[1],
-                        logo: mArray[9],
-                        title: Main_ReplaceLargeFont(twemoji.parse(mArray[2])),
-                        game: mArray[3],
-                        rerun: mArray[8],
-                    });
-                }
-                obj_id = UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
-                UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserLivePos, mArray[0], obj_id);
-
-                if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
-                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
-
-                UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.appendChild(
-                    UserLiveFeed_CreatFeed(
-                        obj_id,
-                        mArray
-                    )
-                );
-
-                if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
-                    Sidepannel_PosFeed = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
-
-                UserLiveFeed_LoadImgSidePush(mArray[9], UserLiveFeed_side_ids[1] + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]);
-                Sidepannel_ScroolDoc.appendChild(
-                    UserLiveFeedobj_CreatSideFeed(
-                        UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
-                        mArray
-                    )
-                );
-
-                UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]++;
-            }
-        }
-
-        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
-    } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
-
-    // UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.appendChild(
-    //     UserLiveFeed_CreatFeed(i++,
-    //         [
-    //             IMG_404_VIDEO,
-    //             "ashlynn",
-    //             "title",
-    //             "game",
-    //             "for 1000 Viewers",
-    //             "720p30 [EN]",
-    //             "ashlynn",
-    //             10000000000,
-    //             true,
-    //             IMG_404_LOGO,
-    //             true,
-    //             "Since 11:04:36&nbsp;",
-    //             "2020-01-25T09:49:05Z",
-    //             1000,
-    //             35618666]
-    //     )
-    // );
-
-    window.setTimeout(function() {
-        UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
-        UserLiveFeed_LoadImg(UserLiveFeedobj_UserLivePos);
-        UserLiveFeed_LoadImgSide();
-        Sidepannel_PreloadImgs();
-    }, 25);
-}
-
 var UserLiveFeedobj_LiveNotificationClearId;
 function UserLiveFeedobj_LiveNotification() {
     if (UserLiveFeed_NotifyRunning || !UserLiveFeed_NotifyLiveidObject.length) {
@@ -378,28 +251,6 @@ function UserLiveFeedobj_LiveNotificationClear() {
     UserLiveFeed_NotifyLiveidObject = [];
     Main_HideElement('user_feed_notify');
 }
-function UserLiveFeedobj_CreatSideFeed(id, data) {
-
-    var div = document.createElement('div');
-    div.setAttribute('id', UserLiveFeed_side_ids[8] + id);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
-    div.className = 'side_panel_feed';
-
-    div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
-        '" class="side_panel_div"><div id="' + UserLiveFeed_side_ids[2] + id +
-        '" style="width: 100%;"><div id="' + UserLiveFeed_side_ids[3] + id +
-        '" style="display: none;">' + data[1] +
-        '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
-        '" class="side_panel_channel_img" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
-        '\';"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
-        '" class="side_panel_new_title">' + Main_ReplaceLargeFont(data[1]) + '</div><div id="' +
-        UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + data[3] +
-        '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
-        (!data[8] ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(data[13]) + '</div></div></div></div></div></div>';
-
-    return div;
-}
 
 var UserLiveFeedobj_LiveFeedOldUserName = '';
 function UserLiveFeedobj_ShowFeed() {
@@ -414,7 +265,7 @@ function UserLiveFeedobj_ShowFeed() {
 function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
     if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
-    if ((!UserLiveFeed_ThumbNull(pos + '_0', UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+    if ((!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
         UserLiveFeed_obj[pos].div.classList.remove('hide');
 
@@ -424,101 +275,6 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
 function UserLiveFeedobj_HideFeed() {
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.classList.add('hide');
-}
-
-function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
-    var response = JSON.parse(responseText)[UserLiveFeed_obj[pos].StreamType],
-        response_items = response.length,
-        stream, id, mArray, obj_id,
-        i = 0;
-
-    if (response.length) {
-        if (pos === UserLiveFeedobj_FeaturedPos) {
-            var sorting = Settings_Obj_default('live_feed_sort');
-
-            var sorting_type1 = Settings_FeedSort[sorting][0],
-                sorting_type2 = Settings_FeedSort[sorting][1],
-                sorting_direction = Settings_FeedSort[sorting][2];
-
-            if (sorting_direction) {
-                //A-Z
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ? -1 :
-                            (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 :
-                            (a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0));
-                    });
-                }
-            } else {
-                //Z-A
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ? -1 :
-                            (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 :
-                            (a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0));
-                    });
-                }
-            }
-        }
-
-        for (i; i < response_items; i++) {
-            stream = UserLiveFeed_obj[pos].cell(response[i]);
-            id = stream.channel._id;
-            if (!UserLiveFeed_idObject[pos][id]) {
-
-                UserLiveFeed_idObject[pos][id] = 1;
-                mArray = ScreensObj_LiveCellArray(stream);
-
-                obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
-                UserLiveFeed_LoadImgPush(pos, mArray[0], obj_id);
-
-                if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
-                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
-
-                UserLiveFeed_obj[pos].div.appendChild(
-                    UserLiveFeed_CreatFeed(
-                        obj_id,
-                        mArray
-                    )
-                );
-                UserLiveFeed_itemsCount[pos]++;
-            }
-        }
-
-        // doc.appendChild(
-        //     UserLiveFeed_CreatFeed(pos + '_' + (i + 1),
-        //         [
-        //             IMG_404_VIDEO,
-        //             "ashlynn",
-        //             "title",
-        //             "game",
-        //             "for 1000 Viewers",
-        //             "720p30 [EN]",
-        //             "ashlynn",
-        //             10000000000,
-        //             true,
-        //             IMG_404_LOGO,
-        //             true,
-        //             "Since 11:04:36&nbsp;",
-        //             "2020-01-25T09:49:05Z",
-        //             1000,
-        //             35618666]
-        //     )
-        // );
-    } else UserLiveFeedobj_Empty(pos);
-
-    window.setTimeout(function() {
-        UserLiveFeed_loadDataSuccessFinish(false, pos);
-        UserLiveFeed_LoadImg(pos);
-    }, 25);
 }
 
 //Live Start
@@ -649,95 +405,7 @@ function UserLiveFeedobj_loadUserHost() {
     );
 }
 
-function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
-    var response = JSON.parse(responseText).hosts,
-        response_items = response.length,
-        stream, id, obj_id,
-        sorting = Settings_Obj_default('live_feed_sort'),
-        i = 0;
 
-    if (response.length) {
-
-        var sorting_type1 = Settings_FeedSortHost[sorting][0],
-            sorting_type2 = Settings_FeedSortHost[sorting][1],
-            sorting_direction = Settings_FeedSortHost[sorting][2];
-
-        if (sorting_direction) {
-            //A-Z
-            if (sorting_type1) {
-                response.sort(function(a, b) {
-                    return (a[sorting_type2] < b[sorting_type2] ? -1 :
-                        (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
-                });
-            } else {
-                response.sort(function(a, b) {
-                    return (a.target[sorting_type2] < b.target[sorting_type2] ? -1 :
-                        (a.target[sorting_type2] > b.target[sorting_type2] ? 1 : 0));
-                });
-            }
-        } else {
-            //Z-A
-            if (sorting_type1) {
-                response.sort(function(a, b) {
-                    return (a[sorting_type2] > b[sorting_type2] ? -1 :
-                        (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
-                });
-            } else {
-                response.sort(function(a, b) {
-                    return (a.target[sorting_type2] > b.target[sorting_type2] ? -1 :
-                        (a.target[sorting_type2] < b.target[sorting_type2] ? 1 : 0));
-                });
-            }
-        }
-
-        for (i; i < response_items; i++) {
-            stream = response[i];
-            id = stream.target._id + '' + stream._id;
-
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id]) {
-
-                UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id] = 1;
-
-                if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
-                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
-
-                obj_id = UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
-                UserLiveFeed_LoadImgPush(UserLiveFeedobj_UserHostPos, stream.target.preview_urls.template, obj_id);
-
-                UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.appendChild(
-                    UserLiveFeed_CreatFeed(
-                        obj_id,
-                        [
-                            stream.target.preview_urls.template,//0
-                            stream.display_name + STR_USER_HOSTING + stream.target.channel.display_name,//1
-                            stream.target.title, //2
-                            stream.target.meta_game,//3
-                            STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
-                            Main_addCommas(stream.target.viewers) + STR_SPACE + STR_VIEWER,//4
-                            '',//5 quality
-                            stream.target.channel.name,//6
-                            '',//7 broadcast id
-                            false,//8
-                            stream.target.channel.logo,//9
-                            '',//10 partner
-                            '',//11 stream creat at string
-                            '',//12 stream creat at
-                            stream.target.viewers,//13
-                            stream.target._id//14
-                        ],
-                        true
-                    )
-                );
-                UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]++;
-            }
-        }
-    } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserHostPos);
-
-    window.setTimeout(function() {
-        UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
-        UserLiveFeed_LoadImg(UserLiveFeedobj_UserHostPos);
-    }, 25);
-}
 
 var UserLiveFeedobj_HostFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserHost() {
@@ -754,109 +422,6 @@ function UserLiveFeedobj_HideUserHost() {
 }
 //User Host end
 
-//Base game fun
-function UserLiveFeedobj_CreatGameFeed(id, data) {
-    var div = document.createElement('div');
-    data[6] = data[0];//To make UserLiveFeed_LastPos work
-
-    div.setAttribute('id', UserLiveFeed_ids[8] + id);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
-
-    div.className = 'user_feed_thumb_game';
-    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_game_feed"><div class="stream_thumbnail_live_game"><img id="' +
-        UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" onerror="this.onerror=null;this.src=\'' +
-        IMG_404_GAME + '\';"></div><div id="' +
-        UserLiveFeed_ids[2] + id +
-        '" class="stream_thumbnail_game_text_holder"><span class="stream_spam_text_holder"><div id="<div id="' +
-        UserLiveFeed_ids[3] + id + '" class="stream_info_game_name">' + data[0] + '</div>' +
-        (data[1] !== '' ? '<div id="' + UserLiveFeed_ids[4] + id +
-            '"class="stream_info_live" style="width: 100%; display: inline-block;">' + data[1] +
-            '</div>' : '') + '</div></span></div>';
-
-    return div;
-}
-
-function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
-    var response = JSON.parse(responseText)[type],
-        response_items = response.length,
-        cell, game, obj_id,
-        i = 0;
-
-    if (response.length) {
-
-        if (pos === UserLiveFeedobj_UserGamesPos) {
-            var sorting = Settings_Obj_default('live_feed_sort');
-
-            var sorting_type1 = Settings_FeedSortGames[sorting][0],
-                sorting_type2 = Settings_FeedSortGames[sorting][1],
-                sorting_direction = Settings_FeedSortGames[sorting][2];
-
-            if (sorting_direction) {
-                //A-Z
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
-                            (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type2] < b[sorting_type2] ? -1 :
-                            (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
-                    });
-                }
-            } else {
-                //Z-A
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
-                            (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type2] > b[sorting_type2] ? -1 :
-                            (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
-                    });
-                }
-            }
-        }
-
-        //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
-        for (i; i < response_items; i++) {
-            cell = response[i];
-            game = cell.game;
-
-            if (!UserLiveFeed_idObject[pos][game._id]) {
-
-                UserLiveFeed_idObject[pos][game._id] = 1;
-
-                if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === game.name)
-                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
-
-                obj_id = pos + '_' + UserLiveFeed_itemsCount[pos];
-                UserLiveFeed_LoadImgPushGame(pos, game.box.template, obj_id);
-
-                UserLiveFeed_obj[pos].div.appendChild(
-                    UserLiveFeedobj_CreatGameFeed(
-                        obj_id,
-                        [
-                            game.name,
-                            Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,
-                            game._id
-                        ]
-                    )
-                );
-                UserLiveFeed_itemsCount[pos]++;
-            }
-        }
-    } else UserLiveFeedobj_Empty(pos);
-
-    window.setTimeout(function() {
-        UserLiveFeed_loadDataSuccessFinish(false, pos);
-        UserLiveFeed_LoadImg(pos);
-    }, 25);
-}
-//Base game fun
 
 //User Games Start
 function UserLiveFeedobj_UserGames() {
@@ -1036,3 +601,437 @@ function UserLiveFeedobj_SetBottomText(pos) {
     Main_innerHTML('feed_end_6', STR_SPACE + (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES)) + STR_SPACE);
 
 }
+
+function UserLiveFeedobj_CreatSideFeed(id, data) {
+
+    var div = document.createElement('div');
+    div.setAttribute('id', UserLiveFeed_side_ids[8] + id);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    div.className = 'side_panel_feed';
+
+    div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
+        '" class="side_panel_div"><div id="' + UserLiveFeed_side_ids[2] + id +
+        '" style="width: 100%;"><div id="' + UserLiveFeed_side_ids[3] + id +
+        '" style="display: none;">' + data[1] +
+        '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
+        '" class="side_panel_channel_img" src="' + data[9] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
+        '\';"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
+        '" class="side_panel_new_title">' + Main_ReplaceLargeFont(data[1]) + '</div><div id="' +
+        UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + data[3] +
+        '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
+        (!data[8] ? 'circle" style="color: red;' : 'refresh" style="') +
+        ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(data[13]) + '</div></div></div></div></div></div>';
+
+    return div;
+}
+
+function UserLiveFeedobj_CreatFeed(id, data, ishosting) {
+    if (!data[1]) data[1] = data[6];
+    var div = document.createElement('div');
+
+    div.setAttribute('id', UserLiveFeed_ids[8] + id);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
+    div.className = 'user_feed_thumb';
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
+        '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id +
+        '" alt="" class="stream_img" src="' +
+        data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
+        '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
+        '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_info_live_name"' +
+        (ishosting ? ' style="max-height: 2.4em; overflow: hidden; white-space: normal;' : '') + '">' + Main_ReplaceLargeFont(data[1]) + '</div>' +
+        '<div id="' + UserLiveFeed_ids[4] + id + '"class="stream_info_live_title" ' + (ishosting ? 'style="max-height: 1.2em;"' : '') +
+        '>' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div><div style="line-height: 1.6ch;"><div id="' +
+        UserLiveFeed_ids[5] + id + '"class="stream_info_live" style="width: 70.75%; display: inline-block;">' + data[3] +
+        '</div><div "class="stream_info_live " style="width:29%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
+        '<i class="icon-' + (!data[8] ? 'circle" style="color: ' + (ishosting ? '#FED000' : 'red') + ';' : 'refresh" style="') + ' font-size: 75%; "></i>' +
+        STR_SPACE + Main_addCommas(data[13]) + '</div></div></span></div></div>';
+
+    return div;
+}
+
+function UserLiveFeedobj_CreatGameFeed(id, data) {
+    var div = document.createElement('div');
+    data[6] = data[0];//To make UserLiveFeed_LastPos work
+
+    div.setAttribute('id', UserLiveFeed_ids[8] + id);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
+    div.className = 'user_feed_thumb_game';
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
+        '" class="stream_thumbnail_game_feed"><div class="stream_thumbnail_live_game"><img id="' +
+        UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' +
+        data[3].replace("{width}x{height}", Main_GameSize) +
+        '" onerror="this.onerror=null;this.src=\'' +
+        IMG_404_GAME + '\';"></div><div id="' +
+        UserLiveFeed_ids[2] + id +
+        '" class="stream_thumbnail_game_text_holder"><span class="stream_spam_text_holder"><div id="<div id="' +
+        UserLiveFeed_ids[3] + id + '" class="stream_info_game_name">' + data[0] + '</div>' +
+        (data[1] !== '' ? '<div id="' + UserLiveFeed_ids[4] + id +
+            '"class="stream_info_live" style="width: 100%; display: inline-block;">' + data[1] +
+            '</div>' : '') + '</div></span></div>';
+
+    return div;
+}
+
+//Base video fun
+function UserLiveFeedobj_loadDataSuccess(responseText) {
+
+    var response = JSON.parse(responseText).streams,
+        response_items = response.length,
+        sorting = Settings_Obj_default('live_feed_sort'),
+        stream, id, mArray,
+        i = 0;
+
+    //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+    if (response.length) {
+        if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
+            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
+            UserLiveFeed_CheckNotifycation = false;
+        }
+
+        var sorting_type1 = Settings_FeedSort[sorting][0],
+            sorting_type2 = Settings_FeedSort[sorting][1],
+            sorting_direction = Settings_FeedSort[sorting][2];
+
+        if (sorting_direction) {
+            //A-Z
+            if (sorting_type1) {
+                response.sort(function(a, b) {
+                    return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
+                        (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
+                });
+            } else {
+                response.sort(function(a, b) {
+                    return (a[sorting_type2] < b[sorting_type2] ? -1 :
+                        (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
+                });
+            }
+        } else {
+            //Z-A
+            if (sorting_type1) {
+                response.sort(function(a, b) {
+                    return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
+                        (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
+                });
+            } else {
+                response.sort(function(a, b) {
+                    return (a[sorting_type2] > b[sorting_type2] ? -1 :
+                        (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
+                });
+            }
+        }
+
+        for (i; i < response_items; i++) {
+            stream = response[i];
+            id = stream.channel._id;
+            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id]) {
+
+                UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = 1;
+                mArray = ScreensObj_LiveCellArray(stream);
+                UserLiveFeed_PreloadImgs.push(mArray[0]);
+
+                //Check if was live if not notificate
+                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][id]) {
+                    UserLiveFeed_NotifyLiveidObject.push({
+                        name: mArray[1],
+                        logo: mArray[9],
+                        title: Main_ReplaceLargeFont(twemoji.parse(mArray[2])),
+                        game: mArray[3],
+                        rerun: mArray[8],
+                    });
+                }
+
+                if (UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
+                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
+
+                UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]] =
+                    UserLiveFeedobj_CreatFeed(
+                        UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
+                        mArray
+                    );
+
+                if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
+                    Sidepannel_PosFeed = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
+
+                Sidepannel_ScroolDoc.appendChild(
+                    UserLiveFeedobj_CreatSideFeed(
+                        UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos],
+                        mArray
+                    )
+                );
+
+                UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]++;
+            }
+        }
+
+        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+    } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+
+    // UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.appendChild(
+    //     UserLiveFeedobj_CreatFeed(i++,
+    //         [
+    //             IMG_404_VIDEO,
+    //             "ashlynn",
+    //             "title",
+    //             "game",
+    //             "for 1000 Viewers",
+    //             "720p30 [EN]",
+    //             "ashlynn",
+    //             10000000000,
+    //             true,
+    //             IMG_404_LOGO,
+    //             true,
+    //             "Since 11:04:36&nbsp;",
+    //             "2020-01-25T09:49:05Z",
+    //             1000,
+    //             35618666]
+    //     )
+    // );
+
+    window.setTimeout(function() {
+        Sidepannel_PreloadImgs();
+        UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
+    }, 25);
+}
+
+
+function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
+    var response = JSON.parse(responseText)[UserLiveFeed_obj[pos].StreamType],
+        response_items = response.length,
+        stream, id, mArray,
+        i = 0;
+
+    if (response.length) {
+        if (pos === UserLiveFeedobj_FeaturedPos) {
+            var sorting = Settings_Obj_default('live_feed_sort');
+
+            var sorting_type1 = Settings_FeedSort[sorting][0],
+                sorting_type2 = Settings_FeedSort[sorting][1],
+                sorting_direction = Settings_FeedSort[sorting][2];
+
+            if (sorting_direction) {
+                //A-Z
+                if (sorting_type1) {
+                    response.sort(function(a, b) {
+                        return (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ? -1 :
+                            (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ? 1 : 0));
+                    });
+                } else {
+                    response.sort(function(a, b) {
+                        return (a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 :
+                            (a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0));
+                    });
+                }
+            } else {
+                //Z-A
+                if (sorting_type1) {
+                    response.sort(function(a, b) {
+                        return (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ? -1 :
+                            (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ? 1 : 0));
+                    });
+                } else {
+                    response.sort(function(a, b) {
+                        return (a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 :
+                            (a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0));
+                    });
+                }
+            }
+        }
+
+        for (i; i < response_items; i++) {
+            stream = UserLiveFeed_obj[pos].cell(response[i]);
+            id = stream.channel._id;
+            if (!UserLiveFeed_idObject[pos][id]) {
+
+                UserLiveFeed_idObject[pos][id] = 1;
+                mArray = ScreensObj_LiveCellArray(stream);
+
+                if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
+                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
+
+                UserLiveFeed_cell[pos][UserLiveFeed_itemsCount[pos]] =
+                    UserLiveFeedobj_CreatFeed(
+                        pos + '_' + UserLiveFeed_itemsCount[pos],
+                        mArray
+                    );
+
+                UserLiveFeed_itemsCount[pos]++;
+            }
+        }
+
+    } else UserLiveFeedobj_Empty(pos);
+
+    window.setTimeout(function() {
+        UserLiveFeed_loadDataSuccessFinish(false, pos);
+    }, 25);
+}
+
+function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
+    var response = JSON.parse(responseText).hosts,
+        response_items = response.length,
+        stream, id,
+        sorting = Settings_Obj_default('live_feed_sort'),
+        i = 0;
+
+    if (response.length) {
+
+        var sorting_type1 = Settings_FeedSortHost[sorting][0],
+            sorting_type2 = Settings_FeedSortHost[sorting][1],
+            sorting_direction = Settings_FeedSortHost[sorting][2];
+
+        if (sorting_direction) {
+            //A-Z
+            if (sorting_type1) {
+                response.sort(function(a, b) {
+                    return (a[sorting_type2] < b[sorting_type2] ? -1 :
+                        (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
+                });
+            } else {
+                response.sort(function(a, b) {
+                    return (a.target[sorting_type2] < b.target[sorting_type2] ? -1 :
+                        (a.target[sorting_type2] > b.target[sorting_type2] ? 1 : 0));
+                });
+            }
+        } else {
+            //Z-A
+            if (sorting_type1) {
+                response.sort(function(a, b) {
+                    return (a[sorting_type2] > b[sorting_type2] ? -1 :
+                        (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
+                });
+            } else {
+                response.sort(function(a, b) {
+                    return (a.target[sorting_type2] > b.target[sorting_type2] ? -1 :
+                        (a.target[sorting_type2] < b.target[sorting_type2] ? 1 : 0));
+                });
+            }
+        }
+
+        for (i; i < response_items; i++) {
+            stream = response[i];
+            id = stream.target._id + '' + stream._id;
+
+            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id]) {
+
+                UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id] = 1;
+
+                if (UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
+                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
+
+                UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]] =
+                    UserLiveFeedobj_CreatFeed(
+                        UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos],
+                        [
+                            stream.target.preview_urls.template,//0
+                            stream.display_name + STR_USER_HOSTING + stream.target.channel.display_name,//1
+                            stream.target.title, //2
+                            stream.target.meta_game,//3
+                            STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
+                            Main_addCommas(stream.target.viewers) + STR_SPACE + STR_VIEWER,//4
+                            '',//5 quality
+                            stream.target.channel.name,//6
+                            '',//7 broadcast id
+                            false,//8
+                            stream.target.channel.logo,//9
+                            '',//10 partner
+                            '',//11 stream creat at string
+                            '',//12 stream creat at
+                            stream.target.viewers,//13
+                            stream.target._id//14
+                        ],
+                        true
+                    );
+
+                UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]++;
+            }
+        }
+    } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserHostPos);
+
+    window.setTimeout(function() {
+        UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
+    }, 25);
+}
+//Base video fun end
+
+//Base game fun
+function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
+    var response = JSON.parse(responseText)[type],
+        response_items = response.length,
+        cell, game,
+        i = 0;
+
+    if (response.length) {
+
+        if (pos === UserLiveFeedobj_UserGamesPos) {
+            var sorting = Settings_Obj_default('live_feed_sort');
+
+            var sorting_type1 = Settings_FeedSortGames[sorting][0],
+                sorting_type2 = Settings_FeedSortGames[sorting][1],
+                sorting_direction = Settings_FeedSortGames[sorting][2];
+
+            if (sorting_direction) {
+                //A-Z
+                if (sorting_type1) {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
+                            (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
+                    });
+                } else {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type2] < b[sorting_type2] ? -1 :
+                            (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
+                    });
+                }
+            } else {
+                //Z-A
+                if (sorting_type1) {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
+                            (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
+                    });
+                } else {
+                    response.sort(function(a, b) {
+                        return (a[sorting_type2] > b[sorting_type2] ? -1 :
+                            (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
+                    });
+                }
+            }
+        }
+
+        //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
+        for (i; i < response_items; i++) {
+            cell = response[i];
+            game = cell.game;
+
+            if (!UserLiveFeed_idObject[pos][game._id]) {
+
+                UserLiveFeed_idObject[pos][game._id] = 1;
+
+                if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === game.name)
+                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
+
+                UserLiveFeed_cell[pos][UserLiveFeed_itemsCount[pos]] =
+                    UserLiveFeedobj_CreatGameFeed(
+                        pos + '_' + UserLiveFeed_itemsCount[pos],
+                        [
+                            game.name,
+                            Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
+                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,
+                            game._id,
+                            game.box.template
+                        ]
+                    );
+
+                UserLiveFeed_itemsCount[pos]++;
+            }
+        }
+    } else UserLiveFeedobj_Empty(pos);
+
+    window.setTimeout(function() {
+        UserLiveFeed_loadDataSuccessFinish(false, pos);
+    }, 25);
+}
+//Base game fun end
