@@ -947,8 +947,7 @@ function PlayVod_handleKeyDown(e) {
                 else if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(2);
                     else {
-                        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
-                            UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                         else {
                             Play_EndDialogEnter = 2;
                             Play_EndUpclearCalback = PlayVod_handleKeyDown;
@@ -969,8 +968,7 @@ function PlayVod_handleKeyDown(e) {
                     } else Play_BottomOptionsPressed(2);
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
-                    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
-                        UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
                 }
                 else PlayVod_showPanel(true);

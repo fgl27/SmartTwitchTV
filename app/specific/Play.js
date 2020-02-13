@@ -2851,8 +2851,7 @@ function Play_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(1);
                     else {
-                        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
-                            UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                         else if (Play_CheckLiveThumb(true)) {
                             Play_EndDialogEnter = 1;
                             Play_EndUpclearCalback = Play_handleKeyDown;
@@ -2869,8 +2868,7 @@ function Play_handleKeyDown(e) {
                     Play_HideMultiDialog();
                     Play_MultiStartPrestart(Play_MultiDialogPos);
                 } else if (UserLiveFeed_isFeedShow()) {
-                    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos ||
-                        UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_MultiEnable) {
                         if (Play_MultiIsFull()) {
                             var mdoc = Play_CheckLiveThumb();

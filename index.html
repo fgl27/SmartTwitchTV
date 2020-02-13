@@ -746,6 +746,12 @@
             width: 19.22%;
             display: inline-block;
             padding: 0.355%;
+            transition: width 0.2s linear;
+            will-change: width;
+        }
+
+        .animate_width {
+            width: 0px !important;
         }
 
         div.user_feed_thumb_game {
@@ -2832,7 +2838,7 @@
                 <div id="dialog_warning_play_text" class="strokedelinebig" style="font-size: 140%;"></div>
             </div>
         </div>
-        <div id="user_feed" class="user_feed user_feed_hide"
+        <div id="user_feed" class="user_feed hide"
             style="background: linear-gradient(to top, black, rgba(0, 0, 0, 0.3));">
             <div id="icon_feed_refresh" class="icon_feed_refresh"></div>
             <div id="icon_feed_back" class="icon_feed_refresh hide"></div>
