@@ -70,7 +70,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_cell[i] = [];
         UserLiveFeed_cellVisible[i] = 7;
         UserLiveFeed_obj[i].AddCell = UserLiveFeed_FeedAddCellVideo;
-        UserLiveFeed_obj[i].min = 3;
+        UserLiveFeed_obj[i].before = 3;
         UserLiveFeed_obj[i].IsGame = false;
         UserLiveFeed_obj[i].AddCellsize = 0;
         UserLiveFeed_obj[i].offset = 0;
@@ -116,7 +116,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].hide = UserLiveFeedobj_HideUserGames;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = document.getElementById('user_games_scroll');
     UserLiveFeed_cellVisible[UserLiveFeedobj_UserGamesPos] = 10;
-    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].min = 5;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].before = 5;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].IsGame = true;
 
@@ -126,7 +126,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].hide = UserLiveFeedobj_HideGames;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div = document.getElementById('games_scroll');
     UserLiveFeed_cellVisible[UserLiveFeedobj_GamesPos] = 10;
-    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].min = 5;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].before = 5;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].IsGame = true;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].HasMore = true;
@@ -252,11 +252,17 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
 
     var len = UserLiveFeed_cell[pos].length;
     if (len) {
-        var min = UserLiveFeed_FeedPosY[pos] - UserLiveFeed_obj[pos].min;
-        min = (min < 0 ? 0 : min);
-        if (min && UserLiveFeed_cellVisible[pos] > (len - min)) min = len - UserLiveFeed_cellVisible[pos];
+        //Start checking from left to right
+        var min = Math.max(0, UserLiveFeed_FeedPosY[pos] - UserLiveFeed_obj[pos].before),
+            max = Math.min(len, min + UserLiveFeed_cellVisible[pos]);
 
-        for (var i = min; i < (len < (UserLiveFeed_cellVisible[pos] + min) ? len : (UserLiveFeed_cellVisible[pos] + min)); i++) {
+        // if less then UserLiveFeed_cellVisible check right to left
+        if ((max - min) < UserLiveFeed_cellVisible[pos]) {
+            max = len;
+            min = Math.max(0, max - UserLiveFeed_cellVisible[pos]);
+        }
+
+        for (var i = min; i < max; i++) {
             if (UserLiveFeed_cell[pos][i]) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
         }
     }
