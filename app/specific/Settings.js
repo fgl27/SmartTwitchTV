@@ -544,7 +544,11 @@ function Settings_SetDefault(position) {
     else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     else if (position === "default_quality") Play_SetQuality();
     else if (position === "thumb_quality") Main_SetThumb();
-    else if (position === "global_font_offset") calculateFontSize();
+    else if (position === "global_font_offset") {
+        calculateFontSize();
+        AddUser_UpdateSidepanelAfterShow();
+        UserLiveFeed_ResetAddCellsize();
+    }
     else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     else if (position === "clock_offset") {
         Settings_SetClock();
