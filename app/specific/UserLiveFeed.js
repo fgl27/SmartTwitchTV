@@ -100,6 +100,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div = document.getElementById('user_agames_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].HasMore = true;
 
     //a game
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].load = UserLiveFeedobj_CurrentAGame;
@@ -108,6 +109,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div = document.getElementById('agame_feed_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].load = UserLiveFeedobj_UserGames;
@@ -137,6 +139,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].div = document.getElementById('live_feed_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
 
     //Current Game
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].load = UserLiveFeedobj_CurrentGame;
@@ -145,6 +148,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div = document.getElementById('current_game_feed_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
 
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].load = UserLiveFeedobj_Featured;
@@ -308,8 +312,9 @@ function UserLiveFeed_setHideFeed() {
 
 function UserLiveFeed_FeedRefresh() {
     UserLiveFeed_clearHideFeed();
-    if (!UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
-    else {
+    if (!UserLiveFeed_loadingData) {
+        if (!UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) UserLiveFeed_StartLoad();
+    } else {
         window.clearTimeout(UserLiveFeed_loadingDataId);
         UserLiveFeed_loadingDataId = window.setTimeout(function() {
             UserLiveFeed_loadingData = false;
