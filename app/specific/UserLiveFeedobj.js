@@ -10,7 +10,7 @@ var UserLiveFeedobj_UserHostPos = 6;
 var UserLiveFeedobj_UserGamesPos = 7;
 var UserLiveFeedobj_UserAGamesPos = 8;
 
-var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos;//Default pos
+var UserLiveFeed_FeedPosX = UserLiveFeedobj_GamesPos;//UserLiveFeedobj_UserLivePos;//Default pos
 var UserLiveFeedobj_MAX = UserLiveFeedobj_UserGamesPos;
 var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 
@@ -30,6 +30,9 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_status[pos] = false;
     UserLiveFeed_FeedPosY[pos] = 0;
     UserLiveFeed_FeedSetPosLast[pos] = 0;
+    UserLiveFeed_obj[pos].offset = 0;
+    UserLiveFeed_obj[pos].loadingMore = false;
+    UserLiveFeed_obj[pos].dataEnded = false;
     UserLiveFeed_obj[pos].div.style.transform = 'translateX(' + 0 + "em)";
 
     Main_ShowElement('dialog_loading_side_feed');
@@ -87,13 +90,18 @@ function UserLiveFeedobj_loadDataError(pos) {
         UserLiveFeed_loadingDataTimeout += 500;
         UserLiveFeed_obj[pos].load();
     } else {
-        UserLiveFeed_loadingDataTry = 0;
-        UserLiveFeed_loadingData = false;
-        UserLiveFeed_Showloading(false);
-        Main_HideElement('dialog_loading_side_feed');
+        if (!UserLiveFeed_obj[pos].loadingMore) {
+            UserLiveFeed_loadingDataTry = 0;
+            UserLiveFeed_loadingData = false;
+            UserLiveFeed_Showloading(false);
+            Main_HideElement('dialog_loading_side_feed');
 
-        if (UserLiveFeed_isFeedShow()) {
-            UserLiveFeedobj_HooderDiv(pos, STR_REFRESH_PROBLEM);
+            if (UserLiveFeed_isFeedShow()) {
+                UserLiveFeedobj_HooderDiv(pos, STR_REFRESH_PROBLEM);
+            }
+        } else {
+            UserLiveFeed_obj[pos].loadingMore = false;
+            UserLiveFeed_obj[pos].dataEnded = true;
         }
     }
 }
@@ -508,12 +516,16 @@ function UserLiveFeedobj_HideCurrentUserAGame() {
 
 //Games Start
 function UserLiveFeedobj_Games() {
-    UserLiveFeedobj_StartDefault(UserLiveFeedobj_GamesPos);
+    if (!UserLiveFeed_obj[UserLiveFeedobj_GamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_GamesPos);
     UserLiveFeedobj_loadGames();
 }
 
 function UserLiveFeedobj_loadGames() {
-    var theUrl = Main_kraken_api + 'games/top?limit=100';//top
+    var theUrl = Main_kraken_api + 'games/top?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset;//top
+
+    if (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset &&
+        (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset)
+        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].dataEnded = true;
 
     BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataGamesSuccess,
         function() {
@@ -691,7 +703,6 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         stream, id, mArray,
         i = 0;
 
-    //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
     if (response.length) {
         if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
             UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
@@ -964,12 +975,18 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
 
 //Base game fun
 function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
-    var response = JSON.parse(responseText)[type],
-        response_items = response.length,
+    //console.log(responseText)
+    var response = JSON.parse(responseText),
+        total = response._total,
+        response_items,
         cell, game,
-        i = 0;
+        i = 0,
+        itemsCount = UserLiveFeed_itemsCount[pos];
 
-    if (response.length) {
+    response = response[type];
+    response_items = response.length;
+
+    if (response_items) {
 
         if (pos === UserLiveFeedobj_UserGamesPos) {
             var sorting = Settings_Obj_default('live_feed_sort');
@@ -1007,7 +1024,6 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
             }
         }
 
-        //if (response_items < Main_ItemsLimitVideo) UserLiveFeed_dataEnded = true;
         for (i; i < response_items; i++) {
             cell = response[i];
             game = cell.game;
@@ -1016,12 +1032,12 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
 
                 UserLiveFeed_idObject[pos][game._id] = 1;
 
-                if (UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === game.name)
-                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_itemsCount[pos];
+                if (!UserLiveFeed_obj[pos].loadingMore && UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === game.name)
+                    UserLiveFeed_FeedPosY[pos] = itemsCount;
 
-                UserLiveFeed_cell[pos][UserLiveFeed_itemsCount[pos]] =
+                UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatGameFeed(
-                        pos + '_' + UserLiveFeed_itemsCount[pos],
+                        pos + '_' + itemsCount,
                         [
                             game.name,
                             Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
@@ -1031,13 +1047,25 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
                         ]
                     );
 
-                UserLiveFeed_itemsCount[pos]++;
+                itemsCount++;
             }
         }
     } else UserLiveFeedobj_Empty(pos);
 
-    window.setTimeout(function() {
-        UserLiveFeed_loadDataSuccessFinish(false, pos);
-    }, 25);
+    UserLiveFeed_itemsCount[pos] = itemsCount;
+
+    if (UserLiveFeed_obj[pos].HasMore) {
+        UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
+        UserLiveFeed_obj[pos].MaxOffset = total;
+        if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
+    }
+
+    if (UserLiveFeed_obj[pos].loadingMore) {
+        UserLiveFeed_obj[pos].loadingMore = false;
+    } else {
+        window.setTimeout(function() {
+            UserLiveFeed_loadDataSuccessFinish(false, pos);
+        }, 25);
+    }
 }
 //Base game fun end
