@@ -29,6 +29,8 @@ function UserLiveFeedobj_StartDefault(pos) {
     Main_emptyWithEle(UserLiveFeed_obj[pos].div);
     UserLiveFeed_status[pos] = false;
     UserLiveFeed_FeedPosY[pos] = 0;
+    UserLiveFeed_FeedSetPosLast[pos] = 0;
+    UserLiveFeed_obj[pos].div.style.transform = 'translateX(' + 0 + "em)";
 
     Main_ShowElement('dialog_loading_side_feed');
     if (UserLiveFeed_isFeedShow()) {
