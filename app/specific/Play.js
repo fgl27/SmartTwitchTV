@@ -2184,7 +2184,7 @@ function Play_OpenLiveFeed() {
 
 function Play_keyUpEnd() {
     Play_EndUpclear = true;
-    UserLiveFeed_FeedRefresh(Play_EndFocus);
+    UserLiveFeed_FeedRefresh();
 }
 
 function Play_handleKeyUpEndClear() {

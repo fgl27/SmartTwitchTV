@@ -1,6 +1,5 @@
 //Spacing for reease maker not trow erros frm jshint
 var UserLiveFeed_loadingData = false;
-var UserLiveFeed_loadingDataId;
 var UserLiveFeed_loadingDataTry = 0;
 var UserLiveFeed_loadingDataTimeout = 3500;
 var UserLiveFeed_loadChannelOffsset = 0;
@@ -311,14 +310,11 @@ function UserLiveFeed_setHideFeed() {
 }
 
 function UserLiveFeed_FeedRefresh() {
-    UserLiveFeed_clearHideFeed();
     if (!UserLiveFeed_loadingData) {
-        if (!UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) UserLiveFeed_StartLoad();
-    } else {
-        window.clearTimeout(UserLiveFeed_loadingDataId);
-        UserLiveFeed_loadingDataId = window.setTimeout(function() {
-            UserLiveFeed_loadingData = false;
-        }, 15000);
+        if (!UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
+            UserLiveFeed_clearHideFeed();
+            UserLiveFeed_StartLoad();
+        }
     }
 }
 
