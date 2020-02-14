@@ -15756,8 +15756,11 @@
         else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
         else if (position === "default_quality") Play_SetQuality();
         else if (position === "thumb_quality") Main_SetThumb();
-        else if (position === "global_font_offset") calculateFontSize();
-        else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
+        else if (position === "global_font_offset") {
+            calculateFontSize();
+            AddUser_UpdateSidepanelAfterShow();
+            UserLiveFeed_ResetAddCellsize();
+        } else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
         else if (position === "clock_offset") {
             Settings_SetClock();
             Main_updateclock();
@@ -17430,6 +17433,12 @@
         UserLiveFeed_FeedSetPosLast[pos] = position;
     }
 
+    function UserLiveFeed_ResetAddCellsize() {
+        for (var i = 0; i < (UserLiveFeedobj_UserAGamesPos + 1); i++) {
+            UserLiveFeed_obj[i].AddCellsize = 0;
+        }
+    }
+
     function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         var total = UserLiveFeed_GetSize(pos);
 
@@ -17439,7 +17448,6 @@
             Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
 
         if (!UserLiveFeed_obj[pos].AddCellsize &&
-            !UserLiveFeed_FeedPosY[pos] &&
             UserLiveFeed_ThumbNull((pos + '_' + UserLiveFeed_FeedPosY[pos]), UserLiveFeed_ids[0])) {
             UserLiveFeed_obj[pos].AddCellsize = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
         }
