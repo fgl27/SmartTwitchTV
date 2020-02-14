@@ -353,9 +353,9 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     if (!Play_isEndDialogVisible() || !Play_EndFocus)
         Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
 
-    if (!UserLiveFeed_obj[pos].AddCellsize &&
-        UserLiveFeed_ThumbNull((pos + '_' + UserLiveFeed_FeedPosY[pos]), UserLiveFeed_ids[0])) {
-        UserLiveFeed_obj[pos].AddCellsize = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
+    if (!UserLiveFeed_obj[pos].AddCellsize) {
+        UserLiveFeed_obj[pos].AddCellsize =
+            (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
     }
 
     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
