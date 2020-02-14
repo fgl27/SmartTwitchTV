@@ -74,6 +74,10 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].min = 3;
         UserLiveFeed_obj[i].IsGame = false;
         UserLiveFeed_obj[i].AddCellsize = 0;
+        UserLiveFeed_obj[i].offset = 0;
+        UserLiveFeed_obj[i].loadingMore = false;
+        UserLiveFeed_obj[i].dataEnded = false;
+        UserLiveFeed_obj[i].MaxOffset = 0;
         UserLiveFeed_FeedSetPosLast[i] = 0;
     }
 
@@ -124,6 +128,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].min = 5;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].IsGame = true;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].HasMore = true;
 
     //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
@@ -367,6 +372,14 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
             UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
         }
 
+    }
+
+    if (UserLiveFeed_obj[pos].HasMore) {
+        //Load more as the data is getting used
+        if (!UserLiveFeed_obj[pos].loadingMore && !UserLiveFeed_obj[pos].dataEnded && ((total - UserLiveFeed_FeedPosY[pos]) < 80)) {
+            UserLiveFeed_obj[pos].loadingMore = true;
+            UserLiveFeed_obj[pos].load();
+        }
     }
 
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
