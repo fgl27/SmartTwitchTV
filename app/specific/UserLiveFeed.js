@@ -339,6 +339,12 @@ function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
     UserLiveFeed_FeedSetPosLast[pos] = position;
 }
 
+function UserLiveFeed_ResetAddCellsize() {
+    for (var i = 0; i < (UserLiveFeedobj_UserAGamesPos + 1); i++) {
+        UserLiveFeed_obj[i].AddCellsize = 0;
+    }
+}
+
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     var total = UserLiveFeed_GetSize(pos);
 
@@ -348,7 +354,6 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
 
     if (!UserLiveFeed_obj[pos].AddCellsize &&
-        !UserLiveFeed_FeedPosY[pos] &&
         UserLiveFeed_ThumbNull((pos + '_' + UserLiveFeed_FeedPosY[pos]), UserLiveFeed_ids[0])) {
         UserLiveFeed_obj[pos].AddCellsize = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
     }
