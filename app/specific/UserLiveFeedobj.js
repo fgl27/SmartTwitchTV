@@ -211,7 +211,10 @@ function UserLiveFeedobj_LiveNotificationShow(position) {
         UserLiveFeedobj_LiveNotificationOnload(position);
     };
 
-    Sidepannel_Notify_img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
+    //If the user refresh too fast and a new live channel is there all the time this may fail
+    if (UserLiveFeed_NotifyLiveidObject[position] && UserLiveFeed_NotifyLiveidObject[position].hasOwnProperty('logo'))
+        Sidepannel_Notify_img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
+    else UserLiveFeedobj_LiveNotificationHide(position);
 }
 
 var UserLiveFeedobj_LiveNotificationHideId;

@@ -72,6 +72,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].AddCell = UserLiveFeed_FeedAddCellVideo;
         UserLiveFeed_obj[i].min = 3;
         UserLiveFeed_obj[i].IsGame = false;
+        UserLiveFeed_obj[i].AddCellsize = 0;
     }
 
     //User live
@@ -246,7 +247,7 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
         if (min && UserLiveFeed_cellVisible[pos] > (len - min)) min = len - UserLiveFeed_cellVisible[pos];
 
         for (var i = min; i < (len < (UserLiveFeed_cellVisible[pos] + min) ? len : (UserLiveFeed_cellVisible[pos] + min)); i++) {
-            UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
+            if (UserLiveFeed_cell[pos][i]) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
         }
     }
 
@@ -309,36 +310,63 @@ function UserLiveFeed_FeedRefresh() {
     }
 }
 
+var UserLiveFeed_FeedSetPosLast = 0;
+function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
+    if (UserLiveFeed_FeedSetPosLast === position) return;
+
+    if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+        !Screens_ChangeFocusAnimationFast) {
+        Screens_ChangeFocusAnimationFinished = false;
+        Screens_ChangeFocusAnimationFast = true;
+
+        UserLiveFeed_obj[pos].div.style.transition = '';
+
+        window.setTimeout(function() {
+            Screens_ChangeFocusAnimationFinished = true;
+        }, UserLiveFeed_AnimationTimeout);
+    } else {
+        UserLiveFeed_obj[pos].div.style.transition = 'none';
+    }
+
+    UserLiveFeed_obj[pos].div.style.transform = 'translateX(' + position + "em)";
+    UserLiveFeed_FeedSetPosLast = position;
+}
+
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
+    var total = UserLiveFeed_GetSize(pos);
 
     if (!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) return;
 
     if (!Play_isEndDialogVisible() || !Play_EndFocus)
         Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
 
-    if (Adder) {
-        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
-            if (Adder > 0) {
-                if (UserLiveFeed_FeedPosY[pos] < 6 || UserLiveFeed_FeedPosY[pos] > (UserLiveFeed_GetSize(pos) - 5)) {
-                    UserLiveFeed_FeedSetPos(skipAnimation, pos);
-                }
-            } else {
-                if (UserLiveFeed_FeedPosY[pos] < 5 || UserLiveFeed_FeedPosY[pos] === (UserLiveFeed_GetSize(pos) - 5)) {
-                    UserLiveFeed_FeedSetPos(skipAnimation, pos);
-                }
-            }
+    if (!UserLiveFeed_obj[pos].AddCellsize &&
+        !UserLiveFeed_FeedPosY[pos] &&
+        UserLiveFeed_ThumbNull((pos + '_' + UserLiveFeed_FeedPosY[pos]), UserLiveFeed_ids[0])) {
+        UserLiveFeed_obj[pos].AddCellsize = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
+    }
+
+    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+
+        if (UserLiveFeed_FeedPosY[pos] < 5 || total < 9) {
+            UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation && UserLiveFeed_FeedPosY[pos] !== 4) : true, pos, 0);
+        } else if (UserLiveFeed_FeedPosY[pos] < (total - 4) || total < UserLiveFeed_cellVisible[pos]) {
+            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation && UserLiveFeed_FeedPosY[pos] !== 5) : true, pos, UserLiveFeed_obj[pos].AddCellsize);
         } else {
-            if (Adder > 0) {
-                if (UserLiveFeed_FeedPosY[pos] < 4 || UserLiveFeed_FeedPosY[pos] > (UserLiveFeed_GetSize(pos) - 4)) {
-                    UserLiveFeed_FeedSetPos(skipAnimation, pos);
-                }
-            } else {
-                if (UserLiveFeed_FeedPosY[pos] < 3 || UserLiveFeed_FeedPosY[pos] === (UserLiveFeed_GetSize(pos) - 4)) {
-                    UserLiveFeed_FeedSetPos(skipAnimation, pos);
-                }
-            }
+            UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
         }
-    } else UserLiveFeed_FeedSetPos(skipAnimation, pos);
+
+    } else {
+
+        if (UserLiveFeed_FeedPosY[pos] < 3 || total < 6) {
+            UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation && UserLiveFeed_FeedPosY[pos] !== 2) : true, pos, 0);
+        } else if (UserLiveFeed_FeedPosY[pos] < (total - 3) || total < UserLiveFeed_cellVisible[pos]) {
+            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation && UserLiveFeed_FeedPosY[pos] !== 3) : true, pos, UserLiveFeed_obj[pos].AddCellsize);
+        } else {
+            UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
+        }
+
+    }
 
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
@@ -451,65 +479,6 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
 function UserLiveFeed_FeedRemoveFocus(pos) {
     if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
         Main_RemoveClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
-}
-
-function UserLiveFeed_FeedGetPos(pos) {
-    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) return UserLiveFeed_FeedGetPosGame(pos);
-    var position = 0;
-
-    if (UserLiveFeed_FeedPosY[pos] < 3) position = 0;
-    else if (UserLiveFeed_ThumbNull((pos + '_' + (UserLiveFeed_FeedPosY[pos] + 2)), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 2)).offsetLeft * -1);
-    else if (UserLiveFeed_ThumbNull(pos + '_' + (UserLiveFeed_FeedPosY[pos] + 1), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 3)).offsetLeft * -1);
-    else
-        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] > 3 ? 4 : 3))).offsetLeft * -1);
-
-    return position;
-}
-
-function UserLiveFeed_FeedGetPosGame(pos) {
-    var position = 0;
-
-    if (UserLiveFeed_FeedPosY[pos] < 5) position = 0;
-    else if (UserLiveFeed_ThumbNull((pos + '_' + (UserLiveFeed_FeedPosY[pos] + 4)), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 4)).offsetLeft * -1);
-    else if (UserLiveFeed_ThumbNull(pos + '_' + (UserLiveFeed_FeedPosY[pos] + 3), UserLiveFeed_ids[0]))
-        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - 4)).offsetLeft * -1);
-    else {
-        var lessPos = 5;
-        var total = UserLiveFeed_GetSize(UserLiveFeed_FeedPosX);
-
-        if (total < 8) {
-            lessPos = UserLiveFeed_FeedPosY[pos];
-        } else if (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] > 5) {
-            lessPos = lessPos + (3 - (total - UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
-        }
-        position = (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + (UserLiveFeed_FeedPosY[pos] - lessPos)).offsetLeft * -1);
-    }
-
-    return position;
-}
-
-function UserLiveFeed_FeedSetPos(skipAnimation, pos) {
-    var position = UserLiveFeed_FeedGetPos(pos);
-
-    if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-        !Screens_ChangeFocusAnimationFast) {
-        Screens_ChangeFocusAnimationFinished = false;
-        Screens_ChangeFocusAnimationFast = true;
-
-        UserLiveFeed_obj[pos].div.style.transition = '';
-
-        window.setTimeout(function() {
-            Screens_ChangeFocusAnimationFinished = true;
-        }, UserLiveFeed_AnimationTimeout);
-    } else {
-        if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
-        UserLiveFeed_obj[pos].div.style.transition = 'none';
-    }
-
-    UserLiveFeed_obj[pos].div.style.transform = 'translateX(' + (position / BodyfontSize) + "em)";
 }
 
 function UserLiveFeed_ThumbNull(y, thumbnail) {
