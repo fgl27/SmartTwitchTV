@@ -921,7 +921,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
 
     if (UserLiveFeed_obj[pos].loadingMore) {
         UserLiveFeed_obj[pos].loadingMore = false;
-        UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+        if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     } else {
         window.setTimeout(function() {
             UserLiveFeed_loadDataSuccessFinish(false, pos);
@@ -1104,7 +1104,7 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
 
     if (UserLiveFeed_obj[pos].loadingMore) {
         UserLiveFeed_obj[pos].loadingMore = false;
-        UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+        if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     } else {
         window.setTimeout(function() {
             UserLiveFeed_loadDataSuccessFinish(false, pos);
