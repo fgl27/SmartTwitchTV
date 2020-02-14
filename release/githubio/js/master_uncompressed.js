@@ -18671,6 +18671,7 @@
 
         if (UserLiveFeed_obj[pos].loadingMore) {
             UserLiveFeed_obj[pos].loadingMore = false;
+            UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
         } else {
             window.setTimeout(function() {
                 UserLiveFeed_loadDataSuccessFinish(false, pos);
@@ -18853,6 +18854,7 @@
 
         if (UserLiveFeed_obj[pos].loadingMore) {
             UserLiveFeed_obj[pos].loadingMore = false;
+            UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
         } else {
             window.setTimeout(function() {
                 UserLiveFeed_loadDataSuccessFinish(false, pos);
