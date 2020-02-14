@@ -17940,14 +17940,14 @@
             return;
         }
 
-        Main_ShowElement('user_feed_notify');
-
         //Reset notifications after 2 times the time it takes just in case imf load and error fail some how
         window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
         UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(
             UserLiveFeedobj_LiveNotificationClear,
             ((UserLiveFeed_NotifyTimeout + 1000) * 2 * UserLiveFeed_NotifyLiveidObject.length)
         );
+
+        Main_ShowElement('user_feed_notify');
 
         UserLiveFeed_NotifyRunning = true;
         UserLiveFeedobj_LiveNotificationShow(0);
@@ -18005,7 +18005,10 @@
         window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
         UserLiveFeed_NotifyRunning = false;
         UserLiveFeed_NotifyLiveidObject = [];
-        Main_HideElement('user_feed_notify');
+
+        UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(function() {
+            Main_HideElement('user_feed_notify');
+        }, 500);
     }
 
     var UserLiveFeedobj_LiveFeedOldUserName = '';
