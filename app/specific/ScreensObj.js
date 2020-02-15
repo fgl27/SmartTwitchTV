@@ -1431,7 +1431,10 @@ function ScreensObj_HistoryLive() {
         },
         setTODialog: function() {
             Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
-            Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
+            if (Main_A_includes_B(document.getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods'))
+                Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
+            else
+                Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
         },
         label_init: function() {
             Main_HistoryPos = 0;
