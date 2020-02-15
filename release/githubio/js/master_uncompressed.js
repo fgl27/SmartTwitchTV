@@ -12875,7 +12875,12 @@
         }
 
         Main_textContent('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : ''));
-        Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory()]);
+
+        if (inUseObj.screen === Main_HistoryLive &&
+            Main_A_includes_B(document.getElementById(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX).src, 's3_vods')) {
+            Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(HistoryVod.histPosXName, [0, 0, 0])[1]]);
+        } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory()]);
+
         Main_textContent('dialog_thumb_opt_val_4', Screens_ThumbOptionScreens[0]);
     }
 
@@ -13038,8 +13043,14 @@
             else if (Screens_ThumbOptionPosY === 1) Screens_OpenGame();
             else if (Screens_ThumbOptionPosY === 3) {
                 if (!inUseObj.screenType) {
-                    HistoryLive.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
-                    Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryLive.histPosX));
+                    if (inUseObj.screen === Main_HistoryLive &&
+                        Main_A_includes_B(document.getElementById(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX).src, 's3_vods')) {
+                        HistoryVod.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                        Main_setItem(HistoryVod.histPosXName, JSON.stringify(HistoryVod.histPosX));
+                    } else {
+                        HistoryLive.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                        Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryLive.histPosX));
+                    }
                 } else if (inUseObj.screenType === 1) {
                     HistoryVod.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                     Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryVod.histPosX));
@@ -13208,7 +13219,14 @@
             STR_NO
         ];
         Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionScreens];
-        Screens_ThumbOptionPosXArrays = [0, 0, 0, Screens_ThumbOptionStringGetHistory(), 0];
+
+        var historyType = Screens_ThumbOptionStringGetHistory();
+        if (inUseObj.screen === Main_HistoryLive &&
+            Main_A_includes_B(document.getElementById(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX).src, 's3_vods')) {
+            historyType = Main_getItemJson(HistoryVod.histPosXName, [0, 0, 0])[1];
+        }
+
+        Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, 0];
 
         Screens_ThumbOptionGOTO = [
             Main_Live,
@@ -14658,7 +14676,10 @@
             },
             setTODialog: function() {
                 Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
-                Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
+                if (Main_A_includes_B(document.getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods'))
+                    Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
+                else
+                    Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
             },
             label_init: function() {
                 Main_HistoryPos = 0;
