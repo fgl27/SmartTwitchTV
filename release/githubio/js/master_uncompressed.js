@@ -17971,7 +17971,7 @@
         window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
         UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(
             UserLiveFeedobj_LiveNotificationClear,
-            ((UserLiveFeed_NotifyTimeout + 1000) * 2 * UserLiveFeed_NotifyLiveidObject.length)
+            ((UserLiveFeed_NotifyTimeout + 1500) * 2 * UserLiveFeed_NotifyLiveidObject.length)
         );
 
         Main_ShowElement('user_feed_notify');
@@ -18038,7 +18038,7 @@
 
         UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(function() {
             Main_HideElement('user_feed_notify');
-        }, 500);
+        }, 10000);
     }
 
     var UserLiveFeedobj_LiveFeedOldUserName = '';
