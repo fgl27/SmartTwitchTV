@@ -137,7 +137,6 @@
     var STR_USER_CODE;
     var STR_USER_CODE_OK;
     var STR_KEY_BAD;
-    var STR_KEY_OK;
     var STR_OAUTH_WRONG;
     var STR_OAUTH_WRONG2;
     var STR_FALLOWING;
@@ -666,7 +665,6 @@
         STR_USER_CODE = "Add Authentication key";
         STR_USER_CODE_OK = "Key added OK";
         STR_KEY_BAD = "Key test failed, new one needs to be added";
-        STR_KEY_OK = "Key test return OK";
         STR_OAUTH_WRONG = "You try to add a key for user ";
         STR_OAUTH_WRONG2 = " but this key is for user ";
         STR_FALLOWING = " Following";
@@ -700,7 +698,7 @@
         STR_VIDEO = " Video";
         STR_REPLAY = "Replay";
         STR_STREAM_END = "exiting in ";
-        STR_STREAM_END_EXIT = 'press "Return" to exit';
+        STR_STREAM_END_EXIT = 'press "Back" to exit';
         STR_FEATURED = 'Featured';
         STR_CREATED_AT = "Created ";
         STR_OPEN_BROADCAST = "Open the Broadcast";
@@ -812,8 +810,8 @@
         STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
         STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If already in picture in picture mode use bottom controls Video Mode or when in video mode smaller screen plus chat hold key enter to start from live feed";
         STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
-        STR_SINGLE_EXIT = "Single return key press";
-        STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key return click";
+        STR_SINGLE_EXIT = "Single back key press";
+        STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
         STR_NOW_LIVE = "Now Live";
         STR_NOW_LIVE_SHOW = "Show Now Live notification";
         STR_NOW_DURATION = "Now Live notification duration in seconds";
@@ -3994,7 +3992,7 @@
     }
 
     function Main_IconLoad(lable, icon, string) {
-        Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block;">' + STR_SPACE + string + '</div>');
+        Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' + STR_SPACE + string + '</div>');
     }
 
     function Main_HideElement(element) {
@@ -5451,6 +5449,13 @@
         Play_showBufferDialog();
         Play_HideEndDialog();
 
+        PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
+        Chat_title = STR_CLIP + '.';
+        if (PlayClip_HasVOD) {
+            Chat_offset = ChannelVod_vodOffset;
+            Chat_Init();
+        } else Chat_NoVod();
+
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
         Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
         Main_innerHTML("stream_info_title", ChannelClip_title);
@@ -5506,13 +5511,6 @@
         if (!PlayClip_replay) PlayClip_loadData(); //Play_PlayEndStart(3);
         else PlayClip_qualityChanged();
         PlayClip_replay = false;
-
-        PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
-        Chat_title = STR_CLIP + '.';
-        if (PlayClip_HasVOD) {
-            Chat_offset = ChannelVod_vodOffset;
-            Chat_Init();
-        } else Chat_NoVod();
 
         document.body.removeEventListener("keyup", Main_handleKeyUp);
 
@@ -17606,7 +17604,7 @@
     }
 
     function UserLiveFeed_SetFeedPicText() {
-        Main_innerHTML('icon_feed_refresh', '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE + STR_SPACE + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_PICTURE_LIVE_FEED + '</div>');
+        Main_innerHTML('icon_feed_refresh', '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE + STR_SPACE + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;">' + STR_SPACE + STR_PICTURE_LIVE_FEED + '</div>');
     }
 
     function UserLiveFeed_Unset() {
