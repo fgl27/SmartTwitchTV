@@ -145,7 +145,6 @@ function en_USLang() {
     STR_USER_CODE = "Add Authentication key";
     STR_USER_CODE_OK = "Key added OK";
     STR_KEY_BAD = "Key test failed, new one needs to be added";
-    STR_KEY_OK = "Key test return OK";
     STR_OAUTH_WRONG = "You try to add a key for user ";
     STR_OAUTH_WRONG2 = " but this key is for user ";
     STR_FALLOWING = " Following";
@@ -179,7 +178,7 @@ function en_USLang() {
     STR_VIDEO = " Video";
     STR_REPLAY = "Replay";
     STR_STREAM_END = "exiting in ";
-    STR_STREAM_END_EXIT = 'press "Return" to exit';
+    STR_STREAM_END_EXIT = 'press "Back" to exit';
     STR_FEATURED = 'Featured';
     STR_CREATED_AT = "Created ";
     STR_OPEN_BROADCAST = "Open the Broadcast";
@@ -291,8 +290,8 @@ function en_USLang() {
     STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
     STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If already in picture in picture mode use bottom controls Video Mode or when in video mode smaller screen plus chat hold key enter to start from live feed";
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
-    STR_SINGLE_EXIT = "Single return key press";
-    STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key return click";
+    STR_SINGLE_EXIT = "Single back key press";
+    STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
     STR_NOW_LIVE = "Now Live";
     STR_NOW_LIVE_SHOW = "Show Now Live notification";
     STR_NOW_DURATION = "Now Live notification duration in seconds";
