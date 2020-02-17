@@ -1303,15 +1303,15 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void setPlaybackSpeed(float value) {
+        public void setPlaybackSpeed(float speed) {
             myHandler.post(() -> {
                 if (MultiStream) {
                     for (int i = 0; i < PlayerAcount; i++) {
                         if (player[i] != null)
-                            player[i].setPlaybackParameters(new PlaybackParameters(value, 1.0f));
+                            player[i].setPlaybackParameters(new PlaybackParameters(speed));
                     }
                 } else if (player[mainPlayer] != null)
-                    player[mainPlayer].setPlaybackParameters(new PlaybackParameters(value, 1.0f));
+                    player[mainPlayer].setPlaybackParameters(new PlaybackParameters(speed));
             });
         }
 
