@@ -266,10 +266,9 @@ public class PlayerActivity extends Activity {
             monStop();
             return;
         }
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         boolean isSmall = (mainPlayer != position);
-
-        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         //Show main loading if this call is in the main player as this is needed fro when we are fast/back forwarding
         //On small player it will show its own loading
@@ -849,85 +848,6 @@ public class PlayerActivity extends Activity {
         mwebview.loadUrl(PageUrl);
 
         mwebview.requestFocus();
-    }
-
-    public void PlayerEventListenerClear(int position) {
-        hideLoading(4);
-        hideLoading(position);
-        if (MultiStream) {
-            ClearPlayer(position);
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_MultiEnd(" + position + ")");
-        } else if (PicturePicture) {
-            boolean mswitch = (mainPlayer == position);
-
-            PicturePicture = false;
-
-            if (mswitch) SwitchPlayer();
-
-            ClearPlayer(position);
-            AudioSource = 1;
-
-            mwebview.loadUrl("javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")");
-
-        } else mwebview.loadUrl("javascript:smartTwitchTV.Play_PannelEndStart(" + mwhocall + ")");
-    }
-
-    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
-        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-        //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
-        if (player[position] != null) {
-            player[position].setPlayWhenReady(false);
-        }
-        showLoading();
-
-        PlayerCheckCounter[position]++;
-        if (PlayerCheckCounter[position] < 4 &&
-                (mainPlayer != position || mediaSourcePlaying[position] != null)) {
-
-            //this is small screen  or is in auto mode check before restart it
-            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
-            else updateResumePosition(position);
-
-            if (mwhocall == 1) {
-                //ask java to reset the qualities only if time expired
-                if (expires[position] < System.currentTimeMillis()) {
-                    mediaSourcePlaying[position] = mediaSourcesAuto[position];
-
-                    if (MultiStream) initializePlayerMulti(position, mediaSourcePlaying[position]);
-                    else initializePlayer(position);
-
-                } else
-                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");
-
-            } else initializePlayer(position);
-
-        } else if (PlayerCheckCounter[position] > 3) {
-
-            // try == 3 Give up internet is probably down or something related
-            PlayerEventListenerClear(position);
-
-        } else if (PlayerCheckCounter[position] > 1) {
-
-            // Second if not in auto mode use js to check if is possible to drop quality
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_PlayerCheck(" + mwhocall + ")");
-
-        } else {
-            //First try and not auto mode only restart the player
-            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
-            else updateResumePosition(position);
-
-            initializePlayer(position);
-        }
-    }
-
-    @TargetApi(23)
-    private void check_writeexternalstorage() {
-        if (!Tools.WR_storage(this)) {
-            requestPermissions(new String[]{
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    },
-                    123);
-        }
     }
 
     public class WebAppInterface {
@@ -1512,20 +1432,22 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlaybackStateChanged(@Player.State int playbackState) {
             myHandler.post(() -> {
+                if (player[position] == null || !player[position].getPlayWhenReady())
+                    return;
+
                 hideLoading(4);
                 if (playbackState == Player.STATE_ENDED) {
                     PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                    if (player[position] != null) {
-                        player[position].setPlayWhenReady(false);
-                    }
+                    player[position].setPlayWhenReady(false);
+
                     PlayerEventListenerClear(position);
                 } else if (playbackState == Player.STATE_BUFFERING) {
                     //Use the player buffer as a player check state to prevent be buffering for ever
                     //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
                     PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                     PlayerCheckHandler[position].postDelayed(() -> {
-                        //Player was released or is on pause
-                        if (player[position] == null || !player[position].isPlaying())
+                        //Player is on pause
+                        if (!player[position].isPlaying())
                             return;
 
                         PlayerEventListenerCheckCounter(position, false);
@@ -1557,6 +1479,75 @@ public class PlayerActivity extends Activity {
             });
         }
 
+    }
+
+    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+        //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
+        if (player[position] != null) {
+            player[position].setPlayWhenReady(false);
+        }
+        showLoading();
+
+        PlayerCheckCounter[position]++;
+        if (PlayerCheckCounter[position] < 4 &&
+                (mainPlayer != position || mediaSourcePlaying[position] != null)) {
+
+            //this is small screen  or is in auto mode check before restart it
+            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
+            else updateResumePosition(position);
+
+            if (mwhocall == 1) {
+                //ask java to reset the qualities only if time expired
+                if (expires[position] < System.currentTimeMillis()) {
+                    mediaSourcePlaying[position] = mediaSourcesAuto[position];
+
+                    if (MultiStream) initializePlayerMulti(position, mediaSourcePlaying[position]);
+                    else initializePlayer(position);
+
+                } else
+                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");
+
+            } else initializePlayer(position);
+
+        } else if (PlayerCheckCounter[position] > 3) {
+
+            // try == 3 Give up internet is probably down or something related
+            PlayerEventListenerClear(position);
+
+        } else if (PlayerCheckCounter[position] > 1) {
+
+            // Second if not in auto mode use js to check if is possible to drop quality
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_PlayerCheck(" + mwhocall + ")");
+
+        } else {
+            //First try and not auto mode only restart the player
+            if (mclearResumePosition || mwhocall == 1) clearResumePosition();
+            else updateResumePosition(position);
+
+            initializePlayer(position);
+        }
+    }
+
+    public void PlayerEventListenerClear(int position) {
+        hideLoading(4);
+        hideLoading(position);
+        if (MultiStream) {
+            ClearPlayer(position);
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_MultiEnd(" + position + ")");
+        } else if (PicturePicture) {
+            boolean mswitch = (mainPlayer == position);
+
+            PicturePicture = false;
+
+            if (mswitch) SwitchPlayer();
+
+            ClearPlayer(position);
+            AudioSource = 1;
+
+            mwebview.loadUrl("javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")");
+
+        } else mwebview.loadUrl("javascript:smartTwitchTV.Play_PannelEndStart(" + mwhocall + ")");
     }
 
     private class AnalyticsEventListener implements AnalyticsListener {
@@ -1598,5 +1589,15 @@ public class PlayerActivity extends Activity {
             droppedFramesTotal += count;
         }
 
+    }
+
+    @TargetApi(23)
+    private void check_writeexternalstorage() {
+        if (!Tools.WR_storage(this)) {
+            requestPermissions(new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    123);
+        }
     }
 }
