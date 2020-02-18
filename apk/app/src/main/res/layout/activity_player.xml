@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:use_controller="false"
+            app:use_artwork="false"
             app:show_buffering="always"/>
 
         <com.google.android.exoplayer2.ui.PlayerView
@@ -28,6 +29,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom|right"
             app:use_controller="false"
+            app:use_artwork="false"
             app:show_buffering="always"/>
 
         <com.google.android.exoplayer2.ui.PlayerView
@@ -37,6 +39,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom|right"
             app:use_controller="false"
+            app:use_artwork="false"
             app:show_buffering="always"/>
 
         <com.google.android.exoplayer2.ui.PlayerView
@@ -46,6 +49,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom|right"
             app:use_controller="false"
+            app:use_artwork="false"
             app:show_buffering="always"/>
 
         <com.google.android.exoplayer2.ui.PlayerView
@@ -54,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:use_controller="false"
+            app:use_artwork="false"
             app:surface_type="texture_view"
             app:show_buffering="always"/>
 
@@ -64,6 +69,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom|right"
             app:use_controller="false"
+            app:use_artwork="false"
             app:surface_type="texture_view"
             app:show_buffering="always"/>
 
@@ -74,6 +80,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom|right"
             app:use_controller="false"
+            app:use_artwork="false"
             app:surface_type="texture_view"
             app:show_buffering="always"/>
 
@@ -84,6 +91,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom|right"
             app:use_controller="false"
+            app:use_artwork="false"
             app:surface_type="texture_view"
             app:show_buffering="always"/>
     </FrameLayout>

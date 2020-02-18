@@ -140,7 +140,6 @@ public class PlayerActivity extends Activity {
     public boolean mLowLatency = false;
     private LoadControl[] loadControl = new LoadControl[PlayerAcount];
     private Uri uri;
-    private MediaSource mediaurireset;
     private FrameLayout.LayoutParams DefaultSizeFrame;
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
     private FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
@@ -190,11 +189,6 @@ public class PlayerActivity extends Activity {
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBandwidth)
                     .build();
-
-            mediaurireset = Tools.buildMediaSource(Uri.parse("file:///android_asset/temp.mp4"),
-                    dataSourceFactory,
-                    3,
-                    false);
 
             SetDefaultSizeFrame();
 
@@ -413,18 +407,6 @@ public class PlayerActivity extends Activity {
                 }
             }
         }
-
-        //Reset player background to a empty black screen and reset all states
-        player[position] = new SimpleExoPlayer.Builder(this).build();
-
-        PlayerView[position].setPlayer(player[position]);
-
-        player[position].setPlayWhenReady(false);
-
-        player[position].setMediaSource(mediaurireset);
-        player[position].prepare();
-
-        releasePlayer(position);
 
         //All players are close enable screen saver
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null)
