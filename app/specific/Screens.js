@@ -703,7 +703,8 @@ function Screens_setOffset(pos, y) {
     if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
         pos = !y ? (y + pos) : y;
         if (inUseObj.Cells[pos]) {
-            inUseObj.offsettop = document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop / BodyfontSize;
+            inUseObj.offsettop = (document.getElementById(inUseObj.ids[0] + pos + '_0').getBoundingClientRect().top -
+                inUseObj.ScrollDoc.offsetTop) / BodyfontSize;
             inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
         }
     }
