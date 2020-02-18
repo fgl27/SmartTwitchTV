@@ -544,7 +544,10 @@ function PlayVod_shutdownStream() {
 }
 
 function PlayVod_PreshutdownStream(saveOffset) {
-    if (saveOffset) PlayVod_SaveVodIds();
+    if (saveOffset && Main_IsNotBrowser) {
+        if ((ChannelVod_DurationSeconds - 300) > parseInt(Android.gettime() / 1000))
+            PlayVod_SaveVodIds();
+    }
     if (Main_IsNotBrowser) Android.stopVideo(2);
     Main_ShowElement('controls_holder');
     Main_ShowElement('progress_pause_holder');
