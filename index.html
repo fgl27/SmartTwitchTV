@@ -33,7 +33,6 @@
             font-family: 'Roboto', 'Roboto-Bold';
             margin: auto;
             overflow: hidden;
-            -webkit-font-smoothing: antialiased;
             -webkit-text-stroke: 0.005em;
         }
 
@@ -135,6 +134,7 @@
             height: 47vh;
             transition: height 0.35s linear;
             will-change: height;
+            transform: translate3d(0, 0, 0);
         }
 
         .animate_height_transition_games {
@@ -146,7 +146,7 @@
         }
 
         .side_panel_holder_ani {
-            transform: none;
+            transform: translateY(0);
             transition: transform 200ms linear;
             will-change: transform;
         }
@@ -253,6 +253,7 @@
             background: #000000;
             color: #FFFFFF;
             border: 0.06em solid rgba(0, 0, 0, 0);
+            transform: translate3d(0, 0, 0);
         }
 
         div.feed_thumbnail_focused_no_ani,
@@ -263,8 +264,8 @@
         }
 
         div.feed_thumbnail_focused {
-            /* same animation time as user_feed_scroll_ani*/
-            transition: background-color 0.2s linear, color 0.2s linear, border-color 0.2s linear;
+            /* same animation time as user_feed_scroll*/
+            transition: background-color 0.25s linear, color 0.25s linear, border-color 0.25s linear;
         }
 
         div.stream_thumbnail_focused_no_ani,
@@ -700,7 +701,7 @@
             background: #000000;
             border: 0.06em solid;
             border-color: #ebebeb !important;
-            transform: none;
+            transform: translateY(0);
             transition: transform 300ms linear;
             will-change: transform;
         }
@@ -716,6 +717,7 @@
             height: 41%;
             width: 100%;
             overflow: hidden;
+            transform: translate3d(0, 0, 0);
         }
 
         div.user_feed_scroll_game,
@@ -727,7 +729,7 @@
             height: auto;
             white-space: nowrap;
             bottom: 7%;
-            transform: none;
+            transform: translateX(0);
             transition: transform 250ms linear;
             will-change: transform;
         }
@@ -737,14 +739,13 @@
             left: 0.9vh;
         }
 
-        /* don't use this class for anything else other then userfeed div because of UserLiveFeed_GetSize()*/
-
         div.user_feed_thumb_game,
         div.user_feed_thumb {
             width: 19.95%;
             display: inline-block;
             transition: width 250ms linear;
             will-change: width;
+            transform: translate3d(0, 0, 0);
         }
 
         .animate_width {
@@ -884,6 +885,7 @@
             position: absolute;
             z-index: 2;
             opacity: 0;
+            transform: translate3d(0, 0, 0);
         }
 
         .opacity_zero {
@@ -1050,7 +1052,7 @@
             width: 5%;
             margin-left: -1%;
             overflow: hidden;
-            transform: none;
+            transform: translateX(0);
             transition: transform 250ms linear;
             will-change: transform;
         }
@@ -1172,7 +1174,7 @@
             height: 100%;
             width: 25.5%;
             overflow: hidden;
-            transform: none;
+            transform: translateX(0);
             transition: transform 250ms linear;
             will-change: transform;
         }
@@ -1277,6 +1279,7 @@
             height: 48%;
             background-color: rgba(0, 0, 0, 0.5);
             overflow: hidden;
+            transform: translate3d(0, 0, 0);
         }
 
         div.chat_container_name,
@@ -2846,15 +2849,15 @@
                     <div></div>
                 </div>
             </div>
-            <div id="agame_feed_scroll" class="user_feed_scroll user_feed_scroll_ani hide"></div>
-            <div id="games_scroll" class="user_feed_scroll_game user_feed_scroll_ani hide"></div>
-            <div id="featured_feed_scroll" class="user_feed_scroll user_feed_scroll_ani hide"></div>
-            <div id="current_game_feed_scroll" class="user_feed_scroll user_feed_scroll_ani hide"></div>
-            <div id="live_feed_scroll" class="user_feed_scroll user_feed_scroll_ani hide"></div>
-            <div id="user_feed_scroll" class="user_feed_scroll user_feed_scroll_ani hide"></div>
-            <div id="user_host_scroll" class="user_feed_scroll user_feed_scroll_ani hide"></div>
-            <div id="user_games_scroll" class="user_feed_scroll_game user_feed_scroll_ani hide"></div>
-            <div id="user_agames_scroll" class="user_feed_scroll user_feed_scroll_ani hide"></div>
+            <div id="agame_feed_scroll" class="user_feed_scroll hide"></div>
+            <div id="games_scroll" class="user_feed_scroll_game hide"></div>
+            <div id="featured_feed_scroll" class="user_feed_scroll hide"></div>
+            <div id="current_game_feed_scroll" class="user_feed_scroll hide"></div>
+            <div id="live_feed_scroll" class="user_feed_scroll hide"></div>
+            <div id="user_feed_scroll" class="user_feed_scroll hide"></div>
+            <div id="user_host_scroll" class="user_feed_scroll hide"></div>
+            <div id="user_games_scroll" class="user_feed_scroll_game hide"></div>
+            <div id="user_agames_scroll" class="user_feed_scroll hide"></div>
             <div id="feed_end" class="icon_feed_refresh strokedelinebig" style="position: absolute; bottom: 0;">
                 <div id="feed_end_0" class="feed_end_name"></div>
                 <i id="feed_end_icon_0" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
