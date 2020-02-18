@@ -33,7 +33,7 @@ function DefaultLang() {
     STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
         STR_PAYPAL_SUMMARY + '</div></div>';
     STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-        STR_BITCOIN_SUMMARY + STR_BR + STR_BITCOIN_WALLET + '</div></div>';
+        STR_SPACE + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE + STR_BITCOIN_WALLET + '</div></div>';
 
     STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
         STR_DIV_MIDLE_LEFT +
