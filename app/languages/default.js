@@ -17,6 +17,8 @@ var STR_ABOUT_INFO_0 = '';
 var STR_CONTROLS_PLAY_0 = '';
 var STR_SPACE = '&nbsp;';
 var STR_PAYPAL;
+var STR_BITCOIN;
+var STR_BITCOIN_WALLET = "1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x";
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
 function DefaultLang() {
@@ -28,7 +30,10 @@ function DefaultLang() {
     STR_SWITCH_USER = STR_SWITCH_USER + STR_KEY_UP_DOWN;
     STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA;
     STR_GOBACK = STR_GOBACK_START;
-    STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' + STR_PAYPAL_SUMMARY + '</div></div>';
+    STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
+        STR_PAYPAL_SUMMARY + '</div></div>';
+    STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
+        STR_BITCOIN_SUMMARY + STR_BR + STR_BITCOIN_WALLET + '</div></div>';
 
     STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
         STR_DIV_MIDLE_LEFT +
@@ -102,6 +107,7 @@ function DefaultLang() {
         STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
         STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
         STR_PAYPAL +
+        STR_BITCOIN + STR_BR +
         STR_ABOUT_INFO_4 + STR_BR +
         STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR +
         STR_BR +
