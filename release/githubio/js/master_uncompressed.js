@@ -3497,7 +3497,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.112';
+    var Main_stringVersion_Min = '.113';
     var Main_minversion = '021820';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -10864,7 +10864,10 @@
     }
 
     function PlayVod_PreshutdownStream(saveOffset) {
-        if (saveOffset) PlayVod_SaveVodIds();
+        if (saveOffset && Main_IsNotBrowser) {
+            if ((ChannelVod_DurationSeconds - 300) > parseInt(Android.gettime() / 1000))
+                PlayVod_SaveVodIds();
+        }
         if (Main_IsNotBrowser) Android.stopVideo(2);
         Main_ShowElement('controls_holder');
         Main_ShowElement('progress_pause_holder');
