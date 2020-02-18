@@ -1446,11 +1446,11 @@ public class PlayerActivity extends Activity {
                     //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
                     PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                     PlayerCheckHandler[position].postDelayed(() -> {
-                        //Player is on pause
-                        if (!player[position].isPlaying())
-                            return;
 
-                        PlayerEventListenerCheckCounter(position, false);
+                        //Check if Player was released or is on pause
+                        if (player[position] != null || player[position].isPlaying())
+                            PlayerEventListenerCheckCounter(position, false);
+
                     }, delayms);
                 } else if (playbackState == Player.STATE_READY) {
                     PlayerCheckHandler[position].removeCallbacksAndMessages(null);
