@@ -81,4 +81,15 @@ It of the permission has a reason:
 
 * Allows to access subscribed only past broadcast and highlight (vod) for the user that you have added the key, as some streamers block those content for subscribers only this is needed.<br>
 
+Donations
+==============
+
+![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/paypal.png) [Paypal email link (clickable): fglfgl27@gmail.com](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fglfgl27@gmail.com&lc=US&no_note=0&item_name=Donate+to+tanks+for+the+twitch+app&cn=&curency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted)
+#
+![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/bitcoin.png) [Bitcoin walet adress link (clickable): 1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x](https://chart.googleapis.com/chart?cht=qr&chs=350x350&chl=bitcoin:1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x)
+
+![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png)
+
 ## In doubt [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
+
+
