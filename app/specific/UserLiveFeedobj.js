@@ -229,6 +229,11 @@ function UserLiveFeedobj_LiveNotificationShow(position) {
 
 var UserLiveFeedobj_LiveNotificationHideId;
 function UserLiveFeedobj_LiveNotificationOnload(position) {
+    if (!UserLiveFeed_NotifyLiveidObject[position]) {
+        UserLiveFeedobj_LiveNotificationHide(position);
+        return;
+    }
+
     Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
 
     Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
