@@ -397,7 +397,8 @@
     var STR_FEED_END_DIALOG;
     var STR_MULTI_TITLE;
     var STR_BACK_USER_GAMES;
-    var STR_NO_LIVE_CONTENT; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_NO_LIVE_CONTENT;
+    var STR_BITCOIN_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -416,6 +417,8 @@
     var STR_CONTROLS_PLAY_0 = '';
     var STR_SPACE = '&nbsp;';
     var STR_PAYPAL;
+    var STR_BITCOIN;
+    var STR_BITCOIN_WALLET = "1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x";
 
     // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
     function DefaultLang() {
@@ -427,7 +430,10 @@
         STR_SWITCH_USER = STR_SWITCH_USER + STR_KEY_UP_DOWN;
         STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA;
         STR_GOBACK = STR_GOBACK_START;
-        STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' + STR_PAYPAL_SUMMARY + '</div></div>';
+        STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
+            STR_PAYPAL_SUMMARY + '</div></div>';
+        STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
+            STR_SPACE + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE + STR_BITCOIN_WALLET + '</div></div>';
 
         STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
             STR_DIV_MIDLE_LEFT +
@@ -501,6 +507,7 @@
             STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
             STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
             STR_PAYPAL +
+            STR_BITCOIN + STR_BR +
             STR_ABOUT_INFO_4 + STR_BR +
             STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR +
             STR_BR +
@@ -780,7 +787,8 @@
         STR_VERY_HIGH = "Very high";
         STR_THUMB_RESOLUTION = "Thumbnails quality";
         STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
-        STR_PAYPAL_SUMMARY = "Donations use above Email.";
+        STR_PAYPAL_SUMMARY = "Paypal donations use above Email.";
+        STR_BITCOIN_SUMMARY = "Bitcoin donations use wallet address:";
         STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load second stream info";
         STR_PLAYER_RESYNC = "Player Auto Sync";
         STR_PLAYER_AUTO_BIG = "Main window";
@@ -11912,10 +11920,12 @@
         }
 
         //Load more as the data is getting used
-        if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
-            Screens_loadDataRequestStart(inUseObj);
-        } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
-            inUseObj.loadDataSuccess();
+        if (inUseObj.data) {
+            if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
+                Screens_loadDataRequestStart(inUseObj);
+            } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
+                inUseObj.loadDataSuccess();
+            }
         }
 
         inUseObj.addrow(forceScroll, inUseObj.posY);
