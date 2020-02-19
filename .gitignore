@@ -36,5 +36,4 @@ release/temp_maker/
 .package/
 index_release.html
 icon.png
-apk/app/src/main/assets/index.html
-apk/app/src/main/assets/app/
+apk/app/src/main/assets/*
