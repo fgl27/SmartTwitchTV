@@ -1145,12 +1145,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String mreadUrlHLS(String url) {
-            return Tools.readUrlHLS(mwebContext, url);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public String mMethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
             return Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method);
         }

@@ -676,7 +676,7 @@ function ScreensObj_InitUserLive() {
 
 function ScreensObj_InitUserHost() {
     UserHost = Screens_assign({
-        HeaderQuatity: 2,
+        HeaderQuatity: 1,
         ids: Screens_ScreenIds('UserHost'),
         table: 'stream_table_user_host',
         screen: Main_UserHost,

@@ -31,8 +31,6 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.gson.JsonObject;
-import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.Response;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -48,7 +46,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 public final class Tools {
 
@@ -83,27 +80,6 @@ public final class Tools {
     private static String[][] HEADERS = {{CLIENTIDHEADER, CLIENTID},
             {ACCEPTHEADER, TWITHCV5JSON},
             {AUTHORIZATION, null}};
-
-    public static String readUrlHLS(Context context, String url) {
-        try {
-            Response<String> result =
-                    Ion.with(context)
-                            .load(url)
-                            .asString()
-                            .withResponse()
-                            .get();
-            if (result != null) {
-                return JsonObToString(result.getHeaders().code(), result.getResult());
-            }
-        } catch (InterruptedException e) {
-            Log.w(TAG, "readUrlHLS InterruptedException ", e);
-        } catch (ExecutionException e) {
-            Log.w(TAG, "readUrlHLS ExecutionException ", e);
-        } catch (NullPointerException e) {
-            Log.w(TAG, "readUrlHLS NullPointerException ", e);
-        }
-        return null;
-    }
 
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
