@@ -318,10 +318,7 @@ function PlayVod_loadDataRequest() {
 
 
     if (Main_IsNotBrowser) {
-        var xmlHttp;
-
-        if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-        else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+        var xmlHttp = Android.mreadUrl(theUrl, PlayVod_loadingDataTimeout, 0, null);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {

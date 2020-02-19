@@ -1703,12 +1703,12 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 }
 
 function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj);
+    if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, Timeout, obj);
     else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
 }
 
-function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj) {
-    var xmlHttp = Android.mreadUrlHLS(theUrl);
+function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, Timeout, obj) {
+    var xmlHttp = Android.mreadUrl(theUrl, Timeout, 0, null);
 
     if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
     else {

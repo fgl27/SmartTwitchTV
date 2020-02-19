@@ -59,5 +59,4 @@ dependencies {
     implementation project(':exoplayer-library-ui')
     implementation project(':exoplayer-library-hls')
     implementation 'com.google.code.gson:gson:' + versions.googlegson
-    implementation 'com.koushikdutta.ion:ion:' + versions.koushikdutta
 }

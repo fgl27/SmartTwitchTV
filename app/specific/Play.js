@@ -356,7 +356,7 @@ function Play_CheckIfIsLiveStart(callback) {
 function Play_CheckIfIsLive() {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Play_CheckIfIsLiveStartChannel + '/access_token';
 
-    var xmlHttp = Android.mreadUrlHLS(theUrl);
+    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
     if (xmlHttp) {
         xmlHttp = JSON.parse(xmlHttp);
@@ -439,7 +439,7 @@ function Play_RefreshAutoRequest(UseAndroid) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + Play_data.data[6] +
         '/access_token?platform=_';
 
-    var xmlHttp = Android.mreadUrlHLS(theUrl);
+    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
     if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
     else Play_RefreshAutoError(UseAndroid);
@@ -656,7 +656,7 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
 function Play_RefreshMultiRequest(pos, streamer, id, tryes) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
-    var xmlHttp = Android.mreadUrlHLS(theUrl);
+    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
     if (xmlHttp) Play_RefreshMultiRequestSucess(JSON.parse(xmlHttp), pos, streamer, id, tryes);
     else Play_RefreshMultiError(pos, streamer, id, tryes);
@@ -866,10 +866,7 @@ function Play_loadDataRequest() {
     }
 
     if (Main_IsNotBrowser) {
-        var xmlHttp;
-
-        if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-        else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
@@ -2399,7 +2396,7 @@ function Play_MultiStartPrestart(position) {
 function Play_MultiStart(pos, streamer, display_name, tryes) {
     var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
-    var xmlHttp = Android.mreadUrlHLS(theUrl);
+    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
     if (xmlHttp) Play_MultiStartSucessToken(JSON.parse(xmlHttp), pos, streamer, display_name, tryes);
     else Play_MultiStartErro(pos, streamer, display_name, tryes);
