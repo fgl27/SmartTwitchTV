@@ -1028,40 +1028,44 @@ function Play_loadDataSuccess(responseText) {
 }
 
 function Play_extractQualities(input) {
-    var Band,
-        codec,
-        result = [],
-        TempId = '',
-        tempCount = 1;
+    var result = [],
+        addedresolution = {},
+        marray,
+        marray2,
+        Regexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g,
+        Regexp2 = /NAME=("(.*?)").*BANDWIDTH=(\d+).*CODECS=("(.*?)").*http(.*).*/g;
 
-    var streams = Play_extractStreamDeclarations(input);
-    for (var i = 0; i < streams.length; i++) {
-        TempId = streams[i].split('NAME="')[1].split('"')[0];
-        Band = Play_extractBand(streams[i].split('BANDWIDTH=')[1].split(',')[0]);
-        codec = Play_extractCodec(streams[i].split('CODECS="')[1].split('.')[0]);
-        if (!result.length) {
-            result.push({
-                'id': 'Auto',
-                'band': 0,
-                'codec': 'avc',
-                'url': 'Auto_url'
-            });
-            if (!Main_A_includes_B(TempId, 'ource')) TempId = TempId + ' | source';
-            else if (TempId) TempId = TempId.replace('(', ' | ').replace(')', '');
-            result.push({
-                'id': TempId,
-                'band': Band,
-                'codec': codec,
-                'url': streams[i].split("\n")[2]
-            });
-        } else if (result[i - tempCount].id !== TempId && result[i - tempCount].id !== TempId + ' | source') {
-            result.push({
-                'id': TempId,
-                'band': Band,
-                'codec': codec,
-                'url': streams[i].split("\n")[2]
-            });
-        } else tempCount++;
+    while ((marray = Regexp.exec(input))) {
+        while ((marray2 = Regexp2.exec(marray[0].replace(/(\r\n|\n|\r)/gm, "")))) {
+            if (!result.length) {
+                result.push({
+                    'id': 'Auto',
+                    'band': 0,
+                    'codec': 'avc',
+                    'url': 'Auto_url'
+                });
+                if (!Main_A_includes_B(marray2[2], 'ource')) marray2[2] = marray2[2] + ' | source';
+                else if (marray2[2]) marray2[2] = marray2[2].replace('(', '| ').replace(')', '');
+                result.push({
+                    'id': marray2[2],
+                    'band': Play_extractBand(marray2[3]),
+                    'codec': Play_extractCodec(marray2[5]),
+                    'url': 'http' + marray2[6]
+                });
+                addedresolution[marray2[2].split(' | ')[0]] = 1;
+            } else {
+                //Prevent duplicated resolution 720p60 source and 720p60
+                if (!addedresolution[marray2[2]]) {
+                    result.push({
+                        'id': marray2[2],
+                        'band': Play_extractBand(marray2[3]),
+                        'codec': Play_extractCodec(marray2[5]),
+                        'url': 'http' + marray2[6]
+                    });
+                    addedresolution[marray2[2]] = 1;
+                }
+            }
+        }
     }
 
     return result;
@@ -1077,16 +1081,6 @@ function Play_extractCodec(input) {
     else if (Main_A_includes_B(input, 'vp9')) return ' | vp9';
     else if (Main_A_includes_B(input, 'mp4')) return ' | mp4';
     return '';
-}
-
-function Play_extractStreamDeclarations(input) {
-    var result = [];
-
-    var myRegexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g;
-    var marray;
-    while ((marray = myRegexp.exec(input))) result.push(marray[0]);
-
-    return result;
 }
 
 function Play_qualityChanged() {
