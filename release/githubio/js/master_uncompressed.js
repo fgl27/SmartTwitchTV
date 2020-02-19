@@ -5084,12 +5084,12 @@
     }
 
     function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-        if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj);
+        if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, Timeout, obj);
         else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
     }
 
-    function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, obj) {
-        var xmlHttp = Android.mreadUrlHLS(theUrl);
+    function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, Timeout, obj) {
+        var xmlHttp = Android.mreadUrl(theUrl, Timeout, 0, null);
 
         if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
         else {
@@ -6402,8 +6402,7 @@
 
         var xmlHttp;
         if (Main_IsNotBrowser) {
-            if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-            else xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
+            xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
             if (xmlHttp) {
                 PlayExtra_loadDataSuccessreadyState(JSON.parse(xmlHttp));
@@ -6466,7 +6465,7 @@
     function PlayExtra_RefreshAutoRequest(UseAndroid) {
         var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_';
 
-        var xmlHttp = Android.mreadUrlHLS(theUrl);
+        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
         if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
         else PlayExtra_RefreshAutoError(UseAndroid);
@@ -6892,7 +6891,7 @@
     function Play_CheckIfIsLive() {
         var theUrl = 'https://api.twitch.tv/api/channels/' + Play_CheckIfIsLiveStartChannel + '/access_token';
 
-        var xmlHttp = Android.mreadUrlHLS(theUrl);
+        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
         if (xmlHttp) {
             xmlHttp = JSON.parse(xmlHttp);
@@ -6975,7 +6974,7 @@
         var theUrl = 'https://api.twitch.tv/api/channels/' + Play_data.data[6] +
             '/access_token?platform=_';
 
-        var xmlHttp = Android.mreadUrlHLS(theUrl);
+        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
         if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
         else Play_RefreshAutoError(UseAndroid);
@@ -7192,7 +7191,7 @@
     function Play_RefreshMultiRequest(pos, streamer, id, tryes) {
         var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
-        var xmlHttp = Android.mreadUrlHLS(theUrl);
+        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
         if (xmlHttp) Play_RefreshMultiRequestSucess(JSON.parse(xmlHttp), pos, streamer, id, tryes);
         else Play_RefreshMultiError(pos, streamer, id, tryes);
@@ -7402,10 +7401,7 @@
         }
 
         if (Main_IsNotBrowser) {
-            var xmlHttp;
-
-            if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-            else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+            var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
             if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
             else {
@@ -8937,7 +8933,7 @@
     function Play_MultiStart(pos, streamer, display_name, tryes) {
         var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
 
-        var xmlHttp = Android.mreadUrlHLS(theUrl);
+        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
         if (xmlHttp) Play_MultiStartSucessToken(JSON.parse(xmlHttp), pos, streamer, display_name, tryes);
         else Play_MultiStartErro(pos, streamer, display_name, tryes);
@@ -10640,10 +10636,7 @@
 
 
         if (Main_IsNotBrowser) {
-            var xmlHttp;
-
-            if (state) xmlHttp = Android.mreadUrlHLS(theUrl);
-            else xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+            var xmlHttp = Android.mreadUrl(theUrl, PlayVod_loadingDataTimeout, 0, null);
 
             if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
             else {
@@ -13927,7 +13920,7 @@
 
     function ScreensObj_InitUserHost() {
         UserHost = Screens_assign({
-            HeaderQuatity: 2,
+            HeaderQuatity: 1,
             ids: Screens_ScreenIds('UserHost'),
             table: 'stream_table_user_host',
             screen: Main_UserHost,
