@@ -18980,11 +18980,11 @@
         var doc = document.getElementById('stream_table_user');
         var x = 1; // 1 as first is used by add user
         var y = 0;
-
         var div = document.createElement('div');
 
         div.setAttribute('id', Users_ids[4] + '0_0');
         div.classList.add('stream_thumbnail_user_icon_holder');
+        row.classList.add('class_translate3d');
 
         div.innerHTML = '<div id="' + Users_ids[0] + '0_0' +
             '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"></div>' +
@@ -19001,6 +19001,7 @@
             if (x > 5) {
                 doc.appendChild(row);
                 row = document.createElement('div');
+                row.classList.add('class_translate3d');
                 y++;
                 x = 0;
             }
