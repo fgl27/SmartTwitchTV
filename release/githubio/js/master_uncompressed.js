@@ -6406,7 +6406,7 @@
 
             if (xmlHttp) {
                 PlayExtra_loadDataSuccessreadyState(JSON.parse(xmlHttp));
-            } else Play_loadDataError();
+            } else PlayExtra_loadDataError();
 
         } else {
             xmlHttp = new XMLHttpRequest();
@@ -6449,7 +6449,7 @@
     }
 
     function PlayExtra_loadDataFail(Reason) {
-        if (Play_data_old.data.length < 0) {
+        if (PlayExtra_Save_data.data.length < 0) {
 
             PlayExtra_PicturePicture = false;
             PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
