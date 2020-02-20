@@ -1432,7 +1432,7 @@ public class PlayerActivity extends Activity {
 
         private PlayerEventListener(int mposition) {
             position = mposition;
-            delayms = (BUFFER_SIZE[mwhocall] * 2) + (mwhocall == 2 ? 5000 : 3000);
+            delayms = (BUFFER_SIZE[mwhocall] * 2) + 5000;
         }
 
         @Override
