@@ -522,7 +522,7 @@ function Play_ResumeAfterOnline() {
 
         } else {
             Play_state = Play_STATE_LOADING_TOKEN;
-            if (PlayExtra_PicturePicture) PlayExtra_Resume();
+            if (PlayExtra_PicturePicture) PlayExtra_Resumenew();
             Play_loadDatanew();
         }
     }
@@ -988,7 +988,6 @@ function Play_loadDataSuccessFake() {
     Main_Set_history('live', Play_data.data);
 }
 
-
 function Play_loadDatanew() {
     if (Main_IsNotBrowser) {
 
@@ -997,7 +996,6 @@ function Play_loadDatanew() {
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData);//obj status url responseText
-                console.log(StreamData);
 
                 if (StreamData.status === 200) {
 
