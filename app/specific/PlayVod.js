@@ -419,7 +419,6 @@ function PlayVod_loadDatanew() {
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData);//obj status url responseText
-                console.log(StreamData);
 
                 if (StreamData.status === 200) {
                     PlayVod_autoUrl = StreamData.url;
