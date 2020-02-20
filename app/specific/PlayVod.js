@@ -990,7 +990,7 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                    else if (Play_CheckIfIsLiveStart()) PlayVod_OpenLiveStream();
                 }
                 else PlayVod_showPanel(true);
                 break;
@@ -1024,7 +1024,7 @@ function PlayVod_handleKeyDown(e) {
                 if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                 break;
             case KEY_REFRESH:
-                if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                if (UserLiveFeed_isFeedShow() && Play_CheckIfIsLiveStart()) PlayVod_OpenLiveStream();
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(2);

@@ -326,46 +326,19 @@ function PlayExtra_loadDataFail(Reason) {
     } else PlayExtra_RestorePlayData();
 }
 
-function PlayExtra_RefreshAutoRequest(UseAndroid) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_';
+function PlayExtra_RefreshAutoRequest(RestartAuto) {
 
-    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+    var tempUrl = Play_RefreshHlsUrl(PlayExtra_data.data[6]);
 
-    if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
-    else PlayExtra_RefreshAutoError(UseAndroid);
-}
+    if (tempUrl) {
 
-function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
-    if (xmlHttp.status === 200) {
+        PlayExtra_data.AutoUrl = tempUrl;
 
-        Play_tokenResponse = JSON.parse(xmlHttp.responseText);
-        //410 error
-        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
-            PlayExtra_RefreshAutoError(UseAndroid);
-            return;
-        }
+        if (RestartAuto) Android.ResStartAuto2(tempUrl);
+        else Android.SetAuto2(tempUrl);
 
-        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_data.data[6] +
-            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
-            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+    } else if (RestartAuto) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
 
-        PlayExtra_data.AutoUrl = theUrl;
-
-        if (UseAndroid) Android.ResStartAuto2(theUrl);
-        else Android.SetAuto2(theUrl);
-
-    } else PlayExtra_RefreshAutoError(UseAndroid);
-}
-
-function PlayExtra_RefreshAutoError(UseAndroid) {
-    if (Play_isOn) {
-        PlayExtra_RefreshAutoTry++;
-        if (PlayExtra_RefreshAutoTry < 5) PlayExtra_RefreshAutoRequest(UseAndroid);
-        else if (UseAndroid) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
-    }
 }
 
 function PlayExtra_updateStreamInfo() {

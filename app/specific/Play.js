@@ -66,7 +66,6 @@ var Play_EndFocus = false;
 var Play_DialogEndText = '';
 var Play_currentTime = 0;
 var Play_ChatDelayPosition = 0;
-var Play_Temp_selectedChannelDisplayname = '';
 //var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
 var Play_isLive = true;
@@ -318,7 +317,15 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    Play_loadDatanew();
+    if (!Play_CheckIfIsLiveQualities.length) Play_loadDatanew();
+    else {
+
+        Play_data.AutoUrl = Play_CheckIfIsLiveURL;
+        Play_loadDataSuccessend(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
+
+        Play_CheckIfIsLiveURL = '';
+        Play_CheckIfIsLiveQualities = [];
+    }
     Play_UpdateMainStream(true);
     document.body.removeEventListener("keyup", Main_handleKeyUp);
 
@@ -331,83 +338,60 @@ function Play_Start() {
 //    Play_showWarningDialog(text);
 //}
 
-var Play_CheckIfIsLiveStartCounter = 0;
-var Play_CheckIfIsLiveStartChannel = 0;
-var Play_CheckIfIsLiveStartCallback = 0;
+var Play_CheckIfIsLiveURL = '';
+var Play_CheckIfIsLiveQualities = [];
 
-function Play_CheckIfIsLiveStart(callback) {
-    if (Main_ThumbOpenIsNull(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0])) return;
-    else if (!Main_IsNotBrowser) {
-        callback();
-        return;
-    }
+function Play_CheckIfIsLiveStart() {
     Play_showBufferDialog();
 
-    Play_CheckIfIsLiveStartCounter = 0;
-    Play_CheckIfIsLiveStartCallback = callback;
-    Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+    var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
+        selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
 
-    Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
+    if (Main_IsNotBrowser) {
 
-    Play_CheckIfIsLive();
-}
+        try {
+            var StreamData = Android.getStreamData(Channel, true);
 
+            if (StreamData) {
+                StreamData = JSON.parse(StreamData);//obj status url responseText
 
-function Play_CheckIfIsLive() {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + Play_CheckIfIsLiveStartChannel + '/access_token';
+                if (StreamData.status === 200) {
 
-    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+                    Play_CheckIfIsLiveURL = StreamData.url;
+                    Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
 
-    if (xmlHttp) {
-        xmlHttp = JSON.parse(xmlHttp);
+                    return true;
 
-        if (xmlHttp.status === 200) {
-            Play_tokenResponse = JSON.parse(xmlHttp.responseText);
+                } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-            if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig')) Play_CheckIfIsLiveError();
-            else {
-                Play_CheckIfIsLiveStartCounter = 0;
-                Play_CheckIfIsLiveLink();
+                    Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                    return false;
+
+                } else if (StreamData.status === 404) {
+
+                    Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                    return false;
+
+                }
+
             }
+
+            Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_PLAYER_PROBLEM_2);
+            return false;
+        } catch (e) {
+            Play_showWarningDialog('Play_CheckIfIsLiveStart ' + e);
+            return true;
         }
 
-    } else Play_CheckIfIsLiveError();
+    } else return true;
 }
 
-function Play_CheckIfIsLiveError() {
-    if (Play_CheckIfIsLiveStartCounter < 3) {
-        Play_CheckIfIsLiveStartCounter++;
-        Play_CheckIfIsLive();
-    } else Play_CheckIfIsLiveWarn();
-}
-
-function Play_CheckIfIsLiveWarn() {
+function Play_CheckIfIsLiveStartFail(text) {
     Play_HideBufferDialog();
-    Play_showWarningDialog(Play_Temp_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
-}
+    Play_CheckIfIsLiveURL = '';
+    Play_CheckIfIsLiveQualities = [];
 
-function Play_CheckIfIsLiveLinkError() {
-    if (Play_CheckIfIsLiveStartCounter < 3) {
-        Play_CheckIfIsLiveStartCounter++;
-        Play_CheckIfIsLiveLink();
-    } else Play_CheckIfIsLiveWarn();
-}
-
-function Play_CheckIfIsLiveLink() {
-    var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Play_CheckIfIsLiveStartChannel +
-        '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-        '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&p=' +
-        Main_RandomInt();
-
-    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
-
-    if (!xmlHttp) {
-        Play_CheckIfIsLiveLinkError();
-        return;
-    }
-
-    if (JSON.parse(xmlHttp).status === 200) Play_CheckIfIsLiveStartCallback();
-    else Play_CheckIfIsLiveLinkError();
+    Play_showWarningDialog(text, 2000);
 }
 
 function Play_CheckResume() { // Called only by JAVAPlay_CheckIfIsLiveStartCallback
@@ -434,48 +418,46 @@ function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called
     else if (Main_IsNotBrowser) Play_RefreshAutoRequest(true);
 }
 
-function Play_RefreshAutoRequest(UseAndroid) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + Play_data.data[6] +
-        '/access_token?platform=_';
+function Play_RefreshHlsUrl(channel) {
+    var theUrl = 'https://api.twitch.tv/api/channels/' + channel +
+        '/access_token?platform=_',
+        xmlHttp, token;
 
-    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+    for (var i = 0; i < 5; i++) {
 
-    if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
-    else Play_RefreshAutoError(UseAndroid);
-}
+        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout + (500 * i), 0, null);
 
-function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
-    if (xmlHttp.status === 200) {
+        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+        else return null;
 
-        Play_tokenResponse = JSON.parse(xmlHttp.responseText);
-        //410 error
-        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
-            Play_RefreshAutoError(UseAndroid);
-            return;
+        if (xmlHttp.status === 200) {
+
+            token = JSON.parse(xmlHttp.responseText);
+            if (!token.hasOwnProperty('token') || !token.hasOwnProperty('sig')) return null;
+
+            return 'https://usher.ttvnw.net/api/channel/hls/' + channel +
+                '.m3u8?&token=' + encodeURIComponent(token.token) + '&sig=' + token.sig +
+                '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=' +
+                Main_RandomInt();
+
         }
+    }
 
-        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Play_data.data[6] +
-            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-        //(Play_SupportsSource ? "&allow_source=true" : '') +
-        //'&fast_bread=true' +
-        //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-
-        Play_data.AutoUrl = theUrl;
-
-        if (UseAndroid) Android.ResStartAuto(theUrl, 1, 0);
-        else Android.SetAuto(theUrl);
-
-    } else Play_RefreshAutoError(UseAndroid);
+    return null;
 }
 
-function Play_RefreshAutoError(UseAndroid) {
-    if (Play_isOn) {
-        Play_RefreshAutoTry++;
-        if (Play_RefreshAutoTry < 5) Play_RefreshAutoRequest(UseAndroid);
-        else if (UseAndroid) Play_CheckHostStart();
+function Play_RefreshAutoRequest(RestartAuto) {
+    var tempUrl = Play_RefreshHlsUrl(Play_data.data[6]);
+
+    if (tempUrl) {
+        Play_data.AutoUrl = tempUrl;
+
+        if (RestartAuto) Android.ResStartAuto(tempUrl, 1, 0);
+        else Android.SetAuto(tempUrl);
+
+    } else if (RestartAuto) {
+        if (!PlayExtra_PicturePicture) Play_CheckHostStart();
+        else Play_CloseBigAndSwich();
     }
 }
 
@@ -653,44 +635,22 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
     }
 }
 
-function Play_RefreshMultiRequest(pos, streamer, id, tryes) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
+function Play_RefreshMultiRequest(pos, streamer, id) {
+    var tempUrl = Play_RefreshHlsUrl(streamer);
 
-    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+    if (tempUrl) {
+        Play_MultiArray[pos].AutoUrl = tempUrl;
 
-    if (xmlHttp) Play_RefreshMultiRequestSucess(JSON.parse(xmlHttp), pos, streamer, id, tryes);
-    else Play_RefreshMultiError(pos, streamer, id, tryes);
-}
+        Android.SetAutoMulti(pos, tempUrl);
 
-function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id, tryes) {
-    if (xmlHttp.status === 200) {
+        Play_RefreshMultiGet(
+            Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I,
+            0,
+            pos
+        );
 
-        Play_tokenResponse = JSON.parse(xmlHttp.responseText);
-        //410 error
-        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
-            Play_RefreshMultiError(pos, streamer, id, tryes);
-            return;
-        }
+    }
 
-        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + streamer +
-            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-
-        Play_MultiArray[pos].AutoUrl = theUrl;
-
-        Android.SetAutoMulti(pos, theUrl);
-
-        theUrl = Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I;
-        Play_RefreshMultiGet(theUrl, 0, pos);
-
-    } else Play_RefreshMultiError(pos, streamer, id, tryes);
-}
-
-function Play_RefreshMultiError(pos, streamer, id, tryes) {
-    if (Play_isOn && tryes < 5 && Play_MultiArray[pos].data.length > 0)
-        Play_RefreshMultiRequest(pos, streamer, id, tryes + 1);
 }
 
 function Play_RefreshMultiGet(theUrl, tryes, pos) {
@@ -755,7 +715,7 @@ function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
 }
 
 //When update this also update PlayExtra_updateStreamInfo
-var PlayExtra_RefreshAutoRequestID;
+
 function Play_updateStreamInfo() {
     if (Play_MultiEnable) {
         for (var i = 0; i < Play_MultiArray.length; i++) {
@@ -763,8 +723,7 @@ function Play_updateStreamInfo() {
                 Play_RefreshMultiRequest(
                     i,
                     Play_MultiArray[i].data[6],
-                    Play_MultiArray[i].data[14],
-                    0
+                    Play_MultiArray[i].data[14]
                 );
             }
         }
@@ -773,14 +732,10 @@ function Play_updateStreamInfo() {
         Play_RefreshAutoTry = 0;
         if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
 
-        window.clearTimeout(PlayExtra_RefreshAutoRequestID);
-        PlayExtra_RefreshAutoRequestID = window.setTimeout(function() {
-            if (PlayExtra_PicturePicture) {
-                PlayExtra_RefreshAutoTry = 0;
-                PlayExtra_RefreshAutoRequest(false);
-            }
-        }, 1500);
-
+        if (PlayExtra_PicturePicture) {
+            PlayExtra_RefreshAutoTry = 0;
+            PlayExtra_RefreshAutoRequest(false);
+        }
 
         var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
         BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
@@ -1732,7 +1687,7 @@ function Play_EndText(PlayVodClip) {
 
             if (PlayVodClip === 1) {
                 PlayExtra_PicturePicture = false;
-                PlayExtra_data.data[6] = '';
+                PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
                 Play_shutdownStream();
             } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
@@ -1950,7 +1905,7 @@ function Play_ClearPP() {
     }
 
     PlayExtra_PicturePicture = false;
-    PlayExtra_data.data[6] = '';
+    PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
     Play_hideChat();
 }
 
@@ -2173,7 +2128,6 @@ function Play_CloseSmall() {
     }
     PlayExtra_updateStreamInfo();
     PlayExtra_PicturePicture = false;
-    PlayExtra_data.data[6] = '';
     PlayExtra_UnSetPanel();
     Play_CleanHideExit();
 }
@@ -2261,8 +2215,7 @@ function Play_Exit() {
     Play_CleanHideExit();
     Play_hideChat();
     PlayExtra_PicturePicture = false;
-    PlayExtra_PicturePicture = false;
-    PlayExtra_data.data[6] = '';
+    PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
     Play_shutdownStream();
 }
 
