@@ -6,7 +6,6 @@ var PlayVod_state = 0;
 
 var PlayVod_streamInfoTimerId = null;
 var PlayVod_tokenResponse = 0;
-var PlayVod_playlistResponse = 0;
 var PlayVod_playingTry = 0;
 
 var PlayVod_playingUrl = '';
@@ -129,14 +128,12 @@ function PlayVod_PosStart() {
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
     PlayVod_tokenResponse = 0;
-    PlayVod_playlistResponse = 0;
     PlayVod_playingTry = 0;
     Play_jumping = false;
     PlayVod_isOn = true;
     PlayVod_WasSubChekd = false;
-    PlayVod_loadData();
 
-    if (!PlayVod_replay) PlayVod_loadData();
+    if (!PlayVod_replay) PlayVod_loadDatanew();
     else PlayVod_qualityChanged();
 
     Play_EndSet(2);
@@ -267,7 +264,7 @@ function PlayVod_ResumeAfterOnline(forced) {
     if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
         PlayVod_state = Play_STATE_LOADING_TOKEN;
-        PlayVod_loadData();
+        PlayVod_loadDatanew();
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -341,11 +338,7 @@ function PlayVod_loadDataEnd(xmlHttp) {
 }
 
 function PlayVod_410Error() {
-    Play_HideBufferDialog();
-    Play_showWarningDialog(STR_410_ERROR);
-    window.setTimeout(function() {
-        if (PlayVod_isOn) PlayVod_shutdownStream();
-    }, 3000);
+    PlayVod_WarnEnd(STR_410_ERROR);
 }
 
 function PlayVod_loadDataError() {
@@ -363,13 +356,15 @@ function PlayVod_loadDataError() {
         if (PlayVod_loadingDataTry < PlayVod_loadingDataTryMax) {
             PlayVod_loadingDataTimeout += 250;
             PlayVod_loadDataRequest();
-        } else {
-            if (Main_IsNotBrowser) {
-                Play_HideBufferDialog();
-                Play_PlayEndStart(2);
-            } else PlayVod_loadDataSuccessFake();
-        }
+        } else PlayVod_loadDataErrorFinish();
     }
+}
+
+function PlayVod_loadDataErrorFinish() {
+    if (Main_IsNotBrowser) {
+        Play_HideBufferDialog();
+        Play_PlayEndStart(2);
+    } else PlayVod_loadDataSuccessFake();
 }
 
 //Browsers crash trying to get the streams link
@@ -416,65 +411,92 @@ function PlayVod_loadDataSuccessFake() {
     if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
 }
 
+function PlayVod_loadDatanew() {
+    if (Main_IsNotBrowser) {
+
+        try {
+            var StreamData = Android.getStreamData(Main_values.ChannelVod_vodId + '', false);
+
+            if (StreamData) {
+                StreamData = JSON.parse(StreamData);//obj status url responseText
+                console.log(StreamData);
+
+                if (StreamData.status === 200) {
+                    PlayVod_autoUrl = StreamData.url;
+                    PlayVod_loadDataSuccessEnd(JSON.parse(StreamData.responseText));
+                    return;
+                } else if (StreamData.status === 1) {
+                    PlayVod_loadDataCheckSub();
+                    return;
+                } else if (StreamData.status === 410) {
+                    //410 = api v3 is gone use v5 bug
+                    PlayVod_410Error();
+                    return;
+                }
+
+            }
+
+            PlayVod_loadDataErrorFinish();
+        } catch (e) {
+            Play_showWarningDialog('PlayVod_loadDatanew ' + e);
+            PlayVod_loadData();
+        }
+
+    } else PlayVod_loadDataSuccessFake();
+}
+
+function PlayVod_loadDataSuccessEnd(quality) {
+
+    //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
+    //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034)) {
+    //            Play_SupportsSource = false;
+    //            PlayVod_loadData();
+    //            return;
+    //        }
+
+    PlayVod_qualities = quality;
+    PlayVod_state = Play_STATE_PLAYING;
+    if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
+    if (PlayVod_isOn) PlayVod_qualityChanged();
+    if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
+}
+
 function PlayVod_loadDataSuccess(responseText) {
     if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
         PlayVod_tokenResponse = JSON.parse(responseText);
         PlayVod_state = Play_STATE_LOADING_PLAYLIST;
         PlayVod_loadData();
-    } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) {
-
-        //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-        //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034)) {
-        //            Play_SupportsSource = false;
-        //            PlayVod_loadData();
-        //            return;
-        //        }
-
-        PlayVod_playlistResponse = responseText;
-        PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
-        PlayVod_state = Play_STATE_PLAYING;
-        if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
-        if (PlayVod_isOn) PlayVod_qualityChanged();
-        if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
-    }
+    } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) PlayVod_loadDataSuccessEnd(Play_extractQualities(responseText));
 }
 
 function PlayVod_loadDataCheckSub() {
     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_CheckSub();
-    } else {
-        Play_HideBufferDialog();
-        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
-        window.setTimeout(function() {
-            if (PlayVod_isOn) PlayVod_shutdownStream();
-        }, 4000);
-    }
+    } else PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
 }
 
 function PlayVod_NotSub() {
-    Play_HideBufferDialog();
-    Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOT_SUB);
-    window.setTimeout(function() {
-        if (PlayVod_isOn) PlayVod_shutdownStream();
-    }, 4000);
+    PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_NOT_SUB);
 }
 
+//TODO revise this
 function PlayVod_isSub() {
-    if (!PlayVod_WasSubChekd) {
-        // Do one more try before failing, because the access_token may be expired on the first treys
-        // the PlayVod_loadData can't check if is expired, but the AddCode_RequestCheckSub can
-        // and will refresh the token if it fail, so just to be shore run the PlayVod_loadData one more time
-        PlayVod_WasSubChekd = true;
-        PlayVod_state = Play_STATE_LOADING_TOKEN;
-        PlayVod_loadData();
-    } else {
-        Play_HideBufferDialog();
-        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB + STR_410_FEATURING);
-        window.setTimeout(function() {
-            if (PlayVod_isOn) PlayVod_shutdownStream();
-        }, 4000);
-    }
+    PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB + STR_410_FEATURING);
+}
+
+var PlayVod_WarnEndId;
+function PlayVod_WarnEnd(text) {
+    Play_HideBufferDialog();
+    Play_showWarningDialog(text);
+
+    window.clearTimeout(PlayVod_WarnEndId);
+    PlayVod_WarnEndId = window.setTimeout(function() {
+        if (PlayVod_isOn) {
+            Play_HideBufferDialog();
+            Play_PlayEndStart(2);
+        }
+    }, 4000);
 }
 
 function PlayVod_qualityChanged() {
