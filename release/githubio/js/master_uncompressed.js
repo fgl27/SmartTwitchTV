@@ -8786,6 +8786,7 @@
         Main_HideElement('stream_info_multi');
         Main_HideElement('dialog_multi_help');
         if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
+        Main_SaveValues();
     }
 
     function Play_Multi_UnSetPanelDivsCheckChat() {
@@ -9031,6 +9032,7 @@
                         AddCode_Channel_id = Play_data.data[14];
                         AddCode_CheckFallow();
                     }
+                    Main_SaveValues();
                 }
                 Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
                 Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
