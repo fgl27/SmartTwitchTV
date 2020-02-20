@@ -1462,11 +1462,17 @@ public class PlayerActivity extends Activity {
                     PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                     PlayerCheckCounter[position] = 0;
 
-                    //If other not playing just play it so they stay close to sync
-                    int otherplayer = position ^ 1;
-                    if (player[otherplayer] != null) {
-                        if (!player[otherplayer].isPlaying())
-                            player[otherplayer].setPlayWhenReady(true);
+                    //If other not playing just play it so they stay in sync
+                    if (MultiStream) {
+                        for (int i = 0; i < PlayerAcount; i++) {
+                            if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
+                        }
+                    } else {
+                        int otherplayer = position ^ 1;
+                        if (player[otherplayer] != null) {
+                            if (!player[otherplayer].isPlaying())
+                                player[otherplayer].setPlayWhenReady(true);
+                        }
                     }
 
                     if (mwhocall > 1) {
@@ -1493,7 +1499,6 @@ public class PlayerActivity extends Activity {
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
         }
-        showLoading();
 
         PlayerCheckCounter[position]++;
         if (PlayerCheckCounter[position] < 4 &&
