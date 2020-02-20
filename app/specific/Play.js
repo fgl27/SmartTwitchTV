@@ -935,6 +935,7 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
 function Play_OlddataSet() {
     return Play_data_old.data.length > 0;
 }
+
 function Play_ForbiddenLive() {
     Play_HideBufferDialog();
     Play_showWarningDialog(STR_FORBIDDEN);
@@ -2496,6 +2497,7 @@ function Play_MultiStartQuality(pos, theUrl, display_name, tryes) {
                 }
             }
             Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
+            Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
         } else if (xmlHttp.status === 403) { //forbidden access
             Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
         } else if (xmlHttp.status === 404) { //off line
