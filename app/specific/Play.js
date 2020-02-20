@@ -419,11 +419,10 @@ function Play_CheckResume() { // Called only by JAVAPlay_CheckIfIsLiveStartCallb
 function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called only by JAVA
 
     if (isMulti) {
-        Play_MultiStart(
+        Play_MultiStartNew(
             position,
             Play_MultiArray[position].data[6],
-            Play_MultiArray[position].data[1],
-            0
+            Play_MultiArray[position].data[1]
         );
         return;
     }
@@ -511,12 +510,13 @@ function Play_ResumeAfterOnline() {
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
             for (var i = 0; i < Play_MultiArray.length; i++) {
                 if (Play_MultiArray[i].data.length > 0) {
-                    Play_MultiStart(
+
+                    Play_MultiStartNew(
                         i,
                         Play_MultiArray[i].data[6],
-                        Play_MultiArray[i].data[1],
-                        0
+                        Play_MultiArray[i].data[1]
                     );
+
                 }
             }
 
@@ -2293,6 +2293,7 @@ function Play_Multi_UnSetPanelDivs(checkChat) {
     Main_HideElement('stream_info_multi');
     Main_HideElement('dialog_multi_help');
     if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
+    Main_SaveValues();
 }
 
 function Play_Multi_UnSetPanelDivsCheckChat() {
@@ -2428,10 +2429,49 @@ function Play_MultiStartPrestart(position) {
         }
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiArray[position].data = doc;
-        Play_MultiStart(
+
+        Play_MultiStartNew(
             position,
             Play_MultiArray[position].data[6],
-            Play_MultiArray[position].data[1],
+            Play_MultiArray[position].data[1]
+        );
+
+    }
+}
+
+function Play_MultiStartNew(pos, streamer, display_name) {
+    try {
+        var StreamData = Android.getStreamData(streamer, true);
+
+        if (StreamData) {
+            StreamData = JSON.parse(StreamData);//obj status url responseText
+
+            if (StreamData.status === 200) {
+
+                Play_MultiStartQualitySucess(pos, StreamData.url, JSON.parse(StreamData.responseText));
+                return;
+
+            } else if (StreamData.status === 1 || StreamData.status === 403) {
+
+                Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
+                return;
+
+            } else if (StreamData.status === 404) {
+
+                Play_MultiStartFail(pos, display_name);
+                return;
+
+            }
+
+        }
+
+        Play_MultiStartFail(pos, display_name);
+    } catch (e) {
+        Play_showWarningDialog('Play_MultiStartNew ' + e);
+        Play_MultiStart(
+            pos,
+            streamer,
+            display_name,
             0
         );
     }
@@ -2505,49 +2545,52 @@ function Play_MultiStartQuality(pos, theUrl, display_name, tryes) {
     if (xmlHttp) {
         xmlHttp = JSON.parse(xmlHttp);
 
-        if (xmlHttp.status === 200) {
-
-            Play_MultiArray[pos].AutoUrl = theUrl;
-            if (Play_MultiIsFull()) UserLiveFeed_Hide();
-
-            Android.StartMultiStream(pos, theUrl);
-
-            Play_MultiArray[pos].qualities = Play_extractQualities(xmlHttp.responseText);
-
-            Play_MultiSetinfo(
-                pos,
-                Play_MultiArray[pos].data[3],
-                Play_MultiArray[pos].data[13],
-                Play_MultiArray[pos].data[1],
-                Play_MultiArray[pos].data[8],
-                Play_MultiArray[pos].data[9],
-                twemoji.parse(Play_MultiArray[pos].data[2])
-            );
-
-            Play_MultiArray[pos].watching_time = new Date().getTime();
-            Main_Set_history('live', Play_MultiArray[pos].data);
-
-            //reset chat and fallow icon if pos 0 changed
-            if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
-                Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
-                ChatLive_Init(0);
-                Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
-                Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-                if (AddUser_UserIsSet()) {
-                    AddCode_PlayRequest = true;
-                    AddCode_Channel_id = Play_data.data[14];
-                    AddCode_CheckFallow();
-                }
-            }
-            Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
-            Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-        } else if (xmlHttp.status === 403) { //forbidden access
+        if (xmlHttp.status === 200) Play_MultiStartQualitySucess(pos, theUrl, Play_extractQualities(xmlHttp.responseText));
+        else if (xmlHttp.status === 403) { //forbidden access
             Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
         } else if (xmlHttp.status === 404) { //off line
             Play_MultiStartFail(pos, display_name);
         } else Play_MultiStartQualityError(pos, theUrl, display_name, tryes);
 
     } else Play_MultiStartQualityError(pos, theUrl, display_name, tryes);
+}
+
+function Play_MultiStartQualitySucess(pos, theUrl, qualities) {
+    Play_MultiArray[pos].AutoUrl = theUrl;
+    if (Play_MultiIsFull()) UserLiveFeed_Hide();
+
+    Android.StartMultiStream(pos, theUrl);
+
+    Play_MultiArray[pos].qualities = qualities;
+
+    Play_MultiSetinfo(
+        pos,
+        Play_MultiArray[pos].data[3],
+        Play_MultiArray[pos].data[13],
+        Play_MultiArray[pos].data[1],
+        Play_MultiArray[pos].data[8],
+        Play_MultiArray[pos].data[9],
+        twemoji.parse(Play_MultiArray[pos].data[2])
+    );
+
+    Play_MultiArray[pos].watching_time = new Date().getTime();
+    Main_Set_history('live', Play_MultiArray[pos].data);
+
+    //reset chat and fallow icon if pos 0 changed
+    if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
+        Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
+        ChatLive_Init(0);
+        Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
+        Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+        if (AddUser_UserIsSet()) {
+            AddCode_PlayRequest = true;
+            AddCode_Channel_id = Play_data.data[14];
+            AddCode_CheckFallow();
+        }
+        Main_SaveValues();
+    }
+    Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
+    Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 }
 
 function Play_MultiStartQualityError(pos, theUrl, display_name, tryes) {

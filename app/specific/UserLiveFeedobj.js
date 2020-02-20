@@ -815,26 +815,26 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
-    // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
-    //     UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos + '_' + itemsCount,
-    //         [
-    //             IMG_404_VIDEO,
-    //             "ashlynn",
-    //             "title",
-    //             "game",
-    //             "for 1000 Viewers",
-    //             "720p30 [EN]",
-    //             "ashlynn",
-    //             10000000000,
-    //             true,
-    //             IMG_404_LOGO,
-    //             true,
-    //             "Since 11:04:36&nbsp;",
-    //             "2020-01-25T09:49:05Z",
-    //             1000,
-    //             35618666]
-    //     );
-    // itemsCount++;
+    UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
+        UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos + '_' + itemsCount,
+            [
+                IMG_404_VIDEO,
+                "ashlynn",
+                "title",
+                "game",
+                "for 1000 Viewers",
+                "720p30 [EN]",
+                "ashlynn",
+                10000000000,
+                true,
+                IMG_404_LOGO,
+                true,
+                "Since 11:04:36&nbsp;",
+                "2020-01-25T09:49:05Z",
+                1000,
+                35618666]
+        );
+    itemsCount++;
 
     UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos] = itemsCount;
 
