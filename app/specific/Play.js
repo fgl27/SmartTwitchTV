@@ -318,7 +318,7 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    Play_loadData();
+    Play_loadDatanew();
     Play_UpdateMainStream(true);
     document.body.removeEventListener("keyup", Main_handleKeyUp);
 
@@ -523,7 +523,7 @@ function Play_ResumeAfterOnline() {
         } else {
             Play_state = Play_STATE_LOADING_TOKEN;
             if (PlayExtra_PicturePicture) PlayExtra_Resume();
-            Play_loadData();
+            Play_loadDatanew();
         }
     }
     Play_ResumeAfterOnlineCounter++;
@@ -987,41 +987,81 @@ function Play_loadDataSuccessFake() {
     Main_Set_history('live', Play_data.data);
 }
 
+
+function Play_loadDatanew() {
+    if (Main_IsNotBrowser) {
+
+        try {
+            var StreamData = Android.getStreamData(Play_data.data[6], true);
+
+            if (StreamData) {
+                StreamData = JSON.parse(StreamData);//obj status url responseText
+                console.log(StreamData);
+
+                if (StreamData.status === 200) {
+
+                    Play_data.AutoUrl = StreamData.url;
+                    Play_loadDataSuccessend(JSON.parse(StreamData.responseText));
+                    return;
+
+                } else if (StreamData.status === 1 || StreamData.status === 403 || StreamData.status === 404 ||
+                    StreamData.status === 410) {
+
+                    //404 = off line
+                    //403 = forbidden access
+                    //410 = api v3 is gone use v5 bug
+                    Play_loadDataErrorFinish(StreamData.status === 410, StreamData.status === 403 || StreamData.status === 1);
+                    return;
+
+                }
+
+            }
+
+            Play_loadDataErrorFinish();
+        } catch (e) {
+            Play_showWarningDialog('Play_loadDatanew ' + e);
+            Play_loadData();
+        }
+
+    } else Play_loadDataSuccessFake();
+}
+
+function Play_loadDataSuccessend(qualities) {
+    UserLiveFeed_Hide();
+
+    if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
+    else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
+
+    Play_EndDialogEnter = 0;
+
+    Play_EndSet(1);
+    UserLiveFeed_SetFeedPicText();
+    Play_HideEndDialog();
+
+    //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
+    //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
+    //            Play_SupportsSource = false;
+    //            Play_loadData();
+    //            return;
+    //        }
+
+    Play_data.qualities = qualities;
+    Play_state = Play_STATE_PLAYING;
+    if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
+    Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
+    if (Play_isOn) Play_qualityChanged();
+    UserLiveFeed_PreventHide = false;
+    ChatLive_Playing = true;
+
+    if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
+}
+
 function Play_loadDataSuccess(responseText) {
     if (Play_state === Play_STATE_LOADING_TOKEN) {
         Play_tokenResponse = JSON.parse(responseText);
         Play_state = Play_STATE_LOADING_PLAYLIST;
         Play_loadData();
-    } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
-
-        UserLiveFeed_Hide();
-
-        if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
-        else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
-
-        Play_EndDialogEnter = 0;
-
-        Play_EndSet(1);
-        UserLiveFeed_SetFeedPicText();
-        Play_HideEndDialog();
-
-        //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-        //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
-        //            Play_SupportsSource = false;
-        //            Play_loadData();
-        //            return;
-        //        }
-
-        Play_data.qualities = Play_extractQualities(responseText);
-        Play_state = Play_STATE_PLAYING;
-        if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
-        Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-        if (Play_isOn) Play_qualityChanged();
-        UserLiveFeed_PreventHide = false;
-        ChatLive_Playing = true;
-
-        if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
-    }
+    } else if (Play_state === Play_STATE_LOADING_PLAYLIST) Play_loadDataSuccessend(Play_extractQualities(responseText));
 }
 
 function Play_extractQualities(input) {

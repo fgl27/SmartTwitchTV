@@ -30,7 +30,10 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -40,12 +43,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Tools {
 
@@ -81,6 +90,195 @@ public final class Tools {
             {ACCEPTHEADER, TWITHCV5JSON},
             {AUTHORIZATION, null}};
 
+    private static final int DefaultTimeout = 3000;
+
+    private static final String live_token = "https://api.twitch.tv/api/channels/%s/access_token?platform=_";
+    private static final String live_links = "https://usher.ttvnw.net/api/channel/hls/%s.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
+
+    private static final String vod_token = "https://api.twitch.tv/api/vods/%s/access_token?platform=_";
+    private static final String vod_links = "https://usher.ttvnw.net/vod/%s.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
+
+    private static final Pattern pattern = Pattern.compile("#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*");
+    private static final Pattern pattern2 = Pattern.compile("NAME=(\"(.*?)\").*BANDWIDTH=(\\d+).*CODECS=(\"(.*?)\").*http(.*).*");
+
+    public static String getStreamData(String channel_name, boolean islive) throws UnsupportedEncodingException {
+        JsonObject response = null;
+        int status = 0, i;
+
+        String url = String.format(
+                Locale.US,
+                islive ? live_token : vod_token,
+                channel_name
+        );
+
+        for (i = 0; i < 5; i++) {
+            response = readUrlSimple(url, DefaultTimeout + (500 * i));
+            if (response != null) {
+                status = response.get("status").getAsInt();
+
+                if (status == 200) break;
+                else if (status == 403 || status == 404 || status == 410)
+                    return JsonObToResult(status, "token").toString();
+            }
+        }
+
+        if (response != null) {
+
+            JsonParser parser = new JsonParser();
+            response = parser.parse(response.get("responseText").getAsString()).getAsJsonObject();
+            String StreamToken = response.get("token").getAsString();
+
+            if (CheckToken(StreamToken, parser)) {
+                return JsonObToResult(1, "restricted").toString();
+            }
+
+            url = String.format(
+                    Locale.US,
+                    islive ? live_links : vod_links,
+                    channel_name,
+                    URLEncoder.encode(StreamToken, "UTF-8"),
+                    response.get("sig").getAsString(),
+                    ThreadLocalRandom.current().nextInt(1, 1000)
+            );
+
+            for (i = 0; i < 5; i++) {
+
+                response = readUrlSimple(url, DefaultTimeout + (500 * i));
+                if (response != null) {
+                    status = response.get("status").getAsInt();
+
+                    //404 = off line
+                    //403 = forbidden access
+                    //410 = api v3 is gone use v5 bug
+                    if (status == 200) break;
+                    else if (status == 403 || status == 404 || status == 410)
+                        return JsonObToResult(status, "link").toString();
+                }
+            }
+            return response != null ? extractQualities(status, response.get("responseText").getAsString(), url) : null;
+        }
+
+        return null;
+    }
+
+    private static boolean CheckToken(String token, JsonParser parser) {
+        JsonElement Token = parser.parse(token);
+
+        if(Token.isJsonObject()) {
+            JsonElement restricted_bitrates = Token.getAsJsonObject().get("chansub").getAsJsonObject().get("restricted_bitrates");
+
+            return !restricted_bitrates.isJsonNull() && restricted_bitrates.getAsJsonArray().size() > 0;
+        }
+
+        return false;
+    }
+
+    private static String extractQualities(int status, String responseText, String url) {
+        Matcher matcher = pattern.matcher(responseText);
+        Matcher matcher2;
+        JsonArray result = new JsonArray();
+        ArrayList<String> list = new ArrayList<>();
+        String id;
+
+        while (matcher.find()) {
+
+            matcher2 = pattern2.matcher(matcher.group().replace("\n", "").replace("\r", ""));
+
+            while (matcher2.find()) {
+                if(result.size() < 1) {
+
+                    result.add(Qualities("Auto", "0", "avc", "Auto_url"));
+
+                    id = matcher2.group(2);
+                    if (id != null && id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
+                    else id = id + " | source";
+
+                    result.add(Qualities(id, matcher2.group(3), matcher2.group(5), matcher2.group(6)));
+                    list.add(id.split(" ")[0]);
+
+                } else {
+
+                    id = matcher2.group(2);
+                    //Prevent duplicated resolution 720p60 source and 720p60
+                    if (!list.contains(id)) {
+
+                        result.add(Qualities(id, matcher2.group(3), matcher2.group(5), matcher2.group(6)));
+                        list.add(id);
+                    }
+
+                }
+            }
+
+        }
+
+        JsonObject JSON = new JsonObject();
+        JSON.addProperty("status", status);
+        JSON.addProperty("url", url);
+        JSON.addProperty("responseText", result.toString());
+
+        return JSON.toString();
+    }
+
+    private static JsonObject JsonObToResult(int status, String responseText) {
+        JsonObject JSON = new JsonObject();
+        JSON.addProperty("status", status);
+        JSON.addProperty("responseText", responseText);
+        return JSON;
+    }
+
+    private static JsonObject Qualities(String id, String band, String codec, String url) {
+        JsonObject JSON = new JsonObject();
+        JSON.addProperty("id", id);
+        JSON.addProperty("band", extractBand(band));
+        JSON.addProperty("codec", extractCodec(codec));
+        JSON.addProperty("url", "http" + url);
+        return JSON;
+    }
+
+    private static String extractBand(String band) {
+        float input = Float.parseFloat(band);
+
+        return input > 0 ? String.format(Locale.US, " | %.02fMbps", (input / 1000000)) : "";
+    }
+
+    private static String extractCodec(String codec) {
+        if (codec.contains("avc")) return " | avc";
+        else if (codec.contains("'vp9'")) return " | vp9";
+        else if (codec.contains("'mp4'")) return " | mp4";
+
+        return "";
+    }
+
+    public static JsonObject readUrlSimple(String urlString, int Timeout) {
+        HttpURLConnection urlConnection = null;
+
+        try {
+            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
+            urlConnection.setConnectTimeout(Timeout);
+            urlConnection.setReadTimeout(Timeout);
+
+            urlConnection.connect();
+
+            int status = urlConnection.getResponseCode();
+
+            if (status != -1) {
+                return JsonObToResult(status, new String(
+                        status != HttpURLConnection.HTTP_OK ?
+                                readFully(urlConnection.getErrorStream()) : readFully(urlConnection.getInputStream()),
+                        StandardCharsets.UTF_8)
+                );
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            Log.w(TAG, "getStreamData IOException ", e);
+            return null;
+        } finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
+        }
+    }
+
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
     public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
@@ -101,11 +299,11 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return JsonObToString(status, new String(
+                return JsonObToResult(status, new String(
                         status != HttpURLConnection.HTTP_OK ?
                                 readFully(urlConnection.getErrorStream()) : readFully(urlConnection.getInputStream()),
                         StandardCharsets.UTF_8)
-                );
+                ).toString();
             } else {
                 return null;
             }
@@ -152,11 +350,11 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return JsonObToString(status, new String(
+                return JsonObToResult(status, new String(
                         status != HttpURLConnection.HTTP_OK ?
                                 readFully(urlConnection.getErrorStream()) : readFully(urlConnection.getInputStream()),
                         StandardCharsets.UTF_8)
-                );
+                ).toString();
             } else {
                 return null;
             }
@@ -290,13 +488,6 @@ public final class Tools {
             Log.w(TAG, "codecframeRate Exception width " + width + " height " + height, e);
             return 0.0;
         }
-    }
-
-    private static String JsonObToString(int status, String responseText) {
-        JsonObject JSON = new JsonObject();
-        JSON.addProperty("status", status);
-        JSON.addProperty("responseText", responseText);
-        return JSON.toString();
     }
 
     public static String mgetVideoQuality(SimpleExoPlayer player) {
