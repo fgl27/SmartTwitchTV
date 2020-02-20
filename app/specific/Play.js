@@ -459,7 +459,7 @@ function Play_RefreshAutoRequest(RestartAuto) {
 function Play_Resume() {
     //Play_FakeMulti();
     UserLiveFeed_Hide();
-    Play_data.watching_time = new Date().getTime();
+
     Play_isOn = true;
     ChatLive_Playing = true;
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
@@ -472,7 +472,11 @@ function Play_Resume() {
     if (navigator.onLine) Play_ResumeAfterOnline();
     else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
 
-    if (!Play_MultiEnable) Play_UpdateMainStream(true);
+    if (!Play_MultiEnable) {
+        Play_data.watching_time = new Date().getTime();
+        Play_UpdateMainStream(true);
+    }
+
     window.clearInterval(Play_streamInfoTimerId);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
     Play_ShowPanelStatus(1);
@@ -484,6 +488,8 @@ function Play_ResumeAfterOnline() {
         if (Play_MultiEnable) {
             Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
+            Play_data.watching_time = new Date().getTime();
+
             for (var i = 0; i < Play_MultiArray.length; i++) {
                 if (Play_MultiArray[i].data.length > 0) {
 
