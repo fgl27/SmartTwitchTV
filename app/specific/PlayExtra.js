@@ -4,7 +4,6 @@ var PlayExtra_clear = false;
 var PlayExtra_loadingDataTry = 0;
 var PlayExtra_state = Play_STATE_LOADING_TOKEN;
 var PlayExtra_PicturePicture = false;
-var PlayExtra_RefreshAutoTry = 0;
 
 var PlayExtra_WasPicturePicture = false;
 
