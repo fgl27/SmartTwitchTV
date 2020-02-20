@@ -9033,6 +9033,7 @@
                     }
                 }
                 Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
+                Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
             } else if (xmlHttp.status === 403) { //forbidden access
                 Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
             } else if (xmlHttp.status === 404) { //off line
