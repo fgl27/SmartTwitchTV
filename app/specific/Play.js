@@ -20,7 +20,6 @@ var Play_STATE_LOADING_PLAYLIST = 1;
 var Play_STATE_PLAYING = 2;
 var Play_state = 0;
 var Play_Status_Always_On = false;
-var Play_RefreshAutoTry = 0;
 var Play_SingleClickExit = 0;
 var Play_MultiEnable = false;
 var Play_MultiArray = [];
@@ -276,7 +275,6 @@ function Play_Start() {
 
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
-    Play_RefreshAutoTry = 0;
 
     Play_ShowPanelStatus(1);
 
@@ -411,9 +409,6 @@ function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called
         return;
     }
 
-    Play_RefreshAutoTry = 0;
-    PlayExtra_RefreshAutoTry = 0;
-
     if (isPicturePicture) PlayExtra_RefreshAutoRequest(true);
     else if (Main_IsNotBrowser) Play_RefreshAutoRequest(true);
 }
@@ -469,7 +464,6 @@ function Play_Resume() {
     ChatLive_Playing = true;
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
     Play_showBufferDialog();
-    Play_RefreshAutoTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_RestoreFromResume = true;
     Play_ResumeAfterOnlineCounter = 0;
@@ -715,7 +709,6 @@ function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
 }
 
 //When update this also update PlayExtra_updateStreamInfo
-
 function Play_updateStreamInfo() {
     if (Play_MultiEnable) {
         for (var i = 0; i < Play_MultiArray.length; i++) {
@@ -729,13 +722,9 @@ function Play_updateStreamInfo() {
         }
     } else {
 
-        Play_RefreshAutoTry = 0;
         if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
 
-        if (PlayExtra_PicturePicture) {
-            PlayExtra_RefreshAutoTry = 0;
-            PlayExtra_RefreshAutoRequest(false);
-        }
+        if (PlayExtra_PicturePicture) PlayExtra_RefreshAutoRequest(false);
 
         var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
         BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
