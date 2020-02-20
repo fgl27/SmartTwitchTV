@@ -19063,7 +19063,11 @@
             if (Users_cursorY > 1) {
 
                 if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0]))
-                    Main_ScrollTableCalc(Users_ids[5], (document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).offsetTop * -1), 39);
+                    Main_ScrollTableCalc(Users_ids[5],
+                        ((document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getBoundingClientRect().top -
+                            document.getElementById(Users_ids[5]).offsetTop) * -1),
+                        36
+                    );
             } else Main_ScrollTable(Users_ids[5], 0);
 
         } else Main_handleKeyUp();
