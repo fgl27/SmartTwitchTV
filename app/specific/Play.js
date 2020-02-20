@@ -755,6 +755,7 @@ function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
 }
 
 //When update this also update PlayExtra_updateStreamInfo
+var PlayExtra_RefreshAutoRequestID;
 function Play_updateStreamInfo() {
     if (Play_MultiEnable) {
         for (var i = 0; i < Play_MultiArray.length; i++) {
@@ -772,10 +773,14 @@ function Play_updateStreamInfo() {
         Play_RefreshAutoTry = 0;
         if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
 
-        if (PlayExtra_PicturePicture) {
-            PlayExtra_RefreshAutoTry = 0;
-            PlayExtra_RefreshAutoRequest(false);
-        }
+        window.clearTimeout(PlayExtra_RefreshAutoRequestID);
+        PlayExtra_RefreshAutoRequestID = window.setTimeout(function() {
+            if (PlayExtra_PicturePicture) {
+                PlayExtra_RefreshAutoTry = 0;
+                PlayExtra_RefreshAutoRequest(false);
+            }
+        }, 1500);
+
 
         var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
         BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
