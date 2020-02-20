@@ -57,6 +57,9 @@ function PlayExtra_KeyEnter() {
 
 function PlayExtra_Resumenew() {
     if (Main_IsNotBrowser) {
+        Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+        PlayExtra_data.watching_time = new Date().getTime();
+        Play_SetAudioIcon();
 
         try {
             var StreamData = Android.getStreamData(PlayExtra_data.data[6], true);
