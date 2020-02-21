@@ -4,7 +4,6 @@ var PlayExtra_clear = false;
 var PlayExtra_loadingDataTry = 0;
 var PlayExtra_state = Play_STATE_LOADING_TOKEN;
 var PlayExtra_PicturePicture = false;
-var PlayExtra_RefreshAutoTry = 0;
 
 var PlayExtra_WasPicturePicture = false;
 
@@ -51,9 +50,49 @@ function PlayExtra_KeyEnter() {
             PlayExtra_data.quality = "Auto";
             PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
         }
-        PlayExtra_Resume();
+        PlayExtra_Resumenew();
 
     }
+}
+
+function PlayExtra_Resumenew() {
+    if (Main_IsNotBrowser) {
+        Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+        PlayExtra_data.watching_time = new Date().getTime();
+        Play_SetAudioIcon();
+
+        try {
+            var StreamData = Android.getStreamData(PlayExtra_data.data[6], true);
+
+            if (StreamData) {
+                StreamData = JSON.parse(StreamData);//obj status url responseText
+
+                if (StreamData.status === 200) {
+
+                    PlayExtra_data.AutoUrl = StreamData.url;
+                    PlayExtra_loadDataSuccessEnd(JSON.parse(StreamData.responseText));
+                    return;
+
+                } else if (StreamData.status === 1 || StreamData.status === 403) {
+
+                    PlayExtra_loadDataFail(STR_FORBIDDEN);
+                    return;
+
+                } else if (StreamData.status === 404) {
+
+                    PlayExtra_loadDataFail(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                    return;
+
+                }
+
+            }
+
+            PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+        } catch (e) {
+            PlayExtra_Resume();
+        }
+
+    } else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
 }
 
 function PlayExtra_Resume() {
@@ -129,40 +168,34 @@ function PlayExtra_End(doSwitch) { // Called only by JAVA
     Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 }
 
+function PlayExtra_loadDataSuccessEnd(qualities) {
+    UserLiveFeed_Hide();
+    Android.SetAuto2(PlayExtra_data.AutoUrl);
+    PlayExtra_data.qualities = qualities;
+    PlayExtra_state = Play_STATE_PLAYING;
+    PlayExtra_SetPanel();
+    if (Play_isOn) PlayExtra_qualityChanged();
+    PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
+    PlayExtra_updateStreamInfo();
+    ChatLive_Playing = true;
+
+    if (!Play_isFullScreen) {
+        Android.mupdatesizePP(!Play_isFullScreen);
+        ChatLive_Init(1);
+        PlayExtra_ShowChat();
+    }
+    Main_Set_history('live', PlayExtra_data.data);
+    Play_loadingInfoDataTry = 0;
+    Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
+}
+
 function PlayExtra_loadDataSuccess(responseText) {
     if (PlayExtra_state === Play_STATE_LOADING_TOKEN) {
         Play_tokenResponse = JSON.parse(responseText);
         PlayExtra_state = Play_STATE_LOADING_PLAYLIST;
         PlayExtra_loadingDataTry = 0;
         PlayExtra_loadDataRequest();
-    } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) {
-
-        //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-        //        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
-        //            PlayExtra_SupportsSource = false;
-        //            PlayExtra_loadingDataTry = 0;
-        //            PlayExtra_loadDataRequest();
-        //            return;
-        //        }
-        UserLiveFeed_Hide();
-        Android.SetAuto2(PlayExtra_data.AutoUrl);
-        PlayExtra_data.qualities = Play_extractQualities(responseText);
-        PlayExtra_state = Play_STATE_PLAYING;
-        PlayExtra_SetPanel();
-        if (Play_isOn) PlayExtra_qualityChanged();
-        PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
-        PlayExtra_updateStreamInfo();
-        ChatLive_Playing = true;
-
-        if (!Play_isFullScreen) {
-            Android.mupdatesizePP(!Play_isFullScreen);
-            ChatLive_Init(1);
-            PlayExtra_ShowChat();
-        }
-        Main_Set_history('live', PlayExtra_data.data);
-        Play_loadingInfoDataTry = 0;
-        Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
-    }
+    } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) PlayExtra_loadDataSuccessEnd(Play_extractQualities(responseText));
 }
 
 function PlayExtra_SetPanel() {
@@ -294,49 +327,19 @@ function PlayExtra_loadDataFail(Reason) {
     } else PlayExtra_RestorePlayData();
 }
 
-function PlayExtra_RefreshAutoRequest(UseAndroid) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_';
+function PlayExtra_RefreshAutoRequest(RestartAuto) {
 
-    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+    var tempUrl = Play_RefreshHlsUrl(PlayExtra_data.data[6]);
 
-    if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
-    else PlayExtra_RefreshAutoError(UseAndroid);
-}
+    if (tempUrl) {
 
-function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
-    if (xmlHttp.status === 200) {
+        PlayExtra_data.AutoUrl = tempUrl;
 
-        Play_tokenResponse = JSON.parse(xmlHttp.responseText);
-        //410 error
-        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
-            PlayExtra_RefreshAutoError(UseAndroid);
-            return;
-        }
+        if (RestartAuto) Android.ResStartAuto2(tempUrl);
+        else Android.SetAuto2(tempUrl);
 
-        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_data.data[6] +
-            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
-            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+    } else if (RestartAuto) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
 
-        //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
-        //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
-
-        PlayExtra_data.AutoUrl = theUrl;
-
-        if (UseAndroid) Android.ResStartAuto2(theUrl);
-        else Android.SetAuto2(theUrl);
-
-    } else PlayExtra_RefreshAutoError(UseAndroid);
-}
-
-function PlayExtra_RefreshAutoError(UseAndroid) {
-    if (Play_isOn) {
-        PlayExtra_RefreshAutoTry++;
-        if (PlayExtra_RefreshAutoTry < 5) PlayExtra_RefreshAutoRequest(UseAndroid);
-        else if (UseAndroid) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
-    }
 }
 
 function PlayExtra_updateStreamInfo() {
