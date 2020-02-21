@@ -89,7 +89,6 @@ function PlayExtra_Resumenew() {
 
             PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
         } catch (e) {
-            Play_showWarningDialog('PlayExtra_Resumenew ' + e);
             PlayExtra_Resume();
         }
 
