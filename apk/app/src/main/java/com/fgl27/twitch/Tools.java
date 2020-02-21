@@ -3,6 +3,7 @@
 package com.fgl27.twitch;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -520,17 +521,16 @@ public final class Tools {
      *
      * @return load control
      */
-    public static DefaultLoadControl getLoadControl(int buffer) {
+    public static DefaultLoadControl getLoadControl(int buffer, int deviceRam) {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
                         buffer + 5000, //DEFAULT_MIN_BUFFER_MS
-                        100000, //DEFAULT_MAX_BUFFER_MS
+                        36000000, //DEFAULT_MAX_BUFFER_MS
                         buffer, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
                         Math.min(buffer + 3000, 15000) //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
-                .setTargetBufferBytes(C.LENGTH_UNSET)
-                .setPrioritizeTimeOverSizeThresholds(true)
+                .setTargetBufferBytes(deviceRam)
                 .createDefaultLoadControl();
     }
 
@@ -649,5 +649,15 @@ public final class Tools {
         public Extractor[] createExtractors() {
             return new Extractor[]{new Mp4Extractor()};
         }
+    }
+
+    public static int deviceRam(Context context) {
+        ActivityManager actManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+        if (actManager != null) {
+            actManager.getMemoryInfo(memInfo);
+        } else return 100000000;
+
+        return (int) (memInfo.totalMem / 8);
     }
 }
