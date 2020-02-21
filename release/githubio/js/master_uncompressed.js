@@ -16414,7 +16414,10 @@
             }
             Main_ContentLang = Main_ContentLang.slice(1);
             //the app allowed more then one language but twitch api block it now
-            if (Main_A_includes_B(Main_ContentLang, ',')) Main_ContentLang = "";
+            if (Main_A_includes_B(Main_ContentLang, ',')) {
+                Languages_ResetAll();
+                Main_ContentLang = "";
+            }
         }
         if (Main_ContentLang === "") Languages_Selected = STR_LANG_ALL;
         else Languages_Selected = Main_ContentLang.toUpperCase();
