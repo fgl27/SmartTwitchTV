@@ -13710,7 +13710,12 @@
         img_404: IMG_404_VIDEO,
         setMax: function(tempObj) {
             this.MaxOffset = tempObj._total;
-            if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+
+            if (typeof this.MaxOffset === 'undefined') {
+                if (tempObj[this.object].length < 90) this.dataEnded = true;
+            } else {
+                if (this.data.length >= this.MaxOffset) this.dataEnded = true;
+            }
         },
         empty_str: function() {
             return STR_NO + STR_SPACE + STR_LIVE_CHANNELS;
@@ -13752,7 +13757,9 @@
             key_pgUp: Main_Clip,
             base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
             set_url: function() {
-                if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+                if ((typeof this.MaxOffset !== 'undefined') &&
+                    this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+
                 this.url = this.base_url + '&offset=' + this.offset +
                     (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
             },
@@ -13781,7 +13788,9 @@
             object: 'streams',
             base_url: Main_kraken_api + 'search/streams?limit=' + Main_ItemsLimitMax + '&query=',
             set_url: function() {
-                if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+                if ((typeof this.MaxOffset !== 'undefined') &&
+                    this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+
                 this.url = this.base_url + encodeURIComponent(Main_values.Search_data) +
                     '&offset=' + this.offset;
             },
@@ -13805,11 +13814,11 @@
 
         SearchLive = Screens_assign(SearchLive, Base_Live_obj);
 
-        SearchLive.setMax = function(tempObj) {
-            this.MaxOffset = tempObj._total;
-            if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined' ||
-                (this.data.length < Main_ItemsLimitMax)) this.dataEnded = true;
-        };
+        // SearchLive.setMax = function(tempObj) {
+        //     this.MaxOffset = tempObj._total;
+        //     if (typeof this.MaxOffset === 'undefined' || this.data.length >= this.MaxOffset ||
+        //         (this.data.length < Main_ItemsLimitMax)) this.dataEnded = true;
+        // };
         SearchLive.Set_Scroll();
     }
 
@@ -13827,7 +13836,8 @@
             followerChannels: '',
             followerChannelsDone: false,
             set_url: function() {
-                if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+                if ((typeof this.MaxOffset !== 'undefined') &&
+                    this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
 
                 if (AddUser_UsernameArray[0].access_token) {
                     //User has added a key
@@ -13933,7 +13943,9 @@
             use_hls: true,
             base_url: 'https://api.twitch.tv/api/users/',
             set_url: function() {
-                if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+                if ((typeof this.MaxOffset !== 'undefined') &&
+                    this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+
                 this.url = this.base_url +
                     encodeURIComponent(AddUser_UsernameArray[0].name) +
                     '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
@@ -13998,7 +14010,9 @@
             key_pgUp: Main_Featured,
             base_url: Main_kraken_api + 'streams?game=',
             set_url: function() {
-                if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+                if ((typeof this.MaxOffset !== 'undefined') &&
+                    this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
+
                 this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) +
                     '&limit=' + Main_ItemsLimitMax + '&offset=' + this.offset +
                     (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
@@ -16399,6 +16413,8 @@
                 if (Languages_Obj_default(key)) Main_ContentLang += ',' + Languages_value[key].set_values;
             }
             Main_ContentLang = Main_ContentLang.slice(1);
+            //the app allowed more then one language but twitch api block it now
+            if (Main_A_includes_B(Main_ContentLang, ',')) Main_ContentLang = "";
         }
         if (Main_ContentLang === "") Languages_Selected = STR_LANG_ALL;
         else Languages_Selected = Main_ContentLang.toUpperCase();
@@ -16473,15 +16489,35 @@
     }
 
     function Languages_ChangeSettigs(position) {
-        var key = Languages_value_keys[position];
+        Languages_ChangeSettigsEnd(position);
+    }
+
+    function Languages_ResetAll() {
+        for (var key in Languages_value) {
+            if (Languages_Obj_default(key)) {
+                Languages_value[key].defaultValue -= 1;
+                Main_setItem(key, Languages_Obj_default(key) + 1);
+                Main_textContent(key, Languages_Obj_values(key));
+                Main_RemoveClass(key, 'red_text');
+            }
+        }
+    }
+
+    function Languages_ChangeSettigsEnd(position) {
+        Languages_ChangeSettigsEndKey(Languages_value_keys[position]);
+    }
+
+    function Languages_ChangeSettigsEndKey(key) {
         Main_setItem(key, Languages_Obj_default(key) + 1);
         Main_textContent(key, Languages_Obj_values(key));
-        Languages_Setarrows(position);
+        Languages_SetarrowsKey(key);
     }
 
     function Languages_Setarrows(position) {
-        var key = Languages_value_keys[position];
+        Languages_SetarrowsKey(Languages_value_keys[position]);
+    }
 
+    function Languages_SetarrowsKey(key) {
         var currentValue = Languages_Obj_default(key);
         var maxValue = Languages_Obj_length(key);
 
@@ -16525,6 +16561,7 @@
             case KEY_RIGHT:
                 key = Languages_value_keys[Languages_cursorY];
                 if (Languages_Obj_default(key) < Languages_Obj_length(key)) {
+                    if (!Main_A_includes_B(key, 'All')) Languages_ResetAll();
                     Languages_value[key].defaultValue += 1;
                     Languages_ChangeSettigs(Languages_cursorY);
                     Main_AddClass(Languages_value_keys[Languages_cursorY], 'red_text');
@@ -18087,7 +18124,8 @@
             (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
             Main_TwithcV5Flag;
 
-        if (UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset &&
+        if ((typeof UserLiveFeed_obj[UserLiveFeedobj_LivePos].MaxOffset !== 'undefined') &&
+            UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset &&
             (UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_LivePos].MaxOffset)
             UserLiveFeed_obj[UserLiveFeedobj_LivePos].dataEnded = true;
 
@@ -18165,7 +18203,8 @@
             '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset +
             (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-        if (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset &&
+        if ((typeof UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].MaxOffset !== 'undefined') &&
+            UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset &&
             (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].MaxOffset)
             UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].dataEnded = true;
 
@@ -18283,7 +18322,8 @@
             '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
             (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-        if (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset &&
+        if ((typeof UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].MaxOffset !== 'undefined') &&
+            UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset &&
             (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].MaxOffset)
             UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].dataEnded = true;
 
@@ -18367,7 +18407,8 @@
             '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
             (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-        if (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset &&
+        if ((typeof UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].MaxOffset !== 'undefined') &&
+            UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset &&
             (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].MaxOffset)
             UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].dataEnded = true;
 
@@ -18706,9 +18747,16 @@
         UserLiveFeed_itemsCount[pos] = itemsCount;
 
         if (UserLiveFeed_obj[pos].HasMore) {
+
             UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
             UserLiveFeed_obj[pos].MaxOffset = total;
-            if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
+
+            if (!response_items) UserLiveFeed_obj[pos].dataEnded = true;
+            else if (typeof UserLiveFeed_obj[pos].MaxOffset === 'undefined') {
+                if (response_items < 90) UserLiveFeed_obj[pos].dataEnded = true;
+            } else {
+                if (UserLiveFeed_obj[pos].offset >= total) UserLiveFeed_obj[pos].dataEnded = true;
+            }
         }
 
         if (UserLiveFeed_obj[pos].loadingMore) {
