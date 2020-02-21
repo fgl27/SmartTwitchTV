@@ -44,12 +44,13 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
     public static final int PlayerAcount = 4;
     private static final int[] positions = {
             Gravity.RIGHT | Gravity.BOTTOM,//0
@@ -1410,6 +1411,17 @@ public class PlayerActivity extends Activity {
                 mediaSourcesAuto[mposition] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
             });
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getStreamData(String channel_name, boolean islive) {
+            try {
+                return Tools.getStreamData(channel_name, islive);
+            } catch (UnsupportedEncodingException e) {
+                Log.d(TAG, "getStreamData UnsupportedEncodingException");
+                return null;
+            }
+        }
     }
 
     // Basic EventListener for exoplayer
@@ -1420,7 +1432,7 @@ public class PlayerActivity extends Activity {
 
         private PlayerEventListener(int mposition) {
             position = mposition;
-            delayms = (BUFFER_SIZE[mwhocall] * 2) + (mwhocall == 2 ? 5000 : 3000);
+            delayms = (BUFFER_SIZE[mwhocall] * 2) + 5000;
         }
 
         @Override
@@ -1450,11 +1462,17 @@ public class PlayerActivity extends Activity {
                     PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                     PlayerCheckCounter[position] = 0;
 
-                    //If other not playing just play it so they stay close to sync
-                    int otherplayer = position ^ 1;
-                    if (player[otherplayer] != null) {
-                        if (!player[otherplayer].isPlaying())
-                            player[otherplayer].setPlayWhenReady(true);
+                    //If other not playing just play it so they stay in sync
+                    if (MultiStream) {
+                        for (int i = 0; i < PlayerAcount; i++) {
+                            if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
+                        }
+                    } else {
+                        int otherplayer = position ^ 1;
+                        if (player[otherplayer] != null) {
+                            if (!player[otherplayer].isPlaying())
+                                player[otherplayer].setPlayWhenReady(true);
+                        }
                     }
 
                     if (mwhocall > 1) {
@@ -1481,7 +1499,6 @@ public class PlayerActivity extends Activity {
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
         }
-        showLoading();
 
         PlayerCheckCounter[position]++;
         if (PlayerCheckCounter[position] < 4 &&

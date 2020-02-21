@@ -819,9 +819,8 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
-    // itemsCount++;
     // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
-    //     UserLiveFeedobj_CreatFeed(i++,
+    //     UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos + '_' + itemsCount,
     //         [
     //             IMG_404_VIDEO,
     //             "ashlynn",
@@ -839,6 +838,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     //             1000,
     //             35618666]
     //     );
+    // itemsCount++;
 
     UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos] = itemsCount;
 
