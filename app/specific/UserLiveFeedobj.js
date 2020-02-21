@@ -307,10 +307,7 @@ function UserLiveFeedobj_loadLive() {
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
         Main_TwithcV5Flag;
 
-    if ((typeof UserLiveFeed_obj[UserLiveFeedobj_LivePos].MaxOffset !== 'undefined') &&
-        UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset &&
-        (UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_LivePos].MaxOffset)
-        UserLiveFeed_obj[UserLiveFeedobj_LivePos].dataEnded = true;
+    UserLiveFeedobj_CheckOffset(UserLiveFeedobj_LivePos);
 
     BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess,
         function() {
@@ -386,10 +383,7 @@ function UserLiveFeedobj_loadCurrentGame() {
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset +
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-    if ((typeof UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].MaxOffset !== 'undefined') &&
-        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset &&
-        (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].MaxOffset)
-        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].dataEnded = true;
+    UserLiveFeedobj_CheckOffset(UserLiveFeedobj_CurrentGamePos);
 
     BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess,
         function() {
@@ -501,10 +495,7 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-    if ((typeof UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].MaxOffset !== 'undefined') &&
-        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset &&
-        (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].MaxOffset)
-        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].dataEnded = true;
+    UserLiveFeedobj_CheckOffset(UserLiveFeedobj_UserAGamesPos);
 
     BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess,
         function() {
@@ -584,10 +575,7 @@ function UserLiveFeedobj_loadCurrentAGame() {
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-    if ((typeof UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].MaxOffset !== 'undefined') &&
-        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset &&
-        (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].MaxOffset)
-        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].dataEnded = true;
+    UserLiveFeedobj_CheckOffset(UserLiveFeedobj_AGamesPos);
 
     BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess,
         function() {
@@ -1128,3 +1116,11 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
     }
 }
 //Base game fun end
+
+function UserLiveFeedobj_CheckOffset(pos) {
+    if ((UserLiveFeed_obj[pos].offset >= 900) ||
+        ((typeof UserLiveFeed_obj[pos].MaxOffset !== 'undefined') &&
+            UserLiveFeed_obj[pos].offset &&
+            (UserLiveFeed_obj[pos].offset + 100) > UserLiveFeed_obj[pos].MaxOffset))
+        UserLiveFeed_obj[pos].dataEnded = true;
+}
