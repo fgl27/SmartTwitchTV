@@ -480,7 +480,7 @@ var Base_Live_obj = {
     addCell: function(cell) {
         this.addCellTemp(cell);
     },
-    set_offset: function() {
+    check_offset: function() {
         if ((this.offset >= 900) ||
             ((typeof this.MaxOffset !== 'undefined') &&
                 this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset)) this.dataEnded = true;
@@ -515,7 +515,7 @@ function ScreensObj_InitLive() {
         key_pgUp: Main_Clip,
         base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
-            this.set_offset();
+            this.check_offset();
 
             this.url = this.base_url + '&offset=' + this.offset +
                 (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
@@ -545,7 +545,7 @@ function ScreensObj_InitSearchLive() {
         object: 'streams',
         base_url: Main_kraken_api + 'search/streams?limit=' + Main_ItemsLimitMax + '&query=',
         set_url: function() {
-            this.set_offset();
+            this.check_offset();
             this.url = this.base_url + encodeURIComponent(Main_values.Search_data) +
                 '&offset=' + this.offset;
         },
@@ -591,7 +591,7 @@ function ScreensObj_InitUserLive() {
         followerChannels: '',
         followerChannelsDone: false,
         set_url: function() {
-            this.set_offset();
+            this.check_offset();
 
             if (AddUser_UsernameArray[0].access_token) {
                 //User has added a key
@@ -764,7 +764,7 @@ function ScreensObj_InitAGame() {
         key_pgUp: Main_Featured,
         base_url: Main_kraken_api + 'streams?game=',
         set_url: function() {
-            this.set_offset();
+            this.check_offset();
 
             this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) +
                 '&limit=' + Main_ItemsLimitMax + '&offset=' + this.offset +
@@ -812,7 +812,7 @@ function ScreensObj_InitFeatured() {
         key_pgUp: Main_Live,
         base_url: Main_kraken_api + 'streams/featured?limit=' + Main_ItemsLimitMax,
         set_url: function() {
-            this.set_offset();
+            this.check_offset();
 
             this.url = this.base_url + '&offset=' + this.offset +
                 (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
