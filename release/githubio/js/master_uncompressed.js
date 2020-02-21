@@ -789,7 +789,7 @@
         STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
         STR_PAYPAL_SUMMARY = "Paypal donations use above Email.";
         STR_BITCOIN_SUMMARY = "Bitcoin donations use wallet address:";
-        STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load second stream info";
+        STR_PLAYER_PROBLEM_2 = " Connection failed, unable to load stream info";
         STR_PLAYER_RESYNC = "Player Auto Sync";
         STR_PLAYER_AUTO_BIG = "Main window";
         STR_PLAYER_AUTO_SMALLS = "Small window";
@@ -3505,8 +3505,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.114';
-    var Main_minversion = '021820';
+    var Main_stringVersion_Min = '.115';
+    var Main_minversion = '022120';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -6055,7 +6055,7 @@
                         PlayClip_setHidePanel();
                     } else if (UserLiveFeed_isFeedShow()) {
                         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else Play_CheckIfIsLiveStart(PlayClip_OpenLiveStream);
+                        else if (Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
                     } else PlayClip_showPanel();
                     break;
                 case KEY_STOP:
@@ -6117,7 +6117,7 @@
                     if (!Play_isEndDialogVisible()) Play_KeyPause(3);
                     break;
                 case KEY_REFRESH:
-                    if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                    if (UserLiveFeed_isFeedShow() && Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
                     break;
                 case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(3);
@@ -6172,7 +6172,6 @@
     var PlayExtra_loadingDataTry = 0;
     var PlayExtra_state = Play_STATE_LOADING_TOKEN;
     var PlayExtra_PicturePicture = false;
-    var PlayExtra_RefreshAutoTry = 0;
 
     var PlayExtra_WasPicturePicture = false;
 
@@ -6219,9 +6218,49 @@
                 PlayExtra_data.quality = "Auto";
                 PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
             }
-            PlayExtra_Resume();
+            PlayExtra_Resumenew();
 
         }
+    }
+
+    function PlayExtra_Resumenew() {
+        if (Main_IsNotBrowser) {
+            Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+            PlayExtra_data.watching_time = new Date().getTime();
+            Play_SetAudioIcon();
+
+            try {
+                var StreamData = Android.getStreamData(PlayExtra_data.data[6], true);
+
+                if (StreamData) {
+                    StreamData = JSON.parse(StreamData); //obj status url responseText
+
+                    if (StreamData.status === 200) {
+
+                        PlayExtra_data.AutoUrl = StreamData.url;
+                        PlayExtra_loadDataSuccessEnd(JSON.parse(StreamData.responseText));
+                        return;
+
+                    } else if (StreamData.status === 1 || StreamData.status === 403) {
+
+                        PlayExtra_loadDataFail(STR_FORBIDDEN);
+                        return;
+
+                    } else if (StreamData.status === 404) {
+
+                        PlayExtra_loadDataFail(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                        return;
+
+                    }
+
+                }
+
+                PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+            } catch (e) {
+                PlayExtra_Resume();
+            }
+
+        } else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
     }
 
     function PlayExtra_Resume() {
@@ -6297,40 +6336,34 @@
         Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
     }
 
+    function PlayExtra_loadDataSuccessEnd(qualities) {
+        UserLiveFeed_Hide();
+        Android.SetAuto2(PlayExtra_data.AutoUrl);
+        PlayExtra_data.qualities = qualities;
+        PlayExtra_state = Play_STATE_PLAYING;
+        PlayExtra_SetPanel();
+        if (Play_isOn) PlayExtra_qualityChanged();
+        PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
+        PlayExtra_updateStreamInfo();
+        ChatLive_Playing = true;
+
+        if (!Play_isFullScreen) {
+            Android.mupdatesizePP(!Play_isFullScreen);
+            ChatLive_Init(1);
+            PlayExtra_ShowChat();
+        }
+        Main_Set_history('live', PlayExtra_data.data);
+        Play_loadingInfoDataTry = 0;
+        Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
+    }
+
     function PlayExtra_loadDataSuccess(responseText) {
         if (PlayExtra_state === Play_STATE_LOADING_TOKEN) {
             Play_tokenResponse = JSON.parse(responseText);
             PlayExtra_state = Play_STATE_LOADING_PLAYLIST;
             PlayExtra_loadingDataTry = 0;
             PlayExtra_loadDataRequest();
-        } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) {
-
-            //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-            //        if (!Main_SupportsAvc1High && PlayExtra_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
-            //            PlayExtra_SupportsSource = false;
-            //            PlayExtra_loadingDataTry = 0;
-            //            PlayExtra_loadDataRequest();
-            //            return;
-            //        }
-            UserLiveFeed_Hide();
-            Android.SetAuto2(PlayExtra_data.AutoUrl);
-            PlayExtra_data.qualities = Play_extractQualities(responseText);
-            PlayExtra_state = Play_STATE_PLAYING;
-            PlayExtra_SetPanel();
-            if (Play_isOn) PlayExtra_qualityChanged();
-            PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
-            PlayExtra_updateStreamInfo();
-            ChatLive_Playing = true;
-
-            if (!Play_isFullScreen) {
-                Android.mupdatesizePP(!Play_isFullScreen);
-                ChatLive_Init(1);
-                PlayExtra_ShowChat();
-            }
-            Main_Set_history('live', PlayExtra_data.data);
-            Play_loadingInfoDataTry = 0;
-            Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
-        }
+        } else if (PlayExtra_state === Play_STATE_LOADING_PLAYLIST) PlayExtra_loadDataSuccessEnd(Play_extractQualities(responseText));
     }
 
     function PlayExtra_SetPanel() {
@@ -6462,49 +6495,19 @@
         } else PlayExtra_RestorePlayData();
     }
 
-    function PlayExtra_RefreshAutoRequest(UseAndroid) {
-        var theUrl = 'https://api.twitch.tv/api/channels/' + PlayExtra_data.data[6] + '/access_token?platform=_';
+    function PlayExtra_RefreshAutoRequest(RestartAuto) {
 
-        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+        var tempUrl = Play_RefreshHlsUrl(PlayExtra_data.data[6]);
 
-        if (xmlHttp) PlayExtra_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
-        else PlayExtra_RefreshAutoError(UseAndroid);
-    }
+        if (tempUrl) {
 
-    function PlayExtra_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
-        if (xmlHttp.status === 200) {
+            PlayExtra_data.AutoUrl = tempUrl;
 
-            Play_tokenResponse = JSON.parse(xmlHttp.responseText);
-            //410 error
-            if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-                Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
-                PlayExtra_RefreshAutoError(UseAndroid);
-                return;
-            }
+            if (RestartAuto) Android.ResStartAuto2(tempUrl);
+            else Android.SetAuto2(tempUrl);
 
-            var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + PlayExtra_data.data[6] +
-                '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-                '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
-                '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
-                (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
+        } else if (RestartAuto) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
 
-            //(PlayExtra_SupportsSource ? "&allow_source=true" : '') +
-            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
-
-            PlayExtra_data.AutoUrl = theUrl;
-
-            if (UseAndroid) Android.ResStartAuto2(theUrl);
-            else Android.SetAuto2(theUrl);
-
-        } else PlayExtra_RefreshAutoError(UseAndroid);
-    }
-
-    function PlayExtra_RefreshAutoError(UseAndroid) {
-        if (Play_isOn) {
-            PlayExtra_RefreshAutoTry++;
-            if (PlayExtra_RefreshAutoTry < 5) PlayExtra_RefreshAutoRequest(UseAndroid);
-            else if (UseAndroid) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
-        }
     }
 
     function PlayExtra_updateStreamInfo() {
@@ -6555,7 +6558,6 @@
     var Play_STATE_PLAYING = 2;
     var Play_state = 0;
     var Play_Status_Always_On = false;
-    var Play_RefreshAutoTry = 0;
     var Play_SingleClickExit = 0;
     var Play_MultiEnable = false;
     var Play_MultiArray = [];
@@ -6601,7 +6603,6 @@
     var Play_DialogEndText = '';
     var Play_currentTime = 0;
     var Play_ChatDelayPosition = 0;
-    var Play_Temp_selectedChannelDisplayname = '';
     //var Play_4K_ModeEnable = false;
     var Play_TargetHost = '';
     var Play_isLive = true;
@@ -6812,7 +6813,6 @@
 
         if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
-        Play_RefreshAutoTry = 0;
 
         Play_ShowPanelStatus(1);
 
@@ -6853,7 +6853,15 @@
         Play_Playing = false;
         Play_state = Play_STATE_LOADING_TOKEN;
 
-        Play_loadData();
+        if (!Play_CheckIfIsLiveQualities.length) Play_loadDatanew();
+        else {
+
+            Play_data.AutoUrl = Play_CheckIfIsLiveURL;
+            Play_loadDataSuccessend(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
+
+            Play_CheckIfIsLiveURL = '';
+            Play_CheckIfIsLiveQualities = [];
+        }
         Play_UpdateMainStream(true);
         document.body.removeEventListener("keyup", Main_handleKeyUp);
 
@@ -6866,83 +6874,59 @@
     //    Play_showWarningDialog(text);
     //}
 
-    var Play_CheckIfIsLiveStartCounter = 0;
-    var Play_CheckIfIsLiveStartChannel = 0;
-    var Play_CheckIfIsLiveStartCallback = 0;
+    var Play_CheckIfIsLiveURL = '';
+    var Play_CheckIfIsLiveQualities = [];
 
-    function Play_CheckIfIsLiveStart(callback) {
-        if (Main_ThumbOpenIsNull(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids[0])) return;
-        else if (!Main_IsNotBrowser) {
-            callback();
-            return;
-        }
+    function Play_CheckIfIsLiveStart() {
         Play_showBufferDialog();
 
-        Play_CheckIfIsLiveStartCounter = 0;
-        Play_CheckIfIsLiveStartCallback = callback;
-        Play_CheckIfIsLiveStartChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+        var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
+            selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
 
-        Play_Temp_selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
+        if (Main_IsNotBrowser) {
 
-        Play_CheckIfIsLive();
-    }
+            try {
+                var StreamData = Android.getStreamData(Channel, true);
 
+                if (StreamData) {
+                    StreamData = JSON.parse(StreamData); //obj status url responseText
 
-    function Play_CheckIfIsLive() {
-        var theUrl = 'https://api.twitch.tv/api/channels/' + Play_CheckIfIsLiveStartChannel + '/access_token';
+                    if (StreamData.status === 200) {
 
-        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+                        Play_CheckIfIsLiveURL = StreamData.url;
+                        Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
 
-        if (xmlHttp) {
-            xmlHttp = JSON.parse(xmlHttp);
+                        return true;
 
-            if (xmlHttp.status === 200) {
-                Play_tokenResponse = JSON.parse(xmlHttp.responseText);
+                    } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-                if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig')) Play_CheckIfIsLiveError();
-                else {
-                    Play_CheckIfIsLiveStartCounter = 0;
-                    Play_CheckIfIsLiveLink();
+                        Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                        return false;
+
+                    } else if (StreamData.status === 404) {
+
+                        Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                        return false;
+
+                    }
+
                 }
+
+                Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_PLAYER_PROBLEM_2);
+                return false;
+            } catch (e) {
+                return true;
             }
 
-        } else Play_CheckIfIsLiveError();
+        } else return true;
     }
 
-    function Play_CheckIfIsLiveError() {
-        if (Play_CheckIfIsLiveStartCounter < 3) {
-            Play_CheckIfIsLiveStartCounter++;
-            Play_CheckIfIsLive();
-        } else Play_CheckIfIsLiveWarn();
-    }
-
-    function Play_CheckIfIsLiveWarn() {
+    function Play_CheckIfIsLiveStartFail(text) {
         Play_HideBufferDialog();
-        Play_showWarningDialog(Play_Temp_selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
-    }
+        Play_CheckIfIsLiveURL = '';
+        Play_CheckIfIsLiveQualities = [];
 
-    function Play_CheckIfIsLiveLinkError() {
-        if (Play_CheckIfIsLiveStartCounter < 3) {
-            Play_CheckIfIsLiveStartCounter++;
-            Play_CheckIfIsLiveLink();
-        } else Play_CheckIfIsLiveWarn();
-    }
-
-    function Play_CheckIfIsLiveLink() {
-        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Play_CheckIfIsLiveStartChannel +
-            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&p=' +
-            Main_RandomInt();
-
-        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
-
-        if (!xmlHttp) {
-            Play_CheckIfIsLiveLinkError();
-            return;
-        }
-
-        if (JSON.parse(xmlHttp).status === 200) Play_CheckIfIsLiveStartCallback();
-        else Play_CheckIfIsLiveLinkError();
+        Play_showWarningDialog(text, 2000);
     }
 
     function Play_CheckResume() { // Called only by JAVAPlay_CheckIfIsLiveStartCallback
@@ -6954,76 +6938,69 @@
     function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called only by JAVA
 
         if (isMulti) {
-            Play_MultiStart(
+            Play_MultiStartNew(
                 position,
                 Play_MultiArray[position].data[6],
-                Play_MultiArray[position].data[1],
-                0
+                Play_MultiArray[position].data[1]
             );
             return;
         }
-
-        Play_RefreshAutoTry = 0;
-        PlayExtra_RefreshAutoTry = 0;
 
         if (isPicturePicture) PlayExtra_RefreshAutoRequest(true);
         else if (Main_IsNotBrowser) Play_RefreshAutoRequest(true);
     }
 
-    function Play_RefreshAutoRequest(UseAndroid) {
-        var theUrl = 'https://api.twitch.tv/api/channels/' + Play_data.data[6] +
-            '/access_token?platform=_';
+    function Play_RefreshHlsUrl(channel) {
+        var theUrl = 'https://api.twitch.tv/api/channels/' + channel +
+            '/access_token?platform=_',
+            xmlHttp, token;
 
-        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+        for (var i = 0; i < 5; i++) {
 
-        if (xmlHttp) Play_RefreshAutoRequestSucess(JSON.parse(xmlHttp), UseAndroid);
-        else Play_RefreshAutoError(UseAndroid);
-    }
+            xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout + (500 * i), 0, null);
 
-    function Play_RefreshAutoRequestSucess(xmlHttp, UseAndroid) {
-        if (xmlHttp.status === 200) {
+            if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
+            else return null;
 
-            Play_tokenResponse = JSON.parse(xmlHttp.responseText);
-            //410 error
-            if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-                Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
-                Play_RefreshAutoError(UseAndroid);
-                return;
+            if (xmlHttp.status === 200) {
+
+                token = JSON.parse(xmlHttp.responseText);
+                if (!token.hasOwnProperty('token') || !token.hasOwnProperty('sig')) return null;
+
+                return 'https://usher.ttvnw.net/api/channel/hls/' + channel +
+                    '.m3u8?&token=' + encodeURIComponent(token.token) + '&sig=' + token.sig +
+                    '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=' +
+                    Main_RandomInt();
+
             }
+        }
 
-            var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Play_data.data[6] +
-                '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-                '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
-                (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-            //(Play_SupportsSource ? "&allow_source=true" : '') +
-            //'&fast_bread=true' +
-            //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-
-            Play_data.AutoUrl = theUrl;
-
-            if (UseAndroid) Android.ResStartAuto(theUrl, 1, 0);
-            else Android.SetAuto(theUrl);
-
-        } else Play_RefreshAutoError(UseAndroid);
+        return null;
     }
 
-    function Play_RefreshAutoError(UseAndroid) {
-        if (Play_isOn) {
-            Play_RefreshAutoTry++;
-            if (Play_RefreshAutoTry < 5) Play_RefreshAutoRequest(UseAndroid);
-            else if (UseAndroid) Play_CheckHostStart();
+    function Play_RefreshAutoRequest(RestartAuto) {
+        var tempUrl = Play_RefreshHlsUrl(Play_data.data[6]);
+
+        if (tempUrl) {
+            Play_data.AutoUrl = tempUrl;
+
+            if (RestartAuto) Android.ResStartAuto(tempUrl, 1, 0);
+            else Android.SetAuto(tempUrl);
+
+        } else if (RestartAuto) {
+            if (!PlayExtra_PicturePicture) Play_CheckHostStart();
+            else Play_CloseBigAndSwich();
         }
     }
 
     function Play_Resume() {
         //Play_FakeMulti();
         UserLiveFeed_Hide();
-        Play_data.watching_time = new Date().getTime();
+
         Play_isOn = true;
         ChatLive_Playing = true;
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
         Play_showBufferDialog();
-        Play_RefreshAutoTry = 0;
         Play_loadingInfoDataTimeout = 3000;
         Play_RestoreFromResume = true;
         Play_ResumeAfterOnlineCounter = 0;
@@ -7032,7 +7009,11 @@
         if (navigator.onLine) Play_ResumeAfterOnline();
         else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
 
-        if (!Play_MultiEnable) Play_UpdateMainStream(true);
+        if (!Play_MultiEnable) {
+            Play_data.watching_time = new Date().getTime();
+            Play_UpdateMainStream(true);
+        }
+
         window.clearInterval(Play_streamInfoTimerId);
         Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
         Play_ShowPanelStatus(1);
@@ -7044,21 +7025,24 @@
             if (Play_MultiEnable) {
                 Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
+                Play_data.watching_time = new Date().getTime();
+
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
-                        Play_MultiStart(
+
+                        Play_MultiStartNew(
                             i,
                             Play_MultiArray[i].data[6],
-                            Play_MultiArray[i].data[1],
-                            0
+                            Play_MultiArray[i].data[1]
                         );
+
                     }
                 }
 
             } else {
                 Play_state = Play_STATE_LOADING_TOKEN;
-                if (PlayExtra_PicturePicture) PlayExtra_Resume();
-                Play_loadData();
+                if (PlayExtra_PicturePicture) PlayExtra_Resumenew();
+                Play_loadDatanew();
             }
         }
         Play_ResumeAfterOnlineCounter++;
@@ -7188,44 +7172,22 @@
         }
     }
 
-    function Play_RefreshMultiRequest(pos, streamer, id, tryes) {
-        var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
+    function Play_RefreshMultiRequest(pos, streamer, id) {
+        var tempUrl = Play_RefreshHlsUrl(streamer);
 
-        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
+        if (tempUrl) {
+            Play_MultiArray[pos].AutoUrl = tempUrl;
 
-        if (xmlHttp) Play_RefreshMultiRequestSucess(JSON.parse(xmlHttp), pos, streamer, id, tryes);
-        else Play_RefreshMultiError(pos, streamer, id, tryes);
-    }
+            Android.SetAutoMulti(pos, tempUrl);
 
-    function Play_RefreshMultiRequestSucess(xmlHttp, pos, streamer, id, tryes) {
-        if (xmlHttp.status === 200) {
+            Play_RefreshMultiGet(
+                Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I,
+                0,
+                pos
+            );
 
-            Play_tokenResponse = JSON.parse(xmlHttp.responseText);
-            //410 error
-            if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig') ||
-                Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
-                Play_RefreshMultiError(pos, streamer, id, tryes);
-                return;
-            }
+        }
 
-            var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + streamer +
-                '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-                '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
-                (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-
-            Play_MultiArray[pos].AutoUrl = theUrl;
-
-            Android.SetAutoMulti(pos, theUrl);
-
-            theUrl = Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I;
-            Play_RefreshMultiGet(theUrl, 0, pos);
-
-        } else Play_RefreshMultiError(pos, streamer, id, tryes);
-    }
-
-    function Play_RefreshMultiError(pos, streamer, id, tryes) {
-        if (Play_isOn && tryes < 5 && Play_MultiArray[pos].data.length > 0)
-            Play_RefreshMultiRequest(pos, streamer, id, tryes + 1);
     }
 
     function Play_RefreshMultiGet(theUrl, tryes, pos) {
@@ -7297,20 +7259,15 @@
                     Play_RefreshMultiRequest(
                         i,
                         Play_MultiArray[i].data[6],
-                        Play_MultiArray[i].data[14],
-                        0
+                        Play_MultiArray[i].data[14]
                     );
                 }
             }
         } else {
 
-            Play_RefreshAutoTry = 0;
             if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
 
-            if (PlayExtra_PicturePicture) {
-                PlayExtra_RefreshAutoTry = 0;
-                PlayExtra_RefreshAutoRequest(false);
-            }
+            if (PlayExtra_PicturePicture) PlayExtra_RefreshAutoRequest(false);
 
             var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
             BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
@@ -7523,41 +7480,78 @@
         Main_Set_history('live', Play_data.data);
     }
 
+    function Play_loadDatanew() {
+        if (Main_IsNotBrowser) {
+
+            try {
+                var StreamData = Android.getStreamData(Play_data.data[6], true);
+
+                if (StreamData) {
+                    StreamData = JSON.parse(StreamData); //obj status url responseText
+
+                    if (StreamData.status === 200) {
+
+                        Play_data.AutoUrl = StreamData.url;
+                        Play_loadDataSuccessend(JSON.parse(StreamData.responseText));
+                        return;
+
+                    } else if (StreamData.status === 1 || StreamData.status === 403 || StreamData.status === 404 ||
+                        StreamData.status === 410) {
+
+                        //404 = off line
+                        //403 = forbidden access
+                        //410 = api v3 is gone use v5 bug
+                        Play_loadDataErrorFinish(StreamData.status === 410, StreamData.status === 403 || StreamData.status === 1);
+                        return;
+
+                    }
+
+                }
+
+                Play_loadDataErrorFinish();
+            } catch (e) {
+                Play_loadData();
+            }
+
+        } else Play_loadDataSuccessFake();
+    }
+
+    function Play_loadDataSuccessend(qualities) {
+        UserLiveFeed_Hide();
+
+        if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
+        else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
+
+        Play_EndDialogEnter = 0;
+
+        Play_EndSet(1);
+        UserLiveFeed_SetFeedPicText();
+        Play_HideEndDialog();
+
+        //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
+        //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
+        //            Play_SupportsSource = false;
+        //            Play_loadData();
+        //            return;
+        //        }
+
+        Play_data.qualities = qualities;
+        Play_state = Play_STATE_PLAYING;
+        if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
+        Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
+        if (Play_isOn) Play_qualityChanged();
+        UserLiveFeed_PreventHide = false;
+        ChatLive_Playing = true;
+
+        if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
+    }
+
     function Play_loadDataSuccess(responseText) {
         if (Play_state === Play_STATE_LOADING_TOKEN) {
             Play_tokenResponse = JSON.parse(responseText);
             Play_state = Play_STATE_LOADING_PLAYLIST;
             Play_loadData();
-        } else if (Play_state === Play_STATE_LOADING_PLAYLIST) {
-
-            UserLiveFeed_Hide();
-
-            if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
-            else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
-
-            Play_EndDialogEnter = 0;
-
-            Play_EndSet(1);
-            UserLiveFeed_SetFeedPicText();
-            Play_HideEndDialog();
-
-            //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-            //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
-            //            Play_SupportsSource = false;
-            //            Play_loadData();
-            //            return;
-            //        }
-
-            Play_data.qualities = Play_extractQualities(responseText);
-            Play_state = Play_STATE_PLAYING;
-            if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
-            Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-            if (Play_isOn) Play_qualityChanged();
-            UserLiveFeed_PreventHide = false;
-            ChatLive_Playing = true;
-
-            if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
-        }
+        } else if (Play_state === Play_STATE_LOADING_PLAYLIST) Play_loadDataSuccessend(Play_extractQualities(responseText));
     }
 
     function Play_extractQualities(input) {
@@ -8225,7 +8219,7 @@
 
                 if (PlayVodClip === 1) {
                     PlayExtra_PicturePicture = false;
-                    PlayExtra_data.data[6] = '';
+                    PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
                     Play_shutdownStream();
                 } else if (PlayVodClip === 2) PlayVod_shutdownStream();
                 else if (PlayVodClip === 3) {
@@ -8443,7 +8437,7 @@
         }
 
         PlayExtra_PicturePicture = false;
-        PlayExtra_data.data[6] = '';
+        PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_hideChat();
     }
 
@@ -8666,7 +8660,6 @@
         }
         PlayExtra_updateStreamInfo();
         PlayExtra_PicturePicture = false;
-        PlayExtra_data.data[6] = '';
         PlayExtra_UnSetPanel();
         Play_CleanHideExit();
     }
@@ -8754,8 +8747,7 @@
         Play_CleanHideExit();
         Play_hideChat();
         PlayExtra_PicturePicture = false;
-        PlayExtra_PicturePicture = false;
-        PlayExtra_data.data[6] = '';
+        PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_shutdownStream();
     }
 
@@ -8922,10 +8914,48 @@
             }
             Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
             Play_MultiArray[position].data = doc;
-            Play_MultiStart(
+
+            Play_MultiStartNew(
                 position,
                 Play_MultiArray[position].data[6],
-                Play_MultiArray[position].data[1],
+                Play_MultiArray[position].data[1]
+            );
+
+        }
+    }
+
+    function Play_MultiStartNew(pos, streamer, display_name) {
+        try {
+            var StreamData = Android.getStreamData(streamer, true);
+
+            if (StreamData) {
+                StreamData = JSON.parse(StreamData); //obj status url responseText
+
+                if (StreamData.status === 200) {
+
+                    Play_MultiStartQualitySucess(pos, StreamData.url, JSON.parse(StreamData.responseText));
+                    return;
+
+                } else if (StreamData.status === 1 || StreamData.status === 403) {
+
+                    Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
+                    return;
+
+                } else if (StreamData.status === 404) {
+
+                    Play_MultiStartFail(pos, display_name);
+                    return;
+
+                }
+
+            }
+
+            Play_MultiStartFail(pos, display_name);
+        } catch (e) {
+            Play_MultiStart(
+                pos,
+                streamer,
+                display_name,
                 0
             );
         }
@@ -8999,50 +9029,52 @@
         if (xmlHttp) {
             xmlHttp = JSON.parse(xmlHttp);
 
-            if (xmlHttp.status === 200) {
-
-                Play_MultiArray[pos].AutoUrl = theUrl;
-                if (Play_MultiIsFull()) UserLiveFeed_Hide();
-
-                Android.StartMultiStream(pos, theUrl);
-
-                Play_MultiArray[pos].qualities = Play_extractQualities(xmlHttp.responseText);
-
-                Play_MultiSetinfo(
-                    pos,
-                    Play_MultiArray[pos].data[3],
-                    Play_MultiArray[pos].data[13],
-                    Play_MultiArray[pos].data[1],
-                    Play_MultiArray[pos].data[8],
-                    Play_MultiArray[pos].data[9],
-                    twemoji.parse(Play_MultiArray[pos].data[2])
-                );
-
-                Play_MultiArray[pos].watching_time = new Date().getTime();
-                Main_Set_history('live', Play_MultiArray[pos].data);
-
-                //reset chat and fallow icon if pos 0 changed
-                if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
-                    Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
-                    ChatLive_Init(0);
-                    Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
-                    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-                    if (AddUser_UserIsSet()) {
-                        AddCode_PlayRequest = true;
-                        AddCode_Channel_id = Play_data.data[14];
-                        AddCode_CheckFallow();
-                    }
-                    Main_SaveValues();
-                }
-                Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
-                Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-            } else if (xmlHttp.status === 403) { //forbidden access
+            if (xmlHttp.status === 200) Play_MultiStartQualitySucess(pos, theUrl, Play_extractQualities(xmlHttp.responseText));
+            else if (xmlHttp.status === 403) { //forbidden access
                 Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
             } else if (xmlHttp.status === 404) { //off line
                 Play_MultiStartFail(pos, display_name);
             } else Play_MultiStartQualityError(pos, theUrl, display_name, tryes);
 
         } else Play_MultiStartQualityError(pos, theUrl, display_name, tryes);
+    }
+
+    function Play_MultiStartQualitySucess(pos, theUrl, qualities) {
+        Play_MultiArray[pos].AutoUrl = theUrl;
+        if (Play_MultiIsFull()) UserLiveFeed_Hide();
+
+        Android.StartMultiStream(pos, theUrl);
+
+        Play_MultiArray[pos].qualities = qualities;
+
+        Play_MultiSetinfo(
+            pos,
+            Play_MultiArray[pos].data[3],
+            Play_MultiArray[pos].data[13],
+            Play_MultiArray[pos].data[1],
+            Play_MultiArray[pos].data[8],
+            Play_MultiArray[pos].data[9],
+            twemoji.parse(Play_MultiArray[pos].data[2])
+        );
+
+        Play_MultiArray[pos].watching_time = new Date().getTime();
+        Main_Set_history('live', Play_MultiArray[pos].data);
+
+        //reset chat and fallow icon if pos 0 changed
+        if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
+            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
+            ChatLive_Init(0);
+            Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
+            Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+            if (AddUser_UserIsSet()) {
+                AddCode_PlayRequest = true;
+                AddCode_Channel_id = Play_data.data[14];
+                AddCode_CheckFallow();
+            }
+            Main_SaveValues();
+        }
+        Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
+        Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     }
 
     function Play_MultiStartQualityError(pos, theUrl, display_name, tryes) {
@@ -10327,7 +10359,6 @@
 
     var PlayVod_streamInfoTimerId = null;
     var PlayVod_tokenResponse = 0;
-    var PlayVod_playlistResponse = 0;
     var PlayVod_playingTry = 0;
 
     var PlayVod_playingUrl = '';
@@ -10450,14 +10481,12 @@
         PlayVod_jumpCount = 0;
         PlayVod_IsJumping = false;
         PlayVod_tokenResponse = 0;
-        PlayVod_playlistResponse = 0;
         PlayVod_playingTry = 0;
         Play_jumping = false;
         PlayVod_isOn = true;
         PlayVod_WasSubChekd = false;
-        PlayVod_loadData();
 
-        if (!PlayVod_replay) PlayVod_loadData();
+        if (!PlayVod_replay) PlayVod_loadDatanew();
         else PlayVod_qualityChanged();
 
         Play_EndSet(2);
@@ -10588,7 +10617,7 @@
         if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
             window.clearInterval(Play_ResumeAfterOnlineId);
             PlayVod_state = Play_STATE_LOADING_TOKEN;
-            PlayVod_loadData();
+            PlayVod_loadDatanew();
         }
         Play_ResumeAfterOnlineCounter++;
     }
@@ -10662,11 +10691,7 @@
     }
 
     function PlayVod_410Error() {
-        Play_HideBufferDialog();
-        Play_showWarningDialog(STR_410_ERROR);
-        window.setTimeout(function() {
-            if (PlayVod_isOn) PlayVod_shutdownStream();
-        }, 3000);
+        PlayVod_WarnEnd(STR_410_ERROR);
     }
 
     function PlayVod_loadDataError() {
@@ -10684,13 +10709,15 @@
             if (PlayVod_loadingDataTry < PlayVod_loadingDataTryMax) {
                 PlayVod_loadingDataTimeout += 250;
                 PlayVod_loadDataRequest();
-            } else {
-                if (Main_IsNotBrowser) {
-                    Play_HideBufferDialog();
-                    Play_PlayEndStart(2);
-                } else PlayVod_loadDataSuccessFake();
-            }
+            } else PlayVod_loadDataErrorFinish();
         }
+    }
+
+    function PlayVod_loadDataErrorFinish() {
+        if (Main_IsNotBrowser) {
+            Play_HideBufferDialog();
+            Play_PlayEndStart(2);
+        } else PlayVod_loadDataSuccessFake();
     }
 
     //Browsers crash trying to get the streams link
@@ -10737,65 +10764,91 @@
         if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
     }
 
+    function PlayVod_loadDatanew() {
+        if (Main_IsNotBrowser) {
+
+            try {
+                var StreamData = Android.getStreamData(Main_values.ChannelVod_vodId + '', false);
+
+                if (StreamData) {
+                    StreamData = JSON.parse(StreamData); //obj status url responseText
+
+                    if (StreamData.status === 200) {
+                        PlayVod_autoUrl = StreamData.url;
+                        PlayVod_loadDataSuccessEnd(JSON.parse(StreamData.responseText));
+                        return;
+                    } else if (StreamData.status === 1) {
+                        PlayVod_loadDataCheckSub();
+                        return;
+                    } else if (StreamData.status === 410) {
+                        //410 = api v3 is gone use v5 bug
+                        PlayVod_410Error();
+                        return;
+                    }
+
+                }
+
+                PlayVod_loadDataErrorFinish();
+            } catch (e) {
+                PlayVod_loadData();
+            }
+
+        } else PlayVod_loadDataSuccessFake();
+    }
+
+    function PlayVod_loadDataSuccessEnd(quality) {
+
+        //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
+        //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034)) {
+        //            Play_SupportsSource = false;
+        //            PlayVod_loadData();
+        //            return;
+        //        }
+
+        PlayVod_qualities = quality;
+        PlayVod_state = Play_STATE_PLAYING;
+        if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
+        if (PlayVod_isOn) PlayVod_qualityChanged();
+        if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
+    }
+
     function PlayVod_loadDataSuccess(responseText) {
         if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
             PlayVod_tokenResponse = JSON.parse(responseText);
             PlayVod_state = Play_STATE_LOADING_PLAYLIST;
             PlayVod_loadData();
-        } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) {
-
-            //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-            //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034)) {
-            //            Play_SupportsSource = false;
-            //            PlayVod_loadData();
-            //            return;
-            //        }
-
-            PlayVod_playlistResponse = responseText;
-            PlayVod_qualities = Play_extractQualities(PlayVod_playlistResponse);
-            PlayVod_state = Play_STATE_PLAYING;
-            if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
-            if (PlayVod_isOn) PlayVod_qualityChanged();
-            if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
-        }
+        } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) PlayVod_loadDataSuccessEnd(Play_extractQualities(responseText));
     }
 
     function PlayVod_loadDataCheckSub() {
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
             AddCode_Channel_id = Main_values.Main_selectedChannel_id;
             AddCode_CheckSub();
-        } else {
-            Play_HideBufferDialog();
-            Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
-            window.setTimeout(function() {
-                if (PlayVod_isOn) PlayVod_shutdownStream();
-            }, 4000);
-        }
+        } else PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_NOOAUTH);
     }
 
     function PlayVod_NotSub() {
-        Play_HideBufferDialog();
-        Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_NOT_SUB);
-        window.setTimeout(function() {
-            if (PlayVod_isOn) PlayVod_shutdownStream();
-        }, 4000);
+        PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_NOT_SUB);
     }
 
+    //TODO revise this
     function PlayVod_isSub() {
-        if (!PlayVod_WasSubChekd) {
-            // Do one more try before failing, because the access_token may be expired on the first treys
-            // the PlayVod_loadData can't check if is expired, but the AddCode_RequestCheckSub can
-            // and will refresh the token if it fail, so just to be shore run the PlayVod_loadData one more time
-            PlayVod_WasSubChekd = true;
-            PlayVod_state = Play_STATE_LOADING_TOKEN;
-            PlayVod_loadData();
-        } else {
-            Play_HideBufferDialog();
-            Play_showWarningDialog(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB + STR_410_FEATURING);
-            window.setTimeout(function() {
-                if (PlayVod_isOn) PlayVod_shutdownStream();
-            }, 4000);
-        }
+        PlayVod_WarnEnd(STR_IS_SUB_ONLY + STR_IS_SUB_IS_SUB + STR_410_FEATURING);
+    }
+
+    var PlayVod_WarnEndId;
+
+    function PlayVod_WarnEnd(text) {
+        Play_HideBufferDialog();
+        Play_showWarningDialog(text);
+
+        window.clearTimeout(PlayVod_WarnEndId);
+        PlayVod_WarnEndId = window.setTimeout(function() {
+            if (PlayVod_isOn) {
+                Play_HideBufferDialog();
+                Play_PlayEndStart(2);
+            }
+        }, 4000);
     }
 
     function PlayVod_qualityChanged() {
@@ -11290,7 +11343,7 @@
                         PlayVod_setHidePanel();
                     } else if (UserLiveFeed_isFeedShow()) {
                         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                        else if (Play_CheckIfIsLiveStart()) PlayVod_OpenLiveStream();
                     } else PlayVod_showPanel(true);
                     break;
                 case KEY_STOP:
@@ -11323,7 +11376,7 @@
                     if (!Play_isEndDialogVisible()) Play_KeyPause(2);
                     break;
                 case KEY_REFRESH:
-                    if (UserLiveFeed_isFeedShow()) Play_CheckIfIsLiveStart(PlayVod_OpenLiveStream);
+                    if (UserLiveFeed_isFeedShow() && Play_CheckIfIsLiveStart()) PlayVod_OpenLiveStream();
                     break;
                 case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(2);
@@ -18646,9 +18699,8 @@
             UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
         } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
-        // itemsCount++;
         // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
-        //     UserLiveFeedobj_CreatFeed(i++,
+        //     UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos + '_' + itemsCount,
         //         [
         //             IMG_404_VIDEO,
         //             "ashlynn",
@@ -18666,6 +18718,7 @@
         //             1000,
         //             35618666]
         //     );
+        // itemsCount++;
 
         UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos] = itemsCount;
 
