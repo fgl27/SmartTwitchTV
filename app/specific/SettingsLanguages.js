@@ -179,6 +179,8 @@ function Languages_SetLang() {
             if (Languages_Obj_default(key)) Main_ContentLang += ',' + Languages_value[key].set_values;
         }
         Main_ContentLang = Main_ContentLang.slice(1);
+        //the app allowed more then one language but twitch api block it now
+        if (Main_A_includes_B(Main_ContentLang, ',')) Main_ContentLang = "";
     }
     if (Main_ContentLang === "") Languages_Selected = STR_LANG_ALL;
     else Languages_Selected = Main_ContentLang.toUpperCase();
@@ -253,15 +255,35 @@ function Languages_ScrollTable() {
 }
 
 function Languages_ChangeSettigs(position) {
-    var key = Languages_value_keys[position];
+    Languages_ChangeSettigsEnd(position);
+}
+
+function Languages_ResetAll() {
+    for (var key in Languages_value) {
+        if (Languages_Obj_default(key)) {
+            Languages_value[key].defaultValue -= 1;
+            Main_setItem(key, Languages_Obj_default(key) + 1);
+            Main_textContent(key, Languages_Obj_values(key));
+            Main_RemoveClass(key, 'red_text');
+        }
+    }
+}
+
+function Languages_ChangeSettigsEnd(position) {
+    Languages_ChangeSettigsEndKey(Languages_value_keys[position]);
+}
+
+function Languages_ChangeSettigsEndKey(key) {
     Main_setItem(key, Languages_Obj_default(key) + 1);
     Main_textContent(key, Languages_Obj_values(key));
-    Languages_Setarrows(position);
+    Languages_SetarrowsKey(key);
 }
 
 function Languages_Setarrows(position) {
-    var key = Languages_value_keys[position];
+    Languages_SetarrowsKey(Languages_value_keys[position]);
+}
 
+function Languages_SetarrowsKey(key) {
     var currentValue = Languages_Obj_default(key);
     var maxValue = Languages_Obj_length(key);
 
@@ -305,6 +327,7 @@ function Languages_handleKeyDown(event) {
         case KEY_RIGHT:
             key = Languages_value_keys[Languages_cursorY];
             if (Languages_Obj_default(key) < Languages_Obj_length(key)) {
+                if (!Main_A_includes_B(key, 'All')) Languages_ResetAll();
                 Languages_value[key].defaultValue += 1;
                 Languages_ChangeSettigs(Languages_cursorY);
                 Main_AddClass(Languages_value_keys[Languages_cursorY], 'red_text');
