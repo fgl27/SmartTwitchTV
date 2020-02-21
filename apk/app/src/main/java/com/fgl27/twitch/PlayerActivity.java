@@ -133,6 +133,7 @@ public class PlayerActivity extends Activity {
     public long[] conSpeed = new long[2];
     public long[] netActivity = new long[2];
     public long droppedFramesTotal = 0L;
+    public int deviceRam = 0;
     public float conSpeedAVG = 0f;
     public float netActivityAVG = 0f;
     public long netcounter = 0L;
@@ -201,6 +202,10 @@ public class PlayerActivity extends Activity {
             setPlayer(true);
 
             shouldCallJavaCheck = false;
+
+            deviceRam = Tools.deviceRam(this);
+            //Ram too big.bigger then max int value... use 1000MB
+            if (deviceRam < 0) deviceRam = 1000000000;
 
             initializeWebview();
         }
@@ -1216,7 +1221,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetBuffer(int whocall, int value) {
             BUFFER_SIZE[whocall] = Math.min(value, 15000);
-            loadControl[whocall] = Tools.getLoadControl(BUFFER_SIZE[whocall]);
+            loadControl[whocall] = Tools.getLoadControl(BUFFER_SIZE[whocall], deviceRam);
         }
 
         @SuppressWarnings("unused")//called by JS
