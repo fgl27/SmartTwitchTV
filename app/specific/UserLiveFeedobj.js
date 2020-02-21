@@ -307,7 +307,8 @@ function UserLiveFeedobj_loadLive() {
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
         Main_TwithcV5Flag;
 
-    if (UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset &&
+    if ((typeof UserLiveFeed_obj[UserLiveFeedobj_LivePos].MaxOffset !== 'undefined') &&
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset &&
         (UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_LivePos].MaxOffset)
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].dataEnded = true;
 
@@ -385,7 +386,8 @@ function UserLiveFeedobj_loadCurrentGame() {
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset +
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-    if (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset &&
+    if ((typeof UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].MaxOffset !== 'undefined') &&
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset &&
         (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].MaxOffset)
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].dataEnded = true;
 
@@ -499,7 +501,8 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-    if (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset &&
+    if ((typeof UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].MaxOffset !== 'undefined') &&
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset &&
         (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].MaxOffset)
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].dataEnded = true;
 
@@ -581,7 +584,8 @@ function UserLiveFeedobj_loadCurrentAGame() {
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
         (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
-    if (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset &&
+    if ((typeof UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].MaxOffset !== 'undefined') &&
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset &&
         (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].MaxOffset)
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].dataEnded = true;
 
@@ -919,9 +923,16 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
     UserLiveFeed_itemsCount[pos] = itemsCount;
 
     if (UserLiveFeed_obj[pos].HasMore) {
+
         UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
         UserLiveFeed_obj[pos].MaxOffset = total;
-        if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
+
+        if (!response_items) UserLiveFeed_obj[pos].dataEnded = true;
+        else if (typeof UserLiveFeed_obj[pos].MaxOffset === 'undefined') {
+            if (response_items < 90) UserLiveFeed_obj[pos].dataEnded = true;
+        } else {
+            if (UserLiveFeed_obj[pos].offset >= total) UserLiveFeed_obj[pos].dataEnded = true;
+        }
     }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
