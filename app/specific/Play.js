@@ -377,7 +377,6 @@ function Play_CheckIfIsLiveStart() {
             Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_PLAYER_PROBLEM_2);
             return false;
         } catch (e) {
-            Play_showWarningDialog('Play_CheckIfIsLiveStart ' + e);
             return true;
         }
 
@@ -973,7 +972,6 @@ function Play_loadDatanew() {
 
             Play_loadDataErrorFinish();
         } catch (e) {
-            Play_showWarningDialog('Play_loadDatanew ' + e);
             Play_loadData();
         }
 
@@ -2415,7 +2413,6 @@ function Play_MultiStartNew(pos, streamer, display_name) {
 
         Play_MultiStartFail(pos, display_name);
     } catch (e) {
-        Play_showWarningDialog('Play_MultiStartNew ' + e);
         Play_MultiStart(
             pos,
             streamer,

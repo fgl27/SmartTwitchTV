@@ -437,7 +437,6 @@ function PlayVod_loadDatanew() {
 
             PlayVod_loadDataErrorFinish();
         } catch (e) {
-            Play_showWarningDialog('PlayVod_loadDatanew ' + e);
             PlayVod_loadData();
         }
 
