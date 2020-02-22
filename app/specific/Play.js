@@ -2240,6 +2240,9 @@ function Play_Multi_UnSetPanelDivs(checkChat) {
     Main_HideElement('dialog_multi_help');
     if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
     Main_SaveValues();
+    Play_IconsRemoveFocus();
+    Play_Panelcounter = Play_MultiStream;
+    Play_IconsAddFocus();
 }
 
 function Play_Multi_UnSetPanelDivsCheckChat() {
