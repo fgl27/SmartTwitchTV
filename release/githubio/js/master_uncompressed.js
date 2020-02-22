@@ -3505,8 +3505,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.116';
-    var Main_minversion = '022120';
+    var Main_stringVersion_Min = '.117';
+    var Main_minversion = '022220';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -8779,6 +8779,9 @@
         Main_HideElement('dialog_multi_help');
         if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
         Main_SaveValues();
+        Play_IconsRemoveFocus();
+        Play_Panelcounter = Play_MultiStream;
+        Play_IconsAddFocus();
     }
 
     function Play_Multi_UnSetPanelDivsCheckChat() {
@@ -9918,8 +9921,6 @@
                         Android.StartAuto(1, 0);
                     }
 
-                    Play_controls[Play_controlsAudioMulti].enterKey();
-
                     var i = 0;
                     for (i; i < 4; i++) {
                         Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
@@ -9947,7 +9948,16 @@
                             Play_MultiArray[1].data[9],
                             twemoji.parse(Play_MultiArray[1].data[2])
                         );
-                    }
+
+                        var PP_audio = Play_controls[Play_controlsAudio].defaultValue;
+                        if (!PP_audio) Play_controls[Play_controlsAudioMulti].defaultValue = 1;
+                        else if (PP_audio === 1) Play_controls[Play_controlsAudioMulti].defaultValue = 0;
+                        else Play_controls[Play_controlsAudioMulti].defaultValue = 4;
+
+                    } else Play_controls[Play_controlsAudioMulti].defaultValue = 0;
+
+
+                    Play_controls[Play_controlsAudioMulti].enterKey();
 
                     for (i = PlayExtra_PicturePicture ? 2 : 1; i < 4; i++) {
                         Play_MultiInfoReset(i);
@@ -13780,7 +13790,7 @@
         addCell: function(cell) {
             this.addCellTemp(cell);
         },
-        set_offset: function() {
+        check_offset: function() {
             if ((this.offset >= 900) ||
                 ((typeof this.MaxOffset !== 'undefined') &&
                     this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset)) this.dataEnded = true;
@@ -13815,7 +13825,7 @@
             key_pgUp: Main_Clip,
             base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
             set_url: function() {
-                this.set_offset();
+                this.check_offset();
 
                 this.url = this.base_url + '&offset=' + this.offset +
                     (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
@@ -13845,7 +13855,7 @@
             object: 'streams',
             base_url: Main_kraken_api + 'search/streams?limit=' + Main_ItemsLimitMax + '&query=',
             set_url: function() {
-                this.set_offset();
+                this.check_offset();
                 this.url = this.base_url + encodeURIComponent(Main_values.Search_data) +
                     '&offset=' + this.offset;
             },
@@ -13891,7 +13901,7 @@
             followerChannels: '',
             followerChannelsDone: false,
             set_url: function() {
-                this.set_offset();
+                this.check_offset();
 
                 if (AddUser_UsernameArray[0].access_token) {
                     //User has added a key
@@ -14064,7 +14074,7 @@
             key_pgUp: Main_Featured,
             base_url: Main_kraken_api + 'streams?game=',
             set_url: function() {
-                this.set_offset();
+                this.check_offset();
 
                 this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) +
                     '&limit=' + Main_ItemsLimitMax + '&offset=' + this.offset +
@@ -14112,7 +14122,7 @@
             key_pgUp: Main_Live,
             base_url: Main_kraken_api + 'streams/featured?limit=' + Main_ItemsLimitMax,
             set_url: function() {
-                this.set_offset();
+                this.check_offset();
 
                 this.url = this.base_url + '&offset=' + this.offset +
                     (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
