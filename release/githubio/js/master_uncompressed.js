@@ -3901,7 +3901,8 @@
         Main_textContent('dialog_thumb_opt_setting_name_0', STR_OPEN_CHANNEL);
         Main_textContent('dialog_thumb_opt_setting_name_1', STR_OPEN_GAME);
         Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
-        Main_textContent('dialog_thumb_opt_setting_name_4', STR_GO_TO);
+        Main_textContent('dialog_thumb_opt_setting_name_4', STR_CONTENT_LANG);
+        Main_textContent('dialog_thumb_opt_setting_name_5', STR_GO_TO);
 
         Main_innerHTML("dialog_multi_help_text", STR_CONTROLS_MULTI);
     }
@@ -12887,8 +12888,8 @@
         Screens_ThumbOptionSetArrowArray();
 
         if (Screens_ThumbOptionSpecial) {
-            Screens_ThumbOptionPosY = 4;
-            Main_textContent('dialog_thumb_opt_val_4', Screens_ThumbOptionScreens[0]);
+            Screens_ThumbOptionPosY = 5;
+            Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
             Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
         } else {
             Screens_ThumbOptionShowSpecial();
@@ -12906,12 +12907,12 @@
     }
 
     function Screens_ThumbOptionShowSpecial() {
-        for (var i = 0; i < 4; i++)
+        for (var i = 0; i < 5; i++)
             Main_RemoveClass('dialog_thumb_opt_setting_' + i, 'hideimp');
     }
 
     function Screens_ThumbOptionHideSpecial() {
-        for (var i = -1; i < 4; i++)
+        for (var i = -1; i < 5; i++)
             Main_AddClass('dialog_thumb_opt_setting_' + i, 'hideimp');
     }
 
@@ -12948,7 +12949,8 @@
             Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(HistoryVod.histPosXName, [0, 0, 0])[1]]);
         } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory()]);
 
-        Main_textContent('dialog_thumb_opt_val_4', Screens_ThumbOptionScreens[0]);
+        Main_textContent('dialog_thumb_opt_val_4', Main_ContentLang === "" ? STR_LANG_ALL : Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]]);
+        Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
     }
 
     var Screens_ThumbOption_CheckFallow_ID;
@@ -13015,8 +13017,10 @@
                 Screens_SeTODialogId();
                 if (Screens_ThumbOptionPosY > 2) {
                     Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
-                    if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0) Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = 0;
-                    else Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
+                    if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0)
+                        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = 0;
+                    else
+                        Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
                 }
                 break;
             case KEY_RIGHT:
@@ -13025,9 +13029,11 @@
                 if (!Screens_handleKeyUpIsClear) break;
                 if (Screens_ThumbOptionPosY > 2) {
                     Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
+
                     if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] > (Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1))
                         Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1;
-                    else Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
+                    else
+                        Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
                 }
                 break;
             case KEY_UP:
@@ -13047,8 +13053,8 @@
                 Screens_clearTODialogId();
                 Screens_SeTODialogId();
                 Screens_ThumbOptionPosY++;
-                if (Screens_ThumbOptionPosY > 4)
-                    Screens_ThumbOptionPosY = 4;
+                if (Screens_ThumbOptionPosY > 5)
+                    Screens_ThumbOptionPosY = 5;
                 else {
                     Screens_histRemoveFocus(Screens_ThumbOptionPosY - 1, 'thumb_opt');
                     Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
@@ -13126,10 +13132,22 @@
                     Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryClip.histPosX));
                 }
 
-            } else if (Screens_ThumbOptionPosY === 4) Screens_OpenScreen();
+            } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang();
+            else if (Screens_ThumbOptionPosY === 5) Screens_OpenScreen();
         }
         Screens_ThumbOptionPosY = 0;
         Screens_ThumbOptionAddFocus(0);
+    }
+
+    function Screens_SetLang() {
+        if (Screens_ThumbOptionPosXArrays[4]) Languages_ResetAll();
+
+        var key = Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]];
+        Languages_value[key].defaultValue = 1;
+        Main_setItem(key, Languages_Obj_default(key) + 1);
+        Languages_SetLang();
+
+        if (!Main_A_equals_B(Main_ContentLang_old, Main_ContentLang)) Main_ReloadScreen();
     }
 
     function Screens_FallowUnfallow() {
@@ -13244,7 +13262,8 @@
         Main_AddClass('dialog_thumb_opt_setting_' + divPos, 'settings_div_focus');
         Main_AddClass('dialog_thumb_opt_val_' + divPos, 'settings_value_focus');
         if (Screens_ThumbOptionPosY === 3) Screens_ThumbOptionSetArrow(Screens_YesNo);
-        else if (Screens_ThumbOptionPosY === 4) Screens_ThumbOptionSetArrow(Screens_ThumbOptionScreens);
+        else if (Screens_ThumbOptionPosY === 4) Screens_ThumbOptionSetArrow(Screens_ThumbOptionLanguages);
+        else if (Screens_ThumbOptionPosY === 5) Screens_ThumbOptionSetArrow(Screens_ThumbOptionScreens);
     }
 
     function Screens_ThumbOptionSetArrow(array) {
@@ -13262,6 +13281,8 @@
     var Screens_ThumbOptionArrays = [];
     var Screens_ThumbOptionPosXArrays = [];
     var Screens_ThumbOptionGOTO = [];
+    var Screens_ThumbOptionLanguages = [];
+    var Main_ContentLang_old = '';
 
     function Screens_ThumbOptionSetArrowArray() {
         Screens_ThumbOptionScreens = [
@@ -13285,7 +13306,17 @@
             STR_YES,
             STR_NO
         ];
-        Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionScreens];
+
+        var default_lang = 0;
+        var isAll = Main_ContentLang === "";
+        Main_ContentLang_old = Main_ContentLang;
+        Screens_ThumbOptionLanguages = [];
+        for (var key in Languages_value) {
+            Screens_ThumbOptionLanguages.push(key);
+            if (!isAll && Languages_Obj_default(key)) default_lang = Screens_ThumbOptionLanguages.length - 1;
+        }
+
+        Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionLanguages, Screens_ThumbOptionScreens];
 
         var historyType = Screens_ThumbOptionStringGetHistory();
         if (inUseObj.screen === Main_HistoryLive &&
@@ -13293,7 +13324,7 @@
             historyType = Main_getItemJson(HistoryVod.histPosXName, [0, 0, 0])[1];
         }
 
-        Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, 0];
+        Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, default_lang, 0];
 
         Screens_ThumbOptionGOTO = [
             Main_Live,
