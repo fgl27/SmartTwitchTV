@@ -129,10 +129,6 @@ public final class Tools {
             response = parser.parse(response.get("responseText").getAsString()).getAsJsonObject();
             String StreamToken = response.get("token").getAsString();
 
-            if (CheckToken(StreamToken, parser)) {
-                return JsonObToResult(1, "restricted").toString();
-            }
-
             url = String.format(
                     Locale.US,
                     islive ? live_links : vod_links,
@@ -153,7 +149,7 @@ public final class Tools {
                     //410 = api v3 is gone use v5 bug
                     if (status == 200) break;
                     else if (status == 403 || status == 404 || status == 410)
-                        return JsonObToResult(status, "link").toString();
+                        return JsonObToResult(CheckToken(StreamToken, parser) ? 1 : status, "link").toString();
                 }
             }
             return response != null ? extractQualities(status, response.get("responseText").getAsString(), url) : null;
