@@ -16755,9 +16755,11 @@
     function Sidepannel_PreloadImgs() {
         if (!Sidepannel_isShowing()) return;
 
-        Main_ImageLoaderWorker.postMessage(
-            UserLiveFeed_PreloadImgs[Sidepannel_PosFeed].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
-        );
+        if (UserLiveFeed_PreloadImgs[Sidepannel_PosFeed]) {
+            Main_ImageLoaderWorker.postMessage(
+                UserLiveFeed_PreloadImgs[Sidepannel_PosFeed].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
+            );
+        }
         UserLiveFeed_PreloadImgs.splice(Sidepannel_PosFeed, 1);
 
         for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++) {
@@ -18584,7 +18586,7 @@
         return div;
     }
 
-    function UserLiveFeedobj_CreatFeed(id, data, ishosting) {
+    function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg, force_VOD) {
         if (!data[1]) data[1] = data[6];
         var div = document.createElement('div');
 
@@ -18592,20 +18594,36 @@
         div.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
         div.className = 'user_feed_thumb';
-        div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed" >' +
-            '<div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id +
-            '" alt="" class="stream_img" src="' +
-            data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
-            '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO + '\';"></div>' +
-            '<div id="' + UserLiveFeed_ids[2] + id + '" class="player_live_feed_text"><span class="stream_spam_text_holder">' +
-            '<div id="' + UserLiveFeed_ids[3] + id + '" class="stream_info_live_name"' +
-            (ishosting ? ' style="max-height: 2.4em; overflow: hidden; white-space: normal;' : '') + '">' + Main_ReplaceLargeFont(data[1]) + '</div>' +
-            '<div id="' + UserLiveFeed_ids[4] + id + '"class="stream_info_live_title" ' + (ishosting ? 'style="max-height: 1.2em;"' : '') +
-            '>' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div><div style="line-height: 1.6ch;"><div id="' +
-            UserLiveFeed_ids[5] + id + '"class="stream_info_live" style="width: 70.75%; display: inline-block;">' + data[3] +
-            '</div><div "class="stream_info_live " style="width:29%; float: right; text-align: right; display: inline-block; font-size: 75%; ">' +
-            '<i class="icon-' + (!data[8] ? 'circle" style="color: ' + (ishosting ? '#FED000' : 'red') + ';' : 'refresh" style="') + ' font-size: 75%; "></i>' +
-            STR_SPACE + Main_addCommas(data[13]) + '</div></div></span></div></div>';
+
+        var image = (force_VOD ? Extra_vodimg : (data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
+
+        div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
+            UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + image +
+            (Extra_vodimg ?
+                ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + inUseObj.img_404 +
+                    '\';};this.src=\'' + Extra_vodimg + '\';' +
+                    'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hideimp\');' +
+                    'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
+                ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
+            UserLiveFeed_ids[2] + id +
+            '" class="stream_thumbnail_feed_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            UserLiveFeed_ids[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 63.5) + '%; display: inline-block;">' +
+            '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
+            (data[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
+            (Extra_vodimg || force_VOD ?
+                ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
+                '<span ></span>') + //empty span to prevent error when childNodes[2].classList.remove
+            data[1] + '</div><div id="' + UserLiveFeed_ids[7] + id +
+            '"class="stream_info_live" style="width:' + (ishosting ? 0 : 36) + '%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
+            data[5] + '</div></div>' +
+            '<div id="' + UserLiveFeed_ids[4] + id + '"class="' +
+            (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + twemoji.parse(data[2]) + '</div>' +
+            '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
+            '</div><div id="' + UserLiveFeed_ids[6] + id + '"class="stream_info_live">' +
+            data[11] + data[4] + '</div>' +
+            (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+                STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
+            '</span></div></div>';
 
         return div;
     }
@@ -18625,7 +18643,7 @@
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_GAME + '\';"></div><div id="' +
             UserLiveFeed_ids[2] + id +
-            '" class="stream_thumbnail_game_text_holder"><span class="stream_spam_text_holder"><div id="<div id="' +
+            '" class="stream_thumbnail_game_feed_text_holder"><span class="stream_spam_text_holder"><div id="<div id="' +
             UserLiveFeed_ids[3] + id + '" class="stream_info_game_name">' + data[0] + '</div>' +
             (data[1] !== '' ? '<div id="' + UserLiveFeed_ids[4] + id +
                 '"class="stream_info_live" style="width: 100%; display: inline-block;">' + data[1] +
