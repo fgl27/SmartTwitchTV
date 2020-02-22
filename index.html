@@ -223,7 +223,7 @@
             color: #FFFFFF;
             text-align: left;
             margin-left: 1%;
-            font-size: 82%;
+            font-size: 2.35vh;
         }
 
         div.stream_thumbnail_game_feed,
@@ -246,9 +246,8 @@
         }
 
         div.stream_thumbnail_player_feed {
-            /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 84.5%;
-            width: 97.25%;
+            padding-bottom: 92%;
+            width: 97%;
             background-repeat: no-repeat;
             background: #000000;
             color: #FFFFFF;
@@ -294,7 +293,6 @@
         }
 
         div.stream_thumbnail_live {
-            /* height / width * 100% of Main.VideoSize*/
             padding-bottom: 80.5%;
             background-color: #000000;
             color: #FFFFFF;
@@ -337,9 +335,9 @@
         }
 
         div.stream_thumbnail_game_feed {
-            padding-bottom: 156%;
-            font-size: 82%;
-            width: 90%;
+            padding-bottom: 162%;
+            font-size: 80%;
+            width: 93%;
         }
 
         div.stream_thumbnail_live_holder {
@@ -377,6 +375,8 @@
         div.stream_thumbnail_user_text_holder,
         div.stream_thumbnail_channel_text_holder,
         div.stream_thumbnail_game_text_holder,
+        div.stream_thumbnail_game_feed_text_holder,
+        div.stream_thumbnail_feed_text_holder,
         div.stream_thumbnail_live_text_holder {
             position: absolute;
             right: 0;
@@ -384,6 +384,11 @@
             padding: 0.5%;
             font-size: 94%;
             margin-top: 0.1em;
+        }
+
+        div.stream_thumbnail_feed_text_holder {
+            height: 12.5vh;
+            font-size: 2.55vh;
         }
 
         div.stream_thumbnail_live_text_holder {
@@ -398,8 +403,13 @@
             transform: translateY(-50%);
         }
 
+        div.stream_thumbnail_game_feed_text_holder,
         div.stream_thumbnail_game_text_holder {
             height: 6.5vh;
+        }
+
+        div.stream_thumbnail_game_feed_text_holder {
+            font-size: 2.3vh;
         }
 
         div.stream_thumbnail_channel_text_holder {
@@ -714,7 +724,7 @@
             z-index: 100;
             position: absolute;
             bottom: 0;
-            height: 41%;
+            height: 42.75%;
             width: 100%;
             overflow: hidden;
             transform: translate3d(0, 0, 0);
@@ -724,18 +734,16 @@
         div.user_feed_scroll {
             position: absolute;
             width: 100%;
-            bottom: 0;
             left: 0.55vh;
             height: auto;
             white-space: nowrap;
-            bottom: 7%;
+            bottom: 5%;
             transform: translateX(0);
             transition: transform 250ms linear;
             will-change: transform;
         }
 
         div.user_feed_scroll_game {
-            bottom: 5%;
             left: 0.9vh;
         }
 
@@ -753,7 +761,7 @@
         }
 
         div.user_feed_thumb_game {
-            width: 12.525%;
+            width: 12.465%;
         }
 
         div.input_text_box {
