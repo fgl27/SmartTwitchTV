@@ -3381,8 +3381,6 @@ function Play_MakeControls() {
                     Android.StartAuto(1, 0);
                 }
 
-                Play_controls[Play_controlsAudioMulti].enterKey();
-
                 var i = 0;
                 for (i; i < 4; i++) {
                     Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
@@ -3410,7 +3408,16 @@ function Play_MakeControls() {
                         Play_MultiArray[1].data[9],
                         twemoji.parse(Play_MultiArray[1].data[2])
                     );
-                }
+
+                    var PP_audio = Play_controls[Play_controlsAudio].defaultValue;
+                    if (!PP_audio) Play_controls[Play_controlsAudioMulti].defaultValue = 1;
+                    else if (PP_audio === 1) Play_controls[Play_controlsAudioMulti].defaultValue = 0;
+                    else Play_controls[Play_controlsAudioMulti].defaultValue = 4;
+
+                } else Play_controls[Play_controlsAudioMulti].defaultValue = 0;
+
+
+                Play_controls[Play_controlsAudioMulti].enterKey();
 
                 for (i = PlayExtra_PicturePicture ? 2 : 1; i < 4; i++) {
                     Play_MultiInfoReset(i);
