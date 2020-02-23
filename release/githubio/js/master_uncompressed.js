@@ -3610,7 +3610,7 @@
             if (!Main_values.Restore_Backup_Check) {
 
                 try {
-                    if (Main_IsNotBrowser) Android.requestWr();
+                    Android.requestWr();
                     Main_HideLoadDialog();
                     Main_innerHTML("main_dialog_remove", STR_BACKUP);
                     Main_textContent('remove_cancel', STR_NO);
