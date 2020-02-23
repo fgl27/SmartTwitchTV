@@ -841,9 +841,16 @@ function PlayVod_DialogPressed(fromStart) {
             PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
             PlayVod_PosStart();
         } else {
-            Main_history_UpdateVod(Main_values.ChannelVod_vodId, 0);
-            Main_values.vodOffset = 0;
-            PlayVod_Start();
+            if (HistoryVod.histPosX[1]) {
+                Main_history_UpdateVod(Main_values.ChannelVod_vodId, 0);
+                Main_values.vodOffset = 0;
+                PlayVod_Start();
+            } else {
+                Main_values.vodOffset = 0;
+                PlayVod_currentTime = Main_values.vodOffset * 1000;
+                PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
+                PlayVod_PosStart();
+            }
         }
     });
 }
