@@ -1655,6 +1655,8 @@ function Play_EndText(PlayVodClip) {
     else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_VIDEO;
     else if (PlayVodClip === 3) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_CLIP;
 
+    Play_DialogEndText = Main_ReplaceLargeFont(Play_DialogEndText);
+
     if (Play_EndTextCounter === -2) { //disable
         Play_state = Play_STATE_PLAYING;
         PlayVod_state = Play_STATE_PLAYING;
