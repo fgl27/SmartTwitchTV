@@ -837,7 +837,7 @@ function PlayVod_DialogPressed(fromStart) {
     Main_ready(function() {
         if (!fromStart) PlayVod_DialogPressedClick(PlayVod_VodOffset);
         else {
-            if (HistoryVod.histPosX[1]) {
+            if (!HistoryVod.histPosX[1]) {
                 Main_history_UpdateVod(Main_values.ChannelVod_vodId, 0);
                 Main_values.vodOffset = 0;
                 PlayVod_Start();
