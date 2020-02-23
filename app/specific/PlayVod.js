@@ -835,24 +835,22 @@ function PlayVod_DialogPressed(fromStart) {
     Play_HideVodDialog();
     Play_showBufferDialog();
     Main_ready(function() {
-        if (!fromStart) {
-            Main_values.vodOffset = PlayVod_VodOffset;
-            PlayVod_currentTime = Main_values.vodOffset * 1000;
-            PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
-            PlayVod_PosStart();
-        } else {
+        if (!fromStart) PlayVod_DialogPressedClick(PlayVod_VodOffset);
+        else {
             if (HistoryVod.histPosX[1]) {
                 Main_history_UpdateVod(Main_values.ChannelVod_vodId, 0);
                 Main_values.vodOffset = 0;
                 PlayVod_Start();
-            } else {
-                Main_values.vodOffset = 0;
-                PlayVod_currentTime = Main_values.vodOffset * 1000;
-                PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
-                PlayVod_PosStart();
-            }
+            } else PlayVod_DialogPressedClick(0);
         }
     });
+}
+
+function PlayVod_DialogPressedClick(time) {
+    Main_values.vodOffset = time;
+    PlayVod_currentTime = Main_values.vodOffset * 1000;
+    PlayVod_ProgresBarrUpdate(Main_values.vodOffset, ChannelVod_DurationSeconds, true);
+    PlayVod_PosStart();
 }
 
 function PlayVod_OpenLiveStream() {
