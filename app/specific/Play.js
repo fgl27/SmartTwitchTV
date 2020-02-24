@@ -3029,7 +3029,7 @@ function Play_MakeControls() {
         setLable: function(title) {
             Main_innerHTML('extra_button_' + this.position,
                 '<div style="max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
-                title + '</div>');
+                (title === "" ? STR_NO_GAME : title) + '</div>');
         },
     };
 
