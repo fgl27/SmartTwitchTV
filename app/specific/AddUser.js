@@ -27,7 +27,7 @@ function AddUser_exit() {
 function AddUser_handleKeyDown(event) {
     if (AddUser_loadingData || AddUser_keyBoardOn || Main_values.Main_Go !== Main_addUser) return;
     switch (event.keyCode) {
-        case KEY_RETURN_Q:
+        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -87,6 +87,7 @@ function AddUser_KeyboardEvent(event) {
     if (AddUser_loadingData || Main_values.Main_Go !== Main_addUser) return;
 
     switch (event.keyCode) {
+        case KEY_RETURN_ESC:
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();

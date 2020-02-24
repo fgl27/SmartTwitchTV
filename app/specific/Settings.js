@@ -769,7 +769,7 @@ Math.easeInOutQuad = function(t, b, c, d) {
 function Settings_handleKeyDown(event) {
     var key;
     switch (event.keyCode) {
-        case KEY_RETURN_Q:
+        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -889,7 +889,7 @@ function Settings_handleKeyDownCodecs(event) {
     var key;
     switch (event.keyCode) {
         case KEY_ENTER:
-        case KEY_RETURN_Q:
+        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);

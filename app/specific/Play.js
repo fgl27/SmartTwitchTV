@@ -2743,7 +2743,7 @@ function Play_handleKeyDown(e) {
             case KEY_STOP:
                 Play_Exit();
                 break;
-            case KEY_RETURN_Q:
+            case KEY_RETURN_ESC:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Play_ExitDialogVisible() || Play_SingleClickExit) {
@@ -2913,7 +2913,7 @@ function Play_handleKeyDown(e) {
                     }
                 } else Play_showPanel();
                 break;
-            case KEY_RETURN_Q:
+            case KEY_RETURN_ESC:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Play_KeyReturn(false);
