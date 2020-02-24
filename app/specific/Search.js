@@ -59,7 +59,6 @@ function Search_handleKeyDown(event) {
     if (Search_keyBoardOn) return;
 
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -157,7 +156,6 @@ function Search_removeEventListener() {
 
 function Search_KeyboardEvent(event) {
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -166,15 +164,9 @@ function Search_KeyboardEvent(event) {
                 Main_SwitchScreen();
             }
             break;
-        case KEY_KEYBOARD_DELETE_ALL:
-            Main_SearchInput.value = '';
-            break;
         case KEY_KEYBOARD_DONE:
         case KEY_DOWN:
             Search_KeyboardDismiss();
-            break;
-        case KEY_KEYBOARD_SPACE:
-            Main_SearchInput.value += ' ';
             break;
         default:
             break;

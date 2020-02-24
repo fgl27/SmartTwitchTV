@@ -408,7 +408,6 @@ function ChannelContent_handleKeyDown(event) {
     else Main_keyClickDelayStart();
 
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Main_isControlsDialogShown()) Main_HideControlsDialog();

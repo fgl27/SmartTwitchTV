@@ -178,8 +178,6 @@ function Main_loadTranslations(language) {
             }
             Main_IsNotBrowser = Android.getAndroid();
             Main_IsNotBrowserVersion = Android.getversion();
-            //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
-            KEY_RETURN_ESC = 113;
         } catch (e) {
             Main_IsNotBrowserVersion = '1.0.0';
             Main_IsNotBrowser = 0;
@@ -190,6 +188,8 @@ function Main_loadTranslations(language) {
             console.log('Main_isBrowser: ' + !Main_IsNotBrowser);
             //If we add the class on the android app for some reason it prevents input from release the focus
             Main_AddClass('scenefeed', 'feed_screen_input');
+            //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
+            KEY_RETURN = 27;
         }
         Main_showLoadDialog();
 
@@ -338,9 +338,7 @@ function Main_initWindows() {
                 Android.SetSmallPlayerBandwidth(0);
 
                 //Enable app animations
-                Settings_value.app_animations.defaultValue = 1;
-                Main_setItem('app_animations', 2);
-                Settings_SetAnimations();
+                Settings_ForceEnableAimations();
             }
         }
 
@@ -396,7 +394,7 @@ function Main_initWindows() {
         //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
         //TODO add a warning when playing avc1.640034 and a setting to disable it
         //Main_SupportsAvc1High = Android.misAVC52Supported();
-    }
+    } else Settings_ForceEnableAimations();
 
     Main_SetStringsMain(true);
 
@@ -1578,7 +1576,6 @@ function Main_updateUserFeed() {
 
 function Main_ExitDialog(event) {
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Main_HideExitDialog();
