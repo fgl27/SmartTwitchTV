@@ -1419,9 +1419,9 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String getStreamData(String channel_name, boolean islive) {
+        public String getStreamData(String channel_name_vod_id, boolean islive) {
             try {
-                return Tools.getStreamData(channel_name, islive);
+                return Tools.getStreamData(channel_name_vod_id, islive);
             } catch (UnsupportedEncodingException e) {
                 Log.d(TAG, "getStreamData UnsupportedEncodingException");
                 return null;
