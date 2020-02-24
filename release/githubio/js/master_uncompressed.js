@@ -1724,7 +1724,6 @@
         if (AddUser_loadingData || Main_values.Main_Go !== Main_addUser) return;
 
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_RETURN:
                 if (Main_isAboutDialogShown()) Main_HideAboutDialog();
                 else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -1741,9 +1740,6 @@
             case KEY_KEYBOARD_DONE:
             case KEY_DOWN:
                 AddUser_KeyboardDismiss();
-                break;
-            case KEY_KEYBOARD_BACKSPACE:
-                Main_AddUserInput.value = Main_AddUserInput.value.slice(0, -1);
                 break;
             case KEY_KEYBOARD_SPACE:
                 Main_AddUserInput.value += ' ';
