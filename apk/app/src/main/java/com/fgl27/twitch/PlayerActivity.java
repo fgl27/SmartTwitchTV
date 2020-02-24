@@ -68,7 +68,7 @@ public class PlayerActivity extends Activity {
             KeyEvent.KEYCODE_DPAD_LEFT,//2
             KeyEvent.KEYCODE_DPAD_RIGHT,//3
             KeyEvent.KEYCODE_ENTER,//4
-            KeyEvent.KEYCODE_1,//key_1 is mapped as back key //5
+            KeyEvent.KEYCODE_F2,//KEYCODE_F2 is mapped as back key //5
             KeyEvent.KEYCODE_PAGE_UP,//6
             KeyEvent.KEYCODE_PAGE_DOWN,//7
             KeyEvent.KEYCODE_3//8
@@ -769,13 +769,12 @@ public class PlayerActivity extends Activity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
-                && !event.isCanceled()) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking() && !event.isCanceled()) {
             // if the call key is being released, AND we are tracking
             // it from an initial key down, AND it is not canceled,
             // then handle it.
-            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_1));
-            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_1));
+            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F2));
+            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F2));
             return true;
         }
         return super.onKeyUp(keyCode, event);

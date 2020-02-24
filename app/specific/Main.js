@@ -1184,12 +1184,18 @@ function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or m
     return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
 }
 
+//TODO remove this check after some app updates
+var Main_oldReturnCheck;
 function Main_checkVersion() {
     if (Main_IsNotBrowser) {
         var device = '';
         device = Android.getDevice();
         Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion + ' Device: ' + device;
-        if (Main_needUpdate(Main_IsNotBrowserVersion)) Main_ShowElement('label_update');
+        if (Main_needUpdate(Main_IsNotBrowserVersion)) {
+            //Temp to support old app version that used number 1 key as back key
+            if (Main_oldReturnCheck) KEY_RETURN = 49;
+            Main_ShowElement('label_update');
+        }
     }
 
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
@@ -1200,6 +1206,7 @@ function Main_checkVersion() {
 
 function Main_needUpdate(version) {
     version = version.split(".");
+    Main_oldReturnCheck = parseInt(version[2]) < 118;
     return (parseFloat(version[0] + '.' + version[1]) < parseFloat(Main_stringVersion)) ||
         (parseInt(version[2]) < parseInt(Main_stringVersion_Min.split(".")[1]));
 }
@@ -1569,7 +1576,7 @@ function Main_updateUserFeed() {
 
 function Main_ExitDialog(event) {
     switch (event.keyCode) {
-        case KEY_RETURN_Q:
+        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Main_HideExitDialog();

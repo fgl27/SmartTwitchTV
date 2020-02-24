@@ -865,7 +865,7 @@ function PlayVod_handleKeyDown(e) {
                 Play_CleanHideExit();
                 PlayVod_shutdownStream();
                 break;
-            case KEY_RETURN_Q:
+            case KEY_RETURN_ESC:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Play_ExitDialogVisible() || Play_SingleClickExit) {
@@ -1002,7 +1002,7 @@ function PlayVod_handleKeyDown(e) {
                 Play_CleanHideExit();
                 PlayVod_shutdownStream();
                 break;
-            case KEY_RETURN_Q:
+            case KEY_RETURN_ESC:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Play_KeyReturn(true);
