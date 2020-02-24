@@ -268,7 +268,6 @@ function Users_handleKeyDown(event) {
     var i;
 
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();

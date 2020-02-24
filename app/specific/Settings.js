@@ -769,7 +769,6 @@ Math.easeInOutQuad = function(t, b, c, d) {
 function Settings_handleKeyDown(event) {
     var key;
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -889,7 +888,6 @@ function Settings_handleKeyDownCodecs(event) {
     var key;
     switch (event.keyCode) {
         case KEY_ENTER:
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);
@@ -983,4 +981,10 @@ function Settings_CodecsRigthLeft(offset) {
 
 function Settings_CodecsSet() {
     if (Main_IsNotBrowser) Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+}
+
+function Settings_ForceEnableAimations() {
+    Settings_value.app_animations.defaultValue = 1;
+    Main_setItem('app_animations', 2);
+    Settings_SetAnimations();
 }

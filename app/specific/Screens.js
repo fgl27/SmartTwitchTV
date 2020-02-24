@@ -491,7 +491,6 @@ function Screens_loadDataSuccessFinish(obj) {
 function Screens_handleKeyControls(event) {
     switch (event.keyCode) {
         case KEY_ENTER:
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Main_isphoneDialogVisible()) {
@@ -940,7 +939,6 @@ function Screens_handleKeyDown(event) {
                 } else Sidepannel_Go(inUseObj.key_pgDown);
             }
             break;
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             inUseObj.key_exit();
@@ -1113,7 +1111,6 @@ function Screens_PeriodRemoveFocus(pos) {
 
 function Screens_PeriodhandleKeyDown(event) {
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
@@ -1201,7 +1198,6 @@ function Screens_OffSetAddFocus(pos) {
 
 function Screens_OffSethandleKeyDown(event) {
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Screens_OffSetDialogHide();
@@ -1319,7 +1315,6 @@ function Screens_histDeleteKeyDown(event) {
             Users_clearRemoveDialog();
             Screens_setRemoveDialog();
             break;
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Users_RemoveCursor = 0;
@@ -1399,7 +1394,6 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
 
 function Screens_histhandleKeyDown(event) {
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Screens_histDialogHide();
@@ -1575,7 +1569,6 @@ function Screens_ThumbOptionStringGetHistory() {
 
 function Screens_ThumbOptionhandleKeyDown(event) {
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Screens_ThumbOptionDialogHide();

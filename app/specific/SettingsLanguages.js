@@ -313,7 +313,6 @@ function Languages_HideShowAll() {
 function Languages_handleKeyDown(event) {
     var key;
     switch (event.keyCode) {
-        case KEY_RETURN_ESC:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Languages_exit();

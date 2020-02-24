@@ -512,7 +512,6 @@ function PlayClip_handleKeyDown(e) {
                 Play_CleanHideExit();
                 PlayClip_shutdownStream();
                 break;
-            case KEY_RETURN_ESC:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Play_ExitDialogVisible() || Play_SingleClickExit) {
@@ -643,7 +642,6 @@ function PlayClip_handleKeyDown(e) {
                 Play_CleanHideExit();
                 PlayClip_shutdownStream();
                 break;
-            case KEY_RETURN_ESC:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {

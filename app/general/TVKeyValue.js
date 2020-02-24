@@ -18,12 +18,10 @@ var KEY_REFRESH = 50; //key #2
 var KEY_CHAT = 51; //key #3
 
 var KEY_RETURN = 113; //key #F2
-var KEY_RETURN_ESC = 27;
 
 var KEY_KEYBOARD_BACKSPACE = 8; // http://developer.samsung.com/tv/develop/guides/user-interaction/keyboardime
 var KEY_KEYBOARD_DONE = 13;
 var KEY_KEYBOARD_SPACE = 32;
-var KEY_KEYBOARD_DELETE_ALL = 46;
 
 var KEY_MEDIA_NEXT = 176;
 var KEY_MEDIA_PREVIOUS = 177;

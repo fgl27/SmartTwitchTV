@@ -239,7 +239,7 @@ function PlayExtra_qualityChanged() {
 }
 
 function PlayExtra_handleKeyDown(e) {
-    if (e.keyCode === KEY_RETURN || e.keyCode === KEY_RETURN_ESC || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
+    if (e.keyCode === KEY_RETURN || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
 
         document.body.removeEventListener("keydown", PlayExtra_handleKeyDown, false);
         document.body.addEventListener("keydown", Play_handleKeyDown, false);
