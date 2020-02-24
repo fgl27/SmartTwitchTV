@@ -178,6 +178,8 @@ function Main_loadTranslations(language) {
             }
             Main_IsNotBrowser = Android.getAndroid();
             Main_IsNotBrowserVersion = Android.getversion();
+            //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
+            KEY_RETURN_ESC = 113;
         } catch (e) {
             Main_IsNotBrowserVersion = '1.0.0';
             Main_IsNotBrowser = 0;
