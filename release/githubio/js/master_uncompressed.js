@@ -1010,13 +1010,11 @@
     var KEY_REFRESH = 50; //key #2
     var KEY_CHAT = 51; //key #3
 
-    var KEY_RETURN = 49; //key #1
-    var KEY_RETURN_Q = 81; //key q
+    var KEY_RETURN = 113; //key #F2
 
     var KEY_KEYBOARD_BACKSPACE = 8; // http://developer.samsung.com/tv/develop/guides/user-interaction/keyboardime
     var KEY_KEYBOARD_DONE = 13;
     var KEY_KEYBOARD_SPACE = 32;
-    var KEY_KEYBOARD_DELETE_ALL = 46;
 
     var KEY_MEDIA_NEXT = 176;
     var KEY_MEDIA_PREVIOUS = 177;
@@ -1664,7 +1662,6 @@
     function AddUser_handleKeyDown(event) {
         if (AddUser_loadingData || AddUser_keyBoardOn || Main_values.Main_Go !== Main_addUser) return;
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -1734,15 +1731,9 @@
                     Main_SwitchScreen();
                 }
                 break;
-            case KEY_KEYBOARD_DELETE_ALL:
-                Main_AddUserInput.value = '';
-                break;
             case KEY_KEYBOARD_DONE:
             case KEY_DOWN:
                 AddUser_KeyboardDismiss();
-                break;
-            case KEY_KEYBOARD_SPACE:
-                Main_AddUserInput.value += ' ';
                 break;
             default:
                 break;
@@ -2411,7 +2402,6 @@
         else Main_keyClickDelayStart();
 
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -3501,8 +3491,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.117';
-    var Main_minversion = '022220';
+    var Main_stringVersion_Min = '.118';
+    var Main_minversion = '022420';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -3565,6 +3555,8 @@
                 console.log('Main_isBrowser: ' + !Main_IsNotBrowser);
                 //If we add the class on the android app for some reason it prevents input from release the focus
                 Main_AddClass('scenefeed', 'feed_screen_input');
+                //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
+                KEY_RETURN = 27;
             }
             Main_showLoadDialog();
 
@@ -3713,9 +3705,7 @@
                     Android.SetSmallPlayerBandwidth(0);
 
                     //Enable app animations
-                    Settings_value.app_animations.defaultValue = 1;
-                    Main_setItem('app_animations', 2);
-                    Settings_SetAnimations();
+                    Settings_ForceEnableAimations();
                 }
             }
 
@@ -3771,7 +3761,7 @@
             //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
             //TODO add a warning when playing avc1.640034 and a setting to disable it
             //Main_SupportsAvc1High = Android.misAVC52Supported();
-        }
+        } else Settings_ForceEnableAimations();
 
         Main_SetStringsMain(true);
 
@@ -4562,12 +4552,19 @@
         return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
     }
 
+    //TODO remove this check after some app updates
+    var Main_oldReturnCheck;
+
     function Main_checkVersion() {
         if (Main_IsNotBrowser) {
             var device = '';
             device = Android.getDevice();
             Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion + ' Device: ' + device;
-            if (Main_needUpdate(Main_IsNotBrowserVersion)) Main_ShowElement('label_update');
+            if (Main_needUpdate(Main_IsNotBrowserVersion)) {
+                //Temp to support old app version that used number 1 key as back key
+                if (Main_oldReturnCheck) KEY_RETURN = 49;
+                Main_ShowElement('label_update');
+            }
         }
 
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
@@ -4578,6 +4575,7 @@
 
     function Main_needUpdate(version) {
         version = version.split(".");
+        Main_oldReturnCheck = parseInt(version[2]) < 118;
         return (parseFloat(version[0] + '.' + version[1]) < parseFloat(Main_stringVersion)) ||
             (parseInt(version[2]) < parseInt(Main_stringVersion_Min.split(".")[1]));
     }
@@ -4946,7 +4944,6 @@
 
     function Main_ExitDialog(event) {
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Main_HideExitDialog();
@@ -5929,7 +5926,6 @@
                     Play_CleanHideExit();
                     PlayClip_shutdownStream();
                     break;
-                case KEY_RETURN_Q:
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
                     if (Play_ExitDialogVisible() || Play_SingleClickExit) {
@@ -6059,7 +6055,6 @@
                     Play_CleanHideExit();
                     PlayClip_shutdownStream();
                     break;
-                case KEY_RETURN_Q:
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
                     if (Play_isEndDialogVisible() && !Play_ExitDialogVisible()) {
@@ -6404,7 +6399,7 @@
     }
 
     function PlayExtra_handleKeyDown(e) {
-        if (e.keyCode === KEY_RETURN || e.keyCode === KEY_RETURN_Q || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
+        if (e.keyCode === KEY_RETURN || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
 
             document.body.removeEventListener("keydown", PlayExtra_handleKeyDown, false);
             document.body.addEventListener("keydown", Play_handleKeyDown, false);
@@ -9281,7 +9276,6 @@
                 case KEY_STOP:
                     Play_Exit();
                     break;
-                case KEY_RETURN_Q:
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
                     if (Play_ExitDialogVisible() || Play_SingleClickExit) {
@@ -9450,7 +9444,6 @@
                         }
                     } else Play_showPanel();
                     break;
-                case KEY_RETURN_Q:
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
                     Play_KeyReturn(false);
@@ -11228,7 +11221,6 @@
                     Play_CleanHideExit();
                     PlayVod_shutdownStream();
                     break;
-                case KEY_RETURN_Q:
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
                     if (Play_ExitDialogVisible() || Play_SingleClickExit) {
@@ -11364,7 +11356,6 @@
                     Play_CleanHideExit();
                     PlayVod_shutdownStream();
                     break;
-                case KEY_RETURN_Q:
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
                     Play_KeyReturn(true);
@@ -11926,7 +11917,6 @@
     function Screens_handleKeyControls(event) {
         switch (event.keyCode) {
             case KEY_ENTER:
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Main_isphoneDialogVisible()) {
@@ -12375,7 +12365,6 @@
                     } else Sidepannel_Go(inUseObj.key_pgDown);
                 }
                 break;
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 inUseObj.key_exit();
@@ -12548,7 +12537,6 @@
 
     function Screens_PeriodhandleKeyDown(event) {
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
@@ -12636,7 +12624,6 @@
 
     function Screens_OffSethandleKeyDown(event) {
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Screens_OffSetDialogHide();
@@ -12754,7 +12741,6 @@
                 Users_clearRemoveDialog();
                 Screens_setRemoveDialog();
                 break;
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Users_RemoveCursor = 0;
@@ -12834,7 +12820,6 @@
 
     function Screens_histhandleKeyDown(event) {
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Screens_histDialogHide();
@@ -13010,7 +12995,6 @@
 
     function Screens_ThumbOptionhandleKeyDown(event) {
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Screens_ThumbOptionDialogHide();
@@ -15215,7 +15199,6 @@
         if (Search_keyBoardOn) return;
 
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -15313,7 +15296,6 @@
 
     function Search_KeyboardEvent(event) {
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_RETURN:
                 if (Main_isAboutDialogShown()) Main_HideAboutDialog();
                 else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
@@ -15322,18 +15304,9 @@
                     Main_SwitchScreen();
                 }
                 break;
-            case KEY_KEYBOARD_DELETE_ALL:
-                Main_SearchInput.value = '';
-                break;
             case KEY_KEYBOARD_DONE:
             case KEY_DOWN:
                 Search_KeyboardDismiss();
-                break;
-            case KEY_KEYBOARD_BACKSPACE:
-                Main_SearchInput.value = Main_SearchInput.value.slice(0, -1);
-                break;
-            case KEY_KEYBOARD_SPACE:
-                Main_SearchInput.value += ' ';
                 break;
             default:
                 break;
@@ -16116,7 +16089,6 @@
     function Settings_handleKeyDown(event) {
         var key;
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Main_isAboutDialogShown()) Main_HideAboutDialog();
@@ -16236,7 +16208,6 @@
         var key;
         switch (event.keyCode) {
             case KEY_ENTER:
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);
@@ -16330,6 +16301,12 @@
 
     function Settings_CodecsSet() {
         if (Main_IsNotBrowser) Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+    }
+
+    function Settings_ForceEnableAimations() {
+        Settings_value.app_animations.defaultValue = 1;
+        Main_setItem('app_animations', 2);
+        Settings_SetAnimations();
     }
     //Variable initialization
     var Languages_cursorY = 0;
@@ -16646,7 +16623,6 @@
     function Languages_handleKeyDown(event) {
         var key;
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Languages_exit();
@@ -17112,7 +17088,6 @@
 
     function Sidepannel_handleKeyDown(event) {
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
             case KEY_CHAT:
@@ -17188,7 +17163,6 @@
 
     function Sidepannel_handleKeyDownMain(event) {
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
             case KEY_RIGHT:
@@ -19338,7 +19312,6 @@
         var i;
 
         switch (event.keyCode) {
-            case KEY_RETURN_Q:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
