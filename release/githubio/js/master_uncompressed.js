@@ -9561,7 +9561,7 @@
             setLable: function(title) {
                 Main_innerHTML('extra_button_' + this.position,
                     '<div style="max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
-                    title + '</div>');
+                    (title === "" ? STR_NO_GAME : title) + '</div>');
             },
         };
 
@@ -20837,7 +20837,7 @@
 
         function parse(str, dontremove, emoticon) {
             //Twitch title may contain < or > with causes html problems
-            if (!str) return;
+            if (!str) return '';
             if (!dontremove) str = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             //Replace line break
             str = str.replace(/(\r\n|\n|\r)/gm, "");
