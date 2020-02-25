@@ -401,4 +401,5 @@ function en_USLang() {
     STR_FEED_END_DIALOG = ', Press back to go back to top menu';
     STR_BACK_USER_GAMES = ' Press back key to ';
     STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
+    STR_SHOW_FEED_PLAYER = 'Show small player over player live feed';
 }

@@ -399,7 +399,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
-    Sidepannel_CheckIfIsLive(UserLiveFeed_isFeedShow(), UserLiveFeed_CheckIfIsLiveStart);
+    if (UserLiveFeed_ShowSmallPlayer) Sidepannel_CheckIfIsLive(UserLiveFeed_isFeedShow(), UserLiveFeed_CheckIfIsLiveStart);
 }
 
 function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
