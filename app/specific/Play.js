@@ -2950,8 +2950,23 @@ function Play_handleKeyDown(e) {
             case KEY_PLAYPAUSE:
                 if (!Play_isEndDialogVisible()) Play_KeyPause(1);
                 break;
+            case KEY_1:
+                if (UserLiveFeed_isFeedShow()) {
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    else if (Play_MultiEnable) {
+                        console.log('multi');
+                        if (Play_MultiIsFull()) {
+                            var mdoc2 = Play_CheckLiveThumb();
+                            if (mdoc2) Play_MultiSetUpdateDialog(mdoc2);
+                        } else Play_MultiStartPrestart();
+                    } else {
+                        console.log('dhdh');
+                        PlayExtra_KeyEnter();
+                    }
+                }
+                break;
             case KEY_REFRESH:
-                if (UserLiveFeed_isFeedShow()) PlayExtra_KeyEnter();
+                if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(1);
