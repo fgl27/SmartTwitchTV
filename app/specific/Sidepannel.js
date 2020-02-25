@@ -31,6 +31,7 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
 }
 
 function Sidepannel_RemoveFocusFeed() {
+    Sidepannel_CheckIfIsLiveSTop();
     Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
 }
 
@@ -56,6 +57,32 @@ function Sidepannel_UpdateThumb() {
 
     if (Sidepannel_isShowing())
         Main_ShowElement('side_panel_feed_thumb');
+
+    if (Sidepannel_isShowing() && !Play_CheckIfIsLiveQualities.length) Sidepannel_CheckIfIsLiveStart();
+}
+
+var Sidepannel_CheckIfIsLiveStartId;
+function Sidepannel_CheckIfIsLiveStart() {
+    if (!Main_IsNotBrowser) return;
+
+    window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+    Sidepannel_CheckIfIsLiveStartId = window.setTimeout(function() {
+
+        if (Play_CheckIfIsLiveStart(true, true)) {
+            Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
+        }
+
+    }, 1000);
+}
+
+function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
+    window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+    if (!Main_IsNotBrowser) return;
+
+    if (Play_CheckIfIsLiveQualities.length) {
+        Android.ClearFeedPlayer();
+        if (!PreventcleanQuailities) Play_CheckIfIsLiveClean();
+    }
 }
 
 function Sidepannel_partnerIcon(name, partner, isrerun) {
@@ -261,7 +288,8 @@ function Sidepannel_HideMain(hideAll) {
     Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
 }
 
-function Sidepannel_Hide() {
+function Sidepannel_Hide(PreventcleanQuailities) {
+    Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
     Sidepannel_HideMain();
     Sidepannel_RemoveFocusMain();
     Main_ShowElement('side_panel_fix');
@@ -462,7 +490,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_ENTER:
             if (!UserLiveFeed_loadingData) {
                 Sidepannel_SidepannelDoc.style.transition = 'none';
-                Sidepannel_Hide();
+                Sidepannel_Hide(true);
                 Main_values.Play_isHost = false;
                 Play_UserLiveFeedPressed = true;
                 Main_ready(function() {

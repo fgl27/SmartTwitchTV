@@ -13,6 +13,7 @@ var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
 var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
 var UserLiveFeed_PreventHide = false;
+var UserLiveFeed_ShowSmallPlayer = true;
 
 var UserLiveFeed_CheckNotifycation = false;
 var UserLiveFeed_WasLiveidObject = {};
@@ -299,12 +300,13 @@ function UserLiveFeed_Show() {
 }
 
 function UserLiveFeed_Hide() {
+    UserLiveFeed_CheckIfIsLiveSTop();
     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'hide');
 }
 
 function UserLiveFeed_ResetFeedId() {
     UserLiveFeed_clearHideFeed();
-    if (!UserLiveFeed_PreventHide) UserLiveFeed_setHideFeed();
+    if (!UserLiveFeed_PreventHide && !UserLiveFeed_ShowSmallPlayer) UserLiveFeed_setHideFeed();
 }
 
 function UserLiveFeed_clearHideFeed() {
@@ -327,7 +329,8 @@ function UserLiveFeed_FeedRefresh() {
 function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
     if (UserLiveFeed_FeedSetPosLast[pos] === position) return;
 
-    if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+    if (!UserLiveFeed_ShowSmallPlayer && !skipAnimation &&
+        Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
         !Screens_ChangeFocusAnimationFast) {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
@@ -396,6 +399,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
+    if (UserLiveFeed_isFeedShow() && !Play_CheckIfIsLiveQualities.length) UserLiveFeed_CheckIfIsLiveStart();
 }
 
 function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
@@ -406,8 +410,8 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
 
             eleRemoveIdPos = pos + '_' + (x - 4);
 
-            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (!UserLiveFeed_ShowSmallPlayer && Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
@@ -428,8 +432,8 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
             UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
             document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.add('animate_width');
 
-            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (!UserLiveFeed_ShowSmallPlayer && Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
@@ -450,6 +454,44 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
 
 }
 
+var UserLiveFeed_CheckIfIsLiveStartId;
+function UserLiveFeed_CheckIfIsLiveStart() {
+    if (!Main_IsNotBrowser) return;
+
+    window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
+    UserLiveFeed_CheckIfIsLiveStartId = window.setTimeout(function() {
+
+        if (Play_CheckLiveThumb(false, true) && Play_CheckIfIsLiveStart(true)) {
+            var position = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX];
+
+            if (position > 2) {
+                var size = UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1;
+                if (size > 4) {
+                    position = position < (size - 2) ? 2 : (4 - (size - position));
+                } else if (size > 3) {
+                    position = position < (size - 1) ? 2 : (4 - (size - position));
+                } else if (size > 2) {
+                    position = position < size ? 2 : 3;
+                }
+
+            }
+
+            Android.StartFeedPlayer(Play_CheckIfIsLiveURL, position, false);
+        }
+
+    }, 1000);
+}
+
+function UserLiveFeed_CheckIfIsLiveSTop() {
+    window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
+    if (!Main_IsNotBrowser) return;
+
+    if (Play_CheckIfIsLiveQualities.length) {
+        Android.ClearFeedPlayer();
+        Play_CheckIfIsLiveClean();
+    }
+}
+
 function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
     var eleIdPos, eleRemoveIdPos;
     if (Adder > 0) { // right
@@ -458,8 +500,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
 
             eleRemoveIdPos = pos + '_' + (x - 6);
 
-            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (!UserLiveFeed_ShowSmallPlayer && Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
@@ -480,8 +522,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
             UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
             document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.add('animate_width');
 
-            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (!UserLiveFeed_ShowSmallPlayer && Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
@@ -505,6 +547,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
 function UserLiveFeed_FeedRemoveFocus(pos) {
     if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
         Main_RemoveClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
+
+    UserLiveFeed_CheckIfIsLiveSTop();
 }
 
 function UserLiveFeed_ThumbNull(y, thumbnail) {

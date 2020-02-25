@@ -50,7 +50,15 @@ function PlayExtra_KeyEnter() {
             PlayExtra_data.quality = "Auto";
             PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
         }
-        PlayExtra_Resumenew();
+
+        if (!Play_CheckIfIsLiveQualities.length) PlayExtra_Resumenew();
+        else {
+
+            PlayExtra_data.AutoUrl = Play_CheckIfIsLiveURL;
+            PlayExtra_loadDataSuccessEnd(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
+
+            Play_CheckIfIsLiveClean();
+        }
 
     }
 }

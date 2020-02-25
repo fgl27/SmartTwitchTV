@@ -293,6 +293,7 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 }
 
 function UserLiveFeedobj_HideFeed() {
+    UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.classList.add('hide');
 }
 
@@ -331,6 +332,7 @@ function UserLiveFeedobj_ShowLive() {
 }
 
 function UserLiveFeedobj_HideLive() {
+    UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].div.classList.add('hide');
 }
 
@@ -368,6 +370,7 @@ function UserLiveFeedobj_ShowFeatured() {
 }
 
 function UserLiveFeedobj_HideFeatured() {
+    UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div.classList.add('hide');
 }
 //Featured end
@@ -409,6 +412,7 @@ function UserLiveFeedobj_ShowCurrentGame() {
 }
 
 function UserLiveFeedobj_HideCurrentGame() {
+    UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div.classList.add('hide');
 }
 //Current game end
@@ -443,6 +447,7 @@ function UserLiveFeedobj_ShowUserHost() {
 }
 
 function UserLiveFeedobj_HideUserHost() {
+    UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.classList.add('hide');
 }
 //User Host end
@@ -524,6 +529,7 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
 }
 
 function UserLiveFeedobj_HideCurrentUserAGame() {
+    UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('hide');
 }
 //Current user a game end
@@ -604,6 +610,7 @@ function UserLiveFeedobj_ShowCurrentAGame() {
 }
 
 function UserLiveFeedobj_HideCurrentAGame() {
+    UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('hide');
 }
 //Current a game end
