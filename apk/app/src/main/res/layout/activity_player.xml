@@ -121,4 +121,25 @@
         android:visibility="gone"
         android:layout_gravity="center_horizontal|bottom"/>
 
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/player_view_e_texture_view"
+        android:focusableInTouchMode="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:use_controller="false"
+        app:use_artwork="false"
+        app:surface_type="texture_view"
+        app:show_buffering="always"/>
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/player_view_e"
+        android:focusableInTouchMode="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:use_controller="false"
+        app:use_artwork="false"
+        app:show_buffering="always"/>
+
 </FrameLayout>

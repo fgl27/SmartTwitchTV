@@ -321,8 +321,7 @@ function Play_Start() {
         Play_data.AutoUrl = Play_CheckIfIsLiveURL;
         Play_loadDataSuccessend(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
 
-        Play_CheckIfIsLiveURL = '';
-        Play_CheckIfIsLiveQualities = [];
+        Play_CheckIfIsLiveClean();
     }
     Play_UpdateMainStream(true);
     document.body.removeEventListener("keyup", Main_handleKeyUp);
@@ -339,11 +338,18 @@ function Play_Start() {
 var Play_CheckIfIsLiveURL = '';
 var Play_CheckIfIsLiveQualities = [];
 
-function Play_CheckIfIsLiveStart() {
-    Play_showBufferDialog();
+function Play_CheckIfIsLiveStart(PreventshowBuffer, IsSide) {
+    if (!PreventshowBuffer) Play_showBufferDialog();
 
-    var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
+    var Channel, selectedChannelDisplayname;
+
+    if (IsSide) {
+        Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+        selectedChannelDisplayname = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).textContent;
+    } else {
+        Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
         selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
+    }
 
     if (Main_IsNotBrowser) {
 
@@ -385,16 +391,21 @@ function Play_CheckIfIsLiveStart() {
 
 function Play_CheckIfIsLiveStartFail(text) {
     Play_HideBufferDialog();
-    Play_CheckIfIsLiveURL = '';
-    Play_CheckIfIsLiveQualities = [];
+    Play_CheckIfIsLiveClean();
 
     Play_showWarningDialog(text, 2000);
 }
 
-function Play_CheckResume() { // Called only by JAVAPlay_CheckIfIsLiveStartCallback
+function Play_CheckIfIsLiveClean() {
+    Play_CheckIfIsLiveURL = '';
+    Play_CheckIfIsLiveQualities = [];
+}
+
+function Play_CheckResume() { // Called only by JAVA
     if (Play_isOn) Play_Resume();
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
+    else if (Sidepannel_isShowing() && Play_CheckIfIsLiveQualities.length && Play_CheckIfIsLiveStart(true, true)) Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
 }
 
 function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called only by JAVA
@@ -2716,7 +2727,7 @@ function Play_setHideMultiDialog() {
     Play_HideMultiDialogID = window.setTimeout(Play_HideMultiDialog, 10000);
 }
 
-function Play_CheckLiveThumb(PreventResetFeed) {
+function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
     var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
         error = STR_STREAM_ERROR;
@@ -2731,7 +2742,7 @@ function Play_CheckLiveThumb(PreventResetFeed) {
         error = STR_ALREDY_PLAYING;
     }
 
-    Play_showWarningDialog(error, 1500);
+    if (!PreventWarn) Play_showWarningDialog(error, 1500);
 
     if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
     return null;
