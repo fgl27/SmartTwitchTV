@@ -52,6 +52,7 @@ public class PlayerActivity extends Activity {
     public static final String PageUrl = "file:///android_asset/index.html";
     //public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
     public static final int PlayerAcount = 4;
+    public static final int PlayerAcountPlus = PlayerAcount + 1;
     private static final int[] positions = {
             Gravity.RIGHT | Gravity.BOTTOM,//0
             Gravity.RIGHT | Gravity.CENTER,//1
@@ -97,11 +98,11 @@ public class PlayerActivity extends Activity {
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     public String[] BLACKLISTEDCODECS = null;
     public int DefaultPositions = 0;
-    public PlayerView[] PlayerView = new PlayerView[PlayerAcount + 1];
-    public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAcount + 1];
+    public PlayerView[] PlayerView = new PlayerView[PlayerAcountPlus];
+    public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAcountPlus];
     public DataSource.Factory dataSourceFactory;
     public DefaultRenderersFactory renderersFactory;
-    public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAcount + 1];
+    public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAcountPlus];
     public DefaultTrackSelector.Parameters trackSelectorParameters;
     public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
     public DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
@@ -111,10 +112,10 @@ public class PlayerActivity extends Activity {
     public long mResumePosition;
     public int mwhocall = 1;
     //The mediaSources stored to be used when changing from auto to source 720 etc etc
-    public MediaSource[] mediaSourcesAuto = new MediaSource[PlayerAcount + 1];
-    public long[] expires = new long[PlayerAcount + 1];
+    public MediaSource[] mediaSourcesAuto = new MediaSource[PlayerAcountPlus];
+    public long[] expires = new long[PlayerAcountPlus];
     //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
-    public MediaSource[] mediaSourcePlaying = new MediaSource[PlayerAcount + 1];
+    public MediaSource[] mediaSourcePlaying = new MediaSource[PlayerAcountPlus];
     public WebView mwebview;
     public boolean PicturePicture;
     public boolean deviceIsTV;
@@ -129,8 +130,8 @@ public class PlayerActivity extends Activity {
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
     public Handler myHandler;
-    public Handler[] PlayerCheckHandler = new Handler[PlayerAcount + 1];
-    public int[] PlayerCheckCounter = new int[PlayerAcount + 1];
+    public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
+    public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
     public int[] droppedFrames = new int[2];
     public long[] conSpeed = new long[2];
     public long[] netActivity = new long[2];
@@ -143,7 +144,7 @@ public class PlayerActivity extends Activity {
     public boolean IsIN5050 = false;
     public boolean mLowLatency = false;
     public boolean UsefullBandwidth = false;
-    private LoadControl[] loadControl = new LoadControl[PlayerAcount + 1];
+    private LoadControl[] loadControl = new LoadControl[PlayerAcountPlus];
     private Uri uri;
     private FrameLayout.LayoutParams DefaultSizeFrame;
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
@@ -172,7 +173,7 @@ public class PlayerActivity extends Activity {
 
             myHandler = new Handler(Looper.getMainLooper());
 
-            for (int i = 0; i < (PlayerAcount + 1); i++) {
+            for (int i = 0; i < (PlayerAcountPlus); i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
             }
 
@@ -241,34 +242,33 @@ public class PlayerActivity extends Activity {
     }
 
     public void setPlayer(boolean surface_view) {
-        int mPlayerAcount = PlayerAcount + 1;
         //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
         if (surface_view) {
-            for (int i = 0; i < mPlayerAcount; i++) {
+            for (int i = 0; i < PlayerAcountPlus; i++) {
                 PlayerView[i] = findViewById(idtexture[i]);
                 PlayerView[i].setVisibility(View.GONE);
                 PlayerView[i] = findViewById(idsurface[i]);
             }
 
             PlayerView[0].setVisibility(View.VISIBLE);
-            for (int i = 1; i < mPlayerAcount; i++) {
+            for (int i = 1; i < PlayerAcountPlus; i++) {
                 PlayerView[i].setVisibility(View.GONE);
             }
         } else {
 
-            for (int i = 0; i < mPlayerAcount; i++) {
+            for (int i = 0; i < PlayerAcountPlus; i++) {
                 PlayerView[i] = findViewById(idsurface[i]);
                 PlayerView[i].setVisibility(View.GONE);
                 PlayerView[i] = findViewById(idtexture[i]);
             }
 
             PlayerView[0].setVisibility(View.VISIBLE);
-            for (int i = 1; i < mPlayerAcount; i++) {
+            for (int i = 1; i < PlayerAcountPlus; i++) {
                 PlayerView[i].setVisibility(View.GONE);
             }
         }
 
-        for (int i = 0; i < mPlayerAcount; i++) {
+        for (int i = 0; i < PlayerAcountPlus; i++) {
             loadingView[i] = PlayerView[i].findViewById(R.id.exo_buffering);
             loadingView[i].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
             loadingView[i].setBackgroundResource(R.drawable.shadow);
@@ -341,7 +341,7 @@ public class PlayerActivity extends Activity {
         KeepScreenOn(true);
     }
 
-    private void initializeSmallPlayer() {
+    private void initializeSmallPlayer(MediaSource mediaSource) {
         if (IsonStop) {
             monStop();
             return;
@@ -381,8 +381,9 @@ public class PlayerActivity extends Activity {
             PlayerView[4].setPlayer(player[4]);
         }
 
+        mediaSourcePlaying[4] = mediaSource;
         player[4].setMediaSource(
-                mediaSourcesAuto[4],
+                mediaSourcePlaying[4],
                 C.TIME_UNSET);
 
         player[4].prepare();
@@ -403,6 +404,7 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[4] = 0;
         shouldCallJavaCheck = false;
+        UsefullBandwidth = false;
     }
 
     private void initializePlayerMulti(int position, MediaSource mediaSource) {
@@ -520,7 +522,7 @@ public class PlayerActivity extends Activity {
         shouldCallJavaCheck = false;
         AudioSource = 1;
 
-        for (int i = 0; i < (PlayerAcount + 1); i++) {
+        for (int i = 0; i < (PlayerAcountPlus); i++) {
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             mediaSourcePlaying[i] = null;
             mediaSourcesAuto[i] = null;
@@ -796,7 +798,7 @@ public class PlayerActivity extends Activity {
         IsonStop = true;
         int temp_AudioMulti = AudioMulti;
 
-        for (int i = 0; i < (PlayerAcount + 1); i++) {
+        for (int i = 0; i < (PlayerAcountPlus); i++) {
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             updateResumePosition(i);
             ClearPlayer(i);
@@ -813,7 +815,7 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        for (int i = 0; i < (PlayerAcount + 1); i++) {
+        for (int i = 0; i < (PlayerAcountPlus); i++) {
             ClearPlayer(i);
         }
     }
@@ -1111,7 +1113,16 @@ public class PlayerActivity extends Activity {
                 expires[4] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
-                initializeSmallPlayer();
+                initializeSmallPlayer(mediaSourcesAuto[4]);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetAutoFeedPlayer(String url) {
+            myHandler.post(() -> {
+                expires[4] = System.currentTimeMillis() + 18000;
+                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
             });
         }
 
@@ -1732,7 +1743,8 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerCheckCounter[4]++;
-        if (PlayerCheckCounter[4] < 4 && expires[4] < System.currentTimeMillis()) initializeSmallPlayer();
+        if (PlayerCheckCounter[4] < 4 && expires[4] < System.currentTimeMillis())
+            initializeSmallPlayer(mediaSourcesAuto[4]);
         else {
             ClearSmallPlayer();
             mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");

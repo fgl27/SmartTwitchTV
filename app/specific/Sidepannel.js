@@ -58,21 +58,35 @@ function Sidepannel_UpdateThumb() {
     if (Sidepannel_isShowing())
         Main_ShowElement('side_panel_feed_thumb');
 
-    if (Sidepannel_isShowing() && !Play_CheckIfIsLiveQualities.length) Sidepannel_CheckIfIsLiveStart();
+    Sidepannel_CheckIfIsLive(Sidepannel_isShowing(), Sidepannel_CheckIfIsLiveStart);
 }
 
 var Sidepannel_CheckIfIsLiveStartId;
+var Sidepannel_CheckIfIsLiveRefreshId;
 function Sidepannel_CheckIfIsLiveStart() {
     if (!Main_IsNotBrowser) return;
 
     window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
     Sidepannel_CheckIfIsLiveStartId = window.setTimeout(function() {
 
         if (Play_CheckIfIsLiveStart(true, true)) {
             Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
+            Sidepannel_CheckIfIsLiveRefreshSet();
         }
 
     }, 1000);
+}
+
+function Sidepannel_CheckIfIsLiveRefreshSet() {
+    Sidepannel_CheckIfIsLiveRefreshId = window.setInterval(Sidepannel_CheckIfIsLiveRefreshAuto, 300000);
+}
+
+function Sidepannel_CheckIfIsLive(visible, callback) {
+    if (visible) {
+        var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+        if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(tempChannel, Play_CheckIfIsLiveChannel)) callback();
+    }
 }
 
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -82,6 +96,15 @@ function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
     if (Play_CheckIfIsLiveQualities.length) {
         Android.ClearFeedPlayer();
         if (!PreventcleanQuailities) Play_CheckIfIsLiveClean();
+    }
+}
+
+function Sidepannel_CheckIfIsLiveRefreshAuto() {
+    var tempUrl = Play_RefreshHlsUrl(Play_CheckIfIsLiveChannel);
+
+    if (tempUrl) {
+        Play_CheckIfIsLiveURL = tempUrl;
+        Android.SetAutoFeedPlayer(tempUrl);
     }
 }
 

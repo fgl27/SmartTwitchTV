@@ -399,7 +399,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
-    if (UserLiveFeed_isFeedShow() && !Play_CheckIfIsLiveQualities.length) UserLiveFeed_CheckIfIsLiveStart();
+    Sidepannel_CheckIfIsLive(UserLiveFeed_isFeedShow(), UserLiveFeed_CheckIfIsLiveStart);
 }
 
 function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
@@ -459,6 +459,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
     if (!Main_IsNotBrowser) return;
 
     window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
+    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
     UserLiveFeed_CheckIfIsLiveStartId = window.setTimeout(function() {
 
         if (Play_CheckLiveThumb(false, true) && Play_CheckIfIsLiveStart(true)) {
@@ -477,6 +478,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
             }
 
             Android.StartFeedPlayer(Play_CheckIfIsLiveURL, position, false);
+            Sidepannel_CheckIfIsLiveRefreshSet();
         }
 
     }, 1000);

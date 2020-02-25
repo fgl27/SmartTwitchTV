@@ -336,25 +336,26 @@ function Play_Start() {
 //}
 
 var Play_CheckIfIsLiveURL = '';
+var Play_CheckIfIsLiveChannel = '';
 var Play_CheckIfIsLiveQualities = [];
 
 function Play_CheckIfIsLiveStart(PreventshowBuffer, IsSide) {
     if (!PreventshowBuffer) Play_showBufferDialog();
 
-    var Channel, selectedChannelDisplayname;
+    var selectedChannelDisplayname;
 
     if (IsSide) {
-        Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+        Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
         selectedChannelDisplayname = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).textContent;
     } else {
-        Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+        Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
         selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
     }
 
     if (Main_IsNotBrowser) {
 
         try {
-            var StreamData = Android.getStreamData(Channel, true);
+            var StreamData = Android.getStreamData(Play_CheckIfIsLiveChannel, true);
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData);//obj status url responseText
@@ -398,6 +399,7 @@ function Play_CheckIfIsLiveStartFail(text) {
 
 function Play_CheckIfIsLiveClean() {
     Play_CheckIfIsLiveURL = '';
+    Play_CheckIfIsLiveChannel = '';
     Play_CheckIfIsLiveQualities = [];
 }
 
