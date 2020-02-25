@@ -433,6 +433,8 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
 function UserLiveFeed_CheckIfIsLiveSTop() {
     window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
+    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+
     if (!Main_IsNotBrowser) return;
 
     if (Play_CheckIfIsLiveQualities.length) {
