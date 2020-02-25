@@ -694,8 +694,14 @@ function PlayClip_handleKeyDown(e) {
                 }
                 if (!Play_isEndDialogVisible()) Play_KeyPause(3);
                 break;
+            case KEY_1:
+                if (UserLiveFeed_isFeedShow()) {
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    else if (Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
+                }
+                break;
             case KEY_REFRESH:
-                if (UserLiveFeed_isFeedShow() && Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
+                if (UserLiveFeed_isFeedShow() && Play_CheckIfIsLiveStart()) UserLiveFeed_FeedRefresh();
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(3);

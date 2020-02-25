@@ -8,7 +8,7 @@ function en_USLang() {
 
     //Below are variables to translate
     STR_KEY_UP_DOWN = " PG Up/Down";
-    STR_GUIDE_EXTRA = STR_SPACE + "or key number 2";
+    STR_GUIDE_EXTRA = STR_SPACE + "or press key 2";
     STR_REFRESH = "Refresh";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
@@ -96,7 +96,7 @@ function en_USLang() {
     STR_UPDATE = 'Update';
     STR_CURRENT_VERSION = "Current installed version ";
     STR_LATEST_VERSION = " latest available version ";
-    STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause media";
+    STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause media or key 1";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
     STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it auto force close";
@@ -235,7 +235,7 @@ function en_USLang() {
     STR_AUTO_PLAY_NEXT = "Auto Play next clip";
     STR_SIDE_PANEL_SETTINGS = "Back to Main menu";
     STR_UP = " Press up";
-    STR_HOLD_UP = " Hold up";
+    STR_HOLD_UP = " Hold up or key 2";
     STR_LIVE_FEED = "Live Feed";
     STR_END_DIALOG_SETTINGS = "End dialog";
     STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that it will take for the stream/video/clip to end dialog taking action";
@@ -275,11 +275,10 @@ function en_USLang() {
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
     STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
-    STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
     STR_AUDIO_SOURCE = "Audio source";
     STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";
-    STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 2 to start";
-    STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter or press key 2 after selecting a stream from live feed";
+    STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 1 to start";
+    STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter or press key 1 after selecting a stream from live feed";
     STR_PICTURE_CONTROLS3 = "Change big window content: simple key enter click after selecting a stream from live feed";
     STR_PICTURE_CONTROLS4 = "Change content between windows: D-pad down big becomes small and vice versa";
     STR_PICTURE_CONTROLS5 = "Change small window position: D-pad left";
@@ -396,7 +395,7 @@ function en_USLang() {
     STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left";
     STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
     STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
-    STR_PICTURE_LIVE_FEED = 'Hold enter or press 2 to start "Picture in Picture", then use D-Pad left to move, right to resize or down to change videos';
+    STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
     STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
     STR_FEED_END_DIALOG = ', Press back to go back to top menu';
     STR_BACK_USER_GAMES = ' Press back key to ';

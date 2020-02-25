@@ -974,6 +974,7 @@ function Screens_handleKeyDown(event) {
                 Screens_addFocus(true);
             }
             break;
+        case KEY_1:
         case KEY_PLAY:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
