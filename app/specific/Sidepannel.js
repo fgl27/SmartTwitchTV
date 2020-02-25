@@ -529,6 +529,7 @@ function Sidepannel_handleKeyDown(event) {
                 Sidepannel_AddFocusFeed();
             }
             break;
+        case KEY_1:
         case KEY_PLAY:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
@@ -605,6 +606,7 @@ function Sidepannel_handleKeyDownMain(event) {
                 Sidepannel_AddFocusMain();
             }
             break;
+        case KEY_1:
         case KEY_PLAY:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
