@@ -3495,7 +3495,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.119';
+    var Main_stringVersion_Min = '.120';
     var Main_minversion = '022520';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -16823,6 +16823,8 @@
 
     function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
         window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+        window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+
         if (!Main_IsNotBrowser) return;
 
         if (Play_CheckIfIsLiveQualities.length) {
@@ -17791,6 +17793,8 @@
 
     function UserLiveFeed_CheckIfIsLiveSTop() {
         window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
+        window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+
         if (!Main_IsNotBrowser) return;
 
         if (Play_CheckIfIsLiveQualities.length) {
