@@ -403,8 +403,9 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerCheckCounter[4] = 0;
-        shouldCallJavaCheck = false;
         UsefullBandwidth = false;
+        if (player[0] == null && player[1] == null && player[2] == null && player[3] == null)
+            shouldCallJavaCheck = false;
     }
 
     private void initializePlayerMulti(int position, MediaSource mediaSource) {
