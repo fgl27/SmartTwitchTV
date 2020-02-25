@@ -409,7 +409,13 @@ function Play_CheckResume() { // Called only by JAVA
     if (Play_isOn) Play_Resume();
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
-    else if (Sidepannel_isShowing() && Play_CheckIfIsLiveQualities.length && Play_CheckIfIsLiveStart(true, true)) Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
+    else if (Sidepannel_isShowing() && Play_CheckIfIsLiveQualities.length && Play_CheckIfIsLiveStart(true, true)) {
+        try {
+            Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
+        } catch (e) {
+            Play_CheckIfIsLiveClean();
+        }
+    }
 }
 
 function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called only by JAVA
