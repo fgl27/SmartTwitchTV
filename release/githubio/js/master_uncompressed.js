@@ -3436,7 +3436,7 @@
         "Sidepannel_Pos": 2,
         "Sidepannel_IsUser": false,
         "My_channel": false,
-        "DeviceCheck": false,
+        "DeviceCheckNew": false,
         "Never_run_phone": true,
         "Codec_is_Check": false,
         "check_pp_workaround": true,
@@ -3692,9 +3692,9 @@
 
         if (Main_IsNotBrowser) {
 
-            if (!Main_values.DeviceCheck) {
+            if (!Main_values.DeviceCheckNew) {
 
-                Main_values.DeviceCheck = true;
+                Main_values.DeviceCheckNew = true;
                 var device = Android.getDevice();
                 var Manufacturer = Android.getManufacturer();
                 device = device ? device.toLowerCase() : "";
