@@ -485,7 +485,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
             }
         }
 
-    }, 1000);
+    }, 800);
 }
 
 function UserLiveFeed_CheckIfIsLiveSTop() {

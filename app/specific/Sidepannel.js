@@ -79,7 +79,7 @@ function Sidepannel_CheckIfIsLiveStart() {
             }
         }
 
-    }, 1000);
+    }, 800);
 }
 
 function Sidepannel_CheckIfIsLiveRefreshSet() {
