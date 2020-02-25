@@ -71,8 +71,12 @@ function Sidepannel_CheckIfIsLiveStart() {
     Sidepannel_CheckIfIsLiveStartId = window.setTimeout(function() {
 
         if (Play_CheckIfIsLiveStart(true, true)) {
-            Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
-            Sidepannel_CheckIfIsLiveRefreshSet();
+            try {
+                Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
+                Sidepannel_CheckIfIsLiveRefreshSet();
+            } catch (e) {
+                Play_CheckIfIsLiveClean();
+            }
         }
 
     }, 1000);
@@ -97,8 +101,14 @@ function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
     if (!Main_IsNotBrowser) return;
 
     if (Play_CheckIfIsLiveQualities.length) {
-        Android.ClearFeedPlayer();
-        if (!PreventcleanQuailities) Play_CheckIfIsLiveClean();
+
+        try {
+            Android.ClearFeedPlayer();
+            if (!PreventcleanQuailities) Play_CheckIfIsLiveClean();
+        } catch (e) {
+            Play_CheckIfIsLiveClean();
+        }
+
     }
 }
 
@@ -107,7 +117,11 @@ function Sidepannel_CheckIfIsLiveRefreshAuto() {
 
     if (tempUrl) {
         Play_CheckIfIsLiveURL = tempUrl;
-        Android.SetAutoFeedPlayer(tempUrl);
+        try {
+            Android.SetAutoFeedPlayer(tempUrl);
+        } catch (e) {
+            Play_CheckIfIsLiveClean();
+        }
     }
 }
 

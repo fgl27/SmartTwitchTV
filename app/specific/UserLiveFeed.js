@@ -477,8 +477,12 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
             }
 
-            Android.StartFeedPlayer(Play_CheckIfIsLiveURL, position, false);
-            Sidepannel_CheckIfIsLiveRefreshSet();
+            try {
+                Android.StartFeedPlayer(Play_CheckIfIsLiveURL, position, false);
+                Sidepannel_CheckIfIsLiveRefreshSet();
+            } catch (e) {
+                Play_CheckIfIsLiveClean();
+            }
         }
 
     }, 1000);
@@ -489,8 +493,14 @@ function UserLiveFeed_CheckIfIsLiveSTop() {
     if (!Main_IsNotBrowser) return;
 
     if (Play_CheckIfIsLiveQualities.length) {
-        Android.ClearFeedPlayer();
-        Play_CheckIfIsLiveClean();
+
+        try {
+            Android.ClearFeedPlayer();
+            Play_CheckIfIsLiveClean();
+        } catch (e) {
+            Play_CheckIfIsLiveClean();
+        }
+
     }
 }
 
