@@ -28,7 +28,6 @@ var UserLiveFeed_AnimationTimeout = 250;//Same value as user_feed_scroll
 var UserLiveFeed_FeedPosY = [];
 var UserLiveFeed_itemsCount = [];
 var UserLiveFeed_obj = {};
-var ImageLoaderWorker;
 var UserLiveFeed_cell = [];
 var UserLiveFeed_cellVisible = [];
 var UserLiveFeed_FeedSetPosLast = [];
@@ -160,7 +159,6 @@ function UserLiveFeed_Prepare() {
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
-    UserLiveFeed_Setworker();
     Main_innerHTML('feed_end_1', STR_SPACE + STR_FEATURED + STR_SPACE);
     Main_innerHTML('feed_end_3', STR_SPACE + STR_LIVE + STR_SPACE);
     Main_innerHTML('feed_end_4', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE + STR_SPACE);
@@ -170,65 +168,6 @@ function UserLiveFeed_Prepare() {
     Sidepannel_SidepannelDoc = document.getElementById('side_panel');
     Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
     UserLiveFeed_FeedHolderDocId = document.getElementById('user_feed');
-}
-
-function UserLiveFeed_Setworker() {
-    //Adapted from https://dev.to/trezy/loading-images-with-web-workers-49ap
-    var blobURL = URL.createObjectURL(new Blob(['(',
-
-        function() {
-            this.addEventListener('message',
-                function(event) {
-                    var onload = function(obj) {
-                        if (obj.status !== 200) obj.response = null;
-
-                        this.postMessage({
-                            url: obj.mData.url,
-                            blob: obj.response,
-                            id: obj.mData.id,
-                        });
-                    };
-
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.responseType = 'blob';
-                    xmlHttp.mData = event.data;
-
-                    xmlHttp.onreadystatechange = function() {
-                        if (xmlHttp.readyState === 4) {
-                            onload(xmlHttp);
-                        }
-                    };
-
-                    xmlHttp.open('GET', xmlHttp.mData.url, true);
-                    xmlHttp.timeout = 3000;
-                    xmlHttp.ontimeout = function() {};
-                    xmlHttp.send();
-                }
-            );
-
-        }.toString(),
-
-        ')()'], {type: 'application/javascript'}));
-
-    ImageLoaderWorker = new Worker(blobURL);
-
-    ImageLoaderWorker.addEventListener('message',
-        function(event) {
-            Main_ready(function() {
-                var imageData = event.data,
-                    imageElement = document.getElementById(imageData.id),
-                    objectURL = imageData.blob ? URL.createObjectURL(imageData.blob) : imageData.url;
-
-                if (imageElement) {
-                    imageElement.onload = function() {
-                        this.onload = null;
-                        URL.revokeObjectURL(objectURL);
-                    };
-                    imageElement.setAttribute('src', objectURL);
-                }
-            });
-        }
-    );
 }
 
 function UserLiveFeed_RefreshLive() {
