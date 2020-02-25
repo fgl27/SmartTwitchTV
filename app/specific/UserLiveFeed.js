@@ -462,7 +462,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
     window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
     UserLiveFeed_CheckIfIsLiveStartId = window.setTimeout(function() {
 
-        if (Play_CheckLiveThumb(false, true) && Play_CheckIfIsLiveStart(true)) {
+        if ((!Play_isOn || Play_CheckLiveThumb(false, true)) && Play_CheckIfIsLiveStart(true)) {
             var position = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX];
 
             if (position > 2) {

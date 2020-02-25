@@ -85,7 +85,10 @@ function Sidepannel_CheckIfIsLiveRefreshSet() {
 function Sidepannel_CheckIfIsLive(visible, callback) {
     if (visible) {
         var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
-        if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(tempChannel, Play_CheckIfIsLiveChannel)) callback();
+        if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(tempChannel, Play_CheckIfIsLiveChannel)) {
+            Play_CheckIfIsLiveClean();
+            callback();
+        }
     }
 }
 
