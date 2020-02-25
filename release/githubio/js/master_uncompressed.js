@@ -17282,6 +17282,7 @@
                     Sidepannel_AddFocusFeed();
                 }
                 break;
+            case KEY_1:
             case KEY_PLAY:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
@@ -17358,6 +17359,7 @@
                     Sidepannel_AddFocusMain();
                 }
                 break;
+            case KEY_1:
             case KEY_PLAY:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
