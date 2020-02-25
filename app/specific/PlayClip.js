@@ -3,7 +3,6 @@ var PlayClip_IsJumping = false;
 var PlayClip_jumpCount = 0;
 var PlayClip_TimeToJump = 0;
 var PlayClip_isOn = false;
-var PlayClip_loadingDataTry = 0;
 var PlayClip_loadingDataTimeout = 2000;
 var PlayClip_loadingDataTryMax = 3;
 var PlayClip_quality = 'source';
@@ -151,7 +150,6 @@ function PlayClip_loadData() {
         PlayClip_loadDataSuccess410();
         return;
     }
-    PlayClip_loadingDataTry = 0;
     PlayClip_loadingDataTimeout = 2000;
     PlayClip_loadDataRequest();
 }
@@ -159,40 +157,41 @@ function PlayClip_loadData() {
 function PlayClip_loadDataRequest() {
     var theUrl = 'https://gql.twitch.tv/gql',
         postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
-            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
+            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}',
+        xmlHttp;
 
-    var xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout, 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
+    for (var i = 0; i < 5; i++) {
+        xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout + (i * 500), 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
 
-    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-    else {
-        PlayClip_loadDataError();
-        return;
+        if (xmlHttp) {
+            xmlHttp = JSON.parse(xmlHttp);
+
+            if (xmlHttp.status === 200) {
+                PlayClip_QualityGenerate(xmlHttp.responseText);
+                return;
+            } else if (xmlHttp.status === 410) { //Workaround for future 410 issue
+                PlayClip_loadData410 = true;
+                PlayClip_loadData410Recheck();
+                PlayClip_loadDataSuccess410();
+                return;
+            }
+        }
     }
 
-    if (xmlHttp.status === 200) {
-        PlayClip_QualityGenerate(xmlHttp.responseText);
-    } else if (xmlHttp.status === 410) { //Workaround for future 410 issue
-        PlayClip_loadData410 = true;
-        window.setTimeout(function() {
-            PlayClip_loadData410 = false;
-        }, 60 * 60 * 1000);//try again after 1h
-        PlayClip_loadDataSuccess410();
-    } else {
-        PlayClip_loadDataError();
-    }
+    PlayClip_loadDataError();
+}
+
+function PlayClip_loadData410Recheck() {
+    window.setTimeout(function() {
+        PlayClip_loadData410 = false;
+    }, 30 * 60 * 1000);//try again after 30min
 }
 
 function PlayClip_loadDataError() {
-    PlayClip_loadingDataTry++;
-    if (PlayClip_loadingDataTry < PlayClip_loadingDataTryMax) {
-        PlayClip_loadingDataTimeout += 250;
-        PlayClip_loadDataRequest();
-    } else {
-        if (Main_IsNotBrowser) {
-            Play_HideBufferDialog();
-            Play_PlayEndStart(3);
-        } else PlayClip_loadDataSuccessFake();
-    }
+    if (Main_IsNotBrowser) {
+        Play_HideBufferDialog();
+        Play_PlayEndStart(3);
+    } else PlayClip_loadDataSuccessFake();
 }
 
 function PlayClip_loadDataSuccessFake() {
