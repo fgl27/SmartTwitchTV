@@ -341,7 +341,11 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     UserLiveFeed_ResetFeedId();
     if (UserLiveFeed_ShowSmallPlayer) {
         if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti)
-            Sidepannel_CheckIfIsLive(UserLiveFeed_isFeedShow(), UserLiveFeed_CheckIfIsLiveStart);
+            Sidepannel_CheckIfIsLive(
+                UserLiveFeed_isFeedShow(),
+                UserLiveFeed_CheckIfIsLiveStart,
+                JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6]
+            );
     }
 }
 
