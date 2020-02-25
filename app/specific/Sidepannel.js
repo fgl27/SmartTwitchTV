@@ -98,6 +98,8 @@ function Sidepannel_CheckIfIsLive(visible, callback) {
 
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
     window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+
     if (!Main_IsNotBrowser) return;
 
     if (Play_CheckIfIsLiveQualities.length) {
