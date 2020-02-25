@@ -14,6 +14,7 @@ var UserLiveFeed_Feedid;
 var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
 var UserLiveFeed_PreventHide = false;
 var UserLiveFeed_ShowSmallPlayer = true;
+var UserLiveFeed_DisableSmallPlayerMulti = false;
 
 var UserLiveFeed_CheckNotifycation = false;
 var UserLiveFeed_WasLiveidObject = {};
@@ -338,7 +339,10 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
-    if (UserLiveFeed_ShowSmallPlayer) Sidepannel_CheckIfIsLive(UserLiveFeed_isFeedShow(), UserLiveFeed_CheckIfIsLiveStart);
+    if (UserLiveFeed_ShowSmallPlayer) {
+        if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti)
+            Sidepannel_CheckIfIsLive(UserLiveFeed_isFeedShow(), UserLiveFeed_CheckIfIsLiveStart);
+    }
 }
 
 function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {

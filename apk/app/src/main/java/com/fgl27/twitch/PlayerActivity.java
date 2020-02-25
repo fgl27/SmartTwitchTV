@@ -1562,7 +1562,7 @@ public class PlayerActivity extends Activity {
 
         private PlayerEventListener(int mposition) {
             position = mposition;
-            delayms = (BUFFER_SIZE[mwhocall] * 2) + 5000;
+            delayms = (BUFFER_SIZE[mwhocall] * 2) + 5000 + (MultiStream ? 2000 : 0);
         }
 
         @Override
@@ -1717,7 +1717,7 @@ public class PlayerActivity extends Activity {
 
                         PlayerEventListenerCheckCounterSmall();
 
-                    }, (BUFFER_SIZE[mwhocall] * 2) + 4000);
+                    }, (BUFFER_SIZE[mwhocall] * 2) + 5000 + (MultiStream ? 2000 : 0));
                 } else if (playbackState == Player.STATE_READY) {
                     PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                     PlayerCheckCounter[4] = 0;

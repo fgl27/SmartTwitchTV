@@ -33,6 +33,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "disable_feed_player_multi": { //disable_feed_player_multi
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "live_feed_sort": { //live_feed_sort
         "values": [
             "views_more",
@@ -244,6 +248,8 @@ function Settings_SetSettings() {
 
     div += Settings_Content('show_feed_player', array_no_yes, STR_SHOW_FEED_PLAYER, null);
 
+    div += Settings_Content('disable_feed_player_multi', array_no_yes, STR_DISABLE_FEED_PLAYER_MULTI, null);
+
     div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
@@ -337,6 +343,8 @@ function Settings_SetStrings() {
     Main_textContent('show_screen_counter_name', STR_SCREEN_COUNTER);
 
     Main_textContent('show_feed_player_name', STR_SHOW_FEED_PLAYER);
+
+    Main_textContent('disable_feed_player_multi_name', STR_DISABLE_FEED_PLAYER_MULTI);
 
     Main_textContent('dpad_position_name', STR_DPAD_POSTION);
 
@@ -468,6 +476,7 @@ function Settings_SetDefautls() {
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     UserLiveFeed_ShowSmallPlayer = Settings_Obj_default("show_feed_player");
+    UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Settings_CodecsSet();
 }
@@ -560,6 +569,7 @@ function Settings_SetDefault(position) {
     }
     else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     else if (position === "show_feed_player") UserLiveFeed_ShowSmallPlayer = Settings_Obj_default("show_feed_player");
+    else if (position === "disable_feed_player_multi") UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
