@@ -3495,7 +3495,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.120';
+    var Main_stringVersion_Min = '.121';
     var Main_minversion = '022520';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -16807,14 +16807,17 @@
         Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
         Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
 
-        if (Sidepannel_isShowing())
+        if (Sidepannel_isShowing()) {
             Main_ShowElement('side_panel_feed_thumb');
 
-        Sidepannel_CheckIfIsLive(
-            Sidepannel_isShowing(),
-            Sidepannel_CheckIfIsLiveStart,
-            JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6]
-        );
+            var Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+            if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                Play_CheckIfIsLiveClean();
+                Sidepannel_CheckIfIsLiveStart();
+            }
+
+        }
+
     }
 
     var Sidepannel_CheckIfIsLiveStartId;
@@ -16841,15 +16844,6 @@
 
     function Sidepannel_CheckIfIsLiveRefreshSet() {
         Sidepannel_CheckIfIsLiveRefreshId = window.setInterval(Sidepannel_CheckIfIsLiveRefreshAuto, 300000);
-    }
-
-    function Sidepannel_CheckIfIsLive(visible, callback, Channel) {
-        if (visible) {
-            if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                Play_CheckIfIsLiveClean();
-                callback();
-            }
-        }
     }
 
     function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -17087,12 +17081,11 @@
     }
 
     function Sidepannel_Hide(PreventcleanQuailities) {
-        Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
         Sidepannel_HideMain();
         Sidepannel_RemoveFocusMain();
         Main_ShowElement('side_panel_fix');
         Sidepannel_FixDiv.style.marginLeft = '';
-        Sidepannel_HideEle();
+        Sidepannel_HideEle(PreventcleanQuailities);
         Main_HideElement('side_panel_feed_thumb');
         Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
@@ -17100,7 +17093,8 @@
         document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
     }
 
-    function Sidepannel_HideEle() {
+    function Sidepannel_HideEle(PreventcleanQuailities) {
+        Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
         Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     }
 
@@ -17732,12 +17726,19 @@
         UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
         UserLiveFeed_ResetFeedId();
         if (UserLiveFeed_ShowSmallPlayer) {
-            if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti)
-                Sidepannel_CheckIfIsLive(
-                    UserLiveFeed_isFeedShow(),
-                    UserLiveFeed_CheckIfIsLiveStart,
-                    JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6]
-                );
+            if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti) {
+                var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+                if (UserLiveFeed_isFeedShow()) {
+                    if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                        Play_CheckIfIsLiveClean();
+                        UserLiveFeed_CheckIfIsLiveStart();
+                    } else if (Play_CheckIfIsLiveQualities.length) {
+                        try {
+                            Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+                        } catch (e) {}
+                    }
+                }
+            }
         }
     }
 
@@ -17803,22 +17804,8 @@
         UserLiveFeed_CheckIfIsLiveStartId = window.setTimeout(function() {
 
             if ((!Play_isOn || Play_CheckLiveThumb(false, true)) && Play_CheckIfIsLiveStart(true)) {
-                var position = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX];
-
-                if (position > 2) {
-                    var size = UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1;
-                    if (size > 4) {
-                        position = position < (size - 2) ? 2 : (4 - (size - position));
-                    } else if (size > 3) {
-                        position = position < (size - 1) ? 2 : (4 - (size - position));
-                    } else if (size > 2) {
-                        position = position < size ? 2 : 3;
-                    }
-
-                }
-
                 try {
-                    Android.StartFeedPlayer(Play_CheckIfIsLiveURL, position, false);
+                    Android.StartFeedPlayer(Play_CheckIfIsLiveURL, UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]), false);
                     Sidepannel_CheckIfIsLiveRefreshSet();
                 } catch (e) {
                     Play_CheckIfIsLiveClean();
@@ -17826,6 +17813,20 @@
             }
 
         }, 800);
+    }
+
+    function UserLiveFeed_CheckIfIsLiveGetPos(position) {
+        if (position > 2) {
+            var size = UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1;
+            if (size > 4) {
+                position = position < (size - 2) ? 2 : (4 - (size - position));
+            } else if (size > 3) {
+                position = position < (size - 1) ? 2 : (4 - (size - position));
+            } else if (size > 2) {
+                position = position < size ? 2 : 3;
+            }
+        }
+        return position;
     }
 
     function UserLiveFeed_CheckIfIsLiveSTop() {
