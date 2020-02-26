@@ -150,7 +150,8 @@ public final class Tools {
                         return JsonObToResult(CheckToken(StreamToken, parser) ? 1 : mStatus, "link").toString();
                 }
             }
-            return response != null ? extractQualities(mStatus, response, url) : null;
+
+            return response != null ? extractQualities(mStatus, response, url, channel_name_vod_id) : null;
         }
 
         return null;
@@ -168,7 +169,7 @@ public final class Tools {
         return false;
     }
 
-    private static String extractQualities(int status, String responseText, String url) {
+    private static String extractQualities(int status, String responseText, String url, String channel_name_vod_id) {
         Matcher matcher = pattern.matcher(responseText);
         Matcher matcher2;
         JsonArray result = new JsonArray();
@@ -208,6 +209,7 @@ public final class Tools {
 
         JsonObject JSON = new JsonObject();
         JSON.addProperty("status", status);
+        JSON.addProperty("channel_vodid", channel_name_vod_id);
         JSON.addProperty("url", url);
         JSON.addProperty("responseText", result.toString());
 

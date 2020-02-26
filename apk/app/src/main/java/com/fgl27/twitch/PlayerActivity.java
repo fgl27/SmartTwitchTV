@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 import android.view.Display;
@@ -130,6 +131,9 @@ public class PlayerActivity extends Activity {
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
     public Handler myHandler;
+    public Handler ExtraPlayerHandler;
+    public String ExtraPlayerHandlerResult;
+    public HandlerThread ExtraPlayerHandlerThread;
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
     public int[] droppedFrames = new int[2];
@@ -172,6 +176,9 @@ public class PlayerActivity extends Activity {
             deviceIsTV = Tools.deviceIsTV(this);
 
             myHandler = new Handler(Looper.getMainLooper());
+            ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
+            ExtraPlayerHandlerThread.start();
+            ExtraPlayerHandler = new Handler(ExtraPlayerHandlerThread.getLooper());
 
             for (int i = 0; i < (PlayerAcountPlus); i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
@@ -355,10 +362,10 @@ public class PlayerActivity extends Activity {
             trackSelector[4] = new DefaultTrackSelector(this);
             trackSelector[4].setParameters(
                     UsefullBandwidth ?
-                    trackSelectorParameters :
-                    (smallPlayerBandwidth < smallExtraPlayerBandwidth ?
-                    trackSelectorParametersSmall : 
-                    trackSelectorParametersExtraSmall)
+                            trackSelectorParameters :
+                            (smallPlayerBandwidth < smallExtraPlayerBandwidth ?
+                                    trackSelectorParametersSmall :
+                                    trackSelectorParametersExtraSmall)
             );
 
             if (BLACKLISTEDCODECS != null) {
@@ -394,6 +401,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void ClearSmallPlayer() {
+        ExtraPlayerHandler.removeCallbacksAndMessages(null);
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
         PlayerView[4].setVisibility(View.GONE);
 
@@ -1119,6 +1127,29 @@ public class PlayerActivity extends Activity {
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
                 initializeSmallPlayer(mediaSourcesAuto[4]);
             });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void CheckIfIsLiveFeed(String Channel_name, int delayms, String fun) {
+            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+
+            ExtraPlayerHandler.postDelayed(() -> {
+
+                try {
+                    ExtraPlayerHandlerResult = Tools.getStreamData(Channel_name, true);
+                } catch (UnsupportedEncodingException e) {
+                    Log.d(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException");
+                }
+
+                myHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "()"));
+            }, delayms);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String GetCheckIfIsLiveFeed() {
+            return ExtraPlayerHandlerResult;
         }
 
         @SuppressWarnings("unused")//called by JS
