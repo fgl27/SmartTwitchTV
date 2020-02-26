@@ -1123,10 +1123,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetFeedPositon(int position) {
-            myHandler.post(() -> {
-                PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
-            });
+        public void SetFeedPosition(int position) {
+            myHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]));
         }
 
         @SuppressWarnings("unused")//called by JS
