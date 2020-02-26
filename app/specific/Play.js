@@ -406,7 +406,7 @@ function Play_CheckIfIsLiveClean(SkipCheckThumbDiv) {
     window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
     window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
     window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
-    if (Sidepannel_isShowing() && !SkipCheckThumbDiv) Sidepannel_UpdateThumbDiv();
+    if (Sidepannel_isShowing() && !SkipCheckThumbDiv) Sidepannel_UpdateThumbDiv();//Was called from java
 }
 
 function Play_CheckResume() { // Called only by JAVA
