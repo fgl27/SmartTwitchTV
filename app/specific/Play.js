@@ -417,6 +417,8 @@ function Play_CheckResume() { // Called only by JAVA
         if (Play_CheckIfIsLiveStart(true, true)) {
             try {
                 Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
+                Sidepannel_CheckIfIsLiveRefreshSet();
+                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
             } catch (e) {
                 Play_CheckIfIsLiveClean(true);
             }
