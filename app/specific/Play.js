@@ -417,6 +417,7 @@ function Play_CheckResume() { // Called only by JAVA
     else if (PlayClip_isOn) PlayClip_Resume();
     else if (Sidepannel_isShowing() && Play_CheckIfIsLiveQualities.length) {
         Sidepannel_CheckIfIsLiveCleanTimeouts();
+        Play_CheckIfIsLiveCleanEnd();
         if (Play_CheckIfIsLiveStart(true, true)) {
             try {
                 Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
