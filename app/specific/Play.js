@@ -340,7 +340,7 @@ var Play_CheckIfIsLiveChannel = '';
 var Play_CheckIfIsLiveQualities = [];
 
 function Play_CheckIfIsLiveStart(PreventshowBuffer, IsSide) {
-    if (Play_CheckIfIsLiveQualities.length) return true;//Reused for vod and clip checking from live feed
+    if (Play_CheckIfIsLiveQualities.length) return true;//Reused for vod and clip checking from live feed alredy playing
 
     if (!PreventshowBuffer) Play_showBufferDialog();
 
