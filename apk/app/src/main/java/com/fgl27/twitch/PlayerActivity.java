@@ -50,8 +50,8 @@ import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
     public static final int PlayerAcount = 4;
     public static final int PlayerAcountPlus = PlayerAcount + 1;
     private static final int[] positions = {
@@ -1625,9 +1625,10 @@ public class PlayerActivity extends Activity {
                     PlayerCheckHandler[position].postDelayed(() -> {
 
                         //Check if Player was released or is on pause
-                        if (player[position] != null || player[position].isPlaying())
-                            PlayerEventListenerCheckCounter(position, false);
+                        if (player[position] == null || !player[position].isPlaying())
+                            return;
 
+                        PlayerEventListenerCheckCounter(position, false);
                     }, delayms);
                 } else if (playbackState == Player.STATE_READY) {
                     PlayerCheckHandler[position].removeCallbacksAndMessages(null);
