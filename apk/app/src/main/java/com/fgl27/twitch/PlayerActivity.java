@@ -633,7 +633,7 @@ public class PlayerActivity extends Activity {
         //Big player for side panel
         PlayerViewExtraLayout[5] = new FrameLayout.LayoutParams((int) (mwidthDefault / 1.68),(int) (heightDefault / 1.68), Gravity.RIGHT | Gravity.BOTTOM);
         PlayerViewExtraLayout[5].bottomMargin = (int) (size.x / 15.7 * density / Scaledensity);
-        PlayerViewExtraLayout[5].rightMargin = (int) (size.y / 13.5 * density / Scaledensity);
+        PlayerViewExtraLayout[5].rightMargin = (int) (size.y / 13.55 * density / Scaledensity);
 
         for (int i = 0; i < 5; i++) {
             PlayerViewExtraLayout[i].bottomMargin = (int) (size.x / 22 * density / Scaledensity);
