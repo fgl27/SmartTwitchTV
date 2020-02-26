@@ -344,7 +344,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
             var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
             if (UserLiveFeed_isFeedShow()) {
                 if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                    Play_CheckIfIsLiveClean();
+                    Play_CheckIfIsLiveCleanEnd();
                     UserLiveFeed_CheckIfIsLiveStart();
                 } else if (Play_CheckIfIsLiveQualities.length) {
                     try {
@@ -412,8 +412,7 @@ var UserLiveFeed_CheckIfIsLiveStartId;
 function UserLiveFeed_CheckIfIsLiveStart() {
     if (!Main_IsNotBrowser) return;
 
-    window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
-    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
     UserLiveFeed_CheckIfIsLiveStartId = window.setTimeout(function() {
 
         if ((!Play_isOn || Play_CheckLiveThumb(false, true)) && Play_CheckIfIsLiveStart(true)) {
@@ -421,7 +420,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
                 Android.StartFeedPlayer(Play_CheckIfIsLiveURL, UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]), false);
                 Sidepannel_CheckIfIsLiveRefreshSet();
             } catch (e) {
-                Play_CheckIfIsLiveClean();
+                Play_CheckIfIsLiveCleanEnd();
             }
         }
 
@@ -443,8 +442,7 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
 }
 
 function UserLiveFeed_CheckIfIsLiveSTop() {
-    window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
-    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
 
     if (!Main_IsNotBrowser) return;
 
@@ -452,9 +450,9 @@ function UserLiveFeed_CheckIfIsLiveSTop() {
 
         try {
             Android.ClearFeedPlayer();
-            Play_CheckIfIsLiveClean();
+            Play_CheckIfIsLiveCleanEnd();
         } catch (e) {
-            Play_CheckIfIsLiveClean();
+            Play_CheckIfIsLiveCleanEnd();
         }
 
     }
