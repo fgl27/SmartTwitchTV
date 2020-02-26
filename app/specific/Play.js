@@ -340,7 +340,7 @@ var Play_CheckIfIsLiveChannel = '';
 var Play_CheckIfIsLiveQualities = [];
 
 function Play_CheckIfIsLiveStart(PreventshowBuffer, IsSide) {
-    if (Play_CheckIfIsLiveQualities.length) return true;//Reused for vod and clip checking from live feed alredy playing
+    if (Play_CheckIfIsLiveQualities.length) return true;//Reused for vod and clip checking from live feed already playing
 
     if (!PreventshowBuffer) Play_showBufferDialog();
 
@@ -2967,19 +2967,19 @@ function Play_handleKeyDown(e) {
                 if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_MultiEnable) {
-                        console.log('multi');
                         if (Play_MultiIsFull()) {
                             var mdoc2 = Play_CheckLiveThumb();
                             if (mdoc2) Play_MultiSetUpdateDialog(mdoc2);
                         } else Play_MultiStartPrestart();
                     } else {
-                        console.log('dhdh');
                         PlayExtra_KeyEnter();
                     }
                 }
                 break;
             case KEY_REFRESH:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                else if (!Play_isEndDialogVisible() && !Play_isPanelShown() &&
+                    !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(1);
