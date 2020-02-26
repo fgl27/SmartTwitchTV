@@ -97,6 +97,7 @@ function Sidepannel_CheckIfIsLiveStart() {
 }
 
 function Sidepannel_CheckIfIsLiveRefreshSet() {
+    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
     Sidepannel_CheckIfIsLiveRefreshId = window.setInterval(Sidepannel_CheckIfIsLiveRefreshAuto, 300000);
 }
 
