@@ -6232,7 +6232,7 @@
                 PlayExtra_data.AutoUrl = Play_CheckIfIsLiveURL;
                 PlayExtra_loadDataSuccessEnd(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
 
-                Play_CheckIfIsLiveClean();
+                Play_CheckIfIsLiveCleanEnd();
             }
 
         }
@@ -6874,7 +6874,7 @@
             Play_data.AutoUrl = Play_CheckIfIsLiveURL;
             Play_loadDataSuccessend(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
 
-            Play_CheckIfIsLiveClean(true);
+            Play_CheckIfIsLiveCleanEnd();
         }
         Play_UpdateMainStream(true);
         document.body.removeEventListener("keyup", Main_handleKeyUp);
@@ -6947,19 +6947,21 @@
 
     function Play_CheckIfIsLiveStartFail(text) {
         Play_HideBufferDialog();
-        Play_CheckIfIsLiveClean(true);
+        Play_CheckIfIsLiveCleanEnd();
 
         Play_showWarningDialog(text, 2000);
     }
 
-    function Play_CheckIfIsLiveClean(SkipCheckThumbDiv) {
+    function Play_CheckIfIsLiveClean() { //called from java
+        Play_CheckIfIsLiveCleanEnd();
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
+        if (Sidepannel_isShowing()) Sidepannel_UpdateThumbDiv();
+    }
+
+    function Play_CheckIfIsLiveCleanEnd() {
         Play_CheckIfIsLiveURL = '';
         Play_CheckIfIsLiveChannel = '';
         Play_CheckIfIsLiveQualities = [];
-        window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
-        window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
-        window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
-        if (Sidepannel_isShowing() && !SkipCheckThumbDiv) Sidepannel_UpdateThumbDiv();
     }
 
     function Play_CheckResume() { // Called only by JAVA
@@ -6973,9 +6975,13 @@
                     Sidepannel_CheckIfIsLiveRefreshSet();
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
                 } catch (e) {
-                    Play_CheckIfIsLiveClean(true);
+                    Play_CheckIfIsLiveCleanEnd();
+                    Sidepannel_CheckIfIsLiveCleanTimeouts();
                 }
-            } else Sidepannel_UpdateThumbDiv();
+            } else {
+                Sidepannel_UpdateThumbDiv();
+                Sidepannel_CheckIfIsLiveCleanTimeouts();
+            }
         }
     }
 
@@ -16824,7 +16830,7 @@
 
             var Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
             if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                Play_CheckIfIsLiveClean(true);
+                Play_CheckIfIsLiveCleanEnd();
                 Sidepannel_CheckIfIsLiveStart();
             } else if (Play_CheckIfIsLiveQualities.length) {
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
@@ -16840,8 +16846,7 @@
     function Sidepannel_CheckIfIsLiveStart() {
         if (!Main_IsNotBrowser) return;
 
-        window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
-        window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
         Sidepannel_CheckIfIsLiveStartId = window.setTimeout(function() {
 
             if (Play_CheckIfIsLiveStart(true, true)) {
@@ -16850,7 +16855,7 @@
                     Sidepannel_CheckIfIsLiveRefreshSet();
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
                 } catch (e) {
-                    Play_CheckIfIsLiveClean(true);
+                    Play_CheckIfIsLiveCleanEnd();
                 }
             }
 
@@ -16863,8 +16868,7 @@
     }
 
     function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
-        window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
-        window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
 
         if (!Main_IsNotBrowser) return;
 
@@ -16872,9 +16876,9 @@
 
             try {
                 Android.ClearFeedPlayer();
-                if (!PreventcleanQuailities) Play_CheckIfIsLiveClean(true);
+                if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
             } catch (e) {
-                Play_CheckIfIsLiveClean(true);
+                Play_CheckIfIsLiveCleanEnd();
             }
 
         }
@@ -16888,9 +16892,15 @@
             try {
                 Android.SetAutoFeedPlayer(tempUrl);
             } catch (e) {
-                Play_CheckIfIsLiveClean(true);
+                Play_CheckIfIsLiveCleanEnd();
             }
         }
+    }
+
+    function Sidepannel_CheckIfIsLiveCleanTimeouts() {
+        window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
+        window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+        window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
     }
 
     function Sidepannel_partnerIcon(name, partner, isrerun) {
@@ -17746,7 +17756,7 @@
                 var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
                 if (UserLiveFeed_isFeedShow()) {
                     if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                        Play_CheckIfIsLiveClean();
+                        Play_CheckIfIsLiveCleanEnd();
                         UserLiveFeed_CheckIfIsLiveStart();
                     } else if (Play_CheckIfIsLiveQualities.length) {
                         try {
@@ -17815,8 +17825,7 @@
     function UserLiveFeed_CheckIfIsLiveStart() {
         if (!Main_IsNotBrowser) return;
 
-        window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
-        window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
         UserLiveFeed_CheckIfIsLiveStartId = window.setTimeout(function() {
 
             if ((!Play_isOn || Play_CheckLiveThumb(false, true)) && Play_CheckIfIsLiveStart(true)) {
@@ -17824,7 +17833,7 @@
                     Android.StartFeedPlayer(Play_CheckIfIsLiveURL, UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]), false);
                     Sidepannel_CheckIfIsLiveRefreshSet();
                 } catch (e) {
-                    Play_CheckIfIsLiveClean();
+                    Play_CheckIfIsLiveCleanEnd();
                 }
             }
 
@@ -17846,8 +17855,7 @@
     }
 
     function UserLiveFeed_CheckIfIsLiveSTop() {
-        window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
-        window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
 
         if (!Main_IsNotBrowser) return;
 
@@ -17855,9 +17863,9 @@
 
             try {
                 Android.ClearFeedPlayer();
-                Play_CheckIfIsLiveClean();
+                Play_CheckIfIsLiveCleanEnd();
             } catch (e) {
-                Play_CheckIfIsLiveClean();
+                Play_CheckIfIsLiveCleanEnd();
             }
 
         }
