@@ -57,7 +57,7 @@ function PlayExtra_KeyEnter() {
             PlayExtra_data.AutoUrl = Play_CheckIfIsLiveURL;
             PlayExtra_loadDataSuccessEnd(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
 
-            Play_CheckIfIsLiveClean();
+            Play_CheckIfIsLiveCleanEnd();
         }
 
     }

@@ -321,7 +321,7 @@ function Play_Start() {
         Play_data.AutoUrl = Play_CheckIfIsLiveURL;
         Play_loadDataSuccessend(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
 
-        Play_CheckIfIsLiveClean(true);
+        Play_CheckIfIsLiveCleanEnd();
     }
     Play_UpdateMainStream(true);
     document.body.removeEventListener("keyup", Main_handleKeyUp);
@@ -394,19 +394,21 @@ function Play_CheckIfIsLiveStart(PreventshowBuffer, IsSide) {
 
 function Play_CheckIfIsLiveStartFail(text) {
     Play_HideBufferDialog();
-    Play_CheckIfIsLiveClean(true);
+    Play_CheckIfIsLiveCleanEnd();
 
     Play_showWarningDialog(text, 2000);
 }
 
-function Play_CheckIfIsLiveClean(SkipCheckThumbDiv) {
+function Play_CheckIfIsLiveClean() {//called from java
+    Play_CheckIfIsLiveCleanEnd();
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
+    if (Sidepannel_isShowing()) Sidepannel_UpdateThumbDiv();
+}
+
+function Play_CheckIfIsLiveCleanEnd() {
     Play_CheckIfIsLiveURL = '';
     Play_CheckIfIsLiveChannel = '';
     Play_CheckIfIsLiveQualities = [];
-    window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
-    window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
-    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
-    if (Sidepannel_isShowing() && !SkipCheckThumbDiv) Sidepannel_UpdateThumbDiv();//Was called from java
 }
 
 function Play_CheckResume() { // Called only by JAVA
@@ -420,9 +422,13 @@ function Play_CheckResume() { // Called only by JAVA
                 Sidepannel_CheckIfIsLiveRefreshSet();
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
             } catch (e) {
-                Play_CheckIfIsLiveClean(true);
+                Play_CheckIfIsLiveCleanEnd();
+                Sidepannel_CheckIfIsLiveCleanTimeouts();
             }
-        } else Sidepannel_UpdateThumbDiv();
+        } else {
+            Sidepannel_UpdateThumbDiv();
+            Sidepannel_CheckIfIsLiveCleanTimeouts();
+        }
     }
 }
 
