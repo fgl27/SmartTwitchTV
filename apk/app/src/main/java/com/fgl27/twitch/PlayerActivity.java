@@ -180,7 +180,7 @@ public class PlayerActivity extends Activity {
             ExtraPlayerHandlerThread.start();
             ExtraPlayerHandler = new Handler(ExtraPlayerHandlerThread.getLooper());
 
-            for (int i = 0; i < (PlayerAcountPlus); i++) {
+            for (int i = 0; i < PlayerAcountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
             }
 
@@ -355,9 +355,6 @@ public class PlayerActivity extends Activity {
         }
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
 
-        if (PlayerView[4].getVisibility() != View.VISIBLE)
-            PlayerView[4].setVisibility(View.VISIBLE);
-
         if (player[4] == null) {
             trackSelector[4] = new DefaultTrackSelector(this);
             trackSelector[4].setParameters(
@@ -395,6 +392,9 @@ public class PlayerActivity extends Activity {
 
         player[4].prepare();
         player[4].setPlayWhenReady(true);
+
+        if (PlayerView[4].getVisibility() != View.VISIBLE)
+            PlayerView[4].setVisibility(View.VISIBLE);
 
         KeepScreenOn(true);
         shouldCallJavaCheck = true;
@@ -533,7 +533,7 @@ public class PlayerActivity extends Activity {
         shouldCallJavaCheck = false;
         AudioSource = 1;
 
-        for (int i = 0; i < (PlayerAcountPlus); i++) {
+        for (int i = 0; i < PlayerAcountPlus; i++) {
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             mediaSourcePlaying[i] = null;
             mediaSourcesAuto[i] = null;
@@ -812,7 +812,7 @@ public class PlayerActivity extends Activity {
         IsonStop = true;
         int temp_AudioMulti = AudioMulti;
 
-        for (int i = 0; i < (PlayerAcountPlus); i++) {
+        for (int i = 0; i < PlayerAcountPlus; i++) {
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             updateResumePosition(i);
             ClearPlayer(i);
@@ -829,7 +829,7 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        for (int i = 0; i < (PlayerAcountPlus); i++) {
+        for (int i = 0; i < PlayerAcountPlus; i++) {
             ClearPlayer(i);
         }
     }
