@@ -339,20 +339,13 @@ var Play_CheckIfIsLiveURL = '';
 var Play_CheckIfIsLiveChannel = '';
 var Play_CheckIfIsLiveQualities = [];
 
-function Play_CheckIfIsLiveStart(PreventshowBuffer, IsSide) {
+function Play_CheckIfIsLiveStart() {
     if (Play_CheckIfIsLiveQualities.length) return true;//Reused for vod and clip checking from live feed already playing
 
     if (!PreventshowBuffer) Play_showBufferDialog();
 
-    var selectedChannelDisplayname;
-
-    if (IsSide) {
-        Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
-        selectedChannelDisplayname = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).textContent;
-    } else {
-        Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
-        selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
-    }
+    var selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
+    Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
     if (Main_IsNotBrowser) {
 
