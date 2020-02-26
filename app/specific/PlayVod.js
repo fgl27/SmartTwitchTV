@@ -1033,6 +1033,8 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_REFRESH:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                else if (!Play_isEndDialogVisible() && !Play_isPanelShown() &&
+                    !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(2);
