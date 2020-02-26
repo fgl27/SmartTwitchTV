@@ -1120,6 +1120,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetFeedPositon(int position) {
+            myHandler.post(() -> {
+                PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void SetAutoFeedPlayer(String url) {
             myHandler.post(() -> {
                 expires[4] = System.currentTimeMillis() + 18000;
