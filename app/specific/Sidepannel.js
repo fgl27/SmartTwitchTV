@@ -39,7 +39,7 @@ function Sidepannel_isShowing() {
     return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
 }
 
-function Sidepannel_UpdateThumb() {
+function Sidepannel_UpdateThumbDiv() {
     var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed)
         .getAttribute(Main_DataAttribute));
 
@@ -54,14 +54,20 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
     Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
     Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
+}
+
+function Sidepannel_UpdateThumb() {
+    Sidepannel_UpdateThumbDiv();
 
     if (Sidepannel_isShowing()) {
         Main_ShowElement('side_panel_feed_thumb');
 
         var Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
         if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-            Play_CheckIfIsLiveClean();
+            Play_CheckIfIsLiveClean(true);
             Sidepannel_CheckIfIsLiveStart();
+        } else if (Play_CheckIfIsLiveQualities.length) {
+            Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
         }
 
     }
@@ -81,8 +87,9 @@ function Sidepannel_CheckIfIsLiveStart() {
             try {
                 Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
                 Sidepannel_CheckIfIsLiveRefreshSet();
+                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
             } catch (e) {
-                Play_CheckIfIsLiveClean();
+                Play_CheckIfIsLiveClean(true);
             }
         }
 
@@ -103,9 +110,9 @@ function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
 
         try {
             Android.ClearFeedPlayer();
-            if (!PreventcleanQuailities) Play_CheckIfIsLiveClean();
+            if (!PreventcleanQuailities) Play_CheckIfIsLiveClean(true);
         } catch (e) {
-            Play_CheckIfIsLiveClean();
+            Play_CheckIfIsLiveClean(true);
         }
 
     }
@@ -119,7 +126,7 @@ function Sidepannel_CheckIfIsLiveRefreshAuto() {
         try {
             Android.SetAutoFeedPlayer(tempUrl);
         } catch (e) {
-            Play_CheckIfIsLiveClean();
+            Play_CheckIfIsLiveClean(true);
         }
     }
 }
