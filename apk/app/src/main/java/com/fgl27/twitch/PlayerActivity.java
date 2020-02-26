@@ -629,13 +629,16 @@ public class PlayerActivity extends Activity {
         PlayerViewExtraLayout[2] = new FrameLayout.LayoutParams(Extrawidth, Extraheight, Gravity.CENTER | Gravity.BOTTOM);
         PlayerViewExtraLayout[3] = new FrameLayout.LayoutParams(Extrawidth, Extraheight, Gravity.RIGHT | Gravity.BOTTOM);
         PlayerViewExtraLayout[4] = new FrameLayout.LayoutParams(Extrawidth, Extraheight, Gravity.RIGHT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[5] = new FrameLayout.LayoutParams((int) (mwidthDefault / 1.33),(int) (heightDefault / 1.33), Gravity.RIGHT | Gravity.BOTTOM);
+
+        //Big player for side panel
+        PlayerViewExtraLayout[5] = new FrameLayout.LayoutParams((int) (mwidthDefault / 1.68),(int) (heightDefault / 1.68), Gravity.RIGHT | Gravity.BOTTOM);
+        PlayerViewExtraLayout[5].bottomMargin = (int) (size.x / 15.7 * density / Scaledensity);
+        PlayerViewExtraLayout[5].rightMargin = (int) (size.y / 13.5 * density / Scaledensity);
 
         for (int i = 0; i < 5; i++) {
             PlayerViewExtraLayout[i].bottomMargin = (int) (size.x / 22 * density / Scaledensity);
         }
 
-        PlayerViewExtraLayout[5].bottomMargin = (int) (size.x / 16 * density / Scaledensity);
         PlayerViewExtraLayout[1].leftMargin = margin;
         PlayerViewExtraLayout[3].rightMargin = margin;
 
