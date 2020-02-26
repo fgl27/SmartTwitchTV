@@ -55,14 +55,17 @@ function Sidepannel_UpdateThumb() {
     Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
     Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
 
-    if (Sidepannel_isShowing())
+    if (Sidepannel_isShowing()) {
         Main_ShowElement('side_panel_feed_thumb');
 
-    Sidepannel_CheckIfIsLive(
-        Sidepannel_isShowing(),
-        Sidepannel_CheckIfIsLiveStart,
-        JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6]
-    );
+        var Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+        if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+            Play_CheckIfIsLiveClean();
+            Sidepannel_CheckIfIsLiveStart();
+        }
+
+    }
+
 }
 
 var Sidepannel_CheckIfIsLiveStartId;
@@ -88,15 +91,6 @@ function Sidepannel_CheckIfIsLiveStart() {
 
 function Sidepannel_CheckIfIsLiveRefreshSet() {
     Sidepannel_CheckIfIsLiveRefreshId = window.setInterval(Sidepannel_CheckIfIsLiveRefreshAuto, 300000);
-}
-
-function Sidepannel_CheckIfIsLive(visible, callback, Channel) {
-    if (visible) {
-        if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-            Play_CheckIfIsLiveClean();
-            callback();
-        }
-    }
 }
 
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
