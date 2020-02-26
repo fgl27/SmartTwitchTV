@@ -334,12 +334,11 @@ function Sidepannel_HideMain(hideAll) {
 }
 
 function Sidepannel_Hide(PreventcleanQuailities) {
-    Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
     Sidepannel_HideMain();
     Sidepannel_RemoveFocusMain();
     Main_ShowElement('side_panel_fix');
     Sidepannel_FixDiv.style.marginLeft = '';
-    Sidepannel_HideEle();
+    Sidepannel_HideEle(PreventcleanQuailities);
     Main_HideElement('side_panel_feed_thumb');
     Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
@@ -347,7 +346,8 @@ function Sidepannel_Hide(PreventcleanQuailities) {
     document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
 }
 
-function Sidepannel_HideEle() {
+function Sidepannel_HideEle(PreventcleanQuailities) {
+    Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
     Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
 }
 
