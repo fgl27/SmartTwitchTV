@@ -64,7 +64,6 @@ function Sidepannel_UpdateThumb() {
 
         var Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
         if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-            Play_CheckIfIsLiveCleanEnd();
             Sidepannel_CheckIfIsLiveStart();
         } else if (Play_CheckIfIsLiveQualities.length) {
             Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
@@ -74,30 +73,85 @@ function Sidepannel_UpdateThumb() {
 
 }
 
-var Sidepannel_CheckIfIsLiveStartId;
-var Sidepannel_CheckIfIsLiveRefreshId;
-function Sidepannel_CheckIfIsLiveStart() {
-    if (!Main_IsNotBrowser) return;
+function Sidepannel_CheckIfIsLiveResult() {//Called by Java
+    var StreamData = JSON.parse(Android.GetCheckIfIsLiveFeed());
 
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
-    Sidepannel_CheckIfIsLiveStartId = window.setTimeout(function() {
+    if (StreamData) {
 
-        if (Play_CheckIfIsLiveStart(true, true)) {
-            try {
-                Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
+        var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+
+        if (Main_A_equals_B(tempChannel, StreamData.channel_vodid)) {
+
+            if (StreamData.status === 200) {
+
+                Play_CheckIfIsLiveURL = StreamData.url;
+                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                Play_CheckIfIsLiveChannel = tempChannel;
+
+                Android.StartFeedPlayer(
+                    Play_CheckIfIsLiveURL,
+                    5,
+                    true
+                );
+
                 Sidepannel_CheckIfIsLiveRefreshSet();
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
-            } catch (e) {
-                Play_CheckIfIsLiveCleanEnd();
+            } else if (StreamData.status === 1 || StreamData.status === 403) {
+
+                Sidepannel_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
+                    ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+
+            } else {
+                Sidepannel_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
+                    ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
             }
         }
 
-    }, 800);
+    }
+
 }
 
+function Sidepannel_CheckIfIsLiveWarn(text) {
+    Play_CheckIfIsLiveCleanEnd();
+    Sidepannel_UpdateThumbDiv();
+    Sidepannel_showWarningDialog(text);
+    window.setTimeout(Sidepannel_HideWarningDialog, 2000);
+}
+
+function Sidepannel_showWarningDialog(text) {
+    Main_innerHTML('sidepannel_dialog_warning_text', text);
+    Main_ShowElement('sidepannel_dialog_warning');
+}
+
+function Sidepannel_HideWarningDialog() {
+    Main_HideElement('sidepannel_dialog_warning');
+}
+
+function Sidepannel_CheckIfIsLiveStart() {
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
+    Play_CheckIfIsLiveCleanEnd();
+
+    if (!Main_IsNotBrowser) return;
+
+    try {
+        Android.CheckIfIsLiveFeed(
+            JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6],
+            500,
+            "Sidepannel_CheckIfIsLiveResult"
+        );
+    } catch (e) {
+        Play_CheckIfIsLiveCleanEnd();
+    }
+}
+
+var Sidepannel_CheckIfIsLiveRefreshId;
 function Sidepannel_CheckIfIsLiveRefreshSet() {
-    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
     Sidepannel_CheckIfIsLiveRefreshId = window.setInterval(Sidepannel_CheckIfIsLiveRefreshAuto, 300000);
+}
+
+function Sidepannel_CheckIfIsLiveCleanTimeouts() {
+    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
 }
 
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -128,12 +182,6 @@ function Sidepannel_CheckIfIsLiveRefreshAuto() {
             Play_CheckIfIsLiveCleanEnd();
         }
     }
-}
-
-function Sidepannel_CheckIfIsLiveCleanTimeouts() {
-    window.clearTimeout(UserLiveFeed_CheckIfIsLiveStartId);
-    window.clearTimeout(Sidepannel_CheckIfIsLiveStartId);
-    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
 }
 
 function Sidepannel_partnerIcon(name, partner, isrerun) {

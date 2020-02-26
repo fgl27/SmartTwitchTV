@@ -482,11 +482,12 @@ function UserLiveFeed_CheckIfIsLiveWarn(text) {
     Play_showWarningDialog(text, 2000);
 }
 
-var UserLiveFeed_CheckIfIsLiveStartId;
 function UserLiveFeed_CheckIfIsLiveStart() {
 
     Sidepannel_CheckIfIsLiveCleanTimeouts();
     Play_CheckIfIsLiveCleanEnd();
+
+    if (!Main_IsNotBrowser) return;
 
     var doc = Play_CheckLiveThumb(false, true);
 
