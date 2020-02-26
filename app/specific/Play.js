@@ -416,18 +416,8 @@ function Play_CheckResume() { // Called only by JAVA
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
     else if (Sidepannel_isShowing() && Play_CheckIfIsLiveQualities.length) {
-        Sidepannel_CheckIfIsLiveCleanTimeouts();
-        Play_CheckIfIsLiveCleanEnd();
-        if (Play_CheckIfIsLiveStart(true, true)) {
-            try {
-                Android.StartFeedPlayer(Play_CheckIfIsLiveURL, 5, true);
-                Sidepannel_CheckIfIsLiveRefreshSet();
-                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
-            } catch (e) {
-                Play_CheckIfIsLiveCleanEnd();
-                Sidepannel_CheckIfIsLiveCleanTimeouts();
-            }
-        } else Sidepannel_UpdateThumbDiv();
+        Sidepannel_UpdateThumbDiv();
+        Sidepannel_CheckIfIsLiveStart();
     }
 }
 
