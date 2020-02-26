@@ -348,7 +348,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
                     UserLiveFeed_CheckIfIsLiveStart();
                 } else if (Play_CheckIfIsLiveQualities.length) {
                     try {
-                        Android.SetFeedPositon(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+                        Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
                     } catch (e) {}
                 }
             }
