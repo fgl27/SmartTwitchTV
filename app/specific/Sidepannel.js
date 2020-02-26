@@ -76,7 +76,7 @@ function Sidepannel_UpdateThumb() {
 function Sidepannel_CheckIfIsLiveResult() {//Called by Java
     var StreamData = JSON.parse(Android.GetCheckIfIsLiveFeed());
 
-    if (StreamData) {
+    if (StreamData && Sidepannel_isShowing()) {
 
         var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
 

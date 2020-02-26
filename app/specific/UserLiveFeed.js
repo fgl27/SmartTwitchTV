@@ -443,7 +443,7 @@ function UserLiveFeed_CheckIfIsLiveSTop() {
 function UserLiveFeed_CheckIfIsLiveResult() {//Called by Java
     var StreamData = JSON.parse(Android.GetCheckIfIsLiveFeed());
 
-    if (StreamData) {
+    if (StreamData && UserLiveFeed_isFeedShow()) {
 
         var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
