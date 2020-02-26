@@ -701,7 +701,7 @@ function PlayClip_handleKeyDown(e) {
                 }
                 break;
             case KEY_REFRESH:
-                if (UserLiveFeed_isFeedShow() && Play_CheckIfIsLiveStart()) UserLiveFeed_FeedRefresh();
+                if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(3);
