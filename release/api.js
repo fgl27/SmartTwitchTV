@@ -28,7 +28,8 @@
         'Play_CheckResumeForced': Play_CheckResumeForced, //Play_CheckResumeForced() func from app/specific/Play.js
         'PlayExtra_End': PlayExtra_End, //PlayExtra_End() func from app/specific/PlayExtra.js
         'Play_MultiEnd': Play_MultiEnd, // Play_MultiEndede() func from app/specific/Play.js
-        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean // Play_CheckIfIsLiveClean() func from app/specific/Play.js
+        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean, // Play_CheckIfIsLiveClean() func from app/specific/Play.js
+        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult // UserLiveFeed_CheckIfIsLiveResult() func from app/specific/UserLiveFeed.js
     };
 
     /** Expose `smartTwitchTV` */
