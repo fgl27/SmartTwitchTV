@@ -12,8 +12,6 @@ var PlayVod_playingUrl = '';
 var PlayVod_qualities = [];
 var PlayVod_qualityIndex = 0;
 
-var PlayVod_loadingDataTry = 0;
-var PlayVod_loadingDataTryMax = 5;
 var PlayVod_isOn = false;
 var PlayVod_Buffer = 2000;
 
@@ -27,7 +25,6 @@ var PlayVod_updateStreamInfId;
 var PlayVod_addToJump = 0;
 var PlayVod_IsJumping = false;
 var PlayVod_jumpCount = 0;
-var PlayVod_loadingDataTimeout = 2000;
 var PlayVod_qualitiesFound = false;
 var PlayVod_currentTime = 0;
 var PlayVod_VodPositions = 0;
@@ -281,92 +278,6 @@ function PlayVod_SaveOffset() {
     }
 }
 
-
-function PlayVod_loadData() {
-    PlayVod_loadingDataTry = 0;
-    PlayVod_loadingDataTimeout = 2000;
-    PlayVod_loadDataRequest();
-}
-
-var PlayVod_autoUrl;
-
-function PlayVod_loadDataRequest() {
-    var theUrl,
-        state = PlayVod_state === Play_STATE_LOADING_TOKEN;
-
-    if (state) {
-        theUrl = 'https://api.twitch.tv/api/vods/' + Main_values.ChannelVod_vodId + '/access_token?platform=_';
-    } else {
-        if (!PlayVod_tokenResponse.hasOwnProperty('token') || !PlayVod_tokenResponse.hasOwnProperty('sig')) {
-            PlayVod_loadDataError();
-            return;
-        }
-        theUrl = 'https://usher.ttvnw.net/vod/' + Main_values.ChannelVod_vodId +
-            '.m3u8?&nauth=' + encodeURIComponent(PlayVod_tokenResponse.token) + '&nauthsig=' +
-            PlayVod_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-        //(Play_SupportsSource ? "&allow_source=true" : '') +
-        //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-
-        PlayVod_autoUrl = theUrl;
-
-    }
-
-
-    if (Main_IsNotBrowser) {
-        var xmlHttp = Android.mreadUrl(theUrl, PlayVod_loadingDataTimeout, 0, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            PlayVod_loadDataError();
-            return;
-        }
-        PlayVod_loadDataEnd(xmlHttp);
-
-    } else PlayVod_loadDataSuccessFake();
-}
-
-function PlayVod_loadDataEnd(xmlHttp) {
-    if (xmlHttp.status === 200) {
-        if (Main_A_includes_B(xmlHttp.responseText, '"status":410')) PlayVod_loadDataError();
-        else PlayVod_loadDataSuccess(xmlHttp.responseText);
-    } else if (xmlHttp.status === 410) {
-        //410 = api v3 is gone use v5 bug
-        PlayVod_410Error();
-    } else PlayVod_loadDataError();
-}
-
-function PlayVod_410Error() {
-    PlayVod_WarnEnd(STR_410_ERROR);
-}
-
-function PlayVod_loadDataError() {
-    if (PlayVod_isOn) {
-        var mjson;
-        if (PlayVod_tokenResponse.token) mjson = JSON.parse(PlayVod_tokenResponse.token);
-        if (mjson) {
-            if (JSON.parse(PlayVod_tokenResponse.token).chansub.restricted_bitrates.length !== 0) {
-                PlayVod_loadDataCheckSub();
-                return;
-            }
-        }
-
-        PlayVod_loadingDataTry++;
-        if (PlayVod_loadingDataTry < PlayVod_loadingDataTryMax) {
-            PlayVod_loadingDataTimeout += 250;
-            PlayVod_loadDataRequest();
-        } else PlayVod_loadDataErrorFinish();
-    }
-}
-
-function PlayVod_loadDataErrorFinish() {
-    if (Main_IsNotBrowser) {
-        Play_HideBufferDialog();
-        Play_PlayEndStart(2);
-    } else PlayVod_loadDataSuccessFake();
-}
-
 //Browsers crash trying to get the streams link
 function PlayVod_loadDataSuccessFake() {
     PlayVod_qualities = [{
@@ -411,60 +322,50 @@ function PlayVod_loadDataSuccessFake() {
     if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
 }
 
+var PlayVod_autoUrl;
 function PlayVod_loadDatanew() {
     if (Main_IsNotBrowser) {
 
-        try {
-            var StreamData = Android.getStreamData(Main_values.ChannelVod_vodId + '', false);
+        var StreamData = Play_getStreamData(Main_values.ChannelVod_vodId + '', false);
 
-            if (StreamData) {
-                StreamData = JSON.parse(StreamData);//obj status url responseText
+        if (StreamData) {
+            StreamData = JSON.parse(StreamData);//obj status url responseText
 
-                if (StreamData.status === 200) {
-                    PlayVod_autoUrl = StreamData.url;
-                    PlayVod_loadDataSuccessEnd(JSON.parse(StreamData.responseText));
-                    return;
-                } else if (StreamData.status === 1) {
-                    PlayVod_loadDataCheckSub();
-                    return;
-                } else if (StreamData.status === 410) {
-                    //410 = api v3 is gone use v5 bug
-                    PlayVod_410Error();
-                    return;
-                }
-
+            if (StreamData.status === 200) {
+                PlayVod_autoUrl = StreamData.url;
+                PlayVod_loadDataSuccessEnd(JSON.parse(StreamData.responseText));
+                return;
+            } else if (StreamData.status === 1) {
+                PlayVod_loadDataCheckSub();
+                return;
+            } else if (StreamData.status === 410) {
+                //410 = api v3 is gone use v5 bug
+                PlayVod_WarnEnd(STR_410_ERROR);
+                return;
             }
 
-            PlayVod_loadDataErrorFinish();
-        } catch (e) {
-            PlayVod_loadData();
         }
 
+        PlayVod_loadDataErrorFinish();
+
+    } else PlayVod_loadDataSuccessFake();
+}
+
+function PlayVod_loadDataErrorFinish() {
+    if (Main_IsNotBrowser) {
+        Play_HideBufferDialog();
+        Play_PlayEndStart(2);
     } else PlayVod_loadDataSuccessFake();
 }
 
 function PlayVod_loadDataSuccessEnd(quality) {
 
-    //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-    //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034)) {
-    //            Play_SupportsSource = false;
-    //            PlayVod_loadData();
-    //            return;
-    //        }
-
     PlayVod_qualities = quality;
+    //TODO revise the needed for PlayVod_state
     PlayVod_state = Play_STATE_PLAYING;
     if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
     if (PlayVod_isOn) PlayVod_qualityChanged();
     if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
-}
-
-function PlayVod_loadDataSuccess(responseText) {
-    if (PlayVod_state === Play_STATE_LOADING_TOKEN) {
-        PlayVod_tokenResponse = JSON.parse(responseText);
-        PlayVod_state = Play_STATE_LOADING_PLAYLIST;
-        PlayVod_loadData();
-    } else if (PlayVod_state === Play_STATE_LOADING_PLAYLIST) PlayVod_loadDataSuccessEnd(Play_extractQualities(responseText));
 }
 
 function PlayVod_loadDataCheckSub() {

@@ -16,8 +16,7 @@ var Play_PicturePicturePos = 4;
 var Play_PicturePictureSize = 3;
 var Play_controlsAudioPos = 1;
 var Play_STATE_LOADING_TOKEN = 0;
-var Play_STATE_LOADING_PLAYLIST = 1;
-var Play_STATE_PLAYING = 2;
+var Play_STATE_PLAYING = 1;
 var Play_state = 0;
 var Play_Status_Always_On = false;
 var Play_SingleClickExit = 0;
@@ -335,6 +334,15 @@ function Play_Start() {
 //    Play_showWarningDialog(text);
 //}
 
+function Play_getStreamData(channel_name_vod_id, isLive) {
+
+    try {
+        return Android.getStreamData(channel_name_vod_id, isLive);
+    } catch (e) {}
+
+    return null;
+}
+
 var Play_CheckIfIsLiveURL = '';
 var Play_CheckIfIsLiveChannel = '';
 var Play_CheckIfIsLiveQualities = [];
@@ -349,38 +357,34 @@ function Play_CheckIfIsLiveStart() {
 
     if (Main_IsNotBrowser) {
 
-        try {
-            var StreamData = Android.getStreamData(Play_CheckIfIsLiveChannel, true);
+        var StreamData = Play_getStreamData(Play_CheckIfIsLiveChannel, true);
 
-            if (StreamData) {
-                StreamData = JSON.parse(StreamData);//obj status url responseText
+        if (StreamData) {
+            StreamData = JSON.parse(StreamData);//obj status url responseText
 
-                if (StreamData.status === 200) {
+            if (StreamData.status === 200) {
 
-                    Play_CheckIfIsLiveURL = StreamData.url;
-                    Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                Play_CheckIfIsLiveURL = StreamData.url;
+                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
 
-                    return true;
+                return true;
 
-                } else if (StreamData.status === 1 || StreamData.status === 403) {
+            } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-                    Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
-                    return false;
+                Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                return false;
 
-                } else if (StreamData.status === 404) {
+            } else if (StreamData.status === 404) {
 
-                    Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
-                    return false;
-
-                }
+                Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                return false;
 
             }
 
-            Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_PLAYER_PROBLEM_2);
-            return false;
-        } catch (e) {
-            return true;
         }
+
+        Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_PLAYER_PROBLEM_2);
+        return false;
 
     } else return true;
 }
@@ -802,81 +806,61 @@ function Play_LoadLogo(ImgObjet, link) {
     ImgObjet.src = link;
 }
 
-function Play_loadData() {
-    Play_loadingDataTry = 0;
-    Play_loadingDataTimeout = 2000 + (Play_RestoreFromResume ? 3000 : 0);
-    Play_loadDataRequest();
-}
-
-//Some times the server is returning {"error":"Gone","status":410,"message":"this API has been removed."}
-//On those case we can't use user oauth_token to prevent the 410 error
-//var Play_410ERROR = false;
-
-function Play_loadDataRequest() {
-    var theUrl, state = Play_state === Play_STATE_LOADING_TOKEN;
-
-    if (state) {
-        theUrl = 'https://api.twitch.tv/api/channels/' + Play_data.data[6] +
-            '/access_token?platform=_';
-    } else {
-        if (!Play_tokenResponse.hasOwnProperty('token') || !Play_tokenResponse.hasOwnProperty('sig')) {
-            Play_loadDataError();
-            return;
-        }
-
-        theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + Play_data.data[6] +
-            '.m3u8?&token=' + encodeURIComponent(Play_tokenResponse.token) + '&sig=' + Play_tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true' +
-            '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&cdm=wv&p=' + Main_RandomInt();
-        //(Play_SupportsSource ? "&allow_source=true" : '') +
-        //'&fast_bread=true' +
-        //(Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
-
-        Play_data.AutoUrl = theUrl;
-    }
-
+function Play_loadDatanew() {
     if (Main_IsNotBrowser) {
-        var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
 
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            Play_loadDataError();
-            return;
+        var StreamData = Play_getStreamData(Play_data.data[6], true);
+
+        if (StreamData) {
+            StreamData = JSON.parse(StreamData);//obj status url responseText
+
+            if (StreamData.status === 200) {
+
+                Play_data.AutoUrl = StreamData.url;
+                Play_loadDataSuccessend(JSON.parse(StreamData.responseText));
+                return;
+
+            } else if (StreamData.status === 1 || StreamData.status === 403 || StreamData.status === 404 ||
+                StreamData.status === 410) {
+
+                //404 = off line
+                //403 = forbidden access
+                //410 = api v3 is gone use v5 bug
+                Play_loadDataErrorFinish(StreamData.status === 410, StreamData.status === 403 || StreamData.status === 1);
+                return;
+
+            }
+
         }
 
-        if (xmlHttp.status === 200) {
-            Play_loadingDataTry = 0;
-
-            if (Main_A_includes_B(xmlHttp.responseText, '"status":410')) Play_loadDataError();
-            else Play_loadDataSuccess(xmlHttp.responseText);
-
-        } else if (xmlHttp.status === 403 || xmlHttp.status === 404 ||
-            xmlHttp.status === 410) { //forbidden access
-            //404 = off line
-            //403 = forbidden access
-            //410 = api v3 is gone use v5 bug
-            Play_loadDataErrorFinish(xmlHttp.status === 410, xmlHttp.status === 403);
-        } else {
-            Play_loadDataError();
-        }
+        Play_loadDataErrorFinish();
 
     } else Play_loadDataSuccessFake();
 }
 
-function Play_loadDataError() {
-    if (Play_isOn && Play_isLive) {
-        Play_loadingDataTry++;
-        if (Play_loadingDataTry < (Play_loadingDataTryMax + (Play_RestoreFromResume ? 7 : 0))) {
-            Play_loadingDataTimeout += 250;
-            if (Play_RestoreFromResume) window.setTimeout(Play_loadDataRequest, 500);
-            else Play_loadDataRequest();
-        } else {
-            if (Main_IsNotBrowser) Play_loadDataErrorFinish();
-            else Play_loadDataSuccessFake();
-        }
-    }
+function Play_loadDataSuccessend(qualities) {
+    UserLiveFeed_Hide();
+
+    if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
+    else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
+
+    Play_EndDialogEnter = 0;
+
+    Play_EndSet(1);
+    UserLiveFeed_SetFeedPicText();
+    Play_HideEndDialog();
+
+    Play_data.qualities = qualities;
+    Play_state = Play_STATE_PLAYING;
+    if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
+    Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
+    if (Play_isOn) Play_qualityChanged();
+    UserLiveFeed_PreventHide = false;
+    ChatLive_Playing = true;
+
+    if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
 }
+
 
 function Play_loadDataErrorFinish(error_410, Isforbiden) {
     if (Play_EndDialogEnter) {
@@ -957,136 +941,6 @@ function Play_loadDataSuccessFake() {
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
     Main_Set_history('live', Play_data.data);
-}
-
-function Play_loadDatanew() {
-    if (Main_IsNotBrowser) {
-
-        try {
-            var StreamData = Android.getStreamData(Play_data.data[6], true);
-
-            if (StreamData) {
-                StreamData = JSON.parse(StreamData);//obj status url responseText
-
-                if (StreamData.status === 200) {
-
-                    Play_data.AutoUrl = StreamData.url;
-                    Play_loadDataSuccessend(JSON.parse(StreamData.responseText));
-                    return;
-
-                } else if (StreamData.status === 1 || StreamData.status === 403 || StreamData.status === 404 ||
-                    StreamData.status === 410) {
-
-                    //404 = off line
-                    //403 = forbidden access
-                    //410 = api v3 is gone use v5 bug
-                    Play_loadDataErrorFinish(StreamData.status === 410, StreamData.status === 403 || StreamData.status === 1);
-                    return;
-
-                }
-
-            }
-
-            Play_loadDataErrorFinish();
-        } catch (e) {
-            Play_loadData();
-        }
-
-    } else Play_loadDataSuccessFake();
-}
-
-function Play_loadDataSuccessend(qualities) {
-    UserLiveFeed_Hide();
-
-    if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
-    else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
-
-    Play_EndDialogEnter = 0;
-
-    Play_EndSet(1);
-    UserLiveFeed_SetFeedPicText();
-    Play_HideEndDialog();
-
-    //Low end device will not support High Level 5.2 video/mp4; codecs="avc1.640034"
-    //        if (!Main_SupportsAvc1High && Play_SupportsSource && Main_A_includes_B(responseText, 'avc1.640034')) {
-    //            Play_SupportsSource = false;
-    //            Play_loadData();
-    //            return;
-    //        }
-
-    Play_data.qualities = qualities;
-    Play_state = Play_STATE_PLAYING;
-    if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
-    Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-    if (Play_isOn) Play_qualityChanged();
-    UserLiveFeed_PreventHide = false;
-    ChatLive_Playing = true;
-
-    if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
-}
-
-function Play_loadDataSuccess(responseText) {
-    if (Play_state === Play_STATE_LOADING_TOKEN) {
-        Play_tokenResponse = JSON.parse(responseText);
-        Play_state = Play_STATE_LOADING_PLAYLIST;
-        Play_loadData();
-    } else if (Play_state === Play_STATE_LOADING_PLAYLIST) Play_loadDataSuccessend(Play_extractQualities(responseText));
-}
-
-function Play_extractQualities(input) {
-    var result = [],
-        addedresolution = {},
-        marray,
-        marray2,
-        Regexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g,
-        Regexp2 = /NAME=("(.*?)").*BANDWIDTH=(\d+).*CODECS=("(.*?)").*http(.*).*/g;
-
-    while ((marray = Regexp.exec(input))) {
-        while ((marray2 = Regexp2.exec(marray[0].replace(/(\r\n|\n|\r)/gm, "")))) {
-            if (!result.length) {
-                result.push({
-                    'id': 'Auto',
-                    'band': 0,
-                    'codec': 'avc',
-                    'url': 'Auto_url'
-                });
-                if (!Main_A_includes_B(marray2[2], 'ource')) marray2[2] = marray2[2] + ' | source';
-                else if (marray2[2]) marray2[2] = marray2[2].replace('(', '| ').replace(')', '');
-                result.push({
-                    'id': marray2[2],
-                    'band': Play_extractBand(marray2[3]),
-                    'codec': Play_extractCodec(marray2[5]),
-                    'url': 'http' + marray2[6]
-                });
-                addedresolution[marray2[2].split(' | ')[0]] = 1;
-            } else {
-                //Prevent duplicated resolution 720p60 source and 720p60
-                if (!addedresolution[marray2[2]]) {
-                    result.push({
-                        'id': marray2[2],
-                        'band': Play_extractBand(marray2[3]),
-                        'codec': Play_extractCodec(marray2[5]),
-                        'url': 'http' + marray2[6]
-                    });
-                    addedresolution[marray2[2]] = 1;
-                }
-            }
-        }
-    }
-
-    return result;
-}
-
-function Play_extractBand(input) {
-    input = parseInt(input);
-    return input > 0 ? ' | ' + parseFloat(input / 1000000).toFixed(2) + 'Mbps' : '';
-}
-
-function Play_extractCodec(input) {
-    if (Main_A_includes_B(input, 'avc')) return ' | avc';
-    else if (Main_A_includes_B(input, 'vp9')) return ' | vp9';
-    else if (Main_A_includes_B(input, 'mp4')) return ' | mp4';
-    return '';
 }
 
 function Play_qualityChanged() {
@@ -1502,6 +1356,11 @@ function Play_getVideoQuality(forceCallback, callback) {
     }
 
     Main_innerHTML("stream_quality", value[0] + value[1] + " | Auto" + Play_extractBand(value[2]) + " | " + value[3]);
+}
+
+function Play_extractBand(input) {
+    input = parseInt(input);
+    return input > 0 ? ' | ' + parseFloat(input / 1000000).toFixed(2) + 'Mbps' : '';
 }
 
 function Play_clearHidePanel() {
@@ -2417,56 +2276,31 @@ function Play_MultiStartNew(pos, streamer, display_name) {
         UserLiveFeed_CheckIfIsLiveSTop();
         return;
     }
-    try {
-        var StreamData = Android.getStreamData(streamer, true);
+    var StreamData = Play_getStreamData(streamer, true);
 
-        if (StreamData) {
-            StreamData = JSON.parse(StreamData);//obj status url responseText
+    if (StreamData) {
+        StreamData = JSON.parse(StreamData);//obj status url responseText
 
-            if (StreamData.status === 200) {
+        if (StreamData.status === 200) {
 
-                Play_MultiStartQualitySucess(pos, StreamData.url, JSON.parse(StreamData.responseText));
-                return;
+            Play_MultiStartQualitySucess(pos, StreamData.url, JSON.parse(StreamData.responseText));
+            return;
 
-            } else if (StreamData.status === 1 || StreamData.status === 403) {
+        } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-                Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
-                return;
+            Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
+            return;
 
-            } else if (StreamData.status === 404) {
+        } else if (StreamData.status === 404) {
 
-                Play_MultiStartFail(pos, display_name);
-                return;
-
-            }
+            Play_MultiStartFail(pos, display_name);
+            return;
 
         }
 
-        Play_MultiStartFail(pos, display_name);
-    } catch (e) {
-        Play_MultiStart(
-            pos,
-            streamer,
-            display_name,
-            0
-        );
     }
-}
 
-function Play_MultiStart(pos, streamer, display_name, tryes) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + streamer + '/access_token?platform=_';
-
-    var xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout, 0, null);
-
-    if (xmlHttp) Play_MultiStartSucessToken(JSON.parse(xmlHttp), pos, streamer, display_name, tryes);
-    else Play_MultiStartErro(pos, streamer, display_name, tryes);
-}
-
-function Play_MultiStartErro(pos, streamer, display_name, tryes) {
-    if (Play_isOn) {
-        if (tryes < 5) Play_MultiStart(pos, streamer, display_name, tryes + 1);
-        else Play_MultiStartFail(pos, display_name);
-    }
+    Play_MultiStartFail(pos, display_name);
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
@@ -2488,47 +2322,6 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
             Play_CheckHostStart();
         }
     }
-}
-
-function Play_MultiStartSucessToken(xmlHttp, pos, streamer, display_name, tryes) {
-    if (xmlHttp.status === 200) {
-        var tokenResponse = JSON.parse(xmlHttp.responseText);
-        //410 error
-        if (!tokenResponse.hasOwnProperty('token') || !tokenResponse.hasOwnProperty('sig') ||
-            Main_A_includes_B(xmlHttp.responseText, '"status":410')) {
-            Play_MultiStartErro(pos, streamer, display_name, tryes);
-            return;
-        }
-
-        var theUrl = 'https://usher.ttvnw.net/api/channel/hls/' + streamer +
-            '.m3u8?&token=' + encodeURIComponent(tokenResponse.token) + '&sig=' + tokenResponse.sig +
-            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true' +
-            '&reassignments_supported=true&playlist_include_framerate=true&fast_bread=true&allow_source=true' +
-            (Main_vp9supported ? '&preferred_codecs=vp09' : '') + '&p=' + Main_RandomInt();
-
-        Play_MultiStartQuality(pos, theUrl, display_name, 0);
-
-    } else if (xmlHttp.status === 403) { //forbidden access
-        Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
-    } else if (xmlHttp.status === 404) { //off line
-        Play_MultiStartFail(pos, display_name);
-    } else Play_MultiStartErro(pos, streamer, display_name, tryes);
-}
-
-function Play_MultiStartQuality(pos, theUrl, display_name, tryes) {
-    var xmlHttp = Android.mreadUrl(theUrl, 3000, 0, null);
-
-    if (xmlHttp) {
-        xmlHttp = JSON.parse(xmlHttp);
-
-        if (xmlHttp.status === 200) Play_MultiStartQualitySucess(pos, theUrl, Play_extractQualities(xmlHttp.responseText));
-        else if (xmlHttp.status === 403) { //forbidden access
-            Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
-        } else if (xmlHttp.status === 404) { //off line
-            Play_MultiStartFail(pos, display_name);
-        } else Play_MultiStartQualityError(pos, theUrl, display_name, tryes);
-
-    } else Play_MultiStartQualityError(pos, theUrl, display_name, tryes);
 }
 
 function Play_MultiStartQualitySucess(pos, theUrl, qualities) {
@@ -2567,13 +2360,6 @@ function Play_MultiStartQualitySucess(pos, theUrl, qualities) {
     }
     Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-}
-
-function Play_MultiStartQualityError(pos, theUrl, display_name, tryes) {
-    if (Play_isOn) {
-        if (tryes < 5) Play_MultiStartQuality(pos, theUrl, display_name, tryes + 1);
-        else Play_MultiStartFail(pos, display_name);
-    }
 }
 
 function Play_MultiEnableKeyRightLeft(adder) {
