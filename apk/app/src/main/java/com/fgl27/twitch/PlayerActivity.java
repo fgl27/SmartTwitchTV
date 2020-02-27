@@ -130,7 +130,7 @@ public class PlayerActivity extends Activity {
     public int playerDivider = 3;
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
-    public Handler myHandler;
+    public Handler MainThreadHandler;
     public Handler ExtraPlayerHandler;
     public String ExtraPlayerHandlerResult;
     public HandlerThread ExtraPlayerHandlerThread;
@@ -175,7 +175,7 @@ public class PlayerActivity extends Activity {
 
             deviceIsTV = Tools.deviceIsTV(this);
 
-            myHandler = new Handler(Looper.getMainLooper());
+            MainThreadHandler = new Handler(Looper.getMainLooper());
             ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
             ExtraPlayerHandlerThread.start();
             ExtraPlayerHandler = new Handler(ExtraPlayerHandlerThread.getLooper());
@@ -988,13 +988,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mloadUrl(String url) {
-            myHandler.post(() -> mwebview.loadUrl(url));
+            MainThreadHandler.post(() -> mwebview.loadUrl(url));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mshowLoading(boolean show) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 if (show) showLoading();
                 else hideLoading(5);
             });
@@ -1003,7 +1003,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mshowLoadingBotton(boolean show) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 if (show) showLoadingBotton();
                 else hideLoading(6);
             });
@@ -1012,7 +1012,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mclose(boolean close) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 if (close) closeThis();
                 else minimizeThis();
             });
@@ -1024,25 +1024,25 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showToast(String toast) {
-            myHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
+            MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mupdatesize(boolean sizechat) {
-            myHandler.post(() -> updateVidesizeChat(sizechat));
+            MainThreadHandler.post(() -> updateVidesizeChat(sizechat));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mupdatesizePP(boolean sizechat) {
-            myHandler.post(() -> updateVidesizeChatPP(sizechat));
+            MainThreadHandler.post(() -> updateVidesizeChatPP(sizechat));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mseekTo(long position) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 if (player[mainPlayer] != null) {
                     player[mainPlayer].seekTo(position);
                     player[mainPlayer].setPlayWhenReady(true);
@@ -1053,25 +1053,25 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int whocall) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1));
+            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, -1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position));
+            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, whocall, position));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void initializePlayer2(String url) {
-            myHandler.post(() -> PreinitializePlayer2(null, url));
+            MainThreadHandler.post(() -> PreinitializePlayer2(null, url));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void initializePlayer2Auto() {
-            myHandler.post(() -> PreinitializePlayer2(mediaSourcesAuto[mainPlayer ^ 1], ""));
+            MainThreadHandler.post(() -> PreinitializePlayer2(mediaSourcesAuto[mainPlayer ^ 1], ""));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1079,7 +1079,7 @@ public class PlayerActivity extends Activity {
         public void SetAuto(String url) {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 expires[mainPlayer] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
             });
@@ -1090,7 +1090,7 @@ public class PlayerActivity extends Activity {
         public void ResStartAuto(String url, int whocall, long position) {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 expires[mainPlayer] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
                 PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position);
@@ -1102,7 +1102,7 @@ public class PlayerActivity extends Activity {
         public void ResStartAuto2(String url) {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
                 PreinitializePlayer2(mediaSourcesAuto[mainPlayer ^ 1], "");
@@ -1114,7 +1114,7 @@ public class PlayerActivity extends Activity {
         public void SetAuto2(String url) {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
             });
@@ -1123,7 +1123,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartFeedPlayer(String url, int position, boolean fullBandwidth) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 UsefullBandwidth = fullBandwidth;
                 expires[4] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
@@ -1146,7 +1146,8 @@ public class PlayerActivity extends Activity {
                     Log.d(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException");
                 }
 
-                myHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed())"));
+                if (ExtraPlayerHandlerResult != null)
+                    MainThreadHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed())"));
             }, delayms);
         }
 
@@ -1166,13 +1167,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetFeedPosition(int position) {
-            myHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]));
+            MainThreadHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetAutoFeedPlayer(String url) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 expires[4] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
             });
@@ -1181,7 +1182,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearFeedPlayer() {
-            myHandler.post(PlayerActivity.this::ClearSmallPlayer);
+            MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1193,25 +1194,25 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int whocall, long position) {
-            myHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position));
+            MainThreadHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", whocall, position));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int whocall) {
-            myHandler.post(() -> PreResetPlayer(whocall, mainPlayer));
+            MainThreadHandler.post(() -> PreResetPlayer(whocall, mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mClearBigPlayer() {
-            myHandler.post(() -> ClearPlayer(mainPlayer));
+            MainThreadHandler.post(() -> ClearPlayer(mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mClearSmallPlayer() {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 PicturePicture = false;
                 ClearPlayer(mainPlayer ^ 1);
             });
@@ -1220,14 +1221,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayer() {
-            myHandler.post(PlayerActivity.this::SwitchPlayer);
+            MainThreadHandler.post(PlayerActivity.this::SwitchPlayer);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerPosition(int position) {
             DefaultPositions = position;
-            myHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
+            MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1240,32 +1241,32 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerSize(int position) {
             playerDivider = position;
-            myHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
+            MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetPlayerSize(int position) {
             playerDivider = position;
-            myHandler.post(PlayerActivity.this::SetheightDefault);
+            MainThreadHandler.post(PlayerActivity.this::SetheightDefault);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerAudio(int position) {
-            myHandler.post(() -> SwitchPlayerAudio(position));
+            MainThreadHandler.post(() -> SwitchPlayerAudio(position));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetAudio(int position, float volume) {
-            myHandler.post(() -> SetAudio(position, volume));
+            MainThreadHandler.post(() -> SetAudio(position, volume));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetPlayerAudioMulti(int position) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 int mposition = position;
                 if (position == 0) mposition = mainPlayer;
                 else if (position == 1) mposition = mainPlayer ^ 1;
@@ -1279,7 +1280,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetMainPlayerBandwidth(int band) {
             mainPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
-            myHandler.post(() -> trackSelectorParameters = trackSelectorParameters
+            MainThreadHandler.post(() -> trackSelectorParameters = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBandwidth)
                     .build());
@@ -1289,7 +1290,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetSmallPlayerBandwidth(int band) {
             smallPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
-            myHandler.post(() -> trackSelectorParametersSmall = trackSelectorParameters
+            MainThreadHandler.post(() -> trackSelectorParametersSmall = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(smallPlayerBandwidth)
                     .build());
@@ -1304,7 +1305,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public long gettime() {
-            HVTHandler.RunnableResult<Long> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Long>() {
+            HVTHandler.RunnableResult<Long> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Long>() {
                 @Override
                 public void run() {
                     if (player[mainPlayer] != null) value = player[mainPlayer].getCurrentPosition();
@@ -1353,13 +1354,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mKeepScreenOn(boolean keepOn) {
-            myHandler.post(() -> KeepScreenOn(keepOn));
+            MainThreadHandler.post(() -> KeepScreenOn(keepOn));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void play(boolean play) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 for (int i = 0; i < PlayerAcount; i++) {
                     if (player[i] != null) player[i].setPlayWhenReady(play);
                 }
@@ -1370,7 +1371,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getPlaybackState() {
-            HVTHandler.RunnableResult<Boolean> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<Boolean>() {
+            HVTHandler.RunnableResult<Boolean> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Boolean>() {
                 @Override
                 public void run() {
                     if (player[mainPlayer] != null) value = player[mainPlayer].isPlaying();
@@ -1383,7 +1384,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void setPlaybackSpeed(float speed) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 if (MultiStream) {
                     for (int i = 0; i < PlayerAcount; i++) {
                         if (player[i] != null)
@@ -1429,7 +1430,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getVideoQuality() {
-            HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
+            HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
                     if (player[mainPlayer] != null)
@@ -1443,7 +1444,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getVideoStatus() {
-            HVTHandler.RunnableResult<String> result = HVTHandler.post(myHandler, new HVTHandler.RunnableValue<String>() {
+            HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
                     value = String.format(Locale.US, "%d,%d,%d,%s,%d,%s,",
@@ -1473,7 +1474,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void keyEvent(int key, int keyaction) {
-            myHandler.post(() -> mwebview.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
+            MainThreadHandler.post(() -> mwebview.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1491,7 +1492,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void msetPlayer(boolean surface_view, boolean sizechat) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 setPlayer(surface_view);
 
                 if (sizechat) updateVidesizeChatPP(false);
@@ -1504,7 +1505,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mhideSystemUI() {
-            myHandler.post(PlayerActivity.this::hideSystemUI);
+            MainThreadHandler.post(PlayerActivity.this::hideSystemUI);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1537,7 +1538,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void requestWr() {
-            myHandler.post(PlayerActivity.this::check_writeexternalstorage);
+            MainThreadHandler.post(PlayerActivity.this::check_writeexternalstorage);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1549,7 +1550,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void EnableMultiStream() {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 MultiStream = true;
                 SetMultiStream();
             });
@@ -1558,7 +1559,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void DisableMultiStream() {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 MultiStream = false;
                 UnSetMultiStream();
             });
@@ -1567,7 +1568,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartMultiStream(int position, String url) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
 
                 int mposition = position;
                 if (position == 0) mposition = mainPlayer;
@@ -1583,7 +1584,7 @@ public class PlayerActivity extends Activity {
         public void SetAutoMulti(int position, String url) {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
 
                 int mposition = position;
                 if (position == 0) mposition = mainPlayer;
@@ -1619,7 +1620,7 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlaybackStateChanged(@Player.State int playbackState) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 if (player[position] == null || !player[position].getPlayWhenReady())
                     return;
 
@@ -1668,7 +1669,7 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
             });
@@ -1748,7 +1749,7 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlaybackStateChanged(@Player.State int playbackState) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 if (player[4] == null || !player[4].getPlayWhenReady())
                     return;
 
@@ -1780,7 +1781,7 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
-            myHandler.post(() -> {
+            MainThreadHandler.post(() -> {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerEventListenerCheckCounterSmall();
             });
