@@ -3,7 +3,7 @@ var AddCode_loadingDataTry = 0;
 var AddCode_loadingDataTryMax = 5;
 var AddCode_loadingDataTimeout = 10000;
 var AddCode_Code = 0;
-var AddCode_IsFallowing = false;
+var AddCode_IsFollowing = false;
 var AddCode_IsSub = false;
 var AddCode_PlayRequest = false;
 var AddCode_Channel_id = '';
@@ -233,116 +233,116 @@ function AddCode_CheckTokenError(position, tryes) {
     if (tryes < AddCode_loadingDataTryMax) AddCode_CheckToken(position, tryes + 1);
 }
 
-function AddCode_CheckFallow() {
+function AddCode_CheckFollow() {
     AddCode_loadingDataTry = 0;
-    AddCode_IsFallowing = false;
-    AddCode_RequestCheckFallow();
+    AddCode_IsFollowing = false;
+    AddCode_RequestCheckFollow();
 }
 
-function AddCode_RequestCheckFallow() {
+function AddCode_RequestCheckFollow() {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(theUrl, 'GET', 2, null, AddCode_RequestCheckFallowReady);
+    AddCode_BasexmlHttpGet(theUrl, 'GET', 2, null, AddCode_RequestCheckFollowReady);
 }
 
-function AddCode_RequestCheckFallowReady(xmlHttp) {
+function AddCode_RequestCheckFollowReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
         if (xmlHttp.status === 200) { //yes
-            AddCode_RequestCheckFallowOK();
+            AddCode_RequestCheckFollowOK();
         } else if (xmlHttp.status === 404) { //no
-            AddCode_RequestCheckFallowNOK(xmlHttp.responseText);
+            AddCode_RequestCheckFollowNOK(xmlHttp.responseText);
         } else { // internet error
-            AddCode_RequestCheckFallowError();
+            AddCode_RequestCheckFollowError();
         }
     }
 }
 
-function AddCode_RequestCheckFallowOK() {
-    AddCode_IsFallowing = true;
-    if (AddCode_PlayRequest) Play_setFallow();
-    else ChannelContent_setFallow();
+function AddCode_RequestCheckFollowOK() {
+    AddCode_IsFollowing = true;
+    if (AddCode_PlayRequest) Play_setFollow();
+    else ChannelContent_setFollow();
 }
 
-function AddCode_RequestCheckFallowNOK(response) {
+function AddCode_RequestCheckFollowNOK(response) {
     response = JSON.parse(response);
     if (response.error) {
         if (Main_A_includes_B((response.error + ''), 'Not Found')) {
-            AddCode_IsFallowing = false;
-            if (AddCode_PlayRequest) Play_setFallow();
-            else ChannelContent_setFallow();
-        } else AddCode_RequestCheckFallowError();
-    } else AddCode_RequestCheckFallowError();
+            AddCode_IsFollowing = false;
+            if (AddCode_PlayRequest) Play_setFollow();
+            else ChannelContent_setFollow();
+        } else AddCode_RequestCheckFollowError();
+    } else AddCode_RequestCheckFollowError();
 }
 
-function AddCode_RequestCheckFallowError() {
+function AddCode_RequestCheckFollowError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestCheckFallow();
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestCheckFollow();
     else {
-        if (AddCode_PlayRequest) Play_setFallow();
-        else ChannelContent_setFallow();
+        if (AddCode_PlayRequest) Play_setFollow();
+        else ChannelContent_setFollow();
     }
 }
 
-function AddCode_Fallow() {
+function AddCode_Follow() {
     AddCode_loadingDataTry = 0;
-    AddCode_FallowRequest();
+    AddCode_FollowRequest();
 }
 
-function AddCode_FallowRequest() {
+function AddCode_FollowRequest() {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_FallowRequestReady);
+    AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_FollowRequestReady);
 }
 
-function AddCode_FallowRequestReady(xmlHttp) {
+function AddCode_FollowRequestReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) { //success user now is fallowing the channel
-            AddCode_IsFallowing = true;
-            if (AddCode_PlayRequest) Play_setFallow();
-            else ChannelContent_setFallow();
+        if (xmlHttp.status === 200) { //success user now is following the channel
+            AddCode_IsFollowing = true;
+            if (AddCode_PlayRequest) Play_setFollow();
+            else ChannelContent_setFollow();
             return;
         } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            AddCode_refreshTokens(0, 0, AddCode_Fallow, null);
+            AddCode_refreshTokens(0, 0, AddCode_Follow, null);
         } else {
-            AddCode_FallowRequestError();
+            AddCode_FollowRequestError();
         }
     }
 }
 
-function AddCode_FallowRequestError() {
+function AddCode_FollowRequestError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_FallowRequest();
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_FollowRequest();
 }
 
-function AddCode_UnFallow() {
+function AddCode_UnFollow() {
     AddCode_loadingDataTry = 0;
-    AddCode_UnFallowRequest();
+    AddCode_UnFollowRequest();
 }
 
-function AddCode_UnFallowRequest() {
+function AddCode_UnFollowRequest() {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_UnFallowRequestReady);
+    AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_UnFollowRequestReady);
 }
 
-function AddCode_UnFallowRequestReady(xmlHttp) {
+function AddCode_UnFollowRequestReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 204) { //success user is now not fallowing the channel
-            AddCode_IsFallowing = false;
-            if (AddCode_PlayRequest) Play_setFallow();
-            else ChannelContent_setFallow();
+        if (xmlHttp.status === 204) { //success user is now not following the channel
+            AddCode_IsFollowing = false;
+            if (AddCode_PlayRequest) Play_setFollow();
+            else ChannelContent_setFollow();
             return;
         } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            AddCode_refreshTokens(0, 0, AddCode_UnFallow, null);
+            AddCode_refreshTokens(0, 0, AddCode_UnFollow, null);
         } else {
-            AddCode_UnFallowRequestError();
+            AddCode_UnFollowRequestError();
         }
     }
 }
 
-function AddCode_UnFallowRequestError() {
+function AddCode_UnFollowRequestError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_UnFallowRequest();
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_UnFollowRequest();
 }
 
 function AddCode_CheckSub() {
@@ -390,9 +390,9 @@ function AddCode_RequestCheckSubfail() {
     PlayVod_NotSub();
 }
 
-function AddCode_FallowGame() {
+function AddCode_FollowGame() {
     AddCode_loadingDataTry = 0;
-    if (Main_values.Main_gameSelected_id) AddCode_RequestFallowGame();
+    if (Main_values.Main_gameSelected_id) AddCode_RequestFollowGame();
     else AddCode_GetGameId();
 }
 
@@ -405,10 +405,10 @@ function AddCode_GetGameId() {
 
 function AddCode_GetGameIdReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) { //success we now fallow the game
+        if (xmlHttp.status === 200) { //success we now follow the game
             Main_values.Main_gameSelected_id = JSON.parse(xmlHttp.responseText).data[0].id;
             AddCode_loadingDataTry = 0;
-            AddCode_RequestFallowGame();
+            AddCode_RequestFollowGame();
             return;
         } else { // internet error
             AddCode_GetGameIdError();
@@ -421,117 +421,117 @@ function AddCode_GetGameIdError() {
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_GetGameId();
 }
 
-function AddCode_RequestFallowGame() {
+function AddCode_RequestFollowGame() {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/games/' +
         Main_values.Main_gameSelected_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_RequestFallowGameReady);
+    AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_RequestFollowGameReady);
 }
 
-function AddCode_RequestFallowGameReady(xmlHttp) {
+function AddCode_RequestFollowGameReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) { //success we now fallow the game
-            AGame_fallowing = true;
-            AGame_setFallow();
+        if (xmlHttp.status === 200) { //success we now follow the game
+            AGame_following = true;
+            AGame_setFollow();
             return;
         } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            AddCode_refreshTokens(0, 0, AddCode_FallowGame, null);
+            AddCode_refreshTokens(0, 0, AddCode_FollowGame, null);
         } else { // internet error
-            AddCode_FallowGameRequestError();
+            AddCode_FollowGameRequestError();
         }
     }
 }
 
-function AddCode_FallowGameRequestError() {
+function AddCode_FollowGameRequestError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestFallowGame();
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestFollowGame();
 }
 
-function AddCode_UnFallowGame() {
+function AddCode_UnFollowGame() {
     AddCode_loadingDataTry = 0;
-    AddCode_RequestUnFallowGame();
+    AddCode_RequestUnFollowGame();
 }
 
-function AddCode_RequestUnFallowGame() {
+function AddCode_RequestUnFollowGame() {
     var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[0].name +
         '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) + '?oauth_token=' +
         AddUser_UsernameArray[0].access_token + Main_TwithcV5Flag;
 
     if (Main_IsNotBrowser)
-        AddCode_BasereadwritedUrl(theUrl, 'DELETE', 2, null, AddCode_UnFallowGameAndroid);
+        AddCode_BasereadwritedUrl(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameAndroid);
     else
-        AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFallowGameJs);
+        AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameJs);
 }
 
-function AddCode_UnFallowGameAndroid(xmlHttp) {
-    if (xmlHttp !== null) AddCode_UnFallowGameEnd(xmlHttp);
-    else AddCode_UnFallowGameRequestError();
+function AddCode_UnFollowGameAndroid(xmlHttp) {
+    if (xmlHttp !== null) AddCode_UnFollowGameEnd(xmlHttp);
+    else AddCode_UnFollowGameRequestError();
 }
 
-function AddCode_UnFallowGameJs(xmlHttp) {
-    if (xmlHttp.readyState === 4) AddCode_UnFallowGameEnd(xmlHttp);
+function AddCode_UnFollowGameJs(xmlHttp) {
+    if (xmlHttp.readyState === 4) AddCode_UnFollowGameEnd(xmlHttp);
 }
 
-function AddCode_UnFallowGameEnd(xmlHttp) {
-    if (xmlHttp.status === 404 || xmlHttp.status === 204) { // success we now unfallow the game
-        if (xmlHttp.status === 204) { // success we now unfallow the game
-            AGame_fallowing = false;
-            AGame_setFallow();
+function AddCode_UnFollowGameEnd(xmlHttp) {
+    if (xmlHttp.status === 404 || xmlHttp.status === 204) { // success we now unfollow the game
+        if (xmlHttp.status === 204) { // success we now unfollow the game
+            AGame_following = false;
+            AGame_setFollow();
         } else if (Main_A_includes_B(JSON.parse(xmlHttp.responseText).message, 'does not follow')) {
-            AGame_fallowing = false;
-            AGame_setFallow();
-        } else AddCode_UnFallowGameRequestError();
+            AGame_following = false;
+            AGame_setFollow();
+        } else AddCode_UnFollowGameRequestError();
     } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-        AddCode_refreshTokens(0, 0, AddCode_UnFallowGame, null);
+        AddCode_refreshTokens(0, 0, AddCode_UnFollowGame, null);
     } else { // internet error
-        AddCode_UnFallowGameRequestError();
+        AddCode_UnFollowGameRequestError();
     }
 }
 
-function AddCode_UnFallowGameRequestError() {
+function AddCode_UnFollowGameRequestError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestUnFallowGame();
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestUnFollowGame();
     else {
         Main_showWarningDialog(STR_410_FEATURING);
         window.setTimeout(Main_HideWarningDialog, 2000);
     }
 }
 
-function AddCode_CheckFallowGame() {
+function AddCode_CheckFollowGame() {
     AddCode_loadingDataTry = 0;
-    AddCode_RequestCheckFallowGame();
+    AddCode_RequestCheckFollowGame();
 }
 
-function AddCode_RequestCheckFallowGame() {
+function AddCode_RequestCheckFollowGame() {
     var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[0].name + '/follows/games/' +
         encodeURIComponent(Main_values.Main_gameSelected) + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGetBack(theUrl, 'GET', 2, null, AddCode_CheckFallowGameReady);
+    AddCode_BasexmlHttpGetBack(theUrl, 'GET', 2, null, AddCode_CheckFollowGameReady);
 }
 
-function AddCode_CheckFallowGameReady(xmlHttp) {
+function AddCode_CheckFollowGameReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) { //success yes user fallows
-            AGame_fallowing = true;
-            AGame_setFallow();
+        if (xmlHttp.status === 200) { //success yes user follows
+            AGame_following = true;
+            AGame_setFollow();
             return;
-        } else if (xmlHttp.status === 404) { //success no user doesnot fallows
-            AGame_fallowing = false;
-            AGame_setFallow();
+        } else if (xmlHttp.status === 404) { //success no user doesnot follows
+            AGame_following = false;
+            AGame_setFollow();
             return;
         } else { // internet error
-            AddCode_CheckFallowGameError();
+            AddCode_CheckFollowGameError();
             return;
         }
     }
 }
 
-function AddCode_CheckFallowGameError() {
+function AddCode_CheckFollowGameError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestCheckFallowGame();
+    if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestCheckFollowGame();
     else {
-        AGame_fallowing = false;
-        AGame_setFallow();
+        AGame_following = false;
+        AGame_setFollow();
     }
 }
 

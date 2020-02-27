@@ -156,8 +156,8 @@ function PlayVod_updateStreamerInfoValues() {
     if (AddUser_UserIsSet()) {
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
         AddCode_PlayRequest = true;
-        AddCode_CheckFallow();
-    } else Play_hideFallow();
+        AddCode_CheckFollow();
+    } else Play_hideFollow();
 }
 
 function PlayVod_updateVodInfo() {
@@ -224,8 +224,8 @@ function PlayVod_updateVodInfoPannel(response) {
     if (AddUser_UserIsSet()) {
         AddCode_PlayRequest = true;
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_CheckFallow();
-    } else Play_hideFallow();
+        AddCode_CheckFollow();
+    } else Play_hideFollow();
 
     //View bot is blocking it
     //new Image().src = response.increment_view_count_url;
