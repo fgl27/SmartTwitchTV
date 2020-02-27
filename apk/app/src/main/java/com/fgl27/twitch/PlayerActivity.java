@@ -50,8 +50,8 @@ import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public static final String TAG = PlayerActivity.class.getName();
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
     public static final int PlayerAcount = 4;
     public static final int PlayerAcountPlus = PlayerAcount + 1;
     private static final int[] positions = {
@@ -1126,7 +1126,7 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 UsefullBandwidth = fullBandwidth;
                 expires[4] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, UsefullBandwidth);
+                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UsefullBandwidth));
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
                 initializeSmallPlayer(mediaSourcesAuto[4]);
             });
@@ -1175,7 +1175,7 @@ public class PlayerActivity extends Activity {
         public void SetAutoFeedPlayer(String url) {
             MainThreadHandler.post(() -> {
                 expires[4] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, UsefullBandwidth);
+                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UsefullBandwidth));
             });
         }
 
