@@ -63,9 +63,6 @@ function PlayExtra_KeyEnter() {
 
 function PlayExtra_Resumenew() {
     if (Main_IsNotBrowser) {
-        Android.mSwitchPlayerAudio(Play_controlsAudioPos);
-        PlayExtra_data.watching_time = new Date().getTime();
-        Play_SetAudioIcon();
 
         var StreamData = Play_getStreamData(PlayExtra_data.data[6], true);
 
@@ -99,6 +96,9 @@ function PlayExtra_Resumenew() {
 
 function PlayExtra_loadDataSuccessEnd(qualities) {
     UserLiveFeed_Hide();
+    Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+    PlayExtra_data.watching_time = new Date().getTime();
+    Play_SetAudioIcon();
     Android.SetAuto2(PlayExtra_data.AutoUrl);
     PlayExtra_data.qualities = qualities;
     PlayExtra_SetPanel();
