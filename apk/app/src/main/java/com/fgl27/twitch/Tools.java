@@ -118,7 +118,7 @@ public final class Tools {
             if (response != null) {
                 if (mStatus == 200) break;
                 else if (mStatus == 403 || mStatus == 404 || mStatus == 410)
-                    return JsonObToResult(mStatus, "token").toString();
+                    return JsonObToResult(mStatus, "token", channel_name_vod_id).toString();
             }
         }
 
@@ -147,7 +147,7 @@ public final class Tools {
                     //410 = api v3 is gone use v5 bug
                     if (mStatus == 200) break;
                     else if (mStatus == 403 || mStatus == 404 || mStatus == 410)
-                        return JsonObToResult(CheckToken(StreamToken, parser) ? 1 : mStatus, "link").toString();
+                        return JsonObToResult(CheckToken(StreamToken, parser) ? 1 : mStatus, "link", channel_name_vod_id).toString();
                 }
             }
 
@@ -216,9 +216,10 @@ public final class Tools {
         return JSON.toString();
     }
 
-    private static JsonObject JsonObToResult(int status, String responseText) {
+    private static JsonObject JsonObToResult(int status, String responseText,String channel_name_vod_id) {
         JsonObject JSON = new JsonObject();
         JSON.addProperty("status", status);
+        JSON.addProperty("channel_vodid", channel_name_vod_id);
         JSON.addProperty("responseText", responseText);
         return JSON;
     }
@@ -304,7 +305,8 @@ public final class Tools {
                                         urlConnection.getErrorStream() :
                                         urlConnection.getInputStream()
                         ),
-                        StandardCharsets.UTF_8)).toString();
+                        StandardCharsets.UTF_8),
+                        "").toString();
             } else {
                 return null;
             }
@@ -357,7 +359,8 @@ public final class Tools {
                                         urlConnection.getErrorStream() :
                                         urlConnection.getInputStream()
                         ),
-                        StandardCharsets.UTF_8)).toString();
+                        StandardCharsets.UTF_8),
+                        "").toString();
             } else {
                 return null;
             }
