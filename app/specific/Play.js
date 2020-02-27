@@ -738,23 +738,34 @@ function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
 function Play_updateStreamInfo() {
     if (Play_MultiEnable) {
         for (var i = 0; i < Play_MultiArray.length; i++) {
-            if (Play_MultiArray[i].data.length > 0) {
-                Play_RefreshMultiRequest(
-                    i,
-                    Play_MultiArray[i].data[6],
-                    Play_MultiArray[i].data[14]
-                );
-            }
+            Play_updateStreamInfoMulti(i);
         }
     } else {
 
         if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
+        if (PlayExtra_PicturePicture) {
 
-        if (PlayExtra_PicturePicture) PlayExtra_RefreshAutoRequest(false);
+            window.setTimeout(function() {
+                PlayExtra_RefreshAutoRequest(false);
+            }, 2000);
+
+        }
 
         var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
         BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
     }
+}
+
+function Play_updateStreamInfoMulti(pos) {
+    window.setTimeout(function() {
+        if (Play_MultiArray[pos].data.length > 0) {
+            Play_RefreshMultiRequest(
+                pos,
+                Play_MultiArray[pos].data[6],
+                Play_MultiArray[pos].data[14]
+            );
+        }
+    }, pos * 2000);
 }
 
 function Play_updateStreamInfoValues(response) {
