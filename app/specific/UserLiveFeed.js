@@ -486,7 +486,7 @@ function UserLiveFeed_CheckIfIsLiveWarn(text) {
     Play_showWarningDialog(text, 2000);
 }
 
-var UserLiveFeed_CheckIfIsLiveDelay = 800;
+var UserLiveFeed_CheckIfIsLiveDelay = 0;
 function UserLiveFeed_CheckIfIsLiveStart() {
 
     Sidepannel_CheckIfIsLiveCleanTimeouts();
