@@ -2408,6 +2408,15 @@ function Play_MultiStartPrestart(position) {
 }
 
 function Play_MultiStartNew(pos, streamer, display_name) {
+    if (Play_CheckIfIsLiveQualities.length) {
+        Play_MultiStartQualitySucess(
+            pos,
+            Play_CheckIfIsLiveURL,
+            JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities))
+        );
+        UserLiveFeed_CheckIfIsLiveSTop();
+        return;
+    }
     try {
         var StreamData = Android.getStreamData(streamer, true);
 
