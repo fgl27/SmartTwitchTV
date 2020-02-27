@@ -18011,7 +18011,10 @@
         Main_ShowElement('user_feed_notify');
 
         UserLiveFeed_NotifyRunning = true;
-        UserLiveFeedobj_LiveNotificationShow(0);
+
+        window.setTimeout(function() {
+            UserLiveFeedobj_LiveNotificationShow(0);
+        }, 1000);
     }
 
     function UserLiveFeedobj_LiveNotificationShow(position) {
