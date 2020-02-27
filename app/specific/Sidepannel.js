@@ -246,7 +246,7 @@ function Sidepannel_KeyEnterUser() {
         Main_values.Main_BeforeChannel = Main_values.Main_Go;
         Main_values.Main_Go = Main_ChannelContent;
         Main_values.Main_BeforeChannelisSet = true;
-        AddCode_IsFallowing = false;
+        AddCode_IsFollowing = false;
         ChannelContent_UserChannels = false;
         Main_ExitCurrent(Main_values.Main_BeforeChannel);
         Main_values.My_channel = true;

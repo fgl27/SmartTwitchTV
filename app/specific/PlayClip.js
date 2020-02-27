@@ -86,8 +86,8 @@ function PlayClip_Start() {
     if (AddUser_UserIsSet()) {
         AddCode_PlayRequest = true;
         AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_CheckFallow();
-    } else Play_hideFallow();
+        AddCode_CheckFollow();
+    } else Play_hideFollow();
 
     PlayClip_IsJumping = false;
     PlayClip_jumpCount = 0;
