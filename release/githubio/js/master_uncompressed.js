@@ -694,7 +694,7 @@
         STR_NET_DOWN = "Network is disconnected, the application can\'t work without INTERNET";
         STR_NET_UP = "Network connection reestablished";
         STR_FALLOWERS = " Followers";
-        STR_CANT_FALLOW = ", Can\'t fallow or unfallow ";
+        STR_CANT_FALLOW = ", Can\'t follow or unfollow ";
         STR_GAME_CONT = "Game content";
         STR_YES = "Yes";
         STR_REMOVE_USER = "Are you sure you want to remove the user ";
@@ -849,8 +849,8 @@
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get stream link issue";
         STR_410_FEATURING = "Third party app are current without access for this featuring.";
-        STR_CLICK_UNFALLOW = "(Press enter to unfallow)";
-        STR_CLICK_FALLOW = "(Press enter to fallow)";
+        STR_CLICK_UNFALLOW = "(Press enter to unfollow)";
+        STR_CLICK_FALLOW = "(Press enter to follow)";
         STR_TODAY = " Today)";
         STR_DROOPED_FRAMES = "Skipped Frames: ";
         STR_BUFFER_HEALT = " Buffer Size: ";
@@ -910,7 +910,7 @@
         STR_OPEN_CHANNEL = "Open the channel";
         STR_THUMB_OPTIONS_KEY = "Press enter above a action (to open or apply it), back to exit without applying";
         STR_DELETE_FROM_HISTORY = "Delete this from history";
-        STR_CHECK_HISTORY = "Checking fallow status";
+        STR_CHECK_HISTORY = "Checking follow status";
         STR_REFRESH_DELETE = "Refresh the screen after delete to see the change.";
         STR_THUMB_OPTIONS_TOP = "Hold right for thumbnail options";
         STR_REPLACE_MULTI = "Choose with to replace by the above?";
