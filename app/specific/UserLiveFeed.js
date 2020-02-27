@@ -486,6 +486,7 @@ function UserLiveFeed_CheckIfIsLiveWarn(text) {
     Play_showWarningDialog(text, 2000);
 }
 
+var UserLiveFeed_CheckIfIsLiveDelay = 800;
 function UserLiveFeed_CheckIfIsLiveStart() {
 
     Sidepannel_CheckIfIsLiveCleanTimeouts();
@@ -500,7 +501,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
         try {
             Android.CheckIfIsLiveFeed(
                 doc[6],
-                750,
+                UserLiveFeed_CheckIfIsLiveDelay,
                 "UserLiveFeed_CheckIfIsLiveResult"
             );
         } catch (e) {

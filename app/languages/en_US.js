@@ -237,8 +237,8 @@ function en_USLang() {
     STR_UP = " Press up";
     STR_HOLD_UP = " Hold up or key 2";
     STR_LIVE_FEED = "Live Feed";
-    STR_END_DIALOG_SETTINGS = "End dialog";
-    STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time that it will take for the stream/video/clip to end dialog taking action";
+    STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
+    STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time (in seconds) that will take for the default action happen";
     STR_END_DIALOG_DISABLE = "Disable the timer";
     STR_CHAT_SIZE = "Chat size";
     STR_CHAT_POS = "Chat position";
@@ -402,4 +402,6 @@ function en_USLang() {
     STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
     STR_SHOW_FEED_PLAYER = 'Show small player over player live feed';
     STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player over player live feed on multistream';
+    STR_SIDE_PANEL_PLAYER_DELAY = "Side panel or player feed small player delay";
+    STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a tile is selected (too small value may cause scroll lag)";
 }

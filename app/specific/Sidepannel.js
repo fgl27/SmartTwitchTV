@@ -139,7 +139,7 @@ function Sidepannel_CheckIfIsLiveStart() {
     try {
         Android.CheckIfIsLiveFeed(
             JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6],
-            750,
+            UserLiveFeed_CheckIfIsLiveDelay,
             "Sidepannel_CheckIfIsLiveResult"
         );
     } catch (e) {
