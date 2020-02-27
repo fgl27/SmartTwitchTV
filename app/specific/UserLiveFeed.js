@@ -298,7 +298,8 @@ function UserLiveFeed_ResetAddCellsize() {
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     if (!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) return;
 
-    if (!Play_isEndDialogVisible() || !Play_EndFocus)
+    var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus;
+    if (add_focus)
         Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
 
     if (!UserLiveFeed_obj[pos].AddCellsize) {
@@ -338,7 +339,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (UserLiveFeed_ShowSmallPlayer && UserLiveFeed_isFeedShow()) {
+    if (add_focus && UserLiveFeed_ShowSmallPlayer && UserLiveFeed_isFeedShow()) {
         if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti) {
 
             var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
