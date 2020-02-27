@@ -342,7 +342,7 @@ var Play_CheckIfIsLiveQualities = [];
 function Play_CheckIfIsLiveStart() {
     if (Play_CheckIfIsLiveQualities.length) return true;//Reused for vod and clip checking from live feed already playing
 
-    if (!PreventshowBuffer) Play_showBufferDialog();
+    Play_showBufferDialog();
 
     var selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
     Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
