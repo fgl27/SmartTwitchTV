@@ -1126,7 +1126,7 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 UsefullBandwidth = fullBandwidth;
                 expires[4] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, UsefullBandwidth);
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
                 initializeSmallPlayer(mediaSourcesAuto[4]);
             });
@@ -1175,7 +1175,7 @@ public class PlayerActivity extends Activity {
         public void SetAutoFeedPlayer(String url) {
             MainThreadHandler.post(() -> {
                 expires[4] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, UsefullBandwidth);
             });
         }
 
