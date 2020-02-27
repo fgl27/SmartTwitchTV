@@ -98,14 +98,9 @@ function Sidepannel_CheckIfIsLiveResult(StreamData) {//Called by Java
 
                     Sidepannel_CheckIfIsLiveRefreshSet();
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
-                } else if (StreamData.status === 1 || StreamData.status === 403) {
-
-                    Sidepannel_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                        ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
 
                 } else {
-                    Sidepannel_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                        ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
+                    Sidepannel_CheckIfIsLiveWarn((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE);
                 }
             }
 
@@ -117,7 +112,8 @@ function Sidepannel_CheckIfIsLiveResult(StreamData) {//Called by Java
 function Sidepannel_CheckIfIsLiveWarn(text) {
     Play_CheckIfIsLiveCleanEnd();
     Sidepannel_UpdateThumbDiv();
-    Sidepannel_showWarningDialog(text);
+    Sidepannel_showWarningDialog(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).textContent +
+        STR_SPACE + STR_LIVE + STR_BR + text);
     window.setTimeout(Sidepannel_HideWarningDialog, 2000);
 }
 
