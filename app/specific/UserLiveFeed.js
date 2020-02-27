@@ -24,7 +24,7 @@ var UserLiveFeed_Notify = true;
 var UserLiveFeed_NotifyRunning = false;
 var UserLiveFeed_NotifyTimeout = 3000;
 var UserLiveFeed_FeedHolderDocId;
-var UserLiveFeed_AnimationTimeout = 250;//Same value as user_feed_scroll
+var UserLiveFeed_AnimationTimeout = 200;//Same value as user_feed_scroll
 
 var UserLiveFeed_FeedPosY = [];
 var UserLiveFeed_itemsCount = [];
@@ -241,6 +241,7 @@ function UserLiveFeed_Show() {
 
 function UserLiveFeed_Hide() {
     UserLiveFeed_CheckIfIsLiveSTop();
+    UserLiveFeed_Showloading(false);
     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'hide');
 }
 
@@ -269,7 +270,7 @@ function UserLiveFeed_FeedRefresh() {
 function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
     if (UserLiveFeed_FeedSetPosLast[pos] === position) return;
 
-    if (!UserLiveFeed_ShowSmallPlayer && !skipAnimation &&
+    if (!Play_MultiEnable && !skipAnimation &&
         Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
         !Screens_ChangeFocusAnimationFast) {
         Screens_ChangeFocusAnimationFinished = false;
@@ -295,8 +296,6 @@ function UserLiveFeed_ResetAddCellsize() {
 }
 
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
-    var total = UserLiveFeed_GetSize(pos);
-
     if (!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) return;
 
     if (!Play_isEndDialogVisible() || !Play_EndFocus)
@@ -306,6 +305,8 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         UserLiveFeed_obj[pos].AddCellsize =
             (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
     }
+
+    var total = UserLiveFeed_GetSize(pos);
 
     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
 
@@ -337,9 +338,6 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
-    UserLiveFeed_ResetFeedId();
-
     if (UserLiveFeed_ShowSmallPlayer && UserLiveFeed_isFeedShow()) {
         if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti) {
 
@@ -355,6 +353,9 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
         }
     }
+
+    UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+    UserLiveFeed_ResetFeedId();
 }
 
 function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
@@ -365,7 +366,7 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
 
             eleRemoveIdPos = pos + '_' + (x - 4);
 
-            if (!UserLiveFeed_ShowSmallPlayer && Screens_ChangeFocusAnimationFinished &&
+            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
@@ -387,7 +388,7 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
             UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
             document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.add('animate_width');
 
-            if (!UserLiveFeed_ShowSmallPlayer && Screens_ChangeFocusAnimationFinished &&
+            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
@@ -430,46 +431,49 @@ function UserLiveFeed_CheckIfIsLiveSTop() {
 
     if (Play_CheckIfIsLiveQualities.length) {
 
-        try {
-            Android.ClearFeedPlayer();
-            Play_CheckIfIsLiveCleanEnd();
-        } catch (e) {
-            Play_CheckIfIsLiveCleanEnd();
-        }
+        Android.ClearFeedPlayer();
+        Play_CheckIfIsLiveCleanEnd();
 
+    } else {
+        try {
+            Android.ResetCallIfIsLiveFeed();
+        } catch (e) {}
     }
 }
 
-function UserLiveFeed_CheckIfIsLiveResult() {//Called by Java
-    var StreamData = JSON.parse(Android.GetCheckIfIsLiveFeed());
+function UserLiveFeed_CheckIfIsLiveResult(StreamData) {//Called by Java
 
-    if (StreamData && UserLiveFeed_isFeedShow()) {
+    if (UserLiveFeed_isFeedShow()) {
 
-        var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+        if (StreamData) {
+            StreamData = JSON.parse(StreamData);
 
-        if (Main_A_equals_B(tempChannel, StreamData.channel_vodid)) {
+            var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
-            if (StreamData.status === 200) {
+            if (Main_A_equals_B(tempChannel, StreamData.channel_vodid)) {
 
-                Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
-                Play_CheckIfIsLiveChannel = tempChannel;
+                if (StreamData.status === 200) {
 
-                Android.StartFeedPlayer(
-                    Play_CheckIfIsLiveURL,
-                    UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
-                    false
-                );
+                    Play_CheckIfIsLiveURL = StreamData.url;
+                    Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                    Play_CheckIfIsLiveChannel = tempChannel;
 
-                Sidepannel_CheckIfIsLiveRefreshSet();
-            } else if (StreamData.status === 1 || StreamData.status === 403) {
+                    Android.StartFeedPlayer(
+                        Play_CheckIfIsLiveURL,
+                        UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
+                        false
+                    );
 
-                UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                    ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                    Sidepannel_CheckIfIsLiveRefreshSet();
+                } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-            } else {
-                UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                    ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
+                    UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
+                        ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+
+                } else {
+                    UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
+                        ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
+                }
             }
         }
 
@@ -496,7 +500,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
         try {
             Android.CheckIfIsLiveFeed(
                 doc[6],
-                500,
+                750,
                 "UserLiveFeed_CheckIfIsLiveResult"
             );
         } catch (e) {
@@ -514,7 +518,7 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
 
             eleRemoveIdPos = pos + '_' + (x - 6);
 
-            if (!UserLiveFeed_ShowSmallPlayer && Screens_ChangeFocusAnimationFinished &&
+            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
@@ -536,7 +540,7 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
             UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
             document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.add('animate_width');
 
-            if (!UserLiveFeed_ShowSmallPlayer && Screens_ChangeFocusAnimationFinished &&
+            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
@@ -559,10 +563,10 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
 }
 
 function UserLiveFeed_FeedRemoveFocus(pos) {
+    UserLiveFeed_CheckIfIsLiveSTop();
+
     if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
         Main_RemoveClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
-
-    UserLiveFeed_CheckIfIsLiveSTop();
 }
 
 function UserLiveFeed_ThumbNull(y, thumbnail) {

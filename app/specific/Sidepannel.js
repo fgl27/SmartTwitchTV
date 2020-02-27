@@ -73,40 +73,43 @@ function Sidepannel_UpdateThumb() {
 
 }
 
-function Sidepannel_CheckIfIsLiveResult() {//Called by Java
-    var StreamData = JSON.parse(Android.GetCheckIfIsLiveFeed());
+function Sidepannel_CheckIfIsLiveResult(StreamData) {//Called by Java
 
-    if (StreamData && Sidepannel_isShowing()) {
+    if (Sidepannel_isShowing()) {
 
-        var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+        if (StreamData) {
+            StreamData = JSON.parse(StreamData);
 
-        if (Main_A_equals_B(tempChannel, StreamData.channel_vodid)) {
+            var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
 
-            if (StreamData.status === 200) {
+            if (Main_A_equals_B(tempChannel, StreamData.channel_vodid)) {
 
-                Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
-                Play_CheckIfIsLiveChannel = tempChannel;
+                if (StreamData.status === 200) {
 
-                Android.StartFeedPlayer(
-                    Play_CheckIfIsLiveURL,
-                    5,
-                    true
-                );
+                    Play_CheckIfIsLiveURL = StreamData.url;
+                    Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                    Play_CheckIfIsLiveChannel = tempChannel;
 
-                Sidepannel_CheckIfIsLiveRefreshSet();
-                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
-            } else if (StreamData.status === 1 || StreamData.status === 403) {
+                    Android.StartFeedPlayer(
+                        Play_CheckIfIsLiveURL,
+                        5,
+                        true
+                    );
 
-                Sidepannel_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                    ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                    Sidepannel_CheckIfIsLiveRefreshSet();
+                    Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+                } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-            } else {
-                Sidepannel_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                    ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
+                    Sidepannel_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
+                        ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+
+                } else {
+                    Sidepannel_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
+                        ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
+                }
             }
-        }
 
+        }
     }
 
 }
@@ -136,7 +139,7 @@ function Sidepannel_CheckIfIsLiveStart() {
     try {
         Android.CheckIfIsLiveFeed(
             JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6],
-            500,
+            750,
             "Sidepannel_CheckIfIsLiveResult"
         );
     } catch (e) {
@@ -161,13 +164,13 @@ function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
 
     if (Play_CheckIfIsLiveQualities.length) {
 
-        try {
-            Android.ClearFeedPlayer();
-            if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
-        } catch (e) {
-            Play_CheckIfIsLiveCleanEnd();
-        }
+        Android.ClearFeedPlayer();
+        if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
 
+    } else {
+        try {
+            Android.ResetCallIfIsLiveFeed();
+        } catch (e) {}
     }
 }
 

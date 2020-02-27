@@ -401,6 +401,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void ClearSmallPlayer() {
+        ExtraPlayerHandlerResult = null;
         ExtraPlayerHandler.removeCallbacksAndMessages(null);
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
         PlayerView[4].setVisibility(View.GONE);
@@ -1135,6 +1136,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String Channel_name, int delayms, String fun) {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            ExtraPlayerHandlerResult = null;
 
             ExtraPlayerHandler.postDelayed(() -> {
 
@@ -1144,8 +1146,15 @@ public class PlayerActivity extends Activity {
                     Log.d(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException");
                 }
 
-                myHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "()"));
+                myHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed())"));
             }, delayms);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void ResetCallIfIsLiveFeed() {
+            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            ExtraPlayerHandlerResult = null;
         }
 
         @SuppressWarnings("unused")//called by JS
