@@ -70,12 +70,12 @@ It of the permission has a reason:
 
 **Manage your followed channels:**
 
-* fallow or unfallow streamers or games for that user.<br>
+* follow or unfollow streamers or games for that user.<br>
 
 **View your email address:**
 
-* Email will not be read, this permission has other uses, it allows to access user live channels in a faster way, the app can load user live without this but it can be really lag if you fallow too many streamers. 
-* Let twitch know you are watching a stream/video (allows you to received a free sub in a random gifted sub for example) and show some target content as in featuring screen you will see the order in relation to yours twitch fallow content.<br>
+* Email will not be read, this permission has other uses, it allows to access user live channels in a faster way, the app can load user live without this but it can be really lag if you follow too many streamers. 
+* Let twitch know you are watching a stream/video (allows you to received a free sub in a random gifted sub for example) and show some target content as in featuring screen you will see the order in relation to yours twitch follow content.<br>
 
 **View your paid subscriptions:**
 
