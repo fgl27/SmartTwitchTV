@@ -37,6 +37,14 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "show_feed_player_delay": { //live notification
+        "values": [
+            0, 100, 200, 300, 400, 500, 600,
+            700, 800, 900, 1000, 1100, 1200,
+            1300, 1400, 1500, 1600, 1700, 1800,
+            1900, 2000],
+        "defaultValue": 9
+    },
     "live_feed_sort": { //live_feed_sort
         "values": [
             "views_more",
@@ -236,12 +244,14 @@ function Settings_SetSettings() {
 
     div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
-
     if (!Main_isTV || !Main_IsNotBrowser) {
         div += Settings_Content('dpad_position', null, STR_DPAD_POSTION, null);
 
         div += Settings_Content('dpad_opacity', null, STR_DPAD_OPACITY, null);
     }
+
+    div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+    Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
@@ -250,12 +260,11 @@ function Settings_SetSettings() {
 
     div += Settings_Content('disable_feed_player_multi', array_no_yes, STR_DISABLE_FEED_PLAYER_MULTI, null);
 
+    div += Settings_Content('show_feed_player_delay', null, STR_SIDE_PANEL_PLAYER_DELAY, STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY);
+
     div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
-
-    div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-    Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
     div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
@@ -343,6 +352,9 @@ function Settings_SetStrings() {
     Main_textContent('show_screen_counter_name', STR_SCREEN_COUNTER);
 
     Main_textContent('show_feed_player_name', STR_SHOW_FEED_PLAYER);
+
+    Main_textContent('show_feed_player_delay_name', STR_SIDE_PANEL_PLAYER_DELAY);
+    Main_textContent('show_feed_player_delay_summary', STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY);
 
     Main_textContent('disable_feed_player_multi_name', STR_DISABLE_FEED_PLAYER_MULTI);
 
@@ -476,6 +488,7 @@ function Settings_SetDefautls() {
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     UserLiveFeed_ShowSmallPlayer = Settings_Obj_default("show_feed_player");
+    UserLiveFeed_CheckIfIsLiveDelay = Settings_Obj_values("show_feed_player_delay");
     UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Settings_CodecsSet();
@@ -570,6 +583,7 @@ function Settings_SetDefault(position) {
     else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     else if (position === "show_feed_player") UserLiveFeed_ShowSmallPlayer = Settings_Obj_default("show_feed_player");
     else if (position === "disable_feed_player_multi") UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
+    else if (position === "show_feed_player_delay") UserLiveFeed_CheckIfIsLiveDelay = Settings_Obj_values("show_feed_player_delay");
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
@@ -578,7 +592,6 @@ function Settings_SetDefault(position) {
     else if (position === "dpad_opacity") Settings_DpadOpacity();
     else if (position === "dpad_position") Settings_DpadPOsition();
     else if (position === "pp_workaround") Settings_PP_Workaround();
-    console.log(UserLiveFeed_ShowSmallPlayer);
 }
 
 function Settings_PP_Workaround() {
@@ -737,7 +750,7 @@ function Settings_ScrollTable() {
     var doc,
         offset = (!Main_isTV || !Main_IsNotBrowser) ? 2 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (13 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -745,7 +758,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 400);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (12 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 400);
         else doc.scrollTop = 0;
