@@ -78,6 +78,14 @@
             font-kerning: none;
         }
 
+        div.feed_screen_new {
+            background-color: rgba(0, 0, 0, 0);
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
         div.scenekeys {
             width: 57vh;
             position: absolute;
@@ -1073,6 +1081,7 @@
         div.side_panel_fix {
             border-right: 0px solid;
             border-image: linear-gradient(to bottom, #000000, #000000, #000000) 1;
+            transition: margin-left 250ms linear;
         }
 
         div.side_panel_background_color {
@@ -2493,6 +2502,67 @@
                 </div>
             </div>
         </div>
+        <div id="scenefeed" class="feed_screen_new">
+            <div id="side_panel_feed_thumb" class="side_panel_feed_thumb class_translate3d hide">
+                <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt=""
+                        src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></div>
+                <div class="side_panel_feed_thumb_text_holder">
+                    <span class="stream_spam_text_holder">
+                        <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold"
+                            style="width: 75%; display: inline-block; font-size: 110%;"></div>
+                        <div id="feed_thum_quality" class="side_panel_feed_thumb_text"
+                            style="width: 24%; float: right; text-align: right;"></div>
+                        <div id="feed_thum_title" class="side_panel_feed_thumb_title_text"></div>
+                        <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
+                        <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
+                    </span>
+                </div>
+                <div id="sidepannel_dialog_warning" class="strokedeline dialogs hide"
+                    style="width: 100%; transform: translateY(-600%);">
+                    <div id="sidepannel_dialog_warning_text" class="strokedeline" style="font-size: 150%; "></div>
+                </div>
+            </div>
+            <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide"
+                style="transform: translateX(-100%);">
+                <div id="side_panel_new" style="width: 100%; position: absolute;">
+                    <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
+                        <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
+                            <div class="loading">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <div id="side_panel_row_0">
+                            <div id="side_panel_cell0_0" style="width: 100%; display: inline-block; padding: 1%;">
+                                <div id="side_panel_thumbdiv0_0" class="side_panel_div">
+                                    <div id="side_panel_feed_1" class="side_panel_feed_top">
+                                        <div class="side_panel_icons">
+                                            <i class="icon icon-arrow-right"></i>
+                                        </div>&nbsp;
+                                        <span id="side_panel_feed_settings"></span>
+                                    </div>
+                                    <div id="side_panel_feed_2" class="side_panel_feed_top">
+                                        <div class="side_panel_icons">
+                                            <i class="icon icon-arrow-left"></i>
+                                        </div>&nbsp;
+                                        <span id="side_panel_feed_refresh"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="side_panel_new_row_1" style="overflow: hidden; width: 94%; position: absolute;">
+                            <div id="side_panel_holder" class="side_panel_holder_ani">
+                            </div>
+                            <div id="side_panel_warn" class="side_panel_feed_top" style="display: none;">
+                                <span id="side_panel_warn_text"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Simple way to see center of screen
         <div class="center">
             <p>Test Text</p>
@@ -2901,7 +2971,7 @@
                 style="position: absolute; bottom: 0; text-align: right; margin-left: 0;"></div>
         </div>
     </div>
-    <div id="scenefeed" class="feed_screen">
+    <div id="scene_notify" class="feed_screen hide">
         <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide hide"
             style="transform: translateY(-120%);">
             <div id="user_feed_notify_content" class="side_panel_not">
@@ -2912,65 +2982,6 @@
                         <div id="user_feed_notify_name" class="notification_name"></div>
                         <div id="user_feed_notify_title" class="notification_title"></div>
                         <div id="user_feed_notify_game" class="notification_game"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="side_panel_feed_thumb" class="side_panel_feed_thumb class_translate3d hide">
-            <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt=""
-                    src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></div>
-            <div class="side_panel_feed_thumb_text_holder">
-                <span class="stream_spam_text_holder">
-                    <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold"
-                        style="width: 75%; display: inline-block; font-size: 110%;"></div>
-                    <div id="feed_thum_quality" class="side_panel_feed_thumb_text"
-                        style="width: 24%; float: right; text-align: right;"></div>
-                    <div id="feed_thum_title" class="side_panel_feed_thumb_title_text"></div>
-                    <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
-                    <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
-                </span>
-            </div>
-            <div id="sidepannel_dialog_warning" class="strokedeline dialogs hide"
-                style="width: 100%; transform: translateY(-600%);">
-                <div id="sidepannel_dialog_warning_text" class="strokedeline" style="font-size: 150%; "></div>
-            </div>
-        </div>
-        <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide"
-            style="transform: translateX(-100%);">
-            <div id="side_panel_new" style="width: 100%; position: absolute;">
-                <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
-                    <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
-                        <div class="loading">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                        </div>
-                    </div>
-                    <div id="side_panel_row_0">
-                        <div id="side_panel_cell0_0" style="width: 100%; display: inline-block; padding: 1%;">
-                            <div id="side_panel_thumbdiv0_0" class="side_panel_div">
-                                <div id="side_panel_feed_1" class="side_panel_feed_top">
-                                    <div class="side_panel_icons">
-                                        <i class="icon icon-arrow-right"></i>
-                                    </div>&nbsp;
-                                    <span id="side_panel_feed_settings"></span>
-                                </div>
-                                <div id="side_panel_feed_2" class="side_panel_feed_top">
-                                    <div class="side_panel_icons">
-                                        <i class="icon icon-arrow-left"></i>
-                                    </div>&nbsp;
-                                    <span id="side_panel_feed_refresh"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="side_panel_new_row_1" style="overflow: hidden; width: 94%; position: absolute;">
-                        <div id="side_panel_holder" class="side_panel_holder_ani">
-                        </div>
-                        <div id="side_panel_warn" class="side_panel_feed_top" style="display: none;">
-                            <span id="side_panel_warn_text"></span>
-                        </div>
                     </div>
                 </div>
             </div>
