@@ -495,7 +495,8 @@ function UserLiveFeed_CheckIfIsLiveStart() {
             Android.CheckIfIsLiveFeed(
                 doc ? doc[6] : JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
                 UserLiveFeed_CheckIfIsLiveDelay,
-                "UserLiveFeed_CheckIfIsLiveResult"
+                "UserLiveFeed_CheckIfIsLiveResult",
+                (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100)
             );
         } catch (e) {
             Play_CheckIfIsLiveCleanEnd();

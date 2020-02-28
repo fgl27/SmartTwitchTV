@@ -136,7 +136,8 @@ function Sidepannel_CheckIfIsLiveStart() {
         Android.CheckIfIsLiveFeed(
             JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6],
             UserLiveFeed_CheckIfIsLiveDelay,
-            "Sidepannel_CheckIfIsLiveResult"
+            "Sidepannel_CheckIfIsLiveResult",
+            (Sidepannel_PosFeed % 100)
         );
     } catch (e) {
         Play_CheckIfIsLiveCleanEnd();

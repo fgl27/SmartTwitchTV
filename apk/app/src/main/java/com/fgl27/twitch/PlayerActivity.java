@@ -132,7 +132,7 @@ public class PlayerActivity extends Activity {
     public int AudioMulti = 0;//window 0
     public Handler MainThreadHandler;
     public Handler ExtraPlayerHandler;
-    public String ExtraPlayerHandlerResult;
+    public String[] ExtraPlayerHandlerResult = new String[100];
     public HandlerThread ExtraPlayerHandlerThread;
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
@@ -401,7 +401,6 @@ public class PlayerActivity extends Activity {
     }
 
     private void ClearSmallPlayer() {
-        ExtraPlayerHandlerResult = null;
         ExtraPlayerHandler.removeCallbacksAndMessages(null);
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
         PlayerView[4].setVisibility(View.GONE);
@@ -1134,34 +1133,27 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String Channel_name, int delayms, String fun) {
+        public void CheckIfIsLiveFeed(String Channel_name, int delayms, String fun, int position) {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
-            ExtraPlayerHandlerResult = null;
+            ExtraPlayerHandlerResult[position] = null;
 
             ExtraPlayerHandler.postDelayed(() -> {
 
                 try {
-                    ExtraPlayerHandlerResult = Tools.getStreamData(Channel_name, true);
+                    ExtraPlayerHandlerResult[position] = Tools.getStreamData(Channel_name, true);
                 } catch (UnsupportedEncodingException e) {
                     Log.d(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException");
                 }
 
-                if (ExtraPlayerHandlerResult != null)
-                    MainThreadHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed())"));
+                if (ExtraPlayerHandlerResult[position] != null)
+                    MainThreadHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed(" + position + "))"));
             }, delayms);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void ResetCallIfIsLiveFeed() {
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
-            ExtraPlayerHandlerResult = null;
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String GetCheckIfIsLiveFeed() {
-            return ExtraPlayerHandlerResult;
+        public String GetCheckIfIsLiveFeed(int position) {
+            return ExtraPlayerHandlerResult[position];
         }
 
         @SuppressWarnings("unused")//called by JS
