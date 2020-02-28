@@ -158,16 +158,8 @@ function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
 
     if (!Main_IsNotBrowser) return;
 
-    if (Play_CheckIfIsLiveQualities.length) {
-
-        Android.ClearFeedPlayer();
-        if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
-
-    } else {
-        try {
-            Android.ResetCallIfIsLiveFeed();
-        } catch (e) {}
-    }
+    Android.ClearFeedPlayer();
+    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
 }
 
 function Sidepannel_CheckIfIsLiveRefreshAuto() {
