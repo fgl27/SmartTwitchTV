@@ -430,16 +430,8 @@ function UserLiveFeed_CheckIfIsLiveSTop() {
 
     if (!Main_IsNotBrowser) return;
 
-    if (Play_CheckIfIsLiveQualities.length) {
-
-        Android.ClearFeedPlayer();
-        Play_CheckIfIsLiveCleanEnd();
-
-    } else {
-        try {
-            Android.ResetCallIfIsLiveFeed();
-        } catch (e) {}
-    }
+    Android.ClearFeedPlayer();
+    Play_CheckIfIsLiveCleanEnd();
 }
 
 function UserLiveFeed_CheckIfIsLiveResult(StreamData) {//Called by Java
