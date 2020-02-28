@@ -132,7 +132,7 @@ public class PlayerActivity extends Activity {
     public int AudioMulti = 0;//window 0
     public Handler MainThreadHandler;
     public Handler ExtraPlayerHandler;
-    public String[] ExtraPlayerHandlerResult = new String[100];
+    public String[][] ExtraPlayerHandlerResult = new String[10][100];
     public HandlerThread ExtraPlayerHandlerThread;
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
@@ -1133,27 +1133,27 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String Channel_name, int delayms, String fun, int position) {
+        public void CheckIfIsLiveFeed(String Channel_name, int delayms, String fun, int x, int y) {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
-            ExtraPlayerHandlerResult[position] = null;
+            ExtraPlayerHandlerResult[x][y] = null;
 
             ExtraPlayerHandler.postDelayed(() -> {
 
                 try {
-                    ExtraPlayerHandlerResult[position] = Tools.getStreamData(Channel_name, true);
+                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(Channel_name, true);
                 } catch (UnsupportedEncodingException e) {
                     Log.d(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException");
                 }
 
-                if (ExtraPlayerHandlerResult[position] != null)
-                    MainThreadHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed(" + position + "))"));
-            }, delayms);
+                if (ExtraPlayerHandlerResult[x][y] != null)
+                    MainThreadHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")"));
+            }, 50 + delayms);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String GetCheckIfIsLiveFeed(int position) {
-            return ExtraPlayerHandlerResult[position];
+        public String GetCheckIfIsLiveFeed(int x, int y) {
+            return ExtraPlayerHandlerResult[x][y];
         }
 
         @SuppressWarnings("unused")//called by JS

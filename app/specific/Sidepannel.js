@@ -73,35 +73,31 @@ function Sidepannel_UpdateThumb() {
 
 }
 
-function Sidepannel_CheckIfIsLiveResult(StreamData) {//Called by Java
+function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (Sidepannel_isShowing()) {
+    if (Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
 
         if (StreamData) {
             StreamData = JSON.parse(StreamData);
 
-            var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
 
-            if (Main_A_equals_B(tempChannel, StreamData.channel_vodid)) {
+            if (StreamData.status === 200) {
 
-                if (StreamData.status === 200) {
+                Play_CheckIfIsLiveURL = StreamData.url;
+                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
 
-                    Play_CheckIfIsLiveURL = StreamData.url;
-                    Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
-                    Play_CheckIfIsLiveChannel = tempChannel;
+                Android.StartFeedPlayer(
+                    Play_CheckIfIsLiveURL,
+                    5,
+                    true
+                );
 
-                    Android.StartFeedPlayer(
-                        Play_CheckIfIsLiveURL,
-                        5,
-                        true
-                    );
+                Sidepannel_CheckIfIsLiveRefreshSet();
+                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
-                    Sidepannel_CheckIfIsLiveRefreshSet();
-                    Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
-
-                } else {
-                    Sidepannel_CheckIfIsLiveWarn((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE);
-                }
+            } else {
+                Sidepannel_CheckIfIsLiveWarn((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE);
             }
 
         }
@@ -137,6 +133,7 @@ function Sidepannel_CheckIfIsLiveStart() {
             JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6],
             UserLiveFeed_CheckIfIsLiveDelay,
             "Sidepannel_CheckIfIsLiveResult",
+            1,
             (Sidepannel_PosFeed % 100)
         );
     } catch (e) {
