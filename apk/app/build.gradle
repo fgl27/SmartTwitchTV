@@ -54,7 +54,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.android.support:leanback-v17:' + versions.supportLib
+    implementation 'androidx.leanback:leanback:' + versions.leanback
     implementation project(':exoplayer-library-core')
     implementation project(':exoplayer-library-ui')
     implementation project(':exoplayer-library-hls')
