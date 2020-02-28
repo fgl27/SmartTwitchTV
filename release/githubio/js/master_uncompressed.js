@@ -17565,7 +17565,7 @@
     }
 
     function UserLiveFeed_CheckIfIsLiveWarn(text) {
-        Play_CheckIfIsLiveCleanEnd();
+        UserLiveFeed_CheckIfIsLiveSTop();
         Play_showWarningDialog(text, 2000);
     }
 
