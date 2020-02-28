@@ -34,7 +34,6 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,6 +55,8 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.google.gson.JsonParser.parseString;
 
 public final class Tools {
 
@@ -124,8 +125,7 @@ public final class Tools {
 
         if (response != null) {
 
-            JsonParser parser = new JsonParser();
-            JsonObject Token = parser.parse(response).getAsJsonObject();
+            JsonObject Token = parseString(response).getAsJsonObject();
             String StreamToken = Token.get("token").getAsString();
 
             url = String.format(
@@ -147,7 +147,7 @@ public final class Tools {
                     //410 = api v3 is gone use v5 bug
                     if (mStatus == 200) break;
                     else if (mStatus == 403 || mStatus == 404 || mStatus == 410)
-                        return JsonObToResult(CheckToken(StreamToken, parser) ? 1 : mStatus, "link", channel_name_vod_id).toString();
+                        return JsonObToResult(CheckToken(StreamToken) ? 1 : mStatus, "link", channel_name_vod_id).toString();
                 }
             }
 
@@ -157,8 +157,8 @@ public final class Tools {
         return null;
     }
 
-    private static boolean CheckToken(String token, JsonParser parser) {
-        JsonElement Token = parser.parse(token);
+    private static boolean CheckToken(String token) {
+        JsonElement Token = parseString(token);
 
         if(Token.isJsonObject()) {
             JsonElement restricted_bitrates = Token.getAsJsonObject().get("chansub").getAsJsonObject().get("restricted_bitrates");
@@ -300,12 +300,12 @@ public final class Tools {
 
             if (status != -1) {
                 return JsonObToResult(status, new String(
-                        readFully(
-                                status != HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getErrorStream() :
-                                        urlConnection.getInputStream()
-                        ),
-                        StandardCharsets.UTF_8),
+                                readFully(
+                                        status != HttpURLConnection.HTTP_OK ?
+                                                urlConnection.getErrorStream() :
+                                                urlConnection.getInputStream()
+                                ),
+                                StandardCharsets.UTF_8),
                         "").toString();
             } else {
                 return null;
@@ -354,12 +354,12 @@ public final class Tools {
 
             if (status != -1) {
                 return JsonObToResult(status, new String(
-                        readFully(
-                                status != HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getErrorStream() :
-                                        urlConnection.getInputStream()
-                        ),
-                        StandardCharsets.UTF_8),
+                                readFully(
+                                        status != HttpURLConnection.HTTP_OK ?
+                                                urlConnection.getErrorStream() :
+                                                urlConnection.getInputStream()
+                                ),
+                                StandardCharsets.UTF_8),
                         "").toString();
             } else {
                 return null;
