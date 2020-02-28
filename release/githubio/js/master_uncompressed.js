@@ -3499,7 +3499,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.123';
+    var Main_stringVersion_Min = '.124';
     var Main_minversion = '022720';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -16462,35 +16462,31 @@
 
     }
 
-    function Sidepannel_CheckIfIsLiveResult(StreamData) { //Called by Java
+    function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
-        if (Sidepannel_isShowing()) {
+        if (Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData);
 
-                var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
 
-                if (Main_A_equals_B(tempChannel, StreamData.channel_vodid)) {
+                if (StreamData.status === 200) {
 
-                    if (StreamData.status === 200) {
+                    Play_CheckIfIsLiveURL = StreamData.url;
+                    Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                    Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
 
-                        Play_CheckIfIsLiveURL = StreamData.url;
-                        Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
-                        Play_CheckIfIsLiveChannel = tempChannel;
+                    Android.StartFeedPlayer(
+                        Play_CheckIfIsLiveURL,
+                        5,
+                        true
+                    );
 
-                        Android.StartFeedPlayer(
-                            Play_CheckIfIsLiveURL,
-                            5,
-                            true
-                        );
+                    Sidepannel_CheckIfIsLiveRefreshSet();
+                    Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
-                        Sidepannel_CheckIfIsLiveRefreshSet();
-                        Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
-
-                    } else {
-                        Sidepannel_CheckIfIsLiveWarn((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE);
-                    }
+                } else {
+                    Sidepannel_CheckIfIsLiveWarn((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE);
                 }
 
             }
@@ -16525,7 +16521,9 @@
             Android.CheckIfIsLiveFeed(
                 JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6],
                 UserLiveFeed_CheckIfIsLiveDelay,
-                "Sidepannel_CheckIfIsLiveResult"
+                "Sidepannel_CheckIfIsLiveResult",
+                1,
+                (Sidepannel_PosFeed % 100)
             );
         } catch (e) {
             Play_CheckIfIsLiveCleanEnd();
@@ -17508,39 +17506,34 @@
         Play_CheckIfIsLiveCleanEnd();
     }
 
-    function UserLiveFeed_CheckIfIsLiveResult(StreamData) { //Called by Java
+    function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
-        if (UserLiveFeed_isFeedShow()) {
+        if (UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData);
 
-                var tempChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+                if (StreamData.status === 200) {
 
-                if (Main_A_equals_B(tempChannel, StreamData.channel_vodid)) {
+                    Play_CheckIfIsLiveURL = StreamData.url;
+                    Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                    Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
-                    if (StreamData.status === 200) {
+                    Android.StartFeedPlayer(
+                        Play_CheckIfIsLiveURL,
+                        UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
+                        false
+                    );
 
-                        Play_CheckIfIsLiveURL = StreamData.url;
-                        Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
-                        Play_CheckIfIsLiveChannel = tempChannel;
+                    Sidepannel_CheckIfIsLiveRefreshSet();
+                } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-                        Android.StartFeedPlayer(
-                            Play_CheckIfIsLiveURL,
-                            UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
-                            false
-                        );
+                    UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
+                        ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
 
-                        Sidepannel_CheckIfIsLiveRefreshSet();
-                    } else if (StreamData.status === 1 || StreamData.status === 403) {
-
-                        UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                            ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
-
-                    } else {
-                        UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                            ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
-                    }
+                } else {
+                    UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
+                        ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
                 }
             }
 
@@ -17570,7 +17563,9 @@
                 Android.CheckIfIsLiveFeed(
                     doc ? doc[6] : JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
                     UserLiveFeed_CheckIfIsLiveDelay,
-                    "UserLiveFeed_CheckIfIsLiveResult"
+                    "UserLiveFeed_CheckIfIsLiveResult",
+                    UserLiveFeed_FeedPosX,
+                    (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100)
                 );
             } catch (e) {
                 Play_CheckIfIsLiveCleanEnd();
@@ -17799,6 +17794,9 @@
     var UserLiveFeedobj_UserHostPos = 6;
     var UserLiveFeedobj_UserGamesPos = 7;
     var UserLiveFeedobj_UserAGamesPos = 8;
+
+    //Check bellow java before define more current max is 0 to 9, 1 is used by the side panel
+    //public String[][] ExtraPlayerHandlerResult = new String[10][100];
 
     var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos; //Default pos
     var UserLiveFeedobj_MAX = UserLiveFeedobj_UserGamesPos;
