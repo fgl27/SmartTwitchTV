@@ -509,7 +509,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
             Play_CheckIfIsLiveCleanEnd();
         }
 
-    }
+    } else UserLiveFeed_CheckIfIsLiveSTop();
 }
 
 function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
