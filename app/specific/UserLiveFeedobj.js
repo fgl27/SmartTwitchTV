@@ -10,6 +10,9 @@ var UserLiveFeedobj_UserHostPos = 6;
 var UserLiveFeedobj_UserGamesPos = 7;
 var UserLiveFeedobj_UserAGamesPos = 8;
 
+//Check bellow java before define more current max is 0 to 9, 1 is used by the side panel
+//public String[][] ExtraPlayerHandlerResult = new String[10][100];
+
 var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos;//Default pos
 var UserLiveFeedobj_MAX = UserLiveFeedobj_UserGamesPos;
 var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
