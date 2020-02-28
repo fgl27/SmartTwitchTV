@@ -10,5 +10,5 @@ ext.versions = [
         supportLib           : '28.0.0',
         gradlePlugin         : '3.5.3',
         benmanes             : '0.27.0',
-        googlegson           : '2.8.5',
+        googlegson           : '2.8.6',
 ]
