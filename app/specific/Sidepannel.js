@@ -110,7 +110,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData) {//Called by Java
 }
 
 function Sidepannel_CheckIfIsLiveWarn(text) {
-    Play_CheckIfIsLiveCleanEnd();
+    Sidepannel_CheckIfIsLiveSTop();
     Sidepannel_UpdateThumbDiv();
     Sidepannel_showWarningDialog(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).textContent +
         STR_SPACE + STR_LIVE + STR_BR + text);
