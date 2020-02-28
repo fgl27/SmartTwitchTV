@@ -483,7 +483,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData) {//Called by Java
 }
 
 function UserLiveFeed_CheckIfIsLiveWarn(text) {
-    Play_CheckIfIsLiveCleanEnd();
+    UserLiveFeed_CheckIfIsLiveSTop();
     Play_showWarningDialog(text, 2000);
 }
 
