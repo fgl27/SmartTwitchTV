@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
@@ -142,4 +142,4 @@
         app:use_artwork="false"
         app:show_buffering="always"/>
 
-</FrameLayout>
+</merge>
