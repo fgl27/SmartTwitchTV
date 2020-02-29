@@ -1,5 +1,3 @@
-//copied https://github.com/yuliskov/SmartYouTubeTV
-
 package com.fgl27.twitch;
 
 import android.Manifest;
@@ -88,11 +86,6 @@ public final class Tools {
     private static final String TWITHCV5JSON = "application/vnd.twitchtv.v5+json";
     private static final String AUTHORIZATION = "Authorization";
 
-    private static String[][] HEADERS = {{CLIENTIDHEADER, CLIENTID},
-            {ACCEPTHEADER, TWITHCV5JSON},
-            {AUTHORIZATION, null}};
-
-    private static int mStatus = 0;
     private static final int DefaultTimeout = 3000;
 
     private static final String live_token = "https://api.twitch.tv/api/channels/%s/access_token?platform=_";
@@ -105,8 +98,8 @@ public final class Tools {
     private static final Pattern pattern2 = Pattern.compile("NAME=(\"(.*?)\").*BANDWIDTH=(\\d+).*CODECS=(\"(.*?)\").*http(.*).*");
 
     public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException {
-        String response = null;
-        int i;
+        JsonObject response = null;
+        int i, status = 0;
 
         String url = String.format(
                 Locale.US,
@@ -115,17 +108,23 @@ public final class Tools {
         );
 
         for (i = 0; i < 5; i++) {
+
             response = readUrlSimple(url, DefaultTimeout + (500 * i));
+
             if (response != null) {
-                if (mStatus == 200) break;
-                else if (mStatus == 403 || mStatus == 404 || mStatus == 410)
-                    return JsonObToResult(mStatus, "token", channel_name_vod_id).toString();
+
+                status = response.get("status").getAsInt();
+
+                if (status == 200) break;
+                else if (status == 403 || status == 404 || status == 410)
+                    return JsonObToResult(status, "token").toString();
+
             }
         }
 
         if (response != null) {
 
-            JsonObject Token = parseString(response).getAsJsonObject();
+            JsonObject Token = parseString(response.get("responseText").getAsString()).getAsJsonObject();
             String StreamToken = Token.get("token").getAsString();
 
             url = String.format(
@@ -140,18 +139,27 @@ public final class Tools {
             for (i = 0; i < 5; i++) {
 
                 response = readUrlSimple(url, DefaultTimeout + (500 * i));
+
                 if (response != null) {
+
+                    status = response.get("status").getAsInt();
 
                     //404 = off line
                     //403 = forbidden access
                     //410 = api v3 is gone use v5 bug
-                    if (mStatus == 200) break;
-                    else if (mStatus == 403 || mStatus == 404 || mStatus == 410)
-                        return JsonObToResult(CheckToken(StreamToken) ? 1 : mStatus, "link", channel_name_vod_id).toString();
+                    if (status == 200) break;
+                    else if (status == 403 || status == 404 || status == 410)
+                        return JsonObToResult(CheckToken(StreamToken) ? 1 : status, "link").toString();
+
                 }
             }
 
-            return response != null ? extractQualities(mStatus, response, url, channel_name_vod_id) : null;
+            return response != null ?
+                    extractQualities(
+                            status,
+                            response.get("responseText").getAsString(),
+                            url
+                    ) : null;
         }
 
         return null;
@@ -169,7 +177,7 @@ public final class Tools {
         return false;
     }
 
-    private static String extractQualities(int status, String responseText, String url, String channel_name_vod_id) {
+    private static String extractQualities(int status, String responseText, String url) {
         Matcher matcher = pattern.matcher(responseText);
         Matcher matcher2;
         JsonArray result = new JsonArray();
@@ -189,7 +197,15 @@ public final class Tools {
                     if (id != null && id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
                     else id = id + " | source";
 
-                    result.add(Qualities(id, matcher2.group(3), matcher2.group(5), matcher2.group(6)));
+                    result.add(
+                            Qualities(
+                                    id,
+                                    matcher2.group(3),
+                                    matcher2.group(5),
+                                    matcher2.group(6)
+                            )
+                    );
+
                     list.add(id.split(" ")[0]);
 
                 } else {
@@ -198,7 +214,15 @@ public final class Tools {
                     //Prevent duplicated resolution 720p60 source and 720p60
                     if (!list.contains(id)) {
 
-                        result.add(Qualities(id, matcher2.group(3), matcher2.group(5), matcher2.group(6)));
+                        result.add(
+                                Qualities(
+                                        id,
+                                        matcher2.group(3),
+                                        matcher2.group(5),
+                                        matcher2.group(6)
+                                )
+                        );
+
                         list.add(id);
                     }
 
@@ -209,17 +233,15 @@ public final class Tools {
 
         JsonObject JSON = new JsonObject();
         JSON.addProperty("status", status);
-        JSON.addProperty("channel_vodid", channel_name_vod_id);
         JSON.addProperty("url", url);
         JSON.addProperty("responseText", result.toString());
 
         return JSON.toString();
     }
 
-    private static JsonObject JsonObToResult(int status, String responseText,String channel_name_vod_id) {
+    private static JsonObject JsonObToResult(int status, String responseText) {
         JsonObject JSON = new JsonObject();
         JSON.addProperty("status", status);
-        JSON.addProperty("channel_vodid", channel_name_vod_id);
         JSON.addProperty("responseText", responseText);
         return JSON;
     }
@@ -247,7 +269,7 @@ public final class Tools {
         return "";
     }
 
-    public static String readUrlSimple(String urlString, int Timeout) {
+    public static JsonObject readUrlSimple(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
         try {
@@ -257,16 +279,17 @@ public final class Tools {
 
             urlConnection.connect();
 
-            mStatus = urlConnection.getResponseCode();
+            int status = urlConnection.getResponseCode();
 
-            if (mStatus != -1) {
-                return new String(
+            if (status != -1) {
+                return JsonObToResult(status, new String(
                         readFully(
-                                mStatus != HttpURLConnection.HTTP_OK ?
+                                status != HttpURLConnection.HTTP_OK ?
                                         urlConnection.getErrorStream() :
                                         urlConnection.getInputStream()
                         ),
-                        StandardCharsets.UTF_8);
+                        StandardCharsets.UTF_8)
+                );
             } else {
                 return null;
             }
@@ -283,7 +306,11 @@ public final class Tools {
     //use default js XMLHttpRequest
     public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
         HttpURLConnection urlConnection = null;
-        HEADERS[2][1] = access_token;
+        String[][] HEADERS = {
+                {CLIENTIDHEADER, CLIENTID},
+                {ACCEPTHEADER, TWITHCV5JSON},
+                {AUTHORIZATION, access_token}
+        };
 
         try {
             urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
@@ -300,13 +327,13 @@ public final class Tools {
 
             if (status != -1) {
                 return JsonObToResult(status, new String(
-                                readFully(
-                                        status != HttpURLConnection.HTTP_OK ?
-                                                urlConnection.getErrorStream() :
-                                                urlConnection.getInputStream()
-                                ),
-                                StandardCharsets.UTF_8),
-                        "").toString();
+                        readFully(
+                                status != HttpURLConnection.HTTP_OK ?
+                                        urlConnection.getErrorStream() :
+                                        urlConnection.getInputStream()
+                        ),
+                        StandardCharsets.UTF_8)
+                ).toString();
             } else {
                 return null;
             }
@@ -322,8 +349,11 @@ public final class Tools {
     //For other then get methods
     public static String MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
         HttpURLConnection urlConnection = null;
-        HEADERS[2][1] = access_token;
-        HEADERS[0][1] = overwriteID != null ? overwriteID : CLIENTID;
+        String[][] HEADERS = {
+                {CLIENTIDHEADER, overwriteID != null ? overwriteID : CLIENTID},
+                {ACCEPTHEADER, TWITHCV5JSON},
+                {AUTHORIZATION, access_token}
+        };
 
         try {
             urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
@@ -354,13 +384,13 @@ public final class Tools {
 
             if (status != -1) {
                 return JsonObToResult(status, new String(
-                                readFully(
-                                        status != HttpURLConnection.HTTP_OK ?
-                                                urlConnection.getErrorStream() :
-                                                urlConnection.getInputStream()
-                                ),
-                                StandardCharsets.UTF_8),
-                        "").toString();
+                        readFully(
+                                status != HttpURLConnection.HTTP_OK ?
+                                        urlConnection.getErrorStream() :
+                                        urlConnection.getInputStream()
+                        ),
+                        StandardCharsets.UTF_8)
+                ).toString();
             } else {
                 return null;
             }
