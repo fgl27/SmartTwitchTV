@@ -365,7 +365,7 @@ function Play_CheckIfIsLiveStart() {
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                Play_CheckIfIsLiveQualities = StreamData.responseText;
 
                 return true;
 
@@ -828,7 +828,7 @@ function Play_loadDatanew() {
             if (StreamData.status === 200) {
 
                 Play_data.AutoUrl = StreamData.url;
-                Play_loadDataSuccessend(JSON.parse(StreamData.responseText));
+                Play_loadDataSuccessend(StreamData.responseText);
                 return;
 
             } else if (StreamData.status === 1 || StreamData.status === 403 || StreamData.status === 404 ||
@@ -2294,7 +2294,7 @@ function Play_MultiStartNew(pos, streamer, display_name) {
 
         if (StreamData.status === 200) {
 
-            Play_MultiStartQualitySucess(pos, StreamData.url, JSON.parse(StreamData.responseText));
+            Play_MultiStartQualitySucess(pos, StreamData.url, StreamData.responseText);
             return;
 
         } else if (StreamData.status === 1 || StreamData.status === 403) {
