@@ -406,4 +406,5 @@ function en_USLang() {
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a tile is selected";
     STR_START_AT_USER = "Always start the app in the user screen (overwrites Restore playback)";
     STR_LAST_REFRESH = "(last refresh: ";
+    STR_PP_VOD = "Exit PP or Multistream to open this VOD";
 }
