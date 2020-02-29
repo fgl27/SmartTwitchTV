@@ -213,7 +213,7 @@
             font-size: 65%;
         }
 
-        div.icon_top_label {
+        .icon_top_label {
             width: auto;
             height: 1.75%;
             text-align: left;
@@ -237,7 +237,7 @@
             color: #FFFFFF;
             text-align: left;
             margin-left: 1%;
-            font-size: 2.35vh;
+            font-size: 2.05vh;
         }
 
         div.stream_thumbnail_game_feed,
@@ -260,7 +260,7 @@
         }
 
         div.stream_thumbnail_player_feed {
-            padding-bottom: 92%;
+            padding-bottom: 93%;
             width: 97%;
             background-repeat: no-repeat;
             background: #000000;
@@ -401,7 +401,7 @@
         }
 
         div.stream_thumbnail_feed_text_holder {
-            height: 12.5vh;
+            height: 13vh;
             font-size: 2.55vh;
         }
 
@@ -751,7 +751,7 @@
             left: 0.55vh;
             height: auto;
             white-space: nowrap;
-            bottom: 5%;
+            bottom: 4.15%;
             transform: translateX(0);
             transition: transform 200ms linear;
             will-change: transform;
@@ -2382,7 +2382,11 @@
             </div>
             <div id="controls_div" class="controls_div">
                 <div id="label_update" class="icon_top_label hide"></div>
-                <div id="label_refresh" class="icon_top_label"></div>
+                <div style="line-height: 1vh;">
+                    <div id="label_refresh" class="icon_top_label" style="display: inline-block;"></div>
+                    <div id="label_last_refresh" class="icon_top_label"
+                        style="display: inline-block; transform: translateY(10%);"></div>
+                </div>
                 <div id="label_side_panel" class="icon_top_label"></div>
             </div>
             <div id="top_lable" class="top_lable">
@@ -2954,6 +2958,7 @@
             <div id="current_game_feed_scroll" class="user_feed_scroll hide"></div>
             <div id="live_feed_scroll" class="user_feed_scroll hide"></div>
             <div id="user_feed_scroll" class="user_feed_scroll hide"></div>
+            <div id="user_history_scroll" class="user_feed_scroll hide"></div>
             <div id="user_host_scroll" class="user_feed_scroll hide"></div>
             <div id="user_games_scroll" class="user_feed_scroll_game hide"></div>
             <div id="user_agames_scroll" class="user_feed_scroll hide"></div>
@@ -2971,6 +2976,8 @@
                 <div id="feed_end_5" class="feed_end_name"></div>
                 <i id="feed_end_icon_5" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
                 <div id="feed_end_6" class="feed_end_name"></div>
+                <i id="feed_end_icon_6" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
+                <div id="feed_end_7" class="feed_end_name"></div>
             </div>
             <div id="feed_counter" class="icon_feed_refresh strokedelinebig"
                 style="position: absolute; bottom: 0; text-align: right; margin-left: 0;"></div>

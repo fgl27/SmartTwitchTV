@@ -19,3 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes InnerClasses
+-keep class com.fgl27.twitch.Tools**
+-keep class com.fgl27.twitch.PlayerActivity**
+-keepclassmembers class com.fgl27.twitch.Tools** {
+    *;
+}
+
+-keepclassmembers class com.fgl27.twitch.PlayerActivity** {
+    *;
+}
+
+
