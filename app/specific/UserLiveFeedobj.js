@@ -315,7 +315,7 @@ function UserLiveFeedobj_ShowHistory() {
     UserLiveFeedobj_SetBottomText(5);
 
     if (AddUser_UserIsSet()) {
-        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, (UserLiveFeedobj_ShowHistoryLength !== Main_values_History_data[AddUser_UsernameArray[0].id].live.length));
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, true);//(UserLiveFeedobj_ShowHistoryLength !== Main_values_History_data[AddUser_UsernameArray[0].id].live.length)
         UserLiveFeedobj_ShowHistoryLength = Main_values_History_data[AddUser_UsernameArray[0].id].live.length;
     }
 
@@ -772,7 +772,7 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
                 'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
             ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
         UserLiveFeed_ids[2] + id +
-        '" class="stream_thumbnail_feed_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+        '" class="stream_thumbnail_feed_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
         UserLiveFeed_ids[3] + id + '" class="stream_info_live_name" style="width:' +
         (ishosting ? '99%; max-height: 2.4em; overflow: hidden; white-space: normal;' : '63.5%') + '; display: inline-block; overflow: hidden;">' +
         '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
@@ -788,7 +788,7 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
         '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
         '</div><div id="' + UserLiveFeed_ids[6] + id + '"class="stream_info_live">' +
         data[11] + data[4] + '</div>' +
-        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
         '</span></div></div>';
 
