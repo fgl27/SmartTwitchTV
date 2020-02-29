@@ -99,6 +99,7 @@ function Screens_init() {
         Main_YRst(inUseObj.posY);
         Screens_addFocus(true);
         Main_SaveValues();
+        Screens_SetLastRefresh();
     } else Screens_StartLoad();
 }
 
@@ -113,6 +114,7 @@ function Screens_exit() {
 
 function Screens_StartLoad() {
     Main_showLoadDialog();
+    inUseObj.lastRefresh = new Date().getTime();
     Main_updateclock();
     Main_empty(inUseObj.table);
     Main_HideWarningDialog();
@@ -1910,4 +1912,8 @@ function Screens_ThumbOptionSetArrowArray() {
         Main_UserVod,
         Main_UserChannels,
         Main_History[Main_HistoryPos]];
+}
+
+function Screens_SetLastRefresh() {
+    Main_innerHTML("label_last_refresh", STR_LAST_REFRESH + Play_timeDay(Date.now() - inUseObj.lastRefresh) + ")");
 }

@@ -1568,6 +1568,7 @@ function Main_updateclock() {
         Main_textContent('label_clock', Main_getclock());
         if (Main_RunningTime) Main_AboutDialogUpdateTime();
         Main_randomimg = '?' + parseInt(Math.random() * 100000);
+        Screens_SetLastRefresh();
     }
 }
 
