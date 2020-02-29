@@ -1395,12 +1395,48 @@ function Main_OPenAsVod(index) {
     if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
     PlayVod_VodOffsetTemp = Main_values.vodOffset;
 
+    if (Play_isOn) {
+        console.log('Play_isOn');
+        Main_OPenAsVod_shutdownStream();
+
+    }
     Play_showWarningDialog(STR_LIVE_VOD);
     Main_openVod();
 
     window.setTimeout(function() {
         if (!Play_IsWarning) Play_HideWarningDialog();
     }, 3000);
+}
+
+function Main_OPenAsVod_shutdownStream() {
+    Main_OPenAsVod_PreshutdownStream(true);
+    Play_data.qualities = [];
+    Main_values.Play_WasPlaying = 0;
+
+    if (AddUser_UserIsSet()) {
+        AddCode_IsFollowing = false;
+        Play_setFollow();
+    } else Play_hideFollow();
+
+    PlayExtra_HideChat();
+    UserLiveFeed_PreventHide = false;
+    PlayVod_ProgresBarrUpdate(0, 0);
+}
+
+function Main_OPenAsVod_PreshutdownStream() {
+    if (Main_IsNotBrowser) {
+        //We are closing the player on error or on end
+        Android.mClearSmallPlayer();
+        Android.stopVideo(1);
+    }
+
+    Play_isOn = false;
+    if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey(false);
+
+    if (!Play_isEndDialogVisible() || true) UserLiveFeed_Hide();
+
+    Play_ClearPlay(true);
+    Play_ClearPlayer();
 }
 
 function Main_openStream() {
