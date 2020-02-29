@@ -38,7 +38,6 @@ var PlayVod_jumpTimers = [0, 10, 30, 60, 120, 300, 600, 900, 1200, 1800];
 var PlayVod_RefreshProgressBarrID;
 var PlayVod_SaveOffsetId;
 var PlayVod_WasSubChekd = false;
-var PlayVod_VodIdex;
 var PlayVod_VodOffset;
 var PlayVod_VodOffsetTemp;
 var PlayVod_HasVodInfo = false;
@@ -93,9 +92,11 @@ function PlayVod_Start() {
         Main_replaceClassEmoji('stream_info_title');
     }
 
-    PlayVod_VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Main_values.ChannelVod_vodId) : -1;
-    PlayVod_VodOffset = (PlayVod_VodIdex > -1) ?
-        Main_values_History_data[AddUser_UsernameArray[0].id].vod[PlayVod_VodIdex].watched : 0;
+    if (!PlayVod_replay) {
+        var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Main_values.ChannelVod_vodId) : -1;
+        PlayVod_VodOffset = (VodIdex > -1) ?
+            Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
+    }
 
     if (PlayVod_VodOffset && !Main_values.vodOffset) {
         Play_HideBufferDialog();
@@ -131,7 +132,10 @@ function PlayVod_PosStart() {
     PlayVod_WasSubChekd = false;
 
     if (!PlayVod_replay) PlayVod_loadDatanew();
-    else PlayVod_qualityChanged();
+    else {
+        PlayVod_state = Play_STATE_PLAYING;
+        PlayVod_qualityChanged();
+    }
 
     Play_EndSet(2);
     document.body.removeEventListener("keyup", Main_handleKeyUp);

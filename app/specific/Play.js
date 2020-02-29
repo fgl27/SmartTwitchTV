@@ -1604,6 +1604,7 @@ function Play_EndDialogPressed(PlayVodClip) {
                 Play_showWarningDialog(STR_CLIP_FAIL, 2000);
             } else {
                 PlayVod_replay = true;
+                PlayVod_VodOffset = 0;
                 PlayVod_Start();
                 PlayVod_currentTime = 0;
                 Chat_offset = 0;
