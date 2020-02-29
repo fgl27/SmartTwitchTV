@@ -1396,7 +1396,6 @@ function Main_OPenAsVod(index) {
     PlayVod_VodOffsetTemp = Main_values.vodOffset;
 
     if (Play_isOn) {
-        console.log('Play_isOn');
         Main_OPenAsVod_shutdownStream();
 
     }
