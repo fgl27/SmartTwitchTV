@@ -72,7 +72,7 @@ function PlayExtra_Resumenew() {
             if (StreamData.status === 200) {
 
                 PlayExtra_data.AutoUrl = StreamData.url;
-                PlayExtra_loadDataSuccessEnd(JSON.parse(StreamData.responseText));
+                PlayExtra_loadDataSuccessEnd(StreamData.responseText);
                 return;
 
             } else if (StreamData.status === 1 || StreamData.status === 403) {
