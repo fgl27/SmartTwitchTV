@@ -5,7 +5,7 @@ ext.versions = [
         buildTools           : '29.0.2',
 
         publishVersion       : '3.0.',
-        publishVersionCode   : 125,
+        publishVersionCode   : 128,
 
         leanback             : '1.0.0',
         gradlePlugin         : '3.6.1',
