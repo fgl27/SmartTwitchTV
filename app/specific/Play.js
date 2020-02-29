@@ -365,7 +365,7 @@ function Play_CheckIfIsLiveStart() {
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                Play_CheckIfIsLiveQualities = StreamData.responseText;
 
                 return true;
 
@@ -828,7 +828,7 @@ function Play_loadDatanew() {
             if (StreamData.status === 200) {
 
                 Play_data.AutoUrl = StreamData.url;
-                Play_loadDataSuccessend(JSON.parse(StreamData.responseText));
+                Play_loadDataSuccessend(StreamData.responseText);
                 return;
 
             } else if (StreamData.status === 1 || StreamData.status === 403 || StreamData.status === 404 ||
@@ -951,7 +951,7 @@ function Play_loadDataSuccessFake() {
     ];
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
-    Main_Set_history('live', Play_data.data);
+    if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
 }
 
 function Play_qualityChanged() {
@@ -1604,6 +1604,7 @@ function Play_EndDialogPressed(PlayVodClip) {
                 Play_showWarningDialog(STR_CLIP_FAIL, 2000);
             } else {
                 PlayVod_replay = true;
+                PlayVod_VodOffset = 0;
                 PlayVod_Start();
                 PlayVod_currentTime = 0;
                 Chat_offset = 0;
@@ -2050,7 +2051,12 @@ function Play_OpenLiveFeed() {
 
     Main_values.Play_isHost = false;
     Play_UserLiveFeedPressed = true;
-    Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
+    Main_OpenLiveStream(
+        UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
+        UserLiveFeed_ids,
+        Play_handleKeyDown,
+        !UserLiveFeed_CheckVod()
+    );
 }
 
 function Play_keyUpEnd() {
@@ -2294,7 +2300,7 @@ function Play_MultiStartNew(pos, streamer, display_name) {
 
         if (StreamData.status === 200) {
 
-            Play_MultiStartQualitySucess(pos, StreamData.url, JSON.parse(StreamData.responseText));
+            Play_MultiStartQualitySucess(pos, StreamData.url, StreamData.responseText);
             return;
 
         } else if (StreamData.status === 1 || StreamData.status === 403) {
@@ -2547,16 +2553,30 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
     if (doc !== null) {
         doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-        if (Play_MultiEnable) {
-            if (!Play_MultiIsAlredyOPen(doc[14])) return doc;
-        } else if (Play_data.data[14] !== doc[14] && PlayExtra_data.data[14] !== doc[14]) return doc;
+        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
-        error = STR_ALREDY_PLAYING;
+            if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
+
+                if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD;
+                else return doc;
+
+            } else if (Play_data.data[14] !== doc[14] && PlayExtra_data.data[14] !== doc[14]) return doc;
+            else error = STR_ALREDY_PLAYING;
+
+        } else {
+
+            if (Play_MultiEnable) {
+                if (!Play_MultiIsAlredyOPen(doc[14])) return doc;
+            } else if (Play_data.data[14] !== doc[14] && PlayExtra_data.data[14] !== doc[14]) return doc;
+
+            error = STR_ALREDY_PLAYING;
+        }
     }
 
     if (!PreventWarn) Play_showWarningDialog(error, 1500);
 
     if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
+
     return null;
 }
 

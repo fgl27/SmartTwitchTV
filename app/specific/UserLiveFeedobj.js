@@ -6,9 +6,10 @@ var UserLiveFeedobj_CurrentGamePos = 3;
 var UserLiveFeedobj_LivePos = 4;
 //User
 var UserLiveFeedobj_UserLivePos = 5;
-var UserLiveFeedobj_UserHostPos = 6;
-var UserLiveFeedobj_UserGamesPos = 7;
-var UserLiveFeedobj_UserAGamesPos = 8;
+var UserLiveFeedobj_UserHistoryPos = 6;
+var UserLiveFeedobj_UserHostPos = 7;
+var UserLiveFeedobj_UserGamesPos = 8;
+var UserLiveFeedobj_UserAGamesPos = 9;
 
 //Check bellow java before define more current max is 0 to 9, 1 is used by the side panel
 //public String[][] ExtraPlayerHandlerResult = new String[10][100];
@@ -303,6 +304,83 @@ function UserLiveFeedobj_HideFeed() {
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div.classList.add('hide');
 }
 
+//Live history start
+function UserLiveFeedobj_HideHistory() {
+    UserLiveFeed_CheckIfIsLiveSTop();
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div.classList.add('hide');
+}
+
+var UserLiveFeedobj_ShowHistoryLength = -1;
+function UserLiveFeedobj_ShowHistory() {
+    UserLiveFeedobj_SetBottomText(5);
+
+    if (AddUser_UserIsSet()) {
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, true);//(UserLiveFeedobj_ShowHistoryLength !== Main_values_History_data[AddUser_UsernameArray[0].id].live.length)
+        UserLiveFeedobj_ShowHistoryLength = Main_values_History_data[AddUser_UsernameArray[0].id].live.length;
+    }
+
+}
+
+function UserLiveFeedobj_History() {
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
+    var pos = UserLiveFeedobj_UserHistoryPos,
+        response = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live)),
+        response_items,
+        len = response.length,
+        cell, id,
+        i = 0,
+        itemsCount = UserLiveFeed_itemsCount[pos],
+        streamerID = {};
+
+    response.sort(
+        function(a, b) {
+            return (a.date > b.date ? -1 : (a.date < b.date ? 1 : 0));
+        }
+    );
+
+    response_items = Math.min(len, 100);
+
+    if (response_items) {
+
+        for (i; i < response_items; i++) {
+            cell = response[i];
+            id = cell.data[7];
+            if (!cell.forceVod) {
+
+                if (!UserLiveFeed_idObject[pos][id] && cell.data[14] !== '') {
+
+                    UserLiveFeed_idObject[pos][id] = 1;
+
+                    UserLiveFeed_cell[pos][itemsCount] =
+                        UserLiveFeedobj_CreatFeed(
+                            pos + '_' + itemsCount,
+                            cell.data,
+                            false,
+                            cell.date,
+                            cell.vodimg,
+                            (streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
+                        );
+
+                    streamerID[cell.data[14]] = 1;
+                    itemsCount++;
+                }
+
+            } else if (len > (response_items + 1)) {
+                response_items++;
+            }
+        }
+
+    } else UserLiveFeedobj_Empty(pos);
+
+    UserLiveFeed_itemsCount[pos] = itemsCount;
+
+    window.setTimeout(function() {
+        UserLiveFeed_loadDataSuccessFinish(false, pos);
+    }, 25);
+}
+
+//Live history end
+
 //Live Start
 function UserLiveFeedobj_Live() {
     if (!UserLiveFeed_obj[UserLiveFeedobj_LivePos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_LivePos);
@@ -444,7 +522,7 @@ function UserLiveFeedobj_loadUserHost() {
 
 var UserLiveFeedobj_HostFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserHost() {
-    UserLiveFeedobj_SetBottomText(5);
+    UserLiveFeedobj_SetBottomText(6);
 
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHostPos, (UserLiveFeedobj_HostFeedOldUserName !== AddUser_UsernameArray[0].name));
@@ -481,7 +559,7 @@ function UserLiveFeedobj_loadDataUserGamesSuccess(responseText) {
 
 var UserLiveFeedobj_GamesFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserGames() {
-    UserLiveFeedobj_SetBottomText(6);
+    UserLiveFeedobj_SetBottomText(7);
 
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserGamesPos, (UserLiveFeedobj_GamesFeedOldUserName !== AddUser_UsernameArray[0].name));
@@ -526,7 +604,7 @@ function UserLiveFeedobj_loadDataCurrentUserGameSuccess(responseText) {
 var UserLiveFeedobj_CurrentUserAGameName = '';
 var UserLiveFeedobj_CurrentUserAGameNameEnter = null;
 function UserLiveFeedobj_ShowCurrentUserAGame() {
-    UserLiveFeedobj_SetBottomText(6);
+    UserLiveFeedobj_SetBottomText(7);
 
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, (UserLiveFeedobj_CurrentUserAGameName !== UserLiveFeedobj_CurrentUserAGameNameEnter));
     UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
@@ -623,12 +701,12 @@ function UserLiveFeedobj_HideCurrentAGame() {
 
 function UserLiveFeedobj_SetBottomText(pos) {
     var i = 0;
-    for (i; i < 7; i++)
+    for (i; i < 8; i++)
         Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
 
     Main_AddClass('feed_end_' + pos, 'feed_end_name_focus');
 
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 7; i++) {
         if (i < pos) {
             Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_up');
             Main_AddClass('feed_end_icon_' + i, 'feed_end_icon_down');
@@ -644,9 +722,9 @@ function UserLiveFeedobj_SetBottomText(pos) {
         }
     }
 
-    Main_innerHTML('feed_end_0', STR_SPACE + (UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : (STR_GAMES)) + STR_SPACE);
-    Main_innerHTML('feed_end_2', STR_SPACE + (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME) + STR_SPACE);
-    Main_innerHTML('feed_end_6', STR_SPACE + (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES)) + STR_SPACE);
+    Main_innerHTML('feed_end_0', (UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : (STR_GAMES)));
+    Main_innerHTML('feed_end_2', (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME));
+    Main_innerHTML('feed_end_7', (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES)));
 
 }
 
@@ -694,7 +772,7 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
                 'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
             ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
         UserLiveFeed_ids[2] + id +
-        '" class="stream_thumbnail_feed_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+        '" class="stream_thumbnail_feed_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
         UserLiveFeed_ids[3] + id + '" class="stream_info_live_name" style="width:' +
         (ishosting ? '99%; max-height: 2.4em; overflow: hidden; white-space: normal;' : '63.5%') + '; display: inline-block; overflow: hidden;">' +
         '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
@@ -710,7 +788,7 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
         '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
         '</div><div id="' + UserLiveFeed_ids[6] + id + '"class="stream_info_live">' +
         data[11] + data[4] + '</div>' +
-        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
         '</span></div></div>';
 

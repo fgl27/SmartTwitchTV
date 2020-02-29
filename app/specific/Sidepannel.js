@@ -84,7 +84,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                Play_CheckIfIsLiveQualities = StreamData.responseText;
                 Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
 
                 Android.StartFeedPlayer(

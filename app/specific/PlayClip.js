@@ -501,7 +501,12 @@ function PlayClip_OpenVod() {
 
 function PlayClip_OpenLiveStream() {
     PlayClip_PreshutdownStream(true);
-    Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, PlayClip_handleKeyDown);
+    Main_OpenLiveStream(
+        UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
+        UserLiveFeed_ids,
+        PlayClip_handleKeyDown,
+        !UserLiveFeed_CheckVod()
+    );
 }
 
 function PlayClip_handleKeyDown(e) {
@@ -621,7 +626,12 @@ function PlayClip_handleKeyDown(e) {
                             Play_EndDialogEnter = 3;
                             Play_EndUpclearCalback = PlayClip_handleKeyDown;
                             Play_SavePlayData();
-                            Main_OpenLiveStream(UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX], UserLiveFeed_ids, Play_handleKeyDown);
+                            Main_OpenLiveStream(
+                                UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
+                                UserLiveFeed_ids,
+                                PlayClip_handleKeyDown,
+                                !UserLiveFeed_CheckVod()
+                            );
                         }
                     }
                 } else if (Play_isPanelShown()) {
@@ -633,7 +643,7 @@ function PlayClip_handleKeyDown(e) {
                     PlayClip_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
+                    else if (!UserLiveFeed_CheckVod() || Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
                 }
                 else PlayClip_showPanel();
                 break;

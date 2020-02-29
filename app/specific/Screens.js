@@ -99,6 +99,7 @@ function Screens_init() {
         Main_YRst(inUseObj.posY);
         Screens_addFocus(true);
         Main_SaveValues();
+        Screens_SetLastRefresh();
     } else Screens_StartLoad();
 }
 
@@ -113,6 +114,7 @@ function Screens_exit() {
 
 function Screens_StartLoad() {
     Main_showLoadDialog();
+    inUseObj.lastRefresh = new Date().getTime();
     Main_updateclock();
     Main_empty(inUseObj.table);
     Main_HideWarningDialog();
@@ -402,7 +404,7 @@ function Screens_loadDataSuccessFinish(obj) {
 
         }
         obj.FirstLoad = false;
-        //TODO improve this check
+
         if (Main_FirstRun) {
             //Force reset some values as I have reset the Never_run_new value and some things may crash
             if (Main_values.Never_run_new) {
@@ -411,7 +413,17 @@ function Screens_loadDataSuccessFinish(obj) {
             }
             Screens_ForceSync = false;
 
-            if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying && obj.status) {
+            if (Settings_value.start_user_screen.defaultValue) {
+
+                Main_ExitCurrent(Main_values.Main_Go);
+                Users_beforeUser = Main_GoBefore;
+                Main_values.Main_Before = Users_beforeUser;
+                Main_values.Main_Go = Main_Users;
+                Main_values.Play_WasPlaying = 0;
+                Main_SwitchScreen(true);
+                Screens_loadDataSuccessFinishEnd();
+
+            } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) {// && obj.status
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;
@@ -1900,4 +1912,8 @@ function Screens_ThumbOptionSetArrowArray() {
         Main_UserVod,
         Main_UserChannels,
         Main_History[Main_HistoryPos]];
+}
+
+function Screens_SetLastRefresh() {
+    Main_innerHTML("label_last_refresh", STR_LAST_REFRESH + Play_timeDay(Date.now() - inUseObj.lastRefresh) + ")");
 }

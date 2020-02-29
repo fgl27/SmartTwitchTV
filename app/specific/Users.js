@@ -372,8 +372,11 @@ function Users_handleKeyDown(event) {
                 }
             }
             break;
+        case KEY_PAUSE://key s
+        case KEY_6:
+            Main_showSettings();
+            break;
         case KEY_PLAY:
-        case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:

@@ -87,6 +87,13 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = document.getElementById('user_feed_scroll');
 
+    //User history
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].load = UserLiveFeedobj_History;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].show = UserLiveFeedobj_ShowHistory;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].hide = UserLiveFeedobj_HideHistory;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].checkHistory = true;
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = document.getElementById('user_history_scroll');
+
     //User Host
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
@@ -160,10 +167,11 @@ function UserLiveFeed_Prepare() {
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
-    Main_innerHTML('feed_end_1', STR_SPACE + STR_FEATURED + STR_SPACE);
-    Main_innerHTML('feed_end_3', STR_SPACE + STR_LIVE + STR_SPACE);
-    Main_innerHTML('feed_end_4', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE + STR_SPACE);
-    Main_innerHTML('feed_end_5', STR_SPACE + STR_USER + STR_SPACE + STR_LIVE_HOSTS + STR_SPACE);
+    Main_innerHTML('feed_end_1', STR_FEATURED);
+    Main_innerHTML('feed_end_3', STR_LIVE);
+    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
+    Main_innerHTML('feed_end_5', STR_USER + STR_SPACE + STR_HISTORY);
+    Main_innerHTML('feed_end_6', STR_USER + STR_SPACE + STR_LIVE_HOSTS);
 
     Sidepannel_ScroolDoc = document.getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = document.getElementById('side_panel');
@@ -339,7 +347,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (add_focus && UserLiveFeed_ShowSmallPlayer && UserLiveFeed_isFeedShow()) {
+    if (add_focus && UserLiveFeed_ShowSmallPlayer && UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
         if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti) {
 
             var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
@@ -357,6 +365,23 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
+}
+
+function UserLiveFeed_CheckVod() {
+    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
+
+        var data = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
+        var index = Main_history_Exist('live', data[7]);
+
+        if (index > -1) {
+
+            if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
+                return false;
+            }
+
+        }
+    }
+    return true;
 }
 
 function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
@@ -444,7 +469,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = JSON.parse(StreamData.responseText);
+                Play_CheckIfIsLiveQualities = StreamData.responseText;
                 Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
                 Android.StartFeedPlayer(

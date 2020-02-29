@@ -75,6 +75,7 @@ var Base_obj = {
     data: null,
     token: null,
     data_cursor: 0,
+    lastRefresh: 0,
     loadDataSuccess: function() {
         Screens_loadDataSuccess(this);
     },
