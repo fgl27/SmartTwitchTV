@@ -98,7 +98,7 @@ public final class Tools {
     private static final Pattern pattern2 = Pattern.compile("NAME=(\"(.*?)\").*BANDWIDTH=(\\d+).*CODECS=(\"(.*?)\").*http(.*).*");
 
     public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException {
-        JsonObject response = null;
+        String[] response = null;
         int i, status = 0;
 
         String url = String.format(
@@ -113,7 +113,7 @@ public final class Tools {
 
             if (response != null) {
 
-                status = response.get("status").getAsInt();
+                status = Integer.parseInt(response[0]);
 
                 if (status == 200) break;
                 else if (status == 403 || status == 404 || status == 410)
@@ -124,7 +124,7 @@ public final class Tools {
 
         if (response != null) {
 
-            JsonObject Token = parseString(response.get("responseText").getAsString()).getAsJsonObject();
+            JsonObject Token = parseString(response[1]).getAsJsonObject();
             String StreamToken = Token.get("token").getAsString();
 
             url = String.format(
@@ -142,7 +142,7 @@ public final class Tools {
 
                 if (response != null) {
 
-                    status = response.get("status").getAsInt();
+                    status = Integer.parseInt(response[0]);
 
                     //404 = off line
                     //403 = forbidden access
@@ -157,7 +157,7 @@ public final class Tools {
             return response != null ?
                     extractQualities(
                             status,
-                            response.get("responseText").getAsString(),
+                            response[1],
                             url
                     ) : null;
         }
@@ -269,7 +269,7 @@ public final class Tools {
         return "";
     }
 
-    public static JsonObject readUrlSimple(String urlString, int Timeout) {
+    public static String[] readUrlSimple(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
         try {
@@ -282,14 +282,16 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return JsonObToResult(status, new String(
-                        readFully(
-                                status != HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getErrorStream() :
-                                        urlConnection.getInputStream()
-                        ),
-                        StandardCharsets.UTF_8)
-                );
+                return new String[] {
+                        String.valueOf(status),
+                        new String(
+                                readFully(
+                                        status != HttpURLConnection.HTTP_OK ?
+                                                urlConnection.getErrorStream() :
+                                                urlConnection.getInputStream()
+                                ),
+                                StandardCharsets.UTF_8)
+                };
             } else {
                 return null;
             }
