@@ -402,7 +402,7 @@ function Screens_loadDataSuccessFinish(obj) {
 
         }
         obj.FirstLoad = false;
-        //TODO improve this check
+
         if (Main_FirstRun) {
             //Force reset some values as I have reset the Never_run_new value and some things may crash
             if (Main_values.Never_run_new) {
@@ -411,7 +411,17 @@ function Screens_loadDataSuccessFinish(obj) {
             }
             Screens_ForceSync = false;
 
-            if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying && obj.status) {
+            if (Settings_value.start_user_screen.defaultValue) {
+
+                Main_ExitCurrent(Main_values.Main_Go);
+                Users_beforeUser = Main_GoBefore;
+                Main_values.Main_Before = Users_beforeUser;
+                Main_values.Main_Go = Main_Users;
+                Main_values.Play_WasPlaying = 0;
+                Main_SwitchScreen(true);
+                Screens_loadDataSuccessFinishEnd();
+
+            } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) {// && obj.status
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;

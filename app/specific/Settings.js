@@ -37,6 +37,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "start_user_screen": { //start_user_screen
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "show_feed_player_delay": { //live notification
         "values": [
             0, 100, 200, 300, 400, 500, 600,
@@ -222,6 +226,8 @@ function Settings_SetSettings() {
         STR_LIVE_FEED_SORT_SUMMARY
     );
 
+    div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, null);
+
     div += Settings_Content('thumb_quality',
         [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
         STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMMARY);
@@ -404,6 +410,10 @@ function Settings_SetStrings() {
     Main_textContent('buffer_live_name', STR_SETTINGS_BUFFER_LIVE);
     Main_textContent('buffer_vod_name', STR_SETTINGS_BUFFER_VOD);
     Main_textContent('buffer_clip_name', STR_SETTINGS_BUFFER_CLIP);
+
+    key = "start_user_screen";
+    Main_textContent('start_user_screen_name', STR_START_AT_USER);
+    Settings_value[key].values = [STR_YES, STR_NO];
 
     //Player restore
     key = "restor_playback";
