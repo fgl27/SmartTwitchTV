@@ -333,7 +333,7 @@ function PlayVod_loadDatanew() {
 
             if (StreamData.status === 200) {
                 PlayVod_autoUrl = StreamData.url;
-                PlayVod_loadDataSuccessEnd(JSON.parse(StreamData.responseText));
+                PlayVod_loadDataSuccessEnd(StreamData.responseText);
                 return;
             } else if (StreamData.status === 1) {
                 PlayVod_loadDataCheckSub();

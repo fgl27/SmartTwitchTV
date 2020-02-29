@@ -29,7 +29,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
-import com.google.gson.JsonArray;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -97,8 +97,79 @@ public final class Tools {
     private static final Pattern pattern = Pattern.compile("#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*");
     private static final Pattern pattern2 = Pattern.compile("NAME=(\"(.*?)\").*BANDWIDTH=(\\d+).*CODECS=(\"(.*?)\").*http(.*).*");
 
+    private static class readUrlSimpleObj {
+        private final int status;
+        private final String responseText;
+
+        public readUrlSimpleObj(int status, String responseText) {
+            this.status = status;
+            this.responseText = responseText;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public String getResponseText() {
+            return responseText;
+        }
+    }
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private static class HttpResultObj {
+        private final int status;
+        private final String responseText;
+
+        public HttpResultObj(int status, String responseText) {
+            this.status = status;
+            this.responseText = responseText;
+        }
+    }
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private static class extractQualitiesObj {
+        private final int status;
+        private final String url;
+        private final ArrayList<QualitiesObj> responseText;
+
+        public extractQualitiesObj(int status, String url, ArrayList<QualitiesObj> responseText) {
+            this.status = status;
+            this.url = url;
+            this.responseText = responseText;
+        }
+    }
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private static class QualitiesObj {
+        private final String id;
+        private final String band;
+        private final String codec;
+        private final String url;
+
+        public QualitiesObj(String id, String band, String codec, String url) {
+            this.id = id;
+            this.band = extractBand(band);
+            this.codec = extractCodec(codec);
+            this.url = "http" + url;
+        }
+    }
+
+    private static String extractBand(String band) {
+        float input = Float.parseFloat(band);
+
+        return input > 0 ? String.format(Locale.US, " | %.02fMbps", (input / 1000000)) : "";
+    }
+
+    private static String extractCodec(String codec) {
+        if (codec.contains("avc")) return " | avc";
+        else if (codec.contains("'vp9'")) return " | vp9";
+        else if (codec.contains("'mp4'")) return " | mp4";
+
+        return "";
+    }
+
     public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException {
-        JsonObject response = null;
+        readUrlSimpleObj response = null;
         int i, status = 0;
 
         String url = String.format(
@@ -113,18 +184,18 @@ public final class Tools {
 
             if (response != null) {
 
-                status = response.get("status").getAsInt();
+                status = response.getStatus();
 
                 if (status == 200) break;
                 else if (status == 403 || status == 404 || status == 410)
-                    return JsonObToResult(status, "token").toString();
+                    return HttpResultToString(status, "token");
 
             }
         }
 
         if (response != null) {
 
-            JsonObject Token = parseString(response.get("responseText").getAsString()).getAsJsonObject();
+            JsonObject Token = parseString(response.getResponseText()).getAsJsonObject();
             String StreamToken = Token.get("token").getAsString();
 
             url = String.format(
@@ -142,22 +213,22 @@ public final class Tools {
 
                 if (response != null) {
 
-                    status = response.get("status").getAsInt();
+                    status = response.getStatus();
 
                     //404 = off line
                     //403 = forbidden access
                     //410 = api v3 is gone use v5 bug
                     if (status == 200) break;
                     else if (status == 403 || status == 404 || status == 410)
-                        return JsonObToResult(CheckToken(StreamToken) ? 1 : status, "link").toString();
+                        return HttpResultToString(CheckToken(StreamToken) ? 1 : status, "link");
 
                 }
             }
 
             return response != null ?
-                    extractQualities(
+                    extractQualitiesObj(
                             status,
-                            response.get("responseText").getAsString(),
+                            response.getResponseText(),
                             url
                     ) : null;
         }
@@ -177,10 +248,10 @@ public final class Tools {
         return false;
     }
 
-    private static String extractQualities(int status, String responseText, String url) {
+    private static String extractQualitiesObj(int status, String responseText, String url) {
         Matcher matcher = pattern.matcher(responseText);
         Matcher matcher2;
-        JsonArray result = new JsonArray();
+        ArrayList<QualitiesObj> result = new ArrayList<>();
         ArrayList<String> list = new ArrayList<>();
         String id;
 
@@ -191,14 +262,14 @@ public final class Tools {
             while (matcher2.find()) {
                 if(result.size() < 1) {
 
-                    result.add(Qualities("Auto", "0", "avc", "Auto_url"));
+                    result.add(new QualitiesObj("Auto", "0", "avc", "Auto_url"));
 
                     id = matcher2.group(2);
                     if (id != null && id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
                     else id = id + " | source";
 
                     result.add(
-                            Qualities(
+                            new QualitiesObj(
                                     id,
                                     matcher2.group(3),
                                     matcher2.group(5),
@@ -215,7 +286,7 @@ public final class Tools {
                     if (!list.contains(id)) {
 
                         result.add(
-                                Qualities(
+                                new QualitiesObj(
                                         id,
                                         matcher2.group(3),
                                         matcher2.group(5),
@@ -231,45 +302,23 @@ public final class Tools {
 
         }
 
-        JsonObject JSON = new JsonObject();
-        JSON.addProperty("status", status);
-        JSON.addProperty("url", url);
-        JSON.addProperty("responseText", result.toString());
-
-        return JSON.toString();
+        return new Gson().toJson(
+                new extractQualitiesObj(
+                        status,
+                        url,
+                        result)
+        );
     }
 
-    private static JsonObject JsonObToResult(int status, String responseText) {
-        JsonObject JSON = new JsonObject();
-        JSON.addProperty("status", status);
-        JSON.addProperty("responseText", responseText);
-        return JSON;
+    private static String HttpResultToString(int status, String responseText) {
+        return new Gson().toJson(
+                new HttpResultObj(
+                        status,
+                        responseText)
+        );
     }
 
-    private static JsonObject Qualities(String id, String band, String codec, String url) {
-        JsonObject JSON = new JsonObject();
-        JSON.addProperty("id", id);
-        JSON.addProperty("band", extractBand(band));
-        JSON.addProperty("codec", extractCodec(codec));
-        JSON.addProperty("url", "http" + url);
-        return JSON;
-    }
-
-    private static String extractBand(String band) {
-        float input = Float.parseFloat(band);
-
-        return input > 0 ? String.format(Locale.US, " | %.02fMbps", (input / 1000000)) : "";
-    }
-
-    private static String extractCodec(String codec) {
-        if (codec.contains("avc")) return " | avc";
-        else if (codec.contains("'vp9'")) return " | vp9";
-        else if (codec.contains("'mp4'")) return " | mp4";
-
-        return "";
-    }
-
-    public static JsonObject readUrlSimple(String urlString, int Timeout) {
+    public static readUrlSimpleObj readUrlSimple(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
         try {
@@ -282,13 +331,15 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return JsonObToResult(status, new String(
-                        readFully(
-                                status != HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getErrorStream() :
-                                        urlConnection.getInputStream()
-                        ),
-                        StandardCharsets.UTF_8)
+                return new readUrlSimpleObj (
+                        status,
+                        new String(
+                                readFully(
+                                        status != HttpURLConnection.HTTP_OK ?
+                                                urlConnection.getErrorStream() :
+                                                urlConnection.getInputStream()
+                                ),
+                                StandardCharsets.UTF_8)
                 );
             } else {
                 return null;
@@ -326,14 +377,15 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return JsonObToResult(status, new String(
-                        readFully(
-                                status != HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getErrorStream() :
-                                        urlConnection.getInputStream()
-                        ),
-                        StandardCharsets.UTF_8)
-                ).toString();
+                return HttpResultToString(
+                        status, new String(
+                                readFully(
+                                        status != HttpURLConnection.HTTP_OK ?
+                                                urlConnection.getErrorStream() :
+                                                urlConnection.getInputStream()
+                                ),
+                                StandardCharsets.UTF_8)
+                );
             } else {
                 return null;
             }
@@ -383,14 +435,15 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return JsonObToResult(status, new String(
-                        readFully(
-                                status != HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getErrorStream() :
-                                        urlConnection.getInputStream()
-                        ),
-                        StandardCharsets.UTF_8)
-                ).toString();
+                return HttpResultToString(
+                        status, new String(
+                                readFully(
+                                        status != HttpURLConnection.HTTP_OK ?
+                                                urlConnection.getErrorStream() :
+                                                urlConnection.getInputStream()
+                                ),
+                                StandardCharsets.UTF_8)
+                );
             } else {
                 return null;
             }
