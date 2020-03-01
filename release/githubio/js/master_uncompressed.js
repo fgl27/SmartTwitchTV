@@ -4664,9 +4664,16 @@
 
             if (index > -1) {
 
-                if (Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
+                    Main_OPenAsVod(index);
+                    return;
+
+                } else if (Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
+
                     Main_CheckBroadcastID(index, idsArray[3] + id);
                     return;
+
                 } else { //is live check is is really
 
                     if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[3] + id);
