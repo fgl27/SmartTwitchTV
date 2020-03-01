@@ -3824,6 +3824,7 @@
     function Main_SetStringsMain(isStarting) {
         Main_updateclock();
         Main_Setworker();
+        Main_SetHistoryworker();
 
         //set top bar labels
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -5471,6 +5472,109 @@
 
     function Main_A_equals_B_No_Case(A, B) { // jshint ignore:line
         return (A ? A.toLowerCase() : null) === (B ? B.toLowerCase() : null);
+    }
+
+    var BradcastCheckerWorker;
+
+    function Main_SetHistoryworker() {
+
+        var blobURL2 = URL.createObjectURL(new Blob(['(',
+
+            function() {
+                this.addEventListener('message',
+                    function(event) {
+                        var theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.data[14] + '?api_version=5';
+
+                        var onload = function(obj) {
+
+                            if (obj.status === 200) {
+                                var response = JSON.parse(obj.responseText);
+
+                                if (response.stream !== null) {
+                                    if (!Array.isArray(response.stream)) {
+
+                                        if (obj.mData.data[7] !== response.stream._id) {
+                                            this.postMessage(
+                                                obj.mData.data[7]
+                                            );
+                                        }
+
+                                    }
+                                } else {
+                                    this.postMessage(
+                                        obj.mData.data[7]
+                                    );
+                                }
+                            }
+
+                        };
+
+                        var xmlHttp = new XMLHttpRequest();
+                        xmlHttp.mData = event.data;
+
+                        xmlHttp.open("GET", theUrl, true);
+                        xmlHttp.timeout = 3000;
+
+                        xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
+                        xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+
+                        xmlHttp.onreadystatechange = function() {
+                            if (xmlHttp.readyState === 4) onload(xmlHttp);
+                        };
+
+                        xmlHttp.send(null);
+
+                    }
+                );
+
+            }.toString(),
+
+            ')()'
+        ], {
+            type: 'application/javascript'
+        }));
+
+        BradcastCheckerWorker = new Worker(blobURL2);
+
+        BradcastCheckerWorker.addEventListener('message',
+            function(event) {
+                var index = Main_history_Exist('live', event.data);
+
+                if (index > -1) {
+
+                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+                        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
+                                forceVod: true
+                            }
+                        );
+                    } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn'ot have a VOD
+                }
+            }
+        );
+    }
+
+    function Main_StartHistoryworker() {
+        window.setTimeout(Main_StartHistoryworker, 1000 * 60 * 30); //Check it 30min
+        if (!AddUser_IsUserSet()) return;
+
+        var array = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live));
+
+        array.sort(
+            function(a, b) {
+                return (a.date > b.date ? -1 : (a.date < b.date ? 1 : 0));
+            }
+        );
+
+        for (var i = 0; i < array.length; i++) {
+            if (!array[i].forceVod) {
+                if (array[i].data[14] !== '') {
+                    BradcastCheckerWorker.postMessage(
+                        array[i]
+                    );
+                }
+            }
+        }
     } //Variable initialization
     var PlayClip_IsJumping = false;
     var PlayClip_jumpCount = 0;
@@ -11731,6 +11835,8 @@
         else Sidepannel_SetDefaultLables();
 
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
+
+        Main_StartHistoryworker();
     }
 
     function Screens_addFocus(forceScroll) {
