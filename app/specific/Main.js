@@ -2068,11 +2068,6 @@ function Main_Setworker() {
                 function(event) {
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.responseType = 'blob';
-                    xmlHttp.onreadystatechange = function() {
-                        if (xmlHttp.readyState === 4) {
-                            onload(xmlHttp);
-                        }
-                    };
                     xmlHttp.open('GET', event.data, true);
                     xmlHttp.timeout = 3000;
                     xmlHttp.ontimeout = function() {};
