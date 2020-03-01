@@ -531,6 +531,8 @@ function Screens_loadDataSuccessFinishEnd() {
     else Sidepannel_SetDefaultLables();
 
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
+
+    Main_StartHistoryworker();
 }
 
 function Screens_addFocus(forceScroll) {
