@@ -54,7 +54,7 @@ function UserLiveFeedobj_CheckToken() {
     Sidepannel_PosFeed = 0;
     Main_empty('side_panel_holder');
     document.getElementById('side_panel_warn').style.display = 'none';
-    Main_HideElement('side_panel_feed_thumb');
+
     UserLiveFeed_loadChannelOffsset = 0;
     UserLiveFeed_followerChannels = '';
 

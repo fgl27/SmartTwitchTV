@@ -304,7 +304,11 @@ function UserLiveFeed_ResetAddCellsize() {
 }
 
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
-    if (!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) return;
+    var total = UserLiveFeed_GetSize(pos);
+    if (!total || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) {
+        if (!total && UserLiveFeed_isFeedShow()) UserLiveFeed_CheckIfIsLiveSTop();
+        return;
+    }
 
     var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus;
     if (add_focus)
@@ -315,7 +319,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
             (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
     }
 
-    var total = UserLiveFeed_GetSize(pos);
+
 
     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
 
