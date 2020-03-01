@@ -4,7 +4,6 @@ var PlayVod_qualityPlaying = PlayVod_quality;
 
 var PlayVod_state = 0;
 
-var PlayVod_streamInfoTimerId = null;
 var PlayVod_tokenResponse = 0;
 var PlayVod_playingTry = 0;
 
@@ -21,7 +20,6 @@ var PlayVod_loadingInfoDataTimeout = 10000;
 
 var Play_jumping = false;
 var PlayVod_SizeClearID;
-var PlayVod_updateStreamInfId;
 var PlayVod_addToJump = 0;
 var PlayVod_IsJumping = false;
 var PlayVod_jumpCount = 0;
@@ -475,7 +473,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
     Main_ShowElement('progress_pause_holder');
     PlayVod_isOn = false;
     window.clearInterval(PlayVod_SaveOffsetId);
-    window.clearInterval(PlayVod_updateStreamInfId);
     Main_values.Play_WasPlaying = 0;
     Chat_Clear();
     UserLiveFeed_Hide();
@@ -486,7 +483,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
 function PlayVod_ClearVod() {
     document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
     Main_values.vodOffset = 0;
-    window.clearInterval(PlayVod_streamInfoTimerId);
     ChannelVod_DurationSeconds = 0;
 }
 

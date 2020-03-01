@@ -176,7 +176,9 @@ function Main_loadTranslations(language) {
                     'Play_MultiEnd': Play_MultiEnd,
                     'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
                     'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-                    'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult
+                    'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+                    'Main_CheckStop': Main_CheckStop,
+                    'Main_CheckResume': Main_CheckResume
                 };
             }
             Main_IsNotBrowser = Android.getAndroid();
@@ -431,6 +433,7 @@ function Main_initWindows() {
         Play_SetFullScreen(Play_isFullScreen);
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30);//Check it 30min
 
         inUseObj = Live;
         Main_ready(function() {
@@ -2171,8 +2174,8 @@ function Main_SetHistoryworker() {
     );
 }
 
+var Main_StartHistoryworkerId;
 function Main_StartHistoryworker() {
-    window.setTimeout(Main_StartHistoryworker, 1000 * 60 * 30);//Check it 30min
     if (!AddUser_IsUserSet()) return;
 
     var array = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live));
@@ -2192,4 +2195,44 @@ function Main_StartHistoryworker() {
             }
         }
     }
+}
+
+function Main_CheckStop() { // Called only by JAVA
+    console.log('Main_CheckStop');
+    //Player related
+    ChatLive_Clear(0);
+    ChatLive_Clear(1);
+    Chat_Clear();
+    window.clearInterval(Play_ResumeAfterOnlineId);
+    window.clearInterval(Play_streamInfoTimerId);
+    window.clearInterval(Play_ShowPanelStatusId);
+
+    window.clearInterval(PlayVod_RefreshProgressBarrID);
+    window.clearInterval(PlayVod_SaveOffsetId);
+
+    if (PlayClip_isOn) PlayClip_Resume();
+
+    //General related
+    Screens_ClearAnimation();
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
+
+    window.clearInterval(Main_updateUserFeedId);
+    window.clearInterval(Main_updateclockId);
+    window.clearInterval(Main_StartHistoryworkerId);
+}
+
+function Main_CheckResume() { // Called only by JAVA
+    console.log('Main_CheckResume');
+    if (AddUser_UserIsSet()) {
+        window.clearInterval(Main_updateUserFeedId);
+        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+        window.setTimeout(Main_updateUserFeed, 1000);
+    }
+    window.clearInterval(Main_updateclockId);
+    Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+    Main_updateclock();
+
+    window.clearInterval(Main_StartHistoryworkerId);
+    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30);//Check it 30min
+    Main_StartHistoryworker();
 }

@@ -162,7 +162,7 @@ public class PlayerActivity extends Activity {
     private boolean IsonStop;
     private ProgressBar[] loadingView = new ProgressBar[PlayerAcount + 3];
     private boolean alredystarted;
-    private boolean shouldCallJavaCheck;
+    private boolean shouldCallJsPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,7 +218,7 @@ public class PlayerActivity extends Activity {
 
             setPlayer(true);
 
-            shouldCallJavaCheck = false;
+            shouldCallJsPlayer = false;
 
             deviceRam = Tools.deviceRam(this);
             //Ram too big.bigger then max int value... use 1000MB
@@ -397,7 +397,7 @@ public class PlayerActivity extends Activity {
             PlayerView[4].setVisibility(View.VISIBLE);
 
         KeepScreenOn(true);
-        shouldCallJavaCheck = true;
+        shouldCallJsPlayer = true;
     }
 
     private void ClearSmallPlayer() {
@@ -413,7 +413,7 @@ public class PlayerActivity extends Activity {
         PlayerCheckCounter[4] = 0;
         UsefullBandwidth = false;
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
-            shouldCallJavaCheck = false;
+            shouldCallJsPlayer = false;
             KeepScreenOn(false);
         }
     }
@@ -507,7 +507,7 @@ public class PlayerActivity extends Activity {
 
         mediaSourcePlaying[mainPlayer] = mediaSource;
         uri = Uri.parse(videoAddress);
-        shouldCallJavaCheck = true;
+        shouldCallJsPlayer = true;
         mwhocall = whocall;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
 
@@ -518,7 +518,7 @@ public class PlayerActivity extends Activity {
     private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
         mediaSourcePlaying[mainPlayer ^ 1] = mediaSource;
         uri = Uri.parse(videoAddress);
-        shouldCallJavaCheck = true;
+        shouldCallJsPlayer = true;
         mResumePosition = 0;
 
         initializePlayer(mainPlayer ^ 1);
@@ -530,7 +530,7 @@ public class PlayerActivity extends Activity {
         if (IsIN5050) updateVidesizeChatPP(false);
         if (mainPlayer == 1) SwitchPlayer();
         PicturePicture = false;
-        shouldCallJavaCheck = false;
+        shouldCallJsPlayer = false;
         AudioSource = 1;
 
         for (int i = 0; i < PlayerAcountPlus; i++) {
@@ -794,9 +794,10 @@ public class PlayerActivity extends Activity {
     public void onResume() {
         super.onResume();
         IsonStop = false;
-        //The app was close but shouldCallJavaCheck is true that means the TV enter standby so call java here
-        if (player[mainPlayer] == null && shouldCallJavaCheck && mwebview != null && alredystarted) {
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResume()");
+
+        if (mwebview != null && alredystarted) {
+            if (shouldCallJsPlayer) mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResume()");
+            mwebview.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
         }
         alredystarted = true;
     }
@@ -818,9 +819,9 @@ public class PlayerActivity extends Activity {
             ClearPlayer(i);
         }
 
-        //Kill playclip if playing or if on end dialog
-        if (player[mainPlayer] != null && mwebview != null && alredystarted && mwhocall == 3) {
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResume()");
+        //Prevent java timeout and related on background
+        if (mwebview != null && alredystarted) {
+            mwebview.loadUrl("javascript:smartTwitchTV.Main_CheckStop()");
         }
         //ClearPlayer will reset audio position
         AudioMulti = temp_AudioMulti;
