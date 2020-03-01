@@ -3505,8 +3505,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.130';
-    var Main_minversion = '022920';
+    var Main_stringVersion_Min = '.131';
+    var Main_minversion = '030120';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -3557,7 +3557,9 @@
                         'Play_MultiEnd': Play_MultiEnd,
                         'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
                         'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-                        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult
+                        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+                        'Main_CheckStop': Main_CheckStop,
+                        'Main_CheckResume': Main_CheckResume
                     };
                 }
                 Main_IsNotBrowser = Android.getAndroid();
@@ -3812,6 +3814,7 @@
             Play_SetFullScreen(Play_isFullScreen);
 
             Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+            Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30); //Check it 30min
 
             inUseObj = Live;
             Main_ready(function() {
@@ -5554,8 +5557,9 @@
         );
     }
 
+    var Main_StartHistoryworkerId;
+
     function Main_StartHistoryworker() {
-        window.setTimeout(Main_StartHistoryworker, 1000 * 60 * 30); //Check it 30min
         if (!AddUser_IsUserSet()) return;
 
         var array = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live));
@@ -5575,6 +5579,44 @@
                 }
             }
         }
+    }
+
+    function Main_CheckStop() { // Called only by JAVA
+        //Player related
+        ChatLive_Clear(0);
+        ChatLive_Clear(1);
+        Chat_Clear();
+        window.clearInterval(Play_ResumeAfterOnlineId);
+        window.clearInterval(Play_streamInfoTimerId);
+        window.clearInterval(Play_ShowPanelStatusId);
+
+        window.clearInterval(PlayVod_RefreshProgressBarrID);
+        window.clearInterval(PlayVod_SaveOffsetId);
+
+        if (PlayClip_isOn) PlayClip_Resume();
+
+        //General related
+        Screens_ClearAnimation();
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
+
+        window.clearInterval(Main_updateUserFeedId);
+        window.clearInterval(Main_updateclockId);
+        window.clearInterval(Main_StartHistoryworkerId);
+    }
+
+    function Main_CheckResume() { // Called only by JAVA
+        if (AddUser_UserIsSet()) {
+            window.clearInterval(Main_updateUserFeedId);
+            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+            window.setTimeout(Main_updateUserFeed, 1000);
+        }
+        window.clearInterval(Main_updateclockId);
+        Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+        Main_updateclock();
+
+        window.clearInterval(Main_StartHistoryworkerId);
+        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30); //Check it 30min
+        Main_StartHistoryworker();
     } //Variable initialization
     var PlayClip_IsJumping = false;
     var PlayClip_jumpCount = 0;
@@ -10296,7 +10338,6 @@
 
     var PlayVod_state = 0;
 
-    var PlayVod_streamInfoTimerId = null;
     var PlayVod_tokenResponse = 0;
     var PlayVod_playingTry = 0;
 
@@ -10313,7 +10354,6 @@
 
     var Play_jumping = false;
     var PlayVod_SizeClearID;
-    var PlayVod_updateStreamInfId;
     var PlayVod_addToJump = 0;
     var PlayVod_IsJumping = false;
     var PlayVod_jumpCount = 0;
@@ -10769,7 +10809,6 @@
         Main_ShowElement('progress_pause_holder');
         PlayVod_isOn = false;
         window.clearInterval(PlayVod_SaveOffsetId);
-        window.clearInterval(PlayVod_updateStreamInfId);
         Main_values.Play_WasPlaying = 0;
         Chat_Clear();
         UserLiveFeed_Hide();
@@ -10780,7 +10819,6 @@
     function PlayVod_ClearVod() {
         document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
         Main_values.vodOffset = 0;
-        window.clearInterval(PlayVod_streamInfoTimerId);
         ChannelVod_DurationSeconds = 0;
     }
 
@@ -21085,7 +21123,9 @@
         'Play_MultiEnd': Play_MultiEnd, // Play_MultiEndede() func from app/specific/Play.js
         'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean, // Play_CheckIfIsLiveClean() func from app/specific/Play.js
         'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult, // UserLiveFeed_CheckIfIsLiveResult() func from app/specific/UserLiveFeed.js
-        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult // UserLiveFeed_CheckIfIsLiveResult() func from app/specific/Sidepannel.js
+        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult, // UserLiveFeed_CheckIfIsLiveResult() func from app/specific/Sidepannel.js
+        'Main_CheckStop': Main_CheckStop, // Main_CheckStop() func from app/specific/Main.js
+        'Main_CheckResume': Main_CheckResume // Main_CheckStop() func from app/specific/Main.js
     };
 
     /** Expose `smartTwitchTV` */
