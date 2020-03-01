@@ -27,7 +27,11 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
         Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
         Sidepannel_Scroll(skipAnimation);
         Sidepannel_UpdateThumb();
-    } else document.getElementById('side_panel_warn').style.display = 'inline-block';
+    } else {
+        document.getElementById('side_panel_warn').style.display = 'inline-block';
+        Main_HideElement('side_panel_feed_thumb');
+        if (Sidepannel_isShowing()) Sidepannel_CheckIfIsLiveSTop();
+    }
 }
 
 function Sidepannel_RemoveFocusFeed() {
