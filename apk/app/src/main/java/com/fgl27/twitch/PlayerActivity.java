@@ -1142,7 +1142,9 @@ public class PlayerActivity extends Activity {
                 try {
                     ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(Channel_name, true);
                 } catch (UnsupportedEncodingException e) {
-                    Log.d(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException");
+                    Log.w(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException ", e);
+                } catch (NullPointerException e) {
+                    Log.w(TAG, "CheckIfIsLiveFeed NullPointerException ", e);
                 }
 
                 if (ExtraPlayerHandlerResult[x][y] != null)
@@ -1593,9 +1595,11 @@ public class PlayerActivity extends Activity {
             try {
                 return Tools.getStreamData(channel_name_vod_id, islive);
             } catch (UnsupportedEncodingException e) {
-                Log.d(TAG, "getStreamData UnsupportedEncodingException");
-                return null;
+                Log.w(TAG, "getStreamData UnsupportedEncodingException ", e);
+            } catch (NullPointerException e) {
+                Log.w(TAG, "getStreamData NullPointerException ", e);
             }
+            return null;
         }
     }
 
