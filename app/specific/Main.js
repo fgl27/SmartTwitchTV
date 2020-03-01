@@ -2158,12 +2158,14 @@ function Main_SetHistoryworker() {
 
             if (index > -1) {
 
-                Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-                    Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
-                    {
-                        forceVod: true
-                    }
-                );
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+                    Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+                        Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
+                        {
+                            forceVod: true
+                        }
+                    );
+                } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn'ot have a VOD
             }
         }
     );
