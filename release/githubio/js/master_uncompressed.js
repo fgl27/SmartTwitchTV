@@ -16656,7 +16656,11 @@
             Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
             Sidepannel_Scroll(skipAnimation);
             Sidepannel_UpdateThumb();
-        } else document.getElementById('side_panel_warn').style.display = 'inline-block';
+        } else {
+            document.getElementById('side_panel_warn').style.display = 'inline-block';
+            Main_HideElement('side_panel_feed_thumb');
+            if (Sidepannel_isShowing()) Sidepannel_CheckIfIsLiveSTop();
+        }
     }
 
     function Sidepannel_RemoveFocusFeed() {
@@ -17616,7 +17620,11 @@
     }
 
     function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
-        if (!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) return;
+        var total = UserLiveFeed_GetSize(pos);
+        if (!total || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) {
+            if (!total && UserLiveFeed_isFeedShow()) UserLiveFeed_CheckIfIsLiveSTop();
+            return;
+        }
 
         var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus;
         if (add_focus)
@@ -17627,7 +17635,7 @@
                 (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
         }
 
-        var total = UserLiveFeed_GetSize(pos);
+
 
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
 
@@ -18104,7 +18112,7 @@
         Sidepannel_PosFeed = 0;
         Main_empty('side_panel_holder');
         document.getElementById('side_panel_warn').style.display = 'none';
-        Main_HideElement('side_panel_feed_thumb');
+
         UserLiveFeed_loadChannelOffsset = 0;
         UserLiveFeed_followerChannels = '';
 
