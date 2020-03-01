@@ -102,16 +102,19 @@ function PlayExtra_loadDataSuccessEnd(qualities) {
     Android.SetAuto2(PlayExtra_data.AutoUrl);
     PlayExtra_data.qualities = qualities;
     PlayExtra_SetPanel();
-    if (Play_isOn) PlayExtra_qualityChanged();
-    PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
-    PlayExtra_updateStreamInfo();
-    ChatLive_Playing = true;
 
     if (!Play_isFullScreen) {
         Android.mupdatesizePP(!Play_isFullScreen);
         ChatLive_Init(1);
         PlayExtra_ShowChat();
-    }
+    } else Android.mSwitchPlayerSize(Play_PicturePictureSize);
+
+    if (Play_isOn) PlayExtra_qualityChanged();
+    PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
+    PlayExtra_updateStreamInfo();
+    ChatLive_Playing = true;
+
+
     Main_Set_history('live', PlayExtra_data.data);
     Play_loadingInfoDataTry = 0;
     Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
@@ -167,15 +170,7 @@ function PlayExtra_HideChat() {
 function PlayExtra_End(doSwitch) { // Called only by JAVA
     //Some player ended switch and warn
     if (doSwitch) PlayExtra_SwitchPlayer();
-
-    //If in 50/50 fix postion
-    if (!Play_isFullScreen) {
-        Play_isFullScreen = !Play_isFullScreen;
-        Play_SetFullScreen(Play_isFullScreen);
-    } // else if (doSwitch) Android.mSwitchPlayer(); // else if doSwitch switch small to big
-
-    PlayExtra_PicturePicture = false;
-    PlayExtra_UnSetPanel();
+    Play_CloseSmall();
 
     Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 }
