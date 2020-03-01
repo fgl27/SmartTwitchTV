@@ -2099,64 +2099,8 @@ function Main_A_equals_B_No_Case(A, B) {// jshint ignore:line
     return (A ? A.toLowerCase() : null) === (B ? B.toLowerCase() : null);
 }
 
-// var HistoryCheckerWorker;
 var BradcastCheckerWorker;
 function Main_SetHistoryworker() {
-
-    // var blobURL = URL.createObjectURL(new Blob(['(',
-
-    //     function() {
-    //         this.addEventListener('message',
-    //             function(event) {
-
-    //                 var onerro = function(obj) {
-    //                     if (obj.status !== 200) {
-    //                         this.postMessage(
-    //                             obj.mData.data[7]
-    //                         );
-    //                     }
-
-    //                 };
-
-    //                 var xmlHttp = new XMLHttpRequest();
-
-    //                 xmlHttp.responseType = 'blob';
-    //                 xmlHttp.mData = event.data;
-
-    //                 xmlHttp.onerror = function() {
-    //                     if (xmlHttp.readyState === 4) {
-    //                         onerro(xmlHttp);
-    //                     }
-    //                 };
-
-    //                 xmlHttp.open('GET', event.data.data[0].replace("{width}x{height}", "1x1"), true);
-    //                 xmlHttp.timeout = 3000;
-    //                 xmlHttp.send();
-
-    //             }
-    //         );
-
-    //     }.toString(),
-
-    //     ')()'], {type: 'application/javascript'}));
-
-    // HistoryCheckerWorker = new Worker(blobURL);
-
-    // HistoryCheckerWorker.addEventListener('message',
-    //     function(event) {
-    //         var index = Main_history_Exist('live', event.data);
-
-    //         if (index > -1) {
-
-    //             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[14] !== '') {
-
-    //                 BradcastCheckerWorker.postMessage(
-    //                     Main_values_History_data[AddUser_UsernameArray[0].id].live[index]
-    //                 );
-    //             }
-    //         }
-    //     }
-    // );
 
     var blobURL2 = URL.createObjectURL(new Blob(['(',
 
