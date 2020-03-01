@@ -171,7 +171,7 @@ public final class Tools {
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
     public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException, NullPointerException {
-        readUrlSimpleObj response = null;
+        readUrlSimpleObj response;
         int i, status;
         JsonObject Token;
         String StreamSig = null;
@@ -206,7 +206,7 @@ public final class Tools {
             }
         }
 
-        if (response != null && StreamToken != null && StreamSig != null) {
+        if (StreamToken != null && StreamSig != null) {
 
             url = String.format(
                     Locale.US,
