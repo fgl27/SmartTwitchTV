@@ -832,7 +832,7 @@ function Play_loadDatanew() {
                 //404 = off line
                 //403 = forbidden access
                 //410 = api v3 is gone use v5 bug
-                Play_loadDataErrorFinish(StreamData.status === 410, StreamData.status === 403 || StreamData.status === 1);
+                Play_loadDataErrorFinish(StreamData.status === 410, (StreamData.status === 403 || StreamData.status === 1));
                 return;
 
             }
@@ -884,7 +884,7 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
         Play_RestorePlayDataValues();
         Main_values.Play_WasPlaying = 0;
         Main_SaveValues();
-    } else if (Play_OlddataSet()) Play_RestorePlayData(error_410);
+    } else if (Play_OlddataSet()) Play_RestorePlayData(error_410, Isforbiden);
     else if (!PlayExtra_PicturePicture) {
 
         if (Isforbiden) Play_ForbiddenLive();
@@ -2049,12 +2049,12 @@ function Play_handleKeyUpEndClear() {
     document.body.addEventListener("keydown", Play_EndUpclearCalback, false);
 }
 
-function Play_RestorePlayData(error_410) {
+function Play_RestorePlayData(error_410, Isforbiden) {
     Play_HideBufferDialog();
     Play_state = Play_STATE_PLAYING;
 
     Play_showWarningDialog(error_410 ? STR_410_ERROR :
-        Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
+        Play_data.data[1] + ' ' + STR_LIVE + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),
         2000);
 
     Play_RestorePlayDataValues();
