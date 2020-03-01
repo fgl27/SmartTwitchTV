@@ -459,7 +459,7 @@ function Play_RefreshHlsUrl(channel) {
 function Play_RefreshAutoRequest(RestartAuto) {
     var tempUrl = Play_RefreshHlsUrl(Play_data.data[6]);
 
-    if (false) {
+    if (tempUrl) {
         Play_data.AutoUrl = tempUrl;
 
         if (RestartAuto) Android.ResStartAuto(tempUrl, 1, 0);
