@@ -2198,7 +2198,6 @@ function Main_StartHistoryworker() {
 }
 
 function Main_CheckStop() { // Called only by JAVA
-    console.log('Main_CheckStop');
     //Player related
     ChatLive_Clear(0);
     ChatLive_Clear(1);
@@ -2222,7 +2221,6 @@ function Main_CheckStop() { // Called only by JAVA
 }
 
 function Main_CheckResume() { // Called only by JAVA
-    console.log('Main_CheckResume');
     if (AddUser_UserIsSet()) {
         window.clearInterval(Main_updateUserFeedId);
         Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
