@@ -3505,7 +3505,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.131';
+    var Main_stringVersion_Min = '.132';
     var Main_minversion = '030120';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -11707,7 +11707,7 @@
             '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
             valuesArray[5] + '</div></div>' +
             '<div id="' + idArray[4] + id + '"class="' +
-            (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + twemoji.parse(valuesArray[2]) + '</div>' +
+            (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(valuesArray[2])) + '</div>' +
             '<div id="' + idArray[5] + id + '"class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
             '</div><div id="' + idArray[6] + id + '"class="stream_info_live">' +
             valuesArray[11] + valuesArray[4] + '</div>' +
@@ -16786,12 +16786,11 @@
     }
 
     function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
-        Sidepannel_CheckIfIsLiveCleanTimeouts();
-
         if (!Main_IsNotBrowser) return;
 
         Android.ClearFeedPlayer();
         if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
     }
 
     function Sidepannel_CheckIfIsLiveRefreshAuto() {
@@ -17771,12 +17770,11 @@
     }
 
     function UserLiveFeed_CheckIfIsLiveSTop() {
-        Sidepannel_CheckIfIsLiveCleanTimeouts();
-
         if (!Main_IsNotBrowser) return;
 
         Android.ClearFeedPlayer();
         Play_CheckIfIsLiveCleanEnd();
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
     }
 
     function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
@@ -18854,7 +18852,7 @@
             '"class="stream_info_live" style="width:' + (ishosting ? 0 : 36) + '%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
             data[5] + '</div></div>' +
             '<div id="' + UserLiveFeed_ids[4] + id + '"class="' +
-            (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + twemoji.parse(data[2]) + '</div>' +
+            (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div>' +
             '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
             '</div><div id="' + UserLiveFeed_ids[6] + id + '"class="stream_info_live">' +
             data[11] + data[4] + '</div>' +
