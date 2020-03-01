@@ -784,7 +784,7 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
         '"class="stream_info_live" style="width:' + (ishosting ? 0 : 36) + '%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
         data[5] + '</div></div>' +
         '<div id="' + UserLiveFeed_ids[4] + id + '"class="' +
-        (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + twemoji.parse(data[2]) + '</div>' +
+        (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div>' +
         '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
         '</div><div id="' + UserLiveFeed_ids[6] + id + '"class="stream_info_live">' +
         data[11] + data[4] + '</div>' +
