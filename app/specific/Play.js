@@ -2054,7 +2054,7 @@ function Play_RestorePlayData(error_410, Isforbiden) {
     Play_state = Play_STATE_PLAYING;
 
     Play_showWarningDialog(error_410 ? STR_410_ERROR :
-        Play_data.data[1] + ' ' + STR_LIVE + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),
+        Play_data.data[1] + ' ' + STR_LIVE + STR_BR + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),
         2000);
 
     Play_RestorePlayDataValues();
