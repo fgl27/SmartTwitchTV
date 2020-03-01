@@ -401,7 +401,6 @@ public class PlayerActivity extends Activity {
     }
 
     private void ClearSmallPlayer() {
-        ExtraPlayerHandler.removeCallbacksAndMessages(null);
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
         PlayerView[4].setVisibility(View.GONE);
 
@@ -1177,6 +1176,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearFeedPlayer() {
+            ExtraPlayerHandler.removeCallbacksAndMessages(null);
             MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
         }
 
