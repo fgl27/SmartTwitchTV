@@ -455,12 +455,11 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
 }
 
 function UserLiveFeed_CheckIfIsLiveSTop() {
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
-
     if (!Main_IsNotBrowser) return;
 
     Android.ClearFeedPlayer();
     Play_CheckIfIsLiveCleanEnd();
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
 }
 
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java

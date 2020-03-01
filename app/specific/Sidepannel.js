@@ -156,12 +156,11 @@ function Sidepannel_CheckIfIsLiveCleanTimeouts() {
 }
 
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
-
     if (!Main_IsNotBrowser) return;
 
     Android.ClearFeedPlayer();
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
 }
 
 function Sidepannel_CheckIfIsLiveRefreshAuto() {
