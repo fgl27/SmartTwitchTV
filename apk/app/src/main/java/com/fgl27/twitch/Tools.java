@@ -168,9 +168,14 @@ public final class Tools {
         return "";
     }
 
-    public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException {
+    //NullPointerException some time from token isJsonNull must prevent but throws anyway
+    //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
+    public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException, NullPointerException {
         readUrlSimpleObj response = null;
-        int i, status = 0;
+        int i, status;
+        JsonObject Token;
+        String StreamSig = null;
+        String StreamToken = null;
 
         String url = String.format(
                 Locale.US,
@@ -186,24 +191,29 @@ public final class Tools {
 
                 status = response.getStatus();
 
-                if (status == 200) break;
-                else if (status == 403 || status == 404 || status == 410)
+                if (status == 200) {
+                    Token = parseString(response.getResponseText()).getAsJsonObject();
+
+                    if(Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
+                        StreamToken = Token.get("token").getAsString();
+                        StreamSig = Token.get("sig").getAsString();
+                        break;
+                    }
+
+                } else if (status == 403 || status == 404 || status == 410)
                     return HttpResultToString(status, "token");
 
             }
         }
 
-        if (response != null) {
-
-            JsonObject Token = parseString(response.getResponseText()).getAsJsonObject();
-            String StreamToken = Token.get("token").getAsString();
+        if (response != null && StreamToken != null && StreamSig != null) {
 
             url = String.format(
                     Locale.US,
                     islive ? live_links : vod_links,
                     channel_name_vod_id,
                     URLEncoder.encode(StreamToken, "UTF-8"),
-                    Token.get("sig").getAsString(),
+                    StreamSig,
                     ThreadLocalRandom.current().nextInt(1, 1000)
             );
 
@@ -218,29 +228,28 @@ public final class Tools {
                     //404 = off line
                     //403 = forbidden access
                     //410 = api v3 is gone use v5 bug
-                    if (status == 200) break;
-                    else if (status == 403 || status == 404 || status == 410)
+                    if (status == 200) {
+                        return extractQualitiesObj(
+                                status,
+                                response.getResponseText(),
+                                url
+                        );
+                    } else if (status == 403 || status == 404 || status == 410)
                         return HttpResultToString(CheckToken(StreamToken) ? 1 : status, "link");
 
                 }
             }
 
-            return response != null ?
-                    extractQualitiesObj(
-                            status,
-                            response.getResponseText(),
-                            url
-                    ) : null;
         }
 
         return null;
     }
 
     private static boolean CheckToken(String token) {
-        JsonElement Token = parseString(token);
+        JsonObject Token = parseString(token).getAsJsonObject();
 
-        if(Token.isJsonObject()) {
-            JsonElement restricted_bitrates = Token.getAsJsonObject().get("chansub").getAsJsonObject().get("restricted_bitrates");
+        if(Token.isJsonObject() && !Token.get("chansub").isJsonNull()) {
+            JsonElement restricted_bitrates = Token.get("chansub").getAsJsonObject().get("restricted_bitrates");
 
             return !restricted_bitrates.isJsonNull() && restricted_bitrates.getAsJsonArray().size() > 0;
         }
