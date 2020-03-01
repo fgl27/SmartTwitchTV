@@ -6441,16 +6441,19 @@
         Android.SetAuto2(PlayExtra_data.AutoUrl);
         PlayExtra_data.qualities = qualities;
         PlayExtra_SetPanel();
-        if (Play_isOn) PlayExtra_qualityChanged();
-        PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
-        PlayExtra_updateStreamInfo();
-        ChatLive_Playing = true;
 
         if (!Play_isFullScreen) {
             Android.mupdatesizePP(!Play_isFullScreen);
             ChatLive_Init(1);
             PlayExtra_ShowChat();
-        }
+        } else Android.mSwitchPlayerSize(Play_PicturePictureSize);
+
+        if (Play_isOn) PlayExtra_qualityChanged();
+        PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
+        PlayExtra_updateStreamInfo();
+        ChatLive_Playing = true;
+
+
         Main_Set_history('live', PlayExtra_data.data);
         Play_loadingInfoDataTry = 0;
         Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
@@ -6506,15 +6509,7 @@
     function PlayExtra_End(doSwitch) { // Called only by JAVA
         //Some player ended switch and warn
         if (doSwitch) PlayExtra_SwitchPlayer();
-
-        //If in 50/50 fix postion
-        if (!Play_isFullScreen) {
-            Play_isFullScreen = !Play_isFullScreen;
-            Play_SetFullScreen(Play_isFullScreen);
-        } // else if (doSwitch) Android.mSwitchPlayer(); // else if doSwitch switch small to big
-
-        PlayExtra_PicturePicture = false;
-        PlayExtra_UnSetPanel();
+        Play_CloseSmall();
 
         Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
     }
@@ -6836,39 +6831,34 @@
     var Play_isFullScreenold = true;
 
     function Play_SetFullScreen(isfull) {
-        if (Play_isFullScreenold === Play_isFullScreen) return;
-        Play_isFullScreenold = Play_isFullScreen;
+        if (Play_isFullScreenold !== Play_isFullScreen) {
+            Play_isFullScreenold = Play_isFullScreen;
 
-        if (isfull) {
-            if (Play_ChatPositionsBF !== undefined) {
-                Play_ChatPositions = Play_ChatPositionsBF;
-                Play_ChatEnable = Play_ChatEnableBF;
-                Play_ChatSizeValue = Play_ChatSizeValueBF;
-                if (!Play_ChatEnable) Play_hideChat();
+            if (isfull) {
+                if (Play_ChatPositionsBF !== undefined) {
+                    Play_ChatPositions = Play_ChatPositionsBF;
+                    Play_ChatEnable = Play_ChatEnableBF;
+                    Play_ChatSizeValue = Play_ChatSizeValueBF;
+                    if (!Play_ChatEnable) Play_hideChat();
+                    Play_ChatSize(false);
+                }
+            } else {
+                Play_ChatPositionsBF = Play_ChatPositions;
+                Play_ChatEnableBF = Play_ChatEnable;
+                Play_ChatSizeValueBF = Play_ChatSizeValue;
+                Play_ChatPositions = 0;
+                Play_showChat();
+                Play_ChatEnable = true;
+                Play_ChatSizeValue = Play_MaxChatSizeValue;
+                Play_ChatPositionConvert(true);
                 Play_ChatSize(false);
             }
-        } else {
-            Play_ChatPositionsBF = Play_ChatPositions;
-            Play_ChatEnableBF = Play_ChatEnable;
-            Play_ChatSizeValueBF = Play_ChatSizeValue;
-            Play_ChatPositions = 0;
-            Play_showChat();
-            Play_ChatEnable = true;
-            Play_ChatSizeValue = Play_MaxChatSizeValue;
-            Play_ChatPositionConvert(true);
-            Play_ChatSize(false);
         }
 
-        if (PlayExtra_PicturePicture) {
-            if (Main_IsNotBrowser) Android.mupdatesizePP(!Play_isFullScreen);
-            if (!Play_isFullScreen) {
-                ChatLive_Init(1);
-                PlayExtra_ShowChat();
-            } else {
-                ChatLive_Clear(1);
-                PlayExtra_HideChat();
-            }
-        } else if (Main_IsNotBrowser) Android.mupdatesize(!Play_isFullScreen);
+        if (Main_IsNotBrowser) {
+            if (PlayExtra_PicturePicture) Android.mupdatesizePP(!Play_isFullScreen);
+            else Android.mupdatesize(!Play_isFullScreen);
+        }
 
         Main_setItem('Play_isFullScreen', Play_isFullScreen);
     }
@@ -7090,7 +7080,7 @@
     function Play_RefreshAutoRequest(RestartAuto) {
         var tempUrl = Play_RefreshHlsUrl(Play_data.data[6]);
 
-        if (tempUrl) {
+        if (false) {
             Play_data.AutoUrl = tempUrl;
 
             if (RestartAuto) Android.ResStartAuto(tempUrl, 1, 0);
@@ -8407,15 +8397,8 @@
     }
 
     function Play_ClearPP() {
-        if (Main_IsNotBrowser) {
-            if (!Play_isFullScreen) {
-                Play_isFullScreen = !Play_isFullScreen;
-                Play_SetFullScreen(Play_isFullScreen);
-            }
-        }
+        Play_CloseSmall();
 
-        PlayExtra_PicturePicture = false;
-        PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_hideChat();
     }
 
@@ -8605,22 +8588,15 @@
         Play_HideBufferDialog();
         Play_state = Play_STATE_PLAYING;
 
-        if (!Play_isFullScreen) {
-            Play_isFullScreen = !Play_isFullScreen;
-            Play_SetFullScreen(Play_isFullScreen);
-        }
-
         Play_showWarningDialog(error_410 ? STR_410_ERROR :
             Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
             2500);
 
-        PlayExtra_PicturePicture = false;
         if (PlayExtra_data.data.length > 0) {
             if (Main_IsNotBrowser) Android.mSwitchPlayer();
             PlayExtra_SwitchPlayer();
-            if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+            Play_CloseSmall();
 
-            Play_CleanHideExit();
         } else {
             if (Main_IsNotBrowser) Android.mClearSmallPlayer();
             Play_CheckHostStart(error_410);
@@ -8629,17 +8605,15 @@
     }
 
     function Play_CloseSmall() {
+        PlayExtra_PicturePicture = false;
+
         if (Main_IsNotBrowser) {
             Android.mClearSmallPlayer();
-            if (!Play_isFullScreen) {
-                Play_isFullScreen = !Play_isFullScreen;
-                Play_SetFullScreen(Play_isFullScreen);
-            }
+            Play_SetFullScreen(Play_isFullScreen);
         }
-        PlayExtra_updateStreamInfo();
-        PlayExtra_PicturePicture = false;
         PlayExtra_UnSetPanel();
         Play_CleanHideExit();
+        PlayExtra_updateStreamInfo();
     }
 
     function Play_handleKeyUp(e) {
@@ -9954,6 +9928,15 @@
                 Play_isFullScreen = !Play_isFullScreen;
                 Play_SetFullScreen(Play_isFullScreen);
 
+                if (PlayExtra_PicturePicture) {
+                    if (!Play_isFullScreen) {
+                        ChatLive_Init(1);
+                        PlayExtra_ShowChat();
+                    } else {
+                        ChatLive_Clear(1);
+                        PlayExtra_HideChat();
+                    }
+                }
                 this.setLable();
                 this.setIcon();
             },
