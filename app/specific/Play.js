@@ -235,8 +235,8 @@ function Play_SetFullScreen(isfull) {
     }
 
     if (Main_IsNotBrowser) {
-        if (PlayExtra_PicturePicture) Android.mupdatesizePP(!Play_isFullScreen);
-        else Android.mupdatesize(!Play_isFullScreen);
+        if (PlayExtra_PicturePicture) Android.mupdatesizePP(Play_isFullScreen);
+        else Android.mupdatesize(Play_isFullScreen);
     }
 
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
