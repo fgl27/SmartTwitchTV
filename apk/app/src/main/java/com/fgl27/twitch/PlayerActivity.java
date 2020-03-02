@@ -121,7 +121,7 @@ public class PlayerActivity extends Activity {
     public boolean PicturePicture;
     public boolean deviceIsTV;
     public boolean MultiStream;
-    public boolean isFullScreen;
+    public boolean isFullScreen = true;
     public int heightDefault = 0;
     public int mwidthDefault = 0;
     public int heightChat = 0;
@@ -145,7 +145,6 @@ public class PlayerActivity extends Activity {
     public float netActivityAVG = 0f;
     public long netcounter = 0L;
     public long speedcounter = 0L;
-    public boolean IsIN5050 = false;
     public boolean mLowLatency = false;
     public boolean UsefullBandwidth = false;
     private LoadControl[] loadControl = new LoadControl[PlayerAcountPlus];
@@ -295,7 +294,7 @@ public class PlayerActivity extends Activity {
 
         //Show main loading if this call is in the main player as this is needed fro when we are fast/back forwarding
         //On small player it will show its own loading
-        if (!isSmall && !IsIN5050) showLoading();
+        if (!isSmall && isFullScreen) showLoading();
 
         if (PlayerView[position].getVisibility() != View.VISIBLE)
             PlayerView[position].setVisibility(View.VISIBLE);
@@ -663,12 +662,11 @@ public class PlayerActivity extends Activity {
 
     //Used in 50/50 mode two videos on the center plus two chat one on it side
     private void updateVideSizePP(boolean FullScreen) {
+        isFullScreen = FullScreen;
         if (FullScreen) {
-            IsIN5050 = false;
             PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
             UpdadeSizePosSmall(mainPlayer ^ 1);
         } else {
-            IsIN5050 = true;
             PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizePP);
             PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSideBySideSizePP);
         }
@@ -771,7 +769,7 @@ public class PlayerActivity extends Activity {
         ClearPlayer(2);
         ClearPlayer(3);
 
-        if (PicturePicture) updateVideSizePP(!IsIN5050);
+        if (PicturePicture) updateVideSizePP(isFullScreen);
         else {
             updateVideSize(isFullScreen);
             PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize);
