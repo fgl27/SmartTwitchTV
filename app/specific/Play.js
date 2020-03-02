@@ -316,6 +316,8 @@ function Play_Start() {
     }
     document.body.removeEventListener("keyup", Main_handleKeyUp);
 
+    if (!Main_IsNotBrowser) Play_UpdateMainStream(true, true);
+
     window.clearInterval(Play_streamInfoTimerId);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
     //PlayExtra_UpdatePanelTest();
