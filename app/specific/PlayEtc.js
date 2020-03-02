@@ -343,13 +343,15 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
+            error = STR_ALREDY_PLAYING;
+
             if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
 
                 if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD;
                 else return doc;
-
+            } else if (Play_MultiEnable) {
+                if (!Play_MultiIsAlredyOPen(doc[14])) return doc;
             } else if (Play_data.data[14] !== doc[14] && PlayExtra_data.data[14] !== doc[14]) return doc;
-            else error = STR_ALREDY_PLAYING;
 
         } else {
 
