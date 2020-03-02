@@ -1,19 +1,18 @@
 //Etc player fun and controls
 
-function Play_partnerIcon(name, partner, islive, lang) {
+function Play_partnerIcon(name, partner, islive, lang, isExtra) {
     var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
         (partner ? ('<img class="partnericon_img" alt="" src="' +
             IMG_PARTNER + '">') : "");
 
     if (islive) {
+        var rerun = isExtra ? PlayExtra_data.data[8] : Play_data.data[8];
         div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #' +
-            (Play_data.data[8] ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
-            STR_SPACE + STR_SPACE + (Play_data.data[8] ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
+            (rerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
+            STR_SPACE + STR_SPACE + (rerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
     }
 
-    div += '<div class="lang_text" ">' + STR_SPACE + STR_SPACE + lang + '</div>';
-
-    Main_innerHTML("stream_info_name", div);
+    return div + '<div class="lang_text" ">' + STR_SPACE + STR_SPACE + lang + '</div>';;
 }
 
 function Play_IconsResetFocus() {

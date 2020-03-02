@@ -545,9 +545,14 @@
         }
 
         .stream_info_multi_diag_div,
+        .stream_info_pp_div,
         .stream_info_multi_div {
             width: 34%;
             display: inline-block;
+        }
+
+        .stream_info_pp_div {
+            width: 70%;
         }
 
         .stream_info_multi_diag_div {
@@ -967,7 +972,7 @@
 
         div.playerinfo {
             width: 100%;
-            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.32));
+            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.5));
         }
 
         div.partnericon_div {
@@ -1791,6 +1796,7 @@
         }
 
         div.multi_dialog_div,
+        div.div_panel_pp,
         div.side_panel_div {
             width: 100%;
             height: 0;
@@ -1804,6 +1810,11 @@
             border-image: linear-gradient(#000000, #000000) 1;
         }
 
+        div.div_panel_pp {
+            border: 0;
+            padding-bottom: 9%;
+        }
+
         div.multi_dialog_div {
             border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
         }
@@ -1813,8 +1824,10 @@
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
 
+        div.side_panel_iner_div1_pp,
         div.side_panel_iner_div1,
         div.side_panel_iner_div2_multi,
+        div.side_panel_iner_div2_pp,
         div.side_panel_iner_div2,
         div.side_panel_iner_div3 {
             width: 16%;
@@ -1826,6 +1839,11 @@
             padding-left: 1%;
         }
 
+        div.side_panel_iner_div1_pp {
+            width: 8%;
+        }
+
+        div.side_panel_iner_div2_pp,
         div.side_panel_iner_div2_multi,
         div.side_panel_iner_div2 {
             width: 60%;
@@ -1833,8 +1851,14 @@
             padding-top: 0.25em;
         }
 
+        div.side_panel_iner_div2_pp,
         div.side_panel_iner_div2_multi {
             padding-top: 0;
+        }
+
+        div.side_panel_iner_div2_pp {
+            width: 90%;
+            line-height: 80%;
         }
 
         div.side_panel_iner_div3 {
@@ -1847,10 +1871,15 @@
             top: 4%;
         }
 
+        img.panel_pp_img,
         img.side_panel_channel_img {
             width: 15%;
             position: absolute;
             top: 0;
+        }
+
+        img.panel_pp_img {
+            width: 9%;
         }
 
         div.notification_holder {
@@ -2642,6 +2671,56 @@
                         <div id="stream_watching_time" class="playsideinfotext"></div>
                     </div>
                 </div>
+                <div id="stream_info_pp" style="padding-top: 0.5%; padding-left: 2%; font-size: 122%;" class="hide">
+                    <div>
+                        <div class="stream_info_pp_div">
+                            <div class="side_panel_feed" style="padding: 0;">
+                                <div class="div_panel_pp">
+                                    <div style="width: 100%;">
+                                        <div id="stream_info_ppimgholder0" class="side_panel_iner_div1_pp"></div>
+                                        <div class="side_panel_iner_div2_pp">
+                                            <div id="stream_info_pp_name0" class="side_panel_new_title"></div>
+                                            <div id="stream_info_pp_title0" class="side_panel_new_game"></div>
+                                            <div id="stream_info_pp_game0" class="side_panel_new_game"></div>
+                                            <div id="stream_info_pp_livetime0" class="side_panel_new_game"
+                                                style="display: inline-block; width:auto;">
+                                            </div>
+                                            <div id="stream_info_pp_viewers0" class="side_panel_new_game"
+                                                style="display: inline-block; width:auto;">
+                                            </div>
+                                            <div id="stream_info_pp_watching_time0" class="side_panel_new_game"
+                                                style="display: inline-block; width:auto;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="stream_info_pp_div">
+                            <div class="side_panel_feed" style="padding: 0;">
+                                <div class="div_panel_pp">
+                                    <div style="width: 100%;">
+                                        <div id="stream_info_ppimgholder1" class="side_panel_iner_div1_pp"></div>
+                                        <div class="side_panel_iner_div2_pp">
+                                            <div id="stream_info_pp_name1" class="side_panel_new_title"></div>
+                                            <div id="stream_info_pp_title1" class="side_panel_new_game"></div>
+                                            <div id="stream_info_pp_game1" class="side_panel_new_game"></div>
+                                            <div id="stream_info_pp_livetime1" class="side_panel_new_game"
+                                                style="display: inline-block; width:auto;">
+                                            </div>
+                                            <div id="stream_info_pp_viewers1" class="side_panel_new_game"
+                                                style="display: inline-block; width:auto;">
+                                            </div>
+                                            <div id="stream_info_pp_watching_time1" class="side_panel_new_game"
+                                                style="display: inline-block; width:auto;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div id="stream_info_multi" style="padding-top: 1.5%; padding-left: 2%; font-size: 125%;" class="hide">
                     <div>
                         <div class="stream_info_multi_div">
@@ -2649,7 +2728,7 @@
                                 <div class="side_panel_div" style="border: 0;">
                                     <div style="width: 100%;">
                                         <div id="stream_info_multiimgholder0" class="side_panel_iner_div1"></div>
-                                        <div class="side_panel_iner_div2_multi">
+                                        <div class="side_panel_iner_div2_multi" style="width: 80%;">
                                             <div id="stream_info_multi_name0" class="side_panel_new_title"></div>
                                             <div id="stream_info_multi_title0" class="side_panel_new_game"></div>
                                             <div id="stream_info_multi_game0" class="side_panel_new_game"></div>
@@ -2937,7 +3016,7 @@
                 </div>
             </div>
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 6%;">
-                <div id="play_dialog_exit_text" class="strokedelinebig" style="font-size: 230%;"></div>
+                <div id="play_dialog_exit_text" class="strokedelinebig" style="font-size: 200%;"></div>
             </div>
             <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 10%;">
                 <div id="dialog_warning_play_text" class="strokedelinebig" style="font-size: 140%;"></div>

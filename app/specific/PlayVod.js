@@ -150,7 +150,7 @@ function PlayVod_PrepareLoad() {
 
 function PlayVod_updateStreamerInfoValues() {
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false, ' [' + (ChannelVod_language).toUpperCase() + ']');
+    Main_innerHTML("stream_info_name", Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false, ' [' + (ChannelVod_language).toUpperCase() + ']'));
 
     //The chat init will happens after user click on vod dialog
     if (!PlayVod_VodOffset) Chat_Init();
@@ -197,8 +197,8 @@ function PlayVod_updateVodInfoPannel(response) {
     //if (response.muted_segments) console.log(response.muted_segments);
 
     Main_values.Main_selectedChannelPartner = response.channel.partner;
-    Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false,
-        '[' + (response.channel.broadcaster_language).toUpperCase() + ']');
+    Main_innerHTML("stream_info_name", Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false,
+        '[' + (response.channel.broadcaster_language).toUpperCase() + ']'));
 
     Main_innerHTML("stream_info_title", ChannelVod_title);
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +

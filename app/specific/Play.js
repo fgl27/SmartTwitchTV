@@ -55,7 +55,6 @@ var Play_IsWarning = false;
 var Play_LoadLogoSucess = false;
 var Play_loadingInfoDataTimeout = 10000;
 var Play_loadingDataTimeout = 2000;
-var Play_Lang = '';
 var Play_Endcounter = 0;
 var Play_EndTextCounter = 3;
 var Play_EndSettingsCounter = 3;
@@ -197,6 +196,7 @@ function Play_PreStart() {
         '<img id="user_feed_notify_img" alt="" class="notify_img" src="' + IMG_404_LOGO +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';" >');
     Play_MultiSetpannelInfo();
+
 }
 
 function Play_SetQuality() {
@@ -321,6 +321,7 @@ function Play_Start() {
 
     window.clearInterval(Play_streamInfoTimerId);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
+    //PlayExtra_UpdatePanelTest();
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -533,7 +534,7 @@ function Play_updateStreamInfoStart() {
 function Play_UpdateMainStreamDiv() {
     //Restore or set info panel
     Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[2], false, true));
-    Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_Lang);
+    Main_innerHTML("stream_info_name", Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''));
     Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
     Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
     Play_LoadLogoSucess = true;
@@ -543,6 +544,8 @@ function Play_UpdateMainStreamDiv() {
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
     Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
+
+    if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
 }
 
 function Play_UpdateMainStream(startChat) {
@@ -569,13 +572,12 @@ function Play_updateStreamInfoStartValues(response) {
 }
 
 function Play_updateStreamInfoEnd(response) {
-    Play_data.data[2] = twemoji.parse(response.stream.channel.status, false, true);
+    Play_data.data[2] = response.stream.channel.status;
     Play_data.data[3] = response.stream.game;
     Play_data.data[7] = response.stream._id;
     Play_data.data[8] = Main_is_rerun(response.stream.broadcast_platform);
     Play_data.data[12] = response.stream.created_at;
     Play_data.data[13] = response.stream.viewers;
-    Play_Lang = ' [' + (response.stream.channel.broadcaster_language).toUpperCase() + ']';
 
     Play_UpdateMainStreamDiv();
 
@@ -1284,11 +1286,23 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_SPACE +
-        STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+    if (PlayExtra_PicturePicture) {
+        Main_innerHTML("stream_info_pp_watching_time0", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
 
-    Main_innerHTML("stream_live_time", STR_SINCE +
-        (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_created)));
+        Main_innerHTML("stream_info_pp_livetime0", STR_SINCE +
+            (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_data.data[12])));
+
+        Main_innerHTML("stream_info_pp_watching_time1", STR_WATCHING + Play_timeMs((new Date().getTime()) - (PlayExtra_data.watching_time)));
+
+        Main_innerHTML("stream_info_pp_livetime1", STR_SINCE +
+            (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(PlayExtra_data.data[12])));
+    } else {
+        Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_SPACE +
+            STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+
+        Main_innerHTML("stream_live_time", STR_SINCE +
+            (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_created)));
+    }
 
     if (!Play_Status_Always_On) {
         if (Main_IsNotBrowser) {
@@ -1569,6 +1583,7 @@ function Play_CloseBigAndSwich(error_410) {
 }
 
 function Play_CloseSmall() {
+    PlayExtra_updateStreamInfo();
     PlayExtra_PicturePicture = false;
 
     if (Main_IsNotBrowser) {
@@ -1577,7 +1592,6 @@ function Play_CloseSmall() {
     }
     PlayExtra_UnSetPanel();
     Play_CleanHideExit();
-    PlayExtra_updateStreamInfo();
 }
 
 function Play_handleKeyUp(e) {
@@ -1988,6 +2002,14 @@ function Play_MultiSetpannelInfo() {
     }
     Main_innerHTML("stream_dialog_multiimgholder-1",
         '<img id="stream_dialog_multiimg-1" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
+        'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+
+    Main_innerHTML("stream_info_ppimgholder0",
+        '<img id="stream_info_ppimg0" class="panel_pp_img" src="' + IMG_404_BANNER + '"' +
+        'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+
+    Main_innerHTML("stream_info_ppimgholder1",
+        '<img id="stream_info_ppimg1" class="panel_pp_img" src="' + IMG_404_BANNER + '"' +
         'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 }
 
