@@ -182,6 +182,9 @@ function PlayExtra_SetPanel() {
     document.getElementById('controls_' + Play_controlsAudio).style.display = '';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
     Play_IconsResetFocus();
+    PlayExtra_UpdatePanel();
+    Main_HideElement('stream_info');
+    Main_ShowElement('stream_info_pp');
 }
 
 function PlayExtra_UnSetPanel() {
@@ -197,6 +200,35 @@ function PlayExtra_UnSetPanel() {
     Play_IconsResetFocus();
     ChatLive_Clear(1);
     PlayExtra_HideChat();
+    Main_HideElement('stream_info_pp');
+    Main_ShowElement('stream_info');
+
+}
+
+// function PlayExtra_UpdatePanelTest() {
+//     PlayExtra_data = Play_data;
+//     PlayExtra_UpdatePanel();
+//     Main_HideElement('stream_info');
+//     Main_ShowElement('stream_info_pp');
+// }
+
+function PlayExtra_UpdatePanel() {
+
+    Main_innerHTML('stream_info_pp_name0',
+        Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''));
+    document.getElementById('stream_info_ppimg0').src = Play_data.data[9];
+
+    Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
+    Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE : STR_PLAYING + Play_data.data[3]);
+    Main_innerHTML('stream_info_pp_viewers0', STR_FOR + Main_addCommas((Play_data.data[13] > 0) ? Play_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
+
+    Main_innerHTML('stream_info_pp_name1',
+        Play_partnerIcon(PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1], PlayExtra_data.data[10], true, PlayExtra_data.data[5] ? PlayExtra_data.data[5].split(' ')[1] : '', true));
+    document.getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
+    Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
+
+    Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE : STR_PLAYING + PlayExtra_data.data[3]);
+    Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas((PlayExtra_data.data[13] > 0) ? PlayExtra_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
 }
 
 function PlayExtra_qualityChanged() {
@@ -262,12 +294,25 @@ function PlayExtra_updateStreamInfo() {
 function PlayExtra_updateStreamInfoValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
+
         Main_history_UpdateLive(
             response.stream._id,
             response.stream.game,
             response.stream.channel.status,
             response.stream.viewers
         );
+
+        //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
+        if (PlayExtra_data.data.length > 0) {
+            PlayExtra_data.data[2] = response.stream.channel.status;
+            PlayExtra_data.data[3] = response.stream.game;
+            PlayExtra_data.data[7] = response.stream._id;
+            PlayExtra_data.data[8] = Main_is_rerun(response.stream.broadcast_platform);
+            PlayExtra_data.data[12] = response.stream.created_at;
+            PlayExtra_data.data[13] = response.stream.viewers;
+
+            PlayExtra_UpdatePanel();
+        }
     }
 }
 
