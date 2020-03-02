@@ -8099,7 +8099,7 @@
         if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         Play_loadingInfoDataTry = 0;
 
-        Play_UpdateMainStream();
+        Play_UpdateMainStream(true, false);
 
         PlayExtra_SwitchPlayerResStoreOld();
         Main_SaveValues();
@@ -8594,8 +8594,9 @@
 
             Play_CheckIfIsLiveCleanEnd();
         }
-        Play_UpdateMainStream(true);
         document.body.removeEventListener("keyup", Main_handleKeyUp);
+
+        if (!Main_IsNotBrowser) Play_UpdateMainStream(true, true);
 
         window.clearInterval(Play_streamInfoTimerId);
         Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
@@ -8765,10 +8766,7 @@
         if (navigator.onLine) Play_ResumeAfterOnline();
         else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
 
-        if (!Play_MultiEnable) {
-            Play_data.watching_time = new Date().getTime();
-            Play_UpdateMainStream(true);
-        }
+        if (!Play_MultiEnable) Play_data.watching_time = new Date().getTime();
 
         window.clearInterval(Play_streamInfoTimerId);
         Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
@@ -8781,6 +8779,7 @@
             if (Play_MultiEnable) {
                 Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
+                ChatLive_Init(0);
                 Play_data.watching_time = new Date().getTime();
 
                 for (var i = 0; i < Play_MultiArray.length; i++) {
@@ -8826,12 +8825,12 @@
         if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
     }
 
-    function Play_UpdateMainStream(startChat) {
-        if (!startChat) ChatLive_Init(0);
+    function Play_UpdateMainStream(startChat, refreshInfo) {
+        if (startChat) ChatLive_Init(0);
         Play_UpdateMainStreamDiv();
         //Restore info panel from web
         Play_loadingInfoDataTry = 0;
-        Play_updateStreamInfoStart();
+        if (refreshInfo) Play_updateStreamInfoStart();
     }
 
     function Play_updateStreamInfoStartValues(response) {
@@ -9117,6 +9116,7 @@
         Play_EndSet(1);
         UserLiveFeed_SetFeedPicText();
         Play_HideEndDialog();
+        Play_UpdateMainStream(true, true);
 
         Play_data.qualities = qualities;
         Play_state = Play_STATE_PLAYING;
@@ -9247,7 +9247,6 @@
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         Play_SetFullScreen(Play_isFullScreen);
         Play_Playing = true;
-        ChatLive_Init(0);
     }
 
     function Play_SetHtmlQuality(element) {
@@ -9928,7 +9927,6 @@
         Play_RestorePlayDataValues();
 
         Main_SaveValues();
-        Play_UpdateMainStream(true);
     }
 
     function Play_SavePlayData() {
@@ -10029,7 +10027,7 @@
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
             if (name !== Play_data.data[14] && First) Play_Start();
-            else Play_UpdateMainStream(name === Play_data.data[14]);
+            else Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
 
         } else if (shutdown) Play_shutdownStream();
     }
