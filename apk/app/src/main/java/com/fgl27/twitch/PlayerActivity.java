@@ -1492,8 +1492,8 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 setPlayer(surface_view);
 
-                if (FullScreen) updateVideSizePP(FullScreen);
-                else updateVideSize(FullScreen);
+                if (FullScreen) updateVideSizePP(true);
+                else updateVideSize(false);
 
                 UpdadeSizePosSmall(mainPlayer ^ 1);
             });
