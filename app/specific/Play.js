@@ -1922,6 +1922,10 @@ function Play_MultiStartQualitySucess(pos, theUrl, qualities) {
     }
     Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
+
+    if (Play_CheckIfIsLiveQualities.length &&
+        Main_A_equals_B(Play_MultiArray[pos].data[6], Play_CheckIfIsLiveChannel))
+        UserLiveFeed_CheckIfIsLiveSTop();
 }
 
 function Play_MultiEnableKeyRightLeft(adder) {
