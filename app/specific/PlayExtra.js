@@ -104,7 +104,7 @@ function PlayExtra_loadDataSuccessEnd(qualities) {
     PlayExtra_SetPanel();
 
     if (!Play_isFullScreen) {
-        Android.mupdatesizePP(!Play_isFullScreen);
+        Android.mupdatesizePP(Play_isFullScreen);
         ChatLive_Init(1);
         PlayExtra_ShowChat();
     } else Android.mSwitchPlayerSize(Play_PicturePictureSize);
@@ -232,7 +232,7 @@ function PlayExtra_loadDataFail(Reason) {
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         ChatLive_Clear(1);
         Main_HideElement('chat_container2');
-        if (Main_IsNotBrowser && !Play_isFullScreen) Android.mupdatesize(!Play_isFullScreen);
+        if (Main_IsNotBrowser && !Play_isFullScreen) Android.mupdatesize(Play_isFullScreen);
 
         Play_HideBufferDialog();
         Play_showWarningDialog(Reason, 2500);

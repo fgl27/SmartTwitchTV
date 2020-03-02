@@ -121,7 +121,7 @@ public class PlayerActivity extends Activity {
     public boolean PicturePicture;
     public boolean deviceIsTV;
     public boolean MultiStream;
-    public boolean isSizechat;
+    public boolean isFullScreen;
     public int heightDefault = 0;
     public int mwidthDefault = 0;
     public int heightChat = 0;
@@ -152,10 +152,10 @@ public class PlayerActivity extends Activity {
     private Uri uri;
     private FrameLayout.LayoutParams DefaultSizeFrame;
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
-    private FrameLayout.LayoutParams PlayerViewDefaultSizeChat;
+    private FrameLayout.LayoutParams PlayerViewSideBySideSize;
     private FrameLayout.LayoutParams PlayerViewSmallSize;
     private FrameLayout.LayoutParams PlayerViewDefaultSizePP;
-    private FrameLayout.LayoutParams PlayerViewDefaultSizeChatPP;
+    private FrameLayout.LayoutParams PlayerViewSideBySideSizePP;
     private FrameLayout.LayoutParams[] PlayerViewExtraLayout = new FrameLayout.LayoutParams[6];
     private FrameLayout VideoHolder;
     private boolean onCreateReady;
@@ -526,8 +526,10 @@ public class PlayerActivity extends Activity {
 
     //Stop the player called from js, clear it all
     private void PreResetPlayer(int whocall, int position) {
-        if (IsIN5050) updateVidesizeChatPP(false);
+        if (IsIN5050) updateVideSizePP(true);
+
         if (mainPlayer == 1) SwitchPlayer();
+
         PicturePicture = false;
         shouldCallJsPlayer = false;
         AudioSource = 1;
@@ -615,10 +617,10 @@ public class PlayerActivity extends Activity {
         if (isNvisible) PlayerView[0].setVisibility(View.GONE);
 
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
-        PlayerViewDefaultSizeChat = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
+        PlayerViewSideBySideSize = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
 
         PlayerViewDefaultSizePP = new FrameLayout.LayoutParams((mwidthDefault / 2), (heightDefault / 2), positions[3]);
-        PlayerViewDefaultSizeChatPP = new FrameLayout.LayoutParams((mwidthDefault / 2), (heightDefault / 2), positions[7]);
+        PlayerViewSideBySideSizePP = new FrameLayout.LayoutParams((mwidthDefault / 2), (heightDefault / 2), positions[7]);
 
         PlayerViewSmallSize = new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]);
         PlayerView[1].setLayoutParams(PlayerViewSmallSize);
@@ -655,22 +657,22 @@ public class PlayerActivity extends Activity {
     }
 
     //Used in side-by-side mode chat plus video
-    private void updateVidesizeChat(boolean sizechat) {
-        isSizechat = sizechat;
-        if (sizechat) PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizeChat);
-        else PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
+    private void updateVideSize(boolean FullScreen) {
+        isFullScreen = FullScreen;
+        if (FullScreen) PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
+        else PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize);
     }
 
     //Used in 50/50 mode two videos on the center plus two chat one on it side
-    private void updateVidesizeChatPP(boolean sizechat) {
-        if (sizechat) {
-            IsIN5050 = true;
-            PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizePP);
-            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewDefaultSizeChatPP);
-        } else {
+    private void updateVideSizePP(boolean FullScreen) {
+        if (FullScreen) {
             IsIN5050 = false;
             PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
             UpdadeSizePosSmall(mainPlayer ^ 1);
+        } else {
+            IsIN5050 = true;
+            PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizePP);
+            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSideBySideSizePP);
         }
     }
 
@@ -771,9 +773,9 @@ public class PlayerActivity extends Activity {
         ClearPlayer(2);
         ClearPlayer(3);
 
-        if (PicturePicture) updateVidesizeChatPP(IsIN5050);
+        if (PicturePicture) updateVideSizePP(IsIN5050);
         else {
-            updateVidesizeChat(isSizechat);
+            updateVideSize(isFullScreen);
             PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize);
         }
 
@@ -1028,14 +1030,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mupdatesize(boolean sizechat) {
-            MainThreadHandler.post(() -> updateVidesizeChat(sizechat));
+        public void mupdatesize(boolean FullScreen) {
+            MainThreadHandler.post(() -> updateVideSize(FullScreen));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mupdatesizePP(boolean sizechat) {
-            MainThreadHandler.post(() -> updateVidesizeChatPP(sizechat));
+        public void mupdatesizePP(boolean FullScreen) {
+            MainThreadHandler.post(() -> updateVideSizePP(FullScreen));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1486,12 +1488,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void msetPlayer(boolean surface_view, boolean sizechat) {
+        public void msetPlayer(boolean surface_view, boolean FullScreen) {
             MainThreadHandler.post(() -> {
                 setPlayer(surface_view);
 
-                if (sizechat) updateVidesizeChatPP(false);
-                else updateVidesizeChat(true);
+                if (FullScreen) updateVideSizePP(FullScreen);
+                else updateVideSize(FullScreen);
 
                 UpdadeSizePosSmall(mainPlayer ^ 1);
             });
