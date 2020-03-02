@@ -254,7 +254,6 @@ function Play_SetChatFont() {
 function Play_Start() {
     Play_showBufferDialog();
 
-    Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
     PlayClip_HasVOD = true;
     //reset channel logo to prevent another channel logo
@@ -1655,6 +1654,8 @@ function Play_SavePlayData() {
 function Play_RestorePlayDataValues() {
     Play_data = JSON.parse(JSON.stringify(Play_data_old));
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
+    Play_created = Play_data.data[12];
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
 }
 
 function Play_handleKeyUpClear() {
