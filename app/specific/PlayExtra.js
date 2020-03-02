@@ -146,7 +146,7 @@ function PlayExtra_SwitchPlayer() {
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Play_loadingInfoDataTry = 0;
 
-    Play_UpdateMainStream();
+    Play_UpdateMainStream(true, false);
 
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
