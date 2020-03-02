@@ -146,11 +146,10 @@ function PlayExtra_SwitchPlayer() {
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Play_loadingInfoDataTry = 0;
 
-    Play_UpdateMainStream(true, false);
-
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
 
+    Play_UpdateMainStream(true, false);
     Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
     Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
 }
@@ -213,7 +212,6 @@ function PlayExtra_UnSetPanel() {
 // }
 
 function PlayExtra_UpdatePanel() {
-
     Main_innerHTML('stream_info_pp_name0',
         Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''));
     document.getElementById('stream_info_ppimg0').src = Play_data.data[9];
