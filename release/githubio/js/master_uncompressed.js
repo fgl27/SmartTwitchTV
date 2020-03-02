@@ -3505,7 +3505,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.133';
+    var Main_stringVersion_Min = '.134';
     var Main_minversion = '030220';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -8302,7 +8302,6 @@
     var Play_SingleClickExit = 0;
     var Play_MultiEnable = false;
     var Play_MultiArray = [];
-    //var Play_SupportsSource = true;
     var Play_LowLatency = false;
     var Play_EndUpclear = false;
     var Play_EndUpclearID;
@@ -8534,7 +8533,6 @@
 
     function Play_Start() {
         Play_showBufferDialog();
-        //Play_SupportsSource = true;
 
         Main_empty('stream_info_title');
         Play_LoadLogoSucess = false;
@@ -9966,6 +9964,7 @@
         UserLiveFeed_SetMulti();
         ChatLive_Clear(1);
         PlayExtra_HideChat();
+        Main_HideElement('stream_info_pp');
         Main_HideElement('stream_info');
         Main_ShowElement('dialog_multi_help');
         Main_ShowElement('stream_info_multi');
