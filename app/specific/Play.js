@@ -22,7 +22,6 @@ var Play_Status_Always_On = false;
 var Play_SingleClickExit = 0;
 var Play_MultiEnable = false;
 var Play_MultiArray = [];
-//var Play_SupportsSource = true;
 var Play_LowLatency = false;
 var Play_EndUpclear = false;
 var Play_EndUpclearID;
@@ -254,7 +253,6 @@ function Play_SetChatFont() {
 
 function Play_Start() {
     Play_showBufferDialog();
-    //Play_SupportsSource = true;
 
     Main_empty('stream_info_title');
     Play_LoadLogoSucess = false;
@@ -1685,6 +1683,7 @@ function Play_Multi_SetPanel() {
     UserLiveFeed_SetMulti();
     ChatLive_Clear(1);
     PlayExtra_HideChat();
+    Main_HideElement('stream_info_pp');
     Main_HideElement('stream_info');
     Main_ShowElement('dialog_multi_help');
     Main_ShowElement('stream_info_multi');

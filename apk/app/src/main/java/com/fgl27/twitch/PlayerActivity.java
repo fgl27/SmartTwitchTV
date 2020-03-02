@@ -526,8 +526,6 @@ public class PlayerActivity extends Activity {
 
     //Stop the player called from js, clear it all
     private void PreResetPlayer(int whocall, int position) {
-        if (IsIN5050) updateVideSizePP(true);
-
         if (mainPlayer == 1) SwitchPlayer();
 
         PicturePicture = false;
@@ -773,7 +771,7 @@ public class PlayerActivity extends Activity {
         ClearPlayer(2);
         ClearPlayer(3);
 
-        if (PicturePicture) updateVideSizePP(IsIN5050);
+        if (PicturePicture) updateVideSizePP(!IsIN5050);
         else {
             updateVideSize(isFullScreen);
             PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize);
