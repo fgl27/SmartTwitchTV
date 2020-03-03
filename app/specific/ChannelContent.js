@@ -31,6 +31,7 @@ function ChannelContent_init() {
     if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
+    Main_innerHTML("label_last_refresh", '');
     document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
     AddCode_PlayRequest = false;
 
@@ -63,6 +64,7 @@ function ChannelContent_exit() {
 function ChannelContent_StartLoad() {
     ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname);
     Main_updateclock();
+    Main_innerHTML("label_last_refresh", '');
     ChannelContent_isoffline = false;
     Main_HideElement(ChannelContent_ids[10]);
     ChannelContent_offline_image = null;

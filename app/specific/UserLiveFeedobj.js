@@ -374,9 +374,7 @@ function UserLiveFeedobj_History() {
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
 
-    window.setTimeout(function() {
-        UserLiveFeed_loadDataSuccessFinish(false, pos);
-    }, 25);
+    UserLiveFeed_loadDataSuccessFinish(false, pos);
 }
 
 //Live history end

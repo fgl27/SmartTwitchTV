@@ -434,6 +434,8 @@ function Main_initWindows() {
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30);//Check it 30min
+        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 5000);
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 5000);
 
         inUseObj = Live;
         Main_ready(function() {
@@ -1626,6 +1628,7 @@ function Main_updateUserFeed() {
     if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
         !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
         UserLiveFeed_RefreshLive();
+        UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
     }
 }
 
@@ -2209,6 +2212,8 @@ function Main_CheckStop() { // Called only by JAVA
     ChatLive_Clear(0);
     ChatLive_Clear(1);
     Chat_Clear();
+
+    Sidepannel_CheckIfIsLiveCleanTimeouts();
     window.clearInterval(Play_ResumeAfterOnlineId);
     window.clearInterval(Play_streamInfoTimerId);
     window.clearInterval(Play_ShowPanelStatusId);
@@ -2220,18 +2225,21 @@ function Main_CheckStop() { // Called only by JAVA
 
     //General related
     Screens_ClearAnimation();
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
 
     window.clearInterval(Main_updateUserFeedId);
     window.clearInterval(Main_updateclockId);
     window.clearInterval(Main_StartHistoryworkerId);
 }
 
+var Main_CheckResumeFeedId;
+var Main_CheckResumeVodsId;
 function Main_CheckResume() { // Called only by JAVA
     if (AddUser_UserIsSet()) {
         window.clearInterval(Main_updateUserFeedId);
         Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
-        window.setTimeout(Main_updateUserFeed, 1000);
+
+        window.clearTimeout(Main_CheckResumeFeedId);
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 1500);
     }
     window.clearInterval(Main_updateclockId);
     Main_updateclockId = window.setInterval(Main_updateclock, 60000);
@@ -2239,5 +2247,7 @@ function Main_CheckResume() { // Called only by JAVA
 
     window.clearInterval(Main_StartHistoryworkerId);
     Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30);//Check it 30min
-    Main_StartHistoryworker();
+
+    window.clearTimeout(Main_CheckResumeVodsId);
+    Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 3500);
 }
