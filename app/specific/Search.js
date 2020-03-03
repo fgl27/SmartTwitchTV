@@ -8,6 +8,7 @@ function Search_init() {
     Main_HideWarningDialog();
     Main_HideElement('label_refresh');
     Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+    Main_innerHTML("label_last_refresh", '');
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     Main_ShowElement('search_scroll');
     Search_cursorY = 0;
