@@ -2039,6 +2039,7 @@
         if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
         if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
         Main_cleanTopLabel();
+        Main_innerHTML("label_last_refresh", '');
         document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
         AddCode_PlayRequest = false;
 
@@ -2071,6 +2072,7 @@
     function ChannelContent_StartLoad() {
         ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname);
         Main_updateclock();
+        Main_innerHTML("label_last_refresh", '');
         ChannelContent_isoffline = false;
         Main_HideElement(ChannelContent_ids[10]);
         ChannelContent_offline_image = null;
@@ -3815,6 +3817,8 @@
 
             Main_updateclockId = window.setInterval(Main_updateclock, 60000);
             Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30); //Check it 30min
+            Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 5000);
+            Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 5000);
 
             inUseObj = Live;
             Main_ready(function() {
@@ -5008,6 +5012,7 @@
         if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
             !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
             UserLiveFeed_RefreshLive();
+            UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
         }
     }
 
@@ -5593,6 +5598,8 @@
         ChatLive_Clear(0);
         ChatLive_Clear(1);
         Chat_Clear();
+
+        Sidepannel_CheckIfIsLiveCleanTimeouts();
         window.clearInterval(Play_ResumeAfterOnlineId);
         window.clearInterval(Play_streamInfoTimerId);
         window.clearInterval(Play_ShowPanelStatusId);
@@ -5604,18 +5611,22 @@
 
         //General related
         Screens_ClearAnimation();
-        Sidepannel_CheckIfIsLiveCleanTimeouts();
 
         window.clearInterval(Main_updateUserFeedId);
         window.clearInterval(Main_updateclockId);
         window.clearInterval(Main_StartHistoryworkerId);
     }
 
+    var Main_CheckResumeFeedId;
+    var Main_CheckResumeVodsId;
+
     function Main_CheckResume() { // Called only by JAVA
         if (AddUser_UserIsSet()) {
             window.clearInterval(Main_updateUserFeedId);
             Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
-            window.setTimeout(Main_updateUserFeed, 1000);
+
+            window.clearTimeout(Main_CheckResumeFeedId);
+            Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 1500);
         }
         window.clearInterval(Main_updateclockId);
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
@@ -5623,7 +5634,9 @@
 
         window.clearInterval(Main_StartHistoryworkerId);
         Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30); //Check it 30min
-        Main_StartHistoryworker();
+
+        window.clearTimeout(Main_CheckResumeVodsId);
+        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 3500);
     } //Variable initialization
     var PlayClip_IsJumping = false;
     var PlayClip_jumpCount = 0;
@@ -11914,8 +11927,6 @@
         else Sidepannel_SetDefaultLables();
 
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
-
-        Main_StartHistoryworker();
     }
 
     function Screens_addFocus(forceScroll) {
@@ -13301,6 +13312,8 @@
     }
 
     function Screens_SetLastRefresh() {
+        if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
+            Main_values.Main_Go === Main_addUser) return;
         Main_innerHTML("label_last_refresh", STR_LAST_REFRESH + Play_timeDay(Date.now() - inUseObj.lastRefresh) + ")");
     } //Spacing for reease maker not trow erros frm jshint
     var Main_ItemsLimitMax = 100;
@@ -15125,6 +15138,7 @@
         Main_HideWarningDialog();
         Main_HideElement('label_refresh');
         Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+        Main_innerHTML("label_last_refresh", '');
         Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
         Main_ShowElement('search_scroll');
         Search_cursorY = 0;
@@ -18493,9 +18507,7 @@
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
 
-        window.setTimeout(function() {
-            UserLiveFeed_loadDataSuccessFinish(false, pos);
-        }, 25);
+        UserLiveFeed_loadDataSuccessFinish(false, pos);
     }
 
     //Live history end
@@ -19393,6 +19405,7 @@
         if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
         Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
         Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABLE);
+        Main_innerHTML("label_last_refresh", '');
 
         Main_values.Main_Go = Main_Users;
         Main_HideWarningDialog();
