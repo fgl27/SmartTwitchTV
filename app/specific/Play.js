@@ -495,6 +495,7 @@ function Play_Resume() {
 function Play_ResumeAfterOnline() {
     if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         window.clearInterval(Play_ResumeAfterOnlineId);
+        Play_CheckIfIsLiveCleanEnd();
         if (Play_MultiEnable) {
             Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
