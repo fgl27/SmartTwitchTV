@@ -1076,10 +1076,8 @@ public class PlayerActivity extends Activity {
         public void SetAuto(String url) {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            MainThreadHandler.post(() -> {
-                expires[mainPlayer] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-            });
+            expires[mainPlayer] = System.currentTimeMillis() + 18000;
+            mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1111,10 +1109,8 @@ public class PlayerActivity extends Activity {
         public void SetAuto2(String url) {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            MainThreadHandler.post(() -> {
-                expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-            });
+            expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
+            mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1165,10 +1161,8 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetAutoFeedPlayer(String url) {
-            MainThreadHandler.post(() -> {
-                expires[4] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UsefullBandwidth));
-            });
+            expires[4] = System.currentTimeMillis() + 18000;
+            mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UsefullBandwidth));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1273,20 +1267,20 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetMainPlayerBandwidth(int band) {
             mainPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
-            MainThreadHandler.post(() -> trackSelectorParameters = trackSelectorParameters
+            trackSelectorParameters = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBandwidth)
-                    .build());
+                    .build();
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetSmallPlayerBandwidth(int band) {
             smallPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
-            MainThreadHandler.post(() -> trackSelectorParametersSmall = trackSelectorParameters
+            trackSelectorParametersSmall = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(smallPlayerBandwidth)
-                    .build());
+                    .build();
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1395,7 +1389,7 @@ public class PlayerActivity extends Activity {
             loadControl[whocall] = Tools.getLoadControl(BUFFER_SIZE[whocall], deviceRam);
 
             //MUltiStream and small feed player
-            loadControl[0] = Tools.getLoadControl(BUFFER_SIZE[1], (int) (deviceRam / 2));
+            loadControl[0] = Tools.getLoadControl(BUFFER_SIZE[1], deviceRam / 2);
         }
 
         @SuppressWarnings("unused")//called by JS
