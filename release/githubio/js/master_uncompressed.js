@@ -8158,17 +8158,24 @@
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_controls[Play_controlsChatSide].setLable();
         Play_controls[Play_controlsChatSide].setIcon();
+
         document.getElementById('controls_' + Play_controlsQuality).style.display = '';
         document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
         document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
         document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
         document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
+
         Play_IconsResetFocus();
         ChatLive_Clear(1);
         PlayExtra_HideChat();
+
         Main_HideElement('stream_info_pp');
         Main_ShowElement('stream_info');
+    }
 
+    function PlayExtra_ClearExtra() {
+        PlayExtra_PicturePicture = false;
+        PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
     }
 
     // function PlayExtra_UpdatePanelTest() {
@@ -9779,8 +9786,7 @@
     //called by android PlayerActivity
     function Play_PannelEndStart(PlayVodClip) { // Called only by JAVA
         if (PlayVodClip === 1) { //live
-            PlayExtra_PicturePicture = false;
-            PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+            PlayExtra_ClearExtra();
             Play_CheckHostStart();
         } else {
             Play_PlayEndStart(PlayVodClip);
@@ -9963,8 +9969,7 @@
     function Play_Exit() {
         Play_CleanHideExit();
         Play_hideChat();
-        PlayExtra_PicturePicture = false;
-        PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+        PlayExtra_ClearExtra();
         Play_shutdownStream();
     }
 
@@ -10034,6 +10039,7 @@
         } else {
             Play_Multi_UnSetPanelDivsCheckChat();
             if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
+            PlayExtra_PicturePicture = false;
         }
 
         //Check if main player is open if not check if one is so it can be main
@@ -10064,8 +10070,7 @@
             Play_MultiEnable = false;
             Android.DisableMultiStream();
             Play_Multi_UnSetPanelDivs(true);
-            PlayExtra_PicturePicture = false;
-            PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+            PlayExtra_ClearExtra();
             Play_CheckHostStart();
         }
     }
@@ -10175,8 +10180,7 @@
                 Play_MultiEnable = false;
                 Android.DisableMultiStream();
                 Play_Multi_UnSetPanelDivs(true);
-                PlayExtra_PicturePicture = false;
-                PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+                PlayExtra_ClearExtra();
                 Play_CheckHostStart();
             }
         }
