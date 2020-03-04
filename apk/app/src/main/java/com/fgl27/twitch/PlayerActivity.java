@@ -147,7 +147,7 @@ public class PlayerActivity extends Activity {
     public long speedcounter = 0L;
     public boolean mLowLatency = false;
     public boolean UsefullBandwidth = false;
-    private LoadControl[] loadControl = new LoadControl[PlayerAcountPlus];
+    private LoadControl[] loadControl = new LoadControl[PlayerAcount];
     private Uri uri;
     private FrameLayout.LayoutParams DefaultSizeFrame;
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
@@ -221,7 +221,7 @@ public class PlayerActivity extends Activity {
 
             deviceRam = Tools.deviceRam(this);
             //Ram too big.bigger then max int value... use 1000MB
-            if (deviceRam < 0) deviceRam = 1000000000;
+            if (deviceRam < 0) deviceRam = 500000000;
 
             initializeWebview();
         }
@@ -370,12 +370,12 @@ public class PlayerActivity extends Activity {
 
                 player[4] = new SimpleExoPlayer.Builder(this, renderersFactory)
                         .setTrackSelector(trackSelector[4])
-                        .setLoadControl(loadControl[mwhocall])
+                        .setLoadControl(loadControl[0])
                         .build();
             } else {
                 player[4] = new SimpleExoPlayer.Builder(this)
                         .setTrackSelector(trackSelector[4])
-                        .setLoadControl(loadControl[mwhocall])
+                        .setLoadControl(loadControl[0])
                         .build();
             }
 
@@ -438,12 +438,12 @@ public class PlayerActivity extends Activity {
 
                 player[position] = new SimpleExoPlayer.Builder(this, renderersFactory)
                         .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[mwhocall])
+                        .setLoadControl(loadControl[0])
                         .build();
             } else {
                 player[position] = new SimpleExoPlayer.Builder(this)
                         .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[mwhocall])
+                        .setLoadControl(loadControl[0])
                         .build();
             }
 
@@ -1393,6 +1393,9 @@ public class PlayerActivity extends Activity {
         public void SetBuffer(int whocall, int value) {
             BUFFER_SIZE[whocall] = Math.min(value, 15000);
             loadControl[whocall] = Tools.getLoadControl(BUFFER_SIZE[whocall], deviceRam);
+
+            //MUltiStream and small feed player
+            loadControl[0] = Tools.getLoadControl(BUFFER_SIZE[1], (int) (deviceRam / 2));
         }
 
         @SuppressWarnings("unused")//called by JS

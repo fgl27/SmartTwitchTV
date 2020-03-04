@@ -622,10 +622,10 @@ public final class Tools {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        buffer + 5000, //DEFAULT_MIN_BUFFER_MS
+                        100000, //DEFAULT_MIN_BUFFER_MS
                         36000000, //DEFAULT_MAX_BUFFER_MS
                         buffer, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
-                        Math.min(buffer + 3000, 15000) //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                        buffer + 3000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .setTargetBufferBytes(deviceRam)
                 .createDefaultLoadControl();
@@ -755,6 +755,6 @@ public final class Tools {
             actManager.getMemoryInfo(memInfo);
         } else return 100000000;
 
-        return (int) (memInfo.totalMem / 8);
+        return (int) (memInfo.totalMem / 16);
     }
 }
