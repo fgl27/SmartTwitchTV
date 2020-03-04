@@ -194,7 +194,6 @@ function PlayExtra_UnSetPanel() {
     document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
     document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
     document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
     Play_IconsResetFocus();
     ChatLive_Clear(1);

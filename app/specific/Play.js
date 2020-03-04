@@ -1740,7 +1740,7 @@ function Play_Multi_UnSetPanel(shutdown) {
         } else Play_Multi_UnSetPanelDivsCheckChat();
     } else {
         Play_Multi_UnSetPanelDivsCheckChat();
-        PlayExtra_PicturePicture = false;
+        if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     }
 
     //Check if main player is open if not check if one is so it can be main
