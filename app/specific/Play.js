@@ -1486,8 +1486,7 @@ function Play_qualityIndexReset() {
 //called by android PlayerActivity
 function Play_PannelEndStart(PlayVodClip) { // Called only by JAVA
     if (PlayVodClip === 1) { //live
-        PlayExtra_PicturePicture = false;
-        PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+        PlayExtra_ClearExtra();
         Play_CheckHostStart();
     } else {
         Play_PlayEndStart(PlayVodClip);
@@ -1670,8 +1669,7 @@ function Play_handleKeyUpClear() {
 function Play_Exit() {
     Play_CleanHideExit();
     Play_hideChat();
-    PlayExtra_PicturePicture = false;
-    PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+    PlayExtra_ClearExtra();
     Play_shutdownStream();
 }
 
@@ -1741,6 +1739,7 @@ function Play_Multi_UnSetPanel(shutdown) {
     } else {
         Play_Multi_UnSetPanelDivsCheckChat();
         if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
+        PlayExtra_PicturePicture = false;
     }
 
     //Check if main player is open if not check if one is so it can be main
@@ -1771,8 +1770,7 @@ function Play_MultiEnd(position) {
         Play_MultiEnable = false;
         Android.DisableMultiStream();
         Play_Multi_UnSetPanelDivs(true);
-        PlayExtra_PicturePicture = false;
-        PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+        PlayExtra_ClearExtra();
         Play_CheckHostStart();
     }
 }
@@ -1882,8 +1880,7 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
             Play_MultiEnable = false;
             Android.DisableMultiStream();
             Play_Multi_UnSetPanelDivs(true);
-            PlayExtra_PicturePicture = false;
-            PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+            PlayExtra_ClearExtra();
             Play_CheckHostStart();
         }
     }
