@@ -256,17 +256,17 @@ function PlayExtra_handleKeyDown(e) {
 }
 
 function PlayExtra_loadDataFail(Reason) {
-    if (PlayExtra_Save_data.data.length < 0) {
-
+    if (PlayExtra_Save_data.data.length > 0) PlayExtra_RestorePlayData();
+    else {
         PlayExtra_PicturePicture = false;
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         ChatLive_Clear(1);
         Main_HideElement('chat_container2');
         if (Main_IsNotBrowser && !Play_isFullScreen) Android.mupdatesize(Play_isFullScreen);
-
+        PlayExtra_UnSetPanel();
         Play_HideBufferDialog();
         Play_showWarningDialog(Reason, 2500);
-    } else PlayExtra_RestorePlayData();
+    }
 }
 
 function PlayExtra_RefreshAutoRequest(RestartAuto) {
