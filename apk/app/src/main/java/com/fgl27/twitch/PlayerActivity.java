@@ -294,7 +294,7 @@ public class PlayerActivity extends Activity {
 
         //Show main loading if this call is in the main player as this is needed fro when we are fast/back forwarding
         //On small player it will show its own loading
-        if (!isSmall && isFullScreen) showLoading();
+        //if (!isSmall && isFullScreen) showLoading();
 
         if (PlayerView[position].getVisibility() != View.VISIBLE)
             PlayerView[position].setVisibility(View.VISIBLE);
@@ -1664,7 +1664,7 @@ public class PlayerActivity extends Activity {
                 PlayerEventListenerClear(position);
             } else if (playbackState == Player.STATE_BUFFERING) {
                 //Use the player buffer as a player check state to prevent be buffering for ever
-                //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
+                //If buffer for as long as (BUFFER_SIZE * 2 + etc) do something because player is frozen
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 PlayerCheckHandler[position].postDelayed(() -> {
 
@@ -1708,7 +1708,7 @@ public class PlayerActivity extends Activity {
 
     public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-        //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
+        //Pause to things run smother and prevent odd behavior during the checks
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
         }
@@ -1795,7 +1795,7 @@ public class PlayerActivity extends Activity {
                 LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
             } else if (playbackState == Player.STATE_BUFFERING) {
                 //Use the player buffer as a player check state to prevent be buffering for ever
-                //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
+                //If buffer for as long as BUFFER_SIZE * 2 + etc do something because player is frozen
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckHandler[4].postDelayed(() -> {
 
@@ -1823,7 +1823,7 @@ public class PlayerActivity extends Activity {
 
     public void PlayerEventListenerCheckCounterSmall() {
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-        //Pause to things run smother and prevent odd behavior during the checks + start loading to show what is going on
+        //Pause so things run smother and prevent odd behavior during the checks
         if (player[4] != null) {
             player[4].setPlayWhenReady(false);
         }
