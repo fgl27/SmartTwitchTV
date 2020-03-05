@@ -11389,7 +11389,7 @@
     var inUseObj = {};
     var Screens_clear = false;
     var Screens_KeyEnterID;
-    var Screens_ScrollAnimationTimeout = 350; //Same time as animate_height_transition
+    var Screens_ScrollAnimationTimeout = 200; //Same time as animate_height_transition
     var Screens_ChangeFocusAnimationFinished = true;
     var Screens_ChangeFocusAnimationFast = false;
     var Screens_SettingDoAnimations = true;
@@ -16070,11 +16070,11 @@
             if (Settings_Obj_default("app_animations")) {
                 var position = doc.scrollTop;
                 doc.scrollTop = 0;
-                scrollTo(doc, position, 400);
+                scrollTo(doc, position, 200);
             }
         } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (13 + offset)) {
             doc = document.getElementById('settings_scroll');
-            if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 400);
+            if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
             else doc.scrollTop = 0;
         }
 
@@ -16707,6 +16707,8 @@
     var Sidepannel_SidepannelDoc;
     var Sidepannel_Notify_img;
 
+    var Sidepannel_AnimationTimeout = 200; //Same value as side_panel_holder_ani
+
     function Sidepannel_AddFocusMain() {
         Main_AddClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
     }
@@ -17224,7 +17226,7 @@
 
             window.setTimeout(function() {
                 Screens_ChangeFocusAnimationFinished = true;
-            }, 200); //Same value as side_panel_holder_ani
+            }, Sidepannel_AnimationTimeout); //Same value as side_panel_holder_ani
 
         } else {
             if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
