@@ -14,6 +14,8 @@ var Sidepannel_ScroolDoc;
 var Sidepannel_SidepannelDoc;
 var Sidepannel_Notify_img;
 
+var Sidepannel_AnimationTimeout = 200;//Same value as side_panel_holder_ani
+
 function Sidepannel_AddFocusMain() {
     Main_AddClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
 }
@@ -530,7 +532,7 @@ function Sidepannel_Scroll(skipAnimation) {
 
         window.setTimeout(function() {
             Screens_ChangeFocusAnimationFinished = true;
-        }, 200); //Same value as side_panel_holder_ani
+        }, Sidepannel_AnimationTimeout); //Same value as side_panel_holder_ani
 
     } else {
         if (skipAnimation) Screens_ChangeFocusAnimationFast = false;

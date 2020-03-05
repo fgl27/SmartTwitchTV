@@ -766,11 +766,11 @@ function Settings_ScrollTable() {
         if (Settings_Obj_default("app_animations")) {
             var position = doc.scrollTop;
             doc.scrollTop = 0;
-            scrollTo(doc, position, 400);
+            scrollTo(doc, position, 200);
         }
     } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (13 + offset)) {
         doc = document.getElementById('settings_scroll');
-        if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 400);
+        if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;
     }
 
