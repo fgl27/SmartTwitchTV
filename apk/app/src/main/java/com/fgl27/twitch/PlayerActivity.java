@@ -927,6 +927,10 @@ public class PlayerActivity extends Activity {
         return super.dispatchKeyEvent(event);
     }
 
+    public  void LoadUrlWebview(String LoadUrlString) {
+        MainThreadHandler.post(() -> mwebview.loadUrl(LoadUrlString));
+    }
+
     // A web app that loads all thumbnails content and interact with the player
     private void initializeWebview() {
         mwebview = findViewById(R.id.WebView);
@@ -985,7 +989,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mloadUrl(String url) {
-            MainThreadHandler.post(() -> mwebview.loadUrl(url));
+            LoadUrlWebview(url);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1142,7 +1146,7 @@ public class PlayerActivity extends Activity {
                 }
 
                 if (ExtraPlayerHandlerResult[x][y] != null)
-                    MainThreadHandler.post(() -> mwebview.loadUrl("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")"));
+                    LoadUrlWebview("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
             }, 50 + delayms);
         }
 
@@ -1648,59 +1652,56 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlaybackStateChanged(@Player.State int playbackState) {
-            MainThreadHandler.post(() -> {
-                if (player[position] == null || !player[position].getPlayWhenReady())
-                    return;
 
-                hideLoading(5);
-                if (playbackState == Player.STATE_ENDED) {
-                    PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                    player[position].setPlayWhenReady(false);
+            if (player[position] == null || !player[position].getPlayWhenReady())
+                return;
 
-                    PlayerEventListenerClear(position);
-                } else if (playbackState == Player.STATE_BUFFERING) {
-                    //Use the player buffer as a player check state to prevent be buffering for ever
-                    //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
-                    PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                    PlayerCheckHandler[position].postDelayed(() -> {
+            hideLoading(5);
+            if (playbackState == Player.STATE_ENDED) {
+                PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                player[position].setPlayWhenReady(false);
 
-                        //Check if Player was released or is on pause
-                        if (player[position] == null || !player[position].isPlaying())
-                            return;
+                PlayerEventListenerClear(position);
+            } else if (playbackState == Player.STATE_BUFFERING) {
+                //Use the player buffer as a player check state to prevent be buffering for ever
+                //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
+                PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                PlayerCheckHandler[position].postDelayed(() -> {
 
-                        PlayerEventListenerCheckCounter(position, false);
-                    }, delayms);
-                } else if (playbackState == Player.STATE_READY) {
-                    PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                    PlayerCheckCounter[position] = 0;
+                    //Check if Player was released or is on pause
+                    if (player[position] == null || !player[position].isPlaying())
+                        return;
 
-                    //If other not playing just play it so they stay in sync
-                    if (MultiStream) {
-                        for (int i = 0; i < PlayerAcount; i++) {
-                            if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
-                        }
-                    } else {
-                        int otherplayer = position ^ 1;
-                        if (player[otherplayer] != null) {
-                            if (!player[otherplayer].isPlaying())
-                                player[otherplayer].setPlayWhenReady(true);
-                        }
+                    PlayerEventListenerCheckCounter(position, false);
+                }, delayms);
+            } else if (playbackState == Player.STATE_READY) {
+                PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+                PlayerCheckCounter[position] = 0;
+
+                //If other not playing just play it so they stay in sync
+                if (MultiStream) {
+                    for (int i = 0; i < PlayerAcount; i++) {
+                        if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
                     }
-
-                    if (mwhocall > 1) {
-                        mwebview.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" +
-                                mwhocall + "," + player[position].getDuration() + ")");
+                } else {
+                    int otherplayer = position ^ 1;
+                    if (player[otherplayer] != null) {
+                        if (!player[otherplayer].isPlaying())
+                            player[otherplayer].setPlayWhenReady(true);
                     }
                 }
-            });
+
+                if (mwhocall > 1) {
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" +
+                            mwhocall + "," + player[position].getDuration() + ")");
+                }
+            }
         }
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
-            MainThreadHandler.post(() -> {
-                PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
-            });
+            PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+            PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
         }
 
     }
@@ -1728,8 +1729,9 @@ public class PlayerActivity extends Activity {
                     if (MultiStream) initializePlayerMulti(position, mediaSourcePlaying[position]);
                     else initializePlayer(position);
 
-                } else
-                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");
+                } else {
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");
+                }
 
             } else initializePlayer(position);
 
@@ -1741,7 +1743,7 @@ public class PlayerActivity extends Activity {
         } else if (PlayerCheckCounter[position] > 1) {
 
             // Second if not in auto mode use js to check if is possible to drop quality
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_PlayerCheck(" + mwhocall + ")");
+            LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mwhocall + ")");
 
         } else {
             //First try and not auto mode only restart the player
@@ -1755,9 +1757,10 @@ public class PlayerActivity extends Activity {
     public void PlayerEventListenerClear(int position) {
         hideLoading(5);
         hideLoading(position);
+        String webviewLoad;
         if (MultiStream) {
             ClearPlayer(position);
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_MultiEnd(" + position + ")");
+            webviewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
         } else if (PicturePicture) {
             boolean mswitch = (mainPlayer == position);
 
@@ -1768,51 +1771,52 @@ public class PlayerActivity extends Activity {
             ClearPlayer(position);
             AudioSource = 1;
 
-            mwebview.loadUrl("javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")");
+            webviewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")";
 
-        } else mwebview.loadUrl("javascript:smartTwitchTV.Play_PannelEndStart(" + mwhocall + ")");
+        } else webviewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mwhocall + ")";
+
+        LoadUrlWebview(webviewLoad);
     }
 
     private class PlayerEventListenerSmall implements Player.EventListener {
 
         @Override
         public void onPlaybackStateChanged(@Player.State int playbackState) {
-            MainThreadHandler.post(() -> {
-                if (player[4] == null || !player[4].getPlayWhenReady())
-                    return;
 
-                if (playbackState == Player.STATE_ENDED) {
-                    PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-                    player[4].setPlayWhenReady(false);
+            if (player[4] == null || !player[4].getPlayWhenReady())
+                return;
 
-                    ClearSmallPlayer();
-                    mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
-                } else if (playbackState == Player.STATE_BUFFERING) {
-                    //Use the player buffer as a player check state to prevent be buffering for ever
-                    //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
-                    PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-                    PlayerCheckHandler[4].postDelayed(() -> {
+            if (playbackState == Player.STATE_ENDED) {
+                PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+                player[4].setPlayWhenReady(false);
 
-                        //Check if Player was released or is on pause
-                        if (player[4] == null || !player[4].isPlaying())
-                            return;
+                ClearSmallPlayer();
 
-                        PlayerEventListenerCheckCounterSmall();
+                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
+            } else if (playbackState == Player.STATE_BUFFERING) {
+                //Use the player buffer as a player check state to prevent be buffering for ever
+                //If buffer for as long as BUFFER_SIZE * 2 do something because player is frozen
+                PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+                PlayerCheckHandler[4].postDelayed(() -> {
 
-                    }, (BUFFER_SIZE[mwhocall] * 2) + 5000 + (MultiStream ? 2000 : 0));
-                } else if (playbackState == Player.STATE_READY) {
-                    PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-                    PlayerCheckCounter[4] = 0;
-                }
-            });
+                    //Check if Player was released or is on pause
+                    if (player[4] == null || !player[4].isPlaying())
+                        return;
+
+                    PlayerEventListenerCheckCounterSmall();
+
+                }, (BUFFER_SIZE[mwhocall] * 2) + 5000 + (MultiStream ? 2000 : 0));
+            } else if (playbackState == Player.STATE_READY) {
+                PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+                PlayerCheckCounter[4] = 0;
+            }
+
         }
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
-            MainThreadHandler.post(() -> {
-                PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-                PlayerEventListenerCheckCounterSmall();
-            });
+            PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+            PlayerEventListenerCheckCounterSmall();
         }
 
     }
@@ -1829,7 +1833,7 @@ public class PlayerActivity extends Activity {
             initializeSmallPlayer(mediaSourcesAuto[4]);
         else {
             ClearSmallPlayer();
-            mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
+            LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
         }
     }
 
