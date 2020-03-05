@@ -3507,8 +3507,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.135';
-    var Main_minversion = '030420';
+    var Main_stringVersion_Min = '.136';
+    var Main_minversion = '030520';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -5117,63 +5117,41 @@
         }
     }
 
-    //Basic XMLHttpRequest thatonly returns error or 200 status
     function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
         if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
         else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
     }
 
-    function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-        var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            calbackError(obj);
-            return;
-        }
-
-        if (xmlHttp.status === 200) {
-            callbackSucess(xmlHttp.responseText, obj);
-        } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-            AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
-        } else {
-            calbackError(obj);
-        }
-    }
-
-    var Main_Headers = [
-        [Main_clientIdHeader, Main_clientId],
-        [Main_AcceptHeader, Main_TwithcV5Json],
-        [Main_Authorization, null]
-    ];
-
-    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, obj);
-    }
-
     function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-        if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, Timeout, obj);
+        if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, callbackSucess, calbackError, obj);
         else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
     }
 
-    function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, Timeout, obj) {
-        var xmlHttp = Android.mreadUrl(theUrl, Timeout, 0, null);
+    function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+        var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
 
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else {
-            calbackError(obj);
-            return;
-        }
+        if (xmlHttp) {
 
-        if (xmlHttp.status === 200) {
-            callbackSucess(xmlHttp.responseText, obj);
-        } else if (xmlHttp.status === 500) {
-            if (Main_isScene1DocShown() && obj.screen === Main_usergames)
+            xmlHttp = JSON.parse(xmlHttp);
+
+            if (xmlHttp.status === 200) {
+                callbackSucess(xmlHttp.responseText, obj);
+            } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
+            } else if (xmlHttp.status === 500 && Main_isScene1DocShown() && obj.screen === Main_usergames) {
                 obj.key_refresh();
-            else calbackError(obj);
+            } else {
+                calbackError(obj);
+            }
+
         } else {
             calbackError(obj);
         }
+
+    }
+
+    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, obj);
     }
 
     function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
@@ -5211,6 +5189,12 @@
 
         xmlHttp.send(null);
     }
+
+    var Main_Headers = [
+        [Main_clientIdHeader, Main_clientId],
+        [Main_AcceptHeader, Main_TwithcV5Json],
+        [Main_Authorization, null]
+    ];
 
     var Main_Headers_Back = [
         [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
@@ -7565,6 +7549,7 @@
                 } else {
                     Android.DisableMultiStream();
                     Play_Multi_UnSetPanel(shutdown);
+                    Play_CleanHideExit();
                 }
             }
         };
@@ -8730,7 +8715,7 @@
             '/access_token?platform=_',
             xmlHttp, token;
 
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < DefaultLoadingDataTryMax; i++) {
 
             xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout + (500 * i), 0, null);
 
@@ -9803,7 +9788,6 @@
     }
 
     function Play_CheckHostStart(error_410) {
-        if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
         if (error_410) {
             Play_IsWarning = true;
             Play_showWarningDialog(STR_410_ERROR);
@@ -9816,12 +9800,12 @@
         ChatLive_Clear(0);
         ChatLive_Clear(1);
         window.clearInterval(Play_streamInfoTimerId);
-        Play_loadDataCheckHost();
+        window.setTimeout(Play_loadDataCheckHost, 50);
     }
 
     function Play_loadDataCheckHost() {
-        var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
-            encodeURIComponent(Play_data.data[14]);
+        var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+
         BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
     }
 
@@ -13350,6 +13334,7 @@
     var AGame_following = false;
 
     var DefaultloadingDataTimeout = 3500;
+    var DefaultLoadingDataTryMax = 3;
 
     //Screens
     var Clip;
@@ -13386,7 +13371,7 @@
         idObject: {},
         loadingData: false,
         itemsCount: 0,
-        loadingDataTryMax: 5,
+        loadingDataTryMax: DefaultLoadingDataTryMax,
         loadingDataTimeout: DefaultloadingDataTimeout,
         MaxOffset: 0,
         offset: 0,
