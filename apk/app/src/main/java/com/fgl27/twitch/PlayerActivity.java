@@ -1469,20 +1469,26 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    if (player[mainPlayer] != null)
-                        value = String.format(Locale.US, "%d", player[mainPlayer].getTotalBufferedDuration()) + "," +
-                                String.format(Locale.US, "%d", player[mainPlayer].getCurrentLiveOffset());
-                    else value = "0,0";
+                    if (player[mainPlayer] != null) {
+                        value = String.format(Locale.US, "%d,%d",
+                                player[mainPlayer].getTotalBufferedDuration(),
+                                player[mainPlayer].getCurrentLiveOffset()
+                        );
+                    } else value = "0,0";
                 }
             });
+            String getValue = "0,0";
 
             try {
-                return mvalue + result.get();
+                getValue = result.get();
             } catch (InterruptedException e) {
                 Log.w(TAG, "getVideoStatus InterruptedException ", e);
             }
 
-            return mvalue + "0,0";
+            return String.format(Locale.US, "%s%s",
+                    mvalue,
+                    getValue
+            );
         }
 
         @SuppressWarnings("unused")//called by JS
