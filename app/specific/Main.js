@@ -1733,63 +1733,41 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-//Basic XMLHttpRequest thatonly returns error or 200 status
 function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
     if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
     else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
 }
 
-function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
-
-    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-    else {
-        calbackError(obj);
-        return;
-    }
-
-    if (xmlHttp.status === 200) {
-        callbackSucess(xmlHttp.responseText, obj);
-    } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-        AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
-    } else {
-        calbackError(obj);
-    }
-}
-
-var Main_Headers = [
-    [Main_clientIdHeader, Main_clientId],
-    [Main_AcceptHeader, Main_TwithcV5Json],
-    [Main_Authorization, null]
-];
-
-function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, obj);
-}
-
 function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    if (Main_IsNotBrowser) BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, Timeout, obj);
+    if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, callbackSucess, calbackError, obj);
     else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
 }
 
-function BaseAndroidHlsGet(theUrl, callbackSucess, calbackError, Timeout, obj) {
-    var xmlHttp = Android.mreadUrl(theUrl, Timeout, 0, null);
+function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+    var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
 
-    if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-    else {
-        calbackError(obj);
-        return;
-    }
+    if (xmlHttp) {
 
-    if (xmlHttp.status === 200) {
-        callbackSucess(xmlHttp.responseText, obj);
-    } else if (xmlHttp.status === 500) {
-        if (Main_isScene1DocShown() && obj.screen === Main_usergames)
+        xmlHttp = JSON.parse(xmlHttp);
+
+        if (xmlHttp.status === 200) {
+            callbackSucess(xmlHttp.responseText, obj);
+        } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+            AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
+        } else if (xmlHttp.status === 500 && Main_isScene1DocShown() && obj.screen === Main_usergames) {
             obj.key_refresh();
-        else calbackError(obj);
+        } else {
+            calbackError(obj);
+        }
+
     } else {
         calbackError(obj);
     }
+
+}
+
+function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, obj);
 }
 
 function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
@@ -1827,6 +1805,12 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
 
     xmlHttp.send(null);
 }
+
+var Main_Headers = [
+    [Main_clientIdHeader, Main_clientId],
+    [Main_AcceptHeader, Main_TwithcV5Json],
+    [Main_Authorization, null]
+];
 
 var Main_Headers_Back = [
     [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],

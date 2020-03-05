@@ -87,6 +87,7 @@ public final class Tools {
     private static final String AUTHORIZATION = "Authorization";
 
     private static final int DefaultTimeout = 3000;
+    private static final int DefaultLoadingDataTryMax = 3;
 
     private static final String live_token = "https://api.twitch.tv/api/channels/%s/access_token?platform=_";
     private static final String live_links = "https://usher.ttvnw.net/api/channel/hls/%s.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
@@ -183,7 +184,7 @@ public final class Tools {
                 channel_name_vod_id
         );
 
-        for (i = 0; i < 5; i++) {
+        for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
             response = readUrlSimple(url, DefaultTimeout + (500 * i));
 
@@ -217,7 +218,7 @@ public final class Tools {
                     ThreadLocalRandom.current().nextInt(1, 1000)
             );
 
-            for (i = 0; i < 5; i++) {
+            for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
                 response = readUrlSimple(url, DefaultTimeout + (500 * i));
 

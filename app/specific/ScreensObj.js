@@ -26,6 +26,7 @@ var Vod_DoAnimateThumb = 1;
 var AGame_following = false;
 
 var DefaultloadingDataTimeout = 3500;
+var DefaultLoadingDataTryMax = 3;
 
 //Screens
 var Clip;
@@ -62,7 +63,7 @@ var Base_obj = {
     idObject: {},
     loadingData: false,
     itemsCount: 0,
-    loadingDataTryMax: 5,
+    loadingDataTryMax: DefaultLoadingDataTryMax,
     loadingDataTimeout: DefaultloadingDataTimeout,
     MaxOffset: 0,
     offset: 0,
