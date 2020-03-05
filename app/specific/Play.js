@@ -1503,7 +1503,6 @@ function Play_PlayEndStart(PlayVodClip) {
 }
 
 function Play_CheckHostStart(error_410) {
-    if (!Main_isElementShowingWithEle(UserLiveFeed_FeedHolderDocId)) Main_ShowElementWithEle(UserLiveFeed_FeedHolderDocId);
     if (error_410) {
         Play_IsWarning = true;
         Play_showWarningDialog(STR_410_ERROR);
