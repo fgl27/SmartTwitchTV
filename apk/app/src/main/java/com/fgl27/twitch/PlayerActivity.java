@@ -292,10 +292,6 @@ public class PlayerActivity extends Activity {
 
         boolean isSmall = (mainPlayer != position);
 
-        //Show main loading if this call is in the main player as this is needed fro when we are fast/back forwarding
-        //On small player it will show its own loading
-        //if (!isSmall && isFullScreen) showLoading();
-
         if (PlayerView[position].getVisibility() != View.VISIBLE)
             PlayerView[position].setVisibility(View.VISIBLE);
 
@@ -333,6 +329,7 @@ public class PlayerActivity extends Activity {
         player[position].prepare();
 
         player[position].setPlayWhenReady(true);
+        hideLoading(5);
         SwitchPlayerAudio(AudioSource);
 
         if (!isSmall) {
@@ -1656,7 +1653,6 @@ public class PlayerActivity extends Activity {
             if (player[position] == null || !player[position].getPlayWhenReady())
                 return;
 
-            hideLoading(5);
             if (playbackState == Player.STATE_ENDED) {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 player[position].setPlayWhenReady(false);
