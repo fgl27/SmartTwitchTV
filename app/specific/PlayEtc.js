@@ -1165,6 +1165,7 @@ function Play_MakeControls() {
             } else {
                 Android.DisableMultiStream();
                 Play_Multi_UnSetPanel(shutdown);
+                Play_CleanHideExit();
             }
         }
     };
