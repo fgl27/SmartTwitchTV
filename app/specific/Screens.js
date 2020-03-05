@@ -578,7 +578,6 @@ function Screens_addrowChannel(forceScroll, y) {
         if (y > 1 && (inUseObj.Cells.length) > (y + 3)) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
-            document.getElementById(inUseObj.ids[12] + (y - 2)).classList.add('animate_height');
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
@@ -586,7 +585,7 @@ function Screens_addrowChannel(forceScroll, y) {
                 Screens_ChangeFocusAnimationFast = true;
 
                 Main_ready(function() {
-                    document.getElementById(inUseObj.ids[12] + (y - 2)).classList.remove('animate_height');
+                    document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = '';
                 });
 
                 window.setTimeout(function() {
@@ -595,7 +594,7 @@ function Screens_addrowChannel(forceScroll, y) {
 
                 }, Screens_ScrollAnimationTimeout);
             } else {
-                document.getElementById(inUseObj.ids[12] + (y - 2)).classList.remove('animate_height');
+                document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = '';
                 Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
             }
         }
@@ -609,12 +608,12 @@ function Screens_addrowChannelDown(y) {
         document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
 
         if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3))) {
+            document.getElementById(inUseObj.ids[12] + (y - 3)).style.height = 0;
+
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
-
-                document.getElementById(inUseObj.ids[12] + (y - 3)).classList.add('animate_height');
 
                 window.setTimeout(function() {
                     Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
@@ -644,7 +643,6 @@ function Screens_addrow(forceScroll, y) {
         if (y && (inUseObj.Cells.length) > (y + 1) && inUseObj.Cells[y + 2]) {
             var doc = document.getElementById(inUseObj.table);
             doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-            document.getElementById(inUseObj.ids[12] + (y - 1)).classList.add('animate_height');
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
@@ -652,7 +650,7 @@ function Screens_addrow(forceScroll, y) {
                 Screens_ChangeFocusAnimationFast = true;
 
                 Main_ready(function() {
-                    document.getElementById(inUseObj.ids[12] + (y - 1)).classList.remove('animate_height');
+                    document.getElementById(inUseObj.ids[12] + (y - 1)).style.height = '';
                 });
 
                 window.setTimeout(function() {
@@ -661,7 +659,7 @@ function Screens_addrow(forceScroll, y) {
 
                 }, Screens_ScrollAnimationTimeout);
             } else {
-                document.getElementById(inUseObj.ids[12] + (y - 1)).classList.remove('animate_height');
+                document.getElementById(inUseObj.ids[12] + (y - 1)).style.height = '';
                 Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
             }
 
@@ -675,19 +673,20 @@ function Screens_addrowDown(y) {
         document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 1]);
 
         if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
+            document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = 0;
+
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
-
-                document.getElementById(inUseObj.ids[12] + (y - 2)).classList.add('animate_height');
 
                 window.setTimeout(function() {
                     Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
                     Screens_ChangeFocusAnimationFinished = true;
                 }, Screens_ScrollAnimationTimeout);
 
-            } else Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
+            } else
+                Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
         }
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
