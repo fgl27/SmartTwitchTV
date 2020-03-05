@@ -17789,12 +17789,14 @@
 
                 } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
             }
+
         } else { // Left
             if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
                 eleIdPos = pos + '_' + (x - 3);
                 eleRemoveIdPos = pos + '_' + (x + 4);
 
                 UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
+                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = 0;
 
                 if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                     Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
