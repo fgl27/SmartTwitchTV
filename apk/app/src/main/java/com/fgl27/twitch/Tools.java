@@ -623,8 +623,8 @@ public final class Tools {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        100000, //DEFAULT_MIN_BUFFER_MS
-                        36000000, //DEFAULT_MAX_BUFFER_MS
+                        90000, //DEFAULT_MIN_BUFFER_MS
+                        36000000, //DEFAULT_MAX_BUFFER_MS... technically infinity setTargetBufferBytes controls it
                         buffer, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
                         buffer + 3000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
