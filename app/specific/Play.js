@@ -431,7 +431,7 @@ function Play_RefreshHlsUrl(channel) {
         '/access_token?platform=_',
         xmlHttp, token;
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < DefaultLoadingDataTryMax; i++) {
 
         xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout + (500 * i), 0, null);
 
@@ -1516,12 +1516,12 @@ function Play_CheckHostStart(error_410) {
     ChatLive_Clear(0);
     ChatLive_Clear(1);
     window.clearInterval(Play_streamInfoTimerId);
-    Play_loadDataCheckHost();
+    window.setTimeout(Play_loadDataCheckHost, 50);
 }
 
 function Play_loadDataCheckHost() {
-    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' +
-        encodeURIComponent(Play_data.data[14]);
+    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+
     BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
 }
 
