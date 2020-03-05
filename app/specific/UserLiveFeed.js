@@ -395,13 +395,12 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
             UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 3]);
 
             eleRemoveIdPos = pos + '_' + (x - 4);
+            document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).style.width = 0;
 
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
-
-                document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).classList.add('animate_width');
 
                 window.setTimeout(function() {
                     Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
@@ -416,7 +415,6 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
             eleRemoveIdPos = pos + '_' + (x + 4);
 
             UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
-            document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.add('animate_width');
 
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
@@ -424,7 +422,7 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
                 Screens_ChangeFocusAnimationFast = true;
 
                 Main_ready(function() {
-                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.remove('animate_width');
+                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
                 });
 
                 window.setTimeout(function() {
@@ -432,7 +430,7 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
                     Screens_ChangeFocusAnimationFinished = true;
                 }, UserLiveFeed_AnimationTimeout);
             } else {
-                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.remove('animate_width');
+                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
                 Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
             }
         }
@@ -534,15 +532,13 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
     if (Adder > 0) { // right
         if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
             UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 4]);
-
             eleRemoveIdPos = pos + '_' + (x - 6);
+            document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).style.width = 0;
 
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
-
-                document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).classList.add('animate_width');
 
                 window.setTimeout(function() {
                     Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
@@ -557,7 +553,6 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
             eleRemoveIdPos = pos + '_' + (x + 5);
 
             UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
-            document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.add('animate_width');
 
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
@@ -565,7 +560,7 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                 Screens_ChangeFocusAnimationFast = true;
 
                 Main_ready(function() {
-                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.remove('animate_width');
+                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
                 });
 
                 window.setTimeout(function() {
@@ -573,7 +568,7 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                     Screens_ChangeFocusAnimationFinished = true;
                 }, UserLiveFeed_AnimationTimeout);
             } else {
-                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).classList.remove('animate_width');
+                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
                 Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
             }
         }
