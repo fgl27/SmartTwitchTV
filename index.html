@@ -147,7 +147,8 @@
         .animate_height_transition_games,
         .animate_height_transition {
             height: 47vh;
-            transition: height 0.35s linear;
+            /* transition: property duration timing-function delay*/
+            transition: height 350ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: height;
             transform: translate3d(0, 0, 0);
         }
@@ -162,7 +163,7 @@
 
         .side_panel_holder_ani {
             transform: translateY(0);
-            transition: transform 200ms linear;
+            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
@@ -174,7 +175,7 @@
             width: 100%;
             position: absolute;
             top: 6.9%;
-            transition: top 0.35s linear;
+            transition: top 350ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.screen_holder_switch {
@@ -280,7 +281,10 @@
 
         div.feed_thumbnail_focused {
             /* same animation time as user_feed_scroll*/
-            transition: background-color 0.2s linear, color 0.2s linear, border-color 0.2s linear;
+            transition:
+                background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
+                color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
+                border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.stream_thumbnail_focused_no_ani,
@@ -292,7 +296,10 @@
 
         div.stream_thumbnail_focused {
             /* same animation time as animate_height_transition*/
-            transition: background-color 0.35s linear, color 0.35s linear, border-color 0.35s linear;
+            transition:
+                background-color 350ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
+                color 350ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
+                border-color 350ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.stream_switch_focused {
@@ -718,7 +725,7 @@
         }
 
         div.scenefeed_background {
-            transition: background 0.3s linear;
+            transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             background: rgba(0, 0, 0, 0.75);
         }
 
@@ -733,7 +740,7 @@
             border: 0.06em solid;
             border-color: #ebebeb !important;
             transform: translateY(0);
-            transition: transform 300ms linear;
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
@@ -760,7 +767,7 @@
             white-space: nowrap;
             bottom: 4.15%;
             transform: translateX(0);
-            transition: transform 200ms linear;
+            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
@@ -772,7 +779,7 @@
         div.user_feed_thumb {
             width: 19.95%;
             display: inline-block;
-            transition: width 200ms linear;
+            transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: width;
             transform: translate3d(0, 0, 0);
         }
@@ -1086,14 +1093,14 @@
             margin-left: -1%;
             overflow: hidden;
             transform: translateX(0);
-            transition: transform 250ms linear;
+            transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
         div.side_panel_fix {
             border-right: 0px solid;
             border-image: linear-gradient(to bottom, #000000, #000000, #000000) 1;
-            transition: margin-left 250ms linear;
+            transition: margin-left 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.side_panel_background_color {
@@ -1209,7 +1216,7 @@
             width: 25.5%;
             overflow: hidden;
             transform: translateX(0);
-            transition: transform 250ms linear;
+            transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
@@ -1961,7 +1968,7 @@
             margin: 0.28125em;
             border: 0.28125em solid #FFFFFF;
             border-radius: 50%;
-            animation: loading 0.6s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            animation: loading 600ms cubic-bezier(0.5, 0, 0.5, 1) infinite;
             border-color: #fff transparent transparent transparent;
         }
 
