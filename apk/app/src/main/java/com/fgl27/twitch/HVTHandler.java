@@ -2,7 +2,7 @@
 package com.fgl27.twitch;
 
 import android.os.Handler;
-import android.os.Looper;
+//import android.os.Looper;
 
 /**
  * A helper class that provides more ways to post a runnable than {@link android.os.Handler}.
@@ -24,11 +24,13 @@ public final class HVTHandler {
     public static <T> RunnableResult<T> post(final Handler handler, final RunnableValue<T> r) {
         NotifyRunnable runnable = new NotifyRunnable(r); // we use the runnable as synchronization object
         RunnableResult<T> result = new RunnableResult<>(r, runnable);
-        if (handler.getLooper() == Looper.myLooper()) {
-            r.run();
-        } else {
-            handler.post(runnable);
-        }
+        //Skip the check as it always call from none main thread
+        //if (handler.getLooper() == Looper.myLooper()) {
+        //    r.run();
+        //} else {
+        //    handler.post(runnable);
+        //}
+        handler.post(runnable);
         return result;
     }
 
@@ -80,16 +82,13 @@ public final class HVTHandler {
         /**
          * Get the return value. Blocks until the runnable has finished running.
          */
-        public T get() {
+        public T get() throws InterruptedException {
             synchronized (mNotifyRunnable) {
                 while (!mNotifyRunnable.isFinished()) {
-                    try {
-                        mNotifyRunnable.wait();
-                    } catch (InterruptedException is) {
-                        // ignore
-                    }
+                    mNotifyRunnable.wait();
                 }
             }
+
             return mRunnable.value;
         }
     }

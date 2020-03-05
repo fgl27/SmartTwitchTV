@@ -1299,7 +1299,14 @@ public class PlayerActivity extends Activity {
                     else value = 0L;
                 }
             });
-            return result.get();
+
+            try {
+                return result.get();
+            } catch (InterruptedException e) {
+                Log.w(TAG, "gettime InterruptedException ", e);
+            }
+
+            return 0L;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1365,7 +1372,14 @@ public class PlayerActivity extends Activity {
                     else value = false;
                 }
             });
-            return result.get();
+
+            try {
+                return result.get();
+            } catch (InterruptedException e) {
+                Log.w(TAG, "getPlaybackState InterruptedException ", e);
+            }
+
+            return false;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1420,6 +1434,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getVideoQuality() {
+
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
@@ -1428,31 +1443,46 @@ public class PlayerActivity extends Activity {
                     else value = null;
                 }
             });
-            return result.get();
+
+            try {
+                return result.get();
+            } catch (InterruptedException e) {
+                Log.w(TAG, "getVideoQuality InterruptedException ", e);
+            }
+
+            return null;
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getVideoStatus() {
+            String mvalue = String.format(Locale.US, "%d,%d,%d,%s,%d,%s,",
+                    droppedFrames[mainPlayer],
+                    droppedFramesTotal,
+                    conSpeed[mainPlayer],
+                    String.format(Locale.US, "%.02f", (speedcounter > 0 ? (conSpeedAVG / speedcounter) : 0)),
+                    netActivity[mainPlayer],
+                    String.format(Locale.US, "%.02f", (netcounter > 0 ? (netActivityAVG / netcounter) : 0)));
+
+            netActivity[mainPlayer] = 0L;
+
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    value = String.format(Locale.US, "%d,%d,%d,%s,%d,%s,",
-                            droppedFrames[mainPlayer],
-                            droppedFramesTotal,
-                            conSpeed[mainPlayer],
-                            String.format(Locale.US, "%.02f", (speedcounter > 0 ? (conSpeedAVG / speedcounter) : 0)),
-                            netActivity[mainPlayer],
-                            String.format(Locale.US, "%.02f", (netcounter > 0 ? (netActivityAVG / netcounter) : 0)));
-
-                    netActivity[mainPlayer] = 0L;
                     if (player[mainPlayer] != null)
-                        value += String.format(Locale.US, "%d", player[mainPlayer].getTotalBufferedDuration()) + "," +
+                        value = String.format(Locale.US, "%d", player[mainPlayer].getTotalBufferedDuration()) + "," +
                                 String.format(Locale.US, "%d", player[mainPlayer].getCurrentLiveOffset());
-                    else value += "0,0";
+                    else value = "0,0";
                 }
             });
-            return result.get();
+
+            try {
+                return mvalue + result.get();
+            } catch (InterruptedException e) {
+                Log.w(TAG, "getVideoStatus InterruptedException ", e);
+            }
+
+            return mvalue + "0,0";
         }
 
         @SuppressWarnings("unused")//called by JS
