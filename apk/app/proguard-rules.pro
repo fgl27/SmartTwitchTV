@@ -22,13 +22,17 @@
 
 -keepattributes InnerClasses
 -keep class com.fgl27.twitch.Tools**
--keep class com.fgl27.twitch.PlayerActivity**
 -keepclassmembers class com.fgl27.twitch.Tools** {
     *;
 }
 
+-keep class com.fgl27.twitch.PlayerActivity**
 -keepclassmembers class com.fgl27.twitch.PlayerActivity** {
     *;
 }
 
+-keep class com.fgl27.twitch.HVTHandler**
+-keepclassmembers class com.fgl27.twitch.HVTHandler** {
+    *;
+}
 
