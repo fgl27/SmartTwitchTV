@@ -311,7 +311,7 @@ function UserLiveFeed_FeedRefresh() {
 function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
     if (UserLiveFeed_FeedSetPosLast[pos] === position) return;
 
-    if (!Play_MultiEnable && !skipAnimation &&
+    if (!skipAnimation &&
         Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
         !Screens_ChangeFocusAnimationFast) {
         Screens_ChangeFocusAnimationFinished = false;
@@ -555,7 +555,7 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
     if (Adder > 0) { // right
         if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
 
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+            if (Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
@@ -589,7 +589,7 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
     } else { // Left
         if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
 
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+            if (Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
@@ -627,7 +627,7 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
     if (Adder > 0) { // right
         if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
 
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+            if (Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
@@ -660,7 +660,7 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
     } else { // Left
         if (x > 4 && UserLiveFeed_cell[pos].length > (x + 4)) {
 
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+            if (Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
