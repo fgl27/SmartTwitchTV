@@ -293,7 +293,7 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
     if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
     if ((!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) || forceRefressh ||
-        UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset')) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+        UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
         UserLiveFeed_obj[pos].div.classList.remove('hide');
 

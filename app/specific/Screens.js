@@ -95,12 +95,14 @@ function Screens_init() {
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
-    if (inUseObj.status && inUseObj.offsettopFontsize === Settings_Obj_default('global_font_offset')) {
+    if (!inUseObj.status || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
+        Screens_StartLoad();
+    else {
         Main_YRst(inUseObj.posY);
         Screens_addFocus(true);
         Main_SaveValues();
         Screens_SetLastRefresh();
-    } else Screens_StartLoad();
+    }
 }
 
 function Screens_exit() {
