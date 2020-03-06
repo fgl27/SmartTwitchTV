@@ -314,7 +314,7 @@ function Sidepannel_KeyEnter() {
 function Sidepannel_Go(GoTo) {
     if (GoTo === Main_values.Main_Go) {
         document.body.addEventListener("keydown", Sidepannel_Callback, false);
-        Main_SwitchScreenAction();
+        Main_SwitchScreen();
     } else {
         Main_values.Main_Before = Main_values.Main_Go;
         Main_values.Main_Go = GoTo;
@@ -548,7 +548,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_RETURN:
         case KEY_CHAT:
             Sidepannel_Hide();
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
             break;
         case KEY_RIGHT:
             Sidepannel_HideEle();
@@ -624,7 +624,7 @@ function Sidepannel_handleKeyDownMain(event) {
         case KEY_RETURN:
         case KEY_RIGHT:
             Sidepannel_Hide();
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
             break;
         case KEY_CHAT:
         case KEY_LEFT:

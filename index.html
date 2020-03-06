@@ -143,10 +143,11 @@
         .animate_height_transition_games,
         .animate_height_transition {
             height: 47vh;
-            /* transition: property duration timing-function delay*/
-            transition: height 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
-            will-change: height;
-            transform: translate3d(0, 0, 0);
+            width: 94%;
+            transform: translateY(0);
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
+            position: absolute;
         }
 
         .animate_height_transition_games {
@@ -159,7 +160,7 @@
 
         .side_panel_holder_ani {
             transform: translateY(0);
-            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
@@ -171,7 +172,9 @@
             width: 100%;
             position: absolute;
             top: 6.9%;
-            transition: top 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            transform: translateY(0);
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
         }
 
         div.screen_holder_switch {
@@ -183,7 +186,7 @@
         }
 
         div.screen_holder_channel {
-            top: 6%;
+            top: 4.25%;
         }
 
         div.screen_holder_user {
@@ -293,9 +296,9 @@
         div.stream_thumbnail_focused {
             /* same animation time as animate_height_transition*/
             transition:
-                background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
-                color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
-                border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+                background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
+                color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
+                border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.stream_switch_focused {
@@ -342,7 +345,6 @@
             padding: 1%;
             padding-top: 0;
             padding-bottom: 0.2%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.stream_thumbnail_game_feed,
@@ -365,7 +367,6 @@
             display: inline-block;
             padding: 0.5%;
             padding-bottom: 1.5%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.stream_thumbnail_user_icon_holder,
@@ -374,7 +375,6 @@
             display: inline-block;
             padding: 0.5%;
             padding-bottom: 1.25%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.stream_thumbnail_user_icon_holder {
@@ -724,7 +724,7 @@
         }
 
         div.scenefeed_background {
-            transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             background: rgba(0, 0, 0, 0.75);
         }
 
@@ -739,7 +739,7 @@
             border: 0.06em solid;
             border-color: #ebebeb !important;
             transform: translateY(0);
-            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
@@ -778,9 +778,11 @@
         div.user_feed_thumb {
             width: 19.95%;
             display: inline-block;
-            transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
-            will-change: width;
-            transform: translate3d(0, 0, 0);
+            transform: translate(0px, -103%);
+            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
+            position: absolute;
+
         }
 
         div.user_feed_thumb_game {
@@ -1088,14 +1090,14 @@
             margin-left: -1%;
             overflow: hidden;
             transform: translateX(0);
-            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
         div.side_panel_fix {
             border-right: 0px solid;
             border-image: linear-gradient(to bottom, #000000, #000000, #000000) 1;
-            transition: margin-left 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.side_panel_background_color {
@@ -1211,7 +1213,7 @@
             width: 25.5%;
             overflow: hidden;
             transform: translateX(0);
-            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
         }
 
@@ -1269,13 +1271,11 @@
         div.streams_div {
             margin-left: 5%;
             width: 94.5%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.streams_game_div {
             margin-left: 7%;
             width: 94.5%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.counter_class {
@@ -1369,6 +1369,8 @@
             font-size: 130%;
             font-family: 'Roboto-Bold';
             position: absolute;
+            /* 1vh offset to hide content that may show benhide it*/
+            top: 1vh;
         }
 
         div.topbar {
@@ -1376,7 +1378,9 @@
             margin-left: 5%;
             width: 94.5%;
             background: rgba(0, 0, 0, 1);
-            height: 4.25vh;
+            /* 1vh offset to hide content that may show benhide it*/
+            height: 5.25vh;
+            transform: translateY(-1vh);
         }
 
         div.topbar_dim {
@@ -1386,13 +1390,15 @@
         div.controls_div {
             float: left;
             padding-left: 1%;
-            padding-top: 0.2%;
+            /* 1vh offset to hide content that may show benhide it*/
+            padding-top: calc(1vh + 0.2%);
         }
 
         div.top_clock {
             position: absolute;
             right: 1%;
-            top: 5%;
+            /* 1vh offset to hide content that may show benhide it*/
+            top: calc(1vh + 5%);
         }
 
         .hide {
@@ -2871,7 +2877,6 @@
                     <div id="dialog_os_text" class="about_text" style="font-size: 100%;"></div>
                 </div>
             </div>
-
             <div id="dialog_multi" class="screens dialog_multi hide">
                 <div class=" stream_info_multi_diag_div" style="padding: 0;">
                     <div class="side_panel_feed">
@@ -3031,7 +3036,7 @@
                 <div id="dialog_warning_play_text" class="strokedelinebig" style="font-size: 140%;"></div>
             </div>
         </div>
-        <div id="user_feed" class="user_feed hide"
+        <div id="user_feed" class="user_feed opacity_zero"
             style="background: linear-gradient(to top, black, rgba(0, 0, 0, 0.3));">
             <div id="icon_feed_refresh" class="icon_feed_refresh"></div>
             <div id="icon_feed_back" class="icon_feed_refresh hide"></div>

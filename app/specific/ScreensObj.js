@@ -82,6 +82,7 @@ var Base_obj = {
     },
     Set_Scroll: function() {
         this.ScrollDoc = document.getElementById(this.ids[10]);
+        this.tableDoc = document.getElementById(this.table);
     },
     addrow: Screens_addrow,
     key_exit: function(goSidepanel) {//TODO overwrite this on if object
@@ -97,20 +98,20 @@ var Base_obj = {
                 Main_values.Main_BeforeAgame = Main_games;
             }
             Screens_BasicExit(Main_values.Main_Go);
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
         } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
             this.screen === Main_SearchChannels) && !goSidepanel) {
             if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
             else Main_values.Main_Go = Main_values.Main_BeforeSearch;
             Main_values.Search_isSearching = false;
             Screens_BasicExit(Main_values.Main_Go);
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
         } else if ((this.screen === Main_AGameClip || this.screen === Main_AGameVod) && !goSidepanel) {
             Screens_BasicExit(Main_aGame);
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
         } else if ((this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) && !goSidepanel) {
             Screens_BasicExit(Main_ChannelContent);
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
         } else Screens_OpenSidePanel();
     },
     concatenate: function(responseText) {
@@ -1037,7 +1038,7 @@ var Base_Game_obj = {
     ItemsLimit: Main_ItemsLimitGame,
     rowClass: 'animate_height_transition_games',
     ColoumnsCount: Main_ColoumnsCountGame,
-    addFocus: Screens_addFocusGame,
+    addFocus: Screens_addFocusVideo,
     img_404: IMG_404_GAME,
     screenType: 3,
     empty_str: function() {
@@ -1060,7 +1061,7 @@ var Base_Game_obj = {
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
         Main_HideElementWithEle(this.ScrollDoc);
 
-        Main_SwitchScreenAction();
+        Main_SwitchScreen();
     },
     setMax: function(tempObj) {
         this.MaxOffset = tempObj._total;
@@ -1473,11 +1474,11 @@ function ScreensObj_HistoryLive() {
                 if (this.posX === 0) {
                     Main_values.Main_Go = Main_HistoryVod;
                     this.history_exit();
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                 } else if (this.posX === 1) {
                     Main_values.Main_Go = Main_HistoryClip;
                     this.history_exit();
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                 } else Screens_histStart();
             } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown, true);
 
@@ -1562,11 +1563,11 @@ function ScreensObj_HistoryVod() {
                 if (this.posX === 0) {
                     Main_values.Main_Go = Main_HistoryLive;
                     this.history_exit();
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                 } else if (this.posX === 1) {
                     Main_values.Main_Go = Main_HistoryClip;
                     this.history_exit();
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                 } else Screens_histStart();
             } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
@@ -1650,11 +1651,11 @@ function ScreensObj_HistoryClip() {
                 if (this.posX === 0) {
                     Main_values.Main_Go = Main_HistoryLive;
                     this.history_exit();
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                 } else if (this.posX === 1) {
                     Main_values.Main_Go = Main_HistoryVod;
                     this.history_exit();
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                 } else Screens_histStart();
             } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
@@ -1710,7 +1711,7 @@ function ScreensObj_addSwitches(StringsArray) {
             'y_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
         inUseObj.row.appendChild(div);
     }
-    document.getElementById(inUseObj.table).appendChild(inUseObj.row);
+    inUseObj.tableDoc.appendChild(inUseObj.row);
 }
 
 function ScreensObj_TopLableAgameInit() {

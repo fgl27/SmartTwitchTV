@@ -166,11 +166,10 @@ function Users_addFocus(forceScroll) {
                 );
         } else Main_ScrollTable(Users_ids[5], 0);
 
-    } else Main_handleKeyUp();
+    }
 }
 
 function Users_removeFocus() {
-    Main_addFocusFinish = false;
     Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, Main_classThumb);
 }
 
@@ -264,7 +263,8 @@ function Users_RemoveCursorSet() {
 
 function Users_handleKeyDown(event) {
     if (Main_FirstLoad || Main_CantClick()) return;
-    else Main_keyClickDelayStart();
+
+    Main_keyClickDelayStart();
 
     var i;
 
@@ -280,7 +280,7 @@ function Users_handleKeyDown(event) {
                 Sidepannel_RemoveFocusMain();
                 Main_values.Main_Go = Users_beforeUser;
                 Sidepannel_SetTopOpacity(Main_values.Main_Go);
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
             }
             break;
         case KEY_LEFT:

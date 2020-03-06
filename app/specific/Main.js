@@ -78,7 +78,6 @@ var Main_values_Play_data;
 var Main_values_History_data = {};//The obj is defined in AddUser_RestoreUsers()
 var Main_Force = "4mv6wki5h1ko";
 var Main_LastClickFinish = true;
-var Main_addFocusFinish = true;
 var Main_newUsercode = 0;
 var Main_ExitCursor = 0;
 var Main_ExitDialogID = null;
@@ -418,7 +417,6 @@ function Main_initWindows() {
         if (AddUser_UserIsSet()) {
             Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
         }
-        document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Screens_InitScreens();
 
         document.getElementById("side_panel").style.transform = '';
@@ -732,7 +730,7 @@ function Main_showExitDialog() {
 
 function Main_HideExitDialog() {
     document.body.removeEventListener("keydown", Main_ExitDialog, false);
-    Main_SwitchScreenAction();
+    Main_SwitchScreen();
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
     Main_ExitCursor = 0;
@@ -846,18 +844,6 @@ function Main_is_rerun(content) {
 
 function Main_ThumbNull(y, x, thumbnail) {
     return document.getElementById(thumbnail + y + '_' + x) !== null;
-}
-
-function Main_ReStartScreens() {
-    Main_updateclock();
-    Main_SwitchScreen();
-    document.body.addEventListener("keyup", Main_handleKeyUp, false);
-}
-
-function Main_SwitchScreen(removekey) {
-    Main_ready(function() {
-        Main_SwitchScreenAction(removekey);
-    });
 }
 
 var Main_Switchobj = {
@@ -1134,7 +1120,12 @@ Main_Switchobj[Main_HistoryClip] = {
     exit_fun: Screens_exit,
 };
 
-function Main_SwitchScreenAction(removekey) {
+function Main_ReStartScreens() {
+    Main_updateclock();
+    Main_SwitchScreen();
+}
+
+function Main_SwitchScreen(removekey) {
     Main_HideWarningDialog();
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
@@ -1247,13 +1238,9 @@ function Main_YchangeAddFocus(y) {
     return position;
 }
 
-//"handleKeyUp, keyClickDelay, keyClickDelayStart and Main_CantClick" are here to prevent races during click and hold
+//"keyClickDelay, keyClickDelayStart and Main_CantClick" are here to prevent races during click and hold
 //That can cause visual glitches and make the user lost sense on were the focus is
 //Or cause the app to keep moving up/down seconds after the key has be released
-function Main_handleKeyUp() {
-    Main_addFocusFinish = true;
-}
-
 function Main_keyClickDelay() {
     Main_LastClickFinish = true;
 }
@@ -1264,7 +1251,7 @@ function Main_keyClickDelayStart() {
 }
 
 function Main_CantClick() {
-    return !Main_LastClickFinish || !Main_addFocusFinish;
+    return !Main_LastClickFinish;
 }
 
 function Main_ThumbOpenIsNull(id, thumbnail) {
@@ -1538,16 +1525,13 @@ function Main_openVod() {
 
 function Main_ScrollTable(id, position) {
     document.getElementById(id).style.top = position ? (position / BodyfontSize) + "em" : "";
-    window.setTimeout(Main_handleKeyUp, 10);
 }
 
 function Main_ScrollTableCalc(id, position, percentage) {
     document.getElementById(id).style.top = 'calc(' + percentage + '% + ' + (position / BodyfontSize) + 'em)';
-    window.setTimeout(Main_handleKeyUp, 10);
 }
 
 function Main_removeFocus(id, idArray) {
-    Main_addFocusFinish = false;
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 
