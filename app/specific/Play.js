@@ -313,7 +313,6 @@ function Play_Start() {
 
         Play_CheckIfIsLiveCleanEnd();
     }
-    document.body.removeEventListener("keyup", Main_handleKeyUp);
 
     if (!Main_IsNotBrowser) Play_UpdateMainStream(true, true);
 

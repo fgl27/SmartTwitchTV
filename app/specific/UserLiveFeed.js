@@ -79,6 +79,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].dataEnded = false;
         UserLiveFeed_obj[i].MaxOffset = 0;
         UserLiveFeed_FeedSetPosLast[i] = 0;
+        UserLiveFeed_obj[i].offsettopFontsize = 0;
     }
 
     //User live
@@ -203,7 +204,8 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     if (len) {
         //Start checking from left to right
         var min = Math.max(0, UserLiveFeed_FeedPosY[pos] - UserLiveFeed_obj[pos].before),
-            max = Math.min(len, min + UserLiveFeed_cellVisible[pos]);
+            max = Math.min(len, min + UserLiveFeed_cellVisible[pos]),
+            i, j = 0;
 
         // if less then UserLiveFeed_cellVisible check right to left
         if ((max - min) < UserLiveFeed_cellVisible[pos]) {
@@ -211,8 +213,38 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
             min = Math.max(0, max - UserLiveFeed_cellVisible[pos]);
         }
 
-        for (var i = min; i < max; i++) {
-            if (UserLiveFeed_cell[pos][i]) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
+        for (i = min; i < max; i++) {
+            if (UserLiveFeed_cell[pos][i]) {
+                UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
+                UserLiveFeed_cell[pos][i].style.position = '';
+                UserLiveFeed_cell[pos][i].style.transition = 'none';
+            }
+        }
+
+        if (!UserLiveFeed_obj[pos].AddCellsize) {
+            var temp = Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
+            if (!temp) UserLiveFeed_obj[pos].div.classList.remove('hide');
+
+            //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
+            if (!Main_isScene2DocShown()) {
+                Main_Scene2Doc.style.transform = 'translateY(-1000%)';
+                Main_ShowElementWithEle(Main_Scene2Doc);
+
+                UserLiveFeed_obj[pos].AddCellsize =
+                    UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+
+                Main_HideElementWithEle(Main_Scene2Doc);
+                Main_Scene2Doc.style.transform = 'translateY(0px)';
+            } else UserLiveFeed_obj[pos].AddCellsize =
+                UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+
+            if (!temp) UserLiveFeed_obj[pos].div.classList.add('hide');
+        }
+
+        for (i = min; i < max; i++ , j++) {
+            if (UserLiveFeed_cell[pos][i]) {
+                UserLiveFeed_cell[pos][i].style.transform = 'translate(' + (j * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+            }
         }
     }
 
@@ -236,7 +268,7 @@ function UserLiveFeed_GetSize(pos) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'hide');
+    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'opacity_zero');
 }
 
 function UserLiveFeed_ShowFeed() {
@@ -244,13 +276,14 @@ function UserLiveFeed_ShowFeed() {
 }
 
 function UserLiveFeed_Show() {
-    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'hide');
+    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
 }
 
 function UserLiveFeed_Hide() {
+    //return;
     UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_Showloading(false);
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'hide');
+    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
 }
 
 function UserLiveFeed_ResetFeedId() {
@@ -278,7 +311,7 @@ function UserLiveFeed_FeedRefresh() {
 function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
     if (UserLiveFeed_FeedSetPosLast[pos] === position) return;
 
-    if (!Play_MultiEnable && !skipAnimation &&
+    if (!skipAnimation &&
         Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
         !Screens_ChangeFocusAnimationFast) {
         Screens_ChangeFocusAnimationFinished = false;
@@ -316,19 +349,17 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     if (!UserLiveFeed_obj[pos].AddCellsize) {
         UserLiveFeed_obj[pos].AddCellsize =
-            (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
+            (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth) / BodyfontSize;
     }
-
-
 
     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
 
         if (UserLiveFeed_FeedPosY[pos] < 5 || total < 9) {
             UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 4) : true, pos, 0);
         } else if (UserLiveFeed_FeedPosY[pos] < (total - 4) || total < UserLiveFeed_cellVisible[pos]) {
-            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5) : true, pos, UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 5), pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
         } else {
-            UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
         }
 
     } else {
@@ -336,9 +367,9 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         if (UserLiveFeed_FeedPosY[pos] < 3 || total < 6) {
             UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 2) : true, pos, 0);
         } else if (UserLiveFeed_FeedPosY[pos] < (total - 3) || total < UserLiveFeed_cellVisible[pos]) {
-            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3) : true, pos, UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 4), pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
         } else {
-            UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
         }
 
     }
@@ -386,58 +417,6 @@ function UserLiveFeed_CheckVod() {
         }
     }
     return true;
-}
-
-function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
-    var eleIdPos, eleRemoveIdPos;
-    if (Adder > 0) { // right
-        if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
-            UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 3]);
-
-            eleRemoveIdPos = pos + '_' + (x - 4);
-            document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).style.width = 0;
-
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
-
-                window.setTimeout(function() {
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, UserLiveFeed_AnimationTimeout);
-
-            } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-        }
-
-    } else { // Left
-        if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
-            eleIdPos = pos + '_' + (x - 3);
-            eleRemoveIdPos = pos + '_' + (x + 4);
-
-            UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
-            document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = 0;
-
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
-
-                Main_ready(function() {
-                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                });
-
-                window.setTimeout(function() {
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, UserLiveFeed_AnimationTimeout);
-            } else {
-                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-            }
-        }
-    }
-
 }
 
 function UserLiveFeed_CheckIfIsLiveGetPos(position) {
@@ -529,49 +508,186 @@ function UserLiveFeed_CheckIfIsLiveStart() {
     } else UserLiveFeed_CheckIfIsLiveSTop();
 }
 
+function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos, right) {
+    Screens_ChangeFocusAnimationFinished = false;
+    Screens_ChangeFocusAnimationFast = true;
+
+    if (right) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
+    else UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x + x_plus], UserLiveFeed_obj[pos].div.childNodes[0]);
+
+    UserLiveFeed_cell[pos][x + x_plus].style.transform = 'translate(' + (x_plus_offset * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+
+    Main_ready(function() {
+        for (var i = for_in; i < for_out; i++) {
+            if (UserLiveFeed_cell[pos][x + i]) {
+                if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
+                UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';
+            }
+        }
+
+        window.setTimeout(function() {
+            UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
+            Screens_ChangeFocusAnimationFinished = true;
+        }, Screens_ScrollAnimationTimeout);
+    });
+}
+
+function UserLiveFeed_FeedAddCellNotAnimated(pos, x, x_plus, for_in, for_out, for_offset, eleRemovePos, right) {
+
+    if (right) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
+    else UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x + x_plus], UserLiveFeed_obj[pos].div.childNodes[0]);
+
+    for (var i = for_in; i < for_out; i++) {
+        if (UserLiveFeed_cell[pos][x + i]) {
+            UserLiveFeed_cell[pos][x + i].style.transition = 'none';
+            UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';
+        }
+    }
+
+    UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
+}
+
+function UserLiveFeed_RemoveElement(ele) {
+    if (ele) ele.remove();
+}
+
+function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
+    if (Adder > 0) { // right
+        if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
+
+            if (Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+
+                UserLiveFeed_FeedAddCellAnimated(
+                    pos,
+                    x,
+                    3,  //x_plus
+                    6,  //x_plus_offset
+                    -3, //for_in
+                    3,  //for_out
+                    3,  //for_offset
+                    -4, //eleRemovePos
+                    1   //right?
+                );
+
+            } else {
+
+                UserLiveFeed_FeedAddCellNotAnimated(
+                    pos,
+                    x,
+                    3,  //x_plus
+                    -3, //for_in
+                    4,  //for_out
+                    3,  //for_offset
+                    -4, //eleRemovePos
+                    1   //right?
+                );
+
+            }
+        }
+
+    } else { // Left
+        if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
+
+            if (Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+
+                UserLiveFeed_FeedAddCellAnimated(
+                    pos,
+                    x,
+                    -3, //x_plus
+                    -6, //x_plus_offset
+                    -3, //for_in
+                    4,  //for_out
+                    3,  //for_offset
+                    4,  //eleRemovePos
+                    0   //right?
+                );
+
+            } else {
+
+                UserLiveFeed_FeedAddCellNotAnimated(
+                    pos,
+                    x,
+                    -3, //x_plus
+                    -3, //for_in
+                    4,  //for_out
+                    3,  //for_offset
+                    4,  //eleRemovePos
+                    0   //right?
+                );
+
+            }
+        }
+    }
+
+}
+
 function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
-    var eleIdPos, eleRemoveIdPos;
     if (Adder > 0) { // right
         if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
-            UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 4]);
-            eleRemoveIdPos = pos + '_' + (x - 6);
-            document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).style.width = 0;
 
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+            if (Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
 
-                window.setTimeout(function() {
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, UserLiveFeed_AnimationTimeout);
+                UserLiveFeed_FeedAddCellAnimated(
+                    pos,
+                    x,
+                    4,  //x_plus
+                    9,  //x_plus_offset
+                    -5, //for_in
+                    6,  //for_out
+                    5,  //for_offset
+                    -6, //eleRemovePos
+                    1   //right?
+                );
 
-            } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+            } else {
+
+                UserLiveFeed_FeedAddCellNotAnimated(
+                    pos,
+                    x,
+                    4,  //x_plus
+                    -5, //for_in
+                    7,  //for_out
+                    5,  //for_offset
+                    -6,  //eleRemovePos
+                    1   //right?
+                );
+
+            }
         }
     } else { // Left
         if (x > 4 && UserLiveFeed_cell[pos].length > (x + 4)) {
-            eleIdPos = pos + '_' + (x - 5);
-            eleRemoveIdPos = pos + '_' + (x + 5);
 
-            UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
-
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+            if (Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
 
-                Main_ready(function() {
-                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                });
+                UserLiveFeed_FeedAddCellAnimated(
+                    pos,
+                    x,
+                    -5, //x_plus
+                    9,  //x_plus_offset
+                    -5, //for_in
+                    7,  //for_out
+                    5,  //for_offset
+                    5,  //eleRemovePos
+                    0   //right?
+                );
 
-                window.setTimeout(function() {
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, UserLiveFeed_AnimationTimeout);
             } else {
-                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+
+                UserLiveFeed_FeedAddCellNotAnimated(
+                    pos,
+                    x,
+                    -5, //x_plus
+                    -5, //for_in
+                    7,  //for_out
+                    5,  //for_offset
+                    5,  //eleRemovePos
+                    0   //right?
+                );
+
             }
         }
     }

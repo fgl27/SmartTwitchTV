@@ -283,7 +283,6 @@ function Play_OpenSearch(PlayVodClip) {
     PlayVod_ProgresBarrUpdate(0, 0);
     Main_showScene1Doc();
     Main_hideScene2Doc();
-    document.body.addEventListener("keyup", Main_handleKeyUp, false);
     Main_OpenSearch();
 }
 

@@ -2,7 +2,7 @@
 var inUseObj = {};
 var Screens_clear = false;
 var Screens_KeyEnterID;
-var Screens_ScrollAnimationTimeout = 200; //Same time as animate_height_transition
+var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
 var Screens_SettingDoAnimations = true;
@@ -95,12 +95,14 @@ function Screens_init() {
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
-    if (inUseObj.status) {
+    if (!inUseObj.status || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
+        Screens_StartLoad();
+    else {
         Main_YRst(inUseObj.posY);
         Screens_addFocus(true);
         Main_SaveValues();
         Screens_SetLastRefresh();
-    } else Screens_StartLoad();
+    }
 }
 
 function Screens_exit() {
@@ -398,9 +400,30 @@ function Screens_loadDataSuccessFinish(obj) {
         if (obj.emptyContent) Main_showWarningDialog(obj.empty_str());
         else {
             obj.status = true;
-            var doc = document.getElementById(obj.table);
-            for (var i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++)
-                doc.appendChild(obj.Cells[i]);
+            var i;
+
+            for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
+                if (obj.Cells[i]) {
+                    inUseObj.tableDoc.appendChild(obj.Cells[i]);
+                    obj.Cells[i].style.position = '';
+                    obj.Cells[i].style.transition = 'none';
+                }
+            }
+
+            //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
+            if (!Main_isScene1DocShown()) {
+                Main_Scene1Doc.style.transform = 'translateY(-1000%)';
+                Main_ShowElementWithEle(Main_Scene1Doc);
+                Screens_setOffset(1, 0);
+                Main_HideElementWithEle(Main_Scene1Doc);
+                Main_Scene1Doc.style.transform = 'translateY(0px)';
+            } else Screens_setOffset(1, 0);
+
+            for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
+                if (obj.Cells[i]) {
+                    obj.Cells[i].style.transform = 'translateY(' + (i * inUseObj.offsettop) + 'em)';
+                }
+            }
 
         }
         obj.FirstLoad = false;
@@ -455,7 +478,7 @@ function Screens_loadDataSuccessFinish(obj) {
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
                     Screens_RemoveAllFocus();
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                     if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
                     else {
                         Main_FirstRun = false;
@@ -568,59 +591,117 @@ function Screens_ThumbNotNull(thumbnail) {
     return document.getElementById(thumbnail) !== null;
 }
 
+function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down) {
+    Screens_ChangeFocusAnimationFinished = false;
+    Screens_ChangeFocusAnimationFast = true;
+
+    if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
+    else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+
+    inUseObj.Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * inUseObj.offsettop) + 'em)';
+
+    Main_ready(function() {
+        for (var i = for_in; i < for_out; i++) {
+            if (inUseObj.Cells[y + i]) {
+                inUseObj.Cells[y + i].style.transition = '';
+                inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
+            }
+        }
+
+        window.setTimeout(function() {
+            UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+            Screens_ChangeFocusAnimationFinished = true;
+        }, Screens_ScrollAnimationTimeout);
+    });
+}
+
+function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down) {
+
+    if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
+    else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+
+    for (var i = for_in; i < for_out; i++) {
+        if (inUseObj.Cells[y + i]) {
+            inUseObj.Cells[y + i].style.transition = 'none';
+            inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
+        }
+    }
+
+    UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+}
 
 function Screens_addrowChannel(forceScroll, y) {
     if (inUseObj.currY < y) { // down
-        inUseObj.currY = inUseObj.posY;
+
         if (y > 2) Screens_addrowChannelDown(y);
+
     } else if (inUseObj.currY > y) { // Up
-        inUseObj.currY = inUseObj.posY;
+
+
         if (y > 1 && (inUseObj.Cells.length) > (y + 3)) {
-            var doc = document.getElementById(inUseObj.table);
-            doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
 
-                Main_ready(function() {
-                    document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = '';
-                });
+                Screens_addrowAnimated(
+                    y,
+                    -2, //y_plus
+                    4,  //y_plus_offset
+                    -2, //for_in
+                    6,  //for_out
+                    2,  //for_offset
+                    3,  //eleRemovePos
+                    0   //down?
+                );
 
-                window.setTimeout(function() {
-                    Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
-                    Screens_ChangeFocusAnimationFinished = true;
-
-                }, Screens_ScrollAnimationTimeout);
             } else {
-                document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = '';
-                Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
+
+                Screens_addrowNotAnimated(
+                    y,
+                    -2, //y_plus
+                    -2, //for_in
+                    6,  //for_out
+                    2,  //for_offset
+                    3,   //eleRemovePos
+                    0   //down?
+                );
+
             }
         }
     }
 
+    inUseObj.currY = inUseObj.posY;
     Screens_addrowEnd(forceScroll);
 }
 
 function Screens_addrowChannelDown(y) {
     if (inUseObj.Cells[y + 2]) {
-        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
 
-        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3))) {
-            document.getElementById(inUseObj.ids[12] + (y - 3)).style.height = 0;
+        if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+            !Screens_ChangeFocusAnimationFast) { //If with animation
 
-            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
+            Screens_addrowAnimated(
+                y,
+                2,  //y_plus
+                4,  //y_plus_offset
+                -2, //for_in
+                5,  //for_out
+                2,  //for_offset
+                -3, //eleRemovePos
+                1   //down?
+            );
 
-                window.setTimeout(function() {
-                    Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, Screens_ScrollAnimationTimeout);
+        } else {
 
-            } else Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
+            Screens_addrowNotAnimated(
+                y,
+                2,  //y_plus
+                -2, //for_in
+                5,  //for_out
+                2,  //for_offset
+                -3,  //eleRemovePos
+                1   //down?
+            );
         }
 
     } else if (inUseObj.loadingData) {
@@ -636,58 +717,76 @@ function Screens_addrowChannelDown(y) {
 
 function Screens_addrow(forceScroll, y) {
     if (inUseObj.currY < y) { // down
-        inUseObj.currY = inUseObj.posY;
         Screens_addrowDown(y);
     } else if (inUseObj.currY > y) { // Up
-        inUseObj.currY = inUseObj.posY;
+
         if (y && (inUseObj.Cells.length) > (y + 1) && inUseObj.Cells[y + 2]) {
-            var doc = document.getElementById(inUseObj.table);
-            doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
 
-                Main_ready(function() {
-                    document.getElementById(inUseObj.ids[12] + (y - 1)).style.height = '';
-                });
+                Screens_addrowAnimated(
+                    y,
+                    -1, //y_plus
+                    -1, //y_plus_offset
+                    -1, //for_in
+                    3,  //for_out
+                    1,  //for_offset
+                    2,  //eleRemovePos
+                    0   //down?
+                );
 
-                window.setTimeout(function() {
-                    Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
-                    Screens_ChangeFocusAnimationFinished = true;
-
-                }, Screens_ScrollAnimationTimeout);
             } else {
-                document.getElementById(inUseObj.ids[12] + (y - 1)).style.height = '';
-                Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
+
+                Screens_addrowNotAnimated(
+                    y,
+                    -1, //y_plus
+                    -1, //for_in
+                    3,  //for_out
+                    1,  //for_offset
+                    2,  //eleRemovePos
+                    0   //down?
+                );
             }
 
         }
     }
+
+    inUseObj.currY = inUseObj.posY;
     Screens_addrowEnd(forceScroll);
 }
 
 function Screens_addrowDown(y) {
-    if (inUseObj.Cells[y + 1]) {
-        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 1]);
+    if (y > 1 && inUseObj.Cells[y + 1]) {
 
-        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
-            document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = 0;
+        if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+            !Screens_ChangeFocusAnimationFast) { //If with animation
 
-            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
+            Screens_addrowAnimated(
+                y,
+                1,  //y_plus
+                3,  //y_plus_offset
+                -1, //for_in
+                2,  //for_out
+                1,  //for_offset
+                -2, //eleRemovePos
+                1   //down?
+            );
 
-                window.setTimeout(function() {
-                    Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, Screens_ScrollAnimationTimeout);
+        } else {
 
-            } else
-                Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
+            Screens_addrowNotAnimated(
+                y,
+                1,  //y_plus
+                -1, //for_in
+                2,  //for_out
+                1,  //for_offset
+                -2, //eleRemovePos
+                1   //down?
+            );
+
         }
+
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
         //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
@@ -697,11 +796,6 @@ function Screens_addrowDown(y) {
             Screens_addrowDown(y);
         }, 10);
     }
-}
-
-function Screens_RemoveElement(id) {
-    var ele = document.getElementById(id);
-    if (ele) ele.remove();
 }
 
 function Screens_addrowEnd(forceScroll) {
@@ -715,68 +809,50 @@ function Screens_setOffset(pos, y) {
     if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
         pos = !y ? (y + pos) : y;
         if (inUseObj.Cells[pos]) {
-            inUseObj.offsettop = (document.getElementById(inUseObj.ids[0] + pos + '_0').getBoundingClientRect().top -
-                inUseObj.ScrollDoc.offsetTop) / BodyfontSize;
+            inUseObj.offsettop = (document.getElementById(inUseObj.ids[12] + pos).offsetHeight + document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+
             inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
         }
     }
 }
 
 function Screens_addFocusChannel(y, idArray, forceScroll) {
-    Screens_setOffset(2, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
         if (y > 1) {
 
             //Channels is a odd screen as thumb are small it need a minor workaround to get all working
-            //TODO revise this for a simple implementeation
+            //TODO revise this for a simple implementation
             if (inUseObj.Cells.length < 6) {
                 if (inUseObj.Cells[y + 1] && (y + 2) < inUseObj.Cells.length || inUseObj.Cells.length === 4)
-                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
                 else if (inUseObj.Cells.length > 3)
-                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + (inUseObj.offsettop * 2) + 'em)';
             } else {
                 if (inUseObj.Cells[y + 2])
-                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
                 else
-                    document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + (inUseObj.offsettop * 2) + 'em)';
             }
 
-        } else document.getElementById(idArray[10]).style.top = '';
+        } else inUseObj.ScrollDoc.style.transform = '';
 
     }
-    Main_handleKeyUp();
 }
 
 function Screens_addFocusVideo(y, idArray, forceScroll) {
-    Screens_setOffset(1, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
-        if (y > 0) {
 
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
-                document.getElementById(idArray[10]).style.top = 'calc(7.65% - ' + inUseObj.offsettop + 'em)';
+        if (!y) inUseObj.ScrollDoc.style.transform = '';
+        else if (y === 1) {
 
-        } else document.getElementById(idArray[10]).style.top = '';
+            if (inUseObj.Cells[y + 1]) //We didn't reach the bottom yet
+                inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
+
+        }
     }
-
-    Main_handleKeyUp();
-}
-
-function Screens_addFocusGame(y, idArray, forceScroll) {
-    Screens_setOffset(1, y);
-
-    if (Main_YchangeAddFocus(y) || forceScroll) {
-        if (y > 0) {
-
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
-                document.getElementById(idArray[10]).style.top = 'calc(4.5% - ' + inUseObj.offsettop + 'em)';
-
-        } else document.getElementById(idArray[10]).style.top = '';
-    }
-
-    Main_handleKeyUp();
 }
 
 function Screens_ChangeFocus(y, x) {
@@ -916,7 +992,8 @@ function Screens_keyRight() {
 
 function Screens_handleKeyDown(event) {
     if (inUseObj.FirstLoad || Main_CantClick()) return;
-    else Main_keyClickDelayStart();
+
+    Main_keyClickDelayStart();
 
     switch (event.keyCode) {
         case KEY_PG_UP:
@@ -1034,12 +1111,12 @@ function AGame_headerOptions() {
         Main_values.Main_Go = Main_AGameVod;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_headerOptionsExit();
-        Main_SwitchScreenAction();
+        Main_SwitchScreen();
     } else if (inUseObj.posX === 1) {
         Main_values.Main_Go = Main_AGameClip;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_headerOptionsExit();
-        Main_SwitchScreenAction();
+        Main_SwitchScreen();
     } else AGame_follow();
 }
 

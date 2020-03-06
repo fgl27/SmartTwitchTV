@@ -293,7 +293,7 @@ function AddUser_SaveNewUser(responseText) {
     Main_values.Main_Go = Main_Users;
     Main_HideLoadDialog();
     if (AddUser_UsernameArray.length === 1) AddUser_UpdateSidepanel();
-    Main_SwitchScreenAction();
+    Main_SwitchScreen();
     AddUser_loadingData = false;
 }
 
