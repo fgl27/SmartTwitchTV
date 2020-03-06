@@ -95,7 +95,7 @@ function Screens_init() {
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
-    if (inUseObj.status) {
+    if (inUseObj.status && inUseObj.offsettopFontsize === Settings_Obj_default('global_font_offset')) {
         Main_YRst(inUseObj.posY);
         Screens_addFocus(true);
         Main_SaveValues();
@@ -825,7 +825,7 @@ function Screens_setOffset(pos, y) {
 }
 
 function Screens_addFocusChannel(y, idArray, forceScroll) {
-    Screens_setOffset(2, y);
+    //Screens_setOffset(2, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -852,7 +852,7 @@ function Screens_addFocusChannel(y, idArray, forceScroll) {
 }
 
 function Screens_addFocusVideo(y, idArray, forceScroll) {
-    Screens_setOffset(1, y);
+    //Screens_setOffset(1, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
         inUseObj.ScrollDoc.style.transition = '';
@@ -868,7 +868,7 @@ function Screens_addFocusVideo(y, idArray, forceScroll) {
 }
 
 function Screens_addFocusGame(y, idArray, forceScroll) {
-    Screens_setOffset(1, y);
+    //Screens_setOffset(1, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
         if (y > 0) {
