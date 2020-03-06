@@ -1238,6 +1238,9 @@ function Main_YchangeAddFocus(y) {
     return position;
 }
 
+//"keyClickDelay, keyClickDelayStart and Main_CantClick" are here to prevent races during click and hold
+//That can cause visual glitches and make the user lost sense on were the focus is
+//Or cause the app to keep moving up/down seconds after the key has be released
 function Main_keyClickDelay() {
     Main_LastClickFinish = true;
 }
