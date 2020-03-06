@@ -203,7 +203,8 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     if (len) {
         //Start checking from left to right
         var min = Math.max(0, UserLiveFeed_FeedPosY[pos] - UserLiveFeed_obj[pos].before),
-            max = Math.min(len, min + UserLiveFeed_cellVisible[pos]);
+            max = Math.min(len, min + UserLiveFeed_cellVisible[pos]),
+            i, j = 0;
 
         // if less then UserLiveFeed_cellVisible check right to left
         if ((max - min) < UserLiveFeed_cellVisible[pos]) {
@@ -211,8 +212,31 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
             min = Math.max(0, max - UserLiveFeed_cellVisible[pos]);
         }
 
-        for (var i = min; i < max; i++) {
-            if (UserLiveFeed_cell[pos][i]) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
+        for (i = min; i < max; i++) {
+            if (UserLiveFeed_cell[pos][i]) {
+                UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
+                UserLiveFeed_cell[pos][i].style.position = '';
+                UserLiveFeed_cell[pos][i].style.transition = 'none';
+            }
+        }
+
+        if (!UserLiveFeed_obj[pos].AddCellsize) {
+            var temp = Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
+            if (!temp)
+                UserLiveFeed_obj[pos].div.classList.remove('hide');
+
+            UserLiveFeed_obj[pos].AddCellsize =
+                UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+
+            if (!temp)
+                UserLiveFeed_obj[pos].div.classList.add('hide');
+        }
+
+        for (i = min; i < max; i++ , j++) {
+            if (UserLiveFeed_cell[pos][i]) {
+                UserLiveFeed_cell[pos][i].style.transform = 'translate(' + (j * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+                UserLiveFeed_cell[pos][i].style.position = 'absolute';
+            }
         }
     }
 
@@ -236,7 +260,7 @@ function UserLiveFeed_GetSize(pos) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'hide');
+    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'opacity_zero');
 }
 
 function UserLiveFeed_ShowFeed() {
@@ -244,13 +268,14 @@ function UserLiveFeed_ShowFeed() {
 }
 
 function UserLiveFeed_Show() {
-    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'hide');
+    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
 }
 
 function UserLiveFeed_Hide() {
+    //return;
     UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_Showloading(false);
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'hide');
+    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
 }
 
 function UserLiveFeed_ResetFeedId() {
@@ -277,6 +302,7 @@ function UserLiveFeed_FeedRefresh() {
 
 function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
     if (UserLiveFeed_FeedSetPosLast[pos] === position) return;
+    console.log(skipAnimation)
 
     if (!Play_MultiEnable && !skipAnimation &&
         Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
@@ -316,19 +342,17 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     if (!UserLiveFeed_obj[pos].AddCellsize) {
         UserLiveFeed_obj[pos].AddCellsize =
-            (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
+            (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth) / BodyfontSize;
     }
-
-
 
     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
 
         if (UserLiveFeed_FeedPosY[pos] < 5 || total < 9) {
             UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 4) : true, pos, 0);
         } else if (UserLiveFeed_FeedPosY[pos] < (total - 4) || total < UserLiveFeed_cellVisible[pos]) {
-            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5) : true, pos, UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 5), pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
         } else {
-            UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
         }
 
     } else {
@@ -336,9 +360,9 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         if (UserLiveFeed_FeedPosY[pos] < 3 || total < 6) {
             UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 2) : true, pos, 0);
         } else if (UserLiveFeed_FeedPosY[pos] < (total - 3) || total < UserLiveFeed_cellVisible[pos]) {
-            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3) : true, pos, UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 4), pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
         } else {
-            UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
         }
 
     }
@@ -386,58 +410,6 @@ function UserLiveFeed_CheckVod() {
         }
     }
     return true;
-}
-
-function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
-    var eleIdPos, eleRemoveIdPos;
-    if (Adder > 0) { // right
-        if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
-            UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 3]);
-
-            eleRemoveIdPos = pos + '_' + (x - 4);
-            document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).style.width = 0;
-
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
-
-                window.setTimeout(function() {
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, UserLiveFeed_AnimationTimeout);
-
-            } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-        }
-
-    } else { // Left
-        if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
-            eleIdPos = pos + '_' + (x - 3);
-            eleRemoveIdPos = pos + '_' + (x + 4);
-
-            UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
-            document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = 0;
-
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
-
-                Main_ready(function() {
-                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                });
-
-                window.setTimeout(function() {
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, UserLiveFeed_AnimationTimeout);
-            } else {
-                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-            }
-        }
-    }
-
 }
 
 function UserLiveFeed_CheckIfIsLiveGetPos(position) {
@@ -529,48 +501,178 @@ function UserLiveFeed_CheckIfIsLiveStart() {
     } else UserLiveFeed_CheckIfIsLiveSTop();
 }
 
-function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
-    var eleIdPos, eleRemoveIdPos;
+function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
+    var eleRemoveIdPos;
     if (Adder > 0) { // right
-        if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
-            UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 4]);
-            eleRemoveIdPos = pos + '_' + (x - 6);
-            document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).style.width = 0;
+        if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
+
+            eleRemoveIdPos = pos + '_' + (x - 4);
 
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
-                window.setTimeout(function() {
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, UserLiveFeed_AnimationTimeout);
+                UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 3]);
+                UserLiveFeed_cell[pos][x + 3].style.transform = 'translate(' + (6 * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+                UserLiveFeed_cell[pos][x + 3].style.position = 'absolute';
 
-            } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-        }
-    } else { // Left
-        if (x > 4 && UserLiveFeed_cell[pos].length > (x + 4)) {
-            eleIdPos = pos + '_' + (x - 5);
-            eleRemoveIdPos = pos + '_' + (x + 5);
-
-            UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
-
-            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
+                for (i = -3; i < 3; i++) {
+                    if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
+                }
 
                 Main_ready(function() {
-                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
+                    for (i = -3; i < 3; i++) {
+                        if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (3 + i)) + 'em, -103%)';
+                    }
                 });
 
                 window.setTimeout(function() {
                     Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
                     Screens_ChangeFocusAnimationFinished = true;
-                }, UserLiveFeed_AnimationTimeout);
+                }, Screens_ScrollAnimationTimeout);
+
             } else {
-                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
+                UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 3]);
+                UserLiveFeed_cell[pos][x + 3].style.position = 'absolute';
+
+                for (i = -3; i < 4; i++) {
+                    if (UserLiveFeed_cell[pos][x + i]) {
+                        UserLiveFeed_cell[pos][x + i].style.transition = 'none';
+                        UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (3 + i)) + 'em, -103%)';
+                    }
+                }
+
+                Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+            }
+        }
+
+    } else { // Left
+        if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
+            eleRemoveIdPos = pos + '_' + (x + 4);
+
+            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
+                UserLiveFeed_cell[pos][x - 3].style.transform = 'translate(-' + (6 * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+                UserLiveFeed_cell[pos][x - 3].style.position = 'absolute';
+
+                for (i = -3; i < 4; i++) {
+                    if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
+                }
+
+                Main_ready(function() {
+                    for (i = -3; i < 4; i++) {
+                        if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (3 + i)) + 'em, -103%)';
+                    }
+                });
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+                    Screens_ChangeFocusAnimationFinished = true;
+                }, Screens_ScrollAnimationTimeout);
+            } else {
+                UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
+                UserLiveFeed_cell[pos][x - 3].style.position = 'absolute';
+
+                for (i = -3; i < 4; i++) {
+                    if (UserLiveFeed_cell[pos][x + i]) {
+                        UserLiveFeed_cell[pos][x + i].style.transition = 'none';
+                        UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (3 + i)) + 'em, -103%)';
+                    }
+                }
+
+                Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+            }
+        }
+    }
+
+}
+
+function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
+    var eleRemoveIdPos;
+    if (Adder > 0) { // right
+        if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
+            eleRemoveIdPos = pos + '_' + (x - 6);
+
+            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 4]);
+                UserLiveFeed_cell[pos][x + 4].style.transform = 'translate(' + (9 * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+                UserLiveFeed_cell[pos][x + 4].style.position = 'absolute';
+
+                for (i = -5; i < 6; i++) {
+                    if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
+                }
+
+                Main_ready(function() {
+                    for (i = -5; i < 6; i++) {
+                        if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (5 + i)) + 'em, -103%)';
+                    }
+                });
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+                    Screens_ChangeFocusAnimationFinished = true;
+                }, Screens_ScrollAnimationTimeout);
+            } else {
+                UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 4]);
+                UserLiveFeed_cell[pos][x + 4].style.position = 'absolute';
+
+                for (i = -5; i < 7; i++) {
+                    if (UserLiveFeed_cell[pos][x + i]) {
+                        UserLiveFeed_cell[pos][x + i].style.transition = 'none';
+                        UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (5 + i)) + 'em, -103%)';
+                    }
+                }
+
+                Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+            }
+        }
+    } else { // Left
+        if (x > 4 && UserLiveFeed_cell[pos].length > (x + 4)) {
+            eleRemoveIdPos = pos + '_' + (x + 5);
+
+            if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+                Screens_ChangeFocusAnimationFinished = false;
+                Screens_ChangeFocusAnimationFast = true;
+
+                UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
+                UserLiveFeed_cell[pos][x - 5].style.transform = 'translate(-' + (9 * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+                UserLiveFeed_cell[pos][x - 5].style.position = 'absolute';
+
+                for (i = -5; i < 7; i++) {
+                    if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
+                }
+
+                Main_ready(function() {
+                    for (i = -5; i < 7; i++) {
+                        if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (5 + i)) + 'em, -103%)';
+                    }
+                });
+
+                window.setTimeout(function() {
+                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+                    Screens_ChangeFocusAnimationFinished = true;
+                }, Screens_ScrollAnimationTimeout);
+            } else {
+                UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
+                UserLiveFeed_cell[pos][x - 5].style.position = 'absolute';
+
+                for (i = -5; i < 7; i++) {
+                    if (UserLiveFeed_cell[pos][x + i]) {
+                        UserLiveFeed_cell[pos][x + i].style.transition = 'none';
+                        UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (5 + i)) + 'em, -103%)';
+                    }
+                }
+
                 Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
             }
         }

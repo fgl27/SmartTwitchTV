@@ -777,9 +777,10 @@
         div.user_feed_thumb {
             width: 19.95%;
             display: inline-block;
-            transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
-            will-change: width;
-            transform: translate3d(0, 0, 0);
+            transform: translate(0px, -103%);
+            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
+
         }
 
         div.user_feed_thumb_game {
@@ -3034,7 +3035,23 @@
                 <div id="dialog_warning_play_text" class="strokedelinebig" style="font-size: 140%;"></div>
             </div>
         </div>
-        <div id="user_feed" class="user_feed hide"
+    </div>
+    <div id="scene_notify" class="feed_screen">
+        <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide hide"
+            style="transform: translateY(-120%);">
+            <div id="user_feed_notify_content" class="side_panel_not">
+                <div id="user_feed_notify_main" class="class_bold" style="text-align: center;"></div>
+                <div>
+                    <div id="user_feed_notify_img_holder" class="side_panel_iner_div1"></div>
+                    <div class="notification_holder">
+                        <div id="user_feed_notify_name" class="notification_name"></div>
+                        <div id="user_feed_notify_title" class="notification_title"></div>
+                        <div id="user_feed_notify_game" class="notification_game"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="user_feed" class="user_feed opacity_zero"
             style="background: linear-gradient(to top, black, rgba(0, 0, 0, 0.3));">
             <div id="icon_feed_refresh" class="icon_feed_refresh"></div>
             <div id="icon_feed_back" class="icon_feed_refresh hide"></div>
@@ -3075,22 +3092,6 @@
             </div>
             <div id="feed_counter" class="icon_feed_refresh strokedelinebig"
                 style="position: absolute; bottom: 0; text-align: right; margin-left: 0;"></div>
-        </div>
-    </div>
-    <div id="scene_notify" class="feed_screen">
-        <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide hide"
-            style="transform: translateY(-120%);">
-            <div id="user_feed_notify_content" class="side_panel_not">
-                <div id="user_feed_notify_main" class="class_bold" style="text-align: center;"></div>
-                <div>
-                    <div id="user_feed_notify_img_holder" class="side_panel_iner_div1"></div>
-                    <div class="notification_holder">
-                        <div id="user_feed_notify_name" class="notification_name"></div>
-                        <div id="user_feed_notify_title" class="notification_title"></div>
-                        <div id="user_feed_notify_game" class="notification_game"></div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div id="scenekeys" class="hide dontavoidclicks">
             <div id="scenekeys_position" class="scenekeys">
