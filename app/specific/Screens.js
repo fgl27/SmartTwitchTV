@@ -839,7 +839,6 @@ function Screens_addFocusChannel(y, idArray, forceScroll) {
         } else inUseObj.ScrollDoc.style.transform = '';
 
     }
-    Main_handleKeyUp();
 }
 
 function Screens_addFocusVideo(y, idArray, forceScroll) {
@@ -854,8 +853,6 @@ function Screens_addFocusVideo(y, idArray, forceScroll) {
 
         }
     }
-
-    Main_handleKeyUp();
 }
 
 function Screens_ChangeFocus(y, x) {
@@ -995,7 +992,8 @@ function Screens_keyRight() {
 
 function Screens_handleKeyDown(event) {
     if (inUseObj.FirstLoad || Main_CantClick()) return;
-    else Main_keyClickDelayStart();
+
+    Main_keyClickDelayStart();
 
     switch (event.keyCode) {
         case KEY_PG_UP:

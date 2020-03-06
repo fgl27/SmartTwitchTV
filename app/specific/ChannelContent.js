@@ -302,8 +302,6 @@ function ChannelContent_checkUser() {
 function ChannelContent_addFocus() {
     if (ChannelContent_cursorY) Main_AddClass('channel_content_thumbdiv0_0', Main_classThumb);
     else ChannelContent_addFocusFollow();
-
-    Main_handleKeyUp();
 }
 
 function ChannelContent_addFocusFollow() {
@@ -407,7 +405,8 @@ function ChannelContent_handleKeyUpClear() {
 
 function ChannelContent_handleKeyDown(event) {
     if (Main_FirstLoad || Main_CantClick()) return;
-    else Main_keyClickDelayStart();
+
+    Main_keyClickDelayStart();
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:

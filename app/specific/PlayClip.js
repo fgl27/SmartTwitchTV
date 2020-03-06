@@ -98,8 +98,6 @@ function PlayClip_Start() {
     else PlayClip_qualityChanged();
     PlayClip_replay = false;
 
-    document.body.removeEventListener("keyup", Main_handleKeyUp);
-
     PlayClip_loadingtreamerInfoTry = 0;
     PlayClip_GetStreamerInfo();
     PlayVod_loadingInfoDataTry = 0;
