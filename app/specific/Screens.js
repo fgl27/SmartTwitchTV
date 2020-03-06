@@ -411,7 +411,14 @@ function Screens_loadDataSuccessFinish(obj) {
                 }
             }
 
-            Screens_setOffset(1, 0);
+            //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
+            if (!Main_isScene1DocShown()) {
+                Main_Scene1Doc.style.transform = 'translateY(-1000%)';
+                Main_ShowElementWithEle(Main_Scene1Doc);
+                Screens_setOffset(1, 0);
+                Main_HideElementWithEle(Main_Scene1Doc);
+                Main_Scene1Doc.style.transform = 'translateY(0px)';
+            } else Screens_setOffset(1, 0);
 
             for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
                 if (obj.Cells[i]) {
@@ -822,8 +829,8 @@ function Screens_setOffset(pos, y) {
 
             inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
         }
-
     }
+    console.log(inUseObj.offsettop);
 }
 
 function Screens_addFocusChannel(y, idArray, forceScroll) {
