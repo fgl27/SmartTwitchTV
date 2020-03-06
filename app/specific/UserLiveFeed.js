@@ -508,11 +508,13 @@ function UserLiveFeed_CheckIfIsLiveStart() {
     } else UserLiveFeed_CheckIfIsLiveSTop();
 }
 
-function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos) {
+function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos, right) {
     Screens_ChangeFocusAnimationFinished = false;
     Screens_ChangeFocusAnimationFast = true;
 
-    UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
+    if (right) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
+    else UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x + x_plus], UserLiveFeed_obj[pos].div.childNodes[0]);
+
     UserLiveFeed_cell[pos][x + x_plus].style.transform = 'translate(' + (x_plus_offset * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
 
     Main_ready(function() {
@@ -530,8 +532,10 @@ function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in,
     });
 }
 
-function UserLiveFeed_FeedAddCellNotAnimated(pos, x, x_plus, for_in, for_out, for_offset, eleRemovePos) {
-    UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
+function UserLiveFeed_FeedAddCellNotAnimated(pos, x, x_plus, for_in, for_out, for_offset, eleRemovePos, right) {
+
+    if (right) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
+    else UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x + x_plus], UserLiveFeed_obj[pos].div.childNodes[0]);
 
     for (var i = for_in; i < for_out; i++) {
         if (UserLiveFeed_cell[pos][x + i]) {
@@ -562,7 +566,8 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
                     -3, //for_in
                     3,  //for_out
                     3,  //for_offset
-                    -4  //eleRemovePos
+                    -4, //eleRemovePos
+                    1   //right?
                 );
 
             } else {
@@ -574,7 +579,8 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
                     -3, //for_in
                     4,  //for_out
                     3,  //for_offset
-                    -4  //eleRemovePos
+                    -4, //eleRemovePos
+                    1   //right?
                 );
 
             }
@@ -594,7 +600,8 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
                     -3, //for_in
                     4,  //for_out
                     3,  //for_offset
-                    4   //eleRemovePos
+                    4,  //eleRemovePos
+                    0   //right?
                 );
 
             } else {
@@ -606,7 +613,8 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
                     -3, //for_in
                     4,  //for_out
                     3,  //for_offset
-                    4   //eleRemovePos
+                    4,  //eleRemovePos
+                    0   //right?
                 );
 
             }
@@ -630,7 +638,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                     -5, //for_in
                     6,  //for_out
                     5,  //for_offset
-                    -6  //eleRemovePos
+                    -6, //eleRemovePos
+                    1   //right?
                 );
 
             } else {
@@ -642,7 +651,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                     -5, //for_in
                     7,  //for_out
                     5,  //for_offset
-                    -6  //eleRemovePos
+                    -6,  //eleRemovePos
+                    1   //right?
                 );
 
             }
@@ -661,7 +671,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                     -5, //for_in
                     7,  //for_out
                     5,  //for_offset
-                    5   //eleRemovePos
+                    5,  //eleRemovePos
+                    0   //right?
                 );
 
             } else {
@@ -673,7 +684,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                     -5, //for_in
                     7,  //for_out
                     5,  //for_offset
-                    5   //eleRemovePos
+                    5,  //eleRemovePos
+                    0   //right?
                 );
 
             }
