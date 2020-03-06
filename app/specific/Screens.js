@@ -787,7 +787,7 @@ function Screens_addFocusVideo(y, idArray, forceScroll) {
     //Screens_setOffset(1, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
-        inUseObj.ScrollDoc.style.transition = '';
+
         if (y > 0) {
 
             if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet

@@ -654,6 +654,7 @@ function Settings_SetAnimations() {
     classes.forEach(
         function(classe) {
             array = document.getElementsByClassName(classe);
+
             for (i = 0; i < array.length; i++)
                 array[i].style.transition = mtransition;
         }
