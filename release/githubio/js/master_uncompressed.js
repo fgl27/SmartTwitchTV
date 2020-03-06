@@ -13773,7 +13773,8 @@
         setMax: function(tempObj) {
             this.MaxOffset = tempObj._total;
 
-            if (typeof this.MaxOffset === 'undefined') {
+            if (!tempObj[this.object]) this.dataEnded = true;
+            else if (typeof this.MaxOffset === 'undefined') {
                 if (tempObj[this.object].length < 90) this.dataEnded = true;
             } else {
                 if (this.data.length >= this.MaxOffset) this.dataEnded = true;
