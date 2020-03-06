@@ -830,7 +830,6 @@ function Screens_setOffset(pos, y) {
             inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
         }
     }
-    console.log(inUseObj.offsettop);
 }
 
 function Screens_addFocusChannel(y, idArray, forceScroll) {
