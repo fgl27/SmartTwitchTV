@@ -640,13 +640,26 @@ function Screens_addrowChannel(forceScroll, y) {
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
 
-                //Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos);
-                Screens_addrowAnimated(y, -2, 4, -2, 6, 2, 3);
+                Screens_addrowAnimated(
+                    y,
+                    -2, //y_plus
+                    4,  //y_plus_offset
+                    -2, //for_in
+                    6,  //for_out
+                    2,  //for_offset
+                    3   //eleRemovePos
+                );
 
             } else {
 
-                //Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos);
-                Screens_addrowNotAnimated(y, -2, -2, 6, 2, 3);
+                Screens_addrowNotAnimated(
+                    y,
+                    -2, //y_plus
+                    -2, //for_in
+                    6,  //for_out
+                    2,  //for_offset
+                    3   //eleRemovePos
+                );
 
             }
         }
@@ -662,13 +675,26 @@ function Screens_addrowChannelDown(y) {
         if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
             !Screens_ChangeFocusAnimationFast) { //If with animation
 
-            //Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos);
-            Screens_addrowAnimated(y, 2, 4, -2, 5, 2, -3);
+            Screens_addrowAnimated(
+                y,
+                2,  //y_plus
+                4,  //y_plus_offset
+                -2, //for_in
+                5,  //for_out
+                2,  //for_offset
+                -3  //eleRemovePos
+            );
 
         } else {
 
-            //Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos);
-            Screens_addrowNotAnimated(y, 2, -2, 5, 2, -3);
+            Screens_addrowNotAnimated(
+                y,
+                2,  //y_plus
+                -2, //for_in
+                5,  //for_out
+                2,  //for_offset
+                -3  //eleRemovePos
+            );
         }
 
     } else if (inUseObj.loadingData) {
@@ -692,13 +718,26 @@ function Screens_addrow(forceScroll, y) {
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
 
-                //Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos);
-                Screens_addrowAnimated(y, -1, -1, -1, 3, 1, 2);
+                Screens_addrowAnimated(
+                    y,
+                    -1, //y_plus
+                    -1, //y_plus_offset
+                    -1, //for_in
+                    3,  //for_out
+                    1,  //for_offset
+                    2   //eleRemovePos
+                );
 
             } else {
 
-                //Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos);
-                Screens_addrowNotAnimated(y, -1, -1, 3, 1, 2);
+                Screens_addrowNotAnimated(
+                    y,
+                    -1, //y_plus
+                    -1, //for_in
+                    3,  //for_out
+                    1,  //for_offset
+                    2   //eleRemovePos
+                );
             }
 
         }
@@ -714,11 +753,27 @@ function Screens_addrowDown(y) {
         if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
             !Screens_ChangeFocusAnimationFast) { //If with animation
 
-            //Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos);
-            Screens_addrowAnimated(y, 1, 3, -1, 2, 1, -2);
+            Screens_addrowAnimated(
+                y,
+                1,  //y_plus
+                3,  //y_plus_offset
+                -1, //for_in
+                2,  //for_out
+                1,  //for_offset
+                -2  //eleRemovePos
+            );
+
         } else {
-            //Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos);
-            Screens_addrowNotAnimated(y, 1, -1, 2, 1, -2);
+
+            Screens_addrowNotAnimated(
+                y,
+                1,  //y_plus
+                -1, //for_in
+                2,  //for_out
+                1,  //for_offset
+                -2  //eleRemovePos
+            );
+
         }
 
     } else if (inUseObj.loadingData) {
