@@ -302,7 +302,6 @@ function UserLiveFeed_FeedRefresh() {
 
 function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
     if (UserLiveFeed_FeedSetPosLast[pos] === position) return;
-    console.log(skipAnimation)
 
     if (!Play_MultiEnable && !skipAnimation &&
         Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
