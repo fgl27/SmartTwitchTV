@@ -143,10 +143,10 @@
         .animate_height_transition_games,
         .animate_height_transition {
             height: 47vh;
-            /* transition: property duration timing-function delay*/
-            transition: height 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
-            will-change: height;
-            transform: translate3d(0, 0, 0);
+            width: 94%;
+            transform: translateY(0);
+            transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
         }
 
         .animate_height_transition_games {
@@ -171,7 +171,9 @@
             width: 100%;
             position: absolute;
             top: 6.9%;
-            transition: top 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            transform: translateY(0);
+            transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
         }
 
         div.screen_holder_switch {
@@ -293,9 +295,9 @@
         div.stream_thumbnail_focused {
             /* same animation time as animate_height_transition*/
             transition:
-                background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
-                color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
-                border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+                background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
+                color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
+                border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.stream_switch_focused {
@@ -342,7 +344,6 @@
             padding: 1%;
             padding-top: 0;
             padding-bottom: 0.2%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.stream_thumbnail_game_feed,
@@ -365,7 +366,6 @@
             display: inline-block;
             padding: 0.5%;
             padding-bottom: 1.5%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.stream_thumbnail_user_icon_holder,
@@ -374,7 +374,6 @@
             display: inline-block;
             padding: 0.5%;
             padding-bottom: 1.25%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.stream_thumbnail_user_icon_holder {
@@ -1269,13 +1268,11 @@
         div.streams_div {
             margin-left: 5%;
             width: 94.5%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.streams_game_div {
             margin-left: 7%;
             width: 94.5%;
-            transform: translate3d(0, 0, 0);
         }
 
         div.counter_class {
@@ -1369,6 +1366,8 @@
             font-size: 130%;
             font-family: 'Roboto-Bold';
             position: absolute;
+            /* 1vh offset to hide content that may show benhide it*/
+            top: 1vh;
         }
 
         div.topbar {
@@ -1376,7 +1375,9 @@
             margin-left: 5%;
             width: 94.5%;
             background: rgba(0, 0, 0, 1);
-            height: 4.25vh;
+            /* 1vh offset to hide content that may show benhide it*/
+            height: 5.25vh;
+            transform: translateY(-1vh);
         }
 
         div.topbar_dim {
@@ -1386,13 +1387,15 @@
         div.controls_div {
             float: left;
             padding-left: 1%;
-            padding-top: 0.2%;
+            /* 1vh offset to hide content that may show benhide it*/
+            padding-top: calc(1vh + 0.2%);
         }
 
         div.top_clock {
             position: absolute;
             right: 1%;
-            top: 5%;
+            /* 1vh offset to hide content that may show benhide it*/
+            top: calc(1vh + 5%);
         }
 
         .hide {
