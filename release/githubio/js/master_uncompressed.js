@@ -11096,6 +11096,7 @@
     }
 
     function Play_showVodDialog() {
+        window.clearTimeout(Play_HideVodDialogId);
         Main_HideElement('controls_holder');
         PlayVod_showPanel(false);
         Main_textContent('stream_quality', '');
@@ -11103,11 +11104,14 @@
         Main_ShowElement('dialog_vod_start');
     }
 
+    var Play_HideVodDialogId;
+
     function Play_HideVodDialog() {
         PlayVod_hidePanel();
         Main_HideElement('dialog_vod_start');
         PlayVod_IconsResetFocus();
-        window.setTimeout(function() {
+        window.clearTimeout(Play_HideVodDialogId);
+        Play_HideVodDialogId = window.setTimeout(function() {
             Main_ShowElement('controls_holder');
         }, 1000);
     }
