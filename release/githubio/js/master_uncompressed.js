@@ -830,7 +830,7 @@
         STR_NOW_LIVE_SHOW = "Show Now Live notification";
         STR_NOW_DURATION = "Now Live notification duration in seconds";
         STR_GLOBAL_FONT = "Global app font size offset";
-        STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited";
+        STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
         STR_MAIN_MENU = "Main Menu";
         STR_USER_MENU = "User Menu";
         STR_CH_IS_OFFLINE = "Is offline";
@@ -1947,7 +1947,7 @@
         Main_values.Main_Go = Main_Users;
         Main_HideLoadDialog();
         if (AddUser_UsernameArray.length === 1) AddUser_UpdateSidepanel();
-        Main_SwitchScreenAction();
+        Main_SwitchScreen();
         AddUser_loadingData = false;
     }
 
@@ -2315,8 +2315,6 @@
     function ChannelContent_addFocus() {
         if (ChannelContent_cursorY) Main_AddClass('channel_content_thumbdiv0_0', Main_classThumb);
         else ChannelContent_addFocusFollow();
-
-        Main_handleKeyUp();
     }
 
     function ChannelContent_addFocusFollow() {
@@ -2420,7 +2418,8 @@
 
     function ChannelContent_handleKeyDown(event) {
         if (Main_FirstLoad || Main_CantClick()) return;
-        else Main_keyClickDelayStart();
+
+        Main_keyClickDelayStart();
 
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
@@ -2435,7 +2434,7 @@
                     ChannelContent_exit();
                     Sidepannel_SetDefaultLables();
                     Main_values.Main_selectedChannel_id = '';
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                 }
                 break;
             case KEY_LEFT:
@@ -3466,7 +3465,6 @@
     var Main_values_History_data = {}; //The obj is defined in AddUser_RestoreUsers()
     var Main_Force = "4mv6wki5h1ko";
     var Main_LastClickFinish = true;
-    var Main_addFocusFinish = true;
     var Main_newUsercode = 0;
     var Main_ExitCursor = 0;
     var Main_ExitDialogID = null;
@@ -3513,7 +3511,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.136';
-    var Main_minversion = '030520';
+    var Main_minversion = '030620';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -3806,7 +3804,6 @@
             if (AddUser_UserIsSet()) {
                 Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
             }
-            document.body.addEventListener("keyup", Main_handleKeyUp, false);
             Screens_InitScreens();
 
             document.getElementById("side_panel").style.transform = '';
@@ -4121,7 +4118,7 @@
 
     function Main_HideExitDialog() {
         document.body.removeEventListener("keydown", Main_ExitDialog, false);
-        Main_SwitchScreenAction();
+        Main_SwitchScreen();
         Main_clearExitDialog();
         Main_HideElement('main_dialog_exit');
         Main_ExitCursor = 0;
@@ -4235,18 +4232,6 @@
 
     function Main_ThumbNull(y, x, thumbnail) {
         return document.getElementById(thumbnail + y + '_' + x) !== null;
-    }
-
-    function Main_ReStartScreens() {
-        Main_updateclock();
-        Main_SwitchScreen();
-        document.body.addEventListener("keyup", Main_handleKeyUp, false);
-    }
-
-    function Main_SwitchScreen(removekey) {
-        Main_ready(function() {
-            Main_SwitchScreenAction(removekey);
-        });
     }
 
     var Main_Switchobj = {
@@ -4523,7 +4508,12 @@
         exit_fun: Screens_exit,
     };
 
-    function Main_SwitchScreenAction(removekey) {
+    function Main_ReStartScreens() {
+        Main_updateclock();
+        Main_SwitchScreen();
+    }
+
+    function Main_SwitchScreen(removekey) {
         Main_HideWarningDialog();
         if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
         if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
@@ -4637,13 +4627,9 @@
         return position;
     }
 
-    //"handleKeyUp, keyClickDelay, keyClickDelayStart and Main_CantClick" are here to prevent races during click and hold
+    //"keyClickDelay, keyClickDelayStart and Main_CantClick" are here to prevent races during click and hold
     //That can cause visual glitches and make the user lost sense on were the focus is
     //Or cause the app to keep moving up/down seconds after the key has be released
-    function Main_handleKeyUp() {
-        Main_addFocusFinish = true;
-    }
-
     function Main_keyClickDelay() {
         Main_LastClickFinish = true;
     }
@@ -4654,7 +4640,7 @@
     }
 
     function Main_CantClick() {
-        return !Main_LastClickFinish || !Main_addFocusFinish;
+        return !Main_LastClickFinish;
     }
 
     function Main_ThumbOpenIsNull(id, thumbnail) {
@@ -4927,16 +4913,13 @@
 
     function Main_ScrollTable(id, position) {
         document.getElementById(id).style.top = position ? (position / BodyfontSize) + "em" : "";
-        window.setTimeout(Main_handleKeyUp, 10);
     }
 
     function Main_ScrollTableCalc(id, position, percentage) {
         document.getElementById(id).style.top = 'calc(' + percentage + '% + ' + (position / BodyfontSize) + 'em)';
-        window.setTimeout(Main_handleKeyUp, 10);
     }
 
     function Main_removeFocus(id, idArray) {
-        Main_addFocusFinish = false;
         Main_RemoveClass(idArray[0] + id, Main_classThumb);
     }
 
@@ -5725,8 +5708,6 @@
         if (!PlayClip_replay) PlayClip_loadData(); //Play_PlayEndStart(3);
         else PlayClip_qualityChanged();
         PlayClip_replay = false;
-
-        document.body.removeEventListener("keyup", Main_handleKeyUp);
 
         PlayClip_loadingtreamerInfoTry = 0;
         PlayClip_GetStreamerInfo();
@@ -6673,7 +6654,6 @@
         PlayVod_ProgresBarrUpdate(0, 0);
         Main_showScene1Doc();
         Main_hideScene2Doc();
-        document.body.addEventListener("keyup", Main_handleKeyUp, false);
         Main_OpenSearch();
     }
 
@@ -8602,7 +8582,6 @@
 
             Play_CheckIfIsLiveCleanEnd();
         }
-        document.body.removeEventListener("keyup", Main_handleKeyUp);
 
         if (!Main_IsNotBrowser) Play_UpdateMainStream(true, true);
 
@@ -10537,7 +10516,6 @@
         }
 
         Play_EndSet(2);
-        document.body.removeEventListener("keyup", Main_handleKeyUp);
 
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
@@ -11398,7 +11376,7 @@
     var inUseObj = {};
     var Screens_clear = false;
     var Screens_KeyEnterID;
-    var Screens_ScrollAnimationTimeout = 200; //Same time as animate_height_transition
+    var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
     var Screens_ChangeFocusAnimationFinished = true;
     var Screens_ChangeFocusAnimationFast = false;
     var Screens_SettingDoAnimations = true;
@@ -11491,12 +11469,14 @@
         document.body.addEventListener("keydown", Screens_handleKeyDown, false);
         Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
-        if (inUseObj.status) {
+        if (!inUseObj.status || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
+            Screens_StartLoad();
+        else {
             Main_YRst(inUseObj.posY);
             Screens_addFocus(true);
             Main_SaveValues();
             Screens_SetLastRefresh();
-        } else Screens_StartLoad();
+        }
     }
 
     function Screens_exit() {
@@ -11794,9 +11774,30 @@
             if (obj.emptyContent) Main_showWarningDialog(obj.empty_str());
             else {
                 obj.status = true;
-                var doc = document.getElementById(obj.table);
-                for (var i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++)
-                    doc.appendChild(obj.Cells[i]);
+                var i;
+
+                for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
+                    if (obj.Cells[i]) {
+                        inUseObj.tableDoc.appendChild(obj.Cells[i]);
+                        obj.Cells[i].style.position = '';
+                        obj.Cells[i].style.transition = 'none';
+                    }
+                }
+
+                //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
+                if (!Main_isScene1DocShown()) {
+                    Main_Scene1Doc.style.transform = 'translateY(-1000%)';
+                    Main_ShowElementWithEle(Main_Scene1Doc);
+                    Screens_setOffset(1, 0);
+                    Main_HideElementWithEle(Main_Scene1Doc);
+                    Main_Scene1Doc.style.transform = 'translateY(0px)';
+                } else Screens_setOffset(1, 0);
+
+                for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
+                    if (obj.Cells[i]) {
+                        obj.Cells[i].style.transform = 'translateY(' + (i * inUseObj.offsettop) + 'em)';
+                    }
+                }
 
             }
             obj.FirstLoad = false;
@@ -11851,7 +11852,7 @@
                         Main_ExitCurrent(Main_values.Main_Go);
                         Main_values.Main_Go = Main_GoBefore;
                         Screens_RemoveAllFocus();
-                        Main_SwitchScreenAction();
+                        Main_SwitchScreen();
                         if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
                         else {
                             Main_FirstRun = false;
@@ -11964,59 +11965,117 @@
         return document.getElementById(thumbnail) !== null;
     }
 
+    function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down) {
+        Screens_ChangeFocusAnimationFinished = false;
+        Screens_ChangeFocusAnimationFast = true;
+
+        if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
+        else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+
+        inUseObj.Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * inUseObj.offsettop) + 'em)';
+
+        Main_ready(function() {
+            for (var i = for_in; i < for_out; i++) {
+                if (inUseObj.Cells[y + i]) {
+                    inUseObj.Cells[y + i].style.transition = '';
+                    inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
+                }
+            }
+
+            window.setTimeout(function() {
+                UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+                Screens_ChangeFocusAnimationFinished = true;
+            }, Screens_ScrollAnimationTimeout);
+        });
+    }
+
+    function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down) {
+
+        if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
+        else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+
+        for (var i = for_in; i < for_out; i++) {
+            if (inUseObj.Cells[y + i]) {
+                inUseObj.Cells[y + i].style.transition = 'none';
+                inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
+            }
+        }
+
+        UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+    }
 
     function Screens_addrowChannel(forceScroll, y) {
         if (inUseObj.currY < y) { // down
-            inUseObj.currY = inUseObj.posY;
+
             if (y > 2) Screens_addrowChannelDown(y);
+
         } else if (inUseObj.currY > y) { // Up
-            inUseObj.currY = inUseObj.posY;
+
+
             if (y > 1 && (inUseObj.Cells.length) > (y + 3)) {
-                var doc = document.getElementById(inUseObj.table);
-                doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
 
                 if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                     !Screens_ChangeFocusAnimationFast) { //If with animation
-                    Screens_ChangeFocusAnimationFinished = false;
-                    Screens_ChangeFocusAnimationFast = true;
 
-                    Main_ready(function() {
-                        document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = '';
-                    });
+                    Screens_addrowAnimated(
+                        y,
+                        -2, //y_plus
+                        4, //y_plus_offset
+                        -2, //for_in
+                        6, //for_out
+                        2, //for_offset
+                        3, //eleRemovePos
+                        0 //down?
+                    );
 
-                    window.setTimeout(function() {
-                        Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
-                        Screens_ChangeFocusAnimationFinished = true;
-
-                    }, Screens_ScrollAnimationTimeout);
                 } else {
-                    document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = '';
-                    Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
+
+                    Screens_addrowNotAnimated(
+                        y,
+                        -2, //y_plus
+                        -2, //for_in
+                        6, //for_out
+                        2, //for_offset
+                        3, //eleRemovePos
+                        0 //down?
+                    );
+
                 }
             }
         }
 
+        inUseObj.currY = inUseObj.posY;
         Screens_addrowEnd(forceScroll);
     }
 
     function Screens_addrowChannelDown(y) {
         if (inUseObj.Cells[y + 2]) {
-            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
 
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3))) {
-                document.getElementById(inUseObj.ids[12] + (y - 3)).style.height = 0;
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
 
-                if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                    !Screens_ChangeFocusAnimationFast) { //If with animation
-                    Screens_ChangeFocusAnimationFinished = false;
-                    Screens_ChangeFocusAnimationFast = true;
+                Screens_addrowAnimated(
+                    y,
+                    2, //y_plus
+                    4, //y_plus_offset
+                    -2, //for_in
+                    5, //for_out
+                    2, //for_offset
+                    -3, //eleRemovePos
+                    1 //down?
+                );
 
-                    window.setTimeout(function() {
-                        Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
-                        Screens_ChangeFocusAnimationFinished = true;
-                    }, Screens_ScrollAnimationTimeout);
+            } else {
 
-                } else Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
+                Screens_addrowNotAnimated(
+                    y,
+                    2, //y_plus
+                    -2, //for_in
+                    5, //for_out
+                    2, //for_offset
+                    -3, //eleRemovePos
+                    1 //down?
+                );
             }
 
         } else if (inUseObj.loadingData) {
@@ -12032,58 +12091,76 @@
 
     function Screens_addrow(forceScroll, y) {
         if (inUseObj.currY < y) { // down
-            inUseObj.currY = inUseObj.posY;
             Screens_addrowDown(y);
         } else if (inUseObj.currY > y) { // Up
-            inUseObj.currY = inUseObj.posY;
+
             if (y && (inUseObj.Cells.length) > (y + 1) && inUseObj.Cells[y + 2]) {
-                var doc = document.getElementById(inUseObj.table);
-                doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
 
                 if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                     !Screens_ChangeFocusAnimationFast) { //If with animation
-                    Screens_ChangeFocusAnimationFinished = false;
-                    Screens_ChangeFocusAnimationFast = true;
 
-                    Main_ready(function() {
-                        document.getElementById(inUseObj.ids[12] + (y - 1)).style.height = '';
-                    });
+                    Screens_addrowAnimated(
+                        y,
+                        -1, //y_plus
+                        -1, //y_plus_offset
+                        -1, //for_in
+                        3, //for_out
+                        1, //for_offset
+                        2, //eleRemovePos
+                        0 //down?
+                    );
 
-                    window.setTimeout(function() {
-                        Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
-                        Screens_ChangeFocusAnimationFinished = true;
-
-                    }, Screens_ScrollAnimationTimeout);
                 } else {
-                    document.getElementById(inUseObj.ids[12] + (y - 1)).style.height = '';
-                    Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
+
+                    Screens_addrowNotAnimated(
+                        y,
+                        -1, //y_plus
+                        -1, //for_in
+                        3, //for_out
+                        1, //for_offset
+                        2, //eleRemovePos
+                        0 //down?
+                    );
                 }
 
             }
         }
+
+        inUseObj.currY = inUseObj.posY;
         Screens_addrowEnd(forceScroll);
     }
 
     function Screens_addrowDown(y) {
-        if (inUseObj.Cells[y + 1]) {
-            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 1]);
+        if (y > 1 && inUseObj.Cells[y + 1]) {
 
-            if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
-                document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = 0;
+            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+                !Screens_ChangeFocusAnimationFast) { //If with animation
 
-                if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                    !Screens_ChangeFocusAnimationFast) { //If with animation
-                    Screens_ChangeFocusAnimationFinished = false;
-                    Screens_ChangeFocusAnimationFast = true;
+                Screens_addrowAnimated(
+                    y,
+                    1, //y_plus
+                    3, //y_plus_offset
+                    -1, //for_in
+                    2, //for_out
+                    1, //for_offset
+                    -2, //eleRemovePos
+                    1 //down?
+                );
 
-                    window.setTimeout(function() {
-                        Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
-                        Screens_ChangeFocusAnimationFinished = true;
-                    }, Screens_ScrollAnimationTimeout);
+            } else {
 
-                } else
-                    Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
+                Screens_addrowNotAnimated(
+                    y,
+                    1, //y_plus
+                    -1, //for_in
+                    2, //for_out
+                    1, //for_offset
+                    -2, //eleRemovePos
+                    1 //down?
+                );
+
             }
+
         } else if (inUseObj.loadingData) {
             //Technically we will not get here because
             //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
@@ -12093,11 +12170,6 @@
                 Screens_addrowDown(y);
             }, 10);
         }
-    }
-
-    function Screens_RemoveElement(id) {
-        var ele = document.getElementById(id);
-        if (ele) ele.remove();
     }
 
     function Screens_addrowEnd(forceScroll) {
@@ -12111,68 +12183,50 @@
         if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
             pos = !y ? (y + pos) : y;
             if (inUseObj.Cells[pos]) {
-                inUseObj.offsettop = (document.getElementById(inUseObj.ids[0] + pos + '_0').getBoundingClientRect().top -
-                    inUseObj.ScrollDoc.offsetTop) / BodyfontSize;
+                inUseObj.offsettop = (document.getElementById(inUseObj.ids[12] + pos).offsetHeight + document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+
                 inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
             }
         }
     }
 
     function Screens_addFocusChannel(y, idArray, forceScroll) {
-        Screens_setOffset(2, y);
 
         if (Main_YchangeAddFocus(y) || forceScroll) {
 
             if (y > 1) {
 
                 //Channels is a odd screen as thumb are small it need a minor workaround to get all working
-                //TODO revise this for a simple implementeation
+                //TODO revise this for a simple implementation
                 if (inUseObj.Cells.length < 6) {
                     if (inUseObj.Cells[y + 1] && (y + 2) < inUseObj.Cells.length || inUseObj.Cells.length === 4)
-                        document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
+                        inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
                     else if (inUseObj.Cells.length > 3)
-                        document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
+                        inUseObj.ScrollDoc.style.transform = 'translateY(-' + (inUseObj.offsettop * 2) + 'em)';
                 } else {
                     if (inUseObj.Cells[y + 2])
-                        document.getElementById(idArray[10]).style.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
+                        inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
                     else
-                        document.getElementById(idArray[10]).style.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
+                        inUseObj.ScrollDoc.style.transform = 'translateY(-' + (inUseObj.offsettop * 2) + 'em)';
                 }
 
-            } else document.getElementById(idArray[10]).style.top = '';
+            } else inUseObj.ScrollDoc.style.transform = '';
 
         }
-        Main_handleKeyUp();
     }
 
     function Screens_addFocusVideo(y, idArray, forceScroll) {
-        Screens_setOffset(1, y);
 
         if (Main_YchangeAddFocus(y) || forceScroll) {
-            if (y > 0) {
 
-                if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
-                    document.getElementById(idArray[10]).style.top = 'calc(7.65% - ' + inUseObj.offsettop + 'em)';
+            if (!y) inUseObj.ScrollDoc.style.transform = '';
+            else if (y === 1) {
 
-            } else document.getElementById(idArray[10]).style.top = '';
+                if (inUseObj.Cells[y + 1]) //We didn't reach the bottom yet
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
+
+            }
         }
-
-        Main_handleKeyUp();
-    }
-
-    function Screens_addFocusGame(y, idArray, forceScroll) {
-        Screens_setOffset(1, y);
-
-        if (Main_YchangeAddFocus(y) || forceScroll) {
-            if (y > 0) {
-
-                if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
-                    document.getElementById(idArray[10]).style.top = 'calc(4.5% - ' + inUseObj.offsettop + 'em)';
-
-            } else document.getElementById(idArray[10]).style.top = '';
-        }
-
-        Main_handleKeyUp();
     }
 
     function Screens_ChangeFocus(y, x) {
@@ -12312,7 +12366,8 @@
 
     function Screens_handleKeyDown(event) {
         if (inUseObj.FirstLoad || Main_CantClick()) return;
-        else Main_keyClickDelayStart();
+
+        Main_keyClickDelayStart();
 
         switch (event.keyCode) {
             case KEY_PG_UP:
@@ -12430,12 +12485,12 @@
             Main_values.Main_Go = Main_AGameVod;
             Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
             AGame_headerOptionsExit();
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
         } else if (inUseObj.posX === 1) {
             Main_values.Main_Go = Main_AGameClip;
             Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
             AGame_headerOptionsExit();
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
         } else AGame_follow();
     }
 
@@ -13398,6 +13453,7 @@
         },
         Set_Scroll: function() {
             this.ScrollDoc = document.getElementById(this.ids[10]);
+            this.tableDoc = document.getElementById(this.table);
         },
         addrow: Screens_addrow,
         key_exit: function(goSidepanel) { //TODO overwrite this on if object
@@ -13413,20 +13469,20 @@
                     Main_values.Main_BeforeAgame = Main_games;
                 }
                 Screens_BasicExit(Main_values.Main_Go);
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
             } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
                     this.screen === Main_SearchChannels) && !goSidepanel) {
                 if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                 else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                 Main_values.Search_isSearching = false;
                 Screens_BasicExit(Main_values.Main_Go);
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
             } else if ((this.screen === Main_AGameClip || this.screen === Main_AGameVod) && !goSidepanel) {
                 Screens_BasicExit(Main_aGame);
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
             } else if ((this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) && !goSidepanel) {
                 Screens_BasicExit(Main_ChannelContent);
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
             } else Screens_OpenSidePanel();
         },
         concatenate: function(responseText) {
@@ -14353,7 +14409,7 @@
         ItemsLimit: Main_ItemsLimitGame,
         rowClass: 'animate_height_transition_games',
         ColoumnsCount: Main_ColoumnsCountGame,
-        addFocus: Screens_addFocusGame,
+        addFocus: Screens_addFocusVideo,
         img_404: IMG_404_GAME,
         screenType: 3,
         empty_str: function() {
@@ -14376,7 +14432,7 @@
             document.body.removeEventListener("keydown", Screens_handleKeyDown);
             Main_HideElementWithEle(this.ScrollDoc);
 
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
         },
         setMax: function(tempObj) {
             this.MaxOffset = tempObj._total;
@@ -14791,11 +14847,11 @@
                     if (this.posX === 0) {
                         Main_values.Main_Go = Main_HistoryVod;
                         this.history_exit();
-                        Main_SwitchScreenAction();
+                        Main_SwitchScreen();
                     } else if (this.posX === 1) {
                         Main_values.Main_Go = Main_HistoryClip;
                         this.history_exit();
-                        Main_SwitchScreenAction();
+                        Main_SwitchScreen();
                     } else Screens_histStart();
                 } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown, true);
 
@@ -14880,11 +14936,11 @@
                     if (this.posX === 0) {
                         Main_values.Main_Go = Main_HistoryLive;
                         this.history_exit();
-                        Main_SwitchScreenAction();
+                        Main_SwitchScreen();
                     } else if (this.posX === 1) {
                         Main_values.Main_Go = Main_HistoryClip;
                         this.history_exit();
-                        Main_SwitchScreenAction();
+                        Main_SwitchScreen();
                     } else Screens_histStart();
                 } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
@@ -14968,11 +15024,11 @@
                     if (this.posX === 0) {
                         Main_values.Main_Go = Main_HistoryLive;
                         this.history_exit();
-                        Main_SwitchScreenAction();
+                        Main_SwitchScreen();
                     } else if (this.posX === 1) {
                         Main_values.Main_Go = Main_HistoryVod;
                         this.history_exit();
-                        Main_SwitchScreenAction();
+                        Main_SwitchScreen();
                     } else Screens_histStart();
                 } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
 
@@ -15028,7 +15084,7 @@
                 'y_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
             inUseObj.row.appendChild(div);
         }
-        document.getElementById(inUseObj.table).appendChild(inUseObj.row);
+        inUseObj.tableDoc.appendChild(inUseObj.row);
     }
 
     function ScreensObj_TopLableAgameInit() {
@@ -15967,6 +16023,7 @@
         classes.forEach(
             function(classe) {
                 array = document.getElementsByClassName(classe);
+
                 for (i = 0; i < array.length; i++)
                     array[i].style.transition = mtransition;
             }
@@ -17017,7 +17074,7 @@
     function Sidepannel_Go(GoTo) {
         if (GoTo === Main_values.Main_Go) {
             document.body.addEventListener("keydown", Sidepannel_Callback, false);
-            Main_SwitchScreenAction();
+            Main_SwitchScreen();
         } else {
             Main_values.Main_Before = Main_values.Main_Go;
             Main_values.Main_Go = GoTo;
@@ -17251,7 +17308,7 @@
             case KEY_RETURN:
             case KEY_CHAT:
                 Sidepannel_Hide();
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
                 break;
             case KEY_RIGHT:
                 Sidepannel_HideEle();
@@ -17327,7 +17384,7 @@
             case KEY_RETURN:
             case KEY_RIGHT:
                 Sidepannel_Hide();
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
                 break;
             case KEY_CHAT:
             case KEY_LEFT:
@@ -17469,6 +17526,7 @@
             UserLiveFeed_obj[i].dataEnded = false;
             UserLiveFeed_obj[i].MaxOffset = 0;
             UserLiveFeed_FeedSetPosLast[i] = 0;
+            UserLiveFeed_obj[i].offsettopFontsize = 0;
         }
 
         //User live
@@ -17593,7 +17651,8 @@
         if (len) {
             //Start checking from left to right
             var min = Math.max(0, UserLiveFeed_FeedPosY[pos] - UserLiveFeed_obj[pos].before),
-                max = Math.min(len, min + UserLiveFeed_cellVisible[pos]);
+                max = Math.min(len, min + UserLiveFeed_cellVisible[pos]),
+                i, j = 0;
 
             // if less then UserLiveFeed_cellVisible check right to left
             if ((max - min) < UserLiveFeed_cellVisible[pos]) {
@@ -17601,8 +17660,38 @@
                 min = Math.max(0, max - UserLiveFeed_cellVisible[pos]);
             }
 
-            for (var i = min; i < max; i++) {
-                if (UserLiveFeed_cell[pos][i]) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
+            for (i = min; i < max; i++) {
+                if (UserLiveFeed_cell[pos][i]) {
+                    UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][i]);
+                    UserLiveFeed_cell[pos][i].style.position = '';
+                    UserLiveFeed_cell[pos][i].style.transition = 'none';
+                }
+            }
+
+            if (!UserLiveFeed_obj[pos].AddCellsize) {
+                var temp = Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
+                if (!temp) UserLiveFeed_obj[pos].div.classList.remove('hide');
+
+                //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
+                if (!Main_isScene2DocShown()) {
+                    Main_Scene2Doc.style.transform = 'translateY(-1000%)';
+                    Main_ShowElementWithEle(Main_Scene2Doc);
+
+                    UserLiveFeed_obj[pos].AddCellsize =
+                        UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+
+                    Main_HideElementWithEle(Main_Scene2Doc);
+                    Main_Scene2Doc.style.transform = 'translateY(0px)';
+                } else UserLiveFeed_obj[pos].AddCellsize =
+                    UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+
+                if (!temp) UserLiveFeed_obj[pos].div.classList.add('hide');
+            }
+
+            for (i = min; i < max; i++, j++) {
+                if (UserLiveFeed_cell[pos][i]) {
+                    UserLiveFeed_cell[pos][i].style.transform = 'translate(' + (j * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+                }
             }
         }
 
@@ -17626,7 +17715,7 @@
     }
 
     function UserLiveFeed_isFeedShow() {
-        return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'hide');
+        return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'opacity_zero');
     }
 
     function UserLiveFeed_ShowFeed() {
@@ -17634,13 +17723,14 @@
     }
 
     function UserLiveFeed_Show() {
-        Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'hide');
+        Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
     }
 
     function UserLiveFeed_Hide() {
+        //return;
         UserLiveFeed_CheckIfIsLiveSTop();
         UserLiveFeed_Showloading(false);
-        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'hide');
+        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
     }
 
     function UserLiveFeed_ResetFeedId() {
@@ -17668,7 +17758,7 @@
     function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
         if (UserLiveFeed_FeedSetPosLast[pos] === position) return;
 
-        if (!Play_MultiEnable && !skipAnimation &&
+        if (!skipAnimation &&
             Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
             !Screens_ChangeFocusAnimationFast) {
             Screens_ChangeFocusAnimationFinished = false;
@@ -17706,19 +17796,17 @@
 
         if (!UserLiveFeed_obj[pos].AddCellsize) {
             UserLiveFeed_obj[pos].AddCellsize =
-                (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).clientWidth * -1) / BodyfontSize;
+                (document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth) / BodyfontSize;
         }
-
-
 
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
 
             if (UserLiveFeed_FeedPosY[pos] < 5 || total < 9) {
                 UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 4) : true, pos, 0);
             } else if (UserLiveFeed_FeedPosY[pos] < (total - 4) || total < UserLiveFeed_cellVisible[pos]) {
-                UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5) : true, pos, UserLiveFeed_obj[pos].AddCellsize);
+                UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 5), pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
             } else {
-                UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
+                UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
             }
 
         } else {
@@ -17726,9 +17814,9 @@
             if (UserLiveFeed_FeedPosY[pos] < 3 || total < 6) {
                 UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 2) : true, pos, 0);
             } else if (UserLiveFeed_FeedPosY[pos] < (total - 3) || total < UserLiveFeed_cellVisible[pos]) {
-                UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3) : true, pos, UserLiveFeed_obj[pos].AddCellsize);
+                UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 4), pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
             } else {
-                UserLiveFeed_FeedSetPos(skipAnimation, pos, 2 * UserLiveFeed_obj[pos].AddCellsize);
+                UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
             }
 
         }
@@ -17776,58 +17864,6 @@
             }
         }
         return true;
-    }
-
-    function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
-        var eleIdPos, eleRemoveIdPos;
-        if (Adder > 0) { // right
-            if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
-                UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 3]);
-
-                eleRemoveIdPos = pos + '_' + (x - 4);
-                document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).style.width = 0;
-
-                if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
-                    Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                    Screens_ChangeFocusAnimationFinished = false;
-                    Screens_ChangeFocusAnimationFast = true;
-
-                    window.setTimeout(function() {
-                        Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                        Screens_ChangeFocusAnimationFinished = true;
-                    }, UserLiveFeed_AnimationTimeout);
-
-                } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-            }
-
-        } else { // Left
-            if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
-                eleIdPos = pos + '_' + (x - 3);
-                eleRemoveIdPos = pos + '_' + (x + 4);
-
-                UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 3], UserLiveFeed_obj[pos].div.childNodes[0]);
-                document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = 0;
-
-                if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
-                    Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                    Screens_ChangeFocusAnimationFinished = false;
-                    Screens_ChangeFocusAnimationFast = true;
-
-                    Main_ready(function() {
-                        document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                    });
-
-                    window.setTimeout(function() {
-                        Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                        Screens_ChangeFocusAnimationFinished = true;
-                    }, UserLiveFeed_AnimationTimeout);
-                } else {
-                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                }
-            }
-        }
-
     }
 
     function UserLiveFeed_CheckIfIsLiveGetPos(position) {
@@ -17920,49 +17956,186 @@
         } else UserLiveFeed_CheckIfIsLiveSTop();
     }
 
+    function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos, right) {
+        Screens_ChangeFocusAnimationFinished = false;
+        Screens_ChangeFocusAnimationFast = true;
+
+        if (right) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
+        else UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x + x_plus], UserLiveFeed_obj[pos].div.childNodes[0]);
+
+        UserLiveFeed_cell[pos][x + x_plus].style.transform = 'translate(' + (x_plus_offset * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+
+        Main_ready(function() {
+            for (var i = for_in; i < for_out; i++) {
+                if (UserLiveFeed_cell[pos][x + i]) {
+                    if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
+                    UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';
+                }
+            }
+
+            window.setTimeout(function() {
+                UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
+                Screens_ChangeFocusAnimationFinished = true;
+            }, Screens_ScrollAnimationTimeout);
+        });
+    }
+
+    function UserLiveFeed_FeedAddCellNotAnimated(pos, x, x_plus, for_in, for_out, for_offset, eleRemovePos, right) {
+
+        if (right) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
+        else UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x + x_plus], UserLiveFeed_obj[pos].div.childNodes[0]);
+
+        for (var i = for_in; i < for_out; i++) {
+            if (UserLiveFeed_cell[pos][x + i]) {
+                UserLiveFeed_cell[pos][x + i].style.transition = 'none';
+                UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';
+            }
+        }
+
+        UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
+    }
+
+    function UserLiveFeed_RemoveElement(ele) {
+        if (ele) ele.remove();
+    }
+
+    function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
+        if (Adder > 0) { // right
+            if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
+
+                if (Screens_ChangeFocusAnimationFinished &&
+                    Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+
+                    UserLiveFeed_FeedAddCellAnimated(
+                        pos,
+                        x,
+                        3, //x_plus
+                        6, //x_plus_offset
+                        -3, //for_in
+                        3, //for_out
+                        3, //for_offset
+                        -4, //eleRemovePos
+                        1 //right?
+                    );
+
+                } else {
+
+                    UserLiveFeed_FeedAddCellNotAnimated(
+                        pos,
+                        x,
+                        3, //x_plus
+                        -3, //for_in
+                        4, //for_out
+                        3, //for_offset
+                        -4, //eleRemovePos
+                        1 //right?
+                    );
+
+                }
+            }
+
+        } else { // Left
+            if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
+
+                if (Screens_ChangeFocusAnimationFinished &&
+                    Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+
+                    UserLiveFeed_FeedAddCellAnimated(
+                        pos,
+                        x,
+                        -3, //x_plus
+                        -6, //x_plus_offset
+                        -3, //for_in
+                        4, //for_out
+                        3, //for_offset
+                        4, //eleRemovePos
+                        0 //right?
+                    );
+
+                } else {
+
+                    UserLiveFeed_FeedAddCellNotAnimated(
+                        pos,
+                        x,
+                        -3, //x_plus
+                        -3, //for_in
+                        4, //for_out
+                        3, //for_offset
+                        4, //eleRemovePos
+                        0 //right?
+                    );
+
+                }
+            }
+        }
+
+    }
+
     function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
-        var eleIdPos, eleRemoveIdPos;
         if (Adder > 0) { // right
             if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
-                UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + 4]);
-                eleRemoveIdPos = pos + '_' + (x - 6);
-                document.getElementById(UserLiveFeed_ids[8] + eleRemoveIdPos).style.width = 0;
 
-                if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+                if (Screens_ChangeFocusAnimationFinished &&
                     Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                    Screens_ChangeFocusAnimationFinished = false;
-                    Screens_ChangeFocusAnimationFast = true;
 
-                    window.setTimeout(function() {
-                        Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                        Screens_ChangeFocusAnimationFinished = true;
-                    }, UserLiveFeed_AnimationTimeout);
+                    UserLiveFeed_FeedAddCellAnimated(
+                        pos,
+                        x,
+                        4, //x_plus
+                        9, //x_plus_offset
+                        -5, //for_in
+                        6, //for_out
+                        5, //for_offset
+                        -6, //eleRemovePos
+                        1 //right?
+                    );
 
-                } else Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+                } else {
+
+                    UserLiveFeed_FeedAddCellNotAnimated(
+                        pos,
+                        x,
+                        4, //x_plus
+                        -5, //for_in
+                        7, //for_out
+                        5, //for_offset
+                        -6, //eleRemovePos
+                        1 //right?
+                    );
+
+                }
             }
         } else { // Left
             if (x > 4 && UserLiveFeed_cell[pos].length > (x + 4)) {
-                eleIdPos = pos + '_' + (x - 5);
-                eleRemoveIdPos = pos + '_' + (x + 5);
 
-                UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x - 5], UserLiveFeed_obj[pos].div.childNodes[0]);
-
-                if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
+                if (Screens_ChangeFocusAnimationFinished &&
                     Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
-                    Screens_ChangeFocusAnimationFinished = false;
-                    Screens_ChangeFocusAnimationFast = true;
 
-                    Main_ready(function() {
-                        document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                    });
+                    UserLiveFeed_FeedAddCellAnimated(
+                        pos,
+                        x,
+                        -5, //x_plus
+                        9, //x_plus_offset
+                        -5, //for_in
+                        7, //for_out
+                        5, //for_offset
+                        5, //eleRemovePos
+                        0 //right?
+                    );
 
-                    window.setTimeout(function() {
-                        Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
-                        Screens_ChangeFocusAnimationFinished = true;
-                    }, UserLiveFeed_AnimationTimeout);
                 } else {
-                    document.getElementById(UserLiveFeed_ids[8] + eleIdPos).style.width = '';
-                    Screens_RemoveElement(UserLiveFeed_ids[8] + eleRemoveIdPos);
+
+                    UserLiveFeed_FeedAddCellNotAnimated(
+                        pos,
+                        x,
+                        -5, //x_plus
+                        -5, //for_in
+                        7, //for_out
+                        5, //for_offset
+                        5, //eleRemovePos
+                        0 //right?
+                    );
+
                 }
             }
         }
@@ -18155,6 +18328,7 @@
             UserLiveFeed_LastPos[pos] = null;
         }
 
+        UserLiveFeed_obj[pos].offsettopFontsize = Settings_Obj_default('global_font_offset');
         UserLiveFeed_cell[pos] = [];
         UserLiveFeed_idObject[pos] = {};
         UserLiveFeed_itemsCount[pos] = 0;
@@ -18165,7 +18339,7 @@
         UserLiveFeed_obj[pos].offset = 0;
         UserLiveFeed_obj[pos].loadingMore = false;
         UserLiveFeed_obj[pos].dataEnded = false;
-        UserLiveFeed_obj[pos].div.style.transform = 'translateX(' + 0 + "em)";
+        UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
         Main_ShowElement('dialog_loading_side_feed');
         if (UserLiveFeed_isFeedShow()) {
@@ -18423,7 +18597,8 @@
     function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
         if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
-        if ((!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+        if ((!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) || forceRefressh ||
+                UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
         else {
             UserLiveFeed_obj[pos].div.classList.remove('hide');
 
@@ -18503,6 +18678,7 @@
                 }
             }
 
+            if (!itemsCount) UserLiveFeedobj_Empty(pos);
         } else UserLiveFeedobj_Empty(pos);
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
@@ -19537,11 +19713,10 @@
                     );
             } else Main_ScrollTable(Users_ids[5], 0);
 
-        } else Main_handleKeyUp();
+        }
     }
 
     function Users_removeFocus() {
-        Main_addFocusFinish = false;
         Main_RemoveClass(Users_ids[0] + Users_cursorY + '_' + Users_cursorX, Main_classThumb);
     }
 
@@ -19635,7 +19810,8 @@
 
     function Users_handleKeyDown(event) {
         if (Main_FirstLoad || Main_CantClick()) return;
-        else Main_keyClickDelayStart();
+
+        Main_keyClickDelayStart();
 
         var i;
 
@@ -19651,7 +19827,7 @@
                     Sidepannel_RemoveFocusMain();
                     Main_values.Main_Go = Users_beforeUser;
                     Sidepannel_SetTopOpacity(Main_values.Main_Go);
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                 }
                 break;
             case KEY_LEFT:
