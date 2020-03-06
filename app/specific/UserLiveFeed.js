@@ -244,7 +244,6 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
         for (i = min; i < max; i++ , j++) {
             if (UserLiveFeed_cell[pos][i]) {
                 UserLiveFeed_cell[pos][i].style.transform = 'translate(' + (j * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
-                UserLiveFeed_cell[pos][i].style.position = 'absolute';
             }
         }
     }
@@ -510,22 +509,18 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 }
 
 function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos) {
-    var i;
-
     Screens_ChangeFocusAnimationFinished = false;
     Screens_ChangeFocusAnimationFast = true;
 
     UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
     UserLiveFeed_cell[pos][x + x_plus].style.transform = 'translate(' + (x_plus_offset * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
-    UserLiveFeed_cell[pos][x + x_plus].style.position = 'absolute';
-
-    for (i = for_in; i < for_out; i++) {
-        if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
-    }
 
     Main_ready(function() {
-        for (i = for_in; i < for_out; i++) {
-            if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';
+        for (var i = for_in; i < for_out; i++) {
+            if (UserLiveFeed_cell[pos][x + i]) {
+                if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
+                UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';
+            }
         }
 
         window.setTimeout(function() {
@@ -537,7 +532,6 @@ function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in,
 
 function UserLiveFeed_FeedAddCellNotAnimated(pos, x, x_plus, for_in, for_out, for_offset, eleRemovePos) {
     UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
-    UserLiveFeed_cell[pos][x + x_plus].style.position = 'absolute';
 
     for (var i = for_in; i < for_out; i++) {
         if (UserLiveFeed_cell[pos][x + i]) {
