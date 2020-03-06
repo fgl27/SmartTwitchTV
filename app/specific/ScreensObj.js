@@ -82,6 +82,7 @@ var Base_obj = {
     },
     Set_Scroll: function() {
         this.ScrollDoc = document.getElementById(this.ids[10]);
+        this.tableDoc = document.getElementById(this.table);
     },
     addrow: Screens_addrow,
     key_exit: function(goSidepanel) {//TODO overwrite this on if object
@@ -1710,7 +1711,7 @@ function ScreensObj_addSwitches(StringsArray) {
             'y_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
         inUseObj.row.appendChild(div);
     }
-    document.getElementById(inUseObj.table).appendChild(inUseObj.row);
+    inUseObj.tableDoc.appendChild(inUseObj.row);
 }
 
 function ScreensObj_TopLableAgameInit() {
