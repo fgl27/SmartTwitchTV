@@ -4538,7 +4538,7 @@
             Main_Switchobj[1].init_fun();
         }
 
-        if (removekey) document.body.removeEventListener("keydown", Main_Switchobj[Main_HistoryClip].key_fun);
+        if (removekey) document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
     }
 
     function Main_OpenSearch() {
