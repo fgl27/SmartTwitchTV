@@ -124,7 +124,7 @@ var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.136';
-var Main_minversion = '030520';
+var Main_minversion = '030620';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsNotBrowserVersion = '';
 var Main_AndroidSDK = 1000;
