@@ -27,6 +27,7 @@ function UserLiveFeedobj_StartDefault(pos) {
         UserLiveFeed_LastPos[pos] = null;
     }
 
+    UserLiveFeed_obj[pos].offsettopFontsize = Settings_Obj_default('global_font_offset');
     UserLiveFeed_cell[pos] = [];
     UserLiveFeed_idObject[pos] = {};
     UserLiveFeed_itemsCount[pos] = 0;
@@ -291,7 +292,8 @@ function UserLiveFeedobj_ShowFeed() {
 function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
     if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
-    if ((!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) || forceRefressh) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
+    if ((!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) || forceRefressh ||
+        UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset')) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
     else {
         UserLiveFeed_obj[pos].div.classList.remove('hide');
 
