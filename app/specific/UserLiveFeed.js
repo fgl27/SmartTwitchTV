@@ -226,7 +226,7 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
             if (!temp) UserLiveFeed_obj[pos].div.classList.remove('hide');
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-            if (!Main_showScene2Doc()) {
+            if (!Main_isScene2DocShown()) {
                 Main_Scene2Doc.style.transform = 'translateY(-1000%)';
                 Main_ShowElementWithEle(Main_Scene2Doc);
 
@@ -510,6 +510,8 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 }
 
 function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos) {
+    var i;
+
     Screens_ChangeFocusAnimationFinished = false;
     Screens_ChangeFocusAnimationFast = true;
 
@@ -537,7 +539,7 @@ function UserLiveFeed_FeedAddCellNotAnimated(pos, x, x_plus, for_in, for_out, fo
     UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
     UserLiveFeed_cell[pos][x + x_plus].style.position = 'absolute';
 
-    for (i = for_in; i < for_out; i++) {
+    for (var i = for_in; i < for_out; i++) {
         if (UserLiveFeed_cell[pos][x + i]) {
             UserLiveFeed_cell[pos][x + i].style.transition = 'none';
             UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';

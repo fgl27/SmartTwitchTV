@@ -400,12 +400,11 @@ function Screens_loadDataSuccessFinish(obj) {
         if (obj.emptyContent) Main_showWarningDialog(obj.empty_str());
         else {
             obj.status = true;
-            var doc = document.getElementById(obj.table),
-                i;
+            var i;
 
             for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
                 if (obj.Cells[i]) {
-                    doc.appendChild(obj.Cells[i]);
+                    inUseObj.tableDoc.appendChild(obj.Cells[i]);
                     obj.Cells[i].style.position = '';
                     obj.Cells[i].style.transition = 'none';
                 }
@@ -593,105 +592,90 @@ function Screens_ThumbNotNull(thumbnail) {
     return document.getElementById(thumbnail) !== null;
 }
 
+function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos) {
+    var i;
+
+    Screens_ChangeFocusAnimationFinished = false;
+    Screens_ChangeFocusAnimationFast = true;
+
+    inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[0]);
+    inUseObj.Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * inUseObj.offsettop) + 'em)';
+    inUseObj.Cells[y + y_plus].style.position = 'absolute';
+
+    for (i = for_in; i < for_out; i++) {
+        if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
+    }
+
+    Main_ready(function() {
+        for (i = for_in; i < for_out; i++) {
+            if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
+        }
+
+        window.setTimeout(function() {
+            UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+            Screens_ChangeFocusAnimationFinished = true;
+        }, Screens_ScrollAnimationTimeout);
+    });
+}
+
+function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos) {
+
+    inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+    inUseObj.Cells[y + y_plus].style.position = 'absolute';
+
+    for (var i = for_in; i < for_out; i++) {
+        if (inUseObj.Cells[y + i]) {
+            inUseObj.Cells[y + i].style.transition = 'none';
+            inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
+        }
+    }
+
+    UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+}
 
 function Screens_addrowChannel(forceScroll, y) {
     if (inUseObj.currY < y) { // down
-        inUseObj.currY = inUseObj.posY;
+
         if (y > 2) Screens_addrowChannelDown(y);
+
     } else if (inUseObj.currY > y) { // Up
-        var i;
-        inUseObj.currY = inUseObj.posY;
+
 
         if (y > 1 && (inUseObj.Cells.length) > (y + 3)) {
-            var doc = document.getElementById(inUseObj.table);
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
 
-                doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
-                inUseObj.Cells[y - 2].style.transform = 'translateY(' + (4 * inUseObj.offsettop) + 'em)';
-                inUseObj.Cells[y - 2].style.position = 'absolute';
-
-                for (i = -2; i < 6; i++) {
-                    if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
-                }
-
-                Main_ready(function() {
-                    for (i = -2; i < 6; i++) {
-                        if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (2 + i)) + 'em)';
-                    }
-                });
-
-                window.setTimeout(function() {
-                    Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, Screens_ScrollAnimationTimeout);
+                //Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos);
+                Screens_addrowAnimated(y, -2, 4, -2, 6, 2, 3);
 
             } else {
-                doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
-                inUseObj.Cells[y - 2].style.position = 'absolute';
 
-                for (i = -2; i < 6; i++) {
-                    if (inUseObj.Cells[y + i]) {
-                        inUseObj.Cells[y + i].style.transition = 'none';
-                        inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (2 + i)) + 'em)';
-                    }
-                }
+                //Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos);
+                Screens_addrowNotAnimated(y, -2, -2, 6, 2, 3);
 
-                Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
             }
         }
     }
 
+    inUseObj.currY = inUseObj.posY;
     Screens_addrowEnd(forceScroll);
 }
 
 function Screens_addrowChannelDown(y) {
     if (inUseObj.Cells[y + 2]) {
-        var i;
-        //if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3))) {
 
         if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
             !Screens_ChangeFocusAnimationFast) { //If with animation
-            Screens_ChangeFocusAnimationFinished = false;
-            Screens_ChangeFocusAnimationFast = true;
 
-            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
-            inUseObj.Cells[y + 2].style.transform = 'translateY(' + (4 * inUseObj.offsettop) + 'em)';
-            inUseObj.Cells[y + 2].style.position = 'absolute';
-
-            for (i = -2; i < 5; i++) {
-                if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
-            }
-
-            Main_ready(function() {
-                for (i = -2; i < 5; i++) {
-                    if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (2 + i)) + 'em)';
-                }
-            });
-
-            window.setTimeout(function() {
-                Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
-                Screens_ChangeFocusAnimationFinished = true;
-            }, Screens_ScrollAnimationTimeout);
-
+            //Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos);
+            Screens_addrowAnimated(y, 2, 4, -2, 5, 2, -3);
 
         } else {
-            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
-            inUseObj.Cells[y + 2].style.position = 'absolute';
 
-            for (i = -2; i < 5; i++) {
-                if (inUseObj.Cells[y + i]) {
-                    inUseObj.Cells[y + i].style.transition = 'none';
-                    inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (2 + i)) + 'em)';
-                }
-            }
-
-            Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
+            //Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos);
+            Screens_addrowNotAnimated(y, 2, -2, 5, 2, -3);
         }
-        //}
 
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
@@ -706,98 +690,43 @@ function Screens_addrowChannelDown(y) {
 
 function Screens_addrow(forceScroll, y) {
     if (inUseObj.currY < y) { // down
-        inUseObj.currY = inUseObj.posY;
         Screens_addrowDown(y);
     } else if (inUseObj.currY > y) { // Up
-        var i;
-        inUseObj.currY = inUseObj.posY;
+
         if (y && (inUseObj.Cells.length) > (y + 1) && inUseObj.Cells[y + 2]) {
-            var doc = document.getElementById(inUseObj.table);
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
 
-                doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-                inUseObj.Cells[y - 1].style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
-                inUseObj.Cells[y - 1].style.position = 'absolute';
+                //Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos);
+                Screens_addrowAnimated(y, -1, -1, -1, 3, 1, 2);
 
-                for (i = -1; i < 3; i++) {
-                    if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
-                }
-
-                Main_ready(function() {
-                    for (i = -1; i < 3; i++) {
-                        if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
-                    }
-                });
-
-                window.setTimeout(function() {
-                    Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, Screens_ScrollAnimationTimeout);
             } else {
-                doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-                inUseObj.Cells[y - 1].style.position = 'absolute';
-                for (i = -1; i < 3; i++) {
-                    if (inUseObj.Cells[y + i]) {
-                        inUseObj.Cells[y + i].style.transition = 'none';
-                        inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
-                    }
-                }
 
-                Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
+                //Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos);
+                Screens_addrowNotAnimated(y, -1, -1, 3, 1, 2);
             }
 
         }
     }
+
+    inUseObj.currY = inUseObj.posY;
     Screens_addrowEnd(forceScroll);
 }
 
 function Screens_addrowDown(y) {
     if (y > 1 && inUseObj.Cells[y + 1]) {
-        var i;
-        //if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 2))) {
 
         if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
             !Screens_ChangeFocusAnimationFast) { //If with animation
-            Screens_ChangeFocusAnimationFinished = false;
-            Screens_ChangeFocusAnimationFast = true;
 
-            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 1]);
-            inUseObj.Cells[y + 1].style.transform = 'translateY(' + (3 * inUseObj.offsettop) + 'em)';
-            inUseObj.Cells[y + 1].style.position = 'absolute';
-
-            for (i = -1; i < 2; i++) {
-                if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
-            }
-
-            Main_ready(function() {
-                for (i = -1; i < 2; i++) {
-                    if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
-                }
-            });
-
-            window.setTimeout(function() {
-                Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
-                Screens_ChangeFocusAnimationFinished = true;
-            }, Screens_ScrollAnimationTimeout);
-
+            //Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos);
+            Screens_addrowAnimated(y, 1, 3, -1, 2, 1, -2);
         } else {
-            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 1]);
-            inUseObj.Cells[y + 1].style.position = 'absolute';
-
-            for (i = -1; i < 2; i++) {
-                if (inUseObj.Cells[y + i]) {
-                    inUseObj.Cells[y + i].style.transition = 'none';
-                    inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
-                }
-            }
-
-            Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
+            //Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos);
+            Screens_addrowNotAnimated(y, 1, -1, 2, 1, -2);
         }
-        //}
+
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
         //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
@@ -807,11 +736,6 @@ function Screens_addrowDown(y) {
             Screens_addrowDown(y);
         }, 10);
     }
-}
-
-function Screens_RemoveElement(id) {
-    var ele = document.getElementById(id);
-    if (ele) ele.remove();
 }
 
 function Screens_addrowEnd(forceScroll) {
