@@ -1038,7 +1038,7 @@ var Base_Game_obj = {
     ItemsLimit: Main_ItemsLimitGame,
     rowClass: 'animate_height_transition_games',
     ColoumnsCount: Main_ColoumnsCountGame,
-    addFocus: Screens_addFocusGame,
+    addFocus: Screens_addFocusVideo,
     img_404: IMG_404_GAME,
     screenType: 3,
     empty_str: function() {
