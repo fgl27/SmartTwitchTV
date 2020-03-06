@@ -79,6 +79,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].dataEnded = false;
         UserLiveFeed_obj[i].MaxOffset = 0;
         UserLiveFeed_FeedSetPosLast[i] = 0;
+        UserLiveFeed_obj[i].offsettopFontsize = 0;
     }
 
     //User live
