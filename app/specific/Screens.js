@@ -591,11 +591,13 @@ function Screens_ThumbNotNull(thumbnail) {
     return document.getElementById(thumbnail) !== null;
 }
 
-function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos) {
+function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down) {
     Screens_ChangeFocusAnimationFinished = false;
     Screens_ChangeFocusAnimationFast = true;
 
-    inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[0]);
+    if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
+    else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+
     inUseObj.Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * inUseObj.offsettop) + 'em)';
 
     Main_ready(function() {
@@ -613,9 +615,10 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
     });
 }
 
-function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos) {
+function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down) {
 
-    inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+    if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
+    else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
 
     for (var i = for_in; i < for_out; i++) {
         if (inUseObj.Cells[y + i]) {
@@ -647,7 +650,8 @@ function Screens_addrowChannel(forceScroll, y) {
                     -2, //for_in
                     6,  //for_out
                     2,  //for_offset
-                    3   //eleRemovePos
+                    3,  //eleRemovePos
+                    0   //down?
                 );
 
             } else {
@@ -658,7 +662,8 @@ function Screens_addrowChannel(forceScroll, y) {
                     -2, //for_in
                     6,  //for_out
                     2,  //for_offset
-                    3   //eleRemovePos
+                    3,   //eleRemovePos
+                    0   //down?
                 );
 
             }
@@ -682,7 +687,8 @@ function Screens_addrowChannelDown(y) {
                 -2, //for_in
                 5,  //for_out
                 2,  //for_offset
-                -3  //eleRemovePos
+                -3, //eleRemovePos
+                1   //down?
             );
 
         } else {
@@ -693,7 +699,8 @@ function Screens_addrowChannelDown(y) {
                 -2, //for_in
                 5,  //for_out
                 2,  //for_offset
-                -3  //eleRemovePos
+                -3,  //eleRemovePos
+                1   //down?
             );
         }
 
@@ -725,7 +732,8 @@ function Screens_addrow(forceScroll, y) {
                     -1, //for_in
                     3,  //for_out
                     1,  //for_offset
-                    2   //eleRemovePos
+                    2,  //eleRemovePos
+                    0   //down?
                 );
 
             } else {
@@ -736,7 +744,8 @@ function Screens_addrow(forceScroll, y) {
                     -1, //for_in
                     3,  //for_out
                     1,  //for_offset
-                    2   //eleRemovePos
+                    2,  //eleRemovePos
+                    0   //down?
                 );
             }
 
@@ -760,7 +769,8 @@ function Screens_addrowDown(y) {
                 -1, //for_in
                 2,  //for_out
                 1,  //for_offset
-                -2  //eleRemovePos
+                -2, //eleRemovePos
+                1   //down?
             );
 
         } else {
@@ -771,7 +781,8 @@ function Screens_addrowDown(y) {
                 -1, //for_in
                 2,  //for_out
                 1,  //for_offset
-                -2  //eleRemovePos
+                -2, //eleRemovePos
+                1   //down?
             );
 
         }
