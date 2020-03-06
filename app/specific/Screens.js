@@ -751,7 +751,6 @@ function Screens_setOffset(pos, y) {
 }
 
 function Screens_addFocusChannel(y, idArray, forceScroll) {
-    //Screens_setOffset(2, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -778,31 +777,16 @@ function Screens_addFocusChannel(y, idArray, forceScroll) {
 }
 
 function Screens_addFocusVideo(y, idArray, forceScroll) {
-    //Screens_setOffset(1, y);
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
-        if (y > 0) {
+        if (!y) inUseObj.ScrollDoc.style.transform = '';
+        else if (y === 1) {
 
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
+            if (inUseObj.Cells[y + 1]) //We didn't reach the bottom yet
                 inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
 
-        } else inUseObj.ScrollDoc.style.transform = '';
-    }
-
-    Main_handleKeyUp();
-}
-
-function Screens_addFocusGame(y, idArray, forceScroll) {
-    //Screens_setOffset(1, y);
-
-    if (Main_YchangeAddFocus(y) || forceScroll) {
-        if (y > 0) {
-
-            if (Main_ThumbNull((y + 1), 0, idArray[0])) //We didn't reach the bottom yet
-                inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
-
-        } else inUseObj.ScrollDoc.style.transform = '';
+        }
     }
 
     Main_handleKeyUp();
