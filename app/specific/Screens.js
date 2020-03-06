@@ -422,7 +422,6 @@ function Screens_loadDataSuccessFinish(obj) {
             for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
                 if (obj.Cells[i]) {
                     obj.Cells[i].style.transform = 'translateY(' + (i * inUseObj.offsettop) + 'em)';
-                    obj.Cells[i].style.position = 'absolute';
                 }
             }
 
@@ -593,22 +592,18 @@ function Screens_ThumbNotNull(thumbnail) {
 }
 
 function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos) {
-    var i;
-
     Screens_ChangeFocusAnimationFinished = false;
     Screens_ChangeFocusAnimationFast = true;
 
     inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[0]);
     inUseObj.Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * inUseObj.offsettop) + 'em)';
-    inUseObj.Cells[y + y_plus].style.position = 'absolute';
-
-    for (i = for_in; i < for_out; i++) {
-        if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
-    }
 
     Main_ready(function() {
-        for (i = for_in; i < for_out; i++) {
-            if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
+        for (var i = for_in; i < for_out; i++) {
+            if (inUseObj.Cells[y + i]) {
+                inUseObj.Cells[y + i].style.transition = '';
+                inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
+            }
         }
 
         window.setTimeout(function() {
@@ -621,7 +616,6 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
 function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos) {
 
     inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
-    inUseObj.Cells[y + y_plus].style.position = 'absolute';
 
     for (var i = for_in; i < for_out; i++) {
         if (inUseObj.Cells[y + i]) {
