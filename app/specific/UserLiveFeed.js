@@ -554,11 +554,28 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
 
-                UserLiveFeed_FeedAddCellAnimated(pos, x, 3, 6, -3, 3, 3, -4);
+                UserLiveFeed_FeedAddCellAnimated(
+                    pos,
+                    x,
+                    3,  //x_plus
+                    6,  //x_plus_offset
+                    -3, //for_in
+                    3,  //for_out
+                    3,  //for_offset
+                    -4  //eleRemovePos
+                );
 
             } else {
 
-                UserLiveFeed_FeedAddCellNotAnimated(pos, x, 3, -3, 4, 3, -4);
+                UserLiveFeed_FeedAddCellNotAnimated(
+                    pos,
+                    x,
+                    3,  //x_plus
+                    -3, //for_in
+                    4,  //for_out
+                    3,  //for_offset
+                    -4  //eleRemovePos
+                );
 
             }
         }
@@ -569,11 +586,28 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
 
-                UserLiveFeed_FeedAddCellAnimated(pos, x, -3, -6, -3, 4, 3, 4);
+                UserLiveFeed_FeedAddCellAnimated(
+                    pos,
+                    x,
+                    -3, //x_plus
+                    -6, //x_plus_offset
+                    -3, //for_in
+                    4,  //for_out
+                    3,  //for_offset
+                    4   //eleRemovePos
+                );
 
             } else {
 
-                UserLiveFeed_FeedAddCellNotAnimated(pos, x, -3, -3, 4, 3, 4);
+                UserLiveFeed_FeedAddCellNotAnimated(
+                    pos,
+                    x,
+                    -3, //x_plus
+                    -3, //for_in
+                    4,  //for_out
+                    3,  //for_offset
+                    4   //eleRemovePos
+                );
 
             }
         }
@@ -588,11 +622,28 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
 
-                UserLiveFeed_FeedAddCellAnimated(pos, x, 4, 9, -5, 6, 5, -6);
+                UserLiveFeed_FeedAddCellAnimated(
+                    pos,
+                    x,
+                    4,  //x_plus
+                    9,  //x_plus_offset
+                    -5, //for_in
+                    6,  //for_out
+                    5,  //for_offset
+                    -6  //eleRemovePos
+                );
 
             } else {
 
-                UserLiveFeed_FeedAddCellNotAnimated(pos, x, 4, -5, 7, 5, -6);
+                UserLiveFeed_FeedAddCellNotAnimated(
+                    pos,
+                    x,
+                    4,  //x_plus
+                    -5, //for_in
+                    7,  //for_out
+                    5,  //for_offset
+                    -6  //eleRemovePos
+                );
 
             }
         }
@@ -602,11 +653,28 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
             if (!Play_MultiEnable && Screens_ChangeFocusAnimationFinished &&
                 Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
 
-                UserLiveFeed_FeedAddCellAnimated(pos, x, -5, 9, -5, 7, 5, 5);
+                UserLiveFeed_FeedAddCellAnimated(
+                    pos,
+                    x,
+                    -5, //x_plus
+                    9,  //x_plus_offset
+                    -5, //for_in
+                    7,  //for_out
+                    5,  //for_offset
+                    5   //eleRemovePos
+                );
 
             } else {
 
-                UserLiveFeed_FeedAddCellNotAnimated(pos, x, -5, -5, 7, 5, 5);
+                UserLiveFeed_FeedAddCellNotAnimated(
+                    pos,
+                    x,
+                    -5, //x_plus
+                    -5, //for_in
+                    7,  //for_out
+                    5,  //for_offset
+                    5   //eleRemovePos
+                );
 
             }
         }
