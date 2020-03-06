@@ -478,7 +478,7 @@ function Screens_loadDataSuccessFinish(obj) {
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
                     Screens_RemoveAllFocus();
-                    Main_SwitchScreenAction();
+                    Main_SwitchScreen();
                     if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
                     else {
                         Main_FirstRun = false;
@@ -1111,12 +1111,12 @@ function AGame_headerOptions() {
         Main_values.Main_Go = Main_AGameVod;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_headerOptionsExit();
-        Main_SwitchScreenAction();
+        Main_SwitchScreen();
     } else if (inUseObj.posX === 1) {
         Main_values.Main_Go = Main_AGameClip;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_headerOptionsExit();
-        Main_SwitchScreenAction();
+        Main_SwitchScreen();
     } else AGame_follow();
 }
 

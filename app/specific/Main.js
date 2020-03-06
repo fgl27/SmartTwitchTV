@@ -730,7 +730,7 @@ function Main_showExitDialog() {
 
 function Main_HideExitDialog() {
     document.body.removeEventListener("keydown", Main_ExitDialog, false);
-    Main_SwitchScreenAction();
+    Main_SwitchScreen();
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
     Main_ExitCursor = 0;
@@ -844,15 +844,6 @@ function Main_is_rerun(content) {
 
 function Main_ThumbNull(y, x, thumbnail) {
     return document.getElementById(thumbnail + y + '_' + x) !== null;
-}
-
-function Main_ReStartScreens() {
-    Main_updateclock();
-    Main_SwitchScreen();
-}
-
-function Main_SwitchScreen(removekey) {
-    Main_SwitchScreenAction(removekey);
 }
 
 var Main_Switchobj = {
@@ -1129,7 +1120,12 @@ Main_Switchobj[Main_HistoryClip] = {
     exit_fun: Screens_exit,
 };
 
-function Main_SwitchScreenAction(removekey) {
+function Main_ReStartScreens() {
+    Main_updateclock();
+    Main_SwitchScreen();
+}
+
+function Main_SwitchScreen(removekey) {
     Main_HideWarningDialog();
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
