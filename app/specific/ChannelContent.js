@@ -421,7 +421,7 @@ function ChannelContent_handleKeyDown(event) {
                 ChannelContent_exit();
                 Sidepannel_SetDefaultLables();
                 Main_values.Main_selectedChannel_id = '';
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
             }
             break;
         case KEY_LEFT:

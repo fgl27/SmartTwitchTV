@@ -280,7 +280,7 @@ function Users_handleKeyDown(event) {
                 Sidepannel_RemoveFocusMain();
                 Main_values.Main_Go = Users_beforeUser;
                 Sidepannel_SetTopOpacity(Main_values.Main_Go);
-                Main_SwitchScreenAction();
+                Main_SwitchScreen();
             }
             break;
         case KEY_LEFT:
