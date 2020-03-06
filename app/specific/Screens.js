@@ -585,26 +585,45 @@ function Screens_addrowChannel(forceScroll, y) {
         if (y > 2) Screens_addrowChannelDown(y);
     } else if (inUseObj.currY > y) { // Up
         inUseObj.currY = inUseObj.posY;
+
         if (y > 1 && (inUseObj.Cells.length) > (y + 3)) {
             var doc = document.getElementById(inUseObj.table);
-            doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
                 Screens_ChangeFocusAnimationFinished = false;
                 Screens_ChangeFocusAnimationFast = true;
 
+                doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
+                inUseObj.Cells[y - 2].style.transform = 'translateY(' + (4 * inUseObj.offsettop) + 'em)';
+                inUseObj.Cells[y - 2].style.position = 'absolute';
+
+                for (i = -2; i < 6; i++) {
+                    if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
+                }
+
                 Main_ready(function() {
-                    document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = '';
+                    for (i = -2; i < 6; i++) {
+                        if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (2 + i)) + 'em)';
+                    }
                 });
 
                 window.setTimeout(function() {
                     Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
                     Screens_ChangeFocusAnimationFinished = true;
-
                 }, Screens_ScrollAnimationTimeout);
+
             } else {
-                document.getElementById(inUseObj.ids[12] + (y - 2)).style.height = '';
+                doc.insertBefore(inUseObj.Cells[y - 2], doc.childNodes[0]);
+                inUseObj.Cells[y - 2].style.position = 'absolute';
+
+                for (i = -2; i < 6; i++) {
+                    if (inUseObj.Cells[y + i]) {
+                        inUseObj.Cells[y + i].style.transition = 'none';
+                        inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (2 + i)) + 'em)';
+                    }
+                }
+
                 Screens_RemoveElement(inUseObj.ids[12] + (y + 3));
             }
         }
@@ -615,23 +634,47 @@ function Screens_addrowChannel(forceScroll, y) {
 
 function Screens_addrowChannelDown(y) {
     if (inUseObj.Cells[y + 2]) {
-        document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
+        //if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3))) {
 
-        if (Screens_ThumbNotNull(inUseObj.ids[12] + (y - 3))) {
-            document.getElementById(inUseObj.ids[12] + (y - 3)).style.height = 0;
+        if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+            !Screens_ChangeFocusAnimationFast) { //If with animation
+            Screens_ChangeFocusAnimationFinished = false;
+            Screens_ChangeFocusAnimationFast = true;
 
-            if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-                !Screens_ChangeFocusAnimationFast) { //If with animation
-                Screens_ChangeFocusAnimationFinished = false;
-                Screens_ChangeFocusAnimationFast = true;
+            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
+            inUseObj.Cells[y + 2].style.transform = 'translateY(' + (4 * inUseObj.offsettop) + 'em)';
+            inUseObj.Cells[y + 2].style.position = 'absolute';
 
-                window.setTimeout(function() {
-                    Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
-                    Screens_ChangeFocusAnimationFinished = true;
-                }, Screens_ScrollAnimationTimeout);
+            for (i = -2; i < 5; i++) {
+                if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
+            }
 
-            } else Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
+            Main_ready(function() {
+                for (i = -2; i < 5; i++) {
+                    if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (2 + i)) + 'em)';
+                }
+            });
+
+            window.setTimeout(function() {
+                Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
+                Screens_ChangeFocusAnimationFinished = true;
+            }, Screens_ScrollAnimationTimeout);
+
+
+        } else {
+            document.getElementById(inUseObj.table).appendChild(inUseObj.Cells[y + 2]);
+            inUseObj.Cells[y + 2].style.position = 'absolute';
+
+            for (i = -2; i < 5; i++) {
+                if (inUseObj.Cells[y + i]) {
+                    inUseObj.Cells[y + i].style.transition = 'none';
+                    inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (2 + i)) + 'em)';
+                }
+            }
+
+            Screens_RemoveElement(inUseObj.ids[12] + (y - 3));
         }
+        //}
 
     } else if (inUseObj.loadingData) {
         //Technically we will not get here because
@@ -664,12 +707,12 @@ function Screens_addrow(forceScroll, y) {
                 inUseObj.Cells[y - 1].style.position = 'absolute';
 
                 for (i = -1; i < 3; i++) {
-                    inUseObj.Cells[y + i].style.transition = '';
+                    if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
                 }
 
                 Main_ready(function() {
                     for (i = -1; i < 3; i++) {
-                        inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
+                        if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
                     }
                 });
 
@@ -681,8 +724,10 @@ function Screens_addrow(forceScroll, y) {
                 doc.insertBefore(inUseObj.Cells[y - 1], doc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
                 inUseObj.Cells[y - 1].style.position = 'absolute';
                 for (i = -1; i < 3; i++) {
-                    inUseObj.Cells[y + i].style.transition = 'none';
-                    inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
+                    if (inUseObj.Cells[y + i]) {
+                        inUseObj.Cells[y + i].style.transition = 'none';
+                        inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
+                    }
                 }
 
                 Screens_RemoveElement(inUseObj.ids[12] + (y + 2));
@@ -708,12 +753,12 @@ function Screens_addrowDown(y) {
             inUseObj.Cells[y + 1].style.position = 'absolute';
 
             for (i = -1; i < 2; i++) {
-                inUseObj.Cells[y + i].style.transition = '';
+                if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transition = '';
             }
 
             Main_ready(function() {
                 for (i = -1; i < 2; i++) {
-                    inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
+                    if (inUseObj.Cells[y + i]) inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
                 }
             });
 
@@ -727,8 +772,10 @@ function Screens_addrowDown(y) {
             inUseObj.Cells[y + 1].style.position = 'absolute';
 
             for (i = -1; i < 2; i++) {
-                inUseObj.Cells[y + i].style.transition = 'none';
-                inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
+                if (inUseObj.Cells[y + i]) {
+                    inUseObj.Cells[y + i].style.transition = 'none';
+                    inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (1 + i)) + 'em)';
+                }
             }
 
             Screens_RemoveElement(inUseObj.ids[12] + (y - 2));
@@ -777,20 +824,20 @@ function Screens_addFocusChannel(y, idArray, forceScroll) {
         if (y > 1) {
 
             //Channels is a odd screen as thumb are small it need a minor workaround to get all working
-            //TODO revise this for a simple implementeation
+            //TODO revise this for a simple implementation
             if (inUseObj.Cells.length < 6) {
                 if (inUseObj.Cells[y + 1] && (y + 2) < inUseObj.Cells.length || inUseObj.Cells.length === 4)
-                    inUseObj.ScrollDoc.style.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)'; //.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
                 else if (inUseObj.Cells.length > 3)
-                    inUseObj.ScrollDoc.style.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + (inUseObj.offsettop * 2) + 'em)';//.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
             } else {
                 if (inUseObj.Cells[y + 2])
-                    inUseObj.ScrollDoc.style.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)'; //.top = 'calc(39% - ' + inUseObj.offsettop + 'em)';
                 else
-                    inUseObj.ScrollDoc.style.top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
+                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + (inUseObj.offsettop * 2) + 'em)'; //top = 'calc(39% - ' + (inUseObj.offsettop * 3 / 2) + 'em)';
             }
 
-        } else inUseObj.ScrollDoc.style.top = '';
+        } else inUseObj.ScrollDoc.style.transform = '';
 
     }
     Main_handleKeyUp();
