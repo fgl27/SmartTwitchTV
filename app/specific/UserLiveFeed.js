@@ -223,14 +223,22 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
 
         if (!UserLiveFeed_obj[pos].AddCellsize) {
             var temp = Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
-            if (!temp)
-                UserLiveFeed_obj[pos].div.classList.remove('hide');
+            if (!temp) UserLiveFeed_obj[pos].div.classList.remove('hide');
 
-            UserLiveFeed_obj[pos].AddCellsize =
+            //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
+            if (!Main_showScene2Doc()) {
+                Main_Scene2Doc.style.transform = 'translateY(-1000%)';
+                Main_ShowElementWithEle(Main_Scene2Doc);
+
+                UserLiveFeed_obj[pos].AddCellsize =
+                    UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+
+                Main_HideElementWithEle(Main_Scene2Doc);
+                Main_Scene2Doc.style.transform = 'translateY(0px)';
+            } else UserLiveFeed_obj[pos].AddCellsize =
                 UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
 
-            if (!temp)
-                UserLiveFeed_obj[pos].div.classList.add('hide');
+            if (!temp) UserLiveFeed_obj[pos].div.classList.add('hide');
         }
 
         for (i = min; i < max; i++ , j++) {

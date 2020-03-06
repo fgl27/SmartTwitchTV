@@ -38,7 +38,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].offset = 0;
     UserLiveFeed_obj[pos].loadingMore = false;
     UserLiveFeed_obj[pos].dataEnded = false;
-    UserLiveFeed_obj[pos].div.style.transform = 'translateX(' + 0 + "em)";
+    UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
     Main_ShowElement('dialog_loading_side_feed');
     if (UserLiveFeed_isFeedShow()) {
