@@ -370,6 +370,7 @@ function UserLiveFeedobj_History() {
             }
         }
 
+        if (!itemsCount) UserLiveFeedobj_Empty(pos);
     } else UserLiveFeedobj_Empty(pos);
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
