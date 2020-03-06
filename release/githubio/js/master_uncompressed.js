@@ -6807,7 +6807,7 @@
             if (is_vod) PlayVod_hidePanel();
             else Play_hidePanel();
         } else {
-            if (Play_isVodDialogVisible() && Play_ExitDialogVisible()) {
+            if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Play_SingleClickExit)) {
                 Play_HideVodDialog();
                 PlayVod_PreshutdownStream(false);
                 Play_exitMain();
