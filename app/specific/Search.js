@@ -125,7 +125,7 @@ function Search_handleKeyDown(event) {
 }
 
 function Search_inputFocus() {
-    //Main_AddClass('scenekeys', 'avoidclicks');
+    Main_AddClass('scene_notify', 'avoidclicks');
     Main_AddClass('scenefeed', 'avoidclicks');
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     document.body.addEventListener("keydown", Search_KeyboardEvent, false);
@@ -138,6 +138,7 @@ function Search_RemoveinputFocus(EnaKeydown) {
     if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
+    Main_RemoveClass('scene_notify', 'avoidclicks');
     Main_SearchInput.blur();
     Search_removeEventListener();
     document.body.removeEventListener("keydown", Search_KeyboardEvent);
