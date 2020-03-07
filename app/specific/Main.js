@@ -312,7 +312,9 @@ function Main_initWindows() {
         //Backup at start as a backup may never be done yet
         if (Main_CanBackup) {
             Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-            Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+            window.setTimeout(function() {
+                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+            }, 10000);
         }
 
     } catch (e) {
@@ -2020,9 +2022,12 @@ function Main_History_Sort(array, msort, direction) {
 }
 
 function Main_setHistoryItem() {
-    var string = JSON.stringify(Main_values_History_data);
-    Main_setItem('Main_values_History_data', string);
-    if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
+    Main_ready(function() {
+        var string = JSON.stringify(Main_values_History_data);
+        Main_setItem('Main_values_History_data', string);
+
+        if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
+    });
 }
 
 //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references

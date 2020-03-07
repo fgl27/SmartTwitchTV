@@ -134,6 +134,8 @@ public class PlayerActivity extends Activity {
     public Handler ExtraPlayerHandler;
     public String[][] ExtraPlayerHandlerResult = new String[10][100];
     public HandlerThread ExtraPlayerHandlerThread;
+    public HandlerThread SaveBackupJsonThread;
+    public Handler SaveBackupJsonHandler;
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
     public int[] droppedFrames = new int[2];
@@ -175,9 +177,14 @@ public class PlayerActivity extends Activity {
             deviceIsTV = Tools.deviceIsTV(this);
 
             MainThreadHandler = new Handler(Looper.getMainLooper());
+
             ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
             ExtraPlayerHandlerThread.start();
             ExtraPlayerHandler = new Handler(ExtraPlayerHandlerThread.getLooper());
+
+            SaveBackupJsonThread = new HandlerThread("SaveBackupJsonThread");
+            SaveBackupJsonThread.start();
+            SaveBackupJsonHandler = new Handler(SaveBackupJsonThread.getLooper());
 
             for (int i = 0; i < PlayerAcountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
@@ -1540,14 +1547,17 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void BackupFile(String file, String file_content) {
+            SaveBackupJsonHandler.removeCallbacksAndMessages(null);
 
-            if (Tools.WR_storage(mwebContext)) {
-                Tools.BackupJson(
-                        mwebContext.getPackageName(),
-                        file,
-                        file_content
-                );
-            }
+            SaveBackupJsonHandler.postDelayed(() -> {
+                if (Tools.WR_storage(mwebContext)) {
+                    Tools.BackupJson(
+                            mwebContext.getPackageName(),
+                            file,
+                            file_content
+                    );
+                }
+            }, 5000);
         }
 
         @SuppressWarnings("unused")//called by JS
