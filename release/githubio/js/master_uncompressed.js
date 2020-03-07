@@ -915,7 +915,7 @@
         STR_DELETE_FROM_HISTORY = "Delete this from history";
         STR_CHECK_HISTORY = "Checking follow status";
         STR_REFRESH_DELETE = "Refresh the screen after delete to see the change.";
-        STR_THUMB_OPTIONS_TOP = "Hold right for thumbnail options";
+        STR_THUMB_OPTIONS_TOP = "Hold left for thumbnail options";
         STR_REPLACE_MULTI = "Choose with to replace by the above?";
         STR_REPLACE_MULTI_ENTER = "Press enter to replace or back to exit without.";
         STR_ALREDY_PLAYING = "Already playing this";
@@ -3839,7 +3839,7 @@
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
         Main_innerHTML('label_update', '<div style="vertical-align: middle; display: inline-block;"><i class="icon-update" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
 
-        Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+        Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
         UserLiveFeed_SetFeedPicText();
 
         Sidepannel_SetDefaultLables();
@@ -4557,11 +4557,11 @@
 
     function Main_RestoreTopLabel() {
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
-        Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+        Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     }
 
     function Main_cleanTopLabel() {
-        Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+        Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     }
 
     function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z' or ms
@@ -12237,6 +12237,7 @@
         Screens_ClearAnimation();
         inUseObj.posY += y;
         inUseObj.posX = x;
+
         Screens_addFocus();
     }
 
@@ -12329,13 +12330,12 @@
         if (e.keyCode === KEY_ENTER) {
             Screens_handleKeyUpClear();
             if (!Screens_clear) inUseObj.key_play();
-        } else if (e.keyCode === KEY_RIGHT) {
+        } else if (e.keyCode === KEY_LEFT) {
             window.clearTimeout(Screens_KeyEnterID);
             document.body.removeEventListener("keyup", Screens_handleKeyUp);
             if (!Screens_clear) {
-                Screens_keyRight();
-                document.body.addEventListener("keydown", Screens_handleKeyDown, false);
-                Screens_ChangeFocusAnimationFast = false;
+                if (!inUseObj.posX) Screens_OpenSidePanel();
+                else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
             }
         }
         Screens_handleKeyUpIsClear = true;
@@ -12407,15 +12407,6 @@
                 inUseObj.key_exit();
                 break;
             case KEY_LEFT:
-                if (!inUseObj.posX) Screens_OpenSidePanel();
-                else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
-                break;
-            case KEY_RIGHT:
-                if (inUseObj.posY === -1) {
-                    Screens_keyRight();
-                    break;
-                }
-
                 Screens_ThumbOptionSpecial = inUseObj.histPosXName ? false : true;
                 Screens_handleKeyUpIsClear = false;
 
@@ -12423,6 +12414,9 @@
                 document.body.addEventListener("keyup", Screens_handleKeyUp, false);
                 Screens_clear = false;
                 Screens_KeyEnterID = window.setTimeout(Screens_ThumbOptionStart, 500);
+                break;
+            case KEY_RIGHT:
+                Screens_keyRight();
                 break;
             case KEY_UP:
                 if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(-1);
@@ -13677,7 +13671,7 @@
                 }
                 this.lastselectedChannel = Main_values.Main_selectedChannel;
                 Main_cleanTopLabel();
-                Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+                Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
                 this.SetPeriod();
             },
             SetPeriod: function() {
@@ -14362,7 +14356,7 @@
                 if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
                 Main_cleanTopLabel();
                 this.SetPeriod();
-                Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+                Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
                 this.lastselectedChannel = Main_values.Main_selectedChannel;
             },
             label_exit: Main_RestoreTopLabel,
@@ -15091,7 +15085,7 @@
     function ScreensObj_TopLableAgameInit() {
         if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
-        Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+        Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
 
         if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
             inUseObj.gameSelected !== Main_values.Main_gameSelected)
@@ -15108,7 +15102,7 @@
 
     function ScreensObj_TopLableAgameExit() {
         inUseObj.gameSelected = Main_values.Main_gameSelected;
-        Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+        Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     }
 
     function ScreensObj_TopLableUserInit() {
@@ -15195,7 +15189,7 @@
     function Search_init() {
         Main_HideWarningDialog();
         Main_HideElement('label_refresh');
-        Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+        Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_innerHTML("label_last_refresh", '');
         Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
         Main_ShowElement('search_scroll');
@@ -15210,7 +15204,7 @@
         document.body.removeEventListener("keydown", Search_handleKeyDown);
         Search_refreshInputFocusTools();
         Main_values.Main_Go = Main_values.Main_BeforeSearch;
-        Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+        Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
         Main_ShowElement('label_refresh');
         Main_SearchInput.value = '';
         Main_HideElement('search_scroll');
@@ -15555,7 +15549,7 @@
         document.body.addEventListener("keydown", Settings_handleKeyDown, false);
         ScreensObj_SetTopLable(STR_SETTINGS);
         Main_ShowElement('settings_holder');
-        Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+        Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_HideElement('label_refresh');
         Settings_cursorY = 0;
         Settings_inputFocus(Settings_cursorY);
@@ -15565,7 +15559,7 @@
     function Settings_exit() {
         Settings_ScrollTableReset();
         document.body.removeEventListener("keydown", Settings_handleKeyDown);
-        Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+        Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
         Main_ShowElement('label_refresh');
         Settings_RemoveinputFocus();
         Main_HideElement('settings_holder');
@@ -19580,7 +19574,7 @@
         }
 
         if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
-        Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+        Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABLE);
         Main_innerHTML("label_last_refresh", '');
 
@@ -19597,7 +19591,7 @@
     }
 
     function Users_exit() {
-        Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+        Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
         Main_HideElement(Users_ids[5]);
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
