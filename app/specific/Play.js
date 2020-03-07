@@ -1867,6 +1867,7 @@ function Play_MultiStartNew(pos, streamer, display_name) {
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
     Play_showWarningDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE), 2000);
+    Play_HideBufferDialog();
 
     if (Play_OlddataSet()) {
         Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_old));
