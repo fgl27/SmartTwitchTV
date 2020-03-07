@@ -51,8 +51,8 @@ function AddUser_handleKeyDown(event) {
 }
 
 function AddUser_inputFocus() {
-    //Main_AddClass('scenekeys', 'avoidclicks');
     Main_AddClass('scenefeed', 'avoidclicks');
+    Main_AddClass('scene_notify', 'avoidclicks');
     document.body.removeEventListener("keydown", AddUser_handleKeyDown);
     document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
@@ -65,6 +65,7 @@ function AddUser_removeEventListener() {
     if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
+    Main_RemoveClass('scene_notify', 'avoidclicks');
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);
         Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
