@@ -7,7 +7,7 @@ var Search_keyBoardOn = false;
 function Search_init() {
     Main_HideWarningDialog();
     Main_HideElement('label_refresh');
-    Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+    Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
     Main_innerHTML("label_last_refresh", '');
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     Main_ShowElement('search_scroll');
@@ -22,7 +22,7 @@ function Search_exit() {
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     Search_refreshInputFocusTools();
     Main_values.Main_Go = Main_values.Main_BeforeSearch;
-    Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+    Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     Main_ShowElement('label_refresh');
     Main_SearchInput.value = '';
     Main_HideElement('search_scroll');

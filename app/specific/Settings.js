@@ -184,7 +184,7 @@ function Settings_init() {
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_ShowElement('settings_holder');
-    Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+    Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
     Main_HideElement('label_refresh');
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);
@@ -194,7 +194,7 @@ function Settings_init() {
 function Settings_exit() {
     Settings_ScrollTableReset();
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
-    Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+    Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     Main_ShowElement('label_refresh');
     Settings_RemoveinputFocus();
     Main_HideElement('settings_holder');

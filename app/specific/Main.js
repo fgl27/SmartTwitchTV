@@ -452,7 +452,7 @@ function Main_SetStringsMain(isStarting) {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
     Main_innerHTML('label_update', '<div style="vertical-align: middle; display: inline-block;"><i class="icon-update" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
 
-    Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+    Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     UserLiveFeed_SetFeedPicText();
 
     Sidepannel_SetDefaultLables();
@@ -1169,11 +1169,11 @@ function Main_ExitCurrent(ExitCurrent) {
 
 function Main_RestoreTopLabel() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
-    Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+    Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
 }
 
 function Main_cleanTopLabel() {
-    Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+    Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
 }
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z' or ms

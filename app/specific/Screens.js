@@ -862,6 +862,7 @@ function Screens_ChangeFocus(y, x) {
     Screens_ClearAnimation();
     inUseObj.posY += y;
     inUseObj.posX = x;
+
     Screens_addFocus();
 }
 
@@ -954,13 +955,12 @@ function Screens_handleKeyUp(e) {
     if (e.keyCode === KEY_ENTER) {
         Screens_handleKeyUpClear();
         if (!Screens_clear) inUseObj.key_play();
-    } else if (e.keyCode === KEY_RIGHT) {
+    } else if (e.keyCode === KEY_LEFT) {
         window.clearTimeout(Screens_KeyEnterID);
         document.body.removeEventListener("keyup", Screens_handleKeyUp);
         if (!Screens_clear) {
-            Screens_keyRight();
-            document.body.addEventListener("keydown", Screens_handleKeyDown, false);
-            Screens_ChangeFocusAnimationFast = false;
+            if (!inUseObj.posX) Screens_OpenSidePanel();
+            else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
         }
     }
     Screens_handleKeyUpIsClear = true;
@@ -1032,15 +1032,6 @@ function Screens_handleKeyDown(event) {
             inUseObj.key_exit();
             break;
         case KEY_LEFT:
-            if (!inUseObj.posX) Screens_OpenSidePanel();
-            else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
-            break;
-        case KEY_RIGHT:
-            if (inUseObj.posY === -1) {
-                Screens_keyRight();
-                break;
-            }
-
             Screens_ThumbOptionSpecial = inUseObj.histPosXName ? false : true;
             Screens_handleKeyUpIsClear = false;
 
@@ -1048,6 +1039,9 @@ function Screens_handleKeyDown(event) {
             document.body.addEventListener("keyup", Screens_handleKeyUp, false);
             Screens_clear = false;
             Screens_KeyEnterID = window.setTimeout(Screens_ThumbOptionStart, 500);
+            break;
+        case KEY_RIGHT:
+            Screens_keyRight();
             break;
         case KEY_UP:
             if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(-1);
