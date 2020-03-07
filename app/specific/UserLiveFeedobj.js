@@ -775,7 +775,7 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
         UserLiveFeed_ids[2] + id +
         '" class="stream_thumbnail_feed_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
         UserLiveFeed_ids[3] + id + '" class="stream_info_live_name" style="width:' +
-        (ishosting ? '99%; max-height: 2.4em; overflow: hidden; white-space: normal;' : '63.5%') + '; display: inline-block; overflow: hidden;">' +
+        (ishosting ? '99%; max-height: 2.4em; white-space: normal;' : '63.5%; white-space: nowrap; text-overflow: ellipsis;') + ' display: inline-block; overflow: hidden;">' +
         '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
         (data[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
         (Extra_vodimg || force_VOD ?
