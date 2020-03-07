@@ -12335,7 +12335,10 @@
             document.body.removeEventListener("keyup", Screens_handleKeyUp);
             if (!Screens_clear) {
                 if (!inUseObj.posX) Screens_OpenSidePanel();
-                else Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+                else {
+                    Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+                    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+                }
             }
         }
         Screens_handleKeyUpIsClear = true;
