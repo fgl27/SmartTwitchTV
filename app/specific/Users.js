@@ -32,7 +32,7 @@ function Users_init() {
     }
 
     if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
-    Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
+    Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABLE);
     Main_innerHTML("label_last_refresh", '');
 

@@ -184,7 +184,7 @@ function Settings_init() {
     document.body.addEventListener("keydown", Settings_handleKeyDown, false);
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_ShowElement('settings_holder');
-    Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
+    Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     Main_HideElement('label_refresh');
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);

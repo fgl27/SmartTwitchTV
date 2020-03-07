@@ -1173,7 +1173,7 @@ function Main_RestoreTopLabel() {
 }
 
 function Main_cleanTopLabel() {
-    Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
+    Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
 }
 
 function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z' or ms
