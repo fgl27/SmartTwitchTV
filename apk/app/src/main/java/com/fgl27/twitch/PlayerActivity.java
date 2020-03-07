@@ -462,11 +462,13 @@ public class PlayerActivity extends Activity {
         player[position].prepare();
 
         player[position].setPlayWhenReady(true);
+        hideLoading(5);
 
         if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(1f);
         else player[position].setVolume(0f);
 
         KeepScreenOn(true);
+        shouldCallJsPlayer = true;
     }
 
     private void ClearPlayer(int position) {
