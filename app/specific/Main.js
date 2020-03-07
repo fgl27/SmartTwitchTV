@@ -2021,13 +2021,16 @@ function Main_History_Sort(array, msort, direction) {
     }
 }
 
+var Main_setHistoryItemId;
 function Main_setHistoryItem() {
-    Main_ready(function() {
+    window.clearTimeout(Main_setHistoryItemId);
+    Main_setHistoryItemId = window.setTimeout(function() {
+
         var string = JSON.stringify(Main_values_History_data);
         Main_setItem('Main_values_History_data', string);
-
         if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
-    });
+
+    }, 5000);
 }
 
 //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
