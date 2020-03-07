@@ -124,17 +124,24 @@ function Search_handleKeyDown(event) {
     }
 }
 
+var Search_inputFocusId;
 function Search_inputFocus() {
     Main_AddClass('scene_notify', 'avoidclicks');
     Main_AddClass('scenefeed', 'avoidclicks');
     document.body.removeEventListener("keydown", Search_handleKeyDown);
     document.body.addEventListener("keydown", Search_KeyboardEvent, false);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
-    Main_SearchInput.focus();
-    Search_keyBoardOn = true;
+
+
+    window.clearTimeout(Search_inputFocusId);
+    Search_inputFocusId = window.setTimeout(function() {
+        Main_SearchInput.focus();
+        Search_keyBoardOn = true;
+    }, 500);
 }
 
 function Search_RemoveinputFocus(EnaKeydown) {
+    window.clearTimeout(Search_inputFocusId);
     if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
@@ -176,6 +183,7 @@ function Search_KeyboardEvent(event) {
 }
 
 function Search_KeyboardDismiss() {
+    window.clearTimeout(Search_inputFocusId);
     Search_RemoveinputFocus(true);
     Search_cursorY = 1;
     Search_refreshInputFocusTools();

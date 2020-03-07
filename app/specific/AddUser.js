@@ -50,6 +50,7 @@ function AddUser_handleKeyDown(event) {
     }
 }
 
+var AddUser_inputFocusId;
 function AddUser_inputFocus() {
     Main_AddClass('scenefeed', 'avoidclicks');
     Main_AddClass('scene_notify', 'avoidclicks');
@@ -57,8 +58,11 @@ function AddUser_inputFocus() {
     document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
 
-    Main_AddUserInput.focus();
-    AddUser_keyBoardOn = true;
+    window.clearTimeout(AddUser_inputFocusId);
+    AddUser_inputFocusId = window.setTimeout(function() {
+        Main_AddUserInput.focus();
+        AddUser_keyBoardOn = true;
+    }, 500);
 }
 
 function AddUser_removeEventListener() {
@@ -74,6 +78,7 @@ function AddUser_removeEventListener() {
 }
 
 function AddUser_RemoveinputFocus(EnaKeydown) {
+    window.clearTimeout(AddUser_inputFocusId);
     Main_AddUserInput.blur();
     AddUser_removeEventListener();
     document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
@@ -107,6 +112,7 @@ function AddUser_KeyboardEvent(event) {
 }
 
 function AddUser_KeyboardDismiss() {
+    window.clearTimeout(AddUser_inputFocusId);
     if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
 
         AddUser_Username = Main_AddUserInput.value;
