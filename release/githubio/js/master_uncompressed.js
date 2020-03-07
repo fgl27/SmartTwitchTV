@@ -1704,21 +1704,27 @@
         }
     }
 
+    var AddUser_inputFocusId;
+
     function AddUser_inputFocus() {
-        //Main_AddClass('scenekeys', 'avoidclicks');
         Main_AddClass('scenefeed', 'avoidclicks');
+        Main_AddClass('scene_notify', 'avoidclicks');
         document.body.removeEventListener("keydown", AddUser_handleKeyDown);
         document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
         Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
 
-        Main_AddUserInput.focus();
-        AddUser_keyBoardOn = true;
+        window.clearTimeout(AddUser_inputFocusId);
+        AddUser_inputFocusId = window.setTimeout(function() {
+            Main_AddUserInput.focus();
+            AddUser_keyBoardOn = true;
+        }, 500);
     }
 
     function AddUser_removeEventListener() {
         if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
 
         Main_RemoveClass('scenefeed', 'avoidclicks');
+        Main_RemoveClass('scene_notify', 'avoidclicks');
         if (Main_AddUserInput !== null) {
             var elClone = Main_AddUserInput.cloneNode(true);
             Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
@@ -1727,6 +1733,7 @@
     }
 
     function AddUser_RemoveinputFocus(EnaKeydown) {
+        window.clearTimeout(AddUser_inputFocusId);
         Main_AddUserInput.blur();
         AddUser_removeEventListener();
         document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
@@ -1760,6 +1767,7 @@
     }
 
     function AddUser_KeyboardDismiss() {
+        window.clearTimeout(AddUser_inputFocusId);
         if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
 
             AddUser_Username = Main_AddUserInput.value;
@@ -3510,7 +3518,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.138';
+    var Main_stringVersion_Min = '.139';
     var Main_minversion = '030620';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -3699,7 +3707,9 @@
             //Backup at start as a backup may never be done yet
             if (Main_CanBackup) {
                 Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                window.setTimeout(function() {
+                    Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                }, 10000);
             }
 
         } catch (e) {
@@ -5401,10 +5411,17 @@
         }
     }
 
+    var Main_setHistoryItemId;
+
     function Main_setHistoryItem() {
-        var string = JSON.stringify(Main_values_History_data);
-        Main_setItem('Main_values_History_data', string);
-        if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
+        window.clearTimeout(Main_setHistoryItemId);
+        Main_setHistoryItemId = window.setTimeout(function() {
+
+            var string = JSON.stringify(Main_values_History_data);
+            Main_setItem('Main_values_History_data', string);
+            if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
+
+        }, 5000);
     }
 
     //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
@@ -15309,20 +15326,29 @@
         }
     }
 
+    var Search_inputFocusId;
+
     function Search_inputFocus() {
-        //Main_AddClass('scenekeys', 'avoidclicks');
+        Main_AddClass('scene_notify', 'avoidclicks');
         Main_AddClass('scenefeed', 'avoidclicks');
         document.body.removeEventListener("keydown", Search_handleKeyDown);
         document.body.addEventListener("keydown", Search_KeyboardEvent, false);
         Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
-        Main_SearchInput.focus();
-        Search_keyBoardOn = true;
+
+
+        window.clearTimeout(Search_inputFocusId);
+        Search_inputFocusId = window.setTimeout(function() {
+            Main_SearchInput.focus();
+            Search_keyBoardOn = true;
+        }, 500);
     }
 
     function Search_RemoveinputFocus(EnaKeydown) {
+        window.clearTimeout(Search_inputFocusId);
         if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
 
         Main_RemoveClass('scenefeed', 'avoidclicks');
+        Main_RemoveClass('scene_notify', 'avoidclicks');
         Main_SearchInput.blur();
         Search_removeEventListener();
         document.body.removeEventListener("keydown", Search_KeyboardEvent);
@@ -15360,6 +15386,7 @@
     }
 
     function Search_KeyboardDismiss() {
+        window.clearTimeout(Search_inputFocusId);
         Search_RemoveinputFocus(true);
         Search_cursorY = 1;
         Search_refreshInputFocusTools();
