@@ -305,7 +305,7 @@ function ScreensObj_InitChannelVod() {
             }
             this.lastselectedChannel = Main_values.Main_selectedChannel;
             Main_cleanTopLabel();
-            Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+            Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
             this.SetPeriod();
         },
         SetPeriod: function() {
@@ -990,7 +990,7 @@ function ScreensObj_InitChannelClip() {
             if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
             Main_cleanTopLabel();
             this.SetPeriod();
-            Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+            Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
             this.lastselectedChannel = Main_values.Main_selectedChannel;
         },
         label_exit: Main_RestoreTopLabel,
@@ -1717,7 +1717,7 @@ function ScreensObj_addSwitches(StringsArray) {
 function ScreensObj_TopLableAgameInit() {
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
-    Main_IconLoad('label_side_panel', 'icon-arrow-left', STR_GOBACK);
+    Main_IconLoad('label_thumb', 'icon-arrow-left', STR_GOBACK);
 
     if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
         inUseObj.gameSelected !== Main_values.Main_gameSelected)
@@ -1734,7 +1734,7 @@ function ScreensObj_TopLableAgameInit() {
 
 function ScreensObj_TopLableAgameExit() {
     inUseObj.gameSelected = Main_values.Main_gameSelected;
-    Main_IconLoad('label_side_panel', 'icon-arrow-right', STR_THUMB_OPTIONS_TOP);
+    Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
 }
 
 function ScreensObj_TopLableUserInit() {

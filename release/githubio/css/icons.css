@@ -195,12 +195,15 @@
 .icon-pg-up:before {
   content: "\76";
 }
-.icon-feed:before {
-  content: "\77";
-}
 .icon-settings:before {
   content: "\43";
 }
 .icon-multi:before {
   content: "\21";
+}
+.icon-feed:before {
+  content: "\77";
+}
+.icon-options:before {
+  content: "\44";
 }

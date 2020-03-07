@@ -381,7 +381,7 @@ function en_USLang() {
     STR_DELETE_FROM_HISTORY = "Delete this from history";
     STR_CHECK_HISTORY = "Checking follow status";
     STR_REFRESH_DELETE = "Refresh the screen after delete to see the change.";
-    STR_THUMB_OPTIONS_TOP = "Hold right for thumbnail options";
+    STR_THUMB_OPTIONS_TOP = "Hold left for thumbnail options";
     STR_REPLACE_MULTI = "Choose with to replace by the above?";
     STR_REPLACE_MULTI_ENTER = "Press enter to replace or back to exit without.";
     STR_ALREDY_PLAYING = "Already playing this";
