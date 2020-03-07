@@ -243,7 +243,7 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
 
         for (i = min; i < max; i++ , j++) {
             if (UserLiveFeed_cell[pos][i]) {
-                UserLiveFeed_cell[pos][i].style.transform = 'translate(' + (j * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+                UserLiveFeed_cell[pos][i].style.transform = 'translateX(' + (j * UserLiveFeed_obj[pos].AddCellsize) + 'em)';
             }
         }
     }
@@ -515,13 +515,13 @@ function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in,
     if (right) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
     else UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x + x_plus], UserLiveFeed_obj[pos].div.childNodes[0]);
 
-    UserLiveFeed_cell[pos][x + x_plus].style.transform = 'translate(' + (x_plus_offset * UserLiveFeed_obj[pos].AddCellsize) + 'em, -103%)';
+    UserLiveFeed_cell[pos][x + x_plus].style.transform = 'translateX(' + (x_plus_offset * UserLiveFeed_obj[pos].AddCellsize) + 'em)';
 
     Main_ready(function() {
         for (var i = for_in; i < for_out; i++) {
             if (UserLiveFeed_cell[pos][x + i]) {
                 if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
-                UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';
+                UserLiveFeed_cell[pos][x + i].style.transform = 'translateX(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em)';
             }
         }
 
@@ -540,7 +540,7 @@ function UserLiveFeed_FeedAddCellNotAnimated(pos, x, x_plus, for_in, for_out, fo
     for (var i = for_in; i < for_out; i++) {
         if (UserLiveFeed_cell[pos][x + i]) {
             UserLiveFeed_cell[pos][x + i].style.transition = 'none';
-            UserLiveFeed_cell[pos][x + i].style.transform = 'translate(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em, -103%)';
+            UserLiveFeed_cell[pos][x + i].style.transform = 'translateX(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em)';
         }
     }
 
