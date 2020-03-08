@@ -344,8 +344,9 @@ function Play_CheckIfIsLiveStart() {
 
     Play_showBufferDialog();
 
-    var selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
-    Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+    var selectedChannelDisplayname = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
+    Play_CheckIfIsLiveChannel = selectedChannelDisplayname[6];
+    selectedChannelDisplayname = selectedChannelDisplayname[1];
 
     if (Main_IsNotBrowser) {
 

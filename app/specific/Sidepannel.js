@@ -86,12 +86,13 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
         if (StreamData) {
             StreamData = JSON.parse(StreamData);
 
+            var StreamInfo = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
 
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
                 Play_CheckIfIsLiveQualities = StreamData.responseText;
-                Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+                Play_CheckIfIsLiveChannel = StreamInfo[6];
 
                 Android.StartFeedPlayer(
                     Play_CheckIfIsLiveURL,
@@ -103,7 +104,10 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
             } else {
-                Sidepannel_CheckIfIsLiveWarn((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE);
+                Sidepannel_CheckIfIsLiveWarn(
+                    ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                    StreamInfo[1]
+                );
             }
 
         }
@@ -111,11 +115,10 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
 }
 
-function Sidepannel_CheckIfIsLiveWarn(text) {
+function Sidepannel_CheckIfIsLiveWarn(ErroText, Streamer) {
     Sidepannel_CheckIfIsLiveSTop();
     Sidepannel_UpdateThumbDiv();
-    Sidepannel_showWarningDialog(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).textContent +
-        STR_SPACE + STR_LIVE + STR_BR + text);
+    Sidepannel_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText);
     window.setTimeout(Sidepannel_HideWarningDialog, 2000);
 }
 

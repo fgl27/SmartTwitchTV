@@ -338,8 +338,10 @@ function UserLiveFeed_ResetAddCellsize() {
 
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     var total = UserLiveFeed_GetSize(pos);
+
     if (!total || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) {
         if (!total && UserLiveFeed_isFeedShow()) UserLiveFeed_CheckIfIsLiveSTop();
+        UserLiveFeed_ResetFeedId();
         return;
     }
 
@@ -448,11 +450,13 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
         if (StreamData) {
             StreamData = JSON.parse(StreamData);
 
+            var StreamInfo = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
+
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
                 Play_CheckIfIsLiveQualities = StreamData.responseText;
-                Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+                Play_CheckIfIsLiveChannel = StreamInfo[6];
 
                 Android.StartFeedPlayer(
                     Play_CheckIfIsLiveURL,
@@ -463,12 +467,10 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Sidepannel_CheckIfIsLiveRefreshSet();
             } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-                UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                    ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                UserLiveFeed_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + STR_FORBIDDEN);
 
             } else {
-                UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                    ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
+                UserLiveFeed_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + STR_IS_OFFLINE);
             }
         }
 
