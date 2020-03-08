@@ -8630,8 +8630,9 @@
 
         Play_showBufferDialog();
 
-        var selectedChannelDisplayname = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent;
-        Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+        var selectedChannelDisplayname = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
+        Play_CheckIfIsLiveChannel = selectedChannelDisplayname[6];
+        selectedChannelDisplayname = selectedChannelDisplayname[1];
 
         if (Main_IsNotBrowser) {
 
@@ -11771,7 +11772,7 @@
             (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
             (Extra_vodimg || force_VOD ?
                 ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
-                '<span ></span>') + //empty span to prevent error when childNodes[2].classList.remove
+                '<span style="display: none;"></span>') + //empty span to prevent error when childNodes[2].classList.remove
             valuesArray[1] + '</div><div id="' + idArray[7] + id +
             '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
             valuesArray[5] + '</div></div>' +
@@ -16870,12 +16871,13 @@
             if (StreamData) {
                 StreamData = JSON.parse(StreamData);
 
+                var StreamInfo = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
 
                 if (StreamData.status === 200) {
 
                     Play_CheckIfIsLiveURL = StreamData.url;
                     Play_CheckIfIsLiveQualities = StreamData.responseText;
-                    Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+                    Play_CheckIfIsLiveChannel = StreamInfo[6];
 
                     Android.StartFeedPlayer(
                         Play_CheckIfIsLiveURL,
@@ -16887,7 +16889,10 @@
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
                 } else {
-                    Sidepannel_CheckIfIsLiveWarn((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE);
+                    Sidepannel_CheckIfIsLiveWarn(
+                        ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                        StreamInfo[1]
+                    );
                 }
 
             }
@@ -16895,11 +16900,10 @@
 
     }
 
-    function Sidepannel_CheckIfIsLiveWarn(text) {
+    function Sidepannel_CheckIfIsLiveWarn(ErroText, Streamer) {
         Sidepannel_CheckIfIsLiveSTop();
         Sidepannel_UpdateThumbDiv();
-        Sidepannel_showWarningDialog(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).textContent +
-            STR_SPACE + STR_LIVE + STR_BR + text);
+        Sidepannel_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText);
         window.setTimeout(Sidepannel_HideWarningDialog, 2000);
     }
 
@@ -17810,8 +17814,10 @@
 
     function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         var total = UserLiveFeed_GetSize(pos);
+
         if (!total || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) {
             if (!total && UserLiveFeed_isFeedShow()) UserLiveFeed_CheckIfIsLiveSTop();
+            UserLiveFeed_ResetFeedId();
             return;
         }
 
@@ -17920,11 +17926,13 @@
             if (StreamData) {
                 StreamData = JSON.parse(StreamData);
 
+                var StreamInfo = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
+
                 if (StreamData.status === 200) {
 
                     Play_CheckIfIsLiveURL = StreamData.url;
                     Play_CheckIfIsLiveQualities = StreamData.responseText;
-                    Play_CheckIfIsLiveChannel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+                    Play_CheckIfIsLiveChannel = StreamInfo[6];
 
                     Android.StartFeedPlayer(
                         Play_CheckIfIsLiveURL,
@@ -17935,12 +17943,10 @@
                     Sidepannel_CheckIfIsLiveRefreshSet();
                 } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-                    UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                        ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                    UserLiveFeed_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + STR_FORBIDDEN);
 
                 } else {
-                    UserLiveFeed_CheckIfIsLiveWarn((document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).textContent) +
-                        ' ' + STR_LIVE + STR_BR + STR_IS_OFFLINE);
+                    UserLiveFeed_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + STR_IS_OFFLINE);
                 }
             }
 
@@ -19116,9 +19122,8 @@
             (ishosting ? '99%; max-height: 2.4em; white-space: normal;' : '63.5%; white-space: nowrap; text-overflow: ellipsis;') + ' display: inline-block; overflow: hidden;">' +
             '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
             (data[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
-            (Extra_vodimg || force_VOD ?
-                ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
-                '<span ></span>') + //empty span to prevent error when childNodes[2].classList.remove
+            (Extra_vodimg || force_VOD ? ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
+                '<span style="display: none;"></span>') + //empty span to prevent error when childNodes[2].classList.remove
             data[1] + '</div><div id="' + UserLiveFeed_ids[7] + id +
             '"class="stream_info_live" style="width:' + (ishosting ? 0 : 36) + '%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
             data[5] + '</div></div>' +
