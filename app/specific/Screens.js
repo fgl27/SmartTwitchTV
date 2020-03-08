@@ -379,7 +379,7 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodi
         (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
         (Extra_vodimg || force_VOD ?
             ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
-            '<span ></span>') + //empty span to prevent error when childNodes[2].classList.remove
+            '<span style="display: none;"></span>') + //empty span to prevent error when childNodes[2].classList.remove
         valuesArray[1] + '</div><div id="' + idArray[7] + id +
         '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div>' +
