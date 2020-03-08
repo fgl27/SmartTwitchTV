@@ -49,12 +49,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
 public class PlayerActivity extends Activity {
-    public static final String TAG = PlayerActivity.class.getName();
+    public final String TAG = PlayerActivity.class.getName();
     //public static final String PageUrl = "file:///android_asset/index.html";
-    public static final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
-    public static final int PlayerAcount = 4;
-    public static final int PlayerAcountPlus = PlayerAcount + 1;
-    private static final int[] positions = {
+    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public final int PlayerAcount = 4;
+    public final int PlayerAcountPlus = PlayerAcount + 1;
+    private final int[] positions = {
             Gravity.RIGHT | Gravity.BOTTOM,//0
             Gravity.RIGHT | Gravity.CENTER,//1
             Gravity.RIGHT | Gravity.TOP,//2
@@ -96,6 +96,7 @@ public class PlayerActivity extends Activity {
             R.id.player_view4_texture_view,//3
             R.id.player_view_e_texture_view//4
     };
+
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     public String[] BLACKLISTEDCODECS = null;
     public int DefaultPositions = 0;
@@ -109,7 +110,7 @@ public class PlayerActivity extends Activity {
     public DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
     public int mainPlayerBandwidth = Integer.MAX_VALUE;
     public int smallPlayerBandwidth = 3000000;
-    public int smallExtraPlayerBandwidth = 4000000;
+    public final int smallExtraPlayerBandwidth = 4000000;
     public long mResumePosition;
     public int mwhocall = 1;
     //The mediaSources stored to be used when changing from auto to source 720 etc etc
@@ -170,11 +171,11 @@ public class PlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
+            setContentView(R.layout.activity_player);
+            SetDefaultSizeFrame();
+
             IsonStop = false;
             onCreateReady = true;
-            setContentView(R.layout.activity_player);
-
-            deviceIsTV = Tools.deviceIsTV(this);
 
             MainThreadHandler = new Handler(Looper.getMainLooper());
 
@@ -215,15 +216,10 @@ public class PlayerActivity extends Activity {
                     .setMaxVideoBitrate(smallExtraPlayerBandwidth)
                     .build();
 
-            SetDefaultSizeFrame();
-
             VideoHolder = findViewById(R.id.videoholder);
-
-            loadingView[5] = findViewById(R.id.loading);
-            loadingView[5].setLayoutParams(DefaultSizeFrame);
-
             setPlayer(true);
 
+            deviceIsTV = Tools.deviceIsTV(this);
             shouldCallJsPlayer = false;
 
             deviceRam = Tools.deviceRam(this);
@@ -252,6 +248,9 @@ public class PlayerActivity extends Activity {
         defaultSizeFrameBottom.height = DefaultSize;
         defaultSizeFrameBottom.bottomMargin = (int) (size.x / 40 * density / Scaledensity);
         loadingView[6].setLayoutParams(defaultSizeFrameBottom);
+
+        loadingView[5] = findViewById(R.id.loading);
+        loadingView[5].setLayoutParams(DefaultSizeFrame);
     }
 
     public void setPlayer(boolean surface_view) {
