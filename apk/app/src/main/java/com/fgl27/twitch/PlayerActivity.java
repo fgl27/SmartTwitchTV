@@ -23,7 +23,6 @@ import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -960,15 +959,6 @@ public class PlayerActivity extends Activity {
         mwebview.clearHistory();
 
         mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
-
-        mwebview.setWebViewClient(new WebViewClient() {
-            @SuppressWarnings("unused")//called by JS
-            public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-                Log.d(TAG, message + " -- From line " +
-                        lineNumber + " of " +
-                        sourceID);
-            }
-        });
 
         mwebview.loadUrl(PageUrl);
 
