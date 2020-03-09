@@ -222,7 +222,7 @@ public class PlayerActivity extends Activity {
             shouldCallJsPlayer = false;
 
             deviceRam = Tools.deviceRam(this);
-            //Ram too big.bigger then max int value... use 1000MB
+            //Ram too big.bigger then max int value... use 500MB
             if (deviceRam < 0) deviceRam = 500000000;
 
             initializeWebview();
