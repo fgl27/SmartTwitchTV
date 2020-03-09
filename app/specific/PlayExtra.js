@@ -169,9 +169,10 @@ function PlayExtra_HideChat() {
 function PlayExtra_End(doSwitch) { // Called only by JAVA
     //Some player ended switch and warn
     if (doSwitch) PlayExtra_SwitchPlayer();
-    Play_CloseSmall();
 
     Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
+
+    Play_CloseSmall();
 }
 
 function PlayExtra_SetPanel() {
