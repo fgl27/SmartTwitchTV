@@ -236,16 +236,16 @@ public class PlayerActivity extends Activity {
         display.getSize(size);
 
         float Scale = (float) size.y / 1080.0f;
-        float Scaledensity = density / 2.0f;
+        float ScaleDensity = density / 2.0f;
 
-        int DefaultSize = Math.round(40 * density * Scale / Scaledensity);
+        int DefaultSize = Math.round(40 * density * Scale / ScaleDensity);
         DefaultSizeFrame = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
 
         loadingView[6] = findViewById(R.id.loading2);
         FrameLayout.LayoutParams defaultSizeFrameBottom = (FrameLayout.LayoutParams) loadingView[6].getLayoutParams();
         defaultSizeFrameBottom.width = DefaultSize;
         defaultSizeFrameBottom.height = DefaultSize;
-        defaultSizeFrameBottom.bottomMargin = (int) (size.x / 40 * density / Scaledensity);
+        defaultSizeFrameBottom.bottomMargin = (int) (size.x / 40 * density / ScaleDensity);
         loadingView[6].setLayoutParams(defaultSizeFrameBottom);
 
         loadingView[5] = findViewById(R.id.loading);
@@ -631,24 +631,24 @@ public class PlayerActivity extends Activity {
         float density = this.getResources().getDisplayMetrics().density;
         Point size = new Point();
         display.getSize(size);
-        float Scaledensity = density / 2.0f;
-        int margin = (int) (size.y / 6.7 * density / Scaledensity);
-        int Extrawidth = (int) (mwidthDefault / 3.77);
-        int Extraheight = (int) (heightDefault / 3.77);
+        float ScaleDensity = density / 2.0f;
+        int margin = (int) (size.y / 6.7 * density / ScaleDensity);
+        int ExtraWidth = (int) (mwidthDefault / 3.77);
+        int ExtraHeight = (int) (heightDefault / 3.77);
 
-        PlayerViewExtraLayout[0] = new FrameLayout.LayoutParams(Extrawidth, Extraheight, Gravity.LEFT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[1] = new FrameLayout.LayoutParams(Extrawidth, Extraheight, Gravity.LEFT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[2] = new FrameLayout.LayoutParams(Extrawidth, Extraheight, Gravity.CENTER | Gravity.BOTTOM);
-        PlayerViewExtraLayout[3] = new FrameLayout.LayoutParams(Extrawidth, Extraheight, Gravity.RIGHT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[4] = new FrameLayout.LayoutParams(Extrawidth, Extraheight, Gravity.RIGHT | Gravity.BOTTOM);
+        PlayerViewExtraLayout[0] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.LEFT | Gravity.BOTTOM);
+        PlayerViewExtraLayout[1] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.LEFT | Gravity.BOTTOM);
+        PlayerViewExtraLayout[2] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.CENTER | Gravity.BOTTOM);
+        PlayerViewExtraLayout[3] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.RIGHT | Gravity.BOTTOM);
+        PlayerViewExtraLayout[4] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.RIGHT | Gravity.BOTTOM);
 
         //Big player for side panel
         PlayerViewExtraLayout[5] = new FrameLayout.LayoutParams((int) (mwidthDefault / 1.68),(int) (heightDefault / 1.68), Gravity.RIGHT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[5].bottomMargin = (int) (size.x / 15.7 * density / Scaledensity);
-        PlayerViewExtraLayout[5].rightMargin = (int) (size.y / 13.55 * density / Scaledensity);
+        PlayerViewExtraLayout[5].bottomMargin = (int) (size.x / 15.7 * density / ScaleDensity);
+        PlayerViewExtraLayout[5].rightMargin = (int) (size.y / 13.55 * density / ScaleDensity);
 
         for (int i = 0; i < 5; i++) {
-            PlayerViewExtraLayout[i].bottomMargin = (int) (size.x / 22 * density / Scaledensity);
+            PlayerViewExtraLayout[i].bottomMargin = (int) (size.x / 22 * density / ScaleDensity);
         }
 
         PlayerViewExtraLayout[1].leftMargin = margin;
