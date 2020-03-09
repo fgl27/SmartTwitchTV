@@ -280,7 +280,7 @@ function UserLiveFeed_Show() {
 }
 
 function UserLiveFeed_Hide() {
-    //return;
+    //return;//return;
     UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_Showloading(false);
     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
@@ -598,7 +598,7 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
                     pos,
                     x,
                     -3, //x_plus
-                    -6, //x_plus_offset
+                    0, //x_plus_offset
                     -3, //for_in
                     4,  //for_out
                     3,  //for_offset
@@ -613,7 +613,7 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
                     x,
                     -3, //x_plus
                     -3, //for_in
-                    4,  //for_out
+                    5,  //for_out
                     3,  //for_offset
                     4,  //eleRemovePos
                     0   //right?
@@ -638,7 +638,7 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                     4,  //x_plus
                     9,  //x_plus_offset
                     -5, //for_in
-                    6,  //for_out
+                    4,  //for_out
                     5,  //for_offset
                     -6, //eleRemovePos
                     1   //right?
@@ -651,7 +651,7 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                     x,
                     4,  //x_plus
                     -5, //for_in
-                    7,  //for_out
+                    5,  //for_out
                     5,  //for_offset
                     -6,  //eleRemovePos
                     1   //right?
@@ -669,9 +669,9 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                     pos,
                     x,
                     -5, //x_plus
-                    9,  //x_plus_offset
+                    0, //x_plus_offset
                     -5, //for_in
-                    7,  //for_out
+                    5,  //for_out
                     5,  //for_offset
                     5,  //eleRemovePos
                     0   //right?
@@ -682,9 +682,9 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
                 UserLiveFeed_FeedAddCellNotAnimated(
                     pos,
                     x,
-                    -5, //x_plus
+                    -5,  //x_plus
                     -5, //for_in
-                    7,  //for_out
+                    6,  //for_out
                     5,  //for_offset
                     5,  //eleRemovePos
                     0   //right?
