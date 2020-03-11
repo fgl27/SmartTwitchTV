@@ -4163,7 +4163,7 @@
     }
 
     function Main_AboutDialogUpdateTime() {
-        Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay(Date.now() - Main_RunningTime));
+        Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
     }
 
     function Main_showAboutDialog(removeEventListener, addEventListener) {
@@ -4605,7 +4605,7 @@
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
             STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
-        Main_RunningTime = Date.now();
+        Main_RunningTime = new Date().getTime();
     }
 
     function Main_needUpdate(version) {
@@ -13385,7 +13385,7 @@
     function Screens_SetLastRefresh() {
         if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
             Main_values.Main_Go === Main_addUser) return;
-        Main_innerHTML("label_last_refresh", STR_LAST_REFRESH + Play_timeDay(Date.now() - inUseObj.lastRefresh) + ")");
+        Main_innerHTML("label_last_refresh", STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - inUseObj.lastRefresh) + ")");
     } //Spacing for reease maker not trow erros frm jshint
     var Main_ItemsLimitMax = 100;
 
