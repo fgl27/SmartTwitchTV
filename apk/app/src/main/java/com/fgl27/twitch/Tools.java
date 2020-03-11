@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.Extractor;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
@@ -652,18 +653,18 @@ public final class Tools {
                 return new HlsMediaSource.Factory(dataSourceFactory)
                         .setAllowChunklessPreparation(true)
                         .setLowLatency(3000)
-                        .createMediaSource(uri);
+                        .createMediaSource(MediaItemBuilder(uri));
             } else {
                 return new HlsMediaSource.Factory(dataSourceFactory)
                         .setAllowChunklessPreparation(true)
-                        .createMediaSource(uri);
+                        .createMediaSource(MediaItemBuilder(uri));
             }
         } else if (mwhocall == 2) {
             return new HlsMediaSource.Factory(dataSourceFactory)
                     .setAllowChunklessPreparation(true)
                     .createMediaSource(uri);
         } else
-            return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(uri);
+            return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(MediaItemBuilder(uri));
     }
 
     public static boolean deviceIsTV(@NonNull Context context) {
@@ -747,6 +748,10 @@ public final class Tools {
         public Extractor[] createExtractors() {
             return new Extractor[]{new Mp4Extractor()};
         }
+    }
+
+    private static MediaItem MediaItemBuilder(Uri uri) {
+        return new MediaItem.Builder().setSourceUri(uri).build();
     }
 
     public static int deviceRam(Context context) {
