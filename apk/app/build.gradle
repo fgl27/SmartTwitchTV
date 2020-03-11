@@ -35,6 +35,7 @@ android {
     }
     lintOptions {
         abortOnError false
+        lintConfig file("lint.xml")
         disable 'SetJavaScriptEnabled', //To run webview and load js file
                 'GoogleAppIndexingWarning', //GoogleAppIndexingWarning: Missing support for Firebase App Indexing
                 'IconMissingDensityFolder', //IconMissingDensityFolder: Missing density folder

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <issue id="UnusedAttribute">
+        <!--Prevent "Attribute requestLegacyExternalStorage is only used in API level 29 and higher (current min is 21)" waring on Lint Report-->
+        <ignore regexp="requestLegacyExternalStorage"/>
+    </issue>
+</lint> 
+
