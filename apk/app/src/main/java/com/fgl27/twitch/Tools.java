@@ -647,24 +647,20 @@ public final class Tools {
         return false;
     }
 
-    public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int mwhocall, boolean LowLatency) {
-        if (mwhocall == 1) {
-            if (LowLatency) {
-                return new HlsMediaSource.Factory(dataSourceFactory)
-                        .setAllowChunklessPreparation(true)
-                        .setLowLatency(3000)
-                        .createMediaSource(MediaItemBuilder(uri));
-            } else {
-                return new HlsMediaSource.Factory(dataSourceFactory)
-                        .setAllowChunklessPreparation(true)
-                        .createMediaSource(MediaItemBuilder(uri));
-            }
-        } else if (mwhocall == 2) {
+    public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int who_called, boolean LowLatency) {
+        if (who_called == 1) {
+            return new HlsMediaSource.Factory(dataSourceFactory)
+                    .setAllowChunklessPreparation(true)
+                    .setLowLatency(LowLatency ? 3000 : 0)//3000 is a safe value the implementation will calculate the proper value
+                    .createMediaSource(MediaItemBuilder(uri));
+        } else if (who_called == 2) {
             return new HlsMediaSource.Factory(dataSourceFactory)
                     .setAllowChunklessPreparation(true)
                     .createMediaSource(uri);
         } else
-            return new ProgressiveMediaSource.Factory(dataSourceFactory, new Mp4ExtractorsFactory()).createMediaSource(MediaItemBuilder(uri));
+            return new ProgressiveMediaSource
+                    .Factory(dataSourceFactory, new Mp4ExtractorsFactory())
+                    .createMediaSource(MediaItemBuilder(uri));
     }
 
     public static boolean deviceIsTV(@NonNull Context context) {
