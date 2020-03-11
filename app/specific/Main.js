@@ -767,7 +767,7 @@ function Main_HideWarningDialog() {
 }
 
 function Main_AboutDialogUpdateTime() {
-    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay(Date.now() - Main_RunningTime));
+    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
 }
 
 function Main_showAboutDialog(removeEventListener, addEventListener) {
@@ -1208,7 +1208,7 @@ function Main_checkVersion() {
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
         STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
-    Main_RunningTime = Date.now();
+    Main_RunningTime = new Date().getTime();
 }
 
 function Main_needUpdate(version) {
