@@ -43,7 +43,8 @@ function ChannelContent_init() {
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
     }
 
-    if (ChannelContent_status) {
+    if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
+    else if (ChannelContent_status) {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement(ChannelContent_ids[10]);
         ChannelContent_checkUser();

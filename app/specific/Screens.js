@@ -95,7 +95,8 @@ function Screens_init() {
     document.body.addEventListener("keydown", Screens_handleKeyDown, false);
     Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
-    if (!inUseObj.status || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
+    if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
+    else if (!inUseObj.status || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
         Screens_StartLoad();
     else {
         Main_YRst(inUseObj.posY);
@@ -498,10 +499,6 @@ function Screens_loadDataSuccessFinish(obj) {
                     if (Main_values.Never_run_phone && !Main_isTV) {
                         Main_showphoneDialog(Main_values.Never_run_new ?
                             Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
-                        Settings_value.global_font_offset.defaultValue = 6;
-                        Main_setItem('global_font_offset', 7);
-                        Main_textContent('global_font_offset', Settings_Obj_values('global_font_offset'));
-                        calculateFontSize();
                         Main_values.Never_run_phone = false;
                     }
 
@@ -523,20 +520,30 @@ function Screens_loadDataSuccessFinish(obj) {
     }
 }
 
+var CheckAccessibilityVWasVisible = false;
 function Screens_handleKeyControls(event) {
     switch (event.keyCode) {
         case KEY_ENTER:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
+            if (Main_CheckAccessibilityVisible()) {
+                CheckAccessibilityVWasVisible = true;
+                document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+                Main_HideElement('dialog_accessibility');
+            } else CheckAccessibilityVWasVisible = false;
+
             if (Main_isphoneDialogVisible()) {
                 Main_HidephoneDialog();
                 break;
             }
+
             Main_HideControlsDialog();
             Main_HideAboutDialog();
             document.body.addEventListener("keydown", Screens_handleKeyDown, false);
             document.body.removeEventListener("keydown", Screens_handleKeyControls);
             Screens_addFocus(true);
+
+            if (CheckAccessibilityVWasVisible) Main_CheckAccessibilitySet();
             break;
         default:
             break;
@@ -554,6 +561,7 @@ function Screens_loadDataSuccessFinishEnd() {
     else Sidepannel_SetDefaultLables();
 
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
+    Main_CheckAccessibility();
 }
 
 function Screens_addFocus(forceScroll) {
@@ -810,7 +818,6 @@ function Screens_setOffset(pos, y) {
         pos = !y ? (y + pos) : y;
         if (inUseObj.Cells[pos]) {
             inUseObj.offsettop = (document.getElementById(inUseObj.ids[12] + pos).offsetHeight + document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop) / BodyfontSize;
-
             inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
         }
     }

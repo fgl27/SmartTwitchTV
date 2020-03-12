@@ -21,6 +21,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "accessibility_warn": { //accessibility_warn
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "app_animations": { //app_animations
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -207,7 +211,7 @@ function Settings_SetSettings() {
         array_no_yes = [STR_NO, STR_YES];
 
     // General settings title
-    div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
+    //div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
     div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
 
@@ -235,6 +239,8 @@ function Settings_SetSettings() {
     div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
     div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
+
+    div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, null);
 
     div += Settings_Content('videos_animation', array_no_yes, STR_VIDEOS_ANIMATION, null);
 
@@ -351,7 +357,7 @@ function Settings_SetStrings() {
     var key = '';
 
     //General settings
-    Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
+    //Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
 
     Main_textContent('clock_offset_name', STR_CLOCK_OFFSET);
 
@@ -436,6 +442,11 @@ function Settings_SetStrings() {
     key = "end_dialog_counter";
     Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
     Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+
+    // accessibility_warn
+    key = "accessibility_warn";
+    Main_textContent(key + '_name', STR_SETTINGS_ACCESSIBILITY);
+    Settings_value[key].values = [STR_YES, STR_NO];
 
     // Videos
     key = "videos_animation";

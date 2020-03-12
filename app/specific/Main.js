@@ -2226,4 +2226,54 @@ function Main_CheckResume() { // Called only by JAVA
 
     window.clearTimeout(Main_CheckResumeVodsId);
     Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 3500);
+
+    Main_CheckAccessibility();
+}
+
+function Main_CheckAccessibility() {
+    if (Settings_Obj_default("accessibility_warn")) {
+        var isenable;
+        //TODO remove the try after some app update
+        try {
+            isenable = Android.isAccessibilitySettingsOn();
+        } catch (e) {
+        }
+        if (isenable) Main_CheckAccessibilitySet();
+        else Main_CheckAccessibilityHide();
+    }
+}
+
+function Main_CheckAccessibilitySet() {
+    Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
+    Main_ShowElement('dialog_accessibility');
+    document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+    document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+    if (!Sidepannel_isShowing() && Main_isScene1DocShown()) {
+        Sidepannel_Hide();
+        document.body.addEventListener("keydown", Main_CheckAccessibilityKey, false);
+    }
+}
+
+function Main_CheckAccessibilityVisible() {
+    return Main_isElementShowing('dialog_accessibility');
+}
+
+function Main_CheckAccessibilityHide() {
+    document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+    Main_HideElement('dialog_accessibility');
+    Main_SwitchScreen();
+}
+
+function Main_CheckAccessibilityKey(event) {
+    switch (event.keyCode) {
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+        case KEY_ENTER:
+            if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocShown()) {
+                Main_CheckAccessibilityHide();
+            }
+            break;
+        default:
+            break;
+    }
 }
