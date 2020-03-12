@@ -539,11 +539,14 @@ function Screens_handleKeyControls(event) {
 
             Main_HideControlsDialog();
             Main_HideAboutDialog();
-            document.body.addEventListener("keydown", Screens_handleKeyDown, false);
             document.body.removeEventListener("keydown", Screens_handleKeyControls);
-            Screens_addFocus(true);
 
             if (CheckAccessibilityVWasVisible) Main_CheckAccessibilitySet();
+            else {
+                document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+                Screens_addFocus(true);
+            }
+
             break;
         default:
             break;
