@@ -61,4 +61,5 @@ dependencies {
     implementation project(':exoplayer-library-ui')
     implementation project(':exoplayer-library-hls')
     implementation 'com.google.code.gson:gson:' + versions.googlegson
+    implementation 'androidx.webkit:webkit:' + versions.webkit
 }

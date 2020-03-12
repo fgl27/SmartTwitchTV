@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -29,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.webkit.WebViewCompat;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -1651,6 +1653,14 @@ public class PlayerActivity extends Activity {
             }
 
             return false;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getWebviewVersion() {
+            PackageInfo pInfo = WebViewCompat.getCurrentWebViewPackage(mwebContext);
+            Log.d(TAG, "pInfo "  + pInfo);
+            return pInfo!= null ? pInfo.versionName: null;
         }
     }
 
