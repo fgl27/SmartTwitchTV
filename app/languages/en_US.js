@@ -85,7 +85,6 @@ function en_USLang() {
     STR_MIN = " Min";
     STR_HR = " Hr";
     STR_SOURCE = "Source";
-    STR_VERSION = "Version: ";
     STR_TWITCH_TV = "SmartTV Client for Twitch";
     STR_CLOSE_THIS = "Press back or enter key to close this.";
     STR_CLOSE_THIS2 = "Press back to close this.";

@@ -1195,9 +1195,17 @@ function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or m
 var Main_oldReturnCheck;
 function Main_checkVersion() {
     if (Main_IsNotBrowser) {
-        var device = '';
-        device = Android.getDevice();
-        Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion + ' Device: ' + device;
+        var device = Android.getDevice();
+        var webversion = null;
+
+        try {
+            webversion = Android.getWebviewVersion();
+        } catch (e) {
+        }
+
+        Main_versionTag = "Apk: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion +
+            (webversion ? (' Webview: ' + webversion) : '') + ' Device: ' + device;
+
         if (Main_needUpdate(Main_IsNotBrowserVersion)) {
             //Temp to support old app version that used number 1 key as back key
             if (Main_oldReturnCheck) KEY_RETURN = 49;
@@ -1205,7 +1213,7 @@ function Main_checkVersion() {
         }
     }
 
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag +
         STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
     Main_RunningTime = new Date().getTime();

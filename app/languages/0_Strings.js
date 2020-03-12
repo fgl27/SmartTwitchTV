@@ -72,7 +72,6 @@ var STR_SEC;
 var STR_MIN;
 var STR_HR;
 var STR_SOURCE;
-var STR_VERSION;
 var STR_TWITCH_TV;
 var STR_CLOSE_THIS;
 var STR_PLAYER;

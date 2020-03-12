@@ -11,4 +11,5 @@ ext.versions = [
         gradlePlugin         : '3.6.1',
         benmanes             : '0.28.0',
         googlegson           : '2.8.6',
+        webkit               : '1.2.0',
 ]
