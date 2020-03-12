@@ -2236,10 +2236,12 @@ function Main_CheckAccessibility() {
         //TODO remove the try after some app update
         try {
             isenable = Android.isAccessibilitySettingsOn();
+
+            if (isenable) Main_CheckAccessibilitySet();
+            else Main_CheckAccessibilityHide();
+
         } catch (e) {
         }
-        if (isenable) Main_CheckAccessibilitySet();
-        else Main_CheckAccessibilityHide();
     }
 }
 
