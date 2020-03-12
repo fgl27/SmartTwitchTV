@@ -193,7 +193,6 @@ function en_USLang() {
     STR_SETTINGS_BUFFER_LIVE = "Live streams Start buffer";
     STR_SETTINGS_BUFFER_VOD = "Videos (Past Broadcast and Highlight) Start buffer";
     STR_SETTINGS_BUFFER_CLIP = "Clips Start buffer";
-    STR_SETTINGS_GENERAL = "General";
     STR_SETTINGS_LANG = "Language";
     STR_LOADING_CHAT = "Chat: Connecting to chat server..." + STR_BR + "Chat: Connected." + STR_BR + "Chat: Joined channel ";
     STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";
@@ -208,7 +207,7 @@ function en_USLang() {
     STR_DISABLE = "Disable";
     STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
-    STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user, the app then can restore what was previously playing on next start";
+    STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user and restores what was previously playing on next start";
     STR_CHAT_FONT = "Chat font size";
     STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
     STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
@@ -407,4 +406,8 @@ function en_USLang() {
     STR_START_AT_USER = "Always start the app in the user screen (overwrites Restore playback)";
     STR_LAST_REFRESH = "(last refresh: ";
     STR_PP_VOD = "Exit PP or Multistream to open this VOD";
+    STR_SETTINGS_ACCESSIBILITY = "Show accessibility service warning";
+    STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
+    STR_ACCESSIBILITY_WARN_EXTRA = "Is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.<br>Read more about this on bellow link:";
+    STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
 }

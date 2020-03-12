@@ -6,6 +6,7 @@ var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
 var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
 var STR_DIV_LINK = '<div style="text-align: center; width: 100%; display: inline-block; color: #0366d6;">';
+var STR_RED_DIV = '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #FF0000; font-size: 110%;">';
 var STR_CONTROL_KEY = '';
 var STR_SEARCH_KEY = '';
 var STR_ABOUT_KEY = '';
@@ -14,6 +15,7 @@ var STR_CONTROLS_MAIN_0 = '';
 var STR_ABOUT_PHONE_0 = '';
 var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
+var STR_ACCESSIBILITY_WARN_TEXT = '';
 var STR_CONTROLS_PLAY_0 = '';
 var STR_SPACE = '&nbsp;';
 var STR_PAYPAL;
@@ -97,9 +99,14 @@ function DefaultLang() {
         STR_ABOUT_PHONE + STR_BR + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
+    STR_ACCESSIBILITY_WARN_TEXT = STR_DIV_TITLE + STR_WARNING + STR_ACCESSIBILITY_WARN + '</div>' + STR_BR +
+        STR_ACCESSIBILITY_WARN_EXTRA + STR_BR + STR_BR +
+        STR_RED_DIV + 'https://tinyurl.com/applag' + '</div>' + STR_BR + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA2 + STR_BR + STR_BR +
+        STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
+
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
     STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 +
-        (Main_IsNotBrowser ? '' : STR_BR + '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #FF0000; font-size: 110%;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
+        (Main_IsNotBrowser ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
 
         STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
         STR_ABOUT_INFO_19 + STR_BR +

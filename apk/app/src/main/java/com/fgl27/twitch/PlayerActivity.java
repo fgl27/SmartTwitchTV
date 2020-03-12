@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -1634,6 +1635,22 @@ public class PlayerActivity extends Activity {
                 Log.w(TAG, "getStreamData NullPointerException ", e);
             }
             return null;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean isAccessibilitySettingsOn() {
+            try {
+                return Settings.Secure.getInt(
+                        mwebContext.getContentResolver(),
+                        android.provider.Settings.Secure.ACCESSIBILITY_ENABLED
+                ) == 1;
+
+            } catch (Settings.SettingNotFoundException e) {
+                Log.w(TAG, "isAccessibilitySettingsOn SettingNotFoundException "  + e);
+            }
+
+            return false;
         }
     }
 

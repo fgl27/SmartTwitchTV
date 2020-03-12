@@ -365,7 +365,6 @@ function Sidepannel_ShowFeed() {
 function Sidepannel_StartMain() {
     Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
     Sidepannel_IsMain = true;
-    Main_ShowElement('side_panel_fix');
     Sidepannel_MovelDiv.style.transform = 'translateX(' + Sidepannel_FixdefaultMargin + '%)';
     Sidepannel_FixDiv.style.marginLeft = '';
     document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
@@ -387,7 +386,6 @@ function Sidepannel_HideMain(hideAll) {
 function Sidepannel_Hide(PreventcleanQuailities) {
     Sidepannel_HideMain();
     Sidepannel_RemoveFocusMain();
-    Main_ShowElement('side_panel_fix');
     Sidepannel_FixDiv.style.marginLeft = '';
     Sidepannel_HideEle(PreventcleanQuailities);
     Main_HideElement('side_panel_feed_thumb');
