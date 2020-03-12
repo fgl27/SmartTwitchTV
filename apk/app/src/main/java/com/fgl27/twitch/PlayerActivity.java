@@ -1659,8 +1659,8 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String getWebviewVersion() {
             PackageInfo pInfo = WebViewCompat.getCurrentWebViewPackage(mwebContext);
-            Log.d(TAG, "pInfo "  + pInfo);
-            return pInfo!= null ? pInfo.versionName: null;
+
+            return pInfo != null ? pInfo.versionName: null;
         }
     }
 

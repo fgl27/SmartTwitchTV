@@ -1196,15 +1196,16 @@ var Main_oldReturnCheck;
 function Main_checkVersion() {
     if (Main_IsNotBrowser) {
         var device = Android.getDevice();
-        var webversion = null;
+        var Webviewversion = null;
 
         try {
-            webversion = Android.getWebviewVersion();
+            Webviewversion = Android.getWebviewVersion();
+            console.log('Webviewversion ' + Webviewversion);
         } catch (e) {
         }
 
         Main_versionTag = "Apk: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion +
-            (webversion ? (' Webview: ' + webversion) : '') + ' Device: ' + device;
+            (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
 
         if (Main_needUpdate(Main_IsNotBrowserVersion)) {
             //Temp to support old app version that used number 1 key as back key
