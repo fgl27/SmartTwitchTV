@@ -2213,6 +2213,8 @@ function Main_CheckStop() { // Called only by JAVA
     window.clearInterval(Main_updateUserFeedId);
     window.clearInterval(Main_updateclockId);
     window.clearInterval(Main_StartHistoryworkerId);
+
+    if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 }
 
 var Main_CheckResumeFeedId;
@@ -2246,7 +2248,7 @@ function Main_CheckAccessibility() {
             isenable = Android.isAccessibilitySettingsOn();
 
             if (isenable) Main_CheckAccessibilitySet();
-            else Main_CheckAccessibilityHide();
+            else Main_CheckAccessibilityHide(false);
 
         } catch (e) {
         }
@@ -2268,10 +2270,10 @@ function Main_CheckAccessibilityVisible() {
     return Main_isElementShowing('dialog_accessibility');
 }
 
-function Main_CheckAccessibilityHide() {
+function Main_CheckAccessibilityHide(switchScreen) {
     document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
     Main_HideElement('dialog_accessibility');
-    Main_SwitchScreen();
+    if (switchScreen) Main_SwitchScreen();
 }
 
 function Main_CheckAccessibilityKey(event) {
@@ -2280,7 +2282,7 @@ function Main_CheckAccessibilityKey(event) {
         case KEY_RETURN:
         case KEY_ENTER:
             if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocShown()) {
-                Main_CheckAccessibilityHide();
+                Main_CheckAccessibilityHide(true);
             }
             break;
         default:
