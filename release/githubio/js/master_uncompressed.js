@@ -86,7 +86,6 @@
     var STR_MIN;
     var STR_HR;
     var STR_SOURCE;
-    var STR_VERSION;
     var STR_TWITCH_TV;
     var STR_CLOSE_THIS;
     var STR_PLAYER;
@@ -184,7 +183,6 @@
     var STR_SETTINGS_BUFFER_LIVE;
     var STR_SETTINGS_BUFFER_VOD;
     var STR_SETTINGS_BUFFER_CLIP;
-    var STR_SETTINGS_GENERAL;
     var STR_SETTINGS_LANG;
     var STR_LOADING_CHAT;
     var STR_VOD_HISTORY;
@@ -405,7 +403,11 @@
     var STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY;
     var STR_START_AT_USER;
     var STR_LAST_REFRESH;
-    var STR_PP_VOD; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_PP_VOD;
+    var STR_SETTINGS_ACCESSIBILITY;
+    var STR_ACCESSIBILITY_WARN;
+    var STR_ACCESSIBILITY_WARN_EXTRA;
+    var STR_ACCESSIBILITY_WARN_EXTRA2; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -413,6 +415,7 @@
     var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
     var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
     var STR_DIV_LINK = '<div style="text-align: center; width: 100%; display: inline-block; color: #0366d6;">';
+    var STR_RED_DIV = '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #FF0000; font-size: 110%;">';
     var STR_CONTROL_KEY = '';
     var STR_SEARCH_KEY = '';
     var STR_ABOUT_KEY = '';
@@ -421,6 +424,7 @@
     var STR_ABOUT_PHONE_0 = '';
     var STR_ABOUT_INFO_HEADER = '';
     var STR_ABOUT_INFO_0 = '';
+    var STR_ACCESSIBILITY_WARN_TEXT = '';
     var STR_CONTROLS_PLAY_0 = '';
     var STR_SPACE = '&nbsp;';
     var STR_PAYPAL;
@@ -504,9 +508,14 @@
             STR_ABOUT_PHONE + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
+        STR_ACCESSIBILITY_WARN_TEXT = STR_DIV_TITLE + STR_WARNING + STR_ACCESSIBILITY_WARN + '</div>' + STR_BR +
+            STR_ACCESSIBILITY_WARN_EXTRA + STR_BR + STR_BR +
+            STR_RED_DIV + 'https://tinyurl.com/applag' + '</div>' + STR_BR + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA2 + STR_BR + STR_BR +
+            STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
+
         STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
         STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 +
-            (Main_IsNotBrowser ? '' : STR_BR + '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #FF0000; font-size: 110%;">' + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
+            (Main_IsNotBrowser ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
 
             STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
             STR_ABOUT_INFO_19 + STR_BR +
@@ -619,7 +628,6 @@
         STR_MIN = " Min";
         STR_HR = " Hr";
         STR_SOURCE = "Source";
-        STR_VERSION = "Version: ";
         STR_TWITCH_TV = "SmartTV Client for Twitch";
         STR_CLOSE_THIS = "Press back or enter key to close this.";
         STR_CLOSE_THIS2 = "Press back to close this.";
@@ -727,7 +735,6 @@
         STR_SETTINGS_BUFFER_LIVE = "Live streams Start buffer";
         STR_SETTINGS_BUFFER_VOD = "Videos (Past Broadcast and Highlight) Start buffer";
         STR_SETTINGS_BUFFER_CLIP = "Clips Start buffer";
-        STR_SETTINGS_GENERAL = "General";
         STR_SETTINGS_LANG = "Language";
         STR_LOADING_CHAT = "Chat: Connecting to chat server..." + STR_BR + "Chat: Connected." + STR_BR + "Chat: Joined channel ";
         STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";
@@ -742,7 +749,7 @@
         STR_DISABLE = "Disable";
         STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
         STR_RESTORE_PLAYBACK = "Restore playback";
-        STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user, the app then can restore what was previously playing on next start";
+        STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user and restores what was previously playing on next start";
         STR_CHAT_FONT = "Chat font size";
         STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
         STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
@@ -941,6 +948,10 @@
         STR_START_AT_USER = "Always start the app in the user screen (overwrites Restore playback)";
         STR_LAST_REFRESH = "(last refresh: ";
         STR_PP_VOD = "Exit PP or Multistream to open this VOD";
+        STR_SETTINGS_ACCESSIBILITY = "Show accessibility service warning";
+        STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
+        STR_ACCESSIBILITY_WARN_EXTRA = "Is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.<br>Read more about this on bellow link:";
+        STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
     }
     //Spacing for release maker not trow erros from jshint
     var IMG_404_GAME = "data:image/png;base64,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";
@@ -2064,7 +2075,8 @@
             Sidepannel_SetTopOpacity(Main_values.Main_Go);
         }
 
-        if (ChannelContent_status) {
+        if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
+        else if (ChannelContent_status) {
             Main_YRst(ChannelContent_cursorY);
             Main_ShowElement(ChannelContent_ids[10]);
             ChannelContent_checkUser();
@@ -3518,8 +3530,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.141';
-    var Main_minversion = 'March 11, 2020';
+    var Main_stringVersion_Min = '.142';
+    var Main_minversion = 'March 12, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -4592,9 +4604,17 @@
 
     function Main_checkVersion() {
         if (Main_IsNotBrowser) {
-            var device = '';
-            device = Android.getDevice();
-            Main_versionTag = "Android: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion + ' Device: ' + device;
+            var device = Android.getDevice();
+            var Webviewversion = null;
+
+            try {
+                Webviewversion = Android.getWebviewVersion();
+                console.log('Webviewversion ' + Webviewversion);
+            } catch (e) {}
+
+            Main_versionTag = "Apk: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion +
+                (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
+
             if (Main_needUpdate(Main_IsNotBrowserVersion)) {
                 //Temp to support old app version that used number 1 key as back key
                 if (Main_oldReturnCheck) KEY_RETURN = 49;
@@ -4602,7 +4622,7 @@
             }
         }
 
-        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + STR_VERSION + Main_versionTag +
+        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag +
             STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
         Main_RunningTime = new Date().getTime();
@@ -5604,6 +5624,8 @@
         window.clearInterval(Main_updateUserFeedId);
         window.clearInterval(Main_updateclockId);
         window.clearInterval(Main_StartHistoryworkerId);
+
+        if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
     }
 
     var Main_CheckResumeFeedId;
@@ -5626,6 +5648,57 @@
 
         window.clearTimeout(Main_CheckResumeVodsId);
         Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 3500);
+
+        Main_CheckAccessibility();
+    }
+
+    function Main_CheckAccessibility() {
+        if (Settings_Obj_default("accessibility_warn")) {
+            var isenable;
+            //TODO remove the try after some app update
+            try {
+                isenable = Android.isAccessibilitySettingsOn();
+
+                if (isenable) Main_CheckAccessibilitySet();
+                else Main_CheckAccessibilityHide(false);
+
+            } catch (e) {}
+        }
+    }
+
+    function Main_CheckAccessibilitySet() {
+        Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
+        Main_ShowElement('dialog_accessibility');
+        document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+        document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+        if (!Sidepannel_isShowing() && Main_isScene1DocShown()) {
+            Sidepannel_Hide();
+            document.body.addEventListener("keydown", Main_CheckAccessibilityKey, false);
+        }
+    }
+
+    function Main_CheckAccessibilityVisible() {
+        return Main_isElementShowing('dialog_accessibility');
+    }
+
+    function Main_CheckAccessibilityHide(switchScreen) {
+        document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+        Main_HideElement('dialog_accessibility');
+        if (switchScreen) Main_SwitchScreen();
+    }
+
+    function Main_CheckAccessibilityKey(event) {
+        switch (event.keyCode) {
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+            case KEY_ENTER:
+                if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocShown()) {
+                    Main_CheckAccessibilityHide(true);
+                }
+                break;
+            default:
+                break;
+        }
     } //Variable initialization
     var PlayClip_IsJumping = false;
     var PlayClip_jumpCount = 0;
@@ -11489,7 +11562,8 @@
         document.body.addEventListener("keydown", Screens_handleKeyDown, false);
         Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
-        if (!inUseObj.status || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
+        if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
+        else if (!inUseObj.status || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
             Screens_StartLoad();
         else {
             Main_YRst(inUseObj.posY);
@@ -11892,10 +11966,6 @@
                         if (Main_values.Never_run_phone && !Main_isTV) {
                             Main_showphoneDialog(Main_values.Never_run_new ?
                                 Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
-                            Settings_value.global_font_offset.defaultValue = 6;
-                            Main_setItem('global_font_offset', 7);
-                            Main_textContent('global_font_offset', Settings_Obj_values('global_font_offset'));
-                            calculateFontSize();
                             Main_values.Never_run_phone = false;
                         }
 
@@ -11917,20 +11987,34 @@
         }
     }
 
+    var CheckAccessibilityVWasVisible = false;
+
     function Screens_handleKeyControls(event) {
         switch (event.keyCode) {
             case KEY_ENTER:
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
+                if (Main_CheckAccessibilityVisible()) {
+                    CheckAccessibilityVWasVisible = true;
+                    document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+                    Main_HideElement('dialog_accessibility');
+                } else CheckAccessibilityVWasVisible = false;
+
                 if (Main_isphoneDialogVisible()) {
                     Main_HidephoneDialog();
                     break;
                 }
+
                 Main_HideControlsDialog();
                 Main_HideAboutDialog();
-                document.body.addEventListener("keydown", Screens_handleKeyDown, false);
                 document.body.removeEventListener("keydown", Screens_handleKeyControls);
-                Screens_addFocus(true);
+
+                if (CheckAccessibilityVWasVisible) Main_CheckAccessibilitySet();
+                else {
+                    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+                    Screens_addFocus(true);
+                }
+
                 break;
             default:
                 break;
@@ -11948,6 +12032,7 @@
         else Sidepannel_SetDefaultLables();
 
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
+        Main_CheckAccessibility();
     }
 
     function Screens_addFocus(forceScroll) {
@@ -12204,7 +12289,6 @@
             pos = !y ? (y + pos) : y;
             if (inUseObj.Cells[pos]) {
                 inUseObj.offsettop = (document.getElementById(inUseObj.ids[12] + pos).offsetHeight + document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop) / BodyfontSize;
-
                 inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
             }
         }
@@ -13384,7 +13468,7 @@
 
     function Screens_SetLastRefresh() {
         if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
-            Main_values.Main_Go === Main_addUser) return;
+            Main_values.Main_Go === Main_addUser || !inUseObj) return;
         Main_innerHTML("label_last_refresh", STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - inUseObj.lastRefresh) + ")");
     } //Spacing for reease maker not trow erros frm jshint
     var Main_ItemsLimitMax = 100;
@@ -15416,6 +15500,10 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
+        "accessibility_warn": { //accessibility_warn
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
         "app_animations": { //app_animations
             "values": ["no", "yes"],
             "defaultValue": 1
@@ -15604,7 +15692,7 @@
             array_no_yes = [STR_NO, STR_YES];
 
         // General settings title
-        div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
+        //div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
         div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
 
@@ -15632,6 +15720,8 @@
         div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
         div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
+
+        div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, null);
 
         div += Settings_Content('videos_animation', array_no_yes, STR_VIDEOS_ANIMATION, null);
 
@@ -15748,7 +15838,7 @@
         var key = '';
 
         //General settings
-        Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
+        //Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
 
         Main_textContent('clock_offset_name', STR_CLOCK_OFFSET);
 
@@ -15833,6 +15923,11 @@
         key = "end_dialog_counter";
         Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
         Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
+
+        // accessibility_warn
+        key = "accessibility_warn";
+        Main_textContent(key + '_name', STR_SETTINGS_ACCESSIBILITY);
+        Settings_value[key].values = [STR_YES, STR_NO];
 
         // Videos
         key = "videos_animation";
@@ -17152,7 +17247,6 @@
     function Sidepannel_StartMain() {
         Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
         Sidepannel_IsMain = true;
-        Main_ShowElement('side_panel_fix');
         Sidepannel_MovelDiv.style.transform = 'translateX(' + Sidepannel_FixdefaultMargin + '%)';
         Sidepannel_FixDiv.style.marginLeft = '';
         document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
@@ -17174,7 +17268,6 @@
     function Sidepannel_Hide(PreventcleanQuailities) {
         Sidepannel_HideMain();
         Sidepannel_RemoveFocusMain();
-        Main_ShowElement('side_panel_fix');
         Sidepannel_FixDiv.style.marginLeft = '';
         Sidepannel_HideEle(PreventcleanQuailities);
         Main_HideElement('side_panel_feed_thumb');
@@ -19618,7 +19711,8 @@
         Main_HideWarningDialog();
         ScreensObj_SetTopLable(STR_USER, STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
         document.body.addEventListener("keydown", Users_handleKeyDown, false);
-        if (Users_status) {
+        if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
+        else if (Users_status) {
             Main_YRst(Users_cursorY);
             Main_ShowElement(Users_ids[5]);
             Users_addFocus();
