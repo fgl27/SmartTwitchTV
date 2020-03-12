@@ -16252,7 +16252,7 @@
         var doc,
             offset = (!Main_isTV || !Main_IsNotBrowser) ? 2 : 0;
 
-        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (14 + offset)) {
+        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (15 + offset)) {
             doc = document.getElementById('settings_scroll');
             doc.scrollTop = doc.scrollHeight;
             if (Settings_Obj_default("app_animations")) {
@@ -16260,7 +16260,7 @@
                 doc.scrollTop = 0;
                 scrollTo(doc, position, 200);
             }
-        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (13 + offset)) {
+        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (14 + offset)) {
             doc = document.getElementById('settings_scroll');
             if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
             else doc.scrollTop = 0;
