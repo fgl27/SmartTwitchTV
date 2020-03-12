@@ -1996,6 +1996,6 @@ function Screens_ThumbOptionSetArrowArray() {
 
 function Screens_SetLastRefresh() {
     if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
-        Main_values.Main_Go === Main_addUser) return;
+        Main_values.Main_Go === Main_addUser || !inUseObj) return;
     Main_innerHTML("label_last_refresh", STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - inUseObj.lastRefresh) + ")");
 }
