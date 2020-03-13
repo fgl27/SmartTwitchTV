@@ -830,7 +830,7 @@
         STR_PICTURE_CONTROLS9 = "Manually Sync playback: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa";
         STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
         STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
-        STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If already in picture in picture mode use bottom controls Video Mode or when in video mode smaller screen plus chat hold key enter to start from live feed";
+        STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If already in picture in picture mode press key 2 or use bottom controls Video Mode or when in video mode smaller screen plus chat hold key enter to start from live feed";
         STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
         STR_SINGLE_EXIT = "Single back key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
