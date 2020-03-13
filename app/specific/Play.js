@@ -2136,3 +2136,14 @@ function Play_ResStoreChatPos() {
     Play_chat_container.style.left = Play_StoreChatPosValue.left;
 }
 
+function Play_AudioChangeRight() {
+    Play_controls[Play_controlsAudio].defaultValue++;
+    if (Play_controls[Play_controlsAudio].defaultValue > (Play_controls[Play_controlsAudio].values.length - 1)) Play_controls[Play_controlsAudio].defaultValue = 0;
+    Play_controls[Play_controlsAudio].enterKey();
+}
+
+function Play_AudioChangeLeft() {
+    Play_controls[Play_controlsAudio].defaultValue--;
+    if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = (Play_controls[Play_controlsAudio].values.length - 1);
+    Play_controls[Play_controlsAudio].enterKey();
+}

@@ -507,9 +507,9 @@ function Play_handleKeyDown(e) {
 
                     Android.mSwitchPlayerPosition(Play_PicturePicturePos);
                     Main_setItem('Play_PicturePicturePos', Play_PicturePicturePos);
-                } else {
+                } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeLeft();
+                else
                     Play_showPanel();
-                }
                 break;
             case KEY_RIGHT:
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
@@ -537,9 +537,9 @@ function Play_handleKeyDown(e) {
                     if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
                     Android.mSwitchPlayerSize(Play_PicturePictureSize);
                     Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
-                } else {
+                } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeRight();
+                else
                     Play_showPanel();
-                }
                 break;
             case KEY_UP:
                 if (Play_isPanelShown()) {
@@ -707,14 +707,14 @@ function Play_handleKeyDown(e) {
                 }
                 break;
             case KEY_REFRESH:
-            case KEY_MEDIA_NEXT:
+            case KEY_MEDIA_FAST_FORWARD:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible() || Play_MultiEnable) break;
 
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
                 else Play_controls[Play_controlsChatSide].enterKey();
 
                 break;
-            case KEY_MEDIA_PREVIOUS:
+            case KEY_MEDIA_REWIND:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
 
                 //Audio all
@@ -727,30 +727,18 @@ function Play_handleKeyDown(e) {
                 }
 
                 break;
-            case KEY_MEDIA_FAST_FORWARD:
+            case KEY_MEDIA_NEXT:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
 
                 if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1, true);
-                else if (PlayExtra_PicturePicture) {
-                    Play_controls[Play_controlsAudio].defaultValue++;
-
-                    if (Play_controls[Play_controlsAudio].defaultValue > 1) Play_controls[Play_controlsAudio].defaultValue = 0;
-
-                    Play_controls[Play_controlsAudio].enterKey();
-                }
+                else if (PlayExtra_PicturePicture) Play_AudioChangeRight();
 
                 break;
-            case KEY_MEDIA_REWIND:
+            case KEY_MEDIA_PREVIOUS:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
 
                 if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1, true);
-                else if (PlayExtra_PicturePicture) {
-                    Play_controls[Play_controlsAudio].defaultValue--;
-
-                    if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = 1;
-
-                    Play_controls[Play_controlsAudio].enterKey();
-                }
+                else if (PlayExtra_PicturePicture) Play_AudioChangeLeft();
 
                 break;
             default:
