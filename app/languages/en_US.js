@@ -9,6 +9,7 @@ function en_USLang() {
     //Below are variables to translate
     STR_KEY_UP_DOWN = " PG Up/Down";
     STR_GUIDE_EXTRA = STR_SPACE + "or press key 2";
+    STR_GUIDE_EXTRA2 = " or media key next track";
     STR_REFRESH = "Refresh";
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
@@ -95,7 +96,7 @@ function en_USLang() {
     STR_UPDATE = 'Update';
     STR_CURRENT_VERSION = "Current installed version ";
     STR_LATEST_VERSION = " latest available version ";
-    STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause media or key 1";
+    STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause or previews track media keys or key 1";
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
     STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it auto force close";

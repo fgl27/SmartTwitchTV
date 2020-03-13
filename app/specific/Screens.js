@@ -1073,6 +1073,7 @@ function Screens_handleKeyDown(event) {
         case KEY_PLAY:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
+        case KEY_MEDIA_PREVIOUS:
             inUseObj.key_play();
             break;
         case KEY_ENTER:
@@ -1081,6 +1082,7 @@ function Screens_handleKeyDown(event) {
             Screens_clear = false;
             Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 400);
             break;
+        case KEY_MEDIA_NEXT:
         case KEY_REFRESH:
             Main_ReloadScreen();
             break;
