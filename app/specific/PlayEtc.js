@@ -717,14 +717,7 @@ function Play_handleKeyDown(e) {
             case KEY_MEDIA_REWIND:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
 
-                //Audio all
-                if (Play_MultiEnable) {
-                    Play_controls[Play_controlsAudioMulti].defaultValue = 4;
-                    Play_controls[Play_controlsAudioMulti].enterKey();
-                } else if (PlayExtra_PicturePicture) {
-                    Play_controls[Play_controlsAudio].defaultValue = 2;
-                    Play_controls[Play_controlsAudio].enterKey();
-                }
+                Play_controls[Play_MultiStream].enterKey();
 
                 break;
             case KEY_MEDIA_NEXT:
