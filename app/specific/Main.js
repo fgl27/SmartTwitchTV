@@ -1534,14 +1534,6 @@ function Main_openVod() {
     window.setTimeout(PlayVod_Start, 25);
 }
 
-function Main_ScrollTable(id, position) {
-    document.getElementById(id).style.top = position ? (position / BodyfontSize) + "em" : "";
-}
-
-function Main_ScrollTableCalc(id, position, percentage) {
-    document.getElementById(id).style.top = 'calc(' + percentage + '% + ' + (position / BodyfontSize) + 'em)';
-}
-
 function Main_removeFocus(id, idArray) {
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
