@@ -8,6 +8,7 @@ function en_USLang() {
 
     //Below are variables to translate
     STR_KEY_UP_DOWN = " PG Up/Down";
+    STR_KEY_MEDIA_FF = " or fastforward/backwards media key";
     STR_GUIDE_EXTRA = STR_SPACE + "or press key 2";
     STR_GUIDE_EXTRA2 = " or media key next track";
     STR_REFRESH = "Refresh";
@@ -100,7 +101,7 @@ function en_USLang() {
     STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
     STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
     STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it auto force close";
-    STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad up/Down or" + STR_KEY_UP_DOWN;
+    STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
     STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
     STR_ABOUT_INFO_1 = "This is a SmartTV Client for Twitch developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
