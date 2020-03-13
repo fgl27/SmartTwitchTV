@@ -1935,28 +1935,27 @@ function Play_MultiCheckLiveFeed(pos) {
     }, 1000);
 }
 
-function Play_MultiEnableKeyRightLeft(adder) {
+function Play_MultiEnableKeyRightLeft(adder, skipall) {
     Play_controls[Play_controlsAudioMulti].defaultValue += adder;
 
-    if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - 1))
+    if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - (1 + (skipall ? 1 : 0)))) {
+
         Play_controls[Play_controlsAudioMulti].defaultValue = 0;
-    else if (Play_controls[Play_controlsAudioMulti].defaultValue < 0)
-        Play_controls[Play_controlsAudioMulti].defaultValue = (Play_controls[Play_controlsAudioMulti].values.length - 1);
+
+    } else if (Play_controls[Play_controlsAudioMulti].defaultValue < 0) {
+
+        Play_controls[Play_controlsAudioMulti].defaultValue = (Play_controls[Play_controlsAudioMulti].values.length - (1 + (skipall ? 1 : 0)));
+
+    }
 
     if (Play_controls[Play_controlsAudioMulti].defaultValue < 4 &&
         Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
 
-        Play_MultiEnableKeyRightLeft(adder);
+        Play_MultiEnableKeyRightLeft(adder, skipall);
         return;
     }
 
     Play_controls[Play_controlsAudioMulti].enterKey();
-
-    Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
-        Play_controls[Play_controlsAudioMulti].values[Play_controls[Play_controlsAudioMulti].defaultValue] +
-        ((Play_controls[Play_controlsAudioMulti].defaultValue < 4) ?
-            (STR_SPACE + Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data[1]) : ''),
-        1500);
 }
 
 function Play_MultiInfoReset(pos) {
