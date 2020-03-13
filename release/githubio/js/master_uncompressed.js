@@ -561,7 +561,7 @@
 
         //Below are variables to translate
         STR_KEY_UP_DOWN = " PG Up/Down";
-        STR_KEY_MEDIA_FF = " or fastforward/backwards media key";
+        STR_KEY_MEDIA_FF = " or fast forward rewind media key";
         STR_GUIDE_EXTRA = STR_SPACE + "or press key 2";
         STR_GUIDE_EXTRA2 = " or media key next track";
         STR_REFRESH = "Refresh";
@@ -842,7 +842,7 @@
         STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
         STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
         STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from live feed";
-        STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls";
+        STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
         STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
         STR_SINGLE_EXIT = "Single back key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
@@ -946,7 +946,7 @@
         STR_CONTROLS_MULTI_1 = 'If you are having lag issues after enable multistream, try to lower the value of "Small player bitrate" in settings, accumulation of skipped frames or constant buffering is a indication of too high bitrate or slow internet';
         STR_CONTROLS_MULTI_2 = "Add streams: open live feed key up and click on a live stream";
         STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from live feed and chose one to replace from the dialog";
-        STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left, or media keys fast/backward switches, meida key backward all";
+        STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left, or media keys next previews track";
         STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
         STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
         STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
@@ -7185,14 +7185,7 @@
                 case KEY_MEDIA_REWIND:
                     if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
 
-                    //Audio all
-                    if (Play_MultiEnable) {
-                        Play_controls[Play_controlsAudioMulti].defaultValue = 4;
-                        Play_controls[Play_controlsAudioMulti].enterKey();
-                    } else if (PlayExtra_PicturePicture) {
-                        Play_controls[Play_controlsAudio].defaultValue = 2;
-                        Play_controls[Play_controlsAudio].enterKey();
-                    }
+                    Play_controls[Play_MultiStream].enterKey();
 
                     break;
                 case KEY_MEDIA_NEXT:
