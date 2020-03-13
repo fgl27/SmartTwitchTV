@@ -10,7 +10,7 @@ var Users_Isautentication = true;
 var Users_ShowAutetication = false;
 var Users_Userlastadded = '';
 
-var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll'];
+var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll', 'user_row'];
 var Users_status = false;
 var Users_loadingData = true;
 //Variable initialization end
@@ -81,7 +81,7 @@ function Users_loadData() {
 
     div.setAttribute('id', Users_ids[4] + '0_0');
     div.classList.add('stream_thumbnail_user_icon_holder');
-    row.classList.add('class_translate3d');
+    row.setAttribute('id', Users_ids[6] + '0');
 
     div.innerHTML = '<div id="' + Users_ids[0] + '0_0' +
         '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"></div>' +
@@ -96,10 +96,10 @@ function Users_loadData() {
         row.appendChild(Users_createCell(y + '_' + x, user));
         x++;
         if (x > 5) {
+            y++;
             doc.appendChild(row);
             row = document.createElement('div');
-            row.classList.add('class_translate3d');
-            y++;
+            row.setAttribute('id', Users_ids[6] + y);
             x = 0;
         }
     }
@@ -159,13 +159,14 @@ function Users_addFocus(forceScroll) {
 
         if (Users_cursorY > 1) {
 
-            if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0]))
-                Main_ScrollTableCalc(Users_ids[5],
-                    ((document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getBoundingClientRect().top -
-                        document.getElementById(Users_ids[5]).offsetTop) * -1),
-                    36
-                );
-        } else Main_ScrollTable(Users_ids[5], 0);
+            if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0])) {
+
+                document.getElementById(Users_ids[5]).style.transform = 'translateY(' +
+                    (((document.getElementById(Users_ids[6] + Users_cursorY).offsetHeight - document.getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop)) / BodyfontSize) +
+                    'em)';
+
+            }
+        } else document.getElementById(Users_ids[5]).style.transform = '';
 
     }
 }
