@@ -413,4 +413,5 @@ function en_USLang() {
     STR_ACCESSIBILITY_WARN_EXTRA = "Is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.<br>Read more about this on bellow link:";
     STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
     STR_AUTO_REFRESH = "Auto refresh content timeout (time in minutes)";
+    STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
 }

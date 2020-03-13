@@ -28,6 +28,7 @@ var Play_EndUpclearID;
 var Play_EndUpclearCalback;
 var Play_EndDialogEnter = 0;
 var Play_PanneInfoDoclId;
+var Play_Multi_MainBig = false;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
@@ -2107,3 +2108,27 @@ function Play_setHideMultiDialog() {
     Play_clearHideMultiDialog();
     Play_HideMultiDialogID = window.setTimeout(Play_HideMultiDialog, 10000);
 }
+
+var Play_StoreChatPosValue = {
+    height: '',
+    marginTop: '',
+    top: '',
+    left: ''
+};
+
+function Play_StoreChatPos() {
+    Play_StoreChatPosValue.height = Play_chat_container.style.height;
+    Play_StoreChatPosValue.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
+    Play_StoreChatPosValue.top = Play_chat_container.style.top;
+    Play_StoreChatPosValue.left = Play_chat_container.style.left;
+}
+
+function Play_ResStoreChatPos() {
+    Play_chat_container.style.width = '';
+    if (!Play_ChatEnable) Play_hideChat();
+    Play_chat_container.style.height = Play_StoreChatPosValue.height;
+    document.getElementById("play_chat_dialog").style.marginTop = Play_StoreChatPosValue.marginTop;
+    Play_chat_container.style.top = Play_StoreChatPosValue.top;
+    Play_chat_container.style.left = Play_StoreChatPosValue.left;
+}
+
