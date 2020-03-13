@@ -739,6 +739,42 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    public void SetMultiStreamMainBig() {
+        FrameLayout.LayoutParams PlayerViewSizePos = new FrameLayout.LayoutParams(
+                (mwidthDefault * 2 / 3),
+                (heightDefault * 2 / 3),
+                positions[4]
+        );
+        PlayerView[mainPlayer].setLayoutParams(PlayerViewSizePos);
+
+        PlayerViewSizePos = new FrameLayout.LayoutParams(
+                (mwidthDefault / 3),
+                (heightDefault / 3),
+                positions[6]
+        );
+        PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSizePos);
+
+        PlayerViewSizePos = new FrameLayout.LayoutParams(
+                (mwidthDefault / 3),
+                (heightDefault / 3),
+                positions[7]
+        );
+        PlayerView[2].setLayoutParams(PlayerViewSizePos);
+
+        PlayerViewSizePos = new FrameLayout.LayoutParams(
+                (mwidthDefault / 3),
+                (heightDefault / 3),
+                positions[0]
+        );
+        PlayerView[3].setLayoutParams(PlayerViewSizePos);
+
+        AudioMulti = mainPlayer;
+        SetPlayerAudioMulti();
+
+        if (trackSelector[mainPlayer] != null)
+            trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
+    }
+
     public void SetMultiStream() {
         FrameLayout.LayoutParams PlayerViewSizePos = new FrameLayout.LayoutParams(
                 (mwidthDefault / 2),
@@ -1580,10 +1616,11 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void EnableMultiStream() {
+        public void EnableMultiStream(boolean MainBig) {
             MainThreadHandler.post(() -> {
                 MultiStream = true;
-                SetMultiStream();
+                if (MainBig) SetMultiStreamMainBig();
+                else SetMultiStream();
             });
         }
 
