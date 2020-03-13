@@ -1706,6 +1706,10 @@ function Play_Multi_UnSetPanelDivs(checkChat) {
     Play_IconsRemoveFocus();
     Play_Panelcounter = Play_MultiStream;
     Play_IconsAddFocus();
+    if (Play_Multi_MainBig) {
+        Play_ResStoreChatPos();
+        Play_Multi_MainBig = false;
+    }
 }
 
 function Play_Multi_UnSetPanelDivsCheckChat() {
