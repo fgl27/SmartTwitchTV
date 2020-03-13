@@ -409,7 +409,9 @@
     var STR_ACCESSIBILITY_WARN_EXTRA;
     var STR_ACCESSIBILITY_WARN_EXTRA2;
     var STR_AUTO_REFRESH;
-    var STR_PICTURE_CONTROLS13; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_PICTURE_CONTROLS13;
+    var STR_GUIDE_EXTRA2;
+    var STR_KEY_MEDIA_FF; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -441,7 +443,7 @@
         STR_ABOUT_KEY = STR_ABOUT + " (A)";
         STR_SWITCH = STR_SWITCH + STR_KEY_UP_DOWN;
         STR_SWITCH_USER = STR_SWITCH_USER + STR_KEY_UP_DOWN;
-        STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA;
+        STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA + STR_GUIDE_EXTRA2;
         STR_GOBACK = STR_GOBACK_START;
         STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
             STR_PAYPAL_SUMMARY + '</div></div>';
@@ -555,7 +557,9 @@
 
         //Below are variables to translate
         STR_KEY_UP_DOWN = " PG Up/Down";
+        STR_KEY_MEDIA_FF = " or fastforward/backwards media key";
         STR_GUIDE_EXTRA = STR_SPACE + "or press key 2";
+        STR_GUIDE_EXTRA2 = " or media key next track";
         STR_REFRESH = "Refresh";
         STR_SEARCH = "Search";
         STR_SETTINGS = "Settings";
@@ -642,11 +646,11 @@
         STR_UPDATE = 'Update';
         STR_CURRENT_VERSION = "Current installed version ";
         STR_LATEST_VERSION = " latest available version ";
-        STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause media or key 1";
+        STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause or previews track media keys or key 1";
         STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
         STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
         STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it auto force close";
-        STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad up/Down or" + STR_KEY_UP_DOWN;
+        STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
         STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
         STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
         STR_ABOUT_INFO_1 = "This is a SmartTV Client for Twitch developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
@@ -12525,6 +12529,7 @@
         Main_keyClickDelayStart();
 
         switch (event.keyCode) {
+            case KEY_MEDIA_REWIND:
             case KEY_PG_UP:
                 //TODO improve this pg up and down so many unnecessary ifs
                 if (inUseObj.key_pgUp) {
@@ -12541,6 +12546,7 @@
                     } else Sidepannel_Go(inUseObj.key_pgUp);
                 }
                 break;
+            case KEY_MEDIA_FAST_FORWARD:
             case KEY_PG_DOWN:
                 if (inUseObj.key_pgDown) {
                     Screens_RemoveAllFocus();
@@ -12589,6 +12595,7 @@
             case KEY_PLAY:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
+            case KEY_MEDIA_PREVIOUS:
                 inUseObj.key_play();
                 break;
             case KEY_ENTER:
@@ -12597,6 +12604,7 @@
                 Screens_clear = false;
                 Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 400);
                 break;
+            case KEY_MEDIA_NEXT:
             case KEY_REFRESH:
                 Main_ReloadScreen();
                 break;
