@@ -96,7 +96,7 @@ function Screens_init() {
     Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (!inUseObj.status || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
+    else if (!inUseObj.status || Screens_RefreshTimeout() || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
         Screens_StartLoad();
     else {
         Main_YRst(inUseObj.posY);
@@ -2000,5 +2000,13 @@ function Screens_ThumbOptionSetArrowArray() {
 function Screens_SetLastRefresh() {
     if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
         Main_values.Main_Go === Main_addUser || !inUseObj) return;
+
     Main_innerHTML("label_last_refresh", STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - inUseObj.lastRefresh) + ")");
+}
+
+function Screens_RefreshTimeout() {
+    if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
+        Main_values.Main_Go === Main_addUser || !inUseObj || !Settings_Obj_default("auto_refresh_screen")) return false;
+
+    return (new Date().getTime()) > (inUseObj.lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000));
 }

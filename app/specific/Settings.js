@@ -45,6 +45,12 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "auto_refresh_screen": { //live notification
+        "values": [
+            'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
+        ],
+        "defaultValue": 1
+    },
     "show_feed_player_delay": { //live notification
         "values": [
             0, 100, 200, 300, 400, 500, 600,
@@ -232,6 +238,9 @@ function Settings_SetSettings() {
 
     div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, null);
 
+    Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
+    div += Settings_Content('auto_refresh_screen', Settings_value.auto_refresh_screen.values, STR_AUTO_REFRESH, null);
+
     div += Settings_Content('thumb_quality',
         [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
         STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMMARY);
@@ -402,10 +411,14 @@ function Settings_SetStrings() {
     Main_textContent('setting_title_bandwidth_summary', STR_PLAYER_BITRATE_SUMMARY);
 
     key = "bitrate_main";
-    Main_textContent(key + '_name', STR_PLAYER_BITRATE_MAIN);
-    Settings_value[key].values[0] = STR_DISABLE;
+    Main_textContent(key + '_name', STR_AUTO_REFRESH);
+    Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
 
     key = "bitrate_min";
+    Main_textContent(key + '_name', STR_START_AT_USER);
+    Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+
+    key = "auto_refresh_screen";
     Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
     Settings_value[key].values[0] = STR_DISABLE;
 
@@ -772,7 +785,7 @@ function Settings_ScrollTable() {
     var doc,
         offset = (!Main_isTV || !Main_IsNotBrowser) ? 2 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (15 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (16 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -780,7 +793,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 200);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (14 + offset)) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (15 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;
