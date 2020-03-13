@@ -262,8 +262,8 @@ function en_USLang() {
     STR_BITCOIN_SUMMARY = "Bitcoin donations use wallet address:";
     STR_PLAYER_PROBLEM_2 = " Connection failed, unable to load stream info";
     STR_PLAYER_RESYNC = "Player Auto Sync";
-    STR_PLAYER_AUTO_BIG = "Main window";
-    STR_PLAYER_AUTO_SMALLS = "Small window";
+    STR_PLAYER_AUTO_BIG = "Main or big window";
+    STR_PLAYER_AUTO_SMALLS = "Small or bottom window";
     STR_PLAYER_AUTO_ALL = "Both windows";
     STR_PLAYER_MULTI_ALL = "All windows";
     STR_PLAYER_WINDOW = "Window ";

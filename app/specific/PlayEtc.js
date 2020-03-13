@@ -663,11 +663,6 @@ function Play_handleKeyDown(e) {
                     }
                 }
                 break;
-            case KEY_REFRESH:
-                if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
-                else if (!Play_isEndDialogVisible() && !Play_isPanelShown() &&
-                    !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
-                break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(1);
                 break;
@@ -686,6 +681,53 @@ function Play_handleKeyDown(e) {
                     Play_BottomUpDown(1, -1);
                     Play_Panelcounter = Play_controlsDefault;
                 }
+                break;
+            case KEY_REFRESH:
+            case KEY_MEDIA_NEXT:
+                if (Play_isEndDialogVisible() || Play_MultiDialogVisible() || Play_MultiEnable) break;
+
+                if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                else Play_controls[Play_controlsChatSide].enterKey();
+
+                break;
+            case KEY_MEDIA_PREVIOUS:
+                if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
+
+                //Audio all
+                if (Play_MultiEnable) {
+                    Play_controls[Play_controlsAudioMulti].defaultValue = 4;
+                    Play_controls[Play_controlsAudioMulti].enterKey();
+                } else if (PlayExtra_PicturePicture) {
+                    Play_controls[Play_controlsAudio].defaultValue = 2;
+                    Play_controls[Play_controlsAudio].enterKey();
+                }
+
+                break;
+            case KEY_MEDIA_FAST_FORWARD:
+                if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
+
+                if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1, true);
+                else if (PlayExtra_PicturePicture) {
+                    Play_controls[Play_controlsAudio].defaultValue++;
+
+                    if (Play_controls[Play_controlsAudio].defaultValue > 1) Play_controls[Play_controlsAudio].defaultValue = 0;
+
+                    Play_controls[Play_controlsAudio].enterKey();
+                }
+
+                break;
+            case KEY_MEDIA_REWIND:
+                if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
+
+                if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1, true);
+                else if (PlayExtra_PicturePicture) {
+                    Play_controls[Play_controlsAudio].defaultValue--;
+
+                    if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = 1;
+
+                    Play_controls[Play_controlsAudio].enterKey();
+                }
+
                 break;
             default:
                 break;
@@ -1039,7 +1081,6 @@ function Play_MakeControls() {
 
             Android.mSwitchPlayerAudio(this.defaultValue);
 
-            Play_hidePanel();
             Play_controlsAudioPos = this.defaultValue;
 
             Main_setItem('Play_controlsAudioPos', Play_controlsAudioPos);
@@ -1047,6 +1088,13 @@ function Play_MakeControls() {
             this.bottomArrows();
             this.setLable();
             Play_SetAudioIcon();
+
+            var text = !this.defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
+
+            Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+                ((this.defaultValue < 2) ? (STR_SPACE + text) : this.values[this.defaultValue]),
+                2000
+            );
         },
         updown: function(adder) {
 
@@ -1076,10 +1124,13 @@ function Play_MakeControls() {
 
             Android.mSetPlayerAudioMulti(this.defaultValue);
 
-            Play_hidePanel();
-
             this.bottomArrows();
             this.setLable();
+
+            Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+                ((this.defaultValue < 4) ? (STR_SPACE + Play_MultiArray[this.defaultValue].data[1]) : this.values[this.defaultValue]),
+                2000
+            );
         },
         updown: function(adder) {
 
