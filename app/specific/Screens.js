@@ -1009,6 +1009,7 @@ function Screens_handleKeyDown(event) {
     Main_keyClickDelayStart();
 
     switch (event.keyCode) {
+        case KEY_MEDIA_REWIND:
         case KEY_PG_UP:
             //TODO improve this pg up and down so many unnecessary ifs
             if (inUseObj.key_pgUp) {
@@ -1025,6 +1026,7 @@ function Screens_handleKeyDown(event) {
                 } else Sidepannel_Go(inUseObj.key_pgUp);
             }
             break;
+        case KEY_MEDIA_FAST_FORWARD:
         case KEY_PG_DOWN:
             if (inUseObj.key_pgDown) {
                 Screens_RemoveAllFocus();
