@@ -139,7 +139,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
     STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...) for live content they are used as shortcuts for audio and video mode changes";
-    STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key next track, also switches between Picture in Picture and 50/50 mode";
+    STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
     STR_F_DISABLE_CHAT = "Chat force disable";
     STR_UPDATE_AVAILABLE = "Update available, check google play store";
     STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> Add a key is not demanding and can be done at any point later <br> <br> In doubt read this link <br> <br> https://github.com/fgl27/SmartTwitchTV#authentication <br> <br> For some devices is necessary a mouse to complete the authentication action.<br> <br>add key for';
@@ -288,7 +288,7 @@ function en_USLang() {
     STR_PICTURE_CONTROLS9 = "Manually Sync playback: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa";
     STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
     STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
-    STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key next track or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from live feed";
+    STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from live feed";
     STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls";
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
     STR_SINGLE_EXIT = "Single back key press";
@@ -393,7 +393,7 @@ function en_USLang() {
     STR_CONTROLS_MULTI_1 = 'If you are having lag issues after enable multistream, try to lower the value of "Small player bitrate" in settings, accumulation of skipped frames or constant buffering is a indication of too high bitrate or slow internet';
     STR_CONTROLS_MULTI_2 = "Add streams: open live feed key up and click on a live stream";
     STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from live feed and chose one to replace from the dialog";
-    STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left, or media keys fast/backward switches, previews track all";
+    STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left, or media keys fast/backward switches, meida key backward all";
     STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
     STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
     STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
@@ -414,4 +414,5 @@ function en_USLang() {
     STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
     STR_AUTO_REFRESH = "Auto refresh content timeout (time in minutes)";
     STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
+    STR_MAIN_MULTI_BIG = "MultiStream main window bigger and chat: press key down";
 }
