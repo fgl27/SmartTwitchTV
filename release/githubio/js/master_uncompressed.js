@@ -408,7 +408,8 @@
     var STR_ACCESSIBILITY_WARN;
     var STR_ACCESSIBILITY_WARN_EXTRA;
     var STR_ACCESSIBILITY_WARN_EXTRA2;
-    var STR_AUTO_REFRESH; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_AUTO_REFRESH;
+    var STR_PICTURE_CONTROLS13; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -461,6 +462,7 @@
             STR_DIV_TITLE + STR_CHAT + '</div>' +
             STR_DIV_MIDLE_LEFT +
             STR_DOT + STR_CONTROLS_PLAY_7 + STR_BR +
+            STR_DOT + STR_CONTROLS_PLAY_14 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_8 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_9 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_10 + STR_BR +
@@ -468,6 +470,7 @@
 
             STR_DIV_TITLE + STR_PICTURE_PICTURE + '</div>' +
             STR_DIV_MIDLE_LEFT +
+            STR_DOT + STR_PICTURE_CONTROLS13 + STR_BR +
             STR_DOT + STR_PICTURE_CONTROLS1 + STR_BR +
             STR_DOT + STR_PICTURE_CONTROLS12 + STR_BR +
             STR_DOT + STR_PICTURE_CONTROLS2 + STR_BR +
@@ -680,8 +683,8 @@
         STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
         STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
         STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
-        STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...)";
-        STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): Color button red (A)";
+        STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...) for live content they are used as shortcuts for audio and video mode changes";
+        STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key next track, also switches between Picture in Picture and 50/50 mode";
         STR_F_DISABLE_CHAT = "Chat force disable";
         STR_UPDATE_AVAILABLE = "Update available, check google play store";
         STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> Add a key is not demanding and can be done at any point later <br> <br> In doubt read this link <br> <br> https://github.com/fgl27/SmartTwitchTV#authentication <br> <br> For some devices is necessary a mouse to complete the authentication action.<br> <br>add key for';
@@ -806,8 +809,8 @@
         STR_BITCOIN_SUMMARY = "Bitcoin donations use wallet address:";
         STR_PLAYER_PROBLEM_2 = " Connection failed, unable to load stream info";
         STR_PLAYER_RESYNC = "Player Auto Sync";
-        STR_PLAYER_AUTO_BIG = "Main window";
-        STR_PLAYER_AUTO_SMALLS = "Small window";
+        STR_PLAYER_AUTO_BIG = "Main or big window";
+        STR_PLAYER_AUTO_SMALLS = "Small or bottom window";
         STR_PLAYER_AUTO_ALL = "Both windows";
         STR_PLAYER_MULTI_ALL = "All windows";
         STR_PLAYER_WINDOW = "Window ";
@@ -818,19 +821,20 @@
         STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
         STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
         STR_AUDIO_SOURCE = "Audio source";
-        STR_PICTURE_PICTURE = "Picture in Picture or 50/50 (For Live streams only, add a user to use it):";
+        STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";
         STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 1 to start";
         STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter or press key 1 after selecting a stream from live feed";
         STR_PICTURE_CONTROLS3 = "Change big window content: simple key enter click after selecting a stream from live feed";
         STR_PICTURE_CONTROLS4 = "Change content between windows: D-pad down big becomes small and vice versa";
         STR_PICTURE_CONTROLS5 = "Change small window position: D-pad left";
         STR_PICTURE_CONTROLS6 = "Change small window size: D-pad right";
-        STR_PICTURE_CONTROLS7 = "Change audio source: use the player bottom controls Audio source, if in 50/50 mode use d-pad down";
+        STR_PICTURE_CONTROLS7 = "Change audio source: use the player bottom controls Audio source, if in 50/50 mode use d-pad down or use media keys fast forward/rewind switches, previous track enable all";
         STR_PICTURE_CONTROLS8 = "Auto Sync playback: use the player bottom controls Player Sync";
         STR_PICTURE_CONTROLS9 = "Manually Sync playback: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa";
         STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
         STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
-        STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If already in picture in picture mode press key 2 or use bottom controls Video Mode or when in video mode smaller screen plus chat hold key enter to start from live feed";
+        STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key next track or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from live feed";
+        STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls";
         STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
         STR_SINGLE_EXIT = "Single back key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
@@ -934,7 +938,7 @@
         STR_CONTROLS_MULTI_1 = 'If you are having lag issues after enable multistream, try to lower the value of "Small player bitrate" in settings, accumulation of skipped frames or constant buffering is a indication of too high bitrate or slow internet';
         STR_CONTROLS_MULTI_2 = "Add streams: open live feed key up and click on a live stream";
         STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from live feed and chose one to replace from the dialog";
-        STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left";
+        STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left, or media keys fast/backward switches, previews track all";
         STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
         STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
         STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
@@ -7117,11 +7121,6 @@
                         }
                     }
                     break;
-                case KEY_REFRESH:
-                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
-                    else if (!Play_isEndDialogVisible() && !Play_isPanelShown() &&
-                        !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
-                    break;
                 case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(1);
                     break;
@@ -7140,6 +7139,53 @@
                         Play_BottomUpDown(1, -1);
                         Play_Panelcounter = Play_controlsDefault;
                     }
+                    break;
+                case KEY_REFRESH:
+                case KEY_MEDIA_NEXT:
+                    if (Play_isEndDialogVisible() || Play_MultiDialogVisible() || Play_MultiEnable) break;
+
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                    else Play_controls[Play_controlsChatSide].enterKey();
+
+                    break;
+                case KEY_MEDIA_PREVIOUS:
+                    if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
+
+                    //Audio all
+                    if (Play_MultiEnable) {
+                        Play_controls[Play_controlsAudioMulti].defaultValue = 4;
+                        Play_controls[Play_controlsAudioMulti].enterKey();
+                    } else if (PlayExtra_PicturePicture) {
+                        Play_controls[Play_controlsAudio].defaultValue = 2;
+                        Play_controls[Play_controlsAudio].enterKey();
+                    }
+
+                    break;
+                case KEY_MEDIA_FAST_FORWARD:
+                    if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
+
+                    if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1, true);
+                    else if (PlayExtra_PicturePicture) {
+                        Play_controls[Play_controlsAudio].defaultValue++;
+
+                        if (Play_controls[Play_controlsAudio].defaultValue > 1) Play_controls[Play_controlsAudio].defaultValue = 0;
+
+                        Play_controls[Play_controlsAudio].enterKey();
+                    }
+
+                    break;
+                case KEY_MEDIA_REWIND:
+                    if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
+
+                    if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1, true);
+                    else if (PlayExtra_PicturePicture) {
+                        Play_controls[Play_controlsAudio].defaultValue--;
+
+                        if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = 1;
+
+                        Play_controls[Play_controlsAudio].enterKey();
+                    }
+
                     break;
                 default:
                     break;
@@ -7493,7 +7539,6 @@
 
                 Android.mSwitchPlayerAudio(this.defaultValue);
 
-                Play_hidePanel();
                 Play_controlsAudioPos = this.defaultValue;
 
                 Main_setItem('Play_controlsAudioPos', Play_controlsAudioPos);
@@ -7501,6 +7546,13 @@
                 this.bottomArrows();
                 this.setLable();
                 Play_SetAudioIcon();
+
+                var text = !this.defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
+
+                Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+                    ((this.defaultValue < 2) ? (STR_SPACE + text) : this.values[this.defaultValue]),
+                    2000
+                );
             },
             updown: function(adder) {
 
@@ -7530,10 +7582,13 @@
 
                 Android.mSetPlayerAudioMulti(this.defaultValue);
 
-                Play_hidePanel();
-
                 this.bottomArrows();
                 this.setLable();
+
+                Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+                    ((this.defaultValue < 4) ? (STR_SPACE + Play_MultiArray[this.defaultValue].data[1]) : this.values[this.defaultValue]),
+                    2000
+                );
             },
             updown: function(adder) {
 
@@ -10290,28 +10345,27 @@
         }, 1000);
     }
 
-    function Play_MultiEnableKeyRightLeft(adder) {
+    function Play_MultiEnableKeyRightLeft(adder, skipall) {
         Play_controls[Play_controlsAudioMulti].defaultValue += adder;
 
-        if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - 1))
+        if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - (1 + (skipall ? 1 : 0)))) {
+
             Play_controls[Play_controlsAudioMulti].defaultValue = 0;
-        else if (Play_controls[Play_controlsAudioMulti].defaultValue < 0)
-            Play_controls[Play_controlsAudioMulti].defaultValue = (Play_controls[Play_controlsAudioMulti].values.length - 1);
+
+        } else if (Play_controls[Play_controlsAudioMulti].defaultValue < 0) {
+
+            Play_controls[Play_controlsAudioMulti].defaultValue = (Play_controls[Play_controlsAudioMulti].values.length - (1 + (skipall ? 1 : 0)));
+
+        }
 
         if (Play_controls[Play_controlsAudioMulti].defaultValue < 4 &&
             Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
 
-            Play_MultiEnableKeyRightLeft(adder);
+            Play_MultiEnableKeyRightLeft(adder, skipall);
             return;
         }
 
         Play_controls[Play_controlsAudioMulti].enterKey();
-
-        Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
-            Play_controls[Play_controlsAudioMulti].values[Play_controls[Play_controlsAudioMulti].defaultValue] +
-            ((Play_controls[Play_controlsAudioMulti].defaultValue < 4) ?
-                (STR_SPACE + Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data[1]) : ''),
-            1500);
     }
 
     function Play_MultiInfoReset(pos) {
