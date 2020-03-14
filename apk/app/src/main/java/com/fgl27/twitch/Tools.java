@@ -6,12 +6,14 @@ import android.app.UiModeManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Display;
 
 import androidx.annotation.NonNull;
 
@@ -758,5 +760,12 @@ public final class Tools {
         } else return 100000000;
 
         return (int) (memInfo.totalMem / 16);
+    }
+
+    public static Point ScreenSize(Display display) {
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
     }
 }
