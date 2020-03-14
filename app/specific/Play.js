@@ -13,7 +13,7 @@ var Play_ChatSizeValueBF;
 var Play_Buffer = 2000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;
-var Play_PicturePictureSize = 3;
+var Play_PicturePictureSize = 1;
 var Play_controlsAudioPos = 1;
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_PLAYING = 1;
@@ -173,7 +173,7 @@ function Play_PreStart() {
     Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
     Play_ChatDelayPosition = Main_getItemInt('Play_ChatDelayPosition', 0);
     Play_PicturePicturePos = Main_getItemInt('Play_PicturePicturePos', 4);
-    Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 3);
+    Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 1);
     Play_controlsAudioPos = Main_getItemInt('Play_controlsAudioPos', 1);
 
     Play_LowLatency = Main_getItemBool('Play_LowLatency', false);

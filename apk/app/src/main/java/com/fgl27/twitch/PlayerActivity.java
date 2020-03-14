@@ -123,7 +123,7 @@ public class PlayerActivity extends Activity {
     public int mwidthChat = 0;
     public int mainPlayer = 0;
     public int DefaultPositions = 0;
-    public int playerDivider = 3;//sizes are 2 , 3 , 4
+    public int playerDivider = 1;//sizes are 0 , 1 , 2
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
     public Handler MainThreadHandler;
@@ -669,8 +669,8 @@ public class PlayerActivity extends Activity {
                 PlayerViewSmallSize[i][j] = new FrameLayout.LayoutParams((mwidthDefault / (j + 2)), (heightDefault /  (j + 2)), positions[i]);
             }
         }
+        PlayerView[1].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider]);
 
-        PlayerView[1].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider - 2]);
         //MultiStream
         //4 way same size
         MultiStreamPlayerViewLayout[0] = new FrameLayout.LayoutParams(
@@ -747,7 +747,7 @@ public class PlayerActivity extends Activity {
 
         //Set new video sizes
         PlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
-        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider - 2]);
+        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider]);
 
         VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
 
@@ -788,7 +788,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void UpdadeSizePosSmall(int pos) {
-        PlayerView[pos].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider - 2]);
+        PlayerView[pos].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider]);
     }
 
     public void SetPlayerAudioMulti() {
@@ -830,7 +830,7 @@ public class PlayerActivity extends Activity {
         if (PicturePicture) updateVideSizePP(isFullScreen);
         else {
             updateVideSize(isFullScreen);
-            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider - 2]);
+            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider]);
         }
 
         if (!PicturePicture || player[mainPlayer ^ 1] == null || player[mainPlayer] == null) {
@@ -1281,6 +1281,11 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerSize(int position) {
             playerDivider = position;
+
+            //Remove this after some apps update also remove all try from js related to new java fun
+            //Adjust to prevent crash on old js code
+            if (playerDivider > 2) playerDivider = 2;
+
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
@@ -1288,6 +1293,11 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetPlayerSize(int position) {
             playerDivider = position;
+
+            //Remove this after some apps update also remove all try from js related to new java fun
+            //Adjust to prevent crash on old js code
+            if (playerDivider > 2) playerDivider = 2;
+
             MainThreadHandler.post(PlayerActivity.this::SetDefaultLayouts);
         }
 

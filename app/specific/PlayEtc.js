@@ -534,7 +534,7 @@ function Play_handleKeyDown(e) {
                     Play_EndIconsAddFocus();
                 } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePictureSize++;
-                    if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
+                    if (Play_PicturePictureSize > 2) Play_PicturePictureSize = 0;
                     Android.mSwitchPlayerSize(Play_PicturePictureSize);
                     Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                 } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeRight();
