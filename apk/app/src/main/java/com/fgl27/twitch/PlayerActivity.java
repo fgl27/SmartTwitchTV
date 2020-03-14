@@ -248,30 +248,22 @@ public class PlayerActivity extends Activity {
     }
 
     public void setPlayer(boolean surface_view) {
+        int[] idGone = idtexture, idVisible = idsurface;
         //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
-        if (surface_view) {
-            for (int i = 0; i < PlayerAcountPlus; i++) {
-                PlayerView[i] = findViewById(idtexture[i]);
-                PlayerView[i].setVisibility(View.GONE);
-                PlayerView[i] = findViewById(idsurface[i]);
-            }
+        if (!surface_view) {
+            idGone = idsurface;
+            idVisible = idtexture;
+        }
 
-            PlayerView[0].setVisibility(View.VISIBLE);
-            for (int i = 1; i < PlayerAcountPlus; i++) {
-                PlayerView[i].setVisibility(View.GONE);
-            }
-        } else {
+        for (int i = 0; i < PlayerAcountPlus; i++) {
+            PlayerView[i] = findViewById(idGone[i]);
+            PlayerView[i].setVisibility(View.GONE);
+            PlayerView[i] = findViewById(idVisible[i]);
+        }
 
-            for (int i = 0; i < PlayerAcountPlus; i++) {
-                PlayerView[i] = findViewById(idsurface[i]);
-                PlayerView[i].setVisibility(View.GONE);
-                PlayerView[i] = findViewById(idtexture[i]);
-            }
-
-            PlayerView[0].setVisibility(View.VISIBLE);
-            for (int i = 1; i < PlayerAcountPlus; i++) {
-                PlayerView[i].setVisibility(View.GONE);
-            }
+        PlayerView[0].setVisibility(View.VISIBLE);
+        for (int i = 1; i < PlayerAcountPlus; i++) {
+            PlayerView[i].setVisibility(View.GONE);
         }
 
         for (int i = 0; i < PlayerAcountPlus; i++) {
