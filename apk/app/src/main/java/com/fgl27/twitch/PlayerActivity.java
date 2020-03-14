@@ -239,9 +239,7 @@ public class PlayerActivity extends Activity {
         DefaultLoadingLayout = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
 
         loadingView[6] = findViewById(R.id.loading2);
-        FrameLayout.LayoutParams DefaultLoadingLayoutBottom = (FrameLayout.LayoutParams) loadingView[6].getLayoutParams();
-        DefaultLoadingLayoutBottom.width = DefaultSize;
-        DefaultLoadingLayoutBottom.height = DefaultSize;
+        FrameLayout.LayoutParams DefaultLoadingLayoutBottom = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER | Gravity.BOTTOM);
         DefaultLoadingLayoutBottom.bottomMargin = (int) (size.x / 40 * density / ScaleDensity);
         loadingView[6].setLayoutParams(DefaultLoadingLayoutBottom);
 
