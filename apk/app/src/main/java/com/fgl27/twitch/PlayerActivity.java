@@ -658,6 +658,7 @@ public class PlayerActivity extends Activity {
         PlayerViewExtraLayout[1].leftMargin = margin;
         PlayerViewExtraLayout[3].rightMargin = margin;
 
+        //The side panel player
         PlayerView[4].setLayoutParams(PlayerViewExtraLayout[0]);
 
         //Small player sizes and positions
@@ -666,6 +667,7 @@ public class PlayerActivity extends Activity {
                 PlayerViewSmallSize[i][j] = new FrameLayout.LayoutParams((mwidthDefault / (j + 2)), (heightDefault / (j + 2)), positions[i]);
             }
         }
+        //The side PP player
         PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
 
         //MultiStream
@@ -722,8 +724,8 @@ public class PlayerActivity extends Activity {
     //Used in side-by-side mode chat plus video
     private void updateVideSize(boolean FullScreen) {
         isFullScreen = FullScreen;
-        if (FullScreen) PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
-        else PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize);
+        if (FullScreen) PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);//100% width x height
+        else PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize);//CENTER_VERTICAL 75% width x height
     }
 
     //Used in 50/50 mode two videos on the center plus two chat one on it side
