@@ -16,7 +16,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -227,20 +226,18 @@ public class PlayerActivity extends Activity {
     }
 
     private void SetDefaultLoadingLayout() {
-        Display display = getWindowManager().getDefaultDisplay();
-        float density = this.getResources().getDisplayMetrics().density;
-        Point size = new Point();
-        display.getSize(size);
+        Point ScreenSize = Tools.ScreenSize(getWindowManager().getDefaultDisplay());
+        float Density = this.getResources().getDisplayMetrics().density;
 
-        float Scale = (float) size.y / 1080.0f;
-        float ScaleDensity = density / 2.0f;
+        float Scale = (float) ScreenSize.y / 1080.0f;
+        float ScaleDensity = Density / 2.0f;
 
-        int DefaultSize = Math.round(40 * density * Scale / ScaleDensity);
+        int DefaultSize = Math.round(40 * Density * Scale / ScaleDensity);
         DefaultLoadingLayout = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
 
         loadingView[6] = findViewById(R.id.loading2);
         FrameLayout.LayoutParams DefaultLoadingLayoutBottom = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER | Gravity.BOTTOM);
-        DefaultLoadingLayoutBottom.bottomMargin = (int) (size.x / 40 * density / ScaleDensity);
+        DefaultLoadingLayoutBottom.bottomMargin = (int) (ScreenSize.x / 40 * Density / ScaleDensity);
         loadingView[6].setLayoutParams(DefaultLoadingLayoutBottom);
 
         loadingView[5] = findViewById(R.id.loading);
@@ -620,12 +617,11 @@ public class PlayerActivity extends Activity {
         PlayerViewSideBySideSize = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
 
         //Player extra positions
-        Display display = getWindowManager().getDefaultDisplay();
-        float density = this.getResources().getDisplayMetrics().density;
-        Point size = new Point();
-        display.getSize(size);
-        float ScaleDensity = density / 2.0f;
-        int margin = (int) (size.y / 6.7 * density / ScaleDensity);
+        Point ScreenSize = Tools.ScreenSize(getWindowManager().getDefaultDisplay());
+        float Density = this.getResources().getDisplayMetrics().density;
+
+        float ScaleDensity = Density / 2.0f;
+        int margin = (int) (ScreenSize.y / 6.7 * Density / ScaleDensity);
         int ExtraWidth = (int) (mwidthDefault / 3.77);
         int ExtraHeight = (int) (heightDefault / 3.77);
 
@@ -638,11 +634,11 @@ public class PlayerActivity extends Activity {
 
         //Big player for side panel
         PlayerViewExtraLayout[5] = new FrameLayout.LayoutParams((int) (mwidthDefault / 1.68),(int) (heightDefault / 1.68), Gravity.RIGHT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[5].bottomMargin = (int) (size.x / 15.7 * density / ScaleDensity);
-        PlayerViewExtraLayout[5].rightMargin = (int) (size.y / 13.55 * density / ScaleDensity);
+        PlayerViewExtraLayout[5].bottomMargin = (int) (ScreenSize.x / 15.7 * Density / ScaleDensity);
+        PlayerViewExtraLayout[5].rightMargin = (int) (ScreenSize.y / 13.55 * Density / ScaleDensity);
 
         for (int i = 0; i < 5; i++) {
-            PlayerViewExtraLayout[i].bottomMargin = (int) (size.x / 22 * density / ScaleDensity);
+            PlayerViewExtraLayout[i].bottomMargin = (int) (ScreenSize.x / 22 * Density / ScaleDensity);
         }
 
         PlayerViewExtraLayout[1].leftMargin = margin;
