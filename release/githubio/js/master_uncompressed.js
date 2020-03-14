@@ -3546,8 +3546,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.143';
-    var Main_minversion = 'March 13, 2020';
+    var Main_stringVersion_Min = '.144';
+    var Main_minversion = 'March 14, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7003,7 +7003,7 @@
                         Play_EndIconsAddFocus();
                     } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                         Play_PicturePictureSize++;
-                        if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 2;
+                        if (Play_PicturePictureSize > 2) Play_PicturePictureSize = 0;
                         Android.mSwitchPlayerSize(Play_PicturePictureSize);
                         Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                     } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeRight();
@@ -8437,7 +8437,7 @@
     var Play_Buffer = 2000;
     var Play_CurrentSpeed = 3;
     var Play_PicturePicturePos = 4;
-    var Play_PicturePictureSize = 3;
+    var Play_PicturePictureSize = 1;
     var Play_controlsAudioPos = 1;
     var Play_STATE_LOADING_TOKEN = 0;
     var Play_STATE_PLAYING = 1;
@@ -8597,7 +8597,7 @@
         Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
         Play_ChatDelayPosition = Main_getItemInt('Play_ChatDelayPosition', 0);
         Play_PicturePicturePos = Main_getItemInt('Play_PicturePicturePos', 4);
-        Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 3);
+        Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 1);
         Play_controlsAudioPos = Main_getItemInt('Play_controlsAudioPos', 1);
 
         Play_LowLatency = Main_getItemBool('Play_LowLatency', false);
