@@ -1281,9 +1281,9 @@ public class PlayerActivity extends Activity {
         public void mSwitchPlayerSize(int position) {
             PicturePictureSize = position;
 
-            //Remove this after some apps update also remove all try from js related to new java fun
+            //V144 Remove this after some apps update also remove all try from js related to new java fun
             //Adjust to prevent crash on old js code
-            if (PicturePictureSize > 2) PicturePictureSize = 2;
+            if (PicturePictureSize > 2) PicturePictureSize = PicturePictureSize - 3;
 
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
@@ -1293,9 +1293,9 @@ public class PlayerActivity extends Activity {
         public void mSetPlayerSize(int position) {
             PicturePictureSize = position;
 
-            //Remove this after some apps update also remove all try from js related to new java fun
+            //V144 Remove this after some apps update also remove all try from js related to new java fun
             //Adjust to prevent crash on old js code
-            if (PicturePictureSize > 2) PicturePictureSize = 2;
+            if (PicturePictureSize > 2) PicturePictureSize = PicturePictureSize - 3;
 
             MainThreadHandler.post(PlayerActivity.this::SetDefaultLayouts);
         }
