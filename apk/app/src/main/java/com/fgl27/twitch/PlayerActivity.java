@@ -213,7 +213,7 @@ public class PlayerActivity extends Activity {
                     .build();
 
             VideoHolder = findViewById(R.id.videoholder);
-            setPlayer(true);
+            setPlayerSurface(true);
 
             deviceIsTV = Tools.deviceIsTV(this);
             shouldCallJsPlayer = false;
@@ -247,7 +247,7 @@ public class PlayerActivity extends Activity {
         loadingView[5].setLayoutParams(DefaultLoadingLayout);
     }
 
-    public void setPlayer(boolean surface_view) {
+    public void setPlayerSurface(boolean surface_view) {
         int[] idGone = idtexture, idVisible = idsurface;
         //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
         if (!surface_view) {
@@ -1571,7 +1571,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void msetPlayer(boolean surface_view, boolean FullScreen) {
             MainThreadHandler.post(() -> {
-                setPlayer(surface_view);
+                setPlayerSurface(surface_view);
 
                 if (FullScreen) updateVideSizePP(true);
                 else updateVideSize(false);
