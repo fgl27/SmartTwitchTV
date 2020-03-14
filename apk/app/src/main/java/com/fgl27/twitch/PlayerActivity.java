@@ -52,20 +52,13 @@ import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
+
     //public static final String PageUrl = "file:///android_asset/index.html";
     public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+
     public final int PlayerAcount = 4;
     public final int PlayerAcountPlus = PlayerAcount + 1;
-    private final int[] positions = {
-            Gravity.RIGHT | Gravity.BOTTOM,//0
-            Gravity.RIGHT | Gravity.CENTER,//1
-            Gravity.RIGHT | Gravity.TOP,//2
-            Gravity.CENTER | Gravity.TOP,//3
-            Gravity.LEFT | Gravity.TOP,//4
-            Gravity.LEFT | Gravity.CENTER,//5
-            Gravity.LEFT | Gravity.BOTTOM,//6
-            Gravity.CENTER | Gravity.BOTTOM//7
-    };
+
     public final int[] keys = {//same order as Main_initClickDoc /smartTwitchTV/app/specific/Main.js
             KeyEvent.KEYCODE_DPAD_UP,//0
             KeyEvent.KEYCODE_DPAD_DOWN,//1
@@ -101,7 +94,6 @@ public class PlayerActivity extends Activity {
 
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     public String[] BLACKLISTEDCODECS = null;
-    public int DefaultPositions = 0;
     public PlayerView[] PlayerView = new PlayerView[PlayerAcountPlus];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAcountPlus];
     public DataSource.Factory dataSourceFactory;
@@ -118,7 +110,7 @@ public class PlayerActivity extends Activity {
     //The mediaSources stored to be used when changing from auto to source 720 etc etc
     public MediaSource[] mediaSourcesAuto = new MediaSource[PlayerAcountPlus];
     public long[] expires = new long[PlayerAcountPlus];
-    //The mediaSources that the player usesreceives mediaSourcesAuto or null if null we know that we aren't in auto mode
+    //The mediaSources that the player uses receives mediaSourcesAuto or null if null we know that we aren't in auto mode
     public MediaSource[] mediaSourcePlaying = new MediaSource[PlayerAcountPlus];
     public WebView mwebview;
     public boolean PicturePicture;
@@ -130,7 +122,8 @@ public class PlayerActivity extends Activity {
     public int heightChat = 0;
     public int mwidthChat = 0;
     public int mainPlayer = 0;
-    public int playerDivider = 3;
+    public int DefaultPositions = 0;
+    public int playerDivider = 3;//sizes are 2 , 3 , 4
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
     public Handler MainThreadHandler;
@@ -144,28 +137,33 @@ public class PlayerActivity extends Activity {
     public int[] droppedFrames = new int[2];
     public long[] conSpeed = new long[2];
     public long[] netActivity = new long[2];
-    public long droppedFramesTotal = 0L;
-    public int deviceRam = 0;
+    public long DroppedFramesTotal = 0L;
+    public int DeviceRam = 0;
     public float conSpeedAVG = 0f;
-    public float netActivityAVG = 0f;
-    public long netcounter = 0L;
-    public long speedcounter = 0L;
+    public float NetActivityAVG = 0f;
+    public long NetCounter = 0L;
+    public long SpeedCounter = 0L;
     public boolean mLowLatency = false;
-    public boolean UsefullBandwidth = false;
+    public boolean UseFullBandwidth = false;
     private LoadControl[] loadControl = new LoadControl[PlayerAcount];
     private Uri uri;
-    private FrameLayout.LayoutParams DefaultSizeFrame;
+    //The default size for all loading dialog
+    private FrameLayout.LayoutParams DefaultLoadingLayout;
+    //the default size for the main player 100% width x height
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
+    //the default size for the main player when on side by side plus chat 75% width x height
     private FrameLayout.LayoutParams PlayerViewSideBySideSize;
-    private FrameLayout.LayoutParams PlayerViewSmallSize;
-    private FrameLayout.LayoutParams PlayerViewDefaultSizePP;
-    private FrameLayout.LayoutParams PlayerViewSideBySideSizePP;
+    //the default size for the other player when on PP mode, some positions are also used when on side by side for both players
+    private FrameLayout.LayoutParams[][] PlayerViewSmallSize = new FrameLayout.LayoutParams[8][3];
+    //the default size for the extra player used by side panel and live player feed
     private FrameLayout.LayoutParams[] PlayerViewExtraLayout = new FrameLayout.LayoutParams[6];
+    //the default size for the players of multistream 4 player two modes
+    private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout = new FrameLayout.LayoutParams[8];
     private FrameLayout VideoHolder;
     private boolean onCreateReady;
-    private boolean IsonStop;
+    private boolean IsStopped;
     private ProgressBar[] loadingView = new ProgressBar[PlayerAcount + 3];
-    private boolean alredystarted;
+    private boolean AlredyStarted;
     private boolean shouldCallJsPlayer;
 
     @Override
@@ -174,9 +172,9 @@ public class PlayerActivity extends Activity {
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
             setContentView(R.layout.activity_player);
-            SetDefaultSizeFrame();
+            SetDefaultLoadingLayout();
 
-            IsonStop = false;
+            IsStopped = false;
             onCreateReady = true;
 
             MainThreadHandler = new Handler(Looper.getMainLooper());
@@ -224,15 +222,15 @@ public class PlayerActivity extends Activity {
             deviceIsTV = Tools.deviceIsTV(this);
             shouldCallJsPlayer = false;
 
-            deviceRam = Tools.deviceRam(this);
+            DeviceRam = Tools.DeviceRam(this);
             //Ram too big.bigger then max int value... use 500MB
-            if (deviceRam < 0) deviceRam = 500000000;
+            if (DeviceRam < 0) DeviceRam = 500000000;
 
             initializeWebview();
         }
     }
 
-    private void SetDefaultSizeFrame() {
+    private void SetDefaultLoadingLayout() {
         Display display = getWindowManager().getDefaultDisplay();
         float density = this.getResources().getDisplayMetrics().density;
         Point size = new Point();
@@ -242,17 +240,17 @@ public class PlayerActivity extends Activity {
         float ScaleDensity = density / 2.0f;
 
         int DefaultSize = Math.round(40 * density * Scale / ScaleDensity);
-        DefaultSizeFrame = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
+        DefaultLoadingLayout = new FrameLayout.LayoutParams(DefaultSize, DefaultSize, Gravity.CENTER);
 
         loadingView[6] = findViewById(R.id.loading2);
-        FrameLayout.LayoutParams defaultSizeFrameBottom = (FrameLayout.LayoutParams) loadingView[6].getLayoutParams();
-        defaultSizeFrameBottom.width = DefaultSize;
-        defaultSizeFrameBottom.height = DefaultSize;
-        defaultSizeFrameBottom.bottomMargin = (int) (size.x / 40 * density / ScaleDensity);
-        loadingView[6].setLayoutParams(defaultSizeFrameBottom);
+        FrameLayout.LayoutParams DefaultLoadingLayoutBottom = (FrameLayout.LayoutParams) loadingView[6].getLayoutParams();
+        DefaultLoadingLayoutBottom.width = DefaultSize;
+        DefaultLoadingLayoutBottom.height = DefaultSize;
+        DefaultLoadingLayoutBottom.bottomMargin = (int) (size.x / 40 * density / ScaleDensity);
+        loadingView[6].setLayoutParams(DefaultLoadingLayoutBottom);
 
         loadingView[5] = findViewById(R.id.loading);
-        loadingView[5].setLayoutParams(DefaultSizeFrame);
+        loadingView[5].setLayoutParams(DefaultLoadingLayout);
     }
 
     public void setPlayer(boolean surface_view) {
@@ -286,13 +284,13 @@ public class PlayerActivity extends Activity {
             loadingView[i] = PlayerView[i].findViewById(R.id.exo_buffering);
             loadingView[i].setIndeterminateTintList(ColorStateList.valueOf(Color.WHITE));
             loadingView[i].setBackgroundResource(R.drawable.shadow);
-            loadingView[i].setLayoutParams(DefaultSizeFrame);
+            loadingView[i].setLayoutParams(DefaultLoadingLayout);
         }
     }
 
     // The main player initialization function
     private void initializePlayer(int position) {
-        if (IsonStop) {
+        if (IsStopped) {
             monStop();
             return;
         }
@@ -353,7 +351,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void initializeSmallPlayer(MediaSource mediaSource) {
-        if (IsonStop) {
+        if (IsStopped) {
             monStop();
             return;
         }
@@ -362,7 +360,7 @@ public class PlayerActivity extends Activity {
         if (player[4] == null) {
             trackSelector[4] = new DefaultTrackSelector(this);
             trackSelector[4].setParameters(
-                    UsefullBandwidth ?
+                    UseFullBandwidth ?
                             trackSelectorParameters :
                             (smallPlayerBandwidth < smallExtraPlayerBandwidth ?
                                     trackSelectorParametersSmall :
@@ -414,7 +412,7 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerCheckCounter[4] = 0;
-        UsefullBandwidth = false;
+        UseFullBandwidth = false;
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
             shouldCallJsPlayer = false;
             KeepScreenOn(false);
@@ -422,7 +420,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void initializePlayerMulti(int position, MediaSource mediaSource) {
-        if (IsonStop) {
+        if (IsStopped) {
             monStop();
             return;
         }
@@ -607,7 +605,18 @@ public class PlayerActivity extends Activity {
         loadingView[position].setVisibility(View.GONE);
     }
 
-    private void SetheightDefault() {
+    private void SetDefaultLayouts() {
+        int[] positions = {
+                Gravity.RIGHT | Gravity.BOTTOM,//0
+                Gravity.RIGHT | Gravity.CENTER,//1
+                Gravity.RIGHT | Gravity.TOP,//2
+                Gravity.CENTER | Gravity.TOP,//3
+                Gravity.LEFT | Gravity.TOP,//4
+                Gravity.LEFT | Gravity.CENTER,//5
+                Gravity.LEFT | Gravity.BOTTOM,//6
+                Gravity.CENTER | Gravity.BOTTOM//7
+        };
+
         //Make it visible for calculation
         boolean isNvisible = PlayerView[0].getVisibility() != View.VISIBLE;
         if (isNvisible) PlayerView[0].setVisibility(View.VISIBLE);
@@ -623,12 +632,6 @@ public class PlayerActivity extends Activity {
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
         PlayerViewSideBySideSize = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
 
-        PlayerViewDefaultSizePP = new FrameLayout.LayoutParams((mwidthDefault / 2), (heightDefault / 2), positions[3]);
-        PlayerViewSideBySideSizePP = new FrameLayout.LayoutParams((mwidthDefault / 2), (heightDefault / 2), positions[7]);
-
-        PlayerViewSmallSize = new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]);
-        PlayerView[1].setLayoutParams(PlayerViewSmallSize);
-
         //Player extra positions
         Display display = getWindowManager().getDefaultDisplay();
         float density = this.getResources().getDisplayMetrics().density;
@@ -639,6 +642,7 @@ public class PlayerActivity extends Activity {
         int ExtraWidth = (int) (mwidthDefault / 3.77);
         int ExtraHeight = (int) (heightDefault / 3.77);
 
+        //Small player for live feed
         PlayerViewExtraLayout[0] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.LEFT | Gravity.BOTTOM);
         PlayerViewExtraLayout[1] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.LEFT | Gravity.BOTTOM);
         PlayerViewExtraLayout[2] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.CENTER | Gravity.BOTTOM);
@@ -658,6 +662,64 @@ public class PlayerActivity extends Activity {
         PlayerViewExtraLayout[3].rightMargin = margin;
 
         PlayerView[4].setLayoutParams(PlayerViewExtraLayout[0]);
+
+        //Small player sizes and positions
+        for (int i = 0; i < positions.length; i++) {
+            for (int j = 0; j < 3; j++) {
+                PlayerViewSmallSize[i][j] = new FrameLayout.LayoutParams((mwidthDefault / (j + 2)), (heightDefault /  (j + 2)), positions[i]);
+            }
+        }
+
+        PlayerView[1].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider - 2]);
+        //MultiStream
+        //4 way same size
+        MultiStreamPlayerViewLayout[0] = new FrameLayout.LayoutParams(
+                (mwidthDefault / 2),
+                (heightDefault / 2),
+                positions[4]
+        );
+        MultiStreamPlayerViewLayout[1] = new FrameLayout.LayoutParams(
+                (mwidthDefault / 2),
+                (heightDefault / 2),
+                positions[2]
+        );
+
+        MultiStreamPlayerViewLayout[2] = new FrameLayout.LayoutParams(
+                (mwidthDefault / 2),
+                (heightDefault / 2),
+                positions[6]
+        );
+
+        MultiStreamPlayerViewLayout[3] = new FrameLayout.LayoutParams(
+                (mwidthDefault / 2),
+                (heightDefault / 2),
+                positions[0]
+        );
+
+        //4 way main big
+        MultiStreamPlayerViewLayout[4] = new FrameLayout.LayoutParams(
+                (mwidthDefault * 2 / 3),
+                (heightDefault * 2 / 3),
+                positions[4]
+        );
+
+        MultiStreamPlayerViewLayout[5] = new FrameLayout.LayoutParams(
+                (mwidthDefault / 3),
+                (heightDefault / 3),
+                positions[6]
+        );
+
+        MultiStreamPlayerViewLayout[6] = new FrameLayout.LayoutParams(
+                (mwidthDefault / 3),
+                (heightDefault / 3),
+                positions[7]
+        );
+
+        MultiStreamPlayerViewLayout[7] = new FrameLayout.LayoutParams(
+                (mwidthDefault / 3),
+                (heightDefault / 3),
+                positions[0]
+        );
     }
 
     //Used in side-by-side mode chat plus video
@@ -674,8 +736,8 @@ public class PlayerActivity extends Activity {
             PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
             UpdadeSizePosSmall(mainPlayer ^ 1);
         } else {
-            PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSizePP);
-            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSideBySideSizePP);
+            PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[3][0]);//center top 50% width x height
+            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[7][0]);//center bottom 50% width x height
         }
     }
 
@@ -685,7 +747,7 @@ public class PlayerActivity extends Activity {
 
         //Set new video sizes
         PlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
-        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize);
+        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider - 2]);
 
         VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
 
@@ -726,8 +788,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void UpdadeSizePosSmall(int pos) {
-        PlayerViewSmallSize = new FrameLayout.LayoutParams((mwidthDefault / playerDivider), (heightDefault / playerDivider), positions[DefaultPositions]);
-        PlayerView[pos].setLayoutParams(PlayerViewSmallSize);
+        PlayerView[pos].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider - 2]);
     }
 
     public void SetPlayerAudioMulti() {
@@ -740,33 +801,10 @@ public class PlayerActivity extends Activity {
     }
 
     public void SetMultiStreamMainBig() {
-        FrameLayout.LayoutParams PlayerViewSizePos = new FrameLayout.LayoutParams(
-                (mwidthDefault * 2 / 3),
-                (heightDefault * 2 / 3),
-                positions[4]
-        );
-        PlayerView[mainPlayer].setLayoutParams(PlayerViewSizePos);
-
-        PlayerViewSizePos = new FrameLayout.LayoutParams(
-                (mwidthDefault / 3),
-                (heightDefault / 3),
-                positions[6]
-        );
-        PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSizePos);
-
-        PlayerViewSizePos = new FrameLayout.LayoutParams(
-                (mwidthDefault / 3),
-                (heightDefault / 3),
-                positions[7]
-        );
-        PlayerView[2].setLayoutParams(PlayerViewSizePos);
-
-        PlayerViewSizePos = new FrameLayout.LayoutParams(
-                (mwidthDefault / 3),
-                (heightDefault / 3),
-                positions[0]
-        );
-        PlayerView[3].setLayoutParams(PlayerViewSizePos);
+        PlayerView[mainPlayer].setLayoutParams(MultiStreamPlayerViewLayout[4]);
+        PlayerView[mainPlayer ^ 1].setLayoutParams(MultiStreamPlayerViewLayout[5]);
+        PlayerView[2].setLayoutParams(MultiStreamPlayerViewLayout[6]);
+        PlayerView[3].setLayoutParams(MultiStreamPlayerViewLayout[7]);
 
         AudioMulti = mainPlayer;
         SetPlayerAudioMulti();
@@ -776,33 +814,10 @@ public class PlayerActivity extends Activity {
     }
 
     public void SetMultiStream() {
-        FrameLayout.LayoutParams PlayerViewSizePos = new FrameLayout.LayoutParams(
-                (mwidthDefault / 2),
-                (heightDefault / 2),
-                positions[4]
-        );
-        PlayerView[mainPlayer].setLayoutParams(PlayerViewSizePos);
-
-        PlayerViewSizePos = new FrameLayout.LayoutParams(
-                (mwidthDefault / 2),
-                (heightDefault / 2),
-                positions[2]
-        );
-        PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSizePos);
-
-        PlayerViewSizePos = new FrameLayout.LayoutParams(
-                (mwidthDefault / 2),
-                (heightDefault / 2),
-                positions[6]
-        );
-        PlayerView[2].setLayoutParams(PlayerViewSizePos);
-
-        PlayerViewSizePos = new FrameLayout.LayoutParams(
-                (mwidthDefault / 2),
-                (heightDefault / 2),
-                positions[0]
-        );
-        PlayerView[3].setLayoutParams(PlayerViewSizePos);
+        PlayerView[mainPlayer].setLayoutParams(MultiStreamPlayerViewLayout[0]);
+        PlayerView[mainPlayer ^ 1].setLayoutParams(MultiStreamPlayerViewLayout[1]);
+        PlayerView[2].setLayoutParams(MultiStreamPlayerViewLayout[2]);
+        PlayerView[3].setLayoutParams(MultiStreamPlayerViewLayout[3]);
 
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
@@ -815,7 +830,7 @@ public class PlayerActivity extends Activity {
         if (PicturePicture) updateVideSizePP(isFullScreen);
         else {
             updateVideSize(isFullScreen);
-            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize);
+            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[DefaultPositions][playerDivider - 2]);
         }
 
         if (!PicturePicture || player[mainPlayer ^ 1] == null || player[mainPlayer] == null) {
@@ -833,13 +848,13 @@ public class PlayerActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        IsonStop = false;
+        IsStopped = false;
 
-        if (mwebview != null && alredystarted) {
+        if (mwebview != null && AlredyStarted) {
             if (shouldCallJsPlayer) mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResume()");
             mwebview.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
         }
-        alredystarted = true;
+        AlredyStarted = true;
     }
 
     //This function is called when home key is pressed
@@ -850,7 +865,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void monStop() {
-        IsonStop = true;
+        IsStopped = true;
         int temp_AudioMulti = AudioMulti;
 
         for (int i = 0; i < PlayerAcountPlus; i++) {
@@ -860,7 +875,7 @@ public class PlayerActivity extends Activity {
         }
 
         //Prevent java timeout and related on background
-        if (mwebview != null && alredystarted) {
+        if (mwebview != null && AlredyStarted) {
             mwebview.loadUrl("javascript:smartTwitchTV.Main_CheckStop()");
         }
         //ClearPlayer will reset audio position
@@ -1155,9 +1170,9 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void StartFeedPlayer(String url, int position, boolean fullBandwidth) {
             MainThreadHandler.post(() -> {
-                UsefullBandwidth = fullBandwidth;
+                UseFullBandwidth = fullBandwidth;
                 expires[4] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UsefullBandwidth));
+                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth));
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
                 initializeSmallPlayer(mediaSourcesAuto[4]);
             });
@@ -1200,7 +1215,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetAutoFeedPlayer(String url) {
             expires[4] = System.currentTimeMillis() + 18000;
-            mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UsefullBandwidth));
+            mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1273,7 +1288,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetPlayerSize(int position) {
             playerDivider = position;
-            MainThreadHandler.post(PlayerActivity.this::SetheightDefault);
+            MainThreadHandler.post(PlayerActivity.this::SetDefaultLayouts);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1438,10 +1453,10 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetBuffer(int who_called, int value) {
             BUFFER_SIZE[who_called] = Math.min(value, 15000);
-            loadControl[who_called] = Tools.getLoadControl(BUFFER_SIZE[who_called], deviceRam);
+            loadControl[who_called] = Tools.getLoadControl(BUFFER_SIZE[who_called], DeviceRam);
 
             //MUltiStream and small feed player
-            loadControl[0] = Tools.getLoadControl(BUFFER_SIZE[1], deviceRam / 2);
+            loadControl[0] = Tools.getLoadControl(BUFFER_SIZE[1], DeviceRam / 2);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1496,11 +1511,11 @@ public class PlayerActivity extends Activity {
         public String getVideoStatus() {
             String mvalue = String.format(Locale.US, "%d,%d,%d,%s,%d,%s,",
                     droppedFrames[mainPlayer],
-                    droppedFramesTotal,
+                    DroppedFramesTotal,
                     conSpeed[mainPlayer],
-                    String.format(Locale.US, "%.02f", (speedcounter > 0 ? (conSpeedAVG / speedcounter) : 0)),
+                    String.format(Locale.US, "%.02f", (SpeedCounter > 0 ? (conSpeedAVG / SpeedCounter) : 0)),
                     netActivity[mainPlayer],
-                    String.format(Locale.US, "%.02f", (netcounter > 0 ? (netActivityAVG / netcounter) : 0)));
+                    String.format(Locale.US, "%.02f", (NetCounter > 0 ? (NetActivityAVG / NetCounter) : 0)));
 
             netActivity[mainPlayer] = 0L;
 
@@ -1909,7 +1924,7 @@ public class PlayerActivity extends Activity {
         @Override
         public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
             droppedFrames[position] += count;
-            droppedFramesTotal += count;
+            DroppedFramesTotal += count;
         }
 
         @Override
@@ -1917,24 +1932,24 @@ public class PlayerActivity extends Activity {
             conSpeed[position] = bitrateEstimate;
             netActivity[position] = totalBytesLoaded * 8;
             if (bitrateEstimate > 0) {
-                speedcounter++;
+                SpeedCounter++;
                 conSpeedAVG += ((float) bitrateEstimate / 1000000);
             }
             if (netActivity[position] > 0) {
-                netcounter++;
-                netActivityAVG += ((float) netActivity[position] / 1000000);
+                NetCounter++;
+                NetActivityAVG += ((float) netActivity[position] / 1000000);
             }
         }
     }
 
     //Simple AnalyticsListener for multiplayer no need to be account for all the data for all players
-    //as the only info show to the user is droppedFramesTotal for all players
+    //as the only info show to the user is DroppedFramesTotal for all players
     private class AnalyticsEventListenerMulti implements AnalyticsListener {
 
         @Override
         public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
             droppedFrames[mainPlayer] += count;
-            droppedFramesTotal += count;
+            DroppedFramesTotal += count;
         }
 
     }
