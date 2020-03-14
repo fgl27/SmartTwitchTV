@@ -620,7 +620,7 @@ public final class Tools {
      *
      * @return load control
      */
-    public static DefaultLoadControl getLoadControl(int buffer, int deviceRam) {
+    public static DefaultLoadControl getLoadControl(int buffer, int DeviceRam) {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
@@ -629,7 +629,7 @@ public final class Tools {
                         buffer, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
                         buffer + 3000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
-                .setTargetBufferBytes(deviceRam)
+                .setTargetBufferBytes(DeviceRam)
                 .createDefaultLoadControl();
     }
 
@@ -750,7 +750,7 @@ public final class Tools {
         return new MediaItem.Builder().setSourceUri(uri).build();
     }
 
-    public static int deviceRam(Context context) {
+    public static int DeviceRam(Context context) {
         ActivityManager actManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         if (actManager != null) {
