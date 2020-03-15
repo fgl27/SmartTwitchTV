@@ -414,7 +414,10 @@
     var STR_KEY_MEDIA_FF;
     var STR_ENABLE_MAIN_MULTI;
     var STR_MAIN_MULTI_BIG;
-    var STR_MAIN_WINDOW; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_MAIN_WINDOW;
+    var STR_CHAT_SUCCESS;
+    var STR_LOADING_FAIL;
+    var STR_CHAT_CONNECTED; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -749,7 +752,11 @@
         STR_SETTINGS_BUFFER_VOD = "Videos (Past Broadcast and Highlight) Start buffer";
         STR_SETTINGS_BUFFER_CLIP = "Clips Start buffer";
         STR_SETTINGS_LANG = "Language";
-        STR_LOADING_CHAT = "Chat: Connecting to chat server..." + STR_BR + "Chat: Connected." + STR_BR + "Chat: Joined channel ";
+        STR_LOADING_CHAT = "Chat: Connecting to chat server...";
+        STR_LOADING_FAIL = "Chat: Connecting Fail... Trying again...";
+        STR_CHAT_CONNECTED = "Chat: Connected...";
+        STR_CHAT_SUCCESS = "Chat: Joined channel ";
+        STR_CHAT_DELAY = "Chat: delay";
         STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";
         STR_FROM = "From:" + STR_BR;
         STR_FROM_START = STR_FROM + "Start";
@@ -801,7 +808,6 @@
         STR_CHAT_PP_SIDE_FULL = "Big plus small screen";
         STR_CHAT_SIDE = "Smaller screen and chat";
         STR_CHAT_5050 = "50/50 and chats";
-        STR_CHAT_DELAY = "Chat delay";
         STR_SPEED = "Speed";
         STR_QUALITY = "Quality";
         STR_NORMAL = "Normal";
@@ -2810,6 +2816,7 @@
 
     function ChatLive_loadChat(chat_number) {
         ChatLive_CheckClear(chat_number);
+        ChatLive_LineAdd('<span class="message">' + STR_LOADING_CHAT + '</span>', chat_number);
         ChatLive_loadChatRequest(chat_number);
     }
 
@@ -2837,19 +2844,22 @@
                     break;
                 case "JOIN":
                     ChatLive_loaded[chat_number] = true;
-                    var div = '&nbsp;<span class="message">' + STR_BR + STR_LOADING_CHAT +
+                    ChatLive_LineAdd('<span class="message">' + STR_CHAT_CONNECTED + '</span>', chat_number);
+
+                    var div = '<span class="message">' + STR_CHAT_SUCCESS +
                         (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ' + STR_LIVE + '</span>';
+                    ChatLive_LineAdd(div, chat_number);
 
                     if (Play_ChatDelayPosition) {
                         var stringSec = STR_SECOND;
                         if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
 
-                        div += '&nbsp;<span class="message">' + STR_BR + STR_BR + STR_CHAT_DELAY + ' ' +
+                        div = '<span class="message">' + STR_CHAT_DELAY + ' ' +
                             Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
                             stringSec + '</span>';
-                    }
 
-                    ChatLive_LineAdd(div, chat_number);
+                        ChatLive_LineAdd(div, chat_number);
+                    }
                     break;
                 case "PRIVMSG":
                     ChatLive_loadChatSuccess(message, chat_number);
@@ -2867,6 +2877,7 @@
     function ChatLive_Check(chat_number) {
         if (!ChatLive_loaded[chat_number]) {
             ChatLive_socket[chat_number].close(1000);
+            ChatLive_LineAdd('<span class="message">' + STR_LOADING_FAIL + '</span>', chat_number);
             ChatLive_loadChat(chat_number);
         }
     }
@@ -3209,11 +3220,9 @@
             nickColor;
 
         if (null_next) {
-            div = '&nbsp;';
-            div += '<span class="message">';
-            div += STR_BR + STR_LOADING_CHAT + Main_values.Main_selectedChannelDisplayname + ' ' + Chat_title;
-            div += '</span>';
-            Chat_MessageVector(div, 0);
+            Chat_MessageVector('<span class="message">' + STR_LOADING_CHAT + '</span>', 0);
+            Chat_MessageVector('<span class="message">' + STR_CHAT_CONNECTED + '</span>', 0);
+            Chat_MessageVector('<span class="message">' + STR_CHAT_SUCCESS + Main_values.Main_selectedChannelDisplayname + ' ' + Chat_title + '</span>', 0);
         }
         Chat_offset = 0;
         Chat_next = responseText._next;
