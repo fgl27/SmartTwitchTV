@@ -186,11 +186,9 @@ function Chat_loadChatSuccess(responseText, id) {
         nickColor;
 
     if (null_next) {
-        div = '&nbsp;';
-        div += '<span class="message">';
-        div += STR_BR + STR_LOADING_CHAT + Main_values.Main_selectedChannelDisplayname + ' ' + Chat_title;
-        div += '</span>';
-        Chat_MessageVector(div, 0);
+        Chat_MessageVector('<span class="message">' + STR_LOADING_CHAT + '</span>', 0);
+        Chat_MessageVector('<span class="message">' + STR_CHAT_CONNECTED + '</span>', 0);
+        Chat_MessageVector('<span class="message">' + STR_CHAT_SUCCESS + Main_values.Main_selectedChannelDisplayname + ' ' + Chat_title + '</span>', 0);
     }
     Chat_offset = 0;
     Chat_next = responseText._next;
@@ -285,7 +283,7 @@ function Chat_Clear() {
 function Main_Addline(id) {
     var elem, i;
     if (Chat_Position < (Chat_Messages.length - 1)) {
-        for (i = Chat_Position; i < Chat_Messages.length; i++ , Chat_Position++) {
+        for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
             if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
                 elem = document.createElement('div');
                 elem.className = 'chat_line';

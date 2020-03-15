@@ -265,6 +265,7 @@ function ChatLive_loadEmotesffz(data) {
 
 function ChatLive_loadChat(chat_number) {
     ChatLive_CheckClear(chat_number);
+    ChatLive_LineAdd('<span class="message">' + STR_LOADING_CHAT + '</span>', chat_number);
     ChatLive_loadChatRequest(chat_number);
 }
 
@@ -292,19 +293,22 @@ function ChatLive_loadChatRequest(chat_number) {
                 break;
             case "JOIN":
                 ChatLive_loaded[chat_number] = true;
-                var div = '&nbsp;<span class="message">' + STR_BR + STR_LOADING_CHAT +
+                ChatLive_LineAdd('<span class="message">' + STR_CHAT_CONNECTED + '</span>', chat_number);
+
+                var div = '<span class="message">' + STR_CHAT_SUCCESS +
                     (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ' + STR_LIVE + '</span>';
+                ChatLive_LineAdd(div, chat_number);
 
                 if (Play_ChatDelayPosition) {
                     var stringSec = STR_SECOND;
                     if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
 
-                    div += '&nbsp;<span class="message">' + STR_BR + STR_BR + STR_CHAT_DELAY + ' ' +
+                    div = '<span class="message">' + STR_CHAT_DELAY + ' ' +
                         Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
                         stringSec + '</span>';
-                }
 
-                ChatLive_LineAdd(div, chat_number);
+                    ChatLive_LineAdd(div, chat_number);
+                }
                 break;
             case "PRIVMSG":
                 ChatLive_loadChatSuccess(message, chat_number);
@@ -322,6 +326,7 @@ function ChatLive_loadChatRequest(chat_number) {
 function ChatLive_Check(chat_number) {
     if (!ChatLive_loaded[chat_number]) {
         ChatLive_socket[chat_number].close(1000);
+        ChatLive_LineAdd('<span class="message">' + STR_LOADING_FAIL + '</span>', chat_number);
         ChatLive_loadChat(chat_number);
     }
 }

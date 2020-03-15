@@ -195,7 +195,11 @@ function en_USLang() {
     STR_SETTINGS_BUFFER_VOD = "Videos (Past Broadcast and Highlight) Start buffer";
     STR_SETTINGS_BUFFER_CLIP = "Clips Start buffer";
     STR_SETTINGS_LANG = "Language";
-    STR_LOADING_CHAT = "Chat: Connecting to chat server..." + STR_BR + "Chat: Connected." + STR_BR + "Chat: Joined channel ";
+    STR_LOADING_CHAT = "Chat: Connecting to chat server...";
+    STR_LOADING_FAIL = "Chat: Connecting Fail... Trying again...";
+    STR_CHAT_CONNECTED = "Chat: Connected...";
+    STR_CHAT_SUCCESS = "Chat: Joined channel ";
+    STR_CHAT_DELAY = "Chat: delay";
     STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";
     STR_FROM = "From:" + STR_BR;
     STR_FROM_START = STR_FROM + "Start";
@@ -247,7 +251,6 @@ function en_USLang() {
     STR_CHAT_PP_SIDE_FULL = "Big plus small screen";
     STR_CHAT_SIDE = "Smaller screen and chat";
     STR_CHAT_5050 = "50/50 and chats";
-    STR_CHAT_DELAY = "Chat delay";
     STR_SPEED = "Speed";
     STR_QUALITY = "Quality";
     STR_NORMAL = "Normal";
