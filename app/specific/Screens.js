@@ -2014,3 +2014,7 @@ function Screens_RefreshTimeout() {
 
     return (new Date().getTime()) > (inUseObj.lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000));
 }
+
+function Screens_Isfocused() {
+    return Main_A_includes_B(document.getElementById(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX).className, 'stream_thumbnail_focused') && Main_isScene1DocShown();
+}
