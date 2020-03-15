@@ -17760,6 +17760,7 @@
     var UserLiveFeed_cell = [];
     var UserLiveFeed_cellVisible = [];
     var UserLiveFeed_FeedSetPosLast = [];
+    var UserLiveFeed_lastRefresh = [];
 
     var UserLiveFeed_ids = [
         'ulf_thumbdiv', //0
@@ -17808,6 +17809,7 @@
             UserLiveFeed_obj[i].MaxOffset = 0;
             UserLiveFeed_FeedSetPosLast[i] = 0;
             UserLiveFeed_obj[i].offsettopFontsize = 0;
+            UserLiveFeed_lastRefresh[i] = 0;
         }
 
         //User live
@@ -18611,6 +18613,7 @@
             UserLiveFeed_LastPos[pos] = null;
         }
 
+        UserLiveFeed_lastRefresh[pos] = new Date().getTime();
         UserLiveFeed_obj[pos].offsettopFontsize = Settings_Obj_default('global_font_offset');
         UserLiveFeed_cell[pos] = [];
         UserLiveFeed_idObject[pos] = {};
@@ -18880,7 +18883,8 @@
     function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
         if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
-        if ((!UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) || forceRefressh ||
+        if ((forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
+                (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
                 UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
         else {
             UserLiveFeed_obj[pos].div.classList.remove('hide');
