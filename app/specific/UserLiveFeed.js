@@ -32,6 +32,7 @@ var UserLiveFeed_obj = {};
 var UserLiveFeed_cell = [];
 var UserLiveFeed_cellVisible = [];
 var UserLiveFeed_FeedSetPosLast = [];
+var UserLiveFeed_lastRefresh = [];
 
 var UserLiveFeed_ids = [
     'ulf_thumbdiv',//0
@@ -80,6 +81,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].MaxOffset = 0;
         UserLiveFeed_FeedSetPosLast[i] = 0;
         UserLiveFeed_obj[i].offsettopFontsize = 0;
+        UserLiveFeed_lastRefresh[i] = 0;
     }
 
     //User live
@@ -241,7 +243,7 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
             if (!temp) UserLiveFeed_obj[pos].div.classList.add('hide');
         }
 
-        for (i = min; i < max; i++ , j++) {
+        for (i = min; i < max; i++, j++) {
             if (UserLiveFeed_cell[pos][i]) {
                 UserLiveFeed_cell[pos][i].style.transform = 'translateX(' + (j * UserLiveFeed_obj[pos].AddCellsize) + 'em)';
             }
