@@ -2241,7 +2241,14 @@ function Main_CheckAccessibility() {
             isenable = Android.isAccessibilitySettingsOn();
 
             if (isenable) Main_CheckAccessibilitySet();
-            else Main_CheckAccessibilityHide(false);
+            else {
+                Main_CheckAccessibilityHide(false);
+                //if focused and showing force a refresh check
+                if (Screens_Isfocused()) {
+                    document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+                    Main_SwitchScreen();
+                }
+            }
 
         } catch (e) {
         }
