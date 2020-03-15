@@ -602,6 +602,7 @@ function Play_handleKeyDown(e) {
                             STR_AUDIO_SOURCE + STR_SPACE + Play_MultiArray[0].data[1],
                             2000
                         );
+                        Main_HideElement('dialog_multi_help');
                         Play_StoreChatPos();
                         Play_showChat();
                         Play_chat_container.style.width = '32.8%';
@@ -1232,7 +1233,8 @@ function Play_MakeControls() {
         defaultValue: null,
         opacity: 0,
         enterKey: function() {
-            if (!Play_isFullScreen && !Play_MultiEnable) return;
+            if ((!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
+
             if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
                 Play_showChat();
                 Play_ChatEnable = true;
@@ -1245,7 +1247,8 @@ function Play_MakeControls() {
         },
         setLable: function() {
             var string = (Play_isChatShown() ? STR_YES : STR_NO);
-            if (!Play_isFullScreen) string = Play_isFullScreen ? STR_CHAT_SIDE : STR_CHAT_5050;
+            if (!Play_isFullScreen && !Play_MultiEnable) string = Play_isFullScreen ? STR_CHAT_SIDE : STR_CHAT_5050;
+            else if (Play_MultiEnable && Play_Multi_MainBig) string = STR_MAIN_WINDOW;
 
             Main_textContent('extra_button_' + this.position, '(' + string + ')');
         },
@@ -1321,7 +1324,8 @@ function Play_MakeControls() {
         opacity: 0,
         isChat: true,
         updown: function(adder) {
-            if (!Play_isChatShown() || !Play_isFullScreen) return;
+            if (!Play_isChatShown() || (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
+
             this.defaultValue += adder;
             if (this.defaultValue < 0)
                 this.defaultValue = (this.values.length - 1);
@@ -1349,7 +1353,7 @@ function Play_MakeControls() {
         opacity: 0,
         isChat: true,
         updown: function(adder) {
-            if (!Play_isChatShown() || !Play_isFullScreen) return;
+            if (!Play_isChatShown() || (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
 
             this.defaultValue += adder;
 
@@ -1393,7 +1397,8 @@ function Play_MakeControls() {
         opacity: 0,
         isChat: true,
         updown: function(adder) {
-            if (!Play_isChatShown() || !Play_isFullScreen) return;
+            if (!Play_isChatShown() || (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
+
             this.defaultValue += adder;
             if (this.defaultValue < 0)
                 this.defaultValue = 0;
@@ -1425,6 +1430,7 @@ function Play_MakeControls() {
         isChat: true,
         updown: function(adder) {
             if (!Play_isChatShown()) return;
+
             this.defaultValue += adder;
             if (this.defaultValue < 0)
                 this.defaultValue = 0;
