@@ -210,29 +210,27 @@ function Play_SetQuality() {
 var Play_isFullScreenold = true;
 
 function Play_SetFullScreen(isfull) {
-    if (Play_isFullScreenold !== Play_isFullScreen) {
-        Play_isFullScreenold = Play_isFullScreen;
+    var changed = Play_isFullScreenold !== Play_isFullScreen;
+    Play_isFullScreenold = Play_isFullScreen;
 
-        if (isfull) {
-            if (Play_ChatPositionsBF !== undefined) {
+    if (isfull) {
+        if (Play_ChatPositionsBF !== undefined) {
+            if (changed) {
                 Play_ChatPositions = Play_ChatPositionsBF;
                 Play_ChatEnable = Play_ChatEnableBF;
                 Play_ChatSizeValue = Play_ChatSizeValueBF;
-                if (!Play_ChatEnable) Play_hideChat();
-                Play_ChatSize(false);
             }
-        } else {
+            if (!Play_ChatEnable) Play_hideChat();
+        }
+    } else {
+        if (changed) {
             Play_ChatPositionsBF = Play_ChatPositions;
             Play_ChatEnableBF = Play_ChatEnable;
             Play_ChatSizeValueBF = Play_ChatSizeValue;
-            Play_ChatPositions = 0;
-            Play_showChat();
-            Play_ChatEnable = true;
-            Play_ChatSizeValue = Play_MaxChatSizeValue;
-            Play_ChatPositionConvert(true);
-            Play_ChatSize(false);
         }
+        Play_SetChatSide();
     }
+    Play_ChatSize(false);
 
     if (Main_IsNotBrowser) {
         if (PlayExtra_PicturePicture) Android.mupdatesizePP(Play_isFullScreen);
@@ -240,6 +238,14 @@ function Play_SetFullScreen(isfull) {
     }
 
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
+}
+
+function Play_SetChatSide() {
+    Play_ChatPositions = 0;
+    Play_showChat();
+    Play_ChatEnable = true;
+    Play_ChatSizeValue = Play_MaxChatSizeValue;
+    Play_ChatPositionConvert(true);
 }
 
 function Play_SetChatFont() {
@@ -1684,6 +1690,9 @@ function Play_Multi_SetPanel() {
     UserLiveFeed_SetMulti();
     ChatLive_Clear(1);
     PlayExtra_HideChat();
+    Play_IconsRemoveFocus();
+    Play_Panelcounter = Play_MultiStream;
+    Play_IconsAddFocus();
     Main_HideElement('stream_info_pp');
     Main_HideElement('stream_info');
     Main_ShowElement('dialog_multi_help');
@@ -1715,8 +1724,7 @@ function Play_Multi_UnSetPanelDivs(checkChat) {
 function Play_Multi_UnSetPanelDivsCheckChat() {
     if (!Play_isFullScreen) {
         Play_controls[Play_controlsChat].enterKey();
-        Play_ChatEnable = true;
-        Play_showChat();
+        Play_SetChatSide();
     }
 }
 
@@ -1733,19 +1741,14 @@ function Play_Multi_UnSetPanel(shutdown) {
                 Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
                 ChatLive_Init(1);
                 PlayExtra_ShowChat();
-                if (!Play_isChatShown()) {
-                    Play_controls[Play_controlsChat].enterKey();
-                    Play_showChat();
-                    Play_ChatEnable = true;
-                    Play_controls[Play_controlsChat].setLable();
-                }
             }
-        } else Play_Multi_UnSetPanelDivsCheckChat();
+        }
     } else {
         Play_Multi_UnSetPanelDivsCheckChat();
         if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
         PlayExtra_PicturePicture = false;
     }
+    Play_Multi_UnSetPanelDivsCheckChat();
 
     //Check if main player is open if not check if one is so it can be main
     var First = Play_MultiFirstAvailable();
