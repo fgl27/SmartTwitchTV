@@ -5679,7 +5679,14 @@
                 isenable = Android.isAccessibilitySettingsOn();
 
                 if (isenable) Main_CheckAccessibilitySet();
-                else Main_CheckAccessibilityHide(false);
+                else {
+                    Main_CheckAccessibilityHide(false);
+                    //if focused and showing force a refresh check
+                    if (Screens_Isfocused()) {
+                        document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+                        Main_SwitchScreen();
+                    }
+                }
 
             } catch (e) {}
         }
@@ -13604,6 +13611,10 @@
             Main_values.Main_Go === Main_addUser || !inUseObj || !Settings_Obj_default("auto_refresh_screen")) return false;
 
         return (new Date().getTime()) > (inUseObj.lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000));
+    }
+
+    function Screens_Isfocused() {
+        return Main_A_includes_B(document.getElementById(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX).className, 'stream_thumbnail_focused') && Main_isScene1DocShown();
     } //Spacing for reease maker not trow erros frm jshint
     var Main_ItemsLimitMax = 100;
 
