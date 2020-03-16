@@ -476,6 +476,7 @@ function Play_PPKeyDownHold() {
 function Play_MultiKeyDown() {
     Play_Multi_MainBig = !Play_Multi_MainBig;
     if (Play_Multi_MainBig && Play_MultiArray[0].data.length) {
+        //reset audio value if on big as it may had be changed via hold down or bootm controls
         Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
 
         Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
