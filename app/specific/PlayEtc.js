@@ -713,7 +713,7 @@ function Play_handleKeyDown(e) {
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
-                    Play_HideMultiDialog();
+                    Play_HideMultiDialog(true);
                     Play_MultiStartPrestart((Play_MultiDialogPos + Play_Multi_Offset) % 4);
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
