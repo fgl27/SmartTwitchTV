@@ -280,17 +280,17 @@ function en_USLang() {
     STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
     STR_AUDIO_SOURCE = "Audio source";
     STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";
-    STR_PICTURE_CONTROLS1 = "Enable picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 1 to start";
-    STR_PICTURE_CONTROLS2 = "Change small window content: Same as before, hold key enter or press key 1 after selecting a stream from live feed";
-    STR_PICTURE_CONTROLS3 = "Change big window content: simple key enter click after selecting a stream from live feed";
-    STR_PICTURE_CONTROLS4 = "Change content between windows: D-pad down big becomes small and vice versa";
-    STR_PICTURE_CONTROLS5 = "Change small window position: D-pad left";
-    STR_PICTURE_CONTROLS6 = "Change small window size: D-pad right";
-    STR_PICTURE_CONTROLS7 = "Change audio source: use the player bottom controls Audio source, if in 50/50 mode use d-pad down or use media keys fast forward/rewind switches, previous track enable all";
+    STR_PICTURE_CONTROLS1 = "Enable Picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 1 to start";
+    STR_PICTURE_CONTROLS2 = "Change a window content: From player live feed, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top window, hold key enter or press key 1 updates the small or bottom window";
+    STR_PICTURE_CONTROLS4 = "Change content between windows (Picture in Picture only): D-pad down big becomes small and vice versa";
+    STR_PICTURE_CONTROLS5 = "Change small window position (Picture in Picture only): D-pad left";
+    STR_PICTURE_CONTROLS6 = "Change small window size (Picture in Picture only): D-pad right";
+    STR_PICTURE_CONTROLS7 = "Change audio source: Use the player bottom controls Audio source, if in 50/50 or multistream use key left/right if on PP use next/previus track media keys";
+    STR_PICTURE_CONTROLS3 = "Change audio source to all windows: on multistream or PP hold key down, on 50/50 single click key down";
     STR_PICTURE_CONTROLS8 = "Auto Sync playback: use the player bottom controls Player Sync";
     STR_PICTURE_CONTROLS9 = "Manually Sync playback: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa";
     STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
-    STR_PICTURE_CONTROLS11 = "Close small window: back key twice";
+    STR_PICTURE_CONTROLS11 = "Close small or bottom window (Picture in Picture only): back key twice will exit PP or 50/50 mode";
     STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from live feed";
     STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
@@ -409,7 +409,7 @@ function en_USLang() {
     STR_SIDE_PANEL_PLAYER_DELAY = "Side panel or player feed small player delay";
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a tile is selected";
     STR_START_AT_USER = "Always start the app in the user screen (overwrites Restore playback)";
-    STR_LAST_REFRESH = "(last refresh: ";
+    STR_LAST_REFRESH = " (last refresh: ";
     STR_PP_VOD = "Exit PP or Multistream to open this VOD";
     STR_SETTINGS_ACCESSIBILITY = "Show accessibility service warning";
     STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
@@ -419,5 +419,5 @@ function en_USLang() {
     STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
     STR_MAIN_WINDOW = "Main window";
     STR_MULTI_MAIN_WINDOW = "MultiStream main window";
-    STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: press key down";
+    STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: press key down, after use left/right to change with is the big window";
 }
