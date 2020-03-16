@@ -396,7 +396,7 @@ function en_USLang() {
     STR_CONTROLS_MULTI_1 = 'If you are having lag issues after enable multistream, try to lower the value of "Small player bitrate" in settings, accumulation of skipped frames or constant buffering is a indication of too high bitrate or slow internet';
     STR_CONTROLS_MULTI_2 = "Add streams: open live feed key up and click on a live stream";
     STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from live feed and chose one to replace from the dialog";
-    STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left, or media keys next previews track";
+    STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left or media keys next previews track, hold down to audio source all windows";
     STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
     STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
     STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
