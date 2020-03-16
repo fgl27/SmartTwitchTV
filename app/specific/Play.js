@@ -1601,19 +1601,6 @@ function Play_CloseSmall() {
     Play_CleanHideExit();
 }
 
-function Play_handleKeyUp(e) {
-    if (e.keyCode === KEY_ENTER) {
-        Play_handleKeyUpClear();
-        if (!PlayExtra_clear) Play_OpenLiveFeedCheck();
-    } else if (e.keyCode === KEY_UP) {
-        Play_handleKeyUpEndClear();
-        if (!Play_EndUpclear) {
-            if (Play_isEndDialogVisible()) Play_EndDialogUpDown(-1);
-            else UserLiveFeed_KeyUpDown(-1);
-        }
-    }
-}
-
 function Play_EndDialogUpDown(adder) {
 
     Play_EndTextClear();
@@ -1958,31 +1945,29 @@ function Play_MultiCheckLiveFeed(pos) {
     }, 1000);
 }
 
-function Play_MultiEnableKeyRightLeft(adder, skipall) {
+function Play_MultiEnableKeyRightLeft(adder) {
 
     Play_controls[Play_controlsAudioMulti].defaultValue += adder;
 
-    if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - (1 + (skipall ? 1 : 0)))) {
+    if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - 2)) {
 
         Play_controls[Play_controlsAudioMulti].defaultValue = 0;
 
     } else if (Play_controls[Play_controlsAudioMulti].defaultValue < 0) {
 
-        Play_controls[Play_controlsAudioMulti].defaultValue = (Play_controls[Play_controlsAudioMulti].values.length - (1 + (skipall ? 1 : 0)));
+        Play_controls[Play_controlsAudioMulti].defaultValue = Play_controls[Play_controlsAudioMulti].values.length - 2;
 
     }
 
-    if (Play_controls[Play_controlsAudioMulti].defaultValue < 4 &&
-        Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
+    if (Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
 
-        Play_MultiEnableKeyRightLeft(adder, skipall);
+        Play_MultiEnableKeyRightLeft(adder);
         return;
     }
 
     Play_controls[Play_controlsAudioMulti].enterKey();
 
-    if (Play_Multi_MainBig && Play_controls[Play_controlsAudioMulti].defaultValue < 4 &&
-        Play_Multi_Offset !== Play_controls[Play_controlsAudioMulti].defaultValue) {
+    if (Play_Multi_Offset !== Play_controls[Play_controlsAudioMulti].defaultValue) {
 
         Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
 

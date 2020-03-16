@@ -446,6 +446,72 @@ function Play_KeyReturn(is_vod) {
     }
 }
 
+var Play_Oldaudio = 0;
+function Play_MultiKeyDownHold() {
+    Play_EndUpclear = true;
+
+    if (Play_controls[Play_controlsAudioMulti].defaultValue !== 4) {
+        Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
+        Play_controls[Play_controlsAudioMulti].defaultValue = 4;
+        Play_controls[Play_controlsAudioMulti].enterKey();
+    } else {
+        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Oldaudio;
+        Play_controls[Play_controlsAudioMulti].enterKey();
+    }
+}
+
+function Play_MultiKeyDown() {
+    Play_Multi_MainBig = !Play_Multi_MainBig;
+    if (Play_Multi_MainBig && Play_MultiArray[0].data.length) {
+        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
+
+        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+
+        Play_showWarningDialog(
+            STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
+            2000
+        );
+        Play_MultiUpdateinfoMainBig('_big');
+        Main_HideElement('stream_info_multi');
+        Main_HideElement('dialog_multi_help');
+        Main_ShowElement('stream_info_multi_big');
+        Play_StoreChatPos();
+        Play_showChat();
+        Play_chat_container.style.width = '32.8%';
+        Play_chat_container.style.height = '65.8%';
+        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Play_chat_container.style.top = '0.2%';
+        Play_chat_container.style.left = '67%';
+    } else {
+        Play_MultiUpdateinfoMainBig('');
+        Main_ShowElement('stream_info_multi');
+        Main_HideElement('stream_info_multi_big');
+        if (!Play_MultiArray[0].data.length) {
+            Play_showWarningDialog(
+                STR_ENABLE_MAIN_MULTI,
+                2000
+            );
+            Play_Multi_MainBig = false;
+        } else Play_ResStoreChatPos();
+        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+    }
+}
+
+function Play_handleKeyUp(e) {
+    if (e.keyCode === KEY_ENTER) {
+        Play_handleKeyUpClear();
+        if (!PlayExtra_clear) Play_OpenLiveFeedCheck();
+    } else if (e.keyCode === KEY_UP) {
+        Play_handleKeyUpEndClear();
+        if (!Play_EndUpclear) {
+            if (Play_isEndDialogVisible()) Play_EndDialogUpDown(-1);
+            else UserLiveFeed_KeyUpDown(-1);
+        }
+    } else if (e.keyCode === KEY_DOWN) {
+        Play_handleKeyUpEndClear();
+        if (!Play_EndUpclear) Play_MultiKeyDown();
+    }
+}
 
 function Play_keyUpEnd() {
     Play_EndUpclear = true;
@@ -603,40 +669,11 @@ function Play_handleKeyDown(e) {
                         Play_controls[Play_controlsAudio].enterKey();
                     }
                 } else if (Play_MultiEnable) {
-                    Play_Multi_MainBig = !Play_Multi_MainBig;
-                    if (Play_Multi_MainBig && Play_MultiArray[0].data.length) {
-                        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
-
-                        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
-
-                        Play_showWarningDialog(
-                            STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
-                            2000
-                        );
-                        Play_MultiUpdateinfoMainBig('_big');
-                        Main_HideElement('stream_info_multi');
-                        Main_HideElement('dialog_multi_help');
-                        Main_ShowElement('stream_info_multi_big');
-                        Play_StoreChatPos();
-                        Play_showChat();
-                        Play_chat_container.style.width = '32.8%';
-                        Play_chat_container.style.height = '65.8%';
-                        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
-                        Play_chat_container.style.top = '0.2%';
-                        Play_chat_container.style.left = '67%';
-                    } else {
-                        Play_MultiUpdateinfoMainBig('');
-                        Main_ShowElement('stream_info_multi');
-                        Main_HideElement('stream_info_multi_big');
-                        if (!Play_MultiArray[0].data.length) {
-                            Play_showWarningDialog(
-                                STR_ENABLE_MAIN_MULTI,
-                                2000
-                            );
-                            Play_Multi_MainBig = false;
-                        } else Play_ResStoreChatPos();
-                        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
-                    }
+                    document.body.removeEventListener("keydown", Play_handleKeyDown, false);
+                    document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                    Play_EndUpclear = false;
+                    Play_EndUpclearCalback = Play_handleKeyDown;
+                    Play_EndUpclearID = window.setTimeout(Play_MultiKeyDownHold, 250);
                 } else Play_showPanel();
                 break;
             case KEY_ENTER:
@@ -742,14 +779,14 @@ function Play_handleKeyDown(e) {
             case KEY_MEDIA_NEXT:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
 
-                if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1, true);
+                if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
                 else if (PlayExtra_PicturePicture) Play_AudioChangeRight();
 
                 break;
             case KEY_MEDIA_PREVIOUS:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible()) break;
 
-                if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1, true);
+                if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1);
                 else if (PlayExtra_PicturePicture) Play_AudioChangeLeft();
 
                 break;
