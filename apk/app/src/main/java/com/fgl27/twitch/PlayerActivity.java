@@ -52,8 +52,8 @@ import java.util.Locale;
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAcount = 4;
     public final int PlayerAcountPlus = PlayerAcount + 1;
@@ -117,6 +117,7 @@ public class PlayerActivity extends Activity {
     public boolean MultiStream;
     public boolean isFullScreen = true;
     public int mainPlayer = 0;
+    public int MultimainPlayer = 0;
     public int PicturePicturePositions = 0;
     public int PicturePictureSize = 1;//sizes are 0 , 1 , 2
     public int AudioSource = 1;
@@ -793,6 +794,7 @@ public class PlayerActivity extends Activity {
         PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[7]);
 
         AudioMulti = (mainPlayer + offset) % 4;
+        MultimainPlayer = AudioMulti;
         SetPlayerAudioMulti();
 
         if (trackSelector[mainPlayer] != null)
@@ -804,6 +806,8 @@ public class PlayerActivity extends Activity {
         PlayerView[((mainPlayer ^ 1) + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[1]);
         PlayerView[(2 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[2]);
         PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[3]);
+        
+        MultimainPlayer = (mainPlayer + offset) % 4;
 
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
@@ -1487,8 +1491,10 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    if (player[mainPlayer] != null)
-                        value = Tools.mgetVideoQuality(player[mainPlayer]);
+                    int playerPos = MultiStream ? MultimainPlayer : mainPlayer;
+
+                    if (player[playerPos] != null)
+                        value = Tools.mgetVideoQuality(player[playerPos]);
                     else value = null;
                 }
             });
@@ -1518,10 +1524,12 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    if (player[mainPlayer] != null) {
+                    int playerPos = MultiStream ? MultimainPlayer : mainPlayer;
+
+                    if (player[playerPos] != null) {
                         value = String.format(Locale.US, "%d,%d",
-                                player[mainPlayer].getTotalBufferedDuration(),
-                                player[mainPlayer].getCurrentLiveOffset()
+                                player[playerPos].getTotalBufferedDuration(),
+                                player[playerPos].getCurrentLiveOffset()
                         );
                     } else value = "0,0";
                 }
