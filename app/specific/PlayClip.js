@@ -83,11 +83,7 @@ function PlayClip_Start() {
     UserLiveFeed_Unset();
     Play_IsWarning = false;
 
-    if (AddUser_UserIsSet()) {
-        AddCode_PlayRequest = true;
-        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_CheckFollow();
-    } else Play_hideFollow();
+    PlayVod_CheckFollow();
 
     PlayClip_IsJumping = false;
     PlayClip_jumpCount = 0;
