@@ -1765,6 +1765,7 @@ function Play_Multi_UnSetPanel(shutdown) {
     } else if (shutdown) Play_shutdownStream();
 
     Play_Multi_Offset = 0;
+    Play_Oldaudio = Play_controls[Play_controlsAudio].defaultValue;
 }
 
 function Play_MultiFirstAvailable() {
@@ -2219,12 +2220,12 @@ function Play_ResStoreChatPos() {
 
 function Play_AudioChangeRight() {
     Play_controls[Play_controlsAudio].defaultValue++;
-    if (Play_controls[Play_controlsAudio].defaultValue > (Play_controls[Play_controlsAudio].values.length - 1)) Play_controls[Play_controlsAudio].defaultValue = 0;
+    if (Play_controls[Play_controlsAudio].defaultValue > (Play_controls[Play_controlsAudio].values.length - 2)) Play_controls[Play_controlsAudio].defaultValue = 0;
     Play_controls[Play_controlsAudio].enterKey();
 }
 
 function Play_AudioChangeLeft() {
     Play_controls[Play_controlsAudio].defaultValue--;
-    if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = (Play_controls[Play_controlsAudio].values.length - 1);
+    if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = (Play_controls[Play_controlsAudio].values.length - 2);
     Play_controls[Play_controlsAudio].enterKey();
 }

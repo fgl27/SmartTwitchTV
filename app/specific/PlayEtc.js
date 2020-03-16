@@ -460,6 +460,19 @@ function Play_MultiKeyDownHold() {
     }
 }
 
+function Play_PPKeyDownHold() {
+    Play_EndUpclear = true;
+
+    if (Play_controls[Play_controlsAudio].defaultValue !== 2) {
+        Play_Oldaudio = Play_controls[Play_controlsAudio].defaultValue;
+        Play_controls[Play_controlsAudio].defaultValue = 2;
+        Play_controls[Play_controlsAudio].enterKey();
+    } else {
+        Play_controls[Play_controlsAudio].defaultValue = Play_Oldaudio;
+        Play_controls[Play_controlsAudio].enterKey();
+    }
+}
+
 function Play_MultiKeyDown() {
     Play_Multi_MainBig = !Play_Multi_MainBig;
     if (Play_Multi_MainBig && Play_MultiArray[0].data.length) {
@@ -509,7 +522,14 @@ function Play_handleKeyUp(e) {
         }
     } else if (e.keyCode === KEY_DOWN) {
         Play_handleKeyUpEndClear();
-        if (!Play_EndUpclear) Play_MultiKeyDown();
+        if (!Play_EndUpclear) {
+            if (Play_MultiEnable) Play_MultiKeyDown();
+            else {
+                if (Main_IsNotBrowser) Android.mSwitchPlayer();
+                PlayExtra_SwitchPlayer();
+            }
+        }
+
     }
 }
 
@@ -659,14 +679,13 @@ function Play_handleKeyDown(e) {
                     Play_KeyChatSizeChage();
                 } else if (PlayExtra_PicturePicture && !Play_MultiEnable) {
                     if (Play_isFullScreen) {
-                        if (Main_IsNotBrowser) Android.mSwitchPlayer();
-                        PlayExtra_SwitchPlayer();
+                        document.body.removeEventListener("keydown", Play_handleKeyDown, false);
+                        document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                        Play_EndUpclear = false;
+                        Play_EndUpclearCalback = Play_handleKeyDown;
+                        Play_EndUpclearID = window.setTimeout(Play_PPKeyDownHold, 250);
                     } else {
-                        Play_controls[Play_controlsAudio].defaultValue++;
-
-                        if (Play_controls[Play_controlsAudio].defaultValue > (Play_controls[Play_controlsAudio].values.length - 1)) Play_controls[Play_controlsAudio].defaultValue = 0;
-
-                        Play_controls[Play_controlsAudio].enterKey();
+                        Play_PPKeyDownHold();
                     }
                 } else if (Play_MultiEnable) {
                     document.body.removeEventListener("keydown", Play_handleKeyDown, false);
