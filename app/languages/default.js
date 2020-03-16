@@ -80,8 +80,8 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_MULTI_2 + STR_BR +
         STR_DOT + STR_CONTROLS_MULTI_3 + STR_BR +
         STR_DOT + STR_CONTROLS_MULTI_4 + STR_BR +
-        STR_DOT + STR_CONTROLS_MULTI_5 + STR_BR +
-        STR_DOT + STR_MAIN_MULTI_BIG + STR_BR + '</div>' +
+        STR_DOT + STR_MAIN_MULTI_BIG + STR_BR +
+        STR_DOT + STR_CONTROLS_MULTI_5 + STR_BR + '</div>' +
         STR_DIV_TITLE + STR_CONTROLS_MULTI_6 + '</div>';
 
     STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
