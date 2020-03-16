@@ -1955,6 +1955,8 @@ function Play_MultiCheckLiveFeed(pos) {
 }
 
 function Play_MultiEnableKeyRightLeft(adder) {
+    //reset audio value if on big as it may had be changed via hold down or bootm controls
+    if (Play_Multi_MainBig) Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
 
     Play_controls[Play_controlsAudioMulti].defaultValue += adder;
 
