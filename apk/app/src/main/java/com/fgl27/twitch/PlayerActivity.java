@@ -798,7 +798,7 @@ public class PlayerActivity extends Activity {
         PlayerView[((mainPlayer ^ 1) + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[1]);
         PlayerView[(2 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[2]);
         PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[3]);
-        
+
         MultimainPlayer = (mainPlayer + offset) % 4;
 
         if (trackSelector[mainPlayer] != null)
