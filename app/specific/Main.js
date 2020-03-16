@@ -2200,6 +2200,10 @@ function Main_CheckStop() { // Called only by JAVA
 
     if (PlayClip_isOn) PlayClip_Resume();
 
+    try {
+        Android.SetshouldCallJsPlayer(Main_isScene2DocShown() || Sidepannel_isShowing());
+    } catch (e) {}
+
     //General related
     Screens_ClearAnimation();
 
