@@ -556,7 +556,10 @@ function Play_UpdateMainStreamDiv() {
 }
 
 function Play_UpdateMainStream(startChat, refreshInfo) {
-    if (startChat) ChatLive_Init(0);
+    if (startChat) {
+        ChatLive_Init(0);
+        Play_CheckFollow();
+    }
     Play_UpdateMainStreamDiv();
     //Restore info panel from web
     Play_loadingInfoDataTry = 0;
@@ -564,11 +567,7 @@ function Play_UpdateMainStream(startChat, refreshInfo) {
 }
 
 function Play_updateStreamInfoStartValues(response) {
-    if (AddUser_UserIsSet()) {
-        AddCode_PlayRequest = true;
-        AddCode_Channel_id = Play_data.data[14];
-        AddCode_CheckFollow();
-    } else Play_hideFollow();
+    Play_CheckFollow();
 
     response = JSON.parse(response);
     if (response.stream !== null) {
@@ -576,6 +575,14 @@ function Play_updateStreamInfoStartValues(response) {
         Play_loadingInfoDataTry = 0;
         Play_updateVodInfo(response.stream.channel._id, response.stream._id, 0);
     }
+}
+
+function Play_CheckFollow() {
+    if (AddUser_UserIsSet()) {
+        AddCode_PlayRequest = true;
+        AddCode_Channel_id = Play_data.data[14];
+        AddCode_CheckFollow();
+    } else Play_hideFollow();
 }
 
 function Play_updateStreamInfoEnd(response) {
@@ -1937,11 +1944,7 @@ function Play_MultiUpdateMain() {
     ChatLive_Init(0);
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-    if (AddUser_UserIsSet()) {
-        AddCode_PlayRequest = true;
-        AddCode_Channel_id = Play_data.data[14];
-        AddCode_CheckFollow();
-    }
+    Play_CheckFollow();
     Main_SaveValues();
 }
 
@@ -1987,11 +1990,9 @@ function Play_MultiEnableKeyRightLeft(adder) {
         );
 
         Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
-
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_Multi_Offset]));
-        ChatLive_Init(0);
         Play_MultiUpdateinfoMainBig('_big');
-        Main_SaveValues();
+        Play_MultiUpdateMain();
     }
 }
 
