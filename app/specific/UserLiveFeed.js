@@ -281,9 +281,9 @@ function UserLiveFeed_Show() {
     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
 }
 
-function UserLiveFeed_Hide() {
+function UserLiveFeed_Hide(PreventcleanQuailities) {
     //return;//return;
-    UserLiveFeed_CheckIfIsLiveSTop();
+    UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities);
     UserLiveFeed_Showloading(false);
     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
 }
@@ -437,11 +437,11 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
     return position;
 }
 
-function UserLiveFeed_CheckIfIsLiveSTop() {
+function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
     if (!Main_IsNotBrowser) return;
 
     Android.ClearFeedPlayer();
-    Play_CheckIfIsLiveCleanEnd();
+    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
     Sidepannel_CheckIfIsLiveCleanTimeouts();
 }
 

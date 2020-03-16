@@ -2108,7 +2108,7 @@ function Play_MultiSetUpdateDialog(doc) {
     Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
 
-    UserLiveFeed_Hide();
+    UserLiveFeed_Hide(true);
     Play_MultiDialogPos = 0;
     Play_MultiAddFocus();
     Play_ShowMultiDialog();
@@ -2141,10 +2141,11 @@ function Play_ShowMultiDialog() {
     Main_ShowElementWithEle(doc);
 }
 
-function Play_HideMultiDialog() {
+function Play_HideMultiDialog(PreventcleanQuailities) {
     Main_HideElement('dialog_multi');
     Play_clearHideMultiDialog();
     Play_MultiRemoveFocus();
+    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
 }
 
 function Play_MultiDialogVisible() {
