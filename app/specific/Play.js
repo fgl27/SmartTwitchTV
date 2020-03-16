@@ -1755,8 +1755,12 @@ function Play_Multi_UnSetPanel(shutdown) {
         var name = Play_data.data[14];
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
-        if ((name !== Play_data.data[14] || Play_Multi_Offset) && First) Play_Start();
-        else Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
+        if ((name !== Play_data.data[14] || Play_Multi_Offset) && First) {
+            Android.SetAuto(Play_data.AutoUrl);
+            Android.StartAuto(1, 0);
+            Play_UpdateMainStream(true, true);
+            Play_MultiUpdateMain();
+        } else Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
 
     } else if (shutdown) Play_shutdownStream();
 
@@ -1921,20 +1925,24 @@ function Play_MultiStartQualitySucess(pos, theUrl, qualities) {
     var tempPos = (pos + (4 - Play_Multi_Offset)) % 4;//revert the value to check for chat
     if (!tempPos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
-        ChatLive_Init(0);
-        Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
-        Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-        if (AddUser_UserIsSet()) {
-            AddCode_PlayRequest = true;
-            AddCode_Channel_id = Play_data.data[14];
-            AddCode_CheckFollow();
-        }
-        Main_SaveValues();
+        Play_MultiUpdateMain();
     }
     Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
     Play_MultiCheckLiveFeed(pos);
+}
+
+function Play_MultiUpdateMain() {
+    ChatLive_Init(0);
+    Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
+    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+    if (AddUser_UserIsSet()) {
+        AddCode_PlayRequest = true;
+        AddCode_Channel_id = Play_data.data[14];
+        AddCode_CheckFollow();
+    }
+    Main_SaveValues();
 }
 
 function Play_MultiCheckLiveFeed(pos) {
@@ -1967,7 +1975,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
     Play_controls[Play_controlsAudioMulti].enterKey();
 
-    if (Play_Multi_Offset !== Play_controls[Play_controlsAudioMulti].defaultValue) {
+    if (Play_Multi_MainBig && Play_Multi_Offset !== Play_controls[Play_controlsAudioMulti].defaultValue) {
 
         Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
 
@@ -1981,6 +1989,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_Multi_Offset]));
         ChatLive_Init(0);
         Play_MultiUpdateinfoMainBig('_big');
+        Main_SaveValues();
     }
 }
 
