@@ -553,8 +553,12 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
-                    Play_MultiDialogPos -= 2;
-                    if (Play_MultiDialogPos < 0) Play_MultiDialogPos += 4;
+                    if (Play_Multi_MainBig) {
+                        Play_MultiDialogPos = Play_MultiDialogPos ? 0 : 2;
+                    } else {
+                        Play_MultiDialogPos -= 2;
+                        if (Play_MultiDialogPos < 0) Play_MultiDialogPos += 4;
+                    }
                     Play_MultiAddFocus();
                 } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
                 else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
@@ -576,8 +580,12 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
-                    Play_MultiDialogPos += 2;
-                    if (Play_MultiDialogPos > 3) Play_MultiDialogPos -= 4;
+                    if (Play_Multi_MainBig) {
+                        Play_MultiDialogPos = !Play_MultiDialogPos ? 2 : 0;
+                    } else {
+                        Play_MultiDialogPos += 2;
+                        if (Play_MultiDialogPos > 3) Play_MultiDialogPos -= 4;
+                    }
                     Play_MultiAddFocus();
                 } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
@@ -596,13 +604,19 @@ function Play_handleKeyDown(e) {
                     }
                 } else if (Play_MultiEnable) {
                     Play_Multi_MainBig = !Play_Multi_MainBig;
-                    Android.EnableMultiStream(Play_Multi_MainBig);
                     if (Play_Multi_MainBig && Play_MultiArray[0].data.length) {
+                        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
+
+                        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+
                         Play_showWarningDialog(
-                            STR_AUDIO_SOURCE + STR_SPACE + Play_MultiArray[0].data[1],
+                            STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
                             2000
                         );
+                        Play_MultiUpdateinfoMainBig('_big');
+                        Main_HideElement('stream_info_multi');
                         Main_HideElement('dialog_multi_help');
+                        Main_ShowElement('stream_info_multi_big');
                         Play_StoreChatPos();
                         Play_showChat();
                         Play_chat_container.style.width = '32.8%';
@@ -611,13 +625,17 @@ function Play_handleKeyDown(e) {
                         Play_chat_container.style.top = '0.2%';
                         Play_chat_container.style.left = '67%';
                     } else {
+                        Play_MultiUpdateinfoMainBig('');
+                        Main_ShowElement('stream_info_multi');
+                        Main_HideElement('stream_info_multi_big');
                         if (!Play_MultiArray[0].data.length) {
                             Play_showWarningDialog(
                                 STR_ENABLE_MAIN_MULTI,
                                 2000
                             );
-                        }
-                        Play_ResStoreChatPos();
+                            Play_Multi_MainBig = false;
+                        } else Play_ResStoreChatPos();
+                        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
                     }
                 } else Play_showPanel();
                 break;
@@ -640,7 +658,7 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
                     Play_HideMultiDialog();
-                    Play_MultiStartPrestart(Play_MultiDialogPos);
+                    Play_MultiStartPrestart((Play_MultiDialogPos + Play_Multi_Offset) % 4);
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_MultiEnable) {
@@ -1164,7 +1182,7 @@ function Play_MakeControls() {
         enterKey: function(shutdown) {
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {
-                Android.EnableMultiStream(Play_Multi_MainBig);
+                Android.EnableMultiStream(Play_Multi_MainBig, 0);
                 Play_hidePanel();
 
                 Play_Multi_SetPanel();
@@ -1248,7 +1266,7 @@ function Play_MakeControls() {
         setLable: function() {
             var string = (Play_isChatShown() ? STR_YES : STR_NO);
             if (!Play_isFullScreen && !Play_MultiEnable) string = Play_isFullScreen ? STR_CHAT_SIDE : STR_CHAT_5050;
-            else if (Play_MultiEnable && Play_Multi_MainBig) string = STR_MAIN_WINDOW;
+            else if (Play_MultiEnable && Play_Multi_MainBig) string = STR_MULTI_MAIN_WINDOW;
 
             Main_textContent('extra_button_' + this.position, '(' + string + ')');
         },

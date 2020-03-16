@@ -786,24 +786,24 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void SetMultiStreamMainBig() {
-        PlayerView[mainPlayer].setLayoutParams(MultiStreamPlayerViewLayout[4]);
-        PlayerView[mainPlayer ^ 1].setLayoutParams(MultiStreamPlayerViewLayout[5]);
-        PlayerView[2].setLayoutParams(MultiStreamPlayerViewLayout[6]);
-        PlayerView[3].setLayoutParams(MultiStreamPlayerViewLayout[7]);
+    public void SetMultiStreamMainBig(int offset) {
+        PlayerView[(mainPlayer + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[4]);
+        PlayerView[((mainPlayer ^ 1) + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[5]);
+        PlayerView[(2 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[6]);
+        PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[7]);
 
-        AudioMulti = mainPlayer;
+        AudioMulti = (mainPlayer + offset) % 4;
         SetPlayerAudioMulti();
 
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
     }
 
-    public void SetMultiStream() {
-        PlayerView[mainPlayer].setLayoutParams(MultiStreamPlayerViewLayout[0]);
-        PlayerView[mainPlayer ^ 1].setLayoutParams(MultiStreamPlayerViewLayout[1]);
-        PlayerView[2].setLayoutParams(MultiStreamPlayerViewLayout[2]);
-        PlayerView[3].setLayoutParams(MultiStreamPlayerViewLayout[3]);
+    public void SetMultiStream(int offset) {
+        PlayerView[(mainPlayer + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[0]);
+        PlayerView[((mainPlayer ^ 1) + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[1]);
+        PlayerView[(2 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[2]);
+        PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[3]);
 
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
@@ -1627,11 +1627,11 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void EnableMultiStream(boolean MainBig) {
+        public void EnableMultiStream(boolean MainBig, int offset) {
             MainThreadHandler.post(() -> {
                 MultiStream = true;
-                if (MainBig) SetMultiStreamMainBig();
-                else SetMultiStream();
+                if (MainBig) SetMultiStreamMainBig(offset);
+                else SetMultiStream(offset);
             });
         }
 
