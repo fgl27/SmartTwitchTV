@@ -153,12 +153,7 @@ function PlayVod_updateStreamerInfoValues() {
 
     //The chat init will happens after user click on vod dialog
     if (!PlayVod_VodOffset) Chat_Init();
-
-    if (AddUser_UserIsSet()) {
-        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_PlayRequest = true;
-        AddCode_CheckFollow();
-    } else Play_hideFollow();
+    PlayVod_CheckFollow();
 }
 
 function PlayVod_updateVodInfo() {
@@ -172,6 +167,14 @@ function PlayVod_updateVodInfoError() {
         PlayVod_loadingInfoDataTimeout += 2000;
         PlayVod_updateVodInfo();
     }
+}
+
+function PlayVod_CheckFollow() {
+    if (AddUser_UserIsSet()) {
+        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
+        AddCode_PlayRequest = true;
+        AddCode_CheckFollow();
+    } else Play_hideFollow();
 }
 
 function PlayVod_updateVodInfoPannel(response) {
@@ -222,11 +225,7 @@ function PlayVod_updateVodInfoPannel(response) {
     Main_values.Main_selectedChannel_id = response.channel._id;
     Main_values.Main_selectedChannel = response.channel.name;
 
-    if (AddUser_UserIsSet()) {
-        AddCode_PlayRequest = true;
-        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_CheckFollow();
-    } else Play_hideFollow();
+    PlayVod_CheckFollow();
 
     //View bot is blocking it
     //new Image().src = response.increment_view_count_url;
