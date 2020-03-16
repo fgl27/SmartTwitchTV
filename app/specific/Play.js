@@ -409,7 +409,7 @@ function Play_CheckIfIsLiveCleanEnd() {
     Play_CheckIfIsLiveQualities = [];
 }
 
-function Play_CheckResume() { // Called only by JAVA
+function Play_CheckResume() {
     if (Play_isOn) Play_Resume();
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
@@ -481,7 +481,6 @@ function Play_Resume() {
     //Play_FakeMulti();
     UserLiveFeed_Hide();
 
-    Play_isOn = true;
     ChatLive_Playing = true;
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
     Play_showBufferDialog();

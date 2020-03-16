@@ -22,7 +22,6 @@
     smartTwitchTV = {// smartTwitchTV var is defined in app/specific/Main.js
         'mainstart': Main_Start, //Main_Start id Main_Start() func from app/specific/Main.js
         'Play_PannelEndStart': Play_PannelEndStart, //Play_PannelEndStart() func from app/specific/Play.js
-        'Play_CheckResume': Play_CheckResume, //Play_CheckResume() func from app/specific/Play.js
         'Play_PlayerCheck': Play_PlayerCheck, //Play_PlayerCheck() func from app/specific/Play.js
         'Play_UpdateDuration': Play_UpdateDuration, //Play_UpdateDuration() func from app/specific/Play.js
         'Play_CheckResumeForced': Play_CheckResumeForced, //Play_CheckResumeForced() func from app/specific/Play.js
