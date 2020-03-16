@@ -114,7 +114,7 @@ public class PlayerActivity extends Activity {
     public WebView mwebview;
     public boolean PicturePicture;
     public boolean deviceIsTV;
-    public boolean MultiStream;
+    public boolean MultiStreamEnable;
     public boolean isFullScreen = true;
     public int mainPlayer = 0;
     public int MultimainPlayer = 0;
@@ -467,7 +467,7 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[position] = 0;
 
-        if (mainPlayer != position && !MultiStream) SwitchPlayerAudio(1);
+        if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1);
         else if (AudioMulti != 4 && AudioMulti == position) {
             for (int i = 0; i < PlayerAcount; i++) {
                 if (i != position && player[i] != null) {
@@ -1430,7 +1430,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void setPlaybackSpeed(float speed) {
             MainThreadHandler.post(() -> {
-                if (MultiStream) {
+                if (MultiStreamEnable) {
                     for (int i = 0; i < PlayerAcount; i++) {
                         if (player[i] != null)
                             player[i].setPlaybackParameters(new PlaybackParameters(speed));
@@ -1482,7 +1482,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    int playerPos = MultiStream ? MultimainPlayer : mainPlayer;
+                    int playerPos = MultiStreamEnable ? MultimainPlayer : mainPlayer;
 
                     if (player[playerPos] != null)
                         value = Tools.mgetVideoQuality(player[playerPos]);
@@ -1515,7 +1515,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    int playerPos = MultiStream ? MultimainPlayer : mainPlayer;
+                    int playerPos = MultiStreamEnable ? MultimainPlayer : mainPlayer;
 
                     if (player[playerPos] != null) {
                         value = String.format(Locale.US, "%d,%d",
@@ -1628,7 +1628,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void EnableMultiStream(boolean MainBig, int offset) {
             MainThreadHandler.post(() -> {
-                MultiStream = true;
+                MultiStreamEnable = true;
                 if (MainBig) SetMultiStreamMainBig(offset);
                 else SetMultiStream(offset);
             });
@@ -1638,7 +1638,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void DisableMultiStream() {
             MainThreadHandler.post(() -> {
-                MultiStream = false;
+                MultiStreamEnable = false;
                 UnSetMultiStream();
             });
         }
@@ -1720,7 +1720,7 @@ public class PlayerActivity extends Activity {
 
         private PlayerEventListener(int mposition) {
             position = mposition;
-            delayms = (BUFFER_SIZE[mwho_called] * 2) + 5000 + (MultiStream ? 2000 : 0);
+            delayms = (BUFFER_SIZE[mwho_called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0);
         }
 
         @Override
@@ -1751,7 +1751,7 @@ public class PlayerActivity extends Activity {
                 PlayerCheckCounter[position] = 0;
 
                 //If other not playing just play it so they stay in sync
-                if (MultiStream) {
+                if (MultiStreamEnable) {
                     for (int i = 0; i < PlayerAcount; i++) {
                         if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
                     }
@@ -1798,11 +1798,11 @@ public class PlayerActivity extends Activity {
                 if (expires[position] < System.currentTimeMillis()) {
                     mediaSourcePlaying[position] = mediaSourcesAuto[position];
 
-                    if (MultiStream) initializePlayerMulti(position, mediaSourcePlaying[position]);
+                    if (MultiStreamEnable) initializePlayerMulti(position, mediaSourcePlaying[position]);
                     else initializePlayer(position);
 
                 } else {
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStream + ", " + position + ")");
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStreamEnable + ", " + position + ")");
                 }
 
             } else initializePlayer(position);
@@ -1830,7 +1830,7 @@ public class PlayerActivity extends Activity {
         hideLoading(5);
         hideLoading(position);
         String webviewLoad;
-        if (MultiStream) {
+        if (MultiStreamEnable) {
             ClearPlayer(position);
             webviewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
         } else if (PicturePicture) {
@@ -1877,7 +1877,7 @@ public class PlayerActivity extends Activity {
 
                     PlayerEventListenerCheckCounterSmall();
 
-                }, (BUFFER_SIZE[mwho_called] * 2) + 5000 + (MultiStream ? 2000 : 0));
+                }, (BUFFER_SIZE[mwho_called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0));
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckCounter[4] = 0;
