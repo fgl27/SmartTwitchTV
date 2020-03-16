@@ -1718,6 +1718,12 @@ public class PlayerActivity extends Activity {
 
             return pInfo != null ? pInfo.versionName: null;
         }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetshouldCallJsPlayer(boolean should) {
+            shouldCallJsPlayer = should;
+        }
     }
 
     // Basic EventListener for exoplayer

@@ -413,7 +413,7 @@ function Play_CheckResume() { // Called only by JAVA
     if (Play_isOn) Play_Resume();
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
-    else if (Sidepannel_isShowing() && Play_CheckIfIsLiveQualities.length) {
+    else if (Sidepannel_isShowing()) {
         Sidepannel_UpdateThumbDiv();
         Sidepannel_CheckIfIsLiveStart();
     }
