@@ -167,7 +167,6 @@ function Main_loadTranslations(language) {
                 smartTwitchTV = {
                     'mainstart': Main_Start,
                     'Play_PannelEndStart': Play_PannelEndStart,
-                    'Play_CheckResume': Play_CheckResume,
                     'Play_PlayerCheck': Play_PlayerCheck,
                     'Play_UpdateDuration': Play_UpdateDuration,
                     'Play_CheckResumeForced': Play_CheckResumeForced,
@@ -2200,10 +2199,6 @@ function Main_CheckStop() { // Called only by JAVA
 
     if (PlayClip_isOn) PlayClip_Resume();
 
-    try {
-        Android.SetshouldCallJsPlayer(Main_isScene2DocShown() || Sidepannel_isShowing());
-    } catch (e) {}
-
     //General related
     Screens_ClearAnimation();
 
@@ -2217,6 +2212,8 @@ function Main_CheckStop() { // Called only by JAVA
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume() { // Called only by JAVA
+    if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
+
     if (AddUser_UserIsSet()) {
         window.clearInterval(Main_updateUserFeedId);
         Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);

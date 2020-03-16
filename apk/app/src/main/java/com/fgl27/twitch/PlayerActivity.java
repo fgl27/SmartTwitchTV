@@ -52,8 +52,8 @@ import java.util.Locale;
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    public static final String PageUrl = "file:///android_asset/index.html";
-    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    //public static final String PageUrl = "file:///android_asset/index.html";
+    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAcount = 4;
     public final int PlayerAcountPlus = PlayerAcount + 1;
@@ -160,7 +160,6 @@ public class PlayerActivity extends Activity {
     private boolean IsStopped;
     private ProgressBar[] loadingView = new ProgressBar[PlayerAcount + 3];
     private boolean AlredyStarted;
-    private boolean shouldCallJsPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +215,6 @@ public class PlayerActivity extends Activity {
             setPlayerSurface(true);
 
             deviceIsTV = Tools.deviceIsTV(this);
-            shouldCallJsPlayer = false;
 
             DeviceRam = Tools.DeviceRam(this);
             //Ram too big.bigger then max int value... use 500MB
@@ -383,7 +381,6 @@ public class PlayerActivity extends Activity {
             PlayerView[4].setVisibility(View.VISIBLE);
 
         KeepScreenOn(true);
-        shouldCallJsPlayer = true;
     }
 
     private void ClearSmallPlayer() {
@@ -398,7 +395,6 @@ public class PlayerActivity extends Activity {
         PlayerCheckCounter[4] = 0;
         UseFullBandwidth = false;
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
-            shouldCallJsPlayer = false;
             KeepScreenOn(false);
         }
     }
@@ -458,7 +454,6 @@ public class PlayerActivity extends Activity {
         else player[position].setVolume(0f);
 
         KeepScreenOn(true);
-        shouldCallJsPlayer = true;
     }
 
     private void ClearPlayer(int position) {
@@ -494,7 +489,6 @@ public class PlayerActivity extends Activity {
 
         mediaSourcePlaying[mainPlayer] = mediaSource;
         uri = Uri.parse(videoAddress);
-        shouldCallJsPlayer = true;
         mwho_called = who_called;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
 
@@ -505,7 +499,6 @@ public class PlayerActivity extends Activity {
     private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
         mediaSourcePlaying[mainPlayer ^ 1] = mediaSource;
         uri = Uri.parse(videoAddress);
-        shouldCallJsPlayer = true;
         mResumePosition = 0;
 
         initializePlayer(mainPlayer ^ 1);
@@ -517,7 +510,6 @@ public class PlayerActivity extends Activity {
         if (mainPlayer == 1) SwitchPlayer();
 
         PicturePicture = false;
-        shouldCallJsPlayer = false;
         AudioSource = 1;
 
         for (int i = 0; i < PlayerAcountPlus; i++) {
@@ -841,7 +833,6 @@ public class PlayerActivity extends Activity {
         IsStopped = false;
 
         if (mwebview != null && AlredyStarted) {
-            if (shouldCallJsPlayer) mwebview.loadUrl("javascript:smartTwitchTV.Play_CheckResume()");
             mwebview.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
         }
         AlredyStarted = true;
@@ -1719,11 +1710,6 @@ public class PlayerActivity extends Activity {
             return pInfo != null ? pInfo.versionName: null;
         }
 
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetshouldCallJsPlayer(boolean should) {
-            shouldCallJsPlayer = should;
-        }
     }
 
     // Basic EventListener for exoplayer

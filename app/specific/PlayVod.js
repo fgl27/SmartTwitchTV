@@ -236,7 +236,6 @@ function PlayVod_updateVodInfoPannel(response) {
 
 function PlayVod_Resume() {
     UserLiveFeed_Hide();
-    PlayVod_isOn = true;
     Play_showBufferDialog();
     Play_ResumeAfterOnlineCounter = 0;
 
