@@ -1201,17 +1201,19 @@ function Play_MakeControls() {
         values: [STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4, STR_PLAYER_MULTI_ALL],
         defaultValue: 0,
         opacity: 0,
-        enterKey: function() {
+        enterKey: function(preventShowWarning) {
 
             Android.mSetPlayerAudioMulti(this.defaultValue);
 
             this.bottomArrows();
             this.setLable();
 
-            Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
-                ((this.defaultValue < 4) ? Play_MultiArray[this.defaultValue].data[1] : this.values[this.defaultValue]),
-                2000
-            );
+            if (!preventShowWarning) {
+                Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+                    ((this.defaultValue < 4) ? Play_MultiArray[this.defaultValue].data[1] : this.values[this.defaultValue]),
+                    2000
+                );
+            }
         },
         updown: function(adder) {
 
@@ -1285,7 +1287,7 @@ function Play_MakeControls() {
                 } else Play_controls[Play_controlsAudioMulti].defaultValue = 0;
 
 
-                Play_controls[Play_controlsAudioMulti].enterKey();
+                Play_controls[Play_controlsAudioMulti].enterKey(true);
 
                 for (i = PlayExtra_PicturePicture ? 2 : 1; i < 4; i++) {
                     Play_MultiInfoReset(i);
