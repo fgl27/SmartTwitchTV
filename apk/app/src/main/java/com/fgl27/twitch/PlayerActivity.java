@@ -141,8 +141,11 @@ public class PlayerActivity extends Activity {
     public long SpeedCounter = 0L;
     public boolean mLowLatency = false;
     public boolean UseFullBandwidth = false;
-    private LoadControl[] loadControl = new LoadControl[PlayerAcount];
-    private Uri uri;
+    public boolean AlredyStarted;
+    public boolean onCreateReady;
+    public boolean IsStopped;
+    public LoadControl[] loadControl = new LoadControl[PlayerAcount];
+    public Uri uri;
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
     //the default size for the main player 100% width x height
@@ -156,10 +159,7 @@ public class PlayerActivity extends Activity {
     //the default size for the players of multistream 4 player two modes
     private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout = new FrameLayout.LayoutParams[8];
     private FrameLayout VideoHolder;
-    private boolean onCreateReady;
-    private boolean IsStopped;
     private ProgressBar[] loadingView = new ProgressBar[PlayerAcount + 3];
-    private boolean AlredyStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
