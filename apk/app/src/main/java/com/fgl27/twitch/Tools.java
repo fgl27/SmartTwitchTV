@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -98,8 +100,9 @@ public final class Tools {
     private static final String vod_token = "https://api.twitch.tv/api/vods/%s/access_token?platform=_";
     private static final String vod_links = "https://usher.ttvnw.net/vod/%s.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
-    private static final Pattern pattern = Pattern.compile("#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*");
-    private static final Pattern pattern2 = Pattern.compile("NAME=\"(.+?)\".*BANDWIDTH=(\\d+)\\b.*CODECS=\"(.+?)\".*(http(.*))");
+    private static final String TAG_MEDIA = "#EXT-X-MEDIA";
+    private static final Pattern REGEX_NAME = Pattern.compile("NAME=\"(.+?)\"");
+    private static final Pattern REGEX_NEXT = Pattern.compile("BANDWIDTH=(\\d+).*CODECS=\"(.+?)\"");
 
     private static class readUrlSimpleObj {
         private final int status;
@@ -262,57 +265,77 @@ public final class Tools {
     }
 
     private static String extractQualitiesObj(int status, String responseText, String url) {
-        Matcher matcher = pattern.matcher(responseText);
-        Matcher matcher2;
+        BufferedReader reader = new BufferedReader(new StringReader(responseText));
+        Matcher matcher;
         ArrayList<QualitiesObj> result = new ArrayList<>();
         ArrayList<String> list = new ArrayList<>();
-        String id;
+        String id, line;
 
-        while (matcher.find()) {
+        try {
+            while ((line = reader.readLine()) != null) {
 
-            matcher2 = pattern2.matcher(matcher.group().replace("\n", "").replace("\r", ""));
+                if (line.startsWith(TAG_MEDIA)) {
+                    if(result.size() < 1) {
+                        result.add(new QualitiesObj("Auto", "0", "avc", "Auto_url"));
 
-            while (matcher2.find()) {
-                if(result.size() < 1) {
+                        matcher = REGEX_NAME.matcher(line);
+                        id = (matcher.find() ? matcher.group(1) : null);
 
-                    result.add(new QualitiesObj("Auto", "0", "avc", "Auto_url"));
+                        if (id != null) {
+                            if (id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
+                            else id = id + " | source";
 
-                    id = matcher2.group(1);
-                    if (id != null && id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
-                    else id = id + " | source";
+                            line = reader.readLine();
+                            matcher = REGEX_NEXT.matcher(line);
 
-                    result.add(
-                            new QualitiesObj(
-                                    id,
-                                    matcher2.group(2),
-                                    matcher2.group(3),
-                                    matcher2.group(4)
-                            )
-                    );
+                            if (matcher.find()) {
+                                result.add(
+                                        new QualitiesObj(
+                                                id,
+                                                matcher.group(1),
+                                                matcher.group(2),
+                                                reader.readLine()
+                                        )
+                                );
 
-                    list.add(id.split(" ")[0]);
+                                list.add(id.split(" ")[0]);
+                            }
+                        }
+                    } else {
 
-                } else {
+                        matcher = REGEX_NAME.matcher(line);
+                        id = (matcher.find() ? matcher.group(1) : null);
+                        //Prevent duplicated resolution 720p60 source and 720p60
+                        if (id != null && !list.contains(id)) {
 
-                    id = matcher2.group(1);
-                    //Prevent duplicated resolution 720p60 source and 720p60
-                    if (!list.contains(id)) {
+                            line = reader.readLine();
+                            matcher = REGEX_NEXT.matcher(line);
 
-                        result.add(
-                                new QualitiesObj(
-                                        id,
-                                        matcher2.group(2),
-                                        matcher2.group(3),
-                                        matcher2.group(4)
-                                )
-                        );
+                            if (matcher.find()) {
+                                result.add(
+                                        new QualitiesObj(
+                                                id,
+                                                matcher.group(1),
+                                                matcher.group(2),
+                                                reader.readLine()
+                                        )
+                                );
 
-                        list.add(id);
+                                list.add(id);
+                            }
+                        }
                     }
-
                 }
             }
-
+        } catch (IOException e) {
+            Log.w(TAG, "extractQualitiesObj IOException ", e);
+            return null;
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                // Ignore.
+            }
         }
 
         return new Gson().toJson(
