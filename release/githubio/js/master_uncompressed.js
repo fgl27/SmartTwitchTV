@@ -11848,6 +11848,8 @@
         document.body.addEventListener("keydown", Screens_handleKeyDown, false);
         Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
+        console.log('inUseObj.offsettop ' + inUseObj.offsettop);
+
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
         else if (!inUseObj.status || Screens_RefreshTimeout() || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
             Screens_StartLoad();
@@ -12575,8 +12577,9 @@
             pos = !y ? (y + pos) : y;
             if (inUseObj.Cells[pos]) {
                 inUseObj.offsettop = (document.getElementById(inUseObj.ids[12] + pos).offsetHeight + document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop) / BodyfontSize;
-                inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
-            }
+            } else inUseObj.offsettop = 1;
+
+            inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
         }
     }
 
