@@ -99,7 +99,7 @@ public final class Tools {
     private static final String vod_links = "https://usher.ttvnw.net/vod/%s.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
     private static final Pattern pattern = Pattern.compile("#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*");
-    private static final Pattern pattern2 = Pattern.compile("NAME=(\"(.*?)\").*BANDWIDTH=(\\d+).*CODECS=(\"(.*?)\").*http(.*).*");
+    private static final Pattern pattern2 = Pattern.compile("NAME=\"(.+?)\".*BANDWIDTH=(\\d+)\\b.*CODECS=\"(.+?)\".*(http(.*))");
 
     private static class readUrlSimpleObj {
         private final int status;
@@ -154,7 +154,7 @@ public final class Tools {
             this.id = id;
             this.band = extractBand(band);
             this.codec = extractCodec(codec);
-            this.url = "http" + url;
+            this.url = url;
         }
     }
 
@@ -277,16 +277,16 @@ public final class Tools {
 
                     result.add(new QualitiesObj("Auto", "0", "avc", "Auto_url"));
 
-                    id = matcher2.group(2);
+                    id = matcher2.group(1);
                     if (id != null && id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
                     else id = id + " | source";
 
                     result.add(
                             new QualitiesObj(
                                     id,
+                                    matcher2.group(2),
                                     matcher2.group(3),
-                                    matcher2.group(5),
-                                    matcher2.group(6)
+                                    matcher2.group(4)
                             )
                     );
 
@@ -294,16 +294,16 @@ public final class Tools {
 
                 } else {
 
-                    id = matcher2.group(2);
+                    id = matcher2.group(1);
                     //Prevent duplicated resolution 720p60 source and 720p60
                     if (!list.contains(id)) {
 
                         result.add(
                                 new QualitiesObj(
                                         id,
+                                        matcher2.group(2),
                                         matcher2.group(3),
-                                        matcher2.group(5),
-                                        matcher2.group(6)
+                                        matcher2.group(4)
                                 )
                         );
 
