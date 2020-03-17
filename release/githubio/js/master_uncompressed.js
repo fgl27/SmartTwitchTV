@@ -5652,6 +5652,8 @@
     var Main_CheckResumeVodsId;
 
     function Main_CheckResume() { // Called only by JAVA
+        if (Main_isElementShowing('main_remove_dialog')) return;
+
         if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
 
         if (AddUser_UserIsSet()) {
@@ -11848,8 +11850,6 @@
         document.body.addEventListener("keydown", Screens_handleKeyDown, false);
         Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
-        console.log('inUseObj.offsettop ' + inUseObj.offsettop);
-
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
         else if (!inUseObj.status || Screens_RefreshTimeout() || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
             Screens_StartLoad();
@@ -12254,12 +12254,13 @@
                         if (Main_values.Never_run_phone && !Main_isTV) {
                             Main_showphoneDialog(Main_values.Never_run_new ?
                                 Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
-                            Main_values.Never_run_phone = false;
                         }
 
-                        Main_values.Never_run_new = false;
+                        if (!Main_values.Never_run_new) Screens_addFocus(true);
 
-                        Screens_addFocus(true);
+                        Main_values.Never_run_new = false;
+                        Main_values.Never_run_phone = false;
+
                         Main_SaveValues();
                         Screens_loadDataSuccessFinishEnd();
                     });
@@ -12278,6 +12279,7 @@
     var CheckAccessibilityVWasVisible = false;
 
     function Screens_handleKeyControls(event) {
+
         switch (event.keyCode) {
             case KEY_ENTER:
             case KEY_KEYBOARD_BACKSPACE:
