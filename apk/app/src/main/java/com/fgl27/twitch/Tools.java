@@ -37,15 +37,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -106,19 +107,19 @@ public final class Tools {
 
     private static class readUrlSimpleObj {
         private final int status;
-        private final String responseText;
+        private final byte[] bytes;
 
-        public readUrlSimpleObj(int status, String responseText) {
+        public readUrlSimpleObj(int status, byte[] bytes) {
             this.status = status;
-            this.responseText = responseText;
+            this.bytes = bytes;
         }
 
         public int getStatus() {
             return status;
         }
 
-        public String getResponseText() {
-            return responseText;
+        public byte[] getbytes() {
+            return bytes;
         }
     }
 
@@ -199,7 +200,7 @@ public final class Tools {
                 status = response.getStatus();
 
                 if (status == 200) {
-                    Token = parseString(response.getResponseText()).getAsJsonObject();
+                    Token = parseString(new String(response.getbytes(), StandardCharsets.UTF_8)).getAsJsonObject();
 
                     if(Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
                         StreamToken = Token.get("token").getAsString();
@@ -238,7 +239,7 @@ public final class Tools {
                     if (status == 200) {
                         return extractQualitiesObj(
                                 status,
-                                response.getResponseText(),
+                                response.getbytes(),
                                 url
                         );
                     } else if (status == 403 || status == 404 || status == 410)
@@ -264,8 +265,8 @@ public final class Tools {
         return false;
     }
 
-    private static String extractQualitiesObj(int status, String responseText, String url) {
-        BufferedReader reader = new BufferedReader(new StringReader(responseText));
+    private static String extractQualitiesObj(int status, byte[] bytes, String url) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
         Matcher matcher;
         ArrayList<QualitiesObj> result = new ArrayList<>();
         ArrayList<String> list = new ArrayList<>();
@@ -369,13 +370,10 @@ public final class Tools {
             if (status != -1) {
                 return new readUrlSimpleObj (
                         status,
-                        new String(
-                                readFully(
-                                        status != HttpURLConnection.HTTP_OK ?
-                                                urlConnection.getErrorStream() :
-                                                urlConnection.getInputStream()
-                                ),
-                                StandardCharsets.UTF_8)
+                        readFully(status != HttpURLConnection.HTTP_OK ?
+                                urlConnection.getErrorStream() :
+                                urlConnection.getInputStream()
+                        )
                 );
             } else {
                 return null;
