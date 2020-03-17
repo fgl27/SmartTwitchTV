@@ -38,8 +38,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -109,19 +107,19 @@ public final class Tools {
 
     private static class readUrlSimpleObj {
         private final int status;
-        private final byte[] bytes;
+        private final String responseText;
 
-        public readUrlSimpleObj(int status, byte[] bytes) {
+        public readUrlSimpleObj(int status, String responseText) {
             this.status = status;
-            this.bytes = bytes;
+            this.responseText = responseText;
         }
 
         public int getStatus() {
             return status;
         }
 
-        public byte[] getbytes() {
-            return bytes;
+        public String getResponseText() {
+            return responseText;
         }
     }
 
@@ -195,14 +193,14 @@ public final class Tools {
 
         for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
-            response = readUrlSimple(url, DefaultTimeout + (500 * i));
+            response = readUrlSimpleToken(url, DefaultTimeout + (500 * i));
 
             if (response != null) {
 
                 status = response.getStatus();
 
                 if (status == 200) {
-                    Token = parseString(new String(response.getbytes(), StandardCharsets.UTF_8)).getAsJsonObject();
+                    Token = parseString(response.getResponseText()).getAsJsonObject();
 
                     if(Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
                         StreamToken = Token.get("token").getAsString();
@@ -227,23 +225,21 @@ public final class Tools {
                     ThreadLocalRandom.current().nextInt(1, 1000)
             );
 
+            String Qualities;
             for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
-                response = readUrlSimple(url, DefaultTimeout + (500 * i));
+                response = readUrlSimpleQualities(url, DefaultTimeout + (500 * i));
 
                 if (response != null) {
 
                     status = response.getStatus();
+                    Qualities = response.getResponseText();
 
                     //404 = off line
                     //403 = forbidden access
                     //410 = api v3 is gone use v5 bug
-                    if (status == 200) {
-                        return extractQualitiesObj(
-                                status,
-                                response.getbytes(),
-                                url
-                        );
+                    if (status == 200 && Qualities != null) {
+                        return Qualities;
                     } else if (status == 403 || status == 404 || status == 410)
                         return HttpResultToString(CheckToken(StreamToken) ? 1 : status, "link");
 
@@ -267,8 +263,85 @@ public final class Tools {
         return false;
     }
 
-    private static String extractQualitiesObj(int status, byte[] bytes, String url) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)));
+    private static String HttpResultToString(int status, String responseText) {
+        return new Gson().toJson(
+                new HttpResultObj(
+                        status,
+                        responseText)
+        );
+    }
+
+    private static readUrlSimpleObj readUrlSimpleToken(String urlString, int Timeout) {
+        HttpURLConnection urlConnection = null;
+
+        try {
+            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
+            urlConnection.setConnectTimeout(Timeout);
+            urlConnection.setReadTimeout(Timeout);
+
+            urlConnection.connect();
+
+            int status = urlConnection.getResponseCode();
+
+            if (status != -1) {
+                return new readUrlSimpleObj (
+                        status,
+                        readFullyString(status != HttpURLConnection.HTTP_OK ?
+                                urlConnection.getErrorStream() :
+                                urlConnection.getInputStream()
+                        )
+                );
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            Log.w(TAG, "getStreamData IOException ", e);
+            return null;
+        } finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
+        }
+    }
+
+    private static readUrlSimpleObj readUrlSimpleQualities(String urlString, int Timeout) {
+        HttpURLConnection urlConnection = null;
+
+        try {
+            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
+            urlConnection.setConnectTimeout(Timeout);
+            urlConnection.setReadTimeout(Timeout);
+
+            urlConnection.connect();
+
+            int status = urlConnection.getResponseCode();
+
+            if (status != -1) {
+
+                if (status == 200) {
+                    return new readUrlSimpleObj(
+                            status,
+                            extractQualitiesObj(
+                                    status,
+                                    urlConnection.getInputStream(),
+                                    urlString
+                            )
+                    );
+                } else return new readUrlSimpleObj(status, "");
+
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            Log.w(TAG, "getStreamData IOException ", e);
+            return null;
+        } finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
+        }
+    }
+
+    private static String extractQualitiesObj(int status, InputStream in, String url) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         Matcher matcher;
         ArrayList<QualitiesObj> result = new ArrayList<>();
         ArrayList<String> list = new ArrayList<>();
@@ -342,46 +415,6 @@ public final class Tools {
                         url,
                         result)
         );
-    }
-
-    private static String HttpResultToString(int status, String responseText) {
-        return new Gson().toJson(
-                new HttpResultObj(
-                        status,
-                        responseText)
-        );
-    }
-
-    public static readUrlSimpleObj readUrlSimple(String urlString, int Timeout) {
-        HttpURLConnection urlConnection = null;
-
-        try {
-            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
-            urlConnection.setConnectTimeout(Timeout);
-            urlConnection.setReadTimeout(Timeout);
-
-            urlConnection.connect();
-
-            int status = urlConnection.getResponseCode();
-
-            if (status != -1) {
-                return new readUrlSimpleObj (
-                        status,
-                        readFullyByte(status != HttpURLConnection.HTTP_OK ?
-                                urlConnection.getErrorStream() :
-                                urlConnection.getInputStream()
-                        )
-                );
-            } else {
-                return null;
-            }
-        } catch (IOException e) {
-            Log.w(TAG, "getStreamData IOException ", e);
-            return null;
-        } finally {
-            if (urlConnection != null)
-                urlConnection.disconnect();
-        }
     }
 
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
@@ -482,20 +515,6 @@ public final class Tools {
         } finally {
             if (urlConnection != null)
                 urlConnection.disconnect();
-        }
-    }
-
-    private static byte[] readFullyByte(InputStream in) throws IOException {
-        try {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int count;
-            while ((count = in.read(buffer)) != -1) {
-                bytes.write(buffer, 0, count);
-            }
-            return bytes.toByteArray();
-        } finally {
-            closeQuietly(in);
         }
     }
 
