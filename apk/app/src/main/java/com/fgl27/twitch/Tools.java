@@ -233,13 +233,16 @@ public final class Tools {
                 if (response != null) {
 
                     status = response.getStatus();
-                    Qualities = response.getResponseText();
 
                     //404 = off line
                     //403 = forbidden access
                     //410 = api v3 is gone use v5 bug
-                    if (status == 200 && Qualities != null) {
-                        return Qualities;
+                    if (status == 200) {
+
+                        Qualities = response.getResponseText();
+
+                        if (Qualities != null) return Qualities;
+
                     } else if (status == 403 || status == 404 || status == 410)
                         return HttpResultToString(CheckToken(StreamToken) ? 1 : status, "link");
 
@@ -284,13 +287,12 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return new readUrlSimpleObj (
-                        status,
-                        readFullyString(status != HttpURLConnection.HTTP_OK ?
-                                urlConnection.getErrorStream() :
-                                urlConnection.getInputStream()
-                        )
-                );
+                if (status == 200) {
+                    return new readUrlSimpleObj(
+                            status,
+                            readFullyString(urlConnection.getInputStream())
+                    );
+                } else return new readUrlSimpleObj(status, "");
             } else {
                 return null;
             }
