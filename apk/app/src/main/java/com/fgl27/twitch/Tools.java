@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Display;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -39,6 +40,7 @@ import com.google.gson.JsonObject;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -331,11 +333,7 @@ public final class Tools {
             Log.w(TAG, "extractQualitiesObj IOException ", e);
             return null;
         } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                // Ignore.
-            }
+            closeQuietly(reader);
         }
 
         return new Gson().toJson(
@@ -369,7 +367,7 @@ public final class Tools {
             if (status != -1) {
                 return new readUrlSimpleObj (
                         status,
-                        readFully(status != HttpURLConnection.HTTP_OK ?
+                        readFullyByte(status != HttpURLConnection.HTTP_OK ?
                                 urlConnection.getErrorStream() :
                                 urlConnection.getInputStream()
                         )
@@ -411,13 +409,12 @@ public final class Tools {
 
             if (status != -1) {
                 return HttpResultToString(
-                        status, new String(
-                                readFully(
-                                        status != HttpURLConnection.HTTP_OK ?
-                                                urlConnection.getErrorStream() :
-                                                urlConnection.getInputStream()
-                                ),
-                                StandardCharsets.UTF_8)
+                        status,
+                        readFullyString(
+                                status != HttpURLConnection.HTTP_OK ?
+                                        urlConnection.getErrorStream() :
+                                        urlConnection.getInputStream()
+                        )
                 );
             } else {
                 return null;
@@ -459,8 +456,8 @@ public final class Tools {
                 OutputStreamWriter mOutputStreamWriter = new OutputStreamWriter(mOutputStream, StandardCharsets.UTF_8);
                 mOutputStreamWriter.write(postMessage);
                 mOutputStreamWriter.flush();
-                mOutputStreamWriter.close();
-                mOutputStream.close();
+                closeQuietly(mOutputStreamWriter);
+                closeQuietly(mOutputStream);
             }
 
             urlConnection.connect();
@@ -469,13 +466,12 @@ public final class Tools {
 
             if (status != -1) {
                 return HttpResultToString(
-                        status, new String(
-                                readFully(
-                                        status != HttpURLConnection.HTTP_OK ?
-                                                urlConnection.getErrorStream() :
-                                                urlConnection.getInputStream()
-                                ),
-                                StandardCharsets.UTF_8)
+                        status,
+                        readFullyString(
+                                status != HttpURLConnection.HTTP_OK ?
+                                        urlConnection.getErrorStream() :
+                                        urlConnection.getInputStream()
+                        )
                 );
             } else {
                 return null;
@@ -489,7 +485,7 @@ public final class Tools {
         }
     }
 
-    private static byte[] readFully(InputStream in) throws IOException {
+    private static byte[] readFullyByte(InputStream in) throws IOException {
         try {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
@@ -499,7 +495,31 @@ public final class Tools {
             }
             return bytes.toByteArray();
         } finally {
-            in.close();
+            closeQuietly(in);
+        }
+    }
+
+    private static String readFullyString(InputStream in) throws IOException {
+        BufferedReader reader =  new BufferedReader(new InputStreamReader(in));
+        StringBuilder ret = new StringBuilder();
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                ret.append(line);
+            }
+            return ret.toString();
+        } finally {
+            closeQuietly(reader);
+        }
+    }
+
+    private static void closeQuietly(@Nullable Closeable closeable) {
+        try {
+            if (closeable != null) {
+                closeable.close();
+            }
+        } catch (IOException e) {
+            // Ignore.
         }
     }
 
@@ -712,7 +732,7 @@ public final class Tools {
             try {
                 FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() + "/" + file, false);
                 mWriter.write(file_content);
-                mWriter.close();
+                closeQuietly(mWriter);
             } catch (IOException e) {
                 Log.w(TAG, "BackupJson IOException ", e);
             }
@@ -743,7 +763,7 @@ public final class Tools {
                 data.append(mReader.nextLine());
             }
 
-            mReader.close();
+            closeQuietly(mReader);
 
             return data.toString();
         } catch (FileNotFoundException e) {
