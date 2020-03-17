@@ -2212,6 +2212,8 @@ function Main_CheckStop() { // Called only by JAVA
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume() { // Called only by JAVA
+    if (Main_isElementShowing('main_remove_dialog')) return;
+
     if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
 
     if (AddUser_UserIsSet()) {
