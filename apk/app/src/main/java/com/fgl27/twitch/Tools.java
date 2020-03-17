@@ -103,7 +103,7 @@ public final class Tools {
 
     private static final String TAG_MEDIA = "#EXT-X-MEDIA";
     private static final Pattern REGEX_NAME = Pattern.compile("NAME=\"(.+?)\"");
-    private static final Pattern REGEX_NEXT = Pattern.compile("BANDWIDTH=(\\d+).*CODECS=\"(.+?)\"");
+    private static final Pattern REGEX_BANDWIDTH_CODECS = Pattern.compile("BANDWIDTH=(\\d+).*CODECS=\"(.+?)\"");
 
     private static class readUrlSimpleObj {
         private final int status;
@@ -286,8 +286,7 @@ public final class Tools {
                             if (id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
                             else id = id + " | source";
 
-                            line = reader.readLine();
-                            matcher = REGEX_NEXT.matcher(line);
+                            matcher = REGEX_BANDWIDTH_CODECS.matcher(reader.readLine());
 
                             if (matcher.find()) {
                                 result.add(
@@ -306,11 +305,11 @@ public final class Tools {
 
                         matcher = REGEX_NAME.matcher(line);
                         id = (matcher.find() ? matcher.group(1) : null);
+
                         //Prevent duplicated resolution 720p60 source and 720p60
                         if (id != null && !list.contains(id)) {
 
-                            line = reader.readLine();
-                            matcher = REGEX_NEXT.matcher(line);
+                            matcher = REGEX_BANDWIDTH_CODECS.matcher(reader.readLine());
 
                             if (matcher.find()) {
                                 result.add(
