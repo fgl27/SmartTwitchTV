@@ -385,10 +385,10 @@ public class PlayerActivity extends Activity {
         player[4].setPlayWhenReady(true);
         mediaSourcePlaying[4] = mediaSource;
 
+        KeepScreenOn(true);
+
         if (PlayerView[4].getVisibility() != View.VISIBLE)
             PlayerView[4].setVisibility(View.VISIBLE);
-
-        KeepScreenOn(true);
     }
 
     private void ClearSmallPlayer() {
