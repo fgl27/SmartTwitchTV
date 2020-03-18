@@ -99,11 +99,11 @@ public class PlayerActivity extends Activity {
     public DefaultRenderersFactory renderersFactory;
     public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAcountPlus];
     public DefaultTrackSelector.Parameters trackSelectorParameters;
-    public DefaultTrackSelector.Parameters trackSelectorParametersSmall;
+    public DefaultTrackSelector.Parameters trackSelectorParametersPP;
     public DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
     public int mainPlayerBandwidth = Integer.MAX_VALUE;
-    public int smallPlayerBandwidth = 3000000;
-    public final int smallExtraPlayerBandwidth = 4000000;
+    public int PP_PlayerBandwidth = 3000000;
+    public final int ExtraSmallPlayerBandwidth = 4000000;
     public long mResumePosition;
     public int mwho_called = 1;
     //The mediaSources stored to be used when changing from auto to source 720 etc etc
@@ -196,9 +196,9 @@ public class PlayerActivity extends Activity {
             // Prevent small window causing lag to the device
             // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
             // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
-            trackSelectorParametersSmall = trackSelectorParameters
+            trackSelectorParametersPP = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(smallPlayerBandwidth)
+                    .setMaxVideoBitrate(PP_PlayerBandwidth)
                     .build();
 
             trackSelectorParameters = trackSelectorParameters
@@ -208,7 +208,7 @@ public class PlayerActivity extends Activity {
 
             trackSelectorParametersExtraSmall = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(smallExtraPlayerBandwidth)
+                    .setMaxVideoBitrate(ExtraSmallPlayerBandwidth)
                     .build();
 
             VideoHolder = findViewById(R.id.videoholder);
@@ -285,7 +285,7 @@ public class PlayerActivity extends Activity {
 
         if (player[position] == null) {
             trackSelector[position] = new DefaultTrackSelector(this);
-            trackSelector[position].setParameters(isSmall ? trackSelectorParametersSmall : trackSelectorParameters);
+            trackSelector[position].setParameters(isSmall ? trackSelectorParametersPP : trackSelectorParameters);
 
             if (BLACKLISTEDCODECS != null) {
                 renderersFactory = new DefaultRenderersFactory(this);
@@ -342,11 +342,7 @@ public class PlayerActivity extends Activity {
         if (player[4] == null) {
             trackSelector[4] = new DefaultTrackSelector(this);
             trackSelector[4].setParameters(
-                    UseFullBandwidth ?
-                            trackSelectorParameters :
-                            (smallPlayerBandwidth < smallExtraPlayerBandwidth ?
-                                    trackSelectorParametersSmall :
-                                    trackSelectorParametersExtraSmall)
+                    UseFullBandwidth ? trackSelectorParameters : trackSelectorParametersExtraSmall
             );
 
             if (BLACKLISTEDCODECS != null) {
@@ -413,7 +409,7 @@ public class PlayerActivity extends Activity {
 
         if (player[position] == null) {
             trackSelector[position] = new DefaultTrackSelector(this);
-            trackSelector[position].setParameters(trackSelectorParametersSmall);
+            trackSelector[position].setParameters(trackSelectorParametersPP);
 
             if (BLACKLISTEDCODECS != null) {
                 renderersFactory = new DefaultRenderersFactory(this);
@@ -737,7 +733,7 @@ public class PlayerActivity extends Activity {
         if (trackSelector[WillBeMain] != null)
             trackSelector[WillBeMain].setParameters(trackSelectorParameters);
         if (trackSelector[mainPlayer] != null)
-            trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
+            trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
 
         mainPlayer = WillBeMain;
 
@@ -790,7 +786,7 @@ public class PlayerActivity extends Activity {
         SetPlayerAudioMulti();
 
         if (trackSelector[mainPlayer] != null)
-            trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
+            trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
     }
 
     public void SetMultiStream(int offset) {
@@ -802,7 +798,7 @@ public class PlayerActivity extends Activity {
         MultimainPlayer = (mainPlayer + offset) % 4;
 
         if (trackSelector[mainPlayer] != null)
-            trackSelector[mainPlayer].setParameters(trackSelectorParametersSmall);
+            trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
     }
 
     public void UnSetMultiStream() {
@@ -1320,11 +1316,17 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetSmallPlayerBandwidth(int band) {
-            smallPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
-            trackSelectorParametersSmall = trackSelectorParameters
+            PP_PlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
+            trackSelectorParametersPP = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(smallPlayerBandwidth)
+                    .setMaxVideoBitrate(PP_PlayerBandwidth)
                     .build();
+
+            trackSelectorParametersExtraSmall = trackSelectorParameters
+                    .buildUpon()
+                    .setMaxVideoBitrate(
+                            (PP_PlayerBandwidth < ExtraSmallPlayerBandwidth) ? PP_PlayerBandwidth : ExtraSmallPlayerBandwidth
+                    ).build();
         }
 
         @SuppressWarnings("unused")//called by JS
