@@ -377,13 +377,13 @@ public class PlayerActivity extends Activity {
             PlayerView[4].setPlayer(player[4]);
         }
 
-        mediaSourcePlaying[4] = mediaSource;
         player[4].setMediaSource(
-                mediaSourcePlaying[4],
+                mediaSource,
                 C.TIME_UNSET);
 
         player[4].prepare();
         player[4].setPlayWhenReady(true);
+        mediaSourcePlaying[4] = mediaSource;
 
         if (PlayerView[4].getVisibility() != View.VISIBLE)
             PlayerView[4].setVisibility(View.VISIBLE);
@@ -413,7 +413,6 @@ public class PlayerActivity extends Activity {
             return;
         }
 
-        mediaSourcePlaying[position] = mediaSource;
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         if (PlayerView[position].getVisibility() != View.VISIBLE)
@@ -449,13 +448,14 @@ public class PlayerActivity extends Activity {
         }
 
         player[position].setMediaSource(
-                mediaSourcePlaying[position],
+                mediaSource,
                 C.TIME_UNSET
         );
 
         player[position].prepare();
 
         player[position].setPlayWhenReady(true);
+        mediaSourcePlaying[position] = mediaSource;
         hideLoading(5);
 
         if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(1f);
