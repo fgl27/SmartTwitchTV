@@ -270,6 +270,18 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    //The main PreinitializePlayer used for when we first start the player or to play clips/vods
+    //Also used to change the main player that is the big screen
+    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int who_called, long resumeposition, int position) {
+
+        mediaSourcePlaying[position] = mediaSource;
+        uri = Uri.parse(videoAddress);
+        mwho_called = who_called;
+        mResumePosition = resumeposition > 0 ? resumeposition : 0;
+
+        initializePlayer(position);
+    }
+
     // The main player initialization function
     private void initializePlayer(int position) {
         if (IsStopped) {
@@ -477,28 +489,6 @@ public class PlayerActivity extends Activity {
         //All players are close enable screen saver
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null)
             KeepScreenOn(false);
-    }
-
-    //The main PreinitializePlayer used for when we first start the player or to play clips/vods
-    //Also used to change the main player that is the big screen
-    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int who_called, long resumeposition) {
-
-        mediaSourcePlaying[mainPlayer] = mediaSource;
-        uri = Uri.parse(videoAddress);
-        mwho_called = who_called;
-        mResumePosition = resumeposition > 0 ? resumeposition : 0;
-
-        initializePlayer(mainPlayer);
-    }
-
-    //The way to start the Picture in Picture small window
-    private void PreinitializePlayer2(MediaSource mediaSource, String videoAddress) {
-        mediaSourcePlaying[mainPlayer ^ 1] = mediaSource;
-        uri = Uri.parse(videoAddress);
-        mResumePosition = 0;
-
-        initializePlayer(mainPlayer ^ 1);
-        PicturePicture = true;
     }
 
     //Stop the player called from js, clear it all
@@ -1080,25 +1070,31 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int who_called) {
-            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, -1));
+            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, -1, mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void startVideoOffset(String videoAddress, int who_called, long position) {
-            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, position));
+        public void startVideoOffset(String videoAddress, int who_called, long resumeposition) {
+            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, resumeposition, mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void initializePlayer2(String url) {
-            MainThreadHandler.post(() -> PreinitializePlayer2(null, url));
+        public void initializePlayer2(String videoAddress) {
+            MainThreadHandler.post(() -> {
+                PreinitializePlayer(null, videoAddress, 1, -1, mainPlayer ^ 1);
+                PicturePicture = true;
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void initializePlayer2Auto() {
-            MainThreadHandler.post(() -> PreinitializePlayer2(mediaSourcesAuto[mainPlayer ^ 1], ""));
+            MainThreadHandler.post(() -> {
+                PreinitializePlayer(mediaSourcesAuto[mainPlayer ^ 1], "", 1, -1, mainPlayer ^ 1);
+                PicturePicture = true;
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1112,13 +1108,28 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void ResStartAuto(String url, int who_called, long position) {
+        public void SetAuto2(String url) {
+            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
+            //For some reason maybe a twitch bug the vod expires in 20 hours not min
+            expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
+            mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartAuto(int who_called, long resumeposition) {
+            MainThreadHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", who_called, resumeposition, mainPlayer));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void ResStartAuto(String url, int who_called, long resumeposition) {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             MainThreadHandler.post(() -> {
                 expires[mainPlayer] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-                PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", who_called, position);
+                PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", who_called, resumeposition, mainPlayer);
             });
         }
 
@@ -1130,17 +1141,9 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
                 mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-                PreinitializePlayer2(mediaSourcesAuto[mainPlayer ^ 1], "");
+                PreinitializePlayer(mediaSourcesAuto[mainPlayer ^ 1], "", 1, -1, mainPlayer ^ 1);
+                PicturePicture = true;
             });
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetAuto2(String url) {
-            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
-            //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
-            mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1206,12 +1209,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetlatency(boolean LowLatency) {
             mLowLatency = LowLatency;
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void StartAuto(int who_called, long position) {
-            MainThreadHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", who_called, position));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1317,6 +1314,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetSmallPlayerBandwidth(int band) {
             PP_PlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
+
             trackSelectorParametersPP = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(PP_PlayerBandwidth)
@@ -1325,7 +1323,7 @@ public class PlayerActivity extends Activity {
             trackSelectorParametersExtraSmall = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(
-                            (PP_PlayerBandwidth < ExtraSmallPlayerBandwidth) ? PP_PlayerBandwidth : ExtraSmallPlayerBandwidth
+                            Math.min(PP_PlayerBandwidth, ExtraSmallPlayerBandwidth)
                     ).build();
         }
 
