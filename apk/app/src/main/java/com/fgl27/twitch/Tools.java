@@ -38,6 +38,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -519,16 +520,16 @@ public final class Tools {
     }
 
     private static String readFullyString(InputStream in) throws IOException {
-        BufferedReader reader =  new BufferedReader(new InputStreamReader(in));
-        StringBuilder ret = new StringBuilder();
-        String line;
         try {
-            while ((line = reader.readLine()) != null) {
-                ret.append(line);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int count;
+            while ((count = in.read(buffer)) != -1) {
+                bytes.write(buffer, 0, count);
             }
-            return ret.toString();
+            return bytes.toString("UTF-8");
         } finally {
-            closeQuietly(reader);
+            closeQuietly(in);
         }
     }
 
