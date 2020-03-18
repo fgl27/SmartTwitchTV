@@ -480,6 +480,18 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
 }
 
+// var qualitiPos = UserLiveFeed_CheckIfIsLiveFind720();
+// qualitiPos ? Play_CheckIfIsLiveQualities[qualitiPos].url : Play_CheckIfIsLiveURL,
+// function UserLiveFeed_CheckIfIsLiveFind720() {
+//     for (var i = 0; i < Play_CheckIfIsLiveQualities.length; i++) {
+//         if (Main_A_includes_B(Play_CheckIfIsLiveQualities[i].id, '720')) {
+//             console.log(Play_CheckIfIsLiveQualities[i].id);
+//             return i;
+//         }
+//     }
+//     return false;
+// }
+
 function UserLiveFeed_CheckIfIsLiveWarn(text) {
     UserLiveFeed_CheckIfIsLiveSTop();
     Play_showWarningDialog(text, 2000);
