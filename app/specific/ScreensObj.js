@@ -1718,6 +1718,7 @@ function ScreensObj_TopLableAgameInit() {
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
     if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
         inUseObj.gameSelected !== Main_values.Main_gameSelected)
