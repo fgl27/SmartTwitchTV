@@ -455,7 +455,8 @@ function Play_MultiKeyDownHold() {
         Play_controls[Play_controlsAudioMulti].defaultValue = 4;
         Play_controls[Play_controlsAudioMulti].enterKey();
     } else {
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Oldaudio;
+        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
+        Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
         Play_controls[Play_controlsAudioMulti].enterKey();
     }
 }
@@ -468,7 +469,8 @@ function Play_PPKeyDownHold() {
         Play_controls[Play_controlsAudio].defaultValue = 2;
         Play_controls[Play_controlsAudio].enterKey();
     } else {
-        Play_controls[Play_controlsAudio].defaultValue = Play_Oldaudio;
+        Play_controls[Play_controlsAudio].defaultValue = Play_Oldaudio < 2 ? Play_Oldaudio : 1;
+        Play_Oldaudio = Play_controls[Play_controlsAudio].defaultValue;
         Play_controls[Play_controlsAudio].enterKey();
     }
 }
