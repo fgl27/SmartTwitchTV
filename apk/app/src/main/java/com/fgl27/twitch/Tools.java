@@ -225,7 +225,6 @@ public final class Tools {
                     ThreadLocalRandom.current().nextInt(1, 1000)
             );
 
-            String Qualities;
             for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
                 response = readUrlSimpleQualities(url, DefaultTimeout + (500 * i));
@@ -237,13 +236,9 @@ public final class Tools {
                     //404 = off line
                     //403 = forbidden access
                     //410 = api v3 is gone use v5 bug
-                    if (status == 200) {
-
-                        Qualities = response.getResponseText();
-
-                        if (Qualities != null) return Qualities;
-
-                    } else if (status == 403 || status == 404 || status == 410)
+                    if (status == 200)
+                        return response.getResponseText();
+                    else if (status == 403 || status == 404 || status == 410)
                         return HttpResultToString(CheckToken(StreamToken) ? 1 : status, "link");
 
                 }
@@ -320,13 +315,16 @@ public final class Tools {
             if (status != -1) {
 
                 if (status == 200) {
-                    return new readUrlSimpleObj(
+                    String QualitiesObj = extractQualitiesObj(
                             status,
-                            extractQualitiesObj(
-                                    status,
-                                    urlConnection.getInputStream(),
-                                    urlString
-                            )
+                            urlConnection.getInputStream(),
+                            urlString
+                    );
+
+                    if (QualitiesObj == null) return null;
+                    else return new readUrlSimpleObj(
+                            status,
+                            QualitiesObj
                     );
                 } else return new readUrlSimpleObj(status, "");
 
@@ -357,7 +355,7 @@ public final class Tools {
                         result.add(new QualitiesObj("Auto", "0", "avc", "Auto_url"));
 
                         matcher = REGEX_NAME.matcher(line);
-                        id = (matcher.find() ? matcher.group(1) : null);
+                        id = matcher.find() ? matcher.group(1) : null;
 
                         if (id != null) {
                             if (id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
@@ -381,7 +379,7 @@ public final class Tools {
                     } else {
 
                         matcher = REGEX_NAME.matcher(line);
-                        id = (matcher.find() ? matcher.group(1) : null);
+                        id = matcher.find() ? matcher.group(1) : null;
 
                         //Prevent duplicated resolution 720p60 source and 720p60
                         if (id != null && !list.contains(id)) {
