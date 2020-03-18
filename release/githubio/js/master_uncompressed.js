@@ -3559,8 +3559,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.146';
-    var Main_minversion = 'March 17, 2020';
+    var Main_stringVersion_Min = '.147';
+    var Main_minversion = 'March 18, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -6944,7 +6944,8 @@
             Play_controls[Play_controlsAudioMulti].defaultValue = 4;
             Play_controls[Play_controlsAudioMulti].enterKey();
         } else {
-            Play_controls[Play_controlsAudioMulti].defaultValue = Play_Oldaudio;
+            Play_controls[Play_controlsAudioMulti].defaultValue = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
+            Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
             Play_controls[Play_controlsAudioMulti].enterKey();
         }
     }
@@ -6957,7 +6958,8 @@
             Play_controls[Play_controlsAudio].defaultValue = 2;
             Play_controls[Play_controlsAudio].enterKey();
         } else {
-            Play_controls[Play_controlsAudio].defaultValue = Play_Oldaudio;
+            Play_controls[Play_controlsAudio].defaultValue = Play_Oldaudio < 2 ? Play_Oldaudio : 1;
+            Play_Oldaudio = Play_controls[Play_controlsAudio].defaultValue;
             Play_controls[Play_controlsAudio].enterKey();
         }
     }
@@ -18370,6 +18372,18 @@
         }
 
     }
+
+    // var qualitiPos = UserLiveFeed_CheckIfIsLiveFind720();
+    // qualitiPos ? Play_CheckIfIsLiveQualities[qualitiPos].url : Play_CheckIfIsLiveURL,
+    // function UserLiveFeed_CheckIfIsLiveFind720() {
+    //     for (var i = 0; i < Play_CheckIfIsLiveQualities.length; i++) {
+    //         if (Main_A_includes_B(Play_CheckIfIsLiveQualities[i].id, '720')) {
+    //             console.log(Play_CheckIfIsLiveQualities[i].id);
+    //             return i;
+    //         }
+    //     }
+    //     return false;
+    // }
 
     function UserLiveFeed_CheckIfIsLiveWarn(text) {
         UserLiveFeed_CheckIfIsLiveSTop();
