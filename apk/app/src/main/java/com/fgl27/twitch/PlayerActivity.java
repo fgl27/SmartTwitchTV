@@ -106,11 +106,9 @@ public class PlayerActivity extends Activity {
     public final int ExtraSmallPlayerBandwidth = 4000000;
     public long mResumePosition;
     public int mwho_called = 1;
-    //The mediaSources stored to be used when changing from auto to source 720 etc etc
-    public MediaSource[] mediaSourcesAuto = new MediaSource[PlayerAcountPlus];
     public long[] expires = new long[PlayerAcountPlus];
-    //The mediaSources that the player uses receives mediaSourcesAuto or null if null we know that we aren't in auto mode
     public MediaSource[] mediaSourcePlaying = new MediaSource[PlayerAcountPlus];
+    public boolean[] PlayerIsAuto = new boolean[PlayerAcount];
     public WebView mwebview;
     public boolean PicturePicture;
     public boolean deviceIsTV;
@@ -145,7 +143,6 @@ public class PlayerActivity extends Activity {
     public boolean onCreateReady;
     public boolean IsStopped;
     public LoadControl[] loadControl = new LoadControl[PlayerAcount];
-    public Uri uri;
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
     //the default size for the main player 100% width x height
@@ -272,10 +269,15 @@ public class PlayerActivity extends Activity {
 
     //The main PreinitializePlayer used for when we first start the player or to play clips/vods
     //Also used to change the main player that is the big screen
-    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int who_called, long resumeposition, int position) {
+    private void PreInitializePlayer(MediaSource mediaSource, String videoAddress, int who_called, long resumeposition, int position) {
 
-        mediaSourcePlaying[position] = mediaSource;
-        uri = Uri.parse(videoAddress);
+        mediaSourcePlaying[position] =
+                mediaSource != null ?
+                        mediaSource :
+                        Tools.buildMediaSource(Uri.parse(videoAddress), dataSourceFactory, mwho_called, mLowLatency);
+
+        PlayerIsAuto[position] = mediaSource != null;
+
         mwho_called = who_called;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
 
@@ -321,10 +323,8 @@ public class PlayerActivity extends Activity {
         }
 
         player[position].setMediaSource(
-                mediaSourcePlaying[position] != null ?
-                        mediaSourcePlaying[position] :
-                        Tools.buildMediaSource(uri, dataSourceFactory, mwho_called, mLowLatency),
-                ((mResumePosition > 0) && (mwho_called > 1)) ? mResumePosition : C.TIME_UNSET);
+                mediaSourcePlaying[position],
+                ((mwho_called > 1) && (mResumePosition > 0)) ? mResumePosition : C.TIME_UNSET);
 
         player[position].prepare();
 
@@ -344,7 +344,7 @@ public class PlayerActivity extends Activity {
         KeepScreenOn(true);
     }
 
-    private void initializeSmallPlayer(MediaSource mediaSource) {
+    private void initializeSmallPlayer() {
         if (IsStopped) {
             monStop();
             return;
@@ -377,7 +377,6 @@ public class PlayerActivity extends Activity {
             PlayerView[4].setPlayer(player[4]);
         }
 
-        mediaSourcePlaying[4] = mediaSource;
         player[4].setMediaSource(
                 mediaSourcePlaying[4],
                 C.TIME_UNSET);
@@ -407,13 +406,12 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private void initializePlayerMulti(int position, MediaSource mediaSource) {
+    private void initializePlayerMulti(int position) {
         if (IsStopped) {
             monStop();
             return;
         }
 
-        mediaSourcePlaying[position] = mediaSource;
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         if (PlayerView[position].getVisibility() != View.VISIBLE)
@@ -456,6 +454,7 @@ public class PlayerActivity extends Activity {
         player[position].prepare();
 
         player[position].setPlayWhenReady(true);
+        PlayerIsAuto[position] = true;
         hideLoading(5);
 
         if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(1f);
@@ -501,7 +500,7 @@ public class PlayerActivity extends Activity {
         for (int i = 0; i < PlayerAcountPlus; i++) {
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
             mediaSourcePlaying[i] = null;
-            mediaSourcesAuto[i] = null;
+            PlayerIsAuto[i] = true;
         }
 
         mwho_called = who_called;
@@ -1070,20 +1069,20 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int who_called) {
-            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, -1, mainPlayer));
+            MainThreadHandler.post(() -> PreInitializePlayer(null, videoAddress, who_called, -1, mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideoOffset(String videoAddress, int who_called, long resumeposition) {
-            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, resumeposition, mainPlayer));
+            MainThreadHandler.post(() -> PreInitializePlayer(null, videoAddress, who_called, resumeposition, mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void initializePlayer2(String videoAddress) {
             MainThreadHandler.post(() -> {
-                PreinitializePlayer(null, videoAddress, 1, -1, mainPlayer ^ 1);
+                PreInitializePlayer(null, videoAddress, 1, -1, mainPlayer ^ 1);
                 PicturePicture = true;
             });
         }
@@ -1092,7 +1091,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void initializePlayer2Auto() {
             MainThreadHandler.post(() -> {
-                PreinitializePlayer(mediaSourcesAuto[mainPlayer ^ 1], "", 1, -1, mainPlayer ^ 1);
+                PreInitializePlayer(mediaSourcePlaying[mainPlayer ^ 1], "", 1, -1, mainPlayer ^ 1);
                 PicturePicture = true;
             });
         }
@@ -1103,7 +1102,7 @@ public class PlayerActivity extends Activity {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             expires[mainPlayer] = System.currentTimeMillis() + 18000;
-            mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+            mediaSourcePlaying[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1112,13 +1111,13 @@ public class PlayerActivity extends Activity {
             //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
-            mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+            mediaSourcePlaying[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(int who_called, long resumeposition) {
-            MainThreadHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", who_called, resumeposition, mainPlayer));
+            MainThreadHandler.post(() -> PreInitializePlayer(mediaSourcePlaying[mainPlayer], "", who_called, resumeposition, mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1128,8 +1127,8 @@ public class PlayerActivity extends Activity {
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             MainThreadHandler.post(() -> {
                 expires[mainPlayer] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-                PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", who_called, resumeposition, mainPlayer);
+                mediaSourcePlaying[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+                PreInitializePlayer(mediaSourcePlaying[mainPlayer], "", who_called, resumeposition, mainPlayer);
             });
         }
 
@@ -1140,8 +1139,8 @@ public class PlayerActivity extends Activity {
             //For some reason maybe a twitch bug the vod expires in 20 hours not min
             MainThreadHandler.post(() -> {
                 expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-                PreinitializePlayer(mediaSourcesAuto[mainPlayer ^ 1], "", 1, -1, mainPlayer ^ 1);
+                mediaSourcePlaying[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+                PreInitializePlayer(mediaSourcePlaying[mainPlayer ^ 1], "", 1, -1, mainPlayer ^ 1);
                 PicturePicture = true;
             });
         }
@@ -1152,9 +1151,9 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 UseFullBandwidth = fullBandwidth;
                 expires[4] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth));
+                mediaSourcePlaying[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth));
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
-                initializeSmallPlayer(mediaSourcesAuto[4]);
+                initializeSmallPlayer();
             });
         }
 
@@ -1195,7 +1194,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetAutoFeedPlayer(String url) {
             expires[4] = System.currentTimeMillis() + 18000;
-            mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth));
+            mediaSourcePlaying[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1652,8 +1651,8 @@ public class PlayerActivity extends Activity {
                 if (position == 0) mposition = mainPlayer;
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
-                mediaSourcesAuto[mposition] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-                initializePlayerMulti(mposition, mediaSourcesAuto[mposition]);
+                mediaSourcePlaying[mposition] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+                initializePlayerMulti(mposition);
             });
         }
 
@@ -1669,7 +1668,7 @@ public class PlayerActivity extends Activity {
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
                 expires[mposition] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mposition] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+                mediaSourcePlaying[mposition] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
             });
         }
 
@@ -1786,8 +1785,8 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerCheckCounter[position]++;
-        if (PlayerCheckCounter[position] < 4 &&
-                (mainPlayer != position || mediaSourcePlaying[position] != null)) {
+        if ((PlayerIsAuto[position] || mainPlayer != position) &&
+                PlayerCheckCounter[position] < 4) {
 
             //this is small screen  or is in auto mode check before restart it
             if (mclearResumePosition || mwho_called == 1) clearResumePosition();
@@ -1796,9 +1795,8 @@ public class PlayerActivity extends Activity {
             if (mwho_called == 1) {
                 //ask java to reset the qualities only if time expired
                 if (expires[position] < System.currentTimeMillis()) {
-                    mediaSourcePlaying[position] = mediaSourcesAuto[position];
 
-                    if (MultiStreamEnable) initializePlayerMulti(position, mediaSourcePlaying[position]);
+                    if (MultiStreamEnable) initializePlayerMulti(position);
                     else initializePlayer(position);
 
                 } else {
@@ -1902,7 +1900,7 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[4]++;
         if (PlayerCheckCounter[4] < 4 && expires[4] < System.currentTimeMillis())
-            initializeSmallPlayer(mediaSourcesAuto[4]);
+            initializeSmallPlayer();
         else {
             ClearSmallPlayer();
             LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");

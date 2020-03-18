@@ -858,7 +858,7 @@ function Play_loadDataSuccessend(qualities) {
 
     Play_data.qualities = qualities;
     Play_state = Play_STATE_PLAYING;
-    if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
+
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     if (Play_isOn) Play_qualityChanged();
     UserLiveFeed_PreventHide = false;
@@ -978,8 +978,10 @@ function Play_onPlayer() {
     if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        if (Main_A_includes_B(Play_data.quality, 'Auto') || PlayExtra_PicturePicture) Android.StartAuto(1, 0);
-        else Android.startVideo(Play_playingUrl, 1);
+        if (Main_A_includes_B(Play_data.quality, 'Auto') || PlayExtra_PicturePicture) {
+            Android.SetAuto(Play_data.AutoUrl);
+            Android.StartAuto(1, 0);
+        } else Android.startVideo(Play_playingUrl, 1);
     }
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();

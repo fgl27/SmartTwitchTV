@@ -41,7 +41,10 @@ function PlayExtra_KeyEnter() {
 
         if (Main_IsNotBrowser) {
             //Not on auto mode for change to auto before start picture in picture
-            if (!Main_A_includes_B(Play_data.quality, 'Auto')) Android.StartAuto(1, 0);
+            if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
+                Android.SetAuto(Play_data.AutoUrl);
+                Android.StartAuto(1, 0);
+            }
 
             Play_data.quality = "Auto";
             Play_data.qualityPlaying = Play_data.quality;

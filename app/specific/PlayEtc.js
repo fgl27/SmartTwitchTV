@@ -1040,10 +1040,13 @@ function Play_MakeControls() {
         enterKey: function() {
 
             if (this.defaultValue === 2) {
+                Android.SetAuto(Play_data.AutoUrl);
                 Android.StartAuto(1, 0);
                 Android.initializePlayer2Auto();
-            } else if (this.defaultValue) Android.StartAuto(1, 0);
-            else Android.initializePlayer2Auto();
+            } else if (this.defaultValue) {
+                Android.SetAuto(Play_data.AutoUrl);
+                Android.StartAuto(1, 0);
+            } else Android.initializePlayer2Auto();
 
             Play_hidePanel();
             this.defaultValue = 2;
@@ -1136,7 +1139,6 @@ function Play_MakeControls() {
                     Android.ResStartAuto(Play_data.AutoUrl, 1, 0);
                     Android.ResStartAuto2(PlayExtra_data.AutoUrl);
                 } else {
-                    if (Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetAuto(Play_data.AutoUrl);
                     Play_onPlayer();
                 }
 
@@ -1248,6 +1250,7 @@ function Play_MakeControls() {
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                     Play_data.quality = "Auto";
                     Play_data.qualityPlaying = Play_data.quality;
+                    Android.SetAuto(Play_data.AutoUrl);
                     Android.StartAuto(1, 0);
                 }
 
