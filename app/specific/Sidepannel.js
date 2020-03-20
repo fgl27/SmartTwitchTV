@@ -69,9 +69,9 @@ function Sidepannel_UpdateThumb() {
         Main_ShowElement('side_panel_feed_thumb');
 
         var Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
-        if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+        if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
             Sidepannel_CheckIfIsLiveStart();
-        } else if (Play_CheckIfIsLiveQualities.length) {
+        } else if (Play_CheckIfIsLiveResponseText) {
             Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
         }
 
@@ -91,7 +91,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = StreamData.responseText;
+                Play_CheckIfIsLiveResponseText = StreamData.responseText;
                 Play_CheckIfIsLiveChannel = StreamInfo[6];
 
                 Android.StartFeedPlayer(

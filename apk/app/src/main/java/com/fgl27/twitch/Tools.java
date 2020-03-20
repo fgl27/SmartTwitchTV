@@ -37,7 +37,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -45,7 +44,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -53,13 +51,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.google.gson.JsonParser.parseString;
 
@@ -102,10 +97,6 @@ public final class Tools {
     private static final String vod_token = "https://api.twitch.tv/api/vods/%s/access_token?platform=_";
     private static final String vod_links = "https://usher.ttvnw.net/vod/%s.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
-    private static final String TAG_MEDIA = "#EXT-X-MEDIA";
-    private static final Pattern REGEX_NAME = Pattern.compile("NAME=\"(.+?)\"");
-    private static final Pattern REGEX_BANDWIDTH_CODECS = Pattern.compile("BANDWIDTH=(\\d+).*CODECS=\"(.+?)\"");
-
     private static class readUrlSimpleObj {
         private final int status;
         private final String responseText;
@@ -136,12 +127,12 @@ public final class Tools {
     }
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    private static class extractQualitiesObj {
+    private static class extractPlayListObj {
         private final int status;
         private final String url;
-        private final ArrayList<QualitiesObj> responseText;
+        private final String responseText;
 
-        public extractQualitiesObj(int status, String url, ArrayList<QualitiesObj> responseText) {
+        public extractPlayListObj(int status, String url, String responseText) {
             this.status = status;
             this.url = url;
             this.responseText = responseText;
@@ -316,16 +307,14 @@ public final class Tools {
             if (status != -1) {
 
                 if (status == 200) {
-                    String QualitiesObj = extractQualitiesObj(
+                    return new readUrlSimpleObj(
                             status,
-                            urlConnection.getInputStream(),
-                            urlString
-                    );
-
-                    if (QualitiesObj == null) return null;
-                    else return new readUrlSimpleObj(
-                            status,
-                            QualitiesObj
+                            new Gson().toJson(
+                                    new extractPlayListObj(
+                                            status,
+                                            urlString,
+                                            readFullyString(urlConnection.getInputStream()))
+                            )
                     );
                 } else return new readUrlSimpleObj(status, "");
 
@@ -341,82 +330,6 @@ public final class Tools {
         }
     }
 
-    private static String extractQualitiesObj(int status, InputStream in, String url) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        Matcher matcher;
-        ArrayList<QualitiesObj> result = new ArrayList<>();
-        ArrayList<String> list = new ArrayList<>();
-        String id, line;
-
-        try {
-            while ((line = reader.readLine()) != null) {
-
-                if (line.startsWith(TAG_MEDIA)) {
-                    if(result.size() < 1) {
-                        result.add(new QualitiesObj("Auto", "0", "avc", "Auto_url"));
-
-                        matcher = REGEX_NAME.matcher(line);
-                        id = matcher.find() ? matcher.group(1) : null;
-
-                        if (id != null) {
-                            if (id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
-                            else id = id + " | source";
-
-                            matcher = REGEX_BANDWIDTH_CODECS.matcher(reader.readLine());
-
-                            if (matcher.find()) {
-                                result.add(
-                                        new QualitiesObj(
-                                                id,
-                                                matcher.group(1),
-                                                matcher.group(2),
-                                                reader.readLine()
-                                        )
-                                );
-
-                                list.add(id.split(" ")[0]);
-                            }
-                        }
-                    } else {
-
-                        matcher = REGEX_NAME.matcher(line);
-                        id = matcher.find() ? matcher.group(1) : null;
-
-                        //Prevent duplicated resolution 720p60 source and 720p60
-                        if (id != null && !list.contains(id)) {
-
-                            matcher = REGEX_BANDWIDTH_CODECS.matcher(reader.readLine());
-
-                            if (matcher.find()) {
-                                result.add(
-                                        new QualitiesObj(
-                                                id,
-                                                matcher.group(1),
-                                                matcher.group(2),
-                                                reader.readLine()
-                                        )
-                                );
-
-                                list.add(id);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            Log.w(TAG, "extractQualitiesObj IOException ", e);
-            return null;
-        } finally {
-            closeQuietly(reader);
-        }
-
-        return new Gson().toJson(
-                new extractQualitiesObj(
-                        status,
-                        url,
-                        result)
-        );
-    }
 
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest

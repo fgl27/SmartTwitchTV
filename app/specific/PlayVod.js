@@ -10,6 +10,7 @@ var PlayVod_playingTry = 0;
 var PlayVod_playingUrl = '';
 var PlayVod_qualities = [];
 var PlayVod_qualityIndex = 0;
+var PlayVod_playlist = null;
 
 var PlayVod_isOn = false;
 var PlayVod_Buffer = 2000;
@@ -132,7 +133,7 @@ function PlayVod_PosStart() {
     if (!PlayVod_replay) PlayVod_loadDatanew();
     else {
         PlayVod_state = Play_STATE_PLAYING;
-        PlayVod_qualityChanged();
+        PlayVod_onPlayer();
     }
 
     Play_EndSet(2);
@@ -357,13 +358,13 @@ function PlayVod_loadDataErrorFinish() {
     } else PlayVod_loadDataSuccessFake();
 }
 
-function PlayVod_loadDataSuccessEnd(quality) {
+function PlayVod_loadDataSuccessEnd(playlist) {
 
-    PlayVod_qualities = quality;
+    PlayVod_playlist = playlist;
     //TODO revise the needed for PlayVod_state
     PlayVod_state = Play_STATE_PLAYING;
     if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl);
-    if (PlayVod_isOn) PlayVod_qualityChanged();
+    if (PlayVod_isOn) PlayVod_onPlayer();
     if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
 }
 
@@ -416,7 +417,8 @@ function PlayVod_qualityChanged() {
     PlayVod_qualityPlaying = PlayVod_quality;
 
     PlayVod_SetHtmlQuality('stream_quality');
-    PlayVod_onPlayer();
+    if (Main_IsNotBrowser) Android.SetQuality(PlayVod_qualityIndex - 1);
+    else PlayVod_onPlayer();
     //Play_PannelEndStart(2);
 }
 
@@ -441,8 +443,10 @@ function PlayVod_onPlayer() {
 
 function PlayVod_onPlayerStartPlay(time) {
     if (PlayVod_isOn) {
-        if (Main_A_includes_B(PlayVod_quality, "Auto")) Android.StartAuto(2, PlayVod_replay ? -1 : time);
-        else Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
+        // if (Main_A_includes_B(PlayVod_quality, "Auto")) Android.StartAuto(2, PlayVod_replay ? -1 : time);
+        // else Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
+
+        Android.StartAuto(2, PlayVod_replay ? -1 : time);
     }
 }
 
@@ -456,6 +460,7 @@ function PlayVod_shutdownStream() {
     if (PlayVod_isOn) {
         PlayVod_PreshutdownStream(true);
         PlayVod_qualities = [];
+        PlayVod_playlist = null;
         Play_exitMain();
     }
 }

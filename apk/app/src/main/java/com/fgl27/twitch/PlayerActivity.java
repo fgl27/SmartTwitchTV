@@ -40,11 +40,14 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
@@ -52,8 +55,8 @@ import java.util.Locale;
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAcount = 4;
     public final int PlayerAcountPlus = PlayerAcount + 1;
@@ -116,6 +119,7 @@ public class PlayerActivity extends Activity {
     public boolean deviceIsTV;
     public boolean MultiStreamEnable;
     public boolean isFullScreen = true;
+    public boolean updateQualities = true;
     public int mainPlayer = 0;
     public int MultimainPlayer = 0;
     public int PicturePicturePositions = 0;
@@ -278,7 +282,7 @@ public class PlayerActivity extends Activity {
         uri = Uri.parse(videoAddress);
         mwho_called = who_called;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
-
+        updateQualities = true;
         initializePlayer(position);
     }
 
@@ -1710,6 +1714,56 @@ public class PlayerActivity extends Activity {
             return pInfo != null ? pInfo.versionName: null;
         }
 
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getQualities() {
+            if (trackSelector[mainPlayer] != null) {
+                MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
+
+                if (mappedTrackInfo != null) {
+                    for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
+                        TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
+                        if (trackGroupArray.length > 0) return new Gson().toJson(trackGroupArray);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetQuality(int position) {
+
+            if (trackSelector[mainPlayer] != null) {
+
+                MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
+
+                if (mappedTrackInfo != null) {
+                    for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
+
+                        if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
+
+                            DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters.buildUpon();
+                            builder.clearSelectionOverrides(0).setRendererDisabled(rendererIndex, false);
+
+                            if(position > -1) {// else auto quality
+                                builder.setSelectionOverride(
+                                        rendererIndex,
+                                        mappedTrackInfo.getTrackGroups(rendererIndex),
+                                        new DefaultTrackSelector.SelectionOverride(0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
+                                );
+                            }
+
+                            trackSelector[mainPlayer].setParameters(builder);
+                            break;
+                        }
+
+                    }
+                }
+            }
+        }
+
     }
 
     // Basic EventListener for exoplayer
@@ -1766,6 +1820,11 @@ public class PlayerActivity extends Activity {
                 if (mwho_called > 1) {
                     LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" +
                             mwho_called + "," + player[position].getDuration() + ")");
+                }
+
+                if (updateQualities && !PicturePicture && !MultiStreamEnable && mwho_called < 3 && position == mainPlayer) {
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + mwho_called +  ")");
+                    updateQualities = false;
                 }
             }
         }

@@ -977,16 +977,14 @@ function Play_MakeControls() {
                 Play_hidePanel();
                 Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
                 Play_data.qualityPlaying = Play_data.quality;
-                Play_playingUrl = Play_data.qualities[Play_data.qualityIndex].url;
                 Play_SetHtmlQuality('stream_quality');
-                Play_onPlayer();
+                Android.SetQuality(Play_data.qualityIndex - 1);
             } else if (PlayVodClip === 2) {
                 PlayVod_hidePanel();
                 PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
                 PlayVod_qualityPlaying = PlayVod_quality;
-                PlayVod_playingUrl = PlayVod_qualities[PlayVod_qualityIndex].url;
                 PlayVod_SetHtmlQuality('stream_quality');
-                PlayVod_onPlayer();
+                Android.SetQuality(PlayVod_qualityIndex - 1);
             } else if (PlayVodClip === 3) {
                 PlayClip_hidePanel();
                 PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
@@ -1250,7 +1248,7 @@ function Play_MakeControls() {
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                     Play_data.quality = "Auto";
                     Play_data.qualityPlaying = Play_data.quality;
-                    Android.StartAuto(1, 0);
+                    Android.SetQuality(-1);
                 }
 
                 var i = 0;
@@ -1301,6 +1299,7 @@ function Play_MakeControls() {
                 Android.DisableMultiStream();
                 Play_Multi_UnSetPanel(shutdown);
                 Play_CleanHideExit();
+                Play_getQualities(1);
             }
         }
     };
