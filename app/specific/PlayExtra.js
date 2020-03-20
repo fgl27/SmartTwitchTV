@@ -99,7 +99,7 @@ function PlayExtra_loadDataSuccessEnd(playlist) {
     Android.mSwitchPlayerAudio(Play_controlsAudioPos);
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
-    Android.SetAuto2(PlayExtra_data.AutoUrl);
+    Android.SetAuto(PlayExtra_data.AutoUrl, playlist, 1);
     PlayExtra_data.playlist = playlist;
     PlayExtra_SetPanel();
 
@@ -237,7 +237,7 @@ function PlayExtra_UpdatePanel() {
 }
 
 function PlayExtra_qualityChanged() {
-    if (Main_IsNotBrowser && Play_isOn) Android.initializePlayer2Auto();
+    if (Main_IsNotBrowser && Play_isOn) Android.StartAuto(1, 0, 1);
 
     if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
 
@@ -274,21 +274,6 @@ function PlayExtra_loadDataFail(Reason) {
         Play_HideBufferDialog();
         Play_showWarningDialog(Reason, 2500);
     }
-}
-
-function PlayExtra_RefreshAutoRequest(RestartAuto) {
-
-    var tempUrl = Play_RefreshHlsUrl(PlayExtra_data.data[6]);
-
-    if (tempUrl) {
-
-        PlayExtra_data.AutoUrl = tempUrl;
-
-        if (RestartAuto) Android.ResStartAuto2(tempUrl);
-        else Android.SetAuto2(tempUrl);
-
-    } else if (RestartAuto) PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
-
 }
 
 function PlayExtra_updateStreamInfo() {

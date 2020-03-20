@@ -442,7 +442,6 @@ function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
 
     Android.ClearFeedPlayer();
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
 }
 
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
@@ -462,11 +461,11 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                 Android.StartFeedPlayer(
                     Play_CheckIfIsLiveURL,
+                    Play_CheckIfIsLiveResponseText,
                     UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
                     false
                 );
 
-                Sidepannel_CheckIfIsLiveRefreshSet();
             } else if (StreamData.status === 1 || StreamData.status === 403) {
 
                 UserLiveFeed_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + STR_FORBIDDEN);
@@ -500,7 +499,6 @@ function UserLiveFeed_CheckIfIsLiveWarn(text) {
 var UserLiveFeed_CheckIfIsLiveDelay = 0;
 function UserLiveFeed_CheckIfIsLiveStart() {
 
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsNotBrowser) return;

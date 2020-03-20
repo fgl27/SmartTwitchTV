@@ -622,15 +622,17 @@ public final class Tools {
         return false;
     }
 
-    public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int who_called, boolean LowLatency) {
+    public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int who_called, boolean LowLatency, String masterPlaylistString) {
         if (who_called == 1) {
             return new HlsMediaSource.Factory(dataSourceFactory)
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency ? 3000 : 0)//3000 is a safe value the implementation will calculate the proper value
+                    .setPlaylistParserFactory(new mDefaultHlsPlaylistParserFactory(masterPlaylistString, uri))
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (who_called == 2) {
             return new HlsMediaSource.Factory(dataSourceFactory)
                     .setAllowChunklessPreparation(true)
+                    .setPlaylistParserFactory(new mDefaultHlsPlaylistParserFactory(masterPlaylistString, uri))
                     .createMediaSource(uri);
         } else
             return new ProgressiveMediaSource
