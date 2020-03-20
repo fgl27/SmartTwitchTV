@@ -96,11 +96,11 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                 Android.StartFeedPlayer(
                     Play_CheckIfIsLiveURL,
+                    Play_CheckIfIsLiveResponseText,
                     5,
                     true
                 );
 
-                Sidepannel_CheckIfIsLiveRefreshSet();
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
             } else {
@@ -132,7 +132,6 @@ function Sidepannel_HideWarningDialog() {
 }
 
 function Sidepannel_CheckIfIsLiveStart() {
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsNotBrowser) return;
@@ -150,35 +149,11 @@ function Sidepannel_CheckIfIsLiveStart() {
     }
 }
 
-var Sidepannel_CheckIfIsLiveRefreshId;
-function Sidepannel_CheckIfIsLiveRefreshSet() {
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
-    Sidepannel_CheckIfIsLiveRefreshId = window.setInterval(Sidepannel_CheckIfIsLiveRefreshAuto, 300000);
-}
-
-function Sidepannel_CheckIfIsLiveCleanTimeouts() {
-    window.clearInterval(Sidepannel_CheckIfIsLiveRefreshId);
-}
-
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
     if (!Main_IsNotBrowser) return;
 
     Android.ClearFeedPlayer();
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
-}
-
-function Sidepannel_CheckIfIsLiveRefreshAuto() {
-    var tempUrl = Play_RefreshHlsUrl(Play_CheckIfIsLiveChannel);
-
-    if (tempUrl) {
-        Play_CheckIfIsLiveURL = tempUrl;
-        try {
-            Android.SetAutoFeedPlayer(tempUrl);
-        } catch (e) {
-            Play_CheckIfIsLiveCleanEnd();
-        }
-    }
 }
 
 function Sidepannel_partnerIcon(name, partner, isrerun) {

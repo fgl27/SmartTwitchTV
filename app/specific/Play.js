@@ -399,7 +399,6 @@ function Play_CheckIfIsLiveStartFail(text) {
 
 function Play_CheckIfIsLiveClean() {//called from java
     Play_CheckIfIsLiveCleanEnd();
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
     if (Sidepannel_isShowing()) Sidepannel_UpdateThumbDiv();
 }
 
@@ -416,64 +415,6 @@ function Play_CheckResume() {
     else if (Sidepannel_isShowing()) {
         Sidepannel_UpdateThumbDiv();
         Sidepannel_CheckIfIsLiveStart();
-    }
-}
-
-function Play_CheckResumeForced(isPicturePicture, isMulti, position) { // Called only by JAVA
-
-    if (isMulti) {
-        Play_MultiStartNew(
-            position,
-            Play_MultiArray[position].data[6],
-            Play_MultiArray[position].data[1]
-        );
-        return;
-    }
-
-    if (isPicturePicture) PlayExtra_RefreshAutoRequest(true);
-    else if (Main_IsNotBrowser) Play_RefreshAutoRequest(true);
-}
-
-function Play_RefreshHlsUrl(channel) {
-    var theUrl = 'https://api.twitch.tv/api/channels/' + channel +
-        '/access_token?platform=_',
-        xmlHttp, token;
-
-    for (var i = 0; i < DefaultLoadingDataTryMax; i++) {
-
-        xmlHttp = Android.mreadUrl(theUrl, Play_loadingDataTimeout + (500 * i), 0, null);
-
-        if (xmlHttp) xmlHttp = JSON.parse(xmlHttp);
-        else return null;
-
-        if (xmlHttp.status === 200) {
-
-            token = JSON.parse(xmlHttp.responseText);
-            if (!token.hasOwnProperty('token') || !token.hasOwnProperty('sig')) return null;
-
-            return 'https://usher.ttvnw.net/api/channel/hls/' + channel +
-                '.m3u8?&token=' + encodeURIComponent(token.token) + '&sig=' + token.sig +
-                '&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=' +
-                Main_RandomInt();
-
-        }
-    }
-
-    return null;
-}
-
-function Play_RefreshAutoRequest(RestartAuto) {
-    var tempUrl = Play_RefreshHlsUrl(Play_data.data[6]);
-
-    if (tempUrl) {
-        Play_data.AutoUrl = tempUrl;
-
-        if (RestartAuto) Android.ResStartAuto(tempUrl, 1, 0);
-        else Android.SetAuto(tempUrl);
-
-    } else if (RestartAuto) {
-        if (!PlayExtra_PicturePicture) Play_CheckHostStart();
-        else Play_CloseBigAndSwich();
     }
 }
 
@@ -688,24 +629,6 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
     }
 }
 
-function Play_RefreshMultiRequest(pos, streamer, id) {
-    var tempUrl = Play_RefreshHlsUrl(streamer);
-
-    if (tempUrl) {
-        Play_MultiArray[pos].AutoUrl = tempUrl;
-
-        Android.SetAutoMulti(pos, tempUrl);
-
-        Play_RefreshMultiGet(
-            Main_kraken_api + 'streams/' + id + Main_TwithcV5Flag_I,
-            0,
-            pos
-        );
-
-    }
-
-}
-
 function Play_RefreshMultiGet(theUrl, tryes, pos) {
     var xmlHttp = new XMLHttpRequest();
 
@@ -775,16 +698,6 @@ function Play_updateStreamInfo() {
             Play_updateStreamInfoMulti(i);
         }
     } else {
-
-        if (Main_IsNotBrowser) Play_RefreshAutoRequest(false);
-        if (PlayExtra_PicturePicture) {
-
-            window.setTimeout(function() {
-                PlayExtra_RefreshAutoRequest(false);
-            }, 2000);
-
-        }
-
         var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
         BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
     }
@@ -793,10 +706,10 @@ function Play_updateStreamInfo() {
 function Play_updateStreamInfoMulti(pos) {
     window.setTimeout(function() {
         if (Play_MultiArray[pos].data.length > 0) {
-            Play_RefreshMultiRequest(
-                pos,
-                Play_MultiArray[pos].data[6],
-                Play_MultiArray[pos].data[14]
+            Play_RefreshMultiGet(
+                Main_kraken_api + 'streams/' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag_I,
+                0,
+                pos
             );
         }
     }, pos * 2000);
@@ -858,7 +771,7 @@ function Play_loadDataSuccessend(playlist) {
 
     Play_data.playlist = playlist;
     Play_state = Play_STATE_PLAYING;
-    if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
+    if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl, Play_data.playlist, 0);
     if (Play_isOn) Play_onPlayer();
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     UserLiveFeed_PreventHide = false;
@@ -1010,7 +923,7 @@ function Play_onPlayer() {
         // if (Main_A_includes_B(Play_data.quality, 'Auto') || PlayExtra_PicturePicture) Android.StartAuto(1, 0);
         // else Android.startVideo(Play_playingUrl, 1);
 
-        Android.StartAuto(1, 0);
+        Android.StartAuto(1, 0, 0);
     }
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
@@ -1777,8 +1690,8 @@ function Play_Multi_UnSetPanel(shutdown) {
             Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
 
             if (Play_Multi_Offset) {
-                Android.SetAuto2(PlayExtra_data.AutoUrl);
-                Android.initializePlayer2Auto();
+                Android.SetAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1);
+                Android.StartAuto(1, 0, 1);
             }
 
             if (!Play_isFullScreen) {
@@ -1801,8 +1714,8 @@ function Play_Multi_UnSetPanel(shutdown) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
         if ((name !== Play_data.data[14] || Play_Multi_Offset) && First) {
-            Android.SetAuto(Play_data.AutoUrl);
-            Android.StartAuto(1, 0);
+            Android.SetAuto(Play_data.AutoUrl, Play_data.playlist, 0);
+            Android.StartAuto(1, 0, 0);
             Play_UpdateMainStream(true, true);
             Play_MultiUpdateMain();
         } else Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
@@ -1950,7 +1863,7 @@ function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
     Play_MultiArray[pos].AutoUrl = theUrl;
     if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
-    Android.StartMultiStream(pos, theUrl);
+    Android.StartMultiStream(pos, theUrl, playlist);
 
     Play_MultiArray[pos].playlist = playlist;
 

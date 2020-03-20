@@ -1044,10 +1044,10 @@ function Play_MakeControls() {
         enterKey: function() {
 
             if (this.defaultValue === 2) {
-                Android.StartAuto(1, 0);
-                Android.initializePlayer2Auto();
-            } else if (this.defaultValue) Android.StartAuto(1, 0);
-            else Android.initializePlayer2Auto();
+                Android.StartAuto(1, 0, 0);
+                Android.StartAuto(1, 0, 1);
+            } else if (this.defaultValue) Android.StartAuto(1, 0, 0);
+            else Android.StartAuto(1, 0, 1);
 
             Play_hidePanel();
             this.defaultValue = 2;
@@ -1085,10 +1085,10 @@ function Play_MakeControls() {
 
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
-                        Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
+                        Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                     }
                 }
-            } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl);
+            } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl, Play_MultiArray[this.defaultValue - 1].playlist);
 
             Play_hidePanel();
             this.defaultValue = 0;
@@ -1132,13 +1132,13 @@ function Play_MakeControls() {
 
                     for (var i = 0; i < Play_MultiArray.length; i++) {
                         if (Play_MultiArray[i].data.length > 0) {
-                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
+                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                         }
                     }
 
                 } else if (PlayExtra_PicturePicture) {
-                    Android.ResStartAuto(Play_data.AutoUrl, 1, 0);
-                    Android.ResStartAuto2(PlayExtra_data.AutoUrl);
+                    Android.ResStartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                    Android.ResStartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
                 } else {
                     if (Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetAuto(Play_data.AutoUrl);
                     Play_onPlayer();

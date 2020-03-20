@@ -169,7 +169,6 @@ function Main_loadTranslations(language) {
                     'Play_PannelEndStart': Play_PannelEndStart,
                     'Play_PlayerCheck': Play_PlayerCheck,
                     'Play_UpdateDuration': Play_UpdateDuration,
-                    'Play_CheckResumeForced': Play_CheckResumeForced,
                     'PlayExtra_End': PlayExtra_End,
                     'Play_MultiEnd': Play_MultiEnd,
                     'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
@@ -2195,7 +2194,6 @@ function Main_CheckStop() { // Called only by JAVA
     ChatLive_Clear(1);
     Chat_Clear();
 
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
     window.clearInterval(Play_ResumeAfterOnlineId);
     window.clearInterval(Play_streamInfoTimerId);
     window.clearInterval(Play_ShowPanelStatusId);
