@@ -42,6 +42,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -103,6 +104,7 @@ public class PlayerActivity extends Activity {
     public DefaultTrackSelector.Parameters trackSelectorParameters;
     public DefaultTrackSelector.Parameters trackSelectorParametersPP;
     public DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
+    public TrackGroupArray lastSeenTrackGroupArray;
     public int mainPlayerBandwidth = Integer.MAX_VALUE;
     public int PP_PlayerBandwidth = 3000000;
     public final int ExtraSmallPlayerBandwidth = 4000000;
@@ -281,7 +283,8 @@ public class PlayerActivity extends Activity {
         uri = Uri.parse(videoAddress);
         mwho_called = who_called;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
-        updateQualities = true;
+        lastSeenTrackGroupArray = null;
+        updateQualities = mainPlayer == position;
         initializePlayer(position);
     }
 
@@ -1765,6 +1768,13 @@ public class PlayerActivity extends Activity {
 
     }
 
+    public void requestgetQualities(int position) {
+        if (updateQualities && !PicturePicture && !MultiStreamEnable && mwho_called < 3 && position == mainPlayer) {
+            mwebview.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + mwho_called +  ")");
+            updateQualities = false;
+        }
+    }
+
     // Basic EventListener for exoplayer
     private class PlayerEventListener implements Player.EventListener {
 
@@ -1774,6 +1784,16 @@ public class PlayerActivity extends Activity {
         private PlayerEventListener(int mposition) {
             position = mposition;
             delayms = (BUFFER_SIZE[mwho_called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0);
+        }
+
+        @Override
+        @SuppressWarnings("ReferenceEquality")
+        public void onTracksChanged(@NonNull TrackGroupArray trackGroups, @NonNull TrackSelectionArray trackSelections) {
+            //onTracksChanged -> Called when the available or selected tracks change.
+            if (trackGroups != lastSeenTrackGroupArray) {
+               requestgetQualities(position);
+               lastSeenTrackGroupArray = trackGroups;
+            }
         }
 
         @Override
@@ -1819,11 +1839,6 @@ public class PlayerActivity extends Activity {
                 if (mwho_called > 1) {
                     LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" +
                             mwho_called + "," + player[position].getDuration() + ")");
-                }
-
-                if (updateQualities && !PicturePicture && !MultiStreamEnable && mwho_called < 3 && position == mainPlayer) {
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + mwho_called +  ")");
-                    updateQualities = false;
                 }
             }
         }
