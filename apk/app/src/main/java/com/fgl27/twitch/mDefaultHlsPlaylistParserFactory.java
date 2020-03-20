@@ -24,6 +24,8 @@ package com.fgl27.twitch;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.exoplayer2.ParserException;
 import com.google.android.exoplayer2.source.UnrecognizedInputFormatException;
 import com.google.android.exoplayer2.source.hls.playlist.HlsMasterPlaylist;
@@ -32,8 +34,6 @@ import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser;
 import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParserFactory;
 import com.google.android.exoplayer2.upstream.ParsingLoadable;
 import com.google.android.exoplayer2.util.Util;
-
-import androidx.annotation.NonNull;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -65,7 +65,7 @@ public final class mDefaultHlsPlaylistParserFactory implements HlsPlaylistParser
 
     @Override
     public ParsingLoadable.Parser<HlsPlaylist> createPlaylistParser() {
-        return new HlsPlaylistParser();
+        return new mHlsPlaylistParser(masterPlaylistString, muri);
     }
 
     @Override
@@ -103,11 +103,16 @@ public final class mDefaultHlsPlaylistParserFactory implements HlsPlaylistParser
             this.muri = uri;
         }
 
+        public mHlsPlaylistParser(String masterPlaylistString, Uri uri) {
+            this(HlsMasterPlaylist.EMPTY, masterPlaylistString, uri);
+        }
+
         @NonNull
         @Override
         public HlsPlaylist parse(@NonNull Uri uri, @NonNull InputStream inputStream) throws IOException {
             BufferedReader reader;
-            if (uri == muri) reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(masterPlaylistString.getBytes())));
+
+            if (uri.toString().equals(muri.toString())) reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(masterPlaylistString.getBytes())));
             else reader = new BufferedReader(new InputStreamReader(inputStream));
 
             Queue<String> extraLines = new ArrayDeque<>();
