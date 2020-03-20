@@ -986,7 +986,7 @@ function Play_getQualities(position) {
 
         for (var i = 0; i < baseQualities.formats.length; i++) {
             result.push({
-                'id': baseQualities.formats[i].height + 'p' + parseInt(baseQualities.formats[i].frameRate),
+                'id': baseQualities.formats[i].height + 'p' + Main_Calculatefps(baseQualities.formats[i].frameRate),
                 'band': Play_extractBand(baseQualities.formats[i].bitrate),
                 'codec': Play_extractCodec(baseQualities.formats[i].codecs)
             });
