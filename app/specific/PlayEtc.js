@@ -972,19 +972,23 @@ function Play_MakeControls() {
         defaultValue: 0,
         opacity: 0,
         enterKey: function(PlayVodClip) {
-
+            var oldQuality;
             if (PlayVodClip === 1) {
                 Play_hidePanel();
+                oldQuality = Play_data.quality;
                 Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
                 Play_data.qualityPlaying = Play_data.quality;
                 Play_SetHtmlQuality('stream_quality');
-                Android.SetQuality(Play_data.qualityIndex - 1);
+                if (oldQuality !== Play_data.quality) Android.SetQuality(Play_data.qualityIndex - 1);
+                else Android.reinitializePlayer();
             } else if (PlayVodClip === 2) {
                 PlayVod_hidePanel();
+                oldQuality = Play_data.quality;
                 PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
                 PlayVod_qualityPlaying = PlayVod_quality;
                 PlayVod_SetHtmlQuality('stream_quality');
-                Android.SetQuality(PlayVod_qualityIndex - 1);
+                if (oldQuality !== Play_data.quality) Android.SetQuality(PlayVod_qualityIndex - 1);
+                else Android.reinitializePlayer();
             } else if (PlayVodClip === 3) {
                 PlayClip_hidePanel();
                 PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
