@@ -833,11 +833,16 @@ function Main_videoqualitylang(video_height, average_fps, language) {
     video_height = video_height + ''; //stringfy doesnot work 8|
     if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
 
-    if (average_fps > 58) average_fps = 60;
-    else if (average_fps < 32) average_fps = 30;
-    else average_fps = Math.ceil(average_fps);
+    average_fps = Main_Calculatefps(average_fps);
 
     return video_height + 'p' + average_fps + ((language !== "") ? ' [' + language.toUpperCase() + ']' : '');
+}
+
+function Main_Calculatefps(fps) {
+    if (fps > 58) return 60;
+    else if (fps < 32) return 30;
+
+    return Math.ceil(fps);
 }
 
 function Main_is_rerun(content) {
