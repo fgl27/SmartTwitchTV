@@ -972,6 +972,7 @@ function Play_qualityChanged() {
 
 function Play_getQualities(position) {
     var baseQualities = Android.getQualities();
+
     if (baseQualities) {
         var result = [];
 
