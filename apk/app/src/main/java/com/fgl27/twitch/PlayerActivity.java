@@ -1878,7 +1878,7 @@ public class PlayerActivity extends Activity {
                     LoadUrlWebview("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStreamEnable + ", " + position + ")");
                 }
 
-            } else initializePlayer(position);
+            } else player[position].prepare();
 
         } else if (PlayerCheckCounter[position] > 3) {
 
@@ -1895,7 +1895,8 @@ public class PlayerActivity extends Activity {
             if (mclearResumePosition || mwho_called == 1) clearResumePosition();
             else updateResumePosition(position);
 
-            initializePlayer(position);
+            if (mwho_called == 1) initializePlayer(position);
+            else player[position].prepare();
         }
     }
 
