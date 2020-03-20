@@ -35,7 +35,6 @@ var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
 var Play_playingTry = 0;
 
-var Play_playingUrl = '';
 var Play_ChatEnable = false;
 var Play_exitID = null;
 
@@ -148,6 +147,7 @@ var Play_data_base = {
     DisplaynameHost: '',
     watching_time: 0,
     qualities: [],
+    playlist: null,
     qualityPlaying: "Auto",
     quality: "Auto",
     AutoUrl: ''
@@ -313,11 +313,11 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    if (!Play_CheckIfIsLiveQualities.length) Play_loadDatanew();
+    if (!Play_CheckIfIsLiveResponseText) Play_loadDatanew();
     else {
 
         Play_data.AutoUrl = Play_CheckIfIsLiveURL;
-        Play_loadDataSuccessend(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
+        Play_loadDataSuccessend(Play_CheckIfIsLiveResponseText);
 
         Play_CheckIfIsLiveCleanEnd();
     }
@@ -345,10 +345,10 @@ function Play_getStreamData(channel_name_vod_id, isLive) {
 
 var Play_CheckIfIsLiveURL = '';
 var Play_CheckIfIsLiveChannel = '';
-var Play_CheckIfIsLiveQualities = [];
+var Play_CheckIfIsLiveResponseText = null;
 
 function Play_CheckIfIsLiveStart() {
-    if (Play_CheckIfIsLiveQualities.length) return true;//Reused for vod and clip checking from live feed already playing
+    if (Play_CheckIfIsLiveResponseText) return true;//Reused for vod and clip checking from live feed already playing
 
     Play_showBufferDialog();
 
@@ -366,7 +366,7 @@ function Play_CheckIfIsLiveStart() {
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = StreamData.responseText;
+                Play_CheckIfIsLiveResponseText = StreamData.responseText;
 
                 return true;
 
@@ -406,7 +406,7 @@ function Play_CheckIfIsLiveClean() {//called from java
 function Play_CheckIfIsLiveCleanEnd() {
     Play_CheckIfIsLiveURL = '';
     Play_CheckIfIsLiveChannel = '';
-    Play_CheckIfIsLiveQualities = [];
+    Play_CheckIfIsLiveResponseText = null;
 }
 
 function Play_CheckResume() {
@@ -843,7 +843,7 @@ function Play_loadDatanew() {
     } else Play_loadDataSuccessFake();
 }
 
-function Play_loadDataSuccessend(qualities) {
+function Play_loadDataSuccessend(playlist) {
     UserLiveFeed_Hide();
 
     if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
@@ -856,11 +856,11 @@ function Play_loadDataSuccessend(qualities) {
     Play_HideEndDialog();
     Play_UpdateMainStream(true, true);
 
-    Play_data.qualities = qualities;
+    Play_data.playlist = playlist;
     Play_state = Play_STATE_PLAYING;
     if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl);
+    if (Play_isOn) Play_onPlayer();
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-    if (Play_isOn) Play_qualityChanged();
     UserLiveFeed_PreventHide = false;
     ChatLive_Playing = true;
 
@@ -951,16 +951,13 @@ function Play_loadDataSuccessFake() {
 
 function Play_qualityChanged() {
     Play_data.qualityIndex = 1;
-    Play_playingUrl = Play_data.qualities[1].url;
 
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
         if (Play_data.qualities[i].id === Play_data.quality) {
             Play_data.qualityIndex = i;
-            Play_playingUrl = Play_data.qualities[i].url;
             break;
         } else if (Main_A_includes_B(Play_data.qualities[i].id, Play_data.quality)) { //make shore to set a value before break out
             Play_data.qualityIndex = i;
-            Play_playingUrl = Play_data.qualities[i].url;
         }
     }
 
@@ -968,18 +965,51 @@ function Play_qualityChanged() {
     Play_data.qualityPlaying = Play_data.quality;
 
     Play_SetHtmlQuality('stream_quality');
-
-    Play_state = Play_STATE_PLAYING;
-    Play_onPlayer();
+    if (Main_IsNotBrowser) Android.SetQuality(Play_data.qualityIndex - 1);
+    else Play_onPlayer();
     //Play_PannelEndStart(1);
 }
 
+function Play_getQualities(position) {
+    var baseQualities = Android.getQualities();
+    if (baseQualities) {
+        var result = [];
+
+        baseQualities = JSON.parse(baseQualities).trackGroups[0];
+
+        result.push({
+            'id': "Auto",
+            'band': 0,
+            'codec': "avc"
+        });
+
+        for (var i = 0; i < baseQualities.formats.length; i++) {
+            result.push({
+                'id': baseQualities.formats[i].height + 'p' + parseInt(baseQualities.formats[i].frameRate),
+                'band': Play_extractBand(baseQualities.formats[i].bitrate),
+                'codec': Play_extractCodec(baseQualities.formats[i].codecs)
+            });
+        }
+        result[1].id += " | source";
+
+        if (position === 1) {
+            Play_data.qualities = result;
+            if (!PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
+        } else {
+            PlayVod_qualities = result;
+            if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
+        }
+
+    }
+}
+
 function Play_onPlayer() {
-    if (Main_isDebug) console.log('Play_onPlayer:', '\n' + '\n"' + Play_playingUrl + '"\n');
 
     if (Main_IsNotBrowser && Play_isOn) {
-        if (Main_A_includes_B(Play_data.quality, 'Auto') || PlayExtra_PicturePicture) Android.StartAuto(1, 0);
-        else Android.startVideo(Play_playingUrl, 1);
+        // if (Main_A_includes_B(Play_data.quality, 'Auto') || PlayExtra_PicturePicture) Android.StartAuto(1, 0);
+        // else Android.startVideo(Play_playingUrl, 1);
+
+        Android.StartAuto(1, 0);
     }
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
@@ -1300,6 +1330,13 @@ function Play_showPanel() {
     Play_setHidePanel();
 }
 
+function Play_extractCodec(input) {
+    if (input.indexOf('avc') !== -1) return ' | avc';
+    else if (input.indexOf('vp9') !== -1) return ' | vp9';
+    else if (input.indexOf('mp4') !== -1) return ' | mp4';
+    return '';
+}
+
 function Play_RefreshWatchingtime() {
     if (PlayExtra_PicturePicture) {
         Main_innerHTML("stream_info_pp_watching_time0", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
@@ -1493,7 +1530,7 @@ function Play_qualityIndexReset() {
         if (Play_data.qualities[i].id === Play_data.quality) {
             Play_data.qualityIndex = i;
             break;
-        } else if (Main_A_includes_B(Play_data.qualities[i].id, Play_data.quality)) { //make shore to set a value before break out
+        } else if (Main_A_includes_B(Play_data.qualities[i].id, Play_data.quality)) { //make sure to set a value before break out
             Play_data.qualityIndex = i;
         }
     }
@@ -1605,6 +1642,7 @@ function Play_CloseSmall() {
     }
     PlayExtra_UnSetPanel();
     Play_CleanHideExit();
+    Play_getQualities(1);
 }
 
 function Play_EndDialogUpDown(adder) {
@@ -1850,11 +1888,11 @@ function Play_MultiStartPrestart(position) {
 }
 
 function Play_MultiStartNew(pos, streamer, display_name) {
-    if (Play_CheckIfIsLiveQualities.length) {
+    if (Play_CheckIfIsLiveResponseText) {
         Play_MultiStartQualitySucess(
             pos,
             Play_CheckIfIsLiveURL,
-            JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities))
+            Play_CheckIfIsLiveResponseText
         );
         UserLiveFeed_CheckIfIsLiveSTop();
         return;
@@ -1907,13 +1945,13 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
     }
 }
 
-function Play_MultiStartQualitySucess(pos, theUrl, qualities) {
+function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
     Play_MultiArray[pos].AutoUrl = theUrl;
     if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
     Android.StartMultiStream(pos, theUrl);
 
-    Play_MultiArray[pos].qualities = qualities;
+    Play_MultiArray[pos].playlist = playlist;
 
     Play_MultiSetinfo(
         pos,
@@ -1950,7 +1988,7 @@ function Play_MultiUpdateMain() {
 
 function Play_MultiCheckLiveFeed(pos) {
     window.setTimeout(function() {
-        if (Play_CheckIfIsLiveQualities.length &&
+        if (Play_CheckIfIsLiveResponseText &&
             Main_A_equals_B(Play_MultiArray[pos].data[6], Play_CheckIfIsLiveChannel))
             UserLiveFeed_CheckIfIsLiveSTop();
     }, 1000);

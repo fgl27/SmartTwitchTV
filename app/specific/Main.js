@@ -176,7 +176,8 @@ function Main_loadTranslations(language) {
                     'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
                     'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
                     'Main_CheckStop': Main_CheckStop,
-                    'Main_CheckResume': Main_CheckResume
+                    'Main_CheckResume': Main_CheckResume,
+                    'Play_getQualities': Play_getQualities
                 };
             }
             Main_IsNotBrowser = Android.getAndroid();

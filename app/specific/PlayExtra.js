@@ -41,7 +41,7 @@ function PlayExtra_KeyEnter() {
 
         if (Main_IsNotBrowser) {
             //Not on auto mode for change to auto before start picture in picture
-            if (!Main_A_includes_B(Play_data.quality, 'Auto')) Android.StartAuto(1, 0);
+            if (!Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetQuality(-1);
 
             Play_data.quality = "Auto";
             Play_data.qualityPlaying = Play_data.quality;
@@ -49,11 +49,11 @@ function PlayExtra_KeyEnter() {
             PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
         }
 
-        if (!Play_CheckIfIsLiveQualities.length) PlayExtra_Resumenew();
+        if (!Play_CheckIfIsLiveResponseText) PlayExtra_Resumenew();
         else {
 
             PlayExtra_data.AutoUrl = Play_CheckIfIsLiveURL;
-            PlayExtra_loadDataSuccessEnd(JSON.parse(JSON.stringify(Play_CheckIfIsLiveQualities)));
+            PlayExtra_loadDataSuccessEnd(Play_CheckIfIsLiveResponseText);
 
             Play_CheckIfIsLiveCleanEnd();
         }
@@ -94,13 +94,13 @@ function PlayExtra_Resumenew() {
     PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
 }
 
-function PlayExtra_loadDataSuccessEnd(qualities) {
+function PlayExtra_loadDataSuccessEnd(playlist) {
     UserLiveFeed_Hide();
     Android.mSwitchPlayerAudio(Play_controlsAudioPos);
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
     Android.SetAuto2(PlayExtra_data.AutoUrl);
-    PlayExtra_data.qualities = qualities;
+    PlayExtra_data.playlist = playlist;
     PlayExtra_SetPanel();
 
     if (!Play_isFullScreen) {

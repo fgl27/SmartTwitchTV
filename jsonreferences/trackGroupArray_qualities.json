@@ -1,0 +1,219 @@
+{
+	"hashCode": 0,
+	"length": 1,
+	"trackGroups": [{
+		"formats": [{
+			"accessibilityChannel": -1,
+			"averageBitrate": -1,
+			"bitrate": 6871513,
+			"channelCount": -1,
+			"codecs": "avc1.64002A",
+			"containerMimeType": "application/x-mpegURL",
+			"encoderDelay": 0,
+			"encoderPadding": 0,
+			"frameRate": 60.0,
+			"hashCode": 0,
+			"height": 1080,
+			"id": "0",
+			"initializationData": [],
+			"maxInputSize": -1,
+			"metadata": {
+				"entries": [{
+					"variantInfos": [{
+						"averageBitrate": -1,
+						"peakBitrate": 6871513,
+						"videoGroupId": "chunked"
+					}]
+				}]
+			},
+			"pcmEncoding": -1,
+			"peakBitrate": 6871513,
+			"pixelWidthHeightRatio": 1.0,
+			"roleFlags": 0,
+			"rotationDegrees": 0,
+			"sampleMimeType": "video/avc",
+			"sampleRate": -1,
+			"selectionFlags": 0,
+			"stereoMode": -1,
+			"subsampleOffsetUs": 9223372036854775807,
+			"width": 1920
+		}, {
+			"accessibilityChannel": -1,
+			"averageBitrate": -1,
+			"bitrate": 3427630,
+			"channelCount": -1,
+			"codecs": "avc1.4D401F",
+			"containerMimeType": "application/x-mpegURL",
+			"encoderDelay": 0,
+			"encoderPadding": 0,
+			"frameRate": 60.0,
+			"hashCode": 0,
+			"height": 720,
+			"id": "1",
+			"initializationData": [],
+			"maxInputSize": -1,
+			"metadata": {
+				"entries": [{
+					"variantInfos": [{
+						"averageBitrate": -1,
+						"peakBitrate": 3427630,
+						"videoGroupId": "720p60"
+					}]
+				}]
+			},
+			"pcmEncoding": -1,
+			"peakBitrate": 3427630,
+			"pixelWidthHeightRatio": 1.0,
+			"roleFlags": 0,
+			"rotationDegrees": 0,
+			"sampleMimeType": "video/avc",
+			"sampleRate": -1,
+			"selectionFlags": 0,
+			"stereoMode": -1,
+			"subsampleOffsetUs": 9223372036854775807,
+			"width": 1280
+		}, {
+			"accessibilityChannel": -1,
+			"averageBitrate": -1,
+			"bitrate": 2377630,
+			"channelCount": -1,
+			"codecs": "avc1.4D401F",
+			"containerMimeType": "application/x-mpegURL",
+			"encoderDelay": 0,
+			"encoderPadding": 0,
+			"frameRate": 30.0,
+			"hashCode": 0,
+			"height": 720,
+			"id": "2",
+			"initializationData": [],
+			"maxInputSize": -1,
+			"metadata": {
+				"entries": [{
+					"variantInfos": [{
+						"averageBitrate": -1,
+						"peakBitrate": 2377630,
+						"videoGroupId": "720p30"
+					}]
+				}]
+			},
+			"pcmEncoding": -1,
+			"peakBitrate": 2377630,
+			"pixelWidthHeightRatio": 1.0,
+			"roleFlags": 0,
+			"rotationDegrees": 0,
+			"sampleMimeType": "video/avc",
+			"sampleRate": -1,
+			"selectionFlags": 0,
+			"stereoMode": -1,
+			"subsampleOffsetUs": 9223372036854775807,
+			"width": 1280
+		}, {
+			"accessibilityChannel": -1,
+			"averageBitrate": -1,
+			"bitrate": 1432630,
+			"channelCount": -1,
+			"codecs": "avc1.4D401F",
+			"containerMimeType": "application/x-mpegURL",
+			"encoderDelay": 0,
+			"encoderPadding": 0,
+			"frameRate": 30.0,
+			"hashCode": 0,
+			"height": 480,
+			"id": "3",
+			"initializationData": [],
+			"maxInputSize": -1,
+			"metadata": {
+				"entries": [{
+					"variantInfos": [{
+						"averageBitrate": -1,
+						"peakBitrate": 1432630,
+						"videoGroupId": "480p30"
+					}]
+				}]
+			},
+			"pcmEncoding": -1,
+			"peakBitrate": 1432630,
+			"pixelWidthHeightRatio": 1.0,
+			"roleFlags": 0,
+			"rotationDegrees": 0,
+			"sampleMimeType": "video/avc",
+			"sampleRate": -1,
+			"selectionFlags": 0,
+			"stereoMode": -1,
+			"subsampleOffsetUs": 9223372036854775807,
+			"width": 852
+		}, {
+			"accessibilityChannel": -1,
+			"averageBitrate": -1,
+			"bitrate": 630000,
+			"channelCount": -1,
+			"codecs": "avc1.4D401F",
+			"containerMimeType": "application/x-mpegURL",
+			"encoderDelay": 0,
+			"encoderPadding": 0,
+			"frameRate": 30.0,
+			"hashCode": 0,
+			"height": 360,
+			"id": "4",
+			"initializationData": [],
+			"maxInputSize": -1,
+			"metadata": {
+				"entries": [{
+					"variantInfos": [{
+						"averageBitrate": -1,
+						"peakBitrate": 630000,
+						"videoGroupId": "360p30"
+					}]
+				}]
+			},
+			"pcmEncoding": -1,
+			"peakBitrate": 630000,
+			"pixelWidthHeightRatio": 1.0,
+			"roleFlags": 0,
+			"rotationDegrees": 0,
+			"sampleMimeType": "video/avc",
+			"sampleRate": -1,
+			"selectionFlags": 0,
+			"stereoMode": -1,
+			"subsampleOffsetUs": 9223372036854775807,
+			"width": 640
+		}, {
+			"accessibilityChannel": -1,
+			"averageBitrate": -1,
+			"bitrate": 230000,
+			"channelCount": -1,
+			"codecs": "avc1.4D401F",
+			"containerMimeType": "application/x-mpegURL",
+			"encoderDelay": 0,
+			"encoderPadding": 0,
+			"frameRate": 30.0,
+			"hashCode": 0,
+			"height": 160,
+			"id": "5",
+			"initializationData": [],
+			"maxInputSize": -1,
+			"metadata": {
+				"entries": [{
+					"variantInfos": [{
+						"averageBitrate": -1,
+						"peakBitrate": 230000,
+						"videoGroupId": "160p30"
+					}]
+				}]
+			},
+			"pcmEncoding": -1,
+			"peakBitrate": 230000,
+			"pixelWidthHeightRatio": 1.0,
+			"roleFlags": 0,
+			"rotationDegrees": 0,
+			"sampleMimeType": "video/avc",
+			"sampleRate": -1,
+			"selectionFlags": 0,
+			"stereoMode": -1,
+			"subsampleOffsetUs": 9223372036854775807,
+			"width": 284
+		}],
+		"hashCode": 0,
+		"length": 6
+	}]
+}
