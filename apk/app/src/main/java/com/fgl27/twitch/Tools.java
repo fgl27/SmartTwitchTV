@@ -139,35 +139,6 @@ public final class Tools {
         }
     }
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    private static class QualitiesObj {
-        private final String id;
-        private final String band;
-        private final String codec;
-        private final String url;
-
-        public QualitiesObj(String id, String band, String codec, String url) {
-            this.id = id;
-            this.band = extractBand(band);
-            this.codec = extractCodec(codec);
-            this.url = url;
-        }
-    }
-
-    private static String extractBand(String band) {
-        float input = Float.parseFloat(band);
-
-        return input > 0 ? String.format(Locale.US, " | %.02fMbps", (input / 1000000)) : "";
-    }
-
-    private static String extractCodec(String codec) {
-        if (codec.contains("avc")) return " | avc";
-        else if (codec.contains("'vp9'")) return " | vp9";
-        else if (codec.contains("'mp4'")) return " | mp4";
-
-        return "";
-    }
-
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
     public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException, NullPointerException {
