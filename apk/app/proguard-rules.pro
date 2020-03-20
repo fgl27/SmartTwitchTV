@@ -36,8 +36,18 @@
     *;
 }
 
--keep class com.fgl27.twitch.mDefaultHlsPlaylistParserFactory**
--keepclassmembers class com.fgl27.twitch.mDefaultHlsPlaylistParserFactory** {
+-keep class com.fgl27.twitch.mDefaultDataSourceFactory**
+-keepclassmembers class com.fgl27.twitch.mDefaultDataSourceFactory** {
+    *;
+}
+
+-keep class com.fgl27.twitch.mDefaultHttpDataSourceFactory**
+-keepclassmembers class com.fgl27.twitch.mDefaultHttpDataSourceFactory** {
+    *;
+}
+
+-keep class com.fgl27.twitch.mDefaultHttpDataSource**
+-keepclassmembers class com.fgl27.twitch.mDefaultHttpDataSource** {
     *;
 }
 

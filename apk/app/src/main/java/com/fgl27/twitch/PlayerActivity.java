@@ -44,9 +44,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
@@ -98,7 +95,6 @@ public class PlayerActivity extends Activity {
     public String[] BLACKLISTEDCODECS = null;
     public PlayerView[] PlayerView = new PlayerView[PlayerAcountPlus];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAcountPlus];
-    public DataSource.Factory dataSourceFactory;
     public DefaultRenderersFactory renderersFactory;
     public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAcountPlus];
     public DefaultTrackSelector.Parameters trackSelectorParameters;
@@ -186,11 +182,6 @@ public class PlayerActivity extends Activity {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
             }
 
-            dataSourceFactory =
-                    new DefaultDataSourceFactory(
-                            this,
-                            Util.getUserAgent(this, this.getString(R.string.app_name)));
-
             trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(this);
 
             // Prevent small window causing lag to the device
@@ -276,7 +267,7 @@ public class PlayerActivity extends Activity {
 
         //Clips don't have a masterPlaylistString only videoAddress
         mediaSources[position] = NewMediaSource != null ? NewMediaSource :
-                Tools.buildMediaSource(Uri.parse(videoAddress), dataSourceFactory, who_called, mLowLatency, "");
+                Tools.buildMediaSource(Uri.parse(videoAddress), this, who_called, mLowLatency, "");
 
         mWho_Called = who_called;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
@@ -1082,7 +1073,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetAuto(String uri, String masterPlaylistString, int player) {
-            mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), dataSourceFactory, 1, mLowLatency, masterPlaylistString);
+            mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1098,7 +1089,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void ResStartAuto(String uri, String masterPlaylistString, int who_called, long resumeposition, int player) {
             MainThreadHandler.post(() -> {
-                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), dataSourceFactory, 1, mLowLatency, masterPlaylistString);
+                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
                 PreinitializePlayer(mediaSources[mainPlayer ^ player], "", who_called, resumeposition, mainPlayer ^ player);
             });
         }
@@ -1114,7 +1105,7 @@ public class PlayerActivity extends Activity {
         public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBandwidth) {
             MainThreadHandler.post(() -> {
                 UseFullBandwidth = fullBandwidth;
-                mediaSources[4] = Tools.buildMediaSource(Uri.parse(uri), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth), masterPlaylistString);
+                mediaSources[4] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, (mLowLatency && UseFullBandwidth), masterPlaylistString);
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
                 initializeSmallPlayer(mediaSources[4]);
             });
@@ -1607,7 +1598,7 @@ public class PlayerActivity extends Activity {
                 if (position == 0) mposition = mainPlayer;
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
-                mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), dataSourceFactory, 1, mLowLatency, masterPlaylistString);
+                mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
                 initializePlayerMulti(mposition, mediaSources[mposition]);
             });
         }
