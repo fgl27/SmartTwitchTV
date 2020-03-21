@@ -1704,7 +1704,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("ReferenceEquality")
         public void onTracksChanged(@NonNull TrackGroupArray trackGroups, @NonNull TrackSelectionArray trackSelections) {
             //onTracksChanged -> Called when the available or selected tracks change.
-            if (trackGroups != lastSeenTrackGroupArray) {
+            if (trackGroups != lastSeenTrackGroupArray || updateQualities) {
                 requestgetQualities(position);
                 lastSeenTrackGroupArray = trackGroups;
             }
