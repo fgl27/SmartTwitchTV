@@ -80,6 +80,17 @@ if [ "$localOK" == 0 ]; then
 	echo "$NDK_DIR" >> local.properties;
 fi;
 
+if [ "$1" == 2 ]; then
+    echo -e "\n Checking for updates:\n";
+	echo "$(./gradlew -q gradleUpdates | sed '/jacoco/d')" > build_log.txt
+	UPDATEDEPENDENCIES=$(grep ' \-> ' build_log.txt)
+	if [ -n "$UPDATEDEPENDENCIES" ]; then
+		echo -e "\n${CYAN}Dependencies that need update:\n${NC}";
+		echo -e "${RED}$UPDATEDEPENDENCIES${NC}";
+	fi;
+	exit;
+fi;
+
 old='                <!-- <category android:name="android.intent.category.LAUNCHER"/> -->'
 new='                <category android:name="android.intent.category.LAUNCHER"/>'
 sed  --in-place "s%$old%$new%g" app/src/main/AndroidManifest.xml
