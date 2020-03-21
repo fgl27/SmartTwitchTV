@@ -1244,6 +1244,11 @@ function Play_MakeControls() {
         enterKey: function(shutdown) {
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {
+                if (Android.IsMainNotMain()) {
+                    Android.mSwitchPlayer();
+                    PlayExtra_SwitchPlayer();
+                }
+
                 Android.EnableMultiStream(Play_Multi_MainBig, 0);
                 Play_hidePanel();
 
