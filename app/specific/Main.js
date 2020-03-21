@@ -2232,7 +2232,7 @@ function Main_CheckResume() { // Called only by JAVA
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
-    if (Settings_Obj_default("accessibility_warn")) {
+    if (Main_IsNotBrowser && Settings_Obj_default("accessibility_warn")) {
         var isenable;
 
         isenable = Android.isAccessibilitySettingsOn();
