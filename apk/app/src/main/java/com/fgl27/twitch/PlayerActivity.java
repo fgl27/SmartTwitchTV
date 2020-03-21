@@ -314,13 +314,14 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setPlayer(player[position]);
         }
 
+        PlayerView[position].setPlaybackPreparer(null);
+        player[position].setPlayWhenReady(true);
         player[position].setMediaSource(
                 mediaSources[position],
                 ((mResumePosition > 0) && (mWho_Called > 1)) ? mResumePosition : C.TIME_UNSET);
 
         player[position].prepare();
 
-        player[position].setPlayWhenReady(true);
         hideLoading(5);
         SwitchPlayerAudio(AudioSource);
 
@@ -369,12 +370,15 @@ public class PlayerActivity extends Activity {
             PlayerView[4].setPlayer(player[4]);
         }
 
+        PlayerView[4].setPlaybackPreparer(null);
+        player[4].setPlayWhenReady(true);
+
         player[4].setMediaSource(
                 NewMediaSource,
                 C.TIME_UNSET);
 
         player[4].prepare();
-        player[4].setPlayWhenReady(true);
+
         mediaSources[4] = NewMediaSource;
 
         KeepScreenOn(true);
@@ -439,6 +443,9 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setPlayer(player[position]);
         }
 
+        PlayerView[position].setPlaybackPreparer(null);
+        player[position].setPlayWhenReady(true);
+
         player[position].setMediaSource(
                 NewMediaSource,
                 C.TIME_UNSET
@@ -446,7 +453,6 @@ public class PlayerActivity extends Activity {
 
         player[position].prepare();
 
-        player[position].setPlayWhenReady(true);
         mediaSources[position] = NewMediaSource;
         hideLoading(5);
 
