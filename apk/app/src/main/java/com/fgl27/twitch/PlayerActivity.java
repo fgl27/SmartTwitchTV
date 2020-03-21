@@ -115,7 +115,7 @@ public class PlayerActivity extends Activity {
     public boolean updateQualities = true;
     public int mainPlayer = 0;
     public int MultiMainPlayer = 0;
-    public int PicturePicturePositions = 0;
+    public int PicturePicturePosition = 0;
     public int PicturePictureSize = 1;//sizes are 0 , 1 , 2
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
@@ -631,7 +631,7 @@ public class PlayerActivity extends Activity {
             }
         }
         //The side PP player
-        PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
+        PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
 
         //MultiStream
         //4 way same size
@@ -709,7 +709,7 @@ public class PlayerActivity extends Activity {
 
         //Set new video sizes
         PlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
-        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
+        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
 
         VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
 
@@ -750,7 +750,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void UpdadeSizePosSmall(int pos) {
-        PlayerView[pos].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
+        PlayerView[pos].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
     }
 
     public void SetPlayerAudioMulti() {
@@ -795,7 +795,7 @@ public class PlayerActivity extends Activity {
         if (PicturePicture) updateVideSizePP(isFullScreen);
         else {
             updateVideSize(isFullScreen);
-            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
+            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
         }
 
         if (!PicturePicture || player[mainPlayer ^ 1] == null || player[mainPlayer] == null) {
@@ -1193,14 +1193,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerPosition(int position) {
-            PicturePicturePositions = position;
+            PicturePicturePosition = position;
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetPlayerPosition(int position) {
-            PicturePicturePositions = position;
+            PicturePicturePosition = position;
         }
 
         @SuppressWarnings("unused")//called by JS
