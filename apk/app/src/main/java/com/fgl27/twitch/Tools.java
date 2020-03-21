@@ -18,6 +18,7 @@ import android.view.Display;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.fgl27.twitch.DataSource.mDefaultDataSourceFactory;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
