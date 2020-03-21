@@ -1043,11 +1043,11 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
 
-            if (this.defaultValue === 2) {
+            if (this.defaultValue === 2) {//both
                 Android.StartAuto(1, 0, 0);
                 Android.StartAuto(1, 0, 1);
-            } else if (this.defaultValue) Android.StartAuto(1, 0, 0);
-            else Android.StartAuto(1, 0, 1);
+            } else if (this.defaultValue) Android.StartAuto(1, 0, 0);//main
+            else Android.StartAuto(1, 0, 1);//small
 
             Play_hidePanel();
             this.defaultValue = 2;
@@ -1140,8 +1140,7 @@ function Play_MakeControls() {
                     Android.ResStartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
                     Android.ResStartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
                 } else {
-                    if (Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetAuto(Play_data.AutoUrl);
-                    Play_onPlayer();
+                    Android.ResStartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
                 }
 
             }
