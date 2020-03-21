@@ -186,9 +186,10 @@ function Chat_loadChatSuccess(responseText, id) {
         nickColor;
 
     if (null_next) {
-        Chat_MessageVector('<span class="message">' + STR_LOADING_CHAT + '</span>', 0);
+
+        Chat_MessageVector('<span class="message">' + STR_LOADING_CHAT + STR_SPACE + Chat_title + STR_SPACE + STR_CHANNEL + ': ' +
+            Main_values.Main_selectedChannelDisplayname + '</span>', 0);
         Chat_MessageVector('<span class="message">' + STR_CHAT_CONNECTED + '</span>', 0);
-        Chat_MessageVector('<span class="message">' + STR_CHAT_SUCCESS + Main_values.Main_selectedChannelDisplayname + ' ' + Chat_title + '</span>', 0);
     }
     Chat_offset = 0;
     Chat_next = responseText._next;
