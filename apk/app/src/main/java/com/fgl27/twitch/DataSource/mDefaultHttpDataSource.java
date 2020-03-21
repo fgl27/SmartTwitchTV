@@ -18,6 +18,7 @@
 package com.fgl27.twitch.DataSource;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -26,9 +27,12 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.upstream.BaseDataSource;
 import com.google.android.exoplayer2.upstream.DataSourceException;
 import com.google.android.exoplayer2.upstream.DataSpec;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.upstream.DataSpec.HttpMethod;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Assertions;
+import com.google.android.exoplayer2.util.Log;
+import com.google.android.exoplayer2.util.Predicate;
+import com.google.android.exoplayer2.util.Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.EOFException;
@@ -36,26 +40,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.NoRouteToHostException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
-import static com.google.android.exoplayer2.upstream.DefaultHttpDataSource.handleRedirect;
-
 public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSource {
-    
+
+    private static final String TAG = "DefaultHttpDataSource";
     private static final int MAX_REDIRECTS = 20; // Same limit as okhttp.
     private static final int HTTP_STATUS_TEMPORARY_REDIRECT = 307;
     private static final int HTTP_STATUS_PERMANENT_REDIRECT = 308;
+    private static final long MAX_BYTES_TO_DRAIN = 2048;
+    private static final Pattern CONTENT_RANGE_HEADER =
+            Pattern.compile("^bytes (\\d+)-(\\d+)/(\\d+)$");
     private static final AtomicReference<byte[]> skipBufferReference = new AtomicReference<>();
-    private final String masterPlaylistString;
-    private final Uri uri;
+
     private final boolean allowCrossProtocolRedirects;
     private final int connectTimeoutMillis;
     private final int readTimeoutMillis;
@@ -63,7 +72,10 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     @Nullable
     private final RequestProperties defaultRequestProperties;
     private final RequestProperties requestProperties;
-
+    private final String masterPlaylistString;
+    private final Uri uri;
+    @Nullable
+    private Predicate<String> contentTypePredicate;
     @Nullable
     private DataSpec dataSpec;
     @Nullable
@@ -72,10 +84,8 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     private InputStream inputStream;
     private boolean opened;
     private int responseCode;
-
     private long bytesToSkip;
     private long bytesToRead;
-
     private long bytesSkipped;
     private long bytesRead;
 
@@ -96,6 +106,139 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         this.defaultRequestProperties = defaultRequestProperties;
         this.masterPlaylistString = masterPlaylist;
         this.uri = uri;
+    }
+
+    /**
+     * Handles a redirect.
+     *
+     * @param originalUrl The original URL.
+     * @param location    The Location header in the response. May be {@code null}.
+     * @return The next URL.
+     * @throws IOException If redirection isn't possible.
+     */
+    private static URL handleRedirect(URL originalUrl, @Nullable String location) throws IOException {
+        if (location == null) {
+            throw new ProtocolException("Null location redirect");
+        }
+        // Form the new url.
+        URL url = new URL(originalUrl, location);
+        // Check that the protocol of the new url is supported.
+        String protocol = url.getProtocol();
+        if (!"https".equals(protocol) && !"http".equals(protocol)) {
+            throw new ProtocolException("Unsupported protocol redirect: " + protocol);
+        }
+        // Currently this method is only called if allowCrossProtocolRedirects is true, and so the code
+        // below isn't required. If we ever decide to handle redirects ourselves when cross-protocol
+        // redirects are disabled, we'll need to uncomment this block of code.
+        // if (!allowCrossProtocolRedirects && !protocol.equals(originalUrl.getProtocol())) {
+        //   throw new ProtocolException("Disallowed cross-protocol redirect ("
+        //       + originalUrl.getProtocol() + " to " + protocol + ")");
+        // }
+        return url;
+    }
+
+    /**
+     * Attempts to extract the length of the content from the response headers of an open connection.
+     *
+     * @param connection The open connection.
+     * @return The extracted length, or {@link C#LENGTH_UNSET}.
+     */
+    private static long getContentLength(HttpURLConnection connection) {
+        long contentLength = C.LENGTH_UNSET;
+        String contentLengthHeader = connection.getHeaderField("Content-Length");
+        if (!TextUtils.isEmpty(contentLengthHeader)) {
+            try {
+                contentLength = Long.parseLong(contentLengthHeader);
+            } catch (NumberFormatException e) {
+                Log.e(TAG, "Unexpected Content-Length [" + contentLengthHeader + "]");
+            }
+        }
+        String contentRangeHeader = connection.getHeaderField("Content-Range");
+        if (!TextUtils.isEmpty(contentRangeHeader)) {
+            Matcher matcher = CONTENT_RANGE_HEADER.matcher(contentRangeHeader);
+            if (matcher.find()) {
+                try {
+                    long contentLengthFromRange =
+                            Long.parseLong(matcher.group(2)) - Long.parseLong(matcher.group(1)) + 1;
+                    if (contentLength < 0) {
+                        // Some proxy servers strip the Content-Length header. Fall back to the length
+                        // calculated here in this case.
+                        contentLength = contentLengthFromRange;
+                    } else if (contentLength != contentLengthFromRange) {
+                        // If there is a discrepancy between the Content-Length and Content-Range headers,
+                        // assume the one with the larger value is correct. We have seen cases where carrier
+                        // change one of them to reduce the size of a request, but it is unlikely anybody would
+                        // increase it.
+                        Log.w(TAG, "Inconsistent headers [" + contentLengthHeader + "] [" + contentRangeHeader
+                                + "]");
+                        contentLength = Math.max(contentLength, contentLengthFromRange);
+                    }
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "Unexpected Content-Range [" + contentRangeHeader + "]");
+                }
+            }
+        }
+        return contentLength;
+    }
+
+    /**
+     * On platform API levels 19 and 20, okhttp's implementation of {@link InputStream#close} can
+     * block for a long time if the stream has a lot of data remaining. Call this method before
+     * closing the input stream to make a best effort to cause the input stream to encounter an
+     * unexpected end of input, working around this issue. On other platform API levels, the method
+     * does nothing.
+     *
+     * @param connection     The connection whose {@link InputStream} should be terminated.
+     * @param bytesRemaining The number of bytes remaining to be read from the input stream if its
+     *                       length is known. {@link C#LENGTH_UNSET} otherwise.
+     */
+    private static void maybeTerminateInputStream(HttpURLConnection connection, long bytesRemaining) {
+        if (Util.SDK_INT != 19 && Util.SDK_INT != 20) {
+            return;
+        }
+
+        try {
+            InputStream inputStream = connection.getInputStream();
+            if (bytesRemaining == C.LENGTH_UNSET) {
+                // If the input stream has already ended, do nothing. The socket may be re-used.
+                if (inputStream.read() == -1) {
+                    return;
+                }
+            } else if (bytesRemaining <= MAX_BYTES_TO_DRAIN) {
+                // There isn't much data left. Prefer to allow it to drain, which may allow the socket to be
+                // re-used.
+                return;
+            }
+            String className = inputStream.getClass().getName();
+            if ("com.android.okhttp.internal.http.HttpTransport$ChunkedInputStream".equals(className)
+                    || "com.android.okhttp.internal.http.HttpTransport$FixedLengthInputStream"
+                    .equals(className)) {
+                Class<?> superclass = inputStream.getClass().getSuperclass();
+                Method unexpectedEndOfInput = superclass.getDeclaredMethod("unexpectedEndOfInput");
+                unexpectedEndOfInput.setAccessible(true);
+                unexpectedEndOfInput.invoke(inputStream);
+            }
+        } catch (Exception e) {
+            // If an IOException then the connection didn't ever have an input stream, or it was closed
+            // already. If another type of exception then something went wrong, most likely the device
+            // isn't using okhttp.
+        }
+    }
+
+    private static boolean isCompressed(HttpURLConnection connection) {
+        String contentEncoding = connection.getHeaderField("Content-Encoding");
+        return "gzip".equalsIgnoreCase(contentEncoding);
+    }
+
+    /**
+     * Sets a content type {@link Predicate}. If a content type is rejected by the predicate then a
+     * {@link HttpDataSource.InvalidContentTypeException} is thrown from {@link #open(DataSpec)}.
+     *
+     * @param contentTypePredicate The content type {@link Predicate}, or {@code null} to clear a
+     *                             predicate that was previously set.
+     */
+    public void setContentTypePredicate(@Nullable Predicate<String> contentTypePredicate) {
+        this.contentTypePredicate = contentTypePredicate;
     }
 
     @Override
@@ -132,9 +275,6 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         requestProperties.clear();
     }
 
-    /**
-     * Opens the source to read the specified data.
-     */
     @Override
     public long open(DataSpec dataSpec) throws HttpDataSourceException {
         this.dataSpec = dataSpec;
@@ -197,12 +337,12 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
             bytesToSkip = responseCode == 200 && dataSpec.position != 0 ? dataSpec.position : 0;
 
             // Determine the length of the data to be read, after skipping.
-            boolean isCompressed = DefaultHttpDataSource.isCompressed(connection);
+            boolean isCompressed = isCompressed(connection);
             if (!isCompressed) {
                 if (dataSpec.length != C.LENGTH_UNSET) {
                     bytesToRead = dataSpec.length;
                 } else {
-                    long contentLength = DefaultHttpDataSource.getContentLength(connection);
+                    long contentLength = getContentLength(connection);
                     bytesToRead = contentLength != C.LENGTH_UNSET ? (contentLength - bytesToSkip)
                             : C.LENGTH_UNSET;
                 }
@@ -230,10 +370,6 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         return bytesToRead;
     }
 
-    protected final long bytesRemaining() {
-        return bytesToRead == C.LENGTH_UNSET ? bytesToRead : bytesToRead - bytesRead;
-    }
-
     @Override
     public int read(byte[] buffer, int offset, int readLength) throws HttpDataSourceException {
         try {
@@ -244,65 +380,11 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         }
     }
 
-    private int readInternal(byte[] buffer, int offset, int readLength) throws IOException {
-        if (readLength == 0) {
-            return 0;
-        }
-        if (bytesToRead != C.LENGTH_UNSET) {
-            long bytesRemaining = bytesToRead - bytesRead;
-            if (bytesRemaining == 0) {
-                return C.RESULT_END_OF_INPUT;
-            }
-            readLength = (int) Math.min(readLength, bytesRemaining);
-        }
-
-        int read = inputStream.read(buffer, offset, readLength);
-        if (read == -1) {
-            if (bytesToRead != C.LENGTH_UNSET) {
-                // End of stream reached having not read sufficient data.
-                throw new EOFException();
-            }
-            return C.RESULT_END_OF_INPUT;
-        }
-
-        bytesRead += read;
-        bytesTransferred(read);
-        return read;
-    }
-
-    public void skipInternal() throws IOException {
-        if (bytesSkipped == bytesToSkip) {
-            return;
-        }
-
-        // Acquire the shared skip buffer.
-        byte[] skipBuffer = skipBufferReference.getAndSet(null);
-        if (skipBuffer == null) {
-            skipBuffer = new byte[4096];
-        }
-
-        while (bytesSkipped != bytesToSkip) {
-            int readLength = (int) Math.min(bytesToSkip - bytesSkipped, skipBuffer.length);
-            int read = inputStream.read(skipBuffer, 0, readLength);
-            if (Thread.currentThread().isInterrupted()) {
-                throw new InterruptedIOException();
-            }
-            if (read == -1) {
-                throw new EOFException();
-            }
-            bytesSkipped += read;
-            bytesTransferred(read);
-        }
-
-        // Release the shared skip buffer.
-        skipBufferReference.set(skipBuffer);
-    }
-
     @Override
     public void close() throws HttpDataSourceException {
         try {
             if (inputStream != null) {
-                DefaultHttpDataSource.maybeTerminateInputStream(connection, bytesRemaining());
+                maybeTerminateInputStream(connection, bytesRemaining());
                 try {
                     inputStream.close();
                 } catch (IOException e) {
@@ -320,22 +402,53 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     }
 
     /**
-     * Closes the current connection quietly, if there is one.
+     * Returns the current connection, or null if the source is not currently opened.
+     *
+     * @return The current open connection, or null.
      */
-    private void closeConnectionQuietly() {
-        if (connection != null) {
-            try {
-                connection.disconnect();
-            } catch (Exception e) {
-                // Ignore
-            }
-            connection = null;
-        }
+    @Nullable
+    protected final HttpURLConnection getConnection() {
+        return connection;
     }
 
+    /**
+     * Returns the number of bytes that have been skipped since the most recent call to
+     * {@link #open(DataSpec)}.
+     *
+     * @return The number of bytes skipped.
+     */
+    protected final long bytesSkipped() {
+        return bytesSkipped;
+    }
+
+    /**
+     * Returns the number of bytes that have been read since the most recent call to
+     * {@link #open(DataSpec)}.
+     *
+     * @return The number of bytes read.
+     */
+    protected final long bytesRead() {
+        return bytesRead;
+    }
+
+    /**
+     * Returns the number of bytes that are still to be read for the current {@link DataSpec}.
+     * <p>
+     * If the total length of the data being read is known, then this length minus {@code bytesRead()}
+     * is returned. If the total length is unknown, {@link C#LENGTH_UNSET} is returned.
+     *
+     * @return The remaining length, or {@link C#LENGTH_UNSET}.
+     */
+    protected final long bytesRemaining() {
+        return bytesToRead == C.LENGTH_UNSET ? bytesToRead : bytesToRead - bytesRead;
+    }
+
+    /**
+     * Establishes a connection, following redirects to do so where permitted.
+     */
     private HttpURLConnection makeConnection(DataSpec dataSpec) throws IOException {
         URL url = new URL(dataSpec.uri.toString());
-        @DataSpec.HttpMethod int httpMethod = dataSpec.httpMethod;
+        @HttpMethod int httpMethod = dataSpec.httpMethod;
         @Nullable byte[] httpBody = dataSpec.httpBody;
         long position = dataSpec.position;
         long length = dataSpec.length;
@@ -412,7 +525,7 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
      */
     private HttpURLConnection makeConnection(
             URL url,
-            @DataSpec.HttpMethod int httpMethod,
+            @HttpMethod int httpMethod,
             @Nullable byte[] httpBody,
             long position,
             long length,
@@ -466,5 +579,95 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     @VisibleForTesting
     /* package */ HttpURLConnection openConnection(URL url) throws IOException {
         return (HttpURLConnection) url.openConnection();
+    }
+
+    /**
+     * Skips any bytes that need skipping. Else does nothing.
+     * <p>
+     * This implementation is based roughly on {@code libcore.io.Streams.skipByReading()}.
+     *
+     * @throws InterruptedIOException If the thread is interrupted during the operation.
+     * @throws EOFException           If the end of the input stream is reached before the bytes are skipped.
+     */
+    private void skipInternal() throws IOException {
+        if (bytesSkipped == bytesToSkip) {
+            return;
+        }
+
+        // Acquire the shared skip buffer.
+        byte[] skipBuffer = skipBufferReference.getAndSet(null);
+        if (skipBuffer == null) {
+            skipBuffer = new byte[4096];
+        }
+
+        while (bytesSkipped != bytesToSkip) {
+            int readLength = (int) Math.min(bytesToSkip - bytesSkipped, skipBuffer.length);
+            int read = inputStream.read(skipBuffer, 0, readLength);
+            if (Thread.currentThread().isInterrupted()) {
+                throw new InterruptedIOException();
+            }
+            if (read == -1) {
+                throw new EOFException();
+            }
+            bytesSkipped += read;
+            bytesTransferred(read);
+        }
+
+        // Release the shared skip buffer.
+        skipBufferReference.set(skipBuffer);
+    }
+
+    /**
+     * Reads up to {@code length} bytes of data and stores them into {@code buffer}, starting at
+     * index {@code offset}.
+     * <p>
+     * This method blocks until at least one byte of data can be read, the end of the opened range is
+     * detected, or an exception is thrown.
+     *
+     * @param buffer     The buffer into which the read data should be stored.
+     * @param offset     The start offset into {@code buffer} at which data should be written.
+     * @param readLength The maximum number of bytes to read.
+     * @return The number of bytes read, or {@link C#RESULT_END_OF_INPUT} if the end of the opened
+     * range is reached.
+     * @throws IOException If an error occurs reading from the source.
+     */
+    private int readInternal(byte[] buffer, int offset, int readLength) throws IOException {
+        if (readLength == 0) {
+            return 0;
+        }
+        if (bytesToRead != C.LENGTH_UNSET) {
+            long bytesRemaining = bytesToRead - bytesRead;
+            if (bytesRemaining == 0) {
+                return C.RESULT_END_OF_INPUT;
+            }
+            readLength = (int) Math.min(readLength, bytesRemaining);
+        }
+
+        int read = inputStream.read(buffer, offset, readLength);
+        if (read == -1) {
+            if (bytesToRead != C.LENGTH_UNSET) {
+                // End of stream reached having not read sufficient data.
+                throw new EOFException();
+            }
+            return C.RESULT_END_OF_INPUT;
+        }
+
+        bytesRead += read;
+        bytesTransferred(read);
+        return read;
+    }
+
+    /**
+     * Closes the current connection quietly, if there is one.
+     */
+    private void closeConnectionQuietly() {
+        if (connection != null) {
+            try {
+                connection.disconnect();
+            } catch (Exception e) {
+                Log.e(TAG, "Unexpected error while disconnecting", e);
+            }
+            connection = null;
+        }
     }
 }
