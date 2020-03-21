@@ -99,7 +99,6 @@ function PlayExtra_loadDataSuccessEnd(playlist) {
     Android.mSwitchPlayerAudio(Play_controlsAudioPos);
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
-    Android.SetAuto(PlayExtra_data.AutoUrl, playlist, 1);
     PlayExtra_data.playlist = playlist;
     PlayExtra_SetPanel();
 
@@ -237,7 +236,9 @@ function PlayExtra_UpdatePanel() {
 }
 
 function PlayExtra_qualityChanged() {
-    if (Main_IsNotBrowser && Play_isOn) Android.StartAuto(1, 0, 1);
+    if (Main_IsNotBrowser && Play_isOn) {
+        Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+    }
 
     if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
 
