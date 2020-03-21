@@ -566,7 +566,7 @@ function Screens_loadDataSuccessFinishEnd() {
     else Sidepannel_SetDefaultLables();
 
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
-    Main_CheckAccessibility();
+    Main_CheckAccessibility(true);
 }
 
 function Screens_addFocus(forceScroll) {

@@ -2231,7 +2231,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_CheckAccessibility();
 }
 
-function Main_CheckAccessibility() {
+function Main_CheckAccessibility(skipRefresCheck) {
     if (Settings_Obj_default("accessibility_warn")) {
         var isenable;
 
@@ -2241,7 +2241,7 @@ function Main_CheckAccessibility() {
         else {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
-            if (Screens_Isfocused()) {
+            if (Screens_Isfocused() && !skipRefresCheck) {
                 document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
                 Main_SwitchScreen();
             }
