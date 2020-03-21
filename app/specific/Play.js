@@ -847,7 +847,10 @@ function Play_loadDataSuccessend(qualities) {
     UserLiveFeed_Hide();
 
     if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
-    else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
+    else if (Play_EndDialogEnter === 3) {
+        PlayClip_PreshutdownStream(false);
+        PlayClip_isOn = false;
+    }
 
     Play_EndDialogEnter = 0;
 
