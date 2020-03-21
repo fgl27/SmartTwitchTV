@@ -979,16 +979,20 @@ function Play_MakeControls() {
                 Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
                 Play_data.qualityPlaying = Play_data.quality;
                 Play_SetHtmlQuality('stream_quality');
-                if (oldQuality !== Play_data.quality) Android.SetQuality(Play_data.qualityIndex - 1);
-                else Android.reinitializePlayer();
+
+                if (oldQuality !== Play_data.quality) Android.SetQuality(Play_data.qualityIndex - 1);//just quality change
+                else Android.reinitializePlayer();//resetart the player
+
             } else if (PlayVodClip === 2) {
                 PlayVod_hidePanel();
-                oldQuality = Play_data.quality;
+                oldQuality = PlayVod_quality;
                 PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
                 PlayVod_qualityPlaying = PlayVod_quality;
                 PlayVod_SetHtmlQuality('stream_quality');
-                if (oldQuality !== Play_data.quality) Android.SetQuality(PlayVod_qualityIndex - 1);
-                else Android.reinitializePlayer();
+
+                if (oldQuality !== PlayVod_quality) Android.SetQuality(PlayVod_qualityIndex - 1);//just quality change
+                else Android.StartAuto(2, Android.gettime(), 0);//resetart the player
+
             } else if (PlayVodClip === 3) {
                 PlayClip_hidePanel();
                 PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
