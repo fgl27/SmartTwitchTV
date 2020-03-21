@@ -18,7 +18,6 @@
 package com.fgl27.twitch.DataSource;
 
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -50,8 +49,7 @@ import java.util.zip.GZIPInputStream;
 import static com.google.android.exoplayer2.upstream.DefaultHttpDataSource.handleRedirect;
 
 public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSource {
-
-    private static final String TAG = "DefaultHttpDataSource";
+    
     private static final int MAX_REDIRECTS = 20; // Same limit as okhttp.
     private static final int HTTP_STATUS_TEMPORARY_REDIRECT = 307;
     private static final int HTTP_STATUS_PERMANENT_REDIRECT = 308;
@@ -146,7 +144,6 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         transferInitializing(dataSpec);
 
         if (dataSpec.uri.toString().equals(uri.toString())) {
-            Log.d("dataSpec", "dataSpec " + dataSpec.uri.toString());
 
             byte[] bytes = masterPlaylistString.getBytes();
 
@@ -330,7 +327,7 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
             try {
                 connection.disconnect();
             } catch (Exception e) {
-                Log.e(TAG, "Unexpected error while disconnecting", e);
+                // Ignore
             }
             connection = null;
         }
