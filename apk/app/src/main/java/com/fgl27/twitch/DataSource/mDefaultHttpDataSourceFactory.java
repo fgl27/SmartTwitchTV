@@ -39,7 +39,7 @@ public final class mDefaultHttpDataSourceFactory extends BaseFactory {
     private final int connectTimeoutMillis;
     private final int readTimeoutMillis;
     private final boolean allowCrossProtocolRedirects;
-    private final String masterPlaylistString;
+    private final byte[] data;
     private final Uri uri;
 
     public mDefaultHttpDataSourceFactory(
@@ -48,14 +48,14 @@ public final class mDefaultHttpDataSourceFactory extends BaseFactory {
             int connectTimeoutMillis,
             int readTimeoutMillis,
             boolean allowCrossProtocolRedirects,
-            String masterPlaylist,
+            byte[] data,
             Uri uri) {
         this.userAgent = Assertions.checkNotEmpty(userAgent);
         this.listener = listener;
         this.connectTimeoutMillis = connectTimeoutMillis;
         this.readTimeoutMillis = readTimeoutMillis;
         this.allowCrossProtocolRedirects = allowCrossProtocolRedirects;
-        this.masterPlaylistString = masterPlaylist;
+        this.data = data;
         this.uri = uri;
     }
 
@@ -69,7 +69,7 @@ public final class mDefaultHttpDataSourceFactory extends BaseFactory {
                         readTimeoutMillis,
                         allowCrossProtocolRedirects,
                         defaultRequestProperties,
-                        masterPlaylistString,
+                        data,
                         uri
                 );
         if (listener != null) {
