@@ -1606,10 +1606,6 @@ function Main_updateclock() {
     }
 }
 
-function Main_RandomInt() {
-    return parseInt(Math.random() * 1000000000);
-}
-
 function Main_updateUserFeed() {
     if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
         !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
