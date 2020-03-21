@@ -19,7 +19,6 @@
 package com.fgl27.twitch.DataSource;
 
 import android.content.Context;
-import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
@@ -35,18 +34,10 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 public final class mDefaultDataSourceFactory implements Factory {
 
     private final Context context;
+
     @Nullable
     private final TransferListener listener;
     private final DataSource.Factory baseDataSourceFactory;
-
-    public mDefaultDataSourceFactory(Context context, String userAgent, String masterPlaylist, Uri uri) {
-        this(context, userAgent, /* listener= */ null, masterPlaylist, uri);
-    }
-
-    public mDefaultDataSourceFactory(
-            Context context, String userAgent, @Nullable TransferListener listener, String masterPlaylist, Uri uri) {
-        this(context, listener, new mDefaultHttpDataSourceFactory(userAgent, listener, masterPlaylist, uri));
-    }
 
     public mDefaultDataSourceFactory(
             Context context,

@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fgl27.twitch.DataSource.mDefaultDataSourceFactory;
+import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -34,6 +35,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -595,20 +597,36 @@ public final class Tools {
         return false;
     }
 
-    public static MediaSource buildMediaSource(Uri uri, Context context, int who_called, boolean LowLatency, String masterPlaylistString) {
+    public static MediaSource buildMediaSource(Uri uri, Context context, int who_called, boolean LowLatency, String masterPlaylist) {
         if (who_called == 1) {
-            return new HlsMediaSource.Factory(new mDefaultDataSourceFactory(context, Util.getUserAgent(context, context.getString(R.string.app_name)), masterPlaylistString, uri))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri))
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency ? 3000 : 0)//3000 is a safe value the implementation will calculate the proper value
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (who_called == 2) {
-            return new HlsMediaSource.Factory(new mDefaultDataSourceFactory(context, Util.getUserAgent(context, context.getString(R.string.app_name)), masterPlaylistString, uri))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri))
                     .setAllowChunklessPreparation(true)
                     .createMediaSource(uri);
         } else
             return new ProgressiveMediaSource
                     .Factory(new DefaultDataSourceFactory(context, Util.getUserAgent(context, context.getString(R.string.app_name))), new Mp4ExtractorsFactory())
                     .createMediaSource(MediaItemBuilder(uri));
+    }
+
+    private static mDefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri) {
+        return new mDefaultDataSourceFactory(
+                context,
+                null,
+                new mDefaultHttpDataSourceFactory(
+                        Util.getUserAgent(context, context.getString(R.string.app_name)),
+                        null,
+                        DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+                        DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+                        false,
+                        masterPlaylist,
+                        uri
+                )
+        );
     }
 
     public static boolean deviceIsTV(@NonNull Context context) {

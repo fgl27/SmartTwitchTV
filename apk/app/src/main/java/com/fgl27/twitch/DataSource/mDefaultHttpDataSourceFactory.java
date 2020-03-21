@@ -22,7 +22,6 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpDataSource.BaseFactory;
 import com.google.android.exoplayer2.upstream.HttpDataSource.Factory;
@@ -42,18 +41,6 @@ public final class mDefaultHttpDataSourceFactory extends BaseFactory {
     private final boolean allowCrossProtocolRedirects;
     private final String masterPlaylistString;
     private final Uri uri;
-
-    public mDefaultHttpDataSourceFactory(String userAgent, @Nullable TransferListener listener, String masterPlaylist, Uri uri) {
-        this(
-                userAgent,
-                listener,
-                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
-                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
-                false,
-                masterPlaylist,
-                uri
-        );
-    }
 
     public mDefaultHttpDataSourceFactory(
             String userAgent,
@@ -75,7 +62,7 @@ public final class mDefaultHttpDataSourceFactory extends BaseFactory {
     @Override
     protected mDefaultHttpDataSource createDataSourceInternal(
             @NonNull HttpDataSource.RequestProperties defaultRequestProperties) {
-      mDefaultHttpDataSource dataSource =
+        mDefaultHttpDataSource dataSource =
                 new mDefaultHttpDataSource(
                         userAgent,
                         connectTimeoutMillis,
