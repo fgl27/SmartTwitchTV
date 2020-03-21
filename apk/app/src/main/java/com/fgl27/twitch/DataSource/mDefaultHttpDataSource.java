@@ -1,5 +1,8 @@
 /*
- *  original file is from exoplayer source https://github.com/google/ExoPlayer
+ * original files is from exoplayer source https://github.com/google/ExoPlayer
+ *
+ * This file works as DefaultHttpDataSource and ByteArrayDataSource
+ * When dataSpec.uri.toString().equals(uri.toString()) == true it works ByteArrayDataSource
  *
  * Copyright (C) 2016 The Android Open Source Project
  *
@@ -34,7 +37,6 @@ import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Predicate;
 import com.google.android.exoplayer2.util.Util;
 
-import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +56,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
+//public final class ByteArrayDataSource extends BaseDataSource {
 public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSource {
 
     private static final String TAG = "DefaultHttpDataSource";
@@ -72,8 +75,11 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     @Nullable
     private final RequestProperties defaultRequestProperties;
     private final RequestProperties requestProperties;
-    private final String masterPlaylistString;
     private final Uri uri;
+    private boolean isPlaylist;
+    private byte[] data;
+    private int readPosition;
+    private int bytesRemaining;
     @Nullable
     private Predicate<String> contentTypePredicate;
     @Nullable
@@ -95,7 +101,7 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
             int readTimeoutMillis,
             boolean allowCrossProtocolRedirects,
             @Nullable RequestProperties defaultRequestProperties,
-            String masterPlaylist,
+            byte[] data,
             Uri uri) {
         super(/* isNetwork= */ true);
         this.userAgent = Assertions.checkNotEmpty(userAgent);
@@ -104,7 +110,7 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         this.readTimeoutMillis = readTimeoutMillis;
         this.allowCrossProtocolRedirects = allowCrossProtocolRedirects;
         this.defaultRequestProperties = defaultRequestProperties;
-        this.masterPlaylistString = masterPlaylist;
+        this.data = data;
         this.uri = uri;
     }
 
@@ -244,6 +250,7 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     @Override
     @Nullable
     public Uri getUri() {
+        if (isPlaylist) return uri;
         return connection == null ? null : Uri.parse(connection.getURL().toString());
     }
 
@@ -277,28 +284,27 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
 
     @Override
     public long open(DataSpec dataSpec) throws HttpDataSourceException {
+        isPlaylist = dataSpec.uri.toString().equals(uri.toString());
+
         this.dataSpec = dataSpec;
         this.bytesRead = 0;
         this.bytesSkipped = 0;
-
         transferInitializing(dataSpec);
 
-        if (dataSpec.uri.toString().equals(uri.toString())) {
+        if (isPlaylist) {
 
-            byte[] bytes = masterPlaylistString.getBytes();
+            readPosition = (int) dataSpec.position;
+            bytesRemaining = (int) ((dataSpec.length == C.LENGTH_UNSET)
+                    ? (data.length - dataSpec.position) : dataSpec.length);
 
-            bytesToRead = bytes.length;
-
-            //Start the connection even if it will fail that is not a problem
-            //It fails only if a connection is done after 18min of link creation
-            //That is the time the stream Token last
-            try {
-                connection = makeConnection(dataSpec);
-            } catch (IOException e) {
-                // Ignore
+            if (bytesRemaining <= 0 || readPosition + bytesRemaining > data.length) {
+                throw new HttpDataSourceException("Unsatisfiable range: [" + readPosition + ", " + dataSpec.length
+                        + "], length: " + data.length, dataSpec, HttpDataSourceException.TYPE_OPEN);
             }
 
-            inputStream = new ByteArrayInputStream(bytes);
+            opened = true;
+            transferStarted(dataSpec);
+            return bytesRemaining;
 
         } else {
 
@@ -362,41 +368,64 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
                 closeConnectionQuietly();
                 throw new HttpDataSourceException(e, dataSpec, HttpDataSourceException.TYPE_OPEN);
             }
+
+            opened = true;
+            transferStarted(dataSpec);
+
+            return bytesToRead;
         }
-
-        opened = true;
-        transferStarted(dataSpec);
-
-        return bytesToRead;
     }
 
     @Override
     public int read(byte[] buffer, int offset, int readLength) throws HttpDataSourceException {
-        try {
-            skipInternal();
-            return readInternal(buffer, offset, readLength);
-        } catch (IOException e) {
-            throw new HttpDataSourceException(e, dataSpec, HttpDataSourceException.TYPE_READ);
+        if (isPlaylist) {
+            if (readLength == 0) {
+                return 0;
+            } else if (bytesRemaining == 0) {
+                return C.RESULT_END_OF_INPUT;
+            }
+
+            readLength = Math.min(readLength, bytesRemaining);
+            System.arraycopy(data, readPosition, buffer, offset, readLength);
+            readPosition += readLength;
+            bytesRemaining -= readLength;
+            bytesTransferred(readLength);
+            return readLength;
+        } else {
+
+            try {
+                skipInternal();
+                return readInternal(buffer, offset, readLength);
+            } catch (IOException e) {
+                throw new HttpDataSourceException(e, dataSpec, HttpDataSourceException.TYPE_READ);
+            }
         }
     }
 
     @Override
     public void close() throws HttpDataSourceException {
-        try {
-            if (inputStream != null) {
-                maybeTerminateInputStream(connection, bytesRemaining());
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    throw new HttpDataSourceException(e, dataSpec, HttpDataSourceException.TYPE_CLOSE);
-                }
-            }
-        } finally {
-            inputStream = null;
-            closeConnectionQuietly();
+        if (isPlaylist) {
             if (opened) {
                 opened = false;
                 transferEnded();
+            }
+        } else {
+            try {
+                if (inputStream != null) {
+                    maybeTerminateInputStream(connection, bytesRemaining());
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        throw new HttpDataSourceException(e, dataSpec, HttpDataSourceException.TYPE_CLOSE);
+                    }
+                }
+            } finally {
+                inputStream = null;
+                closeConnectionQuietly();
+                if (opened) {
+                    opened = false;
+                    transferEnded();
+                }
             }
         }
     }

@@ -621,7 +621,7 @@ public final class Tools {
                         4000,
                         4000,
                         false,
-                        masterPlaylist,
+                        masterPlaylist.getBytes(),
                         uri
                 )
         );
