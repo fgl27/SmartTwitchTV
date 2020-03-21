@@ -16,7 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fgl27.twitch;
+package com.fgl27.twitch.DataSource;
 
 import android.content.Context;
 import android.net.Uri;
