@@ -1087,6 +1087,18 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void PrepareForMulti(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player) {
+            MainThreadHandler.post(() -> {
+                PicturePicture = false;
+                ClearPlayer(mainPlayer);
+                SwitchPlayer();
+                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
+                PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void RestartPlayer(int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
                 PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
