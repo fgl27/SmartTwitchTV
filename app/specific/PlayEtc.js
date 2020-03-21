@@ -1249,8 +1249,12 @@ function Play_MakeControls() {
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {
                 if (Android.IsMainNotMain()) {
-                    Android.mSwitchPlayer();
-                    PlayExtra_SwitchPlayer();
+                    if (PlayExtra_PicturePicture) {
+                        Android.mSwitchPlayer();
+                        PlayExtra_SwitchPlayer();
+                    } else {
+                        Android.PrepareForMulti(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                    }
                 }
 
                 Android.EnableMultiStream(Play_Multi_MainBig, 0);
