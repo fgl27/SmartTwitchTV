@@ -1010,7 +1010,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mshowLoadingBotton(boolean show) {
+        public void mshowLoadingBottom(boolean show) {
             MainThreadHandler.post(() -> {
                 if (show) showLoadingBotton();
                 else hideLoading(6);
@@ -1201,11 +1201,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerSize(int position) {
             PicturePictureSize = position;
-
-            //V144 Remove this after some apps update also remove all try from js related to new java fun
-            //Adjust to prevent crash on old js code
-            if (PicturePictureSize > 2) PicturePictureSize = PicturePictureSize - 3;
-
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
@@ -1213,11 +1208,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetPlayerSize(int position) {
             PicturePictureSize = position;
-
-            //V144 Remove this after some apps update also remove all try from js related to new java fun
-            //Adjust to prevent crash on old js code
-            if (PicturePictureSize > 2) PicturePictureSize = PicturePictureSize - 3;
-
             MainThreadHandler.post(PlayerActivity.this::SetDefaultLayouts);
         }
 

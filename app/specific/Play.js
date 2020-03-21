@@ -335,12 +335,7 @@ function Play_Start() {
 //}
 
 function Play_getStreamData(channel_name_vod_id, isLive) {
-
-    try {
-        return Android.getStreamData(channel_name_vod_id, isLive);
-    } catch (e) {}
-
-    return null;
+    return Android.getStreamData(channel_name_vod_id, isLive);
 }
 
 var Play_CheckIfIsLiveURL = '';
