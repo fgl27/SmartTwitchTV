@@ -18,7 +18,6 @@ import android.view.Display;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.fgl27.twitch.DataSource.mDefaultDataSourceFactory;
 import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -613,8 +612,8 @@ public final class Tools {
                     .createMediaSource(MediaItemBuilder(uri));
     }
 
-    private static mDefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri) {
-        return new mDefaultDataSourceFactory(
+    private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri) {
+        return new DefaultDataSourceFactory(
                 context,
                 null,
                 new mDefaultHttpDataSourceFactory(
