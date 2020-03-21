@@ -7,7 +7,6 @@ var PlayVod_state = 0;
 var PlayVod_tokenResponse = 0;
 var PlayVod_playingTry = 0;
 
-var PlayVod_playingUrl = '';
 var PlayVod_qualities = [];
 var PlayVod_qualityIndex = 0;
 var PlayVod_playlist = null;
@@ -363,7 +362,6 @@ function PlayVod_loadDataSuccessEnd(playlist) {
     PlayVod_playlist = playlist;
     //TODO revise the needed for PlayVod_state
     PlayVod_state = Play_STATE_PLAYING;
-    if (Main_IsNotBrowser) Android.SetAuto(PlayVod_autoUrl, playlist, 0);
     if (PlayVod_isOn) PlayVod_onPlayer();
     if (PlayVod_HasVodInfo) Main_Set_history('vod', Main_values_Play_data);
 }
@@ -400,16 +398,13 @@ function PlayVod_WarnEnd(text) {
 
 function PlayVod_qualityChanged() {
     PlayVod_qualityIndex = 1;
-    PlayVod_playingUrl = PlayVod_qualities[1].url;
 
     for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
         if (PlayVod_qualities[i].id === PlayVod_quality) {
             PlayVod_qualityIndex = i;
-            PlayVod_playingUrl = PlayVod_qualities[i].url;
             break;
         } else if (Main_A_includes_B(PlayVod_qualities[i].id, PlayVod_quality)) { //make shore to set a value before break out
             PlayVod_qualityIndex = i;
-            PlayVod_playingUrl = PlayVod_qualities[i].url;
         }
     }
 
@@ -423,8 +418,6 @@ function PlayVod_qualityChanged() {
 }
 
 function PlayVod_onPlayer() {
-    if (Main_isDebug) console.log('PlayVod_onPlayer:', '\n' + '\n"' + PlayVod_playingUrl + '"\n');
-
     if (Main_IsNotBrowser) {
         if (Main_values.vodOffset) {
             Chat_offset = Main_values.vodOffset;
@@ -442,11 +435,8 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_onPlayerStartPlay(time) {
-    if (PlayVod_isOn) {
-        // if (Main_A_includes_B(PlayVod_quality, "Auto")) Android.StartAuto(2, PlayVod_replay ? -1 : time);
-        // else Android.startVideoOffset(PlayVod_playingUrl, 2, PlayVod_replay ? -1 : time);
-
-        Android.StartAuto(2, PlayVod_replay ? -1 : time, 0);
+    if (Main_IsNotBrowser && PlayVod_isOn) {
+        Android.StartAuto(PlayVod_autoUrl, PlayVod_playlist, 2, PlayVod_replay ? -1 : time, 0);
     }
 }
 

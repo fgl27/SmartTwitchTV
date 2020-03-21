@@ -261,14 +261,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    //The main PreinitializePlayer used for when we first start the player or to play clips/vods
-    //Also used to change the main player that is the big screen
-    private void PreinitializePlayer(MediaSource NewMediaSource, String videoAddress, int who_called, long resumeposition, int position) {
-
-        //Clips don't have a masterPlaylistString only videoAddress
-        mediaSources[position] = NewMediaSource != null ? NewMediaSource :
-                Tools.buildMediaSource(Uri.parse(videoAddress), this, who_called, mLowLatency, "");
-
+    private void PreinitializePlayer(int who_called, long resumeposition, int position) {
         mWho_Called = who_called;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
         lastSeenTrackGroupArray = null;
@@ -1067,43 +1060,38 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int who_called) {
-            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, -1, mainPlayer));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void startVideoOffset(String videoAddress, int who_called, long resumeposition) {
-            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, resumeposition, mainPlayer));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetAuto(String uri, String masterPlaylistString, int player) {
-            mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void StartAuto(int who_called, long resumeposition, int player) {
             MainThreadHandler.post(() -> {
-                PreinitializePlayer(mediaSources[mainPlayer ^ player], "", who_called, resumeposition, mainPlayer ^ player);
+                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mwebContext, who_called, mLowLatency, "");
+                PreinitializePlayer(who_called, -1, mainPlayer);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void startVideoOffset(String videoAddress, int who_called, long ResumePosition) {
+            MainThreadHandler.post(() -> {
+                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mwebContext, who_called, mLowLatency, "");
+                PreinitializePlayer(who_called, ResumePosition, mainPlayer);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player) {
+            MainThreadHandler.post(() -> {
+                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
+                PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
                 if (player == 1) PicturePicture = true;
             });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void ResStartAuto(String uri, String masterPlaylistString, int who_called, long resumeposition, int player) {
+        public void RestartPlayer(int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
-                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
-                PreinitializePlayer(mediaSources[mainPlayer ^ player], "", who_called, resumeposition, mainPlayer ^ player);
+                PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
+                if (player == 1) PicturePicture = true;
             });
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void reinitializePlayer() {
-            MainThreadHandler.post(() -> initializePlayer(mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS

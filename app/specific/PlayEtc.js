@@ -981,7 +981,7 @@ function Play_MakeControls() {
                 Play_SetHtmlQuality('stream_quality');
 
                 if (oldQuality !== Play_data.quality) Android.SetQuality(Play_data.qualityIndex - 1);//just quality change
-                else Android.reinitializePlayer();//resetart the player
+                else Android.RestartPlayer(1, 0, 0);//resetart the player
 
             } else if (PlayVodClip === 2) {
                 PlayVod_hidePanel();
@@ -991,7 +991,7 @@ function Play_MakeControls() {
                 PlayVod_SetHtmlQuality('stream_quality');
 
                 if (oldQuality !== PlayVod_quality) Android.SetQuality(PlayVod_qualityIndex - 1);//just quality change
-                else Android.StartAuto(2, Android.gettime(), 0);//resetart the player
+                else Android.RestartPlayer(2, Android.gettime(), 0);//resetart the player
 
             } else if (PlayVodClip === 3) {
                 PlayClip_hidePanel();
@@ -1048,10 +1048,10 @@ function Play_MakeControls() {
         enterKey: function() {
 
             if (this.defaultValue === 2) {//both
-                Android.StartAuto(1, 0, 0);
-                Android.StartAuto(1, 0, 1);
-            } else if (this.defaultValue) Android.StartAuto(1, 0, 0);//main
-            else Android.StartAuto(1, 0, 1);//small
+                Android.RestartPlayer(1, 0, 0);
+                Android.RestartPlayer(1, 0, 1);
+            } else if (this.defaultValue) Android.RestartPlayer(1, 0, 0);//main
+            else Android.RestartPlayer(1, 0, 1);//small
 
             Play_hidePanel();
             this.defaultValue = 2;
@@ -1141,10 +1141,10 @@ function Play_MakeControls() {
                     }
 
                 } else if (PlayExtra_PicturePicture) {
-                    Android.ResStartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
-                    Android.ResStartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+                    Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                    Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
                 } else {
-                    Android.ResStartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                    Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
                 }
 
             }

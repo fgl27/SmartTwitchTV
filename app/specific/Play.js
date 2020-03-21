@@ -769,7 +769,6 @@ function Play_loadDataSuccessend(playlist) {
 
     Play_data.playlist = playlist;
     Play_state = Play_STATE_PLAYING;
-    if (Main_IsNotBrowser) Android.SetAuto(Play_data.AutoUrl, Play_data.playlist, 0);
     if (Play_isOn) Play_onPlayer();
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     UserLiveFeed_PreventHide = false;
@@ -918,10 +917,7 @@ function Play_getQualities(position) {
 function Play_onPlayer() {
 
     if (Main_IsNotBrowser && Play_isOn) {
-        // if (Main_A_includes_B(Play_data.quality, 'Auto') || PlayExtra_PicturePicture) Android.StartAuto(1, 0);
-        // else Android.startVideo(Play_playingUrl, 1);
-
-        Android.StartAuto(1, 0, 0);
+        Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
     }
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
@@ -1688,8 +1684,7 @@ function Play_Multi_UnSetPanel(shutdown) {
             Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
 
             if (Play_Multi_Offset) {
-                Android.SetAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1);
-                Android.StartAuto(1, 0, 1);
+                Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
             }
 
             if (!Play_isFullScreen) {
@@ -1712,8 +1707,7 @@ function Play_Multi_UnSetPanel(shutdown) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
         if ((name !== Play_data.data[14] || Play_Multi_Offset) && First) {
-            Android.SetAuto(Play_data.AutoUrl, Play_data.playlist, 0);
-            Android.StartAuto(1, 0, 0);
+            Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
             Play_UpdateMainStream(true, true);
             Play_MultiUpdateMain();
         } else Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
