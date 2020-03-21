@@ -6765,7 +6765,7 @@
             Play_ClearPP();
             Play_PreshutdownStream(true);
         } else if (PlayVodClip === 2) PlayVod_PreshutdownStream(true);
-        else if (PlayVodClip === 3) PlayClip_PreshutdownStream();
+        else if (PlayVodClip === 3) PlayClip_PreshutdownStream(true);
 
         Main_values.Play_WasPlaying = 0;
         PlayVod_ProgresBarrUpdate(0, 0);
@@ -9376,7 +9376,10 @@
         UserLiveFeed_Hide();
 
         if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
-        else if (Play_EndDialogEnter === 3) PlayClip_PreshutdownStream(false);
+        else if (Play_EndDialogEnter === 3) {
+            PlayClip_PreshutdownStream(false);
+            PlayClip_isOn = false;
+        }
 
         Play_EndDialogEnter = 0;
 
