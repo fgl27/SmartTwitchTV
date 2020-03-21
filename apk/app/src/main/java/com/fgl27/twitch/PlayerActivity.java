@@ -112,7 +112,6 @@ public class PlayerActivity extends Activity {
     public boolean deviceIsTV;
     public boolean MultiStreamEnable;
     public boolean isFullScreen = true;
-    public boolean updateQualities = true;
     public int mainPlayer = 0;
     public int MultiMainPlayer = 0;
     public int PicturePicturePosition = 0;
@@ -265,7 +264,6 @@ public class PlayerActivity extends Activity {
         mWho_Called = who_called;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
         lastSeenTrackGroupArray = null;
-        updateQualities = mainPlayer == position;
         initializePlayer(position);
     }
 
@@ -1694,10 +1692,9 @@ public class PlayerActivity extends Activity {
 
     }
 
-    public void requestgetQualities(int position) {
-        if (updateQualities && !PicturePicture && !MultiStreamEnable && mWho_Called < 3 && position == mainPlayer) {
+    public void RequestGetQualities() {
+        if (!PicturePicture && !MultiStreamEnable && mWho_Called < 3) {
             mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + mWho_Called +  ")");
-            updateQualities = false;
         }
     }
 
@@ -1716,8 +1713,8 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("ReferenceEquality")
         public void onTracksChanged(@NonNull TrackGroupArray trackGroups, @NonNull TrackSelectionArray trackSelections) {
             //onTracksChanged -> Called when the available or selected tracks change.
-            if (trackGroups != lastSeenTrackGroupArray || updateQualities) {
-                requestgetQualities(position);
+            if (trackGroups != lastSeenTrackGroupArray) {
+                RequestGetQualities();
                 lastSeenTrackGroupArray = trackGroups;
             }
         }
