@@ -1582,6 +1582,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public boolean IsMainNotMain() {
+            return mainPlayer != 0;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void DisableMultiStream() {
             MainThreadHandler.post(() -> {
                 MultiStreamEnable = false;
