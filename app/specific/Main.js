@@ -1200,13 +1200,8 @@ var Main_oldReturnCheck;
 function Main_checkVersion() {
     if (Main_IsNotBrowser) {
         var device = Android.getDevice();
-        var Webviewversion = null;
-
-        try {
-            Webviewversion = Android.getWebviewVersion();
-            console.log('Webviewversion ' + Webviewversion);
-        } catch (e) {
-        }
+        var Webviewversion = Android.getWebviewVersion();
+        console.log('Webviewversion ' + Webviewversion);
 
         Main_versionTag = "Apk: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion +
             (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
@@ -2243,22 +2238,19 @@ function Main_CheckResume() { // Called only by JAVA
 function Main_CheckAccessibility() {
     if (Settings_Obj_default("accessibility_warn")) {
         var isenable;
-        //TODO remove the try after some app update
-        try {
-            isenable = Android.isAccessibilitySettingsOn();
 
-            if (isenable) Main_CheckAccessibilitySet();
-            else {
-                Main_CheckAccessibilityHide(false);
-                //if focused and showing force a refresh check
-                if (Screens_Isfocused()) {
-                    document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
-                    Main_SwitchScreen();
-                }
+        isenable = Android.isAccessibilitySettingsOn();
+
+        if (isenable) Main_CheckAccessibilitySet();
+        else {
+            Main_CheckAccessibilityHide(false);
+            //if focused and showing force a refresh check
+            if (Screens_Isfocused()) {
+                document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+                Main_SwitchScreen();
             }
-
-        } catch (e) {
         }
+
     }
 }
 

@@ -394,9 +394,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
             if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
                 UserLiveFeed_CheckIfIsLiveStart();
             } else if (Play_CheckIfIsLiveResponseText) {
-                try {
-                    Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
-                } catch (e) {}
+                Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
             }
 
         }
@@ -507,17 +505,14 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
     if (!Play_isOn || doc) {
 
-        try {
-            Android.CheckIfIsLiveFeed(
-                doc ? doc[6] : JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
-                UserLiveFeed_CheckIfIsLiveDelay,
-                "UserLiveFeed_CheckIfIsLiveResult",
-                UserLiveFeed_FeedPosX,
-                (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100)
-            );
-        } catch (e) {
-            Play_CheckIfIsLiveCleanEnd();
-        }
+
+        Android.CheckIfIsLiveFeed(
+            doc ? doc[6] : JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
+            UserLiveFeed_CheckIfIsLiveDelay,
+            "UserLiveFeed_CheckIfIsLiveResult",
+            UserLiveFeed_FeedPosX,
+            (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100)
+        );
 
     } else UserLiveFeed_CheckIfIsLiveSTop();
 }
@@ -855,7 +850,7 @@ function UserLiveFeed_KeyEnter(pos) {
 function UserLiveFeed_Showloading(show) {
     if (Main_IsNotBrowser) {
         try {
-            Android.mshowLoadingBotton(show);
+            Android.mshowLoadingBottom(show);
         } catch (e) {
             if (show) Main_ShowElement('dialog_loading_feed');
             else Main_HideElement('dialog_loading_feed');
