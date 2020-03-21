@@ -36,18 +36,18 @@
     *;
 }
 
--keep class com.fgl27.twitch.mDefaultDataSourceFactory**
--keepclassmembers class com.fgl27.twitch.mDefaultDataSourceFactory** {
+-keep class com.fgl27.twitch.DataSource.mDefaultDataSourceFactory**
+-keepclassmembers class com.fgl27.twitch.DataSource.mDefaultDataSourceFactory** {
     *;
 }
 
--keep class com.fgl27.twitch.mDefaultHttpDataSourceFactory**
--keepclassmembers class com.fgl27.twitch.mDefaultHttpDataSourceFactory** {
+-keep class com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory**
+-keepclassmembers class com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory** {
     *;
 }
 
--keep class com.fgl27.twitch.mDefaultHttpDataSource**
--keepclassmembers class com.fgl27.twitch.mDefaultHttpDataSource** {
+-keep class com.fgl27.twitch.DataSource.mDefaultHttpDataSource**
+-keepclassmembers class com.fgl27.twitch.DataSource.mDefaultHttpDataSource** {
     *;
 }
 
