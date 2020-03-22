@@ -391,12 +391,10 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
             var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
 
-            if (!Play_CheckIfIsLiveQualities.length || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+            if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
                 UserLiveFeed_CheckIfIsLiveStart();
-            } else if (Play_CheckIfIsLiveQualities.length) {
-                try {
-                    Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
-                } catch (e) {}
+            } else if (Play_CheckIfIsLiveResponseText) {
+                Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
             }
 
         }
@@ -442,7 +440,6 @@ function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
 
     Android.ClearFeedPlayer();
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
 }
 
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
@@ -457,16 +454,16 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
             if (StreamData.status === 200) {
 
                 Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveQualities = StreamData.responseText;
+                Play_CheckIfIsLiveResponseText = StreamData.responseText;
                 Play_CheckIfIsLiveChannel = StreamInfo[6];
 
                 Android.StartFeedPlayer(
                     Play_CheckIfIsLiveURL,
+                    Play_CheckIfIsLiveResponseText,
                     UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
                     false
                 );
 
-                Sidepannel_CheckIfIsLiveRefreshSet();
             } else if (StreamData.status === 1 || StreamData.status === 403) {
 
                 UserLiveFeed_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + STR_FORBIDDEN);
@@ -481,11 +478,11 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 }
 
 // var qualitiPos = UserLiveFeed_CheckIfIsLiveFind720();
-// qualitiPos ? Play_CheckIfIsLiveQualities[qualitiPos].url : Play_CheckIfIsLiveURL,
+// qualitiPos ? Play_CheckIfIsLiveResponseText[qualitiPos].url : Play_CheckIfIsLiveURL,
 // function UserLiveFeed_CheckIfIsLiveFind720() {
-//     for (var i = 0; i < Play_CheckIfIsLiveQualities.length; i++) {
-//         if (Main_A_includes_B(Play_CheckIfIsLiveQualities[i].id, '720')) {
-//             console.log(Play_CheckIfIsLiveQualities[i].id);
+//     for (var i = 0; i < Play_CheckIfIsLiveResponseText; i++) {
+//         if (Main_A_includes_B(Play_CheckIfIsLiveResponseText[i].id, '720')) {
+//             console.log(Play_CheckIfIsLiveResponseText[i].id);
 //             return i;
 //         }
 //     }
@@ -500,7 +497,6 @@ function UserLiveFeed_CheckIfIsLiveWarn(text) {
 var UserLiveFeed_CheckIfIsLiveDelay = 0;
 function UserLiveFeed_CheckIfIsLiveStart() {
 
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsNotBrowser) return;
@@ -509,17 +505,14 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
     if (!Play_isOn || doc) {
 
-        try {
-            Android.CheckIfIsLiveFeed(
-                doc ? doc[6] : JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
-                UserLiveFeed_CheckIfIsLiveDelay,
-                "UserLiveFeed_CheckIfIsLiveResult",
-                UserLiveFeed_FeedPosX,
-                (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100)
-            );
-        } catch (e) {
-            Play_CheckIfIsLiveCleanEnd();
-        }
+
+        Android.CheckIfIsLiveFeed(
+            doc ? doc[6] : JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
+            UserLiveFeed_CheckIfIsLiveDelay,
+            "UserLiveFeed_CheckIfIsLiveResult",
+            UserLiveFeed_FeedPosX,
+            (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100)
+        );
 
     } else UserLiveFeed_CheckIfIsLiveSTop();
 }
@@ -857,7 +850,7 @@ function UserLiveFeed_KeyEnter(pos) {
 function UserLiveFeed_Showloading(show) {
     if (Main_IsNotBrowser) {
         try {
-            Android.mshowLoadingBotton(show);
+            Android.mshowLoadingBottom(show);
         } catch (e) {
             if (show) Main_ShowElement('dialog_loading_feed');
             else Main_HideElement('dialog_loading_feed');

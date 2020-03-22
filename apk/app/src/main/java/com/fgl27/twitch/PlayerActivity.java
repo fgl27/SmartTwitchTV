@@ -35,16 +35,15 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
@@ -52,8 +51,8 @@ import java.util.Locale;
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAcount = 4;
     public final int PlayerAcountPlus = PlayerAcount + 1;
@@ -95,30 +94,26 @@ public class PlayerActivity extends Activity {
     public String[] BLACKLISTEDCODECS = null;
     public PlayerView[] PlayerView = new PlayerView[PlayerAcountPlus];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAcountPlus];
-    public DataSource.Factory dataSourceFactory;
     public DefaultRenderersFactory renderersFactory;
     public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAcountPlus];
     public DefaultTrackSelector.Parameters trackSelectorParameters;
     public DefaultTrackSelector.Parameters trackSelectorParametersPP;
     public DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
+    public TrackGroupArray lastSeenTrackGroupArray;
     public int mainPlayerBandwidth = Integer.MAX_VALUE;
     public int PP_PlayerBandwidth = 3000000;
     public final int ExtraSmallPlayerBandwidth = 4000000;
     public long mResumePosition;
-    public int mwho_called = 1;
-    //The mediaSources stored to be used when changing from auto to source 720 etc etc
-    public MediaSource[] mediaSourcesAuto = new MediaSource[PlayerAcountPlus];
-    public long[] expires = new long[PlayerAcountPlus];
-    //The mediaSources that the player uses receives mediaSourcesAuto or null if null we know that we aren't in auto mode
-    public MediaSource[] mediaSourcePlaying = new MediaSource[PlayerAcountPlus];
-    public WebView mwebview;
+    public int mWho_Called = 1;
+    public MediaSource[] mediaSources = new MediaSource[PlayerAcountPlus];
+    public WebView mWebView;
     public boolean PicturePicture;
     public boolean deviceIsTV;
     public boolean MultiStreamEnable;
     public boolean isFullScreen = true;
     public int mainPlayer = 0;
-    public int MultimainPlayer = 0;
-    public int PicturePicturePositions = 0;
+    public int MultiMainPlayer = 0;
+    public int PicturePicturePosition = 0;
     public int PicturePictureSize = 1;//sizes are 0 , 1 , 2
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
@@ -141,11 +136,11 @@ public class PlayerActivity extends Activity {
     public long SpeedCounter = 0L;
     public boolean mLowLatency = false;
     public boolean UseFullBandwidth = false;
-    public boolean AlredyStarted;
+    public boolean AlreadyStarted;
     public boolean onCreateReady;
     public boolean IsStopped;
+    public boolean IsInAutoMode = true;
     public LoadControl[] loadControl = new LoadControl[PlayerAcount];
-    public Uri uri;
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
     //the default size for the main player 100% width x height
@@ -185,11 +180,6 @@ public class PlayerActivity extends Activity {
             for (int i = 0; i < PlayerAcountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
             }
-
-            dataSourceFactory =
-                    new DefaultDataSourceFactory(
-                            this,
-                            Util.getUserAgent(this, this.getString(R.string.app_name)));
 
             trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(this);
 
@@ -270,15 +260,10 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    //The main PreinitializePlayer used for when we first start the player or to play clips/vods
-    //Also used to change the main player that is the big screen
-    private void PreinitializePlayer(MediaSource mediaSource, String videoAddress, int who_called, long resumeposition, int position) {
-
-        mediaSourcePlaying[position] = mediaSource;
-        uri = Uri.parse(videoAddress);
-        mwho_called = who_called;
+    private void PreinitializePlayer(int who_called, long resumeposition, int position) {
+        mWho_Called = who_called;
         mResumePosition = resumeposition > 0 ? resumeposition : 0;
-
+        lastSeenTrackGroupArray = null;
         initializePlayer(position);
     }
 
@@ -305,12 +290,12 @@ public class PlayerActivity extends Activity {
 
                 player[position] = new SimpleExoPlayer.Builder(this, renderersFactory)
                         .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[mwho_called])
+                        .setLoadControl(loadControl[mWho_Called])
                         .build();
             } else {
                 player[position] = new SimpleExoPlayer.Builder(this)
                         .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[mwho_called])
+                        .setLoadControl(loadControl[mWho_Called])
                         .build();
             }
 
@@ -320,15 +305,14 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setPlayer(player[position]);
         }
 
+        PlayerView[position].setPlaybackPreparer(null);
+        player[position].setPlayWhenReady(true);
         player[position].setMediaSource(
-                mediaSourcePlaying[position] != null ?
-                        mediaSourcePlaying[position] :
-                        Tools.buildMediaSource(uri, dataSourceFactory, mwho_called, mLowLatency),
-                ((mResumePosition > 0) && (mwho_called > 1)) ? mResumePosition : C.TIME_UNSET);
+                mediaSources[position],
+                ((mResumePosition > 0) && (mWho_Called > 1)) ? mResumePosition : C.TIME_UNSET);
 
         player[position].prepare();
 
-        player[position].setPlayWhenReady(true);
         hideLoading(5);
         SwitchPlayerAudio(AudioSource);
 
@@ -344,7 +328,7 @@ public class PlayerActivity extends Activity {
         KeepScreenOn(true);
     }
 
-    private void initializeSmallPlayer(MediaSource mediaSource) {
+    private void initializeSmallPlayer(MediaSource NewMediaSource) {
         if (IsStopped) {
             monStop();
             return;
@@ -377,13 +361,16 @@ public class PlayerActivity extends Activity {
             PlayerView[4].setPlayer(player[4]);
         }
 
+        PlayerView[4].setPlaybackPreparer(null);
+        player[4].setPlayWhenReady(true);
+
         player[4].setMediaSource(
-                mediaSource,
+                NewMediaSource,
                 C.TIME_UNSET);
 
         player[4].prepare();
-        player[4].setPlayWhenReady(true);
-        mediaSourcePlaying[4] = mediaSource;
+
+        mediaSources[4] = NewMediaSource;
 
         KeepScreenOn(true);
 
@@ -407,7 +394,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private void initializePlayerMulti(int position, MediaSource mediaSource) {
+    private void initializePlayerMulti(int position, MediaSource NewMediaSource) {
         if (IsStopped) {
             monStop();
             return;
@@ -447,15 +434,17 @@ public class PlayerActivity extends Activity {
             PlayerView[position].setPlayer(player[position]);
         }
 
+        PlayerView[position].setPlaybackPreparer(null);
+        player[position].setPlayWhenReady(true);
+
         player[position].setMediaSource(
-                mediaSource,
+                NewMediaSource,
                 C.TIME_UNSET
         );
 
         player[position].prepare();
 
-        player[position].setPlayWhenReady(true);
-        mediaSourcePlaying[position] = mediaSource;
+        mediaSources[position] = NewMediaSource;
         hideLoading(5);
 
         if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(1f);
@@ -500,11 +489,10 @@ public class PlayerActivity extends Activity {
 
         for (int i = 0; i < PlayerAcountPlus; i++) {
             PlayerCheckHandler[i].removeCallbacksAndMessages(null);
-            mediaSourcePlaying[i] = null;
-            mediaSourcesAuto[i] = null;
+            mediaSources[i] = null;
         }
 
-        mwho_called = who_called;
+        mWho_Called = who_called;
         mResumePosition = 0;
 
         ClearPlayer(position);
@@ -634,7 +622,7 @@ public class PlayerActivity extends Activity {
             }
         }
         //The side PP player
-        PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
+        PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
 
         //MultiStream
         //4 way same size
@@ -712,7 +700,7 @@ public class PlayerActivity extends Activity {
 
         //Set new video sizes
         PlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
-        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
+        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
 
         VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
 
@@ -753,7 +741,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void UpdadeSizePosSmall(int pos) {
-        PlayerView[pos].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
+        PlayerView[pos].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
     }
 
     public void SetPlayerAudioMulti() {
@@ -772,7 +760,7 @@ public class PlayerActivity extends Activity {
         PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[7]);
 
         AudioMulti = (mainPlayer + offset) % 4;
-        MultimainPlayer = AudioMulti;
+        MultiMainPlayer = AudioMulti;
         SetPlayerAudioMulti();
 
         if (trackSelector[mainPlayer] != null)
@@ -785,7 +773,7 @@ public class PlayerActivity extends Activity {
         PlayerView[(2 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[2]);
         PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[3]);
 
-        MultimainPlayer = (mainPlayer + offset) % 4;
+        MultiMainPlayer = (mainPlayer + offset) % 4;
 
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
@@ -798,7 +786,7 @@ public class PlayerActivity extends Activity {
         if (PicturePicture) updateVideSizePP(isFullScreen);
         else {
             updateVideSize(isFullScreen);
-            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[PicturePicturePositions][PicturePictureSize]);
+            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
         }
 
         if (!PicturePicture || player[mainPlayer ^ 1] == null || player[mainPlayer] == null) {
@@ -818,10 +806,10 @@ public class PlayerActivity extends Activity {
         super.onResume();
         IsStopped = false;
 
-        if (mwebview != null && AlredyStarted) {
-            mwebview.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
+        if (mWebView != null && AlreadyStarted) {
+            mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
         }
-        AlredyStarted = true;
+        AlreadyStarted = true;
     }
 
     //This function is called when home key is pressed
@@ -842,8 +830,8 @@ public class PlayerActivity extends Activity {
         }
 
         //Prevent java timeout and related on background
-        if (mwebview != null && AlredyStarted) {
-            mwebview.loadUrl("javascript:smartTwitchTV.Main_CheckStop()");
+        if (mWebView != null && AlreadyStarted) {
+            mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckStop()");
         }
         //ClearPlayer will reset audio position
         AudioMulti = temp_AudioMulti;
@@ -909,8 +897,8 @@ public class PlayerActivity extends Activity {
             // if the call key is being released, AND we are tracking
             // it from an initial key down, AND it is not canceled,
             // then handle it.
-            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F2));
-            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F2));
+            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F2));
+            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F2));
             return true;
         }
         return super.onKeyUp(keyCode, event);
@@ -936,16 +924,16 @@ public class PlayerActivity extends Activity {
             if (event.getAction() == KeyEvent.ACTION_DOWN) return true;
 
             //P for play
-            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_P));
-            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_P));
+            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_P));
+            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_P));
             return true;
         } else if (event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PAUSE) {
             //Prevent send it up down and up
             if (event.getAction() == KeyEvent.ACTION_DOWN) return true;
 
             //S for stop/pause
-            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_S));
-            mwebview.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_S));
+            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_S));
+            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_S));
             return true;
         }
 
@@ -953,17 +941,17 @@ public class PlayerActivity extends Activity {
     }
 
     public  void LoadUrlWebview(String LoadUrlString) {
-        MainThreadHandler.post(() -> mwebview.loadUrl(LoadUrlString));
+        MainThreadHandler.post(() -> mWebView.loadUrl(LoadUrlString));
     }
 
     // A web app that loads all thumbnails content and interact with the player
     private void initializeWebview() {
-        mwebview = findViewById(R.id.WebView);
-        mwebview.setBackgroundColor(Color.TRANSPARENT);
+        mWebView = findViewById(R.id.WebView);
+        mWebView.setBackgroundColor(Color.TRANSPARENT);
         if (BuildConfig.DEBUG)
             WebView.setWebContentsDebuggingEnabled(true);
 
-        WebSettings websettings = mwebview.getSettings();
+        WebSettings websettings = mWebView.getSettings();
 
         websettings.setJavaScriptEnabled(true);
         websettings.setDomStorageEnabled(true);
@@ -976,14 +964,14 @@ public class PlayerActivity extends Activity {
         websettings.setUseWideViewPort(true);
         websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        mwebview.clearCache(true);
-        mwebview.clearHistory();
+        mWebView.clearCache(true);
+        mWebView.clearHistory();
 
-        mwebview.addJavascriptInterface(new WebAppInterface(this), "Android");
+        mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
-        mwebview.loadUrl(PageUrl);
+        mWebView.loadUrl(PageUrl);
 
-        mwebview.requestFocus();
+        mWebView.requestFocus();
     }
 
     public class WebAppInterface {
@@ -1019,7 +1007,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mshowLoadingBotton(boolean show) {
+        public void mshowLoadingBottom(boolean show) {
             MainThreadHandler.post(() -> {
                 if (show) showLoadingBotton();
                 else hideLoading(6);
@@ -1070,91 +1058,64 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void startVideo(String videoAddress, int who_called) {
-            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, -1, mainPlayer));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void startVideoOffset(String videoAddress, int who_called, long resumeposition) {
-            MainThreadHandler.post(() -> PreinitializePlayer(null, videoAddress, who_called, resumeposition, mainPlayer));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void initializePlayer2(String videoAddress) {
             MainThreadHandler.post(() -> {
-                PreinitializePlayer(null, videoAddress, 1, -1, mainPlayer ^ 1);
-                PicturePicture = true;
+                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mwebContext, who_called, mLowLatency, "");
+                PreinitializePlayer(who_called, -1, mainPlayer);
             });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void initializePlayer2Auto() {
+        public void startVideoOffset(String videoAddress, int who_called, long ResumePosition) {
             MainThreadHandler.post(() -> {
-                PreinitializePlayer(mediaSourcesAuto[mainPlayer ^ 1], "", 1, -1, mainPlayer ^ 1);
-                PicturePicture = true;
+                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mwebContext, who_called, mLowLatency, "");
+                PreinitializePlayer(who_called, ResumePosition, mainPlayer);
             });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetAuto(String url) {
-            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
-            //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            expires[mainPlayer] = System.currentTimeMillis() + 18000;
-            mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetAuto2(String url) {
-            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
-            //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
-            mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void StartAuto(int who_called, long resumeposition) {
-            MainThreadHandler.post(() -> PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", who_called, resumeposition, mainPlayer));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void ResStartAuto(String url, int who_called, long resumeposition) {
-            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
-            //For some reason maybe a twitch bug the vod expires in 20 hours not min
+        public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
-                expires[mainPlayer] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-                PreinitializePlayer(mediaSourcesAuto[mainPlayer], "", who_called, resumeposition, mainPlayer);
+                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
+                PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
+                if (player == 1) {
+                    PicturePicture = true;
+                }
             });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void ResStartAuto2(String url) {
-            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
-            //For some reason maybe a twitch bug the vod expires in 20 hours not min
+        public void PrepareForMulti(String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
-                expires[mainPlayer ^ 1] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mainPlayer ^ 1] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-                PreinitializePlayer(mediaSourcesAuto[mainPlayer ^ 1], "", 1, -1, mainPlayer ^ 1);
-                PicturePicture = true;
+                PicturePicture = false;
+                ClearPlayer(mainPlayer);
+                mainPlayer = mainPlayer ^ 1;
+                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
+                PreinitializePlayer(1, 0, mainPlayer);
             });
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StartFeedPlayer(String url, int position, boolean fullBandwidth) {
+        public void RestartPlayer(int who_called, long ResumePosition, int player) {
+            MainThreadHandler.post(() -> {
+                PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
+                if (player == 1) {
+                    PicturePicture = true;
+                }
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBandwidth) {
             MainThreadHandler.post(() -> {
                 UseFullBandwidth = fullBandwidth;
-                expires[4] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth));
+                mediaSources[4] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, (mLowLatency && UseFullBandwidth), masterPlaylistString);
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
-                initializeSmallPlayer(mediaSourcesAuto[4]);
+                initializeSmallPlayer(mediaSources[4]);
             });
         }
 
@@ -1189,13 +1150,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetFeedPosition(int position) {
             MainThreadHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetAutoFeedPlayer(String url) {
-            expires[4] = System.currentTimeMillis() + 18000;
-            mediaSourcesAuto[4] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, (mLowLatency && UseFullBandwidth));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1241,25 +1195,20 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerPosition(int position) {
-            PicturePicturePositions = position;
+            PicturePicturePosition = position;
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetPlayerPosition(int position) {
-            PicturePicturePositions = position;
+            PicturePicturePosition = position;
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerSize(int position) {
             PicturePictureSize = position;
-
-            //V144 Remove this after some apps update also remove all try from js related to new java fun
-            //Adjust to prevent crash on old js code
-            if (PicturePictureSize > 2) PicturePictureSize = PicturePictureSize - 3;
-
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
@@ -1267,11 +1216,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetPlayerSize(int position) {
             PicturePictureSize = position;
-
-            //V144 Remove this after some apps update also remove all try from js related to new java fun
-            //Adjust to prevent crash on old js code
-            if (PicturePictureSize > 2) PicturePictureSize = PicturePictureSize - 3;
-
             MainThreadHandler.post(PlayerActivity.this::SetDefaultLayouts);
         }
 
@@ -1433,10 +1377,10 @@ public class PlayerActivity extends Activity {
                 if (MultiStreamEnable) {
                     for (int i = 0; i < PlayerAcount; i++) {
                         if (player[i] != null)
-                            player[i].setPlaybackParameters(new PlaybackParameters(speed));
+                            player[i].setPlaybackSpeed(speed);
                     }
                 } else if (player[mainPlayer] != null)
-                    player[mainPlayer].setPlaybackParameters(new PlaybackParameters(speed));
+                    player[mainPlayer].setPlaybackSpeed(speed);
             });
         }
 
@@ -1482,7 +1426,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    int playerPos = MultiStreamEnable ? MultimainPlayer : mainPlayer;
+                    int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
                     if (player[playerPos] != null)
                         value = Tools.mgetVideoQuality(player[playerPos]);
@@ -1515,7 +1459,7 @@ public class PlayerActivity extends Activity {
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
                 public void run() {
-                    int playerPos = MultiStreamEnable ? MultimainPlayer : mainPlayer;
+                    int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
                     if (player[playerPos] != null) {
                         value = String.format(Locale.US, "%d,%d",
@@ -1548,7 +1492,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void keyEvent(int key, int keyaction) {
-            MainThreadHandler.post(() -> mwebview.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
+            MainThreadHandler.post(() -> mWebView.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1636,6 +1580,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public boolean IsMainNotMain() {
+            return mainPlayer != 0;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void DisableMultiStream() {
             MainThreadHandler.post(() -> {
                 MultiStreamEnable = false;
@@ -1645,31 +1595,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StartMultiStream(int position, String url) {
+        public void StartMultiStream(int position, String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
-
                 int mposition = position;
                 if (position == 0) mposition = mainPlayer;
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
-                mediaSourcesAuto[mposition] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
-                initializePlayerMulti(mposition, mediaSourcesAuto[mposition]);
-            });
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetAutoMulti(int position, String url) {
-            //The live token expires in 20 min add a timer to request a refresh in case the js code fail to refresh it
-            //For some reason maybe a twitch bug the vod expires in 20 hours not min
-            MainThreadHandler.post(() -> {
-
-                int mposition = position;
-                if (position == 0) mposition = mainPlayer;
-                else if (position == 1) mposition = mainPlayer ^ 1;
-
-                expires[mposition] = System.currentTimeMillis() + 18000;
-                mediaSourcesAuto[mposition] = Tools.buildMediaSource(Uri.parse(url), dataSourceFactory, 1, mLowLatency);
+                mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
+                initializePlayerMulti(mposition, mediaSources[mposition]);
             });
         }
 
@@ -1710,6 +1643,63 @@ public class PlayerActivity extends Activity {
             return pInfo != null ? pInfo.versionName: null;
         }
 
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getQualities() {
+            return Tools.getQualities(trackSelector[mainPlayer]);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetQuality(int position) {
+            mSetQuality(position);
+        }
+
+    }
+
+    public void mSetQuality(int position) {
+
+        if (trackSelector[mainPlayer] != null) {
+            IsInAutoMode = position == -1;
+
+            if(IsInAutoMode){
+                trackSelector[mainPlayer].setParameters(trackSelectorParameters);
+                return;
+            }
+
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
+
+            if (mappedTrackInfo != null) {
+                for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
+
+                    if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
+
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelector[mainPlayer].getParameters().buildUpon();
+                        builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
+
+                        if(position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
+
+                            builder.setSelectionOverride(
+                                    rendererIndex,
+                                    mappedTrackInfo.getTrackGroups(rendererIndex),
+                                    new DefaultTrackSelector.SelectionOverride(/* groupIndex */ 0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
+                            );
+
+                        }
+
+                        trackSelector[mainPlayer].setParameters(builder);
+                        break;
+                    }
+
+                }
+            }
+        }
+    }
+
+    public void RequestGetQualities() {
+        if (!PicturePicture && !MultiStreamEnable && mWho_Called < 3) {
+            mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + mWho_Called +  ")");
+        }
     }
 
     // Basic EventListener for exoplayer
@@ -1720,7 +1710,17 @@ public class PlayerActivity extends Activity {
 
         private PlayerEventListener(int mposition) {
             position = mposition;
-            delayms = (BUFFER_SIZE[mwho_called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0);
+            delayms = (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0);
+        }
+
+        @Override
+        @SuppressWarnings("ReferenceEquality")
+        public void onTracksChanged(@NonNull TrackGroupArray trackGroups, @NonNull TrackSelectionArray trackSelections) {
+            //onTracksChanged -> Called when the available or selected tracks change.
+            if (trackGroups != lastSeenTrackGroupArray) {
+                RequestGetQualities();
+                lastSeenTrackGroupArray = trackGroups;
+            }
         }
 
         @Override
@@ -1763,9 +1763,9 @@ public class PlayerActivity extends Activity {
                     }
                 }
 
-                if (mwho_called > 1) {
+                if (mWho_Called > 1) {
                     LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" +
-                            mwho_called + "," + player[position].getDuration() + ")");
+                            mWho_Called + "," + player[position].getDuration() + ")");
                 }
             }
         }
@@ -1780,32 +1780,21 @@ public class PlayerActivity extends Activity {
 
     public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+
         //Pause to things run smother and prevent odd behavior during the checks
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
         }
 
         PlayerCheckCounter[position]++;
-        if (PlayerCheckCounter[position] < 4 &&
-                (mainPlayer != position || mediaSourcePlaying[position] != null)) {
 
-            //this is small screen  or is in auto mode check before restart it
-            if (mclearResumePosition || mwho_called == 1) clearResumePosition();
-            else updateResumePosition(position);
+        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && mWho_Called < 3) {
 
-            if (mwho_called == 1) {
-                //ask java to reset the qualities only if time expired
-                if (expires[position] < System.currentTimeMillis()) {
-                    mediaSourcePlaying[position] = mediaSourcesAuto[position];
-
-                    if (MultiStreamEnable) initializePlayerMulti(position, mediaSourcePlaying[position]);
-                    else initializePlayer(position);
-
-                } else {
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_CheckResumeForced(" + (mainPlayer != position) + ", " + MultiStreamEnable + ", " + position + ")");
-                }
-
-            } else initializePlayer(position);
+            if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture) {
+                mSetQuality(-1);
+                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
+            }
+            PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
 
         } else if (PlayerCheckCounter[position] > 3) {
 
@@ -1815,24 +1804,32 @@ public class PlayerActivity extends Activity {
         } else if (PlayerCheckCounter[position] > 1) {
 
             // Second if not in auto mode use js to check if is possible to drop quality
-            LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mwho_called + ")");
+            LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
 
-        } else {
-            //First try and not auto mode only restart the player
-            if (mclearResumePosition || mwho_called == 1) clearResumePosition();
-            else updateResumePosition(position);
+        } else PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
 
-            initializePlayer(position);
-        }
     }
 
+    //First check only reset the player as it may be stuck
+    public void PlayerEventListenerCheckCounterEnd(int position, boolean mclearResumePosition) {
+        if (mclearResumePosition || mWho_Called == 1) clearResumePosition();
+        else updateResumePosition(position);
+
+        if (mWho_Called == 1) {
+
+            if (MultiStreamEnable) initializePlayerMulti(position, mediaSources[position]);
+            else initializePlayer(position);
+
+        } else initializePlayer(position);
+
+    }
     public void PlayerEventListenerClear(int position) {
         hideLoading(5);
         hideLoading(position);
-        String webviewLoad;
+        String WebViewLoad;
         if (MultiStreamEnable) {
             ClearPlayer(position);
-            webviewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
+            WebViewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
         } else if (PicturePicture) {
             boolean mswitch = (mainPlayer == position);
 
@@ -1843,11 +1840,11 @@ public class PlayerActivity extends Activity {
             ClearPlayer(position);
             AudioSource = 1;
 
-            webviewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")";
+            WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")";
 
-        } else webviewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mwho_called + ")";
+        } else WebViewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
 
-        LoadUrlWebview(webviewLoad);
+        LoadUrlWebview(WebViewLoad);
     }
 
     private class PlayerEventListenerSmall implements Player.EventListener {
@@ -1877,7 +1874,7 @@ public class PlayerActivity extends Activity {
 
                     PlayerEventListenerCheckCounterSmall();
 
-                }, (BUFFER_SIZE[mwho_called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0));
+                }, (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0));
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckCounter[4] = 0;
@@ -1901,8 +1898,8 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerCheckCounter[4]++;
-        if (PlayerCheckCounter[4] < 4 && expires[4] < System.currentTimeMillis())
-            initializeSmallPlayer(mediaSourcesAuto[4]);
+        if (PlayerCheckCounter[4] < 4)
+            initializeSmallPlayer(mediaSources[4]);
         else {
             ClearSmallPlayer();
             LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
