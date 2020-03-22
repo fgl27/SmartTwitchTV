@@ -81,7 +81,7 @@ if [ "$localOK" == 0 ]; then
 fi;
 
 if [ "$1" == 2 ]; then
-    echo -e "\n Checking for updates:\n";
+	echo -e "\n Checking for updates:\n";
 	echo "$(./gradlew -q gradleUpdates | sed '/jacoco/d')" > build_log.txt
 	UPDATEDEPENDENCIES=$(grep ' \-> ' build_log.txt)
 	if [ -n "$UPDATEDEPENDENCIES" ]; then
