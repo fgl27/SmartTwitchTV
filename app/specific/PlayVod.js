@@ -279,42 +279,37 @@ function PlayVod_SaveOffset() {
 
 //Browsers crash trying to get the streams link
 function PlayVod_loadDataSuccessFake() {
-    PlayVod_qualities = [{
-        'id': 'Auto',
-        'band': 0,
-        'codec': 'avc',
-        'url': 'https://auto'
-    },
-    {
-        'id': '1080p60 | source ',
-        'band': '| 10.00Mbps',
-        'codec': ' | avc',
-        'url': 'https://souce'
-    },
-    {
-        'id': '720p60',
-        'band': ' | 5.00Mbps',
-        'codec': ' | avc',
-        'url': 'https://720p60'
-    },
-    {
-        'id': '720p',
-        'band': ' | 2.50Mbps',
-        'codec': ' | avc',
-        'url': 'https://720'
-    },
-    {
-        'id': '480p',
-        'band': ' | 2.50Mbps',
-        'codec': ' | avc',
-        'url': 'https://480'
-    },
-    {
-        'id': '320p',
-        'band': ' | 2.50Mbps',
-        'codec': ' | avc',
-        'url': 'https://320'
-    },
+    PlayVod_qualities = [
+        {
+            'id': 'Auto',
+            'band': 0,
+            'codec': 'avc',
+        },
+        {
+            'id': '1080p60 | source ',
+            'band': '| 10.00Mbps',
+            'codec': ' | avc',
+        },
+        {
+            'id': '720p60',
+            'band': ' | 5.00Mbps',
+            'codec': ' | avc',
+        },
+        {
+            'id': '720p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+        },
+        {
+            'id': '480p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+        },
+        {
+            'id': '320p',
+            'band': ' | 2.50Mbps',
+            'codec': ' | avc',
+        },
     ];
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_qualityChanged();
