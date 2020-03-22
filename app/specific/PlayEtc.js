@@ -1257,8 +1257,8 @@ function Play_MakeControls() {
                     }
                 }
 
-                Android.EnableMultiStream(Play_Multi_MainBig, 0);
                 Play_hidePanel();
+                Android.EnableMultiStream(Play_Multi_MainBig, 0);
 
                 Play_Multi_SetPanel();
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {

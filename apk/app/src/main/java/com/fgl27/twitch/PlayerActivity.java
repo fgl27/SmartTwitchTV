@@ -140,6 +140,7 @@ public class PlayerActivity extends Activity {
     public boolean AlreadyStarted;
     public boolean onCreateReady;
     public boolean IsStopped;
+    public boolean IsInAutoMode = true;
     public LoadControl[] loadControl = new LoadControl[PlayerAcount];
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
@@ -1079,7 +1080,9 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
                 PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
-                if (player == 1) PicturePicture = true;
+                if (player == 1) {
+                    PicturePicture = true;
+                }
             });
         }
 
@@ -1100,7 +1103,9 @@ public class PlayerActivity extends Activity {
         public void RestartPlayer(int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
                 PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
-                if (player == 1) PicturePicture = true;
+                if (player == 1) {
+                    PicturePicture = true;
+                }
             });
         }
 
@@ -1593,7 +1598,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void StartMultiStream(int position, String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
-
                 int mposition = position;
                 if (position == 0) mposition = mainPlayer;
                 else if (position == 1) mposition = mainPlayer ^ 1;
@@ -1660,36 +1664,41 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetQuality(int position) {
+            mSetQuality(position);
+        }
 
-            if (trackSelector[mainPlayer] != null) {
+    }
 
-                MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
+    public void mSetQuality(int position) {
 
-                if (mappedTrackInfo != null) {
-                    for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
+        if (trackSelector[mainPlayer] != null) {
 
-                        if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
 
-                            DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters.buildUpon();
-                            builder.clearSelectionOverrides(0).setRendererDisabled(rendererIndex, false);
+            if (mappedTrackInfo != null) {
+                for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
 
-                            if(position > -1) {// else auto quality
-                                builder.setSelectionOverride(
-                                        rendererIndex,
-                                        mappedTrackInfo.getTrackGroups(rendererIndex),
-                                        new DefaultTrackSelector.SelectionOverride(0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
-                                );
-                            }
+                    if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                            trackSelector[mainPlayer].setParameters(builder);
-                            break;
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters.buildUpon();
+                        builder.clearSelectionOverrides(0).setRendererDisabled(rendererIndex, false);
+
+                        IsInAutoMode = position > -1;
+                        if(IsInAutoMode) {// else auto quality
+                            builder.setSelectionOverride(
+                                    rendererIndex,
+                                    mappedTrackInfo.getTrackGroups(rendererIndex),
+                                    new DefaultTrackSelector.SelectionOverride(0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
+                            );
                         }
 
+                        trackSelector[mainPlayer].setParameters(builder);
+                        break;
                     }
+
                 }
             }
         }
-
     }
 
     public void RequestGetQualities() {
@@ -1776,24 +1785,21 @@ public class PlayerActivity extends Activity {
 
     public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+
         //Pause to things run smother and prevent odd behavior during the checks
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
         }
 
         PlayerCheckCounter[position]++;
-        if (PlayerCheckCounter[position] < 4 && mWho_Called < 3) {
 
-            //this is small screen  or is in auto mode check before restart it
-            if (mclearResumePosition || mWho_Called == 1) clearResumePosition();
-            else updateResumePosition(position);
+        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && mWho_Called < 3) {
 
-            if (mWho_Called == 1) {
-
-                if (MultiStreamEnable) initializePlayerMulti(position, mediaSources[position]);
-                else initializePlayer(position);
-
-            } else initializePlayer(position);
+            if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture) {
+                mSetQuality(-1);
+                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
+            }
+            PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
 
         } else if (PlayerCheckCounter[position] > 3) {
 
@@ -1805,22 +1811,30 @@ public class PlayerActivity extends Activity {
             // Second if not in auto mode use js to check if is possible to drop quality
             LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
 
-        } else {
-            //First try and not auto mode only restart the player
-            if (mclearResumePosition || mWho_Called == 1) clearResumePosition();
-            else updateResumePosition(position);
+        } else PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
 
-            initializePlayer(position);
-        }
     }
 
+    //First check only reset the player as it may be stuck
+    public void PlayerEventListenerCheckCounterEnd(int position, boolean mclearResumePosition) {
+        if (mclearResumePosition || mWho_Called == 1) clearResumePosition();
+        else updateResumePosition(position);
+
+        if (mWho_Called == 1) {
+
+            if (MultiStreamEnable) initializePlayerMulti(position, mediaSources[position]);
+            else initializePlayer(position);
+
+        } else initializePlayer(position);
+
+    }
     public void PlayerEventListenerClear(int position) {
         hideLoading(5);
         hideLoading(position);
-        String webviewLoad;
+        String WebViewLoad;
         if (MultiStreamEnable) {
             ClearPlayer(position);
-            webviewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
+            WebViewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
         } else if (PicturePicture) {
             boolean mswitch = (mainPlayer == position);
 
@@ -1831,11 +1845,11 @@ public class PlayerActivity extends Activity {
             ClearPlayer(position);
             AudioSource = 1;
 
-            webviewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")";
+            WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")";
 
-        } else webviewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
+        } else WebViewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
 
-        LoadUrlWebview(webviewLoad);
+        LoadUrlWebview(WebViewLoad);
     }
 
     private class PlayerEventListenerSmall implements Player.EventListener {
