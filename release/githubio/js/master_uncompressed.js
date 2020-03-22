@@ -9419,6 +9419,13 @@
                 'band': 0,
                 'codec': 'avc'
             }];
+            if (position === 1) {
+                Play_data.quality = "Auto";
+                Play_data.qualityPlaying = Play_data.quality;
+            } else {
+                PlayVod_quality = 'Auto';
+                PlayVod_qualityPlaying = PlayVod_quality;
+            }
         }
 
         if (position === 1) {
