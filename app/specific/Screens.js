@@ -566,7 +566,7 @@ function Screens_loadDataSuccessFinishEnd() {
     else Sidepannel_SetDefaultLables();
 
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
-    Main_CheckAccessibility();
+    Main_CheckAccessibility(true);
 }
 
 function Screens_addFocus(forceScroll) {
@@ -2019,5 +2019,6 @@ function Screens_RefreshTimeout() {
 }
 
 function Screens_Isfocused() {
-    return Main_A_includes_B(document.getElementById(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX).className, 'stream_thumbnail_focused') && Main_isScene1DocShown();
+    var doc = document.getElementById(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX);
+    return doc ? Main_A_includes_B(doc.className, 'stream_thumbnail_focused') && Main_isScene1DocShown() : false;
 }

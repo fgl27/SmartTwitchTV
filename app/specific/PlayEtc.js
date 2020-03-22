@@ -972,21 +972,27 @@ function Play_MakeControls() {
         defaultValue: 0,
         opacity: 0,
         enterKey: function(PlayVodClip) {
-
+            var oldQuality;
             if (PlayVodClip === 1) {
                 Play_hidePanel();
+                oldQuality = Play_data.quality;
                 Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
                 Play_data.qualityPlaying = Play_data.quality;
-                Play_playingUrl = Play_data.qualities[Play_data.qualityIndex].url;
                 Play_SetHtmlQuality('stream_quality');
-                Play_onPlayer();
+
+                if (oldQuality !== Play_data.quality) Android.SetQuality(Play_data.qualityIndex - 1);//just quality change
+                else Android.RestartPlayer(1, 0, 0);//resetart the player
+
             } else if (PlayVodClip === 2) {
                 PlayVod_hidePanel();
+                oldQuality = PlayVod_quality;
                 PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
                 PlayVod_qualityPlaying = PlayVod_quality;
-                PlayVod_playingUrl = PlayVod_qualities[PlayVod_qualityIndex].url;
                 PlayVod_SetHtmlQuality('stream_quality');
-                PlayVod_onPlayer();
+
+                if (oldQuality !== PlayVod_quality) Android.SetQuality(PlayVod_qualityIndex - 1);//just quality change
+                else Android.RestartPlayer(2, Android.gettime(), 0);//resetart the player
+
             } else if (PlayVodClip === 3) {
                 PlayClip_hidePanel();
                 PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
@@ -1041,11 +1047,11 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
 
-            if (this.defaultValue === 2) {
-                Android.StartAuto(1, 0);
-                Android.initializePlayer2Auto();
-            } else if (this.defaultValue) Android.StartAuto(1, 0);
-            else Android.initializePlayer2Auto();
+            if (this.defaultValue === 2) {//both
+                Android.RestartPlayer(1, 0, 0);
+                Android.RestartPlayer(1, 0, 1);
+            } else if (this.defaultValue) Android.RestartPlayer(1, 0, 0);//main
+            else Android.RestartPlayer(1, 0, 1);//small
 
             Play_hidePanel();
             this.defaultValue = 2;
@@ -1083,10 +1089,10 @@ function Play_MakeControls() {
 
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
-                        Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
+                        Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                     }
                 }
-            } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl);
+            } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl, Play_MultiArray[this.defaultValue - 1].playlist);
 
             Play_hidePanel();
             this.defaultValue = 0;
@@ -1130,16 +1136,15 @@ function Play_MakeControls() {
 
                     for (var i = 0; i < Play_MultiArray.length; i++) {
                         if (Play_MultiArray[i].data.length > 0) {
-                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl);
+                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                         }
                     }
 
                 } else if (PlayExtra_PicturePicture) {
-                    Android.ResStartAuto(Play_data.AutoUrl, 1, 0);
-                    Android.ResStartAuto2(PlayExtra_data.AutoUrl);
+                    Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                    Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
                 } else {
-                    if (Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetAuto(Play_data.AutoUrl);
-                    Play_onPlayer();
+                    Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
                 }
 
             }
@@ -1243,14 +1248,23 @@ function Play_MakeControls() {
         enterKey: function(shutdown) {
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {
-                Android.EnableMultiStream(Play_Multi_MainBig, 0);
+                if (Android.IsMainNotMain()) {
+                    if (PlayExtra_PicturePicture) {
+                        Android.mSwitchPlayer();
+                        PlayExtra_SwitchPlayer();
+                    } else {
+                        Android.PrepareForMulti(Play_data.AutoUrl, Play_data.playlist);
+                    }
+                }
+
                 Play_hidePanel();
+                Android.EnableMultiStream(Play_Multi_MainBig, 0);
 
                 Play_Multi_SetPanel();
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                     Play_data.quality = "Auto";
                     Play_data.qualityPlaying = Play_data.quality;
-                    Android.StartAuto(1, 0);
+                    Android.SetQuality(-1);
                 }
 
                 var i = 0;
@@ -1301,6 +1315,7 @@ function Play_MakeControls() {
                 Android.DisableMultiStream();
                 Play_Multi_UnSetPanel(shutdown);
                 Play_CleanHideExit();
+                Play_getQualities(1);
             }
         }
     };

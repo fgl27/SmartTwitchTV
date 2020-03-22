@@ -36,7 +36,7 @@ function PlayClip_Start() {
     Play_HideEndDialog();
 
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
-    Chat_title = STR_CLIP + '.';
+    Chat_title = STR_CLIP;
     if (PlayClip_HasVOD) {
         Chat_offset = ChannelVod_vodOffset;
         Chat_Init();

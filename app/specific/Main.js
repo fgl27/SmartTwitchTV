@@ -123,8 +123,8 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.147';
-var Main_minversion = 'March 18, 2020';
+var Main_stringVersion_Min = '.148';
+var Main_minversion = 'March 22, 2020';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsNotBrowserVersion = '';
 var Main_AndroidSDK = 1000;
@@ -169,14 +169,14 @@ function Main_loadTranslations(language) {
                     'Play_PannelEndStart': Play_PannelEndStart,
                     'Play_PlayerCheck': Play_PlayerCheck,
                     'Play_UpdateDuration': Play_UpdateDuration,
-                    'Play_CheckResumeForced': Play_CheckResumeForced,
                     'PlayExtra_End': PlayExtra_End,
                     'Play_MultiEnd': Play_MultiEnd,
                     'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
                     'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
                     'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
                     'Main_CheckStop': Main_CheckStop,
-                    'Main_CheckResume': Main_CheckResume
+                    'Main_CheckResume': Main_CheckResume,
+                    'Play_getQualities': Play_getQualities
                 };
             }
             Main_IsNotBrowser = Android.getAndroid();
@@ -832,11 +832,16 @@ function Main_videoqualitylang(video_height, average_fps, language) {
     video_height = video_height + ''; //stringfy doesnot work 8|
     if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
 
-    if (average_fps > 58) average_fps = 60;
-    else if (average_fps < 32) average_fps = 30;
-    else average_fps = Math.ceil(average_fps);
+    average_fps = Main_Calculatefps(average_fps);
 
     return video_height + 'p' + average_fps + ((language !== "") ? ' [' + language.toUpperCase() + ']' : '');
+}
+
+function Main_Calculatefps(fps) {
+    if (fps > 58) return 60;
+    else if (fps < 32) return 30;
+
+    return Math.ceil(fps);
 }
 
 function Main_is_rerun(content) {
@@ -1195,13 +1200,8 @@ var Main_oldReturnCheck;
 function Main_checkVersion() {
     if (Main_IsNotBrowser) {
         var device = Android.getDevice();
-        var Webviewversion = null;
-
-        try {
-            Webviewversion = Android.getWebviewVersion();
-            console.log('Webviewversion ' + Webviewversion);
-        } catch (e) {
-        }
+        var Webviewversion = Android.getWebviewVersion();
+        console.log('Webviewversion ' + Webviewversion);
 
         Main_versionTag = "Apk: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion +
             (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
@@ -1604,10 +1604,6 @@ function Main_updateclock() {
         Main_randomimg = '?' + parseInt(Math.random() * 100000);
         Screens_SetLastRefresh();
     }
-}
-
-function Main_RandomInt() {
-    return parseInt(Math.random() * 1000000000);
 }
 
 function Main_updateUserFeed() {
@@ -2189,7 +2185,6 @@ function Main_CheckStop() { // Called only by JAVA
     ChatLive_Clear(1);
     Chat_Clear();
 
-    Sidepannel_CheckIfIsLiveCleanTimeouts();
     window.clearInterval(Play_ResumeAfterOnlineId);
     window.clearInterval(Play_streamInfoTimerId);
     window.clearInterval(Play_ShowPanelStatusId);
@@ -2236,25 +2231,22 @@ function Main_CheckResume() { // Called only by JAVA
     Main_CheckAccessibility();
 }
 
-function Main_CheckAccessibility() {
-    if (Settings_Obj_default("accessibility_warn")) {
+function Main_CheckAccessibility(skipRefresCheck) {
+    if (Main_IsNotBrowser && Settings_Obj_default("accessibility_warn")) {
         var isenable;
-        //TODO remove the try after some app update
-        try {
-            isenable = Android.isAccessibilitySettingsOn();
 
-            if (isenable) Main_CheckAccessibilitySet();
-            else {
-                Main_CheckAccessibilityHide(false);
-                //if focused and showing force a refresh check
-                if (Screens_Isfocused()) {
-                    document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
-                    Main_SwitchScreen();
-                }
+        isenable = Android.isAccessibilitySettingsOn();
+
+        if (isenable) Main_CheckAccessibilitySet();
+        else {
+            Main_CheckAccessibilityHide(false);
+            //if focused and showing force a refresh check
+            if (Screens_Isfocused() && !skipRefresCheck) {
+                document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+                Main_SwitchScreen();
             }
-
-        } catch (e) {
         }
+
     }
 }
 

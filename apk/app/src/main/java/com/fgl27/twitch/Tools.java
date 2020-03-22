@@ -18,6 +18,7 @@ import android.view.Display;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -30,14 +31,18 @@ import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.TrackGroup;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
-import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
@@ -45,7 +50,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -58,8 +62,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.google.gson.JsonParser.parseString;
 
@@ -102,10 +104,6 @@ public final class Tools {
     private static final String vod_token = "https://api.twitch.tv/api/vods/%s/access_token?platform=_";
     private static final String vod_links = "https://usher.ttvnw.net/vod/%s.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
-    private static final String TAG_MEDIA = "#EXT-X-MEDIA";
-    private static final Pattern REGEX_NAME = Pattern.compile("NAME=\"(.+?)\"");
-    private static final Pattern REGEX_BANDWIDTH_CODECS = Pattern.compile("BANDWIDTH=(\\d+).*CODECS=\"(.+?)\"");
-
     private static class readUrlSimpleObj {
         private final int status;
         private final String responseText;
@@ -136,45 +134,16 @@ public final class Tools {
     }
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    private static class extractQualitiesObj {
+    private static class extractPlayListObj {
         private final int status;
         private final String url;
-        private final ArrayList<QualitiesObj> responseText;
+        private final String responseText;
 
-        public extractQualitiesObj(int status, String url, ArrayList<QualitiesObj> responseText) {
+        public extractPlayListObj(int status, String url, String responseText) {
             this.status = status;
             this.url = url;
             this.responseText = responseText;
         }
-    }
-
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    private static class QualitiesObj {
-        private final String id;
-        private final String band;
-        private final String codec;
-        private final String url;
-
-        public QualitiesObj(String id, String band, String codec, String url) {
-            this.id = id;
-            this.band = extractBand(band);
-            this.codec = extractCodec(codec);
-            this.url = url;
-        }
-    }
-
-    private static String extractBand(String band) {
-        float input = Float.parseFloat(band);
-
-        return input > 0 ? String.format(Locale.US, " | %.02fMbps", (input / 1000000)) : "";
-    }
-
-    private static String extractCodec(String codec) {
-        if (codec.contains("avc")) return " | avc";
-        else if (codec.contains("'vp9'")) return " | vp9";
-        else if (codec.contains("'mp4'")) return " | mp4";
-
-        return "";
     }
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
@@ -316,16 +285,14 @@ public final class Tools {
             if (status != -1) {
 
                 if (status == 200) {
-                    String QualitiesObj = extractQualitiesObj(
+                    return new readUrlSimpleObj(
                             status,
-                            urlConnection.getInputStream(),
-                            urlString
-                    );
-
-                    if (QualitiesObj == null) return null;
-                    else return new readUrlSimpleObj(
-                            status,
-                            QualitiesObj
+                            new Gson().toJson(
+                                    new extractPlayListObj(
+                                            status,
+                                            urlString,
+                                            readFullyString(urlConnection.getInputStream()))
+                            )
                     );
                 } else return new readUrlSimpleObj(status, "");
 
@@ -341,82 +308,6 @@ public final class Tools {
         }
     }
 
-    private static String extractQualitiesObj(int status, InputStream in, String url) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        Matcher matcher;
-        ArrayList<QualitiesObj> result = new ArrayList<>();
-        ArrayList<String> list = new ArrayList<>();
-        String id, line;
-
-        try {
-            while ((line = reader.readLine()) != null) {
-
-                if (line.startsWith(TAG_MEDIA)) {
-                    if(result.size() < 1) {
-                        result.add(new QualitiesObj("Auto", "0", "avc", "Auto_url"));
-
-                        matcher = REGEX_NAME.matcher(line);
-                        id = matcher.find() ? matcher.group(1) : null;
-
-                        if (id != null) {
-                            if (id.contains("ource")) id = id.replace("(", "| ").replace(")", "");
-                            else id = id + " | source";
-
-                            matcher = REGEX_BANDWIDTH_CODECS.matcher(reader.readLine());
-
-                            if (matcher.find()) {
-                                result.add(
-                                        new QualitiesObj(
-                                                id,
-                                                matcher.group(1),
-                                                matcher.group(2),
-                                                reader.readLine()
-                                        )
-                                );
-
-                                list.add(id.split(" ")[0]);
-                            }
-                        }
-                    } else {
-
-                        matcher = REGEX_NAME.matcher(line);
-                        id = matcher.find() ? matcher.group(1) : null;
-
-                        //Prevent duplicated resolution 720p60 source and 720p60
-                        if (id != null && !list.contains(id)) {
-
-                            matcher = REGEX_BANDWIDTH_CODECS.matcher(reader.readLine());
-
-                            if (matcher.find()) {
-                                result.add(
-                                        new QualitiesObj(
-                                                id,
-                                                matcher.group(1),
-                                                matcher.group(2),
-                                                reader.readLine()
-                                        )
-                                );
-
-                                list.add(id);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (IOException e) {
-            Log.w(TAG, "extractQualitiesObj IOException ", e);
-            return null;
-        } finally {
-            closeQuietly(reader);
-        }
-
-        return new Gson().toJson(
-                new extractQualitiesObj(
-                        status,
-                        url,
-                        result)
-        );
-    }
 
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
@@ -662,7 +553,7 @@ public final class Tools {
         return String.format(Locale.US, "%s,%s,%d,%s",
                 format.height + "p",
                 (format.frameRate == Format.NO_VALUE ? "" :
-                        String.format(Locale.US, "%d", Math.round(format.frameRate))),
+                        String.format(Locale.US, "%d", extractFPS(format.frameRate))),
                 format.bitrate,
                 (format.codecs != null ? mgetCodec(format.codecs) : null));
     }
@@ -709,20 +600,36 @@ public final class Tools {
         return false;
     }
 
-    public static MediaSource buildMediaSource(Uri uri, DataSource.Factory dataSourceFactory, int who_called, boolean LowLatency) {
+    public static MediaSource buildMediaSource(Uri uri, Context context, int who_called, boolean LowLatency, String masterPlaylist) {
         if (who_called == 1) {
-            return new HlsMediaSource.Factory(dataSourceFactory)
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri))
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency ? 3000 : 0)//3000 is a safe value the implementation will calculate the proper value
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (who_called == 2) {
-            return new HlsMediaSource.Factory(dataSourceFactory)
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri))
                     .setAllowChunklessPreparation(true)
                     .createMediaSource(uri);
         } else
             return new ProgressiveMediaSource
-                    .Factory(dataSourceFactory, new Mp4ExtractorsFactory())
+                    .Factory(new DefaultDataSourceFactory(context, Util.getUserAgent(context, context.getString(R.string.app_name))), new Mp4ExtractorsFactory())
                     .createMediaSource(MediaItemBuilder(uri));
+    }
+
+    private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri) {
+        return new DefaultDataSourceFactory(
+                context,
+                null,
+                new mDefaultHttpDataSourceFactory(
+                        Util.getUserAgent(context, context.getString(R.string.app_name)),
+                        null,
+                        4000,
+                        4000,
+                        false,
+                        masterPlaylist.getBytes(),
+                        uri
+                )
+        );
     }
 
     public static boolean deviceIsTV(@NonNull Context context) {
@@ -827,5 +734,79 @@ public final class Tools {
         display.getSize(size);
 
         return size;
+    }
+
+    public static String getQualities(DefaultTrackSelector trackSelector) {
+        if (trackSelector != null) {
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+
+            if (mappedTrackInfo != null) {
+
+                for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
+
+                    if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
+
+                        TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
+                        if (trackGroupArray.length > 0) {
+                            ArrayList<QualitiesObj> result = new ArrayList<>();
+                            Format format;
+                            TrackGroup groupIndex = trackGroupArray.get(0);
+
+                            result.add(new QualitiesObj("Auto", 0, "avc"));
+
+                            for (int trackIndex = 0; trackIndex < groupIndex.length; trackIndex++) {
+                                format = groupIndex.getFormat(trackIndex);
+                                result.add(
+                                        new QualitiesObj(
+                                                format.height + "p" + extractFPS(format.frameRate),
+                                                format.bitrate,
+                                                format.codecs
+                                        )
+                                );
+
+                            }
+                            return new Gson().toJson(result);
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+        return null;
+    }
+
+    private static int extractFPS(float fps) {
+        if (fps > 58 && fps < 62) return 60;
+        else if (fps < 32 && fps > 28) return 30;
+
+        return (int) Math.ceil(fps);
+    }
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private static class QualitiesObj {
+        private final String id;
+        private final String band;
+        private final String codec;
+
+        public QualitiesObj(String id, int band, String codec) {
+            this.id = id;
+            this.band = extractBand(band);
+            this.codec = extractCodec(codec);
+        }
+    }
+
+    private static String extractBand(int band) {
+        return band > 0 ? String.format(Locale.US, " | %.02fMbps", ((float) band / 1000000.0)) : "";
+    }
+
+    private static String extractCodec(String codec) {
+        if (codec.contains("avc")) return " | avc";
+        else if (codec.contains("'vp9'")) return " | vp9";
+        else if (codec.contains("'mp4'")) return " | mp4";
+
+        return "";
     }
 }
