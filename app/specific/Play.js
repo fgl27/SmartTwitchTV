@@ -1227,13 +1227,6 @@ function Play_showPanel() {
     Play_setHidePanel();
 }
 
-function Play_extractCodec(input) {
-    if (input.indexOf('avc') !== -1) return ' | avc';
-    else if (input.indexOf('vp9') !== -1) return ' | vp9';
-    else if (input.indexOf('mp4') !== -1) return ' | mp4';
-    return '';
-}
-
 function Play_RefreshWatchingtime() {
     if (PlayExtra_PicturePicture) {
         Main_innerHTML("stream_info_pp_watching_time0", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
