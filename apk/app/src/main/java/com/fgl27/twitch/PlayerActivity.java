@@ -604,8 +604,7 @@ public class PlayerActivity extends Activity {
         PlayerViewExtraLayout[5].bottomMargin = (int) (ScreenSize.x / 15.7 * Density / ScaleDensity);
         PlayerViewExtraLayout[5].rightMargin = (int) (ScreenSize.y / 13.55 * Density / ScaleDensity);
 
-        int i,j;
-        for (i = 0; i < 5; i++) {
+        for (int i = 0; i < (PlayerViewExtraLayout.length - 1); i++) {
             PlayerViewExtraLayout[i].bottomMargin = (int) (ScreenSize.x / 22 * Density / ScaleDensity);
         }
 
@@ -616,8 +615,8 @@ public class PlayerActivity extends Activity {
         PlayerView[4].setLayoutParams(PlayerViewExtraLayout[0]);
 
         //Small player sizes and positions
-        for (i = 0; i < positions.length; i++) {
-            for (j = 0; j < 3; j++) {
+        for (int i = 0; i < PlayerViewSmallSize.length; i++) {
+            for (int j = 0; j < PlayerViewSmallSize[i].length; j++) {
                 PlayerViewSmallSize[i][j] = new FrameLayout.LayoutParams((mwidthDefault / (j + 2)), (heightDefault / (j + 2)), positions[i]);
             }
         }
