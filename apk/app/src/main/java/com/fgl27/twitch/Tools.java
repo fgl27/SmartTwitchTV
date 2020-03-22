@@ -31,7 +31,11 @@ import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.TrackGroup;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
@@ -53,6 +57,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
@@ -548,7 +553,7 @@ public final class Tools {
         return String.format(Locale.US, "%s,%s,%d,%s",
                 format.height + "p",
                 (format.frameRate == Format.NO_VALUE ? "" :
-                        String.format(Locale.US, "%d", Math.round(format.frameRate))),
+                        String.format(Locale.US, "%d", extractFPS(format.frameRate))),
                 format.bitrate,
                 (format.codecs != null ? mgetCodec(format.codecs) : null));
     }
@@ -729,5 +734,79 @@ public final class Tools {
         display.getSize(size);
 
         return size;
+    }
+
+    public static String getQualities(DefaultTrackSelector trackSelector) {
+        if (trackSelector != null) {
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+
+            if (mappedTrackInfo != null) {
+
+                for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
+
+                    if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
+
+                        TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
+                        if (trackGroupArray.length > 0) {
+                            ArrayList<QualitiesObj> result = new ArrayList<>();
+                            Format format;
+                            TrackGroup groupIndex = trackGroupArray.get(0);
+
+                            result.add(new QualitiesObj("Auto", 0, "avc"));
+
+                            for (int trackIndex = 0; trackIndex < groupIndex.length; trackIndex++) {
+                                format = groupIndex.getFormat(trackIndex);
+                                result.add(
+                                        new QualitiesObj(
+                                                format.height + "p" + extractFPS(format.frameRate),
+                                                format.bitrate,
+                                                format.codecs
+                                        )
+                                );
+
+                            }
+                            return new Gson().toJson(result);
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+        return null;
+    }
+
+    private static int extractFPS(float fps) {
+        if (fps > 58 && fps < 62) return 60;
+        else if (fps < 32 && fps > 28) return 30;
+
+        return (int) Math.ceil(fps);
+    }
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private static class QualitiesObj {
+        private final String id;
+        private final String band;
+        private final String codec;
+
+        public QualitiesObj(String id, int band, String codec) {
+            this.id = id;
+            this.band = extractBand(band);
+            this.codec = extractCodec(codec);
+        }
+    }
+
+    private static String extractBand(int band) {
+        return band > 0 ? String.format(Locale.US, " | %.02fMbps", ((float) band / 1000000.0)) : "";
+    }
+
+    private static String extractCodec(String codec) {
+        if (codec.contains("avc")) return " | avc";
+        else if (codec.contains("'vp9'")) return " | vp9";
+        else if (codec.contains("'mp4'")) return " | mp4";
+
+        return "";
     }
 }

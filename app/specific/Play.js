@@ -889,24 +889,9 @@ function Play_getQualities(position) {
     var baseQualities = Android.getQualities();
 
     if (baseQualities) {
-        var result = [];
+        var result = JSON.parse(baseQualities);
 
-        baseQualities = JSON.parse(baseQualities).trackGroups[0];
-
-        result.push({
-            'id': "Auto",
-            'band': 0,
-            'codec': "avc"
-        });
-
-        for (var i = 0; i < baseQualities.formats.length; i++) {
-            result.push({
-                'id': baseQualities.formats[i].height + 'p' + Main_Calculatefps(baseQualities.formats[i].frameRate),
-                'band': Play_extractBand(baseQualities.formats[i].bitrate),
-                'codec': Play_extractCodec(baseQualities.formats[i].codecs)
-            });
-        }
-        result[1].id += " | source";
+        if (result.length > 1) result[1].id += " | source";
 
         if (position === 1) {
             Play_data.qualities = result;

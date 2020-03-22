@@ -44,7 +44,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
@@ -1647,18 +1646,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getQualities() {
-            if (trackSelector[mainPlayer] != null) {
-                MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
-
-                if (mappedTrackInfo != null) {
-                    for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
-                        TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
-                        if (trackGroupArray.length > 0) return new Gson().toJson(trackGroupArray);
-                    }
-                }
-            }
-
-            return null;
+            return Tools.getQualities(trackSelector[mainPlayer]);
         }
 
         @SuppressWarnings("unused")//called by JS
