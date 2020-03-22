@@ -887,20 +887,29 @@ function Play_qualityChanged() {
 
 function Play_getQualities(position) {
     var baseQualities = Android.getQualities();
+    var result;
 
     if (baseQualities) {
-        var result = JSON.parse(baseQualities);
+        result = JSON.parse(baseQualities);
 
         if (result.length > 1) result[1].id += " | source";
 
-        if (position === 1) {
-            Play_data.qualities = result;
-            if (!PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
-        } else {
-            PlayVod_qualities = result;
-            if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
-        }
+    } else {
+        result = [
+            {
+                'id': 'Auto',
+                'band': 0,
+                'codec': 'avc'
+            }
+        ];
+    }
 
+    if (position === 1) {
+        Play_data.qualities = result;
+        if (!PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
+    } else {
+        PlayVod_qualities = result;
+        if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
     }
 }
 
