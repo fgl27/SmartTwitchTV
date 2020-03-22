@@ -195,7 +195,7 @@ function en_USLang() {
     STR_SETTINGS_BUFFER_VOD = "Videos (Past Broadcast and Highlight) Start buffer";
     STR_SETTINGS_BUFFER_CLIP = "Clips Start buffer";
     STR_SETTINGS_LANG = "Language";
-    STR_LOADING_CHAT = "Chat: Connecting to chat";
+    STR_LOADING_CHAT = "Chat: Connecting to";
     STR_LOADING_FAIL = "Chat: Connecting Fail... Trying again...";
     STR_CHAT_CONNECTED = "Chat: Connected.";
     STR_CHAT_DELAY = "Chat: delay";
@@ -419,4 +419,5 @@ function en_USLang() {
     STR_MAIN_WINDOW = "Main window";
     STR_MULTI_MAIN_WINDOW = "MultiStream main window";
     STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: press key down, after use left/right to change with is the big window";
+    STR_PLAYER_LAG = "Player is lagging quality change to Auto mode";
 }

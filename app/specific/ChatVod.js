@@ -187,7 +187,7 @@ function Chat_loadChatSuccess(responseText, id) {
 
     if (null_next) {
 
-        Chat_MessageVector('<span class="message">' + STR_LOADING_CHAT + STR_SPACE + Chat_title + STR_SPACE + STR_CHANNEL + ': ' +
+        Chat_MessageVector('<span class="message">' + STR_LOADING_CHAT + Chat_title + STR_SPACE + STR_CHANNEL + ': ' +
             Main_values.Main_selectedChannelDisplayname + '</span>', 0);
         Chat_MessageVector('<span class="message">' + STR_CHAT_CONNECTED + '</span>', 0);
     }

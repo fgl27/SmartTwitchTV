@@ -941,27 +941,22 @@ function Play_SetHtmlQuality(element) {
 }
 
 function Play_PlayerCheck(mwhocall) { // Called only by JAVA
-    if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
-    else if (mwhocall === 1) {
 
-        if ((Play_data.qualityIndex < Play_getQualitiesCount() - 1)) {
-            Play_data.qualityIndex++;
-            Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality);
-            Play_qualityChanged();
-        } else Play_EndStart(false, 1);
+    if (mwhocall === 1) {
+
+        Play_data.quality = "Auto";
+        Play_data.qualityPlaying = Play_data.quality;
+        Play_showWarningDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 2) {
 
-        if ((PlayVod_qualityIndex < PlayVod_getQualitiesCount() - 1)) {
-            PlayVod_qualityIndex++;
-            Main_values.vodOffset = Android.getsavedtime() / 1000;
-            Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality);
-            PlayVod_qualityChanged();
-        } else Play_EndStart(false, 2);
+        PlayVod_quality = "Auto";
+        PlayVod_qualityPlaying = PlayVod_quality;
+        Play_showWarningDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 3) {
-
-        if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
+        if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
+        else if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
             PlayClip_qualityIndex++;
             Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality);
             PlayClip_qualityChanged();
