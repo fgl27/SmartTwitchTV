@@ -1683,8 +1683,8 @@ public class PlayerActivity extends Activity {
                         DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters.buildUpon();
                         builder.clearSelectionOverrides(0).setRendererDisabled(rendererIndex, false);
 
-                        IsInAutoMode = position > -1;
-                        if(IsInAutoMode) {// else auto quality
+                        IsInAutoMode = position == -1;
+                        if(!IsInAutoMode) {// else auto quality
                             builder.setSelectionOverride(
                                     rendererIndex,
                                     mappedTrackInfo.getTrackGroups(rendererIndex),
