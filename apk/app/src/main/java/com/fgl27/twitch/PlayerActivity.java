@@ -1672,6 +1672,12 @@ public class PlayerActivity extends Activity {
     public void mSetQuality(int position) {
 
         if (trackSelector[mainPlayer] != null) {
+            IsInAutoMode = position == -1;
+
+            if(IsInAutoMode){
+                trackSelector[mainPlayer].setParameters(trackSelectorParameters);
+                return;
+            }
 
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
 
@@ -1680,16 +1686,17 @@ public class PlayerActivity extends Activity {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters.buildUpon();
-                        builder.clearSelectionOverrides(0).setRendererDisabled(rendererIndex, false);
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelector[mainPlayer].getParameters().buildUpon();
+                        builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
-                        IsInAutoMode = position == -1;
-                        if(!IsInAutoMode) {// else auto quality
+                        if(position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
+
                             builder.setSelectionOverride(
                                     rendererIndex,
                                     mappedTrackInfo.getTrackGroups(rendererIndex),
-                                    new DefaultTrackSelector.SelectionOverride(0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
+                                    new DefaultTrackSelector.SelectionOverride(/* groupIndex */ 0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
                             );
+
                         }
 
                         trackSelector[mainPlayer].setParameters(builder);
