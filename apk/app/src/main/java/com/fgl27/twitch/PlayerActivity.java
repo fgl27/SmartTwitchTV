@@ -1092,7 +1092,7 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 PicturePicture = false;
                 ClearPlayer(mainPlayer);
-                SwitchPlayer();
+                mainPlayer = mainPlayer ^ 1;
                 mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
                 PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
             });
