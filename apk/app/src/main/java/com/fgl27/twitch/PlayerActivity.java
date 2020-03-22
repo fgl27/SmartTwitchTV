@@ -1088,13 +1088,13 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void PrepareForMulti(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player) {
+        public void PrepareForMulti(String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
                 PicturePicture = false;
                 ClearPlayer(mainPlayer);
                 mainPlayer = mainPlayer ^ 1;
-                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
-                PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
+                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
+                PreinitializePlayer(1, 0, mainPlayer);
             });
         }
 

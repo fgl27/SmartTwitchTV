@@ -1253,7 +1253,7 @@ function Play_MakeControls() {
                         Android.mSwitchPlayer();
                         PlayExtra_SwitchPlayer();
                     } else {
-                        Android.PrepareForMulti(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                        Android.PrepareForMulti(Play_data.AutoUrl, Play_data.playlist);
                     }
                 }
 
