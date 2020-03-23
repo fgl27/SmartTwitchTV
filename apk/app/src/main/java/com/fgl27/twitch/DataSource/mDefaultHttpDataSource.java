@@ -284,7 +284,7 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
 
     @Override
     public long open(DataSpec dataSpec) throws HttpDataSourceException {
-        isPlaylist = dataSpec.uri.toString().equals(uri.toString());
+        isPlaylist = dataSpec.uri.toString().equals(uri.toString()) && (data.length > 0);
 
         this.dataSpec = dataSpec;
         this.bytesRead = 0;
