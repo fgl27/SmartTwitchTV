@@ -196,7 +196,7 @@ public final class Tools {
 
             for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
-                response = readUrlSimpleQualities(url, DefaultTimeout + (500 * i));
+                response = readUrlSimpleQualitiesPlaylist(url, DefaultTimeout + (500 * i));
 
                 if (response != null) {
 
@@ -269,7 +269,7 @@ public final class Tools {
         }
     }
 
-    private static readUrlSimpleObj readUrlSimpleQualities(String urlString, int Timeout) {
+    private static readUrlSimpleObj readUrlSimpleQualitiesPlaylist(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
         try {
@@ -611,6 +611,8 @@ public final class Tools {
     }
 
     private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri) {
+        if (masterPlaylist == null) masterPlaylist = "";//technically should not happen but check to prevent exception when converting to byte[]
+
         return new DefaultDataSourceFactory(
                 context,
                 new mDefaultHttpDataSourceFactory(
