@@ -613,7 +613,6 @@ public final class Tools {
     private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri) {
         return new DefaultDataSourceFactory(
                 context,
-                null,
                 new mDefaultHttpDataSourceFactory(
                         Util.getUserAgent(context, context.getString(R.string.app_name)),
                         null,
