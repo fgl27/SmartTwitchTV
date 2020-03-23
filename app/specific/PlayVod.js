@@ -49,6 +49,7 @@ function PlayVod_Start() {
     Main_textContent("stream_live_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = STR_PAST_BROA;
+    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO_TEMP);
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
     Main_HideElement('progress_pause_holder');
     Main_ShowElement('progress_bar_div');

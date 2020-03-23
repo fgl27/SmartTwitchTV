@@ -42,7 +42,7 @@ function PlayClip_Start() {
         Chat_Init();
     } else Chat_NoVod();
 
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO_TEMP);
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
     Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game);
@@ -55,6 +55,7 @@ function PlayClip_Start() {
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     Main_replaceClassEmoji('stream_info_title');
+    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
     Main_values.Play_isHost = false;
     PlayClip_SetOpenVod();
