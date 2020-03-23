@@ -489,6 +489,7 @@ function PlayVod_hidePanel() {
 }
 
 function PlayVod_showPanel(autoHide) {
+    if (Play_getQualitiesFail) Play_getQualities(2, true);
     PlayVod_RefreshProgressBarr(autoHide);
     Play_clock();
     Play_CleanHideExit();
