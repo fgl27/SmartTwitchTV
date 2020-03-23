@@ -34,6 +34,7 @@ import androidx.webkit.WebViewCompat;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -1411,19 +1412,19 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String getVideoQuality() {
 
-            HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
+            HVTHandler.RunnableResult<Format> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Format>() {
                 @Override
                 public void run() {
                     int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-                    if (player[playerPos] != null)
-                        value = Tools.mgetVideoQuality(player[playerPos]);
+                    if (player[playerPos] != null) value = player[playerPos].getVideoFormat();
                     else value = null;
+
                 }
             });
 
             try {
-                return result.get();
+                return Tools.mgetVideoQuality(result.get());
             } catch (InterruptedException e) {
                 Log.w(TAG, "getVideoQuality InterruptedException ", e);
             }

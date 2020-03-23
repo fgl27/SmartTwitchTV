@@ -1286,18 +1286,12 @@ function Play_getBuffer(value) {
 function Play_getVideoQuality(forceCallback, callback) {
     var value = Android.getVideoQuality();
 
-    if (value === null || value === undefined || forceCallback) {
+    if (!value || forceCallback) {
         callback('stream_quality');
         return;
     }
 
-    value = value.split(',');
-
-    for (var i = 0; i < value.length; i++) {
-        value[i] = (value[i] !== null && value[i] !== 'null' && value[i] !== undefined) ? value[i] : '';
-    }
-
-    Main_innerHTML("stream_quality", value[0] + value[1] + " | Auto" + Play_extractBand(value[2]) + " | " + value[3]);
+    Main_innerHTML("stream_quality", value);
 }
 
 function Play_extractBand(input) {
