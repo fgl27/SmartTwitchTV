@@ -260,9 +260,9 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private void PreinitializePlayer(int who_called, long resumeposition, int position) {
+    private void PreInitializePlayer(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
-        mResumePosition = resumeposition > 0 ? resumeposition : 0;
+        mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
         lastSeenTrackGroupArray = null;
         initializePlayer(position);
     }
@@ -1051,7 +1051,7 @@ public class PlayerActivity extends Activity {
         public void startVideo(String videoAddress, int who_called) {
             MainThreadHandler.post(() -> {
                 mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mwebContext, who_called, mLowLatency, "");
-                PreinitializePlayer(who_called, -1, mainPlayer);
+                PreInitializePlayer(who_called, -1, mainPlayer);
             });
         }
 
@@ -1060,7 +1060,7 @@ public class PlayerActivity extends Activity {
         public void startVideoOffset(String videoAddress, int who_called, long ResumePosition) {
             MainThreadHandler.post(() -> {
                 mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mwebContext, who_called, mLowLatency, "");
-                PreinitializePlayer(who_called, ResumePosition, mainPlayer);
+                PreInitializePlayer(who_called, ResumePosition, mainPlayer);
             });
         }
 
@@ -1069,7 +1069,7 @@ public class PlayerActivity extends Activity {
         public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
                 mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
-                PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
+                PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
                 if (player == 1) {
                     PicturePicture = true;
                 }
@@ -1084,7 +1084,7 @@ public class PlayerActivity extends Activity {
                 ClearPlayer(mainPlayer);
                 mainPlayer = mainPlayer ^ 1;
                 mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString);
-                PreinitializePlayer(1, 0, mainPlayer);
+                PreInitializePlayer(1, 0, mainPlayer);
             });
         }
 
@@ -1092,7 +1092,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void RestartPlayer(int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
-                PreinitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
+                PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
                 if (player == 1) {
                     PicturePicture = true;
                 }
@@ -1160,12 +1160,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void stopVideo(int who_called) {
             MainThreadHandler.post(() -> PreResetPlayer(who_called, mainPlayer));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void mClearBigPlayer() {
-            MainThreadHandler.post(() -> ClearPlayer(mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
