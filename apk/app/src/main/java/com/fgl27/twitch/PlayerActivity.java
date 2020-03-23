@@ -34,7 +34,6 @@ import androidx.webkit.WebViewCompat;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -133,6 +132,7 @@ public class PlayerActivity extends Activity {
     public long netActivity = 0L;
     public long DroppedFramesTotal = 0L;
     public int DeviceRam = 0;
+    public String VideoQualityResult = null;
     public String getVideoStatusResult = null;
     public float conSpeedAVG = 0f;
     public float NetActivityAVG = 0f;
@@ -1413,26 +1413,23 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String getVideoQuality() {
+        public String getVideoQualityString() {
+            return VideoQualityResult;
+        }
 
-            HVTHandler.RunnableResult<Format> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Format>() {
-                @Override
-                public void run() {
-                    int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void getVideoQuality(int position) {
+            VideoQualityResult = null;
 
-                    if (player[playerPos] != null) value = player[playerPos].getVideoFormat();
-                    else value = null;
+            MainThreadHandler.post(() -> {
+                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-                }
+                if (player[playerPos] != null) VideoQualityResult = Tools.mgetVideoQuality(player[playerPos].getVideoFormat());
+                else VideoQualityResult = null;
+
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + position + ")");
             });
-
-            try {
-                return Tools.mgetVideoQuality(result.get());
-            } catch (InterruptedException e) {
-                Log.w(TAG, "getVideoQuality InterruptedException ", e);
-            }
-
-            return null;
         }
 
         @SuppressWarnings("unused")//called by JS

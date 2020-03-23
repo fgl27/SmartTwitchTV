@@ -514,7 +514,7 @@ function PlayVod_RefreshProgressBarr(show) {
 
     if (!Play_Status_Always_On) {
         if (Main_IsNotBrowser && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
-            Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
+            Play_getVideoQuality(1);
 
         if (Main_IsNotBrowser) Play_VideoStatus(false);
         else Play_VideoStatusTest();
