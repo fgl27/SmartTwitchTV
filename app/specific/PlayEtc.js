@@ -1315,7 +1315,7 @@ function Play_MakeControls() {
                 Android.DisableMultiStream();
                 Play_Multi_UnSetPanel(shutdown);
                 Play_CleanHideExit();
-                Play_getQualities(1);
+                Play_getQualities(1, true);
             }
         }
     };
