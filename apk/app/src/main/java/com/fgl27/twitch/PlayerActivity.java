@@ -1909,7 +1909,7 @@ public class PlayerActivity extends Activity {
         public void onBandwidthEstimate(@NonNull EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
             conSpeed = bitrateEstimate;
             netActivity = totalBytesLoaded * 8;
-            if (bitrateEstimate > 0) {
+            if (conSpeed > 0) {
                 SpeedCounter++;
                 conSpeedAVG += ((float) bitrateEstimate / 1000000);
             }
