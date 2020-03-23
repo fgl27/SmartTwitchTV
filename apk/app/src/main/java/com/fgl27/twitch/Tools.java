@@ -799,7 +799,7 @@ public final class Tools {
     }
 
     private static String extractBand(int band) {
-        return band > 0 ? String.format(Locale.US, " | %.02fMbps", ((float) band / 1000000.0)) : "";
+        return band > 0 ? String.format(Locale.US, " | %.02fMbps", ((float) band / 1000000)) : "";
     }
 
     private static String extractCodec(String codec) {
