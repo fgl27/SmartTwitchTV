@@ -7786,7 +7786,7 @@
                     Android.DisableMultiStream();
                     Play_Multi_UnSetPanel(shutdown);
                     Play_CleanHideExit();
-                    Play_getQualities(1);
+                    Play_getQualities(1, true);
                 }
             }
         };
@@ -9398,23 +9398,26 @@
         //Play_PannelEndStart(1);
     }
 
-    function Play_getQualities(position) {
+    var Play_getQualitiesFail = false;
+
+    function Play_getQualities(position, skipchange) {
         var baseQualities = Android.getQualities();
         var result;
 
         if (baseQualities) {
+            Play_getQualitiesFail = false;
             result = JSON.parse(baseQualities);
 
             if (result.length > 1) result[1].id += " | source";
 
             if (position === 1) {
                 Play_data.qualities = result;
-                if (!PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
+                if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
             } else {
                 PlayVod_qualities = result;
-                if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
+                if (!skipchange && !Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
             }
-        }
+        } else Play_getQualitiesFail = true;
     }
 
     function Play_onPlayer() {
@@ -9724,6 +9727,7 @@
     }
 
     function Play_showPanel() {
+        if (Play_getQualitiesFail) Play_getQualities(1, true);
         PlayVod_IconsBottonResetFocus();
         Play_qualityIndexReset();
         Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality);
@@ -10047,7 +10051,7 @@
         }
         PlayExtra_UnSetPanel();
         Play_CleanHideExit();
-        Play_getQualities(1);
+        Play_getQualities(1, true);
     }
 
     function Play_EndDialogUpDown(adder) {
@@ -11166,6 +11170,7 @@
     }
 
     function PlayVod_showPanel(autoHide) {
+        if (Play_getQualitiesFail) Play_getQualities(2, true);
         PlayVod_RefreshProgressBarr(autoHide);
         Play_clock();
         Play_CleanHideExit();
