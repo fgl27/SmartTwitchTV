@@ -1307,11 +1307,6 @@ function Play_ShowVideoQuality(position) {
     Main_innerHTML("stream_quality", value);
 }
 
-function Play_extractBand(input) {
-    input = parseInt(input);
-    return input > 0 ? ' | ' + parseFloat(input / 1000000).toFixed(2) + 'Mbps' : '';
-}
-
 function Play_clearHidePanel() {
     window.clearTimeout(Play_PanelHideID);
     PlayVod_ProgressBaroffset = 0;
