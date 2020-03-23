@@ -196,7 +196,7 @@ public final class Tools {
 
             for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
-                response = readUrlSimpleQualitiesPlaylist(url, DefaultTimeout + (500 * i));
+                response = readUrlSimplePlaylist(url, DefaultTimeout + (500 * i));
 
                 if (response != null) {
 
@@ -269,7 +269,7 @@ public final class Tools {
         }
     }
 
-    private static readUrlSimpleObj readUrlSimpleQualitiesPlaylist(String urlString, int Timeout) {
+    private static readUrlSimpleObj readUrlSimplePlaylist(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
         try {
