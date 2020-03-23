@@ -357,6 +357,7 @@ public class PlayerActivity extends Activity {
             }
 
             player[4].addListener(new PlayerEventListenerSmall());
+            player[4].addAnalyticsListener(new AnalyticsEventListenerSmall());
 
             PlayerView[4].setPlayer(player[4]);
         }
@@ -1918,6 +1919,17 @@ public class PlayerActivity extends Activity {
                 NetActivityAVG += ((float) netActivity / 1000000);
             }
         }
+    }
+
+    //For the small player only droppedFrames is need as this is a good mesure of lag
+    private class AnalyticsEventListenerSmall implements AnalyticsListener {
+
+        @Override
+        public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
+            droppedFrames += count;
+            DroppedFramesTotal += count;
+        }
+
     }
 
     @TargetApi(23)
