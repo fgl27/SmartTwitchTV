@@ -45,8 +45,10 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class PlayerActivity extends Activity {
@@ -131,6 +133,7 @@ public class PlayerActivity extends Activity {
     public long netActivity = 0L;
     public long DroppedFramesTotal = 0L;
     public int DeviceRam = 0;
+    public String getVideoStatusResult = null;
     public float conSpeedAVG = 0f;
     public float NetActivityAVG = 0f;
     public long NetCounter = 0L;
@@ -1434,43 +1437,43 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String getVideoStatus() {
-            String mvalue = String.format(Locale.US, "%d,%d,%d,%s,%d,%s,",
-                    droppedFrames,
-                    DroppedFramesTotal,
-                    conSpeed,
-                    String.format(Locale.US, "%.02f", (SpeedCounter > 0 ? (conSpeedAVG / SpeedCounter) : 0)),
-                    netActivity,
-                    String.format(Locale.US, "%.02f", (NetCounter > 0 ? (NetActivityAVG / NetCounter) : 0)));
+        public String getVideoStatusString() {
+            return getVideoStatusResult;
+        }
 
-            //Erase after read
-            netActivity = 0L;
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void getVideoStatus(boolean showLatency) {
+            getVideoStatusResult = null;
 
-            HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
-                @Override
-                public void run() {
-                    int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
+            MainThreadHandler.post(() -> {
+                ArrayList<String> ret = new ArrayList<>();
 
-                    if (player[playerPos] != null) {
-                        value = String.format(Locale.US, "%d,%d",
-                                player[playerPos].getTotalBufferedDuration(),
-                                player[playerPos].getCurrentLiveOffset()
-                        );
-                    } else value = "0,0";
+                ret.add(String.valueOf(droppedFrames));
+                ret.add(String.valueOf(DroppedFramesTotal));
+                ret.add(String.valueOf(conSpeed));
+                ret.add(String.format(Locale.US, "%.02f", (SpeedCounter > 0 ? (conSpeedAVG / SpeedCounter) : 0)));
+                ret.add(String.valueOf(netActivity));
+                ret.add(String.format(Locale.US, "%.02f", (NetCounter > 0 ? (NetActivityAVG / NetCounter) : 0)));
+
+                //Erase after read
+                netActivity = 0L;
+
+                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
+
+                if (player[playerPos] != null) {
+                    ret.add(String.valueOf(player[playerPos].getTotalBufferedDuration()));
+                    ret.add(String.valueOf(player[playerPos].getCurrentLiveOffset()));
+                } else {
+                    ret.add("0");
+                    ret.add("0");
                 }
+
+                getVideoStatusResult = new Gson().toJson(ret);
+
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency +")");
             });
-            String getValue = "0,0";
 
-            try {
-                getValue = result.get();
-            } catch (InterruptedException e) {
-                Log.w(TAG, "getVideoStatus InterruptedException ", e);
-            }
-
-            return String.format(Locale.US, "%s%s",
-                    mvalue,
-                    getValue
-            );
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1782,7 +1785,7 @@ public class PlayerActivity extends Activity {
 
             if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture)
                 LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
-            else 
+            else
                 PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
 
         } else if (PlayerCheckCounter[position] > 3) {
