@@ -177,7 +177,8 @@ function Main_loadTranslations(language) {
                     'Main_CheckStop': Main_CheckStop,
                     'Main_CheckResume': Main_CheckResume,
                     'Play_getQualities': Play_getQualities,
-                    'Play_ShowVideoStatus': Play_ShowVideoStatus
+                    'Play_ShowVideoStatus': Play_ShowVideoStatus,
+                    'Play_ShowVideoQuality': Play_ShowVideoQuality
                 };
             }
             Main_IsNotBrowser = Android.getAndroid();
