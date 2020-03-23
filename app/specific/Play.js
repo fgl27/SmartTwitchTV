@@ -1261,7 +1261,14 @@ function Play_VideoStatusTest() {
 }
 
 function Play_VideoStatus(showLatency) {
-    var value = Android.getVideoStatus().split(',');
+    Android.getVideoStatus(showLatency);
+}
+
+function Play_ShowVideoStatus(showLatency) {
+    var value = Android.getVideoStatusString();
+
+    if (value) value = JSON.parse(value);
+    else return;
 
     Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
         " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +

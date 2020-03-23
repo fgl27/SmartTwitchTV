@@ -31,7 +31,8 @@
         'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult, // UserLiveFeed_CheckIfIsLiveResult() func from app/specific/Sidepannel.js
         'Main_CheckStop': Main_CheckStop, // Main_CheckStop() func from app/specific/Main.js
         'Main_CheckResume': Main_CheckResume, // Main_CheckStop() func from app/specific/Main.js
-        'Play_getQualities': Play_getQualities // Main_CheckStop() func from app/specific/Play.js
+        'Play_getQualities': Play_getQualities, // Main_CheckStop() func from app/specific/Play.js
+        'Play_ShowVideoStatus': Play_ShowVideoStatus // Main_CheckStop() func from app/specific/Play.js
     };
 
     /** Expose `smartTwitchTV` */
