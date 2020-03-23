@@ -125,9 +125,9 @@ public class PlayerActivity extends Activity {
     public Handler SaveBackupJsonHandler;
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
-    public int[] droppedFrames = new int[2];
-    public long[] conSpeed = new long[2];
-    public long[] netActivity = new long[2];
+    public int droppedFrames = 0;
+    public long conSpeed = 0L;
+    public long netActivity = 0L;
     public long DroppedFramesTotal = 0L;
     public int DeviceRam = 0;
     public float conSpeedAVG = 0f;
@@ -300,7 +300,7 @@ public class PlayerActivity extends Activity {
             }
 
             player[position].addListener(new PlayerEventListener(position));
-            player[position].addAnalyticsListener(new AnalyticsEventListener(position));
+            player[position].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[position].setPlayer(player[position]);
         }
@@ -425,11 +425,7 @@ public class PlayerActivity extends Activity {
             }
 
             player[position].addListener(new PlayerEventListener(position));
-
-            player[position].addAnalyticsListener(
-                    (position < 2) ? new AnalyticsEventListener(position) :
-                            new AnalyticsEventListenerMulti()
-            );
+            player[position].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[position].setPlayer(player[position]);
         }
@@ -505,11 +501,6 @@ public class PlayerActivity extends Activity {
             player[position].release();
             player[position] = null;
             trackSelector[position] = null;
-
-            if (position < 2) {//Only player 0 & 1 acount for this
-                droppedFrames[position] = 0;
-                netActivity[position] = 0L;
-            }
         }
     }
 
@@ -1446,14 +1437,15 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String getVideoStatus() {
             String mvalue = String.format(Locale.US, "%d,%d,%d,%s,%d,%s,",
-                    droppedFrames[mainPlayer],
+                    droppedFrames,
                     DroppedFramesTotal,
-                    conSpeed[mainPlayer],
+                    conSpeed,
                     String.format(Locale.US, "%.02f", (SpeedCounter > 0 ? (conSpeedAVG / SpeedCounter) : 0)),
-                    netActivity[mainPlayer],
+                    netActivity,
                     String.format(Locale.US, "%.02f", (NetCounter > 0 ? (NetActivityAVG / NetCounter) : 0)));
 
-            netActivity[mainPlayer] = 0L;
+            //Erase after read
+            netActivity = 0L;
 
             HVTHandler.RunnableResult<String> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<String>() {
                 @Override
@@ -1907,43 +1899,25 @@ public class PlayerActivity extends Activity {
 
     private class AnalyticsEventListener implements AnalyticsListener {
 
-        private int position;
-
-        private AnalyticsEventListener(int mposition) {
-            position = mposition;
-        }
-
         @Override
         public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
-            droppedFrames[position] += count;
+            droppedFrames += count;
             DroppedFramesTotal += count;
         }
 
         @Override
         public void onBandwidthEstimate(@NonNull EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
-            conSpeed[position] = bitrateEstimate;
-            netActivity[position] = totalBytesLoaded * 8;
+            conSpeed = bitrateEstimate;
+            netActivity = totalBytesLoaded * 8;
             if (bitrateEstimate > 0) {
                 SpeedCounter++;
                 conSpeedAVG += ((float) bitrateEstimate / 1000000);
             }
-            if (netActivity[position] > 0) {
+            if (netActivity > 0) {
                 NetCounter++;
-                NetActivityAVG += ((float) netActivity[position] / 1000000);
+                NetActivityAVG += ((float) netActivity / 1000000);
             }
         }
-    }
-
-    //Simple AnalyticsListener for multiplayer no need to be account for all the data for all players
-    //as the only info show to the user is DroppedFramesTotal for all players
-    private class AnalyticsEventListenerMulti implements AnalyticsListener {
-
-        @Override
-        public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
-            droppedFrames[mainPlayer] += count;
-            DroppedFramesTotal += count;
-        }
-
     }
 
     @TargetApi(23)
