@@ -51,8 +51,8 @@ import java.util.Locale;
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAcount = 4;
     public final int PlayerAcountPlus = PlayerAcount + 1;
@@ -1777,13 +1777,12 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[position]++;
 
-        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && mWho_Called < 3) {
+        if (PlayerCheckCounter[position] < 4 && mWho_Called < 3) {
 
-            if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture) {
-                mSetQuality(-1);
+            if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture)
                 LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
-            }
-            PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
+            else 
+                PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
 
         } else if (PlayerCheckCounter[position] > 3) {
 

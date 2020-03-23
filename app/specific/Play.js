@@ -894,29 +894,13 @@ function Play_getQualities(position) {
 
         if (result.length > 1) result[1].id += " | source";
 
-    } else {
-        result = [
-            {
-                'id': 'Auto',
-                'band': 0,
-                'codec': 'avc'
-            }
-        ];
         if (position === 1) {
-            Play_data.quality = "Auto";
-            Play_data.qualityPlaying = Play_data.quality;
+            Play_data.qualities = result;
+            if (!PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
         } else {
-            PlayVod_quality = 'Auto';
-            PlayVod_qualityPlaying = PlayVod_quality;
+            PlayVod_qualities = result;
+            if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
         }
-    }
-
-    if (position === 1) {
-        Play_data.qualities = result;
-        if (!PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
-    } else {
-        PlayVod_qualities = result;
-        if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
     }
 }
 
@@ -947,17 +931,20 @@ function Play_SetHtmlQuality(element) {
 }
 
 function Play_PlayerCheck(mwhocall) { // Called only by JAVA
-
     if (mwhocall === 1) {
 
         Play_data.quality = "Auto";
         Play_data.qualityPlaying = Play_data.quality;
+        Android.SetQuality(-1);
+        Android.RestartPlayer(1, 0, 0);
         Play_showWarningDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 2) {
 
         PlayVod_quality = "Auto";
         PlayVod_qualityPlaying = PlayVod_quality;
+        Android.SetQuality(-1);
+        Android.RestartPlayer(2, Android.gettime(), 0);
         Play_showWarningDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 3) {
