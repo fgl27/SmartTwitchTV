@@ -180,7 +180,7 @@ function Play_PreStart() {
     Play_LowLatency = Main_getItemBool('Play_LowLatency', false);
 
     if (Main_IsNotBrowser) {
-        //TODO remove tihs after some app updates
+        //TODO remove this after some app updates
         if (Play_PicturePictureSize > 2) {
             Play_PicturePictureSize = 0;
             Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
