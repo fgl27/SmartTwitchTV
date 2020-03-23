@@ -326,6 +326,7 @@ public class PlayerActivity extends Activity {
         }
 
         KeepScreenOn(true);
+        droppedFrames = 0;
     }
 
     private void initializeSmallPlayer(MediaSource NewMediaSource) {
@@ -448,6 +449,7 @@ public class PlayerActivity extends Activity {
         else player[position].setVolume(0f);
 
         KeepScreenOn(true);
+        droppedFrames = 0;
     }
 
     private void ClearPlayer(int position) {
@@ -473,8 +475,9 @@ public class PlayerActivity extends Activity {
         }
 
         //All players are close enable screen saver
-        if (player[0] == null && player[1] == null && player[2] == null && player[3] == null)
+        if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
             KeepScreenOn(false);
+        }
     }
 
     //Stop the player called from js, clear it all
