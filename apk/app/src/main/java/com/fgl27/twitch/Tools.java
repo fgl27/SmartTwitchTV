@@ -24,7 +24,6 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.Extractor;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.extractor.mp4.Mp4Extractor;
@@ -543,19 +542,14 @@ public final class Tools {
         }
     }
 
-    public static String mgetVideoQuality(SimpleExoPlayer player) {
-        Format format = player.getVideoFormat();
-
+    public static String mgetVideoQuality(Format format) {
         if (format == null) {
             return null;
         }
 
-        return String.format(Locale.US, "%s,%s,%d,%s",
-                format.height + "p",
-                (format.frameRate == Format.NO_VALUE ? "" :
-                        String.format(Locale.US, "%d", extractFPS(format.frameRate))),
-                format.bitrate,
-                (format.codecs != null ? mgetCodec(format.codecs) : null));
+        return format.height + "p" +
+                (format.frameRate == Format.NO_VALUE ? "" : String.valueOf(extractFPS(format.frameRate))) +
+                " | Auto" + extractBand(format.bitrate) + (format.codecs != null ? (" | " + mgetCodec(format.codecs)) : "");
     }
 
     private static String mgetCodec(String codec) {
