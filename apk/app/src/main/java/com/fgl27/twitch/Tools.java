@@ -612,7 +612,7 @@ public final class Tools {
                     .createMediaSource(uri);
         } else
             return new ProgressiveMediaSource
-                    .Factory(new DefaultDataSourceFactory(context, Util.getUserAgent(context, context.getString(R.string.app_name))), new Mp4ExtractorsFactory())
+                    .Factory(getDefaultDataSourceFactory(context, masterPlaylist, Uri.parse("clip")), new Mp4ExtractorsFactory())
                     .createMediaSource(MediaItemBuilder(uri));
     }
 
