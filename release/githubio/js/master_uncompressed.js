@@ -3559,7 +3559,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.149';
+    var Main_stringVersion_Min = '.150';
     var Main_minversion = 'March 23, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -3612,7 +3612,9 @@
                         'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
                         'Main_CheckStop': Main_CheckStop,
                         'Main_CheckResume': Main_CheckResume,
-                        'Play_getQualities': Play_getQualities
+                        'Play_getQualities': Play_getQualities,
+                        'Play_ShowVideoStatus': Play_ShowVideoStatus,
+                        'Play_ShowVideoQuality': Play_ShowVideoQuality
                     };
                 }
                 Main_IsNotBrowser = Android.getAndroid();
@@ -5768,7 +5770,7 @@
             Chat_Init();
         } else Chat_NoVod();
 
-        Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+        Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO_TEMP);
         Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
         Main_innerHTML("stream_info_title", ChannelClip_title);
         Main_innerHTML("stream_info_game", ChannelClip_game);
@@ -5781,6 +5783,7 @@
         Play_DefaultjumpTimers = PlayClip_jumpTimers;
         PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
         Main_replaceClassEmoji('stream_info_title');
+        Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
         Main_values.Play_isHost = false;
         PlayClip_SetOpenVod();
@@ -6150,22 +6153,8 @@
         if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 
         if (!Play_Status_Always_On) {
-            if (Main_IsNotBrowser) {
-                Play_VideoStatus(false);
-
-                var value = Android.getVideoQuality();
-
-                if (Main_A_includes_B(PlayClip_quality, 'Auto') && value !== null && value !== undefined) {
-                    value = value.split(',');
-
-                    for (var i = 0; i < 2; i++) {
-                        value[i] = (value[i] !== null && value[i] !== 'null' && value[i] !== undefined) ? value[i] : '';
-                    }
-
-                    Main_textContent('stream_quality', value[0] + value[1] + " | Auto | mp4");
-                }
-
-            } else Play_VideoStatusTest();
+            if (Main_IsNotBrowser) Play_VideoStatus(false);
+            else Play_VideoStatusTest();
         }
     }
 
@@ -8705,7 +8694,7 @@
         Play_LowLatency = Main_getItemBool('Play_LowLatency', false);
 
         if (Main_IsNotBrowser) {
-            //TODO remove tihs after some app updates
+            //TODO remove this after some app updates
             if (Play_PicturePictureSize > 2) {
                 Play_PicturePictureSize = 0;
                 Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
@@ -9418,27 +9407,13 @@
 
             if (result.length > 1) result[1].id += " | source";
 
-        } else {
-            result = [{
-                'id': 'Auto',
-                'band': 0,
-                'codec': 'avc'
-            }];
             if (position === 1) {
-                Play_data.quality = "Auto";
-                Play_data.qualityPlaying = Play_data.quality;
+                Play_data.qualities = result;
+                if (!PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
             } else {
-                PlayVod_quality = 'Auto';
-                PlayVod_qualityPlaying = PlayVod_quality;
+                PlayVod_qualities = result;
+                if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
             }
-        }
-
-        if (position === 1) {
-            Play_data.qualities = result;
-            if (!PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
-        } else {
-            PlayVod_qualities = result;
-            if (!Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
         }
     }
 
@@ -9469,17 +9444,20 @@
     }
 
     function Play_PlayerCheck(mwhocall) { // Called only by JAVA
-
         if (mwhocall === 1) {
 
             Play_data.quality = "Auto";
             Play_data.qualityPlaying = Play_data.quality;
+            Android.SetQuality(-1);
+            Android.RestartPlayer(1, 0, 0);
             Play_showWarningDialog(STR_PLAYER_LAG, 2000);
 
         } else if (mwhocall === 2) {
 
             PlayVod_quality = "Auto";
             PlayVod_qualityPlaying = PlayVod_quality;
+            Android.SetQuality(-1);
+            Android.RestartPlayer(2, Android.gettime(), 0);
             Play_showWarningDialog(STR_PLAYER_LAG, 2000);
 
         } else if (mwhocall === 3) {
@@ -9740,8 +9718,8 @@
     function Play_UpdateStatus(mwhocall) {
         var isLive = mwhocall === 1;
 
-        if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(false, Play_SetHtmlQuality);
-        else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
+        if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(0);
+        else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) Play_getVideoQuality(1);
         Play_VideoStatus(isLive);
     }
 
@@ -9783,7 +9761,7 @@
 
         if (!Play_Status_Always_On) {
             if (Main_IsNotBrowser) {
-                if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(false, Play_SetHtmlQuality);
+                if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(0);
                 Play_VideoStatus(true);
             } else Play_VideoStatusTest();
         }
@@ -9797,7 +9775,14 @@
     }
 
     function Play_VideoStatus(showLatency) {
-        var value = Android.getVideoStatus().split(',');
+        Android.getVideoStatus(showLatency);
+    }
+
+    function Play_ShowVideoStatus(showLatency) {
+        var value = Android.getVideoStatusString();
+
+        if (value) value = JSON.parse(value);
+        else return;
 
         Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
             " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +
@@ -9819,26 +9804,21 @@
         return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
     }
 
-    function Play_getVideoQuality(forceCallback, callback) {
-        var value = Android.getVideoQuality();
+    function Play_getVideoQuality(position) {
+        Android.getVideoQuality(position);
+    }
 
-        if (value === null || value === undefined || forceCallback) {
-            callback('stream_quality');
+    function Play_ShowVideoQuality(position) {
+        var value = Android.getVideoQualityString();
+
+        if (!value) {
+            if (!position) Play_SetHtmlQuality('stream_quality');
+            else PlayVod_SetHtmlQuality('stream_quality');
+
             return;
         }
 
-        value = value.split(',');
-
-        for (var i = 0; i < value.length; i++) {
-            value[i] = (value[i] !== null && value[i] !== 'null' && value[i] !== undefined) ? value[i] : '';
-        }
-
-        Main_innerHTML("stream_quality", value[0] + value[1] + " | Auto" + Play_extractBand(value[2]) + " | " + value[3]);
-    }
-
-    function Play_extractBand(input) {
-        input = parseInt(input);
-        return input > 0 ? ' | ' + parseFloat(input / 1000000).toFixed(2) + 'Mbps' : '';
+        Main_innerHTML("stream_quality", value);
     }
 
     function Play_clearHidePanel() {
@@ -10744,7 +10724,8 @@
         PlayVod_currentTime = 0;
         Main_textContent("stream_live_time", '');
         Main_textContent('progress_bar_current_time', Play_timeS(0));
-        Chat_title = STR_PAST_BROA;
+        Chat_title = " VOD";
+        Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_LOGO_TEMP);
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
         Main_HideElement('progress_pause_holder');
         Main_ShowElement('progress_bar_div');
@@ -11210,7 +11191,7 @@
 
         if (!Play_Status_Always_On) {
             if (Main_IsNotBrowser && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
-                Play_getVideoQuality(false, PlayVod_SetHtmlQuality);
+                Play_getVideoQuality(1);
 
             if (Main_IsNotBrowser) Play_VideoStatus(false);
             else Play_VideoStatusTest();
@@ -21730,7 +21711,9 @@
         'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult, // UserLiveFeed_CheckIfIsLiveResult() func from app/specific/Sidepannel.js
         'Main_CheckStop': Main_CheckStop, // Main_CheckStop() func from app/specific/Main.js
         'Main_CheckResume': Main_CheckResume, // Main_CheckStop() func from app/specific/Main.js
-        'Play_getQualities': Play_getQualities // Main_CheckStop() func from app/specific/Play.js
+        'Play_getQualities': Play_getQualities, // Main_CheckStop() func from app/specific/Play.js
+        'Play_ShowVideoStatus': Play_ShowVideoStatus, // Main_CheckStop() func from app/specific/Play.js
+        'Play_ShowVideoQuality': Play_ShowVideoQuality // Main_CheckStop() func from app/specific/Play.js
     };
 
     /** Expose `smartTwitchTV` */
