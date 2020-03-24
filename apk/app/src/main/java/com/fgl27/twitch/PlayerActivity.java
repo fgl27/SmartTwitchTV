@@ -1709,6 +1709,8 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("ReferenceEquality")
         public void onTracksChanged(@NonNull TrackGroupArray trackGroups, @NonNull TrackSelectionArray trackSelections) {
             //onTracksChanged -> Called when the available or selected tracks change.
+            //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
+            //So trackGroups.length will be 0 and getQualities = null, after 100ms or so this will be called again and all will be fine
             if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0) {
                 RequestGetQualities();
                 lastSeenTrackGroupArray = trackGroups;
