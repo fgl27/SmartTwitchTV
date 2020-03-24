@@ -807,24 +807,28 @@ public final class Tools {
         return "";
     }
 
-    public static String getMbps(float FullValue, float FullValueAVG, long Counter) {
-        FullValue = FullValue / 1000000;
+    public static String GetCounters(float FullValue, float FullValueAVG, long Counter, String end) {
         FullValueAVG = (Counter > 0 ? (FullValueAVG / Counter) : 0);
 
-        return (FullValue < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f", FullValue) +
-                " (" + (FullValueAVG < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f", FullValueAVG) + " Avg) Mb";
-    }
-
-    public static String getPing(float FullValue, float FullValueAVG, long Counter) {
-        FullValueAVG = (Counter > 0 ? (FullValueAVG / Counter) : 0);
-
-        return (FullValue < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f", FullValue) +
-                " (" + (FullValueAVG < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f", FullValueAVG) + " Avg) ms";
+        return String.format(
+                Locale.US,
+                "%s%.02f (%s%.02f Avg) %s",
+                (FullValue < 10 ? "&nbsp;&nbsp;" : ""),
+                FullValue,
+                (FullValueAVG < 10 ? "&nbsp;&nbsp;" : ""),
+                FullValueAVG,
+                end
+        );
     }
 
     public static String getTime(float time) {
         time = time > 0 ? time / 1000 : 0;
 
-        return (time < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f s", time);
+        return String.format(
+                Locale.US,
+                "%s%.02f s",
+                (time < 10 ? "&nbsp;&nbsp;" : ""),
+                time
+        );
     }
 }
