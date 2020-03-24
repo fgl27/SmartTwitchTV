@@ -865,9 +865,22 @@ public class PlayerActivity extends Activity {
         }
         //ClearPlayer will reset audio position
         AudioMulti = temp_AudioMulti;
-        //Reset ping values
+
+        //Reset status values
+        PingValue = 0f;
         PingValueAVG = 0f;
         PingCounter = 0L;
+
+        droppedFrames = 0;
+        DroppedFramesTotal = 0L;
+
+        conSpeed = 0L;
+        conSpeedAVG = 0f;
+        SpeedCounter = 0L;
+
+        netActivity = 0L;
+        NetActivityAVG = 0f;
+        NetCounter = 0L;
     }
 
     @Override
