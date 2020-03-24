@@ -4953,7 +4953,6 @@
         ChannelVod_title = Main_values_Play_data[10];
         ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[11]);
         ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
-        Play_IncrementView = Main_values_Play_data[17];
 
         Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
         Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
@@ -8583,7 +8582,6 @@
     var Play_RestoreFromResume = false;
     var Play_updateStreamInfoErrorTry = 0;
     var Play_chat_container;
-    var Play_IncrementView = '';
     var Play_ProgresBarrElm;
     var Play_DefaultjumpTimers = [];
     var Play_UserLiveFeedPressed = false;
@@ -9585,7 +9583,6 @@
         Play_HideWarningDialog();
         if (!Play_EndDialogEnter) Play_HideEndDialog();
         Main_updateclock();
-        Play_IncrementView = '';
 
         if (Play_data.qualities[1] && Play_data.qualityIndex === (Play_getQualitiesCount() - 1)) {
             if (Play_data.qualities[1].hasOwnProperty('id')) {
@@ -10068,12 +10065,12 @@
     }
 
     function Play_OpenLiveFeedCheck() {
-        if (Play_CheckLiveThumb()) Play_OpenLiveFeed();
+        if (Play_CheckIfIsLiveResponseText || Play_CheckLiveThumb()) Play_OpenLiveFeed();
     }
 
     function Play_OpenLiveFeed() {
         Play_SavePlayData();
-        Play_PreshutdownStream(false);
+        UserLiveFeed_Hide(true);
 
         Main_values.Play_isHost = false;
         Play_UserLiveFeedPressed = true;
@@ -10796,8 +10793,6 @@
         Main_SaveValues();
 
         PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
-        //View bot is blocking it
-        //new Image().src = Play_IncrementView;
 
         Play_PlayerPanelOffset = -13;
         PlayVod_qualitiesFound = false;
