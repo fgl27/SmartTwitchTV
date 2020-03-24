@@ -116,8 +116,6 @@ function PlayVod_PosStart() {
     Main_SaveValues();
 
     PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
-    //View bot is blocking it
-    //new Image().src = Play_IncrementView;
 
     Play_PlayerPanelOffset = -13;
     PlayVod_qualitiesFound = false;

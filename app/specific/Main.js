@@ -1516,7 +1516,6 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
     ChannelVod_title = Main_values_Play_data[10];
     ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[11]);
     ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
-    Play_IncrementView = Main_values_Play_data[17];
 
     Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
