@@ -330,6 +330,7 @@ function en_USLang() {
     STR_NET_ACT = "Net Activity: ";
     STR_NET_SPEED = "Net Speed:";
     STR_LATENCY = "Latency To Broadcaster: ";
+    STR_PING = "Ping to Twitch: ";
     STR_WARNING = "Warning";
     STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and back key controller (ESC works for back key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
     STR_DPAD_POSTION = "D-pad screen position";
