@@ -67,8 +67,6 @@ public final class Tools {
 
     private static final String TAG = Tools.class.getName();
 
-    private static final String[] codecNames = {"avc", "vp9", "mp4a"};
-
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
     private static final String[] AvcLevels = {
             "1", "1.1", "1.2", "1.3", "1.b",
@@ -541,26 +539,6 @@ public final class Tools {
         }
     }
 
-    public static String mgetVideoQuality(Format format) {
-        if (format == null) {
-            return null;
-        }
-
-        return format.height + "p" +
-                (format.frameRate == Format.NO_VALUE ? "" : String.valueOf(extractFPS(format.frameRate))) +
-                " | Auto" + extractBand(format.bitrate) + (format.codecs != null ? (" | " + mgetCodec(format.codecs)) : "");
-    }
-
-    private static String mgetCodec(String codec) {
-        for (String codecName : codecNames) {
-            if (codec.contains(codecName)) {
-                return codecName;
-            }
-        }
-
-        return codec;
-    }
-
     public static DefaultLoadControl getLoadControl(int buffer, int DeviceRam) {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
@@ -791,10 +769,22 @@ public final class Tools {
         return band > 0 ? String.format(Locale.US, " | %.02fMbps", ((float) band / 1000000)) : "";
     }
 
+    public static String GetVideoQuality(Format format) {
+        if (format == null) {
+            return null;
+        }
+
+        return format.height + "p" +
+                (format.frameRate == Format.NO_VALUE ? "" : String.valueOf(extractFPS(format.frameRate))) +
+                " | Auto" + extractBand(format.bitrate) + extractCodec(format.codecs);
+    }
+
     private static String extractCodec(String codec) {
-        if (codec.contains("avc")) return " | avc";
-        else if (codec.contains("'vp9'")) return " | vp9";
-        else if (codec.contains("'mp4'")) return " | mp4";
+
+        if (codec == null) return "";
+        else if (codec.contains("avc")) return " | avc";
+        else if (codec.contains("vp9")) return " | vp9";
+        else if (codec.contains("mp4a")) return " | mp4";
 
         return "";
     }
