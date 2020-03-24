@@ -37,7 +37,6 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -594,29 +593,29 @@ public final class Tools {
         return false;
     }
 
-    public static MediaSource buildMediaSource(Uri uri, Context context, int who_called, boolean LowLatency, String masterPlaylist) {
+    public static MediaSource buildMediaSource(Uri uri, Context context, int who_called, boolean LowLatency, String masterPlaylist, String userAgent) {
         if (who_called == 1) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency ? 3000 : 0)//3000 is a safe value the implementation will calculate the proper value
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (who_called == 2) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .createMediaSource(uri);
         } else
             return new ProgressiveMediaSource
-                    .Factory(new DefaultDataSourceFactory(context, Util.getUserAgent(context, context.getString(R.string.app_name))), new Mp4ExtractorsFactory())
+                    .Factory(new DefaultDataSourceFactory(context, userAgent), new Mp4ExtractorsFactory())
                     .createMediaSource(MediaItemBuilder(uri));
     }
 
-    private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri) {
+    private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri, String userAgent) {
         if (masterPlaylist == null) masterPlaylist = "";//technically should not happen but check to prevent exception when converting to byte[]
 
         return new DefaultDataSourceFactory(
                 context,
                 new mDefaultHttpDataSourceFactory(
-                        Util.getUserAgent(context, context.getString(R.string.app_name)),
+                        userAgent,
                         null,
                         4000,
                         4000,
