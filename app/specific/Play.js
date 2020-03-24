@@ -69,7 +69,6 @@ var Play_isLive = true;
 var Play_RestoreFromResume = false;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
-var Play_IncrementView = '';
 var Play_ProgresBarrElm;
 var Play_DefaultjumpTimers = [];
 var Play_UserLiveFeedPressed = false;
@@ -1071,7 +1070,6 @@ function Play_ClearPlayer() {
     Play_HideWarningDialog();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
     Main_updateclock();
-    Play_IncrementView = '';
 
     if (Play_data.qualities[1] && Play_data.qualityIndex === (Play_getQualitiesCount() - 1)) {
         if (Play_data.qualities[1].hasOwnProperty('id')) {
@@ -1553,12 +1551,12 @@ function Play_EndDialogUpDown(adder) {
 }
 
 function Play_OpenLiveFeedCheck() {
-    if (Play_CheckLiveThumb()) Play_OpenLiveFeed();
+    if (Play_CheckIfIsLiveResponseText || Play_CheckLiveThumb()) Play_OpenLiveFeed();
 }
 
 function Play_OpenLiveFeed() {
     Play_SavePlayData();
-    Play_PreshutdownStream(false);
+    UserLiveFeed_Hide(true);
 
     Main_values.Play_isHost = false;
     Play_UserLiveFeedPressed = true;
