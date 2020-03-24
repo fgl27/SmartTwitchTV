@@ -561,11 +561,6 @@ public final class Tools {
         return codec;
     }
 
-    /**
-     * Increase player's min/max buffer sizes
-     *
-     * @return load control
-     */
     public static DefaultLoadControl getLoadControl(int buffer, int DeviceRam) {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
@@ -573,7 +568,7 @@ public final class Tools {
                         90000, //DEFAULT_MIN_BUFFER_MS
                         36000000, //DEFAULT_MAX_BUFFER_MS... technically infinity setTargetBufferBytes controls it
                         buffer, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
-                        buffer + 3000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                        buffer + 1000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .setTargetBufferBytes(DeviceRam)
                 .createDefaultLoadControl();
