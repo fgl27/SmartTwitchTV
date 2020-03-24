@@ -49,7 +49,6 @@ import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
@@ -127,6 +126,12 @@ public class PlayerActivity extends Activity {
     public HandlerThread ExtraPlayerHandlerThread;
     public HandlerThread SaveBackupJsonThread;
     public Handler SaveBackupJsonHandler;
+    public HandlerThread RuntimeThread;
+    public Handler RuntimeHandler;
+    public Runtime runtime;
+    public float PingValue = 0f;
+    public float PingValueAVG = 0f;
+    public long PingCounter = 0L;
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
     public int droppedFrames = 0;
@@ -182,6 +187,12 @@ public class PlayerActivity extends Activity {
             SaveBackupJsonThread = new HandlerThread("SaveBackupJsonThread");
             SaveBackupJsonThread.start();
             SaveBackupJsonHandler = new Handler(SaveBackupJsonThread.getLooper());
+
+            RuntimeThread = new HandlerThread("RuntimeThread");
+            RuntimeThread.start();
+            RuntimeHandler = new Handler(RuntimeThread.getLooper());
+            runtime = Runtime.getRuntime();
+            GetPing();
 
             for (int i = 0; i < PlayerAcountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
@@ -802,6 +813,23 @@ public class PlayerActivity extends Activity {
             trackSelector[mainPlayer].setParameters(trackSelectorParameters);
     }
 
+    private void GetPing() {
+        RuntimeHandler.removeCallbacksAndMessages(null);
+
+        RuntimeHandler.postDelayed(() -> {
+            String TempPing = Tools.GetPing(runtime);
+
+            if (TempPing != null) {
+                PingValue = Float.parseFloat(TempPing);
+                PingValueAVG += PingValue;
+                PingCounter++;
+
+            }
+
+            if (!IsStopped) GetPing();
+        }, 5000);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -809,6 +837,7 @@ public class PlayerActivity extends Activity {
 
         if (mWebView != null && AlreadyStarted) {
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
+            GetPing();
         }
         AlreadyStarted = true;
     }
@@ -836,6 +865,9 @@ public class PlayerActivity extends Activity {
         }
         //ClearPlayer will reset audio position
         AudioMulti = temp_AudioMulti;
+        //Reset ping values
+        PingValueAVG = 0f;
+        PingCounter = 0L;
     }
 
     @Override
@@ -1451,12 +1483,10 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 ArrayList<String> ret = new ArrayList<>();
 
-                ret.add(String.valueOf(droppedFrames));
-                ret.add(String.valueOf(DroppedFramesTotal));
-                ret.add(String.valueOf(conSpeed));
-                ret.add(String.format(Locale.US, "%.02f", (SpeedCounter > 0 ? (conSpeedAVG / SpeedCounter) : 0)));
-                ret.add(String.valueOf(netActivity));
-                ret.add(String.format(Locale.US, "%.02f", (NetCounter > 0 ? (NetActivityAVG / NetCounter) : 0)));
+                ret.add(Tools.getMbps(conSpeed, conSpeedAVG, SpeedCounter));//0
+                ret.add(Tools.getMbps(netActivity, NetActivityAVG, NetCounter));//1
+                ret.add(String.valueOf(droppedFrames));//2
+                ret.add(String.valueOf(DroppedFramesTotal));//3
 
                 //Erase after read
                 netActivity = 0L;
@@ -1464,12 +1494,13 @@ public class PlayerActivity extends Activity {
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
                 if (player[playerPos] != null) {
-                    ret.add(String.valueOf(player[playerPos].getTotalBufferedDuration()));
-                    ret.add(String.valueOf(player[playerPos].getCurrentLiveOffset()));
+                    ret.add(Tools.getTime(player[playerPos].getTotalBufferedDuration()));//4
+                    ret.add(Tools.getTime(player[playerPos].getCurrentLiveOffset()));//5
                 } else {
                     ret.add("0");
                     ret.add("0");
                 }
+                ret.add(Tools.getPing(PingValue, PingValueAVG, PingCounter));//6
 
                 getVideoStatusResult = new Gson().toJson(ret);
 

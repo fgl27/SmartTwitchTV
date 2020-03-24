@@ -60,6 +60,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.google.gson.JsonParser.parseString;
 
@@ -99,6 +101,8 @@ public final class Tools {
 
     private static final String vod_token = "https://api.twitch.tv/api/vods/%s/access_token?platform=_";
     private static final String vod_links = "https://usher.ttvnw.net/vod/%s.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
+
+    private static final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
     private static class readUrlSimpleObj {
         private final int status;
@@ -347,6 +351,20 @@ public final class Tools {
             if (urlConnection != null)
                 urlConnection.disconnect();
         }
+    }
+
+    public static String GetPing(Runtime runtime) {
+        try {
+
+            Process process = runtime.exec("ping -c 1 api.twitch.tv");
+
+            Matcher matcher = TIME_NAME.matcher(readFullyString(process.getInputStream()));
+
+            return matcher.find() ? matcher.group(1) : null;
+        } catch (IOException e) {
+            Log.w(TAG, "GetPing IOException ", e);
+        }
+        return null;
     }
 
     //For other then get methods
@@ -787,5 +805,26 @@ public final class Tools {
         else if (codec.contains("mp4a")) return " | mp4";
 
         return "";
+    }
+
+    public static String getMbps(float FullValue, float FullValueAVG, long Counter) {
+        FullValue = FullValue / 1000000;
+        FullValueAVG = (Counter > 0 ? (FullValueAVG / Counter) : 0);
+
+        return (FullValue < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f", FullValue) +
+                " (" + (FullValueAVG < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f", FullValueAVG) + " Avg) Mb";
+    }
+
+    public static String getPing(float FullValue, float FullValueAVG, long Counter) {
+        FullValueAVG = (Counter > 0 ? (FullValueAVG / Counter) : 0);
+
+        return (FullValue < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f", FullValue) +
+                " (" + (FullValueAVG < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f", FullValueAVG) + " Avg) ms";
+    }
+
+    public static String getTime(float time) {
+        time = time > 0 ? time / 1000 : 0;
+
+        return (time < 10 ? "&nbsp;&nbsp;" : "") + String.format(Locale.US, "%.02f s", time);
     }
 }

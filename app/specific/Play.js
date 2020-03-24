@@ -1228,7 +1228,9 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
-    if (PlayExtra_PicturePicture) {
+    if (Play_MultiEnable) {
+        Main_innerHTML("stream_watching_time_multi", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+    } else if (PlayExtra_PicturePicture) {
         Main_innerHTML("stream_info_pp_watching_time0", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
 
         Main_innerHTML("stream_info_pp_livetime0", STR_SINCE +
@@ -1258,7 +1260,8 @@ function Play_VideoStatusTest() {
     Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' (150.00 Avg) Mbps' +
         STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 Today)' +
         STR_BR + STR_BUFFER_HEALT + Play_getBuffer(100.37 * 1000) +
-        STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000));
+        STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000) +
+        STR_BR + STR_PING + " 100.00 (99.00 Avg) ms");
 }
 
 function Play_VideoStatus(showLatency) {
@@ -1271,12 +1274,13 @@ function Play_ShowVideoStatus(showLatency) {
     if (value) value = JSON.parse(value);
     else return;
 
-    Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
-        " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +
-        value[5] + STR_AVGMB + STR_BR + STR_DROOPED_FRAMES + value[0] + " (" + value[1] + STR_TODAY +
-        STR_BR + STR_BUFFER_HEALT + Play_getBuffer(value[6]) +
-        (showLatency ? (STR_BR + STR_LATENCY + Play_getBuffer(value[7])) : '') +
-        (Play_MultiEnable ? (STR_BR + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time))) : ''));
+    Main_innerHTML("stream_status",
+        STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
+        STR_NET_ACT + value[1] + STR_BR +
+        STR_DROOPED_FRAMES + value[2] + " (" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
+        STR_BUFFER_HEALT + value[4] +
+        (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
+        STR_BR + STR_PING + value[6]);
 }
 
 function Play_getMbps(value) {
@@ -1622,6 +1626,7 @@ function Play_Multi_SetPanel() {
     Main_HideElement('stream_info');
     Main_ShowElement('dialog_multi_help');
     Main_ShowElement('stream_info_multi');
+    Main_ShowElement('stream_watching_time_multi');
 }
 
 function Play_Multi_UnSetPanelDivs(checkChat) {
@@ -1636,6 +1641,7 @@ function Play_Multi_UnSetPanelDivs(checkChat) {
     Main_HideElement('stream_info_multi');
     Main_HideElement('stream_info_multi_big');
     Main_HideElement('dialog_multi_help');
+    Main_HideElement('stream_watching_time_multi');
     if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
     Main_SaveValues();
     Play_IconsRemoveFocus();
