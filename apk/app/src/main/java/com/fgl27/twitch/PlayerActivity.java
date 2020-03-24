@@ -1430,7 +1430,7 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-                if (player[playerPos] != null) VideoQualityResult = Tools.mgetVideoQuality(player[playerPos].getVideoFormat());
+                if (player[playerPos] != null) VideoQualityResult = Tools.GetVideoQuality(player[playerPos].getVideoFormat());
                 else VideoQualityResult = null;
 
                 mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + position + ")");
