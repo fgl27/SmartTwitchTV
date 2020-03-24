@@ -449,7 +449,7 @@ function PlayVod_shutdownStream() {
     }
 }
 
-function PlayVod_PreshutdownStream(saveOffset) {
+function PlayVod_PreshutdownStream(saveOffset, PreventcleanQuailities) {
     if (saveOffset && Main_IsNotBrowser) {
         if ((ChannelVod_DurationSeconds - 300) > parseInt(Android.gettime() / 1000))
             PlayVod_SaveVodIds();
@@ -461,7 +461,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     window.clearInterval(PlayVod_SaveOffsetId);
     Main_values.Play_WasPlaying = 0;
     Chat_Clear();
-    UserLiveFeed_Hide();
+    UserLiveFeed_Hide(PreventcleanQuailities);
     Play_ClearPlayer();
     PlayVod_ClearVod();
 }
@@ -745,7 +745,7 @@ function PlayVod_DialogPressedClick(time) {
 }
 
 function PlayVod_OpenLiveStream() {
-    PlayVod_PreshutdownStream(true);
+    PlayVod_PreshutdownStream(true, true);
     Main_OpenLiveStream(
         UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
         UserLiveFeed_ids,
