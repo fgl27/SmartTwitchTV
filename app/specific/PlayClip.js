@@ -304,7 +304,7 @@ function PlayClip_shutdownStream() {
     }
 }
 
-function PlayClip_PreshutdownStream(closePlayer) {
+function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
     Main_history_UpdateClip(ChannelClip_Id, Main_IsNotBrowser ? (parseInt(Android.gettime() / 1000)) : 0);
     PlayClip_hidePanel();
     if (Main_IsNotBrowser) {
@@ -314,7 +314,7 @@ function PlayClip_PreshutdownStream(closePlayer) {
     if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
-    UserLiveFeed_Hide();
+    UserLiveFeed_Hide(PreventcleanQuailities);
     PlayClip_qualities = [];
     document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
     ChannelVod_vodOffset = 0;
@@ -480,7 +480,7 @@ function PlayClip_OpenVod() {
 }
 
 function PlayClip_OpenLiveStream() {
-    PlayClip_PreshutdownStream(true);
+    PlayClip_PreshutdownStream(true, true);
     Main_OpenLiveStream(
         UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
         UserLiveFeed_ids,
