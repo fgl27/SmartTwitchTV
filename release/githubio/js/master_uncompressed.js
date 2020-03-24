@@ -7174,7 +7174,7 @@
                         if (Play_EndFocus) Play_EndDialogPressed(1);
                         else {
                             if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                            else if (Play_CheckLiveThumb(true)) {
+                            else if (Play_CheckIfIsLiveResponseText || Play_CheckLiveThumb(true)) {
                                 Play_EndDialogEnter = 1;
                                 Play_EndUpclearCalback = Play_handleKeyDown;
                                 Play_OpenLiveFeed();
@@ -11127,7 +11127,7 @@
         }
     }
 
-    function PlayVod_PreshutdownStream(saveOffset) {
+    function PlayVod_PreshutdownStream(saveOffset, PreventcleanQuailities) {
         if (saveOffset && Main_IsNotBrowser) {
             if ((ChannelVod_DurationSeconds - 300) > parseInt(Android.gettime() / 1000))
                 PlayVod_SaveVodIds();
@@ -11139,7 +11139,7 @@
         window.clearInterval(PlayVod_SaveOffsetId);
         Main_values.Play_WasPlaying = 0;
         Chat_Clear();
-        UserLiveFeed_Hide();
+        UserLiveFeed_Hide(PreventcleanQuailities);
         Play_ClearPlayer();
         PlayVod_ClearVod();
     }
@@ -11424,7 +11424,7 @@
     }
 
     function PlayVod_OpenLiveStream() {
-        PlayVod_PreshutdownStream(true);
+        PlayVod_PreshutdownStream(true, true);
         Main_OpenLiveStream(
             UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
             UserLiveFeed_ids,
