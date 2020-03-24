@@ -135,8 +135,8 @@ public class PlayerActivity extends Activity {
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
     public int droppedFrames = 0;
-    public long conSpeed = 0L;
-    public long netActivity = 0L;
+    public float conSpeed = 0L;
+    public float netActivity = 0L;
     public long DroppedFramesTotal = 0L;
     public int DeviceRam = 0;
     public String VideoQualityResult = null;
@@ -1496,8 +1496,8 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 ArrayList<String> ret = new ArrayList<>();
 
-                ret.add(Tools.getMbps(conSpeed, conSpeedAVG, SpeedCounter));//0
-                ret.add(Tools.getMbps(netActivity, NetActivityAVG, NetCounter));//1
+                ret.add(Tools.GetCounters(conSpeed, conSpeedAVG, SpeedCounter, "Mb"));//0
+                ret.add(Tools.GetCounters(netActivity, NetActivityAVG, NetCounter, "Mb"));//1
                 ret.add(String.valueOf(droppedFrames));//2
                 ret.add(String.valueOf(DroppedFramesTotal));//3
 
@@ -1513,7 +1513,7 @@ public class PlayerActivity extends Activity {
                     ret.add("0");
                     ret.add("0");
                 }
-                ret.add(Tools.getPing(PingValue, PingValueAVG, PingCounter));//6
+                ret.add(Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"));//6
 
                 getVideoStatusResult = new Gson().toJson(ret);
 
@@ -1956,15 +1956,16 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onBandwidthEstimate(@NonNull EventTime eventTime, int totalLoadTimeMs, long totalBytesLoaded, long bitrateEstimate) {
-            conSpeed = bitrateEstimate;
-            netActivity = totalBytesLoaded * 8;
+            conSpeed = (float) bitrateEstimate / 1000000;
             if (conSpeed > 0) {
                 SpeedCounter++;
-                conSpeedAVG += ((float) bitrateEstimate / 1000000);
+                conSpeedAVG += conSpeed;
             }
+
+            netActivity = (float) totalBytesLoaded * 8 / 1000000;
             if (netActivity > 0) {
                 NetCounter++;
-                NetActivityAVG += ((float) netActivity / 1000000);
+                NetActivityAVG += netActivity;
             }
         }
     }
