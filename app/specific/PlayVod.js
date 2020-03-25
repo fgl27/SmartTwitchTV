@@ -599,10 +599,9 @@ function PlayVod_getQualitiesCount() {
 
 function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
     Main_textContent('progress_bar_current_time', Play_timeS(current_time_seconds));
-    if (update_bar) {
-        Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
-        Play_ProgresBarrBufferElm.style.width = (((current_time_seconds + Play_BufferSize) / duration_seconds) * 100) + '%';
-    }
+    Play_ProgresBarrBufferElm.style.width = (((current_time_seconds + Play_BufferSize) / duration_seconds) * 100) + '%';
+
+    if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
 }
 
 function PlayVod_jump() {
