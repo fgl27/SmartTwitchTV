@@ -819,9 +819,9 @@ public final class Tools {
         return String.format(
                 Locale.US,
                 "%s%.02f (%s%.02f Avg) %s",
-                (FullValue < 10 ? "&nbsp;&nbsp;" : ""),
+                (FullValue < 10 ? "&nbsp;&nbsp;" : ""),//Keeps the indentation when the values go bellow 10
                 FullValue,
-                (FullValueAVG < 10 ? "&nbsp;&nbsp;" : ""),
+                (FullValueAVG < 10 ? "&nbsp;&nbsp;" : ""),//Keeps the indentation when the values go bellow 10
                 FullValueAVG,
                 end
         );
@@ -833,7 +833,7 @@ public final class Tools {
         return String.format(
                 Locale.US,
                 "%s%.02f s",
-                (time < 10 ? "&nbsp;&nbsp;" : ""),
+                (time < 10 ? "&nbsp;&nbsp;" : ""),//Keeps the indentation when the values go bellow 10
                 time
         );
     }
