@@ -64,6 +64,7 @@ function PlayClip_Start() {
     document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
+    Play_BufferSize = 0;
     Play_IconsResetFocus();
 
     Play_ShowPanelStatus(3);

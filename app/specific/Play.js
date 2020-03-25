@@ -70,6 +70,7 @@ var Play_RestoreFromResume = false;
 var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ProgresBarrElm;
+var Play_ProgresBarrBufferElm;
 var Play_DefaultjumpTimers = [];
 var Play_UserLiveFeedPressed = false;
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
@@ -164,6 +165,7 @@ var PlayExtra_data_old = JSON.parse(JSON.stringify(Play_data_base));
 function Play_PreStart() {
     Play_chat_container = document.getElementById("chat_container");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
+    Play_ProgresBarrBufferElm = document.getElementById("inner_progress_bar_buffer");
     Play_PanneInfoDoclId = document.getElementById("scene_channel_panel");
 
     Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
@@ -1268,6 +1270,7 @@ function Play_VideoStatus(showLatency) {
     Android.getVideoStatus(showLatency);
 }
 
+var Play_BufferSize = 0;
 function Play_ShowVideoStatus(showLatency) {
     var value = Android.getVideoStatusString();
 
@@ -1281,6 +1284,8 @@ function Play_ShowVideoStatus(showLatency) {
         STR_BUFFER_HEALT + value[4] +
         (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
         STR_BR + STR_PING + value[6]);
+
+    if (!PlayVod_IsJumping) Play_BufferSize = parseInt(value[7]);
 }
 
 function Play_getMbps(value) {
