@@ -763,13 +763,6 @@ public final class Tools {
         return null;
     }
 
-    private static int extractFPS(float fps) {
-        if (fps > 58 && fps < 62) return 60;
-        else if (fps < 32 && fps > 28) return 30;
-
-        return (int) Math.ceil(fps);
-    }
-
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private static class QualitiesObj {
         private final String id;
@@ -792,9 +785,15 @@ public final class Tools {
             return null;
         }
 
-        return format.height + "p" +
-                (format.frameRate == Format.NO_VALUE ? "" : String.valueOf(extractFPS(format.frameRate))) +
-                " | Auto" + extractBand(format.bitrate) + extractCodec(format.codecs);
+        return String.format(
+                Locale.US,
+                "%dp%s | Auto%s%s",
+                format.height,
+                (format.frameRate == Format.NO_VALUE ? "" : String.valueOf(extractFPS(format.frameRate))),
+                extractBand(format.bitrate),
+                extractCodec(format.codecs)
+
+        );
     }
 
     private static String extractCodec(String codec) {
@@ -805,6 +804,13 @@ public final class Tools {
         else if (codec.contains("mp4a")) return " | mp4";
 
         return "";
+    }
+
+    private static int extractFPS(float fps) {
+        if (fps > 58 && fps < 62) return 60;
+        else if (fps < 32 && fps > 28) return 30;
+
+        return (int) Math.ceil(fps);
     }
 
     public static String GetCounters(float FullValue, float FullValueAVG, long Counter, String end) {
