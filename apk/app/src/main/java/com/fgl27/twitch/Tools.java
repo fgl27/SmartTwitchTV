@@ -743,7 +743,7 @@ public final class Tools {
                                 format = groupIndex.getFormat(trackIndex);
                                 result.add(
                                         new QualitiesObj(
-                                                format.height + "p" + extractFPS(format.frameRate),
+                                                String.format(Locale.US,"%dp%d", format.height, extractFPS(format.frameRate)),
                                                 format.bitrate,
                                                 format.codecs
                                         )
