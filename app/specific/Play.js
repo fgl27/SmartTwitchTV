@@ -1285,7 +1285,7 @@ function Play_ShowVideoStatus(showLatency) {
         (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
         STR_BR + STR_PING + value[6]);
 
-    if (!PlayVod_IsJumping) Play_BufferSize = parseInt(value[7]);
+    Play_BufferSize = parseInt(value[7]);
 }
 
 function Play_getMbps(value) {
