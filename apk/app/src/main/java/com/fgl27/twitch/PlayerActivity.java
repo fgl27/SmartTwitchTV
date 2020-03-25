@@ -1321,11 +1321,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public long gettime() {
             if (player[mainPlayer] == null) return 0L;
-        
+
             HVTHandler.RunnableResult<Long> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Long>() {
                 @Override
                 public void run() {
-                    value = player[mainPlayer].getCurrentPosition();
+                    if (player[mainPlayer] == null) value = 0L;
+                    else value = player[mainPlayer].getCurrentPosition();
                 }
             });
 
@@ -1395,11 +1396,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public boolean getPlaybackState() {
             if (player[mainPlayer] == null) return false;
-        
+
             HVTHandler.RunnableResult<Boolean> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Boolean>() {
                 @Override
                 public void run() {
-                    value = player[mainPlayer].isPlaying();
+                    if (player[mainPlayer] == null) value = false;
+                    else value = player[mainPlayer].isPlaying();
                 }
             });
 
