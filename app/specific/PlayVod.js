@@ -679,8 +679,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 
     PlayVod_jumpTime();
     Play_ProgresBarrElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
-    Play_ProgresBarrBufferElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
-    Play_BufferSize = 0;
+
     PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
 
     PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
