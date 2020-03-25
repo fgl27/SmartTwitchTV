@@ -135,8 +135,8 @@ public class PlayerActivity extends Activity {
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
     public int droppedFrames = 0;
-    public float conSpeed = 0L;
-    public float netActivity = 0L;
+    public float conSpeed = 0f;
+    public float netActivity = 0f;
     public long DroppedFramesTotal = 0L;
     public int DeviceRam = 0;
     public String VideoQualityResult = null;
@@ -874,11 +874,11 @@ public class PlayerActivity extends Activity {
         droppedFrames = 0;
         DroppedFramesTotal = 0L;
 
-        conSpeed = 0L;
+        conSpeed = 0f;
         conSpeedAVG = 0f;
         SpeedCounter = 0L;
 
-        netActivity = 0L;
+        netActivity = 0f;
         NetActivityAVG = 0f;
         NetCounter = 0L;
     }
