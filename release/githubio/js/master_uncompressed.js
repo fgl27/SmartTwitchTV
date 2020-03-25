@@ -9803,7 +9803,7 @@
             (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
             STR_BR + STR_PING + value[6]);
 
-        if (!PlayVod_IsJumping) Play_BufferSize = parseInt(value[7]);
+        Play_BufferSize = parseInt(value[7]);
     }
 
     function Play_getMbps(value) {
@@ -11372,8 +11372,7 @@
 
         PlayVod_jumpTime();
         Play_ProgresBarrElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
-        Play_ProgresBarrBufferElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
-        Play_BufferSize = 0;
+
         PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
 
         PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
