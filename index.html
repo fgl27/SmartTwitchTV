@@ -1644,10 +1644,10 @@
             width: 95%;
             margin-left: 2.5%;
             height: 2.5em;
-            text-align: center;
             margin-bottom: 0.5ch;
             border-radius: 0.2em;
             border: 0.0825em solid rgba(0, 0, 0, 0);
+            text-align: center;
         }
 
         .progress_bar_div_focus {
@@ -1657,12 +1657,12 @@
 
         .progress_bar_jump,
         .progress_bar_timer {
-            text-align: center;
             width: 7%;
             font-size: 75%;
             font-family: 'Roboto-Bold';
             color: #FFFFFF;
             display: inline-block;
+            text-align: center;
         }
 
         .progress_bar_jump {
@@ -2887,7 +2887,7 @@
                 <div id="progress_bar_div" class="progress_bar_div">
                     <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline"
                         style="transform: translateY(-25%);"></div>
-                    <div>
+                    <div style="text-align: left;">
                         <div style="width: 100%; position: relative; transform: translateY(-50%);">
                             <div id="progress_bar_current_time" class="progress_bar_timer strokedeline"></div>
                             <div id="progress_bar" class="progress_bar_holder">
@@ -2895,8 +2895,14 @@
                                     <div class="inner_progress_bar">
                                         <div id="inner_progress_bar_buffer" class="inner_progress_bar"
                                             style="background-color:#940000cf; width: 20%;"></div>
-                                        <div id="inner_progress_bar" class="inner_progress_bar"
-                                            style="background-color: #3a3a3a; height: 1em; width: 10%; transform: translateY(-75%);">
+                                        <div class="inner_progress_bar" style="transform: translateY(-100%);">
+                                            <div id="inner_progress_bar" class="inner_progress_bar"
+                                                style="max-width: 100%; background-color: #3a3a3a; height: 1em; width: 10%; transform: translateY(-30%); display: inline-block;">
+                                            </div>
+
+                                            <div style="transform: translate(-120%,-36.5%);; display: inline-block;">
+                                                <i class="icon-circle pause_button3d" style="font-size: 1vh;"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
