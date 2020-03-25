@@ -420,7 +420,8 @@
     var STR_MULTI_MAIN_WINDOW;
     var STR_PLAYER_LAG;
     var STR_STREAM_ERROR_SMALL;
-    var STR_TOO_ERRORS; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_TOO_ERRORS;
+    var STR_PING; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -890,6 +891,7 @@
         STR_NET_ACT = "Net Activity: ";
         STR_NET_SPEED = "Net Speed:";
         STR_LATENCY = "Latency To Broadcaster: ";
+        STR_PING = "Ping to Twitch: ";
         STR_WARNING = "Warning";
         STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and back key controller (ESC works for back key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
         STR_DPAD_POSTION = "D-pad screen position";
@@ -3559,7 +3561,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.152';
+    var Main_stringVersion_Min = '.153';
     var Main_minversion = 'March 24, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
@@ -9742,7 +9744,9 @@
     }
 
     function Play_RefreshWatchingtime() {
-        if (PlayExtra_PicturePicture) {
+        if (Play_MultiEnable) {
+            Main_innerHTML("stream_watching_time_multi", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+        } else if (PlayExtra_PicturePicture) {
             Main_innerHTML("stream_info_pp_watching_time0", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
 
             Main_innerHTML("stream_info_pp_livetime0", STR_SINCE +
@@ -9772,7 +9776,8 @@
         Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' (150.00 Avg) Mbps' +
             STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 Today)' +
             STR_BR + STR_BUFFER_HEALT + Play_getBuffer(100.37 * 1000) +
-            STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000));
+            STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000) +
+            STR_BR + STR_PING + " 100.00 (99.00 Avg) ms");
     }
 
     function Play_VideoStatus(showLatency) {
@@ -9785,12 +9790,13 @@
         if (value) value = JSON.parse(value);
         else return;
 
-        Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(value[2]) +
-            " (" + value[3] + STR_AVGMB + STR_BR + STR_NET_ACT + Play_getMbps(value[4]) + " (" +
-            value[5] + STR_AVGMB + STR_BR + STR_DROOPED_FRAMES + value[0] + " (" + value[1] + STR_TODAY +
-            STR_BR + STR_BUFFER_HEALT + Play_getBuffer(value[6]) +
-            (showLatency ? (STR_BR + STR_LATENCY + Play_getBuffer(value[7])) : '') +
-            (Play_MultiEnable ? (STR_BR + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time))) : ''));
+        Main_innerHTML("stream_status",
+            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
+            STR_NET_ACT + value[1] + STR_BR +
+            STR_DROOPED_FRAMES + value[2] + " (" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
+            STR_BUFFER_HEALT + value[4] +
+            (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
+            STR_BR + STR_PING + value[6]);
     }
 
     function Play_getMbps(value) {
@@ -10136,6 +10142,7 @@
         Main_HideElement('stream_info');
         Main_ShowElement('dialog_multi_help');
         Main_ShowElement('stream_info_multi');
+        Main_ShowElement('stream_watching_time_multi');
     }
 
     function Play_Multi_UnSetPanelDivs(checkChat) {
@@ -10150,6 +10157,7 @@
         Main_HideElement('stream_info_multi');
         Main_HideElement('stream_info_multi_big');
         Main_HideElement('dialog_multi_help');
+        Main_HideElement('stream_watching_time_multi');
         if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
         Main_SaveValues();
         Play_IconsRemoveFocus();
