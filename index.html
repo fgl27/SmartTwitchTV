@@ -1685,17 +1685,14 @@
             box-sizing: border-box;
             border: 0.1em solid #000000;
             border-radius: 0.6em;
-            background-color: #DDDDDD;
+            background-color: #FFFFFF;
             overflow: hidden;
         }
 
         .inner_progress_bar {
-            width: 10%;
+            width: 100%;
             height: 0.37em;
-            background-color: #444444;
-            text-align: center;
             line-height: 1.5em;
-            color: white;
         }
 
         /* Chat this is a adaptation of https://www.nightdev.com/kapchat/ functions*/
@@ -2895,7 +2892,13 @@
                             <div id="progress_bar_current_time" class="progress_bar_timer strokedeline"></div>
                             <div id="progress_bar" class="progress_bar_holder">
                                 <div class="progress_bar">
-                                    <div id="inner_progress_bar" class="inner_progress_bar"></div>
+                                    <div class="inner_progress_bar">
+                                        <div id="inner_progress_bar_buffer" class="inner_progress_bar"
+                                            style="background-color:#940000cf; width: 20%;"></div>
+                                        <div id="inner_progress_bar" class="inner_progress_bar"
+                                            style="background-color: #3a3a3a; height: 1em; width: 10%; transform: translateY(-75%);">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div id="progress_bar_duration" class="progress_bar_timer strokedeline"></div>

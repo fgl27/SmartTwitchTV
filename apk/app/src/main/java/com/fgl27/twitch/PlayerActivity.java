@@ -1507,15 +1507,18 @@ public class PlayerActivity extends Activity {
                 netActivity = 0L;
 
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
+                long buffer = 0;
 
                 if (player[playerPos] != null) {
-                    ret.add(Tools.getTime(player[playerPos].getTotalBufferedDuration()));//4
+                    buffer = player[playerPos].getTotalBufferedDuration();
+                    ret.add(Tools.getTime(buffer));//4
                     ret.add(Tools.getTime(player[playerPos].getCurrentLiveOffset()));//5
                 } else {
                     ret.add("0");
                     ret.add("0");
                 }
                 ret.add(Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"));//6
+                ret.add(String.valueOf(Math.ceil(buffer / 1000.0)));//7
 
                 getVideoStatusResult = new Gson().toJson(ret);
 

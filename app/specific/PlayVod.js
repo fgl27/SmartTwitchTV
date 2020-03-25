@@ -53,6 +53,7 @@ function PlayVod_Start() {
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
     Main_HideElement('progress_pause_holder');
     Main_ShowElement('progress_bar_div');
+    Play_BufferSize = 0;
 
     document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
@@ -598,7 +599,10 @@ function PlayVod_getQualitiesCount() {
 
 function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
     Main_textContent('progress_bar_current_time', Play_timeS(current_time_seconds));
-    if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
+    if (update_bar) {
+        Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
+        Play_ProgresBarrBufferElm.style.width = (((current_time_seconds + Play_BufferSize) / duration_seconds) * 100) + '%';
+    }
 }
 
 function PlayVod_jump() {
@@ -675,6 +679,8 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 
     PlayVod_jumpTime();
     Play_ProgresBarrElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
+    Play_ProgresBarrBufferElm.style.width = ((PlayVod_TimeToJump / duration_seconds) * 100) + '%';
+    Play_BufferSize = 0;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
 
     PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
