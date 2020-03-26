@@ -5329,33 +5329,6 @@
         return -1;
     }
 
-    function Main_history_UpdateLive(id, game, title, views) {
-        if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
-
-        var index = Main_history_Exist('live', id);
-
-        if (index > -1) {
-
-            //Use Screens_assign() to change only obj that has changed
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-                Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
-                    date: new Date().getTime(),
-                    game: game,
-                    views: views,
-                }
-            );
-
-            //Some values will change as the stream updates or as the streames goes offline and online again
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[4] = STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER;
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
-                STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
-
-            Main_setHistoryItem();
-        }
-    }
-
     function Main_history_UpdateLiveVod(id, vod, vod_img) {
         if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
 
@@ -8484,21 +8457,12 @@
         response = JSON.parse(response);
         if (response.stream !== null) {
 
-            Main_history_UpdateLive(
-                response.stream._id,
-                response.stream.game,
-                response.stream.channel.status,
-                response.stream.viewers
-            );
+            var tempData = ScreensObj_LiveCellArray(response.stream);
+            Main_Set_history('live', tempData);
 
             //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
             if (PlayExtra_data.data.length > 0) {
-                PlayExtra_data.data[2] = response.stream.channel.status;
-                PlayExtra_data.data[3] = response.stream.game;
-                PlayExtra_data.data[7] = response.stream._id;
-                PlayExtra_data.data[8] = Main_is_rerun(response.stream.broadcast_platform);
-                PlayExtra_data.data[12] = response.stream.created_at;
-                PlayExtra_data.data[13] = response.stream.viewers;
+                PlayExtra_data.data = tempData;
 
                 PlayExtra_UpdatePanel();
             }
@@ -8960,6 +8924,7 @@
         window.clearInterval(Play_streamInfoTimerId);
         Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
         Play_ShowPanelStatus(1);
+
     }
 
     function Play_ResumeAfterOnline() {
@@ -8992,6 +8957,7 @@
                 if (PlayExtra_PicturePicture) PlayExtra_Resumenew();
                 Play_loadDatanew();
             }
+            Play_updateStreamInfo();
         }
         Play_ResumeAfterOnlineCounter++;
     }
@@ -9049,25 +9015,11 @@
     }
 
     function Play_updateStreamInfoEnd(response) {
-        Play_data.data[2] = response.stream.channel.status;
-        Play_data.data[3] = response.stream.game;
-        Play_data.data[7] = response.stream._id;
-        Play_data.data[8] = Main_is_rerun(response.stream.broadcast_platform);
-        Play_data.data[12] = response.stream.created_at;
-        Play_data.data[13] = response.stream.viewers;
+        Play_data.data = ScreensObj_LiveCellArray(response.stream);
 
         Play_UpdateMainStreamDiv();
 
-        if (Play_data.isHost && Main_history_Exist('live', Play_data.data[14]) < 0) {
-            Main_Set_history('live', ScreensObj_LiveCellArray(response.stream));
-        } else {
-            Main_history_UpdateLive(
-                Play_data.data[7],
-                Play_data.data[3],
-                response.stream.channel.status,
-                Play_data.data[13]
-            );
-        }
+        Main_Set_history('live', Play_data.data);
     }
 
     function Play_updateStreamInfoStartError() {
@@ -9178,7 +9130,7 @@
     function Play_updateStreamInfoMultiValues(response, pos) {
         response = JSON.parse(response);
         if (response.stream !== null) {
-            Play_MultiArray[pos].data[3] = response.stream.game;
+            Play_MultiArray[pos].data = ScreensObj_LiveCellArray(response.stream);
 
             if (!pos) {
                 Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
@@ -9194,12 +9146,7 @@
                 (Play_Multi_MainBig ? '_big' : '')
             );
 
-            Main_history_UpdateLive(
-                response.stream._id,
-                response.stream.game,
-                response.stream.channel.status,
-                response.stream.viewers
-            );
+            Main_Set_history('live', Play_MultiArray[pos].data);
 
         }
     }
