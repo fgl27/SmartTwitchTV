@@ -11319,6 +11319,7 @@
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
         PlayVod_jumpCount = 0;
         PlayVod_IsJumping = false;
+        Play_BufferSize = Play_BufferSize - PlayVod_addToJump;
         PlayVod_addToJump = 0;
         PlayVod_TimeToJump = 0;
     }
