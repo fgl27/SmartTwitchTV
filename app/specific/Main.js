@@ -1893,34 +1893,6 @@ function Main_history_Exist(type, id) {
     return -1;
 }
 
-function Main_history_UpdateLive(id, game, title, views) {
-    if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
-
-    var index = Main_history_Exist('live', id);
-
-    if (index > -1) {
-
-        //Use Screens_assign() to change only obj that has changed
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
-            {
-                date: new Date().getTime(),
-                game: game,
-                views: views,
-            }
-        );
-
-        //Some values will change as the stream updates or as the streames goes offline and online again
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[2] = title;
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[3] = game;
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[4] = STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER;
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[11] =
-            STR_SINCE + Play_streamLiveAt(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].data[12]) + STR_SPACE;
-
-        Main_setHistoryItem();
-    }
-}
-
 function Main_history_UpdateLiveVod(id, vod, vod_img) {
     if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
 

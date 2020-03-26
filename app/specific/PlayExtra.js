@@ -286,21 +286,12 @@ function PlayExtra_updateStreamInfoValues(response) {
     response = JSON.parse(response);
     if (response.stream !== null) {
 
-        Main_history_UpdateLive(
-            response.stream._id,
-            response.stream.game,
-            response.stream.channel.status,
-            response.stream.viewers
-        );
+        var tempData = ScreensObj_LiveCellArray(response.stream);
+        Main_Set_history('live', tempData);
 
         //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
         if (PlayExtra_data.data.length > 0) {
-            PlayExtra_data.data[2] = response.stream.channel.status;
-            PlayExtra_data.data[3] = response.stream.game;
-            PlayExtra_data.data[7] = response.stream._id;
-            PlayExtra_data.data[8] = Main_is_rerun(response.stream.broadcast_platform);
-            PlayExtra_data.data[12] = response.stream.created_at;
-            PlayExtra_data.data[13] = response.stream.viewers;
+            PlayExtra_data.data = tempData;
 
             PlayExtra_UpdatePanel();
         }

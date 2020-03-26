@@ -444,6 +444,7 @@ function Play_Resume() {
     window.clearInterval(Play_streamInfoTimerId);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
     Play_ShowPanelStatus(1);
+
 }
 
 function Play_ResumeAfterOnline() {
@@ -476,6 +477,7 @@ function Play_ResumeAfterOnline() {
             if (PlayExtra_PicturePicture) PlayExtra_Resumenew();
             Play_loadDatanew();
         }
+        Play_updateStreamInfo();
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -533,25 +535,11 @@ function Play_CheckFollow() {
 }
 
 function Play_updateStreamInfoEnd(response) {
-    Play_data.data[2] = response.stream.channel.status;
-    Play_data.data[3] = response.stream.game;
-    Play_data.data[7] = response.stream._id;
-    Play_data.data[8] = Main_is_rerun(response.stream.broadcast_platform);
-    Play_data.data[12] = response.stream.created_at;
-    Play_data.data[13] = response.stream.viewers;
+    Play_data.data = ScreensObj_LiveCellArray(response.stream);
 
     Play_UpdateMainStreamDiv();
 
-    if (Play_data.isHost && Main_history_Exist('live', Play_data.data[14]) < 0) {
-        Main_Set_history('live', ScreensObj_LiveCellArray(response.stream));
-    } else {
-        Main_history_UpdateLive(
-            Play_data.data[7],
-            Play_data.data[3],
-            response.stream.channel.status,
-            Play_data.data[13]
-        );
-    }
+    Main_Set_history('live', Play_data.data);
 }
 
 function Play_updateStreamInfoStartError() {
@@ -662,7 +650,7 @@ function Play_RefreshMultiGet(theUrl, tryes, pos) {
 function Play_updateStreamInfoMultiValues(response, pos) {
     response = JSON.parse(response);
     if (response.stream !== null) {
-        Play_MultiArray[pos].data[3] = response.stream.game;
+        Play_MultiArray[pos].data = ScreensObj_LiveCellArray(response.stream);
 
         if (!pos) {
             Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
@@ -678,12 +666,7 @@ function Play_updateStreamInfoMultiValues(response, pos) {
             (Play_Multi_MainBig ? '_big' : '')
         );
 
-        Main_history_UpdateLive(
-            response.stream._id,
-            response.stream.game,
-            response.stream.channel.status,
-            response.stream.viewers
-        );
+        Main_Set_history('live', Play_MultiArray[pos].data);
 
     }
 }
