@@ -6347,7 +6347,7 @@
                     } else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
                         if (!PlayVod_PanelY) {
-                            if (PlayVod_addToJump) PlayVod_jump();
+                            if (PlayVod_IsJumping) PlayVod_jump();
                         } else if (PlayVod_PanelY === 1) PlayClip_Enter();
                         else Play_BottomOptionsPressed(3);
                         PlayClip_setHidePanel();
@@ -11581,7 +11581,7 @@
                     } else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
                         if (!PlayVod_PanelY) {
-                            if (PlayVod_addToJump) PlayVod_jump();
+                            if (PlayVod_IsJumping) PlayVod_jump();
                         } else if (PlayVod_PanelY === 1) {
                             if (!Main_values.Play_ChatForceDisable) {
                                 if (Play_isNotplaying()) Chat_Play(Chat_Id);
