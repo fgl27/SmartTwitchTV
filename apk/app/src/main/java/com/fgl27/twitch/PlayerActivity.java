@@ -1755,12 +1755,12 @@ public class PlayerActivity extends Activity {
     // Basic EventListener for exoplayer
     private class PlayerEventListener implements Player.EventListener {
 
-        private int position;
-        private int delayms;
+        private final int position;
+        private final int Delay_ms;
 
-        private PlayerEventListener(int mposition) {
-            position = mposition;
-            delayms = (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0);
+        private PlayerEventListener(int position) {
+            this.position = position;
+            this.Delay_ms = (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0);
         }
 
         @Override
@@ -1802,7 +1802,7 @@ public class PlayerActivity extends Activity {
                         return;
 
                     PlayerEventListenerCheckCounter(position, false);
-                }, delayms);
+                }, Delay_ms);
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 PlayerCheckCounter[position] = 0;
