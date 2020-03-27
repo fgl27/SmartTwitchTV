@@ -123,6 +123,7 @@ public class PlayerActivity extends Activity {
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
     public Handler MainThreadHandler;
+    public Handler CurrentPositionHandler;
     public Handler ExtraPlayerHandler;
     public String[][] ExtraPlayerHandlerResult = new String[10][100];
     public HandlerThread ExtraPlayerHandlerThread;
@@ -134,6 +135,7 @@ public class PlayerActivity extends Activity {
     public float PingValue = 0f;
     public float PingValueAVG = 0f;
     public long PingCounter = 0L;
+    public long PlayerCurrentPosition = 0L;
     public boolean[] PlayerIsPlaying = new boolean[PlayerAcountPlus];
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
@@ -182,6 +184,7 @@ public class PlayerActivity extends Activity {
             onCreateReady = true;
 
             MainThreadHandler = new Handler(Looper.getMainLooper());
+            CurrentPositionHandler = new Handler(Looper.getMainLooper());
 
             ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
             ExtraPlayerHandlerThread.start();
@@ -348,6 +351,12 @@ public class PlayerActivity extends Activity {
 
         KeepScreenOn(true);
         droppedFrames = 0;
+
+        //Player can only be acceed from main thread so start a "position listener" to pass the value to webview
+        if (mWho_Called > 1) {
+            GetCurrentPosition();
+            PlayerCurrentPosition = 0L;
+        } else CurrentPositionHandler.removeCallbacksAndMessages(null);
     }
 
     private void initializeSmallPlayer(MediaSource NewMediaSource) {
@@ -817,6 +826,18 @@ public class PlayerActivity extends Activity {
             trackSelector[mainPlayer].setParameters(trackSelectorParameters);
     }
 
+    private void GetCurrentPosition() {
+        CurrentPositionHandler.removeCallbacksAndMessages(null);
+
+        CurrentPositionHandler.postDelayed(() -> {
+            if (player[mainPlayer] == null) PlayerCurrentPosition = 0L;
+            else {
+                PlayerCurrentPosition = player[mainPlayer].getCurrentPosition();
+                GetCurrentPosition();
+            }
+        }, 500);
+    }
+
     private void GetPing() {
         RuntimeHandler.removeCallbacksAndMessages(null);
 
@@ -1019,6 +1040,8 @@ public class PlayerActivity extends Activity {
 
         mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
+        //When we request a full url change on autentication key request 
+        //prevent open it on a external browser
         mWebView.setWebViewClient(new WebViewClientCompat(){
 
             @Override
@@ -1334,22 +1357,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public long gettime() {
-
-            HVTHandler.RunnableResult<Long> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Long>() {
-                @Override
-                public void run() {
-                    if (player[mainPlayer] == null) value = 0L;
-                    else value = player[mainPlayer].getCurrentPosition();
-                }
-            });
-
-            try {
-                return result.get();
-            } catch (InterruptedException e) {
-                Log.w(TAG, "gettime InterruptedException ", e);
-            }
-
-            return 0L;
+            return PlayerCurrentPosition;
         }
 
         @SuppressWarnings("unused")//called by JS
