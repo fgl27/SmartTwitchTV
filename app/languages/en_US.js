@@ -207,8 +207,8 @@ function en_USLang() {
     STR_VIWES = ", Most views";
     STR_NOKEY_VIDEO_WARN = "Set an user authentication key to be able to see followed videos";
     STR_SWITCH_TYPE = "Switch: Most recent or views";
-    STR_ENABLE = "Enable";
-    STR_DISABLE = "Disable";
+    STR_ENABLE = "Enabled";
+    STR_DISABLE = "Disabled";
     STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
     STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user and restores what was previously playing on next start";
