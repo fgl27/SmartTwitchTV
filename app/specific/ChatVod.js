@@ -38,7 +38,7 @@ function Chat_Preinit() {
 function Chat_Init() {
     Chat_JustStarted = true;
     Chat_Clear();
-    if (!Main_IsNotBrowser || Main_values.Play_ChatForceDisable) {
+    if (!Main_IsOnAndroid || Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
     }

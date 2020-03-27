@@ -39,7 +39,7 @@ function PlayExtra_KeyEnter() {
 
         Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
 
-        if (Main_IsNotBrowser) {
+        if (Main_IsOnAndroid) {
             //Not on auto mode for change to auto before start picture in picture
             if (!Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetQuality(-1);
 
@@ -62,7 +62,7 @@ function PlayExtra_KeyEnter() {
 }
 
 function PlayExtra_Resumenew() {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
 
         var StreamData = Play_getStreamData(PlayExtra_data.data[6], true);
 
@@ -236,7 +236,7 @@ function PlayExtra_UpdatePanel() {
 }
 
 function PlayExtra_qualityChanged() {
-    if (Main_IsNotBrowser && Play_isOn) {
+    if (Main_IsOnAndroid && Play_isOn) {
         Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
     }
 
@@ -270,7 +270,7 @@ function PlayExtra_loadDataFail(Reason) {
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         ChatLive_Clear(1);
         Main_HideElement('chat_container2');
-        if (Main_IsNotBrowser && !Play_isFullScreen) Android.mupdatesize(Play_isFullScreen);
+        if (Main_IsOnAndroid && !Play_isFullScreen) Android.mupdatesize(Play_isFullScreen);
         PlayExtra_UnSetPanel();
         Play_HideBufferDialog();
         Play_showWarningDialog(Reason, 2500);

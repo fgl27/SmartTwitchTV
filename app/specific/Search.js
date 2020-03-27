@@ -142,7 +142,7 @@ function Search_inputFocus() {
 
 function Search_RemoveinputFocus(EnaKeydown) {
     window.clearTimeout(Search_inputFocusId);
-    if (!Main_isTV && Main_IsNotBrowser) Android.mhideSystemUI();
+    if (!Main_isTV && Main_IsOnAndroid) Android.mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
     Main_RemoveClass('scene_notify', 'avoidclicks');
