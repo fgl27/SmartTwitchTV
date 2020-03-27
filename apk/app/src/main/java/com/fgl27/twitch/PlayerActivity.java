@@ -133,6 +133,7 @@ public class PlayerActivity extends Activity {
     public float PingValue = 0f;
     public float PingValueAVG = 0f;
     public long PingCounter = 0L;
+    public boolean[] PlayerIsPlaying = new boolean[PlayerAcountPlus];
     public Handler[] PlayerCheckHandler = new Handler[PlayerAcountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAcountPlus];
     public int droppedFrames = 0;
@@ -474,6 +475,7 @@ public class PlayerActivity extends Activity {
     private void ClearPlayer(int position) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
         PlayerView[position].setVisibility(View.GONE);
+        PlayerIsPlaying[position] = false;
 
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
@@ -1406,23 +1408,10 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getPlaybackState() {
-            if (player[mainPlayer] == null) return false;
+            int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-            HVTHandler.RunnableResult<Boolean> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Boolean>() {
-                @Override
-                public void run() {
-                    if (player[mainPlayer] == null) value = false;
-                    else value = player[mainPlayer].isPlaying();
-                }
-            });
-
-            try {
-                return result.get();
-            } catch (InterruptedException e) {
-                Log.w(TAG, "getPlaybackState InterruptedException ", e);
-            }
-
-            return false;
+            if (player[playerPos] == null) return false;
+            else return PlayerIsPlaying[playerPos];
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1778,6 +1767,11 @@ public class PlayerActivity extends Activity {
                 RequestGetQualities();
                 lastSeenTrackGroupArray = trackGroups;
             }
+        }
+
+        @Override
+        public void onIsPlayingChanged(boolean isPlaying) {
+            PlayerIsPlaying[position] = isPlaying;
         }
 
         @Override
