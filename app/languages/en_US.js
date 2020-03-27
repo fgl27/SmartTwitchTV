@@ -265,7 +265,7 @@ function en_USLang() {
     STR_PAYPAL_SUMMARY = "Paypal donations use above Email.";
     STR_BITCOIN_SUMMARY = "Bitcoin donations use wallet address:";
     STR_PLAYER_PROBLEM_2 = " Connection failed, unable to load stream info";
-    STR_PLAYER_RESYNC = "Player Auto Sync";
+    STR_PLAYER_RESYNC = "Player Restart";
     STR_PLAYER_AUTO_BIG = "Main or big window";
     STR_PLAYER_AUTO_SMALLS = "Small or bottom window";
     STR_PLAYER_AUTO_ALL = "Both windows";
@@ -286,8 +286,8 @@ function en_USLang() {
     STR_PICTURE_CONTROLS6 = "Change small window size (Picture in Picture only): D-pad right";
     STR_PICTURE_CONTROLS7 = "Change audio source: Use the player bottom controls Audio source, if in 50/50 or multistream use key left/right if on PP use next/previus track media keys";
     STR_PICTURE_CONTROLS3 = "Change audio source to all windows: on multistream or PP hold key down, on 50/50 single click key down";
-    STR_PICTURE_CONTROLS8 = "Auto Sync playback: use the player bottom controls Player Sync";
-    STR_PICTURE_CONTROLS9 = "Manually Sync playback: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa";
+    STR_PICTURE_CONTROLS8 = "Player Restart: use the player bottom controls Player Restart, this will only restart all the players, usefully to sync player and chat, this will not sync a player content with another";
+    STR_PICTURE_CONTROLS9 = "Manually Sync players: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa only works on PP mode";
     STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
     STR_PICTURE_CONTROLS11 = "Close small or bottom window (Picture in Picture only): back key twice will exit PP or 50/50 mode";
     STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from live feed";
