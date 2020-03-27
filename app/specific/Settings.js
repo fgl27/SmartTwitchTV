@@ -265,7 +265,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
-    if (!Main_isTV || !Main_IsNotBrowser) {
+    if (!Main_isTV || !Main_IsOnAndroid) {
         div += Settings_Content('dpad_position', null, STR_DPAD_POSTION, null);
 
         div += Settings_Content('dpad_opacity', null, STR_DPAD_OPACITY, null);
@@ -633,7 +633,7 @@ function Settings_PP_Workaround() {
 }
 
 function Settings_DpadOpacity() {
-    if (!Main_IsNotBrowser) return;
+    if (!Main_IsOnAndroid) return;
     Main_clearHideButtons();
     Main_setHideButtons();
     Main_scenekeysDoc.style.opacity = Settings_Obj_default("dpad_opacity") * 0.05;
@@ -647,7 +647,7 @@ var Settings_DpadPOsitions = [
 ];
 
 function Settings_DpadPOsition() {
-    if (!Main_IsNotBrowser) return;
+    if (!Main_IsOnAndroid) return;
     Settings_DpadOpacity();
     Main_clearHideButtons();
     Main_setHideButtons();
@@ -708,7 +708,7 @@ function Settings_ShowCounter(show) {
 }
 
 function Settings_SetBitRate(whocall) {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         if (!whocall) {
             Settings_SetBitRateMain();
             Settings_SetBitRateMin();
@@ -742,20 +742,20 @@ function Settings_SetBuffers(whocall) {
         Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
         PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
         PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-        if (Main_IsNotBrowser) {
+        if (Main_IsOnAndroid) {
             Android.SetBuffer(1, Play_Buffer);
             Android.SetBuffer(2, PlayVod_Buffer);
             Android.SetBuffer(3, PlayClip_Buffer);
         }
     } else if (whocall === 1) {
         Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
-        if (Main_IsNotBrowser) Android.SetBuffer(1, Play_Buffer);
+        if (Main_IsOnAndroid) Android.SetBuffer(1, Play_Buffer);
     } else if (whocall === 2) {
         PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
-        if (Main_IsNotBrowser) Android.SetBuffer(2, PlayVod_Buffer);
+        if (Main_IsOnAndroid) Android.SetBuffer(2, PlayVod_Buffer);
     } else if (whocall === 3) {
         PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-        if (Main_IsNotBrowser) Android.SetBuffer(3, PlayClip_Buffer);
+        if (Main_IsOnAndroid) Android.SetBuffer(3, PlayClip_Buffer);
     }
 }
 
@@ -783,7 +783,7 @@ var Settings_CurY = 0;
 
 function Settings_ScrollTable() {
     var doc,
-        offset = (!Main_isTV || !Main_IsNotBrowser) ? 2 : 0;
+        offset = (!Main_isTV || !Main_IsOnAndroid) ? 2 : 0;
 
     if (Settings_CurY < Settings_cursorY && Settings_cursorY === (16 + offset)) {
         doc = document.getElementById('settings_scroll');
@@ -895,7 +895,7 @@ function Settings_CodecsShow() {
 
     if (!Settings_CodecsValue) {
 
-        if (!Main_IsNotBrowser) Settings_CodecsValue = "video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,32,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73|video/avc,OMX.google.h264.decoder,4080x4080,48 Mbps,8,5.2,32,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68|video/avc,OMX.chico.h264.decoder,4080x4080,48 Mbps,8,5.2,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68";
+        if (!Main_IsOnAndroid) Settings_CodecsValue = "video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,32,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73|video/avc,OMX.google.h264.decoder,4080x4080,48 Mbps,8,5.2,32,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68|video/avc,OMX.chico.h264.decoder,4080x4080,48 Mbps,8,5.2,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68";
         else Settings_CodecsValue = Android.getcodecCapabilities('avc');
 
         var dialogContent = '',
@@ -1049,7 +1049,7 @@ function Settings_CodecsRigthLeft(offset) {
 }
 
 function Settings_CodecsSet() {
-    if (Main_IsNotBrowser) Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+    if (Main_IsOnAndroid) Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
 }
 
 function Settings_ForceEnableAimations() {

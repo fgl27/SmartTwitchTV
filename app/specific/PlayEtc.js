@@ -383,14 +383,14 @@ function Play_KeyPause(PlayVodClip) {
             else if (PlayVodClip === 3) PlayClip_hidePanel();
         }
 
-        if (Main_IsNotBrowser) Android.play(true);
+        if (Main_IsOnAndroid) Android.play(true);
     } else {
         ChatLive_Playing = false;
         Play_HideBufferDialog();
 
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
-        if (Main_IsNotBrowser) Android.play(false);
+        if (Main_IsOnAndroid) Android.play(false);
     }
 }
 
@@ -528,7 +528,7 @@ function Play_handleKeyUp(e) {
         if (!Play_EndUpclear) {
             if (Play_MultiEnable) Play_MultiKeyDown();
             else {
-                if (Main_IsNotBrowser) Android.mSwitchPlayer();
+                if (Main_IsOnAndroid) Android.mSwitchPlayer();
                 PlayExtra_SwitchPlayer();
             }
         }
@@ -1129,7 +1129,7 @@ function Play_MakeControls() {
 
             Play_LowLatency = !Play_LowLatency;
 
-            if (Main_IsNotBrowser) {
+            if (Main_IsOnAndroid) {
                 Android.mSetlatency(Play_LowLatency);
 
                 if (Play_MultiEnable) {

@@ -110,7 +110,7 @@ function DefaultLang() {
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
     STR_ABOUT_INFO_0 = STR_DIV_MIDLE_LEFT + STR_BR + STR_ABOUT_INFO_1 +
-        (Main_IsNotBrowser ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
+        (Main_IsOnAndroid ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') + '</div>' +
 
         STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
         STR_ABOUT_INFO_19 + STR_BR +

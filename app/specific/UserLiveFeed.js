@@ -436,7 +436,7 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
 }
 
 function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
-    if (!Main_IsNotBrowser) return;
+    if (!Main_IsOnAndroid) return;
 
     Android.ClearFeedPlayer();
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
@@ -499,7 +499,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsNotBrowser) return;
+    if (!Main_IsOnAndroid) return;
 
     var doc = Play_CheckLiveThumb(false, true);
 
@@ -848,7 +848,7 @@ function UserLiveFeed_KeyEnter(pos) {
 }
 
 function UserLiveFeed_Showloading(show) {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         try {
             Android.mshowLoadingBottom(show);
         } catch (e) {

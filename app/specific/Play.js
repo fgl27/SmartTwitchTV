@@ -180,7 +180,7 @@ function Play_PreStart() {
 
     Play_LowLatency = Main_getItemBool('Play_LowLatency', false);
 
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         //TODO remove this after some app updates
         if (Play_PicturePictureSize > 2) {
             Play_PicturePictureSize = 0;
@@ -239,7 +239,7 @@ function Play_SetFullScreen(isfull) {
     }
     Play_ChatSize(false);
 
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         if (PlayExtra_PicturePicture) Android.mupdatesizePP(Play_isFullScreen);
         else Android.mupdatesize(Play_isFullScreen);
     }
@@ -328,7 +328,7 @@ function Play_Start() {
         Play_CheckIfIsLiveCleanEnd();
     }
 
-    if (!Main_IsNotBrowser) Play_UpdateMainStream(true, true);
+    if (!Main_IsOnAndroid) Play_UpdateMainStream(true, true);
 
     window.clearInterval(Play_streamInfoTimerId);
     Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
@@ -357,7 +357,7 @@ function Play_CheckIfIsLiveStart() {
     Play_CheckIfIsLiveChannel = selectedChannelDisplayname[6];
     selectedChannelDisplayname = selectedChannelDisplayname[1];
 
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
 
         var StreamData = Play_getStreamData(Play_CheckIfIsLiveChannel, true);
 
@@ -714,7 +714,7 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 function Play_loadDatanew() {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
 
         var StreamData = Play_getStreamData(Play_data.data[6], true);
 
@@ -864,7 +864,7 @@ function Play_qualityChanged() {
     Play_data.qualityPlaying = Play_data.quality;
 
     Play_SetHtmlQuality('stream_quality');
-    if (Main_IsNotBrowser) Android.SetQuality(Play_data.qualityIndex - 1);
+    if (Main_IsOnAndroid) Android.SetQuality(Play_data.qualityIndex - 1);
     else Play_onPlayer();
     //Play_PannelEndStart(1);
 }
@@ -892,7 +892,7 @@ function Play_getQualities(position, skipchange) {
 
 function Play_onPlayer() {
 
-    if (Main_IsNotBrowser && Play_isOn) {
+    if (Main_IsOnAndroid && Play_isOn) {
         Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
     }
 
@@ -951,7 +951,7 @@ function Play_EndStart(hosting, PlayVodClip) {
 }
 
 function Play_isNotplaying() {
-    if (Main_IsNotBrowser) return !Android.getPlaybackState();
+    if (Main_IsOnAndroid) return !Android.getPlaybackState();
     return false;
 }
 
@@ -1014,7 +1014,7 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream(closePlayer) {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         if (closePlayer) {
             //We are closing the player on error or on end
             Android.mClearSmallPlayer();
@@ -1093,12 +1093,12 @@ function Play_hideFollow() {
 }
 
 function Play_showBufferDialog() {
-    if (Main_IsNotBrowser) Android.mshowLoading(true);
+    if (Main_IsOnAndroid) Android.mshowLoading(true);
     else Main_ShowElement('dialog_loading_play');
 }
 
 function Play_HideBufferDialog() {
-    if (Main_IsNotBrowser) Android.mshowLoading(false);
+    if (Main_IsOnAndroid) Android.mshowLoading(false);
     else Main_HideElement('dialog_loading_play');
 }
 
@@ -1172,7 +1172,7 @@ function Play_ShowPanelStatus(mwhocall) {
     window.clearInterval(Play_ShowPanelStatusId);
     if (Play_Status_Always_On) {
 
-        if (Main_IsNotBrowser) {
+        if (Main_IsOnAndroid) {
             Play_ShowPanelStatusId = window.setInterval(function() {
                 Play_UpdateStatus(mwhocall);
             }, 1000);
@@ -1234,7 +1234,7 @@ function Play_RefreshWatchingtime() {
     }
 
     if (!Play_Status_Always_On) {
-        if (Main_IsNotBrowser) {
+        if (Main_IsOnAndroid) {
             if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(0);
             Play_VideoStatus(true);
         } else Play_VideoStatusTest();
@@ -1505,12 +1505,12 @@ function Play_CloseBigAndSwich(error_410) {
         2500);
 
     if (PlayExtra_data.data.length > 0) {
-        if (Main_IsNotBrowser) Android.mSwitchPlayer();
+        if (Main_IsOnAndroid) Android.mSwitchPlayer();
         PlayExtra_SwitchPlayer();
         Play_CloseSmall();
 
     } else {
-        if (Main_IsNotBrowser) Android.mClearSmallPlayer();
+        if (Main_IsOnAndroid) Android.mClearSmallPlayer();
         Play_CheckHostStart(error_410);
     }
     PlayExtra_UnSetPanel();
@@ -1520,7 +1520,7 @@ function Play_CloseSmall() {
     PlayExtra_updateStreamInfo();
     PlayExtra_PicturePicture = false;
 
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         Android.mClearSmallPlayer();
         Play_SetFullScreen(Play_isFullScreen);
     }

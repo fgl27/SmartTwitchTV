@@ -118,7 +118,7 @@ function AddCode_requestTokensFail() {
         Main_newUsercode = 0;
         Main_SaveValues();
         Main_values.Main_Go = Main_Users;
-        Main_LoadUrl(Main_IsNotBrowser ? Android.mPageUrl() : AddCode_redirect_uri);
+        Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
     }, 4000);
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
@@ -166,9 +166,9 @@ function AddCode_CheckOauthTokenSucess(response) {
         Main_values.Main_Go = Main_Users;
         Main_SaveValues();
         Main_showWarningDialog(STR_USER_CODE_OK);
-        if (Main_IsNotBrowser) Android.clearCookie();
+        if (Main_IsOnAndroid) Android.clearCookie();
         window.setTimeout(function() {
-            Main_LoadUrl(Main_IsNotBrowser ? Android.mPageUrl() : AddCode_redirect_uri);
+            Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
         }, 3000);
     } else {
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
@@ -179,7 +179,7 @@ function AddCode_CheckOauthTokenSucess(response) {
             Main_newUsercode = 0;
             Main_SaveValues();
             Main_values.Main_Go = Main_Users;
-            Main_LoadUrl(Main_IsNotBrowser ? Android.mPageUrl() : AddCode_redirect_uri);
+            Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
         }, 4000);
     }
     return;
@@ -450,7 +450,7 @@ function AddCode_RequestUnFollowGame() {
         '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) + '?oauth_token=' +
         AddUser_UsernameArray[0].access_token + Main_TwithcV5Flag;
 
-    if (Main_IsNotBrowser)
+    if (Main_IsOnAndroid)
         AddCode_BasereadwritedUrl(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameAndroid);
     else
         AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameJs);

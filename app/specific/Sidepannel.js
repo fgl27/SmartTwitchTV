@@ -134,7 +134,7 @@ function Sidepannel_HideWarningDialog() {
 function Sidepannel_CheckIfIsLiveStart() {
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsNotBrowser) return;
+    if (!Main_IsOnAndroid) return;
 
     try {
         Android.CheckIfIsLiveFeed(
@@ -150,7 +150,7 @@ function Sidepannel_CheckIfIsLiveStart() {
 }
 
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
-    if (!Main_IsNotBrowser) return;
+    if (!Main_IsOnAndroid) return;
 
     Android.ClearFeedPlayer();
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();

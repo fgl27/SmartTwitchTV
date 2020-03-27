@@ -126,10 +126,10 @@ var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.157';
 var Main_minversion = 'March 27, 2020';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
-var Main_IsNotBrowserVersion = '';
+var Main_IsOnAndroidVersion = '';
 var Main_AndroidSDK = 1000;
 var Main_ClockOffset = 0;
-var Main_IsNotBrowser = 0;
+var Main_IsOnAndroid = 0;
 var Main_randomimg = '?' + Math.random();
 var Main_updateUserFeedId;
 var Main_vp9supported = false;
@@ -181,16 +181,16 @@ function Main_loadTranslations(language) {
                     'Play_ShowVideoQuality': Play_ShowVideoQuality
                 };
             }
-            Main_IsNotBrowser = Android.getAndroid();
-            Main_IsNotBrowserVersion = Android.getversion();
+            Main_IsOnAndroid = Android.getAndroid();
+            Main_IsOnAndroidVersion = Android.getversion();
         } catch (e) {
-            Main_IsNotBrowserVersion = '1.0.0';
-            Main_IsNotBrowser = 0;
+            Main_IsOnAndroidVersion = '1.0.0';
+            Main_IsOnAndroid = 0;
             document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
             Main_isDebug = true;
             console.log('Main_isReleased: ' + Main_isReleased);
             console.log('Main_isDebug: ' + Main_isDebug);
-            console.log('Main_isBrowser: ' + !Main_IsNotBrowser);
+            console.log('Main_isBrowser: ' + !Main_IsOnAndroid);
             //If we add the class on the android app for some reason it prevents input from release the focus
             Main_AddClass('scenefeed', 'feed_screen_input');
             //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
@@ -198,7 +198,7 @@ function Main_loadTranslations(language) {
         }
         Main_showLoadDialog();
 
-        if (Main_IsNotBrowser) Main_vp9supported = Android.misCodecSupported();
+        if (Main_IsOnAndroid) Main_vp9supported = Android.misCodecSupported();
 
         Main_initClick();
         Settings_SetDefautls();
@@ -325,7 +325,7 @@ function Main_initWindows() {
     Users_RemoveCursor = 0;
     Users_RemoveCursorSet();
 
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
 
         if (!Main_values.DeviceCheckNew) {
 
@@ -550,7 +550,7 @@ var Main_scenekeysPositionDoc;
 var Main_isTV;
 
 function Main_initClick() {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         Main_isTV = Android.deviceIsTV();
         //Only show virtual d-pad on none TV devices
         if (Main_isTV) return;
@@ -618,7 +618,7 @@ function Main_initClickSet(doc, pos) {
         Main_ClickonpointerdownClear();
         if (!Main_buttonsVisible()) return;
 
-        if (Main_IsNotBrowser) Android.keyEvent(pos, 1);
+        if (Main_IsOnAndroid) Android.keyEvent(pos, 1);
         else console.log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
     };
 }
@@ -629,7 +629,7 @@ function Main_ClickonpointerdownClear() {
 }
 
 function Main_Clickonpointerdown(pos) {
-    if (Main_IsNotBrowser) Android.keyEvent(pos, 0);
+    if (Main_IsOnAndroid) Android.keyEvent(pos, 0);
     else console.log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
 }
 
@@ -708,12 +708,12 @@ function Main_replaceClassEmoji(div) {
 
 function Main_showLoadDialog() {
     Main_YRst(-1);
-    if (Main_IsNotBrowser) Android.mshowLoading(true);
+    if (Main_IsOnAndroid) Android.mshowLoading(true);
     else Main_ShowElement('dialog_loading');
 }
 
 function Main_HideLoadDialog() {
-    if (Main_IsNotBrowser) Android.mshowLoading(false);
+    if (Main_IsOnAndroid) Android.mshowLoading(false);
     else Main_HideElement('dialog_loading');
 }
 
@@ -1200,15 +1200,15 @@ function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or m
 //TODO remove this check after some app updates
 var Main_oldReturnCheck;
 function Main_checkVersion() {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         var device = Android.getDevice();
         var Webviewversion = Android.getWebviewVersion();
         console.log('Webviewversion ' + Webviewversion);
 
-        Main_versionTag = "Apk: " + Main_IsNotBrowserVersion + ' Web: ' + Main_minversion +
+        Main_versionTag = "Apk: " + Main_IsOnAndroidVersion + ' Web: ' + Main_minversion +
             (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
 
-        if (Main_needUpdate(Main_IsNotBrowserVersion)) {
+        if (Main_needUpdate(Main_IsOnAndroidVersion)) {
             //Temp to support old app version that used number 1 key as back key
             if (Main_oldReturnCheck) KEY_RETURN = 49;
             Main_ShowElement('label_update');
@@ -1435,7 +1435,7 @@ function Main_OPenAsVod_shutdownStream() {
 }
 
 function Main_OPenAsVod_PreshutdownStream() {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         //We are closing the player on error or on end
         Android.mClearSmallPlayer();
         Android.stopVideo(1);
@@ -1636,7 +1636,7 @@ function Main_ExitDialog(event) {
             Main_setExitDialog();
             break;
         case KEY_ENTER:
-            if (!Main_IsNotBrowser || !Main_ExitCursor) Main_HideExitDialog();
+            if (!Main_IsOnAndroid || !Main_ExitCursor) Main_HideExitDialog();
             else if (Main_ExitCursor === 1) {
                 Main_HideExitDialog();
                 Android.mclose(false);
@@ -1705,7 +1705,7 @@ function processCode(pageUrl) {
 
 //Redirect to assets if running from it
 function CheckPage(pageUrlCode) {
-    if (Main_IsNotBrowser) {
+    if (Main_IsOnAndroid) {
         var PageUrl = Android.mPageUrl();
         if (PageUrl) {
             if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
@@ -1717,12 +1717,12 @@ function CheckPage(pageUrlCode) {
 }
 
 function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
+    if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
     else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
 }
 
 function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    if (Main_IsNotBrowser) BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, callbackSucess, calbackError, obj);
+    if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, callbackSucess, calbackError, obj);
     else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
 }
 
@@ -2222,7 +2222,7 @@ function Main_CheckResume() { // Called only by JAVA
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
-    if (Main_IsNotBrowser && Settings_Obj_default("accessibility_warn")) {
+    if (Main_IsOnAndroid && Settings_Obj_default("accessibility_warn")) {
         var isenable;
 
         isenable = Android.isAccessibilitySettingsOn();
@@ -2276,6 +2276,6 @@ function Main_CheckAccessibilityKey(event) {
 }
 
 function Main_LoadUrl(url) {
-    if (Main_IsNotBrowser) Android.mloadUrl(url);
+    if (Main_IsOnAndroid) Android.mloadUrl(url);
     else window.location = url;
 }
