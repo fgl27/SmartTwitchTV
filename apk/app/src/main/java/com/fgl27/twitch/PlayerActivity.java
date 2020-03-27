@@ -24,6 +24,7 @@ import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -1014,6 +1015,16 @@ public class PlayerActivity extends Activity {
         mWebView.clearHistory();
 
         mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
+
+        mWebView.setWebViewClient(new WebViewClient(){
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+        });
 
         mWebView.loadUrl(PageUrl);
 
