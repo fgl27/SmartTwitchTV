@@ -2276,9 +2276,6 @@ function Main_CheckAccessibilityKey(event) {
 }
 
 function Main_LoadUrl(url) {
-    try {
-        Android.mloadUrl(url);
-    } catch (e) {
-        window.location = url;
-    }
+    if (Main_IsNotBrowser) Android.mloadUrl(url);
+    else window.location = url;
 }
