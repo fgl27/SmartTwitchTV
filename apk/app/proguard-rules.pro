@@ -31,11 +31,6 @@
     *;
 }
 
--keep class com.fgl27.twitch.HVTHandler**
--keepclassmembers class com.fgl27.twitch.HVTHandler** {
-    *;
-}
-
 -keep class com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory**
 -keepclassmembers class com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory** {
     *;
@@ -45,4 +40,3 @@
 -keepclassmembers class com.fgl27.twitch.DataSource.mDefaultHttpDataSource** {
     *;
 }
-
