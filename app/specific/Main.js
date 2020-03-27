@@ -2150,7 +2150,7 @@ var Main_StartHistoryworkerId;
 function Main_StartHistoryworker() {
     if (!AddUser_IsUserSet()) return;
 
-    var array = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live));
+    var array = Main_Clone([], Main_values_History_data[AddUser_UsernameArray[0].id].live);
 
     array.sort(
         function(a, b) {
@@ -2166,6 +2166,15 @@ function Main_StartHistoryworker() {
                 );
             }
         }
+    }
+
+}
+
+function Main_Clone(add, obj) {
+    try {
+        return Object.assign(add, obj);
+    } catch (e) {
+        return JSON.parse(JSON.stringify(obj));
     }
 }
 
