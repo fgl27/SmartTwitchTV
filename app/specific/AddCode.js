@@ -118,7 +118,7 @@ function AddCode_requestTokensFail() {
         Main_newUsercode = 0;
         Main_SaveValues();
         Main_values.Main_Go = Main_Users;
-        Main_LoadUrl(Android.mPageUrl());
+        Main_LoadUrl(Main_IsNotBrowser ? Android.mPageUrl() : AddCode_redirect_uri);
     }, 4000);
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
@@ -168,7 +168,7 @@ function AddCode_CheckOauthTokenSucess(response) {
         Main_showWarningDialog(STR_USER_CODE_OK);
         if (Main_IsNotBrowser) Android.clearCookie();
         window.setTimeout(function() {
-            Main_LoadUrl(Android.mPageUrl());
+            Main_LoadUrl(Main_IsNotBrowser ? Android.mPageUrl() : AddCode_redirect_uri);
         }, 3000);
     } else {
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
@@ -179,7 +179,7 @@ function AddCode_CheckOauthTokenSucess(response) {
             Main_newUsercode = 0;
             Main_SaveValues();
             Main_values.Main_Go = Main_Users;
-            Main_LoadUrl(Android.mPageUrl());
+            Main_LoadUrl(Main_IsNotBrowser ? Android.mPageUrl() : AddCode_redirect_uri);
         }, 4000);
     }
     return;
