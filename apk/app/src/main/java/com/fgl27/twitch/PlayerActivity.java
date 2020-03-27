@@ -483,6 +483,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void ClearPlayer(int position) {
+        CurrentPositionHandler.removeCallbacksAndMessages(null);
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
         PlayerView[position].setVisibility(View.GONE);
         PlayerIsPlaying[position] = false;
