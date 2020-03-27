@@ -71,7 +71,6 @@ var Main_values = {
     "check_pp_workaround": true,
     "OS_is_Check": false,
     "Restore_Backup_Check": false,
-    "Restore_Created_at_fix": false,
 };
 
 var Main_values_Play_data;
@@ -1823,66 +1822,61 @@ function Main_ReplaceLargeFont(text) {
 }
 
 function Main_Set_history(type, Data, skipUpdateDate) {
-    if (type === 'live' && HistoryLive.histPosX[1]) return;
-    if (type === 'vod' && HistoryVod.histPosX[1]) return;
-    if (type === 'clip' && HistoryClip.histPosX[1]) return;
 
-    if (AddUser_IsUserSet() && Data) {
-        var index = Main_history_Exist(type, Data[7]);
+    if (!AddUser_IsUserSet() || !Data || (type === 'live' && HistoryLive.histPosX[1]) ||
+        (type === 'vod' && HistoryVod.histPosX[1]) || (type === 'clip' && HistoryClip.histPosX[1])) return;
 
-        if (index > -1) {
+    var index = Main_history_Exist(type, Data[7]);
 
-            //Use Screens_assign() to change only obj that has changed
-            Main_values_History_data[AddUser_UsernameArray[0].id][type][index] = Screens_assign(
-                Main_values_History_data[AddUser_UsernameArray[0].id][type][index],
-                {
-                    data: Main_Slice(Data),
-                    date: !skipUpdateDate ? new Date().getTime() : Main_values_History_data[AddUser_UsernameArray[0].id][type][index].date,
-                    game: Data[3],
-                    views: Data[13],
+    if (index > -1) {
+
+        var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id][type][index];
+
+        ArrayPos.data = Main_Slice(Data);
+        ArrayPos.date = !skipUpdateDate ? new Date().getTime() : ArrayPos.date;
+        ArrayPos.game = Data[3];
+        ArrayPos.views = Data[13];
+
+    } else {
+        //Limit size to 1500
+        if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 1499) {
+
+            //Sort by oldest first to delete the oldest
+            Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
+                function(a, b) {
+                    return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
                 }
             );
 
-        } else {
-            //Limit size to 1500
-            if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 1499) {
-
-                //Sort by oldest first to delete the oldest
-                Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
-                    function(a, b) {
-                        return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
-                    }
-                );
-
-                Main_values_History_data[AddUser_UsernameArray[0].id][type].shift();
-            }
-
-            Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
-                {
-                    data: Main_Slice(Data),
-                    date: new Date().getTime(),
-                    name: Data[6] ? Data[6].toLowerCase() : "",
-                    game: Data[3],
-                    id: Data[7],
-                    views: Data[13],
-                    created_at: new Date(Data[12]).getTime(),
-                    watched: 0
-                }
-            );
-
-            if (type === 'live') {
-                //Sort live by id this allows to always show the newst first even by sorting by othrs tipe
-                //this allows to get with are alredy VOD easier when there is more then one broadcast for the same streamer
-                Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
-                    function(a, b) {
-                        return (a.id > b.id ? -1 : (a.id < b.id ? 1 : 0));
-                    }
-                );
-            }
-
-            Main_setHistoryItem();
+            Main_values_History_data[AddUser_UsernameArray[0].id][type].shift();
         }
+
+        Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
+            {
+                data: Main_Slice(Data),
+                date: new Date().getTime(),
+                name: Data[6] ? Data[6].toLowerCase() : "",
+                game: Data[3],
+                id: Data[7],
+                views: Data[13],
+                created_at: new Date(Data[12]).getTime(),
+                watched: 0
+            }
+        );
+
+        if (type === 'live') {
+            //Sort live by id this allows to always show the newst first even by sorting by othrs tipe
+            //this allows to get with are alredy VOD easier when there is more then one broadcast for the same streamer
+            Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
+                function(a, b) {
+                    return (a.id > b.id ? -1 : (a.id < b.id ? 1 : 0));
+                }
+            );
+        }
+
+        Main_setHistoryItem();
     }
+
 }
 
 function Main_history_Exist(type, id) {
@@ -1900,77 +1894,34 @@ function Main_history_UpdateLiveVod(id, vod, vod_img) {
 
     if (index > -1) {
 
-        //Use Screens_assign() to change only obj that has changed
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
-            {
-                vodid: vod,
-                vodimg: vod_img,
-            }
-        );
+        var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
+
+        ArrayPos.vodid = vod;
+        ArrayPos.vodimg = vod_img;
+
         Main_setHistoryItem();
     }
 }
 
-function Main_history_UpdateVod(id, time) {
-    if (!AddUser_IsUserSet() || HistoryVod.histPosX[1]) return;
+function Main_history_UpdateVodClip(id, time, type) {
+    if (!AddUser_IsUserSet() || (type === 'vod' && HistoryVod.histPosX[1]) ||
+        (type === 'clip' && HistoryClip.histPosX[1])) return;
 
-    var index = Main_history_Exist('vod', id);
-
-    if (index > -1) {
-
-        //Use Screens_assign() to change only obj that has changed
-        Main_values_History_data[AddUser_UsernameArray[0].id].vod[index] = Screens_assign(
-            Main_values_History_data[AddUser_UsernameArray[0].id].vod[index],
-            {
-                date: new Date().getTime(),
-                watched: time
-            }
-        );
-        Main_setHistoryItem();
-    }
-}
-
-function Main_history_UpdateClip(id, time) {
-    if (!AddUser_IsUserSet() || HistoryClip.histPosX[1]) return;
-
-    var index = Main_history_Exist('clip', id);
+    var index = Main_history_Exist(type, id);
 
     if (index > -1) {
 
-        //Use Screens_assign() to change only obj that has changed
-        Main_values_History_data[AddUser_UsernameArray[0].id].clip[index] = Screens_assign(
-            Main_values_History_data[AddUser_UsernameArray[0].id].clip[index],
-            {
-                date: new Date().getTime(),
-                watched: time
-            }
-        );
+        var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id][type][index];
+
+        ArrayPos.date = new Date().getTime();
+        ArrayPos.watched = time;
+
         Main_setHistoryItem();
     }
 }
 
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
-
-    //Temp fix as creadt at was added to sorting after
-    if (!Main_values.Restore_Created_at_fix) {
-
-        Main_values.Restore_Created_at_fix = true;
-
-        var i = 0, j;
-
-        for (i = 0; i < AddUser_UsernameArray.length; i++) {
-
-            for (j = 0; j < Main_values_History_data[AddUser_UsernameArray[i].id].live.length; j++) {
-
-                Main_values_History_data[AddUser_UsernameArray[i].id].live[j].created_at =
-                    new Date(Main_values_History_data[AddUser_UsernameArray[i].id].live[j].data[12]).getTime();
-
-            }
-
-        }
-    }
 }
 
 function Main_History_Sort(array, msort, direction) {
@@ -2150,13 +2101,7 @@ var Main_StartHistoryworkerId;
 function Main_StartHistoryworker() {
     if (!AddUser_IsUserSet()) return;
 
-    var array = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live));
-
-    array.sort(
-        function(a, b) {
-            return (a.date > b.date ? -1 : (a.date < b.date ? 1 : 0));
-        }
-    );
+    var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
     for (var i = 0; i < array.length; i++) {
         if (!array[i].forceVod) {
