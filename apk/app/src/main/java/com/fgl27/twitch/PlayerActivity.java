@@ -25,12 +25,12 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewCompat;
 
 import com.google.android.exoplayer2.C;
@@ -1019,17 +1019,10 @@ public class PlayerActivity extends Activity {
 
         mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
-        mWebView.setWebViewClient(new WebViewClient(){
+        mWebView.setWebViewClient(new WebViewClientCompat(){
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return false;
-            }
-
-            @TargetApi(Build.VERSION_CODES.N)
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
                 view.loadUrl(request.getUrl().toString());
                 return false;
             }
