@@ -434,7 +434,7 @@ function Main_initWindows() {
         Play_SetFullScreen(Play_isFullScreen);
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30);//Check it 30min
+        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
         Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 5000);
         Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 5000);
 
@@ -1822,7 +1822,7 @@ function Main_ReplaceLargeFont(text) {
     });
 }
 
-function Main_Set_history(type, Data) {
+function Main_Set_history(type, Data, skipUpdateDate) {
     if (type === 'live' && HistoryLive.histPosX[1]) return;
     if (type === 'vod' && HistoryVod.histPosX[1]) return;
     if (type === 'clip' && HistoryClip.histPosX[1]) return;
@@ -1837,7 +1837,7 @@ function Main_Set_history(type, Data) {
                 Main_values_History_data[AddUser_UsernameArray[0].id][type][index],
                 {
                     data: Main_Slice(Data),
-                    date: new Date().getTime(),
+                    date: !skipUpdateDate ? new Date().getTime() : Main_values_History_data[AddUser_UsernameArray[0].id][type][index].date,
                     game: Data[3],
                     views: Data[13],
                 }
@@ -2072,14 +2072,27 @@ function Main_SetHistoryworker() {
 
                                     if (obj.mData.data[7] !== response.stream._id) {
                                         this.postMessage(
-                                            obj.mData.data[7]
+                                            {
+                                                data: obj.mData.data[7],
+                                                ended: true
+                                            }
+                                        );
+                                    } else {
+                                        this.postMessage(
+                                            {
+                                                data: response.stream,
+                                                ended: false
+                                            }
                                         );
                                     }
 
                                 }
                             } else {
                                 this.postMessage(
-                                    obj.mData.data[7]
+                                    {
+                                        data: obj.mData.data[7],
+                                        ended: true
+                                    }
                                 );
                             }
                         }
@@ -2112,18 +2125,22 @@ function Main_SetHistoryworker() {
 
     BradcastCheckerWorker.addEventListener('message',
         function(event) {
-            var index = Main_history_Exist('live', event.data);
+            if (event.data.ended) {
+                var index = Main_history_Exist('live', event.data.data);
 
-            if (index > -1) {
+                if (index > -1) {
 
-                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-                    Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-                        Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
-                        {
-                            forceVod: true
-                        }
-                    );
-                } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn'ot have a VOD
+                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+                        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
+                            {
+                                forceVod: true
+                            }
+                        );
+                    } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn'ot have a VOD
+                }
+            } else {
+                Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
             }
         }
     );
@@ -2196,7 +2213,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_updateclock();
 
     window.clearInterval(Main_StartHistoryworkerId);
-    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 30);//Check it 30min
+    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
 
     window.clearTimeout(Main_CheckResumeVodsId);
     Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 3500);
