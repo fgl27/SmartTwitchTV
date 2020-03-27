@@ -2274,3 +2274,11 @@ function Main_CheckAccessibilityKey(event) {
             break;
     }
 }
+
+function Main_LoadUrl(url) {
+    try {
+        Android.mloadUrl(url);
+    } catch (e) {
+        window.location = url;
+    }
+}
