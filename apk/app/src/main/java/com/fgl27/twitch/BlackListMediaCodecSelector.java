@@ -16,10 +16,10 @@ import java.util.Locale;
 
 public class BlackListMediaCodecSelector implements MediaCodecSelector {
 
-    private static String[] BLACKLISTEDCODECS = {};
+    private final String[] BLACKLISTEDCODECS;
 
-    public BlackListMediaCodecSelector(String[] mBLACKLISTEDCODECS) {
-        BLACKLISTEDCODECS = mBLACKLISTEDCODECS;
+    public BlackListMediaCodecSelector(String[] BLACKLISTEDCODECS) {
+        this.BLACKLISTEDCODECS = BLACKLISTEDCODECS;
     }
 
     @NonNull
@@ -27,12 +27,18 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
     public List<MediaCodecInfo> getDecoderInfos(@NonNull String mimeType, boolean requiresSecureDecoder, boolean requiresTunnelingDecoder)
             throws MediaCodecUtil.DecoderQueryException {
 
-        List<MediaCodecInfo> codecInfos = MediaCodecUtil.getDecoderInfos(
-                mimeType, requiresSecureDecoder, requiresTunnelingDecoder);
+        List<MediaCodecInfo> codecInfoList = MediaCodecUtil.getDecoderInfos(
+                mimeType,
+                requiresSecureDecoder,
+                requiresTunnelingDecoder
+        );
+
         // filter codecs based on blacklist template
-        List<MediaCodecInfo> filteredCodecInfos = new ArrayList<>();
-        for (MediaCodecInfo codecInfo : codecInfos) {
-            boolean blacklisted = false;
+        List<MediaCodecInfo> filteredCodecInfo = new ArrayList<>();
+        boolean blacklisted;
+
+        for (MediaCodecInfo codecInfo : codecInfoList) {
+            blacklisted = false;
             for (String blackListedCodec : BLACKLISTEDCODECS) {
                 if (codecInfo != null && codecInfo.name.toLowerCase(Locale.US).contains(blackListedCodec.toLowerCase(Locale.US))) {
                     blacklisted = true;
@@ -40,10 +46,10 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
                 }
             }
             if (!blacklisted) {
-                filteredCodecInfos.add(codecInfo);
+                filteredCodecInfo.add(codecInfo);
             }
         }
-        return filteredCodecInfos;
+        return filteredCodecInfo;
     }
 
     @Nullable
