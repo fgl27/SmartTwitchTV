@@ -406,7 +406,7 @@ function Users_handleKeyDown(event) {
                         var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
                             encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +
                             '&force_verify=' + force_verify;
-                        window.location = url;
+                        Android.mloadUrl(url);
                     }
                 }
             } else if (Users_isUserDialogShown()) {
