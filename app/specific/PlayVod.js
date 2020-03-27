@@ -686,7 +686,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 }
 
 function PlayVod_SaveVodIds() {
-    Main_history_UpdateVod(Main_values.ChannelVod_vodId, Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0);
+    Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0, 'vod');
 }
 
 function Play_showVodDialog() {
@@ -734,7 +734,7 @@ function PlayVod_DialogPressed(fromStart) {
         if (!fromStart) PlayVod_DialogPressedClick(PlayVod_VodOffset);
         else {
             if (!HistoryVod.histPosX[1]) {
-                Main_history_UpdateVod(Main_values.ChannelVod_vodId, 0);
+                Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, 0, 'vod');
                 Main_values.vodOffset = 0;
                 PlayVod_Start();
             } else PlayVod_DialogPressedClick(0);

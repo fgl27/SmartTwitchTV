@@ -306,7 +306,7 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
-    Main_history_UpdateClip(ChannelClip_Id, Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0);
+    Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0, 'clip');
     PlayClip_hidePanel();
     if (Main_IsOnAndroid) {
         if (closePlayer) Android.stopVideo(3);
