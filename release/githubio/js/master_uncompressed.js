@@ -768,8 +768,8 @@
         STR_VIWES = ", Most views";
         STR_NOKEY_VIDEO_WARN = "Set an user authentication key to be able to see followed videos";
         STR_SWITCH_TYPE = "Switch: Most recent or views";
-        STR_ENABLE = "Enable";
-        STR_DISABLE = "Disable";
+        STR_ENABLE = "Enabled";
+        STR_DISABLE = "Disabled";
         STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
         STR_RESTORE_PLAYBACK = "Restore playback";
         STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user and restores what was previously playing on next start";
@@ -1209,11 +1209,7 @@
             Main_newUsercode = 0;
             Main_SaveValues();
             Main_values.Main_Go = Main_Users;
-            try {
-                Android.mloadUrl(Android.mPageUrl());
-            } catch (e) {
-                window.location = AddCode_redirect_uri;
-            }
+            Main_LoadUrl(Android.mPageUrl());
         }, 4000);
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
@@ -1263,11 +1259,7 @@
             Main_showWarningDialog(STR_USER_CODE_OK);
             if (Main_IsNotBrowser) Android.clearCookie();
             window.setTimeout(function() {
-                try {
-                    Android.mloadUrl(Android.mPageUrl());
-                } catch (e) {
-                    window.location = AddCode_redirect_uri;
-                }
+                Main_LoadUrl(Android.mPageUrl());
             }, 3000);
         } else {
             AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
@@ -1278,11 +1270,7 @@
                 Main_newUsercode = 0;
                 Main_SaveValues();
                 Main_values.Main_Go = Main_Users;
-                try {
-                    Android.mloadUrl(Android.mPageUrl());
-                } catch (e) {
-                    window.location = AddCode_redirect_uri;
-                }
+                Main_LoadUrl(Android.mPageUrl());
             }, 4000);
         }
         return;
@@ -3561,8 +3549,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.156';
-    var Main_minversion = 'March 26, 2020';
+    var Main_stringVersion_Min = '.157';
+    var Main_minversion = 'March 27, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsNotBrowserVersion = '';
     var Main_AndroidSDK = 1000;
@@ -5710,6 +5698,14 @@
                 break;
             default:
                 break;
+        }
+    }
+
+    function Main_LoadUrl(url) {
+        try {
+            Android.mloadUrl(url);
+        } catch (e) {
+            window.location = url;
         }
     } //Variable initialization
     var PlayClip_IsJumping = false;
@@ -20263,7 +20259,7 @@
                             var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
                                 encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +
                                 '&force_verify=' + force_verify;
-                            window.location = url;
+                            Main_LoadUrl(url);
                         }
                     }
                 } else if (Users_isUserDialogShown()) {
