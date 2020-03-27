@@ -423,12 +423,12 @@ function PlayClip_showPanel() {
 }
 
 function PlayClip_RefreshProgressBarr() {
-    if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
-
     if (!Play_Status_Always_On) {
         if (Main_IsNotBrowser) Play_VideoStatus(false);
         else Play_VideoStatusTest();
     }
+
+    if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayClip_qualityIndexReset() {

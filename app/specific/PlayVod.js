@@ -510,8 +510,6 @@ function PlayVod_showPanel(autoHide) {
 }
 
 function PlayVod_RefreshProgressBarr(show) {
-    if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
-
     if (!Play_Status_Always_On) {
         if (Main_IsNotBrowser && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
             Play_getVideoQuality(1);
@@ -519,6 +517,8 @@ function PlayVod_RefreshProgressBarr(show) {
         if (Main_IsNotBrowser) Play_VideoStatus(false);
         else Play_VideoStatusTest();
     }
+
+    if (Main_IsNotBrowser) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayVod_IconsBottonResetFocus() {
