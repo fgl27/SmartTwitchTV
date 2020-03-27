@@ -1334,7 +1334,6 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public long gettime() {
-            if (player[mainPlayer] == null) return 0L;
 
             HVTHandler.RunnableResult<Long> result = HVTHandler.post(MainThreadHandler, new HVTHandler.RunnableValue<Long>() {
                 @Override
@@ -1409,10 +1408,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getPlaybackState() {
-            int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
-
-            if (player[playerPos] == null) return false;
-            else return PlayerIsPlaying[playerPos];
+            return PlayerIsPlaying[MultiStreamEnable ? MultiMainPlayer : mainPlayer];
         }
 
         @SuppressWarnings("unused")//called by JS
