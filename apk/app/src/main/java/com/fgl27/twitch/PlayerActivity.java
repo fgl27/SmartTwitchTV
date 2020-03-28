@@ -25,12 +25,12 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewCompat;
 
 import com.google.android.exoplayer2.C;
@@ -1045,11 +1045,16 @@ public class PlayerActivity extends Activity {
 
         //When we request a full url change on autentication key request 
         //prevent open it on a external browser
-        mWebView.setWebViewClient(new WebViewClientCompat(){
+        mWebView.setWebViewClient(new WebViewClient(){
 
             @Override
-            public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
+            @TargetApi(Build.VERSION_CODES.N)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
 
