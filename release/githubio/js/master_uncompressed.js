@@ -6077,8 +6077,6 @@
             if (Main_IsOnAndroid) Play_VideoStatus(false);
             else Play_VideoStatusTest();
         }
-
-        if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
     }
 
     function PlayClip_qualityIndexReset() {
@@ -9699,6 +9697,9 @@
             STR_BR + STR_PING + value[6]);
 
         Play_BufferSize = parseInt(value[7]);
+
+        if (PlayVod_isOn) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
+        else if (PlayClip_isOn) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
     }
 
     function Play_getMbps(value) {
@@ -11104,8 +11105,6 @@
             if (Main_IsOnAndroid) Play_VideoStatus(false);
             else Play_VideoStatusTest();
         }
-
-        if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
     }
 
     function PlayVod_IconsBottonResetFocus() {
