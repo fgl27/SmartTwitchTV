@@ -642,10 +642,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
     PlayVod_addToJump += Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier;
     PlayVod_TimeToJump = currentTime + PlayVod_addToJump;
 
-    //hls jump/seek time in avplay is "10 base", jump/seek to 1:53:53 will jump to 1:53:50, round to show then
-    if (PlayVod_isOn) PlayVod_TimeToJump = Math.floor(PlayVod_TimeToJump / 10) * 10;
-
-    if (PlayVod_TimeToJump > duration_seconds) {
+    if (PlayVod_TimeToJump > (duration_seconds - 1)) {
         PlayVod_addToJump = duration_seconds - currentTime - Play_DefaultjumpTimers[1];
         PlayVod_TimeToJump = currentTime + PlayVod_addToJump;
         PlayVod_jumpCount = 0;
