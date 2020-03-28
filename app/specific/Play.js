@@ -924,6 +924,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         Play_data.qualityPlaying = Play_data.quality;
         Android.SetQuality(-1);
         Android.RestartPlayer(1, 0, 0);
+        Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
         Play_showWarningDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 2) {
@@ -932,6 +933,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         PlayVod_qualityPlaying = PlayVod_quality;
         Android.SetQuality(-1);
         Android.RestartPlayer(2, Android.gettime(), 0);
+        Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality);
         Play_showWarningDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 3) {
@@ -940,6 +942,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
             PlayClip_qualityIndex++;
             Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality);
             PlayClip_qualityChanged();
+            Play_showWarningDialog(STR_PLAYER_SOURCE, 2000);
         } else Play_EndStart(false, 3);
 
     }

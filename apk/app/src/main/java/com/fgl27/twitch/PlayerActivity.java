@@ -1809,7 +1809,12 @@ public class PlayerActivity extends Activity {
                 }, Delay_ms);
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-                PlayerCheckCounter[position] = 0;
+
+                //Delay the counter reset to make sure the connection is fine now when not on a auto mode
+                if (!IsInAutoMode || mWho_Called == 3)
+                    PlayerCheckHandler[position].postDelayed(() -> PlayerCheckCounter[position] = 0, 10000);
+                else
+                    PlayerCheckCounter[position] = 0;
 
                 //If other not playing just play it so they stay in sync
                 if (MultiStreamEnable) {
@@ -1817,10 +1822,10 @@ public class PlayerActivity extends Activity {
                         if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
                     }
                 } else {
-                    int otherplayer = position ^ 1;
-                    if (player[otherplayer] != null) {
-                        if (!player[otherplayer].isPlaying())
-                            player[otherplayer].setPlayWhenReady(true);
+                    int OtherPlayer = position ^ 1;
+                    if (player[OtherPlayer] != null) {
+                        if (!player[OtherPlayer].isPlaying())
+                            player[OtherPlayer].setPlayWhenReady(true);
                     }
                 }
 
@@ -1849,11 +1854,11 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[position]++;
 
-        if (PlayerCheckCounter[position] < 4 && mWho_Called < 3) {
+        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && mWho_Called < 3) {
 
-            if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture)
+            if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
                 LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
-            else
+            else//already on auto just restart the player
                 PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
 
         } else if (PlayerCheckCounter[position] > 3) {
@@ -1861,18 +1866,18 @@ public class PlayerActivity extends Activity {
             // try == 3 Give up internet is probably down or something related
             PlayerEventListenerClear(position);
 
-        } else if (PlayerCheckCounter[position] > 1) {
+        } else if (PlayerCheckCounter[position] > 1) {//only for clips
 
-            // Second if not in auto mode use js to check if is possible to drop quality
+            // Second check drop quality as it freezes too much
             LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
 
-        } else PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
+        } else PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);//first check just reset
 
     }
 
     //First check only reset the player as it may be stuck
-    public void PlayerEventListenerCheckCounterEnd(int position, boolean mclearResumePosition) {
-        if (mclearResumePosition || mWho_Called == 1) clearResumePosition();
+    public void PlayerEventListenerCheckCounterEnd(int position, boolean ClearResumePosition) {
+        if (ClearResumePosition || mWho_Called == 1) clearResumePosition();
         else updateResumePosition(position);
 
         if (mWho_Called == 1) {

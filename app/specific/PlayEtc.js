@@ -1265,6 +1265,7 @@ function Play_MakeControls() {
                     Play_data.quality = "Auto";
                     Play_data.qualityPlaying = Play_data.quality;
                     Android.SetQuality(-1);
+                    Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
                 }
 
                 var i = 0;
