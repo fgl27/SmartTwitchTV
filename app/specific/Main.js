@@ -1402,7 +1402,6 @@ function Main_OPenAsVod(index) {
         ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
 
     if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
-    PlayVod_VodOffsetTemp = Main_values.vodOffset;
 
     if (Play_isOn) {
         Main_OPenAsVod_shutdownStream();
