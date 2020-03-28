@@ -1464,7 +1464,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
     ChannelClip_playUrl = Main_values_Play_data[0];
-    PlayClip_DurationSeconds = parseInt(Main_values_Play_data[1]);
+    Play_DurationSeconds = parseInt(Main_values_Play_data[1]);
     Main_values.Main_selectedChannel_id = Main_values_Play_data[2];
 
     Play_data.data[3] = Main_values_Play_data[3];
@@ -1511,8 +1511,8 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
 
     ChannelVod_language = Main_values_Play_data[9];
     ChannelVod_title = Main_values_Play_data[10];
-    ChannelVod_DurationSeconds = parseInt(Main_values_Play_data[11]);
-    ChannelVod_Duration = STR_DURATION + Play_timeS(ChannelVod_DurationSeconds);
+    Play_DurationSeconds = parseInt(Main_values_Play_data[11]);
+    ChannelVod_Duration = STR_DURATION + Play_timeS(Play_DurationSeconds);
 
     Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];

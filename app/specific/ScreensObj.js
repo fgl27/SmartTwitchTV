@@ -11,7 +11,6 @@ var ChannelClip_language = '';
 var ChannelClip_Id = 0;
 
 var ChannelVod_vodOffset = 0;
-var ChannelVod_DurationSeconds = 0;
 var ChannelVod_language = '';
 var ChannelVod_createdAt = '';
 var ChannelVod_views = '';

@@ -461,7 +461,7 @@ function Screens_loadDataSuccessFinish(obj) {
                         } else Main_SwitchScreen(false);
                     } else {
                         if (!Main_values.vodOffset) Main_values.vodOffset = 1;
-                        ChannelVod_DurationSeconds = Main_values.vodOffset + 1;
+                        Play_DurationSeconds = Main_values.vodOffset + 1;
 
                         Main_openVod();
                         Main_SwitchScreen(true);

@@ -20,7 +20,6 @@ var PlayClip_Buffer = 2000;
 var PlayClip_loadData410 = false;
 
 var PlayClip_jumpTimers = [0, 5];
-var PlayClip_DurationSeconds = 0;
 
 var PlayClip_HasNext = false;
 var PlayClip_HasBack = false;
@@ -51,7 +50,7 @@ function PlayClip_Start() {
     Main_textContent("stream_live_viewers", '');
     Main_textContent("stream_watching_time", '');
 
-    Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
+    Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
     Main_replaceClassEmoji('stream_info_title');
@@ -284,12 +283,6 @@ function PlayClip_onPlayer() {
     Play_SetFullScreen(Play_isFullScreen);
 }
 
-function PlayClip_UpdateDuration(duration) {
-    PlayClip_DurationSeconds = duration / 1000;
-    Main_textContent('progress_bar_duration', Play_timeS(PlayClip_DurationSeconds));
-    PlayClip_RefreshProgressBarr();
-}
-
 function PlayClip_Resume() {
     //return;
     window.clearInterval(Play_ShowPanelStatusId);
@@ -401,17 +394,17 @@ function PlayClip_hidePanel() {
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     Play_ForceHidePannel();
-    if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, true);
+    if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     window.clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
 function PlayClip_showPanel() {
-    PlayClip_RefreshProgressBarr();
+    PlayVod_RefreshProgressBarr();
     Play_clock();
     window.clearInterval(PlayVod_RefreshProgressBarrID);
-    PlayVod_RefreshProgressBarrID = window.setInterval(PlayClip_RefreshProgressBarr, 1000);
+    PlayVod_RefreshProgressBarrID = window.setInterval(PlayVod_RefreshProgressBarr, 1000);
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
@@ -420,13 +413,6 @@ function PlayClip_showPanel() {
     Play_ForceShowPannel();
     Play_clearHidePanel();
     PlayClip_setHidePanel();
-}
-
-function PlayClip_RefreshProgressBarr() {
-    if (!Play_Status_Always_On) {
-        if (Main_IsOnAndroid) Play_VideoStatus(false);
-        else Play_VideoStatusTest();
-    }
 }
 
 function PlayClip_qualityIndexReset() {
@@ -520,7 +506,7 @@ function PlayClip_handleKeyDown(e) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, -1);
                     else if (!PlayVod_PanelY) {
-                        PlayVod_jumpStart(-1, PlayClip_DurationSeconds);
+                        PlayVod_jumpStart(-1, Play_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     } else if (PlayVod_PanelY === 1) {
                         if (PlayClip_EnterPos > -1) {
@@ -546,7 +532,7 @@ function PlayClip_handleKeyDown(e) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, 1);
                     else if (!PlayVod_PanelY) {
-                        PlayVod_jumpStart(1, PlayClip_DurationSeconds);
+                        PlayVod_jumpStart(1, Play_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     } else if (PlayVod_PanelY === 1) {
                         if (PlayClip_EnterPos < 1) {
@@ -737,7 +723,7 @@ function PlayClip_FastBackForward(position) {
     PlayVod_PanelY = 0;
     PlayVod_IconsBottonFocus();
 
-    PlayVod_jumpStart(position, PlayClip_DurationSeconds);
+    PlayVod_jumpStart(position, Play_DurationSeconds);
     PlayVod_ProgressBaroffset = 2500;
     PlayClip_setHidePanel();
 }
