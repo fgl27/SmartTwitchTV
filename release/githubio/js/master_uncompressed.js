@@ -3548,7 +3548,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.158';
+    var Main_stringVersion_Min = '.159';
     var Main_minversion = 'March 27, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
@@ -15721,7 +15721,7 @@
         },
         "videos_animation": { //videos_animation
             "values": ["no", "yes"],
-            "defaultValue": 2
+            "defaultValue": 1
         },
         "thumb_quality": { //thumbnail quality
             "values": ["very-low", "low", "normal", "high", "very-high"],
