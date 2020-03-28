@@ -593,7 +593,7 @@ public final class Tools {
         } else if (who_called == 2) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
-                    .createMediaSource(uri);
+                    .createMediaSource(MediaItemBuilder(uri));
         } else
             return new ProgressiveMediaSource
                     .Factory(new DefaultDataSourceFactory(context, userAgent), new Mp4ExtractorsFactory())
