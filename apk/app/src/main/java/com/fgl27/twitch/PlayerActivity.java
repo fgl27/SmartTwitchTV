@@ -356,7 +356,6 @@ public class PlayerActivity extends Activity {
 
         //Player can only be acceed from main thread so start a "position listener" to pass the value to webview
         if (mWho_Called > 1) GetCurrentPosition();
-        else CurrentPositionHandler.removeCallbacksAndMessages(null);
     }
 
     private void initializeSmallPlayer(MediaSource NewMediaSource) {
@@ -832,8 +831,10 @@ public class PlayerActivity extends Activity {
         CurrentPositionHandler.removeCallbacksAndMessages(null);
 
         CurrentPositionHandler.postDelayed(() -> {
-            if (player[mainPlayer] == null) PlayerCurrentPosition = 0L;
-            else {
+            if (player[mainPlayer] == null) {
+                CurrentPositionHandler.removeCallbacksAndMessages(null);
+                PlayerCurrentPosition = 0L;
+            } else {
                 PlayerCurrentPosition = player[mainPlayer].getCurrentPosition();
                 GetCurrentPosition();
             }
@@ -1531,7 +1532,7 @@ public class PlayerActivity extends Activity {
                 getVideoStatusResult = new Gson().toJson(ret);
 
                 mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency +
-                    "," + mWho_Called + ")");
+                        "," + mWho_Called + ")");
             });
 
         }
@@ -1882,10 +1883,11 @@ public class PlayerActivity extends Activity {
         } else initializePlayer(position);
 
     }
+
     public void PlayerEventListenerClear(int position) {
         hideLoading(5);
         hideLoading(position);
-        PlayerCurrentPosition = 0L;
+        CurrentPositionHandler.removeCallbacksAndMessages(null);
         String WebViewLoad;
         if (MultiStreamEnable) {
             ClearPlayer(position);
