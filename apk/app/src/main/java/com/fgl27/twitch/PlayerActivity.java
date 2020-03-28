@@ -287,6 +287,7 @@ public class PlayerActivity extends Activity {
     private void PreInitializePlayer(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
+        CurrentPositionHandler.removeCallbacksAndMessages(null);
         PlayerCurrentPosition = mResumePosition;
         lastSeenTrackGroupArray = null;
         initializePlayer(position);
