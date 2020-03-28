@@ -1530,7 +1530,8 @@ public class PlayerActivity extends Activity {
 
                 getVideoStatusResult = new Gson().toJson(ret);
 
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency +")");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency +
+                    "," + mWho_Called + ")");
             });
 
         }
@@ -1824,7 +1825,7 @@ public class PlayerActivity extends Activity {
 
                 if (mWho_Called > 1) {
                     LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" +
-                            mWho_Called + "," + player[position].getDuration() + ")");
+                            player[position].getDuration() + ")");
                 }
             }
         }

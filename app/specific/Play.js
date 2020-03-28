@@ -30,6 +30,7 @@ var Play_EndDialogEnter = 0;
 var Play_PanneInfoDoclId;
 var Play_Multi_MainBig = false;
 var Play_Multi_Offset = 0;
+var Play_DurationSeconds = 0;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
@@ -1254,7 +1255,7 @@ function Play_VideoStatus(showLatency) {
 }
 
 var Play_BufferSize = 0;
-function Play_ShowVideoStatus(showLatency) {
+function Play_ShowVideoStatus(showLatency, Who_Called) {
     var value = Android.getVideoStatusString();
 
     if (value) value = JSON.parse(value);
@@ -1268,10 +1269,10 @@ function Play_ShowVideoStatus(showLatency) {
         (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
         STR_BR + STR_PING + value[6]);
 
-    Play_BufferSize = parseInt(value[7]);
-
-    if (PlayVod_isOn) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
-    else if (PlayClip_isOn) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
+    if (Who_Called > 1) {
+        Play_BufferSize = parseInt(value[7]);
+        PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+    }
 }
 
 function Play_getMbps(value) {
@@ -1488,10 +1489,12 @@ function Play_CheckHost(responseText) {
     Play_PlayEndStart(1);
 }
 
-function Play_UpdateDuration(mwhocall, duration) { // Called only by JAVA
+function Play_UpdateDuration(duration) { // Called only by JAVA
     if (duration > 0) {
-        if (mwhocall === 2) PlayVod_UpdateDuration(duration);
-        else if (mwhocall === 3) PlayClip_UpdateDuration(duration);
+        Play_DurationSeconds = duration / 1000;
+        Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
+        PlayVod_RefreshProgressBarr();
+        if (!Play_Status_Always_On) Play_VideoStatus(false);
     }
 }
 
