@@ -287,6 +287,7 @@ public class PlayerActivity extends Activity {
     private void PreInitializePlayer(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
+        PlayerCurrentPosition = mResumePosition;
         lastSeenTrackGroupArray = null;
         initializePlayer(position);
     }
@@ -487,6 +488,7 @@ public class PlayerActivity extends Activity {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
         PlayerView[position].setVisibility(View.GONE);
         PlayerIsPlaying[position] = false;
+        PlayerCurrentPosition = 0L;
 
         if (player[position] != null) {
             player[position].setPlayWhenReady(false);
@@ -1882,6 +1884,7 @@ public class PlayerActivity extends Activity {
     public void PlayerEventListenerClear(int position) {
         hideLoading(5);
         hideLoading(position);
+        PlayerCurrentPosition = 0L;
         String WebViewLoad;
         if (MultiStreamEnable) {
             ClearPlayer(position);
