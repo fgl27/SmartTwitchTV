@@ -355,10 +355,8 @@ public class PlayerActivity extends Activity {
         droppedFrames = 0;
 
         //Player can only be acceed from main thread so start a "position listener" to pass the value to webview
-        if (mWho_Called > 1) {
-            GetCurrentPosition();
-            PlayerCurrentPosition = 0L;
-        } else CurrentPositionHandler.removeCallbacksAndMessages(null);
+        if (mWho_Called > 1) GetCurrentPosition();
+        else CurrentPositionHandler.removeCallbacksAndMessages(null);
     }
 
     private void initializeSmallPlayer(MediaSource NewMediaSource) {
