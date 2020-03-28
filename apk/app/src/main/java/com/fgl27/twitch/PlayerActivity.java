@@ -337,6 +337,7 @@ public class PlayerActivity extends Activity {
 
         player[position].prepare();
 
+        PlayerIsPlaying[position] = false;
         hideLoading(5);
         SwitchPlayerAudio(AudioSource);
 
@@ -472,6 +473,7 @@ public class PlayerActivity extends Activity {
 
         player[position].prepare();
 
+        PlayerIsPlaying[position] = true;
         mediaSources[position] = NewMediaSource;
         hideLoading(5);
 
@@ -1408,7 +1410,10 @@ public class PlayerActivity extends Activity {
         public void play(boolean play) {
             MainThreadHandler.post(() -> {
                 for (int i = 0; i < PlayerAcount; i++) {
-                    if (player[i] != null) player[i].setPlayWhenReady(play);
+                    if (player[i] != null) {
+                        player[i].setPlayWhenReady(play);
+                        PlayerIsPlaying[i] = play;
+                    }
                 }
                 KeepScreenOn(play);
             });
