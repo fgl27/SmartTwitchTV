@@ -1136,6 +1136,7 @@ public class PlayerActivity extends Activity {
         public void mseekTo(long position) {
             MainThreadHandler.post(() -> {
                 if (player[mainPlayer] != null) {
+                    PlayerCurrentPosition = position;
                     player[mainPlayer].seekTo(position);
                     player[mainPlayer].setPlayWhenReady(true);
                 }
