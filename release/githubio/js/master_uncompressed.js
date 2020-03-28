@@ -10622,7 +10622,6 @@
 
     var PlayVod_RefreshProgressBarrID;
     var PlayVod_SaveOffsetId;
-    var PlayVod_WasSubChekd = false;
     var PlayVod_VodOffset;
     var PlayVod_VodOffsetTemp;
     var PlayVod_HasVodInfo = false;
@@ -10714,7 +10713,6 @@
         PlayVod_playingTry = 0;
         Play_jumping = false;
         PlayVod_isOn = true;
-        PlayVod_WasSubChekd = false;
 
         if (!PlayVod_replay) PlayVod_loadDatanew();
         else {
@@ -11048,6 +11046,7 @@
         Main_ShowElement('progress_pause_holder');
         PlayVod_isOn = false;
         window.clearInterval(PlayVod_SaveOffsetId);
+        window.clearTimeout(PlayVod_WarnEndId);
         Main_values.Play_WasPlaying = 0;
         Chat_Clear();
         UserLiveFeed_Hide(PreventcleanQuailities);
