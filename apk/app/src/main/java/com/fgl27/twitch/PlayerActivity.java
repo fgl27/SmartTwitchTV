@@ -1047,6 +1047,7 @@ public class PlayerActivity extends Activity {
         //prevent open it on a external browser
         mWebView.setWebViewClient(new WebViewClient(){
 
+            @SuppressWarnings({"deprecation", "RedundantSuppression"})
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return false;
