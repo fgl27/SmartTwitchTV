@@ -1135,8 +1135,14 @@ public class PlayerActivity extends Activity {
         public void mseekTo(long position) {
             MainThreadHandler.post(() -> {
                 if (player[mainPlayer] != null) {
-                    PlayerCurrentPosition = position;
-                    player[mainPlayer].seekTo(position);
+                    long duration = player[mainPlayer].getDuration();
+                    long jumpPosition = position > 0 ? position : 0;
+
+                    if (jumpPosition >= duration)
+                        jumpPosition = duration - 1000;
+
+                    PlayerCurrentPosition = jumpPosition;
+                    player[mainPlayer].seekTo(jumpPosition);
                     player[mainPlayer].setPlayWhenReady(true);
                 }
             });

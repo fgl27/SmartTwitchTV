@@ -275,8 +275,10 @@ function PlayClip_qualityChanged() {
 
 function PlayClip_onPlayer() {
     if (Main_isDebug) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
+
     if (Main_IsOnAndroid && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
         PlayClip_replayOrNext ? -1 : Android.gettime());
+
     PlayClip_replayOrNext = false;
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
