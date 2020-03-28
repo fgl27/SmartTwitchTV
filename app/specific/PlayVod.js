@@ -36,7 +36,6 @@ var PlayVod_jumpTimers = [0, 10, 30, 60, 120, 300, 600, 900, 1200, 1800];
 var PlayVod_RefreshProgressBarrID;
 var PlayVod_SaveOffsetId;
 var PlayVod_VodOffset;
-var PlayVod_VodOffsetTemp;
 var PlayVod_HasVodInfo = false;
 //Variable initialization end
 
@@ -177,16 +176,6 @@ function PlayVod_CheckFollow() {
 
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
-
-    Play_DurationSeconds = parseInt(response.length);
-
-    if (Play_DurationSeconds < PlayVod_VodOffsetTemp) {
-        if (Main_IsOnAndroid) Android.mseekTo(0);
-        Main_values.vodOffset = 0;
-        Chat_offset = 0;
-        Chat_Init();
-    }
-    PlayVod_VodOffsetTemp = 0;
 
     Main_values_Play_data = ScreensObj_VodCellArray(response);
     Main_Set_history('vod', Main_values_Play_data);
