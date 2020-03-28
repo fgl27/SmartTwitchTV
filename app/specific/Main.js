@@ -1392,12 +1392,10 @@ function Main_OPenAsVod(index) {
     }
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
-    Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
     Main_values.Main_selectedChannel = Main_values_Play_data[6];
-
-    Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
     Main_values.Main_selectedChannelPartner = Main_values_Play_data[10];
+    Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
 
     Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
     Main_values.vodOffset =
