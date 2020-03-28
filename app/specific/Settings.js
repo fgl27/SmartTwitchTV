@@ -110,7 +110,7 @@ var Settings_value = {
     },
     "videos_animation": { //videos_animation
         "values": ["no", "yes"],
-        "defaultValue": 2
+        "defaultValue": 1
     },
     "thumb_quality": { //thumbnail quality
         "values": ["very-low", "low", "normal", "high", "very-high"],
