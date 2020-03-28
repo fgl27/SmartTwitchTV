@@ -45,6 +45,7 @@ function PlayExtra_KeyEnter() {
 
             Play_data.quality = "Auto";
             Play_data.qualityPlaying = Play_data.quality;
+            Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
             PlayExtra_data.quality = "Auto";
             PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
         }
