@@ -516,8 +516,6 @@ function PlayVod_RefreshProgressBarr(show) {
         if (Main_IsOnAndroid) Play_VideoStatus(false);
         else Play_VideoStatusTest();
     }
-
-    if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), ChannelVod_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayVod_IconsBottonResetFocus() {

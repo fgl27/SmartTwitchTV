@@ -427,8 +427,6 @@ function PlayClip_RefreshProgressBarr() {
         if (Main_IsOnAndroid) Play_VideoStatus(false);
         else Play_VideoStatusTest();
     }
-
-    if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), PlayClip_DurationSeconds, !PlayVod_IsJumping);
 }
 
 function PlayClip_qualityIndexReset() {
