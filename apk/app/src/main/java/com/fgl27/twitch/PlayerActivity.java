@@ -1515,16 +1515,16 @@ public class PlayerActivity extends Activity {
                 netActivity = 0L;
 
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
-                long buffer = 0;
+                long buffer = 0L;
+                long LiveOffset = 0L;
 
                 if (player[playerPos] != null) {
                     buffer = player[playerPos].getTotalBufferedDuration();
-                    ret.add(Tools.getTime(buffer));//4
-                    ret.add(Tools.getTime(player[playerPos].getCurrentLiveOffset()));//5
-                } else {
-                    ret.add("0");
-                    ret.add("0");
+                    LiveOffset = player[playerPos].getCurrentLiveOffset();
                 }
+                ret.add(Tools.getTime(buffer));//4
+                ret.add(Tools.getTime(LiveOffset));//5
+
                 ret.add(Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"));//6
                 ret.add(String.valueOf(Math.ceil(buffer / 1000.0)));//7
 
