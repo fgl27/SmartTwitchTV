@@ -132,9 +132,9 @@ function en_USLang() {
     STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
     STR_CONTROLS_PLAY_5 = "Change video quality: use the player bottom controls Quality";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
-    STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad right or key number 3" + STR_CONTROLS_PLAY_0;
-    STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or " + STR_KEY_UP_DOWN + STR_CONTROLS_PLAY_0;
-    STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad down" + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad down or key number 3" + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or PG up" + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad rigth or PG down" + STR_CONTROLS_PLAY_0;
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
@@ -424,4 +424,5 @@ function en_USLang() {
     STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
     STR_TOO_ERRORS = " or too many errors";
     STR_STREAM_ERROR_SMALL = "Small player, stream ended" + STR_TOO_ERRORS;
+    STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
 }
