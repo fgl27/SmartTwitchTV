@@ -677,6 +677,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(3);
                 break;
+            case KEY_MEDIA_REWIND:
             case KEY_PG_UP:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
                 else if (Play_isChatShown()) Play_KeyChatPosChage();
@@ -688,10 +689,10 @@ function PlayClip_handleKeyDown(e) {
                 else PlayClip_showPanel();
                 break;
             case KEY_MEDIA_FAST_FORWARD:
-                if (!Play_isEndDialogVisible()) PlayClip_FastBackForward(1);
-                break;
-            case KEY_MEDIA_REWIND:
-                if (!Play_isEndDialogVisible()) PlayClip_FastBackForward(-1);
+                if (Play_isEndDialogVisible()) break;
+
+                if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                else Play_controls[Play_controlsChatSide].enterKey();
                 break;
             case KEY_MEDIA_NEXT:
                 PlayClip_PlayNext();
