@@ -576,10 +576,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(-1);
                 else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
                     !PlayExtra_PicturePicture) {
-                    Play_ChatPositions++;
-                    Play_ChatPosition();
-                    Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
-                    Play_controls[Play_controlsChatPos].setLable();
+                    Play_KeyChatPosChage();
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
@@ -597,8 +594,7 @@ function Play_handleKeyDown(e) {
                     Android.mSwitchPlayerPosition(Play_PicturePicturePos);
                     Main_setItem('Play_PicturePicturePos', Play_PicturePicturePos);
                 } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeLeft();
-                else
-                    Play_showPanel();
+                else Play_showPanel();
                 break;
             case KEY_RIGHT:
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
@@ -608,9 +604,9 @@ function Play_handleKeyDown(e) {
                     if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
                     Play_MultiAddFocus();
                 } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(1);
-                else if (Play_isFullScreen && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
+                else if (Play_isFullScreen && Play_isChatShown() && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
                     (!PlayExtra_PicturePicture || Play_MultiEnable)) {
-                    Play_controls[Play_controlsChat].enterKey(1);
+                    Play_KeyChatSizeChage();
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, 1);
@@ -627,8 +623,7 @@ function Play_handleKeyDown(e) {
                     Android.mSwitchPlayerSize(Play_PicturePictureSize);
                     Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                 } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeRight();
-                else
-                    Play_showPanel();
+                else Play_showPanel();
                 break;
             case KEY_UP:
                 if (Play_isPanelShown()) {
@@ -678,9 +673,7 @@ function Play_handleKeyDown(e) {
                     Play_MultiAddFocus();
                 } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
-                else if (Play_isFullScreen && Play_isChatShown() && !PlayExtra_PicturePicture && !Play_MultiEnable) {
-                    Play_KeyChatSizeChage();
-                } else if (PlayExtra_PicturePicture && !Play_MultiEnable) {
+                else if (PlayExtra_PicturePicture && !Play_MultiEnable) {
                     if (Play_isFullScreen) {
                         document.body.removeEventListener("keydown", Play_handleKeyDown, false);
                         document.body.addEventListener("keyup", Play_handleKeyUp, false);
@@ -696,7 +689,8 @@ function Play_handleKeyDown(e) {
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
                     Play_EndUpclearID = window.setTimeout(Play_MultiKeyDownHold, 250);
-                } else Play_showPanel();
+                } else if (Play_isFullScreen) Play_controls[Play_controlsChat].enterKey(1);
+                else Play_showPanel();
                 break;
             case KEY_ENTER:
                 if (Play_isEndDialogVisible()) {
@@ -770,19 +764,13 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_PG_UP:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
-                else {
-                    Play_Panelcounter = Play_controlsChatPos;
-                    Play_BottomUpDown(1, 1);
-                    Play_Panelcounter = Play_controlsDefault;
-                }
+                else if (Play_isChatShown()) Play_KeyChatPosChage();
+                else Play_showPanel();
                 break;
             case KEY_PG_DOWN:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
-                else {
-                    Play_Panelcounter = Play_controlsChatPos;
-                    Play_BottomUpDown(1, -1);
-                    Play_Panelcounter = Play_controlsDefault;
-                }
+                else if (Play_isChatShown()) Play_KeyChatSizeChage();
+                else Play_showPanel();
                 break;
             case KEY_REFRESH:
             case KEY_MEDIA_FAST_FORWARD:
@@ -1623,6 +1611,13 @@ function Play_KeyChatSizeChage() {
     Play_controls[Play_controlsChatSize].defaultValue = Play_ChatSizeValue;
     Play_controls[Play_controlsChatSize].bottomArrows();
     Play_controls[Play_controlsChatSize].setLable();
+}
+
+function Play_KeyChatPosChage() {
+    Play_ChatPositions++;
+    Play_ChatPosition();
+    Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
+    Play_controls[Play_controlsChatPos].setLable();
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {

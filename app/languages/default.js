@@ -44,6 +44,7 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_PLAY_2 + STR_BR + '</div>' +
         STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_CONTROLS_PLAY_3 + STR_BR +
+        STR_DOT + STR_CONTROLS_MEDIA_FF + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_5 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_6 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_13 + STR_BR +
