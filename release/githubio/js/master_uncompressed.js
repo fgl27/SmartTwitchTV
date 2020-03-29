@@ -697,12 +697,12 @@
         STR_CONTROLS_PLAY_5 = "Change video quality: use the player bottom controls Quality";
         STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
         STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad down or key number 3" + STR_CONTROLS_PLAY_0;
-        STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left or PG up" + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left, PG up or rewind (VOD and clips only)" + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad rigth or PG down" + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
         STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
         STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
-        STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...) for live content they are used as shortcuts for audio and video mode changes";
+        STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...) some are used as shortcuts for audio and video mode changes";
         STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
         STR_F_DISABLE_CHAT = "Chat force disable";
         STR_UPDATE_AVAILABLE = "Update available, check google play store";
@@ -6330,6 +6330,7 @@
                 case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(3);
                     break;
+                case KEY_MEDIA_REWIND:
                 case KEY_PG_UP:
                     if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
                     else if (Play_isChatShown()) Play_KeyChatPosChage();
@@ -6341,10 +6342,10 @@
                     else PlayClip_showPanel();
                     break;
                 case KEY_MEDIA_FAST_FORWARD:
-                    if (!Play_isEndDialogVisible()) PlayClip_FastBackForward(1);
-                    break;
-                case KEY_MEDIA_REWIND:
-                    if (!Play_isEndDialogVisible()) PlayClip_FastBackForward(-1);
+                    if (Play_isEndDialogVisible()) break;
+
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                    else Play_controls[Play_controlsChatSide].enterKey();
                     break;
                 case KEY_MEDIA_NEXT:
                     PlayClip_PlayNext();
@@ -11484,6 +11485,7 @@
                 case KEY_CHAT:
                     Play_controls[Play_controlsChat].enterKey(2);
                     break;
+                case KEY_MEDIA_REWIND:
                 case KEY_PG_UP:
                     if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
                     else if (Play_isChatShown()) Play_KeyChatPosChage();
@@ -11495,10 +11497,16 @@
                     else PlayVod_showPanel(true);
                     break;
                 case KEY_MEDIA_FAST_FORWARD:
-                    if (!Play_isEndDialogVisible()) PlayVod_FastBackForward(1);
+                    if (Play_isEndDialogVisible()) break;
+
+                    if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                    else Play_controls[Play_controlsChatSide].enterKey();
+
                     break;
-                case KEY_MEDIA_REWIND:
-                    if (!Play_isEndDialogVisible()) PlayVod_FastBackForward(-1);
+                case KEY_MEDIA_NEXT:
+                case KEY_MEDIA_PREVIOUS:
+                    if (Play_isPanelShown()) PlayVod_hidePanel();
+                    else PlayVod_showPanel(true);
                     break;
                 default:
                     break;
