@@ -454,6 +454,7 @@ function PlayClip_SetOpenVod() {
 
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
+        Play_DurationSeconds = 0;
         Main_values.vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream(true);
         document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);

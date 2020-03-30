@@ -180,6 +180,12 @@ function PlayVod_CheckFollow() {
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
 
+    //Update the value only if the Play_UpdateDuration() has not yet
+    if (!Play_DurationSeconds) Play_DurationSeconds = parseInt(response.length);
+
+    if (Main_IsOnAndroid) PlayVod_previews_start();
+    //else PlayVod_previews_start_test();
+
     Main_values_Play_data = ScreensObj_VodCellArray(response);
     Main_Set_history('vod', Main_values_Play_data);
 
@@ -214,12 +220,6 @@ function PlayVod_updateVodInfoPannel(response) {
     Main_values.Main_selectedChannel_id = response.channel._id;
     Main_values.Main_selectedChannel = response.channel.name;
     Main_values.Main_seek_previews_url = response.seek_previews_url;
-
-    if (!Main_IsOnAndroid) {
-        Play_DurationSeconds = parseInt(response.length);
-        Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
-        //PlayVod_previews_start_test();
-    } else PlayVod_previews_start();
 
     PlayVod_CheckFollow();
 
