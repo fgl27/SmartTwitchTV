@@ -455,6 +455,7 @@ function PlayClip_SetOpenVod() {
 
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
+        Main_values.Main_seek_previews_url = null;
         Play_DurationSeconds = 0;
         Main_values.vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream(true);
