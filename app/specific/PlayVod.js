@@ -79,8 +79,7 @@ function PlayVod_Start() {
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
     } else {
-        if (Main_IsOnAndroid) PlayVod_previews_start();
-        //else PlayVod_previews_start_test();
+        PlayVod_previews_pre_start();
 
         PlayVod_HasVodInfo = true;
         PlayVod_updateStreamerInfoValues();
@@ -183,8 +182,7 @@ function PlayVod_updateVodInfoPannel(response) {
     //Update the value only if the Play_UpdateDuration() has not yet
     if (!Play_DurationSeconds) Play_DurationSeconds = parseInt(response.length);
 
-    if (Main_IsOnAndroid) PlayVod_previews_start();
-    //else PlayVod_previews_start_test();
+    PlayVod_previews_pre_start();
 
     Main_values_Play_data = ScreensObj_VodCellArray(response);
     Main_Set_history('vod', Main_values_Play_data);
@@ -966,6 +964,11 @@ function PlayVod_FastBackForward(position) {
     PlayVod_jumpStart(position, Play_DurationSeconds);
     PlayVod_ProgressBaroffset = 2500;
     PlayVod_setHidePanel();
+}
+
+function PlayVod_previews_pre_start() {
+    if (Main_IsOnAndroid) PlayVod_previews_start();
+    //else PlayVod_previews_start_test();
 }
 
 function PlayVod_previews_start() {
