@@ -713,6 +713,20 @@
             text-shadow: 0 0.025em 0 #000000, -0.025em 0 0 #000000, 0 0.0375em 0 #777777, 0 0.055em 0 #666666, 0 0.07em 0 #555455, -0.03em -0.03em 0 #000000, 0.03em -0.03em 0 #000000, -0.03em 0.08em 0 #000000, 0.03em 0.08em 0 #000000, -0.04em 0.03em 0 #000000, 0.04em 0.03em 0 #000000, 0 0.1em 0 #000000, 0 -0.04em 0 #000000;
         }
 
+        div.seek_previews {
+            transform: translate(-50%, -22.25vh);
+            position: absolute;
+            /* 16 by 9*/
+            width: 30vh;
+            /* height = width / 16 * 9*/
+            height: 16.875vh;
+            /* background-size = width * 5*/
+            background-size: 150vh;
+            display: inline-block;
+            border-radius: 0.5vh;
+            border: 0.35vh solid #FFFFFF;
+        }
+
         .stream_channel_follow_icon {
             color: #FFFFFF;
             font-size: 100%
@@ -2911,6 +2925,8 @@
                                             style="max-width: 100%; background-color: #3a3a3a; height: 1em; width: 10%; transform: translateY(-75%); display: inline-block;">
                                         </div>
                                         <div class="inner_progress_circle"></div>
+                                        <div id="seek_previews" class="hideimp seek_previews">
+                                        </div>
                                     </div>
                                 </div>
                             </div>

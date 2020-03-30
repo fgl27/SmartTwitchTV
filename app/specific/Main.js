@@ -62,6 +62,7 @@ var Main_values = {
     "ChatBackground": 12,
     "IsRerun": false,
     "Main_selectedChannelPartner": false,
+    "Main_seek_previews_url": null,
     "Sidepannel_Pos": 2,
     "Sidepannel_IsUser": false,
     "My_channel": false,
@@ -177,7 +178,8 @@ function Main_loadTranslations(language) {
                     'Main_CheckResume': Main_CheckResume,
                     'Play_getQualities': Play_getQualities,
                     'Play_ShowVideoStatus': Play_ShowVideoStatus,
-                    'Play_ShowVideoQuality': Play_ShowVideoQuality
+                    'Play_ShowVideoQuality': Play_ShowVideoQuality,
+                    'PlayVod_previews_success': PlayVod_previews_success
                 };
             }
             Main_IsOnAndroid = Android.getAndroid();
@@ -1396,6 +1398,7 @@ function Main_OPenAsVod(index) {
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[9];
     Main_values.Main_selectedChannelPartner = Main_values_Play_data[10];
     Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
+    Main_values.Main_seek_previews_url = null;
 
     Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
     Main_values.vodOffset =
@@ -1516,6 +1519,7 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
     Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
     Main_values.Main_selectedChannelPartner = Main_values_Play_data[16];
+    Main_values.Main_seek_previews_url = Main_values_Play_data[18];
 
     Main_openVod();
 }
