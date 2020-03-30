@@ -201,7 +201,7 @@ function Play_EndSet(PlayVodClip) {
 
         Play_EndTextsReset();
         Main_innerHTML("end_channel_name_text", Play_data.data[1]);
-        Main_innerHTML("end_vod_title_text", Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name);
+        Main_innerHTML("end_vod_title_text", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name));
     } else if (PlayVodClip === 1) { // play
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 2;
