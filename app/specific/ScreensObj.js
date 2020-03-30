@@ -1788,7 +1788,8 @@ function ScreensObj_VodCellArray(cell) {
         cell.channel._id,//14
         cell.channel.logo,//15
         cell.channel.partner,//16
-        cell.increment_view_count_url//17
+        cell.increment_view_count_url,//17
+        cell.seek_previews_url//18
     ];
 }
 
@@ -1800,7 +1801,7 @@ function ScreensObj_AnimateThumbId(screen) {
     // Only load the animation if it can be loaded
     // This prevent starting animating before it has loaded or animated a empty image
     screen.Vod_newImg.onload = function() {
-        screen.onload = null;
+        this.onload = null;
         Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
         div.style.backgroundSize = div.offsetWidth + "px";
         var frame = 0;

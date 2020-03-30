@@ -31,6 +31,8 @@ var Play_PanneInfoDoclId;
 var Play_Multi_MainBig = false;
 var Play_Multi_Offset = 0;
 var Play_DurationSeconds = 0;
+var Play_seek_previews;
+var Play_seek_previews_img;
 
 var Play_streamInfoTimerId = null;
 var Play_tokenResponse = 0;
@@ -164,6 +166,8 @@ var PlayExtra_data_old = JSON.parse(JSON.stringify(Play_data_base));
 //Variable initialization end
 
 function Play_PreStart() {
+    Play_seek_previews = document.getElementById("seek_previews");
+    Play_seek_previews_img = new Image();
     Play_chat_container = document.getElementById("chat_container");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
     Play_ProgresBarrBufferElm = document.getElementById("inner_progress_bar_buffer");

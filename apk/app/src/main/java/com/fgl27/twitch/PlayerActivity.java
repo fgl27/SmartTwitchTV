@@ -111,6 +111,7 @@ public class PlayerActivity extends Activity {
     public int mWho_Called = 1;
     public MediaSource[] mediaSources = new MediaSource[PlayerAcountPlus];
     public String userAgent;
+    public String PreviewsResult;
     public WebView mWebView;
     public boolean PicturePicture;
     public boolean deviceIsTV;
@@ -128,7 +129,9 @@ public class PlayerActivity extends Activity {
     public String[][] ExtraPlayerHandlerResult = new String[10][100];
     public HandlerThread ExtraPlayerHandlerThread;
     public HandlerThread SaveBackupJsonThread;
+    public HandlerThread PreviewsThread;
     public Handler SaveBackupJsonHandler;
+    public Handler PreviewsHandler;
     public HandlerThread RuntimeThread;
     public Handler RuntimeHandler;
     public Runtime runtime;
@@ -193,6 +196,10 @@ public class PlayerActivity extends Activity {
             SaveBackupJsonThread = new HandlerThread("SaveBackupJsonThread");
             SaveBackupJsonThread.start();
             SaveBackupJsonHandler = new Handler(SaveBackupJsonThread.getLooper());
+
+            PreviewsThread = new HandlerThread("PreviewsThread");
+            PreviewsThread.start();
+            PreviewsHandler = new Handler(PreviewsThread.getLooper());
 
             RuntimeThread = new HandlerThread("RuntimeThread");
             RuntimeThread.start();
@@ -1606,6 +1613,25 @@ public class PlayerActivity extends Activity {
                     );
                 }
             }, 5000);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void GetPreviews(String url) {
+            PreviewsHandler.removeCallbacksAndMessages(null);
+
+            PreviewsHandler.post(() -> {
+                PreviewsResult = Tools.readUrl(url, 5000, 0, null);
+
+                if (PreviewsResult != null)
+                    LoadUrlWebview("javascript:smartTwitchTV.PlayVod_previews_success(Android.GetPreviewsResult())");
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String GetPreviewsResult() {
+            return PreviewsResult;
         }
 
         @SuppressWarnings("unused")//called by JS

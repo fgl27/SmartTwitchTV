@@ -33,7 +33,8 @@
         'Main_CheckResume': Main_CheckResume, // Main_CheckStop() func from app/specific/Main.js
         'Play_getQualities': Play_getQualities, // Main_CheckStop() func from app/specific/Play.js
         'Play_ShowVideoStatus': Play_ShowVideoStatus, // Main_CheckStop() func from app/specific/Play.js
-        'Play_ShowVideoQuality': Play_ShowVideoQuality // Main_CheckStop() func from app/specific/Play.js
+        'Play_ShowVideoQuality': Play_ShowVideoQuality, // Main_CheckStop() func from app/specific/Play.js
+        'PlayVod_previews_success': PlayVod_previews_success // Main_CheckStop() func from app/specific/PlayVod.js
     };
 
     /** Expose `smartTwitchTV` */
