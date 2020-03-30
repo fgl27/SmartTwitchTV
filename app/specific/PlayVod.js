@@ -182,6 +182,7 @@ function PlayVod_updateVodInfoPannel(response) {
     //Update the value only if the Play_UpdateDuration() has not yet
     if (!Play_DurationSeconds) Play_DurationSeconds = parseInt(response.length);
 
+    Main_values.Main_seek_previews_url = response.seek_previews_url;
     PlayVod_previews_pre_start();
 
     Main_values_Play_data = ScreensObj_VodCellArray(response);
@@ -217,7 +218,6 @@ function PlayVod_updateVodInfoPannel(response) {
 
     Main_values.Main_selectedChannel_id = response.channel._id;
     Main_values.Main_selectedChannel = response.channel.name;
-    Main_values.Main_seek_previews_url = response.seek_previews_url;
 
     PlayVod_CheckFollow();
 
