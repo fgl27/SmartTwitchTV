@@ -64,6 +64,7 @@ function PlayClip_Start() {
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_BufferSize = 0;
+    Main_values.Main_seek_previews_url = null;
     Play_IconsResetFocus();
 
     Play_ShowPanelStatus(3);
