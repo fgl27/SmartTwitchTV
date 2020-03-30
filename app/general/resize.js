@@ -3,6 +3,7 @@
 
 // BodyfontSize is used for px to em calculation used by scroll functions
 var BodyfontSize;
+var scaleFactor;
 
 function calculateFontSize() {
 
@@ -20,7 +21,6 @@ function calculateFontSize() {
         initialHeight = 1080,
 
         currentHeight,
-        scaleFactor,
         scaledWidth;
 
     // Get current client/screen height.
