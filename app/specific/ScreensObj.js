@@ -14,7 +14,6 @@ var ChannelVod_vodOffset = 0;
 var ChannelVod_language = '';
 var ChannelVod_createdAt = '';
 var ChannelVod_views = '';
-var ChannelVod_Duration = '';
 var ChannelVod_title = '';
 var ChannelVod_game = '';
 var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
