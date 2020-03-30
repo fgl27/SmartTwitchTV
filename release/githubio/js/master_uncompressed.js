@@ -1008,6 +1008,7 @@
 
     // BodyfontSize is used for px to em calculation used by scroll functions
     var BodyfontSize;
+    var scaleFactor;
 
     function calculateFontSize() {
 
@@ -1025,7 +1026,6 @@
             initialHeight = 1080,
 
             currentHeight,
-            scaleFactor,
             scaledWidth;
 
         // Get current client/screen height.
@@ -11254,8 +11254,7 @@
         var position = (PlayVod_TimeToJump / duration_seconds);
         Play_ProgresBarrElm.style.width = (position * 100) + '%';
 
-        if (Main_IsOnAndroid) PlayVod_previews_move(position);
-        //else PlayVod_previews_move_test(position);
+        PlayVod_previews_move(position);
 
         PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
 
@@ -11561,7 +11560,7 @@
 
     function PlayVod_previews_start() {
         PlayVod_previews_hide();
-        PlayVod_previews_images = [];
+        PlayVod_previews_obj.images = [];
         PlayVod_previews_images_pos = -1;
         PlayVod_previews_images_load = false;
 
@@ -11572,17 +11571,14 @@
         } catch (e) {}
     }
 
-    var PlayVod_previews_count;
-    var PlayVod_previews_rows;
-    var PlayVod_previews_cols;
-    var PlayVod_previews_images = [];
-    var PlayVod_previews_tmp_images = [];
-
-    var PlayVod_previews_width = 30; // = css div.seek_previews width
-    var PlayVod_previews_height = 16.875; // = css div.seek_previews height
+    var PlayVod_previews_obj = {};
+    PlayVod_previews_obj.images = [];
 
     var PlayVod_previews_images_pos = -1;
     var PlayVod_previews_images_load = false;
+    var PlayVod_previews_tmp_images = [];
+
+    var PlayVod_previews_scale = 1.55;
 
     function PlayVod_previews_hide() {
         Play_seek_previews.classList.add('hideimp');
@@ -11609,36 +11605,40 @@
             return;
         }
 
-        var result_pos = result.length > 1 ? (result.length - 1) : 0;
+        PlayVod_previews_obj = result[result.length - 1];
 
-        PlayVod_previews_count = result[result_pos].count;
-        PlayVod_previews_rows = result[result_pos].rows;
-        PlayVod_previews_cols = result[result_pos].cols;
-        PlayVod_previews_images = result[result_pos].images;
+        PlayVod_previews_obj.width = PlayVod_previews_obj.width * scaleFactor * PlayVod_previews_scale;
+        PlayVod_previews_obj.height = PlayVod_previews_obj.height * scaleFactor * PlayVod_previews_scale;
 
-        Play_seek_previews.style.backgroundSize = (PlayVod_previews_cols * PlayVod_previews_width) + "vh";
+        Play_seek_previews.style.width = PlayVod_previews_obj.width + 'px';
+        Play_seek_previews.style.height = PlayVod_previews_obj.height + 'px';
+
+        Play_seek_previews.style.backgroundSize = (PlayVod_previews_obj.cols * PlayVod_previews_obj.width) + "px";
 
         PlayVod_previews_tmp_images = [];
-        for (var i = 0; i < PlayVod_previews_images.length; i++) {
+        for (var i = 0; i < PlayVod_previews_obj.images.length; i++) {
             PlayVod_previews_tmp_images[i] = new Image();
-            PlayVod_previews_tmp_images[i].src = Main_values.Main_seek_previews_url.split(Main_values.ChannelVod_vodId)[0] + PlayVod_previews_images[i];
+            PlayVod_previews_tmp_images[i].src = Main_values.Main_seek_previews_url.split(Main_values.ChannelVod_vodId)[0] + PlayVod_previews_obj.images[i];
         }
     }
 
     function PlayVod_previews_move(position) {
-        if (!PlayVod_previews_images.length) {
+        if (!PlayVod_previews_obj.images.length) {
             PlayVod_previews_hide();
             return;
         }
 
-        position = parseInt(position * PlayVod_previews_count);
-        var imagePos = parseInt(position / (PlayVod_previews_cols * PlayVod_previews_rows)) % PlayVod_previews_images.length;
+        position = parseInt(position * PlayVod_previews_obj.count);
+        var imagePos = parseInt(position / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length;
+
+        // console.log('position ' + position + ' w ' + (position % PlayVod_previews_obj.cols) + ' h ' +
+        //     parseInt(position / PlayVod_previews_obj.cols) + ' p ' + imagePos);
 
         if (!PlayVod_previews_images_load || imagePos !== PlayVod_previews_images_pos) {
             PlayVod_previews_images_pos = imagePos;
             PlayVod_previews_images_load = false;
 
-            var imgurl = Main_values.Main_seek_previews_url.split(Main_values.ChannelVod_vodId)[0] + PlayVod_previews_images[imagePos];
+            var imgurl = Main_values.Main_seek_previews_url.split(Main_values.ChannelVod_vodId)[0] + PlayVod_previews_obj.images[imagePos];
 
             Play_seek_previews_img.onload = function() {
                 this.onload = null;
@@ -11654,61 +11654,33 @@
             Play_seek_previews_img.src = imgurl;
         }
 
-        Play_seek_previews.style.backgroundPosition = (-PlayVod_previews_width * (position % PlayVod_previews_cols)) + "vh " +
-            (-PlayVod_previews_height * (parseInt(position / PlayVod_previews_cols) % PlayVod_previews_rows)) + "vh";
+        Play_seek_previews.style.backgroundPosition = (-PlayVod_previews_obj.width * (position % PlayVod_previews_obj.cols)) + "px " +
+            (-PlayVod_previews_obj.height * (parseInt(position / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows)) + "px";
     }
 
     // function PlayVod_previews_start_test() {
+    //     console.log(Main_values.Main_seek_previews_url);
     //     PlayVod_previews_hide();
     //     if (!Main_values.Main_seek_previews_url) return;
 
-    //     PlayVod_previews_count = 200;
-    //     PlayVod_previews_rows = 10;
-    //     PlayVod_previews_cols = 5;
-    //     PlayVod_previews_images = 4;
-    //     PlayVod_previews_images_pos = -1;
-    //     PlayVod_previews_images_load = false;
+    //     PlayVod_previews_obj = {
+    //         "count": 200,
+    //         "width": 220,
+    //         "rows": 10,
+    //         "images": [Main_values.ChannelVod_vodId + "-high-0.jpg", Main_values.ChannelVod_vodId + "-high-1.jpg", Main_values.ChannelVod_vodId + "-high-2.jpg", Main_values.ChannelVod_vodId + "-high-3.jpg"],
+    //         "interval": 55,
+    //         "quality": "high",
+    //         "cols": 5,
+    //         "height": 124
+    //     };
 
-    //     Play_seek_previews.style.backgroundSize = (PlayVod_previews_cols * PlayVod_previews_width) + "vh";
+    //     PlayVod_previews_obj.width = PlayVod_previews_obj.width * scaleFactor * PlayVod_previews_scale;
+    //     PlayVod_previews_obj.height = PlayVod_previews_obj.height * scaleFactor * PlayVod_previews_scale;
 
-    //     console.log(Main_values.Main_seek_previews_url);
-    // }
+    //     Play_seek_previews.style.width = PlayVod_previews_obj.width + 'px';
+    //     Play_seek_previews.style.height = PlayVod_previews_obj.height + 'px';
 
-    // function PlayVod_previews_move_test(position) {
-    //     if (!Main_values.Main_seek_previews_url) {
-    //         PlayVod_previews_hide();
-    //         return;
-    //     }
-
-    //     position = parseInt(position * PlayVod_previews_count);
-    //     var imagePos = parseInt(position / (PlayVod_previews_cols * PlayVod_previews_rows)) % PlayVod_previews_images;
-
-    //     console.log('position ' + position + ' w ' + (position % PlayVod_previews_cols) + ' h ' +
-    //         parseInt(position / PlayVod_previews_cols) + ' p ' + imagePos);
-
-    //     if (!PlayVod_previews_images_load || imagePos !== PlayVod_previews_images_pos) {
-    //         PlayVod_previews_images_pos = imagePos;
-    //         PlayVod_previews_images_load = false;
-
-    //         var imgurl = Main_values.Main_seek_previews_url.split(Main_values.ChannelVod_vodId)[0] + Main_values.ChannelVod_vodId +
-    //             '-high-' + imagePos + '.jpg';
-
-    //         Play_seek_previews_img.onload = function() {
-    //             this.onload = null;
-    //             Play_seek_previews.style.backgroundImage = "url('" + imgurl + "')";
-    //             PlayVod_previews_show();
-    //         };
-
-    //         Play_seek_previews_img.onerror = function() {
-    //             this.onerror = null;
-    //             PlayVod_previews_hide();
-    //         };
-
-    //         Play_seek_previews_img.src = imgurl;
-    //     }
-
-    //     Play_seek_previews.style.backgroundPosition = (-PlayVod_previews_width * (position % PlayVod_previews_cols)) + "vh " +
-    //         (-PlayVod_previews_height * (parseInt(position / PlayVod_previews_cols) % PlayVod_previews_rows)) + "vh";
+    //     Play_seek_previews.style.backgroundSize = (PlayVod_previews_obj.cols * PlayVod_previews_obj.width) + "px";
     // }//Variable initialization
     var inUseObj = {};
     var Screens_clear = false;
