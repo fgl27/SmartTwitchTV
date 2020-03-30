@@ -1519,7 +1519,13 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
     Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[15];
     Main_values.Main_selectedChannelPartner = Main_values_Play_data[16];
-    Main_values.Main_seek_previews_url = Main_values_Play_data[18];
+
+    //Old history don't have [18]
+    if (!Main_values_Play_data[18] && Main_values_Play_data[8]) {
+
+        Main_values.Main_seek_previews_url = Main_values_Play_data[8].split('strip')[0] + 'info.json';
+
+    } else Main_values.Main_seek_previews_url = Main_values_Play_data[18];
 
     Main_openVod();
 }
