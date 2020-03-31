@@ -520,7 +520,7 @@ function ScreensObj_InitLive() {
             this.check_offset();
 
             this.url = this.base_url + '&offset=' + this.offset +
-                (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         label_init: function() {
             Sidepannel_SetDefaultLables();
@@ -770,7 +770,7 @@ function ScreensObj_InitAGame() {
 
             this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) +
                 '&limit=' + Main_ItemsLimitMax + '&offset=' + this.offset +
-                (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '');
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         label_init: function() {
             ScreensObj_TopLableAgameInit();

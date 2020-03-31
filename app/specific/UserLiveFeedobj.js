@@ -392,7 +392,7 @@ function UserLiveFeedobj_Live() {
 
 function UserLiveFeedobj_loadLive() {
     var theUrl = Main_kraken_api + 'streams?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset +
-        (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') +
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
         Main_TwithcV5Flag;
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_LivePos);
@@ -471,7 +471,7 @@ function UserLiveFeedobj_CurrentGame() {
 function UserLiveFeedobj_loadCurrentGame() {
     var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset +
-        (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_CurrentGamePos);
 
@@ -585,7 +585,7 @@ function UserLiveFeedobj_CurrentUserAGame() {
 function UserLiveFeedobj_loadCurrentUserAGame() {
     var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
-        (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_UserAGamesPos);
 
@@ -666,7 +666,7 @@ function UserLiveFeedobj_CurrentAGame() {
 function UserLiveFeedobj_loadCurrentAGame() {
     var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
-        (Main_ContentLang !== "" ? ('&broadcaster_language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_AGamesPos);
 
