@@ -12155,6 +12155,8 @@
                             if (!Main_values.vodOffset) Main_values.vodOffset = 1;
                             Play_DurationSeconds = 0;
 
+                            //History vod is so fast to load that this need to be set here to prevent a vod reset
+                            Main_FirstRun = false;
                             Main_openVod();
                             Main_SwitchScreen(true);
                         }
