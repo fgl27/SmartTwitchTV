@@ -16798,6 +16798,11 @@
             "defaultValue": 1,
             "set_values": "bg"
         },
+        "Čeština [CS]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "cs"
+        },
         "Dansk [DA]": {
             "values": ["off", "on"],
             "defaultValue": 1,
@@ -16808,6 +16813,11 @@
             "defaultValue": 1,
             "set_values": "de"
         },
+        "Ελληνικά [EL]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "el"
+        },
         "English [EN]": {
             "values": ["off", "on"],
             "defaultValue": 1,
@@ -16817,6 +16827,11 @@
             "values": ["off", "on"],
             "defaultValue": 1,
             "set_values": "es"
+        },
+        "Suomi [FI]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "fi"
         },
         "Français [FR]": {
             "values": ["off", "on"],
@@ -16832,6 +16847,16 @@
             "values": ["off", "on"],
             "defaultValue": 1,
             "set_values": "hu"
+        },
+        "日本語 [JA]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "ja"
+        },
+        "한국어 [KO]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "ko"
         },
         "Nederlands [NL]": {
             "values": ["off", "on"],
@@ -16853,70 +16878,45 @@
             "defaultValue": 1,
             "set_values": "pt"
         },
-        "Slovenčina [SK]": {
+        "Română [RO]": {
             "values": ["off", "on"],
             "defaultValue": 1,
-            "set_values": "sk"
-        },
-        "Suomi [FI]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "fi"
-        },
-        "Svenska [SV]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "sv"
-        },
-        "Tiếng Việt [VI]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "vi"
-        },
-        "Türkçe [TR]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "tr"
-        },
-        "Čeština [CS]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "cs"
-        },
-        "Ελληνικά [EL]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "el"
+            "set_values": "ro"
         },
         "Русский [RU]": {
             "values": ["off", "on"],
             "defaultValue": 1,
             "set_values": "ru"
         },
+        "Slovenčina [SK]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "sk"
+        },
+        "Svenska [SV]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "sv"
+        },
         "ภาษาไทย [TH]": {
             "values": ["off", "on"],
             "defaultValue": 1,
             "set_values": "th"
         },
+        "Türkçe [TR]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "tr"
+        },
+        "Tiếng Việt [VI]": {
+            "values": ["off", "on"],
+            "defaultValue": 1,
+            "set_values": "vi"
+        },
         "中文 [ZH]": {
             "values": ["off", "on"],
             "defaultValue": 1,
             "set_values": "zh"
-        },
-        "日本語 [JA]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "ja"
-        },
-        "한국어 [KO]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "ko"
-        },
-        "Română [RO]": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "ro"
         }
     };
 
