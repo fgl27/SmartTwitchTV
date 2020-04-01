@@ -1012,13 +1012,6 @@ function PlayVod_previews_success(result) {
 
     result = JSON.parse(result);
 
-    if (result.status === 200) {
-        result = JSON.parse(result.responseText);
-    } else {
-        PlayVod_previews_hide();
-        return;
-    }
-
     if (result.length) {
         PlayVod_previews_obj = result[result.length - 1];
         PlayVod_previews_success_end();
