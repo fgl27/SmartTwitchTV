@@ -64,8 +64,7 @@ function PlayClip_Start() {
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_BufferSize = 0;
-    PlayVod_previews_hide();
-    PlayVod_previews_obj.images = [];
+    PlayVod_previews_clear();
     Main_values.Main_seek_previews_url = null;
     Play_IconsResetFocus();
     Main_empty('inner_progress_bar_muted');
