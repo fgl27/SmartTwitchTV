@@ -3569,7 +3569,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.163';
+    var Main_stringVersion_Min = '.164';
     var Main_minversion = 'March 30, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
@@ -11623,13 +11623,6 @@
         }
 
         result = JSON.parse(result);
-
-        if (result.status === 200) {
-            result = JSON.parse(result.responseText);
-        } else {
-            PlayVod_previews_hide();
-            return;
-        }
 
         if (result.length) {
             PlayVod_previews_obj = result[result.length - 1];
