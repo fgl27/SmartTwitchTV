@@ -11630,7 +11630,9 @@
 
         if (result.length) {
             PlayVod_previews_obj = result[result.length - 1];
-            PlayVod_previews_success_end();
+
+            if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) PlayVod_previews_success_end();
+            else PlayVod_previews_clear();
         }
     }
 
