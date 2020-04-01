@@ -104,7 +104,7 @@ public final class Tools {
 
     private static final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
-    private static class readUrlSimpleObj {
+    public static class readUrlSimpleObj {
         private final int status;
         private final String responseText;
 
@@ -239,7 +239,7 @@ public final class Tools {
         );
     }
 
-    private static readUrlSimpleObj readUrlSimpleToken(String urlString, int Timeout) {
+    public static readUrlSimpleObj readUrlSimpleToken(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
         try {

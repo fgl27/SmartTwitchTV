@@ -1618,13 +1618,19 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void GetPreviews(String url) {
-            PreviewsHandler.removeCallbacksAndMessages(null);
+            PreviewsResult = null;
 
             PreviewsHandler.post(() -> {
-                PreviewsResult = Tools.readUrl(url, 5000, 0, null);
+                Tools.readUrlSimpleObj response;
+                for (int i = 0; i < 3; i++) {
+                    response = Tools.readUrlSimpleToken(url, 3000 + (500 * i));
 
-                if (PreviewsResult != null)
-                    LoadUrlWebview("javascript:smartTwitchTV.PlayVod_previews_success(Android.GetPreviewsResult())");
+                    if (response != null && response.getStatus() == 200) {
+                        PreviewsResult = response.getResponseText();
+                        LoadUrlWebview("javascript:smartTwitchTV.PlayVod_previews_success(Android.GetPreviewsResult())");
+                        break;
+                    }
+                }
             });
         }
 
