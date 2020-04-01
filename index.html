@@ -713,10 +713,17 @@
             text-shadow: 0 0.025em 0 #000000, -0.025em 0 0 #000000, 0 0.0375em 0 #777777, 0 0.055em 0 #666666, 0 0.07em 0 #555455, -0.03em -0.03em 0 #000000, 0.03em -0.03em 0 #000000, -0.03em 0.08em 0 #000000, 0.03em 0.08em 0 #000000, -0.04em 0.03em 0 #000000, 0.04em 0.03em 0 #000000, 0 0.1em 0 #000000, 0 -0.04em 0 #000000;
         }
 
-        div.seek_previews {
-            transform: translate(-50%, -127%);
+        div.seek_previews_holder {
+            transform: translateY(-5.2vh);
             position: absolute;
             display: inline-block;
+        }
+
+        div.seek_previews {
+            transform: translateX(-50%);
+            left: 0;
+            bottom: 0;
+            position: absolute;
             border-radius: 0.5vh;
             box-shadow:
                 inset 0 0 0 0.025vh #FFFFFF,
@@ -2921,9 +2928,10 @@
                                         <div id="inner_progress_bar" class="inner_progress_bar"
                                             style="max-width: 100%; background-color: #3a3a3a; height: 1em; width: 10%; transform: translateY(-75%); display: inline-block;">
                                         </div>
-                                        <div class="inner_progress_circle"></div>
-                                        <div id="seek_previews" class="hideimp seek_previews">
+                                        <div class="seek_previews_holder">
+                                            <div id="seek_previews" class="hideimp seek_previews"></div>
                                         </div>
+                                        <div class="inner_progress_circle"></div>
                                     </div>
                                 </div>
                             </div>
