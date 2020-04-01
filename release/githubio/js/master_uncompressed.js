@@ -5748,8 +5748,7 @@
         PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
         Play_BufferSize = 0;
-        PlayVod_previews_hide();
-        PlayVod_previews_obj.images = [];
+        PlayVod_previews_clear();
         Main_values.Main_seek_previews_url = null;
         Play_IconsResetFocus();
         Main_empty('inner_progress_bar_muted');
@@ -10689,6 +10688,7 @@
 
         if (Main_values.vodOffset) { // this is a vod coming from a clip or from restore playback
             PlayVod_HasVodInfo = false;
+            PlayVod_previews_clear();
             PlayVod_PrepareLoad();
             PlayVod_updateVodInfo();
         } else {
@@ -11582,16 +11582,18 @@
     }
 
     function PlayVod_previews_pre_start() {
+        PlayVod_previews_clear();
         if (Main_IsOnAndroid) PlayVod_previews_start();
         //else PlayVod_previews_start_test();
     }
 
-    function PlayVod_previews_start() {
+    function PlayVod_previews_clear() {
         PlayVod_previews_hide();
         PlayVod_previews_obj.images = [];
         PlayVod_previews_images_pos = -1;
-        PlayVod_previews_images_load = false;
+    }
 
+    function PlayVod_previews_start() {
         if (!Main_values.Main_seek_previews_url) return;
 
         try {
@@ -11695,6 +11697,7 @@
     }
 
     // function PlayVod_previews_start_test() {
+    //     PlayVod_previews_clear();
     //     console.log(Main_values.Main_seek_previews_url);
 
     //     PlayVod_previews_hide();
