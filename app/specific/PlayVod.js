@@ -80,6 +80,7 @@ function PlayVod_Start() {
         PlayVod_updateVodInfo();
     } else {
         PlayVod_previews_pre_start();
+        PlayVod_muted_segments(Main_values.muted_segments);
 
         PlayVod_HasVodInfo = true;
         PlayVod_updateStreamerInfoValues();
@@ -190,8 +191,8 @@ function PlayVod_updateVodInfoPannel(response) {
 
     ChannelVod_title = twemoji.parse(response.title, false, true);
 
-    //TODO add a warning about muted segments
-    //if (response.muted_segments) console.log(response.muted_segments);
+    Main_values.muted_segments = response.muted_segments;
+    PlayVod_muted_segments(Main_values.muted_segments);
 
     Main_values.Main_selectedChannelPartner = response.channel.partner;
     Main_innerHTML("stream_info_name", Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false,
@@ -497,6 +498,7 @@ function PlayVod_showPanel(autoHide) {
         PlayVod_setHidePanel();
     }
     Play_ForceShowPannel();
+    if (PlayVod_muted_segments_warn && autoHide) PlayVod_muted_WarningDialog();
 }
 
 function PlayVod_RefreshProgressBarr(show) {
@@ -1104,3 +1106,39 @@ function PlayVod_previews_move(position) {
 
 //     PlayVod_previews_success_end();
 // }
+
+var PlayVod_muted_segments_warn = false;
+
+function PlayVod_muted_segments(muted_segments, skipwarning) {
+    if (muted_segments && muted_segments.length) {
+
+        var doc = document.getElementById('inner_progress_bar_muted'), div;
+        Main_emptyWithEle(doc);
+
+        for (var i = 0; i < muted_segments.length; i++) {
+
+            div = document.createElement('div');
+            div.classList.add('inner_progress_bar_muted_segment');
+            div.style.left = ((muted_segments[i].offset / Play_DurationSeconds) * 100) + '%';
+            div.style.width = ((muted_segments[i].duration / Play_DurationSeconds) * 100) + '%';
+
+            doc.appendChild(div);
+        }
+        if (!skipwarning) PlayVod_muted_segments_warn = true;
+    } else {
+        PlayVod_muted_segments_warn = false;
+        Main_empty('inner_progress_bar_muted');
+    }
+}
+
+var PlayVod_muted_WarningDialogId;
+function PlayVod_muted_WarningDialog() {
+    PlayVod_muted_segments_warn = false;
+    Main_innerHTML("dialog_warning_muted_text", STR_VOD_MUTED);
+    Main_ShowElement('dialog_warning_muted');
+
+    window.clearTimeout(PlayVod_muted_WarningDialogId);
+    PlayVod_muted_WarningDialogId = window.setTimeout(function() {
+        Main_HideElement('dialog_warning_muted');
+    }, 5000);
+}

@@ -425,4 +425,5 @@ function en_USLang() {
     STR_TOO_ERRORS = " or too many errors";
     STR_STREAM_ERROR_SMALL = "Small player, stream ended" + STR_TOO_ERRORS;
     STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
+    STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
 }

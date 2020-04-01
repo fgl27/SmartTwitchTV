@@ -1719,10 +1719,25 @@
             border: 0.125em solid #000000;
         }
 
+        .inner_progress_bar_muted,
         .inner_progress_bar {
             width: 100%;
             height: 0.37em;
             line-height: 1.5em;
+        }
+
+        .inner_progress_bar_muted {
+            width: 80%;
+            left: 10%;
+            display: inline-block;
+            transform: translateY(-100%);
+            position: absolute;
+        }
+
+        .inner_progress_bar_muted_segment {
+            height: 0.37em;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
         }
 
         /* Chat this is a adaptation of https://www.nightdev.com/kapchat/ functions*/
@@ -2924,10 +2939,11 @@
                                 <div class="progress_bar">
                                     <div class="inner_progress_bar">
                                         <div id="inner_progress_bar_buffer" class="inner_progress_bar"
-                                            style="background-color:#940000cf; width: 20%;"></div>
+                                            style="background-color:rgba(148, 0, 0, 0.8); width: 20%;"></div>
                                         <div id="inner_progress_bar" class="inner_progress_bar"
                                             style="max-width: 100%; background-color: #3a3a3a; height: 1em; width: 10%; transform: translateY(-75%); display: inline-block;">
                                         </div>
+                                        <div id="inner_progress_bar_muted" class="inner_progress_bar_muted"></div>
                                         <div class="seek_previews_holder">
                                             <div id="seek_previews" class="hideimp seek_previews"></div>
                                         </div>
@@ -3211,6 +3227,10 @@
             </div>
             <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 10%;">
                 <div id="dialog_warning_play_text" class="strokedelinebig" style="font-size: 140%;"></div>
+            </div>
+            <div id="dialog_warning_muted" class="dialogs hide"
+                style="z-index:7; margin-top: 25%; background-color: rgba(0, 0, 0, 0.5);">
+                <div id="dialog_warning_muted_text" class="strokedelinebig" style="font-size: 100%;"></div>
             </div>
         </div>
         <div id="user_feed" class="user_feed opacity_zero"
