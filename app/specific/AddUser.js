@@ -283,7 +283,9 @@ function AddUser_SaveNewUser(responseText) {
         display_name: AddUser_Username.display_name,
         logo: AddUser_Username.logo,
         access_token: 0,
-        refresh_token: 0
+        refresh_token: 0,
+        expires_in: 0,
+        timeout_id: null,
     });
 
     Main_values_History_data[AddUser_UsernameArray[AddUser_UserFindpos(AddUser_Username.name)].id] = {
@@ -304,10 +306,13 @@ function AddUser_SaveNewUser(responseText) {
     AddUser_loadingData = false;
 }
 
-function AddUser_removeUser(Position) {
+function AddUser_removeUser(position) {
     // remove the user
-    var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
-    if (index > -1) AddUser_UsernameArray.splice(index, 1);
+    var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
+    if (index > -1) {
+        window.clearTimeout(AddUser_UsernameArray[position].timeout_id);
+        AddUser_UsernameArray.splice(index, 1);
+    }
 
     // reset localStorage usernames
     AddUser_SaveUserArray();
@@ -315,7 +320,7 @@ function AddUser_removeUser(Position) {
     // restart users and smarthub
     if (AddUser_UsernameArray.length > 0) {
         //Reset main user if user is 0
-        if (!Position) AddUser_UpdateSidepanel();
+        if (!position) AddUser_UpdateSidepanel();
         Users_status = false;
         Users_init();
     } else {
@@ -339,10 +344,14 @@ function AddUser_SaveUserArray() {
     if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
 }
 
-function AddUser_UserMakeOne(Position) {
-    AddUser_Username = AddUser_UsernameArray[0];
-    AddUser_UsernameArray[0] = AddUser_UsernameArray[Position];
-    AddUser_UsernameArray[Position] = AddUser_Username;
+function AddUser_UserMakeOne(position) {
+    var temp_Username = JSON.parse(JSON.stringify(AddUser_UsernameArray[0]));
+    AddUser_UsernameArray[0] = JSON.parse(JSON.stringify(AddUser_UsernameArray[position]));
+    AddUser_UsernameArray[position] = temp_Username;
+
+    AddCode_Refreshtimeout(0);
+    AddCode_Refreshtimeout(position);
+
     AddUser_SaveUserArray();
     Users_status = false;
     AddUser_UpdateSidepanel();
