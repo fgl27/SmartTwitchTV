@@ -11622,12 +11622,13 @@
             return;
         }
 
-        PlayVod_previews_obj = result[result.length - 1];
-        PlayVod_previews_success_end();
+        if (result.length) {
+            PlayVod_previews_obj = result[result.length - 1];
+            PlayVod_previews_success_end();
+        }
     }
 
     function PlayVod_previews_success_end() {
-
         PlayVod_previews_obj.width = PlayVod_previews_obj.width * scaleFactor * PlayVod_previews_scale;
         PlayVod_previews_obj.height = PlayVod_previews_obj.height * scaleFactor * PlayVod_previews_scale;
 
