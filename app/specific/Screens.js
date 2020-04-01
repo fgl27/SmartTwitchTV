@@ -930,7 +930,7 @@ function Screens_KeyUpDown(y) {
 function Screens_ClearAnimation() {
     if (inUseObj.HasAnimateThumb) {
         window.clearInterval(inUseObj.AnimateThumbId);
-        if (Screens_ThumbNotNull(inUseObj.ids[6] + inUseObj.posY + '_' + inUseObj.posX)) Main_ShowElement(inUseObj.ids[6] + inUseObj.posY + '_' + inUseObj.posX);
+        if (Screens_ThumbNotNull(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX)) Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
     }
 }
 
