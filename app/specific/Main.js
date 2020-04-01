@@ -1399,6 +1399,7 @@ function Main_OPenAsVod(index) {
     Main_values.Main_selectedChannelPartner = Main_values_Play_data[10];
     Main_values.Main_selectedChannel_id = Main_values_Play_data[14];
     Main_values.Main_seek_previews_url = null;
+    Main_values.muted_segments = null;
     Play_DurationSeconds = 0;
 
     Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
@@ -1526,6 +1527,8 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
         Main_values.Main_seek_previews_url = Main_values_Play_data[8].split('strip')[0] + 'info.json';
 
     } else Main_values.Main_seek_previews_url = Main_values_Play_data[18];
+
+    Main_values.muted_segments = Main_values_Play_data[19];
 
     Main_openVod();
 }

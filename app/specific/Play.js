@@ -1504,6 +1504,7 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
         Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
         PlayVod_RefreshProgressBarr();
         if (!Play_Status_Always_On) Play_VideoStatus(false);
+        if (PlayVod_isOn) PlayVod_muted_segments(Main_values.muted_segments, true);
     }
 }
 

@@ -66,7 +66,7 @@ function PlayClip_Start() {
     Play_BufferSize = 0;
     Main_values.Main_seek_previews_url = null;
     Play_IconsResetFocus();
-
+    Main_empty('inner_progress_bar_muted');
     Play_ShowPanelStatus(3);
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
@@ -455,6 +455,7 @@ function PlayClip_SetOpenVod() {
 
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
+        Main_values.muted_segments = null;
         Main_values.Main_seek_previews_url = null;
         Play_DurationSeconds = 0;
         Main_values.vodOffset = ChannelVod_vodOffset;

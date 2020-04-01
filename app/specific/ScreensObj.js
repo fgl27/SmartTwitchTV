@@ -1788,7 +1788,8 @@ function ScreensObj_VodCellArray(cell) {
         cell.channel.logo,//15
         cell.channel.partner,//16
         cell.increment_view_count_url,//17
-        cell.seek_previews_url//18
+        cell.seek_previews_url,//18
+        cell.muted_segments,//19
     ];
 }
 
