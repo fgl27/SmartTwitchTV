@@ -1008,7 +1008,7 @@ function PlayVod_previews_show() {
 }
 
 function PlayVod_previews_success(result) {
-    if (!result || !PlayVod_isOn) {
+    if (!result) {
         PlayVod_previews_hide();
         return;
     }
