@@ -390,16 +390,15 @@ function AddCode_FollowGame() {
 }
 
 function AddCode_GetGameId() {
-    var theUrl = 'https://api.twitch.tv/helix/games?name=' +
-        Main_values.Main_gameSelected;
+    var theUrl = 'https://api.twitch.tv/api/games/' + encodeURIComponent(Main_values.Main_gameSelected);
 
-    AddCode_BasexmlHttpGet(theUrl, 'GET', 2, null, AddCode_GetGameIdReady);
+    AddCode_BasexmlHttpGetBack(theUrl, 'GET', 2, null, AddCode_GetGameIdReady);
 }
 
 function AddCode_GetGameIdReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) { //success we now follow the game
-            Main_values.Main_gameSelected_id = JSON.parse(xmlHttp.responseText).data[0].id;
+        if (xmlHttp.status === 200) {
+            Main_values.Main_gameSelected_id = JSON.parse(xmlHttp.responseText)._id;
             AddCode_loadingDataTry = 0;
             AddCode_RequestFollowGame();
             return;
