@@ -1115,6 +1115,8 @@
     }
 
     function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, obj) {
+        if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
+
         var xmlHttp = new XMLHttpRequest();
 
         var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
@@ -1140,7 +1142,6 @@
                             } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                         } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                     } catch (e) {
-                        console.log(xmlHttp);
                         AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                     }
                 }
@@ -1160,10 +1161,11 @@
         if (AddCode_TokensCheckScope(response.scope)) {
             AddUser_UsernameArray[position].access_token = response.access_token;
             AddUser_UsernameArray[position].refresh_token = response.refresh_token;
+            AddUser_UsernameArray[position].expires_in = response.expires_in;
 
             AddUser_SaveUserArray();
 
-            AddCode_Refreshtimeout(position, response.expires_in);
+            AddCode_Refreshtimeout(position);
 
         } else AddCode_requestTokensFailRunning(position);
 
@@ -1223,12 +1225,10 @@
         //Token fail remove it and warn
         Users_status = false;
         Main_HideLoadDialog();
-        Main_showWarningDialog(STR_OAUTH_FAIL);
         AddUser_UsernameArray[position].access_token = 0;
         AddUser_UsernameArray[position].refresh_token = 0;
         AddUser_SaveUserArray();
         Main_SaveValues();
-        window.setTimeout(Main_HideWarningDialog, 4000);
     }
 
     function AddCode_requestTokensSucess(responseText) {
@@ -1297,7 +1297,6 @@
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
             else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_loadingDataTry = 0;
                 AddCode_refreshTokens(position, 0, null, null);
             } else AddCode_CheckTokenError(position, tryes);
         }
@@ -1306,14 +1305,22 @@
     function AddCode_CheckTokenSuccess(responseText, position) {
         var token = JSON.parse(responseText);
         if (token.scopes && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
-        else if (token.expires_in) AddCode_Refreshtimeout(position, token.expires_in);
+        else if (token.expires_in) {
+            AddUser_UsernameArray[position].expires_in = token.expires_in;
+            AddCode_Refreshtimeout(position);
+        }
     }
 
-    function AddCode_Refreshtimeout(position, time) {
-        window.setTimeout(function() {
-            AddCode_loadingDataTry = 0;
-            AddCode_refreshTokens(position, 0, null, null);
-        }, (time - 60) * 1000);
+    function AddCode_Refreshtimeout(position) {
+        window.clearTimeout(AddUser_UsernameArray[position].timeout_id);
+
+        if (AddUser_UsernameArray[position].access_token) {
+            AddUser_UsernameArray[position].timeout_id = window.setTimeout(function() {
+
+                AddCode_refreshTokens(position, 0, null, null);
+
+            }, (parseInt(AddUser_UsernameArray[position].expires_in) - 60) * 1000);
+        }
     }
 
     function AddCode_CheckTokenError(position, tryes) {
@@ -1971,7 +1978,9 @@
             display_name: AddUser_Username.display_name,
             logo: AddUser_Username.logo,
             access_token: 0,
-            refresh_token: 0
+            refresh_token: 0,
+            expires_in: 0,
+            timeout_id: null,
         });
 
         Main_values_History_data[AddUser_UsernameArray[AddUser_UserFindpos(AddUser_Username.name)].id] = {
@@ -1992,10 +2001,13 @@
         AddUser_loadingData = false;
     }
 
-    function AddUser_removeUser(Position) {
+    function AddUser_removeUser(position) {
         // remove the user
-        var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[Position]);
-        if (index > -1) AddUser_UsernameArray.splice(index, 1);
+        var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
+        if (index > -1) {
+            window.clearTimeout(AddUser_UsernameArray[position].timeout_id);
+            AddUser_UsernameArray.splice(index, 1);
+        }
 
         // reset localStorage usernames
         AddUser_SaveUserArray();
@@ -2003,7 +2015,7 @@
         // restart users and smarthub
         if (AddUser_UsernameArray.length > 0) {
             //Reset main user if user is 0
-            if (!Position) AddUser_UpdateSidepanel();
+            if (!position) AddUser_UpdateSidepanel();
             Users_status = false;
             Users_init();
         } else {
@@ -2027,10 +2039,14 @@
         if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
     }
 
-    function AddUser_UserMakeOne(Position) {
-        AddUser_Username = AddUser_UsernameArray[0];
-        AddUser_UsernameArray[0] = AddUser_UsernameArray[Position];
-        AddUser_UsernameArray[Position] = AddUser_Username;
+    function AddUser_UserMakeOne(position) {
+        var temp_Username = JSON.parse(JSON.stringify(AddUser_UsernameArray[0]));
+        AddUser_UsernameArray[0] = JSON.parse(JSON.stringify(AddUser_UsernameArray[position]));
+        AddUser_UsernameArray[position] = temp_Username;
+
+        AddCode_Refreshtimeout(0);
+        AddCode_Refreshtimeout(position);
+
         AddUser_SaveUserArray();
         Users_status = false;
         AddUser_UpdateSidepanel();
