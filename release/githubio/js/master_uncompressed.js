@@ -3570,7 +3570,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.164';
-    var Main_minversion = 'March 30, 2020';
+    var Main_minversion = 'April 1, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -5748,6 +5748,8 @@
         PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
         Play_BufferSize = 0;
+        PlayVod_previews_hide();
+        PlayVod_previews_obj.images = [];
         Main_values.Main_seek_previews_url = null;
         Play_IconsResetFocus();
         Main_empty('inner_progress_bar_muted');
@@ -11617,7 +11619,7 @@
     }
 
     function PlayVod_previews_success(result) {
-        if (!result) {
+        if (!result || !PlayVod_isOn) {
             PlayVod_previews_hide();
             return;
         }
@@ -11651,7 +11653,7 @@
     }
 
     function PlayVod_previews_move(position) {
-        if (!PlayVod_previews_obj.images.length) {
+        if (!PlayVod_previews_obj.images.length || !PlayVod_isOn) {
             PlayVod_previews_hide();
             return;
         }
