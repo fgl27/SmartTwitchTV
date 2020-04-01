@@ -1005,7 +1005,7 @@ function PlayVod_previews_show() {
 }
 
 function PlayVod_previews_success(result) {
-    if (!result) {
+    if (!result || !PlayVod_isOn) {
         PlayVod_previews_hide();
         return;
     }
@@ -1039,7 +1039,7 @@ function PlayVod_previews_success_end() {
 }
 
 function PlayVod_previews_move(position) {
-    if (!PlayVod_previews_obj.images.length) {
+    if (!PlayVod_previews_obj.images.length || !PlayVod_isOn) {
         PlayVod_previews_hide();
         return;
     }
