@@ -3,7 +3,6 @@
 package com.fgl27.twitch;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.exoplayer2.mediacodec.MediaCodecInfo;
 import com.google.android.exoplayer2.mediacodec.MediaCodecSelector;
@@ -52,9 +51,4 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
         return filteredCodecInfo;
     }
 
-    @Nullable
-    @Override
-    public MediaCodecInfo getPassthroughDecoderInfo() throws MediaCodecUtil.DecoderQueryException {
-        return MediaCodecUtil.getPassthroughDecoderInfo();
-    }
 }
