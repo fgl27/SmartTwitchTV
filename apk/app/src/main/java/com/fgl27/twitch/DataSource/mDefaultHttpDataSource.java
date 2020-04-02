@@ -34,15 +34,12 @@ import com.google.android.exoplayer2.upstream.DataSpec.HttpMethod;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Log;
-import com.google.android.exoplayer2.util.Predicate;
-import com.google.android.exoplayer2.util.Util;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.NoRouteToHostException;
 import java.net.ProtocolException;
@@ -63,7 +60,6 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     private static final int MAX_REDIRECTS = 20; // Same limit as okhttp.
     private static final int HTTP_STATUS_TEMPORARY_REDIRECT = 307;
     private static final int HTTP_STATUS_PERMANENT_REDIRECT = 308;
-    private static final long MAX_BYTES_TO_DRAIN = 2048;
     private static final Pattern CONTENT_RANGE_HEADER =
             Pattern.compile("^bytes (\\d+)-(\\d+)/(\\d+)$");
     private static final AtomicReference<byte[]> skipBufferReference = new AtomicReference<>();
@@ -80,8 +76,6 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     private byte[] data;
     private int readPosition;
     private int bytesRemaining;
-    @Nullable
-    private Predicate<String> contentTypePredicate;
     @Nullable
     private DataSpec dataSpec;
     @Nullable
@@ -187,64 +181,9 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         return contentLength;
     }
 
-    /**
-     * On platform API levels 19 and 20, okhttp's implementation of {@link InputStream#close} can
-     * block for a long time if the stream has a lot of data remaining. Call this method before
-     * closing the input stream to make a best effort to cause the input stream to encounter an
-     * unexpected end of input, working around this issue. On other platform API levels, the method
-     * does nothing.
-     *
-     * @param connection     The connection whose {@link InputStream} should be terminated.
-     * @param bytesRemaining The number of bytes remaining to be read from the input stream if its
-     *                       length is known. {@link C#LENGTH_UNSET} otherwise.
-     */
-    private static void maybeTerminateInputStream(HttpURLConnection connection, long bytesRemaining) {
-        if (Util.SDK_INT != 19 && Util.SDK_INT != 20) {
-            return;
-        }
-
-        try {
-            InputStream inputStream = connection.getInputStream();
-            if (bytesRemaining == C.LENGTH_UNSET) {
-                // If the input stream has already ended, do nothing. The socket may be re-used.
-                if (inputStream.read() == -1) {
-                    return;
-                }
-            } else if (bytesRemaining <= MAX_BYTES_TO_DRAIN) {
-                // There isn't much data left. Prefer to allow it to drain, which may allow the socket to be
-                // re-used.
-                return;
-            }
-            String className = inputStream.getClass().getName();
-            if ("com.android.okhttp.internal.http.HttpTransport$ChunkedInputStream".equals(className)
-                    || "com.android.okhttp.internal.http.HttpTransport$FixedLengthInputStream"
-                    .equals(className)) {
-                Class<?> superclass = inputStream.getClass().getSuperclass();
-                Method unexpectedEndOfInput = superclass.getDeclaredMethod("unexpectedEndOfInput");
-                unexpectedEndOfInput.setAccessible(true);
-                unexpectedEndOfInput.invoke(inputStream);
-            }
-        } catch (Exception e) {
-            // If an IOException then the connection didn't ever have an input stream, or it was closed
-            // already. If another type of exception then something went wrong, most likely the device
-            // isn't using okhttp.
-        }
-    }
-
     private static boolean isCompressed(HttpURLConnection connection) {
         String contentEncoding = connection.getHeaderField("Content-Encoding");
         return "gzip".equalsIgnoreCase(contentEncoding);
-    }
-
-    /**
-     * Sets a content type {@link Predicate}. If a content type is rejected by the predicate then a
-     * {@link HttpDataSource.InvalidContentTypeException} is thrown from {@link #open(DataSpec)}.
-     *
-     * @param contentTypePredicate The content type {@link Predicate}, or {@code null} to clear a
-     *                             predicate that was previously set.
-     */
-    public void setContentTypePredicate(@Nullable Predicate<String> contentTypePredicate) {
-        this.contentTypePredicate = contentTypePredicate;
     }
 
     @Override
@@ -412,7 +351,6 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         } else {
             try {
                 if (inputStream != null) {
-                    maybeTerminateInputStream(connection, bytesRemaining());
                     try {
                         inputStream.close();
                     } catch (IOException e) {
@@ -428,48 +366,6 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
                 }
             }
         }
-    }
-
-    /**
-     * Returns the current connection, or null if the source is not currently opened.
-     *
-     * @return The current open connection, or null.
-     */
-    @Nullable
-    protected final HttpURLConnection getConnection() {
-        return connection;
-    }
-
-    /**
-     * Returns the number of bytes that have been skipped since the most recent call to
-     * {@link #open(DataSpec)}.
-     *
-     * @return The number of bytes skipped.
-     */
-    protected final long bytesSkipped() {
-        return bytesSkipped;
-    }
-
-    /**
-     * Returns the number of bytes that have been read since the most recent call to
-     * {@link #open(DataSpec)}.
-     *
-     * @return The number of bytes read.
-     */
-    protected final long bytesRead() {
-        return bytesRead;
-    }
-
-    /**
-     * Returns the number of bytes that are still to be read for the current {@link DataSpec}.
-     * <p>
-     * If the total length of the data being read is known, then this length minus {@code bytesRead()}
-     * is returned. If the total length is unknown, {@link C#LENGTH_UNSET} is returned.
-     *
-     * @return The remaining length, or {@link C#LENGTH_UNSET}.
-     */
-    protected final long bytesRemaining() {
-        return bytesToRead == C.LENGTH_UNSET ? bytesToRead : bytesToRead - bytesRead;
     }
 
     /**
