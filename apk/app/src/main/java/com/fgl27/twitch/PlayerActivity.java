@@ -1625,9 +1625,11 @@ public class PlayerActivity extends Activity {
                 for (int i = 0; i < 3; i++) {
                     response = Tools.readUrlSimpleToken(url, 3000 + (500 * i));
 
-                    if (response != null && response.getStatus() == 200) {
-                        PreviewsResult = response.getResponseText();
-                        LoadUrlWebview("javascript:smartTwitchTV.PlayVod_previews_success(Android.GetPreviewsResult())");
+                    if (response != null) {
+                        if (response.getStatus() == 200) {
+                            PreviewsResult = response.getResponseText();
+                            LoadUrlWebview("javascript:smartTwitchTV.PlayVod_previews_success(Android.GetPreviewsResult())");
+                        }
                         break;
                     }
                 }
