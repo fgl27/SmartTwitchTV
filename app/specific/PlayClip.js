@@ -65,7 +65,6 @@ function PlayClip_Start() {
     Play_CurrentSpeed = 3;
     Play_BufferSize = 0;
     PlayVod_previews_clear();
-    Main_values.Main_seek_previews_url = null;
     Play_IconsResetFocus();
     Main_empty('inner_progress_bar_muted');
     Play_ShowPanelStatus(3);
@@ -76,7 +75,6 @@ function PlayClip_Start() {
     Main_ShowElement('progress_bar_div');
     Main_ShowElement('controls_holder');
 
-    Play_PlayerPanelOffset = -13;
     PlayClip_state = 0;
     PlayClip_currentTime = 0;
     PlayClip_qualityIndex = 2;
@@ -456,8 +454,6 @@ function PlayClip_SetOpenVod() {
 
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
-        Main_values.muted_segments = null;
-        Main_values.Main_seek_previews_url = null;
         Play_DurationSeconds = 0;
         Main_values.vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream(true);
