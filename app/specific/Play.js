@@ -1,7 +1,6 @@
 //Variable initialization
 var Play_ChatPositions = 0;
 var Play_ChatPositionConvertBefore = Play_ChatPositions;
-var Play_PlayerPanelOffset = -5;
 var Play_ChatBackground = 0.55;
 var Play_ChatSizeValue = 2;
 var Play_MaxChatSizeValue = 4;
@@ -314,7 +313,7 @@ function Play_Start() {
         Play_EndSet(1);
         UserLiveFeed_SetFeedPicText();
     }
-    Play_PlayerPanelOffset = -5;
+
     Play_updateStreamInfoErrorTry = 0;
     Play_loadingInfoDataTimeout = 3000;
     Play_isLive = true;
@@ -1504,7 +1503,7 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
         Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
         PlayVod_RefreshProgressBarr();
         if (!Play_Status_Always_On) Play_VideoStatus(false);
-        if (PlayVod_isOn) PlayVod_muted_segments(Main_values.muted_segments, true);
+        if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true);//duration may have changed update the positions
     }
 }
 
