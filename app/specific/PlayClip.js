@@ -305,7 +305,7 @@ function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
     PlayClip_hidePanel();
     if (Main_IsOnAndroid) {
         if (closePlayer) Android.stopVideo(3);
-        else Android.play(false);
+        else Android.PlayPause(false);
     }
     if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();
@@ -360,11 +360,7 @@ function PlayClip_HideShowNext(which, val) {
 
 function PlayClip_Enter() {
     if (!PlayClip_EnterPos) {
-        if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
-            if (Play_isNotplaying()) Chat_Play(Chat_Id);
-            else Chat_Pause();
-        }
-        if (!Play_isEndDialogVisible()) Play_KeyPause(3);
+        if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
     } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
     else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
 }
@@ -645,24 +641,9 @@ function PlayClip_handleKeyDown(e) {
                 }
                 break;
             case KEY_PLAY:
-                if (!Play_isEndDialogVisible() && Play_isNotplaying()) {
-                    Play_KeyPause(2);
-                    if (!Main_values.Play_ChatForceDisable) Chat_Play(Chat_Id);
-                }
-                break;
-            case KEY_PAUSE:
-                if (!Play_isEndDialogVisible() && !Play_isNotplaying()) {
-                    Play_KeyPause(2);
-                    if (!Main_values.Play_ChatForceDisable) Chat_Pause();
-                }
-                break;
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
-                if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
-                    if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                    else Chat_Pause();
-                }
-                if (!Play_isEndDialogVisible()) Play_KeyPause(3);
+                if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                 break;
             case KEY_1:
                 if (UserLiveFeed_isFeedShow()) {

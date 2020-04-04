@@ -178,7 +178,8 @@ function Main_loadTranslations(language) {
                     'Play_getQualities': Play_getQualities,
                     'Play_ShowVideoStatus': Play_ShowVideoStatus,
                     'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                    'PlayVod_previews_success': PlayVod_previews_success
+                    'PlayVod_previews_success': PlayVod_previews_success,
+                    'Play_PlayPauseChange': Play_PlayPauseChange
                 };
             }
             Main_IsOnAndroid = Android.getAndroid();
