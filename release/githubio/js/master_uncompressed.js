@@ -3568,8 +3568,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.165';
-    var Main_minversion = 'April 2, 2020';
+    var Main_stringVersion_Min = '.166';
+    var Main_minversion = 'April 4, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -3624,7 +3624,8 @@
                         'Play_getQualities': Play_getQualities,
                         'Play_ShowVideoStatus': Play_ShowVideoStatus,
                         'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                        'PlayVod_previews_success': PlayVod_previews_success
+                        'PlayVod_previews_success': PlayVod_previews_success,
+                        'Play_PlayPauseChange': Play_PlayPauseChange
                     };
                 }
                 Main_IsOnAndroid = Android.getAndroid();
@@ -5977,7 +5978,7 @@
         PlayClip_hidePanel();
         if (Main_IsOnAndroid) {
             if (closePlayer) Android.stopVideo(3);
-            else Android.play(false);
+            else Android.PlayPause(false);
         }
         if (closePlayer) PlayClip_isOn = false;
         Chat_Clear();
@@ -6032,11 +6033,7 @@
 
     function PlayClip_Enter() {
         if (!PlayClip_EnterPos) {
-            if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
-                if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                else Chat_Pause();
-            }
-            if (!Play_isEndDialogVisible()) Play_KeyPause(3);
+            if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
         } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
         else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
     }
@@ -6316,24 +6313,9 @@
                     }
                     break;
                 case KEY_PLAY:
-                    if (!Play_isEndDialogVisible() && Play_isNotplaying()) {
-                        Play_KeyPause(2);
-                        if (!Main_values.Play_ChatForceDisable) Chat_Play(Chat_Id);
-                    }
-                    break;
-                case KEY_PAUSE:
-                    if (!Play_isEndDialogVisible() && !Play_isNotplaying()) {
-                        Play_KeyPause(2);
-                        if (!Main_values.Play_ChatForceDisable) Chat_Pause();
-                    }
-                    break;
                 case KEY_PLAYPAUSE:
                 case KEY_KEYBOARD_SPACE:
-                    if (PlayClip_HasVOD && !Main_values.Play_ChatForceDisable) {
-                        if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                        else Chat_Pause();
-                    }
-                    if (!Play_isEndDialogVisible()) Play_KeyPause(3);
+                    if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                     break;
                 case KEY_1:
                     if (UserLiveFeed_isFeedShow()) {
@@ -6554,7 +6536,6 @@
                 Play_data.data[6] = Play_TargetHost.target_login;
                 Play_data.data[1] = Play_TargetHost.target_display_name;
                 Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
-                Android.play(false);
                 Play_PreshutdownStream(false);
 
                 document.body.addEventListener("keydown", Play_handleKeyDown, false);
@@ -6759,13 +6740,14 @@
         return null;
     }
 
-    function Play_KeyPause(PlayVodClip) {
-        if (Play_isNotplaying()) {
-            ChatLive_Playing = true;
-            ChatLive_MessagesRunAfterPause();
-            Play_HideBufferDialog();
-
+    function Play_PlayPauseChange(State, PlayVodClip) { //called by java
+        if (State) {
             Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
+
+            if (PlayVodClip === 1) {
+                ChatLive_Playing = true;
+                ChatLive_MessagesRunAfterPause();
+            } else if (PlayClip_HasVOD) Chat_Play(Chat_Id);
 
             if (Play_isPanelShown()) {
                 if (PlayVodClip === 1) Play_hidePanel();
@@ -6773,14 +6755,11 @@
                 else if (PlayVodClip === 3) PlayClip_hidePanel();
             }
 
-            if (Main_IsOnAndroid) Android.play(true);
         } else {
-            ChatLive_Playing = false;
-            Play_HideBufferDialog();
-
             Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
-            if (Main_IsOnAndroid) Android.play(false);
+            if (PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) Chat_Pause();
+            else ChatLive_Playing = false;
         }
     }
 
@@ -7097,7 +7076,7 @@
                     } else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY === 1) {
-                            if (!Play_isEndDialogVisible()) Play_KeyPause(1);
+                            if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                         } else Play_BottomOptionsPressed(1);
                         Play_setHidePanel();
                     } else if (Play_MultiDialogVisible()) {
@@ -7127,14 +7106,9 @@
                     Play_Exit();
                     break;
                 case KEY_PLAY:
-                    if (!Play_isEndDialogVisible() && Play_isNotplaying()) Play_KeyPause(1);
-                    break;
-                case KEY_PAUSE:
-                    if (!Play_isEndDialogVisible() && !Play_isNotplaying()) Play_KeyPause(1);
-                    break;
                 case KEY_KEYBOARD_SPACE:
                 case KEY_PLAYPAUSE:
-                    if (!Play_isEndDialogVisible()) Play_KeyPause(1);
+                    if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                     break;
                 case KEY_1:
                     if (UserLiveFeed_isFeedShow()) {
@@ -9380,11 +9354,6 @@
         Play_PlayEndStart(PlayVodClip);
     }
 
-    function Play_isNotplaying() {
-        if (Main_IsOnAndroid) return !Android.getPlaybackState();
-        return false;
-    }
-
     function Play_clock() {
         var clock = Main_getclock();
         Main_textContent("stream_clock", clock);
@@ -11440,11 +11409,7 @@
                         if (!PlayVod_PanelY) {
                             if (PlayVod_IsJumping) PlayVod_jump();
                         } else if (PlayVod_PanelY === 1) {
-                            if (!Main_values.Play_ChatForceDisable) {
-                                if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                                else Chat_Pause();
-                            }
-                            if (!Play_isEndDialogVisible()) Play_KeyPause(2);
+                            if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                         } else Play_BottomOptionsPressed(2);
                         PlayVod_setHidePanel();
                     } else if (UserLiveFeed_isFeedShow()) {
@@ -11461,24 +11426,9 @@
                     Play_KeyReturn(true);
                     break;
                 case KEY_PLAY:
-                    if (!Play_isEndDialogVisible() && Play_isNotplaying()) {
-                        Play_KeyPause(2);
-                        if (!Main_values.Play_ChatForceDisable) Chat_Play(Chat_Id);
-                    }
-                    break;
-                case KEY_PAUSE:
-                    if (!Play_isEndDialogVisible() && !Play_isNotplaying()) {
-                        Play_KeyPause(2);
-                        if (!Main_values.Play_ChatForceDisable) Chat_Pause();
-                    }
-                    break;
                 case KEY_PLAYPAUSE:
                 case KEY_KEYBOARD_SPACE:
-                    if (!Main_values.Play_ChatForceDisable) {
-                        if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                        else Chat_Pause();
-                    }
-                    if (!Play_isEndDialogVisible()) Play_KeyPause(2);
+                    if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                     break;
                 case KEY_1:
                     if (UserLiveFeed_isFeedShow()) {
@@ -21767,7 +21717,8 @@
         'Play_getQualities': Play_getQualities, // Play_getQualities() func from app/specific/Play.js
         'Play_ShowVideoStatus': Play_ShowVideoStatus, // Play_ShowVideoStatus() func from app/specific/Play.js
         'Play_ShowVideoQuality': Play_ShowVideoQuality, // Play_ShowVideoQuality() func from app/specific/Play.js
-        'PlayVod_previews_success': PlayVod_previews_success // PlayVod_previews_success() func from app/specific/PlayVod.js
+        'PlayVod_previews_success': PlayVod_previews_success, // PlayVod_previews_success() func from app/specific/PlayVod.js
+        'Play_PlayPauseChange': Play_PlayPauseChange // Play_KeyPause() func from app/specific/PlayEtc.js
     };
 
     /** Expose `smartTwitchTV` */
