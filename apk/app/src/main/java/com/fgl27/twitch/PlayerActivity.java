@@ -502,6 +502,7 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[position] = 0;
 
+        //TODO revise this
         if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1);
         else if (AudioMulti != 4 && AudioMulti == position) {
             for (int i = 0; i < PlayerAccount; i++) {
