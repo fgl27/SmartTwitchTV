@@ -6847,7 +6847,7 @@
 
     function Play_MultiKeyDown() {
         Play_Multi_MainBig = !Play_Multi_MainBig;
-        if (Play_Multi_MainBig && Play_MultiArray[0].data.length) {
+        if (Play_Multi_MainBig) {
             //reset audio value if on big as it may had be changed via hold down or bootm controls
             Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
 
@@ -6868,17 +6868,13 @@
             document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
             Play_chat_container.style.top = '0.2%';
             Play_chat_container.style.left = '67%';
+
+            if (!Play_MultiArray[Play_Multi_Offset].data.length) Play_MultiEnableKeyRightLeft(1);
         } else {
             Play_MultiUpdateinfoMainBig('');
             Main_ShowElement('stream_info_multi');
             Main_HideElement('stream_info_multi_big');
-            if (!Play_MultiArray[0].data.length) {
-                Play_showWarningDialog(
-                    STR_ENABLE_MAIN_MULTI,
-                    2000
-                );
-                Play_Multi_MainBig = false;
-            } else Play_ResStoreChatPos();
+            Play_ResStoreChatPos();
             Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
         }
     }
@@ -10121,6 +10117,13 @@
             Play_Multi_UnSetPanelDivs(true);
             PlayExtra_ClearExtra();
             Play_CheckHostStart();
+        } else {
+            if (Play_Multi_MainBig && position === Play_Multi_Offset) {
+                var tempAudio = Play_controls[Play_controlsAudioMulti].defaultValue === 4;
+                Play_MultiEnableKeyRightLeft(1);
+                if (tempAudio) Play_MultiKeyDownHold();
+            } else if (Play_controls[Play_controlsAudioMulti].defaultValue !== 4 && position === Play_Multi_Offset) Play_MultiEnableKeyRightLeft(1);
+
         }
     }
 
@@ -10286,7 +10289,7 @@
     }
 
     function Play_MultiEnableKeyRightLeft(adder) {
-        //reset audio value if on big as it may had be changed via hold down or bootm controls
+        //reset audio value if on big as it may had be changed via hold down or bottom controls
         if (Play_Multi_MainBig) Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
 
         Play_controls[Play_controlsAudioMulti].defaultValue += adder;
@@ -10301,7 +10304,9 @@
 
         }
 
-        if (Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
+        if (!Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length) {
+            //Prevent infity loop from first fun line
+            if (Play_Multi_MainBig) Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
 
             Play_MultiEnableKeyRightLeft(adder);
             return;
