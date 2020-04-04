@@ -1724,6 +1724,13 @@ function Play_MultiEnd(position) {
         Play_Multi_UnSetPanelDivs(true);
         PlayExtra_ClearExtra();
         Play_CheckHostStart();
+    } else {
+        if (Play_Multi_MainBig && position === Play_Multi_Offset) {
+            var tempAudio = Play_controls[Play_controlsAudioMulti].defaultValue === 4;
+            Play_MultiEnableKeyRightLeft(1);
+            if (tempAudio) Play_MultiKeyDownHold();
+        } else if (Play_controls[Play_controlsAudioMulti].defaultValue !== 4 && position === Play_Multi_Offset) Play_MultiEnableKeyRightLeft(1);
+
     }
 }
 
@@ -1889,7 +1896,7 @@ function Play_MultiCheckLiveFeed(pos) {
 }
 
 function Play_MultiEnableKeyRightLeft(adder) {
-    //reset audio value if on big as it may had be changed via hold down or bootm controls
+    //reset audio value if on big as it may had be changed via hold down or bottom controls
     if (Play_Multi_MainBig) Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
 
     Play_controls[Play_controlsAudioMulti].defaultValue += adder;
@@ -1904,7 +1911,9 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
     }
 
-    if (Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length < 1) {
+    if (!Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length) {
+        //Prevent infity loop from first fun line
+        if (Play_Multi_MainBig) Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
 
         Play_MultiEnableKeyRightLeft(adder);
         return;
