@@ -164,7 +164,6 @@ function Play_EndDialogPressed(PlayVodClip) {
             Play_data.data[6] = Play_TargetHost.target_login;
             Play_data.data[1] = Play_TargetHost.target_display_name;
             Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
-            Android.play(false);
             Play_PreshutdownStream(false);
 
             document.body.addEventListener("keydown", Play_handleKeyDown, false);
@@ -369,13 +368,14 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
     return null;
 }
 
-function Play_KeyPause(PlayVodClip) {
-    if (Play_isNotplaying()) {
-        ChatLive_Playing = true;
-        ChatLive_MessagesRunAfterPause();
-        Play_HideBufferDialog();
-
+function Play_PlayPauseChange(State, PlayVodClip) {//called by java
+    if (State) {
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
+
+        if (PlayVodClip === 1) {
+            ChatLive_Playing = true;
+            ChatLive_MessagesRunAfterPause();
+        } else if (PlayClip_HasVOD) Chat_Play(Chat_Id);
 
         if (Play_isPanelShown()) {
             if (PlayVodClip === 1) Play_hidePanel();
@@ -383,14 +383,11 @@ function Play_KeyPause(PlayVodClip) {
             else if (PlayVodClip === 3) PlayClip_hidePanel();
         }
 
-        if (Main_IsOnAndroid) Android.play(true);
     } else {
-        ChatLive_Playing = false;
-        Play_HideBufferDialog();
-
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
-        if (Main_IsOnAndroid) Android.play(false);
+        if (PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) Chat_Pause();
+        else ChatLive_Playing = false;
     }
 }
 
@@ -706,7 +703,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 1) {
-                        if (!Play_isEndDialogVisible()) Play_KeyPause(1);
+                        if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
@@ -737,14 +734,9 @@ function Play_handleKeyDown(e) {
                 Play_Exit();
                 break;
             case KEY_PLAY:
-                if (!Play_isEndDialogVisible() && Play_isNotplaying()) Play_KeyPause(1);
-                break;
-            case KEY_PAUSE:
-                if (!Play_isEndDialogVisible() && !Play_isNotplaying()) Play_KeyPause(1);
-                break;
             case KEY_KEYBOARD_SPACE:
             case KEY_PLAYPAUSE:
-                if (!Play_isEndDialogVisible()) Play_KeyPause(1);
+                if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                 break;
             case KEY_1:
                 if (UserLiveFeed_isFeedShow()) {

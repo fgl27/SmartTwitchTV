@@ -959,11 +959,6 @@ function Play_EndStart(hosting, PlayVodClip) {
     Play_PlayEndStart(PlayVodClip);
 }
 
-function Play_isNotplaying() {
-    if (Main_IsOnAndroid) return !Android.getPlaybackState();
-    return false;
-}
-
 function Play_clock() {
     var clock = Main_getclock();
     Main_textContent("stream_clock", clock);

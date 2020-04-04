@@ -843,11 +843,7 @@ function PlayVod_handleKeyDown(e) {
                     if (!PlayVod_PanelY) {
                         if (PlayVod_IsJumping) PlayVod_jump();
                     } else if (PlayVod_PanelY === 1) {
-                        if (!Main_values.Play_ChatForceDisable) {
-                            if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                            else Chat_Pause();
-                        }
-                        if (!Play_isEndDialogVisible()) Play_KeyPause(2);
+                        if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                     } else Play_BottomOptionsPressed(2);
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
@@ -865,24 +861,9 @@ function PlayVod_handleKeyDown(e) {
                 Play_KeyReturn(true);
                 break;
             case KEY_PLAY:
-                if (!Play_isEndDialogVisible() && Play_isNotplaying()) {
-                    Play_KeyPause(2);
-                    if (!Main_values.Play_ChatForceDisable) Chat_Play(Chat_Id);
-                }
-                break;
-            case KEY_PAUSE:
-                if (!Play_isEndDialogVisible() && !Play_isNotplaying()) {
-                    Play_KeyPause(2);
-                    if (!Main_values.Play_ChatForceDisable) Chat_Pause();
-                }
-                break;
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
-                if (!Main_values.Play_ChatForceDisable) {
-                    if (Play_isNotplaying()) Chat_Play(Chat_Id);
-                    else Chat_Pause();
-                }
-                if (!Play_isEndDialogVisible()) Play_KeyPause(2);
+                if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
                 break;
             case KEY_1:
                 if (UserLiveFeed_isFeedShow()) {

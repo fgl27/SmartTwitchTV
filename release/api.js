@@ -34,7 +34,8 @@
         'Play_getQualities': Play_getQualities, // Play_getQualities() func from app/specific/Play.js
         'Play_ShowVideoStatus': Play_ShowVideoStatus, // Play_ShowVideoStatus() func from app/specific/Play.js
         'Play_ShowVideoQuality': Play_ShowVideoQuality, // Play_ShowVideoQuality() func from app/specific/Play.js
-        'PlayVod_previews_success': PlayVod_previews_success // PlayVod_previews_success() func from app/specific/PlayVod.js
+        'PlayVod_previews_success': PlayVod_previews_success, // PlayVod_previews_success() func from app/specific/PlayVod.js
+        'Play_PlayPauseChange': Play_PlayPauseChange // Play_KeyPause() func from app/specific/PlayEtc.js
     };
 
     /** Expose `smartTwitchTV` */
