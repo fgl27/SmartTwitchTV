@@ -131,7 +131,6 @@ var Main_ClockOffset = 0;
 var Main_IsOnAndroid = 0;
 var Main_randomimg = '?' + Math.random();
 var Main_updateUserFeedId;
-//var Main_SupportsAvc1High = false;
 var Main_Fix = "kimne78kx3";
 var Main_DoRestore = true;
 var Main_CanBackup = false;
