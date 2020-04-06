@@ -348,9 +348,9 @@ function Settings_DivOptionNoSummary(key, string) {
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
 }
 
-function Settings_DivOptionWithSummary(key, string_title, string_summary) {
+function Settings_DivOptionWithSummary(key, string_title, string_summary, fontSize) {
     return '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' +
-        string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div></div>' +
+        string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: ' + (fontSize ? fontSize : 64) + '%;">' + string_summary + '</div></div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
         '<div id="' + key + '" class="strokedeline settings_value">' + Settings_Obj_values(key) + '</div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
@@ -884,69 +884,59 @@ function Settings_handleKeyDown(event) {
     }
 }
 
-var Settings_CodecsValue;
-var Settings_CodecsTotal;
+var Settings_CodecsValue = [];
 var Settings_CodecsPos;
-var Settings_CodecsNames = [];
 var Settings_DisableCodecsNames = [];
 
 function Settings_CodecsShow() {
     document.body.removeEventListener("keydown", Settings_handleKeyDown);
 
-    if (!Settings_CodecsValue) {
+    if (!Settings_CodecsValue.length) {
 
-        if (!Main_IsOnAndroid) Settings_CodecsValue = "video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,32,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73|video/avc,OMX.google.h264.decoder,4080x4080,48 Mbps,8,5.2,32,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68|video/avc,OMX.chico.h264.decoder,4080x4080,48 Mbps,8,5.2,-1,160p : 960.00,360p : 960.00,480p : 960.00,720p : 546.13,1080p : 240.94,1440p : 136.53,4k : 60.68";
-        else Settings_CodecsValue = Android.getcodecCapabilities('avc');
-
-        var dialogContent = '',
-            codecs = Settings_CodecsValue.split('|'),
-            codecsValue,
-            i = 0,
-            j,
-            temptitlecontent,
-            key,
-            spacer = " | ";
-
-        Settings_CodecsTotal = codecs.length;
-        Settings_CodecsNames = [];
-
-        dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR +
-            STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
-
-        for (i; i < Settings_CodecsTotal; i++) {
-            codecsValue = codecs[i].split(',');
-
-            key = codecsValue[1];
-            Settings_value[key] = {
-                "values": [STR_ENABLE, STR_DISABLE],
-                "defaultValue": Main_getItemInt(key, 0)
-            };
-
-            Settings_CodecsNames.push(key);
-
-            temptitlecontent = "";
-            temptitlecontent += STR_MAX_RES + codecsValue[2] + spacer;
-            temptitlecontent += STR_MAX_BIT + codecsValue[3] + spacer;
-            temptitlecontent += STR_MAX_LEVEL + codecsValue[5] + spacer;
-            temptitlecontent += STR_MAX_INSTANCES + ((codecsValue[6] > -1) ? codecsValue[6] : STR_UNKNOWN) + STR_BR;
-            for (j = 7; j < codecsValue.length; j++) {
-                temptitlecontent += (parseFloat(codecsValue[j].split(': ')[1]) > 0) ? codecsValue[j] + " fps" + spacer : "";
+        if (!Main_IsOnAndroid) Settings_CodecsValue = [{"instances": 32, "maxbitrate": "120 Mbps", "maxlevel": "5.2", "maxresolution": "3840x2176", "name": "OMX.Nvidia.h264.decode", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps", "type": "video/avc"}, {"instances": 32, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.google.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}, {"instances": -1, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.chico.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}];
+        else {
+            try {
+                Settings_CodecsValue = JSON.parse(Android.getcodecCapabilities('avc'));
+            } catch (e) {
+                Settings_CodecsValue = [];
             }
-
-            temptitlecontent = temptitlecontent.substring(0, temptitlecontent.length - 3);
-
-            dialogContent += Settings_DivOptionWithSummary(key, codecsValue[1], temptitlecontent + STR_BR + STR_BR);
         }
 
-        Main_innerHTML("dialog_codecs_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+        if (Settings_CodecsValue.length) {
+            var dialogContent = '',
+                DivContent,
+                spacer = " | ";
+
+            dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR +
+                STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
+
+            for (var i = 0; i < Settings_CodecsValue.length; i++) {
+
+                Settings_value[Settings_CodecsValue[i].name] = {
+                    "values": [STR_ENABLE, STR_DISABLE],
+                    "defaultValue": Main_getItemInt(Settings_CodecsValue[i].name, 0)
+                };
+
+                DivContent = "";
+                DivContent += STR_MAX_RES + Settings_CodecsValue[i].maxresolution + spacer;
+                DivContent += STR_MAX_BIT + Settings_CodecsValue[i].maxbitrate + spacer;
+                DivContent += STR_MAX_LEVEL + Settings_CodecsValue[i].maxlevel + spacer;
+                DivContent += STR_MAX_INSTANCES + ((Settings_CodecsValue[i].instances > -1) ? Settings_CodecsValue[i].instances : STR_UNKNOWN) + STR_BR;
+                DivContent += Settings_CodecsValue[i].resolutions;
+
+                dialogContent += Settings_DivOptionWithSummary(Settings_CodecsValue[i].name, Settings_CodecsValue[i].name, DivContent + STR_BR + STR_BR, 73);
+            }
+
+            Main_innerHTML("dialog_codecs_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+        }
 
     }
 
-    if (Settings_CodecsTotal > 0) {
+    if (Settings_CodecsValue.length) {
         Settings_CodecsPos = 0;
-        Main_AddClass(Settings_CodecsNames[Settings_CodecsPos], 'settings_value_focus');
-        Main_AddClass(Settings_CodecsNames[Settings_CodecsPos] + '_div', 'settings_div_focus');
-        Settings_SetarrowsKey(Settings_CodecsNames[Settings_CodecsPos]);
+        Main_AddClass(Settings_CodecsValue[Settings_CodecsPos].name, 'settings_value_focus');
+        Main_AddClass(Settings_CodecsValue[Settings_CodecsPos].name + '_div', 'settings_div_focus');
+        Settings_SetarrowsKey(Settings_CodecsValue[Settings_CodecsPos].name);
     }
 
     Main_ShowElement('dialog_codecs');
@@ -959,24 +949,24 @@ function Settings_handleKeyDownCodecs(event) {
         case KEY_ENTER:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);
+            Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');
             document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
             document.body.addEventListener("keydown", Settings_handleKeyDown, false);
             break;
         case KEY_LEFT:
-            key = Settings_CodecsNames[Settings_CodecsPos];
+            key = Settings_CodecsValue[Settings_CodecsPos].name;
             if (Settings_Obj_default(key) > 0) Settings_CodecsRigthLeft(-1);
             break;
         case KEY_RIGHT:
-            key = Settings_CodecsNames[Settings_CodecsPos];
+            key = Settings_CodecsValue[Settings_CodecsPos].name;
             if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRigthLeft(1);
             break;
         case KEY_UP:
             if (Settings_CodecsPos > 0) Settings_CodecsUpDown(-1);
             break;
         case KEY_DOWN:
-            if (Settings_CodecsPos < (Settings_CodecsTotal - 1)) Settings_CodecsUpDown(1);
+            if (Settings_CodecsPos < (Settings_CodecsValue.length - 1)) Settings_CodecsUpDown(1);
             break;
         default:
             break;
@@ -984,10 +974,10 @@ function Settings_handleKeyDownCodecs(event) {
 }
 
 function Settings_CodecsUpDown(offset) {
-    Settings_RemoveinputFocusKey(Settings_CodecsNames[Settings_CodecsPos]);
+    Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
     Settings_CodecsPos += offset;
 
-    var key = Settings_CodecsNames[Settings_CodecsPos];
+    var key = Settings_CodecsValue[Settings_CodecsPos].name;
     Main_AddClass(key, 'settings_value_focus');
     Main_AddClass(key + '_div', 'settings_div_focus');
     Settings_SetarrowsKey(key);
@@ -995,13 +985,13 @@ function Settings_CodecsUpDown(offset) {
 
 function Settings_CodecsRigthLeft(offset) {
 
-    if (Settings_CodecsTotal < 2) {
+    if (Settings_CodecsValue.length < 2) {
         Main_showWarningDialog(STR_ONE_CODEC_ENA);
         window.setTimeout(Main_HideWarningDialog, 2000);
         return;
     }
 
-    var key = Settings_CodecsNames[Settings_CodecsPos],
+    var key = Settings_CodecsValue[Settings_CodecsPos].name,
         index;
 
     Settings_value[key].defaultValue += offset;
@@ -1011,14 +1001,14 @@ function Settings_CodecsRigthLeft(offset) {
     Settings_SetarrowsKey(key);
 
     if (Settings_value[key].defaultValue) {
-        Settings_DisableCodecsNames.push(Settings_CodecsNames[Settings_CodecsPos]);
+        Settings_DisableCodecsNames.push(Settings_CodecsValue[Settings_CodecsPos].name);
 
         //Make sure at least one is enable
         var oneEnable = false,
             i = 0;
 
-        for (i; i < Settings_CodecsTotal; i++) {
-            if (!Settings_value[Settings_CodecsNames[i]].defaultValue) {
+        for (i; i < Settings_CodecsValue.length; i++) {
+            if (!Settings_value[Settings_CodecsValue[i].name].defaultValue) {
                 oneEnable = true;
                 break;
             }
@@ -1026,13 +1016,13 @@ function Settings_CodecsRigthLeft(offset) {
         if (!oneEnable) {
             Main_showWarningDialog(STR_ONE_CODEC_ENA);
             window.setTimeout(Main_HideWarningDialog, 2000);
-            for (i = 0; i < Settings_CodecsTotal; i++) {
+            for (i = 0; i < Settings_CodecsValue.length; i++) {
                 if (Settings_CodecsPos !== i) {
-                    key = Settings_CodecsNames[i];
+                    key = Settings_CodecsValue[i].name;
                     Settings_value[key].defaultValue += -1;
                     Main_setItem(key, Settings_Obj_default(key));
                     Main_textContent(key, Settings_Obj_values(key));
-                    index = Settings_DisableCodecsNames.indexOf(Settings_CodecsNames[i]);
+                    index = Settings_DisableCodecsNames.indexOf(Settings_CodecsValue[i].name);
                     if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
 
                     break;
@@ -1040,7 +1030,7 @@ function Settings_CodecsRigthLeft(offset) {
             }
         }
     } else {
-        index = Settings_DisableCodecsNames.indexOf(Settings_CodecsNames[Settings_CodecsPos]);
+        index = Settings_DisableCodecsNames.indexOf(Settings_CodecsValue[Settings_CodecsPos].name);
         if (index > -1) Settings_DisableCodecsNames.splice(index, 1);
     }
 

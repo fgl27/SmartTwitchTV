@@ -358,32 +358,35 @@ function Main_initWindows() {
         //Disable googles OMX.google.h264.decoder if another codec is available
         //Check if at least one none google codec is available
         if (!Main_values.Codec_is_Check) {
-            var getcodec = Android.getcodecCapabilities('avc');
+            var getcodec = null;
+            try {
+                getcodec = JSON.parse(Android.getcodecCapabilities('avc'));
+            } catch (e) {}
 
-            if (getcodec !== null) {
+            if (getcodec) {
 
                 Main_values.Codec_is_Check = true;
-                var codecs = getcodec.split('|');
 
-                if (codecs.length > 1) {
+                if (getcodec.length > 1) {
+                    var codecsnames = [];
 
-                    var codecsValue,
-                        codecsnames = [];
+                    for (var i = 0; i < getcodec.length; i++) {
 
-                    for (var i = 0; i < codecs.length; i++) {
-                        codecsValue = codecs[i].split(',');
-                        if (Main_A_includes_B(codecsValue[1] ? codecsValue[1].toLowerCase() : "", 'google'))
-                            codecsnames.push(codecsValue[1]);
+                        if (Main_A_includes_B(getcodec[i].name ? getcodec[i].name.toLowerCase() : "", 'google'))
+                            codecsnames.push(getcodec[i].name);
+
                     }
 
-                    if (codecsnames.length < 2) {
+                    if (codecsnames.length === 1) {
 
                         Main_setItem(codecsnames[0], 1);
                         Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
 
                         Android.setBlackListMediaCodec(codecsnames.join());
+
                     }
                 }
+
             }
 
         }
@@ -404,9 +407,6 @@ function Main_initWindows() {
             Main_values.OS_is_Check = true;
         }
 
-        //Check for High Level 5.2 video/mp4; codecs="avc1.640034" as some devices don't support it
-        //TODO add a warning when playing avc1.640034 and a setting to disable it
-        //Main_SupportsAvc1High = Android.misAVC52Supported();
     } else Settings_ForceEnableAimations();
 
     Main_SetStringsMain(true);
