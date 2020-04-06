@@ -131,7 +131,6 @@ var Main_ClockOffset = 0;
 var Main_IsOnAndroid = 0;
 var Main_randomimg = '?' + Math.random();
 var Main_updateUserFeedId;
-var Main_vp9supported = false;
 //var Main_SupportsAvc1High = false;
 var Main_Fix = "kimne78kx3";
 var Main_DoRestore = true;
@@ -198,8 +197,6 @@ function Main_loadTranslations(language) {
             KEY_RETURN = 27;
         }
         Main_showLoadDialog();
-
-        if (Main_IsOnAndroid) Main_vp9supported = Android.misCodecSupported();
 
         Main_initClick();
         Settings_SetDefautls();

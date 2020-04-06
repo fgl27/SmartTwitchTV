@@ -424,14 +424,6 @@ public final class Tools {
         }
     }
 
-    public static boolean isCodecSupported(String name) {
-        for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos())
-            if (codec.getName().contains(name) && !codec.isEncoder() && !codec.getName().contains("google"))
-                return true;
-
-        return false;
-    }
-
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private static class CodecList {
         private final String type;
