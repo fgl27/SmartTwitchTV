@@ -146,9 +146,9 @@ var Base_Vod_obj = {
     rowClass: 'animate_height_transition',
     histPosXName: 'HistoryVod_histPosX',
     screenType: 1,
-    addFocus: function(y, x, idArray, forceScroll) {
+    addFocus: function(y, forceScroll) {
         this.AnimateThumb(this);
-        Screens_addFocusVideo(y, x, idArray, forceScroll);
+        Screens_addFocusVideo(y, forceScroll);
     },
     setTODialog: function() {
         Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
