@@ -1493,12 +1493,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public boolean misCodecSupported() {
-            return Tools.isCodecSupported("vp9");
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public String getVideoQualityString() {
             return VideoQualityResult;
         }
