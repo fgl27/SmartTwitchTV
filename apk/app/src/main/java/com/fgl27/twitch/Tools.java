@@ -104,11 +104,11 @@ public final class Tools {
 
     private static final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
-    public static class readUrlSimpleObj {
+    public static class ResponseObj {
         private final int status;
         private final String responseText;
 
-        public readUrlSimpleObj(int status, String responseText) {
+        public ResponseObj(int status, String responseText) {
             this.status = status;
             this.responseText = responseText;
         }
@@ -123,23 +123,12 @@ public final class Tools {
     }
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    private static class HttpResultObj {
-        private final int status;
-        private final String responseText;
-
-        public HttpResultObj(int status, String responseText) {
-            this.status = status;
-            this.responseText = responseText;
-        }
-    }
-
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    private static class extractPlayListObj {
+    private static class PlayListObj {
         private final int status;
         private final String url;
         private final String responseText;
 
-        public extractPlayListObj(int status, String url, String responseText) {
+        public PlayListObj(int status, String url, String responseText) {
             this.status = status;
             this.url = url;
             this.responseText = responseText;
@@ -149,7 +138,7 @@ public final class Tools {
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
     public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException, NullPointerException {
-        readUrlSimpleObj response;
+        ResponseObj response;
         int i, status;
         JsonObject Token;
         String StreamSig = null;
@@ -163,7 +152,7 @@ public final class Tools {
 
         for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
-            response = readUrlSimpleToken(url, DefaultTimeout + (500 * i));
+            response = GetResponseObj(url, DefaultTimeout + (500 * i));
 
             if (response != null) {
 
@@ -179,7 +168,7 @@ public final class Tools {
                     }
 
                 } else if (status == 403 || status == 404 || status == 410)
-                    return HttpResultToString(status, "token");
+                    return ResponseObjToString(status, "token");
 
             }
         }
@@ -197,7 +186,7 @@ public final class Tools {
 
             for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
-                response = readUrlSimplePlaylist(url, DefaultTimeout + (500 * i));
+                response = GetResponseObj(url, DefaultTimeout + (500 * i));
 
                 if (response != null) {
 
@@ -206,10 +195,16 @@ public final class Tools {
                     //404 = off line
                     //403 = forbidden access
                     //410 = api v3 is gone use v5 bug
-                    if (status == 200)
-                        return response.getResponseText();
-                    else if (status == 403 || status == 404 || status == 410)
-                        return HttpResultToString(CheckToken(StreamToken) ? 1 : status, "link");
+                    if (status == 200) {
+                        return new Gson().toJson(
+                                new PlayListObj(
+                                        status,
+                                        url,
+                                        response.getResponseText()
+                                )
+                        );
+                    } else if (status == 403 || status == 404 || status == 410)
+                        return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link");
 
                 }
             }
@@ -231,15 +226,15 @@ public final class Tools {
         return false;
     }
 
-    private static String HttpResultToString(int status, String responseText) {
+    private static String ResponseObjToString(int status, String responseText) {
         return new Gson().toJson(
-                new HttpResultObj(
+                new ResponseObj(
                         status,
                         responseText)
         );
     }
 
-    public static readUrlSimpleObj readUrlSimpleToken(String urlString, int Timeout) {
+    public static ResponseObj GetResponseObj(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
         try {
@@ -253,49 +248,11 @@ public final class Tools {
 
             if (status != -1) {
                 if (status == 200) {
-                    return new readUrlSimpleObj(
+                    return new ResponseObj(
                             status,
                             readFullyString(urlConnection.getInputStream())
                     );
-                } else return new readUrlSimpleObj(status, "");
-            } else {
-                return null;
-            }
-        } catch (IOException e) {
-            Log.w(TAG, "getStreamData IOException ", e);
-            return null;
-        } finally {
-            if (urlConnection != null)
-                urlConnection.disconnect();
-        }
-    }
-
-    private static readUrlSimpleObj readUrlSimplePlaylist(String urlString, int Timeout) {
-        HttpURLConnection urlConnection = null;
-
-        try {
-            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
-            urlConnection.setConnectTimeout(Timeout);
-            urlConnection.setReadTimeout(Timeout);
-
-            urlConnection.connect();
-
-            int status = urlConnection.getResponseCode();
-
-            if (status != -1) {
-
-                if (status == 200) {
-                    return new readUrlSimpleObj(
-                            status,
-                            new Gson().toJson(
-                                    new extractPlayListObj(
-                                            status,
-                                            urlString,
-                                            readFullyString(urlConnection.getInputStream()))
-                            )
-                    );
-                } else return new readUrlSimpleObj(status, "");
-
+                } else return new ResponseObj(status, "");
             } else {
                 return null;
             }
@@ -332,7 +289,7 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return HttpResultToString(
+                return ResponseObjToString(
                         status,
                         readFullyString(
                                 status != HttpURLConnection.HTTP_OK ?
@@ -403,7 +360,7 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return HttpResultToString(
+                return ResponseObjToString(
                         status,
                         readFullyString(
                                 status != HttpURLConnection.HTTP_OK ?

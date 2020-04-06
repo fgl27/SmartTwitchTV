@@ -1633,9 +1633,9 @@ public class PlayerActivity extends Activity {
             PreviewsResult = null;
 
             PreviewsHandler.post(() -> {
-                Tools.readUrlSimpleObj response;
+                Tools.ResponseObj response;
                 for (int i = 0; i < 3; i++) {
-                    response = Tools.readUrlSimpleToken(url, 3000 + (500 * i));
+                    response = Tools.GetResponseObj(url, 3000 + (500 * i));
 
                     if (response != null) {
                         if (response.getStatus() == 200) {
