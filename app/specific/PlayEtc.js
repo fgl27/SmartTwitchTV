@@ -1234,8 +1234,6 @@ function Play_MakeControls() {
                 }
 
                 Play_hidePanel();
-                Android.EnableMultiStream(Play_Multi_MainBig, 0);
-
                 Play_Multi_SetPanel();
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                     Play_data.quality = "Auto";
@@ -1243,6 +1241,8 @@ function Play_MakeControls() {
                     Android.SetQuality(-1);
                     Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
                 }
+
+                Android.EnableMultiStream(Play_Multi_MainBig, 0);
 
                 var i = 0;
                 for (i; i < 4; i++) {
