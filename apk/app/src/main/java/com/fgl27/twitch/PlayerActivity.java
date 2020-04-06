@@ -1499,12 +1499,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public boolean misAVC52Supported() {
-            return Tools.isAVC52Supported();
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public String getVideoQualityString() {
             return VideoQualityResult;
         }

@@ -86,6 +86,26 @@ public final class Tools {
             16384, 32768, 65536,
             131072, 262144, 524288};
 
+    private static final Integer[] resolutionsWidth = {
+            240,
+            480,
+            640,
+            1280,
+            1920,
+            2560,
+            3840
+    };
+
+    private static final Integer[] resolutionsHeight = {
+            160,
+            360,
+            480,
+            720,
+            1080,
+            1440,
+            2160
+    };
+
     //Same values as in the js counterpart
     private static final String CLIENTIDHEADER = "Client-ID";
     private static final String CLIENTID = "5seja5ptej058mxqy7gh5tcudjqtm9";
@@ -412,104 +432,121 @@ public final class Tools {
         return false;
     }
 
-    public static boolean isAVC52Supported() {
-        int maxAVCLevel = 0;
-        for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos()) {
-            if (!codec.isEncoder() && !codec.getName().contains("google")) {
-                for (String type : codec.getSupportedTypes()) {
-                    if (type.contains("avc")) {
-                        try {
-                            for (MediaCodecInfo.CodecProfileLevel codecProfileLevel : codec.getCapabilitiesForType(type).profileLevels) {
-                                if (codecProfileLevel.level > maxAVCLevel) {
-                                    maxAVCLevel = codecProfileLevel.level;
-                                }
-                            }
-                        } catch (Exception e) {
-                            Log.w(TAG, "mAVCMaxLevel Exception ", e);
-                        }
-                    }
-                }
-            }
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private static class CodecList {
+        private final String type;
+        private final String name;
+        private final String maxresolution;
+        private final String maxbitrate;
+        private final String maxlevel;
+        private final int instances;
+        private final String resolutions;
 
+        public CodecList(String type, String name, String maxresolution, String maxbitrate, String maxlevel, int instances, String resolutions) {
+            this.type = type;
+            this.name = name;
+            this.maxresolution = maxresolution;
+            this.maxbitrate = maxbitrate;
+            this.maxlevel = maxlevel;
+            this.instances = instances;
+            this.resolutions = resolutions;
         }
-        return maxAVCLevel >= 65536;
     }
 
-    // Receives the codec type (avc, vp9 or etc...) and returns a comma concatenate string
-    // Type, Name, Max resolution Width x Heigth, Max bitrate Mbps, Max profile, Max level, 160p to 4k fps (returns fps = 0.0 for unsupported resolutions) | next codec same type
-    //video/avc,OMX.Nvidia.h264.decode,3840x2176,120 Mbps,524288,5.2,160p : 960.00,360p : 960.00,480p : 960.00,720p : 555.56,1080p : 245.10,1440p : 138.89,4k : 61.73 | next codec same type
+    //Returns a stringify json obj contain
+    //[{"instances": 32, "maxbitrate": "120 Mbps", "maxlevel": "5.2", "maxresolution": "3840x2176", "name": "OMX.Nvidia.h264.decode", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps", "type": "video/avc"}, {"instances": 32, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.google.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}]
     public static String codecCapabilities(String CodecType) {
-        StringBuilder values = new StringBuilder();
-        String info;
-        int position;
         int lowerWidth;
         int UperWidth;
-        int Instances;
+        int instances;
+
+        String maxlevel;
+        String resolutions;
+
+        ArrayList<CodecList> result = new ArrayList<>();
 
         for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos()) {
             if (!codec.isEncoder()) {
                 for (String type : codec.getSupportedTypes()) {
                     if (type.contains(CodecType)) {
-                        try {
-                            MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
-                            MediaCodecInfo.VideoCapabilities videoCapabilities = codecCapabilities.getVideoCapabilities();
+                        MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
+                        MediaCodecInfo.VideoCapabilities videoCapabilities = codecCapabilities.getVideoCapabilities();
 
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                Instances = codecCapabilities.getMaxSupportedInstances();
-                            } else Instances = -1;
+                        if (Build.VERSION.SDK_INT >= 23) instances = codecCapabilities.getMaxSupportedInstances();
+                        else instances = -1;
 
-                            MediaCodecInfo.CodecProfileLevel[] profile = codecCapabilities.profileLevels;
+                        MediaCodecInfo.CodecProfileLevel[] profile = codecCapabilities.profileLevels;
 
-                            if (CodecType.contains("avc")) { //check avc arrays others codecs current not used
-                                position = Arrays.asList(AvcLevelsEx).indexOf(profile[profile.length - 1].level);
-                                info = String.format(Locale.US, "%d,%s",
-                                        profile[profile.length - 1].profile,
-                                        (position > 0) ? AvcLevels[position] : "Unknown level " + profile[profile.length - 1].level);
-                            } else {
-                                info = String.format(Locale.US, "%d,%d",
-                                        profile[profile.length - 1].profile,//4
-                                        profile[profile.length - 1].level);//5
-                            }
+                        if (CodecType.contains("avc")) { //check avc arrays others codecs current not used
 
-                            lowerWidth = videoCapabilities.getSupportedWidths().getLower();
-                            UperWidth = videoCapabilities.getSupportedWidths().getUpper();
+                            int position = Arrays.asList(AvcLevelsEx).indexOf(profile[profile.length - 1].level);
+                            maxlevel = (position > 0) ? AvcLevels[position] : "Unknown level " + profile[profile.length - 1].level;
 
-                            values.append((values.length() == 0) ? "" : "|").append(String.format(Locale.US,
-                                    //"type %s,codec %s,Max res %dx%d,Max bit %d Mbps,Max level %s,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
-                                    "%s,%s,%dx%d,%d Mbps,%s,%d,160p : %.2f,360p : %.2f,480p : %.2f,720p : %.2f,1080p : %.2f,1440p : %.2f,4k : %.2f",
-                                    type,//0
-                                    codec.getName(),//1
-                                    videoCapabilities.getSupportedWidths().getUpper(),//2
-                                    videoCapabilities.getSupportedHeights().getUpper(),//2
-                                    videoCapabilities.getBitrateRange().getUpper() / 1000000,//3
-                                    info,//4 & 5
-                                    Instances,//6
-                                    codecframeRate(videoCapabilities, 240, 160, lowerWidth, UperWidth),//7
-                                    codecframeRate(videoCapabilities, 480, 360, lowerWidth, UperWidth),//8
-                                    codecframeRate(videoCapabilities, 640, 480, lowerWidth, UperWidth),//9
-                                    codecframeRate(videoCapabilities, 1280, 720, lowerWidth, UperWidth),//10
-                                    codecframeRate(videoCapabilities, 1920, 1080, lowerWidth, UperWidth),//11
-                                    codecframeRate(videoCapabilities, 2560, 1440, lowerWidth, UperWidth),//12
-                                    codecframeRate(videoCapabilities, 3840, 2160, lowerWidth, UperWidth)));//13
-
-                        } catch (Exception e) {
-                            Log.w(TAG, "codecCapabilities Exception ", e);
+                        } else {
+                            maxlevel = String.format(
+                                    Locale.US,
+                                    "%d",
+                                    profile[profile.length - 1].level
+                            );
                         }
+
+                        lowerWidth = videoCapabilities.getSupportedWidths().getLower();
+                        UperWidth = videoCapabilities.getSupportedWidths().getUpper();
+
+                        StringBuilder values = new StringBuilder();
+                        for (int i = 0; i < resolutionsWidth.length; i++) {
+                            resolutions = codecframeRate(videoCapabilities, resolutionsWidth[i], resolutionsHeight[i], lowerWidth, UperWidth);
+                            if (resolutions != null) values.append(resolutions);
+                        }
+
+                        if (values.length() > 0) {
+                            resolutions = values.toString();
+                            resolutions = resolutions.substring(0, resolutions.length() - 3);
+                        } else resolutions = "";
+
+                        result.add(
+                                new CodecList(
+                                        type, //type
+                                        codec.getName(), //name
+                                        String.format(
+                                                Locale.US,
+                                                "%dx%d",
+                                                videoCapabilities.getSupportedWidths().getUpper(),
+                                                videoCapabilities.getSupportedHeights().getUpper()
+                                        ), //maxresolution
+                                        String.format(
+                                                Locale.US,
+                                                "%d Mbps",
+                                                videoCapabilities.getBitrateRange().getUpper() / 1000000
+                                        ), //maxbitrate
+                                        maxlevel, //maxlevel
+                                        instances, //instances
+                                        resolutions //resolutions
+                                )
+                        );
+
                     }
                 }
             }
 
         }
-        return values.toString();
+        return new Gson().toJson(result);
     }
 
-    private static Double codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
+    private static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
         try {
             //Check if is bigger then smallest and smaller then the biggest
-            return (width >= lowerWidth && width <= UperWidth) ? videoCapabilities.getSupportedFrameRatesFor(width, height).getUpper() : 0.0;
+            return (width >= lowerWidth && width <= UperWidth) ?
+                    String.format(
+                            Locale.US,
+                            "%dp : %d fps | ",
+                            height,
+                            Math.round(videoCapabilities.getSupportedFrameRatesFor(width, height).getUpper())
+                    )
+                    : null;
         } catch (Exception e) {
             Log.w(TAG, "codecframeRate Exception width " + width + " height " + height, e);
-            return 0.0;
+            return null;
         }
     }
 
