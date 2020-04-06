@@ -12250,8 +12250,7 @@
         }
         if (inUseObj.posY < 0) {
             Screens_addFocusFollow();
-            //Reset screen position
-            inUseObj.ScrollDoc.style.top = '';
+
             if (!inUseObj.emptyContent)
                 Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
 
@@ -12278,18 +12277,15 @@
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
 
+        inUseObj.Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * inUseObj.offsettop) + 'em)';
+
         if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
         else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
 
-        inUseObj.Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * inUseObj.offsettop) + 'em)';
-
+        //Delay to make sure inUseObj.Cells[y + y_plus] is added and it's position is ready
         Main_ready(function() {
-            for (var i = for_in; i < for_out; i++) {
-                if (inUseObj.Cells[y + i]) {
-                    inUseObj.Cells[y + i].style.transition = '';
-                    inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
-                }
-            }
+            for (var i = for_in; i < for_out; i++)
+                Screens_addrowtransition(y + i, (for_offset + i) * inUseObj.offsettop, '');
 
             window.setTimeout(function() {
                 UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
@@ -12298,17 +12294,20 @@
         });
     }
 
+    function Screens_addrowtransition(pos, offset, transition) {
+        if (inUseObj.Cells[pos]) {
+            inUseObj.Cells[pos].style.transition = transition;
+            inUseObj.Cells[pos].style.transform = 'translateY(' + offset + 'em)';
+        }
+    }
+
     function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down) {
 
         if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
         else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
 
-        for (var i = for_in; i < for_out; i++) {
-            if (inUseObj.Cells[y + i]) {
-                inUseObj.Cells[y + i].style.transition = 'none';
-                inUseObj.Cells[y + i].style.transform = 'translateY(' + (inUseObj.offsettop * (for_offset + i)) + 'em)';
-            }
-        }
+        for (var i = for_in; i < for_out; i++)
+            Screens_addrowtransition(y + i, (for_offset + i) * inUseObj.offsettop, 'none');
 
         UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
     }
@@ -12329,7 +12328,7 @@
                     Screens_addrowAnimated(
                         y,
                         -2, //y_plus
-                        4, //y_plus_offset
+                        -2, //y_plus_offset
                         -2, //for_in
                         6, //for_out
                         2, //for_offset
@@ -12482,10 +12481,15 @@
     }
 
     function Screens_addrowEnd(forceScroll) {
-        Main_AddClass(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX, Main_classThumb);
-        Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+        Main_ready(function() {
 
-        inUseObj.addFocus(inUseObj.posY, inUseObj.ids, forceScroll);
+            Main_AddClass(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX, Main_classThumb);
+
+            inUseObj.addFocus(inUseObj.posY, forceScroll);
+
+            Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+
+        });
     }
 
     function Screens_setOffset(pos, y) {
@@ -12499,7 +12503,7 @@
         }
     }
 
-    function Screens_addFocusChannel(y, idArray, forceScroll) {
+    function Screens_addFocusChannel(y, forceScroll) {
 
         if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -12524,7 +12528,7 @@
         }
     }
 
-    function Screens_addFocusVideo(y, idArray, forceScroll) {
+    function Screens_addFocusVideo(y, forceScroll) {
 
         if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -13840,9 +13844,9 @@
         rowClass: 'animate_height_transition',
         histPosXName: 'HistoryVod_histPosX',
         screenType: 1,
-        addFocus: function(y, x, idArray, forceScroll) {
+        addFocus: function(y, forceScroll) {
             this.AnimateThumb(this);
-            Screens_addFocusVideo(y, x, idArray, forceScroll);
+            Screens_addFocusVideo(y, forceScroll);
         },
         setTODialog: function() {
             Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
