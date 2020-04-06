@@ -502,17 +502,8 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[position] = 0;
 
-        //TODO revise this
+        //Multi audio is deal on js side when a player closes
         if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1);
-        else if (AudioMulti != 4 && AudioMulti == position) {
-            for (int i = 0; i < PlayerAccount; i++) {
-                if (i != position && player[i] != null) {
-                    AudioMulti = i;
-                    player[i].setVolume(1f);
-                    break;
-                }
-            }
-        }
 
         //All players are close enable screen saver
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
