@@ -41,6 +41,11 @@ function PlayClip_Start() {
         Chat_Init();
     } else Chat_NoVod();
 
+    document.getElementById('next_button_img').src = IMG_404_BANNER;
+    document.getElementById('back_button_img').src = IMG_404_BANNER;
+    Main_ShowElement('next_button_img');
+    Main_ShowElement('back_button_img');
+
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
     Main_innerHTML("stream_info_title", ChannelClip_title);
@@ -319,30 +324,43 @@ function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
 function PlayClip_UpdateNext() {
     var nextid = PlayClip_getIdNext(1, 0);
     var backid = PlayClip_getIdNext(-1, inUseObj.ColoumnsCount - 1);
-    var text;
+    var data;
 
     PlayClip_HasNext = false;
     PlayClip_HasBack = false;
 
     if (nextid) {
         PlayClip_HasNext = true;
-        text = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
-        Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(text[4]));
-        Main_innerHTML("next_button_text_title", Main_ReplaceLargeFont(text[10]));
+        data = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
 
-        Main_innerHTML("end_next_button_text_name", Main_ReplaceLargeFont(text[4]));
-        Main_innerHTML("end_next_button_text_title", Main_ReplaceLargeFont(text[10]));
+        PlayClip_NextImg(document.getElementById('next_button_img'), data[15]);
+        Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(data[4]));
+        Main_innerHTML("next_button_text_title", Main_ReplaceLargeFont(data[10]));
+
+        Main_innerHTML("end_next_button_text_name", Main_ReplaceLargeFont(data[4]));
+        Main_innerHTML("end_next_button_text_title", Main_ReplaceLargeFont(data[10]));
 
         PlayClip_HideShowNext(0, 1);
     } else PlayClip_HideShowNext(0, 0);
 
     if (backid) {
         PlayClip_HasBack = true;
-        text = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
-        Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(text[4]));
-        Main_innerHTML("back_button_text_title", Main_ReplaceLargeFont(text[10]));
+        data = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
+
+        PlayClip_NextImg(document.getElementById('back_button_img'), data[15]);
+        Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(data[4]));
+        Main_innerHTML("back_button_text_title", Main_ReplaceLargeFont(data[10]));
         PlayClip_HideShowNext(1, 1);
     } else PlayClip_HideShowNext(1, 0);
+}
+
+function PlayClip_NextImg(ImgObjet, link) {
+    ImgObjet.onerror = function() {
+        this.onerror = null;
+        this.src = IMG_404_BANNER;
+        Main_HideElementWithEle(this);
+    };
+    ImgObjet.src = link;
 }
 
 function PlayClip_getIdNext(y, x) {

@@ -497,6 +497,8 @@ function PlayVod_IconsBottonFocus() {
     Main_RemoveClass('next_button', 'progress_bar_div_focus');
     Main_RemoveClass('back_button', 'progress_bar_div_focus');
     Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
+    Main_HideElement('next_button_img_holder');
+    Main_HideElement('back_button_img_holder');
 
     if (!PlayVod_PanelY) { //progress_bar
         Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
@@ -509,8 +511,10 @@ function PlayVod_IconsBottonFocus() {
         if (!PlayClip_EnterPos) { //pause
             Main_AddClass('pause_button', 'progress_bar_div_focus');
         } else if (PlayClip_EnterPos === 1) { //next
+            Main_ShowElement('next_button_img_holder');
             Main_AddClass('next_button', 'progress_bar_div_focus');
         } else if (PlayClip_EnterPos === -1) { //back
+            Main_ShowElement('back_button_img_holder');
             Main_AddClass('back_button', 'progress_bar_div_focus');
         }
 
