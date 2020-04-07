@@ -417,7 +417,7 @@
             height: 12.5vh;
         }
 
-        .stream_spam_text_holder {
+        .stream_text_holder {
             display: inline-block;
             width: 100%;
             top: 50%;
@@ -427,7 +427,7 @@
 
         div.stream_thumbnail_game_feed_text_holder,
         div.stream_thumbnail_game_text_holder {
-            height: 6.5vh;
+            height: 7vh;
         }
 
         div.stream_thumbnail_game_feed_text_holder {
@@ -2052,37 +2052,37 @@
     </style>
     <!-- jsstart this is here so release_maker can work don't remove-->
     <!--<script src="release/master.js" defer></script>-->
-    <script src="app/languages/0_Strings.js" defer></script>
-    <script src="app/languages/en_US.js" defer></script>
-    <script src="app/languages/default.js" defer></script>
-    <script src="app/general/TVKeyValue.js" defer></script>
-    <script src="app/general/img64.js" defer></script>
-    <script src="app/specific/Play.js" defer></script>
-    <script src="app/specific/PlayEtc.js" defer></script>
-    <script src="app/specific/PlayExtra.js" defer></script>
-    <script src="app/specific/PlayClip.js" defer></script>
-    <script src="app/specific/PlayVod.js" defer></script>
-    <script src="app/specific/AddUser.js" defer></script>
-    <script src="app/specific/AddCode.js" defer></script>
-    <script src="app/specific/ChatVod.js" defer></script>
-    <script src="app/specific/ChatLive.js" defer></script>
-    <script src="app/thirdparty/irc-message.js" defer></script>
-    <script src="app/thirdparty/reconnecting-websocket.js" defer></script>
-    <script src="app/thirdparty/twemoji.js" defer></script>
-    <script src="app/thirdparty/punycode.js" defer></script>
-    <script src="app/thirdparty/kapchat.js" defer></script>
-    <script src="app/specific/Settings.js" defer></script>
-    <script src="app/specific/SettingsLanguages.js" defer></script>
-    <script src="app/specific/ChannelContent.js" defer></script>
-    <script src="app/specific/Search.js" defer></script>
-    <script src="app/specific/Users.js" defer></script>
-    <script src="app/specific/UserLiveFeed.js" defer></script>
-    <script src="app/specific/UserLiveFeedobj.js" defer></script>
-    <script src="app/specific/Screens.js" defer></script>
-    <script src="app/specific/Sidepannel.js" defer></script>
-    <script src="app/general/resize.js" defer></script>
-    <script src="app/specific/Main.js" defer></script>
-    <script src="app/specific/ScreensObj.js" defer></script>
+    <script src="languages/0_Strings.js" defer></script>
+    <script src="languages/en_US.js" defer></script>
+    <script src="languages/default.js" defer></script>
+    <script src="general/TVKeyValue.js" defer></script>
+    <script src="general/img64.js" defer></script>
+    <script src="specific/Play.js" defer></script>
+    <script src="specific/PlayEtc.js" defer></script>
+    <script src="specific/PlayExtra.js" defer></script>
+    <script src="specific/PlayClip.js" defer></script>
+    <script src="specific/PlayVod.js" defer></script>
+    <script src="specific/AddUser.js" defer></script>
+    <script src="specific/AddCode.js" defer></script>
+    <script src="specific/ChatVod.js" defer></script>
+    <script src="specific/ChatLive.js" defer></script>
+    <script src="thirdparty/irc-message.js" defer></script>
+    <script src="thirdparty/reconnecting-websocket.js" defer></script>
+    <script src="thirdparty/twemoji.js" defer></script>
+    <script src="thirdparty/punycode.js" defer></script>
+    <script src="thirdparty/kapchat.js" defer></script>
+    <script src="specific/Settings.js" defer></script>
+    <script src="specific/SettingsLanguages.js" defer></script>
+    <script src="specific/ChannelContent.js" defer></script>
+    <script src="specific/Search.js" defer></script>
+    <script src="specific/Users.js" defer></script>
+    <script src="specific/UserLiveFeed.js" defer></script>
+    <script src="specific/UserLiveFeedobj.js" defer></script>
+    <script src="specific/Screens.js" defer></script>
+    <script src="specific/Sidepannel.js" defer></script>
+    <script src="general/resize.js" defer></script>
+    <script src="specific/Main.js" defer></script>
+    <script src="specific/ScreensObj.js" defer></script>
     <!-- this is here so release_maker can work don't remove jsend-->
 </head>
 
@@ -2600,7 +2600,7 @@
                 <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt=""
                         src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></div>
                 <div class="side_panel_feed_thumb_text_holder">
-                    <span class="stream_spam_text_holder">
+                    <div class="stream_text_holder">
                         <div id="feed_thum_name" class="side_panel_feed_thumb_text class_bold"
                             style="width: 75%; display: inline-block; font-size: 110%;"></div>
                         <div id="feed_thum_quality" class="side_panel_feed_thumb_text"
@@ -2608,7 +2608,7 @@
                         <div id="feed_thum_title" class="side_panel_feed_thumb_title_text"></div>
                         <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
                         <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
-                    </span>
+                    </div>
                 </div>
                 <div id="sidepannel_dialog_warning" class="strokedeline dialogs hide"
                     style="width: 100%; transform: translateY(-600%);">
