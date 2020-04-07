@@ -3569,7 +3569,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.167';
-    var Main_minversion = 'April 6, 2020';
+    var Main_minversion = 'April 7, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -5710,6 +5710,13 @@
             Chat_Init();
         } else Chat_NoVod();
 
+        document.getElementById('next_button_img').src = IMG_404_BANNER;
+        document.getElementById('back_button_img').src = IMG_404_BANNER;
+        document.getElementById('end_button_img').src = IMG_404_BANNER;
+        Main_ShowElement('next_button_img');
+        Main_ShowElement('back_button_img');
+        Main_ShowElement('end_button_img');
+
         Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
         Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
         Main_innerHTML("stream_info_title", ChannelClip_title);
@@ -5988,30 +5995,47 @@
     function PlayClip_UpdateNext() {
         var nextid = PlayClip_getIdNext(1, 0);
         var backid = PlayClip_getIdNext(-1, inUseObj.ColoumnsCount - 1);
-        var text;
+        var data;
 
         PlayClip_HasNext = false;
         PlayClip_HasBack = false;
 
         if (nextid) {
             PlayClip_HasNext = true;
-            text = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
-            Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(text[4]));
-            Main_innerHTML("next_button_text_title", Main_ReplaceLargeFont(text[10]));
+            data = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
 
-            Main_innerHTML("end_next_button_text_name", Main_ReplaceLargeFont(text[4]));
-            Main_innerHTML("end_next_button_text_title", Main_ReplaceLargeFont(text[10]));
+            PlayClip_NextImg(document.getElementById('next_button_img'), data[15]);
+            Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(data[4]));
+            Main_innerHTML("next_button_text_title", Main_ReplaceLargeFont(data[10]));
+
+            PlayClip_NextImg(document.getElementById('end_button_img'), data[15]);
+            Main_innerHTML("end_next_button_text_name", Main_ReplaceLargeFont(data[4]));
+            Main_innerHTML("end_next_button_text_title", Main_ReplaceLargeFont(data[10]));
 
             PlayClip_HideShowNext(0, 1);
-        } else PlayClip_HideShowNext(0, 0);
+        } else {
+            PlayClip_HideShowNext(0, 0);
+            Main_HideElement('end_button_img');
+        }
 
         if (backid) {
             PlayClip_HasBack = true;
-            text = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
-            Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(text[4]));
-            Main_innerHTML("back_button_text_title", Main_ReplaceLargeFont(text[10]));
+            data = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
+
+            PlayClip_NextImg(document.getElementById('back_button_img'), data[15]);
+            Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(data[4]));
+            Main_innerHTML("back_button_text_title", Main_ReplaceLargeFont(data[10]));
             PlayClip_HideShowNext(1, 1);
         } else PlayClip_HideShowNext(1, 0);
+    }
+
+    function PlayClip_NextImg(ImgObjet, link) {
+        ImgObjet.onerror = function() {
+            this.onerror = null;
+            this.src = IMG_404_BANNER;
+            Main_HideElementWithEle(this);
+        };
+        ImgObjet.src = link;
     }
 
     function PlayClip_getIdNext(y, x) {
@@ -11062,6 +11086,8 @@
         Main_RemoveClass('next_button', 'progress_bar_div_focus');
         Main_RemoveClass('back_button', 'progress_bar_div_focus');
         Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
+        Main_HideElement('next_button_img_holder');
+        Main_HideElement('back_button_img_holder');
 
         if (!PlayVod_PanelY) { //progress_bar
             Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
@@ -11074,8 +11100,10 @@
             if (!PlayClip_EnterPos) { //pause
                 Main_AddClass('pause_button', 'progress_bar_div_focus');
             } else if (PlayClip_EnterPos === 1) { //next
+                Main_ShowElement('next_button_img_holder');
                 Main_AddClass('next_button', 'progress_bar_div_focus');
             } else if (PlayClip_EnterPos === -1) { //back
+                Main_ShowElement('back_button_img_holder');
                 Main_AddClass('back_button', 'progress_bar_div_focus');
             }
 
