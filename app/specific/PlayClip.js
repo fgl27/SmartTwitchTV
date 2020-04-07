@@ -43,8 +43,10 @@ function PlayClip_Start() {
 
     document.getElementById('next_button_img').src = IMG_404_BANNER;
     document.getElementById('back_button_img').src = IMG_404_BANNER;
+    document.getElementById('end_button_img').src = IMG_404_BANNER;
     Main_ShowElement('next_button_img');
     Main_ShowElement('back_button_img');
+    Main_ShowElement('end_button_img');
 
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
@@ -337,11 +339,15 @@ function PlayClip_UpdateNext() {
         Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(data[4]));
         Main_innerHTML("next_button_text_title", Main_ReplaceLargeFont(data[10]));
 
+        PlayClip_NextImg(document.getElementById('end_button_img'), data[15]);
         Main_innerHTML("end_next_button_text_name", Main_ReplaceLargeFont(data[4]));
         Main_innerHTML("end_next_button_text_title", Main_ReplaceLargeFont(data[10]));
 
         PlayClip_HideShowNext(0, 1);
-    } else PlayClip_HideShowNext(0, 0);
+    } else {
+        PlayClip_HideShowNext(0, 0);
+        Main_HideElement('end_button_img');
+    }
 
     if (backid) {
         PlayClip_HasBack = true;
