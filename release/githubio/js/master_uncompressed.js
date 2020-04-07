@@ -2323,7 +2323,7 @@
 
         Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
-            '\';"></div><div class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div id="channel_content_cell0_3" style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
+            '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div id="channel_content_cell0_3" style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
             '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
             (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') +
             ';"></i> ' + valuesArray[1] + '</div><div class="stream_info_live" style="width:' +
@@ -2333,7 +2333,7 @@
             '<div id="channel_content_cell0_5" class="stream_info_live">' +
             (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
             '</div>' + '<div class="stream_info_live">' +
-            valuesArray[11] + STR_FOR + valuesArray[4] + STR_SPACE + STR_VIEWER + '</div></span></div>');
+            valuesArray[11] + STR_FOR + valuesArray[4] + STR_SPACE + STR_VIEWER + '</div></div></div>');
     }
 
     function ChannelContent_createCellOffline() {
@@ -2341,9 +2341,9 @@
         Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' +
             (ChannelContent_offline_image ? (ChannelContent_offline_image + Main_randomimg) : IMG_404_VIDEO) +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
-            '\';"></div><div class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder" style="font-size: 150%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
+            '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder" style="font-size: 150%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
             Main_values.Main_selectedChannelDisplayname + '</div><div class="stream_info_live" style="width:0%; float: right; text-align: right; display: inline-block;"></div></div>' +
-            '<div class="stream_info_live">' + STR_CH_IS_OFFLINE + '</div></span>' +
+            '<div class="stream_info_live">' + STR_CH_IS_OFFLINE + '</div></div>' +
             '</div>');
     }
 
@@ -3577,7 +3577,6 @@
     var Main_IsOnAndroid = 0;
     var Main_randomimg = '?' + Math.random();
     var Main_updateUserFeedId;
-    //var Main_SupportsAvc1High = false;
     var Main_Fix = "kimne78kx3";
     var Main_DoRestore = true;
     var Main_CanBackup = false;
@@ -11955,11 +11954,11 @@
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
             '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="' +
             idArray[2] + id +
-            '" class="stream_thumbnail_game_text_holder"><span class="stream_spam_text_holder"><div id="<div id="' +
+            '" class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="<div id="' +
             idArray[3] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
             (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
                 '"class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
-                '</div>' : '') + '</div></span></div>');
+                '</div>' : '') + '</div></div></div>');
     }
 
     function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_until) {
@@ -11972,7 +11971,7 @@
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
             '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="' +
             idArray[2] + id +
-            '" class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
             valuesArray[4] + '</div><div id="' + idArray[7] + id +
             '"class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
@@ -11987,7 +11986,7 @@
             Play_timeS(valuesArray[1]) + '</div></div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
-            '</div></span></div></div>');
+            '</div></div></div></div>');
     }
 
     function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until) {
@@ -12000,7 +11999,7 @@
             '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
             '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="' +
             idArray[2] + id +
-            '" class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
             valuesArray[1] + '</div><div id="' + idArray[7] + id +
             '"class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
@@ -12014,7 +12013,7 @@
             Play_timeS(valuesArray[11]) + '</div></div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
-            '</span></div></div>');
+            '</div></div></div>');
     }
 
     //TODO uncomplicate this ifs
@@ -12037,7 +12036,7 @@
                     'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
                 ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
             idArray[2] + id +
-            '" class="stream_thumbnail_live_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
             '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
             (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
@@ -12054,7 +12053,7 @@
             valuesArray[11] + valuesArray[4] + '</div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
-            '</span></div></div>');
+            '</div></div></div>');
     }
 
     function Screens_loadDataSuccessFinish(obj) {
@@ -19441,7 +19440,7 @@
                     'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
                 ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
             UserLiveFeed_ids[2] + id +
-            '" class="stream_thumbnail_feed_text_holder"><span class="stream_spam_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
+            '" class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
             UserLiveFeed_ids[3] + id + '" class="stream_info_live_name" style="width:' +
             (ishosting ? '99%; max-height: 2.4em; white-space: normal;' : '63.5%; white-space: nowrap; text-overflow: ellipsis;') + ' display: inline-block; overflow: hidden;">' +
             '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
@@ -19458,7 +19457,7 @@
             data[11] + data[4] + '</div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
-            '</span></div></div>';
+            '</div></div></div>';
 
         return div;
     }
@@ -19478,11 +19477,11 @@
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_GAME + '\';"></div><div id="' +
             UserLiveFeed_ids[2] + id +
-            '" class="stream_thumbnail_game_feed_text_holder"><span class="stream_spam_text_holder"><div id="<div id="' +
+            '" class="stream_thumbnail_game_feed_text_holder"><div class="stream_text_holder"><div id="<div id="' +
             UserLiveFeed_ids[3] + id + '" class="stream_info_game_name">' + data[0] + '</div>' +
             (data[1] !== '' ? '<div id="' + UserLiveFeed_ids[4] + id +
                 '"class="stream_info_live" style="width: 100%; display: inline-block;">' + data[1] +
-                '</div>' : '') + '</div></span></div>';
+                '</div>' : '') + '</div></div></div>';
 
         return div;
     }
