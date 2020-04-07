@@ -177,7 +177,7 @@ mkdir -p "$temp_maker_folder"
 sed -i 's/Main_isReleased = false/Main_isReleased = true/g' app/specific/Main.js;
 
 # make the release/index.min.html
-cp -rf index.html release/index.min.html
+cp -rf app/index.html release/index.min.html
 sed -i ':a;N;$!ba;s/jsstart.*jsend/httpmin/g' release/index.min.html
 old='<!-- httpmin-->'
 new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/master.js" defer></script>'
