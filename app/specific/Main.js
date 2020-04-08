@@ -432,7 +432,7 @@ function Main_initWindows() {
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
-        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
+        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
         Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
 
         inUseObj = Live;
