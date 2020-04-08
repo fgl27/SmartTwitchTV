@@ -568,9 +568,6 @@ function Main_initClick() {
 }
 
 function Main_initbodyClickSet() {
-    //if (Main_isElementShowing('search_scroll')) Search_KeyboardDismiss();
-    //else if (Main_isElementShowing('add_user_scroll')) AddUser_KeyboardDismiss();
-
     Settings_DpadOpacity();
     Main_clearHideButtons();
     Main_setHideButtons();
@@ -2132,6 +2129,19 @@ function Main_CheckStop() { // Called only by JAVA
     window.clearInterval(Main_StartHistoryworkerId);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
+
+    //Hide setting if showing
+    if (Languages_isVisible()) {
+        Languages_exit();
+        Settings_exit();
+    } else if (Settings_isVisible()) {
+        if (Settings_Codecs_isVisible()) {
+            if (Settings_CodecsValue.length) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
+            Main_HideElement('dialog_codecs');
+            document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
+        }
+        Settings_exit();
+    }
 }
 
 var Main_CheckResumeFeedId;

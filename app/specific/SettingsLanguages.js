@@ -161,6 +161,10 @@ function Languages_exit() {
     Languages_ResetLang();
 }
 
+function Languages_isVisible() {
+    return Main_isElementShowing('settings_lang');
+}
+
 function Languages_ResetLang() {
     if (Main_ContentLang === "") {
         Languages_Selected = STR_LANG_ALL;
