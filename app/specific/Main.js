@@ -432,8 +432,8 @@ function Main_initWindows() {
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
-        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 5000);
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 5000);
+        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
 
         inUseObj = Live;
         Main_ready(function() {
@@ -2156,7 +2156,7 @@ function Main_CheckResume() { // Called only by JAVA
         Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
 
         window.clearTimeout(Main_CheckResumeFeedId);
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 1500);
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 5000);
     }
     window.clearInterval(Main_updateclockId);
     Main_updateclockId = window.setInterval(Main_updateclock, 60000);
@@ -2166,7 +2166,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
 
     window.clearTimeout(Main_CheckResumeVodsId);
-    Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 3500);
+    Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
 
     Main_CheckAccessibility();
 }
