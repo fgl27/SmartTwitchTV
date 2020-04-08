@@ -210,6 +210,10 @@ function Settings_exit() {
     Main_HideElement('settings_holder');
 }
 
+function Settings_isVisible() {
+    return Main_isElementShowing('settings_holder');
+}
+
 // The order in Settings_SetSettings is the display order
 function Settings_SetSettings() {
     var div = '',
@@ -971,6 +975,10 @@ function Settings_handleKeyDownCodecs(event) {
         default:
             break;
     }
+}
+
+function Settings_Codecs_isVisible() {
+    return Main_isElementShowing('dialog_codecs');
 }
 
 function Settings_CodecsUpDown(offset) {
