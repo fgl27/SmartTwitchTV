@@ -4015,9 +4015,6 @@
     }
 
     function Main_initbodyClickSet() {
-        //if (Main_isElementShowing('search_scroll')) Search_KeyboardDismiss();
-        //else if (Main_isElementShowing('add_user_scroll')) AddUser_KeyboardDismiss();
-
         Settings_DpadOpacity();
         Main_clearHideButtons();
         Main_setHideButtons();
@@ -5580,6 +5577,19 @@
         window.clearInterval(Main_StartHistoryworkerId);
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
+
+        //Hide setting if showing
+        if (Languages_isVisible()) {
+            Languages_exit();
+            Settings_exit();
+        } else if (Settings_isVisible()) {
+            if (Settings_Codecs_isVisible()) {
+                if (Settings_CodecsValue.length) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
+                Main_HideElement('dialog_codecs');
+                document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
+            }
+            Settings_exit();
+        }
     }
 
     var Main_CheckResumeFeedId;
@@ -15938,6 +15948,10 @@
         Main_HideElement('settings_holder');
     }
 
+    function Settings_isVisible() {
+        return Main_isElementShowing('settings_holder');
+    }
+
     // The order in Settings_SetSettings is the display order
     function Settings_SetSettings() {
         var div = '',
@@ -16724,6 +16738,10 @@
         }
     }
 
+    function Settings_Codecs_isVisible() {
+        return Main_isElementShowing('dialog_codecs');
+    }
+
     function Settings_CodecsUpDown(offset) {
         Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
         Settings_CodecsPos += offset;
@@ -16959,6 +16977,10 @@
         Languages_RemoveinputFocus();
         Languages_SetLang();
         Languages_ResetLang();
+    }
+
+    function Languages_isVisible() {
+        return Main_isElementShowing('settings_lang');
     }
 
     function Languages_ResetLang() {
