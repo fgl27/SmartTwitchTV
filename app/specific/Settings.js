@@ -532,7 +532,6 @@ function Settings_SetDefautls() {
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     UserLiveFeed_Notify = Settings_Obj_default("live_notification");
-    UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
     Settings_NotifyTimeout();
     Settings_notification_background();
     Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
@@ -616,8 +615,10 @@ function Settings_SetDefault(position) {
 
     if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-    else if (position === "live_notification") UserLiveFeed_Notify = Settings_Obj_default("live_notification");
-    else if (position === "live_notification_background") Settings_notification_background();
+    else if (position === "live_notification") {
+        UserLiveFeed_Notify = Settings_Obj_default("live_notification");
+        Settings_notification_background();
+    } else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "live_notification_time") Settings_NotifyTimeout();
     else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
@@ -650,7 +651,7 @@ function Settings_SetDefault(position) {
 function Settings_notification_background() {
     UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
 
-    if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1);
+    if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
 }
 
 function Settings_NotifyTimeout() {
