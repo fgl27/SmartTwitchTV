@@ -11,7 +11,7 @@ import com.fgl27.twitch.Tools;
 
 import net.grandcentrix.tray.AppPreferences;
 
-public class BootBroadcastReceiver extends BroadcastReceiver {
+public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -20,11 +20,15 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         boolean runNotifications = Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, new AppPreferences(context));
 
-        if (Intent.ACTION_BOOT_COMPLETED.equals(action) && runNotifications) {
+        boolean screenOff = Intent.ACTION_SCREEN_OFF.equals(action);
+        boolean screenOn = Intent.ACTION_SCREEN_ON.equals(action);
+
+        if ((screenOff || screenOn) && runNotifications) {
             Intent mIntent = new Intent(context, NotificationService.class);
-            mIntent.setAction(Constants.ACTION_NOTIFY_START);
+            mIntent.setAction(screenOff ? Constants.ACTION_SCREEN_OFF : Constants.ACTION_SCREEN_ON);
             ContextCompat.startForegroundService(context, mIntent);
         }
+
     }
 
 }
