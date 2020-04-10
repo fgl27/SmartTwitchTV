@@ -1,3 +1,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name" translatable="false">SmartTV for Twitch</string>
+    <string name="notification" translatable="false">Now Live (SmartTV for Twitch)</string>
 </resources>

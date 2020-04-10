@@ -2169,6 +2169,31 @@ function Main_CheckResume() { // Called only by JAVA
     Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
 
     Main_CheckAccessibility();
+
+    //Restore UserLiveFeed_WasLiveidObject array from java if it exist
+    if (UserLiveFeed_Notify_Background) {
+
+        var oldLive = null;
+        //TODO remove this try after some app updates
+        try {
+            oldLive = Android.GetNotificationOld();
+        } catch (e) {}
+
+        if (oldLive) {
+
+            oldLive = JSON.parse(oldLive);
+
+            if (oldLive.length > 0) {
+
+                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
+
+                for (var i = 0; i < oldLive.length; i++) {
+                    UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][oldLive[i]] = 1;
+                }
+
+            }
+        }
+    }
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
