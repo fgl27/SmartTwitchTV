@@ -297,7 +297,7 @@ function en_USLang() {
     STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
     STR_NOW_LIVE = "Now Live";
     STR_NOW_LIVE_SHOW = "Show Now Live notification";
-    STR_NOW_DURATION = "Now Live notification duration in seconds";
+    STR_NOW_DURATION = "Notification duration in seconds (background notification duration is based on system timeout)";
     STR_NOW_BACKGROUND = "Now Live notification over other apps, when the app is on background";
     STR_GLOBAL_FONT = "Global app font size offset";
     STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
