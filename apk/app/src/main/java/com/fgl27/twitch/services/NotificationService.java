@@ -325,10 +325,13 @@ public class NotificationService extends Service {
         layout_text.requestLayout();
 
         TextView name = layout.findViewById(R.id.name);
+        name.setCompoundDrawablesWithIntrinsicBounds(
+                result.isLive() ? R.drawable.circle : R.drawable.ic_refresh,
+                0,
+                0,
+                0
+        );
         name.setText(result.getName());
-
-        ImageView imageRerun = layout.findViewById(R.id.rerun);
-        imageRerun.setImageResource(result.isLive() ? R.drawable.circle : R.drawable.ic_refresh);
 
         TextView title = layout.findViewById(R.id.title);
         title.setText(result.getTitle().trim());
