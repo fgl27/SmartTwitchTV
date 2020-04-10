@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.core.content.ContextCompat;
-
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.Tools;
 
@@ -21,9 +19,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         boolean runNotifications = Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, new AppPreferences(context));
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) && runNotifications) {
-            Intent mIntent = new Intent(context, NotificationService.class);
-            mIntent.setAction(Constants.ACTION_NOTIFY_START);
-            ContextCompat.startForegroundService(context, mIntent);
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, context);
         }
     }
 

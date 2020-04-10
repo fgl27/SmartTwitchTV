@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.core.content.ContextCompat;
-
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.Tools;
 
@@ -24,9 +22,7 @@ public class ScreenReceiver extends BroadcastReceiver {
         boolean screenOn = Intent.ACTION_SCREEN_ON.equals(action);
 
         if ((screenOff || screenOn) && runNotifications) {
-            Intent mIntent = new Intent(context, NotificationService.class);
-            mIntent.setAction(screenOff ? Constants.ACTION_SCREEN_OFF : Constants.ACTION_SCREEN_ON);
-            ContextCompat.startForegroundService(context, mIntent);
+            Tools.SendNotificationIntent(screenOff ? Constants.ACTION_SCREEN_OFF : Constants.ACTION_SCREEN_ON, context);
         }
 
     }

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -32,10 +31,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.webkit.WebViewCompat;
 
-import com.fgl27.twitch.services.NotificationService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -852,17 +849,13 @@ public class PlayerActivity extends Activity {
     private void StopService() {
         if (!deviceIsTV) return;
 
-        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-        intent.setAction(Constants.ACTION_NOTIFY_STOP);
-        ContextCompat.startForegroundService(this, intent);
+        Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
     }
 
     private void StartService() {
         if (!deviceIsTV) return;
 
-        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-        intent.setAction(Constants.ACTION_NOTIFY_START);
-        ContextCompat.startForegroundService(this, intent);
+        Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
     }
 
     private void GetPing() {
