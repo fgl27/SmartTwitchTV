@@ -5582,6 +5582,7 @@
         if (Languages_isVisible()) {
             Languages_exit();
             Settings_exit();
+            Main_SwitchScreen();
         } else if (Settings_isVisible()) {
             if (Settings_Codecs_isVisible()) {
                 if (Settings_CodecsValue.length) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
@@ -5589,6 +5590,7 @@
                 document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
             }
             Settings_exit();
+            Main_SwitchScreen();
         }
     }
 
