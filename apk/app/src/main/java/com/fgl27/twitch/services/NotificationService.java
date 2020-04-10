@@ -5,8 +5,10 @@ import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -14,6 +16,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
 import com.google.gson.Gson;
@@ -57,6 +61,8 @@ public class NotificationService extends Service {
     private String Channels;
     private int ChannelsOffset;
     private int width;
+    private boolean screenOn = true;
+    BroadcastReceiver mReceiver = null;
 
     AppPreferences appPreferences;
 
@@ -68,8 +74,10 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if (Objects.equals(intent.getAction(), "StopService")) StopService();
-        else if (Objects.equals(intent.getAction(), "StartService") && !isRunning) start();
+        if (Objects.equals(intent.getAction(), Constants.ACTION_NOTIFY_STOP)) StopService();
+        else if (Objects.equals(intent.getAction(), Constants.ACTION_NOTIFY_START) && !isRunning) start();
+        else if (Objects.equals(intent.getAction(), Constants.ACTION_SCREEN_OFF) && !isRunning) screenOn = false;
+        else if (Objects.equals(intent.getAction(), Constants.ACTION_SCREEN_ON) && !isRunning) screenOn = true;
 
         return START_NOT_STICKY;
     }
@@ -80,12 +88,14 @@ public class NotificationService extends Service {
         if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
         isRunning = false;
         Notify = false;
+        munregisterReceiver();
     }
 
     public void StopService() {
         if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
         isRunning = false;
         Notify = false;
+        munregisterReceiver();
         stopForeground(true);
         stopSelf();
     }
@@ -115,9 +125,9 @@ public class NotificationService extends Service {
 
         appPreferences = new AppPreferences(context);
 
-        UserId = Tools.getString("notification_id", null, appPreferences);
+        UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
-        if (isRunning || !Tools.getBoolean("notification_background", false, appPreferences) || UserId == null) {
+        if (isRunning || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) || !screenOn || UserId == null) {
             StopService();
             return;
         }
@@ -134,9 +144,32 @@ public class NotificationService extends Service {
 
         currentLive = new ArrayList<>();
         oldLive = new ArrayList<>();
-        appPreferences.put("notification_oldLive", new Gson().toJson(oldLive));
+        appPreferences.put(Constants.PREF_NOTIFY_OLD, new Gson().toJson(oldLive));
+
+        mregisterReceiver();
 
         init(3 * 1000);//call the first time very fast to load defaults
+    }
+
+    public void mregisterReceiver() {
+        try {
+            munregisterReceiver();
+            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            mReceiver = new ScreenReceiver();
+            registerReceiver(mReceiver, filter);
+        } catch (Exception e) {
+            Log.w(TAG, "mregisterReceiver Exception ", e);
+        }
+    }
+
+    public void munregisterReceiver() {
+        try {
+            if (mReceiver != null) unregisterReceiver(mReceiver);
+            mReceiver = null;
+        } catch (Exception e) {
+            Log.w(TAG, "munregisterReceiver Exception ", e);
+        }
     }
 
     @TargetApi(26)
@@ -165,7 +198,7 @@ public class NotificationService extends Service {
 
     private void init(int timeout) {
         NotificationHandler.postDelayed(() -> {
-            DoNotifications();
+            if (screenOn) DoNotifications();
             if (isRunning) init(1000 * 60 * 5);//it 5 min refresh
         }, timeout);
     }
@@ -266,7 +299,7 @@ public class NotificationService extends Service {
         oldLive = new ArrayList<>();
         oldLive.addAll(currentLive);
 
-        appPreferences.put("notification_oldLive", new Gson().toJson(oldLive));
+        appPreferences.put(Constants.PREF_NOTIFY_OLD, new Gson().toJson(oldLive));
     }
 
     private void DoNotification(NotifyList result, int delay) {

@@ -853,7 +853,7 @@ public class PlayerActivity extends Activity {
         if (!deviceIsTV) return;
 
         Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-        intent.setAction("StopService");
+        intent.setAction(Constants.ACTION_NOTIFY_STOP);
         ContextCompat.startForegroundService(this, intent);
     }
 
@@ -861,7 +861,7 @@ public class PlayerActivity extends Activity {
         if (!deviceIsTV) return;
 
         Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-        intent.setAction("StartService");
+        intent.setAction(Constants.ACTION_NOTIFY_START);
         ContextCompat.startForegroundService(this, intent);
     }
 
@@ -1153,19 +1153,19 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String GetNotificationOld() {
-            return Tools.getString("notification_oldLive", null, appPreferences);
+            return Tools.getString(Constants.PREF_NOTIFY_OLD, null, appPreferences);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upNotificationState(boolean Notify) {
-            appPreferences.put("notification_background", Notify);
+            appPreferences.put(Constants.PREF_NOTIFICATION_BACKGROUND, Notify);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upNotificationId(String id) {
-            appPreferences.put("notification_id", id);
+            appPreferences.put(Constants.PREF_USER_ID, id);
         }
 
         @SuppressWarnings("unused")//called by JS
