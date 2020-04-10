@@ -45,13 +45,13 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "auto_refresh_screen": { //live notification
+    "auto_refresh_screen": { //auto_refresh_screen
         "values": [
             'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
         ],
         "defaultValue": 1
     },
-    "show_feed_player_delay": { //live notification
+    "show_feed_player_delay": { //show_feed_player_delay
         "values": [
             0, 100, 200, 300, 400, 500, 600,
             700, 800, 900, 1000, 1100, 1200,
@@ -72,16 +72,20 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
-    "live_notification": { //buffer_live
+    "live_notification": { //live_notification
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "global_font_offset": { //live notification
-        "values": [-3, -2, -1, 0, 1, 2, 3],
+    "live_notification_background": { //live_notification_background
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "live_notification_time": { //live_notification_time
+        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         "defaultValue": 4
     },
-    "live_notification_time": { //live notification
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "global_font_offset": { //live notification
+        "values": [-3, -2, -1, 0, 1, 2, 3],
         "defaultValue": 4
     },
     "buffer_live": { //buffer_live
@@ -262,6 +266,8 @@ function Settings_SetSettings() {
     div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
 
     div += Settings_Content('live_notification', array_no_yes, STR_NOW_LIVE_SHOW, null);
+
+    if (Main_isTV) div += Settings_Content('live_notification_background', array_no_yes, STR_NOW_BACKGROUND, null);
 
     div += Settings_Content('live_notification_time', null, STR_NOW_DURATION, null);
 
@@ -482,6 +488,12 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_NOW_LIVE_SHOW);
     Settings_value[key].values = [STR_NO, STR_YES];
 
+    if (Main_isTV) {
+        key = "live_notification_background";
+        Main_textContent(key + '_name', STR_NOW_BACKGROUND);
+        Settings_value[key].values = [STR_NO, STR_YES];
+    }
+
     Main_textContent('live_notification_time_name', STR_NOW_DURATION);
 
     key = "keep_panel_info_visible";
@@ -520,7 +532,9 @@ function Settings_SetDefautls() {
     Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     UserLiveFeed_Notify = Settings_Obj_default("live_notification");
-    UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
+    UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
+    Settings_NotifyTimeout();
+    Settings_notification_background();
     Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -603,7 +617,8 @@ function Settings_SetDefault(position) {
     if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     else if (position === "live_notification") UserLiveFeed_Notify = Settings_Obj_default("live_notification");
-    else if (position === "live_notification_time") UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
+    else if (position === "live_notification_background") Settings_notification_background();
+    else if (position === "live_notification_time") Settings_NotifyTimeout();
     else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     else if (position === "app_animations") Settings_SetAnimations();
@@ -632,8 +647,18 @@ function Settings_SetDefault(position) {
     else if (position === "pp_workaround") Settings_PP_Workaround();
 }
 
+function Settings_notification_background() {
+    UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
+
+    if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1);
+}
+
+function Settings_NotifyTimeout() {
+    UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
+}
+
 function Settings_PP_Workaround() {
-    Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
+    if (Main_IsOnAndroid) Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
 }
 
 function Settings_DpadOpacity() {
@@ -787,9 +812,9 @@ var Settings_CurY = 0;
 
 function Settings_ScrollTable() {
     var doc,
-        offset = (!Main_isTV || !Main_IsOnAndroid) ? 2 : 0;
+        offset = (!Main_isTV || !Main_IsOnAndroid) ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (16 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (17 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -797,7 +822,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 200);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (15 + offset)) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (16 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;

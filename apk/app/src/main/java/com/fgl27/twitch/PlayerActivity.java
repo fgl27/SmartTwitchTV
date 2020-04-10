@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -31,8 +32,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.webkit.WebViewCompat;
 
+import com.fgl27.twitch.services.NotificationService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -49,14 +52,16 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 
+import net.grandcentrix.tray.AppPreferences;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/app/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
@@ -159,6 +164,7 @@ public class PlayerActivity extends Activity {
     public boolean onCreateReady;
     public boolean IsStopped;
     public boolean IsInAutoMode = true;
+    public AppPreferences appPreferences;
     public LoadControl[] loadControl = new LoadControl[PlayerAccount];
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
@@ -205,7 +211,11 @@ public class PlayerActivity extends Activity {
             RuntimeThread.start();
             RuntimeHandler = new Handler(RuntimeThread.getLooper());
             runtime = Runtime.getRuntime();
+
+            deviceIsTV = Tools.deviceIsTV(this);
+
             GetPing();
+            StopService();
 
             for (int i = 0; i < PlayerAccountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
@@ -235,12 +245,11 @@ public class PlayerActivity extends Activity {
             VideoHolder = findViewById(R.id.videoholder);
             setPlayerSurface(true);
 
-            deviceIsTV = Tools.deviceIsTV(this);
-
             DeviceRam = Tools.DeviceRam(this);
             //Ram too big.bigger then max int value... use 500MB
             if (DeviceRam < 0) DeviceRam = 500000000;
 
+            appPreferences = new AppPreferences(this);
             initializeWebview();
         }
     }
@@ -840,6 +849,22 @@ public class PlayerActivity extends Activity {
         }, 500);
     }
 
+    private void StopService() {
+        if (!deviceIsTV) return;
+
+        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+        intent.setAction("StopService");
+        ContextCompat.startForegroundService(this, intent);
+    }
+
+    private void StartService() {
+        if (!deviceIsTV) return;
+
+        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+        intent.setAction("StartService");
+        ContextCompat.startForegroundService(this, intent);
+    }
+
     private void GetPing() {
         RuntimeHandler.removeCallbacksAndMessages(null);
 
@@ -865,6 +890,7 @@ public class PlayerActivity extends Activity {
         if (mWebView != null && AlreadyStarted) {
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
             GetPing();
+            StopService();
         }
         AlreadyStarted = true;
     }
@@ -878,6 +904,7 @@ public class PlayerActivity extends Activity {
 
     private void monStop() {
         IsStopped = true;
+        StartService();
         int temp_AudioMulti = AudioMulti;
 
         for (int i = 0; i < PlayerAccountPlus; i++) {
@@ -1121,6 +1148,24 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void showToast(String toast) {
             MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String GetNotificationOld() {
+            return Tools.getString("notification_oldLive", null, appPreferences);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void upNotificationState(boolean Notify) {
+            appPreferences.put("notification_background", Notify);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void upNotificationId(String id) {
+            appPreferences.put("notification_id", id);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1384,13 +1429,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token);
+            return new Gson().toJson(Tools.readUrl(urlString, timeout, HeaderQuantity, access_token));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mMethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
-            return Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method);
+            return new Gson().toJson(Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method));
         }
 
         @SuppressWarnings("unused")//called by JS
