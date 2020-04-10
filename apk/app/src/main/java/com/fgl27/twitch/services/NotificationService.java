@@ -60,7 +60,10 @@ public class NotificationService extends Service {
     private String UserId;
     private String Channels;
     private int ChannelsOffset;
-    private int width;
+    int LayoutWidth;
+    int ImageSize;
+    float textSizeSmall;
+    float textSizeBig;
     private boolean screenOn = true;
     BroadcastReceiver mReceiver = null;
 
@@ -145,7 +148,6 @@ public class NotificationService extends Service {
 
         Notify = false;
         isRunning = true;
-        setWidth();
 
         currentLive = new ArrayList<>();
         oldLive = new ArrayList<>();
@@ -197,7 +199,12 @@ public class NotificationService extends Service {
         WindowManager window = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         if (window != null) {
             Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
-            width = ScreenSize.y / 100;
+            float width = ScreenSize.y / 100.0f;
+
+            LayoutWidth = (int) width * 75;
+            ImageSize = (int) width * 18;
+            textSizeSmall = 1.2f * width;
+            textSizeBig = 1.1f * width;
         }
     }
 
@@ -296,6 +303,7 @@ public class NotificationService extends Service {
         }
 
         if (Notify && result.size() > 0) {
+            setWidth();
             for (int i = 0; i < result.size(); i++) {
                 DoNotification(result.get(i), i);
             }
@@ -321,7 +329,7 @@ public class NotificationService extends Service {
         } else return;
 
         LinearLayout layout_text = layout.findViewById(R.id.text_holder);
-        layout_text.getLayoutParams().width = width * 75;
+        if (LayoutWidth > 0) layout_text.getLayoutParams().width = LayoutWidth;
         layout_text.requestLayout();
 
         TextView name = layout.findViewById(R.id.name);
@@ -355,10 +363,18 @@ public class NotificationService extends Service {
 
         ImageView image = layout.findViewById(R.id.image);
         if (bmp != null) {
-            if (width > 0) bmp = Bitmap.createScaledBitmap(bmp, width * 18, width * 17, true);
+            if (LayoutWidth > 0) bmp = Bitmap.createScaledBitmap(bmp, ImageSize, ImageSize, true);
 
             image.setImageBitmap(bmp);
         } else image.setImageResource(android.R.color.transparent);
+
+        if (LayoutWidth > 0) {
+            TextView now_live = layout.findViewById(R.id.now_live);
+            now_live.setTextSize(textSizeBig);
+            name.setTextSize(textSizeBig);
+            title.setTextSize(textSizeSmall);
+            game.setTextSize(textSizeSmall);
+        }
 
         Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.RIGHT | Gravity.TOP, 0, 20);
