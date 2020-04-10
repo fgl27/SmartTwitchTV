@@ -50,24 +50,32 @@ public class NotificationService extends Service {
 
     private static final String TAG = "STTV_Notification";
 
-    public HandlerThread NotificationThread;
-    public Handler NotificationHandler;
-    ArrayList<String> currentLive = new ArrayList<>();
-    ArrayList<String> oldLive = new ArrayList<>();
+    private HandlerThread NotificationThread;
+    private Handler NotificationHandler;
+    private HandlerThread ToastThread;
+    private Handler ToastHandler;
+
+    private ArrayList<String> currentLive = new ArrayList<>();
+    private ArrayList<String> oldLive = new ArrayList<>();
+
+    private BroadcastReceiver mReceiver = null;
+    private AppPreferences appPreferences;
+
     private boolean isRunning;
     private boolean Notify;
+    private boolean screenOn = true;
+
     private Context context;
+
     private String UserId;
     private String Channels;
-    private int ChannelsOffset;
-    int LayoutWidth;
-    int ImageSize;
-    float textSizeSmall;
-    float textSizeBig;
-    private boolean screenOn = true;
-    BroadcastReceiver mReceiver = null;
 
-    AppPreferences appPreferences;
+    private int ChannelsOffset;
+    private int LayoutWidth;
+    private int ImageSize;
+
+    private float textSizeSmall;
+    private float textSizeBig;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -80,9 +88,12 @@ public class NotificationService extends Service {
         String action = intent.getAction();
 
         if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) StopService();
-        else if (Objects.equals(action, Constants.ACTION_NOTIFY_START) && !isRunning) start();
-        else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF) && !isRunning) screenOn = false;
-        else if (Objects.equals(action, Constants.ACTION_SCREEN_ON) && !isRunning) screenOn = true;
+        else if (Objects.equals(action, Constants.ACTION_NOTIFY_START) && !isRunning) startService();
+        else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) screenOn = false;
+        else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
+            screenOn = true;
+            if (isRunning) init(3 * 1000);
+        }
 
         return START_NOT_STICKY;
     }
@@ -115,14 +126,14 @@ public class NotificationService extends Service {
 
     public void startNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationCompat.Builder builder = NotificationBuilder("Notification service", TAG, context);
+            NotificationCompat.Builder builder = NotificationBuilder(getString(R.string.notification), TAG, context);
 
             if (builder != null) startForeground(100, builder.build());
             else StopService();
         }
     }
 
-    public void start() {
+    public void startService() {
         super.onCreate();
         context = getApplicationContext();
 
@@ -132,10 +143,8 @@ public class NotificationService extends Service {
 
         UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
-        if (isRunning ||
-                !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
-                !screenOn || UserId == null) {
-
+        if (isRunning || !screenOn || UserId == null ||
+                !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
             StopService();
             return;
         }
@@ -144,6 +153,12 @@ public class NotificationService extends Service {
             NotificationThread = new HandlerThread("NotificationThread");
             NotificationThread.start();
             NotificationHandler = new Handler(NotificationThread.getLooper());
+        }
+
+        if (ToastThread == null || ToastHandler == null) {
+            ToastThread = new HandlerThread("ToastThread");
+            ToastThread.start();
+            ToastHandler = new Handler(ToastThread.getLooper());
         }
 
         Notify = false;
@@ -183,15 +198,14 @@ public class NotificationService extends Service {
     public NotificationCompat.Builder NotificationBuilder(String title, String id, Context context) {
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationChannel mChannel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_NONE);
         if (mNotifyManager != null) {
-            mNotifyManager.createNotificationChannel(mChannel);
+            mNotifyManager.createNotificationChannel(new NotificationChannel(id, title, NotificationManager.IMPORTANCE_NONE));
         } else return null;
 
         return new NotificationCompat.Builder(context, id)
                 .setContentTitle(title)
                 .setOngoing(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_refresh)
                 .setChannelId(id);
     }
 
@@ -209,10 +223,14 @@ public class NotificationService extends Service {
     }
 
     private void init(int timeout) {
-        NotificationHandler.postDelayed(() -> {
-            if (screenOn) DoNotifications();
-            if (isRunning) init(1000 * 60 * 5);//it 5 min refresh
-        }, timeout);
+        if (NotificationHandler != null) {
+            NotificationHandler.removeCallbacksAndMessages(null);
+
+            NotificationHandler.postDelayed(() -> {
+                if (screenOn) DoNotifications();
+                if (isRunning) init(1000 * 60 * 5);//it 5 min refresh
+            }, timeout);
+        }
     }
 
     private void DoNotifications() {
@@ -316,7 +334,7 @@ public class NotificationService extends Service {
     }
 
     private void DoNotification(NotifyList result, int delay) {
-        NotificationHandler.postDelayed(() -> DoToast(result), 5000 * delay);
+        ToastHandler.postDelayed(() -> DoToast(result), 5000 * delay);
     }
 
     @SuppressLint("InflateParams")
@@ -415,8 +433,7 @@ public class NotificationService extends Service {
                                 obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
 
                                 if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
-                                    values.append(obj.get("_id").getAsString()); //Get the channel id
-                                    values.append(",");
+                                    values.append(obj.get("_id").getAsString()).append(","); //Get the channel id
                                 }
                             }
                         }
