@@ -74,10 +74,12 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if (Objects.equals(intent.getAction(), Constants.ACTION_NOTIFY_STOP)) StopService();
-        else if (Objects.equals(intent.getAction(), Constants.ACTION_NOTIFY_START) && !isRunning) start();
-        else if (Objects.equals(intent.getAction(), Constants.ACTION_SCREEN_OFF) && !isRunning) screenOn = false;
-        else if (Objects.equals(intent.getAction(), Constants.ACTION_SCREEN_ON) && !isRunning) screenOn = true;
+        String action = intent.getAction();
+
+        if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) StopService();
+        else if (Objects.equals(action, Constants.ACTION_NOTIFY_START) && !isRunning) start();
+        else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF) && !isRunning) screenOn = false;
+        else if (Objects.equals(action, Constants.ACTION_SCREEN_ON) && !isRunning) screenOn = true;
 
         return START_NOT_STICKY;
     }
@@ -127,7 +129,10 @@ public class NotificationService extends Service {
 
         UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
-        if (isRunning || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) || !screenOn || UserId == null) {
+        if (isRunning ||
+                !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
+                !screenOn || UserId == null) {
+
             StopService();
             return;
         }

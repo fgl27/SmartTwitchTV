@@ -13,12 +13,12 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!Tools.deviceIsTV(context)) return;
+        if (!Tools.deviceIsTV(context) ||
+                !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, new AppPreferences(context))) return;
 
         String action = intent.getAction();
-        boolean runNotifications = Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, new AppPreferences(context));
 
-        if (Intent.ACTION_BOOT_COMPLETED.equals(action) && runNotifications) {
+        if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, context);
         }
     }
