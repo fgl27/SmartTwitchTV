@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ActivityManager;
 import android.app.UiModeManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -17,8 +18,10 @@ import android.view.Display;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
+import com.fgl27.twitch.services.NotificationService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -831,5 +834,11 @@ public final class Tools {
 
     public static String getString(String name, String defaults, AppPreferences appPreferences) {
         return appPreferences.getString(name, defaults);
+    }
+
+    public static void SendNotificationIntent(String action, Context context) {
+        Intent intent = new Intent(context, NotificationService.class);
+        intent.setAction(action);
+        ContextCompat.startForegroundService(context, intent);
     }
 }
