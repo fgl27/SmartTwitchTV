@@ -2173,7 +2173,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_CheckAccessibility();
 
     //Restore UserLiveFeed_WasLiveidObject array from java if it exist
-    if (UserLiveFeed_Notify_Background) {
+    if (UserLiveFeed_Notify_Background && UserLiveFeed_Notify) {
 
         var oldLive = null;
         //TODO remove this try after some app updates
