@@ -107,7 +107,7 @@ function en_USLang() {
     STR_ABOUT_INFO_1 = "This is a SmartTV Client for Twitch developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
     STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
     STR_ABOUT_INFO_3 = "Developer information:";
-    STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on github";
+    STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on GitHub";
     STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
     STR_ABOUT_INFO_6 = "This application uses following dependencies:";
     STR_ABOUT_INFO_7 = "Nightdev KapChat - KapChat captures Twitch chat directly into OBS or XSplit (https://www.nightdev.com/kapchat/)";
@@ -134,7 +134,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
     STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad down or key number 3" + STR_CONTROLS_PLAY_0;
     STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left, PG up or rewind (VOD and clips only)" + STR_CONTROLS_PLAY_0;
-    STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad rigth or PG down" + STR_CONTROLS_PLAY_0;
+    STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad right or PG down" + STR_CONTROLS_PLAY_0;
     STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
     STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
     STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
