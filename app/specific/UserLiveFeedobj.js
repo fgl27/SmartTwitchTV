@@ -914,8 +914,17 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             }
         }
 
-        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
-        Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
+        //Remove the try after some app updates
+        var Android_Notification_end_time = 0;
+        try {
+            Android_Notification_end_time = Android.GetNotificationTime();
+        } catch (e) {}
+        //Check if the android service notification has end notifying before update things and show notifications on js side
+        if (!Android_Notification_end_time || ((new Date().getTime()) > Android_Notification_end_time)) {
+            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+            Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
+        } else UserLiveFeed_NotifyLiveidObject = [];
+
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
     // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =

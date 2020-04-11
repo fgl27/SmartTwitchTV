@@ -1150,6 +1150,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public long GetNotificationTime() {
+            return Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public String GetNotificationOld() {
             return Tools.getString(Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
         }
