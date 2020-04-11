@@ -40,3 +40,18 @@
 -keepclassmembers class com.fgl27.twitch.DataSource.mDefaultHttpDataSource** {
     *;
 }
+
+-keep class com.fgl27.twitch.services.BootBroadcastReceiver**
+-keepclassmembers class com.fgl27.twitch.services.BootBroadcastReceiver** {
+    *;
+}
+
+-keep class com.fgl27.twitch.services.NotificationService**
+-keepclassmembers class com.fgl27.twitch.services.NotificationService** {
+    *;
+}
+
+-keep class com.fgl27.twitch.services.ScreenReceiver**
+-keepclassmembers class com.fgl27.twitch.services.ScreenReceiver** {
+    *;
+}

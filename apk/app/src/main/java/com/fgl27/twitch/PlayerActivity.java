@@ -49,14 +49,16 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 
+import net.grandcentrix.tray.AppPreferences;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/app/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
@@ -159,6 +161,7 @@ public class PlayerActivity extends Activity {
     public boolean onCreateReady;
     public boolean IsStopped;
     public boolean IsInAutoMode = true;
+    public AppPreferences appPreferences;
     public LoadControl[] loadControl = new LoadControl[PlayerAccount];
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
@@ -205,7 +208,12 @@ public class PlayerActivity extends Activity {
             RuntimeThread.start();
             RuntimeHandler = new Handler(RuntimeThread.getLooper());
             runtime = Runtime.getRuntime();
+
+            deviceIsTV = Tools.deviceIsTV(this);
+            appPreferences = new AppPreferences(this);
+
             GetPing();
+            StopService();
 
             for (int i = 0; i < PlayerAccountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
@@ -234,8 +242,6 @@ public class PlayerActivity extends Activity {
 
             VideoHolder = findViewById(R.id.videoholder);
             setPlayerSurface(true);
-
-            deviceIsTV = Tools.deviceIsTV(this);
 
             DeviceRam = Tools.DeviceRam(this);
             //Ram too big.bigger then max int value... use 500MB
@@ -840,6 +846,23 @@ public class PlayerActivity extends Activity {
         }, 500);
     }
 
+    private void StopService() {
+        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_PAUSE, this);
+    }
+
+    private void StartService() {
+        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+    }
+
+    private boolean CheckService() {
+        if (!deviceIsTV || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+            return false;
+        }
+
+        return true;
+    }
+
     private void GetPing() {
         RuntimeHandler.removeCallbacksAndMessages(null);
 
@@ -865,6 +888,7 @@ public class PlayerActivity extends Activity {
         if (mWebView != null && AlreadyStarted) {
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
             GetPing();
+            StopService();
         }
         AlreadyStarted = true;
     }
@@ -878,6 +902,7 @@ public class PlayerActivity extends Activity {
 
     private void monStop() {
         IsStopped = true;
+        StartService();
         int temp_AudioMulti = AudioMulti;
 
         for (int i = 0; i < PlayerAccountPlus; i++) {
@@ -1121,6 +1146,36 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void showToast(String toast) {
             MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public long GetNotificationTime() {
+            return Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String GetNotificationOld() {
+            return Tools.getString(Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetNotificationOld(String values) {
+            appPreferences.put(Constants.PREF_NOTIFY_OLD_LIST, values);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void upNotificationState(boolean Notify) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_BACKGROUND, Notify);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void upNotificationId(String id) {
+            appPreferences.put(Constants.PREF_USER_ID, id);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1384,13 +1439,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-            return Tools.readUrl(urlString, timeout, HeaderQuantity, access_token);
+            return new Gson().toJson(Tools.readUrl(urlString, timeout, HeaderQuantity, access_token));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mMethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
-            return Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method);
+            return new Gson().toJson(Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method));
         }
 
         @SuppressWarnings("unused")//called by JS
