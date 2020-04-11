@@ -309,10 +309,12 @@ function Main_initWindows() {
 
         //Backup at start as a backup may never be done yet
         if (Main_CanBackup) {
-            Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-            window.setTimeout(function() {
-                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-            }, 10000);
+            if (AddUser_IsUserSet()) {
+                Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+                window.setTimeout(function() {
+                    Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                }, 10000);
+            }
         }
 
     } catch (e) {
