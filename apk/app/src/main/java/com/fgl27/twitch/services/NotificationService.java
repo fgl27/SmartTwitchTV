@@ -294,7 +294,12 @@ public class NotificationService extends Service {
             for (int i = 0; i < result.size(); i++) {
                 DoNotification(result.get(i), i);
             }
-        } else Notify = true;
+
+            appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, (System.currentTimeMillis() + (result.size() * 5000)));
+        } else {
+            Notify = true;
+            appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+        }
 
         oldLive = new ArrayList<>();
         oldLive.addAll(currentLive);
