@@ -415,7 +415,7 @@ function Main_initWindows() {
         UserLiveFeed_Prepare();
 
         if (AddUser_UserIsSet()) {
-            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
         }
         Screens_InitScreens();
 
@@ -431,7 +431,7 @@ function Main_initWindows() {
         Play_SetFullScreen(Play_isFullScreen);
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
+        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
         Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
         Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
 
@@ -2154,23 +2154,75 @@ function Main_CheckResume() { // Called only by JAVA
     if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
 
     if (AddUser_UserIsSet()) {
+        //Restore UserLiveFeed_WasLiveidObject array from java if it exist
+        if (UserLiveFeed_Notify_Background && UserLiveFeed_Notify) {
+            Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
+        }
+
         window.clearInterval(Main_updateUserFeedId);
-        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
 
         window.clearTimeout(Main_CheckResumeFeedId);
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 5000);
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
     }
     window.clearInterval(Main_updateclockId);
     Main_updateclockId = window.setInterval(Main_updateclock, 60000);
     Main_updateclock();
 
     window.clearInterval(Main_StartHistoryworkerId);
-    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
+    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
 
     window.clearTimeout(Main_CheckResumeVodsId);
     Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
 
     Main_CheckAccessibility();
+}
+
+function Main_RestoreLiveObjt(position) {
+    var oldLive = null;
+    //TODO remove this try after some app updates
+    try {
+        oldLive = Android.GetNotificationOld();
+    } catch (e) {}
+
+    if (oldLive) {
+
+        oldLive = JSON.parse(oldLive);
+
+        if (oldLive.length > 0) {
+
+            UserLiveFeed_WasLiveidObject[position] = {};
+
+            for (var i = 0; i < oldLive.length; i++) {
+                UserLiveFeed_WasLiveidObject[position][oldLive[i]] = 1;
+            }
+
+        } else {
+            UserLiveFeed_WasLiveidObject[position] = null;
+            UserLiveFeed_CheckNotifycation = false;
+        }
+    }
+}
+
+function Main_SaveLiveObjt(position) {
+    var array = [];
+
+    if (!UserLiveFeed_WasLiveidObject[position]) {
+
+        UserLiveFeed_CheckNotifycation = false;
+
+    } else {
+
+        for (var property in UserLiveFeed_WasLiveidObject[position]) {
+            array.push(property);
+        }
+
+    }
+
+    //TODO remove this try after some app updates
+    try {
+        if (Main_IsOnAndroid) Android.SetNotificationOld(JSON.stringify(array));
+    } catch (e) {}
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {

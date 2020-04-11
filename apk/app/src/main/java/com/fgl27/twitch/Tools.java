@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ActivityManager;
 import android.app.UiModeManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -17,8 +18,10 @@ import android.view.Display;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
+import com.fgl27.twitch.services.NotificationService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -40,6 +43,8 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import net.grandcentrix.tray.AppPreferences;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -287,7 +292,7 @@ public final class Tools {
 
     //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
     //use default js XMLHttpRequest
-    public static String readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
+    public static ResponseObj readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
         HttpURLConnection urlConnection = null;
         String[][] HEADERS = {
                 {CLIENTIDHEADER, CLIENTID},
@@ -309,7 +314,7 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return ResponseObjToString(
+                return new ResponseObj(
                         status,
                         readFullyString(
                                 status != HttpURLConnection.HTTP_OK ?
@@ -344,7 +349,7 @@ public final class Tools {
     }
 
     //For other then get methods
-    public static String MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
+    public static ResponseObj MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
         HttpURLConnection urlConnection = null;
         String[][] HEADERS = {
                 {CLIENTIDHEADER, overwriteID != null ? overwriteID : CLIENTID},
@@ -380,7 +385,7 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return ResponseObjToString(
+                return new ResponseObj(
                         status,
                         readFullyString(
                                 status != HttpURLConnection.HTTP_OK ?
@@ -821,5 +826,24 @@ public final class Tools {
                 (time < 10 ? "&nbsp;&nbsp;" : ""),//Keeps the indentation when the values go bellow 10
                 time
         );
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean getBoolean(String name, boolean defaults, AppPreferences appPreferences) {
+        return appPreferences.getBoolean(name, defaults);
+    }
+
+    public static String getString(String name, String defaults, AppPreferences appPreferences) {
+        return appPreferences.getString(name, defaults);
+    }
+
+    public static long getLong(String name, long defaults, AppPreferences appPreferences) {
+        return appPreferences.getLong(name, defaults);
+    }
+
+    public static void SendNotificationIntent(String action, Context context) {
+        Intent intent = new Intent(context, NotificationService.class);
+        intent.setAction(action);
+        ContextCompat.startForegroundService(context, intent);
     }
 }

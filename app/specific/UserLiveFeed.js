@@ -15,6 +15,7 @@ var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
 var UserLiveFeed_PreventHide = false;
 var UserLiveFeed_ShowSmallPlayer = true;
 var UserLiveFeed_DisableSmallPlayerMulti = false;
+var UserLiveFeed_Notify_Background = false;
 
 var UserLiveFeed_CheckNotifycation = false;
 var UserLiveFeed_WasLiveidObject = {};
@@ -256,7 +257,7 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     UserLiveFeed_Showloading(false);
 
     if (ShowNotifications) {
-        //The app just started or user change don't nottify
+        //The app just started or user change don't or background service was running nottify
         if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
         else {
             UserLiveFeed_NotifyLiveidObject = [];

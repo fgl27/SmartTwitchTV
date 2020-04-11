@@ -174,6 +174,15 @@ function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
 
+        //TODO remove this try after some app updates
+        try {
+            if (Main_IsOnAndroid) {
+                Android.upNotificationId(AddUser_UsernameArray[0].id);
+                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
+                Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
+            }
+        } catch (e) {}
+
         //Check and refresh all tokens at start
         for (var i = 0; i < AddUser_UsernameArray.length; i++) {
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
@@ -345,6 +354,8 @@ function AddUser_SaveUserArray() {
 }
 
 function AddUser_UserMakeOne(position) {
+    window.clearTimeout(Main_CheckResumeFeedId);
+
     var temp_Username = JSON.parse(JSON.stringify(AddUser_UsernameArray[0]));
     AddUser_UsernameArray[0] = JSON.parse(JSON.stringify(AddUser_UsernameArray[position]));
     AddUser_UsernameArray[position] = temp_Username;
@@ -356,6 +367,11 @@ function AddUser_UserMakeOne(position) {
     Users_status = false;
     AddUser_UpdateSidepanel();
     Users_init();
+
+    if (Main_IsOnAndroid) {
+        Android.upNotificationId(AddUser_UsernameArray[0].id);
+        Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
+    }
 }
 
 function AddUser_UserCodeExist(user) {

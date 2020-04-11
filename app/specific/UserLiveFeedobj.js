@@ -834,8 +834,8 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     response_items = response.length;
 
     if (response_items) {
-        if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
+        if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id]) {
+            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
             UserLiveFeed_CheckNotifycation = false;
         }
 
@@ -881,7 +881,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                 //Check if was live if not notificate
-                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][id]) {
+                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id][id]) {
                     UserLiveFeed_NotifyLiveidObject.push({
                         name: mArray[1],
                         logo: mArray[9],
@@ -914,7 +914,17 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             }
         }
 
-        UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+        //Remove the try after some app updates
+        var Android_Notification_end_time = 0;
+        try {
+            Android_Notification_end_time = Android.GetNotificationTime();
+        } catch (e) {}
+        //Check if the android service notification has end notifying before update things and show notifications on js side
+        if (!Android_Notification_end_time || ((new Date().getTime()) > Android_Notification_end_time)) {
+            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+            Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
+        } else UserLiveFeed_NotifyLiveidObject = [];
+
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
     // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
