@@ -415,7 +415,7 @@ function Main_initWindows() {
         UserLiveFeed_Prepare();
 
         if (AddUser_UserIsSet()) {
-            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
         }
         Screens_InitScreens();
 
@@ -431,7 +431,7 @@ function Main_initWindows() {
         Play_SetFullScreen(Play_isFullScreen);
 
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
+        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
         Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
         Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
 
@@ -2160,17 +2160,17 @@ function Main_CheckResume() { // Called only by JAVA
         }
 
         window.clearInterval(Main_updateUserFeedId);
-        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
 
         window.clearTimeout(Main_CheckResumeFeedId);
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 5000);
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
     }
     window.clearInterval(Main_updateclockId);
     Main_updateclockId = window.setInterval(Main_updateclock, 60000);
     Main_updateclock();
 
     window.clearInterval(Main_StartHistoryworkerId);
-    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10);//Check it 30min
+    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
 
     window.clearTimeout(Main_CheckResumeVodsId);
     Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
