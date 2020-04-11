@@ -34,6 +34,7 @@ Project Apk Dependencies
 * [Google: Leanback v17](https://developer.android.com/reference/android/support/v17/leanback/package-summary)
 * [Google: ExoPlayer](https://github.com/google/ExoPlayer)
 * [ben-manes: gradle-versions-plugin](https://github.com/ben-manes/gradle-versions-plugin)
+* [Tray: a SharedPreferences replacement for Android](https://github.com/grandcentrix/tray)
 
 Donations
 ==============
