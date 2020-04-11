@@ -2074,7 +2074,10 @@
         Users_init();
 
         if (Main_IsOnAndroid) {
-            Android.upNotificationId(AddUser_UsernameArray[0].id);
+            //TODO remove the try after some app updates
+            try {
+                Android.upNotificationId(AddUser_UsernameArray[0].id);
+            } catch (e) {}
             Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
         }
     }
@@ -16472,7 +16475,10 @@
     function Settings_notification_background() {
         UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
 
-        if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
+        //TODO remove the try after some app updates
+        try {
+            if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
+        } catch (e) {}
     }
 
     function Settings_NotifyTimeout() {
