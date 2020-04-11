@@ -2,7 +2,7 @@ package com.fgl27.twitch;
 
 public interface Constants {
 
-    String PREF_NOTIFY_OLD = "notification_oldLive";
+    String PREF_NOTIFY_OLD_LIST = "notification_oldLive";
     String PREF_NOTIFICATION_BACKGROUND = "notification_background";
     String PREF_USER_ID = "user_id";
 

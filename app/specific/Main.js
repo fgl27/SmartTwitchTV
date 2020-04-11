@@ -2154,6 +2154,11 @@ function Main_CheckResume() { // Called only by JAVA
     if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
 
     if (AddUser_UserIsSet()) {
+        //Restore UserLiveFeed_WasLiveidObject array from java if it exist
+        if (UserLiveFeed_Notify_Background && UserLiveFeed_Notify) {
+            Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
+        }
+
         window.clearInterval(Main_updateUserFeedId);
         Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
 
@@ -2171,31 +2176,56 @@ function Main_CheckResume() { // Called only by JAVA
     Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
 
     Main_CheckAccessibility();
+}
 
-    //Restore UserLiveFeed_WasLiveidObject array from java if it exist
-    if (UserLiveFeed_Notify_Background && UserLiveFeed_Notify) {
+function Main_RestoreLiveObjt(position) {
+    var oldLive = null;
+    //TODO remove this try after some app updates
+    try {
+        oldLive = Android.GetNotificationOld();
+    } catch (e) {}
 
-        var oldLive = null;
-        //TODO remove this try after some app updates
-        try {
-            oldLive = Android.GetNotificationOld();
-        } catch (e) {}
+    if (oldLive) {
 
-        if (oldLive) {
+        oldLive = JSON.parse(oldLive);
 
-            oldLive = JSON.parse(oldLive);
+        if (oldLive.length > 0) {
 
-            if (oldLive.length > 0) {
+            UserLiveFeed_WasLiveidObject[position] = {};
 
-                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
-
-                for (var i = 0; i < oldLive.length; i++) {
-                    UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][oldLive[i]] = 1;
-                }
-
+            for (var i = 0; i < oldLive.length; i++) {
+                UserLiveFeed_WasLiveidObject[position][oldLive[i]] = 1;
             }
+
+        } else {
+            UserLiveFeed_WasLiveidObject[position] = null;
+            UserLiveFeed_CheckNotifycation = false;
         }
     }
+}
+
+function Main_SaveLiveObjt(position) {
+    if (!UserLiveFeed_WasLiveidObject[position]) {
+        UserLiveFeed_CheckNotifycation = false;
+
+        //TODO remove this try after some app updates
+        try {
+            if (Main_IsOnAndroid) Android.SetNotificationOld(JSON.stringify([]));
+        } catch (e) {}
+
+        return;
+    }
+
+    var array = [];
+
+    for (var property in UserLiveFeed_WasLiveidObject[position]) {
+        array.push(property);
+    }
+
+    //TODO remove this try after some app updates
+    try {
+        if (Main_IsOnAndroid) Android.SetNotificationOld(JSON.stringify(array));
+    } catch (e) {}
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
