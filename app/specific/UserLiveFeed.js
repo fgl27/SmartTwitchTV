@@ -181,6 +181,7 @@ function UserLiveFeed_Prepare() {
     Sidepannel_SidepannelDoc = document.getElementById('side_panel');
     Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
     UserLiveFeed_FeedHolderDocId = document.getElementById('user_feed');
+    Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
 }
 
 function UserLiveFeed_RefreshLive() {
@@ -390,12 +391,16 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     if (add_focus && UserLiveFeed_ShowSmallPlayer && UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
         if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti) {
 
-            var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+            var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-            if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                UserLiveFeed_CheckIfIsLiveStart();
-            } else if (Play_CheckIfIsLiveResponseText) {
-                Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+            if (doc) {
+                var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+
+                if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                    UserLiveFeed_CheckIfIsLiveStart();
+                } else if (Play_CheckIfIsLiveResponseText) {
+                    Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+                }
             }
 
         }
@@ -408,15 +413,19 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 function UserLiveFeed_CheckVod() {
     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
-        var data = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
-        var index = Main_history_Exist('live', data[7]);
+        var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-        if (index > -1) {
+        if (doc) {
+            var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            var index = Main_history_Exist('live', data[7]);
 
-            if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
-                return false;
+            if (index > -1) {
+
+                if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
+                    return false;
+                }
+
             }
-
         }
     }
     return true;
@@ -446,11 +455,12 @@ function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
+        var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-        if (StreamData) {
+        if (StreamData && doc) {
             StreamData = JSON.parse(StreamData);
 
-            var StreamInfo = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
+            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
             if (StreamData.status === 200) {
 
@@ -506,9 +516,8 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
     if (!Play_isOn || doc) {
 
-
         Android.CheckIfIsLiveFeed(
-            doc ? doc[6] : JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
+            doc[6],
             UserLiveFeed_CheckIfIsLiveDelay,
             "UserLiveFeed_CheckIfIsLiveResult",
             UserLiveFeed_FeedPosX,

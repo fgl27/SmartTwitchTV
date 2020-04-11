@@ -46,20 +46,23 @@ function Sidepannel_isShowing() {
 }
 
 function Sidepannel_UpdateThumbDiv() {
-    var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed)
-        .getAttribute(Main_DataAttribute));
+    var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
 
-    Sidepannel_UpdateThumbDoc.onerror = function() {
-        this.onerror = null;
-        this.src = IMG_404_VIDEO;
-    };
-    Sidepannel_UpdateThumbDoc.src = info[0].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
+    if (doc) {
+        var info = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-    Main_innerHTML('feed_thum_name', Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[1]), info[10], info[8]));
-    Main_innerHTML('feed_thum_quality', info[5]);
-    Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
-    Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
-    Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
+        Sidepannel_UpdateThumbDoc.onerror = function() {
+            this.onerror = null;
+            this.src = IMG_404_VIDEO;
+        };
+        Sidepannel_UpdateThumbDoc.src = info[0].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
+
+        Main_innerHTML('feed_thum_name', Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[1]), info[10], info[8]));
+        Main_innerHTML('feed_thum_quality', info[5]);
+        Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
+        Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
+        Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
+    }
 }
 
 function Sidepannel_UpdateThumb() {
@@ -68,11 +71,15 @@ function Sidepannel_UpdateThumb() {
     if (Sidepannel_isShowing()) {
         Main_ShowElement('side_panel_feed_thumb');
 
-        var Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
-        if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-            Sidepannel_CheckIfIsLiveStart();
-        } else if (Play_CheckIfIsLiveResponseText) {
-            Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+        var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
+
+        if (doc) {
+            var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+            if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                Sidepannel_CheckIfIsLiveStart();
+            } else if (Play_CheckIfIsLiveResponseText) {
+                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+            }
         }
 
     }
@@ -82,11 +89,12 @@ function Sidepannel_UpdateThumb() {
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
+        var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
 
-        if (StreamData) {
+        if (StreamData && doc) {
             StreamData = JSON.parse(StreamData);
 
-            var StreamInfo = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
+            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
             if (StreamData.status === 200) {
 
@@ -135,18 +143,21 @@ function Sidepannel_CheckIfIsLiveStart() {
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsOnAndroid) return;
+    var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
 
-    try {
-        Android.CheckIfIsLiveFeed(
-            JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6],
-            UserLiveFeed_CheckIfIsLiveDelay,
-            "Sidepannel_CheckIfIsLiveResult",
-            1,
-            (Sidepannel_PosFeed % 100)
-        );
-    } catch (e) {
-        Play_CheckIfIsLiveCleanEnd();
-    }
+    if (doc) {
+        try {
+            Android.CheckIfIsLiveFeed(
+                JSON.parse(doc.getAttribute(Main_DataAttribute))[6],
+                UserLiveFeed_CheckIfIsLiveDelay,
+                "Sidepannel_CheckIfIsLiveResult",
+                1,
+                (Sidepannel_PosFeed % 100)
+            );
+        } catch (e) {
+            Play_CheckIfIsLiveCleanEnd();
+        }
+    } else Play_CheckIfIsLiveCleanEnd();
 }
 
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
