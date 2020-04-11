@@ -214,9 +214,10 @@ public class NotificationService extends Service {
         if (window != null) {
             Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
             float width = ScreenSize.y / 100.0f;
+            int widthInt = ScreenSize.y / 100;
 
-            LayoutWidth = (int) width * 75;
-            ImageSize = (int) width * 18;
+            LayoutWidth = widthInt * 75;
+            ImageSize = widthInt * 18;
             textSizeSmall = 1.2f * width;
             textSizeBig = 1.1f * width;
         }
@@ -299,11 +300,15 @@ public class NotificationService extends Service {
                                     currentLive.add(id);
 
                                     if (Notify && !oldLive.contains(id)) {
+
+                                        Bitmap bmp = null;
+                                        if (!obj.get("logo").isJsonNull()) bmp = GetBitmap(obj.get("logo").getAsString());
+
                                         result.add(
                                                 new NotifyList(
                                                         game,
                                                         !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
-                                                        !obj.get("logo").isJsonNull() ? obj.get("logo").getAsString() : "",
+                                                        bmp,
                                                         !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
                                                         isLive
                                                 )
@@ -365,21 +370,8 @@ public class NotificationService extends Service {
         TextView game = layout.findViewById(R.id.game);
         game.setText(result.getGame());
 
-        URL newUrl = null;
-        Bitmap bmp = null;
-        try {
-            newUrl = new URL(result.getLogo());
-        } catch (MalformedURLException ignored) {
-        }
-
-        if (newUrl != null) {
-            try {
-                bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
-            } catch (IOException ignored) {
-            }
-        }
-
         ImageView image = layout.findViewById(R.id.image);
+        Bitmap bmp = result.getLogo();
         if (bmp != null) {
             if (LayoutWidth > 0) bmp = Bitmap.createScaledBitmap(bmp, ImageSize, ImageSize, true);
 
@@ -456,11 +448,11 @@ public class NotificationService extends Service {
     private static class NotifyList {
         private final String game;
         private final String name;
-        private final String logo;
+        private final Bitmap logo;
         private final String title;
         private final boolean live;
 
-        public NotifyList(String game, String name, String logo, String title, boolean live) {
+        public NotifyList(String game, String name, Bitmap logo, String title, boolean live) {
             this.game = game;
             this.name = name;
             this.logo = logo;
@@ -476,7 +468,7 @@ public class NotificationService extends Service {
             return name;
         }
 
-        public String getLogo() {
+        public Bitmap getLogo() {
             return logo;
         }
 
@@ -488,4 +480,26 @@ public class NotificationService extends Service {
             return live;
         }
     }
+
+    public Bitmap GetBitmap(String url) {
+
+        URL newUrl = null;
+        Bitmap bmp = null;
+
+        try {
+            newUrl = new URL(url);
+        } catch (MalformedURLException ignored) {
+        }
+
+        if (newUrl != null) {
+            try {
+                bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
+            } catch (IOException ignored) {
+            }
+        }
+
+        return bmp;
+    }
+
+
 }
