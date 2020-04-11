@@ -856,7 +856,8 @@ public class PlayerActivity extends Activity {
 
     private boolean CheckService() {
         if (!deviceIsTV || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+            //the service only start on TV devices
+            if (deviceIsTV) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
             return false;
         }
 
