@@ -440,7 +440,6 @@ function Main_initWindows() {
         inUseObj = Live;
         Main_ready(function() {
             Screens_init();
-            Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
         });
     });
 }
