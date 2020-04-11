@@ -8,7 +8,6 @@ ext.versions = [
         publishVersionCode   : 167,
 
         tray                 : '0.12.0',
-        supportLib           : '28.0.0',
         leanback             : '1.0.0',
         gradlePlugin         : '3.6.2',
         benmanes             : '0.28.0',
