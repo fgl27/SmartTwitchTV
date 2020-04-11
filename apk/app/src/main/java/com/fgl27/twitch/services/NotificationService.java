@@ -86,7 +86,6 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startNotification();
-
         String action = intent.getAction();
 
         if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {//Fully stop the service as is not enable or is not TV
@@ -118,7 +117,6 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
         startNotification();
     }
 
@@ -142,9 +140,6 @@ public class NotificationService extends Service {
 
     private void startService() {
         super.onCreate();
-
-        startNotification();
-
         appPreferences = new AppPreferences(context);
 
         UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
@@ -181,7 +176,7 @@ public class NotificationService extends Service {
 
         mRegisterReceiver();
 
-        InitHandler(5 * 1000);
+        InitHandler(10 * 1000);
     }
 
     private void InitHandler(int timeout) {
@@ -189,7 +184,6 @@ public class NotificationService extends Service {
             NotificationHandler.removeCallbacksAndMessages(null);
 
             NotificationHandler.postDelayed(() -> {
-
                 if (screenOn && isRunning) DoNotifications();
 
                 InitHandler(1000 * 60 * 5);//it 5 min refresh

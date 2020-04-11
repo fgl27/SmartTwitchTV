@@ -847,11 +847,11 @@ public class PlayerActivity extends Activity {
     }
 
     private void StopService() {
-        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_PAUSE, this);
+        if (!IsStopped && CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_PAUSE, this);
     }
 
     private void StartService() {
-        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+        if (IsStopped && CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
     }
 
     private boolean CheckService() {
@@ -1146,6 +1146,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void showToast(String toast) {
             MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StopNotificationService() {
+            MainThreadHandler.post(PlayerActivity.this::StopService);
         }
 
         @SuppressWarnings("unused")//called by JS

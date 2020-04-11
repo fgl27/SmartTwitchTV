@@ -563,6 +563,11 @@ function Screens_loadDataSuccessFinishEnd() {
 
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_CheckAccessibility(true);
+    //Remove the try after some app updates
+    //Make sure the service is stop
+    try {
+        JSON.parse(Android.StopNotificationService());
+    } catch (e) {}
 }
 
 function Screens_addFocus(forceScroll) {
