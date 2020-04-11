@@ -651,7 +651,10 @@ function Settings_SetDefault(position) {
 function Settings_notification_background() {
     UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
 
-    if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
+    //TODO remove the try after some app updates
+    try {
+        if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
+    } catch (e) {}
 }
 
 function Settings_NotifyTimeout() {
