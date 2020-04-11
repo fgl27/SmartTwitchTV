@@ -2205,21 +2205,18 @@ function Main_RestoreLiveObjt(position) {
 }
 
 function Main_SaveLiveObjt(position) {
-    if (!UserLiveFeed_WasLiveidObject[position]) {
-        UserLiveFeed_CheckNotifycation = false;
-
-        //TODO remove this try after some app updates
-        try {
-            if (Main_IsOnAndroid) Android.SetNotificationOld(JSON.stringify([]));
-        } catch (e) {}
-
-        return;
-    }
-
     var array = [];
 
-    for (var property in UserLiveFeed_WasLiveidObject[position]) {
-        array.push(property);
+    if (!UserLiveFeed_WasLiveidObject[position]) {
+
+        UserLiveFeed_CheckNotifycation = false;
+
+    } else {
+
+        for (var property in UserLiveFeed_WasLiveidObject[position]) {
+            array.push(property);
+        }
+
     }
 
     //TODO remove this try after some app updates
