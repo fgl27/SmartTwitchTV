@@ -218,8 +218,8 @@ public class NotificationService extends Service {
 
             LayoutWidth = widthInt * 75;
             ImageSize = widthInt * 18;
-            textSizeSmall = 1.2f * width;
-            textSizeBig = 1.1f * width;
+            textSizeSmall = 1.1f * width;
+            textSizeBig = 1.22f * width;
         }
     }
 
@@ -481,7 +481,7 @@ public class NotificationService extends Service {
         }
     }
 
-    public Bitmap GetBitmap(String url) {
+    private Bitmap GetBitmap(String url) {
 
         URL newUrl = null;
         Bitmap bmp = null;
