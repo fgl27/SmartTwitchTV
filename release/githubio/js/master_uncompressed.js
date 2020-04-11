@@ -424,7 +424,10 @@
     var STR_PING;
     var STR_PLAYER_SOURCE;
     var STR_CONTROLS_MEDIA_FF;
-    var STR_VOD_MUTED; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_VOD_MUTED;
+    var STR_NOW_BACKGROUND;
+    var STR_ABOUT_INFO_21;
+    var STR_ABOUT_INFO_22; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -550,17 +553,19 @@
             STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR +
             STR_BR +
             STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
-            STR_DIV_MIDLE_LEFT +
-            STR_ABOUT_INFO_14 + STR_BR +
+            STR_DIV_MIDLE_LEFT + STR_BR +
+            STR_SPACE + STR_SPACE + STR_ABOUT_INFO_14 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_7 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_10 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_12 + STR_BR +
-            STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
-            STR_ABOUT_INFO_15 + STR_BR +
+            STR_DOT + STR_ABOUT_INFO_13 + STR_BR + STR_BR +
+            STR_SPACE + STR_SPACE + STR_ABOUT_INFO_15 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
+            STR_DOT + STR_ABOUT_INFO_21 + STR_BR +
+            STR_DOT + STR_ABOUT_INFO_22 + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
     }
     //Spacing for reease maker not trow erros frm jshint
@@ -672,7 +677,7 @@
         STR_ABOUT_INFO_1 = "This is a SmartTV Client for Twitch developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
         STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
         STR_ABOUT_INFO_3 = "Developer information:";
-        STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on github";
+        STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on GitHub";
         STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
         STR_ABOUT_INFO_6 = "This application uses following dependencies:";
         STR_ABOUT_INFO_7 = "Nightdev KapChat - KapChat captures Twitch chat directly into OBS or XSplit (https://www.nightdev.com/kapchat/)";
@@ -689,6 +694,8 @@
         STR_ABOUT_INFO_18 = "Phones and Tablets support:";
         STR_ABOUT_INFO_19 = "Yes is possible to use this app on phones and tablets, but this app is design to be used mainly on TVs, the support for other device is limited and because of that not released on play store, use the bellow link to download latest APK and manually install on a phone or tablets";
         STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
+        STR_ABOUT_INFO_21 = "ben-manes: gradle-versions-plugin (https://github.com/ben-manes/gradle-versions-plugin)";
+        STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
 
         STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
         STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
@@ -699,7 +706,7 @@
         STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
         STR_CONTROLS_PLAY_7 = "Show or hide the Chat : D-pad down or key number 3" + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_8 = "Change Chat position : D-pad left, PG up or rewind (VOD and clips only)" + STR_CONTROLS_PLAY_0;
-        STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad rigth or PG down" + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_9 = "Change Chat size : D-pad right or PG down" + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_10 = "Change Chat background brightness: change in player bottom controls";
         STR_CONTROLS_PLAY_11 = "Force refresh the Chat in Live streams (in case it freezes or doesn\'t load): use the player bottom controls Chat force disable (click twice)";
         STR_CONTROLS_PLAY_12 = "Start a search: open information panel, navigate using use Directional pad (left/right) to \"Search\" and press enter";
@@ -862,7 +869,8 @@
         STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
         STR_NOW_LIVE = "Now Live";
         STR_NOW_LIVE_SHOW = "Show Now Live notification";
-        STR_NOW_DURATION = "Now Live notification duration in seconds";
+        STR_NOW_DURATION = "Notification duration in seconds (background notification duration is based on system timeout)";
+        STR_NOW_BACKGROUND = "Now Live notification over other apps, when the app is on background";
         STR_GLOBAL_FONT = "Global app font size offset";
         STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
         STR_MAIN_MENU = "Main Menu";
@@ -1871,6 +1879,15 @@
         AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
         if (AddUser_UsernameArray.length > 0) {
 
+            //TODO remove this try after some app updates
+            try {
+                if (Main_IsOnAndroid) {
+                    Android.upNotificationId(AddUser_UsernameArray[0].id);
+                    UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
+                    Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
+                }
+            } catch (e) {}
+
             //Check and refresh all tokens at start
             for (var i = 0; i < AddUser_UsernameArray.length; i++) {
                 if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
@@ -2042,6 +2059,8 @@
     }
 
     function AddUser_UserMakeOne(position) {
+        window.clearTimeout(Main_CheckResumeFeedId);
+
         var temp_Username = JSON.parse(JSON.stringify(AddUser_UsernameArray[0]));
         AddUser_UsernameArray[0] = JSON.parse(JSON.stringify(AddUser_UsernameArray[position]));
         AddUser_UsernameArray[position] = temp_Username;
@@ -2053,6 +2072,11 @@
         Users_status = false;
         AddUser_UpdateSidepanel();
         Users_init();
+
+        if (Main_IsOnAndroid) {
+            Android.upNotificationId(AddUser_UsernameArray[0].id);
+            Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
+        }
     }
 
     function AddUser_UserCodeExist(user) {
@@ -3568,8 +3592,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.167';
-    var Main_minversion = 'April 7, 2020';
+    var Main_stringVersion_Min = '.168';
+    var Main_minversion = 'April 11, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -3755,10 +3779,12 @@
 
             //Backup at start as a backup may never be done yet
             if (Main_CanBackup) {
-                Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                window.setTimeout(function() {
-                    Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                }, 10000);
+                if (AddUser_IsUserSet()) {
+                    Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+                    window.setTimeout(function() {
+                        Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                    }, 10000);
+                }
             }
 
         } catch (e) {
@@ -3861,7 +3887,7 @@
             UserLiveFeed_Prepare();
 
             if (AddUser_UserIsSet()) {
-                Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+                Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5); //it 5 min refresh
             }
             Screens_InitScreens();
 
@@ -3877,14 +3903,13 @@
             Play_SetFullScreen(Play_isFullScreen);
 
             Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-            Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10); //Check it 30min
+            Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5); //Check it 5min
             Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
             Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
 
             inUseObj = Live;
             Main_ready(function() {
                 Screens_init();
-                Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
             });
         });
     }
@@ -5603,23 +5628,75 @@
         if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
 
         if (AddUser_UserIsSet()) {
+            //Restore UserLiveFeed_WasLiveidObject array from java if it exist
+            if (UserLiveFeed_Notify_Background && UserLiveFeed_Notify) {
+                Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
+            }
+
             window.clearInterval(Main_updateUserFeedId);
-            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 600000);
+            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5); //it 5 min refresh
 
             window.clearTimeout(Main_CheckResumeFeedId);
-            Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 5000);
+            Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
         }
         window.clearInterval(Main_updateclockId);
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         Main_updateclock();
 
         window.clearInterval(Main_StartHistoryworkerId);
-        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 10); //Check it 30min
+        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5); //Check it 5min
 
         window.clearTimeout(Main_CheckResumeVodsId);
         Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
 
         Main_CheckAccessibility();
+    }
+
+    function Main_RestoreLiveObjt(position) {
+        var oldLive = null;
+        //TODO remove this try after some app updates
+        try {
+            oldLive = Android.GetNotificationOld();
+        } catch (e) {}
+
+        if (oldLive) {
+
+            oldLive = JSON.parse(oldLive);
+
+            if (oldLive.length > 0) {
+
+                UserLiveFeed_WasLiveidObject[position] = {};
+
+                for (var i = 0; i < oldLive.length; i++) {
+                    UserLiveFeed_WasLiveidObject[position][oldLive[i]] = 1;
+                }
+
+            } else {
+                UserLiveFeed_WasLiveidObject[position] = null;
+                UserLiveFeed_CheckNotifycation = false;
+            }
+        }
+    }
+
+    function Main_SaveLiveObjt(position) {
+        var array = [];
+
+        if (!UserLiveFeed_WasLiveidObject[position]) {
+
+            UserLiveFeed_CheckNotifycation = false;
+
+        } else {
+
+            for (var property in UserLiveFeed_WasLiveidObject[position]) {
+                array.push(property);
+            }
+
+        }
+
+        //TODO remove this try after some app updates
+        try {
+            if (Main_IsOnAndroid) Android.SetNotificationOld(JSON.stringify(array));
+        } catch (e) {}
     }
 
     function Main_CheckAccessibility(skipRefresCheck) {
@@ -12272,6 +12349,11 @@
 
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
         Main_CheckAccessibility(true);
+        //Remove the try after some app updates
+        //Make sure the service is stop
+        try {
+            JSON.parse(Android.StopNotificationService());
+        } catch (e) {}
     }
 
     function Screens_addFocus(forceScroll) {
@@ -15783,13 +15865,13 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "auto_refresh_screen": { //live notification
+        "auto_refresh_screen": { //auto_refresh_screen
             "values": [
                 'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
             ],
             "defaultValue": 1
         },
-        "show_feed_player_delay": { //live notification
+        "show_feed_player_delay": { //show_feed_player_delay
             "values": [
                 0, 100, 200, 300, 400, 500, 600,
                 700, 800, 900, 1000, 1100, 1200,
@@ -15811,16 +15893,20 @@
             ],
             "defaultValue": 1
         },
-        "live_notification": { //buffer_live
+        "live_notification": { //live_notification
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "global_font_offset": { //live notification
-            "values": [-3, -2, -1, 0, 1, 2, 3],
+        "live_notification_background": { //live_notification_background
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "live_notification_time": { //live_notification_time
+            "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             "defaultValue": 4
         },
-        "live_notification_time": { //live notification
-            "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "global_font_offset": { //live notification
+            "values": [-3, -2, -1, 0, 1, 2, 3],
             "defaultValue": 4
         },
         "buffer_live": { //buffer_live
@@ -16002,6 +16088,8 @@
         div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
 
         div += Settings_Content('live_notification', array_no_yes, STR_NOW_LIVE_SHOW, null);
+
+        if (Main_isTV) div += Settings_Content('live_notification_background', array_no_yes, STR_NOW_BACKGROUND, null);
 
         div += Settings_Content('live_notification_time', null, STR_NOW_DURATION, null);
 
@@ -16222,6 +16310,12 @@
         Main_textContent(key + '_name', STR_NOW_LIVE_SHOW);
         Settings_value[key].values = [STR_NO, STR_YES];
 
+        if (Main_isTV) {
+            key = "live_notification_background";
+            Main_textContent(key + '_name', STR_NOW_BACKGROUND);
+            Settings_value[key].values = [STR_NO, STR_YES];
+        }
+
         Main_textContent('live_notification_time_name', STR_NOW_DURATION);
 
         key = "keep_panel_info_visible";
@@ -16260,7 +16354,8 @@
         Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
         PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
         UserLiveFeed_Notify = Settings_Obj_default("live_notification");
-        UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
+        Settings_NotifyTimeout();
+        Settings_notification_background();
         Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
         Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -16342,8 +16437,11 @@
 
         if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
         else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-        else if (position === "live_notification") UserLiveFeed_Notify = Settings_Obj_default("live_notification");
-        else if (position === "live_notification_time") UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
+        else if (position === "live_notification") {
+            UserLiveFeed_Notify = Settings_Obj_default("live_notification");
+            Settings_notification_background();
+        } else if (position === "live_notification_background") Settings_notification_background();
+        else if (position === "live_notification_time") Settings_NotifyTimeout();
         else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
         else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         else if (position === "app_animations") Settings_SetAnimations();
@@ -16371,8 +16469,18 @@
         else if (position === "pp_workaround") Settings_PP_Workaround();
     }
 
+    function Settings_notification_background() {
+        UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
+
+        if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
+    }
+
+    function Settings_NotifyTimeout() {
+        UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
+    }
+
     function Settings_PP_Workaround() {
-        Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
+        if (Main_IsOnAndroid) Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
     }
 
     function Settings_DpadOpacity() {
@@ -16526,9 +16634,9 @@
 
     function Settings_ScrollTable() {
         var doc,
-            offset = (!Main_isTV || !Main_IsOnAndroid) ? 2 : 0;
+            offset = (!Main_isTV || !Main_IsOnAndroid) ? 1 : 0;
 
-        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (16 + offset)) {
+        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (17 + offset)) {
             doc = document.getElementById('settings_scroll');
             doc.scrollTop = doc.scrollHeight;
             if (Settings_Obj_default("app_animations")) {
@@ -16536,7 +16644,7 @@
                 doc.scrollTop = 0;
                 scrollTo(doc, position, 200);
             }
-        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (15 + offset)) {
+        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (16 + offset)) {
             doc = document.getElementById('settings_scroll');
             if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
             else doc.scrollTop = 0;
@@ -17225,20 +17333,23 @@
     }
 
     function Sidepannel_UpdateThumbDiv() {
-        var info = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed)
-            .getAttribute(Main_DataAttribute));
+        var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
 
-        Sidepannel_UpdateThumbDoc.onerror = function() {
-            this.onerror = null;
-            this.src = IMG_404_VIDEO;
-        };
-        Sidepannel_UpdateThumbDoc.src = info[0].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
+        if (doc) {
+            var info = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-        Main_innerHTML('feed_thum_name', Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[1]), info[10], info[8]));
-        Main_innerHTML('feed_thum_quality', info[5]);
-        Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
-        Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
-        Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
+            Sidepannel_UpdateThumbDoc.onerror = function() {
+                this.onerror = null;
+                this.src = IMG_404_VIDEO;
+            };
+            Sidepannel_UpdateThumbDoc.src = info[0].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
+
+            Main_innerHTML('feed_thum_name', Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[1]), info[10], info[8]));
+            Main_innerHTML('feed_thum_quality', info[5]);
+            Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
+            Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
+            Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
+        }
     }
 
     function Sidepannel_UpdateThumb() {
@@ -17247,11 +17358,15 @@
         if (Sidepannel_isShowing()) {
             Main_ShowElement('side_panel_feed_thumb');
 
-            var Channel = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
-            if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                Sidepannel_CheckIfIsLiveStart();
-            } else if (Play_CheckIfIsLiveResponseText) {
-                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+            var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
+
+            if (doc) {
+                var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+                if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                    Sidepannel_CheckIfIsLiveStart();
+                } else if (Play_CheckIfIsLiveResponseText) {
+                    Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+                }
             }
 
         }
@@ -17261,11 +17376,12 @@
     function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
         if (Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
+            var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
 
-            if (StreamData) {
+            if (StreamData && doc) {
                 StreamData = JSON.parse(StreamData);
 
-                var StreamInfo = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute));
+                var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
                 if (StreamData.status === 200) {
 
@@ -17314,18 +17430,21 @@
         Play_CheckIfIsLiveCleanEnd();
 
         if (!Main_IsOnAndroid) return;
+        var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
 
-        try {
-            Android.CheckIfIsLiveFeed(
-                JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6],
-                UserLiveFeed_CheckIfIsLiveDelay,
-                "Sidepannel_CheckIfIsLiveResult",
-                1,
-                (Sidepannel_PosFeed % 100)
-            );
-        } catch (e) {
-            Play_CheckIfIsLiveCleanEnd();
-        }
+        if (doc) {
+            try {
+                Android.CheckIfIsLiveFeed(
+                    JSON.parse(doc.getAttribute(Main_DataAttribute))[6],
+                    UserLiveFeed_CheckIfIsLiveDelay,
+                    "Sidepannel_CheckIfIsLiveResult",
+                    1,
+                    (Sidepannel_PosFeed % 100)
+                );
+            } catch (e) {
+                Play_CheckIfIsLiveCleanEnd();
+            }
+        } else Play_CheckIfIsLiveCleanEnd();
     }
 
     function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -17857,6 +17976,7 @@
     var UserLiveFeed_PreventHide = false;
     var UserLiveFeed_ShowSmallPlayer = true;
     var UserLiveFeed_DisableSmallPlayerMulti = false;
+    var UserLiveFeed_Notify_Background = false;
 
     var UserLiveFeed_CheckNotifycation = false;
     var UserLiveFeed_WasLiveidObject = {};
@@ -18022,6 +18142,7 @@
         Sidepannel_SidepannelDoc = document.getElementById('side_panel');
         Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
         UserLiveFeed_FeedHolderDocId = document.getElementById('user_feed');
+        Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
     }
 
     function UserLiveFeed_RefreshLive() {
@@ -18098,7 +18219,7 @@
         UserLiveFeed_Showloading(false);
 
         if (ShowNotifications) {
-            //The app just started or user change don't nottify
+            //The app just started or user change don't or background service was running nottify
             if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
             else {
                 UserLiveFeed_NotifyLiveidObject = [];
@@ -18231,12 +18352,16 @@
         if (add_focus && UserLiveFeed_ShowSmallPlayer && UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
             if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti) {
 
-                var Channel = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6];
+                var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-                if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                    UserLiveFeed_CheckIfIsLiveStart();
-                } else if (Play_CheckIfIsLiveResponseText) {
-                    Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+                if (doc) {
+                    var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+
+                    if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                        UserLiveFeed_CheckIfIsLiveStart();
+                    } else if (Play_CheckIfIsLiveResponseText) {
+                        Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+                    }
                 }
 
             }
@@ -18249,15 +18374,19 @@
     function UserLiveFeed_CheckVod() {
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
-            var data = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
-            var index = Main_history_Exist('live', data[7]);
+            var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-            if (index > -1) {
+            if (doc) {
+                var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                var index = Main_history_Exist('live', data[7]);
 
-                if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
-                    return false;
+                if (index > -1) {
+
+                    if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
+                        return false;
+                    }
+
                 }
-
             }
         }
         return true;
@@ -18287,11 +18416,12 @@
     function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
         if (UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
+            var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-            if (StreamData) {
+            if (StreamData && doc) {
                 StreamData = JSON.parse(StreamData);
 
-                var StreamInfo = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
+                var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
                 if (StreamData.status === 200) {
 
@@ -18348,9 +18478,8 @@
 
         if (!Play_isOn || doc) {
 
-
             Android.CheckIfIsLiveFeed(
-                doc ? doc[6] : JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute))[6],
+                doc[6],
                 UserLiveFeed_CheckIfIsLiveDelay,
                 "UserLiveFeed_CheckIfIsLiveResult",
                 UserLiveFeed_FeedPosX,
@@ -19551,8 +19680,8 @@
         response_items = response.length;
 
         if (response_items) {
-            if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name]) {
-                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = {};
+            if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id]) {
+                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
                 UserLiveFeed_CheckNotifycation = false;
             }
 
@@ -19598,7 +19727,7 @@
                     UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                     //Check if was live if not notificate
-                    if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name][id]) {
+                    if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id][id]) {
                         UserLiveFeed_NotifyLiveidObject.push({
                             name: mArray[1],
                             logo: mArray[9],
@@ -19631,7 +19760,17 @@
                 }
             }
 
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].name] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+            //Remove the try after some app updates
+            var Android_Notification_end_time = 0;
+            try {
+                Android_Notification_end_time = Android.GetNotificationTime();
+            } catch (e) {}
+            //Check if the android service notification has end notifying before update things and show notifications on js side
+            if (!Android_Notification_end_time || ((new Date().getTime()) > Android_Notification_end_time)) {
+                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+                Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
+            } else UserLiveFeed_NotifyLiveidObject = [];
+
         } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
         // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
