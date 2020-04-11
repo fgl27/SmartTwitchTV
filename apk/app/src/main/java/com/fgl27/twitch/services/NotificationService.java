@@ -34,6 +34,7 @@ import com.fgl27.twitch.Tools;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import net.grandcentrix.tray.AppPreferences;
 
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -55,7 +57,6 @@ public class NotificationService extends Service {
     private HandlerThread ToastThread;
     private Handler ToastHandler;
 
-    private ArrayList<String> currentLive = new ArrayList<>();
     private ArrayList<String> oldLive = new ArrayList<>();
 
     private BroadcastReceiver mReceiver = null;
@@ -88,7 +89,8 @@ public class NotificationService extends Service {
         String action = intent.getAction();
 
         if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) StopService();
-        else if (Objects.equals(action, Constants.ACTION_NOTIFY_START) && !isRunning) startService();
+        else if (Objects.equals(action, Constants.ACTION_NOTIFY_START) && !isRunning)
+            startService();
         else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) screenOn = false;
         else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
             screenOn = true;
@@ -161,12 +163,16 @@ public class NotificationService extends Service {
             ToastHandler = new Handler(ToastThread.getLooper());
         }
 
-        Notify = false;
         isRunning = true;
 
-        currentLive = new ArrayList<>();
         oldLive = new ArrayList<>();
-        appPreferences.put(Constants.PREF_NOTIFY_OLD, new Gson().toJson(oldLive));
+        String tempOldLive = Tools.getString(Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
+
+        if (tempOldLive != null) {
+            oldLive = new Gson().fromJson(tempOldLive, new TypeToken<List<String>>() {}.getType());
+        }
+
+        Notify = oldLive.size() > 0;
 
         mregisterReceiver();
 
@@ -261,7 +267,7 @@ public class NotificationService extends Service {
         String game;
         boolean isLive;
         ArrayList<NotifyList> result = new ArrayList<>();
-        currentLive = new ArrayList<>();
+        ArrayList<String> currentLive = new ArrayList<>();
 
         url = String.format(
                 Locale.US,
@@ -302,7 +308,8 @@ public class NotificationService extends Service {
                                     if (Notify && !oldLive.contains(id)) {
 
                                         Bitmap bmp = null;
-                                        if (!obj.get("logo").isJsonNull()) bmp = GetBitmap(obj.get("logo").getAsString());
+                                        if (!obj.get("logo").isJsonNull())
+                                            bmp = GetBitmap(obj.get("logo").getAsString());
 
                                         result.add(
                                                 new NotifyList(
@@ -335,7 +342,7 @@ public class NotificationService extends Service {
         oldLive = new ArrayList<>();
         oldLive.addAll(currentLive);
 
-        appPreferences.put(Constants.PREF_NOTIFY_OLD, new Gson().toJson(oldLive));
+        appPreferences.put(Constants.PREF_NOTIFY_OLD_LIST, new Gson().toJson(oldLive));
     }
 
     private void DoNotification(NotifyList result, int delay) {
@@ -445,6 +452,26 @@ public class NotificationService extends Service {
         return false;
     }
 
+    private Bitmap GetBitmap(String url) {
+
+        URL newUrl = null;
+        Bitmap bmp = null;
+
+        try {
+            newUrl = new URL(url);
+        } catch (MalformedURLException ignored) {
+        }
+
+        if (newUrl != null) {
+            try {
+                bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
+            } catch (IOException ignored) {
+            }
+        }
+
+        return bmp;
+    }
+
     private static class NotifyList {
         private final String game;
         private final String name;
@@ -479,26 +506,6 @@ public class NotificationService extends Service {
         public boolean isLive() {
             return live;
         }
-    }
-
-    private Bitmap GetBitmap(String url) {
-
-        URL newUrl = null;
-        Bitmap bmp = null;
-
-        try {
-            newUrl = new URL(url);
-        } catch (MalformedURLException ignored) {
-        }
-
-        if (newUrl != null) {
-            try {
-                bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
-            } catch (IOException ignored) {
-            }
-        }
-
-        return bmp;
     }
 
 

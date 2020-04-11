@@ -1146,7 +1146,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String GetNotificationOld() {
-            return Tools.getString(Constants.PREF_NOTIFY_OLD, null, appPreferences);
+            return Tools.getString(Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetNotificationOld(String values) {
+            appPreferences.put(Constants.PREF_NOTIFY_OLD_LIST, values);
         }
 
         @SuppressWarnings("unused")//called by JS
