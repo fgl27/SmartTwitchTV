@@ -369,7 +369,10 @@ function AddUser_UserMakeOne(position) {
     Users_init();
 
     if (Main_IsOnAndroid) {
-        Android.upNotificationId(AddUser_UsernameArray[0].id);
+        //TODO remove the try after some app updates
+        try {
+            Android.upNotificationId(AddUser_UsernameArray[0].id);
+        } catch (e) {}
         Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
     }
 }
