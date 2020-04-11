@@ -85,16 +85,23 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        startNotification();
 
         String action = intent.getAction();
 
-        if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) StopService();
-        else if (Objects.equals(action, Constants.ACTION_NOTIFY_START) && !isRunning)
+        if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {//Fully stop the service as is not enable or is not TV
+            StopService();
+        } else if (Objects.equals(action, Constants.ACTION_NOTIFY_PAUSE)) {//Just pause it
+            isRunning = false;
+            if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
+        } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {//Start or restart the service
             startService();
-        else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) screenOn = false;
-        else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
+        } else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) {
+            screenOn = false;
+            if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
+        } else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
             screenOn = true;
-            if (isRunning) init(3 * 1000);
+            if (isRunning) InitHandler(10 * 1000);
         }
 
         return START_NOT_STICKY;
@@ -105,39 +112,36 @@ public class NotificationService extends Service {
         super.onDestroy();
         if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
         isRunning = false;
-        Notify = false;
-        munregisterReceiver();
-    }
-
-    public void StopService() {
-        if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
-        isRunning = false;
-        Notify = false;
-        munregisterReceiver();
-        stopForeground(true);
-        stopSelf();
+        mUnRegisterReceiver();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
 
         startNotification();
     }
 
-    public void startNotification() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationCompat.Builder builder = NotificationBuilder(getString(R.string.notification), TAG, context);
+    private void StopService() {
+        if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
+        isRunning = false;
+        mUnRegisterReceiver();
+        stopForeground(true);
+        stopSelf();
+    }
 
-            if (builder != null) startForeground(100, builder.build());
-            else StopService();
+    private void startNotification() {
+        context = getApplicationContext();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationCompat.Builder builder = NotificationBuilder(getString(R.string.notification), context);
+
+            startForeground(100, builder.build());
         }
     }
 
-    public void startService() {
+    private void startService() {
         super.onCreate();
-        context = getApplicationContext();
 
         startNotification();
 
@@ -145,9 +149,10 @@ public class NotificationService extends Service {
 
         UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
-        if (isRunning || !screenOn || UserId == null ||
-                !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
-            StopService();
+        //UserId == null user not set
+        // !isRunning resume/stop scenario change the value
+        // During !isRunning user may change
+        if (isRunning || UserId == null) {
             return;
         }
 
@@ -174,68 +179,20 @@ public class NotificationService extends Service {
 
         Notify = oldLive.size() > 0;
 
-        mregisterReceiver();
+        mRegisterReceiver();
 
-        init(3 * 1000);//call the first time very fast to load defaults
+        InitHandler(5 * 1000);
     }
 
-    public void mregisterReceiver() {
-        try {
-            munregisterReceiver();
-            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-            filter.addAction(Intent.ACTION_SCREEN_OFF);
-            mReceiver = new ScreenReceiver();
-            registerReceiver(mReceiver, filter);
-        } catch (Exception e) {
-            Log.w(TAG, "mregisterReceiver Exception ", e);
-        }
-    }
-
-    public void munregisterReceiver() {
-        try {
-            if (mReceiver != null) unregisterReceiver(mReceiver);
-            mReceiver = null;
-        } catch (Exception e) {
-            Log.w(TAG, "munregisterReceiver Exception ", e);
-        }
-    }
-
-    @TargetApi(26)
-    public NotificationCompat.Builder NotificationBuilder(String title, String id, Context context) {
-        NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (mNotifyManager != null) {
-            mNotifyManager.createNotificationChannel(new NotificationChannel(id, title, NotificationManager.IMPORTANCE_NONE));
-        } else return null;
-
-        return new NotificationCompat.Builder(context, id)
-                .setContentTitle(title)
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_refresh)
-                .setChannelId(id);
-    }
-
-    private void setWidth() {
-        WindowManager window = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        if (window != null) {
-            Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
-            float width = ScreenSize.y / 100.0f;
-            int widthInt = ScreenSize.y / 100;
-
-            LayoutWidth = widthInt * 75;
-            ImageSize = widthInt * 18;
-            textSizeSmall = 1.1f * width;
-            textSizeBig = 1.22f * width;
-        }
-    }
-
-    private void init(int timeout) {
+    private void InitHandler(int timeout) {
         if (NotificationHandler != null) {
             NotificationHandler.removeCallbacksAndMessages(null);
 
             NotificationHandler.postDelayed(() -> {
-                if (screenOn) DoNotifications();
-                if (isRunning) init(1000 * 60 * 5);//it 5 min refresh
+
+                if (screenOn && isRunning) DoNotifications();
+
+                InitHandler(1000 * 60 * 5);//it 5 min refresh
             }, timeout);
         }
     }
@@ -452,26 +409,6 @@ public class NotificationService extends Service {
         return false;
     }
 
-    private Bitmap GetBitmap(String url) {
-
-        URL newUrl = null;
-        Bitmap bmp = null;
-
-        try {
-            newUrl = new URL(url);
-        } catch (MalformedURLException ignored) {
-        }
-
-        if (newUrl != null) {
-            try {
-                bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
-            } catch (IOException ignored) {
-            }
-        }
-
-        return bmp;
-    }
-
     private static class NotifyList {
         private final String game;
         private final String name;
@@ -508,5 +445,74 @@ public class NotificationService extends Service {
         }
     }
 
+    private Bitmap GetBitmap(String url) {
+
+        URL newUrl = null;
+        Bitmap bmp = null;
+
+        try {
+            newUrl = new URL(url);
+        } catch (MalformedURLException ignored) {
+        }
+
+        if (newUrl != null) {
+            try {
+                bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
+            } catch (IOException ignored) {
+            }
+        }
+
+        return bmp;
+    }
+
+    private void mRegisterReceiver() {
+        try {
+            mUnRegisterReceiver();
+            IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            mReceiver = new ScreenReceiver();
+            registerReceiver(mReceiver, filter);
+        } catch (Exception e) {
+            Log.w(TAG, "mregisterReceiver Exception ", e);
+        }
+    }
+
+    private void mUnRegisterReceiver() {
+        try {
+            if (mReceiver != null) unregisterReceiver(mReceiver);
+            mReceiver = null;
+        } catch (Exception e) {
+            Log.w(TAG, "munregisterReceiver Exception ", e);
+        }
+    }
+
+    @TargetApi(26)
+    private NotificationCompat.Builder NotificationBuilder(String title, Context context) {
+        NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (mNotifyManager != null) {
+            mNotifyManager.createNotificationChannel(new NotificationChannel(TAG, title, NotificationManager.IMPORTANCE_NONE));
+        }
+
+        return new NotificationCompat.Builder(context, TAG)
+                .setContentTitle(title)
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_refresh)
+                .setChannelId(TAG);
+    }
+
+    private void setWidth() {
+        WindowManager window = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        if (window != null) {
+            Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
+            float width = ScreenSize.y / 100.0f;
+            int widthInt = ScreenSize.y / 100;
+
+            LayoutWidth = widthInt * 75;
+            ImageSize = widthInt * 18;
+            textSizeSmall = 1.1f * width;
+            textSizeBig = 1.22f * width;
+        }
+    }
 
 }

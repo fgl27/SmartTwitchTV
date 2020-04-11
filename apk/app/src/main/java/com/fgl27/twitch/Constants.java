@@ -11,6 +11,6 @@ public interface Constants {
 
     String ACTION_NOTIFY_START = "action_StartService";
     String ACTION_NOTIFY_STOP = "action_StopService";
+    String ACTION_NOTIFY_PAUSE = "action_PauseService";
 
-    //Constants.ACTION_NOTIFY_STOP
 }

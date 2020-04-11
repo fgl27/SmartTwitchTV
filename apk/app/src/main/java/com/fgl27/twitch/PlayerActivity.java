@@ -210,6 +210,7 @@ public class PlayerActivity extends Activity {
             runtime = Runtime.getRuntime();
 
             deviceIsTV = Tools.deviceIsTV(this);
+            appPreferences = new AppPreferences(this);
 
             GetPing();
             StopService();
@@ -246,7 +247,6 @@ public class PlayerActivity extends Activity {
             //Ram too big.bigger then max int value... use 500MB
             if (DeviceRam < 0) DeviceRam = 500000000;
 
-            appPreferences = new AppPreferences(this);
             initializeWebview();
         }
     }
@@ -847,15 +847,20 @@ public class PlayerActivity extends Activity {
     }
 
     private void StopService() {
-        if (!deviceIsTV) return;
-
-        Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_PAUSE, this);
     }
 
     private void StartService() {
-        if (!deviceIsTV) return;
+        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+    }
 
-        Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+    private boolean CheckService() {
+        if (!deviceIsTV || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+            return false;
+        }
+
+        return true;
     }
 
     private void GetPing() {
