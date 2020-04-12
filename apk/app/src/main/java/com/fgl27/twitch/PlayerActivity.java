@@ -142,6 +142,7 @@ public class PlayerActivity extends Activity {
     public float PingValueAVG = 0f;
     public long PingCounter = 0L;
     public long PingErrorCounter = 0L;
+    public boolean warningShowing = false;
     public long PlayerCurrentPosition = 0L;
     public boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
     public Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
@@ -889,11 +890,13 @@ public class PlayerActivity extends Activity {
         TextView warning = findViewById(R.id.warning);
         warning.setText(text);
         warning.setVisibility(View.VISIBLE);
+        warningShowing = true;
     }
 
     private void HideWarningText() {
         TextView warning = findViewById(R.id.warning);
         warning.setVisibility(View.GONE);
+        warningShowing = false;
     }
 
     private void GetPing() {
@@ -906,12 +909,16 @@ public class PlayerActivity extends Activity {
                 PingValue = Float.parseFloat(TempPing);
                 PingValueAVG += PingValue;
                 PingCounter++;
+                //Reset error check
                 PingErrorCounter = 0L;
-            } else {
+                //Prevent clear ShowNoNetworkWarning
+                if (warningShowing) MainThreadHandler.post(this::HideWarningText);
+            } else if (!warningShowing) {
                 PingErrorCounter++;
-                if (PingErrorCounter > 5) {
+                if (PingErrorCounter > 2) {//> 0 1 2 = 30s... 5 seconds of postDelayed plus 5 seconds of postDelayed times 3 = 30s
+                    PingErrorCounter = 0L;
                     MainThreadHandler.post(() -> ShowWarningText(getString(R.string.no_internet)));
-                    MainThreadHandler.postDelayed(this::HideWarningText, 10000);
+                    MainThreadHandler.postDelayed(this::HideWarningText, 30000);
                 }
             }
 
