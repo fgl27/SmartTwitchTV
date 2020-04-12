@@ -336,8 +336,10 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
     var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
         error = STR_STREAM_ERROR;
 
-    if (doc !== null) {
+    if (doc) {
         doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+        if (!Play_isOn) return doc;
 
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
