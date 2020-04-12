@@ -135,4 +135,17 @@
         app:use_artwork="false"
         app:show_buffering="always"/>
 
+    <TextView
+        android:id="@+id/warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:padding="10dp"
+        android:background="@drawable/shadow_text"
+        android:visibility="gone"/>
+
 </merge>
