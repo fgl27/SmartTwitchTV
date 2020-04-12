@@ -122,8 +122,8 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.168';
-var Main_minversion = 'April 11, 2020';
+var Main_stringVersion_Min = '.169';
+var Main_minversion = 'April 12, 2020';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsOnAndroidVersion = '';
 var Main_AndroidSDK = 1000;
