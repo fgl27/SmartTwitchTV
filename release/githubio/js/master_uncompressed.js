@@ -6820,8 +6820,10 @@
         var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
             error = STR_STREAM_ERROR;
 
-        if (doc !== null) {
+        if (doc) {
             doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+            if (!Play_isOn) return doc;
 
             if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
@@ -18482,7 +18484,7 @@
 
         var doc = Play_CheckLiveThumb(false, true);
 
-        if (!Play_isOn || doc) {
+        if (doc) {
 
             Android.CheckIfIsLiveFeed(
                 doc[6],
