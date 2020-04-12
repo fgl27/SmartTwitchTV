@@ -514,7 +514,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
     var doc = Play_CheckLiveThumb(false, true);
 
-    if (!Play_isOn || doc) {
+    if (doc) {
 
         Android.CheckIfIsLiveFeed(
             doc[6],
