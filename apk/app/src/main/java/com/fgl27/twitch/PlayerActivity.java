@@ -28,6 +28,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -140,6 +141,7 @@ public class PlayerActivity extends Activity {
     public float PingValue = 0f;
     public float PingValueAVG = 0f;
     public long PingCounter = 0L;
+    public long PingErrorCounter = 0L;
     public long PlayerCurrentPosition = 0L;
     public boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
     public Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
@@ -268,6 +270,11 @@ public class PlayerActivity extends Activity {
 
         loadingView[5] = findViewById(R.id.loading);
         loadingView[5].setLayoutParams(DefaultLoadingLayout);
+
+        //Set default warning text size base on screen size
+        float textSize = ScreenSize.y / 100.0f * 2;
+        TextView warning = findViewById(R.id.warning);
+        warning.setTextSize(textSize);
     }
 
     public void setPlayerSurface(boolean surface_view) {
@@ -864,6 +871,31 @@ public class PlayerActivity extends Activity {
         return true;
     }
 
+    private void ShowNoNetworkWarning() {
+        ShowWarningText(getString(R.string.no_network));
+        NetworkCheck();
+    }
+
+    private void NetworkCheck() {
+        MainThreadHandler.postDelayed(() -> {
+            if (Tools.isConnectedOrConnecting(this)){
+                HideWarningText();
+                mWebView.loadUrl(PageUrl);
+            } else NetworkCheck();
+        }, 1000);
+    }
+
+    private void ShowWarningText(String text) {
+        TextView warning = findViewById(R.id.warning);
+        warning.setText(text);
+        warning.setVisibility(View.VISIBLE);
+    }
+
+    private void HideWarningText() {
+        TextView warning = findViewById(R.id.warning);
+        warning.setVisibility(View.GONE);
+    }
+
     private void GetPing() {
         RuntimeHandler.removeCallbacksAndMessages(null);
 
@@ -874,7 +906,13 @@ public class PlayerActivity extends Activity {
                 PingValue = Float.parseFloat(TempPing);
                 PingValueAVG += PingValue;
                 PingCounter++;
-
+                PingErrorCounter = 0L;
+            } else {
+                PingErrorCounter++;
+                if (PingErrorCounter > 5) {
+                    MainThreadHandler.post(() -> ShowWarningText(getString(R.string.no_internet)));
+                    MainThreadHandler.postDelayed(this::HideWarningText, 10000);
+                }
             }
 
             if (!IsStopped) GetPing();
@@ -1086,7 +1124,8 @@ public class PlayerActivity extends Activity {
 
         });
 
-        mWebView.loadUrl(PageUrl);
+        if (Tools.isConnectedOrConnecting(this)) mWebView.loadUrl(PageUrl);
+        else ShowNoNetworkWarning();
 
         mWebView.requestFocus();
     }

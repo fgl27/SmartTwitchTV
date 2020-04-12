@@ -10,6 +10,8 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -65,6 +67,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -339,12 +342,23 @@ public final class Tools {
 
             Process process = runtime.exec("ping -c 1 api.twitch.tv");
 
+            //TODO find a solution for older api
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if(!process.waitFor(5, TimeUnit.SECONDS)) {
+                    //timeout - kill the process.
+                    process.destroy(); // consider using destroyForcibly instead
+                }
+            }
+
             Matcher matcher = TIME_NAME.matcher(readFullyString(process.getInputStream()));
 
             return matcher.find() ? matcher.group(1) : null;
+        } catch (InterruptedException e) {
+            Log.w(TAG, "GetPing InterruptedException ", e);
         } catch (IOException e) {
             Log.w(TAG, "GetPing IOException ", e);
         }
+
         return null;
     }
 
@@ -845,5 +859,16 @@ public final class Tools {
         Intent intent = new Intent(context, NotificationService.class);
         intent.setAction(action);
         ContextCompat.startForegroundService(context, intent);
+    }
+
+    public static boolean isConnectedOrConnecting(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = null;
+        if (cm != null) {
+            activeNetwork = cm.getActiveNetworkInfo();
+        }
+
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }
