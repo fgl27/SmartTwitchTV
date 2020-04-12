@@ -338,15 +338,16 @@ public final class Tools {
     }
 
     public static String GetPing(Runtime runtime) {
+        Process process = null;
         try {
 
-            Process process = runtime.exec("ping -c 1 api.twitch.tv");
+            process = runtime.exec("ping -c 1 api.twitch.tv");
 
             //TODO find a solution for older api
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if(!process.waitFor(5, TimeUnit.SECONDS)) {
-                    //timeout - kill the process.
-                    process.destroy(); // consider using destroyForcibly instead
+                    process.destroy();
+                    return null;
                 }
             }
 
@@ -357,6 +358,8 @@ public final class Tools {
             Log.w(TAG, "GetPing InterruptedException ", e);
         } catch (IOException e) {
             Log.w(TAG, "GetPing IOException ", e);
+        } finally {
+            if (process != null) process.destroy();
         }
 
         return null;
