@@ -431,4 +431,5 @@ function en_USLang() {
     STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
     STR_GIFT_SUB = " has gift you a sub!";
     STR_GIFT_ANONYMOUS = "A anonymous user ";
+    STR_CHAT_BANNED = "You are permanently banned from talking in  ";
 }

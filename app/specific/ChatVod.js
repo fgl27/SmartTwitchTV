@@ -95,7 +95,7 @@ function Chat_loadEmotesError() {
 }
 
 function Chat_loadEmotesSuccess(data) {
-    ChatLive_loadEmotesbbtv(JSON.parse(data));
+    ChatLive_loadEmotesbbtv(JSON.parse(data), 0, true);
     Chat_loadEmotesffz();
 }
 
@@ -116,7 +116,7 @@ function Chat_loadEmotesErrorffz() {
 }
 
 function Chat_loadEmotesSuccessffz(data) {
-    ChatLive_loadEmotesffz(JSON.parse(data));
+    ChatLive_loadEmotesffz(JSON.parse(data), 0, true);
 
     Chat_LoadGlobal = true;
 }
@@ -132,7 +132,7 @@ function Chat_loadBadgesTransform(responseText, chat_number) {
 function Chat_loadBadgesChannelSuccess(responseText, id) {
     Chat_loadBadgesTransform(responseText, 0);
 
-    ChatLive_loadEmotesChannel(0);
+    ChatLive_loadEmotesChannelbbtv(0);
     ChatLive_loadCheersChannel(0);
     ChatLive_loadEmotesChannelffz(0);
     if (Chat_Id === id) Chat_loadChat(id);
