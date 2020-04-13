@@ -83,6 +83,8 @@ function AddCode_TokensCheckScope(scope) {
     if (!Main_A_includes_B(scope, 'user_read')) return false;
     if (!Main_A_includes_B(scope, 'user_follows_edit')) return false;
     if (!Main_A_includes_B(scope, 'user_subscriptions')) return false;
+    if (!Main_A_includes_B(scope, 'chat:edit')) return false;
+    if (!Main_A_includes_B(scope, 'chat:read')) return false;
 
     return true;
 }

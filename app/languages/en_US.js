@@ -199,7 +199,7 @@ function en_USLang() {
     STR_SETTINGS_LANG = "Language";
     STR_LOADING_CHAT = "Chat: Connecting to";
     STR_LOADING_FAIL = "Chat: Connecting Fail... Trying again...";
-    STR_CHAT_CONNECTED = "Chat: Connected.";
+    STR_CHAT_CONNECTED = "Chat: Connected";
     STR_CHAT_DELAY = "Chat: delay";
     STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";
     STR_FROM = "From:" + STR_BR;
@@ -429,4 +429,6 @@ function en_USLang() {
     STR_STREAM_ERROR_SMALL = "Small player, stream ended" + STR_TOO_ERRORS;
     STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
     STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
+    STR_GIFT_SUB = " has gift you a sub!";
+    STR_GIFT_ANONYMOUS = "A anonymous user ";
 }
