@@ -375,6 +375,9 @@ function AddUser_UserMakeOne(position) {
         } catch (e) {}
         Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
     }
+
+    //Reset user emotes on chage
+    userEmote = null;
 }
 
 function AddUser_UserCodeExist(user) {

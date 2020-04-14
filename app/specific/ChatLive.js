@@ -205,7 +205,6 @@ function ChatLive_loadEmotesUserSuccess(data) {
 }
 
 function ChatLive_loadEmotesChannelbbtv(chat_number) {
-    extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = null;
     ChatLive_loadingDataTry = 0;
     ChatLive_loadEmotesChannelbbtvRequest(chat_number);
 }
@@ -332,9 +331,6 @@ function ChatLive_loadCheersChannelSuccess(data, chat_number) {
 }
 
 function ChatLive_loadEmotesChannelffz(chat_number) {
-
-    extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = null;
-
     ChatLive_loadingDataTry = 0;
     ChatLive_loadEmotesChannelffzRequest(chat_number);
 }
@@ -868,10 +864,8 @@ function ChatLive_Clear(chat_number) {
     ChatLive_LineAddCounter[chat_number] = 0;
     ChatLive_Messages[chat_number] = [];
 
-    if (!chat_number) {
-        Main_empty('chat_box');
-        userEmote = null;
-    } else Main_empty('chat_box2');
+    if (!chat_number) Main_empty('chat_box');
+    else Main_empty('chat_box2');
 
     ChatLive_loaded[chat_number] = false;
     ChatLive_Banned[chat_number] = false;
