@@ -218,3 +218,6 @@
 .icon-options:before {
   content: "\44";
 }
+.icon-keyboard:before {
+  content: "\55";
+}
