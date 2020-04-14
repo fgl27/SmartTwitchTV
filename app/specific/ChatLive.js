@@ -19,7 +19,7 @@ var extraEmotesDone = {
     ffzGlobal: {}
 };
 
-var userEmote = {};
+var userEmote = null;
 var extraEmotes = {};
 var cheers = {};
 
@@ -199,9 +199,6 @@ function ChatLive_loadEmotesUserSuccess(data) {
         });
 
     } catch (e) {}
-
-    console.log('ChatLive_loadEmotesUserSuccess');
-    console.log(userEmote);
 }
 
 function ChatLive_loadEmotesChannelbbtv(chat_number) {
@@ -269,9 +266,6 @@ function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
             }
         }
     });
-    console.log("ChatLive_loadEmotesbbtv");
-    console.log(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]]);
-    console.log(extraEmotesDone.bbtvGlobal);
 }
 
 function ChatLive_loadCheersChannel(chat_number) {
@@ -410,10 +404,6 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
             });
         }
     });
-
-    console.log("ChatLive_loadEmotesffz");
-    console.log(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]);
-    console.log(extraEmotesDone.ffzGlobal);
 }
 
 function ChatLive_loadChat(chat_number) {
@@ -457,8 +447,6 @@ function ChatLive_loadChatRequest(chat_number) {
                 ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                 break;
             case "001":
-                //console.log(message.command);
-                //console.log(message);
                 if (useToken) {
                     if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
                         ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
@@ -475,8 +463,6 @@ function ChatLive_loadChatRequest(chat_number) {
                 }
                 break;
             case "JOIN":
-                //console.log(message.command);
-                //console.log(message);
 
                 if (!ChatLive_loaded[chat_number]) {
                     ChatLive_loaded[chat_number] = true;
@@ -511,15 +497,32 @@ function ChatLive_loadChatRequest(chat_number) {
                     }
                 }
 
+                window.setTimeout(function() {
+                    ChatLive_FakeSendMessage("LUL ", 0);
+                }, 10000);
+
                 if (useToken && !chat_number) ChatLive_SendPrepared();
                 else if (!AddUser_UsernameArray[0].access_token) ChatLive_SendClose();
 
                 break;
             case "PRIVMSG":
+                //console.log(message);
                 ChatLive_loadChatSuccess(message, chat_number);
                 break;
             case "USERNOTICE":
                 if (useToken) ChatLive_CheckGiftSub(message, chat_number);
+                break;
+            case "USERSTATE":
+                //console.log(message);
+                // tags:
+                // badge-info: true
+                // badges: true
+                // color: true
+                // display-name: "testtwitch27"
+                // emote-sets: "0"
+                // mod: "0"
+                // subscriber: "0"
+                // user-type: true
                 break;
             case "NOTICE":
                 console.log(message);
@@ -546,8 +549,6 @@ function ChatLive_loadChatRequest(chat_number) {
                 // msg-id: "msg_banned"
                 break;
             case "ROOMSTATE":
-                //console.log(message);
-
                 // command: "ROOMSTATE"
                 // params: Array(6)
                 // 0: "#sayeedblack
@@ -576,7 +577,6 @@ function ChatLive_loadChatRequest(chat_number) {
                 // __proto__: Object
                 break;
             case "PART":
-                //console.log('PART hehereh');
                 if (ChatLive_socket[chat_number]) ChatLive_socket[chat_number].close(1000);
                 break;
             default:
@@ -647,7 +647,7 @@ function ChatLive_SendPrepared() {
                     }, 10000);
                     break;
                 case "USERSTATE":
-                    //console.log(message);
+                    console.log(message);
                     break;
                 default:
                     break;
@@ -676,8 +676,31 @@ function ChatLive_socketSendCheck() {
 }
 
 function ChatLive_SendMessage(message, chat_number) {
-    //console.log('message ' + message);
+    console.log('ChatLive_SendMessage ' + message);
     ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
+}
+
+function ChatLive_FakeSendMessage(messageText, chat_number) {
+    console.log('ChatLive_FakeSendMessage ' + messageText);
+
+    var message = {
+        params: [
+            "",
+            messageText
+        ],
+        tags: {
+            "badge-info": true,
+            badges: true,
+            color: true,
+            "display-name": "testtwitch27",
+            "emote-sets": "0",
+            mod: "0",
+            subscriber: "0",
+            "user-type": true
+        }
+    };
+
+    ChatLive_loadChatSuccess(message, chat_number);
 }
 
 function ChatLive_CheckGiftSub(message) {
