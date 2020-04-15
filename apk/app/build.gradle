@@ -1,5 +1,6 @@
 apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -18,8 +19,8 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles = [
-                getDefaultProguardFile('proguard-android.txt'),
-                'proguard-rules.pro'
+                    getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
             ]
         }
         debug {
@@ -56,6 +57,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-analytics:' + versions.firebase
     implementation 'net.grandcentrix.tray:tray:' + versions.tray
     implementation 'androidx.leanback:leanback:' + versions.leanback
     implementation project(':exoplayer-library-core')
