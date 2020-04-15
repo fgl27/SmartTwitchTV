@@ -17,6 +17,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -873,5 +875,19 @@ public final class Tools {
         }
 
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public static void showKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
+        }
     }
 }
