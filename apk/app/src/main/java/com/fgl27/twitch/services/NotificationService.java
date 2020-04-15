@@ -507,10 +507,12 @@ public class NotificationService extends Service {
             float width = ScreenSize.y / 100.0f;
             int widthInt = ScreenSize.y / 100;
 
-            LayoutWidth = widthInt * 75;
-            ImageSize = widthInt * 18;
-            textSizeSmall = 1.1f * width;
-            textSizeBig = 1.22f * width;
+            if (LayoutWidth != (widthInt * 75)) {
+                LayoutWidth = widthInt * 75;
+                ImageSize = widthInt * 18;
+                textSizeSmall = 1.1f * width;
+                textSizeBig = 1.22f * width;
+            }
         }
     }
 
