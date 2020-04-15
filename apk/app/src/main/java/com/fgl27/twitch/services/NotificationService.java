@@ -183,11 +183,14 @@ public class NotificationService extends Service {
         if (NotificationHandler != null) {
             NotificationHandler.removeCallbacksAndMessages(null);
 
+            long delay = Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+            if (delay > 0) delay = delay - System.currentTimeMillis();
+
             NotificationHandler.postDelayed(() -> {
                 if (screenOn && isRunning) DoNotifications();
 
                 InitHandler(1000 * 60 * 5);//it 5 min refresh
-            }, timeout);
+            }, timeout + (delay > 0 ? delay : 0));
         }
     }
 
