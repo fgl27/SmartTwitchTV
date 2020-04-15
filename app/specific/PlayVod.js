@@ -52,6 +52,7 @@ function PlayVod_Start() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();

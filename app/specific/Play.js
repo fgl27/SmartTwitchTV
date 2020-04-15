@@ -281,6 +281,7 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
+    document.getElementById('controls_' + Play_controlsChatSend).style.display = '';
 
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;

@@ -814,12 +814,13 @@ var Play_controlsAudio = 11;
 var Play_controlsAudioMulti = 12;
 var Play_controlsChat = 13;
 var Play_controlsChatSide = 14;
-var Play_controlsChatForceDis = 15;
-var Play_controlsChatPos = 16;
-var Play_controlsChatSize = 17;
-var Play_controlsChatBright = 18;
-var Play_controlsChatFont = 19;
-var Play_controlsChatDelay = 20;
+var Play_controlsChatSend = 15;
+var Play_controlsChatForceDis = 16;
+var Play_controlsChatPos = 17;
+var Play_controlsChatSize = 18;
+var Play_controlsChatBright = 19;
+var Play_controlsChatFont = 20;
+var Play_controlsChatDelay = 21;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -1363,6 +1364,15 @@ function Play_MakeControls() {
             Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
                 icon + '" ></i>');
         },
+    };
+
+    Play_controls[Play_controlsChatSend] = {
+        icons: "keyboard",
+        string: STR_CHAT_WRITE,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: ChatLiveControls_Show
     };
 
     Play_controls[Play_controlsChatForceDis] = { //force disable chat

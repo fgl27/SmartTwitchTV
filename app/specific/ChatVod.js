@@ -1,5 +1,4 @@
 //Variable initialization
-var Chat_LoadGlobal = false;
 var Chat_loadingDataTry = 0;
 var Chat_Messages = [];
 var Chat_MessagesNext = [];
@@ -42,7 +41,8 @@ function Chat_Init() {
         Chat_Disable();
         return;
     }
-    if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
+
+    Chat_loadBadgesGlobal();
 
     Chat_Id = (new Date()).getTime();
     ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
@@ -50,75 +50,89 @@ function Chat_Init() {
     ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess, 0);
 }
 
+var Chat_LoadGlobalBadges = false;
+
 function Chat_loadBadgesGlobal() {
-    extraEmotes = {};
-    Chat_loadingDataTry = 0;
-    Chat_LoadGlobal = false;
-    Chat_loadBadgesGlobalRequest();
+    if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
+    if (!extraEmotesDone.bbtvGlobal || extraEmotesDone.bbtvGlobal.length < 1) Chat_loadBBTVGlobalEmotes(0);
+    if (!extraEmotesDone.ffzGlobal || extraEmotesDone.ffzGlobal.length < 1) Chat_loadEmotesffz(0);
 }
 
-function Chat_loadBadgesGlobalRequest() {
-    var theUrl = 'https://badges.twitch.tv/v1/badges/global/display';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadBadgesGlobalSuccess, Chat_loadBadgesGlobalError);
+function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                callbackSucess(xmlHttp.responseText);
+            } else {
+                calbackError(tryes);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
 }
 
-function Chat_loadBadgesGlobalError() {
-    Chat_loadingDataTry++;
-    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest();
-    else Chat_LoadGlobal = false;
+function Chat_loadBadgesGlobalRequest(tryes) {
+    Chat_BaseLoadUrl(
+        'https://badges.twitch.tv/v1/badges/global/display',
+        tryes,
+        Chat_loadBadgesGlobalSuccess,
+        Chat_loadBadgesGlobalError
+    );
+}
+
+function Chat_loadBadgesGlobalError(tryes) {
+    if (tryes < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest(tryes + 1);
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
+
+    Chat_LoadGlobalBadges = true;
     transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
         badge.versions.forEach(function(version) {
             tagCSS(badge.type, version.type, version.image_url_4x, null);
         });
     });
-
-    Chat_loadEmotes();
 }
 
-function Chat_loadEmotes() {
-    Chat_loadingDataTry = 0;
-    Chat_loadEmotesRequest();
+function Chat_loadBBTVGlobalEmotes(tryes) {
+    Chat_BaseLoadUrl(
+        'https://api.betterttv.net/2/emotes',
+        tryes,
+        Chat_loadEmotesSuccess,
+        Chat_loadEmotesError
+    );
 }
 
-function Chat_loadEmotesRequest() {
-    var theUrl = 'https://api.betterttv.net/2/emotes';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccess, Chat_loadEmotesError);
-}
-
-function Chat_loadEmotesError() {
-    Chat_loadingDataTry++;
-    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequest();
-    else Chat_LoadGlobal = false;
+function Chat_loadEmotesError(tryes) {
+    if (tryes < Chat_loadingDataTryMax) Chat_loadBBTVGlobalEmotes(tryes + 1);
 }
 
 function Chat_loadEmotesSuccess(data) {
     ChatLive_loadEmotesbbtv(JSON.parse(data), 0, true);
-    Chat_loadEmotesffz();
 }
 
-function Chat_loadEmotesffz() {
-    Chat_loadingDataTry = 0;
-    Chat_loadEmotesRequestffz();
+function Chat_loadEmotesffz(tryes) {
+    Chat_BaseLoadUrl(
+        'https://api.frankerfacez.com/v1/set/global',
+        tryes,
+        Chat_loadEmotesSuccessffz,
+        Chat_loadEmotesErrorffz
+    );
 }
 
-function Chat_loadEmotesRequestffz() {
-    var theUrl = 'https://api.frankerfacez.com/v1/set/global';
-    BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccessffz, Chat_loadEmotesErrorffz);
-}
-
-function Chat_loadEmotesErrorffz() {
-    Chat_loadingDataTry++;
-    if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequestffz();
-    else Chat_LoadGlobal = false;
+function Chat_loadEmotesErrorffz(tryes) {
+    if (tryes < Chat_loadingDataTryMax) Chat_loadEmotesffz(tryes + 1);
 }
 
 function Chat_loadEmotesSuccessffz(data) {
     ChatLive_loadEmotesffz(JSON.parse(data), 0, true);
-
-    Chat_LoadGlobal = true;
 }
 
 function Chat_loadBadgesTransform(responseText, chat_number) {
@@ -132,9 +146,9 @@ function Chat_loadBadgesTransform(responseText, chat_number) {
 function Chat_loadBadgesChannelSuccess(responseText, id) {
     Chat_loadBadgesTransform(responseText, 0);
 
-    ChatLive_loadEmotesChannelbbtv(0);
-    ChatLive_loadCheersChannel(0);
-    ChatLive_loadEmotesChannelffz(0);
+    ChatLive_loadEmotesChannelbbtv(0, 0);
+    ChatLive_loadCheersChannel(0, 0);
+    ChatLive_loadEmotesChannelffz(0, 0);
     if (Chat_Id === id) Chat_loadChat(id);
 }
 

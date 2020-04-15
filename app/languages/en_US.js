@@ -432,4 +432,19 @@ function en_USLang() {
     STR_GIFT_SUB = " has gift you a sub!";
     STR_GIFT_ANONYMOUS = "A anonymous user ";
     STR_CHAT_BANNED = "You are permanently banned from talking in  ";
+    STR_CHAT_WRITE = "Write to chat";
+    STR_PLACEHOLDER_CHAT = "Press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
+    STR_CHAT_ROOMSTATE = "Chat ROOMSTATE:";
+    STR_CHAT_NO_RESTRICTIONS = "No restrictions";
+    STR_CHAT_OPTIONS = "Options";
+    STR_CHAT_DELL_ALL = "Delete all";
+    STR_CHAT_TW_EMOTES = "Twitch emotes";
+    STR_CHAT_BBTV_GLOBAL = "BBTV global";
+    STR_CHAT_BBTV_STREAM = "BBTV streamer";
+    STR_CHAT_FFZ_GLOBAL = "FFZ global";
+    STR_CHAT_FFZ_STREAM = "FFZ streamer";
+    STR_CHAT_AT_STREAM = "@streamer";
+    STR_CHAT_RESULT = "In Chat expected result:";
+    STR_CHAT_SEND = "Send";
+    STR_CHAT_EMOTE_EMPTY = "This emote list is empty";
 }

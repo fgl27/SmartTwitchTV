@@ -83,6 +83,7 @@ var Main_ExitDialogID = null;
 var Main_IsDayFirst = false;
 var Main_SearchInput;
 var Main_AddUserInput;
+var Main_ChatLiveInput;
 var Main_updateclockId;
 var Main_ContentLang = "";
 var Main_Periods = [];
@@ -185,7 +186,7 @@ function Main_loadTranslations(language) {
         } catch (e) {
             Main_IsOnAndroidVersion = '1.0.0';
             Main_IsOnAndroid = 0;
-            document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
+            document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";
             Main_isDebug = true;
             console.log('Main_isReleased: ' + Main_isReleased);
             console.log('Main_isDebug: ' + Main_isDebug);
@@ -223,6 +224,7 @@ function Main_loadTranslations(language) {
 
         Main_SearchInput = document.getElementById("search_input");
         Main_AddUserInput = document.getElementById("user_input");
+        Main_ChatLiveInput = document.getElementById("chat_send_input");
         Main_Scene1Doc = document.getElementById('scene1');
         Main_Scene2Doc = document.getElementById('scene2');
 
@@ -537,6 +539,17 @@ function Main_SetStringsSecondary() {
     Main_textContent('dialog_thumb_opt_setting_name_5', STR_GO_TO);
 
     Main_innerHTML("dialog_multi_help_text", STR_CONTROLS_MULTI);
+
+    Main_textContent("chat_send_button0", STR_CHAT_OPTIONS);
+    Main_textContent("chat_send_button1", STR_CHAT_DELL_ALL);
+    Main_textContent("chat_send_button2", STR_CHAT_TW_EMOTES);
+    Main_textContent("chat_send_button3", STR_CHAT_BBTV_GLOBAL);
+    Main_textContent("chat_send_button4", STR_CHAT_FFZ_GLOBAL);
+    Main_textContent("chat_send_button5", STR_CHAT_SEND);
+    Main_textContent("chat_send_button6", STR_CHAT_AT_STREAM);
+    Main_textContent("chat_send_button7", STR_CHAT_BBTV_STREAM);
+    Main_textContent("chat_send_button8", STR_CHAT_FFZ_STREAM);
+    Main_textContent("chat_result", STR_CHAT_RESULT);
 }
 
 var Main_initClickDoc = [
@@ -1773,6 +1786,7 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
                     obj.key_refresh();
                 else calbackError(obj);
             } else {
+                console.log(xmlHttp);
                 calbackError(obj);
             }
         }

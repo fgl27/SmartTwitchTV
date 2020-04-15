@@ -12,14 +12,14 @@ var ChatLive_Messages = [];
 var ChatLive_Banned = [];
 var ChatLive_Playing = true;
 var extraEmotesDone = {
-    bbtv: {},
-    ffz: {},
+    bbtv: [],
+    ffz: [],
     cheers: {},
-    bbtvGlobal: {},
-    ffzGlobal: {}
+    bbtvGlobal: [],
+    ffzGlobal: []
 };
 
-var userEmote = null;
+var userEmote = [];
 var extraEmotes = {};
 var cheers = {};
 
@@ -60,10 +60,12 @@ function ChatLive_Init(chat_number) {
         Chat_Disable();
         return;
     }
-    if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
+
+    Chat_loadBadgesGlobal();
 
     ChatLive_loaded[chat_number] = false;
     ChatLive_Banned[chat_number] = false;
+    ChatLive_RoomState[chat_number] = null;
 
     ChatLive_Id[chat_number] = (new Date()).getTime();
     ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
@@ -73,11 +75,10 @@ function ChatLive_Init(chat_number) {
 }
 
 function ChatLive_loadBadgesChannel(id, callbackSucess, chat_number) {
-    ChatLive_loadingDataTry = 0;
-    ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
+    ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number, 0);
 }
 
-function ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number) {
+function ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number, tryes) {
     var theUrl = 'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display';
     var xmlHttp = new XMLHttpRequest();
 
@@ -91,7 +92,7 @@ function ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number) {
                 callbackSucess(xmlHttp.responseText, id, chat_number);
                 return;
             } else {
-                ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number);
+                ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number, tryes);
             }
         }
     };
@@ -99,74 +100,53 @@ function ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number) {
     xmlHttp.send(null);
 }
 
-function ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number) {
-    ChatLive_loadingDataTry++;
-    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
+function ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number, tryes) {
+
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number, tryes + 1);
     else {
         if (ChatLive_Id[chat_number] === id) {
             window.clearTimeout(ChatLive_loadBadgesChannelId);
             ChatLive_loadBadgesChannelId = window.setTimeout(function() {
-                ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
-            }, 500);
+                ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number, 0);
+            }, 200);
         }
     }
+
 }
 
 function ChatLive_loadBadgesChannelSuccess(responseText, id, chat_number) {
     Chat_loadBadgesTransform(responseText, chat_number);
 
-    ChatLive_loadEmotesUser();
-    ChatLive_loadEmotesChannelbbtv(chat_number);
-    ChatLive_loadCheersChannel(chat_number);
-    ChatLive_loadEmotesChannelffz(chat_number);
+    ChatLive_loadEmotesUser(0);
+    ChatLive_loadEmotesChannelbbtv(0, chat_number);
+    ChatLive_loadCheersChannel(0, chat_number);
+    ChatLive_loadEmotesChannelffz(0, chat_number);
     if (ChatLive_Id[chat_number] === id) ChatLive_loadChat(chat_number);
 }
 
-function ChatLive_loadEmotesUser() {
-    if (AddUser_UsernameArray[0].access_token && !userEmote) {
-        ChatLive_loadingDataTry = 0;
-        ChatLive_loadEmotesUserRequest();
+function ChatLive_loadEmotesUser(tryes) {
+    if (AddUser_UsernameArray[0].access_token && !userEmote.length) {
+        ChatLive_BaseLoadUrl(
+            Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
+            0,
+            tryes,
+            ChatLive_loadEmotesUserSuccess,
+            ChatLive_loadEmotesUserError,
+            Main_Headers,
+            3
+        );
     }
 }
 
-function ChatLive_loadEmotesUserRequest() {
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes';
-    var xmlHttp = new XMLHttpRequest();
-
-    Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-
-    xmlHttp.open("GET", theUrl, true);
-
-    for (var i = 0; i < 3; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                ChatLive_loadEmotesUserSuccess(xmlHttp.responseText);
-            } else {
-                ChatLive_loadEmotesUserError();
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function ChatLive_loadEmotesUserError() {
-    ChatLive_loadingDataTry++;
-    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesUserRequest();
+function ChatLive_loadEmotesUserError(tryes) {
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesUser(tryes + 1);
 }
 
 function ChatLive_loadEmotesUserSuccess(data) {
-
     try {
 
         data = JSON.parse(data);
-        userEmote = {};
+        userEmote = [];
 
         Object.keys(data.emoticon_sets).forEach(function(set) {
             set = data.emoticon_sets[set];
@@ -187,12 +167,13 @@ function ChatLive_loadEmotesUserSuccess(data) {
                         '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
                     };
 
-                    //Don't copy to prevent shallow clone
-                    userEmote[emoticon.code] = {
-                        code: emoticon.code,
-                        id: emoticon.id,
-                        '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
-                    };
+                    userEmote.push(
+                        {
+                            code: emoticon.code,
+                            id: emoticon.id,
+                            '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
+                        }
+                    );
 
                 });
             }
@@ -201,35 +182,20 @@ function ChatLive_loadEmotesUserSuccess(data) {
     } catch (e) {}
 }
 
-function ChatLive_loadEmotesChannelbbtv(chat_number) {
+function ChatLive_loadEmotesChannelbbtv(tryes, chat_number) {
     ChatLive_loadingDataTry = 0;
-    ChatLive_loadEmotesChannelbbtvRequest(chat_number);
+
+    ChatLive_BaseLoadUrl(
+        'https://api.betterttv.net/2/channels/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
+        chat_number,
+        tryes,
+        ChatLive_loadEmotesChannelbbtvSuccess,
+        ChatLive_loadEmotesChannelError
+    );
 }
 
-function ChatLive_loadEmotesChannelbbtvRequest(chat_number) {
-    var theUrl = 'https://api.betterttv.net/2/channels/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]);
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                ChatLive_loadEmotesChannelbbtvSuccess(xmlHttp.responseText, chat_number);
-            } else {
-                ChatLive_loadEmotesChannelError(chat_number);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function ChatLive_loadEmotesChannelError(chat_number) {
-    ChatLive_loadingDataTry++;
-    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelbbtvRequest(chat_number);
+function ChatLive_loadEmotesChannelError(tryes, chat_number) {
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelbbtv(tryes + 1, chat_number);
 }
 
 function ChatLive_loadEmotesChannelbbtvSuccess(data, chat_number) {
@@ -237,9 +203,8 @@ function ChatLive_loadEmotesChannelbbtvSuccess(data, chat_number) {
 }
 
 function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
-
-    if (!skipChannel) extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = {};
-    else extraEmotesDone.bbtvGlobal = {};
+    if (!skipChannel) extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = [];
+    else extraEmotesDone.bbtvGlobal = [];
 
     data.emotes.forEach(function(emote) {
         if (data.urlTemplate) {
@@ -252,54 +217,43 @@ function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
 
             //Don't copy to prevent shallow clone
             if (!skipChannel) {
-                extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
-                    code: emote.code,
-                    id: emote.id,
-                    '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
-                };
+                extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]].push(
+                    {
+                        code: emote.code,
+                        id: emote.id,
+                        '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
+                    }
+                );
             } else {
-                extraEmotesDone.bbtvGlobal[emote.code] = {
-                    code: emote.code,
-                    id: emote.id,
-                    '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
-                };
+                extraEmotesDone.bbtvGlobal.push(
+                    {
+                        code: emote.code,
+                        id: emote.id,
+                        '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
+                    }
+                );
             }
         }
     });
 }
 
-function ChatLive_loadCheersChannel(chat_number) {
+function ChatLive_loadCheersChannel(tryes, chat_number) {
     if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
-        ChatLive_loadingDataTry = 0;
-        ChatLive_loadCheersChannelRequest(chat_number);
+
+        ChatLive_BaseLoadUrl(
+            'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+            chat_number,
+            tryes,
+            ChatLive_loadCheersChannelSuccess,
+            ChatLive_loadCheersChannelError,
+            Main_Headers,
+            1
+        );
     }
 }
 
-function ChatLive_loadCheersChannelRequest(chat_number) {
-    var theUrl = 'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]);
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-    xmlHttp.setRequestHeader(Main_Headers[0][0], Main_Headers[0][1]);
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                ChatLive_loadCheersChannelSuccess(JSON.parse(xmlHttp.responseText), chat_number);
-            } else {
-                ChatLive_loadCheersChannelError(chat_number);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function ChatLive_loadCheersChannelError(chat_number) {
-    ChatLive_loadingDataTry++;
-    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadCheersChannelRequest(chat_number);
+function ChatLive_loadCheersChannelError(tryes, chat_number) {
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadCheersChannel(tryes + 1, chat_number);
 }
 
 function ChatLive_loadCheersChannelSuccess(data, chat_number) {
@@ -324,35 +278,20 @@ function ChatLive_loadCheersChannelSuccess(data, chat_number) {
 
 }
 
-function ChatLive_loadEmotesChannelffz(chat_number) {
+function ChatLive_loadEmotesChannelffz(tryes, chat_number) {
     ChatLive_loadingDataTry = 0;
-    ChatLive_loadEmotesChannelffzRequest(chat_number);
+
+    ChatLive_BaseLoadUrl(
+        'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
+        chat_number,
+        tryes,
+        ChatLive_loadEmotesChannelffzSuccess,
+        ChatLive_loadEmotesChannelffzError
+    );
 }
 
-function ChatLive_loadEmotesChannelffzRequest(chat_number) {
-    var theUrl = 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]);
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                ChatLive_loadEmotesChannelffzSuccess(xmlHttp.responseText, chat_number);
-            } else {
-                ChatLive_loadEmotesChannelffzError(chat_number);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function ChatLive_loadEmotesChannelffzError(chat_number) {
-    ChatLive_loadingDataTry++;
-    if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelffzRequest(chat_number);
+function ChatLive_loadEmotesChannelffzError(tryes, chat_number) {
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelffz(tryes + 1, chat_number);
 }
 
 function ChatLive_loadEmotesChannelffzSuccess(data, chat_number) {
@@ -360,9 +299,8 @@ function ChatLive_loadEmotesChannelffzSuccess(data, chat_number) {
 }
 
 function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
-
-    if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
-    else extraEmotesDone.ffzGlobal = {};
+    if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = [];
+    else extraEmotesDone.ffzGlobal = [];
 
     Object.keys(data.sets).forEach(function(set) {
         set = data.sets[set];
@@ -388,17 +326,21 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
 
                 //Don't copy to prevent shallow clone
                 if (!skipChannel) {
-                    extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
-                        code: emoticon.name,
-                        id: emoticon.id,
-                        '4x': 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1])
-                    };
+                    extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]].push(
+                        {
+                            code: emoticon.name,
+                            id: emoticon.id,
+                            '4x': 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1])
+                        }
+                    );
                 } else {
-                    extraEmotesDone.ffzGlobal[emoticon.name] = {
-                        code: emoticon.name,
-                        id: emoticon.id,
-                        '4x': 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1])
-                    };
+                    extraEmotesDone.ffzGlobal.push(
+                        {
+                            code: emoticon.name,
+                            id: emoticon.id,
+                            '4x': 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1])
+                        }
+                    );
                 }
 
             });
@@ -406,11 +348,21 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
     });
 }
 
+var useToken = [];
+
 function ChatLive_loadChat(chat_number) {
     ChatLive_CheckClear(chat_number);
     ChatLive_LineAdd('<span class="message">' + STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
         (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + '</span>', chat_number);
     ChatLive_loadChatRequest(chat_number);
+
+    useToken[chat_number] = !ChatLive_Banned[chat_number] && AddUser_UsernameArray[0].access_token;
+
+    if (!chat_number) {
+        if (useToken[chat_number]) ChatLive_SendPrepared();
+        else if (!AddUser_UsernameArray[0].access_token) ChatLive_SendClose();
+    }
+
 }
 
 function ChatLive_loadChatRequest(chat_number) {
@@ -435,7 +387,6 @@ function ChatLive_loadChatRequest(chat_number) {
     ChatLive_socket[chat_number].onmessage = function(data) {
 
         var message = window.parseIRC(data.data.trim());
-        var useToken = !ChatLive_Banned[chat_number] && !chat_number && AddUser_UsernameArray[0].access_token;
 
         if (!message.command) return;
 
@@ -444,17 +395,19 @@ function ChatLive_loadChatRequest(chat_number) {
 
         switch (message.command) {
             case "PING":
+                console.log('ChatLive_socket[chat_number] ' + chat_number);
+                console.log(message);
                 ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                 break;
             case "001":
-                if (useToken) {
+                if (useToken[chat_number]) {
                     if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
                         ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
                     }
                 }
                 break;
             case "CAP":
-                if (useToken) {
+                if (useToken[chat_number]) {
                     //Delay the joing so the cap get fully accepted
                     window.clearTimeout(ChatLive_JoinID[chat_number]);
                     ChatLive_JoinID[chat_number] = window.setTimeout(function() {
@@ -467,7 +420,7 @@ function ChatLive_loadChatRequest(chat_number) {
                 if (!ChatLive_loaded[chat_number]) {
                     ChatLive_loaded[chat_number] = true;
                     ChatLive_LineAdd('<span class="message">' + STR_CHAT_CONNECTED + " as " +
-                        (useToken ? AddUser_UsernameArray[0].display_name : STR_GIFT_ANONYMOUS) + '</span>', chat_number);
+                        (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_GIFT_ANONYMOUS) + '</span>', chat_number);
 
                     if (Play_ChatDelayPosition) {
                         var stringSec = STR_SECOND;
@@ -480,13 +433,13 @@ function ChatLive_loadChatRequest(chat_number) {
 
                 }
 
-                if (useToken) {
+                if (useToken[chat_number]) {
                     //1: "tmi.twitch.tv USERSTATE #cyr↵@emote-only=0;followers-only=-1;r9k=0;rituals=0;room-id=37522866;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #cyr"
                     if (message.params[1] && Main_A_includes_B(message.params[1], "ROOMSTATE")) {
 
                         var Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
                         var array = Regex.exec(message.params[1]);
-                        if (array && array.length === 6) console.log(array);
+                        if (array && array.length === 6) ChatLive_SetRoomState(array, chat_number);
 
                     } else {
                         //try a join again so the ROOMSTATE get send
@@ -501,16 +454,13 @@ function ChatLive_loadChatRequest(chat_number) {
                     ChatLive_FakeSendMessage("LUL ", 0);
                 }, 10000);
 
-                if (useToken && !chat_number) ChatLive_SendPrepared();
-                else if (!AddUser_UsernameArray[0].access_token) ChatLive_SendClose();
-
                 break;
             case "PRIVMSG":
                 //console.log(message);
                 ChatLive_loadChatSuccess(message, chat_number);
                 break;
             case "USERNOTICE":
-                if (useToken) ChatLive_CheckGiftSub(message, chat_number);
+                if (useToken[chat_number]) ChatLive_CheckGiftSub(message, chat_number);
                 break;
             case "USERSTATE":
                 //console.log(message);
@@ -526,7 +476,7 @@ function ChatLive_loadChatRequest(chat_number) {
                 break;
             case "NOTICE":
                 console.log(message);
-                if (useToken) {
+                if (useToken[chat_number]) {
                     if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
 
                         Play_showWarningDialog(message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number], 5000);
@@ -549,6 +499,7 @@ function ChatLive_loadChatRequest(chat_number) {
                 // msg-id: "msg_banned"
                 break;
             case "ROOMSTATE":
+                ChatLive_UpdateRoomState(message, chat_number);
                 // command: "ROOMSTATE"
                 // params: Array(6)
                 // 0: "#sayeedblack
@@ -603,6 +554,37 @@ function ChatLive_CheckClear(chat_number) {
     window.clearTimeout(ChatLive_CheckId[chat_number]);
 }
 
+var ChatLive_RoomState = [];
+function ChatLive_SetRoomState(array, chat_number) {
+
+    ChatLive_RoomState[chat_number] = {
+        'emote-only': parseInt(array[1]),
+        'followers-only': parseInt(array[2]),
+        rk9: parseInt(array[3]),
+        slow: parseInt(array[4]),
+        'subs-only': parseInt(array[5])
+    };
+
+    ChatLiveControls_RefreshRoomState(chat_number);
+}
+
+function ChatLive_UpdateRoomState(message, chat_number) {
+    console.log(message);
+    if (message.tags) {
+
+        if (!ChatLive_RoomState[chat_number]) ChatLive_RoomState[chat_number] = {};
+
+        if (message.tags.hasOwnProperty('msg-id')) ChatLive_RoomState[chat_number]['emote-only'] = message.tags['emote-only'];
+        if (message.tags.hasOwnProperty('followers-only')) ChatLive_RoomState[chat_number]['followers-only'] = message.tags['followers-only'];
+        if (message.tags.hasOwnProperty('rk9')) ChatLive_RoomState[chat_number].rk9 = message.tags.rk9;
+        if (message.tags.hasOwnProperty('slow')) ChatLive_RoomState[chat_number].slow = message.tags.slow;
+        if (message.tags.hasOwnProperty('subs-only')) ChatLive_RoomState[chat_number]['subs-only'] = message.tags['subs-only'];
+
+        console.log(ChatLive_RoomState[chat_number]);
+        ChatLiveControls_RefreshRoomState(chat_number);
+    }
+}
+
 var ChatLive_socketSend;
 var ChatLive_socketSendJoin = false;
 var ChatLive_socketSendCheckID;
@@ -630,6 +612,8 @@ function ChatLive_SendPrepared() {
 
             switch (message.command) {
                 case "PING":
+                    console.log('ChatLive_socketSend');
+                    console.log(message);
                     ChatLive_socketSend.send('PONG ' + message.params[0]);
                     break;
                 case "001":
@@ -893,18 +877,45 @@ function ChatLive_Clear(chat_number) {
     ChatLive_loaded[chat_number] = false;
     ChatLive_Banned[chat_number] = false;
 
-    //Prevent a random crash causing a chat look issue
-    try {
+    ChatLive_CheckClear(chat_number);
 
-        if (ChatLive_socket[chat_number] && ChatLive_socket[chat_number].readyState === 1 && AddUser_UsernameArray[0].access_token) {
-            ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number] + '\r\n');
-        } else if (ChatLive_socket[chat_number]) {
-            ChatLive_socket[chat_number].close(1000);
-        }
-
-        if (!chat_number) ChatLive_SendClose();
-
-    } catch (e) {
-        console.log("ChatLive_Clear " + e);
+    if (ChatLive_socket[chat_number] && ChatLive_socket[chat_number].readyState === 1 && AddUser_UsernameArray[0].access_token) {
+        ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number] + '\r\n');
+    } else if (ChatLive_socket[chat_number]) {
+        ChatLive_socket[chat_number].close(1000);
     }
+
+    if (!chat_number) ChatLive_SendClose();
+
+}
+
+
+function ChatLive_BaseLoadUrl(theUrl, chat_number, tryes, callbackSucess, calbackError, Headers, HeaderQuatity) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+
+    if (Headers) {
+
+        if (HeaderQuatity > 2) Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
+
+        for (var i = 0; i < HeaderQuatity; i++)
+            xmlHttp.setRequestHeader(Headers[i][0], Main_Headers[i][1]);
+    }
+
+
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                callbackSucess(xmlHttp.responseText, chat_number);
+            } else {
+                calbackError(tryes, chat_number);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
 }
