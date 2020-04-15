@@ -55,6 +55,8 @@ import net.grandcentrix.tray.AppPreferences;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import static android.content.res.Configuration.KEYBOARD_QWERTY;
+
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
@@ -1193,6 +1195,34 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void showToast(String toast) {
             MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean isKeyboardConnected() {
+            return getResources().getConfiguration().keyboard == KEYBOARD_QWERTY;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void KeyboardCheckAndHIde() {
+            MainThreadHandler.post(() -> {
+                if (getResources().getConfiguration().keyboard == KEYBOARD_QWERTY) {
+                    Tools.hideKeyboardFrom(mwebContext, mWebView);
+                }
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void hideKeyboardFrom() {
+            MainThreadHandler.post(() -> Tools.hideKeyboardFrom(mwebContext, mWebView));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void showKeyboardFrom() {
+            MainThreadHandler.post(() -> Tools.showKeyboardFrom(mwebContext, mWebView));
         }
 
         @SuppressWarnings("unused")//called by JS
