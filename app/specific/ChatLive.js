@@ -93,13 +93,13 @@ function ChatLive_loadBadgesChannel(tryes, chat_number) {
         );
 
     } else {
-        Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number);
+        Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number, Chat_div[chat_number]);
     }
 }
 
 function ChatLive_loadBadgesChannelSuccess(responseText, chat_number) {
     extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = JSON.parse(responseText);
-    Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number);
+    Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number, Chat_div[chat_number]);
 }
 
 function ChatLive_loadBadgesChannelError(tryes, chat_number) {
@@ -720,7 +720,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
             tags.badges.split(',').forEach(function(badge) {
                 badge = badge.split('/');
 
-                div += '<span class="' + badge[0] + (Main_A_includes_B(badge[0], 'subscriber') ? chat_number : "") + '-' + badge[1] + ' tag"></span>';
+                div += '<span class="' + badge[0] + (Main_A_includes_B(badge[0], 'subscriber') ? chat_number : 0) + '-' + badge[1] + ' tag"></span>';
             });
         }
     }

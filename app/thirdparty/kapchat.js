@@ -145,23 +145,9 @@ function emoticonize(message, emotes) {
     return tokenizedMessage;
 }
 
-function transformBadges(sets) {
-    return Object.keys(sets).map(function(b) {
-        var badge = sets[b];
-        badge.type = b;
-        badge.versions = Object.keys(sets[b].versions).map(function(v) {
-            var version = sets[b].versions[v];
-            version.type = v;
-            return version;
-        });
-        return badge;
-    });
-}
-
 function tagCSS(type, version, url, doc) {
     var style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = '.' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
-    if (doc) doc.appendChild(style);
-    else document.head.appendChild(style);
+    doc.appendChild(style);
 }

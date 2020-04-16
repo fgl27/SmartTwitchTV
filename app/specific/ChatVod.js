@@ -98,13 +98,20 @@ function Chat_loadBadgesGlobalError(tryes) {
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
+    Chat_loadBadgesTransform(JSON.parse(responseText), 0, document.head);
 
     Chat_LoadGlobalBadges = true;
-    transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
-        badge.versions.forEach(function(version) {
-            tagCSS(badge.type, version.type, version.image_url_4x, null);
-        });
-    });
+}
+
+function Chat_loadBadgesTransform(responseText, chat_number, doc) {
+    var versions, property, version;
+
+    for (property in responseText.badge_sets) {
+        versions = responseText.badge_sets[property].versions;
+        for (version in versions) {
+            tagCSS(property + chat_number, version, versions[version].image_url_4x, doc);
+        }
+    }
 }
 
 function Chat_loadBBTVGlobalEmotes(tryes) {
@@ -139,14 +146,6 @@ function Chat_loadEmotesErrorffz(tryes) {
 
 function Chat_loadEmotesSuccessffz(data) {
     ChatLive_loadEmotesffz(JSON.parse(data), 0, true);
-}
-
-function Chat_loadBadgesTransform(responseText, chat_number) {
-    transformBadges(responseText.badge_sets).forEach(function(badge) {
-        badge.versions.forEach(function(version) {
-            tagCSS(badge.type + chat_number, version.type, version.image_url_4x, Chat_div[chat_number]);
-        });
-    });
 }
 
 function Chat_loadChat(id) {
@@ -212,7 +211,7 @@ function Chat_loadChatSuccess(responseText, id) {
         //Add badges
         if (mmessage.hasOwnProperty('user_badges')) {
             mmessage.user_badges.forEach(function(badges) {
-                div += '<span class="' + badges._id + (Main_A_includes_B(badges._id, 'subscriber') ? "0-" : "-") + badges.version + ' tag"></span>';
+                div += '<span class="' + badges._id + "0-" + badges.version + ' tag"></span>';
             });
         }
 
