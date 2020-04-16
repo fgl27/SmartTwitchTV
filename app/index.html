@@ -783,6 +783,7 @@
         }
 
         div.chat_result,
+        div.chat_result_holder,
         div.chat_result_text {
             width: 100%;
             text-align: center;
@@ -792,9 +793,23 @@
             color: #FFFFFF;
         }
 
+        div.chat_result_holder_inner {
+            padding: 0.5%;
+        }
+
         div.chat_result_text {
+            width: 100%;
+            height: 100%;
+            transform: rotate(180deg);
+            text-align: left;
+        }
+
+        div.chat_result_holder {
+            max-height: 24vh;
             margin-bottom: 1%;
             border: 0.1em solid #FFFFFF;
+            transform: rotate(180deg);
+            overflow: hidden;
         }
 
         div.chat_result {
@@ -3133,10 +3148,15 @@
                 <div id="chat_send_button7" class="button_chat"></div>
                 <!-- FFZ streamer-->
                 <div id="chat_send_button8" class="button_chat"></div>
-                <input id="chat_send_input" class="chat_input_class" type="text" placeholder="" />
+                <input id="chat_send_input" class="chat_input_class" onfocus="this.value = this.value;" type="text"
+                    placeholder="" />
                 <!-- In Chat expected result: -->
                 <div id="chat_result" class="chat_result"></div>
-                <div id="chat_result_text" class="chat_result_text"></div>
+                <div class="chat_result_holder">
+                    <div class="chat_result_holder_inner">
+                        <div id="chat_result_text" class="chat_result_text"></div>
+                    </div>
+                </div>
                 <!-- ROOMSTATE -->
                 <div id="chat_state" class="chat_result" style="font-size: 80%;"></div>
             </div>

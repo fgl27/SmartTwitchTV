@@ -99,6 +99,7 @@ function Chat_loadBadgesGlobalError(tryes) {
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
     Chat_loadBadgesTransform(JSON.parse(responseText), 0, document.head);
+    Chat_loadBadgesTransform(JSON.parse(responseText), 1, document.head);
 
     Chat_LoadGlobalBadges = true;
 }

@@ -720,7 +720,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
             tags.badges.split(',').forEach(function(badge) {
                 badge = badge.split('/');
 
-                div += '<span class="' + badge[0] + (Main_A_includes_B(badge[0], 'subscriber') ? chat_number : 0) + '-' + badge[1] + ' tag"></span>';
+                div += '<span class="' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
             });
         }
     }

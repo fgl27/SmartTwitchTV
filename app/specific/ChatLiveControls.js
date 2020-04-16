@@ -142,13 +142,12 @@ function ChatLiveControls_HandleKeyEnter() {
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL);
     } else if (ChatLiveControls_cursor === 5) {
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
-            var sen_text = Main_ChatLiveInput.value;
+            ChatLive_FakeSendMessage(Main_ChatLiveInput.value, 0);
             Main_ChatLiveInput.value = '';
-            ChatLive_FakeSendMessage(sen_text, 0);
+            ChatLiveControls_UpdateResultText();
         } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
     } else if (ChatLiveControls_cursor === 6) {
-        Main_ChatLiveInput.value += '@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ';
-        ChatLiveControls_inputFocus();
+        ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));
     } else if (ChatLiveControls_cursor === 7) {
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BBTV_STREAM);
     } else if (ChatLiveControls_cursor === 8) {
@@ -196,6 +195,7 @@ function ChatLiveControls_handleKeyDown(event) {
 }
 
 function ChatLiveControls_KeyboardEvent(event) {
+    ChatLiveControls_UpdateResultText();
     switch (event.keyCode) {
         case KEY_RETURN:
         case KEY_KEYBOARD_DONE:
@@ -313,7 +313,7 @@ function ChatLiveControls_EmotesEvent(event) {
 
 function ChatLiveControls_AddToChat(position) {
     var doc = document.getElementById('chat_emotes' + position);
-    if (doc) Main_ChatLiveInput.value += doc.getAttribute(Main_DataAttribute) + ' ';
+    if (doc) ChatLiveControls_UpdateTextInput(doc.getAttribute(Main_DataAttribute));
 }
 
 function ChatLiveControls_EmotesAddFocus(position) {
@@ -367,4 +367,35 @@ function ChatLiveControls_EmotesScroll(position) {
 
         }
     } else document.getElementById('chat_emotes').style.transform = '';
+}
+
+function ChatLiveControls_UpdateTextInput(text) {
+    if (!(Main_ChatLiveInput.value).endsWith(' ')) Main_ChatLiveInput.value += ' ';
+    Main_ChatLiveInput.value += text;
+    ChatLiveControls_UpdateResultText();
+}
+
+var ChatLiveControls_UpdateResultTextId;
+function ChatLiveControls_UpdateResultText() {
+    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
+        window.clearTimeout(ChatLiveControls_UpdateResultTextId);
+        ChatLiveControls_UpdateResultTextId = window.setTimeout(function() {
+            Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize(Main_ChatLiveInput.value));
+        }, 10);
+    } else Main_innerHTML("chat_result_text", STR_SPACE);
+}
+
+function ChatLiveControls_extraMessageTokenize(message) {
+
+    var div = '<span class="message">';
+    message = [message];
+
+    for (var i = 0; i < message.length; i++) {
+        message[i] = extraMessageTokenize(message[i], 0, null);
+    }
+
+    div += twemoji.parse(message.join(' '), true, true);
+    div += '</span>';
+
+    return div
 }
