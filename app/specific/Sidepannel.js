@@ -147,8 +147,11 @@ function Sidepannel_CheckIfIsLiveStart() {
 
     if (doc) {
         try {
+            var channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+
             Android.CheckIfIsLiveFeed(
-                JSON.parse(doc.getAttribute(Main_DataAttribute))[6],
+                Play_live_token.replace('%x', channel),
+                Play_live_links.replace('%x', channel),
                 UserLiveFeed_CheckIfIsLiveDelay,
                 "Sidepannel_CheckIfIsLiveResult",
                 1,

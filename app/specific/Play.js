@@ -75,6 +75,14 @@ var Play_ProgresBarrElm;
 var Play_ProgresBarrBufferElm;
 var Play_DefaultjumpTimers = [];
 var Play_UserLiveFeedPressed = false;
+
+//To pass to Java
+var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token?platform=_";
+var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
+
+var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_";
+var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
+
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
 var Play_ChatPositionVal = [{
@@ -344,8 +352,17 @@ function Play_Start() {
 //    Play_showWarningDialog(text);
 //}
 
-function Play_getStreamData(channel_name_vod_id, isLive) {
-    return Android.getStreamData(channel_name_vod_id, isLive);
+function Play_getStreamData(channel_name) {
+    var result = null;
+
+    try {
+        result = Android.getStreamData(
+            Play_live_token.replace('%x', channel_name),
+            Play_live_links.replace('%x', channel_name)
+        );
+    } catch (e) {}
+
+    return result;
 }
 
 var Play_CheckIfIsLiveURL = '';
@@ -363,7 +380,7 @@ function Play_CheckIfIsLiveStart() {
 
     if (Main_IsOnAndroid) {
 
-        var StreamData = Play_getStreamData(Play_CheckIfIsLiveChannel, true);
+        var StreamData = Play_getStreamData(Play_CheckIfIsLiveChannel);
 
         if (StreamData) {
             StreamData = JSON.parse(StreamData);//obj status url responseText
@@ -720,7 +737,7 @@ function Play_LoadLogo(ImgObjet, link) {
 function Play_loadDatanew() {
     if (Main_IsOnAndroid) {
 
-        var StreamData = Play_getStreamData(Play_data.data[6], true);
+        var StreamData = Play_getStreamData(Play_data.data[6]);
 
         if (StreamData) {
             StreamData = JSON.parse(StreamData);//obj status url responseText
@@ -1798,7 +1815,7 @@ function Play_MultiStartNew(pos, streamer, display_name) {
         UserLiveFeed_CheckIfIsLiveSTop();
         return;
     }
-    var StreamData = Play_getStreamData(streamer, true);
+    var StreamData = Play_getStreamData(streamer);
 
     if (StreamData) {
         StreamData = JSON.parse(StreamData);//obj status url responseText

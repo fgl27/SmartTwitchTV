@@ -1357,14 +1357,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String Channel_name, int delayms, String fun, int x, int y) {
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String fun, int x, int y) {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
             ExtraPlayerHandlerResult[x][y] = null;
 
             ExtraPlayerHandler.postDelayed(() -> {
 
                 try {
-                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(Channel_name, true);
+                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url);
                 } catch (UnsupportedEncodingException e) {
                     Log.w(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException ", e);
                 } catch (NullPointerException e) {
@@ -1373,7 +1373,7 @@ public class PlayerActivity extends Activity {
 
                 if (ExtraPlayerHandlerResult[x][y] != null)
                     LoadUrlWebview("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
-            }, 50 + delayms);
+            }, 50 + Delay_ms);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1846,9 +1846,9 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String getStreamData(String channel_name_vod_id, boolean islive) {
+        public String getStreamData(String token_url, String hls_url) {
             try {
-                return Tools.getStreamData(channel_name_vod_id, islive);
+                return Tools.getStreamData(token_url, hls_url);
             } catch (UnsupportedEncodingException e) {
                 Log.w(TAG, "getStreamData UnsupportedEncodingException ", e);
             } catch (NullPointerException e) {

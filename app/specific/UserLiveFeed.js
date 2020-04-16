@@ -517,7 +517,8 @@ function UserLiveFeed_CheckIfIsLiveStart() {
     if (doc) {
 
         Android.CheckIfIsLiveFeed(
-            doc[6],
+            Play_live_token.replace('%x', doc[6]),
+            Play_live_links.replace('%x', doc[6]),
             UserLiveFeed_CheckIfIsLiveDelay,
             "UserLiveFeed_CheckIfIsLiveResult",
             UserLiveFeed_FeedPosX,
