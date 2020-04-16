@@ -12228,7 +12228,7 @@
                     Main_values.Main_Before = Users_beforeUser;
                     Main_values.Main_Go = Main_Users;
                     Main_values.Play_WasPlaying = 0;
-                    Main_SwitchScreen(true);
+                    Main_SwitchScreen(false);
                     Screens_loadDataSuccessFinishEnd();
 
                 } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) { // && obj.status
