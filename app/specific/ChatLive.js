@@ -15,6 +15,7 @@ var extraEmotesDone = {
     bbtv: {},
     ffz: {},
     cheers: {},
+    BadgesChannel: {},
     bbtvGlobal: [],
     ffzGlobal: []
 };
@@ -70,58 +71,39 @@ function ChatLive_Init(chat_number) {
     ChatLive_Id[chat_number] = (new Date()).getTime();
     ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
     ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
-    ChatLive_loadBadgesChannel(ChatLive_Id[chat_number], ChatLive_loadBadgesChannelSuccess, chat_number);
-
-}
-
-function ChatLive_loadBadgesChannel(id, callbackSucess, chat_number) {
-    ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number, 0);
-}
-
-function ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number, tryes) {
-    var theUrl = 'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display';
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
-
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText, id, chat_number);
-                return;
-            } else {
-                ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number, tryes);
-            }
-        }
-    };
-
-    xmlHttp.send(null);
-}
-
-function ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number, tryes) {
-
-    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number, tryes + 1);
-    else {
-        if (ChatLive_Id[chat_number] === id) {
-            window.clearTimeout(ChatLive_loadBadgesChannelId);
-            ChatLive_loadBadgesChannelId = window.setTimeout(function() {
-                ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number, 0);
-            }, 200);
-        }
-    }
-
-}
-
-function ChatLive_loadBadgesChannelSuccess(responseText, id, chat_number) {
-    Chat_loadBadgesTransform(responseText, chat_number);
 
     ChatLive_loadEmotesUser(0);
     ChatLive_loadEmotesChannelbbtv(0, chat_number);
-    ChatLive_loadCheersChannel(0, chat_number);
     ChatLive_loadEmotesChannelffz(0, chat_number);
-    if (ChatLive_Id[chat_number] === id) ChatLive_loadChat(chat_number);
+
+    ChatLive_loadBadgesChannel(0, chat_number);
+    ChatLive_loadCheersChannel(0, chat_number);
+
+    ChatLive_loadChat(chat_number);
+}
+
+function ChatLive_loadBadgesChannel(tryes, chat_number) {
+    if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
+        ChatLive_BaseLoadUrl(
+            'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
+            chat_number,
+            tryes,
+            ChatLive_loadBadgesChannelSuccess,
+            ChatLive_loadBadgesChannelError
+        );
+
+    } else {
+        Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number);
+    }
+}
+
+function ChatLive_loadBadgesChannelSuccess(responseText, chat_number) {
+    extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = JSON.parse(responseText);
+    Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number);
+}
+
+function ChatLive_loadBadgesChannelError(tryes, chat_number) {
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number);
 }
 
 function ChatLive_loadEmotesUser(tryes) {
@@ -621,10 +603,6 @@ function ChatLive_SendPrepared() {
                     break;
                 case "CAP":
                     ChatLive_socketSendJoin = true;
-
-                    window.setTimeout(function() {
-                        //ChatLive_SendMessage("LUL ", 0);
-                    }, 10000);
                     break;
                 case "USERSTATE":
                     console.log(message);
@@ -857,6 +835,7 @@ function ChatLive_MessagesRunAfterPause() {
 
 function ChatLive_ClearIds(chat_number) {
     ChatLive_CheckClear(chat_number);
+    window.clearTimeout(ChatLive_socketSendCheckID);
     window.clearTimeout(ChatLive_loadBadgesChannelId);
 }
 

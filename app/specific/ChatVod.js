@@ -47,11 +47,17 @@ function Chat_Init() {
     Chat_Id = (new Date()).getTime();
     ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
     ChatLive_selectedChannel[0] = Main_values.Main_selectedChannel;
-    ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess, 0);
+
+    ChatLive_loadEmotesChannelbbtv(0, 0);
+    ChatLive_loadEmotesChannelffz(0, 0);
+
+    ChatLive_loadBadgesChannel(0, 0);
+    ChatLive_loadCheersChannel(0, 0);
+
+    Chat_loadChat(Chat_Id);
 }
 
 var Chat_LoadGlobalBadges = false;
-
 function Chat_loadBadgesGlobal() {
     if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
     if (!extraEmotesDone.bbtvGlobal || extraEmotesDone.bbtvGlobal.length < 1) Chat_loadBBTVGlobalEmotes(0);
@@ -136,20 +142,11 @@ function Chat_loadEmotesSuccessffz(data) {
 }
 
 function Chat_loadBadgesTransform(responseText, chat_number) {
-    transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
+    transformBadges(responseText.badge_sets).forEach(function(badge) {
         badge.versions.forEach(function(version) {
             tagCSS(badge.type + chat_number, version.type, version.image_url_4x, Chat_div[chat_number]);
         });
     });
-}
-
-function Chat_loadBadgesChannelSuccess(responseText, id) {
-    Chat_loadBadgesTransform(responseText, 0);
-
-    ChatLive_loadEmotesChannelbbtv(0, 0);
-    ChatLive_loadCheersChannel(0, 0);
-    ChatLive_loadEmotesChannelffz(0, 0);
-    if (Chat_Id === id) Chat_loadChat(id);
 }
 
 function Chat_loadChat(id) {
