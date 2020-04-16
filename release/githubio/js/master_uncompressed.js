@@ -3595,8 +3595,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.170';
-    var Main_minversion = 'April 15, 2020';
+    var Main_stringVersion_Min = '.171';
+    var Main_minversion = 'April 16, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -5154,7 +5154,7 @@
     }
 
     function processCode(pageUrl) {
-        console.log("processCode");
+        if (!Main_IsOnAndroid) console.log("processCode");
         var code = '';
         code = pageUrl.match(/code=(\w+)/);
         if (code) {
@@ -8259,7 +8259,7 @@
     function PlayExtra_Resumenew() {
         if (Main_IsOnAndroid) {
 
-            var StreamData = Play_getStreamData(PlayExtra_data.data[6], true);
+            var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData); //obj status url responseText
@@ -8579,6 +8579,14 @@
     var Play_ProgresBarrBufferElm;
     var Play_DefaultjumpTimers = [];
     var Play_UserLiveFeedPressed = false;
+
+    //To pass to Java
+    var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token?platform=_";
+    var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
+
+    var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_";
+    var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
+
     //counterclockwise movement, Vertical/horizontal Play_ChatPositions
     //sizeOffset in relation to the size
     var Play_ChatPositionVal = [{
@@ -8848,8 +8856,17 @@
     //    Play_showWarningDialog(text);
     //}
 
-    function Play_getStreamData(channel_name_vod_id, isLive) {
-        return Android.getStreamData(channel_name_vod_id, isLive);
+    function Play_getStreamData(channel_name) {
+        var result = null;
+
+        try {
+            result = Android.getStreamData(
+                Play_live_token.replace('%x', channel_name),
+                Play_live_links.replace('%x', channel_name)
+            );
+        } catch (e) {}
+
+        return result;
     }
 
     var Play_CheckIfIsLiveURL = '';
@@ -8867,7 +8884,7 @@
 
         if (Main_IsOnAndroid) {
 
-            var StreamData = Play_getStreamData(Play_CheckIfIsLiveChannel, true);
+            var StreamData = Play_getStreamData(Play_CheckIfIsLiveChannel);
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData); //obj status url responseText
@@ -9224,7 +9241,7 @@
     function Play_loadDatanew() {
         if (Main_IsOnAndroid) {
 
-            var StreamData = Play_getStreamData(Play_data.data[6], true);
+            var StreamData = Play_getStreamData(Play_data.data[6]);
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData); //obj status url responseText
@@ -10304,7 +10321,7 @@
             UserLiveFeed_CheckIfIsLiveSTop();
             return;
         }
-        var StreamData = Play_getStreamData(streamer, true);
+        var StreamData = Play_getStreamData(streamer);
 
         if (StreamData) {
             StreamData = JSON.parse(StreamData); //obj status url responseText
@@ -10968,8 +10985,14 @@
 
     function PlayVod_loadDatanew() {
         if (Main_IsOnAndroid) {
+            var StreamData = null;
 
-            var StreamData = Play_getStreamData(Main_values.ChannelVod_vodId + '', false);
+            try {
+                StreamData = Android.getStreamData(
+                    Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
+                    Play_vod_links.replace('%x', Main_values.ChannelVod_vodId)
+                );
+            } catch (e) {}
 
             if (StreamData) {
                 StreamData = JSON.parse(StreamData); //obj status url responseText
@@ -17442,8 +17465,11 @@
 
         if (doc) {
             try {
+                var channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+
                 Android.CheckIfIsLiveFeed(
-                    JSON.parse(doc.getAttribute(Main_DataAttribute))[6],
+                    Play_live_token.replace('%x', channel),
+                    Play_live_links.replace('%x', channel),
                     UserLiveFeed_CheckIfIsLiveDelay,
                     "Sidepannel_CheckIfIsLiveResult",
                     1,
@@ -18487,7 +18513,8 @@
         if (doc) {
 
             Android.CheckIfIsLiveFeed(
-                doc[6],
+                Play_live_token.replace('%x', doc[6]),
+                Play_live_links.replace('%x', doc[6]),
                 UserLiveFeed_CheckIfIsLiveDelay,
                 "UserLiveFeed_CheckIfIsLiveResult",
                 UserLiveFeed_FeedPosX,
