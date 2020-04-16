@@ -2,6 +2,7 @@ var ChatLiveControls_inputFocusId;
 var ChatLiveControls_keyBoardOn = false;
 var ChatLiveControls_cursor = 4;
 var ChatLiveControls_Channel = 0;
+var ChatLiveControls_LastChannel = '';
 
 function ChatLiveControls_Show() {
     document.body.removeEventListener("keydown", Play_handleKeyDown);
@@ -11,7 +12,13 @@ function ChatLiveControls_Show() {
     Main_ShowElement('chat_send');
     Play_hidePanel();
 
-    Main_innerHTML("chat_result_text", STR_SPACE);
+    //Reset the chat result if streamer has changed
+    var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
+    if (!Main_A_equals_B(ChatLiveControls_LastChannel, streamer)) Main_ChatLiveInput.value = '';
+    ChatLiveControls_LastChannel = streamer;
+
+    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) ChatLiveControls_extraMessageTokenize(Main_ChatLiveInput.value);
+    else Main_innerHTML("chat_result_text", STR_SPACE);
 
     ChatLiveControls_inputFocus();
 }
@@ -272,6 +279,7 @@ function ChatLiveControls_ShowEmotes() {
         document.body.addEventListener("keydown", ChatLiveControls_EmotesEvent, false);
         ChatLiveControls_resetInputFocusTools();
 
+        document.getElementById('chat_emotes').style.transform = '';
         ChatLiveControls_EmotesUpdateCounter(0);
         Main_ShowElement('chat_emotes_holder');
         ChatLiveControls_EmotesAddFocus(0);
@@ -370,7 +378,7 @@ function ChatLiveControls_EmotesScroll(position) {
 }
 
 function ChatLiveControls_UpdateTextInput(text) {
-    if (!(Main_ChatLiveInput.value).endsWith(' ')) Main_ChatLiveInput.value += ' ';
+    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !(Main_ChatLiveInput.value).endsWith(' ')) Main_ChatLiveInput.value += ' ';
     Main_ChatLiveInput.value += text;
     ChatLiveControls_UpdateResultText();
 }
@@ -384,8 +392,8 @@ function ChatLiveControls_UpdateResultText() {
 
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
 
-
             Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize([Main_ChatLiveInput.value]));
+
         } else Main_innerHTML("chat_result_text", STR_SPACE);
 
     }, 10);
