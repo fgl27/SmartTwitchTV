@@ -12,8 +12,8 @@ var ChatLive_Messages = [];
 var ChatLive_Banned = [];
 var ChatLive_Playing = true;
 var extraEmotesDone = {
-    bbtv: [],
-    ffz: [],
+    bbtv: {},
+    ffz: {},
     cheers: {},
     bbtvGlobal: [],
     ffzGlobal: []
@@ -125,7 +125,7 @@ function ChatLive_loadBadgesChannelSuccess(responseText, id, chat_number) {
 }
 
 function ChatLive_loadEmotesUser(tryes) {
-    if (AddUser_UsernameArray[0].access_token && !userEmote.length) {
+    if (AddUser_UsernameArray[0].access_token) {
         ChatLive_BaseLoadUrl(
             Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
             0,
@@ -156,8 +156,6 @@ function ChatLive_loadEmotesUserSuccess(data) {
 
                     if (!emoticon.code || !emoticon.id) return;
                     if (typeof emoticon.code !== 'string' || typeof emoticon.id !== 'number') return;
-
-                    if (extraEmotes[emoticon.code]) return;
 
                     emoticon.code = emoteReplace[emoticon.code] || emoticon.code;
 
@@ -310,8 +308,6 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
 
                 if (!emoticon.name || !emoticon.id) return;
                 if (typeof emoticon.name !== 'string' || typeof emoticon.id !== 'number') return;
-
-                if (extraEmotes[emoticon.name]) return;
 
                 if (!emoticon.urls || typeof emoticon.urls !== 'object') return;
 

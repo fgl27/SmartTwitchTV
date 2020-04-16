@@ -135,13 +135,10 @@ function ChatLiveControls_HandleKeyEnter() {
         Main_ChatLiveInput.value = '';
         Main_innerHTML("chat_result_text", STR_SPACE);
     } else if (ChatLiveControls_cursor === 2) {
-        console.log('tw emotes');
         ChatLiveControls_SetEmotesDiv(userEmote, STR_CHAT_TW_EMOTES);
     } else if (ChatLiveControls_cursor === 3) {
-        console.log('bbtv global');
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtvGlobal, STR_CHAT_BBTV_GLOBAL);
     } else if (ChatLiveControls_cursor === 4) {
-        console.log('ffz global');
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL);
     } else if (ChatLiveControls_cursor === 5) {
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
@@ -153,10 +150,8 @@ function ChatLiveControls_HandleKeyEnter() {
         Main_ChatLiveInput.value += '@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ';
         ChatLiveControls_inputFocus();
     } else if (ChatLiveControls_cursor === 7) {
-        console.log('bbtv stream');
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BBTV_STREAM);
     } else if (ChatLiveControls_cursor === 8) {
-        console.log('ffz stream');
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM);
     }
 }
