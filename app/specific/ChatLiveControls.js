@@ -377,25 +377,25 @@ function ChatLiveControls_UpdateTextInput(text) {
 
 var ChatLiveControls_UpdateResultTextId;
 function ChatLiveControls_UpdateResultText() {
-    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
-        window.clearTimeout(ChatLiveControls_UpdateResultTextId);
-        ChatLiveControls_UpdateResultTextId = window.setTimeout(function() {
-            Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize(Main_ChatLiveInput.value));
-        }, 10);
-    } else Main_innerHTML("chat_result_text", STR_SPACE);
+
+    window.clearTimeout(ChatLiveControls_UpdateResultTextId);
+    // delay the check to prevent lag on fun call spaming
+    ChatLiveControls_UpdateResultTextId = window.setTimeout(function() {
+
+        if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
+
+
+            Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize([Main_ChatLiveInput.value]));
+        } else Main_innerHTML("chat_result_text", STR_SPACE);
+
+    }, 10);
 }
 
 function ChatLiveControls_extraMessageTokenize(message) {
-
-    var div = '<span class="message">';
-    message = [message];
 
     for (var i = 0; i < message.length; i++) {
         message[i] = extraMessageTokenize(message[i], 0, null);
     }
 
-    div += twemoji.parse(message.join(' '), true, true);
-    div += '</span>';
-
-    return div
+    return '<span class="message">' + twemoji.parse(message.join(' '), true, true) + '</span>';
 }
