@@ -126,12 +126,6 @@ public final class Tools {
     private static final int DefaultTimeout = 3000;
     private static final int DefaultLoadingDataTryMax = 3;
 
-    private static final String live_token = "https://api.twitch.tv/api/channels/%s/access_token?platform=_";
-    private static final String live_links = "https://usher.ttvnw.net/api/channel/hls/%s.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
-
-    private static final String vod_token = "https://api.twitch.tv/api/vods/%s/access_token?platform=_";
-    private static final String vod_links = "https://usher.ttvnw.net/vod/%s.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
-
     private static final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
     public static class ResponseObj {
@@ -167,22 +161,16 @@ public final class Tools {
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    public static String getStreamData(String channel_name_vod_id, boolean islive) throws UnsupportedEncodingException, NullPointerException {
+    public static String getStreamData(String token_url, String hls_url) throws UnsupportedEncodingException, NullPointerException {
         ResponseObj response;
         int i, status;
         JsonObject Token;
         String StreamSig = null;
         String StreamToken = null;
 
-        String url = String.format(
-                Locale.US,
-                islive ? live_token : vod_token,
-                channel_name_vod_id
-        );
-
         for (i = 0; i < DefaultLoadingDataTryMax; i++) {
 
-            response = GetResponseObj(url, DefaultTimeout + (500 * i));
+            response = GetResponseObj(token_url, DefaultTimeout + (500 * i));
 
             if (response != null) {
 
@@ -205,10 +193,9 @@ public final class Tools {
 
         if (StreamToken != null && StreamSig != null) {
 
-            url = String.format(
+            String url = String.format(
                     Locale.US,
-                    islive ? live_links : vod_links,
-                    channel_name_vod_id,
+                    hls_url,
                     URLEncoder.encode(StreamToken, "UTF-8"),
                     StreamSig,
                     ThreadLocalRandom.current().nextInt(1, 1000)

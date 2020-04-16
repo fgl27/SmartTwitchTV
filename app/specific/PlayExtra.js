@@ -65,7 +65,7 @@ function PlayExtra_KeyEnter() {
 function PlayExtra_Resumenew() {
     if (Main_IsOnAndroid) {
 
-        var StreamData = Play_getStreamData(PlayExtra_data.data[6], true);
+        var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
         if (StreamData) {
             StreamData = JSON.parse(StreamData);//obj status url responseText

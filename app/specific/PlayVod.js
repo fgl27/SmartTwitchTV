@@ -287,8 +287,14 @@ function PlayVod_loadDataSuccessFake() {
 var PlayVod_autoUrl;
 function PlayVod_loadDatanew() {
     if (Main_IsOnAndroid) {
+        var StreamData = null;
 
-        var StreamData = Play_getStreamData(Main_values.ChannelVod_vodId + '', false);
+        try {
+            StreamData = Android.getStreamData(
+                Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
+                Play_vod_links.replace('%x', Main_values.ChannelVod_vodId)
+            );
+        } catch (e) {}
 
         if (StreamData) {
             StreamData = JSON.parse(StreamData);//obj status url responseText
