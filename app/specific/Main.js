@@ -1680,7 +1680,7 @@ function Main_PrintUnicode(string) { // jshint ignore:line
 }
 
 function processCode(pageUrl) {
-    console.log("processCode");
+    if (!Main_IsOnAndroid) console.log("processCode");
     var code = '';
     code = pageUrl.match(/code=(\w+)/);
     if (code) {
