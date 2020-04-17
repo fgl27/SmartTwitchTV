@@ -404,7 +404,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
         switch (message.command) {
             case "PING":
-                console.log('ChatLive_socket[chat_number] ' + chat_number);
+                console.log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
                 console.log(message);
                 ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                 break;
@@ -583,11 +583,13 @@ function ChatLive_UpdateRoomState(message, chat_number) {
 
         if (!ChatLive_RoomState[chat_number]) ChatLive_RoomState[chat_number] = {};
 
-        if (message.tags.hasOwnProperty('msg-id')) ChatLive_RoomState[chat_number]['emote-only'] = message.tags['emote-only'];
-        if (message.tags.hasOwnProperty('followers-only')) ChatLive_RoomState[chat_number]['followers-only'] = message.tags['followers-only'];
-        if (message.tags.hasOwnProperty('rk9')) ChatLive_RoomState[chat_number].rk9 = message.tags.rk9;
-        if (message.tags.hasOwnProperty('slow')) ChatLive_RoomState[chat_number].slow = message.tags.slow;
-        if (message.tags.hasOwnProperty('subs-only')) ChatLive_RoomState[chat_number]['subs-only'] = message.tags['subs-only'];
+        var tags = message.tags;
+
+        if (tags.hasOwnProperty('msg-id')) ChatLive_RoomState[chat_number]['emote-only'] = tags['emote-only'];
+        if (tags.hasOwnProperty('followers-only')) ChatLive_RoomState[chat_number]['followers-only'] = tags['followers-only'];
+        if (tags.hasOwnProperty('rk9')) ChatLive_RoomState[chat_number].rk9 = tags.rk9;
+        if (tags.hasOwnProperty('slow')) ChatLive_RoomState[chat_number].slow = tags.slow;
+        if (tags.hasOwnProperty('subs-only')) ChatLive_RoomState[chat_number]['subs-only'] = tags['subs-only'];
 
         console.log(ChatLive_RoomState[chat_number]);
         ChatLiveControls_RefreshRoomState(chat_number);
@@ -621,7 +623,7 @@ function ChatLive_SendPrepared() {
 
             switch (message.command) {
                 case "PING":
-                    console.log('ChatLive_socketSend');
+                    console.log('ChatLive_socketSend PING');
                     console.log(message);
                     ChatLive_socketSend.send('PONG ' + message.params[0]);
                     break;

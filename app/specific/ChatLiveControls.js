@@ -49,26 +49,21 @@ function ChatLiveControls_SetRoomState() {
     if (!ChatLive_RoomState[ChatLiveControls_Channel]) text = STR_UNKNOWN;
     else {
 
-        if (ChatLive_RoomState[ChatLiveControls_Channel].hasOwnProperty('emote-only') &&
-            ChatLive_RoomState[ChatLiveControls_Channel]['emote-only']) text += "Emote-only, ";
+        var tags = ChatLive_RoomState[ChatLiveControls_Channel];
 
-        if (ChatLive_RoomState[ChatLiveControls_Channel].hasOwnProperty('followers-only') &&
-            ChatLive_RoomState[ChatLiveControls_Channel]['followers-only'] !== -1) {
-            text += "Followers-only" + (
-                ChatLive_RoomState[ChatLiveControls_Channel]['followers-only'] ? (' minimum ' + ChatLive_RoomState[ChatLiveControls_Channel]['followers-only'] + ' minute(s) fallowing') : '') + ', ';
+        if (tags.hasOwnProperty('emote-only') && tags['emote-only']) text += "Emote-only, ";
+
+        if (tags.hasOwnProperty('followers-only') && tags['followers-only'] !== -1) {
+            text += "Followers-only" + (tags['followers-only'] ? (' minimum ' + tags['followers-only'] + ' minute(s) fallowing') : '') + ', ';
         }
 
-        if (ChatLive_RoomState[ChatLiveControls_Channel].hasOwnProperty('rk9') &&
-            ChatLive_RoomState[ChatLiveControls_Channel].rk9) text += 'R9K messages with more than 9 characters must be unique, ';
+        if (tags.hasOwnProperty('rk9') && tags.rk9) text += 'R9K messages with more than 9 characters must be unique, ';
 
-        if (ChatLive_RoomState[ChatLiveControls_Channel].hasOwnProperty('slow') &&
-            ChatLive_RoomState[ChatLiveControls_Channel].slow) {
-            text += "Slow" + (
-                ChatLive_RoomState[ChatLiveControls_Channel].slow ? (' wait ' + ChatLive_RoomState[ChatLiveControls_Channel].slow + ' second(s)  between sending messages') : '') + ', ';
+        if (tags.hasOwnProperty('slow') && tags.slow) {
+            text += "Slow" + (tags.slow ? (' wait ' + tags.slow + ' second(s)  between sending messages') : '') + ', ';
         }
 
-        if (ChatLive_RoomState[ChatLiveControls_Channel].hasOwnProperty('subs-only') &&
-            ChatLive_RoomState[ChatLiveControls_Channel]['subs-only']) text += 'Subscribers-only, ';
+        if (tags.hasOwnProperty('subs-only') && tags['subs-only']) text += 'Subscribers-only, ';
 
         text = text.slice(0, -2);
     }
