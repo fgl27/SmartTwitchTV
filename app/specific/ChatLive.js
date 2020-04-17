@@ -9,6 +9,8 @@ var ChatLive_JoinID = [];
 var ChatLive_LineAddCounter = [];
 var ChatLive_Messages = [];
 var ChatLive_Banned = [];
+var ChatLive_FollowState = [];
+var ChatLive_SubState = [];
 var ChatLive_Playing = true;
 var extraEmotesDone = {
     bbtv: {},
@@ -70,6 +72,9 @@ function ChatLive_Init(chat_number) {
     ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
 
     ChatLive_loadEmotesUser(0);
+    ChatLive_checkFallow(0, chat_number, Chat_Id[chat_number]);
+    ChatLive_checkSub(0, chat_number, Chat_Id[chat_number]);
+
     ChatLive_loadEmotesChannelbbtv(0, chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelffz(0, chat_number, Chat_Id[chat_number]);
 
@@ -77,6 +82,113 @@ function ChatLive_Init(chat_number) {
     ChatLive_loadCheersChannel(0, chat_number, Chat_Id[chat_number]);
 
     ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
+}
+
+function ChatLive_checkFallow(tryes, chat_number, id) {
+    if (!AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
+
+    ChatLive_FollowState[chat_number] = {};
+
+    var xmlHttp = new XMLHttpRequest();
+    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
+
+    xmlHttp.open("GET", theUrl, true);
+
+    for (var i = 0; i < 2; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) { //yes
+                ChatLive_checkFallowSuccess(xmlHttp.responseText, chat_number, id);
+            } else if (xmlHttp.status === 404) { //no
+                ChatLive_RequestCheckFollowNOK(xmlHttp.responseText, tryes, chat_number, id);
+            } else { // internet error
+                ChatLive_checkFallowError(tryes, chat_number, id);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
+    if (id !== Chat_Id[chat_number]) return;
+    responseText = JSON.parse(responseText);
+
+    ChatLive_FollowState[chat_number] = {
+        minutes: ChatLive_GetMinutes((new Date().getTime()) - (new Date(responseText.created_at).getTime())),// "2020-04-17T21:03:42Z"
+        follows: true
+    };
+}
+
+function ChatLive_GetMinutes(time) {
+    return Math.floor(Math.floor(parseInt(time / 1000)) / 60);
+}
+
+function ChatLive_RequestCheckFollowNOK(response, tryes, chat_number, id) {
+    response = JSON.parse(response);
+
+    if (response.message && Main_A_includes_B((response.message + ''), 'Follow not found')) {
+        ChatLive_FollowState[chat_number].follows = false;
+    } else ChatLive_checkFallowError(tryes, chat_number, id);
+}
+
+function ChatLive_checkFallowError(tryes, chat_number, id) {
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_checkFallow(tryes + 1, chat_number, id);
+}
+
+function ChatLive_checkSub(tryes, chat_number, id) {
+    if (!AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
+
+    ChatLive_SubState[chat_number] = {};
+
+    var xmlHttp = new XMLHttpRequest();
+    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
+
+    xmlHttp.open("GET", theUrl, true);
+
+    Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
+    for (var i = 0; i < 3; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+    xmlHttp.timeout = 10000;
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) { //yes
+                ChatLive_SubState[chat_number] = {
+                    state: true,
+                    hassub: true
+                };
+            } else if (xmlHttp.status === 404) {
+                var response = JSON.parse(xmlHttp.responseText);
+                if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) {//no
+                    ChatLive_SubState[chat_number] = {
+                        state: false,
+                        hassub: true
+                    };
+                } else ChatLive_checkSubError(tryes, chat_number, id);
+            } else if (xmlHttp.status === 422) { //channel does not have a subscription program, old check doesn't work anymore maybe return
+                ChatLive_SubState[chat_number] = {
+                    state: false,
+                    hassub: false
+                };
+            } else { // internet error
+                ChatLive_checkSubError(tryes, chat_number, id);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function ChatLive_checkSubError(tryes, chat_number, id) {
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_checkSub(tryes + 1, chat_number, id);
 }
 
 function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
@@ -909,7 +1021,7 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
         if (HeaderQuatity > 2) Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
 
         for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Headers[i][0], Main_Headers[i][1]);
+            xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
     }
 
 
