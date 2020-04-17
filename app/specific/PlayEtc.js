@@ -377,7 +377,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
         if (PlayVodClip === 1) {
             ChatLive_Playing = true;
             ChatLive_MessagesRunAfterPause();
-        } else if (PlayClip_HasVOD) Chat_Play(Chat_Id);
+        } else if (PlayClip_HasVOD) Chat_Play(Chat_Id[0]);
 
         if (Play_isPanelShown()) {
             if (PlayVodClip === 1) Play_hidePanel();

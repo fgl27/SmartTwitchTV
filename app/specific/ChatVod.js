@@ -19,7 +19,6 @@ var defaultColorsLength = defaultColors.length;
 var Chat_div = [];
 var Chat_Position = 0;
 var Chat_hasEnded = false;
-var Chat_Id = 0;
 var Chat_CleanMax = 60;
 var Chat_JustStarted = true;
 //Variable initialization end
@@ -44,24 +43,24 @@ function Chat_Init() {
 
     Chat_loadBadgesGlobal();
 
-    Chat_Id = (new Date()).getTime();
+    Chat_Id[0] = (new Date()).getTime();
     ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
     ChatLive_selectedChannel[0] = Main_values.Main_selectedChannel;
 
-    ChatLive_loadEmotesChannelbbtv(0, 0);
-    ChatLive_loadEmotesChannelffz(0, 0);
+    ChatLive_loadEmotesChannelbbtv(0, 0, Chat_Id[0]);
+    ChatLive_loadEmotesChannelffz(0, 0, Chat_Id[0]);
 
-    ChatLive_loadBadgesChannel(0, 0);
-    ChatLive_loadCheersChannel(0, 0);
+    ChatLive_loadBadgesChannel(0, 0, Chat_Id[0]);
+    ChatLive_loadCheersChannel(0, 0, Chat_Id[0]);
 
-    Chat_loadChat(Chat_Id);
+    Chat_loadChat(Chat_Id[0]);
 }
 
 var Chat_LoadGlobalBadges = false;
 function Chat_loadBadgesGlobal() {
     if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
-    if (!extraEmotesDone.bbtvGlobal || extraEmotesDone.bbtvGlobal.length < 1) Chat_loadBBTVGlobalEmotes(0);
-    if (!extraEmotesDone.ffzGlobal || extraEmotesDone.ffzGlobal.length < 1) Chat_loadEmotesffz(0);
+    if (!extraEmotesDone.bbtvGlobal || !extraEmotesDone.bbtvGlobal.length) Chat_loadBBTVGlobalEmotes(0);
+    if (!extraEmotesDone.ffzGlobal || !extraEmotesDone.ffzGlobal.length) Chat_loadEmotesffz(0);
 }
 
 function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
@@ -151,7 +150,7 @@ function Chat_loadEmotesSuccessffz(data) {
 
 function Chat_loadChat(id) {
     Chat_loadingDataTry = 0;
-    if (Chat_Id === id) Chat_loadChatRequest(id);
+    if (Chat_Id[0] === id) Chat_loadChatRequest(id);
 }
 
 function Chat_loadChatRequest(id) {
@@ -167,9 +166,9 @@ function Chat_loadChatRequest(id) {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
-                if (Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+                if (Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
             } else {
-                if (Chat_Id === id) Chat_loadChatError(id);
+                if (Chat_Id[0] === id) Chat_loadChatError(id);
             }
         }
     };
@@ -179,7 +178,7 @@ function Chat_loadChatRequest(id) {
 
 function Chat_loadChatError(id) {
     Chat_loadingDataTry++;
-    if (Chat_Id === id) {
+    if (Chat_Id[0] === id) {
         if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatRequest(id);
         else {
             window.clearTimeout(Chat_loadChatId);
@@ -242,7 +241,7 @@ function Chat_loadChatSuccess(responseText, id) {
         if (null_next) Chat_MessageVector(div, comments.content_offset_seconds);
         else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments.content_offset_seconds);
     });
-    if (null_next && Chat_Id === id) {
+    if (null_next && Chat_Id[0] === id) {
         Chat_JustStarted = false;
         Chat_Play(id);
         if (Chat_next !== undefined) Chat_loadChatNext(id); //if (Chat_next === undefined) chat has ended
@@ -264,7 +263,7 @@ function Chat_MessageVectorNext(message, time) {
 }
 
 function Chat_Play(id) {
-    if (!Chat_JustStarted && !Chat_hasEnded && Chat_Id === id && !Main_values.Play_ChatForceDisable) {
+    if (!Chat_JustStarted && !Chat_hasEnded && Chat_Id[0] === id && !Main_values.Play_ChatForceDisable) {
         Main_Addline(id);
         window.clearInterval(Chat_addlinesId);
         Chat_addlinesId = window.setInterval(function() {
@@ -283,7 +282,7 @@ function Chat_Clear() {
     // on exit cleanup the div
     Chat_hasEnded = false;
     Chat_Pause();
-    Chat_Id = 0;
+    Chat_Id[0] = 0;
     Main_empty('chat_box');
     Main_empty('chat_box2');
     Chat_next = null;
@@ -316,7 +315,7 @@ function Main_Addline(id) {
             Chat_Play(id);
             Chat_MessagesNext = [];
 
-            if (Chat_Id === id) Chat_loadChatNext(id);
+            if (Chat_Id[0] === id) Chat_loadChatNext(id);
             Chat_Clean(0);
         } else { //Chat has eneded
             var div = '&nbsp;';
@@ -338,7 +337,7 @@ function Main_Addline(id) {
 
 function Chat_loadChatNext(id) {
     Chat_loadingDataTry = 0;
-    if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextRequest(id);
+    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id);
 }
 
 function Chat_loadChatNextRequest(id) {
@@ -354,9 +353,9 @@ function Chat_loadChatNextRequest(id) {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
-                if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+                if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
             } else {
-                if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextError(id);
+                if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextError(id);
             }
         }
     };
@@ -366,7 +365,7 @@ function Chat_loadChatNextRequest(id) {
 
 function Chat_loadChatNextError(id) {
     Chat_loadingDataTry++;
-    if (Chat_Id === id) {
+    if (Chat_Id[0] === id) {
         if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatNextRequest(id);
         else {
             window.clearTimeout(Chat_loadChatNextId);
