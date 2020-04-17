@@ -492,7 +492,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                         ChatLive_Banned[chat_number] = true;
 
                         window.clearTimeout(ChatLive_CheckId[chat_number]);
-                        ChatLive_Check(chat_number);
+                        ChatLive_Check(chat_number, id);
                     }
                 }
 
@@ -885,8 +885,9 @@ function ChatLive_Clear(chat_number) {
 
     ChatLive_CheckClear(chat_number);
 
-    if (ChatLive_socket[chat_number] && ChatLive_socket[chat_number].readyState === 1 && AddUser_UsernameArray[0].access_token) {
+    if (ChatLive_socket[chat_number] && ChatLive_loaded[chat_number] && ChatLive_socket[chat_number].readyState === 1 && AddUser_UsernameArray[0].access_token) {
         ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number] + '\r\n');
+        ChatLive_socket[chat_number].close(1000);
     } else if (ChatLive_socket[chat_number]) {
         ChatLive_socket[chat_number].close(1000);
     }

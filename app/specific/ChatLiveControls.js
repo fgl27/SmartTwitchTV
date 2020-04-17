@@ -5,6 +5,13 @@ var ChatLiveControls_Channel = 0;
 var ChatLiveControls_LastChannel = '';
 
 function ChatLiveControls_Show() {
+    var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
+
+    if (ChatLive_Banned[ChatLiveControls_Channel]) {
+        Play_showWarningDialog(STR_CHAT_BANNED + streamer, 1000);
+        return;
+    }
+
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
     Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
@@ -13,7 +20,7 @@ function ChatLiveControls_Show() {
     Play_hidePanel();
 
     //Reset the chat result if streamer has changed
-    var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
+
     if (!Main_A_equals_B(ChatLiveControls_LastChannel, streamer)) Main_ChatLiveInput.value = '';
     ChatLiveControls_LastChannel = streamer;
 
