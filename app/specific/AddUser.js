@@ -377,7 +377,7 @@ function AddUser_UserMakeOne(position) {
     }
 
     //Reset user emotes on chage
-    userEmote = [];
+    userEmote = {};
 }
 
 function AddUser_UserCodeExist(user) {

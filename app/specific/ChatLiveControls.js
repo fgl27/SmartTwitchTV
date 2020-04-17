@@ -217,9 +217,14 @@ function ChatLiveControls_KeyboardEvent(event) {
 
 var ChatLiveControls_EmotesTotal = 0;
 var ChatLiveControls_EmotesPos = 0;
-function ChatLiveControls_SetEmotesDiv(array, text) {
+function ChatLiveControls_SetEmotesDiv(obj, text) {
+    var array = [];
 
-    if (array && array.length > 1) {
+    for (var property in obj) {
+        array.push(obj[property]);
+    }
+
+    if (array.length > 1) {
         Main_textContent("chat_emotes_text", text);
     } else {
         ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);

@@ -14,12 +14,10 @@ var extraEmotesDone = {
     bbtv: {},
     ffz: {},
     cheers: {},
-    BadgesChannel: {},
-    bbtvGlobal: [],
-    ffzGlobal: []
+    BadgesChannel: {}
 };
 
-var userEmote = [];
+var userEmote = {};
 var extraEmotes = {};
 var cheers = {};
 
@@ -133,7 +131,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
     try {
 
         data = JSON.parse(data);
-        userEmote = [];
+        userEmote = {};
 
         Object.keys(data.emoticon_sets).forEach(function(set) {
             set = data.emoticon_sets[set];
@@ -152,13 +150,11 @@ function ChatLive_loadEmotesUserSuccess(data) {
                         '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
                     };
 
-                    userEmote.push(
-                        {
-                            code: emoticon.code,
-                            id: emoticon.id,
-                            '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
-                        }
-                    );
+                    userEmote[emoticon.code] = {
+                        code: emoticon.code,
+                        id: emoticon.id,
+                        '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
+                    };
 
                 });
             }
@@ -170,7 +166,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
 function ChatLive_loadEmotesChannelbbtv(tryes, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
-    if (!extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] || !extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]].length) {
+    if (!extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]]) {
         ChatLive_BaseLoadUrl(
             id,
             'https://api.betterttv.net/2/channels/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
@@ -195,8 +191,8 @@ function ChatLive_loadEmotesChannelbbtvSuccess(data, chat_number, id) {
 }
 
 function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
-    if (!skipChannel) extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = [];
-    else extraEmotesDone.bbtvGlobal = [];
+    if (!skipChannel) extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = {};
+    else extraEmotesDone.bbtvGlobal = {};
 
     data.emotes.forEach(function(emote) {
         if (data.urlTemplate) {
@@ -210,24 +206,21 @@ function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
 
             //Don't copy to prevent shallow clone
             if (!skipChannel) {
-                extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]].push(
-                    {
-                        code: emote.code,
-                        id: emote.id,
-                        '4x': url
-                    }
-                );
+                extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
+                    code: emote.code,
+                    id: emote.id,
+                    '4x': url
+                };
             } else {
-                extraEmotesDone.bbtvGlobal.push(
-                    {
-                        code: emote.code,
-                        id: emote.id,
-                        '4x': url
-                    }
-                );
+                extraEmotesDone.bbtvGlobal[emote.code] = {
+                    code: emote.code,
+                    id: emote.id,
+                    '4x': url
+                };
             }
         }
     });
+
 }
 
 function ChatLive_loadCheersChannel(tryes, chat_number, id) {
@@ -276,12 +269,13 @@ function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
 
 }
 
-function ChatLive_updateExtraEmotes(array) {
-    for (var i = 0; i < array.length; i++) {
-        extraEmotes[array[i].code] = {
-            code: array[i].code,
-            id: array[i].id,
-            '4x': array[i]['4x']
+function ChatLive_updateExtraEmotes(obj) {
+    //We need to update the main obj as some channel have the same code for different emotes image
+    for (var property in obj) {
+        extraEmotes[property] = {
+            code: obj[property].code,
+            id: obj[property].id,
+            '4x': obj[property]['4x']
         };
     }
 }
@@ -289,7 +283,7 @@ function ChatLive_updateExtraEmotes(array) {
 function ChatLive_loadEmotesChannelffz(tryes, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
-    if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] || !extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]].length) {
+    if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
         ChatLive_BaseLoadUrl(
             id,
             'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
@@ -314,8 +308,8 @@ function ChatLive_loadEmotesChannelffzSuccess(data, chat_number, id) {
 }
 
 function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
-    if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = [];
-    else extraEmotesDone.ffzGlobal = [];
+    if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
+    else extraEmotesDone.ffzGlobal = {};
 
     Object.keys(data.sets).forEach(function(set) {
         set = data.sets[set];
@@ -332,6 +326,7 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
                 if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
 
                 var url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
+
                 extraEmotes[emoticon.name] = {
                     code: emoticon.name,
                     id: emoticon.id,
@@ -340,21 +335,17 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
 
                 //Don't copy to prevent shallow clone
                 if (!skipChannel) {
-                    extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]].push(
-                        {
-                            code: emoticon.name,
-                            id: emoticon.id,
-                            '4x': url
-                        }
-                    );
+                    extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
+                        code: emoticon.name,
+                        id: emoticon.id,
+                        '4x': url
+                    };
                 } else {
-                    extraEmotesDone.ffzGlobal.push(
-                        {
-                            code: emoticon.name,
-                            id: emoticon.id,
-                            '4x': url
-                        }
-                    );
+                    extraEmotesDone.ffzGlobal[emoticon.name] = {
+                        code: emoticon.name,
+                        id: emoticon.id,
+                        '4x': url
+                    };
                 }
 
             });
