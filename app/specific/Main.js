@@ -190,6 +190,8 @@ function Main_loadTranslations(language) {
         }
         Main_IsOnAndroid = Android.getAndroid();
         Main_IsOnAndroidVersion = Android.getversion();
+        Main_isDebug = Android.getdebug();
+
     } catch (e) {
         Main_IsOnAndroidVersion = '1.0.0';
         Main_IsOnAndroid = 0;
@@ -2297,3 +2299,8 @@ function Main_LoadUrl(url) {
     if (Main_IsOnAndroid) Android.mloadUrl(url);
     else window.location = url;
 }
+
+function Main_Log(text) {
+    if (Main_isDebug) console.log(text);
+}
+

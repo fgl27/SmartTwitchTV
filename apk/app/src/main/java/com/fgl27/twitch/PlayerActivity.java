@@ -1141,7 +1141,6 @@ public class PlayerActivity extends Activity {
 
     public class WebAppInterface {
         final Context mwebContext;
-
         /**
          * Instantiate the interface and set the context
          */
@@ -1620,6 +1619,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String getversion() {
             return BuildConfig.VERSION_NAME;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean getdebug() {
+            return BuildConfig.DEBUG;
         }
 
         @SuppressWarnings("unused")//called by JS
