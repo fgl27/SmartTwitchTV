@@ -54,7 +54,7 @@ Project Web Dependencies
 The application never stops receiving updates the bellow video may be outdated
 [![How the application looks](https://fgl27.github.io/SmartTwitchTV/screenshot/Screenshot_you.png)](http://www.youtube.com/watch?v=maX9kRnarYg)
 
-## Authentication
+## Authorization
 The user can add a authentication key if you have the twitch password for that user (aka you are it).
 That key will be used to access twitch content for that account, when accessing twitch authentication site it will show:
 
