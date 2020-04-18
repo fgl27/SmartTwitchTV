@@ -248,14 +248,12 @@ function UserLiveFeedobj_LiveNotificationOnload(position) {
     Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
     Main_innerHTML('user_feed_notify_title', UserLiveFeed_NotifyLiveidObject[position].title);
 
-    Main_ready(function() {
-        Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
+    Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
 
-        window.clearTimeout(UserLiveFeedobj_LiveNotificationHideId);
-        UserLiveFeedobj_LiveNotificationHideId = window.setTimeout(function() {
-            UserLiveFeedobj_LiveNotificationHide(position);
-        }, UserLiveFeed_NotifyTimeout);
-    });
+    window.clearTimeout(UserLiveFeedobj_LiveNotificationHideId);
+    UserLiveFeedobj_LiveNotificationHideId = window.setTimeout(function() {
+        UserLiveFeedobj_LiveNotificationHide(position);
+    }, UserLiveFeed_NotifyTimeout);
 }
 
 var UserLiveFeedobj_LiveNotificationShowId;

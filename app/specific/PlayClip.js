@@ -402,7 +402,7 @@ function PlayClip_PlayPreviously() {
 
 function PlayClip_PlayNextPreviously() {
     Play_ForceHidePannel();
-    Main_ready(function() {
+    Main_timeOut(function() {
         PlayClip_replayOrNext = true;
         PlayClip_PreshutdownStream(false);
         Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);

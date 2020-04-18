@@ -19,10 +19,8 @@ function Users_init() {
     if (Main_newUsercode) {
         Main_HideElement('topbar');
         Main_HideElement('side_panel_new_holder');
-        Main_ready(function() {
-            Users_exit();
-            AddCode_CheckNewCode(Main_newUsercode);
-        });
+        Users_exit();
+        AddCode_CheckNewCode(Main_newUsercode);
         return;
     } else if (!AddUser_IsUserSet()) {
         Main_values.Main_Go = Main_Live;
@@ -67,9 +65,7 @@ function Users_StartLoad() {
     Users_cursorY = 0;
     Users_loadingData = true;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        Users_loadData();
-    });
+    Main_ready(Users_loadData);
 }
 
 function Users_loadData() {
@@ -131,7 +127,7 @@ function Users_createCell(id, pos) {
 }
 
 function Users_loadDataSuccessFinish() {
-    Main_ready(function() {
+    Main_timeOut(function() {
         if (!Users_status) {
             Users_status = true;
             Users_addFocus();

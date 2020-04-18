@@ -183,12 +183,11 @@ function AddUser_RestoreUsers() {
             }
         } catch (e) {}
 
+        AddUser_UpdateSidepanel();
+
         //Check and refresh all tokens at start
         for (var i = 0; i < AddUser_UsernameArray.length; i++) {
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
-
-            if (!AddUser_UsernameArray[i].logo) AddUser_UpdateUser(i, 0);
-            else if (!i) AddUser_UpdateSidepanel();
 
             //Set user history obj
             Main_values_History_data[AddUser_UsernameArray[i].id] = {

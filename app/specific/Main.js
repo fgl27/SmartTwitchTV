@@ -73,6 +73,13 @@ var Main_values = {
     "Restore_Backup_Check": false,
 };
 
+var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
+var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
+var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
+var Main_SidePannelSize = "1280x720";
+var Main_VideoSize = "640x360";
+var Main_GameSize = "340x475";
+
 var Main_values_Play_data;
 var Main_values_History_data = {};//The obj is defined in AddUser_RestoreUsers()
 var Main_Force = "4mv6wki5h1ko";
@@ -157,99 +164,97 @@ function Main_Start() {
 function Main_loadTranslations(language) {
     Main_Checktylesheet();
 
-    Main_ready(function() {
-        try {
-            if (Main_A_includes_B(window.location.href, 'asset')) {
-                //Same as in smartTwitchTV/release/api.js
-                //The app is running from assets need to expose smartTwitchTV
-                smartTwitchTV = {
-                    'mainstart': Main_Start,
-                    'Play_PannelEndStart': Play_PannelEndStart,
-                    'Play_PlayerCheck': Play_PlayerCheck,
-                    'Play_UpdateDuration': Play_UpdateDuration,
-                    'PlayExtra_End': PlayExtra_End,
-                    'Play_MultiEnd': Play_MultiEnd,
-                    'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
-                    'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-                    'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
-                    'Main_CheckStop': Main_CheckStop,
-                    'Main_CheckResume': Main_CheckResume,
-                    'Play_getQualities': Play_getQualities,
-                    'Play_ShowVideoStatus': Play_ShowVideoStatus,
-                    'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                    'PlayVod_previews_success': PlayVod_previews_success,
-                    'Play_PlayPauseChange': Play_PlayPauseChange
-                };
-            }
-            Main_IsOnAndroid = Android.getAndroid();
-            Main_IsOnAndroidVersion = Android.getversion();
-        } catch (e) {
-            Main_IsOnAndroidVersion = '1.0.0';
-            Main_IsOnAndroid = 0;
-            document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";
-            Main_isDebug = true;
-            console.log('Main_isReleased: ' + Main_isReleased);
-            console.log('Main_isDebug: ' + Main_isDebug);
-            console.log('Main_isBrowser: ' + !Main_IsOnAndroid);
-            //If we add the class on the android app for some reason it prevents input from release the focus
-            Main_AddClass('scenefeed', 'feed_screen_input');
-            //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
-            KEY_RETURN = 27;
+
+    try {
+        if (Main_A_includes_B(window.location.href, 'asset')) {
+            //Same as in smartTwitchTV/release/api.js
+            //The app is running from assets need to expose smartTwitchTV
+            smartTwitchTV = {
+                'mainstart': Main_Start,
+                'Play_PannelEndStart': Play_PannelEndStart,
+                'Play_PlayerCheck': Play_PlayerCheck,
+                'Play_UpdateDuration': Play_UpdateDuration,
+                'PlayExtra_End': PlayExtra_End,
+                'Play_MultiEnd': Play_MultiEnd,
+                'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
+                'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
+                'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+                'Main_CheckStop': Main_CheckStop,
+                'Main_CheckResume': Main_CheckResume,
+                'Play_getQualities': Play_getQualities,
+                'Play_ShowVideoStatus': Play_ShowVideoStatus,
+                'Play_ShowVideoQuality': Play_ShowVideoQuality,
+                'PlayVod_previews_success': PlayVod_previews_success,
+                'Play_PlayPauseChange': Play_PlayPauseChange
+            };
         }
-        Main_showLoadDialog();
+        Main_IsOnAndroid = Android.getAndroid();
+        Main_IsOnAndroidVersion = Android.getversion();
+    } catch (e) {
+        Main_IsOnAndroidVersion = '1.0.0';
+        Main_IsOnAndroid = 0;
+        document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
+        Main_isDebug = true;
+        console.log('Main_isReleased: ' + Main_isReleased);
+        console.log('Main_isDebug: ' + Main_isDebug);
+        console.log('Main_isBrowser: ' + !Main_IsOnAndroid);
+        //If we add the class on the android app for some reason it prevents input from release the focus
+        Main_AddClass('scenefeed', 'feed_screen_input');
+        //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
+        KEY_RETURN = 27;
+    }
+    Main_showLoadDialog();
 
-        Main_initClick();
-        Settings_SetDefautls();
-        calculateFontSize();
-        en_USLang();
-        Languages_SetDefautls();
+    Main_initClick();
+    Settings_SetDefautls();
+    calculateFontSize();
+    en_USLang();
+    Languages_SetDefautls();
 
-        // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-        // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+    // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+    // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-        //var lang = language,
-        //    Savedlang = Main_getItemInt('user_language', 0);
+    //var lang = language,
+    //    Savedlang = Main_getItemInt('user_language', 0);
 
-        //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-        //else Settings_CheckLang(lang);
+    //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
+    //else Settings_CheckLang(lang);
 
-        //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-        //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
+    //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
+    //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
 
-        console.log("language is " + language);
-        DefaultLang();
+    console.log("language is " + language);
+    DefaultLang();
 
-        if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
+    if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
-        Main_SearchInput = document.getElementById("search_input");
-        Main_AddUserInput = document.getElementById("user_input");
-        Main_ChatLiveInput = document.getElementById("chat_send_input");
-        Main_Scene1Doc = document.getElementById('scene1');
-        Main_Scene2Doc = document.getElementById('scene2');
+    Main_SearchInput = document.getElementById("search_input");
+    Main_AddUserInput = document.getElementById("user_input");
+    Main_ChatLiveInput = document.getElementById("chat_send_input");
+    Main_Scene1Doc = document.getElementById('scene1');
+    Main_Scene2Doc = document.getElementById('scene2');
 
-        Main_RestoreValues();
+    Main_RestoreValues();
 
-        Main_DoRestore = AddUser_RestoreUsers();
+    Main_DoRestore = AddUser_RestoreUsers();
 
-        if (!Main_values.Restore_Backup_Check) {
+    if (!Main_values.Restore_Backup_Check) {
 
-            try {
-                Android.requestWr();
-                Main_HideLoadDialog();
-                Main_innerHTML("main_dialog_remove", STR_BACKUP);
-                Main_textContent('remove_cancel', STR_NO);
-                Main_textContent('remove_yes', STR_YES);
-                Main_ShowElement('main_remove_dialog');
-                Main_values.Restore_Backup_Check = true;
-                document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
-            } catch (e) {
-                window.setTimeout(Main_initWindows, 500);
-                return;
-            }
-        } else window.setTimeout(Main_initWindows, 500);
-
-    });
+        try {
+            Android.requestWr();
+            Main_HideLoadDialog();
+            Main_innerHTML("main_dialog_remove", STR_BACKUP);
+            Main_textContent('remove_cancel', STR_NO);
+            Main_textContent('remove_yes', STR_YES);
+            Main_ShowElement('main_remove_dialog');
+            Main_values.Restore_Backup_Check = true;
+            document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+        } catch (e) {
+            window.setTimeout(Main_initWindows, 500);
+            return;
+        }
+    } else window.setTimeout(Main_initWindows, 500);
 
 }
 
@@ -413,37 +418,34 @@ function Main_initWindows() {
 
     Main_GoBefore = Main_values.Main_Go;
 
-    Main_ready(function() {
-        Chat_Preinit();
-        Play_PreStart();
-        UserLiveFeed_Prepare();
 
-        if (AddUser_UserIsSet()) {
-            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
-        }
-        Screens_InitScreens();
+    Chat_Preinit();
+    Play_PreStart();
+    UserLiveFeed_Prepare();
 
-        document.getElementById("side_panel").style.transform = '';
-        document.getElementById("user_feed_notify").style.transform = '';
+    if (AddUser_UserIsSet()) {
+        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
+    }
+    Screens_InitScreens();
 
-        Main_checkVersion();
+    document.getElementById("side_panel").style.transform = '';
+    document.getElementById("user_feed_notify").style.transform = '';
 
-        Main_SetStringsSecondary();
+    Main_checkVersion();
 
-        Play_MakeControls();
-        Play_SetControls();
-        Play_SetFullScreen(Play_isFullScreen);
+    Main_SetStringsSecondary();
 
-        Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
-        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+    Play_MakeControls();
+    Play_SetControls();
+    Play_SetFullScreen(Play_isFullScreen);
 
-        inUseObj = Live;
-        Main_ready(function() {
-            Screens_init();
-        });
-    });
+    Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
+    Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
+    Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+
+    inUseObj = Live;
+    Screens_init();
 }
 
 function Main_SetStringsMain(isStarting) {
@@ -1577,9 +1579,13 @@ function Main_ready(func) {
         (document.readyState !== "loading" && !document.documentElement.doScroll)) {
 
         // Handle it asynchronously to allow scripts the opportunity to delay ready
-        window.setTimeout(func);
+        Main_timeOut(func);
 
     } else document.addEventListener("DOMContentLoaded", func);
+}
+
+function Main_timeOut(func) {
+    window.setTimeout(func);
 }
 
 function Main_getclock() {
@@ -1806,13 +1812,6 @@ var Main_Headers_Back = [
     [Main_AcceptHeader, Main_TwithcV5Json],
     [Main_Authorization, null]
 ];
-
-var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
-var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
-var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
-var Main_SidePannelSize = "1280x720";
-var Main_VideoSize = "640x360";
-var Main_GameSize = "340x475";
 
 function Main_SetThumb() {
     Main_VideoSize = Main_VideoSizeAll[Settings_value.thumb_quality.defaultValue];

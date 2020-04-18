@@ -447,7 +447,6 @@ function Screens_loadDataSuccessFinish(obj) {
                 Main_values.Main_Go = Main_GoBefore;
                 Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
-                Main_ready(function() {
                     if (Main_values.Play_WasPlaying === 1) {
                         if (Play_data.data.length > 0) {
                             Main_openStream();
@@ -467,11 +466,9 @@ function Screens_loadDataSuccessFinish(obj) {
                         if (!Play_IsWarning) Play_HideWarningDialog();
                     }, 3000);
                     Screens_loadDataSuccessFinishEnd();
-                });
             } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
                 Main_GoBefore !== Main_Search) {
                 Main_HideElementWithEle(obj.ScrollDoc);
-                Main_ready(function() {
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
                     Screens_RemoveAllFocus();
@@ -481,9 +478,8 @@ function Screens_loadDataSuccessFinish(obj) {
                         Main_FirstRun = false;
                         Main_HideLoadDialog();
                     }
-                });
             } else {
-                Main_ready(function() {
+
                     //Values that need to be reset to prevent app odd behavier
                     Main_values.Search_isSearching = false;
                     Main_values.Main_BeforeChannelisSet = false;
@@ -504,7 +500,6 @@ function Screens_loadDataSuccessFinish(obj) {
 
                     Main_SaveValues();
                     Screens_loadDataSuccessFinishEnd();
-                });
             }
         } else {
             Screens_addFocus(true);

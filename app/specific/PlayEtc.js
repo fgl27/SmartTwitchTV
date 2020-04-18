@@ -169,7 +169,7 @@ function Play_EndDialogPressed(PlayVodClip) {
             document.body.addEventListener("keydown", Play_handleKeyDown, false);
 
             Play_data.data[14] = Play_TargetHost.target_id;
-            Main_ready(Play_Start);
+            Main_timeOut(Play_Start);
         } else {
             PlayClip_OpenVod();
             if (!PlayClip_HasVOD) canhide = false;
@@ -1620,13 +1620,11 @@ function Play_KeyChatPosChage() {
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {
-    Main_ready(function() {
-        if (Play_controls[Play_Panelcounter].enterKey) {
-            Play_controls[Play_Panelcounter].enterKey(PlayVodClip);
-        } else {
-            Play_Resetpanel(PlayVodClip);
-        }
-    });
+    if (Play_controls[Play_Panelcounter].enterKey) {
+        Play_controls[Play_Panelcounter].enterKey(PlayVodClip);
+    } else {
+        Play_Resetpanel(PlayVodClip);
+    }
     Main_SaveValues();
 }
 
