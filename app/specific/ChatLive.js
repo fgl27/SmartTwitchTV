@@ -1011,7 +1011,7 @@ function ChatLive_Clear(chat_number) {
 }
 
 
-function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, calbackError, Headers, HeaderQuatity) {
+function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, callbackError, Headers, HeaderQuatity) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -1032,8 +1032,8 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 callbackSucess(xmlHttp.responseText, chat_number, id);
-            } else {
-                calbackError(tryes, chat_number, id);
+            } else if (xmlHttp.status !== 404) {//404 ignore the result is empty
+                callbackError(tryes, chat_number, id);
             }
         }
     };
