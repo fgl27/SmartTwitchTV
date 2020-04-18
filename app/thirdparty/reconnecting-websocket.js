@@ -331,7 +331,7 @@
                 return ws.send(data);
             } else {
                 //throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
-                console.log('INVALID_STATE_ERR : Pausing to reconnect websocket');
+                Main_Log('INVALID_STATE_ERR : Pausing to reconnect websocket');
             }
         };
 

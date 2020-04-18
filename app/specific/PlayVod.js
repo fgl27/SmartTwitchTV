@@ -35,6 +35,8 @@ var PlayVod_VodOffset;
 //Variable initialization end
 
 function PlayVod_Start() {
+    Main_Log('PlayVod_Start');
+
     Play_showBufferDialog();
     Play_HideEndDialog();
     //Play_SupportsSource = true;
@@ -105,6 +107,8 @@ function PlayVod_Start() {
 }
 
 function PlayVod_PosStart() {
+    Main_Log('PlayVod_PosStart');
+
     window.setTimeout(function() {
         Main_ShowElement('controls_holder');
         Main_ShowElement('progress_pause_holder');
@@ -286,6 +290,8 @@ function PlayVod_loadDataSuccessFake() {
 
 var PlayVod_autoUrl;
 function PlayVod_loadDatanew() {
+    Main_Log('PlayVod_loadDatanew');
+
     if (Main_IsOnAndroid) {
         var StreamData = null;
 
@@ -386,6 +392,8 @@ function PlayVod_qualityChanged() {
 }
 
 function PlayVod_onPlayer() {
+    Main_Log('PlayVod_onPlayer');
+
     if (Main_IsOnAndroid) {
         if (Main_values.vodOffset) {
             Chat_offset = Main_values.vodOffset;
@@ -409,6 +417,8 @@ function PlayVod_onPlayerStartPlay(time) {
 }
 
 function PlayVod_shutdownStream() {
+    Main_Log('PlayVod_shutdownStream ' + PlayVod_isOn);
+
     if (PlayVod_isOn) {
         PlayVod_PreshutdownStream(true);
         PlayVod_qualities = [];
@@ -418,6 +428,8 @@ function PlayVod_shutdownStream() {
 }
 
 function PlayVod_PreshutdownStream(saveOffset, PreventcleanQuailities) {
+    Main_Log('PlayVod_PreshutdownStream');
+
     if (saveOffset && Main_IsOnAndroid) {
         if ((Play_DurationSeconds - 300) > parseInt(Android.gettime() / 1000))
             PlayVod_SaveVodIds();
@@ -436,6 +448,8 @@ function PlayVod_PreshutdownStream(saveOffset, PreventcleanQuailities) {
 }
 
 function PlayVod_ClearVod() {
+    Main_Log('PlayVod_ClearVod');
+
     document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
     Main_values.vodOffset = 0;
     Play_DurationSeconds = 0;
@@ -1021,7 +1035,7 @@ function PlayVod_previews_move(position) {
     position = parseInt(position * PlayVod_previews_obj.count);
     var imagePos = parseInt(position / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length;
 
-    // console.log('position ' + position + ' w ' + (position % PlayVod_previews_obj.cols) + ' h ' +
+    // Main_Log('position ' + position + ' w ' + (position % PlayVod_previews_obj.cols) + ' h ' +
     //     parseInt(position / PlayVod_previews_obj.cols) + ' p ' + imagePos);
 
     if (!PlayVod_previews_images_load || imagePos !== PlayVod_previews_images_pos) {
@@ -1056,7 +1070,7 @@ function PlayVod_previews_move(position) {
 
 // function PlayVod_previews_start_test() {
 //     PlayVod_previews_clear();
-//     console.log(PlayVod_previews_url);
+//     Main_Log(PlayVod_previews_url);
 
 //     PlayVod_previews_hide();
 //     if (!PlayVod_previews_url) return;

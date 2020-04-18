@@ -148,7 +148,7 @@ function ChatLiveControls_showWarningDialog(text, timeout) {
 }
 
 function ChatLiveControls_HandleKeyEnter() {
-    if (!ChatLiveControls_cursor) console.log('options');
+    if (!ChatLiveControls_cursor) Main_Log('ChatLiveControls_HandleKeyEnter options');
     if (ChatLiveControls_cursor === 1) {
         Main_ChatLiveInput.value = '';
         Main_innerHTML("chat_result_text", STR_SPACE);

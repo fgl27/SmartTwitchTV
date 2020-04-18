@@ -197,9 +197,9 @@ function Main_loadTranslations(language) {
         Main_IsOnAndroid = 0;
         document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
         Main_isDebug = true;
-        console.log('Main_isReleased: ' + Main_isReleased);
-        console.log('Main_isDebug: ' + Main_isDebug);
-        console.log('Main_isBrowser: ' + !Main_IsOnAndroid);
+        Main_Log('Main_isReleased: ' + Main_isReleased);
+        Main_Log('Main_isDebug: ' + Main_isDebug);
+        Main_Log('Main_isBrowser: ' + !Main_IsOnAndroid);
         //If we add the class on the android app for some reason it prevents input from release the focus
         Main_AddClass('scenefeed', 'feed_screen_input');
         //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
@@ -226,7 +226,7 @@ function Main_loadTranslations(language) {
     //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
     //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
 
-    console.log("language is " + language);
+    Main_Log("language is " + language);
     DefaultLang();
 
     if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
@@ -313,6 +313,7 @@ function Main_initRestoreBackups() {
 }
 
 function Main_initWindows() {
+    Main_Log('Main_initWindows');
     try {
         Main_CanBackup = Android.canBackupFile();
 
@@ -631,7 +632,7 @@ function Main_initClickSet(doc, pos) {
         if (!Main_buttonsVisible()) return;
 
         if (Main_IsOnAndroid) Android.keyEvent(pos, 1);
-        else console.log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
+        else Main_Log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
     };
 }
 
@@ -642,7 +643,7 @@ function Main_ClickonpointerdownClear() {
 
 function Main_Clickonpointerdown(pos) {
     if (Main_IsOnAndroid) Android.keyEvent(pos, 0);
-    else console.log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
+    else Main_Log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -1215,7 +1216,7 @@ function Main_checkVersion() {
     if (Main_IsOnAndroid) {
         var device = Android.getDevice();
         var Webviewversion = Android.getWebviewVersion();
-        console.log('Webviewversion ' + Webviewversion);
+        Main_Log('Webviewversion ' + Webviewversion);
 
         Main_versionTag = "Apk: " + Main_IsOnAndroidVersion + ' Web: ' + Main_minversion +
             (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
@@ -1559,9 +1560,9 @@ function Main_Checktylesheet() {
 
     Main_ready(function() {
         if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-            console.log('Main_Checktylesheet reloading');
+            Main_Log('Main_Checktylesheet reloading');
             Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-        } else console.log('Main_Checktylesheet loaded OK');
+        } else Main_Log('Main_Checktylesheet loaded OK');
 
         document.body.removeChild(span);
     });
@@ -1695,22 +1696,22 @@ function Main_getItemBool(item, default_value) {
 // Replace "16EB" with is the char ᛫ by the result of "string.charCodeAt(i).toString(16).toUpperCase()"
 // To see supported fonts and etc info about the unknown char
 function Main_PrintUnicode(string) { // jshint ignore:line
-    console.log(string);
+    Main_Log(string);
     for (var i = 0; i < string.length; i++)
-        console.log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
+        Main_Log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
 }
 
 function processCode(pageUrl) {
-    console.log("processCode");
+    Main_Log("processCode");
     var code = '';
     code = pageUrl.match(/code=(\w+)/);
     if (code) {
         code = code[1];
         CheckPage("?code=" + code);
-        console.log('if code ' + code);
+        Main_Log('if code ' + code);
         Main_newUsercode = code;
     } else {
-        console.log('else code ' + code);
+        Main_Log('else code ' + code);
         CheckPage('');
         Main_newUsercode = 0;
     }
@@ -1794,7 +1795,6 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
                     obj.key_refresh();
                 else calbackError(obj);
             } else {
-                console.log(xmlHttp);
                 calbackError(obj);
             }
         }

@@ -31,6 +31,8 @@ var PlayClip_loadingtreamerInfoTry = 0;
 //Variable initialization end
 
 function PlayClip_Start() {
+    Main_Log('PlayClip_Start');
+
     Play_showBufferDialog();
     Play_HideEndDialog();
 
@@ -133,6 +135,7 @@ function PlayClip_updateVodInfoError() {
 }
 
 function PlayClip_GetStreamerInfo() {
+    Main_Log('PlayClip_GetStreamerInfo');
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
     BasehttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
@@ -282,7 +285,7 @@ function PlayClip_qualityChanged() {
 }
 
 function PlayClip_onPlayer() {
-    if (Main_isDebug) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
+    Main_Log('PlayClip_onPlayer ' + PlayClip_playingUrl);
 
     if (Main_IsOnAndroid && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
         PlayClip_replayOrNext ? -1 : Android.gettime());
@@ -300,6 +303,8 @@ function PlayClip_Resume() {
 }
 
 function PlayClip_shutdownStream() {
+    Main_Log('PlayClip_shutdownStream ' + PlayClip_isOn);
+
     if (PlayClip_isOn) {
         PlayClip_All = false;
         PlayClip_PreshutdownStream(true);
@@ -309,6 +314,8 @@ function PlayClip_shutdownStream() {
 }
 
 function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
+    Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
+
     Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0, 'clip');
     PlayClip_hidePanel();
     if (Main_IsOnAndroid) {

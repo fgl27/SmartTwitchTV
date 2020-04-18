@@ -512,13 +512,13 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
         if (!message.command) return;
 
-        //console.log(message);
-        //console.log(message.command);
+        //Main_Log(message);
+        //Main_Log(message.command);
 
         switch (message.command) {
             case "PING":
-                console.log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
-                console.log(message);
+                Main_Log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
+                Main_Log(message);
                 ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                 break;
             case "001":
@@ -578,14 +578,14 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
                 break;
             case "PRIVMSG":
-                //console.log(message);
+                //Main_Log(message);
                 ChatLive_loadChatSuccess(message, chat_number);
                 break;
             case "USERNOTICE":
                 if (useToken[chat_number]) ChatLive_CheckGiftSub(message, chat_number);
                 break;
             case "USERSTATE":
-                //console.log(message);
+                //Main_Log(message);
                 // tags:
                 // badge-info: true
                 // badges: true
@@ -597,7 +597,8 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 // user-type: true
                 break;
             case "NOTICE":
-                console.log(message);
+                Main_Log('NOTICE');
+                Main_Log(message);
                 if (useToken[chat_number]) {
                     if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
 
@@ -691,7 +692,8 @@ function ChatLive_SetRoomState(array, chat_number) {
 }
 
 function ChatLive_UpdateRoomState(message, chat_number) {
-    console.log(message);
+    Main_Log('ChatLive_UpdateRoomState');
+    Main_Log(message);
     if (message.tags) {
 
         if (!ChatLive_RoomState[chat_number]) ChatLive_RoomState[chat_number] = {};
@@ -704,7 +706,7 @@ function ChatLive_UpdateRoomState(message, chat_number) {
         if (tags.hasOwnProperty('slow')) ChatLive_RoomState[chat_number].slow = tags.slow;
         if (tags.hasOwnProperty('subs-only')) ChatLive_RoomState[chat_number]['subs-only'] = tags['subs-only'];
 
-        console.log(ChatLive_RoomState[chat_number]);
+        Main_Log(ChatLive_RoomState[chat_number]);
         ChatLiveControls_RefreshRoomState(chat_number);
     }
 }
@@ -731,13 +733,13 @@ function ChatLive_SendPrepared() {
 
             if (!message.command) return;
 
-            //console.log(message.command);
-            //console.log(message);
+            //Main_Log(message.command);
+            //Main_Log(message);
 
             switch (message.command) {
                 case "PING":
-                    console.log('ChatLive_socketSend PING');
-                    console.log(message);
+                    Main_Log('ChatLive_socketSend PING');
+                    Main_Log(message);
                     ChatLive_socketSend.send('PONG ' + message.params[0]);
                     break;
                 case "001":
@@ -751,7 +753,7 @@ function ChatLive_SendPrepared() {
                     ChatLive_socketSendJoin = true;
                     break;
                 case "USERSTATE":
-                    console.log(message);
+                    Main_Log(message);
                     break;
                 default:
                     break;
@@ -780,12 +782,12 @@ function ChatLive_socketSendCheck() {
 }
 
 function ChatLive_SendMessage(message, chat_number) {
-    console.log('ChatLive_SendMessage ' + message);
+    Main_Log('ChatLive_SendMessage ' + message);
     ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
 }
 
 function ChatLive_FakeSendMessage(messageText, chat_number) {
-    console.log('ChatLive_FakeSendMessage ' + messageText);
+    Main_Log('ChatLive_FakeSendMessage ' + messageText);
 
     var message = {
         params: [
