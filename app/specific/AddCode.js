@@ -21,6 +21,7 @@ function AddCode_CheckNewCode(code) {
 }
 
 function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, obj) {
+    Main_Log('AddCode_refreshTokens');
     if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
 
     var xmlHttp = new XMLHttpRequest();
@@ -36,6 +37,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, o
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
+            Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
             if (xmlHttp.status === 200) {
                 AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, obj);
             } else {
@@ -198,11 +200,13 @@ function AddCode_CheckTokenStart(position) {
 }
 
 function AddCode_CheckToken(position, tryes) {
+    Main_Log('AddCode_CheckToken');
     AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
 }
 
 function AddCode_CheckTokenReady(xmlHttp, position, tryes) {
     if (xmlHttp.readyState === 4) {
+        Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
         if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
         else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
             AddCode_refreshTokens(position, 0, null, null);
@@ -211,6 +215,8 @@ function AddCode_CheckTokenReady(xmlHttp, position, tryes) {
 }
 
 function AddCode_CheckTokenSuccess(responseText, position) {
+    Main_Log('AddCode_CheckTokenSuccess ' + responseText);
+
     var token = JSON.parse(responseText);
     if (token.scopes && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
     else if (token.expires_in) {
