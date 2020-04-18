@@ -120,12 +120,13 @@ function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
     responseText = JSON.parse(responseText);
 
     ChatLive_FollowState[chat_number] = {
-        minutes: ChatLive_GetMinutes((new Date().getTime()) - (new Date(responseText.created_at).getTime())),// "2020-04-17T21:03:42Z"
+        created_at: responseText.created_at,
         follows: true
     };
 }
 
-function ChatLive_GetMinutes(time) {
+function ChatLive_GetMinutes(time) {// "2020-04-17T21:03:42Z"
+    time = (new Date().getTime()) - (new Date(time).getTime());
     return Math.floor(Math.floor(parseInt(time / 1000)) / 60);
 }
 
