@@ -8,6 +8,14 @@ var AddCode_IsSub = false;
 var AddCode_PlayRequest = false;
 var AddCode_Channel_id = '';
 
+var AddCode_Scopes = [
+    'user_read',
+    'user_follows_edit',
+    'user_subscriptions',
+    'chat:edit',
+    'chat:read'
+];
+
 var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
 var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
@@ -82,12 +90,9 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc, obj) 
 
 //Check if has all scopes, in canse they change
 function AddCode_TokensCheckScope(scope) {
-    if (!Main_A_includes_B(scope, 'user_read')) return false;
-    if (!Main_A_includes_B(scope, 'user_follows_edit')) return false;
-    if (!Main_A_includes_B(scope, 'user_subscriptions')) return false;
-    if (!Main_A_includes_B(scope, 'chat:edit')) return false;
-    if (!Main_A_includes_B(scope, 'chat:read')) return false;
-
+    for (var i = 0; i < AddCode_Scopes.length; i++) {
+        if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
+    }
     return true;
 }
 
@@ -196,6 +201,8 @@ function AddCode_CheckOauthTokenError() {
 }
 
 function AddCode_CheckTokenStart(position) {
+    Main_Log('AddCode_CheckTokenStart');
+
     AddCode_CheckToken(position, 0);
 }
 
