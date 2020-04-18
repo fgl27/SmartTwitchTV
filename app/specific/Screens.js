@@ -454,19 +454,27 @@ function Screens_loadDataSuccessFinish(obj) {
                 Main_values.Main_Go = Main_GoBefore;
                 Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
+                //History vod is so fast to load that this need to be set here to prevent a vod reset
+                Main_FirstRun = false;
+
                 if (Main_values.Play_WasPlaying === 1) {
                     if (Play_data.data.length > 0) {
-                        Main_openStream();
-                        Main_SwitchScreen(true);
+
+                        Main_timeOut(function() {
+                            Main_openStream();
+                            Main_SwitchScreen(true);
+                        }, 500);
+
                     } else Main_SwitchScreen(false);
                 } else {
                     if (!Main_values.vodOffset) Main_values.vodOffset = 1;
                     Play_DurationSeconds = 0;
 
-                    //History vod is so fast to load that this need to be set here to prevent a vod reset
-                    Main_FirstRun = false;
-                    Main_openVod();
-                    Main_SwitchScreen(true);
+                    Main_timeOut(function() {
+
+                        Main_openVod();
+                        Main_SwitchScreen(true);
+                    }, 500);
                 }
 
                 window.setTimeout(function() {

@@ -253,10 +253,10 @@ function Main_loadTranslations(language) {
             Main_values.Restore_Backup_Check = true;
             document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
         } catch (e) {
-            window.setTimeout(Main_initWindows, 500);
+            Main_timeOut(Main_initWindows, 500);
             return;
         }
-    } else window.setTimeout(Main_initWindows, 500);
+    } else Main_timeOut(Main_initWindows, 500);
 
 }
 
@@ -448,7 +448,7 @@ function Main_initWindows() {
     Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
 
     inUseObj = Live;
-    Screens_init();
+    Main_timeOut(Screens_init, 500);
 }
 
 function Main_SetStringsMain(isStarting) {
@@ -1587,8 +1587,9 @@ function Main_ready(func) {
     } else document.addEventListener("DOMContentLoaded", func);
 }
 
-function Main_timeOut(func) {
-    window.setTimeout(func);
+function Main_timeOut(func, timeout) {
+    if (timeout && timeout > 0) window.setTimeout(func, timeout);
+    else window.setTimeout(func);
 }
 
 function Main_getclock() {
