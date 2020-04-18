@@ -787,7 +787,7 @@
         div.chat_result_text {
             width: 100%;
             text-align: center;
-            font-size: 95%;
+            font-size: 2.4vh;
             font-family: 'Roboto-Bold';
             background-color: #000000;
             color: #FFFFFF;
@@ -800,22 +800,20 @@
         div.chat_result_text {
             width: 100%;
             height: 100%;
-            font-size: 90%;
             transform: rotate(180deg);
             text-align: left;
         }
 
         div.chat_result_holder {
-            max-height: 25vh;
+            max-height: 24.5vh;
             margin-bottom: 1%;
-            border: 0.1em solid #FFFFFF;
+            border: 0.4vh solid #FFFFFF;
             transform: rotate(180deg);
             overflow: hidden;
         }
 
         div.chat_result {
             background-color: rgba(0, 0, 0, 0);
-            font-size: 85%;
         }
 
         input.chat_input_class {
@@ -824,7 +822,7 @@
             height: 1.25em;
             color: #000000;
             font-family: 'Roboto-Bold';
-            font-size: 85%;
+            font-size: 2vh;
             text-align: center;
             background-color: #dcdcdc;
             border: 0.125em solid #FFFFFF;
@@ -922,12 +920,19 @@
             margin-bottom: 0.5%;
             color: #FFFFFF;
             font-family: 'Roboto-Bold';
-            font-size: 90%;
+            font-size: 2.4vh;
             background-color: #2F2F2F;
             display: inline-block;
             border: 0.1em solid #FFFFFF;
             box-shadow: inset 0 0 0 0.1em #000000;
             text-align: center;
+        }
+
+        div.chat_send {
+            font-size: 0;
+            top: 0;
+            z-index: 3;
+            background: rgba(0, 0, 0, 0.7)
         }
 
         div.button_chat_focused {
@@ -3123,10 +3128,10 @@
                 </div>
             </div>
         </div>
-        <div id="chat_send" class="screen_holder hide" style="top: 0; z-index: 3; background: rgba(0, 0, 0, 0.7)">
+        <div id="chat_send" class="chat_send screen_holder hide">
             <div id="dialog_warning_chat" class="dialogs hide"
                 style="z-index:7; margin-top: 1%; background: rgba(0, 0, 0, 0.65);">
-                <div id="dialog_warning_chat_text" class="strokedelinebig" style="font-size: 133%;"></div>
+                <div id="dialog_warning_chat_text" class="strokedelinebig" style="font-size: 3vh;"></div>
             </div>
             <div class="chat_input_text_box">
                 <!-- Options-->
@@ -3159,7 +3164,7 @@
                     </div>
                 </div>
                 <!-- ROOMSTATE -->
-                <div id="chat_state" class="chat_result" style="font-size: 80%;"></div>
+                <div id="chat_state" class="chat_result"></div>
             </div>
         </div>
         <div id="chat_emotes_holder" class="chat_emotes_holder hide">
