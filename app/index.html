@@ -831,7 +831,8 @@
         }
 
         input.chat_input_class_focus {
-            border-color: #000000;
+            border: 0.2em solid red;
+            caret-color: red;
             box-shadow: inset 0 0 0 0.1em #FFFFFF;
             background-color: #FFFFFF;
         }
@@ -966,20 +967,23 @@
         div.button_dialog,
         div.button_search {
             width: 20%;
-            height: 1.7em;
-            line-height: 1.7em;
+            height: 1.5em;
+            line-height: 1.5em;
             border-radius: 0.75em;
-            margin-top: 2%;
+            margin-top: 1%;
             margin-left: 4.5%;
             color: #000000;
             font-family: 'Roboto-Bold';
             font-size: 150%;
-            background-color: #999999;
+            background-color: #ebebeb;
             display: inline-block;
             border-top: 0.055em solid;
             border-bottom: 0.06em solid;
             border-image: linear-gradient(#000000, #000000) 1;
             text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 1%;
         }
 
         div.button_dialog {
@@ -989,9 +993,12 @@
         div.button_dialog_focused,
         div.button_search_focused {
             color: #FFFFFF;
+            height: 2.2em;
+            line-height: 2.2em;
             background-color: #2F2F2F;
             text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
             border-image: linear-gradient(to right, #000000 6%, #D0D3D4, #000000 94%) 1;
+            margin-bottom: 0 !important;
         }
 
         div.button_dialog_focused {
@@ -2539,6 +2546,7 @@
                     <div id="chanel_button" class="button_search" style="margin-left: 16%;"></div>
                     <div id="game_button" class="button_search"></div>
                     <div id="live_button" class="button_search"></div>
+                    <div class="button_search button_search_focused" style="opacity: 0; width: 0;"></div>
                 </div>
             </div>
 
@@ -3165,6 +3173,16 @@
                 </div>
                 <!-- ROOMSTATE -->
                 <div id="chat_state" class="chat_result"></div>
+            </div>
+        </div>
+        <div id="chat_choose" class="screens hide" style="z-index: 99;">
+            <div class="dialog_exit" style="width: 60%; margin-left: 20%;">
+                <div id="chat_choose_dialog_text" class="exit_text"></div>
+                <div style="text-align: center; margin-bottom: 4%;">
+                    <div id="chat_choose_dialog1" class="button_dialog" style="width: 35%; margin-left: 0%;">
+                    </div>
+                    <div id="chat_choose_dialog0" class="button_dialog" style="width: 35%;"></div>
+                </div>
             </div>
         </div>
         <div id="chat_emotes_holder" class="chat_emotes_holder hide">

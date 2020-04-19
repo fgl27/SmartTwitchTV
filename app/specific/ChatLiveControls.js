@@ -20,12 +20,12 @@ function ChatLiveControls_Show() {
     ChatLiveControls_LastChannel = streamer;
 
     if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) ChatLiveControls_extraMessageTokenize(Main_ChatLiveInput.value);
-    else Main_innerHTML("chat_result_text", STR_SPACE);
 
     ChatLiveControls_inputFocus();
 }
 
 function ChatLiveControls_Hide() {
+    ChatLiveControls_Channel = 0;
     document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
     document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
@@ -147,7 +147,6 @@ function ChatLiveControls_HandleKeyEnter() {
     if (!ChatLiveControls_cursor) Main_Log('ChatLiveControls_HandleKeyEnter options');
     if (ChatLiveControls_cursor === 1) {
         Main_ChatLiveInput.value = '';
-        Main_innerHTML("chat_result_text", STR_SPACE);
     } else if (ChatLiveControls_cursor === 2) {
         ChatLiveControls_SetEmotesDiv(userEmote, STR_CHAT_TW_EMOTES);
     } else if (ChatLiveControls_cursor === 3 && ChatLiveControls_CheckEmoteStatus()) {
@@ -330,7 +329,8 @@ function ChatLiveControls_EmotesEvent(event) {
             ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 1);
             break;
         case KEY_UP:
-            ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, -20);
+            if (ChatLiveControls_EmotesPos < 20) ChatLiveControls_HideEmotes();
+            else ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, -20);
             break;
         case KEY_DOWN:
             ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
@@ -418,7 +418,7 @@ function ChatLiveControls_UpdateResultText() {
 
             Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize([Main_ChatLiveInput.value]));
 
-        } else Main_innerHTML("chat_result_text", STR_SPACE);
+        }
 
     }, 10);
 }
@@ -438,10 +438,10 @@ function ChatLiveControls_CheckEmoteStatus() {
 
     if (tags && tags.hasOwnProperty('emote-only') && tags['emote-only']) {
         ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_ONLY, 1500);
-        return true;
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 function ChatLiveControls_CheckStatus(chat_warning) {
@@ -499,4 +499,50 @@ function ChatLiveControls_CheckStatus(chat_warning) {
     }
 
     return true;
+}
+
+function ChatLiveControls_ShowChooseChat() {
+    document.body.removeEventListener("keydown", Play_handleKeyDown);
+    document.body.addEventListener("keydown", ChatLiveControls_ChooseChat, false);
+
+    Main_textContent("chat_choose_dialog_text", STR_CHAT_CHOOSE);
+    Main_textContent("chat_choose_dialog0", Play_data.data[1]);
+    Main_textContent("chat_choose_dialog1", PlayExtra_data.data[1]);
+    ChatLiveControls_ChooseChatChannel = 0;
+
+    Main_ShowElement('chat_choose');
+    ChatLiveControls_ChooseChatFocus(0);
+}
+
+function ChatLiveControls_ChooseChatFocus(position) {
+    Main_AddClass('chat_choose_dialog' + position, 'button_dialog_focused');
+    Main_RemoveClass('chat_choose_dialog' + (position ^ 1), 'button_dialog_focused');
+
+}
+
+function ChatLiveControls_HideChooseChat() {
+    document.body.removeEventListener("keydown", ChatLiveControls_ChooseChat);
+    Main_HideElement('chat_choose');
+}
+
+var ChatLiveControls_ChooseChatChannel = 0;
+function ChatLiveControls_ChooseChat(event) {
+    switch (event.keyCode) {
+        case KEY_RETURN:
+            ChatLiveControls_HideChooseChat();
+            ChatLiveControls_Hide();
+            break;
+        case KEY_RIGHT:
+        case KEY_LEFT:
+            ChatLiveControls_ChooseChatChannel = ChatLiveControls_ChooseChatChannel ^ 1;
+            ChatLiveControls_ChooseChatFocus(ChatLiveControls_ChooseChatChannel);
+            break;
+        case KEY_ENTER:
+            ChatLiveControls_HideChooseChat();
+            ChatLiveControls_Channel = ChatLiveControls_ChooseChatChannel;
+            ChatLiveControls_Show();
+            break;
+        default:
+            break;
+    }
 }

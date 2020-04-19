@@ -1372,7 +1372,10 @@ function Play_MakeControls() {
         values: null,
         defaultValue: null,
         opacity: 0,
-        enterKey: ChatLiveControls_Show
+        enterKey: function() {
+            if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
+            else ChatLiveControls_Show();
+        }
     };
 
     Play_controls[Play_controlsChatForceDis] = { //force disable chat
