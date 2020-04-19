@@ -19,8 +19,6 @@ var ChannelVod_game = '';
 var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
 var Main_HistoryPos = 0;
 
-var Vod_DoAnimateThumb = 1;
-
 var AGame_following = false;
 
 var DefaultloadingDataTimeout = 3500;
@@ -1792,7 +1790,7 @@ function ScreensObj_VodCellArray(cell) {
 
 function ScreensObj_AnimateThumbId(screen) {
     window.clearInterval(screen.AnimateThumbId);
-    if (!Vod_DoAnimateThumb) return;
+    if (!Settings_Obj_default("videos_animation")) return;
     var div = document.getElementById(screen.ids[6] + screen.posY + '_' + screen.posX);
 
     // Only load the animation if it can be loaded

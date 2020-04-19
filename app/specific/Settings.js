@@ -529,7 +529,6 @@ function Settings_SetDefautls() {
     }
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
-    Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     UserLiveFeed_Notify = Settings_Obj_default("live_notification");
     Settings_NotifyTimeout();
@@ -613,8 +612,7 @@ function Settings_SetarrowsKey(key) {
 function Settings_SetDefault(position) {
     position = Settings_value_keys[position];
 
-    if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
-    else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+    if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     else if (position === "live_notification") {
         UserLiveFeed_Notify = Settings_Obj_default("live_notification");
         Settings_notification_background();
