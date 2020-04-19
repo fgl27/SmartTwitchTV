@@ -547,13 +547,14 @@ function Main_SetStringsSecondary() {
 
     Main_textContent("chat_send_button0", STR_CHAT_OPTIONS);
     Main_textContent("chat_send_button1", STR_CHAT_DELL_ALL);
-    Main_textContent("chat_send_button2", STR_CHAT_TW_EMOTES);
+    Main_textContent("chat_send_button2", STR_CHAT_UNICODE_EMOJI);
     Main_textContent("chat_send_button3", STR_CHAT_BBTV_GLOBAL);
     Main_textContent("chat_send_button4", STR_CHAT_FFZ_GLOBAL);
     Main_textContent("chat_send_button5", STR_CHAT_SEND);
     Main_textContent("chat_send_button6", STR_CHAT_AT_STREAM);
-    Main_textContent("chat_send_button7", STR_CHAT_BBTV_STREAM);
-    Main_textContent("chat_send_button8", STR_CHAT_FFZ_STREAM);
+    Main_textContent("chat_send_button7", STR_CHAT_TW_EMOTES);
+    Main_textContent("chat_send_button8", STR_CHAT_BBTV_STREAM);
+    Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
     Main_textContent("chat_result", STR_CHAT_RESULT);
 }
 

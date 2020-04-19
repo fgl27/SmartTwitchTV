@@ -1019,7 +1019,6 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
             xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
     }
 
-
     xmlHttp.timeout = 10000;
     xmlHttp.ontimeout = function() {};
 

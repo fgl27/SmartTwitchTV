@@ -103,6 +103,7 @@ var twemoji = (function(
              *
              */
             parse: parse,
+            parseIcon: parseIcon,
 
             /**
              * Given a string, invokes the callback argument
@@ -181,6 +182,16 @@ var twemoji = (function(
             var iconId = grabTheRightIcon(rawText);
 
             return iconId ? '<img class="' + (emoticon ? 'emoticon' : 'emoji') + '" alt="" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
+        });
+    }
+
+    function parseIcon(str) {
+        if (!str) return '';
+
+        return replace(str, function(rawText) {
+            var iconId = grabTheRightIcon(rawText);
+
+            return iconId ? 'https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png' : rawText;
         });
     }
 

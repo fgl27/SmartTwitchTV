@@ -19,7 +19,8 @@ function ChatLiveControls_Show() {
     if (!Main_A_equals_B(ChatLiveControls_LastChannel, streamer)) Main_ChatLiveInput.value = '';
     ChatLiveControls_LastChannel = streamer;
 
-    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) ChatLiveControls_extraMessageTokenize(Main_ChatLiveInput.value);
+    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) ChatLiveControls_UpdateResultText();
+    else ChatLiveControls_UpdateResultTextEmpty();
 
     ChatLiveControls_inputFocus();
 }
@@ -126,7 +127,7 @@ function ChatLiveControls_refreshInputFocusTools() {
 }
 
 function ChatLiveControls_resetInputFocusTools() {
-    for (var i = 0; i < 9; i++)
+    for (var i = 0; i < 10; i++)
         Main_RemoveClass('chat_send_button' + i, 'button_chat_focused');
 }
 
@@ -147,8 +148,11 @@ function ChatLiveControls_HandleKeyEnter() {
     if (!ChatLiveControls_cursor) Main_Log('ChatLiveControls_HandleKeyEnter options');
     if (ChatLiveControls_cursor === 1) {
         Main_ChatLiveInput.value = '';
+        ChatLiveControls_UpdateResultTextEmpty();
     } else if (ChatLiveControls_cursor === 2) {
-        ChatLiveControls_SetEmotesDiv(userEmote, STR_CHAT_TW_EMOTES);
+
+        ChatLiveControls_SetEmojisDiv();
+
     } else if (ChatLiveControls_cursor === 3 && ChatLiveControls_CheckEmoteStatus()) {
 
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtvGlobal, STR_CHAT_BBTV_GLOBAL);
@@ -171,9 +175,13 @@ function ChatLiveControls_HandleKeyEnter() {
 
     } else if (ChatLiveControls_cursor === 7 && ChatLiveControls_CheckEmoteStatus()) {
 
-        ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BBTV_STREAM);
+        ChatLiveControls_SetEmotesDiv(userEmote, STR_CHAT_TW_EMOTES);
 
     } else if (ChatLiveControls_cursor === 8 && ChatLiveControls_CheckEmoteStatus()) {
+
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BBTV_STREAM);
+
+    } else if (ChatLiveControls_cursor === 9 && ChatLiveControls_CheckEmoteStatus()) {
 
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM);
 
@@ -187,17 +195,17 @@ function ChatLiveControls_handleKeyDown(event) {
             break;
         case KEY_LEFT:
             ChatLiveControls_cursor--;
-            if (ChatLiveControls_cursor < 0) ChatLiveControls_cursor = 8;
+            if (ChatLiveControls_cursor < 0) ChatLiveControls_cursor = 9;
             ChatLiveControls_refreshInputFocusTools();
             break;
         case KEY_RIGHT:
             ChatLiveControls_cursor++;
-            if (ChatLiveControls_cursor > 8) ChatLiveControls_cursor = 0;
+            if (ChatLiveControls_cursor > 9) ChatLiveControls_cursor = 0;
             ChatLiveControls_refreshInputFocusTools();
             break;
         case KEY_UP:
             if (ChatLiveControls_cursor > 4) {
-                ChatLiveControls_cursor -= 4;
+                ChatLiveControls_cursor -= 5;
                 ChatLiveControls_refreshInputFocusTools();
             } else {
                 ChatLiveControls_inputFocus();
@@ -205,7 +213,7 @@ function ChatLiveControls_handleKeyDown(event) {
             break;
         case KEY_DOWN:
             if (ChatLiveControls_cursor < 5) {
-                ChatLiveControls_cursor += 4;
+                ChatLiveControls_cursor += 5;
                 ChatLiveControls_refreshInputFocusTools();
             } else {
                 ChatLiveControls_inputFocus();
@@ -291,6 +299,45 @@ function ChatLiveControls_SetEmoteDiv(obj, position) {
     div.innerHTML = '<div ><div id="chat_emotes_img' + position + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + obj['4x'] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
         '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + position + '" class="chat_emotes_name opacity_zero">' + obj.code + '</div></div></div>';
+
+    return div;
+}
+
+function ChatLiveControls_SetEmojisDiv() {
+
+    if (emojis && emojis.length > 1) {
+        Main_textContent("chat_emotes_text", STR_CHAT_UNICODE_EMOJI);
+    } else {
+        ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);
+        return;
+    }
+
+    var div_holder = document.getElementById('chat_emotes');
+    Main_emptyWithEle(div_holder);
+
+    ChatLiveControls_EmotesTotal = emojis.length;
+    ChatLiveControls_EmotesPos = 0;
+
+    for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
+        div_holder.appendChild(
+            ChatLiveControls_SetEmojiDiv(emojis[i], i)
+        );
+    }
+
+    ChatLiveControls_ShowEmotes();
+}
+
+function ChatLiveControls_SetEmojiDiv(obj, position) {
+
+    var div = document.createElement('div');
+
+    div.setAttribute('id', 'chat_emotes' + position);
+    div.setAttribute(Main_DataAttribute, obj.unicode);
+    div.classList.add('chat_emotes_img_holder');
+
+    div.innerHTML = '<div ><div id="chat_emotes_img' + position + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + twemoji.parseIcon(obj.unicode) +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
+        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + position + '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
 
     return div;
 }
@@ -418,9 +465,12 @@ function ChatLiveControls_UpdateResultText() {
 
             Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize([Main_ChatLiveInput.value]));
 
-        }
+        } else ChatLiveControls_UpdateResultTextEmpty();
 
     }, 10);
+}
+function ChatLiveControls_UpdateResultTextEmpty() {
+    Main_textContent("chat_result_text", '');
 }
 
 function ChatLiveControls_extraMessageTokenize(message) {

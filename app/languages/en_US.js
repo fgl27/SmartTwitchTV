@@ -438,6 +438,7 @@ function en_USLang() {
     STR_CHAT_NO_RESTRICTIONS = "No restrictions";
     STR_CHAT_OPTIONS = "Options";
     STR_CHAT_DELL_ALL = "Delete all";
+    STR_CHAT_UNICODE_EMOJI = "Unicode Emoji";
     STR_CHAT_TW_EMOTES = "Twitch emotes";
     STR_CHAT_BBTV_GLOBAL = "BBTV global";
     STR_CHAT_BBTV_STREAM = "BBTV streamer";
