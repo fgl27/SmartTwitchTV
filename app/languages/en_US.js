@@ -447,4 +447,8 @@ function en_USLang() {
     STR_CHAT_RESULT = "In Chat expected result:";
     STR_CHAT_SEND = "Send";
     STR_CHAT_EMOTE_EMPTY = "This emote list is empty";
+    STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
+    STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
+    STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you only fallows for ";
+    STR_CHAT_EMOTE_ONLY = "Twitch Emote-only mode";
 }

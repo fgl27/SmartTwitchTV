@@ -398,7 +398,7 @@ function Users_handleKeyDown(event) {
                         var client_id = Main_clientId;
                         var redirect_uri = AddCode_redirect_uri;
                         var scope = '';
-                        for (var i = 0; i < AddCode_Scopes.length; i++) {
+                        for (i = 0; i < AddCode_Scopes.length; i++) {
                             scope += AddCode_Scopes[i] + '+';
                         }
                         scope = scope.slice(0, -1);

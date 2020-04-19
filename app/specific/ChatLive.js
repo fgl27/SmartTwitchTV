@@ -63,10 +63,6 @@ function ChatLive_Init(chat_number) {
 
     Chat_loadBadgesGlobal();
 
-    ChatLive_loaded[chat_number] = false;
-    ChatLive_Banned[chat_number] = false;
-    ChatLive_RoomState[chat_number] = null;
-
     Chat_Id[chat_number] = (new Date()).getTime();
     ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
     ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
@@ -117,6 +113,10 @@ function ChatLive_checkFallow(tryes, chat_number, id) {
 
 function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
+    ChatLive_checkFallowSuccessUpdate(responseText, chat_number);
+}
+
+function ChatLive_checkFallowSuccessUpdate(responseText, chat_number) {
     responseText = JSON.parse(responseText);
 
     ChatLive_FollowState[chat_number] = {
@@ -162,23 +162,12 @@ function ChatLive_checkSub(tryes, chat_number, id) {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) { //yes
-                ChatLive_SubState[chat_number] = {
-                    state: true,
-                    hassub: true
-                };
+                ChatLive_SubState[chat_number].state = true;
             } else if (xmlHttp.status === 404) {
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) {//no
-                    ChatLive_SubState[chat_number] = {
-                        state: false,
-                        hassub: true
-                    };
+                    ChatLive_SubState[chat_number].state = false;
                 } else ChatLive_checkSubError(tryes, chat_number, id);
-            } else if (xmlHttp.status === 422) { //channel does not have a subscription program, old check doesn't work anymore maybe return
-                ChatLive_SubState[chat_number] = {
-                    state: false,
-                    hassub: false
-                };
             } else { // internet error
                 ChatLive_checkSubError(tryes, chat_number, id);
             }
@@ -679,6 +668,7 @@ function ChatLive_CheckClear(chat_number) {
 
 var ChatLive_RoomState = [];
 function ChatLive_SetRoomState(array, chat_number) {
+    Main_Log('ChatLive_SetRoomState');
 
     ChatLive_RoomState[chat_number] = {
         'emote-only': parseInt(array[1]),
@@ -688,6 +678,7 @@ function ChatLive_SetRoomState(array, chat_number) {
         'subs-only': parseInt(array[5])
     };
 
+    Main_Log(ChatLive_RoomState[chat_number]);
     ChatLiveControls_RefreshRoomState(chat_number);
 }
 
@@ -700,11 +691,11 @@ function ChatLive_UpdateRoomState(message, chat_number) {
 
         var tags = message.tags;
 
-        if (tags.hasOwnProperty('msg-id')) ChatLive_RoomState[chat_number]['emote-only'] = tags['emote-only'];
-        if (tags.hasOwnProperty('followers-only')) ChatLive_RoomState[chat_number]['followers-only'] = tags['followers-only'];
-        if (tags.hasOwnProperty('rk9')) ChatLive_RoomState[chat_number].rk9 = tags.rk9;
-        if (tags.hasOwnProperty('slow')) ChatLive_RoomState[chat_number].slow = tags.slow;
-        if (tags.hasOwnProperty('subs-only')) ChatLive_RoomState[chat_number]['subs-only'] = tags['subs-only'];
+        if (tags.hasOwnProperty('emote-only')) ChatLive_RoomState[chat_number]['emote-only'] = parseInt(tags['emote-only']);
+        if (tags.hasOwnProperty('followers-only')) ChatLive_RoomState[chat_number]['followers-only'] = parseInt(tags['followers-only']);
+        if (tags.hasOwnProperty('rk9')) ChatLive_RoomState[chat_number].rk9 = parseInt(tags.rk9);
+        if (tags.hasOwnProperty('slow')) ChatLive_RoomState[chat_number].slow = parseInt(tags.slow);
+        if (tags.hasOwnProperty('subs-only')) ChatLive_RoomState[chat_number]['subs-only'] = parseInt(tags['subs-only']);
 
         Main_Log(ChatLive_RoomState[chat_number]);
         ChatLiveControls_RefreshRoomState(chat_number);
@@ -999,6 +990,7 @@ function ChatLive_Clear(chat_number) {
 
     ChatLive_loaded[chat_number] = false;
     ChatLive_Banned[chat_number] = false;
+    ChatLive_RoomState[chat_number] = null;
 
     ChatLive_CheckClear(chat_number);
 

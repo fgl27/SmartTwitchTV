@@ -5,12 +5,7 @@ var ChatLiveControls_Channel = 0;
 var ChatLiveControls_LastChannel = '';
 
 function ChatLiveControls_Show() {
-    var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
-
-    if (ChatLive_Banned[ChatLiveControls_Channel]) {
-        Play_showWarningDialog(STR_CHAT_BANNED + streamer, 1000);
-        return;
-    }
+    if (!ChatLiveControls_CheckStatus(false)) return;
 
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
@@ -20,7 +15,7 @@ function ChatLiveControls_Show() {
     Play_hidePanel();
 
     //Reset the chat result if streamer has changed
-
+    var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
     if (!Main_A_equals_B(ChatLiveControls_LastChannel, streamer)) Main_ChatLiveInput.value = '';
     ChatLiveControls_LastChannel = streamer;
 
@@ -53,6 +48,7 @@ function ChatLiveControls_SetRoomState() {
 
         if (tags.hasOwnProperty('emote-only') && tags['emote-only']) text += "Emote-only, ";
 
+        //TODO convert this to strings
         if (tags.hasOwnProperty('followers-only') && tags['followers-only'] !== -1) {
             text += "Followers-only" + (tags['followers-only'] ? (' minimum ' + tags['followers-only'] + ' minute(s) fallowing') : '') + ', ';
         }
@@ -154,22 +150,34 @@ function ChatLiveControls_HandleKeyEnter() {
         Main_innerHTML("chat_result_text", STR_SPACE);
     } else if (ChatLiveControls_cursor === 2) {
         ChatLiveControls_SetEmotesDiv(userEmote, STR_CHAT_TW_EMOTES);
-    } else if (ChatLiveControls_cursor === 3) {
+    } else if (ChatLiveControls_cursor === 3 && ChatLiveControls_CheckEmoteStatus()) {
+
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtvGlobal, STR_CHAT_BBTV_GLOBAL);
-    } else if (ChatLiveControls_cursor === 4) {
+
+    } else if (ChatLiveControls_cursor === 4 && ChatLiveControls_CheckEmoteStatus()) {
+
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL);
+
     } else if (ChatLiveControls_cursor === 5) {
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
-            ChatLive_FakeSendMessage(Main_ChatLiveInput.value, 0);
-            Main_ChatLiveInput.value = '';
-            ChatLiveControls_UpdateResultText();
+            if (ChatLiveControls_CheckStatus(true)) {
+                ChatLive_FakeSendMessage(Main_ChatLiveInput.value, 0);
+                Main_ChatLiveInput.value = '';
+                ChatLiveControls_UpdateResultText();
+            }
         } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
-    } else if (ChatLiveControls_cursor === 6) {
+    } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CheckEmoteStatus()) {
+
         ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));
-    } else if (ChatLiveControls_cursor === 7) {
+
+    } else if (ChatLiveControls_cursor === 7 && ChatLiveControls_CheckEmoteStatus()) {
+
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BBTV_STREAM);
-    } else if (ChatLiveControls_cursor === 8) {
+
+    } else if (ChatLiveControls_cursor === 8 && ChatLiveControls_CheckEmoteStatus()) {
+
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM);
+
     }
 }
 
@@ -422,4 +430,73 @@ function ChatLiveControls_extraMessageTokenize(message) {
     }
 
     return '<span class="message">' + twemoji.parse(message.join(' '), true, true) + '</span>';
+}
+
+function ChatLiveControls_CheckEmoteStatus() {
+
+    var tags = ChatLive_RoomState[ChatLiveControls_Channel];
+
+    if (tags && tags.hasOwnProperty('emote-only') && tags['emote-only']) {
+        ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_ONLY, 1500);
+        return true;
+    }
+
+    return false;
+}
+
+function ChatLiveControls_CheckStatus(chat_warning) {
+    var streamer = (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]);
+    var text = '';
+    if (ChatLive_Banned[ChatLiveControls_Channel]) {
+
+        text = STR_CHAT_BANNED + streamer;
+        if (chat_warning) ChatLiveControls_showWarningDialog(text, 1500);
+        else Play_showWarningDialog(text, 1500);
+
+        return false;
+
+    } else if (ChatLive_RoomState[ChatLiveControls_Channel]) {
+
+        var tags = ChatLive_RoomState[ChatLiveControls_Channel];
+        var user_fallow = ChatLive_FollowState[ChatLiveControls_Channel];
+
+        var user_sub = ChatLive_SubState[ChatLiveControls_Channel];
+        var user_issub = user_sub && user_sub.hasOwnProperty('state') && !user_sub.state;
+
+        if (tags.hasOwnProperty('subs-only') && tags['subs-only'] && user_issub) {
+
+            text = 'Chat Subscribers-only mode ' + STR_IS_SUB_NOT_SUB;
+
+            if (chat_warning) ChatLiveControls_showWarningDialog(text, 1500);
+            else Play_showWarningDialog(text, 1500);
+
+            return false;
+        }
+
+        if (tags.hasOwnProperty('followers-only') && tags['followers-only'] !== -1 && user_fallow) {
+
+            if ((tags['followers-only'] > -1) && user_fallow.hasOwnProperty('follows') && !user_fallow.follows) {
+
+                text = STR_CHAT_FOLLOWER_ONLY + streamer;
+
+                if (chat_warning) ChatLiveControls_showWarningDialog(text, 1500);
+                else Play_showWarningDialog(text, 1500);
+
+                return false;
+
+            } else if (tags['followers-only'] && user_fallow.hasOwnProperty('created_at') && (tags['followers-only'] > ChatLive_GetMinutes(user_fallow.created_at))) {
+
+                text = "Followers-only" + (tags['followers-only'] ? (' minimum ' + tags['followers-only'] + ' minute(s) fallowing') : '') +
+                    ' ' + STR_CHAT_FOLLOWER_ONLY_USER_TIME + ChatLive_GetMinutes(user_fallow.created_at);
+
+                if (chat_warning) ChatLiveControls_showWarningDialog(text, 1500);
+                else Play_showWarningDialog(text, 1500);
+
+                return false;
+            }
+        }
+
+    }
+
+    return true;
 }

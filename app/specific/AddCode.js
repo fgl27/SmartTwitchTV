@@ -313,8 +313,10 @@ function AddCode_FollowRequestReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
         if (xmlHttp.status === 200) { //success user now is following the channel
             AddCode_IsFollowing = true;
-            if (AddCode_PlayRequest) Play_setFollow();
-            else ChannelContent_setFollow();
+            if (AddCode_PlayRequest) {
+                Play_setFollow();
+                ChatLive_checkFallowSuccessUpdate(xmlHttp.responseText, 0);
+            } else ChannelContent_setFollow();
             return;
         } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
             AddCode_refreshTokens(0, 0, AddCode_Follow, null);
@@ -344,8 +346,10 @@ function AddCode_UnFollowRequestReady(xmlHttp) {
     if (xmlHttp.readyState === 4) {
         if (xmlHttp.status === 204) { //success user is now not following the channel
             AddCode_IsFollowing = false;
-            if (AddCode_PlayRequest) Play_setFollow();
-            else ChannelContent_setFollow();
+            if (AddCode_PlayRequest) {
+                Play_setFollow();
+                ChatLive_FollowState[0].follows = false;
+            } else ChannelContent_setFollow();
             return;
         } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
             AddCode_refreshTokens(0, 0, AddCode_UnFollow, null);
