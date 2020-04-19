@@ -456,31 +456,28 @@ function Screens_loadDataSuccessFinish(obj) {
 
                 //History vod is so fast to load that this need to be set here to prevent a vod reset
                 Main_FirstRun = false;
+                Main_timeOut(function() {
+                    if (Main_values.Play_WasPlaying === 1) {
+                        if (Play_data.data.length > 0) {
 
-                if (Main_values.Play_WasPlaying === 1) {
-                    if (Play_data.data.length > 0) {
 
-                        Main_timeOut(function() {
                             Main_openStream();
                             Main_SwitchScreen(true);
-                        }, 500);
 
-                    } else Main_SwitchScreen(false);
-                } else {
-                    if (!Main_values.vodOffset) Main_values.vodOffset = 1;
-                    Play_DurationSeconds = 0;
 
-                    Main_timeOut(function() {
-
+                        } else Main_SwitchScreen(false);
+                    } else {
+                        if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                        Play_DurationSeconds = 0;
                         Main_openVod();
                         Main_SwitchScreen(true);
-                    }, 500);
-                }
+                    }
 
-                window.setTimeout(function() {
-                    if (!Play_IsWarning) Play_HideWarningDialog();
-                }, 3000);
-                Screens_loadDataSuccessFinishEnd();
+                    Main_timeOut(function() {
+                        if (!Play_IsWarning) Play_HideWarningDialog();
+                    }, 3000);
+                    Screens_loadDataSuccessFinishEnd();
+                }, 500);
             } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
                 Main_GoBefore !== Main_Search) {
                 Main_Log('!Play_WasPlaying');
