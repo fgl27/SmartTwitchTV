@@ -55,31 +55,52 @@ The application never stops receiving updates the bellow video may be outdated
 [![How the application looks](https://fgl27.github.io/SmartTwitchTV/screenshot/Screenshot_you.png)](http://www.youtube.com/watch?v=maX9kRnarYg)
 
 ## Authorization
-The user can add a authentication key if you have the twitch password for that user (aka you are it).
-That key will be used to access twitch content for that account, when accessing twitch authentication site it will show:
+The user can add a authorization key if you have the twitch password for that user (aka you are it).
+That key will be used to access twitch content for that account, when accessing twitch authorization site it will show:
 
 	SmartTV Android TV by fgl27
 	wants to access your account
 	
 	This will allow SmartTV Android TV by fgl27 to:
 	* Manage your followed channels
+	* Send live Stream Chat and Rooms messages
 	* View your email address
 	* View your paid subscriptions
+	* View live Stream Chat and Rooms messages
 
-It of the permission has a reason:
+**The app user current permision:**
+
+* user_read, user_follows_edit, user_subscriptions, chat:edit, chat:read they are summarized here [authentication twitch-api-v5](https://dev.twitch.tv/docs/authentication#twitch-api-v5)<br>
+
+**It of the permission has a reason:**
 
 **Manage your followed channels:**
 
-* follow or unfollow streamers or games for that user.<br>
+* The permission used for this is **user_follows_edit** the API used on this is [Follow Channel](https://dev.twitch.tv/docs/v5/reference/users/#follow-channel)
+* Allow to follow or unfollow streamers or games for that user (unfollow a game is current not supported by Twitch for third party app, but follow is).<br>
+
+**Send live Stream Chat and Rooms messages:**
+
+* The permission used for this is **chat:edit** the API used on this is [Connecting to Twitch IRC](https://dev.twitch.tv/docs/irc/guide/#connecting-to-twitch-irc)
+* Allows access so you can use the app to logging in on Twitch chat using yours username to send chat messages.
+* Also enable you to receive gifted sub give for user in chat.<br>
 
 **View your email address:**
 
-* Email will not be read, this permission has other uses, it allows to access user live channels in a faster way, the app can load user live without this but it can be really lag if you follow too many streamers. 
-* Let twitch know you are watching a stream/video (allows you to received a free sub in a random gifted sub for example) and show some target content as in featuring screen you will see the order in relation to yours twitch follow content.<br>
+* The permission used for this is **user_read** the API used on this is [Get Followed Streams](https://dev.twitch.tv/docs/v5/reference/streams#get-followed-streams)
+* Email will not be read! (you can search the source code if you are in doubt no user email is accessed), this permission has many uses, as the above API, it allows to access user live channels list in a faster way, the app can load user live list without this but it can be really slow if you follow too many streamers (100+ you already notice the slow down).<br>
 
 **View your paid subscriptions:**
 
-* Allows to access subscribed only past broadcast and highlight (vod) for the user that you have added the key, as some streamers block those content for subscribers only this is needed.<br>
+* The permission used for this is **user_subscriptions** the API's used on this are [Get User Emotes](https://dev.twitch.tv/docs/v5/reference/users/#get-user-emotes ) and [Check User Subscription by Channel](https://dev.twitch.tv/docs/v5/reference/users#check-user-subscription-by-channel)
+* Allows to get yours emotes list from all subscriptions you have, even if you aren't sub to a channel this is needed to get yours available Twitch emotes, this list will be used on the write to chat implementation.
+* Allows to check if you are sub to a particularly channel, that information is used to give a on screen warning when a content is block for Sub-only (a Sub-only chat ROOM (write mode, read will always work) or a VOD for example) and you don't have access because you aren't a sub of a particularly channel (unfortunately twitch has blocked all third party app's to access sub-only VOD's so this warning will let you know that, on the past that wasn't a issue for sub-only VOD's)<br>
+
+**View live Stream Chat and Rooms messages:**
+
+* The permission used for this is **chat:read** the API used on this is [Connecting to Twitch IRC](https://dev.twitch.tv/docs/irc/guide/#connecting-to-twitch-irc)
+* Allows access so you can use the app to logging in on Twitch chat using yours username to read chat messages as yours user (technically the app can read chat without a user but the bellow option will not work on that case as the login is as anonymous).
+* Also enable you to receive gifted sub give for user in chat.<br>
 
 Donations
 ==============
