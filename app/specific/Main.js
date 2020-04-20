@@ -165,7 +165,6 @@ function Main_Start() {
 function Main_loadTranslations(language) {
     Main_Checktylesheet();
 
-
     try {
         if (Main_A_includes_B(window.location.href, 'asset')) {
             //Same as in smartTwitchTV/release/api.js
@@ -191,7 +190,6 @@ function Main_loadTranslations(language) {
         }
         Main_IsOnAndroid = Android.getAndroid();
         Main_IsOnAndroidVersion = Android.getversion();
-        Main_isDebug = Android.getdebug();
 
     } catch (e) {
         Main_IsOnAndroidVersion = '1.0.0';
@@ -206,6 +204,10 @@ function Main_loadTranslations(language) {
         //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
         KEY_RETURN = 27;
     }
+    try {
+        Main_isDebug = Android.getdebug();
+    } catch (e) {}
+
     Main_showLoadDialog();
 
     Main_initClick();
