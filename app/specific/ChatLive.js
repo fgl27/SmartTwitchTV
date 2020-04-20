@@ -794,8 +794,9 @@ function ChatLive_UserNoticeWarn(message) {
 }
 
 function ChatLive_SendMessage(message, chat_number) {
-    Main_Log('ChatLive_SendMessage ' + message);
-    ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
+    Main_Log('ChatLive_SendMessage ' + ChatLive_socketSendJoin + ' msg ' + message);
+    if (ChatLive_socketSendJoin)
+        ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
 }
 
 // function ChatLive_FakeSendMessage(messageText, chat_number) {
