@@ -561,10 +561,6 @@ function ChatLive_loadChatRequest(chat_number, id) {
                     }
                 }
 
-                window.setTimeout(function() {
-                    ChatLive_FakeSendMessage("LUL ", 0);
-                }, 10000);
-
                 break;
             case "PRIVMSG":
                 //Main_Log(message);
@@ -574,7 +570,8 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 if (useToken[chat_number]) ChatLive_CheckGiftSub(message, chat_number);
                 break;
             case "USERSTATE":
-                //Main_Log(message);
+                Main_Log('USERSTATE chat ' + chat_number);
+                Main_Log(message);
                 // tags:
                 // badge-info: true
                 // badges: true
@@ -586,19 +583,9 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 // user-type: true
                 break;
             case "NOTICE":
-                Main_Log('NOTICE');
-                Main_Log(message);
                 if (useToken[chat_number]) {
-                    if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
-
-                        Play_showWarningDialog(message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number], 5000);
-                        ChatLive_Banned[chat_number] = true;
-
-                        window.clearTimeout(ChatLive_CheckId[chat_number]);
-                        ChatLive_Check(chat_number, id);
-                    }
+                    ChatLive_UserNoticeCheck(message, chat_number, id);
                 }
-
                 // command: "NOTICE"
                 // params: Array(2)
                 // 0: "#channel"
@@ -743,7 +730,11 @@ function ChatLive_SendPrepared() {
                 case "CAP":
                     ChatLive_socketSendJoin = true;
                     break;
+                case "NOTICE":
+                    ChatLive_UserNoticeWarn(message);
+                    break;
                 case "USERSTATE":
+                    Main_Log('USERSTATE send');
                     Main_Log(message);
                     break;
                 default:
@@ -772,33 +763,63 @@ function ChatLive_socketSendCheck() {
     }
 }
 
+function ChatLive_UserNoticeCheck(message, chat_number, id) {
+    Main_Log(message);
+
+    if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
+
+        var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
+        ChatLiveControls_showWarningDialog(text, 5000);
+        Play_showWarningDialog(text, 5000);
+
+        ChatLive_Banned[chat_number] = true;
+
+        window.clearTimeout(ChatLive_CheckId[chat_number]);
+        ChatLive_Check(chat_number, id);
+    } else ChatLive_UserNoticeWarn(message);
+
+}
+
+function ChatLive_UserNoticeWarn(message) {
+    Main_Log(message);
+
+    if (message.params[1]) {
+
+        Main_Log(message.params[1]);
+
+        ChatLiveControls_showWarningDialog(message.params[1], 5000);
+        Play_showWarningDialog(message.params[1], 5000);
+
+    }
+}
+
 function ChatLive_SendMessage(message, chat_number) {
     Main_Log('ChatLive_SendMessage ' + message);
     ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
 }
 
-function ChatLive_FakeSendMessage(messageText, chat_number) {
-    Main_Log('ChatLive_FakeSendMessage ' + messageText);
+// function ChatLive_FakeSendMessage(messageText, chat_number) {
+//     Main_Log('ChatLive_FakeSendMessage ' + messageText);
 
-    var message = {
-        params: [
-            "",
-            messageText
-        ],
-        tags: {
-            "badge-info": true,
-            badges: true,
-            color: true,
-            "display-name": "testtwitch27",
-            "emote-sets": "0",
-            mod: "0",
-            subscriber: "0",
-            "user-type": true
-        }
-    };
+//     var message = {
+//         params: [
+//             "",
+//             messageText
+//         ],
+//         tags: {
+//             "badge-info": true,
+//             badges: true,
+//             color: true,
+//             "display-name": "testtwitch27",
+//             "emote-sets": "0",
+//             mod: "0",
+//             subscriber: "0",
+//             "user-type": true
+//         }
+//     };
 
-    ChatLive_loadChatSuccess(message, chat_number);
-}
+//     ChatLive_loadChatSuccess(message, chat_number);
+// }
 
 function ChatLive_CheckGiftSub(message) {
     var tags = message.tags;

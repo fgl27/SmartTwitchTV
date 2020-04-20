@@ -184,7 +184,7 @@ function ChatLiveControls_HandleKeyEnter() {
     } else if (ChatLiveControls_cursor === 5) {
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
             if (ChatLiveControls_CanSend()) {
-                ChatLive_FakeSendMessage(Main_ChatLiveInput.value, 0);
+                ChatLive_SendMessage(Main_ChatLiveInput.value, 0);
                 Main_ChatLiveInput.value = '';
                 ChatLiveControls_UpdateResultText();
             } else ChatLiveControls_CantSend();
@@ -492,7 +492,7 @@ function ChatLiveControls_EmotesScroll(position) {
 
 function ChatLiveControls_UpdateTextInput(text) {
     if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !(Main_ChatLiveInput.value).endsWith(' ')) Main_ChatLiveInput.value += ' ';
-    Main_ChatLiveInput.value += text;
+    Main_ChatLiveInput.value += text + ' ';
     ChatLiveControls_UpdateResultText();
 }
 
@@ -635,6 +635,7 @@ var ChatLiveControls_CanSendText = '';
 var ChatLiveControls_CanSendBool = true;
 
 function ChatLiveControls_CanSend() {
+
     ChatLiveControls_CanSendText = '';
     ChatLiveControls_CanSendBool = true;
     var streamer = (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]);
