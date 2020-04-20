@@ -453,4 +453,11 @@ function en_USLang() {
     STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you only fallows for ";
     STR_CHAT_EMOTE_ONLY = "Twitch Emote-only mode";
     STR_CHAT_CHOOSE = "Choose with chat to write to or press return to close this";
+    STR_CHAT_OPTIONS_TITLE = "Write to chat options";
+    STR_CHAT_OPTIONS_KEYBOARD = "Software Keyboard auto hide";
+    STR_CHAT_OPTIONS_KEYBOARD_SUMMARY = "Allows to control the behavior of the on screen software Keyboard, if you have a physical Keyboard connected use this, if not set to never";
+    STR_CHAT_OPTIONS_KEYBOARD_1 = "Never";
+    STR_CHAT_OPTIONS_KEYBOARD_2 = "If Keyboard detected";
+    STR_CHAT_OPTIONS_KEYBOARD_3 = "Always";
+    STR_CHAT_OPTIONS_EMOTE_SORT = "Emotes sorting";
 }

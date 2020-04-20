@@ -89,7 +89,10 @@ function ChatLiveControls_inputFocus() {
             Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
             Main_ChatLiveInput.focus();
             try {
-                if (Main_IsOnAndroid) Android.KeyboardCheckAndHIde();
+                if (Main_IsOnAndroid) {
+                    if (OptionsShowObj.keyboard_options.defaultValue === 1) Android.KeyboardCheckAndHIde();
+                    else if (OptionsShowObj.keyboard_options.defaultValue === 2) Android.hideKeyboardFrom();
+                }
             } catch (e) {}
             ChatLiveControls_keyBoardOn = true;
             document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
@@ -162,7 +165,7 @@ function ChatLiveControls_showWarningDialog(text, timeout) {
 }
 
 function ChatLiveControls_HandleKeyEnter() {
-    if (!ChatLiveControls_cursor) Main_Log('ChatLiveControls_HandleKeyEnter options');
+    if (!ChatLiveControls_cursor) ChatLiveControls_OptionsShow();
     if (ChatLiveControls_cursor === 1 && ChatLiveControls_CanSend()) {
         Main_ChatLiveInput.value = '';
         ChatLiveControls_UpdateResultTextEmpty();
@@ -274,15 +277,15 @@ function ChatLiveControls_SetEmotesDiv(obj, text) {
         return;
     }
 
-    var direction = 1;
+    var direction = OptionsShowObj.emote_sorting.defaultValue;
 
-    if (direction) {//a-z
+    if (direction === 1) {//a-z
         array.sort(
             function(a, b) {
                 return (a.code < b.code ? -1 : (a.code > b.code ? 1 : 0));
             }
         );
-    } else {//z-a
+    } else if (direction === 2) {//z-a
         array.sort(
             function(a, b) {
                 return (a.code > b.code ? -1 : (a.code < b.code ? 1 : 0));
@@ -321,23 +324,42 @@ function ChatLiveControls_SetEmoteDiv(obj, position) {
 }
 
 function ChatLiveControls_SetEmojisDiv() {
+    var array = emojis;
 
-    if (emojis && emojis.length > 1) {
+    if (array && array.length > 1) {
         Main_textContent("chat_emotes_text", STR_CHAT_UNICODE_EMOJI);
     } else {
         ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);
         return;
     }
 
+    var direction = OptionsShowObj.emote_sorting.defaultValue;
+
+    if (direction === 1) {//a-z
+        array = JSON.parse(JSON.stringify(array));
+        array.sort(
+            function(a, b) {
+                return (a.tags < b.tags ? -1 : (a.tags > b.tags ? 1 : 0));
+            }
+        );
+    } else if (direction === 2) {//z-a
+        array = JSON.parse(JSON.stringify(array));
+        array.sort(
+            function(a, b) {
+                return (a.tags > b.tags ? -1 : (a.tags < b.tags ? 1 : 0));
+            }
+        );
+    }
+
     var div_holder = document.getElementById('chat_emotes');
     Main_emptyWithEle(div_holder);
 
-    ChatLiveControls_EmotesTotal = emojis.length;
+    ChatLiveControls_EmotesTotal = array.length;
     ChatLiveControls_EmotesPos = 0;
 
     for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
         div_holder.appendChild(
-            ChatLiveControls_SetEmojiDiv(emojis[i], i)
+            ChatLiveControls_SetEmojiDiv(array[i], i)
         );
     }
 
@@ -672,7 +694,7 @@ function ChatLiveControls_PreventInput() {
     Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
     Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_block');
     Main_ChatLiveInput.value = ChatLiveControls_CanSendText;
-    ChatLiveControls_showWarningDialog(ChatLiveControls_CanSendText, 1000)
+    ChatLiveControls_showWarningDialog(ChatLiveControls_CanSendText, 1000);
     ChatLiveControls_UpdateResultTextEmpty();
 }
 
@@ -682,4 +704,144 @@ function ChatLiveControls_PreventInputClear() {
         Main_ChatLiveInput.value = '';
         ChatLiveControls_UpdateResultTextEmpty();
     }
+}
+
+var OptionsShowObj = {};
+var OptionsShowArray = [];
+var ChatLiveControls_OptionsY = 0;
+
+function ChatLiveControls_OptionsUpdate_defautls() {
+    OptionsShowObj.keyboard_options = {};
+    OptionsShowObj.keyboard_options.defaultValue = Main_getItemInt('keyboard_options', 0);
+    OptionsShowObj.emote_sorting = {};
+    OptionsShowObj.emote_sorting.defaultValue = Main_getItemInt('emote_sorting', 0);
+}
+
+function ChatLiveControls_OptionsShow() {
+    document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+
+    OptionsShowObj = {
+        keyboard_options: {
+            defaultValue: OptionsShowObj.keyboard_options.defaultValue,
+            values: [STR_CHAT_OPTIONS_KEYBOARD_1, STR_CHAT_OPTIONS_KEYBOARD_2, STR_CHAT_OPTIONS_KEYBOARD_3],
+            title: STR_CHAT_OPTIONS_KEYBOARD,
+            summary: STR_CHAT_OPTIONS_KEYBOARD_SUMMARY
+        },
+        emote_sorting: {
+            defaultValue: OptionsShowObj.emote_sorting.defaultValue,
+            values: [STR_DISABLE, STR_A_Z, STR_Z_A],
+            title: STR_CHAT_OPTIONS_EMOTE_SORT,
+            summary: ''
+        },
+    };
+
+
+    var dialogContent = STR_CHAT_OPTIONS_TITLE + STR_BR;
+    OptionsShowArray = [];
+
+    for (var property in OptionsShowObj) {
+        OptionsShowArray.push(property);
+        dialogContent += ChatLiveControls_DivOptionWithSummary(property, OptionsShowObj[property].title + STR_BR, OptionsShowObj[property].summary);
+    }
+
+    Main_innerHTML("chat_options_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+
+
+    ChatLiveControls_OptionsY = 0;
+    Main_AddClass(OptionsShowArray[0], 'settings_value_focus');
+    Main_AddClass(OptionsShowArray[0] + '_div', 'settings_div_focus');
+    ChatLiveControls_SetarrowsKey(OptionsShowArray[0]);
+
+    Main_ShowElement('chat_options');
+    document.body.addEventListener("keydown", ChatLiveControls_OptionsKeyDown, false);
+}
+
+function ChatLiveControls_DivOptionWithSummary(key, string_title, string_summary) {
+    return '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' +
+        string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: 73%;">' + string_summary + '</div></div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+        '<div id="' + key + '" class="strokedeline settings_value">' + OptionsShowObj[key].values[OptionsShowObj[key].defaultValue] + '</div>' +
+        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+}
+
+function ChatLiveControls_SetarrowsKey(key) {
+
+    var currentValue = OptionsShowObj[key].defaultValue;
+    var maxValue = OptionsShowObj[key].values.length - 1;
+
+    if (currentValue > 0 && currentValue < maxValue) {
+        document.getElementById(key + "arrow_left").style.opacity = "1";
+        document.getElementById(key + "arrow_right").style.opacity = "1";
+    } else if (currentValue === maxValue) {
+        document.getElementById(key + "arrow_left").style.opacity = "1";
+        document.getElementById(key + "arrow_right").style.opacity = "0.2";
+    } else {
+        document.getElementById(key + "arrow_left").style.opacity = "0.2";
+        document.getElementById(key + "arrow_right").style.opacity = "1";
+    }
+}
+
+function ChatLiveControls_Optionshide() {
+    Settings_RemoveinputFocusKey(OptionsShowArray[ChatLiveControls_OptionsY]);
+    Main_HideElement('chat_options');
+    document.body.removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
+    document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
+}
+
+function ChatLiveControls_OptionsKeyDown(event) {
+    var key;
+    switch (event.keyCode) {
+        case KEY_ENTER:
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            ChatLiveControls_Optionshide();
+            break;
+        case KEY_LEFT:
+            key = OptionsShowArray[ChatLiveControls_OptionsY];
+            if (OptionsShowObj[key].defaultValue > 0) ChatLiveControls_OptionsRigthLeft(-1);
+            break;
+        case KEY_RIGHT:
+            key = OptionsShowArray[ChatLiveControls_OptionsY];
+            if (OptionsShowObj[key].defaultValue < (OptionsShowObj[key].values.length - 1)) ChatLiveControls_OptionsRigthLeft(1);
+            break;
+        case KEY_UP:
+            if (ChatLiveControls_OptionsY > 0) ChatLiveControls_OptionsUpDown(-1);
+            break;
+        case KEY_DOWN:
+            if (ChatLiveControls_OptionsY < (OptionsShowArray.length - 1)) ChatLiveControls_OptionsUpDown(1);
+            break;
+        default:
+            break;
+    }
+}
+
+function ChatLiveControls_OptionsUpDown(offset) {
+    var key = OptionsShowArray[ChatLiveControls_OptionsY];
+
+    ChatLiveControls_RemoveinputFocusKey(key);
+    ChatLiveControls_OptionsY += offset;
+
+    key = OptionsShowArray[ChatLiveControls_OptionsY];
+
+    Main_AddClass(key, 'settings_value_focus');
+    Main_AddClass(key + '_div', 'settings_div_focus');
+    ChatLiveControls_SetarrowsKey(key);
+}
+
+function ChatLiveControls_RemoveinputFocusKey(key) {
+    document.getElementById(key + "arrow_left").style.opacity = "0";
+    document.getElementById(key + "arrow_right").style.opacity = "0";
+    Main_RemoveClass(key, 'settings_value_focus');
+    Main_RemoveClass(key + '_div', 'settings_div_focus');
+}
+
+function ChatLiveControls_OptionsRigthLeft(offset) {
+
+    var key = OptionsShowArray[ChatLiveControls_OptionsY];
+
+    OptionsShowObj[key].defaultValue += offset;
+
+    Main_setItem(key, OptionsShowObj[key].defaultValue);
+    Main_textContent(key, OptionsShowObj[key].values[OptionsShowObj[key].defaultValue]);
+    ChatLiveControls_SetarrowsKey(key);
 }
