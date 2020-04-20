@@ -28,6 +28,9 @@ function ChatLiveControls_Show() {
     if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) ChatLiveControls_UpdateResultText();
     else ChatLiveControls_UpdateResultTextEmpty();
 
+    if (OptionsShowObj.force_show_chat_write.defaultValue && !Play_isChatShown())
+        Play_controls[Play_controlsChat].enterKey(1);
+
     ChatLiveControls_inputFocus();
 }
 
@@ -733,6 +736,8 @@ function ChatLiveControls_OptionsUpdate_defautls() {
     OptionsShowObj.keyboard_options.defaultValue = Main_getItemInt('keyboard_options', 0);
     OptionsShowObj.emote_sorting = {};
     OptionsShowObj.emote_sorting.defaultValue = Main_getItemInt('emote_sorting', 0);
+    OptionsShowObj.force_show_chat_write = {};
+    OptionsShowObj.force_show_chat_write.defaultValue = Main_getItemInt('force_show_chat_write', 0);
 }
 
 function ChatLiveControls_OptionsShow() {
@@ -749,7 +754,13 @@ function ChatLiveControls_OptionsShow() {
             defaultValue: OptionsShowObj.emote_sorting.defaultValue,
             values: [STR_DISABLE, STR_A_Z, STR_Z_A],
             title: STR_CHAT_OPTIONS_EMOTE_SORT,
-            summary: ''
+            summary: STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY
+        },
+        force_show_chat_write: {
+            defaultValue: OptionsShowObj.force_show_chat_write.defaultValue,
+            values: [STR_DISABLE, STR_ENABLE],
+            title: STR_CHAT_OPTIONS_FORCE_SHOW,
+            summary: STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY
         },
     };
 

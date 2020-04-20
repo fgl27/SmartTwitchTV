@@ -460,6 +460,9 @@ function en_USLang() {
     STR_CHAT_OPTIONS_KEYBOARD_2 = "If Keyboard detected";
     STR_CHAT_OPTIONS_KEYBOARD_3 = "Always";
     STR_CHAT_OPTIONS_EMOTE_SORT = "Emotes sorting";
+    STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY = "If disable the list of emotes will show in the order provider by the server";
+    STR_CHAT_OPTIONS_FORCE_SHOW = "Force show chat";
+    STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY = "If you wanna see the chat when enable write to chat enable this";
     STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because that permission wasn't asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
     STR_NOKEY_CHAT_WARN = "Add an user authorization key to be able to logging and write to chat";
 }
