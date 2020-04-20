@@ -125,7 +125,7 @@ function PlayExtra_SavePlayData() {
 }
 
 function PlayExtra_RestorePlayData() {
-    Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+    Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
     PlayExtra_data = JSON.parse(JSON.stringify(PlayExtra_Save_data));
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -170,7 +170,7 @@ function PlayExtra_End(doSwitch) { // Called only by JAVA
     //Some player ended switch and warn
     if (doSwitch) PlayExtra_SwitchPlayer();
 
-    Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
+    Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 
     Play_CloseSmall();
 }
@@ -274,7 +274,7 @@ function PlayExtra_loadDataFail(Reason) {
         if (Main_IsOnAndroid && !Play_isFullScreen) Android.mupdatesize(Play_isFullScreen);
         PlayExtra_UnSetPanel();
         Play_HideBufferDialog();
-        Play_showWarningDialog(Reason, 2500);
+        Play_showWarningMidleDialog(Reason, 2500);
     }
 }
 

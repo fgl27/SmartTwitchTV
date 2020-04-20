@@ -770,7 +770,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 
         var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
         ChatLiveControls_showWarningDialog(text, 5000);
-        Play_showWarningDialog(text, 5000);
+        Play_showWarningMidleDialog(text, 5000);
 
         ChatLive_Banned[chat_number] = true;
 
@@ -788,7 +788,7 @@ function ChatLive_UserNoticeWarn(message) {
         Main_Log(message.params[1]);
 
         ChatLiveControls_showWarningDialog(message.params[1], 5000);
-        Play_showWarningDialog(message.params[1], 5000);
+        Play_showWarningMidleDialog(message.params[1], 5000);
 
     }
 }
@@ -831,7 +831,7 @@ function ChatLive_CheckGiftSub(message) {
         if (Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
             Main_A_equals_B(tags['msg-param-recipient-user-name'].toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + '')) {
 
-            Play_showWarningDialog((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
+            Play_showWarningMidleDialog((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
                 STR_GIFT_SUB, 10000);
         }
     }

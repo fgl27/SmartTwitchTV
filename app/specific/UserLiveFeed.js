@@ -502,7 +502,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
 function UserLiveFeed_CheckIfIsLiveWarn(text) {
     UserLiveFeed_CheckIfIsLiveSTop();
-    Play_showWarningDialog(text, 2000);
+    Play_showWarningMidleDialog(text, 2000);
 }
 
 var UserLiveFeed_CheckIfIsLiveDelay = 0;
@@ -764,10 +764,10 @@ function UserLiveFeed_KeyUpDown(Adder) {
 
         if (NextPos > (userSet ? (UserLiveFeedobj_CurrentUserAGameEnable ? (UserLiveFeedobj_MAX + 1) : UserLiveFeedobj_MAX) : UserLiveFeedobj_MAX_No_user)) {
             NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
-            if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
+            if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARN, 1000);
         } else if (NextPos < (UserLiveFeedobj_CurrentAGameEnable ? 0 : 1)) {
             NextPos = userSet ? (UserLiveFeedobj_CurrentUserAGameEnable ? (UserLiveFeedobj_MAX + 1) : UserLiveFeedobj_MAX) : UserLiveFeedobj_MAX_No_user;
-            if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
+            if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARN, 1000);
         }
 
         if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
@@ -816,7 +816,7 @@ function UserLiveFeed_KeyEnter(pos) {
         if (doc !== null) UserLiveFeedobj_CurrentUserAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
         if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
-            Play_showWarningDialog(STR_NO_GAME, 1000);
+            Play_showWarningMidleDialog(STR_NO_GAME, 1000);
             return;
         }
         UserLiveFeedobj_CurrentUserAGameEnable = true;
@@ -837,7 +837,7 @@ function UserLiveFeed_KeyEnter(pos) {
         if (doc !== null) UserLiveFeedobj_CurrentAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
         if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentAGameNameEnter, '')) {
-            Play_showWarningDialog(STR_NO_GAME, 1000);
+            Play_showWarningMidleDialog(STR_NO_GAME, 1000);
             return;
         }
 

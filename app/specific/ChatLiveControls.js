@@ -9,7 +9,7 @@ function ChatLiveControls_Show() {
     var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
 
     if (ChatLive_Banned[ChatLiveControls_Channel]) {
-        Play_showWarningDialog(STR_CHAT_BANNED + streamer, 1500);
+        Play_showWarningMidleDialog(STR_CHAT_BANNED + streamer, 1500);
         return;
     }
 
