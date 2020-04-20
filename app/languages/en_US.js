@@ -433,7 +433,7 @@ function en_USLang() {
     STR_GIFT_ANONYMOUS = "A anonymous user ";
     STR_CHAT_BANNED = "You are permanently banned from talking in  ";
     STR_CHAT_WRITE = "Write to chat";
-    STR_PLACEHOLDER_CHAT = "Press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
+    STR_PLACEHOLDER_CHAT = "When this seleceted, press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
     STR_CHAT_ROOMSTATE = "Chat ROOMSTATE:";
     STR_CHAT_NO_RESTRICTIONS = "No restrictions";
     STR_CHAT_OPTIONS = "Options";
