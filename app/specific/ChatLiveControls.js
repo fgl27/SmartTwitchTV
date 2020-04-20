@@ -202,7 +202,7 @@ function ChatLiveControls_HandleKeyEnter() {
                 if (ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel)) {
                     Main_ChatLiveInput.value = '';
                     ChatLiveControls_UpdateResultTextEmpty();
-                }
+                } else ChatLiveControls_showWarningDialog(STR_CHAT_NOT_READY, 1500);
             } else ChatLiveControls_CantSend();
         } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
     } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
