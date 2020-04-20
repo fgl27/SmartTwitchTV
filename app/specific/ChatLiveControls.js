@@ -672,6 +672,7 @@ function ChatLiveControls_PreventInput() {
     Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
     Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_block');
     Main_ChatLiveInput.value = ChatLiveControls_CanSendText;
+    ChatLiveControls_showWarningDialog(ChatLiveControls_CanSendText, 1000)
     ChatLiveControls_UpdateResultTextEmpty();
 }
 
