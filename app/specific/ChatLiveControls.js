@@ -36,10 +36,19 @@ function ChatLiveControls_Hide() {
     ChatLiveControls_PreventInputClear();
     document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
     document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+    document.body.removeEventListener("keydown", ChatLiveControls_EmotesEvent);
+    document.body.removeEventListener("keydown", ChatLiveControls_ChooseChat);
+    document.body.removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
+
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
+
     Main_HideElement('chat_send');
     Main_HideElement('chat_emotes_holder');
+    Main_HideElement('dialog_warning_chat');
+    Main_HideElement('chat_choose');
+    Main_HideElement('chat_options');
+
     ChatLiveControls_RemoveinputFocus(false);
 }
 

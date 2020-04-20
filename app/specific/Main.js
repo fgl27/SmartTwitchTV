@@ -1617,15 +1617,6 @@ function Main_getclock() {
     return dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
 }
 
-// right after the TV comes from standby the network can lag, delay the check
-//function Main_Resume() {
-//    if (!document.hidden) {
-//        Main_updateclock();
-//        //Update clock twice as first try clock may be out of date in the case TV was on standby
-//        window.setTimeout(Main_updateclock, 20000);
-//    }
-//}
-
 function Main_updateclock() {
     if (!document.hidden) {
         Main_textContent('label_clock', Main_getclock());
@@ -2159,6 +2150,8 @@ function Main_CheckStop() { // Called only by JAVA
     window.clearInterval(Main_StartHistoryworkerId);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
+
+    if (Main_isElementShowing('chat_send')) ChatLiveControls_Hide();
 
     //Hide setting if showing
     if (Languages_isVisible()) {
