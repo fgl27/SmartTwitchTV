@@ -750,7 +750,7 @@
         STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
         STR_F_DISABLE_CHAT = "Chat force disable";
         STR_UPDATE_AVAILABLE = "Update available, check google play store";
-        STR_OAUTH_IN = 'Adding a key allows the app to access chat using yours user to send messages and get yours emote list (enable you to get gift sub given to chat), follow/unfollow channels/games and access some user content faster<br><br>Adding a key is not demanding and can be done at any point later<br><br>In doubt read this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices is necessary a mouse to complete the authorization action as you may need to manually click on a button to confirm.<br><br>add key for';
+        STR_OAUTH_IN = 'Adding a key allows the app to access chat using yours user to send messages and get yours emote list (enables you to get gifted sub give to chat), follow/unfollow channels/games and access some user content faster<br><br>Adding a key is not demanding and can be done at any point later<br><br>In doubt read this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices is necessary a mouse to complete the authorization action as you may need to manually click on a button to confirm.<br><br>add key for';
         STR_USER_CODE = "Add authorization key";
         STR_USER_CODE_OK = "Key added OK";
         STR_KEY_BAD = "Key test failed, new one needs to be added";
