@@ -45,7 +45,10 @@ function ChatLiveControls_Hide() {
 }
 
 function ChatLiveControls_RefreshRoomState(chat_number) {
-    if (chat_number === ChatLiveControls_Channel) ChatLiveControls_SetRoomState();
+    if (chat_number === ChatLiveControls_Channel) {
+        ChatLiveControls_SetRoomState();
+        if (!ChatLiveControls_CanSend()) ChatLiveControls_CantSend();
+    }
 }
 
 function ChatLiveControls_SetRoomState() {
@@ -688,6 +691,7 @@ function ChatLiveControls_CanSend() {
 
     }
 
+    ChatLiveControls_PreventInputClear();
     return true;
 }
 
