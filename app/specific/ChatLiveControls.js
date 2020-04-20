@@ -184,7 +184,7 @@ function ChatLiveControls_HandleKeyEnter() {
     } else if (ChatLiveControls_cursor === 5) {
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
             if (ChatLiveControls_CanSend()) {
-                ChatLive_SendMessage(Main_ChatLiveInput.value, 0);
+                ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel);
                 Main_ChatLiveInput.value = '';
                 ChatLiveControls_UpdateResultText();
             } else ChatLiveControls_CantSend();
