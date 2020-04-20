@@ -795,8 +795,15 @@ function ChatLive_UserNoticeWarn(message) {
 
 function ChatLive_SendMessage(message, chat_number) {
     Main_Log('ChatLive_SendMessage ' + ChatLive_socketSendJoin + ' msg ' + message);
-    if (ChatLive_socketSendJoin)
+
+    if (ChatLive_socketSendJoin && ChatLive_socketSend && ChatLive_socketSend.readyState === 1) {
+        Main_Log('ChatLive_SendMessage sended');
         ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
+
+        return true;
+    }
+
+    return false;
 }
 
 // function ChatLive_FakeSendMessage(messageText, chat_number) {

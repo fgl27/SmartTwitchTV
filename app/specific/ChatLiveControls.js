@@ -199,9 +199,10 @@ function ChatLiveControls_HandleKeyEnter() {
     } else if (ChatLiveControls_cursor === 5) {
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
             if (ChatLiveControls_CanSend()) {
-                ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel);
-                Main_ChatLiveInput.value = '';
-                ChatLiveControls_UpdateResultText();
+                if (ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel)) {
+                    Main_ChatLiveInput.value = '';
+                    ChatLiveControls_UpdateResultTextEmpty();
+                }
             } else ChatLiveControls_CantSend();
         } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
     } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
