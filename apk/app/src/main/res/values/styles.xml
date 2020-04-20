@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="@style/Theme.Leanback">
+    <style name="AppThemeAfter" parent="@style/Theme.Leanback">
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowBackground">@color/primary</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item> 
+    </style>
+
+    <style name="AppTheme" parent="@style/Theme.Leanback">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 </resources>

@@ -253,6 +253,7 @@ public class PlayerActivity extends Activity {
             if (DeviceRam < 0) DeviceRam = 500000000;
 
             initializeWebview();
+            setTheme(R.style.AppThemeAfter);
         }
     }
 
