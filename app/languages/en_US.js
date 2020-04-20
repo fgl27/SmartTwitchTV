@@ -119,12 +119,12 @@ function en_USLang() {
 
     STR_ABOUT_INFO_14 = "Web:";
     STR_ABOUT_INFO_15 = "Android:";
-    STR_ABOUT_INFO_16 = "Google: Leanback v17 (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
-    STR_ABOUT_INFO_17 = "Google: ExoPlayer (https://github.com/google/ExoPlayer)";
+    STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
+    STR_ABOUT_INFO_17 = "ExoPlayer: An extensible media player for Android (https://github.com/google/ExoPlayer)";
     STR_ABOUT_INFO_18 = "Phones and Tablets support:";
     STR_ABOUT_INFO_19 = "Yes is possible to use this app on phones and tablets, but this app is design to be used mainly on TVs, the support for other device is limited and because of that not released on play store, use the bellow link to download latest APK and manually install on a phone or tablets";
     STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
-    STR_ABOUT_INFO_21 = "ben-manes: gradle-versions-plugin (https://github.com/ben-manes/gradle-versions-plugin)";
+    STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle plugin to discover dependency updates (https://github.com/ben-manes/gradle-versions-plugin)";
     STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
 
     STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
