@@ -88,7 +88,6 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         startNotification();
         String action = intent.getAction();
-        TransportRuntime.initialize(getApplicationContext());
 
         if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {//Fully stop the service as is not enable or is not TV
             StopService();
@@ -120,6 +119,7 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
         startNotification();
+        TransportRuntime.initialize(getApplicationContext());
     }
 
     private void StopService() {
