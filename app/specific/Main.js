@@ -58,6 +58,7 @@ var Main_values = {
     "Search_isSearching": false,
     "Play_ChatForceDisable": false,
     "Never_run_new": true,
+    "warning_extra": true,
     "Chat_font_size": 2,
     "ChatBackground": 12,
     "IsRerun": false,
@@ -771,6 +772,14 @@ function Main_CounterDialogRst() {
 function Main_CounterDialog(x, y, coloumns, total) {
     if (total > 0) Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
     else Main_CounterDialogRst();
+}
+
+function Main_showWarningExtra(text) {
+    Main_innerHTML('dialog_warning_extra_text', text);
+    Main_ShowElement('dialog_warning_extra');
+    Main_timeOut(function() {
+        Main_HideElement('dialog_warning_extra');
+    }, 60000);
 }
 
 function Main_showWarningDialog(text) {

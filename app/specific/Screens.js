@@ -437,6 +437,9 @@ function Screens_loadDataSuccessFinish(obj) {
             }
             Screens_ForceSync = false;
 
+            if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
+            Main_values.warning_extra = false;
+
             if (Settings_value.start_user_screen.defaultValue) {
 
                 Main_ExitCurrent(Main_values.Main_Go);

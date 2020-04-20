@@ -144,7 +144,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
     STR_F_DISABLE_CHAT = "Chat force disable";
     STR_UPDATE_AVAILABLE = "Update available, check google play store";
-    STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> Add a key is not demanding and can be done at any point later <br> <br> In doubt read this link <br> <br> https://github.com/fgl27/SmartTwitchTV#authorization <br> <br> For some devices is necessary a mouse to complete the authorization action.<br> <br>add key for';
+    STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> Add a key is not demanding and can be done at any point later <br> <br> In doubt read this link <br><br> https://github.com/fgl27/SmartTwitchTV#authorization <br> <br> For some devices is necessary a mouse to complete the authorization action.<br> <br>add key for';
     STR_USER_CODE = "Add authorization key";
     STR_USER_CODE_OK = "Key added OK";
     STR_KEY_BAD = "Key test failed, new one needs to be added";
@@ -152,8 +152,8 @@ function en_USLang() {
     STR_OAUTH_WRONG2 = " but this key is for user ";
     STR_FOLLOWING = " Following";
     STR_FOLLOW = " Follow";
-    STR_IS_SUB_NOOAUTH = " And you have not set a authorization key the app can\'t check yours sub status.";
-    STR_IS_SUB_NOT_SUB = " And you are not a sub of this channel";
+    STR_IS_SUB_NOOAUTH = " And you haven't set a authorization key the app can\'t check yours sub status.";
+    STR_IS_SUB_NOT_SUB = " And you aren't a sub of this channel";
     STR_IS_SUB_IS_SUB = " You are a sub of this channel but ";
     STR_OAUTH_FAIL = "Fail authorization check with the provider key, please check and try again";
     STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user ";
@@ -207,7 +207,7 @@ function en_USLang() {
     STR_CHAT_END = "Chat: The Chat has ended!";
     STR_TIME = ", Most recent";
     STR_VIWES = ", Most views";
-    STR_NOKEY_VIDEO_WARN = "Set an user authorization key to be able to see followed videos";
+    STR_NOKEY_VIDEO_WARN = "Add an user authorization key to be able to see followed videos";
     STR_SWITCH_TYPE = "Switch: Most recent or views";
     STR_ENABLE = "Enabled";
     STR_DISABLE = "Disabled";
@@ -460,4 +460,6 @@ function en_USLang() {
     STR_CHAT_OPTIONS_KEYBOARD_2 = "If Keyboard detected";
     STR_CHAT_OPTIONS_KEYBOARD_3 = "Always";
     STR_CHAT_OPTIONS_EMOTE_SORT = "Emotes sorting";
+    STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because that permission wasn't asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
+    STR_NOKEY_CHAT_WARN = "Add an user authorization key to be able to logging and write to chat";
 }
