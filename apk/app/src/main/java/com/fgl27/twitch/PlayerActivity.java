@@ -186,6 +186,7 @@ public class PlayerActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         TransportRuntime.initialize(getApplicationContext());
         //On create is called onResume so prevent it if already set
@@ -255,7 +256,6 @@ public class PlayerActivity extends Activity {
             if (DeviceRam < 0) DeviceRam = 500000000;
 
             initializeWebview();
-            setTheme(R.style.AppThemeAfter);
         }
     }
 
