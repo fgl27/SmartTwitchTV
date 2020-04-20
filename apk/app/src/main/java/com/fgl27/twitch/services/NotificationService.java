@@ -499,7 +499,7 @@ public class NotificationService extends Service {
         return new NotificationCompat.Builder(context, TAG)
                 .setContentTitle(title)
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_stat_refresh)
+                .setSmallIcon(R.drawable.ic_refresh)
                 .setChannelId(TAG);
     }
 
