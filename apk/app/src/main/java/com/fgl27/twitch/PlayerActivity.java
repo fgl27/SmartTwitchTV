@@ -34,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.webkit.WebViewCompat;
 
+import com.google.android.datatransport.runtime.TransportRuntime;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -186,6 +187,7 @@ public class PlayerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TransportRuntime.initialize(getApplicationContext());
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
             setContentView(R.layout.activity_player);

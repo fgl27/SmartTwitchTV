@@ -1,6 +1,7 @@
 apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -65,4 +66,6 @@ dependencies {
     implementation project(':exoplayer-library-hls')
     implementation 'com.google.code.gson:gson:' + versions.googlegson
     implementation 'androidx.webkit:webkit:' + versions.webkit
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.google.firebase:firebase-datatransport:17.0.3'
 }
