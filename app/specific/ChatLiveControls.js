@@ -639,8 +639,12 @@ function ChatLiveControls_ChooseChat(event) {
 
 function ChatLiveControls_CantSend() {
     window.clearTimeout(ChatLiveControls_inputFocusId);
-    ChatLiveControls_RemoveinputFocus(Main_isElementShowing('chat_send'));
-    ChatLiveControls_refreshInputFocusTools();
+
+    if (ChatLiveControls_keyBoardOn) {
+        ChatLiveControls_RemoveinputFocus(Main_isElementShowing('chat_send'));
+        ChatLiveControls_refreshInputFocusTools();
+    } else if (Main_isElementShowing('chat_emotes_holder')) ChatLiveControls_HideEmotes();
+
 }
 
 var ChatLiveControls_CanSendText = '';
