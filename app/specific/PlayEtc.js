@@ -1376,11 +1376,16 @@ function Play_MakeControls() {
         defaultValue: null,
         opacity: 0,
         enterKey: function() {
+            if (Main_values.Play_ChatForceDisable) {
+                Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
+                return;
+            } else if (!AddUser_UsernameArray[0].access_token) {
+                Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
+                return;
+            }
 
-            if (AddUser_UsernameArray[0].access_token) {
-                if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
-                else ChatLiveControls_Show();
-            } else Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
+            if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
+            else ChatLiveControls_Show();
 
         }
     };

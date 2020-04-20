@@ -5,7 +5,6 @@ var ChatLiveControls_Channel = 0;
 var ChatLiveControls_LastChannel = '';
 
 function ChatLiveControls_Show() {
-
     var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
 
     if (ChatLive_Banned[ChatLiveControls_Channel]) {
@@ -118,6 +117,7 @@ function ChatLiveControls_removeEventListener() {
 }
 
 function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
+
     window.clearTimeout(ChatLiveControls_inputFocusId);
     if (!Main_isTV && Main_IsOnAndroid) Android.mhideSystemUI();
 
@@ -630,7 +630,7 @@ function ChatLiveControls_ChooseChat(event) {
 
 function ChatLiveControls_CantSend() {
     window.clearTimeout(ChatLiveControls_inputFocusId);
-    ChatLiveControls_RemoveinputFocus(true);
+    ChatLiveControls_RemoveinputFocus(Main_isElementShowing('chat_send'));
     ChatLiveControls_refreshInputFocusTools();
 }
 
