@@ -776,6 +776,181 @@
             width: 12.465%;
         }
 
+        div.chat_input_text_box {
+            width: 95%;
+            text-align: center;
+            margin-left: 2.5%;
+        }
+
+        div.chat_result,
+        div.chat_result_holder,
+        div.chat_result_text {
+            width: 100%;
+            text-align: center;
+            font-size: 2.4vh;
+            font-family: 'Roboto-Bold';
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+        div.chat_result_holder_inner {
+            padding: 0.5%;
+        }
+
+        div.chat_result_text {
+            width: 100%;
+            height: 100%;
+            transform: rotate(180deg);
+            text-align: left;
+        }
+
+        div.chat_result_holder {
+            max-height: 24.5vh;
+            margin-bottom: 1%;
+            border: 0.4vh solid #FFFFFF;
+            transform: rotate(180deg);
+            overflow: hidden;
+        }
+
+        div.chat_result {
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        input.chat_input_class {
+            width: 100%;
+            margin-bottom: 0.5%;
+            height: 1.25em;
+            color: #000000;
+            font-family: 'Roboto-Bold';
+            font-size: 2vh;
+            text-align: center;
+            background-color: #dcdcdc;
+            border: 0.125em solid #FFFFFF;
+            box-shadow: inset 0 0 0 0.1em #000000;
+            padding: 0.08em;
+        }
+
+        input.chat_input_class_focus {
+            border: 0.2em solid red;
+            caret-color: red;
+            box-shadow: inset 0 0 0 0.1em #FFFFFF;
+            background-color: #FFFFFF;
+        }
+
+        input.chat_input_class_block {
+            border: 0.2em solid red;
+            caret-color: red;
+            color: red;
+            box-shadow: inset 0 0 0 0.1em #FFFFFF;
+            background-color: #FFFFFF;
+        }
+
+        img.chat_emotes_img {
+            width: 5vh;
+            height: 5vh;
+            object-fit: contain;
+        }
+
+        div.chat_emotes_div {
+            overflow: hidden;
+        }
+
+        div.chat_emotes {
+            width: 93%;
+            margin-left: 3.5%;
+            margin-top: 0.5%;
+            text-align: left;
+            transform: translateY(0);
+            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
+        }
+
+        div.chat_emotes_img_div {
+            padding: 20%;
+        }
+
+        div.chat_emotes_img_holder {
+            width: 5%;
+            display: inline-block;
+        }
+
+        .chat_emotes_focus {
+            background-color: rgba(0, 0, 0, 0.6);
+            box-shadow: inset 0 0 0 0.4vh #EBEBEB;
+        }
+
+        div.chat_emotes_name_holder {
+            height: 2vh;
+        }
+
+        div.chat_emotes_name {
+            color: #FFFFFF;
+            font-size: 2vh;
+            width: 100vw;
+            text-align: center;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        div.chat_emotes_counter {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-right: 1vh;
+            font-size: 2.5vh;
+            color: #FFFFFF;
+        }
+
+        div.chat_emotes_holder {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            height: 46.5%;
+            bottom: 0;
+            font-size: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2;
+        }
+
+        div.chat_emotes_text {
+            color: #FFFFFF;
+            font-family: 'Roboto-Bold';
+            font-size: 3vh;
+        }
+
+        div.button_chat {
+            width: 17%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            height: 1.25em;
+            margin-left: 2%;
+            margin-bottom: 0.5%;
+            color: #FFFFFF;
+            font-family: 'Roboto-Bold';
+            font-size: 2.4vh;
+            background-color: #2F2F2F;
+            display: inline-block;
+            border: 0.1em solid #FFFFFF;
+            box-shadow: inset 0 0 0 0.1em #000000;
+            text-align: center;
+        }
+
+        div.chat_send {
+            font-size: 0;
+            top: 0;
+            z-index: 3;
+            background: rgba(0, 0, 0, 0.7)
+        }
+
+        div.button_chat_focused {
+            color: #000000;
+            background-color: #ebebeb;
+            border-color: #000000;
+            box-shadow: inset 0 0 0 0.1em #FFFFFF;
+        }
+
         div.input_text_box {
             width: 70%;
             margin-top: 13%;
@@ -785,7 +960,6 @@
         input.input_class {
             width: 100%;
             height: 2em;
-            box-shadow: 0 0 1.45em rgba(0, 0, 0, 0.45);
             color: black;
             font-family: 'Roboto-Bold';
             font-size: 150%;
@@ -801,20 +975,23 @@
         div.button_dialog,
         div.button_search {
             width: 20%;
-            height: 1.7em;
-            line-height: 1.7em;
+            height: 1.5em;
+            line-height: 1.5em;
             border-radius: 0.75em;
-            margin-top: 2%;
+            margin-top: 1%;
             margin-left: 4.5%;
             color: #000000;
             font-family: 'Roboto-Bold';
             font-size: 150%;
-            background-color: #999999;
+            background-color: #ebebeb;
             display: inline-block;
             border-top: 0.055em solid;
             border-bottom: 0.06em solid;
             border-image: linear-gradient(#000000, #000000) 1;
             text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 1%;
         }
 
         div.button_dialog {
@@ -824,9 +1001,12 @@
         div.button_dialog_focused,
         div.button_search_focused {
             color: #FFFFFF;
+            height: 2.2em;
+            line-height: 2.2em;
             background-color: #2F2F2F;
             text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
             border-image: linear-gradient(to right, #000000 6%, #D0D3D4, #000000 94%) 1;
+            margin-bottom: 0 !important;
         }
 
         div.button_dialog_focused {
@@ -901,7 +1081,7 @@
         }
 
         div.playsideinfo {
-            z-index: 100;
+            z-index: 2;
             position: absolute;
             right: 0;
             width: 35ch;
@@ -1528,7 +1708,7 @@
 
         .controls_button_holder {
             display: inline-block;
-            width: 5.7%;
+            width: 5.4%;
         }
 
         .controls_button {
@@ -1975,7 +2155,7 @@
             border: 0.28125em solid #FFFFFF;
             border-radius: 50%;
             animation: loading 600ms cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: #fff transparent transparent transparent;
+            border-color: #FFFFFF transparent transparent transparent;
         }
 
         .loading div:nth-child(1) {
@@ -2019,6 +2199,7 @@
     <script src="languages/default.js" defer></script>
     <script src="general/TVKeyValue.js" defer></script>
     <script src="general/img64.js" defer></script>
+    <script src="general/emojis.js" defer></script>
     <script src="specific/Play.js" defer></script>
     <script src="specific/PlayEtc.js" defer></script>
     <script src="specific/PlayExtra.js" defer></script>
@@ -2026,8 +2207,9 @@
     <script src="specific/PlayVod.js" defer></script>
     <script src="specific/AddUser.js" defer></script>
     <script src="specific/AddCode.js" defer></script>
-    <script src="specific/ChatVod.js" defer></script>
     <script src="specific/ChatLive.js" defer></script>
+    <script src="specific/ChatLiveControls.js" defer></script>
+    <script src="specific/ChatVod.js" defer></script>
     <script src="thirdparty/irc-message.js" defer></script>
     <script src="thirdparty/reconnecting-websocket.js" defer></script>
     <script src="thirdparty/twemoji.js" defer></script>
@@ -2373,6 +2555,7 @@
                     <div id="chanel_button" class="button_search" style="margin-left: 16%;"></div>
                     <div id="game_button" class="button_search"></div>
                     <div id="live_button" class="button_search"></div>
+                    <div class="button_search button_search_focused" style="opacity: 0; width: 0;"></div>
                 </div>
             </div>
 
@@ -2624,7 +2807,7 @@
         </div>-->
     </div>
     <div id="scene2" class="screen_size hide">
-        <div id="chat_container" class="chat_container opacity_zero">
+        <div id="chat_container" class="chat_container opacity_zero avoidclicks">
             <div id="chat_inner_container" class="chat_size_default">
                 <div class="chat_box_holder">
                     <div style="transform: rotate(180deg);">
@@ -2639,7 +2822,7 @@
                 </div>
             </div>
         </div>
-        <div id="chat_container2" class="chat_container2 hide">
+        <div id="chat_container2" class="chat_container2 hide avoidclicks">
             <div id="chat_inner_container2" class="chat_size_default">
                 <div class="chat_box_holder">
                     <div style="transform: rotate(180deg);">
@@ -2648,7 +2831,7 @@
                 </div>
             </div>
         </div>
-        <div id="chat_container2_name" class="chat_container2_name hide">
+        <div id="chat_container2_name" class="chat_container2_name hide avoidclicks">
             <div id="chat_container2_sound_icon" class="chat_container2_name_text">
                 <i class="icon-sound-off strokicon"></i>
             </div>
@@ -2658,7 +2841,7 @@
                 <i class="icon-arrow-right strokicon"></i>
             </div>
         </div>
-        <div id="chat_container_name" class="chat_container_name hide">
+        <div id="chat_container_name" class="chat_container_name hide avoidclicks">
             <div class="chat_container2_name_text">
                 <i class="icon-arrow-left strokicon"></i>
             </div>
@@ -2668,7 +2851,7 @@
                 <i class="icon-sound strokicon"></i>
             </div>
         </div>
-        <div id="scene_channel_panel" class="screen_size scene_channel_panel">
+        <div id="scene_channel_panel" class="screen_size scene_channel_panel avoidclicks">
             <div class="playerinfo">
                 <div id="stream_clock" class="playclock"></div>
                 <div id="stream_watching_time_multi" class="playclock hide" style="padding-top: 1.65%;"></div>
@@ -2888,9 +3071,9 @@
                     </div>
                 </div>
             </div>
-            <div id="controls_holder" class="controls_holder">
+            <div id="controls_holder" class="controls_holder avoidclicks">
             </div>
-            <div id="progress_pause_holder" class="progress_pause_holder">
+            <div id="progress_pause_holder" class="progress_pause_holder avoidclicks">
                 <div id="progress_bar_div" class="progress_bar_div">
                     <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline"
                         style="transform: translateY(-25%);"></div>
@@ -2962,16 +3145,81 @@
                 </div>
             </div>
         </div>
-        <div id="playsideinfo" class="playsideinfo hide">
+        <div id="chat_send" class="chat_send screen_holder hide">
+            <div id="dialog_warning_chat" class="dialogs hide"
+                style="z-index:7; margin-top: 1%; background: rgba(0, 0, 0, 0.65);">
+                <div id="dialog_warning_chat_text" class="strokedelinebig" style="font-size: 3vh;"></div>
+            </div>
+            <div class="chat_input_text_box">
+                <!-- Options-->
+                <div id="chat_send_button0" class="button_chat" style="margin-top: 1%; margin-left: 0;"></div>
+                <!-- Delete-->
+                <div id="chat_send_button1" class="button_chat"></div>
+                <!-- Unicode emojis-->
+                <div id="chat_send_button2" class="button_chat"></div>
+                <!-- BBTV global-->
+                <div id="chat_send_button3" class="button_chat"></div>
+                <!-- FFZ global-->
+                <div id="chat_send_button4" class="button_chat"></div>
+                <!-- Send-->
+                <div id="chat_send_button5" class="button_chat" style="margin-left: 0;"></div>
+                <!-- @streamer-->
+                <div id="chat_send_button6" class="button_chat"></div>
+                <!-- Twitch emotes-->
+                <div id="chat_send_button7" class="button_chat"></div>
+                <!-- BBTV streamer-->
+                <div id="chat_send_button8" class="button_chat"></div>
+                <!-- FFZ streamer-->
+                <div id="chat_send_button9" class="button_chat"></div>
+                <input id="chat_send_input" class="chat_input_class" onfocus="this.value = this.value;" type="text"
+                    placeholder="" />
+                <!-- In Chat expected result: -->
+                <div id="chat_result" class="chat_result"></div>
+                <div class="chat_result_holder">
+                    <div class="chat_result_holder_inner">
+                        <div id="chat_result_text" class="chat_result_text"></div>
+                    </div>
+                </div>
+                <!-- ROOMSTATE -->
+                <div id="chat_state" class="chat_result"></div>
+            </div>
+        </div>
+        <div id="chat_choose" class="screens hide" style="z-index: 99;">
+            <div class="dialog_exit" style="width: 60%; margin-left: 20%;">
+                <div id="chat_choose_dialog_text" class="exit_text"></div>
+                <div style="text-align: center; margin-bottom: 4%;">
+                    <div id="chat_choose_dialog1" class="button_dialog" style="width: 35%; margin-left: 0%;">
+                    </div>
+                    <div id="chat_choose_dialog0" class="button_dialog" style="width: 35%;"></div>
+                </div>
+            </div>
+        </div>
+        <div id="chat_options" class="screens hide" style="z-index: 99;">
+            <div class="about_dialogs" style="width: 96%; margin-left: 2%;">
+                <div id="chat_options_text" class="about_text" style="font-size: 98%;"></div>
+            </div>
+        </div>
+        <div id="chat_emotes_holder" class="chat_emotes_holder hide">
+            <div id="chat_emotes_text" class="chat_emotes_text"></div>
+
+            <div id="chat_emotes_div" class="chat_emotes_div">
+                <div id="chat_emotes" class="chat_emotes"></div>
+            </div>
+
+            <div id="chat_emotes_counter" class="chat_emotes_counter"></div>
+        </div>
+        <div id="playsideinfo" class="avoidclicks playsideinfo hide">
             <div id="stream_quality" class="playsideinfostatus"></div>
             <div id="stream_status" class="playsideinfostatus"></div>
         </div>
-        <div id="dialog_multi_help" class="hide" style="position: absolute; width: 100%; height : 100%; z-index: 1;">
+        <div id="dialog_multi_help" class="avoidclicks hide"
+            style="position: absolute; width: 100%; height : 100%; z-index: 1;">
             <div class="screens dialog_multi_help_holder">
                 <div id="dialog_multi_help_text" class="screens dialog_multi_help"></div>
             </div>
         </div>
-        <div id="scene2_dialogs" style="display:flex; position: absolute; width: 100%; height : 100%; z-index: 2;">
+        <div id="scene2_dialogs" class="avoidclicks"
+            style="display:flex; position: absolute; width: 100%; height : 100%; z-index: 2;">
             <div id="dialog_os" class="screens hide" style="z-index: 1;">
                 <div class="about_dialogs" style="width: 60%; margin-left: 20%;">
                     <div id="dialog_os_text" class="about_text" style="font-size: 100%;"></div>
@@ -3200,15 +3448,19 @@
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 6%;">
                 <div id="play_dialog_exit_text" class="strokedelinebig" style="font-size: 200%;"></div>
             </div>
-            <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 10%;">
+            <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 10%; ">
                 <div id="dialog_warning_play_text" class="strokedelinebig" style="font-size: 140%;"></div>
+            </div>
+            <div id="dialog_warning_play_middle" class="dialogs hide" style="z-index:7; margin-top: 50vh; ">
+                <div id="dialog_warning_play_middle_text" class="strokedelinebig"
+                    style="font-size: 140%; background-color: rgba(0, 0, 0, 0.5);"></div>
             </div>
             <div id="dialog_warning_muted" class="dialogs hide"
                 style="z-index:7; margin-top: 25%; background-color: rgba(0, 0, 0, 0.5);">
                 <div id="dialog_warning_muted_text" class="strokedelinebig" style="font-size: 100%;"></div>
             </div>
         </div>
-        <div id="user_feed" class="user_feed opacity_zero"
+        <div id="user_feed" class="avoidclicks user_feed opacity_zero"
             style="background: linear-gradient(to top, black, rgba(0, 0, 0, 0.3));">
             <div id="icon_feed_refresh" class="icon_feed_refresh"></div>
             <div id="icon_feed_back" class="icon_feed_refresh hide"></div>
@@ -3264,6 +3516,11 @@
                         <div id="user_feed_notify_game" class="notification_game"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="dialog_warning_extra" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75);">
+            <div class="about_dialogs" style="width: 96%; margin-left: 2%;">
+                <div id="dialog_warning_extra_text" class="about_text class_bold" style="font-size: 3vh;"></div>
             </div>
         </div>
         <div id="scenekeys" class="hide dontavoidclicks">

@@ -169,7 +169,7 @@ function Play_EndDialogPressed(PlayVodClip) {
             document.body.addEventListener("keydown", Play_handleKeyDown, false);
 
             Play_data.data[14] = Play_TargetHost.target_id;
-            Main_ready(Play_Start);
+            Main_timeOut(Play_Start);
         } else {
             PlayClip_OpenVod();
             if (!PlayClip_HasVOD) canhide = false;
@@ -326,7 +326,7 @@ function Play_FollowUnfollow() {
         if (AddCode_IsFollowing) AddCode_UnFollow();
         else AddCode_Follow();
     } else {
-        Play_showWarningDialog(STR_NOKEY_WARN, 2000);
+        Play_showWarningMidleDialog(STR_NOKEY_WARN, 2000);
         Play_IsWarning = true;
     }
 }
@@ -363,7 +363,7 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
         }
     }
 
-    if (!PreventWarn) Play_showWarningDialog(error, 1500);
+    if (!PreventWarn) Play_showWarningMidleDialog(error, 1500);
 
     if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
 
@@ -377,7 +377,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
         if (PlayVodClip === 1) {
             ChatLive_Playing = true;
             ChatLive_MessagesRunAfterPause();
-        } else if (PlayClip_HasVOD) Chat_Play(Chat_Id);
+        } else if (PlayClip_HasVOD) Chat_Play(Chat_Id[0]);
 
         if (Play_isPanelShown()) {
             if (PlayVodClip === 1) Play_hidePanel();
@@ -433,8 +433,11 @@ function Play_KeyReturn(is_vod) {
                 if (is_vod) PlayVod_shutdownStream();
                 else Play_shutdownStream();
             }
-        } else if (Play_WarningDialogVisible()) {
+        } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
+            window.clearTimeout(Play_showWarningMidleDialogId);
+            window.clearTimeout(Play_showWarningDialogId);
             Play_HideWarningDialog();
+            Play_HideWarningMidleDialog();
             Play_showExitDialog();
         } else {
             var text = PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN;
@@ -482,7 +485,7 @@ function Play_MultiKeyDown() {
 
         Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
 
-        Play_showWarningDialog(
+        Play_showWarningMidleDialog(
             STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
             2000
         );
@@ -790,6 +793,9 @@ function Play_handleKeyDown(e) {
                 else if (PlayExtra_PicturePicture) Play_AudioChangeLeft();
 
                 break;
+            case KEY_4:
+                Play_controls[Play_controlsChatSend].enterKey();
+                break;
             default:
                 break;
         }
@@ -813,13 +819,14 @@ var Play_MultiStream = 10;
 var Play_controlsAudio = 11;
 var Play_controlsAudioMulti = 12;
 var Play_controlsChat = 13;
-var Play_controlsChatSide = 14;
-var Play_controlsChatForceDis = 15;
-var Play_controlsChatPos = 16;
-var Play_controlsChatSize = 17;
-var Play_controlsChatBright = 18;
-var Play_controlsChatFont = 19;
-var Play_controlsChatDelay = 20;
+var Play_controlsChatSend = 14;
+var Play_controlsChatSide = 15;
+var Play_controlsChatForceDis = 16;
+var Play_controlsChatPos = 17;
+var Play_controlsChatSize = 18;
+var Play_controlsChatBright = 19;
+var Play_controlsChatFont = 20;
+var Play_controlsChatDelay = 21;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -1127,7 +1134,7 @@ function Play_MakeControls() {
 
             }
 
-            if (Play_LowLatency) Play_showWarningDialog(STR_LOW_LATENCY_SUMMARY, 3000);
+            if (Play_LowLatency) Play_showWarningMidleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
 
             Main_setItem('Play_LowLatency', Play_LowLatency);
             this.setLable();
@@ -1157,7 +1164,7 @@ function Play_MakeControls() {
 
             var text = !this.defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
 
-            Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+            Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE +
                 ((this.defaultValue < 2) ? text : this.values[this.defaultValue]),
                 2000
             );
@@ -1194,7 +1201,7 @@ function Play_MakeControls() {
             this.setLable();
 
             if (!preventShowWarning) {
-                Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+                Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE +
                     ((this.defaultValue < 4) ? Play_MultiArray[this.defaultValue].data[1] : this.values[this.defaultValue]),
                     2000
                 );
@@ -1324,6 +1331,27 @@ function Play_MakeControls() {
 
             Main_textContent('extra_button_' + this.position, '(' + string + ')');
         },
+    };
+
+    Play_controls[Play_controlsChatSend] = {
+        icons: "keyboard",
+        string: STR_CHAT_WRITE,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function() {
+            if (Main_values.Play_ChatForceDisable) {
+                Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
+                return;
+            } else if (!AddUser_UsernameArray[0].access_token) {
+                Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
+                return;
+            }
+
+            if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
+            else ChatLiveControls_Show();
+
+        }
     };
 
     Play_controls[Play_controlsChatSide] = { //chat side
@@ -1610,13 +1638,11 @@ function Play_KeyChatPosChage() {
 }
 
 function Play_BottomOptionsPressed(PlayVodClip) {
-    Main_ready(function() {
-        if (Play_controls[Play_Panelcounter].enterKey) {
-            Play_controls[Play_Panelcounter].enterKey(PlayVodClip);
-        } else {
-            Play_Resetpanel(PlayVodClip);
-        }
-    });
+    if (Play_controls[Play_Panelcounter].enterKey) {
+        Play_controls[Play_Panelcounter].enterKey(PlayVodClip);
+    } else {
+        Play_Resetpanel(PlayVodClip);
+    }
     Main_SaveValues();
 }
 

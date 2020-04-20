@@ -1,0 +1,204 @@
+{
+	"group": 1,
+	"emojiList": [{
+			"unicode": "👋",
+			"tags": "hand-wave"
+		}, {
+			"unicode": "🤚",
+			"tags": "backhand"
+		},
+		{
+			"unicode": "🖐️",
+			"tags": "hand-open-finger"
+		},
+		{
+			"unicode": "✋",
+			"tags": "hand"
+		},
+		{
+			"unicode": "🖖",
+			"tags": "hand-vulcan"
+
+		},
+		{
+			"unicode": "👌",
+			"tags": "hand-ok"
+		},
+		{
+			"unicode": "✌️",
+			"tags": "hand-v"
+		},
+		{
+			"unicode": "🤞",
+			"tags": "hand-cross"
+		},
+		{
+			"unicode": "🤟",
+			"tags": "hand-ily"
+		},
+		{
+			"unicode": "🤘",
+			"tags": "hand-horns"
+		},
+		{
+			"unicode": "🤙",
+			"tags": "hand-call"
+		},
+		{
+			"unicode": "🖕",
+			"tags": "hand-finger"
+		},
+		{
+			"unicode": "👈",
+			"tags": "hand-point"
+		},
+		{
+			"unicode": "👇",
+			"tags": "hand-poin2"
+		},
+		{
+			"unicode": "☝️",
+			"tags": "hand-point3"
+		},
+		{
+			"unicode": "👍",
+			"tags": "hand-thumb-up"
+		},
+		{
+			"unicode": "👎",
+			"tags": "hand-thumb-down"
+		},
+		{
+			"unicode": "✊",
+			"tags": "hand-punch"
+		},
+		{
+			"unicode": "👊",
+			"tags": "hand-punch2"
+		},
+		{
+			"unicode": "🤛",
+			"tags": "hand-punch3"
+		},
+		{
+			"unicode": "🤜",
+			"tags": "hand-punch4"
+		},
+		{
+			"unicode": "👏",
+			"tags": "hand-clap"
+		},
+		{
+			"unicode": "🙌",
+			"tags": "hand-celebration"
+		},
+		{
+			"unicode": "👐",
+			"tags": "hand-open"
+		},
+		{
+			"unicode": "🤲",
+			"tags": "hand-prayer"
+		},
+		{
+			"unicode": "🤝",
+			"tags": "hand-agreement"
+		},
+		{
+			"unicode": "🙏",
+			"tags": "hand-please"
+		},
+		{
+			"unicode": "✍️",
+			"tags": "hand-write"
+		},
+		{
+			"unicode": "💅",
+			"tags": "cosmetics"
+		},
+		{
+			"unicode": "🤳",
+			"tags": "self"
+		},
+		{
+			"unicode": "💪",
+			"tags": "muscle"
+		},
+		{
+			"unicode": "🦵",
+			"tags": "kick"
+		},
+		{
+			"unicode": "🦶",
+			"tags": "kick2"
+		},
+		{
+			"unicode": "👂",
+			"tags": "ear"
+		},
+		{
+			"unicode": "👃",
+			"tags": "nose"
+		},
+		{
+			"unicode": "🧠",
+			"tags": "brain"
+		},
+		{
+			"unicode": "🦷",
+			"tags": "tooth"
+		},
+		{
+			"unicode": "👀",
+			"tags": "eyes"
+		},
+		{
+			"unicode": "👁️",
+			"tags": "eye"
+		},
+		{
+			"unicode": "👅",
+			"tags": "tongue2"
+		},
+		{
+			"unicode": "👄",
+			"tags": "lips"
+		},
+		{
+			"unicode": "👶",
+			"tags": "baby"
+		},
+		{
+			"unicode": "👨‍🦲",
+			"tags": "bald"
+		},
+		{
+			"unicode": "👴",
+			"tags": "old-man"
+		},
+		{
+			"unicode": "👵",
+			"tags": "old-woman"
+		},
+		{
+			"unicode": "👨‍🚒",
+			"tags": "firefighter"
+		},
+		{
+			"unicode": "👩‍🚒",
+			"tags": "firefighter2"
+		},
+		{
+			"unicode": "👮‍♂️",
+			"tags": "police-officer"
+		},
+		{
+			"unicode": "👮‍♀️",
+			"tags": "police-officer-woman"
+		},
+		{
+			"unicode": "👨‍👩‍👧‍👦",
+			"tags": "family"
+		}
+	]
+}

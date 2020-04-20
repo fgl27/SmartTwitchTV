@@ -58,6 +58,7 @@ var Main_values = {
     "Search_isSearching": false,
     "Play_ChatForceDisable": false,
     "Never_run_new": true,
+    "warning_extra": true,
     "Chat_font_size": 2,
     "ChatBackground": 12,
     "IsRerun": false,
@@ -73,6 +74,13 @@ var Main_values = {
     "Restore_Backup_Check": false,
 };
 
+var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
+var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
+var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
+var Main_SidePannelSize = "1280x720";
+var Main_VideoSize = "640x360";
+var Main_GameSize = "340x475";
+
 var Main_values_Play_data;
 var Main_values_History_data = {};//The obj is defined in AddUser_RestoreUsers()
 var Main_Force = "4mv6wki5h1ko";
@@ -83,6 +91,7 @@ var Main_ExitDialogID = null;
 var Main_IsDayFirst = false;
 var Main_SearchInput;
 var Main_AddUserInput;
+var Main_ChatLiveInput;
 var Main_updateclockId;
 var Main_ContentLang = "";
 var Main_Periods = [];
@@ -156,98 +165,101 @@ function Main_Start() {
 function Main_loadTranslations(language) {
     Main_Checktylesheet();
 
-    Main_ready(function() {
-        try {
-            if (Main_A_includes_B(window.location.href, 'asset')) {
-                //Same as in smartTwitchTV/release/api.js
-                //The app is running from assets need to expose smartTwitchTV
-                smartTwitchTV = {
-                    'mainstart': Main_Start,
-                    'Play_PannelEndStart': Play_PannelEndStart,
-                    'Play_PlayerCheck': Play_PlayerCheck,
-                    'Play_UpdateDuration': Play_UpdateDuration,
-                    'PlayExtra_End': PlayExtra_End,
-                    'Play_MultiEnd': Play_MultiEnd,
-                    'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
-                    'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-                    'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
-                    'Main_CheckStop': Main_CheckStop,
-                    'Main_CheckResume': Main_CheckResume,
-                    'Play_getQualities': Play_getQualities,
-                    'Play_ShowVideoStatus': Play_ShowVideoStatus,
-                    'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                    'PlayVod_previews_success': PlayVod_previews_success,
-                    'Play_PlayPauseChange': Play_PlayPauseChange
-                };
-            }
-            Main_IsOnAndroid = Android.getAndroid();
-            Main_IsOnAndroidVersion = Android.getversion();
-        } catch (e) {
-            Main_IsOnAndroidVersion = '1.0.0';
-            Main_IsOnAndroid = 0;
-            document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
-            Main_isDebug = true;
-            console.log('Main_isReleased: ' + Main_isReleased);
-            console.log('Main_isDebug: ' + Main_isDebug);
-            console.log('Main_isBrowser: ' + !Main_IsOnAndroid);
-            //If we add the class on the android app for some reason it prevents input from release the focus
-            Main_AddClass('scenefeed', 'feed_screen_input');
-            //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
-            KEY_RETURN = 27;
+    try {
+        if (Main_A_includes_B(window.location.href, 'asset')) {
+            //Same as in smartTwitchTV/release/api.js
+            //The app is running from assets need to expose smartTwitchTV
+            smartTwitchTV = {
+                'mainstart': Main_Start,
+                'Play_PannelEndStart': Play_PannelEndStart,
+                'Play_PlayerCheck': Play_PlayerCheck,
+                'Play_UpdateDuration': Play_UpdateDuration,
+                'PlayExtra_End': PlayExtra_End,
+                'Play_MultiEnd': Play_MultiEnd,
+                'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
+                'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
+                'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+                'Main_CheckStop': Main_CheckStop,
+                'Main_CheckResume': Main_CheckResume,
+                'Play_getQualities': Play_getQualities,
+                'Play_ShowVideoStatus': Play_ShowVideoStatus,
+                'Play_ShowVideoQuality': Play_ShowVideoQuality,
+                'PlayVod_previews_success': PlayVod_previews_success,
+                'Play_PlayPauseChange': Play_PlayPauseChange
+            };
         }
-        Main_showLoadDialog();
+        Main_IsOnAndroid = Android.getAndroid();
+        Main_IsOnAndroidVersion = Android.getversion();
 
-        Main_initClick();
-        Settings_SetDefautls();
-        calculateFontSize();
-        en_USLang();
-        Languages_SetDefautls();
+    } catch (e) {
+        Main_IsOnAndroidVersion = '1.0.0';
+        Main_IsOnAndroid = 0;
+        document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
+        Main_isDebug = true;
+        Main_Log('Main_isReleased: ' + Main_isReleased);
+        Main_Log('Main_isDebug: ' + Main_isDebug);
+        Main_Log('Main_isBrowser: ' + !Main_IsOnAndroid);
+        //If we add the class on the android app for some reason it prevents input from release the focus
+        Main_AddClass('scenefeed', 'feed_screen_input');
+        //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
+        KEY_RETURN = 27;
+    }
+    try {
+        Main_isDebug = Android.getdebug();
+    } catch (e) {}
 
-        // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-        // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+    Main_showLoadDialog();
 
-        //var lang = language,
-        //    Savedlang = Main_getItemInt('user_language', 0);
+    Main_initClick();
+    Settings_SetDefautls();
+    calculateFontSize();
+    en_USLang();
+    Languages_SetDefautls();
 
-        //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-        //else Settings_CheckLang(lang);
+    // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+    // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-        //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-        //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
+    //var lang = language,
+    //    Savedlang = Main_getItemInt('user_language', 0);
 
-        console.log("language is " + language);
-        DefaultLang();
+    //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
+    //else Settings_CheckLang(lang);
 
-        if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
+    //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
+    //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
 
-        Main_SearchInput = document.getElementById("search_input");
-        Main_AddUserInput = document.getElementById("user_input");
-        Main_Scene1Doc = document.getElementById('scene1');
-        Main_Scene2Doc = document.getElementById('scene2');
+    Main_Log("language is " + language);
+    DefaultLang();
 
-        Main_RestoreValues();
+    if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
-        Main_DoRestore = AddUser_RestoreUsers();
+    Main_SearchInput = document.getElementById("search_input");
+    Main_AddUserInput = document.getElementById("user_input");
+    Main_ChatLiveInput = document.getElementById("chat_send_input");
+    Main_Scene1Doc = document.getElementById('scene1');
+    Main_Scene2Doc = document.getElementById('scene2');
 
-        if (!Main_values.Restore_Backup_Check) {
+    Main_RestoreValues();
 
-            try {
-                Android.requestWr();
-                Main_HideLoadDialog();
-                Main_innerHTML("main_dialog_remove", STR_BACKUP);
-                Main_textContent('remove_cancel', STR_NO);
-                Main_textContent('remove_yes', STR_YES);
-                Main_ShowElement('main_remove_dialog');
-                Main_values.Restore_Backup_Check = true;
-                document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
-            } catch (e) {
-                window.setTimeout(Main_initWindows, 500);
-                return;
-            }
-        } else window.setTimeout(Main_initWindows, 500);
+    Main_DoRestore = AddUser_RestoreUsers();
 
-    });
+    if (!Main_values.Restore_Backup_Check) {
+
+        try {
+            Android.requestWr();
+            Main_HideLoadDialog();
+            Main_innerHTML("main_dialog_remove", STR_BACKUP);
+            Main_textContent('remove_cancel', STR_NO);
+            Main_textContent('remove_yes', STR_YES);
+            Main_ShowElement('main_remove_dialog');
+            Main_values.Restore_Backup_Check = true;
+            document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+        } catch (e) {
+            Main_timeOut(Main_initWindows, 500);
+            return;
+        }
+    } else Main_timeOut(Main_initWindows, 500);
 
 }
 
@@ -304,6 +316,7 @@ function Main_initRestoreBackups() {
 }
 
 function Main_initWindows() {
+    Main_Log('Main_initWindows');
     try {
         Main_CanBackup = Android.canBackupFile();
 
@@ -411,37 +424,34 @@ function Main_initWindows() {
 
     Main_GoBefore = Main_values.Main_Go;
 
-    Main_ready(function() {
-        Chat_Preinit();
-        Play_PreStart();
-        UserLiveFeed_Prepare();
 
-        if (AddUser_UserIsSet()) {
-            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
-        }
-        Screens_InitScreens();
+    Chat_Preinit();
+    Play_PreStart();
+    UserLiveFeed_Prepare();
 
-        document.getElementById("side_panel").style.transform = '';
-        document.getElementById("user_feed_notify").style.transform = '';
+    if (AddUser_UserIsSet()) {
+        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
+    }
+    Screens_InitScreens();
 
-        Main_checkVersion();
+    document.getElementById("side_panel").style.transform = '';
+    document.getElementById("user_feed_notify").style.transform = '';
 
-        Main_SetStringsSecondary();
+    Main_checkVersion();
 
-        Play_MakeControls();
-        Play_SetControls();
-        Play_SetFullScreen(Play_isFullScreen);
+    Main_SetStringsSecondary();
 
-        Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
-        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+    Play_MakeControls();
+    Play_SetControls();
+    Play_SetFullScreen(Play_isFullScreen);
 
-        inUseObj = Live;
-        Main_ready(function() {
-            Screens_init();
-        });
-    });
+    Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
+    Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
+    Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+
+    inUseObj = Live;
+    Main_timeOut(Screens_init, 500);
 }
 
 function Main_SetStringsMain(isStarting) {
@@ -537,6 +547,19 @@ function Main_SetStringsSecondary() {
     Main_textContent('dialog_thumb_opt_setting_name_5', STR_GO_TO);
 
     Main_innerHTML("dialog_multi_help_text", STR_CONTROLS_MULTI);
+
+    Main_textContent("chat_send_button0", STR_CHAT_OPTIONS);
+    Main_textContent("chat_send_button1", STR_CHAT_DELL_ALL);
+    Main_textContent("chat_send_button2", STR_CHAT_UNICODE_EMOJI);
+    Main_textContent("chat_send_button3", STR_CHAT_BBTV_GLOBAL);
+    Main_textContent("chat_send_button4", STR_CHAT_FFZ_GLOBAL);
+    Main_textContent("chat_send_button5", STR_CHAT_SEND);
+    Main_textContent("chat_send_button6", STR_CHAT_AT_STREAM);
+    Main_textContent("chat_send_button7", STR_CHAT_TW_EMOTES);
+    Main_textContent("chat_send_button8", STR_CHAT_BBTV_STREAM);
+    Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
+    Main_textContent("chat_result", STR_CHAT_RESULT);
+    ChatLiveControls_OptionsUpdate_defautls();
 }
 
 var Main_initClickDoc = [
@@ -614,7 +637,7 @@ function Main_initClickSet(doc, pos) {
         if (!Main_buttonsVisible()) return;
 
         if (Main_IsOnAndroid) Android.keyEvent(pos, 1);
-        else console.log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
+        else Main_Log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
     };
 }
 
@@ -625,7 +648,7 @@ function Main_ClickonpointerdownClear() {
 
 function Main_Clickonpointerdown(pos) {
     if (Main_IsOnAndroid) Android.keyEvent(pos, 0);
-    else console.log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
+    else Main_Log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -751,6 +774,14 @@ function Main_CounterDialogRst() {
 function Main_CounterDialog(x, y, coloumns, total) {
     if (total > 0) Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
     else Main_CounterDialogRst();
+}
+
+function Main_showWarningExtra(text) {
+    Main_innerHTML('dialog_warning_extra_text', text);
+    Main_ShowElement('dialog_warning_extra');
+    Main_timeOut(function() {
+        Main_HideElement('dialog_warning_extra');
+    }, 60000);
 }
 
 function Main_showWarningDialog(text) {
@@ -1198,7 +1229,7 @@ function Main_checkVersion() {
     if (Main_IsOnAndroid) {
         var device = Android.getDevice();
         var Webviewversion = Android.getWebviewVersion();
-        console.log('Webviewversion ' + Webviewversion);
+        Main_Log('Webviewversion ' + Webviewversion);
 
         Main_versionTag = "Apk: " + Main_IsOnAndroidVersion + ' Web: ' + Main_minversion +
             (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
@@ -1542,9 +1573,9 @@ function Main_Checktylesheet() {
 
     Main_ready(function() {
         if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-            console.log('Main_Checktylesheet reloading');
+            Main_Log('Main_Checktylesheet reloading');
             Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-        } else console.log('Main_Checktylesheet loaded OK');
+        } else Main_Log('Main_Checktylesheet loaded OK');
 
         document.body.removeChild(span);
     });
@@ -1564,9 +1595,14 @@ function Main_ready(func) {
         (document.readyState !== "loading" && !document.documentElement.doScroll)) {
 
         // Handle it asynchronously to allow scripts the opportunity to delay ready
-        window.setTimeout(func);
+        Main_timeOut(func);
 
     } else document.addEventListener("DOMContentLoaded", func);
+}
+
+function Main_timeOut(func, timeout) {
+    if (timeout && timeout > 0) window.setTimeout(func, timeout);
+    else window.setTimeout(func);
 }
 
 function Main_getclock() {
@@ -1580,15 +1616,6 @@ function Main_getclock() {
 
     return dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
 }
-
-// right after the TV comes from standby the network can lag, delay the check
-//function Main_Resume() {
-//    if (!document.hidden) {
-//        Main_updateclock();
-//        //Update clock twice as first try clock may be out of date in the case TV was on standby
-//        window.setTimeout(Main_updateclock, 20000);
-//    }
-//}
 
 function Main_updateclock() {
     if (!document.hidden) {
@@ -1674,22 +1701,22 @@ function Main_getItemBool(item, default_value) {
 // Replace "16EB" with is the char ᛫ by the result of "string.charCodeAt(i).toString(16).toUpperCase()"
 // To see supported fonts and etc info about the unknown char
 function Main_PrintUnicode(string) { // jshint ignore:line
-    console.log(string);
+    Main_Log(string);
     for (var i = 0; i < string.length; i++)
-        console.log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
+        Main_Log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
 }
 
 function processCode(pageUrl) {
-    if (!Main_IsOnAndroid) console.log("processCode");
+    Main_Log("processCode");
     var code = '';
     code = pageUrl.match(/code=(\w+)/);
     if (code) {
         code = code[1];
         CheckPage("?code=" + code);
-        console.log('if code ' + code);
+        Main_Log('if code ' + code);
         Main_newUsercode = code;
     } else {
-        console.log('else code ' + code);
+        Main_Log('else code ' + code);
         CheckPage('');
         Main_newUsercode = 0;
     }
@@ -1792,13 +1819,6 @@ var Main_Headers_Back = [
     [Main_AcceptHeader, Main_TwithcV5Json],
     [Main_Authorization, null]
 ];
-
-var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
-var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
-var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
-var Main_SidePannelSize = "1280x720";
-var Main_VideoSize = "640x360";
-var Main_GameSize = "340x475";
 
 function Main_SetThumb() {
     Main_VideoSize = Main_VideoSizeAll[Settings_value.thumb_quality.defaultValue];
@@ -2131,6 +2151,8 @@ function Main_CheckStop() { // Called only by JAVA
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 
+    if (Main_isElementShowing('chat_send')) ChatLiveControls_Hide();
+
     //Hide setting if showing
     if (Languages_isVisible()) {
         Languages_exit();
@@ -2284,3 +2306,8 @@ function Main_LoadUrl(url) {
     if (Main_IsOnAndroid) Android.mloadUrl(url);
     else window.location = url;
 }
+
+function Main_Log(text) {
+    if (Main_isDebug) console.log(text);
+}
+

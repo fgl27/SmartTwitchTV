@@ -19,10 +19,8 @@ function Users_init() {
     if (Main_newUsercode) {
         Main_HideElement('topbar');
         Main_HideElement('side_panel_new_holder');
-        Main_ready(function() {
-            Users_exit();
-            AddCode_CheckNewCode(Main_newUsercode);
-        });
+        Users_exit();
+        AddCode_CheckNewCode(Main_newUsercode);
         return;
     } else if (!AddUser_IsUserSet()) {
         Main_values.Main_Go = Main_Live;
@@ -67,9 +65,7 @@ function Users_StartLoad() {
     Users_cursorY = 0;
     Users_loadingData = true;
     Main_CounterDialogRst();
-    Main_ready(function() {
-        Users_loadData();
-    });
+    Main_ready(Users_loadData);
 }
 
 function Users_loadData() {
@@ -131,7 +127,7 @@ function Users_createCell(id, pos) {
 }
 
 function Users_loadDataSuccessFinish() {
-    Main_ready(function() {
+    Main_timeOut(function() {
         if (!Users_status) {
             Users_status = true;
             Users_addFocus();
@@ -401,7 +397,12 @@ function Users_handleKeyDown(event) {
                         var type_code = 'code';
                         var client_id = Main_clientId;
                         var redirect_uri = AddCode_redirect_uri;
-                        var scope = 'user_read+user_follows_edit+user_subscriptions';
+                        var scope = '';
+                        for (i = 0; i < AddCode_Scopes.length; i++) {
+                            scope += AddCode_Scopes[i] + '+';
+                        }
+                        scope = scope.slice(0, -1);
+
                         var force_verify = 'true';
                         var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
                             encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +

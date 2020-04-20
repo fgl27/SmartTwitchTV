@@ -19,8 +19,6 @@ var ChannelVod_game = '';
 var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
 var Main_HistoryPos = 0;
 
-var Vod_DoAnimateThumb = 1;
-
 var AGame_following = false;
 
 var DefaultloadingDataTimeout = 3500;
@@ -113,7 +111,7 @@ var Base_obj = {
         } else Screens_OpenSidePanel();
     },
     concatenate: function(responseText) {
-        //console.log(responseText);
+        //Main_Log(responseText);
         if (this.data) {
             responseText = JSON.parse(responseText);
 
@@ -630,7 +628,7 @@ function ScreensObj_InitUserLive() {
     UserLive = Screens_assign(UserLive, Base_Live_obj);
 
     UserLive.concatenate = function(responseText) {
-        //console.log(responseText);
+        //Main_Log(responseText);
         if (this.token || this.followerChannelsDone) {
             //User has added a key or followed channels list is done, concatenate live channels
             if (this.data) {
@@ -1792,7 +1790,7 @@ function ScreensObj_VodCellArray(cell) {
 
 function ScreensObj_AnimateThumbId(screen) {
     window.clearInterval(screen.AnimateThumbId);
-    if (!Vod_DoAnimateThumb) return;
+    if (!Settings_Obj_default("videos_animation")) return;
     var div = document.getElementById(screen.ids[6] + screen.posY + '_' + screen.posX);
 
     // Only load the animation if it can be loaded

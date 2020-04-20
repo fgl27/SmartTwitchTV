@@ -31,9 +31,9 @@ The reason to build **ExoPlayer** from source is because I made changes to impro
 
 Project Apk Dependencies
 ==============
-* [Google: Leanback v17](https://developer.android.com/reference/android/support/v17/leanback/package-summary)
-* [Google: ExoPlayer](https://github.com/google/ExoPlayer)
-* [ben-manes: gradle-versions-plugin](https://github.com/ben-manes/gradle-versions-plugin)
+* [Leanback v17: Support classes for building Leanback user experiences](https://developer.android.com/reference/android/support/v17/leanback/package-summary)
+* [ExoPlayer: An extensible media player for Android](https://github.com/google/ExoPlayer)
+* [Gradle Versions Plugin: Gradle plugin to discover dependency updates](https://github.com/ben-manes/gradle-versions-plugin)
 * [Tray: a SharedPreferences replacement for Android](https://github.com/grandcentrix/tray)
 
 Donations

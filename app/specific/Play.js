@@ -278,6 +278,8 @@ function Play_SetChatFont() {
 }
 
 function Play_Start() {
+    Main_Log('Play_Start');
+
     Play_showBufferDialog();
 
     Play_LoadLogoSucess = false;
@@ -289,6 +291,7 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
+    document.getElementById('controls_' + Play_controlsChatSend).style.display = '';
 
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
@@ -349,7 +352,7 @@ function Play_Start() {
 
 // To Force a warn, not used regularly so keep commented out
 //function Play_Warn(text) {
-//    Play_showWarningDialog(text);
+//    Play_showWarningMidleDialog(text);
 //}
 
 function Play_getStreamData(channel_name) {
@@ -416,7 +419,7 @@ function Play_CheckIfIsLiveStartFail(text) {
     Play_HideBufferDialog();
     Play_CheckIfIsLiveCleanEnd();
 
-    Play_showWarningDialog(text, 2000);
+    Play_showWarningMidleDialog(text, 2000);
 }
 
 function Play_CheckIfIsLiveClean() {//called from java
@@ -426,7 +429,7 @@ function Play_CheckIfIsLiveClean() {//called from java
             STR_IS_OFFLINE + STR_TOO_ERRORS,
             JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[1]
         );
-    } else Play_showWarningDialog(STR_STREAM_ERROR_SMALL, 2000);
+    } else Play_showWarningMidleDialog(STR_STREAM_ERROR_SMALL, 2000);
 }
 
 function Play_CheckIfIsLiveCleanEnd() {
@@ -735,6 +738,7 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 function Play_loadDatanew() {
+    Main_Log('Play_loadDatanew');
     if (Main_IsOnAndroid) {
 
         var StreamData = Play_getStreamData(Play_data.data[6]);
@@ -802,7 +806,7 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
         document.body.addEventListener("keydown", Play_EndUpclearCalback, false);
         Play_state = Play_STATE_PLAYING;
 
-        Play_showWarningDialog(error_410 ? STR_410_ERROR :
+        Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
             Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
             2000);
 
@@ -824,7 +828,7 @@ function Play_OlddataSet() {
 
 function Play_ForbiddenLive() {
     Play_HideBufferDialog();
-    Play_showWarningDialog(STR_FORBIDDEN);
+    Play_showWarningMidleDialog(STR_FORBIDDEN);
     window.setTimeout(function() {
         if (Play_isOn) Play_CheckHostStart();
     }, 4000);
@@ -914,6 +918,7 @@ function Play_getQualities(position, skipchange) {
 }
 
 function Play_onPlayer() {
+    Main_Log('Play_onPlayer');
 
     if (Main_IsOnAndroid && Play_isOn) {
         Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
@@ -947,7 +952,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         Android.SetQuality(-1);
         Android.RestartPlayer(1, 0, 0);
         Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
-        Play_showWarningDialog(STR_PLAYER_LAG, 2000);
+        Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 2) {
 
@@ -956,7 +961,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         Android.SetQuality(-1);
         Android.RestartPlayer(2, Android.gettime(), 0);
         Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality);
-        Play_showWarningDialog(STR_PLAYER_LAG, 2000);
+        Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 3) {
         if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
@@ -964,7 +969,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
             PlayClip_qualityIndex++;
             Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality);
             PlayClip_qualityChanged();
-            Play_showWarningDialog(STR_PLAYER_SOURCE, 2000);
+            Play_showWarningMidleDialog(STR_PLAYER_SOURCE, 2000);
         } else Play_EndStart(false, 3);
 
     }
@@ -1026,6 +1031,7 @@ function Play_timeDay(time) {
 }
 
 function Play_shutdownStream() {
+    Main_Log('Play_shutdownStream ' + Play_isOn);
     if (Play_isOn) {
         Play_PreshutdownStream(true);
         Play_data.qualities = [];
@@ -1035,6 +1041,7 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream(closePlayer) {
+    Main_Log('Play_PreshutdownStream ' + closePlayer);
     if (Main_IsOnAndroid) {
         if (closePlayer) {
             //We are closing the player on error or on end
@@ -1055,7 +1062,7 @@ function Play_PreshutdownStream(closePlayer) {
 }
 
 function Play_exitMain() {
-
+    Main_Log('Play_exitMain');
     if (AddUser_UserIsSet()) {
         AddCode_IsFollowing = false;
         Play_setFollow();
@@ -1071,6 +1078,8 @@ function Play_exitMain() {
 }
 
 function Play_ClearPlayer() {
+    Main_Log('Play_ClearPlayer');
+
     window.clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
     Play_HideWarningDialog();
@@ -1101,6 +1110,8 @@ function Play_ClearPlayer() {
 }
 
 function Play_ClearPlay(clearChat) {
+    Main_Log('Play_ClearPlay');
+
     Play_Playing = false;
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     if (clearChat) ChatLive_Clear(0);
@@ -1143,6 +1154,27 @@ function Play_HideWarningDialog() {
 
 function Play_WarningDialogVisible() {
     return Main_isElementShowing('dialog_warning_play');
+}
+
+var Play_showWarningMidleDialogId;
+function Play_showWarningMidleDialog(text, timeout) {
+    Main_innerHTML("dialog_warning_play_middle_text", text);
+    Main_ShowElement('dialog_warning_play_middle');
+
+    window.clearTimeout(Play_showWarningMidleDialogId);
+    if (timeout) {
+        Play_showWarningMidleDialogId = window.setTimeout(function() {
+            Play_HideWarningMidleDialog();
+        }, timeout);
+    }
+}
+
+function Play_HideWarningMidleDialog() {
+    Main_HideElement('dialog_warning_play_middle');
+}
+
+function Play_WarningMidleDialogVisible() {
+    return Main_isElementShowing('dialog_warning_play_middle');
 }
 
 function Play_showExitDialog() {
@@ -1527,7 +1559,7 @@ function Play_CloseBigAndSwich(error_410) {
     Play_HideBufferDialog();
     Play_state = Play_STATE_PLAYING;
 
-    Play_showWarningDialog(error_410 ? STR_410_ERROR :
+    Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
         Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
         2500);
 
@@ -1591,7 +1623,7 @@ function Play_RestorePlayData(error_410, Isforbiden) {
     Play_HideBufferDialog();
     Play_state = Play_STATE_PLAYING;
 
-    Play_showWarningDialog(error_410 ? STR_410_ERROR :
+    Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
         Play_data.data[1] + ' ' + STR_LIVE + STR_BR + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),
         2000);
 
@@ -1731,7 +1763,7 @@ function Play_MultiFirstAvailable() {
 }
 
 function Play_MultiEnd(position) {
-    Play_showWarningDialog(Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+    Play_showWarningMidleDialog(Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiInfoReset(position);
@@ -1843,7 +1875,7 @@ function Play_MultiStartNew(pos, streamer, display_name) {
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
-    Play_showWarningDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE), 2000);
+    Play_showWarningMidleDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE), 2000);
     Play_HideBufferDialog();
 
     if (Play_OlddataSet()) {
@@ -1942,7 +1974,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
         Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
 
-        Play_showWarningDialog(
+        Play_showWarningMidleDialog(
             STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
             2000
         );
