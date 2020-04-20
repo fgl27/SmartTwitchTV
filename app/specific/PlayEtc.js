@@ -793,6 +793,9 @@ function Play_handleKeyDown(e) {
                 else if (PlayExtra_PicturePicture) Play_AudioChangeLeft();
 
                 break;
+            case KEY_4:
+                Play_controls[Play_controlsChatSend].enterKey();
+                break;
             default:
                 break;
         }
@@ -816,8 +819,8 @@ var Play_MultiStream = 10;
 var Play_controlsAudio = 11;
 var Play_controlsAudioMulti = 12;
 var Play_controlsChat = 13;
-var Play_controlsChatSide = 14;
-var Play_controlsChatSend = 15;
+var Play_controlsChatSend = 14;
+var Play_controlsChatSide = 15;
 var Play_controlsChatForceDis = 16;
 var Play_controlsChatPos = 17;
 var Play_controlsChatSize = 18;
@@ -1330,6 +1333,27 @@ function Play_MakeControls() {
         },
     };
 
+    Play_controls[Play_controlsChatSend] = {
+        icons: "keyboard",
+        string: STR_CHAT_WRITE,
+        values: null,
+        defaultValue: null,
+        opacity: 0,
+        enterKey: function() {
+            if (Main_values.Play_ChatForceDisable) {
+                Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
+                return;
+            } else if (!AddUser_UsernameArray[0].access_token) {
+                Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
+                return;
+            }
+
+            if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
+            else ChatLiveControls_Show();
+
+        }
+    };
+
     Play_controls[Play_controlsChatSide] = { //chat side
         icons: Play_isFullScreen ? "resize-down" : "resize-up",
         string: STR_CHAT_VIDEO_MODE,
@@ -1367,27 +1391,6 @@ function Play_MakeControls() {
             Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
                 icon + '" ></i>');
         },
-    };
-
-    Play_controls[Play_controlsChatSend] = {
-        icons: "keyboard",
-        string: STR_CHAT_WRITE,
-        values: null,
-        defaultValue: null,
-        opacity: 0,
-        enterKey: function() {
-            if (Main_values.Play_ChatForceDisable) {
-                Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
-                return;
-            } else if (!AddUser_UsernameArray[0].access_token) {
-                Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
-                return;
-            }
-
-            if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
-            else ChatLiveControls_Show();
-
-        }
     };
 
     Play_controls[Play_controlsChatForceDis] = { //force disable chat
