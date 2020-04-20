@@ -462,7 +462,8 @@
     var STR_NOKEY_CHAT_WARN;
     var STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY;
     var STR_CHAT_OPTIONS_FORCE_SHOW;
-    var STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY;
+    var STR_CHAT_NOT_READY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -1070,6 +1071,7 @@
         STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY = "If you wanna see the chat when enable write to chat enable this";
         STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because chat permissions wasn't asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
         STR_NOKEY_CHAT_WARN = "Add an user authorization key to be able to logging and write to chat";
+        STR_CHAT_NOT_READY = "Chat not ready to send! Try again is a second or two.";
     }
     //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
@@ -4217,7 +4219,7 @@
                     if (ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel)) {
                         Main_ChatLiveInput.value = '';
                         ChatLiveControls_UpdateResultTextEmpty();
-                    }
+                    } else ChatLiveControls_showWarningDialog(STR_CHAT_NOT_READY, 1500);
                 } else ChatLiveControls_CantSend();
             } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
         } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
