@@ -427,7 +427,42 @@
     var STR_VOD_MUTED;
     var STR_NOW_BACKGROUND;
     var STR_ABOUT_INFO_21;
-    var STR_ABOUT_INFO_22; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_ABOUT_INFO_22;
+    var STR_GIFT_SUB;
+    var STR_GIFT_ANONYMOUS;
+    var STR_CHAT_BANNED;
+    var STR_CHAT_WRITE;
+    var STR_PLACEHOLDER_CHAT;
+    var STR_CHAT_ROOMSTATE;
+    var STR_CHAT_NO_RESTRICTIONS;
+    var STR_CHAT_OPTIONS;
+    var STR_CHAT_DELL_ALL;
+    var STR_CHAT_TW_EMOTES;
+    var STR_CHAT_BBTV_GLOBAL;
+    var STR_CHAT_BBTV_STREAM;
+    var STR_CHAT_FFZ_GLOBAL;
+    var STR_CHAT_FFZ_STREAM;
+    var STR_CHAT_AT_STREAM;
+    var STR_CHAT_RESULT;
+    var STR_CHAT_SEND;
+    var STR_CHAT_EMOTE_EMPTY;
+    var STR_CHAT_FOLLOWER_ONLY;
+    var STR_CHAT_FOLLOWER_ONLY_USER_TIME;
+    var STR_CHAT_EMOTE_ONLY;
+    var STR_CHAT_CHOOSE;
+    var STR_CHAT_UNICODE_EMOJI;
+    var STR_CHAT_OPTIONS_TITLE;
+    var STR_CHAT_OPTIONS_KEYBOARD;
+    var STR_CHAT_OPTIONS_KEYBOARD_SUMMARY;
+    var STR_CHAT_OPTIONS_KEYBOARD_1;
+    var STR_CHAT_OPTIONS_KEYBOARD_2;
+    var STR_CHAT_OPTIONS_KEYBOARD_3;
+    var STR_CHAT_OPTIONS_EMOTE_SORT;
+    var STR_WARNING_NEW;
+    var STR_NOKEY_CHAT_WARN;
+    var STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY;
+    var STR_CHAT_OPTIONS_FORCE_SHOW;
+    var STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -603,7 +638,7 @@
         STR_SINCE = "Since ";
         STR_AGAME = "A Game";
         STR_PLACEHOLDER_SEARCH = "Type your search...";
-        STR_PLACEHOLDER_OAUTH = "Type your authentication key...";
+        STR_PLACEHOLDER_OAUTH = "Type your authorization key...";
         STR_PLACEHOLDER_USER = "Type your username...";
         STR_PLACEHOLDER_PRESS = "Press Enter or Select key to, ";
         STR_CHANNELS = "Channels";
@@ -689,12 +724,12 @@
 
         STR_ABOUT_INFO_14 = "Web:";
         STR_ABOUT_INFO_15 = "Android:";
-        STR_ABOUT_INFO_16 = "Google: Leanback v17 (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
-        STR_ABOUT_INFO_17 = "Google: ExoPlayer (https://github.com/google/ExoPlayer)";
+        STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
+        STR_ABOUT_INFO_17 = "ExoPlayer: An extensible media player for Android (https://github.com/google/ExoPlayer)";
         STR_ABOUT_INFO_18 = "Phones and Tablets support:";
         STR_ABOUT_INFO_19 = "Yes is possible to use this app on phones and tablets, but this app is design to be used mainly on TVs, the support for other device is limited and because of that not released on play store, use the bellow link to download latest APK and manually install on a phone or tablets";
         STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
-        STR_ABOUT_INFO_21 = "ben-manes: gradle-versions-plugin (https://github.com/ben-manes/gradle-versions-plugin)";
+        STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle plugin to discover dependency updates (https://github.com/ben-manes/gradle-versions-plugin)";
         STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
 
         STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
@@ -714,21 +749,21 @@
         STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
         STR_F_DISABLE_CHAT = "Chat force disable";
         STR_UPDATE_AVAILABLE = "Update available, check google play store";
-        STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> Add a key is not demanding and can be done at any point later <br> <br> In doubt read this link <br> <br> https://github.com/fgl27/SmartTwitchTV#authentication <br> <br> For some devices is necessary a mouse to complete the authentication action.<br> <br>add key for';
-        STR_USER_CODE = "Add Authentication key";
+        STR_OAUTH_IN = 'Adding a key allows the app to access live user content faster, follow/unfollow channels/games and access subscribed only past broadcast (for channel you are Sub to and block VOD access to none subscribers) <br> <br> Add a key is not demanding and can be done at any point later <br> <br> In doubt read this link <br><br> https://github.com/fgl27/SmartTwitchTV#authorization <br> <br> For some devices is necessary a mouse to complete the authorization action.<br> <br>add key for';
+        STR_USER_CODE = "Add authorization key";
         STR_USER_CODE_OK = "Key added OK";
         STR_KEY_BAD = "Key test failed, new one needs to be added";
         STR_OAUTH_WRONG = "You try to add a key for user ";
         STR_OAUTH_WRONG2 = " but this key is for user ";
         STR_FOLLOWING = " Following";
         STR_FOLLOW = " Follow";
-        STR_IS_SUB_NOOAUTH = " And you have not set a authentication key the app can\'t check yours sub status.";
-        STR_IS_SUB_NOT_SUB = " And you are not a sub of this channel";
+        STR_IS_SUB_NOOAUTH = " And you haven't set a authorization key the app can\'t check yours sub status.";
+        STR_IS_SUB_NOT_SUB = " And you aren't a sub of this channel";
         STR_IS_SUB_IS_SUB = " You are a sub of this channel but ";
-        STR_OAUTH_FAIL = "Fail authentication check with the provider key, please check and try again";
+        STR_OAUTH_FAIL = "Fail authorization check with the provider key, please check and try again";
         STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user ";
         STR_NOKEY = "No user";
-        STR_NOKEY_WARN = "Set user and an authentication key to be able to follow/unfollow";
+        STR_NOKEY_WARN = "Set user and an authorization key to be able to follow/unfollow";
         STR_NOKUSER_WARN = "Set a user first";
         STR_RESET = "Restart the";
         STR_CLIP = " Clip";
@@ -769,7 +804,7 @@
         STR_SETTINGS_LANG = "Language";
         STR_LOADING_CHAT = "Chat: Connecting to";
         STR_LOADING_FAIL = "Chat: Connecting Fail... Trying again...";
-        STR_CHAT_CONNECTED = "Chat: Connected.";
+        STR_CHAT_CONNECTED = "Chat: Connected";
         STR_CHAT_DELAY = "Chat: delay";
         STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";
         STR_FROM = "From:" + STR_BR;
@@ -777,7 +812,7 @@
         STR_CHAT_END = "Chat: The Chat has ended!";
         STR_TIME = ", Most recent";
         STR_VIWES = ", Most views";
-        STR_NOKEY_VIDEO_WARN = "Set an user authentication key to be able to see followed videos";
+        STR_NOKEY_VIDEO_WARN = "Add an user authorization key to be able to see followed videos";
         STR_SWITCH_TYPE = "Switch: Most recent or views";
         STR_ENABLE = "Enabled";
         STR_DISABLE = "Disabled";
@@ -999,8 +1034,1372 @@
         STR_STREAM_ERROR_SMALL = "Small player, stream ended" + STR_TOO_ERRORS;
         STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
         STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
+        STR_GIFT_SUB = " has gift you a sub!";
+        STR_GIFT_ANONYMOUS = "A anonymous user ";
+        STR_CHAT_BANNED = "You are permanently banned from talking in  ";
+        STR_CHAT_WRITE = "Write to chat";
+        STR_PLACEHOLDER_CHAT = "When this seleceted, press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
+        STR_CHAT_ROOMSTATE = "Chat ROOMSTATE:";
+        STR_CHAT_NO_RESTRICTIONS = "No restrictions";
+        STR_CHAT_OPTIONS = "Options";
+        STR_CHAT_DELL_ALL = "Delete all";
+        STR_CHAT_UNICODE_EMOJI = "Unicode Emoji";
+        STR_CHAT_TW_EMOTES = "Twitch emotes";
+        STR_CHAT_BBTV_GLOBAL = "BBTV global";
+        STR_CHAT_BBTV_STREAM = "BBTV streamer";
+        STR_CHAT_FFZ_GLOBAL = "FFZ global";
+        STR_CHAT_FFZ_STREAM = "FFZ streamer";
+        STR_CHAT_AT_STREAM = "@streamer";
+        STR_CHAT_RESULT = "In Chat expected result:";
+        STR_CHAT_SEND = "Send";
+        STR_CHAT_EMOTE_EMPTY = "This emote list is empty";
+        STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
+        STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
+        STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you only fallows for ";
+        STR_CHAT_EMOTE_ONLY = "Twitch Emote-only mode";
+        STR_CHAT_CHOOSE = "Choose with chat to write to or press return to close this";
+        STR_CHAT_OPTIONS_TITLE = "Write to chat options";
+        STR_CHAT_OPTIONS_KEYBOARD = "Software Keyboard auto hide";
+        STR_CHAT_OPTIONS_KEYBOARD_SUMMARY = "Allows to control the behavior of the on screen software Keyboard, if you have a physical Keyboard connected use this, if not set to never";
+        STR_CHAT_OPTIONS_KEYBOARD_1 = "Never";
+        STR_CHAT_OPTIONS_KEYBOARD_2 = "If Keyboard detected";
+        STR_CHAT_OPTIONS_KEYBOARD_3 = "Always";
+        STR_CHAT_OPTIONS_EMOTE_SORT = "Emotes sorting";
+        STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY = "If disable the list of emotes will show in the order provider by the server";
+        STR_CHAT_OPTIONS_FORCE_SHOW = "Force show chat";
+        STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY = "If you wanna see the chat when enable write to chat enable this";
+        STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because that permission wasn't asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
+        STR_NOKEY_CHAT_WARN = "Add an user authorization key to be able to logging and write to chat";
     }
-    //Spacing for release maker not trow erros from jshint
+    //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
+    //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
+    //https://emojipedia.org/
+    //But removed not working or not needed as is too much
+    var emojis = [{
+        "unicode": "😀",
+        "tags": "grin"
+    }, {
+        "unicode": "😃",
+        "tags": "smile"
+    }, {
+        "unicode": "😄",
+        "tags": "smile2"
+    }, {
+        "unicode": "😁",
+        "tags": "smile3"
+    }, {
+        "unicode": "😆",
+        "tags": "satisfied"
+    }, {
+        "unicode": "😅",
+        "tags": "sweat"
+    }, {
+        "unicode": "🤣",
+        "tags": "rolling"
+    }, {
+        "unicode": "😂",
+        "tags": "tear"
+    }, {
+        "unicode": "🙂",
+        "tags": "smile4"
+    }, {
+        "unicode": "🙃",
+        "tags": "smile-upside-down"
+    }, {
+        "unicode": "😉",
+        "tags": "wink"
+    }, {
+        "unicode": "😊",
+        "tags": "smile-blush"
+    }, {
+        "unicode": "😇",
+        "tags": "angel"
+    }, {
+        "unicode": "🥰",
+        "tags": "adore"
+    }, {
+        "unicode": "😍",
+        "tags": "smile-love"
+    }, {
+        "unicode": "🤩",
+        "tags": "smile-star"
+    }, {
+        "unicode": "😘",
+        "tags": "kiss"
+    }, {
+        "unicode": "😗",
+        "tags": "kiss2"
+    }, {
+        "unicode": "☺️",
+        "tags": "relaxed"
+    }, {
+        "unicode": "😚",
+        "tags": "kiss3"
+    }, {
+        "unicode": "😙",
+        "tags": "kis4"
+    }, {
+        "unicode": "😋",
+        "tags": "delicious"
+    }, {
+        "unicode": "😛",
+        "tags": "tongue"
+    }, {
+        "unicode": "😜",
+        "tags": "tongue-wink"
+    }, {
+        "unicode": "🤪",
+        "tags": "goofy"
+    }, {
+        "unicode": "😝",
+        "tags": "tongue-><"
+    }, {
+        "unicode": "🤑",
+        "tags": "face-money"
+    }, {
+        "unicode": "🤗",
+        "tags": "hugging"
+    }, {
+        "unicode": "🤭",
+        "tags": "whoops"
+    }, {
+        "unicode": "🤫",
+        "tags": "quiet"
+    }, {
+        "unicode": "🤔",
+        "tags": "thinking"
+    }, {
+        "unicode": "🤐",
+        "tags": "zipper"
+    }, {
+        "unicode": "🤨",
+        "tags": "skeptic"
+    }, {
+        "unicode": "😑",
+        "tags": "unexpressive"
+    }, {
+        "unicode": "😶",
+        "tags": "silent"
+    }, {
+        "unicode": "😏",
+        "tags": "smirk"
+    }, {
+        "unicode": "😒",
+        "tags": "unhappy"
+    }, {
+        "unicode": "🙄",
+        "tags": "eyeroll"
+    }, {
+        "unicode": "😬",
+        "tags": "grimace"
+    }, {
+        "unicode": "🤥",
+        "tags": "pinocchio"
+    }, {
+        "unicode": "😌",
+        "tags": "relieved"
+    }, {
+        "unicode": "😔",
+        "tags": "pensive"
+    }, {
+        "unicode": "😪",
+        "tags": "sleep"
+    }, {
+        "unicode": "🤤",
+        "tags": "drooling-face"
+    }, {
+        "unicode": "😴",
+        "tags": "sleep-face"
+    }, {
+        "unicode": "😷",
+        "tags": "cold-face"
+    }, {
+        "unicode": "🤒",
+        "tags": "sick-face"
+    }, {
+        "unicode": "🤕",
+        "tags": "bandage-face"
+    }, {
+        "unicode": "🤢",
+        "tags": "nauseated-face"
+    }, {
+        "unicode": "🤮",
+        "tags": "sick-face"
+    }, {
+        "unicode": "🤧",
+        "tags": "sneeze"
+    }, {
+        "unicode": "🥵",
+        "tags": "feverish"
+    }, {
+        "unicode": "🥶",
+        "tags": "blue-faced"
+    }, {
+        "unicode": "🥴",
+        "tags": "intoxicated"
+    }, {
+        "unicode": "😵",
+        "tags": "dizzy"
+    }, {
+        "unicode": "🤯",
+        "tags": "mind blown"
+    }, {
+        "unicode": "🤠",
+        "tags": "cowboy"
+    }, {
+        "unicode": "🥳",
+        "tags": "celebration"
+    }, {
+        "unicode": "😎",
+        "tags": "cool-face"
+    }, {
+        "unicode": "🤓",
+        "tags": "cool"
+    }, {
+        "unicode": "🧐",
+        "tags": "stuffy"
+    }, {
+        "unicode": "😕",
+        "tags": "confused"
+    }, {
+        "unicode": "😟",
+        "tags": "worried"
+    }, {
+        "unicode": "🙁",
+        "tags": "frown"
+    }, {
+        "unicode": "☹️",
+        "tags": "frown"
+    }, {
+        "unicode": "😮",
+        "tags": "mouth-open"
+    }, {
+        "unicode": "😯",
+        "tags": "surprised"
+    }, {
+        "unicode": "😲",
+        "tags": "astonished"
+    }, {
+        "unicode": "😳",
+        "tags": "dazed"
+    }, {
+        "unicode": "🥺",
+        "tags": "puppy eyes"
+    }, {
+        "unicode": "😦",
+        "tags": "frown"
+    }, {
+        "unicode": "😧",
+        "tags": "anguished"
+    }, {
+        "unicode": "😨",
+        "tags": "fearful"
+    }, {
+        "unicode": "😰",
+        "tags": "fearful2"
+    }, {
+        "unicode": "😥",
+        "tags": "disappointed"
+    }, {
+        "unicode": "😢",
+        "tags": "cry-face"
+    }, {
+        "unicode": "😭",
+        "tags": "cry-face2"
+    }, {
+        "unicode": "😱",
+        "tags": "fear-face"
+    }, {
+        "unicode": "😖",
+        "tags": "confounded"
+    }, {
+        "unicode": "😣",
+        "tags": "persevere"
+    }, {
+        "unicode": "😞",
+        "tags": "disappointed"
+    }, {
+        "unicode": "😓",
+        "tags": "cold"
+    }, {
+        "unicode": "😩",
+        "tags": "weary"
+    }, {
+        "unicode": "😫",
+        "tags": "tired"
+    }, {
+        "unicode": "😤",
+        "tags": "triumph"
+    }, {
+        "unicode": "😡",
+        "tags": "angry"
+    }, {
+        "unicode": "😠",
+        "tags": "mad"
+    }, {
+        "unicode": "🤬",
+        "tags": "swearing"
+    }, {
+        "unicode": "😈",
+        "tags": "devil"
+    }, {
+        "unicode": "👿",
+        "tags": "demon"
+    }, {
+        "unicode": "💀",
+        "tags": "death"
+    }, {
+        "unicode": "☠️",
+        "tags": "crossbones"
+    }, {
+        "unicode": "💩",
+        "tags": "poop"
+    }, {
+        "unicode": "🤡",
+        "tags": "clown"
+    }, {
+        "unicode": "👹",
+        "tags": "creature"
+    }, {
+        "unicode": "👺",
+        "tags": "creature2"
+    }, {
+        "unicode": "👻",
+        "tags": "ghost"
+    }, {
+        "unicode": "👾",
+        "tags": "alien"
+    }, {
+        "unicode": "🤖",
+        "tags": "robot"
+    }, {
+        "unicode": "😺",
+        "tags": "cat-face"
+    }, {
+        "unicode": "😸",
+        "tags": "cat-smile"
+    }, {
+        "unicode": "😹",
+        "tags": "cat-tear"
+    }, {
+        "unicode": "😻",
+        "tags": "cat-heart"
+    }, {
+        "unicode": "😼",
+        "tags": "cat-ironic"
+    }, {
+        "unicode": "😽",
+        "tags": "cat-kiss"
+    }, {
+        "unicode": "🙀",
+        "tags": "cat-surprised"
+    }, {
+        "unicode": "😿",
+        "tags": "cat-sad"
+    }, {
+        "unicode": "😾",
+        "tags": "cat-pouting"
+    }, {
+        "unicode": "👋",
+        "tags": "hand-wave"
+    }, {
+        "unicode": "🤚",
+        "tags": "backhand"
+    }, {
+        "unicode": "🖐️",
+        "tags": "hand-open-finger"
+    }, {
+        "unicode": "✋",
+        "tags": "hand"
+    }, {
+        "unicode": "🖖",
+        "tags": "hand-vulcan"
+
+    }, {
+        "unicode": "👌",
+        "tags": "hand-ok"
+    }, {
+        "unicode": "✌️",
+        "tags": "hand-v"
+    }, {
+        "unicode": "🤞",
+        "tags": "hand-cross"
+    }, {
+        "unicode": "🤟",
+        "tags": "hand-ily"
+    }, {
+        "unicode": "🤘",
+        "tags": "hand-horns"
+    }, {
+        "unicode": "🤙",
+        "tags": "hand-call"
+    }, {
+        "unicode": "🖕",
+        "tags": "hand-finger"
+    }, {
+        "unicode": "👈",
+        "tags": "hand-point"
+    }, {
+        "unicode": "👇",
+        "tags": "hand-poin2"
+    }, {
+        "unicode": "☝️",
+        "tags": "hand-point3"
+    }, {
+        "unicode": "👍",
+        "tags": "hand-thumb-up"
+    }, {
+        "unicode": "👎",
+        "tags": "hand-thumb-down"
+    }, {
+        "unicode": "✊",
+        "tags": "hand-punch"
+    }, {
+        "unicode": "👊",
+        "tags": "hand-punch2"
+    }, {
+        "unicode": "🤛",
+        "tags": "hand-punch3"
+    }, {
+        "unicode": "🤜",
+        "tags": "hand-punch4"
+    }, {
+        "unicode": "👏",
+        "tags": "hand-clap"
+    }, {
+        "unicode": "🙌",
+        "tags": "hand-celebration"
+    }, {
+        "unicode": "👐",
+        "tags": "hand-open"
+    }, {
+        "unicode": "🤲",
+        "tags": "hand-prayer"
+    }, {
+        "unicode": "🤝",
+        "tags": "hand-agreement"
+    }, {
+        "unicode": "🙏",
+        "tags": "hand-please"
+    }, {
+        "unicode": "✍️",
+        "tags": "hand-write"
+    }, {
+        "unicode": "💅",
+        "tags": "cosmetics"
+    }, {
+        "unicode": "🤳",
+        "tags": "self"
+    }, {
+        "unicode": "💪",
+        "tags": "muscle"
+    }, {
+        "unicode": "🦵",
+        "tags": "kick"
+    }, {
+        "unicode": "🦶",
+        "tags": "kick2"
+    }, {
+        "unicode": "👂",
+        "tags": "ear"
+    }, {
+        "unicode": "👃",
+        "tags": "nose"
+    }, {
+        "unicode": "🧠",
+        "tags": "brain"
+    }, {
+        "unicode": "🦷",
+        "tags": "tooth"
+    }, {
+        "unicode": "👀",
+        "tags": "eyes"
+    }, {
+        "unicode": "👁️",
+        "tags": "eye"
+    }, {
+        "unicode": "👅",
+        "tags": "tongue2"
+    }, {
+        "unicode": "👄",
+        "tags": "lips"
+    }, {
+        "unicode": "👶",
+        "tags": "baby"
+    }, {
+        "unicode": "👨‍🦲",
+        "tags": "bald"
+    }, {
+        "unicode": "👴",
+        "tags": "old-man"
+    }, {
+        "unicode": "👵",
+        "tags": "old-woman"
+    }, {
+        "unicode": "👨‍🚒",
+        "tags": "firefighter"
+    }, {
+        "unicode": "👩‍🚒",
+        "tags": "firefighter2"
+    }, {
+        "unicode": "👮‍♂️",
+        "tags": "police-officer"
+    }, {
+        "unicode": "👮‍♀️",
+        "tags": "police-officer-woman"
+    }, {
+        "unicode": "👨‍👩‍👧‍👦",
+        "tags": "family"
+    }, {
+        "unicode": "🙈",
+        "tags": "monkey-see"
+    }, {
+        "unicode": "🙉",
+        "tags": "monkey-hear"
+    }, {
+        "unicode": "🙊",
+        "tags": "monkey-speak"
+    }, {
+        "unicode": "💋",
+        "tags": "kiss-lips"
+    }, {
+        "unicode": "💌",
+        "tags": "heart-letter"
+    }, {
+        "unicode": "💘",
+        "tags": "arrow-cupid"
+    }, {
+        "unicode": "💝",
+        "tags": "valentine"
+    }, {
+        "unicode": "💖",
+        "tags": "sparkle"
+    }, {
+        "unicode": "💗",
+        "tags": "pulse"
+    }, {
+        "unicode": "💓",
+        "tags": "beating"
+    }, {
+        "unicode": "💞",
+        "tags": "revolving"
+    }, {
+        "unicode": "💕",
+        "tags": "love"
+    }, {
+        "unicode": "💟",
+        "tags": "heart"
+    }, {
+        "unicode": "❣️",
+        "tags": "exclamation"
+    }, {
+        "unicode": "💔",
+        "tags": "broken-heart"
+    }, {
+        "unicode": "❤️",
+        "tags": "heart"
+    }, {
+        "unicode": "🖤",
+        "tags": "black-heart"
+    }, {
+        "unicode": "💯",
+        "tags": "hundred"
+    }, {
+        "unicode": "💢",
+        "tags": "mad"
+    }, {
+        "unicode": "💥",
+        "tags": "boom"
+    }, {
+        "unicode": "💫",
+        "tags": "stars"
+    }, {
+        "unicode": "💦",
+        "tags": "splashing"
+    }, {
+        "unicode": "💨",
+        "tags": "comic-dash"
+    }, {
+        "unicode": "🕳️",
+        "tags": "hole"
+    }, {
+        "unicode": "💬",
+        "tags": "balloon-dialog"
+    }, {
+        "unicode": "🗨️",
+        "tags": "dialog"
+    }, {
+        "unicode": "🗯️",
+        "tags": "angry-balloon"
+    }, {
+        "unicode": "💭",
+        "tags": "balloon-bubble"
+    }, {
+        "unicode": "💤",
+        "tags": "comic-sleep"
+    }, {
+        "unicode": "🕶️",
+        "tags": "glasses-dark"
+    }, {
+        "unicode": "🥽",
+        "tags": "glasses-swimming"
+    }, {
+        "unicode": "🥼",
+        "tags": "scientist"
+    }, {
+        "unicode": "👔",
+        "tags": "tie"
+    }, {
+        "unicode": "👕",
+        "tags": "tshirt"
+    }, {
+        "unicode": "👖",
+        "tags": "pants"
+    }, {
+        "unicode": "🧣",
+        "tags": "neck"
+    }, {
+        "unicode": "🧤",
+        "tags": "hand"
+    }, {
+        "unicode": "🧥",
+        "tags": "jacket"
+    }, {
+        "unicode": "🧦",
+        "tags": "stocking"
+    }, {
+        "unicode": "👗",
+        "tags": "clothing"
+    }, {
+        "unicode": "👘",
+        "tags": "clothing2"
+    }, {
+        "unicode": "👙",
+        "tags": "swim-clothing"
+    }, {
+        "unicode": "👚",
+        "tags": "woman-clothing"
+    }, {
+        "unicode": "👛",
+        "tags": "coin-clothing"
+    }, {
+        "unicode": "👜",
+        "tags": "purse"
+    }, {
+        "unicode": "👝",
+        "tags": "pouch"
+    }, {
+        "unicode": "🛍️",
+        "tags": "shopping-bag"
+    }, {
+        "unicode": "🎒",
+        "tags": "school-bag"
+    }, {
+        "unicode": "👞",
+        "tags": "shoe"
+    }, {
+        "unicode": "👟",
+        "tags": "sneaker"
+    }, {
+        "unicode": "🥾",
+        "tags": "hiking-boot"
+    }, {
+        "unicode": "🥿",
+        "tags": "ballet flat"
+    }, {
+        "unicode": "👠",
+        "tags": "woman-shoe"
+    }, {
+        "unicode": "👡",
+        "tags": "woman-shoe2"
+    }, {
+        "unicode": "👢",
+        "tags": "woman-boot"
+    }, {
+        "unicode": "👑",
+        "tags": "king"
+    }, {
+        "unicode": "👒",
+        "tags": "hat"
+    }, {
+        "unicode": "🎩",
+        "tags": "tophat"
+    }, {
+        "unicode": "🧢",
+        "tags": "baseball cap"
+    }, {
+        "unicode": "⛑️",
+        "tags": "aid"
+    }, {
+        "unicode": "📿",
+        "tags": "beads"
+    }, {
+        "unicode": "💄",
+        "tags": "lipstick"
+    }, {
+        "unicode": "💍",
+        "tags": "diamond-ring"
+    }, {
+        "unicode": "💎",
+        "tags": "diamond"
+    }, {
+        "unicode": "🔇",
+        "tags": "mute"
+    }, {
+        "unicode": "🔉",
+        "tags": "medium"
+    }, {
+        "unicode": "🔊",
+        "tags": "loud"
+    }, {
+        "unicode": "📢",
+        "tags": "loud2"
+    }, {
+        "unicode": "📣",
+        "tags": "cheering"
+    }, {
+        "unicode": "📯",
+        "tags": "horn"
+    }, {
+        "unicode": "🔔",
+        "tags": "bell"
+    }, {
+        "unicode": "🔕",
+        "tags": "bell"
+    }, {
+        "unicode": "🎼",
+        "tags": "music-score"
+    }, {
+        "unicode": "🎵",
+        "tags": "music-note"
+    }, {
+        "unicode": "🎶",
+        "tags": "music-notes"
+    }, {
+        "unicode": "🎙️",
+        "tags": "microphone"
+    }, {
+        "unicode": "🎤",
+        "tags": "microphone2"
+    }, {
+        "unicode": "🎷",
+        "tags": "sax"
+    }, {
+        "unicode": "🎸",
+        "tags": "guitar"
+    }, {
+        "unicode": "🎹",
+        "tags": "piano-keys"
+    }, {
+        "unicode": "🎺",
+        "tags": "trumpet"
+    }, {
+        "unicode": "🎻",
+        "tags": "violin"
+    }, {
+        "unicode": "🥁",
+        "tags": "drumsticks"
+    }, {
+        "unicode": "📱",
+        "tags": "cellphone"
+    }, {
+        "unicode": "☎️",
+        "tags": "phone"
+    }, {
+        "unicode": "📞",
+        "tags": "phone2"
+    }, {
+        "unicode": "📠",
+        "tags": "fax"
+    }, {
+        "unicode": "🔋",
+        "tags": "battery"
+    }, {
+        "unicode": "🔌",
+        "tags": "plug"
+    }, {
+        "unicode": "🖥️",
+        "tags": "computer-desktop"
+    }, {
+        "unicode": "🖨️",
+        "tags": "printer"
+    }, {
+        "unicode": "⌨️",
+        "tags": "keyboard"
+    }, {
+        "unicode": "🖱️",
+        "tags": "mouse-computer"
+    }, {
+        "unicode": "💽",
+        "tags": "computer-disk"
+    }, {
+        "unicode": "💾",
+        "tags": "floppy-disk"
+    }, {
+        "unicode": "📀",
+        "tags": "blu-ray"
+    }, {
+        "unicode": "🧮",
+        "tags": "calculation"
+    }, {
+        "unicode": "🎥",
+        "tags": "camera"
+    }, {
+        "unicode": "🎞️",
+        "tags": "cinema"
+    }, {
+        "unicode": "📽️",
+        "tags": "cinema2"
+    }, {
+        "unicode": "📸",
+        "tags": "camera-flash"
+    }, {
+        "unicode": "📼",
+        "tags": "vhs-tape"
+    }, {
+        "unicode": "🔎",
+        "tags": "magnifying"
+    }, {
+        "unicode": "🕯️",
+        "tags": "light"
+    }, {
+        "unicode": "💡",
+        "tags": "bulb"
+    }, {
+        "unicode": "🔦",
+        "tags": "electric-torch"
+    }, {
+        "unicode": "📒",
+        "tags": "notebook"
+    }, {
+        "unicode": "📃",
+        "tags": "note"
+    }, {
+        "unicode": "📄",
+        "tags": "document"
+    }, {
+        "unicode": "📰",
+        "tags": "newspaper"
+    }, {
+        "unicode": "🗞️",
+        "tags": "newspaper-rolled"
+    }, {
+        "unicode": "💴",
+        "tags": "money-rolled"
+    }, {
+        "unicode": "💲",
+        "tags": "dollar-sign"
+    }, {
+        "unicode": "✉️",
+        "tags": "email"
+    }, {
+        "unicode": "✏️",
+        "tags": "pencil"
+    }, {
+        "unicode": "✒️",
+        "tags": "pen"
+    }, {
+        "unicode": "🖋️",
+        "tags": "pen2"
+    }, {
+        "unicode": "📝",
+        "tags": "note-pencil"
+    }, {
+        "unicode": "💼",
+        "tags": "briefcase"
+    }, {
+        "unicode": "🗓️",
+        "tags": "calendar"
+    }, {
+        "unicode": "📌",
+        "tags": "pin"
+    }, {
+        "unicode": "📍",
+        "tags": "pin2"
+    }, {
+        "unicode": "📎",
+        "tags": "paperclip"
+    }, {
+        "unicode": "📏",
+        "tags": "ruler"
+    }, {
+        "unicode": "📐",
+        "tags": "ruler2"
+    }, {
+        "unicode": "✂️",
+        "tags": "cutting"
+    }, {
+        "unicode": "🗑️",
+        "tags": "wastebasket"
+    }, {
+        "unicode": "🔑",
+        "tags": "key"
+    }, {
+        "unicode": "🗝️",
+        "tags": "key-old"
+    }, {
+        "unicode": "🔨",
+        "tags": "hammer"
+    }, {
+        "unicode": "⛏️",
+        "tags": "pickaxe"
+    }, {
+        "unicode": "⚒️",
+        "tags": "hammer2"
+    }, {
+        "unicode": "🛠️",
+        "tags": "hammer-wrench"
+    }, {
+        "unicode": "🗡️",
+        "tags": "knife"
+    }, {
+        "unicode": "⚔️",
+        "tags": "swords"
+    }, {
+        "unicode": "🔫",
+        "tags": "gun-tool"
+    }, {
+        "unicode": "🏹",
+        "tags": "archer"
+    }, {
+        "unicode": "🛡️",
+        "tags": "shield"
+    }, {
+        "unicode": "🔧",
+        "tags": "spanner"
+    }, {
+        "unicode": "🔩",
+        "tags": "bolt"
+    }, {
+        "unicode": "⚙️",
+        "tags": "cog"
+    }, {
+        "unicode": "⚖️",
+        "tags": "balance"
+    }, {
+        "unicode": "🔗",
+        "tags": "link"
+    }, {
+        "unicode": "🧲",
+        "tags": "magnetic"
+    }, {
+        "unicode": "⚗️",
+        "tags": "chemistry"
+    }, {
+        "unicode": "🧪",
+        "tags": "chemist"
+    }, {
+        "unicode": "🧬",
+        "tags": "gene"
+    }, {
+        "unicode": "🔬",
+        "tags": "microscope"
+    }, {
+        "unicode": "🔭",
+        "tags": "telescope"
+    }, {
+        "unicode": "📡",
+        "tags": "antenna-dish"
+    }, {
+        "unicode": "💉",
+        "tags": "medicine"
+    }, {
+        "unicode": "💊",
+        "tags": "medicine"
+    }, {
+        "unicode": "🚪",
+        "tags": "door"
+    }, {
+        "unicode": "🛏️",
+        "tags": "hotel-bed"
+    }, {
+        "unicode": "🚽",
+        "tags": "toilet"
+    }, {
+        "unicode": "🚿",
+        "tags": "shower"
+    }, {
+        "unicode": "🛁",
+        "tags": "bath"
+    }, {
+        "unicode": "🧴",
+        "tags": "lotion"
+    }, {
+        "unicode": "🧷",
+        "tags": "diaper"
+    }, {
+        "unicode": "🧹",
+        "tags": "sweeping"
+    }, {
+        "unicode": "🧺",
+        "tags": "farming"
+    }, {
+        "unicode": "🧻",
+        "tags": "toilet paper"
+    }, {
+        "unicode": "🧯",
+        "tags": "extinguisher"
+    }, {
+        "unicode": "🛒",
+        "tags": "shopping-cart"
+    }, {
+        "unicode": "🚬",
+        "tags": "smoking"
+    }, {
+        "unicode": "⚰️",
+        "tags": "death"
+    }, {
+        "unicode": "🗿",
+        "tags": "statue-face"
+    }, {
+        "unicode": "🐵",
+        "tags": "monkey-face"
+    }, {
+        "unicode": "🐒",
+        "tags": "monkey"
+    }, {
+        "unicode": "🦍",
+        "tags": "gorilla"
+    }, {
+        "unicode": "🐶",
+        "tags": "dog-face"
+    }, {
+        "unicode": "🐩",
+        "tags": "dog"
+    }, {
+        "unicode": "🐺",
+        "tags": "face"
+    }, {
+        "unicode": "🦊",
+        "tags": "face"
+    }, {
+        "unicode": "🦝",
+        "tags": "curious"
+    }, {
+        "unicode": "🐱",
+        "tags": "cat"
+    }, {
+        "unicode": "🦁",
+        "tags": "lion-face"
+    }, {
+        "unicode": "🐯",
+        "tags": "tiger-face"
+    }, {
+        "unicode": "🐅",
+        "tags": "tiger"
+    }, {
+        "unicode": "🐆",
+        "tags": "leopard"
+    }, {
+        "unicode": "🐴",
+        "tags": "horse-face"
+    }, {
+        "unicode": "🐎",
+        "tags": "racehorse"
+    }, {
+        "unicode": "🦄",
+        "tags": "unicorn-face"
+    }, {
+        "unicode": "🦓",
+        "tags": "zebra"
+    }, {
+        "unicode": "🦌",
+        "tags": "deer"
+    }, {
+        "unicode": "🐮",
+        "tags": "cow"
+    }, {
+        "unicode": "🐂",
+        "tags": "bull"
+    }, {
+        "unicode": "🐃",
+        "tags": "buffalo"
+    }, {
+        "unicode": "🐄",
+        "tags": "cow"
+    }, {
+        "unicode": "🐷",
+        "tags": "pig-face"
+    }, {
+        "unicode": "🐖",
+        "tags": "sow"
+    }, {
+        "unicode": "🐗",
+        "tags": "pig"
+    }, {
+        "unicode": "🐽",
+        "tags": "pig-nose"
+    }, {
+        "unicode": "🐏",
+        "tags": "aries"
+    }, {
+        "unicode": "🐑",
+        "tags": "sheep"
+    }, {
+        "unicode": "🐐",
+        "tags": "capricorn"
+    }, {
+        "unicode": "🐪",
+        "tags": "dromedary"
+    }, {
+        "unicode": "🐫",
+        "tags": "camel"
+    }, {
+        "unicode": "🦙",
+        "tags": "alpaca"
+    }, {
+        "unicode": "🦒",
+        "tags": "spots"
+    }, {
+        "unicode": "🐘",
+        "tags": "elephant"
+    }, {
+        "unicode": "🦏",
+        "tags": "rhinoceros"
+    }, {
+        "unicode": "🦛",
+        "tags": "hippo"
+    }, {
+        "unicode": "🐭",
+        "tags": "mouse-face"
+    }, {
+        "unicode": "🐁",
+        "tags": "mouse"
+    }, {
+        "unicode": "🐀",
+        "tags": "rat"
+    }, {
+        "unicode": "🐹",
+        "tags": "pet-face"
+    }, {
+        "unicode": "🐰",
+        "tags": "bunny-face"
+    }, {
+        "unicode": "🐇",
+        "tags": "bunny"
+    }, {
+        "unicode": "🐿️",
+        "tags": "squirrel"
+    }, {
+        "unicode": "🦔",
+        "tags": "spiny"
+    }, {
+        "unicode": "🦇",
+        "tags": "vampire"
+    }, {
+        "unicode": "🐻",
+        "tags": "face"
+    }, {
+        "unicode": "🐨",
+        "tags": "bear"
+    }, {
+        "unicode": "🐼",
+        "tags": "panda-face"
+    }, {
+        "unicode": "🦘",
+        "tags": "marsupial"
+    }, {
+        "unicode": "🦡",
+        "tags": "honey badger"
+    }, {
+        "unicode": "🐾",
+        "tags": "paw"
+    }, {
+        "unicode": "🦃",
+        "tags": "bird"
+    }, {
+        "unicode": "🐔",
+        "tags": "chicken"
+    }, {
+        "unicode": "🐓",
+        "tags": "rooster"
+    }, {
+        "unicode": "🐣",
+        "tags": "baby-bird"
+    }, {
+        "unicode": "🐤",
+        "tags": "baby-chick"
+    }, {
+        "unicode": "🐥",
+        "tags": "baby-chick2"
+    }, {
+        "unicode": "🐧",
+        "tags": "penguin"
+    }, {
+        "unicode": "🕊️",
+        "tags": "bird-fly"
+    }, {
+        "unicode": "🦅",
+        "tags": "eagle"
+    }, {
+        "unicode": "🦆",
+        "tags": "duck"
+    }, {
+        "unicode": "🦢",
+        "tags": "swan"
+    }, {
+        "unicode": "🦉",
+        "tags": "owl"
+    }, {
+        "unicode": "🦚",
+        "tags": "peahen"
+    }, {
+        "unicode": "🦜",
+        "tags": "macaw"
+    }, {
+        "unicode": "🐸",
+        "tags": "frog-face"
+    }, {
+        "unicode": "🐊",
+        "tags": "crocodile"
+    }, {
+        "unicode": "🐢",
+        "tags": "turtle"
+    }, {
+        "unicode": "🦎",
+        "tags": "reptile"
+    }, {
+        "unicode": "🐍",
+        "tags": "snake"
+    }, {
+        "unicode": "🐲",
+        "tags": "dragon-face"
+    }, {
+        "unicode": "🐉",
+        "tags": "dragon"
+    }, {
+        "unicode": "🦕",
+        "tags": "brontosaurus"
+    }, {
+        "unicode": "🦖",
+        "tags": "t-rex"
+    }, {
+        "unicode": "🐳",
+        "tags": "whale"
+    }, {
+        "unicode": "🐋",
+        "tags": "whale2"
+    }, {
+        "unicode": "🐬",
+        "tags": "flipper"
+    }, {
+        "unicode": "🐠",
+        "tags": "tropical-fish"
+    }, {
+        "unicode": "🐡",
+        "tags": "fish"
+    }, {
+        "unicode": "🦈",
+        "tags": "shark"
+    }, {
+        "unicode": "🐙",
+        "tags": "octopus"
+    }, {
+        "unicode": "🐚",
+        "tags": "shell"
+    }, {
+        "unicode": "🐌",
+        "tags": "snail"
+    }, {
+        "unicode": "🦋",
+        "tags": "butterfly"
+    }, {
+        "unicode": "🐛",
+        "tags": "insect"
+    }, {
+        "unicode": "🐜",
+        "tags": "insect"
+    }, {
+        "unicode": "🐝",
+        "tags": "bee"
+    }, {
+        "unicode": "🐞",
+        "tags": "ladybug"
+    }, {
+        "unicode": "🦗",
+        "tags": "grasshopper"
+    }, {
+        "unicode": "🕷️",
+        "tags": "insect"
+    }, {
+        "unicode": "🕸️",
+        "tags": "spider-web"
+    }, {
+        "unicode": "🦂",
+        "tags": "scorpio"
+    }, {
+        "unicode": "🦟",
+        "tags": "mosquito"
+    }, {
+        "unicode": "🦠",
+        "tags": "amoeba"
+    }, {
+        "unicode": "💐",
+        "tags": "flower"
+    }, {
+        "unicode": "🌸",
+        "tags": "blossom"
+    }, {
+        "unicode": "💮",
+        "tags": "flower"
+    }, {
+        "unicode": "🏵️",
+        "tags": "plant"
+    }, {
+        "unicode": "🌹",
+        "tags": "flower2"
+    }, {
+        "unicode": "🥀",
+        "tags": "flower-wilted"
+    }, {
+        "unicode": "🌺",
+        "tags": "flower3"
+    }, {
+        "unicode": "🌻",
+        "tags": "sun-flower"
+    }, {
+        "unicode": "🌼",
+        "tags": "flower4"
+    }, {
+        "unicode": "🌷",
+        "tags": "flower5"
+    }, {
+        "unicode": "🌱",
+        "tags": "young-tree"
+    }, {
+        "unicode": "🌲",
+        "tags": "tree"
+    }, {
+        "unicode": "🌳",
+        "tags": "big-tree"
+    }, {
+        "unicode": "🌴",
+        "tags": "palm-tree"
+    }, {
+        "unicode": "🌵",
+        "tags": "plant"
+    }, {
+        "unicode": "🌾",
+        "tags": "grain"
+    }, {
+        "unicode": "🌿",
+        "tags": "leaf"
+    }, {
+        "unicode": "☘️",
+        "tags": "three-leaf clover"
+    }, {
+        "unicode": "🍀",
+        "tags": "four-leaf clover"
+    }, {
+        "unicode": "🍁",
+        "tags": "falling-leaf"
+    }, {
+        "unicode": "🍂",
+        "tags": "falling-leaf2"
+    }, {
+        "unicode": "🍃",
+        "tags": "leaf2"
+    }]; //Spacing for release maker not trow erros from jshint
     var IMG_404_GAME = "data:image/png;base64,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";
 
     var IMG_404_LOGO = "data:image/png;base64,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";
@@ -1092,7 +2491,7 @@
     var KEY_MEDIA_REWIND = 227;
 
     var KEY_1 = 49;
-    //var KEY_4 = 52;
+    var KEY_4 = 52;
     //var KEY_5 = 53;
     var KEY_6 = 54;
     var KEY_7 = 55;
@@ -1112,6 +2511,14 @@
     var AddCode_PlayRequest = false;
     var AddCode_Channel_id = '';
 
+    var AddCode_Scopes = [
+        'user_read',
+        'user_follows_edit',
+        'user_subscriptions',
+        'chat:edit',
+        'chat:read'
+    ];
+
     var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
     var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
     var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
@@ -1125,6 +2532,7 @@
     }
 
     function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, obj) {
+        Main_Log('AddCode_refreshTokens');
         if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
 
         var xmlHttp = new XMLHttpRequest();
@@ -1140,6 +2548,7 @@
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
+                Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
                 if (xmlHttp.status === 200) {
                     AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, obj);
                 } else {
@@ -1184,10 +2593,9 @@
 
     //Check if has all scopes, in canse they change
     function AddCode_TokensCheckScope(scope) {
-        if (!Main_A_includes_B(scope, 'user_read')) return false;
-        if (!Main_A_includes_B(scope, 'user_follows_edit')) return false;
-        if (!Main_A_includes_B(scope, 'user_subscriptions')) return false;
-
+        for (var i = 0; i < AddCode_Scopes.length; i++) {
+            if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
+        }
         return true;
     }
 
@@ -1296,15 +2704,19 @@
     }
 
     function AddCode_CheckTokenStart(position) {
+        Main_Log('AddCode_CheckTokenStart');
+
         AddCode_CheckToken(position, 0);
     }
 
     function AddCode_CheckToken(position, tryes) {
+        Main_Log('AddCode_CheckToken');
         AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
     }
 
     function AddCode_CheckTokenReady(xmlHttp, position, tryes) {
         if (xmlHttp.readyState === 4) {
+            Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
             if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
             else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
                 AddCode_refreshTokens(position, 0, null, null);
@@ -1313,6 +2725,8 @@
     }
 
     function AddCode_CheckTokenSuccess(responseText, position) {
+        Main_Log('AddCode_CheckTokenSuccess ' + responseText);
+
         var token = JSON.parse(responseText);
         if (token.scopes && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
         else if (token.expires_in) {
@@ -1402,8 +2816,10 @@
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) { //success user now is following the channel
                 AddCode_IsFollowing = true;
-                if (AddCode_PlayRequest) Play_setFollow();
-                else ChannelContent_setFollow();
+                if (AddCode_PlayRequest) {
+                    Play_setFollow();
+                    ChatLive_checkFallowSuccessUpdate(xmlHttp.responseText, 0);
+                } else ChannelContent_setFollow();
                 return;
             } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
                 AddCode_refreshTokens(0, 0, AddCode_Follow, null);
@@ -1433,8 +2849,10 @@
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 204) { //success user is now not following the channel
                 AddCode_IsFollowing = false;
-                if (AddCode_PlayRequest) Play_setFollow();
-                else ChannelContent_setFollow();
+                if (AddCode_PlayRequest) {
+                    Play_setFollow();
+                    ChatLive_FollowState[0].follows = false;
+                } else ChannelContent_setFollow();
                 return;
             } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
                 AddCode_refreshTokens(0, 0, AddCode_UnFollow, null);
@@ -1888,12 +3306,11 @@
                 }
             } catch (e) {}
 
+            AddUser_UpdateSidepanel();
+
             //Check and refresh all tokens at start
             for (var i = 0; i < AddUser_UsernameArray.length; i++) {
                 if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
-
-                if (!AddUser_UsernameArray[i].logo) AddUser_UpdateUser(i, 0);
-                else if (!i) AddUser_UpdateSidepanel();
 
                 //Set user history obj
                 Main_values_History_data[AddUser_UsernameArray[i].id] = {
@@ -2080,6 +3497,9 @@
             } catch (e) {}
             Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
         }
+
+        //Reset user emotes on chage
+        userEmote = {};
     }
 
     function AddUser_UserCodeExist(user) {
@@ -2592,27 +4012,939 @@
                 break;
         }
     }
-    //Variable initialization
-    var ChatLive_loadingDataTry = 0;
+    var ChatLiveControls_inputFocusId;
+    var ChatLiveControls_keyBoardOn = false;
+    var ChatLiveControls_cursor = 5;
+    var ChatLiveControls_Channel = 0;
+    var ChatLiveControls_LastChannel = '';
+
+    function ChatLiveControls_Show() {
+        var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
+
+        if (ChatLive_Banned[ChatLiveControls_Channel]) {
+            Play_showWarningMidleDialog(STR_CHAT_BANNED + streamer, 1500);
+            return;
+        }
+
+        document.body.removeEventListener("keydown", Play_handleKeyDown);
+        document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+        document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
+        Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
+        ChatLiveControls_SetRoomState();
+        Main_ShowElement('chat_send');
+        Play_hidePanel();
+
+        //Reset the chat result if streamer has changed
+
+        if (!Main_A_equals_B(ChatLiveControls_LastChannel, streamer)) Main_ChatLiveInput.value = '';
+        ChatLiveControls_LastChannel = streamer;
+
+        if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) ChatLiveControls_UpdateResultText();
+        else ChatLiveControls_UpdateResultTextEmpty();
+
+        if (OptionsShowObj.force_show_chat_write.defaultValue && !Play_isChatShown())
+            Play_controls[Play_controlsChat].enterKey(1);
+
+        ChatLiveControls_inputFocus();
+    }
+
+    function ChatLiveControls_Hide() {
+        ChatLiveControls_Channel = 0;
+        ChatLiveControls_PreventInputClear();
+        document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
+        document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+        document.body.removeEventListener("keydown", ChatLiveControls_EmotesEvent);
+        document.body.removeEventListener("keydown", ChatLiveControls_ChooseChat);
+        document.body.removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
+
+        document.body.removeEventListener("keydown", Play_handleKeyDown);
+        document.body.addEventListener("keydown", Play_handleKeyDown, false);
+
+        Main_HideElement('chat_send');
+        Main_HideElement('chat_emotes_holder');
+        Main_HideElement('dialog_warning_chat');
+        Main_HideElement('chat_choose');
+        Main_HideElement('chat_options');
+
+        ChatLiveControls_RemoveinputFocus(false);
+    }
+
+    function ChatLiveControls_RefreshRoomState(chat_number) {
+        if (chat_number === ChatLiveControls_Channel) {
+            ChatLiveControls_SetRoomState();
+            if (!ChatLiveControls_CanSend()) ChatLiveControls_CantSend();
+        }
+    }
+
+    function ChatLiveControls_SetRoomState() {
+        var text = '';
+
+        if (!ChatLive_RoomState[ChatLiveControls_Channel]) text = STR_UNKNOWN;
+        else {
+
+            var tags = ChatLive_RoomState[ChatLiveControls_Channel];
+
+            if (tags.hasOwnProperty('emote-only') && tags['emote-only']) text += "Emote-only, ";
+
+            //TODO convert this to strings
+            if (tags.hasOwnProperty('followers-only') && tags['followers-only'] !== -1) {
+                text += "Followers-only" + (tags['followers-only'] ? (' minimum ' + tags['followers-only'] + ' minute(s) fallowing') : '') + ', ';
+            }
+
+            if (tags.hasOwnProperty('rk9') && tags.rk9) text += 'R9K messages with more than 9 characters must be unique, ';
+
+            if (tags.hasOwnProperty('slow') && tags.slow) {
+                text += "Slow" + (tags.slow ? (' wait ' + tags.slow + ' second(s)  between sending messages') : '') + ', ';
+            }
+
+            if (tags.hasOwnProperty('subs-only') && tags['subs-only']) text += 'Subscribers-only, ';
+
+            text = text.slice(0, -2);
+        }
+
+        var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
+        Main_innerHTML("chat_state", streamer + STR_SPACE + STR_CHAT_ROOMSTATE + STR_BR + (text === '' ? STR_CHAT_NO_RESTRICTIONS : text));
+    }
+
+    function ChatLiveControls_inputFocus() {
+        if (ChatLiveControls_CanSend()) {
+            ChatLiveControls_resetInputFocusTools();
+            document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+            Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
+
+            window.clearTimeout(ChatLiveControls_inputFocusId);
+            ChatLiveControls_inputFocusId = window.setTimeout(function() {
+                Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
+                Main_ChatLiveInput.focus();
+                try {
+                    if (Main_IsOnAndroid) {
+                        if (OptionsShowObj.keyboard_options.defaultValue === 1) Android.KeyboardCheckAndHIde();
+                        else if (OptionsShowObj.keyboard_options.defaultValue === 2) Android.hideKeyboardFrom();
+                    }
+                } catch (e) {}
+                ChatLiveControls_keyBoardOn = true;
+                document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
+                document.body.addEventListener("keydown", ChatLiveControls_KeyboardEvent, false);
+                //Set the avoidclicks only after focus
+                Main_AddClass('scene_notify', 'avoidclicks');
+                Main_AddClass('scenefeed', 'avoidclicks');
+            }, 200);
+        } else {
+            ChatLiveControls_CantSend();
+        }
+    }
+
+    function ChatLiveControls_removeEventListener() {
+        if (Main_ChatLiveInput !== null) {
+            var elClone = Main_ChatLiveInput.cloneNode(true);
+            Main_ChatLiveInput.parentNode.replaceChild(elClone, Main_ChatLiveInput);
+            Main_ChatLiveInput = document.getElementById("chat_send_input");
+        }
+    }
+
+    function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
+
+        window.clearTimeout(ChatLiveControls_inputFocusId);
+        if (!Main_isTV && Main_IsOnAndroid) Android.mhideSystemUI();
+
+        Main_RemoveClass('scenefeed', 'avoidclicks');
+        Main_RemoveClass('scene_notify', 'avoidclicks');
+        Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
+        Main_ChatLiveInput.blur();
+        ChatLiveControls_removeEventListener();
+        document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
+        Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
+
+        if (EnaKeydown) {
+            document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+            document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
+        }
+
+        ChatLiveControls_keyBoardOn = false;
+    }
+
+    function ChatLiveControls_KeyboardDismiss() {
+        window.clearTimeout(ChatLiveControls_inputFocusId);
+        ChatLiveControls_RemoveinputFocus(true);
+        ChatLiveControls_cursor = 5;
+        ChatLiveControls_refreshInputFocusTools();
+    }
+
+    function ChatLiveControls_refreshInputFocusTools() {
+        ChatLiveControls_resetInputFocusTools();
+        Main_AddClass('chat_send_button' + ChatLiveControls_cursor, 'button_chat_focused');
+    }
+
+    function ChatLiveControls_resetInputFocusTools() {
+        for (var i = 0; i < 10; i++)
+            Main_RemoveClass('chat_send_button' + i, 'button_chat_focused');
+    }
+
+    var ChatLiveControls_showWarningDialogId;
+
+    function ChatLiveControls_showWarningDialog(text, timeout) {
+        Main_innerHTML("dialog_warning_chat_text", text);
+        Main_ShowElement('dialog_warning_chat');
+
+        window.clearTimeout(ChatLiveControls_showWarningDialogId);
+        if (timeout) {
+            ChatLiveControls_showWarningDialogId = window.setTimeout(function() {
+                Main_HideElement('dialog_warning_chat');
+            }, timeout);
+        }
+    }
+
+    function ChatLiveControls_HandleKeyEnter() {
+        if (!ChatLiveControls_cursor) ChatLiveControls_OptionsShow();
+        if (ChatLiveControls_cursor === 1 && ChatLiveControls_CanSend()) {
+            Main_ChatLiveInput.value = '';
+            ChatLiveControls_UpdateResultTextEmpty();
+        } else if (ChatLiveControls_cursor === 2 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+
+            ChatLiveControls_SetEmojisDiv();
+
+        } else if (ChatLiveControls_cursor === 3 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+
+            ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtvGlobal, STR_CHAT_BBTV_GLOBAL);
+
+        } else if (ChatLiveControls_cursor === 4 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+
+            ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL);
+
+        } else if (ChatLiveControls_cursor === 5) {
+            if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
+                if (ChatLiveControls_CanSend()) {
+                    ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel);
+                    Main_ChatLiveInput.value = '';
+                    ChatLiveControls_UpdateResultText();
+                } else ChatLiveControls_CantSend();
+            } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
+        } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+
+            ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));
+
+        } else if (ChatLiveControls_cursor === 7 && ChatLiveControls_CanSend()) {
+
+            ChatLiveControls_SetEmotesDiv(userEmote, STR_CHAT_TW_EMOTES);
+
+        } else if (ChatLiveControls_cursor === 8 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+
+            ChatLiveControls_SetEmotesDiv(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BBTV_STREAM);
+
+        } else if (ChatLiveControls_cursor === 9 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+
+            ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM);
+
+        }
+    }
+
+    function ChatLiveControls_handleKeyDown(event) {
+        switch (event.keyCode) {
+            case KEY_RETURN:
+                ChatLiveControls_Hide();
+                break;
+            case KEY_LEFT:
+                ChatLiveControls_cursor--;
+                if (ChatLiveControls_cursor < 0) ChatLiveControls_cursor = 9;
+                ChatLiveControls_refreshInputFocusTools();
+                break;
+            case KEY_RIGHT:
+                ChatLiveControls_cursor++;
+                if (ChatLiveControls_cursor > 9) ChatLiveControls_cursor = 0;
+                ChatLiveControls_refreshInputFocusTools();
+                break;
+            case KEY_UP:
+                if (ChatLiveControls_cursor > 4) {
+                    ChatLiveControls_cursor -= 5;
+                    ChatLiveControls_refreshInputFocusTools();
+                } else {
+                    ChatLiveControls_inputFocus();
+                }
+                break;
+            case KEY_DOWN:
+                if (ChatLiveControls_cursor < 5) {
+                    ChatLiveControls_cursor += 5;
+                    ChatLiveControls_refreshInputFocusTools();
+                } else {
+                    ChatLiveControls_inputFocus();
+                }
+                break;
+            case KEY_ENTER:
+                ChatLiveControls_HandleKeyEnter();
+                break;
+            default:
+                break;
+        }
+    }
+
+    function ChatLiveControls_KeyboardEvent(event) {
+        ChatLiveControls_UpdateResultText();
+        switch (event.keyCode) {
+            case KEY_RETURN:
+            case KEY_KEYBOARD_DONE:
+            case KEY_DOWN:
+            case KEY_UP:
+                ChatLiveControls_KeyboardDismiss();
+                break;
+            default:
+                break;
+        }
+    }
+
+    var ChatLiveControls_EmotesTotal = 0;
+    var ChatLiveControls_EmotesPos = 0;
+
+    function ChatLiveControls_SetEmotesDiv(obj, text) {
+        var array = [];
+
+        for (var property in obj) {
+            array.push(obj[property]);
+        }
+
+        if (array.length > 1) {
+            Main_textContent("chat_emotes_text", text);
+        } else {
+            ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);
+            return;
+        }
+
+        var direction = OptionsShowObj.emote_sorting.defaultValue;
+
+        if (direction === 1) { //a-z
+            array.sort(
+                function(a, b) {
+                    return (a.code < b.code ? -1 : (a.code > b.code ? 1 : 0));
+                }
+            );
+        } else if (direction === 2) { //z-a
+            array.sort(
+                function(a, b) {
+                    return (a.code > b.code ? -1 : (a.code < b.code ? 1 : 0));
+                }
+            );
+        }
+
+        var div_holder = document.getElementById('chat_emotes');
+        Main_emptyWithEle(div_holder);
+
+        ChatLiveControls_EmotesTotal = array.length;
+        ChatLiveControls_EmotesPos = 0;
+
+        for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
+            div_holder.appendChild(
+                ChatLiveControls_SetEmoteDiv(array[i], i)
+            );
+        }
+
+        ChatLiveControls_ShowEmotes();
+    }
+
+    function ChatLiveControls_SetEmoteDiv(obj, position) {
+
+        var div = document.createElement('div');
+
+        div.setAttribute('id', 'chat_emotes' + position);
+        div.setAttribute(Main_DataAttribute, obj.code);
+        div.classList.add('chat_emotes_img_holder');
+
+        div.innerHTML = '<div ><div id="chat_emotes_img' + position + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + obj['4x'] +
+            '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
+            '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + position + '" class="chat_emotes_name opacity_zero">' + obj.code + '</div></div></div>';
+
+        return div;
+    }
+
+    function ChatLiveControls_SetEmojisDiv() {
+        var array = emojis;
+
+        if (array && array.length > 1) {
+            Main_textContent("chat_emotes_text", STR_CHAT_UNICODE_EMOJI);
+        } else {
+            ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);
+            return;
+        }
+
+        var direction = OptionsShowObj.emote_sorting.defaultValue;
+
+        if (direction === 1) { //a-z
+            array = JSON.parse(JSON.stringify(array));
+            array.sort(
+                function(a, b) {
+                    return (a.tags < b.tags ? -1 : (a.tags > b.tags ? 1 : 0));
+                }
+            );
+        } else if (direction === 2) { //z-a
+            array = JSON.parse(JSON.stringify(array));
+            array.sort(
+                function(a, b) {
+                    return (a.tags > b.tags ? -1 : (a.tags < b.tags ? 1 : 0));
+                }
+            );
+        }
+
+        var div_holder = document.getElementById('chat_emotes');
+        Main_emptyWithEle(div_holder);
+
+        ChatLiveControls_EmotesTotal = array.length;
+        ChatLiveControls_EmotesPos = 0;
+
+        for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
+            div_holder.appendChild(
+                ChatLiveControls_SetEmojiDiv(array[i], i)
+            );
+        }
+
+        ChatLiveControls_ShowEmotes();
+    }
+
+    function ChatLiveControls_SetEmojiDiv(obj, position) {
+
+        var div = document.createElement('div');
+
+        div.setAttribute('id', 'chat_emotes' + position);
+        div.setAttribute(Main_DataAttribute, obj.unicode);
+        div.classList.add('chat_emotes_img_holder');
+
+        div.innerHTML = '<div ><div id="chat_emotes_img' + position + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + twemoji.parseIcon(obj.unicode) +
+            '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
+            '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + position + '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
+
+        return div;
+    }
+
+    function ChatLiveControls_ShowEmotes() {
+        Main_ready(function() {
+            document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
+            document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+            document.body.removeEventListener("keydown", ChatLiveControls_EmotesEvent);
+
+            document.body.addEventListener("keydown", ChatLiveControls_EmotesEvent, false);
+            ChatLiveControls_resetInputFocusTools();
+
+            document.getElementById('chat_emotes').style.transform = '';
+            ChatLiveControls_EmotesUpdateCounter(0);
+            Main_ShowElement('chat_emotes_holder');
+            ChatLiveControls_EmotesAddFocus(0);
+        });
+    }
+
+    function ChatLiveControls_HideEmotes() {
+        document.body.removeEventListener("keydown", ChatLiveControls_EmotesEvent);
+        document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+        document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown);
+
+        Main_HideElement('chat_emotes_holder');
+        ChatLiveControls_refreshInputFocusTools();
+    }
+
+    function ChatLiveControls_EmotesEvent(event) {
+        switch (event.keyCode) {
+            case KEY_RETURN:
+                ChatLiveControls_HideEmotes();
+                break;
+            case KEY_LEFT:
+                ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, -1);
+                break;
+            case KEY_RIGHT:
+                ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 1);
+                break;
+            case KEY_UP:
+                if (ChatLiveControls_EmotesPos < 20) ChatLiveControls_HideEmotes();
+                else ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, -20);
+                break;
+            case KEY_DOWN:
+                ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
+                break;
+            case KEY_ENTER:
+                ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function ChatLiveControls_AddToChat(position) {
+        var doc = document.getElementById('chat_emotes' + position);
+        if (doc) ChatLiveControls_UpdateTextInput(doc.getAttribute(Main_DataAttribute));
+    }
+
+    function ChatLiveControls_EmotesAddFocus(position) {
+        Main_AddClass('chat_emotes_img' + position, 'chat_emotes_focus');
+        ChatLiveControls_EmotesUpdateCounter(ChatLiveControls_EmotesPos);
+        Main_RemoveClass('chat_emotes_name' + position, 'opacity_zero');
+    }
+
+    function ChatLiveControls_EmotesRemoveFocus(position) {
+        Main_RemoveClass('chat_emotes_img' + position, 'chat_emotes_focus');
+        Main_AddClass('chat_emotes_name' + position, 'opacity_zero');
+    }
+
+    function ChatLiveControls_EmotesChangeFocus(position, adder) {
+        var doc = document.getElementById('chat_emotes' + (position + adder));
+        if (doc) {
+            ChatLiveControls_EmotesRemoveFocus(position);
+            ChatLiveControls_EmotesPos += adder;
+            ChatLiveControls_EmotesAddFocus(ChatLiveControls_EmotesPos);
+            ChatLiveControls_EmotesScroll(ChatLiveControls_EmotesPos);
+        } else if (adder > 0) { //go to last of next line
+            var postion_now = parseInt(position / 20);
+            var postion_down = (postion_now + 1) * 20;
+
+            if (document.getElementById('chat_emotes' + postion_down)) {
+                ChatLiveControls_EmotesRemoveFocus(position);
+                ChatLiveControls_EmotesPos = ChatLiveControls_EmotesTotal - 1;
+                ChatLiveControls_EmotesAddFocus(ChatLiveControls_EmotesPos);
+                ChatLiveControls_EmotesScroll(ChatLiveControls_EmotesPos);
+            }
+        }
+    }
+
+    function ChatLiveControls_EmotesUpdateCounter(position) {
+        Main_textContent('chat_emotes_counter', (position + 1) + '/' + ChatLiveControls_EmotesTotal);
+    }
+
+    function ChatLiveControls_EmotesScroll(position) {
+
+        if (position > 39) {
+
+            var postion_now = parseInt(position / 20);
+            var postion_down = (postion_now + 2) * 20;
+            var postion_up = (postion_now - 1) * 20;
+
+            var how_much = document.getElementById('chat_emotes' + postion_up).offsetHeight;
+
+            if (document.getElementById('chat_emotes' + postion_down)) {
+
+                document.getElementById('chat_emotes').style.transform = 'translateY(-' + (how_much * (postion_now - 1)) + 'px)';
+
+            }
+        } else document.getElementById('chat_emotes').style.transform = '';
+    }
+
+    function ChatLiveControls_UpdateTextInput(text) {
+        if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !(Main_ChatLiveInput.value).endsWith(' ')) Main_ChatLiveInput.value += ' ';
+        Main_ChatLiveInput.value += text + ' ';
+        ChatLiveControls_UpdateResultText();
+    }
+
+    var ChatLiveControls_UpdateResultTextId;
+
+    function ChatLiveControls_UpdateResultText() {
+
+        window.clearTimeout(ChatLiveControls_UpdateResultTextId);
+        // delay the check to prevent lag on fun call spaming
+        ChatLiveControls_UpdateResultTextId = window.setTimeout(function() {
+
+            if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
+
+                Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize([Main_ChatLiveInput.value]));
+
+            } else ChatLiveControls_UpdateResultTextEmpty();
+
+        }, 10);
+    }
+
+    function ChatLiveControls_UpdateResultTextEmpty() {
+        Main_textContent("chat_result_text", '');
+    }
+
+    function ChatLiveControls_extraMessageTokenize(message) {
+
+        for (var i = 0; i < message.length; i++) {
+            message[i] = extraMessageTokenize(message[i], 0, null);
+        }
+
+        return '<span class="message">' + twemoji.parse(message.join(' '), true, true) + '</span>';
+    }
+
+    function ChatLiveControls_CheckEmoteStatus() {
+
+        var tags = ChatLive_RoomState[ChatLiveControls_Channel];
+
+        if (tags && tags.hasOwnProperty('emote-only') && tags['emote-only']) {
+            ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_ONLY, 1500);
+            return false;
+        }
+
+        return true;
+    }
+
+    function ChatLiveControls_ShowChooseChat() {
+        document.body.removeEventListener("keydown", Play_handleKeyDown);
+        document.body.removeEventListener("keydown", ChatLiveControls_ChooseChat);
+        document.body.addEventListener("keydown", ChatLiveControls_ChooseChat, false);
+
+        Main_textContent("chat_choose_dialog_text", STR_CHAT_CHOOSE);
+        Main_textContent("chat_choose_dialog0", Play_data.data[1]);
+        Main_textContent("chat_choose_dialog1", PlayExtra_data.data[1]);
+        ChatLiveControls_ChooseChatChannel = 0;
+
+        Main_ShowElement('chat_choose');
+        ChatLiveControls_ChooseChatFocus(0);
+    }
+
+    function ChatLiveControls_ChooseChatFocus(position) {
+        Main_AddClass('chat_choose_dialog' + position, 'button_dialog_focused');
+        Main_RemoveClass('chat_choose_dialog' + (position ^ 1), 'button_dialog_focused');
+
+    }
+
+    function ChatLiveControls_HideChooseChat() {
+        document.body.removeEventListener("keydown", ChatLiveControls_ChooseChat);
+        Main_HideElement('chat_choose');
+    }
+
+    var ChatLiveControls_ChooseChatChannel = 0;
+
+    function ChatLiveControls_ChooseChat(event) {
+        switch (event.keyCode) {
+            case KEY_RETURN:
+                ChatLiveControls_HideChooseChat();
+                ChatLiveControls_Hide();
+                break;
+            case KEY_RIGHT:
+            case KEY_LEFT:
+                ChatLiveControls_ChooseChatChannel = ChatLiveControls_ChooseChatChannel ^ 1;
+                ChatLiveControls_ChooseChatFocus(ChatLiveControls_ChooseChatChannel);
+                break;
+            case KEY_ENTER:
+                ChatLiveControls_HideChooseChat();
+                ChatLiveControls_Channel = ChatLiveControls_ChooseChatChannel;
+                ChatLiveControls_Show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    // function ChatLiveControls_EmotesOnlyEnabled(position) {
+    //     var tags = ChatLive_RoomState[position];
+
+    //     return tags && tags.hasOwnProperty('emote-only') && tags['emote-only'];
+    // }
+
+    // function ChatLiveControls_rk9Enabled(position) {
+    //     var tags = ChatLive_RoomState[position];
+
+    //     return tags && tags.hasOwnProperty('rk9') && tags.rk9;
+    // }
+
+    // function ChatLiveControls_slowEnabled(position) {
+    //     var tags = ChatLive_RoomState[position];
+
+    //     return tags && tags.hasOwnProperty('slow') && tags.slow;
+    // }
+
+    // function ChatLiveControls_slowEnableTime(position) {
+    //     var tags = ChatLive_RoomState[position];
+
+    //     return (tags && tags.hasOwnProperty('slow')) ? tags.slow : 0;
+    // }
+
+    // function ChatLiveControls_FallowersOnlyEnabled(position) {
+    //     var tags = ChatLive_RoomState[position];
+
+    //     return tags && tags.hasOwnProperty('followers-only') && tags['followers-only'] !== -1;
+    // }
+
+    // function ChatLiveControls_FallowersOnlyTime(position) {
+    //     var tags = ChatLive_RoomState[position];
+
+    //     return (tags && tags.hasOwnProperty('followers-only')) ? tags['followers-only'] : 0;
+    // }
+
+    // function ChatLiveControls_SubOnlyEnabled(position) {
+    //     var tags = ChatLive_RoomState[position];
+
+    //     return tags && tags.hasOwnProperty('subs-only') && tags['subs-only'];
+    // }
+
+    function ChatLiveControls_CantSend() {
+        window.clearTimeout(ChatLiveControls_inputFocusId);
+
+        if (ChatLiveControls_keyBoardOn) {
+            ChatLiveControls_RemoveinputFocus(Main_isElementShowing('chat_send'));
+            ChatLiveControls_refreshInputFocusTools();
+        } else if (Main_isElementShowing('chat_emotes_holder')) ChatLiveControls_HideEmotes();
+
+    }
+
+    var ChatLiveControls_CanSendText = '';
+    var ChatLiveControls_CanSendBool = true;
+
+    function ChatLiveControls_CanSend() {
+
+        ChatLiveControls_CanSendText = '';
+        ChatLiveControls_CanSendBool = true;
+        var streamer = (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]);
+
+        if (ChatLive_Banned[ChatLiveControls_Channel]) {
+
+            ChatLiveControls_CanSendText = STR_CHAT_BANNED + streamer;
+            ChatLiveControls_CanSendBool = false;
+            ChatLiveControls_PreventInput();
+
+            return false;
+
+        } else if (ChatLive_RoomState[ChatLiveControls_Channel]) {
+
+            var tags = ChatLive_RoomState[ChatLiveControls_Channel];
+            var user_fallow = ChatLive_FollowState[ChatLiveControls_Channel];
+
+            var user_sub = ChatLive_SubState[ChatLiveControls_Channel];
+            var user_issub = user_sub && user_sub.hasOwnProperty('state') && !user_sub.state;
+
+            if (tags.hasOwnProperty('subs-only') && tags['subs-only'] && user_issub) {
+
+                ChatLiveControls_CanSendText = 'Chat Subscribers-only mode ' + STR_IS_SUB_NOT_SUB;
+                ChatLiveControls_CanSendBool = false;
+                ChatLiveControls_PreventInput();
+
+                return false;
+            }
+
+            if (tags.hasOwnProperty('followers-only') && tags['followers-only'] !== -1 && user_fallow) {
+
+                if ((tags['followers-only'] > -1) && user_fallow.hasOwnProperty('follows') && !user_fallow.follows) {
+
+                    ChatLiveControls_CanSendText = STR_CHAT_FOLLOWER_ONLY + streamer;
+                    ChatLiveControls_CanSendBool = false;
+                    ChatLiveControls_PreventInput();
+
+                    return false;
+
+                } else if (tags['followers-only'] && user_fallow.hasOwnProperty('created_at') && (tags['followers-only'] > ChatLive_GetMinutes(user_fallow.created_at))) {
+
+                    ChatLiveControls_CanSendText = "Followers-only" + (tags['followers-only'] ? (' minimum ' + tags['followers-only'] + ' minute(s) fallowing') : '') +
+                        ' ' + STR_CHAT_FOLLOWER_ONLY_USER_TIME + ChatLive_GetMinutes(user_fallow.created_at);
+                    ChatLiveControls_CanSendBool = false;
+                    ChatLiveControls_PreventInput();
+
+                    return false;
+                }
+            }
+
+        }
+
+        ChatLiveControls_PreventInputClear();
+        return true;
+    }
+
+    function ChatLiveControls_PreventInput() {
+        Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
+        Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_block');
+        Main_ChatLiveInput.value = ChatLiveControls_CanSendText;
+        ChatLiveControls_showWarningDialog(ChatLiveControls_CanSendText, 1000);
+        ChatLiveControls_UpdateResultTextEmpty();
+    }
+
+    function ChatLiveControls_PreventInputClear() {
+        if (Main_A_includes_B(Main_ChatLiveInput.className, 'chat_input_class_block')) {
+            Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_block');
+            Main_ChatLiveInput.value = '';
+            ChatLiveControls_UpdateResultTextEmpty();
+        }
+    }
+
+    var OptionsShowObj = {};
+    var OptionsShowArray = [];
+    var ChatLiveControls_OptionsY = 0;
+
+    function ChatLiveControls_OptionsUpdate_defautls() {
+        OptionsShowObj.keyboard_options = {};
+        OptionsShowObj.keyboard_options.defaultValue = Main_getItemInt('keyboard_options', 0);
+        OptionsShowObj.emote_sorting = {};
+        OptionsShowObj.emote_sorting.defaultValue = Main_getItemInt('emote_sorting', 0);
+        OptionsShowObj.force_show_chat_write = {};
+        OptionsShowObj.force_show_chat_write.defaultValue = Main_getItemInt('force_show_chat_write', 0);
+    }
+
+    function ChatLiveControls_OptionsShow() {
+        document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+
+        OptionsShowObj = {
+            keyboard_options: {
+                defaultValue: OptionsShowObj.keyboard_options.defaultValue,
+                values: [STR_CHAT_OPTIONS_KEYBOARD_1, STR_CHAT_OPTIONS_KEYBOARD_2, STR_CHAT_OPTIONS_KEYBOARD_3],
+                title: STR_CHAT_OPTIONS_KEYBOARD,
+                summary: STR_CHAT_OPTIONS_KEYBOARD_SUMMARY
+            },
+            emote_sorting: {
+                defaultValue: OptionsShowObj.emote_sorting.defaultValue,
+                values: [STR_DISABLE, STR_A_Z, STR_Z_A],
+                title: STR_CHAT_OPTIONS_EMOTE_SORT,
+                summary: STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY
+            },
+            force_show_chat_write: {
+                defaultValue: OptionsShowObj.force_show_chat_write.defaultValue,
+                values: [STR_DISABLE, STR_ENABLE],
+                title: STR_CHAT_OPTIONS_FORCE_SHOW,
+                summary: STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY
+            },
+        };
+
+
+        var dialogContent = STR_CHAT_OPTIONS_TITLE + STR_BR;
+        OptionsShowArray = [];
+
+        for (var property in OptionsShowObj) {
+            OptionsShowArray.push(property);
+            dialogContent += ChatLiveControls_DivOptionWithSummary(property, OptionsShowObj[property].title + STR_BR, OptionsShowObj[property].summary);
+        }
+
+        Main_innerHTML("chat_options_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+
+
+        ChatLiveControls_OptionsY = 0;
+        Main_AddClass(OptionsShowArray[0], 'settings_value_focus');
+        Main_AddClass(OptionsShowArray[0] + '_div', 'settings_div_focus');
+        ChatLiveControls_SetarrowsKey(OptionsShowArray[0]);
+
+        Main_ShowElement('chat_options');
+        document.body.addEventListener("keydown", ChatLiveControls_OptionsKeyDown, false);
+    }
+
+    function ChatLiveControls_DivOptionWithSummary(key, string_title, string_summary) {
+        return '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' +
+            string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: 73%;">' + string_summary + '</div></div>' +
+            '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+            '<div id="' + key + '" class="strokedeline settings_value">' + OptionsShowObj[key].values[OptionsShowObj[key].defaultValue] + '</div>' +
+            '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    }
+
+    function ChatLiveControls_SetarrowsKey(key) {
+
+        var currentValue = OptionsShowObj[key].defaultValue;
+        var maxValue = OptionsShowObj[key].values.length - 1;
+
+        if (currentValue > 0 && currentValue < maxValue) {
+            document.getElementById(key + "arrow_left").style.opacity = "1";
+            document.getElementById(key + "arrow_right").style.opacity = "1";
+        } else if (currentValue === maxValue) {
+            document.getElementById(key + "arrow_left").style.opacity = "1";
+            document.getElementById(key + "arrow_right").style.opacity = "0.2";
+        } else {
+            document.getElementById(key + "arrow_left").style.opacity = "0.2";
+            document.getElementById(key + "arrow_right").style.opacity = "1";
+        }
+    }
+
+    function ChatLiveControls_Optionshide() {
+        Settings_RemoveinputFocusKey(OptionsShowArray[ChatLiveControls_OptionsY]);
+        Main_HideElement('chat_options');
+        document.body.removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
+        document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
+    }
+
+    function ChatLiveControls_OptionsKeyDown(event) {
+        var key;
+        switch (event.keyCode) {
+            case KEY_ENTER:
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                ChatLiveControls_Optionshide();
+                break;
+            case KEY_LEFT:
+                key = OptionsShowArray[ChatLiveControls_OptionsY];
+                if (OptionsShowObj[key].defaultValue > 0) ChatLiveControls_OptionsRigthLeft(-1);
+                break;
+            case KEY_RIGHT:
+                key = OptionsShowArray[ChatLiveControls_OptionsY];
+                if (OptionsShowObj[key].defaultValue < (OptionsShowObj[key].values.length - 1)) ChatLiveControls_OptionsRigthLeft(1);
+                break;
+            case KEY_UP:
+                if (ChatLiveControls_OptionsY > 0) ChatLiveControls_OptionsUpDown(-1);
+                break;
+            case KEY_DOWN:
+                if (ChatLiveControls_OptionsY < (OptionsShowArray.length - 1)) ChatLiveControls_OptionsUpDown(1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function ChatLiveControls_OptionsUpDown(offset) {
+        var key = OptionsShowArray[ChatLiveControls_OptionsY];
+
+        ChatLiveControls_RemoveinputFocusKey(key);
+        ChatLiveControls_OptionsY += offset;
+
+        key = OptionsShowArray[ChatLiveControls_OptionsY];
+
+        Main_AddClass(key, 'settings_value_focus');
+        Main_AddClass(key + '_div', 'settings_div_focus');
+        ChatLiveControls_SetarrowsKey(key);
+    }
+
+    function ChatLiveControls_RemoveinputFocusKey(key) {
+        document.getElementById(key + "arrow_left").style.opacity = "0";
+        document.getElementById(key + "arrow_right").style.opacity = "0";
+        Main_RemoveClass(key, 'settings_value_focus');
+        Main_RemoveClass(key + '_div', 'settings_div_focus');
+    }
+
+    function ChatLiveControls_OptionsRigthLeft(offset) {
+
+        var key = OptionsShowArray[ChatLiveControls_OptionsY];
+
+        OptionsShowObj[key].defaultValue += offset;
+
+        Main_setItem(key, OptionsShowObj[key].defaultValue);
+        Main_textContent(key, OptionsShowObj[key].values[OptionsShowObj[key].defaultValue]);
+        ChatLiveControls_SetarrowsKey(key);
+    } //Variable initialization
     var ChatLive_loadingDataTryMax = 10;
-    var ChatLive_Id = [];
+    var Chat_Id = [];
     var ChatLive_loadBadgesChannelId;
     var ChatLive_socket = [];
     var ChatLive_loaded = [];
     var ChatLive_CheckId = [];
+    var ChatLive_JoinID = [];
     var ChatLive_LineAddCounter = [];
     var ChatLive_Messages = [];
+    var ChatLive_Banned = [];
+    var ChatLive_FollowState = [];
+    var ChatLive_SubState = [];
     var ChatLive_Playing = true;
     var extraEmotesDone = {
         bbtv: {},
         ffz: {},
-        cheers: {}
+        cheers: {},
+        BadgesChannel: {}
     };
+
+    var userEmote = {};
     var extraEmotes = {};
     var cheers = {};
 
     var ChatLive_selectedChannel_id = [];
     var ChatLive_selectedChannel = [];
+
+    var emoteReplace = {
+        "B-?\\)": "B)",
+        "\\:-?\\)": ":)",
+        "\\:-?\\(": ":(",
+        "\\:-?(p|P)": ":P",
+        "\\;-?(p|P)": ";P",
+        "\\:-?[\\\\/]": ":/",
+        "\\;-?\\)": ";)",
+        "R-?\\)": "R)",
+        ":>": ":>",
+        "\\:\\&gt\\;": ":>",
+        "[oO](_|\\.)[oO]": "O_O",
+        "\\:-?D": ":D",
+        "\\:-?(o|O)": ":O",
+        ">\\\\(": ">(",
+        ":-?(?:7|L)": ":7",
+        "\\:-?(S|s)": ":s",
+        "#-?[\\\\/]": "#/",
+        "<\\]": "<]",
+        "<3": "<3",
+        "\\&lt\\;3": "<3",
+        "\\&lt\\;\\]": "<]",
+        "\\&gt\\;\\(": ">(",
+        "\\:-?[z|Z|\\|]": ":Z",
+    };
 
     //Variable initialization end
 
@@ -2622,37 +4954,50 @@
             Chat_Disable();
             return;
         }
-        if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
 
-        ChatLive_loaded[chat_number] = false;
+        Chat_loadBadgesGlobal();
 
-        ChatLive_Id[chat_number] = (new Date()).getTime();
+        Chat_Id[chat_number] = (new Date()).getTime();
         ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
         ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
-        ChatLive_loadBadgesChannel(ChatLive_Id[chat_number], ChatLive_loadBadgesChannelSuccess, chat_number);
 
+        ChatLive_loadEmotesUser(0);
+        ChatLive_checkFallow(0, chat_number, Chat_Id[chat_number]);
+        ChatLive_checkSub(0, chat_number, Chat_Id[chat_number]);
+
+        ChatLive_loadEmotesChannelbbtv(0, chat_number, Chat_Id[chat_number]);
+        ChatLive_loadEmotesChannelffz(0, chat_number, Chat_Id[chat_number]);
+
+        ChatLive_loadBadgesChannel(0, chat_number, Chat_Id[chat_number]);
+        ChatLive_loadCheersChannel(0, chat_number, Chat_Id[chat_number]);
+
+        ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
     }
 
-    function ChatLive_loadBadgesChannel(id, callbackSucess, chat_number) {
-        ChatLive_loadingDataTry = 0;
-        ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
-    }
+    function ChatLive_checkFallow(tryes, chat_number, id) {
+        if (!AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
 
-    function ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number) {
-        var theUrl = 'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display';
+        ChatLive_FollowState[chat_number] = {};
+
         var xmlHttp = new XMLHttpRequest();
+        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
         xmlHttp.open("GET", theUrl, true);
+
+        for (var i = 0; i < 2; i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
         xmlHttp.timeout = 10000;
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    callbackSucess(xmlHttp.responseText, id, chat_number);
-                    return;
-                } else {
-                    ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number);
+                if (xmlHttp.status === 200) { //yes
+                    ChatLive_checkFallowSuccess(xmlHttp.responseText, chat_number, id);
+                } else if (xmlHttp.status === 404) { //no
+                    ChatLive_RequestCheckFollowNOK(xmlHttp.responseText, tryes, chat_number, id);
+                } else { // internet error
+                    ChatLive_checkFallowError(tryes, chat_number, id);
                 }
             }
         };
@@ -2660,103 +5005,245 @@
         xmlHttp.send(null);
     }
 
-    function ChatLive_loadBadgesChannelError(id, callbackSucess, chat_number) {
-        ChatLive_loadingDataTry++;
-        if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
-        else {
-            if (ChatLive_Id[chat_number] === id) {
-                window.clearTimeout(ChatLive_loadBadgesChannelId);
-                ChatLive_loadBadgesChannelId = window.setTimeout(function() {
-                    ChatLive_loadBadgesChannelRequest(id, callbackSucess, chat_number);
-                }, 500);
+    function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+        ChatLive_checkFallowSuccessUpdate(responseText, chat_number);
+    }
+
+    function ChatLive_checkFallowSuccessUpdate(responseText, chat_number) {
+        responseText = JSON.parse(responseText);
+
+        ChatLive_FollowState[chat_number] = {
+            created_at: responseText.created_at,
+            follows: true
+        };
+    }
+
+    function ChatLive_GetMinutes(time) { // "2020-04-17T21:03:42Z"
+        time = (new Date().getTime()) - (new Date(time).getTime());
+        return Math.floor(Math.floor(parseInt(time / 1000)) / 60);
+    }
+
+    function ChatLive_RequestCheckFollowNOK(response, tryes, chat_number, id) {
+        response = JSON.parse(response);
+
+        if (response.message && Main_A_includes_B((response.message + ''), 'Follow not found')) {
+            ChatLive_FollowState[chat_number].follows = false;
+        } else ChatLive_checkFallowError(tryes, chat_number, id);
+    }
+
+    function ChatLive_checkFallowError(tryes, chat_number, id) {
+        if (tryes < ChatLive_loadingDataTryMax) ChatLive_checkFallow(tryes + 1, chat_number, id);
+    }
+
+    function ChatLive_checkSub(tryes, chat_number, id) {
+        if (!AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
+
+        ChatLive_SubState[chat_number] = {};
+
+        var xmlHttp = new XMLHttpRequest();
+        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
+
+        xmlHttp.open("GET", theUrl, true);
+
+        Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
+        for (var i = 0; i < 3; i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+        xmlHttp.timeout = 10000;
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) { //yes
+                    ChatLive_SubState[chat_number].state = true;
+                } else if (xmlHttp.status === 404) {
+                    var response = JSON.parse(xmlHttp.responseText);
+                    if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) { //no
+                        ChatLive_SubState[chat_number].state = false;
+                    } else ChatLive_checkSubError(tryes, chat_number, id);
+                } else { // internet error
+                    ChatLive_checkSubError(tryes, chat_number, id);
+                }
             }
+        };
+
+        xmlHttp.send(null);
+    }
+
+    function ChatLive_checkSubError(tryes, chat_number, id) {
+        if (tryes < ChatLive_loadingDataTryMax) ChatLive_checkSub(tryes + 1, chat_number, id);
+    }
+
+    function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
+            ChatLive_BaseLoadUrl(
+                id,
+                'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
+                chat_number,
+                tryes,
+                ChatLive_loadBadgesChannelSuccess,
+                ChatLive_loadBadgesChannelError
+            );
+
+        } else {
+            Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number, Chat_div[chat_number]);
         }
     }
 
-    function ChatLive_loadBadgesChannelSuccess(responseText, id, chat_number) {
-        Chat_loadBadgesTransform(responseText, chat_number);
+    function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
 
-        ChatLive_loadEmotesChannel(chat_number);
-        ChatLive_loadCheersChannel(chat_number);
-        ChatLive_loadEmotesChannelffz(chat_number);
-        if (ChatLive_Id[chat_number] === id) ChatLive_loadChat(chat_number);
+        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = JSON.parse(responseText);
+        Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number, Chat_div[chat_number]);
     }
 
-    function ChatLive_loadEmotesChannel(chat_number) {
+    function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
+        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
+    }
+
+    function ChatLive_loadEmotesUser(tryes) {
+        if (AddUser_UsernameArray[0].access_token) {
+            ChatLive_BaseLoadUrl(
+                0,
+                Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
+                0,
+                tryes,
+                ChatLive_loadEmotesUserSuccess,
+                ChatLive_loadEmotesUserError,
+                Main_Headers,
+                3
+            );
+        }
+    }
+
+    function ChatLive_loadEmotesUserError(tryes) {
+        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesUser(tryes + 1);
+    }
+
+    function ChatLive_loadEmotesUserSuccess(data) {
+        try {
+
+            data = JSON.parse(data);
+            userEmote = {};
+
+            Object.keys(data.emoticon_sets).forEach(function(set) {
+                set = data.emoticon_sets[set];
+                if (Array.isArray(set)) {
+
+                    set.forEach(function(emoticon) {
+
+                        if (!emoticon.code || !emoticon.id) return;
+                        if (typeof emoticon.code !== 'string' || typeof emoticon.id !== 'number') return;
+
+                        emoticon.code = emoteReplace[emoticon.code] || emoticon.code;
+
+                        extraEmotes[emoticon.code] = {
+                            code: emoticon.code,
+                            id: emoticon.id,
+                            '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
+                        };
+
+                        userEmote[emoticon.code] = {
+                            code: emoticon.code,
+                            id: emoticon.id,
+                            '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
+                        };
+
+                    });
+                }
+            });
+
+        } catch (e) {}
+    }
+
+    function ChatLive_loadEmotesChannelbbtv(tryes, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
         if (!extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]]) {
-            ChatLive_loadingDataTry = 0;
-            ChatLive_loadEmotesChannelRequest(chat_number);
+            ChatLive_BaseLoadUrl(
+                id,
+                'https://api.betterttv.net/2/channels/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
+                chat_number,
+                tryes,
+                ChatLive_loadEmotesChannelbbtvSuccess,
+                ChatLive_loadEmotesChannelError
+            );
+        } else {
+            ChatLive_updateExtraEmotes(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]]);
         }
     }
 
-    function ChatLive_loadEmotesChannelRequest(chat_number) {
-        var theUrl = 'https://api.betterttv.net/2/channels/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]);
-        var xmlHttp = new XMLHttpRequest();
+    function ChatLive_loadEmotesChannelError(tryes, chat_number, id) {
+        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelbbtv(tryes + 1, chat_number, id);
+    }
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
+    function ChatLive_loadEmotesChannelbbtvSuccess(data, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    ChatLive_loadEmotesChannelSuccess(xmlHttp.responseText, chat_number);
-                } else if (xmlHttp.status === 404) { //not supported by this channel
-                    extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = 1;
+        ChatLive_loadEmotesbbtv(JSON.parse(data), chat_number, false);
+    }
+
+    function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
+        if (!skipChannel) extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = {};
+        else extraEmotesDone.bbtvGlobal = {};
+
+        data.emotes.forEach(function(emote) {
+            if (data.urlTemplate) {
+
+                var url = 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x');
+                extraEmotes[emote.code] = {
+                    code: emote.code,
+                    id: emote.id,
+                    '4x': url
+                };
+
+                //Don't copy to prevent shallow clone
+                if (!skipChannel) {
+                    extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
+                        code: emote.code,
+                        id: emote.id,
+                        '4x': url
+                    };
                 } else {
-                    ChatLive_loadEmotesChannelError(chat_number);
+                    extraEmotesDone.bbtvGlobal[emote.code] = {
+                        code: emote.code,
+                        id: emote.id,
+                        '4x': url
+                    };
                 }
             }
-        };
+        });
 
-        xmlHttp.send(null);
     }
 
-    function ChatLive_loadEmotesChannelError(chat_number) {
-        ChatLive_loadingDataTry++;
-        if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelRequest(chat_number);
-    }
+    function ChatLive_loadCheersChannel(tryes, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
 
-    function ChatLive_loadEmotesChannelSuccess(data, chat_number) {
-        ChatLive_loadEmotesbbtv(JSON.parse(data));
-        extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = 1;
-    }
-
-    function ChatLive_loadCheersChannel(chat_number) {
         if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
-            ChatLive_loadingDataTry = 0;
-            ChatLive_loadCheersChannelRequest(chat_number);
+
+            ChatLive_BaseLoadUrl(
+                id,
+                'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+                chat_number,
+                tryes,
+                ChatLive_loadCheersChannelSuccess,
+                ChatLive_loadCheersChannelError,
+                Main_Headers,
+                1
+            );
         }
     }
 
-    function ChatLive_loadCheersChannelRequest(chat_number) {
-        var theUrl = 'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]);
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
-        xmlHttp.setRequestHeader(Main_Headers[0][0], Main_Headers[0][1]);
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    ChatLive_loadCheersChannelSuccess(JSON.parse(xmlHttp.responseText), chat_number);
-                } else {
-                    ChatLive_loadCheersChannelError(chat_number);
-                }
-            }
-        };
-
-        xmlHttp.send(null);
+    function ChatLive_loadCheersChannelError(tryes, chat_number, id) {
+        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadCheersChannel(tryes + 1, chat_number, id);
     }
 
-    function ChatLive_loadCheersChannelError(chat_number) {
-        ChatLive_loadingDataTry++;
-        if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadCheersChannelRequest(chat_number);
-    }
+    function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
 
-    function ChatLive_loadCheersChannelSuccess(data, chat_number) {
         cheers[ChatLive_selectedChannel_id[chat_number]] = {};
 
         try {
@@ -2778,59 +5265,48 @@
 
     }
 
-    function ChatLive_loadEmotesChannelffz(chat_number) {
-        if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
-            ChatLive_loadingDataTry = 0;
-            ChatLive_loadEmotesChannelffzRequest(chat_number);
+    function ChatLive_updateExtraEmotes(obj) {
+        //We need to update the main obj as some channel have the same code for different emotes image
+        for (var property in obj) {
+            extraEmotes[property] = {
+                code: obj[property].code,
+                id: obj[property].id,
+                '4x': obj[property]['4x']
+            };
         }
     }
 
-    function ChatLive_loadEmotesChannelffzRequest(chat_number) {
-        var theUrl = 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]);
-        var xmlHttp = new XMLHttpRequest();
+    function ChatLive_loadEmotesChannelffz(tryes, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    ChatLive_loadEmotesChannelffzSuccess(xmlHttp.responseText, chat_number);
-                } else if (xmlHttp.status === 404) { //not supported by this channel
-                    extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = 1;
-                } else {
-                    ChatLive_loadEmotesChannelffzError(chat_number);
-                }
-            }
-        };
-
-        xmlHttp.send(null);
+        if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
+            ChatLive_BaseLoadUrl(
+                id,
+                'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
+                chat_number,
+                tryes,
+                ChatLive_loadEmotesChannelffzSuccess,
+                ChatLive_loadEmotesChannelffzError
+            );
+        } else {
+            ChatLive_updateExtraEmotes(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]);
+        }
     }
 
-    function ChatLive_loadEmotesChannelffzError(chat_number) {
-        ChatLive_loadingDataTry++;
-        if (ChatLive_loadingDataTry < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelffzRequest(chat_number);
+    function ChatLive_loadEmotesChannelffzError(tryes, chat_number, id) {
+        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelffz(tryes + 1, chat_number, id);
     }
 
-    function ChatLive_loadEmotesChannelffzSuccess(data, chat_number) {
-        ChatLive_loadEmotesffz(JSON.parse(data));
-        extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = 1;
+    function ChatLive_loadEmotesChannelffzSuccess(data, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        ChatLive_loadEmotesffz(JSON.parse(data), chat_number, false);
     }
 
-    function ChatLive_loadEmotesbbtv(data) {
-        data.emotes.forEach(function(emote) {
-            if (data.urlTemplate) {
-                extraEmotes[emote.code] = {
-                    code: emote.code,
-                    id: emote.id,
-                    '4x': 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x')
-                };
-            }
-        });
-    }
+    function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
+        if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
+        else extraEmotesDone.ffzGlobal = {};
 
-    function ChatLive_loadEmotesffz(data) {
         Object.keys(data.sets).forEach(function(set) {
             set = data.sets[set];
             if (set.emoticons || Array.isArray(set.emoticons)) {
@@ -2840,41 +5316,78 @@
                     if (!emoticon.name || !emoticon.id) return;
                     if (typeof emoticon.name !== 'string' || typeof emoticon.id !== 'number') return;
 
-                    if (extraEmotes[emoticon.name]) return;
-
                     if (!emoticon.urls || typeof emoticon.urls !== 'object') return;
 
                     if (typeof emoticon.urls[1] !== 'string') return;
                     if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
+
+                    var url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
+
                     extraEmotes[emoticon.name] = {
                         code: emoticon.name,
                         id: emoticon.id,
-                        '4x': 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1])
+                        '4x': url
                     };
+
+                    //Don't copy to prevent shallow clone
+                    if (!skipChannel) {
+                        extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
+                            code: emoticon.name,
+                            id: emoticon.id,
+                            '4x': url
+                        };
+                    } else {
+                        extraEmotesDone.ffzGlobal[emoticon.name] = {
+                            code: emoticon.name,
+                            id: emoticon.id,
+                            '4x': url
+                        };
+                    }
 
                 });
             }
         });
     }
 
-    function ChatLive_loadChat(chat_number) {
+    var useToken = [];
+
+    function ChatLive_loadChat(chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
         ChatLive_CheckClear(chat_number);
         ChatLive_LineAdd('<span class="message">' + STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
             (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + '</span>', chat_number);
-        ChatLive_loadChatRequest(chat_number);
+        ChatLive_loadChatRequest(chat_number, id);
+
+        useToken[chat_number] = !ChatLive_Banned[chat_number] && AddUser_UsernameArray[0].access_token;
+
+        if (!chat_number) {
+            if (useToken[chat_number]) ChatLive_SendPrepared();
+            else if (!AddUser_UsernameArray[0].access_token) ChatLive_SendClose();
+        }
+
     }
 
-    function ChatLive_loadChatRequest(chat_number) {
-        ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
+    function ChatLive_loadChatRequest(chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
             reconnectInterval: 3000
         });
 
-        ChatLive_socket[chat_number].onopen = function() {
-            ChatLive_socket[chat_number].send('PASS blah\r\n');
-            ChatLive_socket[chat_number].send('NICK justinfan12345\r\n');
-            ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
-            ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
-        };
+        if (!ChatLive_Banned[chat_number] && AddUser_UsernameArray[0].access_token) {
+            ChatLive_socket[chat_number].onopen = function() {
+                ChatLive_socket[chat_number].send('PASS oauth:' + AddUser_UsernameArray[0].access_token + '\r\n');
+                ChatLive_socket[chat_number].send('NICK ' + AddUser_UsernameArray[0].name.toLowerCase() + '\r\n');
+            };
+        } else {
+            ChatLive_socket[chat_number].onopen = function() {
+                ChatLive_socket[chat_number].send('PASS blah\r\n');
+                ChatLive_socket[chat_number].send('NICK justinfan12345\r\n');
+                ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
+                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+            };
+        }
 
         ChatLive_socket[chat_number].onmessage = function(data) {
 
@@ -2882,46 +5395,369 @@
 
             if (!message.command) return;
 
+            //Main_Log(message);
+            //Main_Log(message.command);
+
             switch (message.command) {
                 case "PING":
+                    Main_Log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
+                    Main_Log(message);
                     ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                     break;
-                case "JOIN":
-                    ChatLive_loaded[chat_number] = true;
-                    ChatLive_LineAdd('<span class="message">' + STR_CHAT_CONNECTED + '</span>', chat_number);
-
-                    if (Play_ChatDelayPosition) {
-                        var stringSec = STR_SECOND;
-                        if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
-
-                        ChatLive_LineAdd('<span class="message">' + STR_CHAT_DELAY + ' ' +
-                            Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
-                            stringSec + '</span>', chat_number);
+                case "001":
+                    if (useToken[chat_number]) {
+                        if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
+                            ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
+                        }
                     }
                     break;
+                case "CAP":
+                    if (useToken[chat_number]) {
+                        //Delay the joing so the cap get fully accepted
+                        window.clearTimeout(ChatLive_JoinID[chat_number]);
+                        ChatLive_JoinID[chat_number] = window.setTimeout(function() {
+                            ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                        }, 500);
+                    }
+                    break;
+                case "JOIN":
+
+                    if (!ChatLive_loaded[chat_number]) {
+                        ChatLive_loaded[chat_number] = true;
+                        ChatLive_LineAdd('<span class="message">' + STR_CHAT_CONNECTED + " as " +
+                            (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_GIFT_ANONYMOUS) + '</span>', chat_number);
+
+                        if (Play_ChatDelayPosition) {
+                            var stringSec = STR_SECOND;
+                            if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
+
+                            ChatLive_LineAdd('<span class="message">' + STR_CHAT_DELAY + ' ' +
+                                Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
+                                stringSec + '</span>', chat_number);
+                        }
+
+                    }
+
+                    if (useToken[chat_number]) {
+                        //1: "tmi.twitch.tv USERSTATE #cyr↵@emote-only=0;followers-only=-1;r9k=0;rituals=0;room-id=37522866;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #cyr"
+                        if (message.params[1] && Main_A_includes_B(message.params[1], "ROOMSTATE")) {
+
+                            var Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
+                            var array = Regex.exec(message.params[1]);
+                            if (array && array.length === 6) ChatLive_SetRoomState(array, chat_number);
+
+                        } else {
+                            //try a join again so the ROOMSTATE get send
+                            window.clearTimeout(ChatLive_JoinID[chat_number]);
+                            ChatLive_JoinID[chat_number] = window.setTimeout(function() {
+                                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                            }, 500);
+                        }
+                    }
+
+                    break;
                 case "PRIVMSG":
+                    //Main_Log(message);
                     ChatLive_loadChatSuccess(message, chat_number);
+                    break;
+                case "USERNOTICE":
+                    if (useToken[chat_number]) ChatLive_CheckGiftSub(message, chat_number);
+                    break;
+                case "USERSTATE":
+                    Main_Log('USERSTATE chat ' + chat_number);
+                    Main_Log(message);
+                    // tags:
+                    // badge-info: true
+                    // badges: true
+                    // color: true
+                    // display-name: "testtwitch27"
+                    // emote-sets: "0"
+                    // mod: "0"
+                    // subscriber: "0"
+                    // user-type: true
+                    break;
+                case "NOTICE":
+                    if (useToken[chat_number]) {
+                        ChatLive_UserNoticeCheck(message, chat_number, id);
+                    }
+                    // command: "NOTICE"
+                    // params: Array(2)
+                    // 0: "#channel"
+                    // 1: "You are permanently banned from talking in buddha."
+                    // length: 2
+                    // __proto__: Array(0)
+                    // prefix: "tmi.twitch.tv"
+                    // raw: "@msg-id=msg_banned :tmi.twitch.tv NOTICE #channel :You are permanently banned from talking in channel."
+                    // tags:
+                    // msg-id: "msg_banned"
+                    break;
+                case "ROOMSTATE":
+                    ChatLive_UpdateRoomState(message, chat_number);
+                    // command: "ROOMSTATE"
+                    // params: Array(6)
+                    // 0: "#sayeedblack
+                    // ↵:testtwitch27.tmi.twitch.tv"
+                    // 1: "353"
+                    // 2: "testtwitch27"
+                    // 3: "="
+                    // 4: "#sayeedblack"
+                    // 5: "testtwitch27
+                    // ↵:testtwitch27.tmi.twitch.tv 366 testtwitch27 #sayeedblack :End of /NAMES list"
+                    // length: 6
+                    // __proto__: Array(0)
+                    // prefix: "tmi.twitch.tv"
+                    // raw: "@emote-only=0;followers-only=-1;r9k=0;rituals=1;room-id=83084666;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #sayeedblack
+                    // ↵:testtwitch27.tmi.twitch.tv 353 testtwitch27 = #sayeedblack :testtwitch27
+                    // ↵:testtwitch27.tmi.twitch.tv 366 testtwitch27 #sayeedblack :End of /NAMES list"
+                    // tags:
+                    // emote-only: "0"
+                    // followers-only: "-1"
+                    // r9k: "0"
+                    // rituals: "1"
+                    // room-id: "83084666"
+                    // slow: "0"
+                    // subs-only: "0"
+                    // __proto__: Object
+                    // __proto__: Object
+                    break;
+                case "PART":
+                    if (ChatLive_socket[chat_number]) ChatLive_socket[chat_number].close(1000);
                     break;
                 default:
                     break;
             }
         };
 
+        window.clearTimeout(ChatLive_CheckId[chat_number]);
         ChatLive_CheckId[chat_number] = window.setTimeout(function() {
-            ChatLive_Check(chat_number);
+            ChatLive_Check(chat_number, id);
         }, 5000);
     }
 
-    function ChatLive_Check(chat_number) {
-        if (!ChatLive_loaded[chat_number]) {
+    function ChatLive_Check(chat_number, id) {
+        if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
             ChatLive_socket[chat_number].close(1000);
             ChatLive_LineAdd('<span class="message">' + STR_LOADING_FAIL + '</span>', chat_number);
-            ChatLive_loadChat(chat_number);
+            ChatLive_loadChat(chat_number, id);
         }
     }
 
     function ChatLive_CheckClear(chat_number) {
+        window.clearTimeout(ChatLive_JoinID[chat_number]);
         window.clearTimeout(ChatLive_CheckId[chat_number]);
+    }
+
+    var ChatLive_RoomState = [];
+
+    function ChatLive_SetRoomState(array, chat_number) {
+        Main_Log('ChatLive_SetRoomState');
+
+        ChatLive_RoomState[chat_number] = {
+            'emote-only': parseInt(array[1]),
+            'followers-only': parseInt(array[2]),
+            rk9: parseInt(array[3]),
+            slow: parseInt(array[4]),
+            'subs-only': parseInt(array[5])
+        };
+
+        Main_Log(ChatLive_RoomState[chat_number]);
+        ChatLiveControls_RefreshRoomState(chat_number);
+    }
+
+    function ChatLive_UpdateRoomState(message, chat_number) {
+        Main_Log('ChatLive_UpdateRoomState');
+        Main_Log(message);
+        if (message.tags) {
+
+            if (!ChatLive_RoomState[chat_number]) ChatLive_RoomState[chat_number] = {};
+
+            var tags = message.tags;
+
+            if (tags.hasOwnProperty('emote-only')) ChatLive_RoomState[chat_number]['emote-only'] = parseInt(tags['emote-only']);
+            if (tags.hasOwnProperty('followers-only')) ChatLive_RoomState[chat_number]['followers-only'] = parseInt(tags['followers-only']);
+            if (tags.hasOwnProperty('rk9')) ChatLive_RoomState[chat_number].rk9 = parseInt(tags.rk9);
+            if (tags.hasOwnProperty('slow')) ChatLive_RoomState[chat_number].slow = parseInt(tags.slow);
+            if (tags.hasOwnProperty('subs-only')) ChatLive_RoomState[chat_number]['subs-only'] = parseInt(tags['subs-only']);
+
+            Main_Log(ChatLive_RoomState[chat_number]);
+            ChatLiveControls_RefreshRoomState(chat_number);
+        }
+    }
+
+    var ChatLive_socketSend;
+    var ChatLive_socketSendJoin = false;
+    var ChatLive_socketSendCheckID;
+
+    function ChatLive_SendPrepared() {
+        if (!ChatLive_socketSend || ChatLive_socketSend.readyState !== 1) {
+            ChatLive_SendClose();
+
+            ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
+                reconnectInterval: 3000
+            });
+
+            ChatLive_socketSend.onopen = function() {
+                ChatLive_socketSend.send('PASS oauth:' + AddUser_UsernameArray[0].access_token + '\r\n');
+                ChatLive_socketSend.send('NICK ' + AddUser_UsernameArray[0].name.toLowerCase() + '\r\n');
+            };
+
+            ChatLive_socketSend.onmessage = function(data) {
+
+                var message = window.parseIRC(data.data.trim());
+
+                if (!message.command) return;
+
+                //Main_Log(message.command);
+                //Main_Log(message);
+
+                switch (message.command) {
+                    case "PING":
+                        Main_Log('ChatLive_socketSend PING');
+                        Main_Log(message);
+                        ChatLive_socketSend.send('PONG ' + message.params[0]);
+                        break;
+                    case "001":
+                        if (AddUser_UsernameArray[0].access_token && message.params[1]) {
+                            if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
+                                ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
+                            }
+                        }
+                        break;
+                    case "CAP":
+                        ChatLive_socketSendJoin = true;
+                        break;
+                    case "NOTICE":
+                        ChatLive_UserNoticeWarn(message);
+                        break;
+                    case "USERSTATE":
+                        Main_Log('USERSTATE send');
+                        Main_Log(message);
+                        break;
+                    default:
+                        break;
+                }
+            };
+        }
+
+        window.clearTimeout(ChatLive_socketSendCheckID);
+        ChatLive_socketSendCheckID = window.setTimeout(function() {
+            ChatLive_socketSendCheck();
+        }, 5000);
+    }
+
+    function ChatLive_SendClose() {
+        if (ChatLive_socketSend) {
+            ChatLive_socketSend.close(1000);
+        }
+        ChatLive_socketSendJoin = false;
+    }
+
+    function ChatLive_socketSendCheck() {
+        if (!ChatLive_socketSendJoin) {
+            ChatLive_socketSend.close(1000);
+            ChatLive_SendPrepared();
+        }
+    }
+
+    function ChatLive_UserNoticeCheck(message, chat_number, id) {
+        Main_Log(message);
+
+        if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
+
+            var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
+            ChatLiveControls_showWarningDialog(text, 5000);
+            Play_showWarningMidleDialog(text, 5000);
+
+            ChatLive_Banned[chat_number] = true;
+
+            window.clearTimeout(ChatLive_CheckId[chat_number]);
+            ChatLive_Check(chat_number, id);
+        } else ChatLive_UserNoticeWarn(message);
+
+    }
+
+    function ChatLive_UserNoticeWarn(message) {
+        Main_Log(message);
+
+        if (message.params[1]) {
+
+            Main_Log(message.params[1]);
+
+            ChatLiveControls_showWarningDialog(message.params[1], 5000);
+            Play_showWarningMidleDialog(message.params[1], 5000);
+
+        }
+    }
+
+    function ChatLive_SendMessage(message, chat_number) {
+        Main_Log('ChatLive_SendMessage ' + message);
+        ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
+    }
+
+    // function ChatLive_FakeSendMessage(messageText, chat_number) {
+    //     Main_Log('ChatLive_FakeSendMessage ' + messageText);
+
+    //     var message = {
+    //         params: [
+    //             "",
+    //             messageText
+    //         ],
+    //         tags: {
+    //             "badge-info": true,
+    //             badges: true,
+    //             color: true,
+    //             "display-name": "testtwitch27",
+    //             "emote-sets": "0",
+    //             mod: "0",
+    //             subscriber: "0",
+    //             "user-type": true
+    //         }
+    //     };
+
+    //     ChatLive_loadChatSuccess(message, chat_number);
+    // }
+
+    function ChatLive_CheckGiftSub(message) {
+        var tags = message.tags;
+
+        if (!tags || !tags.hasOwnProperty('msg-id')) return; //bad formatted message
+
+        if (Main_A_includes_B(tags['msg-id'], "subgift")) {
+
+            if (Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
+                Main_A_equals_B(tags['msg-param-recipient-user-name'].toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + '')) {
+
+                Play_showWarningMidleDialog((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
+                    STR_GIFT_SUB, 10000);
+            }
+        }
+
+        // tag:
+        // badge-info: "subscriber/2"
+        // badges: "subscriber/0,premium/1"
+        // color: true
+        // display-name: "marti_c16"
+        // emotes: true
+        // flags: true
+        // id: "2748827c-cd12-4b9f-b73f-34aff4c53c41"
+        // login: "marti_c16"
+        // mod: "0"
+        // msg-id: "subgift"
+        // msg-param-months: "2"
+        // msg-param-origin-id: "da\s39\sa3\see\s5e\s6b\s4b\s0d\s32\s55\sbf\sef\s95\s60\s18\s90\saf\sd8\s07\s09"
+        // msg-param-recipient-display-name: "Mayohnee"
+        // msg-param-recipient-id: "208812945"
+        // msg-param-recipient-user-name: "mayohnee"
+        // msg-param-sender-count: "0"
+        // msg-param-sub-plan: "1000"
+        // msg-param-sub-plan-name: "Channel\sSubscription\s(fedmyster)"
+        // room-id: "39040630"
+        // subscriber: "1"
+        // system-msg: "marti_c16\sgifted\sa\sTier\s1\ssub\sto\sMayohnee!"
+        // tmi-sent-ts: "1586752394924"
+        // user-id: "496014406"
+        // user-type: true
+
     }
 
     function ChatLive_loadChatSuccess(message, chat_number) {
@@ -2940,7 +5776,7 @@
                 tags.badges.split(',').forEach(function(badge) {
                     badge = badge.split('/');
 
-                    div += '<span class="' + badge[0] + (Main_A_includes_B(badge[0], 'subscriber') ? chat_number : "") + '-' + badge[1] + ' tag"></span>';
+                    div += '<span class="' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
                 });
             }
         }
@@ -2998,9 +5834,9 @@
 
         if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number);
         else {
-            var id = ChatLive_Id[chat_number];
+            var id = Chat_Id[chat_number];
             window.setTimeout(function() {
-                if (id === ChatLive_Id[chat_number]) ChatLive_LineAdd(div, chat_number);
+                if (id === Chat_Id[chat_number]) ChatLive_LineAdd(div, chat_number);
             }, (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000));
         }
     }
@@ -3055,13 +5891,14 @@
 
     function ChatLive_ClearIds(chat_number) {
         ChatLive_CheckClear(chat_number);
+        window.clearTimeout(ChatLive_socketSendCheckID);
         window.clearTimeout(ChatLive_loadBadgesChannelId);
     }
 
     function ChatLive_Clear(chat_number) {
         ChatLive_ClearIds(chat_number);
-        if (ChatLive_socket[chat_number]) ChatLive_socket[chat_number].close(1000);
-        ChatLive_Id[chat_number] = 0;
+
+        Chat_Id[chat_number] = 0;
         ChatLive_LineAddCounter[chat_number] = 0;
         ChatLive_Messages[chat_number] = [];
 
@@ -3069,9 +5906,51 @@
         else Main_empty('chat_box2');
 
         ChatLive_loaded[chat_number] = false;
+        ChatLive_Banned[chat_number] = false;
+        ChatLive_RoomState[chat_number] = null;
+
+        ChatLive_CheckClear(chat_number);
+
+        if (ChatLive_socket[chat_number] && ChatLive_loaded[chat_number] && ChatLive_socket[chat_number].readyState === 1 && AddUser_UsernameArray[0].access_token) {
+            ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number] + '\r\n');
+            ChatLive_socket[chat_number].close(1000);
+        } else if (ChatLive_socket[chat_number]) {
+            ChatLive_socket[chat_number].close(1000);
+        }
+
+        if (!chat_number) ChatLive_SendClose();
+
     }
-    //Variable initialization
-    var Chat_LoadGlobal = false;
+
+
+    function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, callbackError, Headers, HeaderQuatity) {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+
+        if (Headers) {
+
+            if (HeaderQuatity > 2) Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
+
+            for (var i = 0; i < HeaderQuatity; i++)
+                xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
+        }
+
+        xmlHttp.timeout = 10000;
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    callbackSucess(xmlHttp.responseText, chat_number, id);
+                } else if (xmlHttp.status !== 404) { //404 ignore the result is empty
+                    callbackError(tryes, chat_number, id);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    } //Variable initialization
     var Chat_loadingDataTry = 0;
     var Chat_Messages = [];
     var Chat_MessagesNext = [];
@@ -3092,7 +5971,6 @@
     var Chat_div = [];
     var Chat_Position = 0;
     var Chat_hasEnded = false;
-    var Chat_Id = 0;
     var Chat_CleanMax = 60;
     var Chat_JustStarted = true;
     //Variable initialization end
@@ -3114,105 +5992,118 @@
             Chat_Disable();
             return;
         }
-        if (!Chat_LoadGlobal) Chat_loadBadgesGlobal();
 
-        Chat_Id = (new Date()).getTime();
+        Chat_loadBadgesGlobal();
+
+        Chat_Id[0] = (new Date()).getTime();
         ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
         ChatLive_selectedChannel[0] = Main_values.Main_selectedChannel;
-        ChatLive_loadBadgesChannel(Chat_Id, Chat_loadBadgesChannelSuccess, 0);
+
+        ChatLive_loadEmotesChannelbbtv(0, 0, Chat_Id[0]);
+        ChatLive_loadEmotesChannelffz(0, 0, Chat_Id[0]);
+
+        ChatLive_loadBadgesChannel(0, 0, Chat_Id[0]);
+        ChatLive_loadCheersChannel(0, 0, Chat_Id[0]);
+
+        Chat_loadChat(Chat_Id[0]);
     }
+
+    var Chat_LoadGlobalBadges = false;
 
     function Chat_loadBadgesGlobal() {
-        extraEmotes = {};
-        Chat_loadingDataTry = 0;
-        Chat_LoadGlobal = false;
-        Chat_loadBadgesGlobalRequest();
+        if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
+        if (!extraEmotesDone.bbtvGlobal) Chat_loadBBTVGlobalEmotes(0);
+        if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
     }
 
-    function Chat_loadBadgesGlobalRequest() {
-        var theUrl = 'https://badges.twitch.tv/v1/badges/global/display';
-        BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadBadgesGlobalSuccess, Chat_loadBadgesGlobalError);
+    function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = 10000;
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    callbackSucess(xmlHttp.responseText);
+                } else {
+                    calbackError(tryes);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
     }
 
-    function Chat_loadBadgesGlobalError() {
-        Chat_loadingDataTry++;
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest();
-        else Chat_LoadGlobal = false;
+    function Chat_loadBadgesGlobalRequest(tryes) {
+        Chat_BaseLoadUrl(
+            'https://badges.twitch.tv/v1/badges/global/display',
+            tryes,
+            Chat_loadBadgesGlobalSuccess,
+            Chat_loadBadgesGlobalError
+        );
+    }
+
+    function Chat_loadBadgesGlobalError(tryes) {
+        if (tryes < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest(tryes + 1);
     }
 
     function Chat_loadBadgesGlobalSuccess(responseText) {
-        transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
-            badge.versions.forEach(function(version) {
-                tagCSS(badge.type, version.type, version.image_url_4x, null);
-            });
-        });
+        Chat_loadBadgesTransform(JSON.parse(responseText), 0, document.head);
+        Chat_loadBadgesTransform(JSON.parse(responseText), 1, document.head);
 
-        Chat_loadEmotes();
+        Chat_LoadGlobalBadges = true;
     }
 
-    function Chat_loadEmotes() {
-        Chat_loadingDataTry = 0;
-        Chat_loadEmotesRequest();
+    function Chat_loadBadgesTransform(responseText, chat_number, doc) {
+        var versions, property, version;
+
+        for (property in responseText.badge_sets) {
+            versions = responseText.badge_sets[property].versions;
+            for (version in versions) {
+                tagCSS(property + chat_number, version, versions[version].image_url_4x, doc);
+            }
+        }
     }
 
-    function Chat_loadEmotesRequest() {
-        var theUrl = 'https://api.betterttv.net/2/emotes';
-        BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccess, Chat_loadEmotesError);
+    function Chat_loadBBTVGlobalEmotes(tryes) {
+        Chat_BaseLoadUrl(
+            'https://api.betterttv.net/2/emotes',
+            tryes,
+            Chat_loadEmotesSuccess,
+            Chat_loadEmotesError
+        );
     }
 
-    function Chat_loadEmotesError() {
-        Chat_loadingDataTry++;
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequest();
-        else Chat_LoadGlobal = false;
+    function Chat_loadEmotesError(tryes) {
+        if (tryes < Chat_loadingDataTryMax) Chat_loadBBTVGlobalEmotes(tryes + 1);
     }
 
     function Chat_loadEmotesSuccess(data) {
-        ChatLive_loadEmotesbbtv(JSON.parse(data));
-        Chat_loadEmotesffz();
+        ChatLive_loadEmotesbbtv(JSON.parse(data), 0, true);
     }
 
-    function Chat_loadEmotesffz() {
-        Chat_loadingDataTry = 0;
-        Chat_loadEmotesRequestffz();
+    function Chat_loadEmotesffz(tryes) {
+        Chat_BaseLoadUrl(
+            'https://api.frankerfacez.com/v1/set/global',
+            tryes,
+            Chat_loadEmotesSuccessffz,
+            Chat_loadEmotesErrorffz
+        );
     }
 
-    function Chat_loadEmotesRequestffz() {
-        var theUrl = 'https://api.frankerfacez.com/v1/set/global';
-        BasexmlHttpGet(theUrl, 10000, 0, null, Chat_loadEmotesSuccessffz, Chat_loadEmotesErrorffz);
-    }
-
-    function Chat_loadEmotesErrorffz() {
-        Chat_loadingDataTry++;
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadEmotesRequestffz();
-        else Chat_LoadGlobal = false;
+    function Chat_loadEmotesErrorffz(tryes) {
+        if (tryes < Chat_loadingDataTryMax) Chat_loadEmotesffz(tryes + 1);
     }
 
     function Chat_loadEmotesSuccessffz(data) {
-        ChatLive_loadEmotesffz(JSON.parse(data));
-
-        Chat_LoadGlobal = true;
-    }
-
-    function Chat_loadBadgesTransform(responseText, chat_number) {
-        transformBadges(JSON.parse(responseText).badge_sets).forEach(function(badge) {
-            badge.versions.forEach(function(version) {
-                tagCSS(badge.type + chat_number, version.type, version.image_url_4x, Chat_div[chat_number]);
-            });
-        });
-    }
-
-    function Chat_loadBadgesChannelSuccess(responseText, id) {
-        Chat_loadBadgesTransform(responseText, 0);
-
-        ChatLive_loadEmotesChannel(0);
-        ChatLive_loadCheersChannel(0);
-        ChatLive_loadEmotesChannelffz(0);
-        if (Chat_Id === id) Chat_loadChat(id);
+        ChatLive_loadEmotesffz(JSON.parse(data), 0, true);
     }
 
     function Chat_loadChat(id) {
         Chat_loadingDataTry = 0;
-        if (Chat_Id === id) Chat_loadChatRequest(id);
+        if (Chat_Id[0] === id) Chat_loadChatRequest(id);
     }
 
     function Chat_loadChatRequest(id) {
@@ -3228,9 +6119,9 @@
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    if (Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+                    if (Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
                 } else {
-                    if (Chat_Id === id) Chat_loadChatError(id);
+                    if (Chat_Id[0] === id) Chat_loadChatError(id);
                 }
             }
         };
@@ -3240,7 +6131,7 @@
 
     function Chat_loadChatError(id) {
         Chat_loadingDataTry++;
-        if (Chat_Id === id) {
+        if (Chat_Id[0] === id) {
             if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatRequest(id);
             else {
                 window.clearTimeout(Chat_loadChatId);
@@ -3273,7 +6164,7 @@
             //Add badges
             if (mmessage.hasOwnProperty('user_badges')) {
                 mmessage.user_badges.forEach(function(badges) {
-                    div += '<span class="' + badges._id + (Main_A_includes_B(badges._id, 'subscriber') ? "0-" : "-") + badges.version + ' tag"></span>';
+                    div += '<span class="' + badges._id + "0-" + badges.version + ' tag"></span>';
                 });
             }
 
@@ -3303,7 +6194,7 @@
             if (null_next) Chat_MessageVector(div, comments.content_offset_seconds);
             else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments.content_offset_seconds);
         });
-        if (null_next && Chat_Id === id) {
+        if (null_next && Chat_Id[0] === id) {
             Chat_JustStarted = false;
             Chat_Play(id);
             if (Chat_next !== undefined) Chat_loadChatNext(id); //if (Chat_next === undefined) chat has ended
@@ -3325,7 +6216,7 @@
     }
 
     function Chat_Play(id) {
-        if (!Chat_JustStarted && !Chat_hasEnded && Chat_Id === id && !Main_values.Play_ChatForceDisable) {
+        if (!Chat_JustStarted && !Chat_hasEnded && Chat_Id[0] === id && !Main_values.Play_ChatForceDisable) {
             Main_Addline(id);
             window.clearInterval(Chat_addlinesId);
             Chat_addlinesId = window.setInterval(function() {
@@ -3344,7 +6235,7 @@
         // on exit cleanup the div
         Chat_hasEnded = false;
         Chat_Pause();
-        Chat_Id = 0;
+        Chat_Id[0] = 0;
         Main_empty('chat_box');
         Main_empty('chat_box2');
         Chat_next = null;
@@ -3377,7 +6268,7 @@
                 Chat_Play(id);
                 Chat_MessagesNext = [];
 
-                if (Chat_Id === id) Chat_loadChatNext(id);
+                if (Chat_Id[0] === id) Chat_loadChatNext(id);
                 Chat_Clean(0);
             } else { //Chat has eneded
                 var div = '&nbsp;';
@@ -3399,7 +6290,7 @@
 
     function Chat_loadChatNext(id) {
         Chat_loadingDataTry = 0;
-        if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextRequest(id);
+        if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id);
     }
 
     function Chat_loadChatNextRequest(id) {
@@ -3415,9 +6306,9 @@
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+                    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
                 } else {
-                    if (!Chat_hasEnded && Chat_Id === id) Chat_loadChatNextError(id);
+                    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextError(id);
                 }
             }
         };
@@ -3427,7 +6318,7 @@
 
     function Chat_loadChatNextError(id) {
         Chat_loadingDataTry++;
-        if (Chat_Id === id) {
+        if (Chat_Id[0] === id) {
             if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatNextRequest(id);
             else {
                 window.clearTimeout(Chat_loadChatNextId);
@@ -3531,6 +6422,7 @@
         "Search_isSearching": false,
         "Play_ChatForceDisable": false,
         "Never_run_new": true,
+        "warning_extra": true,
         "Chat_font_size": 2,
         "ChatBackground": 12,
         "IsRerun": false,
@@ -3546,6 +6438,13 @@
         "Restore_Backup_Check": false,
     };
 
+    var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
+    var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
+    var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
+    var Main_SidePannelSize = "1280x720";
+    var Main_VideoSize = "640x360";
+    var Main_GameSize = "340x475";
+
     var Main_values_Play_data;
     var Main_values_History_data = {}; //The obj is defined in AddUser_RestoreUsers()
     var Main_Force = "4mv6wki5h1ko";
@@ -3556,6 +6455,7 @@
     var Main_IsDayFirst = false;
     var Main_SearchInput;
     var Main_AddUserInput;
+    var Main_ChatLiveInput;
     var Main_updateclockId;
     var Main_ContentLang = "";
     var Main_Periods = [];
@@ -3596,7 +6496,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.171';
-    var Main_minversion = 'April 16, 2020';
+    var Main_minversion = 'April 20, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -3629,98 +6529,101 @@
     function Main_loadTranslations(language) {
         Main_Checktylesheet();
 
-        Main_ready(function() {
-            try {
-                if (Main_A_includes_B(window.location.href, 'asset')) {
-                    //Same as in smartTwitchTV/release/api.js
-                    //The app is running from assets need to expose smartTwitchTV
-                    smartTwitchTV = {
-                        'mainstart': Main_Start,
-                        'Play_PannelEndStart': Play_PannelEndStart,
-                        'Play_PlayerCheck': Play_PlayerCheck,
-                        'Play_UpdateDuration': Play_UpdateDuration,
-                        'PlayExtra_End': PlayExtra_End,
-                        'Play_MultiEnd': Play_MultiEnd,
-                        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
-                        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-                        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
-                        'Main_CheckStop': Main_CheckStop,
-                        'Main_CheckResume': Main_CheckResume,
-                        'Play_getQualities': Play_getQualities,
-                        'Play_ShowVideoStatus': Play_ShowVideoStatus,
-                        'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                        'PlayVod_previews_success': PlayVod_previews_success,
-                        'Play_PlayPauseChange': Play_PlayPauseChange
-                    };
-                }
-                Main_IsOnAndroid = Android.getAndroid();
-                Main_IsOnAndroidVersion = Android.getversion();
-            } catch (e) {
-                Main_IsOnAndroidVersion = '1.0.0';
-                Main_IsOnAndroid = 0;
-                document.body.style.backgroundColor = "rgba(0, 0, 0, 1)";
-                Main_isDebug = true;
-                console.log('Main_isReleased: ' + Main_isReleased);
-                console.log('Main_isDebug: ' + Main_isDebug);
-                console.log('Main_isBrowser: ' + !Main_IsOnAndroid);
-                //If we add the class on the android app for some reason it prevents input from release the focus
-                Main_AddClass('scenefeed', 'feed_screen_input');
-                //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
-                KEY_RETURN = 27;
+        try {
+            if (Main_A_includes_B(window.location.href, 'asset')) {
+                //Same as in smartTwitchTV/release/api.js
+                //The app is running from assets need to expose smartTwitchTV
+                smartTwitchTV = {
+                    'mainstart': Main_Start,
+                    'Play_PannelEndStart': Play_PannelEndStart,
+                    'Play_PlayerCheck': Play_PlayerCheck,
+                    'Play_UpdateDuration': Play_UpdateDuration,
+                    'PlayExtra_End': PlayExtra_End,
+                    'Play_MultiEnd': Play_MultiEnd,
+                    'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
+                    'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
+                    'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+                    'Main_CheckStop': Main_CheckStop,
+                    'Main_CheckResume': Main_CheckResume,
+                    'Play_getQualities': Play_getQualities,
+                    'Play_ShowVideoStatus': Play_ShowVideoStatus,
+                    'Play_ShowVideoQuality': Play_ShowVideoQuality,
+                    'PlayVod_previews_success': PlayVod_previews_success,
+                    'Play_PlayPauseChange': Play_PlayPauseChange
+                };
             }
-            Main_showLoadDialog();
+            Main_IsOnAndroid = Android.getAndroid();
+            Main_IsOnAndroidVersion = Android.getversion();
 
-            Main_initClick();
-            Settings_SetDefautls();
-            calculateFontSize();
-            en_USLang();
-            Languages_SetDefautls();
+        } catch (e) {
+            Main_IsOnAndroidVersion = '1.0.0';
+            Main_IsOnAndroid = 0;
+            document.body.style.backgroundColor = "rgba(155, 155, 155, 1)"; //default rgba(0, 0, 0, 1)
+            Main_isDebug = true;
+            Main_Log('Main_isReleased: ' + Main_isReleased);
+            Main_Log('Main_isDebug: ' + Main_isDebug);
+            Main_Log('Main_isBrowser: ' + !Main_IsOnAndroid);
+            //If we add the class on the android app for some reason it prevents input from release the focus
+            Main_AddClass('scenefeed', 'feed_screen_input');
+            //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
+            KEY_RETURN = 27;
+        }
+        try {
+            Main_isDebug = Android.getdebug();
+        } catch (e) {}
 
-            // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-            // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-            // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+        Main_showLoadDialog();
 
-            //var lang = language,
-            //    Savedlang = Main_getItemInt('user_language', 0);
+        Main_initClick();
+        Settings_SetDefautls();
+        calculateFontSize();
+        en_USLang();
+        Languages_SetDefautls();
 
-            //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-            //else Settings_CheckLang(lang);
+        // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+        // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+        // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
 
-            //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-            //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
+        //var lang = language,
+        //    Savedlang = Main_getItemInt('user_language', 0);
 
-            console.log("language is " + language);
-            DefaultLang();
+        //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
+        //else Settings_CheckLang(lang);
 
-            if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
+        //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
+        //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
 
-            Main_SearchInput = document.getElementById("search_input");
-            Main_AddUserInput = document.getElementById("user_input");
-            Main_Scene1Doc = document.getElementById('scene1');
-            Main_Scene2Doc = document.getElementById('scene2');
+        Main_Log("language is " + language);
+        DefaultLang();
 
-            Main_RestoreValues();
+        if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
-            Main_DoRestore = AddUser_RestoreUsers();
+        Main_SearchInput = document.getElementById("search_input");
+        Main_AddUserInput = document.getElementById("user_input");
+        Main_ChatLiveInput = document.getElementById("chat_send_input");
+        Main_Scene1Doc = document.getElementById('scene1');
+        Main_Scene2Doc = document.getElementById('scene2');
 
-            if (!Main_values.Restore_Backup_Check) {
+        Main_RestoreValues();
 
-                try {
-                    Android.requestWr();
-                    Main_HideLoadDialog();
-                    Main_innerHTML("main_dialog_remove", STR_BACKUP);
-                    Main_textContent('remove_cancel', STR_NO);
-                    Main_textContent('remove_yes', STR_YES);
-                    Main_ShowElement('main_remove_dialog');
-                    Main_values.Restore_Backup_Check = true;
-                    document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
-                } catch (e) {
-                    window.setTimeout(Main_initWindows, 500);
-                    return;
-                }
-            } else window.setTimeout(Main_initWindows, 500);
+        Main_DoRestore = AddUser_RestoreUsers();
 
-        });
+        if (!Main_values.Restore_Backup_Check) {
+
+            try {
+                Android.requestWr();
+                Main_HideLoadDialog();
+                Main_innerHTML("main_dialog_remove", STR_BACKUP);
+                Main_textContent('remove_cancel', STR_NO);
+                Main_textContent('remove_yes', STR_YES);
+                Main_ShowElement('main_remove_dialog');
+                Main_values.Restore_Backup_Check = true;
+                document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+            } catch (e) {
+                Main_timeOut(Main_initWindows, 500);
+                return;
+            }
+        } else Main_timeOut(Main_initWindows, 500);
 
     }
 
@@ -3777,6 +6680,7 @@
     }
 
     function Main_initWindows() {
+        Main_Log('Main_initWindows');
         try {
             Main_CanBackup = Android.canBackupFile();
 
@@ -3884,37 +6788,34 @@
 
         Main_GoBefore = Main_values.Main_Go;
 
-        Main_ready(function() {
-            Chat_Preinit();
-            Play_PreStart();
-            UserLiveFeed_Prepare();
 
-            if (AddUser_UserIsSet()) {
-                Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5); //it 5 min refresh
-            }
-            Screens_InitScreens();
+        Chat_Preinit();
+        Play_PreStart();
+        UserLiveFeed_Prepare();
 
-            document.getElementById("side_panel").style.transform = '';
-            document.getElementById("user_feed_notify").style.transform = '';
+        if (AddUser_UserIsSet()) {
+            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5); //it 5 min refresh
+        }
+        Screens_InitScreens();
 
-            Main_checkVersion();
+        document.getElementById("side_panel").style.transform = '';
+        document.getElementById("user_feed_notify").style.transform = '';
 
-            Main_SetStringsSecondary();
+        Main_checkVersion();
 
-            Play_MakeControls();
-            Play_SetControls();
-            Play_SetFullScreen(Play_isFullScreen);
+        Main_SetStringsSecondary();
 
-            Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-            Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5); //Check it 5min
-            Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
-            Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+        Play_MakeControls();
+        Play_SetControls();
+        Play_SetFullScreen(Play_isFullScreen);
 
-            inUseObj = Live;
-            Main_ready(function() {
-                Screens_init();
-            });
-        });
+        Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+        Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5); //Check it 5min
+        Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+
+        inUseObj = Live;
+        Main_timeOut(Screens_init, 500);
     }
 
     function Main_SetStringsMain(isStarting) {
@@ -4010,6 +6911,19 @@
         Main_textContent('dialog_thumb_opt_setting_name_5', STR_GO_TO);
 
         Main_innerHTML("dialog_multi_help_text", STR_CONTROLS_MULTI);
+
+        Main_textContent("chat_send_button0", STR_CHAT_OPTIONS);
+        Main_textContent("chat_send_button1", STR_CHAT_DELL_ALL);
+        Main_textContent("chat_send_button2", STR_CHAT_UNICODE_EMOJI);
+        Main_textContent("chat_send_button3", STR_CHAT_BBTV_GLOBAL);
+        Main_textContent("chat_send_button4", STR_CHAT_FFZ_GLOBAL);
+        Main_textContent("chat_send_button5", STR_CHAT_SEND);
+        Main_textContent("chat_send_button6", STR_CHAT_AT_STREAM);
+        Main_textContent("chat_send_button7", STR_CHAT_TW_EMOTES);
+        Main_textContent("chat_send_button8", STR_CHAT_BBTV_STREAM);
+        Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
+        Main_textContent("chat_result", STR_CHAT_RESULT);
+        ChatLiveControls_OptionsUpdate_defautls();
     }
 
     var Main_initClickDoc = [
@@ -4088,7 +7002,7 @@
             if (!Main_buttonsVisible()) return;
 
             if (Main_IsOnAndroid) Android.keyEvent(pos, 1);
-            else console.log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
+            else Main_Log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
         };
     }
 
@@ -4099,7 +7013,7 @@
 
     function Main_Clickonpointerdown(pos) {
         if (Main_IsOnAndroid) Android.keyEvent(pos, 0);
-        else console.log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
+        else Main_Log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
     }
 
     function Main_IconLoad(lable, icon, string) {
@@ -4225,6 +7139,14 @@
     function Main_CounterDialog(x, y, coloumns, total) {
         if (total > 0) Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
         else Main_CounterDialogRst();
+    }
+
+    function Main_showWarningExtra(text) {
+        Main_innerHTML('dialog_warning_extra_text', text);
+        Main_ShowElement('dialog_warning_extra');
+        Main_timeOut(function() {
+            Main_HideElement('dialog_warning_extra');
+        }, 60000);
     }
 
     function Main_showWarningDialog(text) {
@@ -4673,7 +7595,7 @@
         if (Main_IsOnAndroid) {
             var device = Android.getDevice();
             var Webviewversion = Android.getWebviewVersion();
-            console.log('Webviewversion ' + Webviewversion);
+            Main_Log('Webviewversion ' + Webviewversion);
 
             Main_versionTag = "Apk: " + Main_IsOnAndroidVersion + ' Web: ' + Main_minversion +
                 (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
@@ -5016,9 +7938,9 @@
 
         Main_ready(function() {
             if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-                console.log('Main_Checktylesheet reloading');
+                Main_Log('Main_Checktylesheet reloading');
                 Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-            } else console.log('Main_Checktylesheet loaded OK');
+            } else Main_Log('Main_Checktylesheet loaded OK');
 
             document.body.removeChild(span);
         });
@@ -5038,9 +7960,14 @@
             (document.readyState !== "loading" && !document.documentElement.doScroll)) {
 
             // Handle it asynchronously to allow scripts the opportunity to delay ready
-            window.setTimeout(func);
+            Main_timeOut(func);
 
         } else document.addEventListener("DOMContentLoaded", func);
+    }
+
+    function Main_timeOut(func, timeout) {
+        if (timeout && timeout > 0) window.setTimeout(func, timeout);
+        else window.setTimeout(func);
     }
 
     function Main_getclock() {
@@ -5054,15 +7981,6 @@
 
         return dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
     }
-
-    // right after the TV comes from standby the network can lag, delay the check
-    //function Main_Resume() {
-    //    if (!document.hidden) {
-    //        Main_updateclock();
-    //        //Update clock twice as first try clock may be out of date in the case TV was on standby
-    //        window.setTimeout(Main_updateclock, 20000);
-    //    }
-    //}
 
     function Main_updateclock() {
         if (!document.hidden) {
@@ -5148,22 +8066,22 @@
     // Replace "16EB" with is the char ᛫ by the result of "string.charCodeAt(i).toString(16).toUpperCase()"
     // To see supported fonts and etc info about the unknown char
     function Main_PrintUnicode(string) { // jshint ignore:line
-        console.log(string);
+        Main_Log(string);
         for (var i = 0; i < string.length; i++)
-            console.log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
+            Main_Log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
     }
 
     function processCode(pageUrl) {
-        if (!Main_IsOnAndroid) console.log("processCode");
+        Main_Log("processCode");
         var code = '';
         code = pageUrl.match(/code=(\w+)/);
         if (code) {
             code = code[1];
             CheckPage("?code=" + code);
-            console.log('if code ' + code);
+            Main_Log('if code ' + code);
             Main_newUsercode = code;
         } else {
-            console.log('else code ' + code);
+            Main_Log('else code ' + code);
             CheckPage('');
             Main_newUsercode = 0;
         }
@@ -5266,13 +8184,6 @@
         [Main_AcceptHeader, Main_TwithcV5Json],
         [Main_Authorization, null]
     ];
-
-    var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
-    var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
-    var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
-    var Main_SidePannelSize = "1280x720";
-    var Main_VideoSize = "640x360";
-    var Main_GameSize = "340x475";
 
     function Main_SetThumb() {
         Main_VideoSize = Main_VideoSizeAll[Settings_value.thumb_quality.defaultValue];
@@ -5606,6 +8517,8 @@
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 
+        if (Main_isElementShowing('chat_send')) ChatLiveControls_Hide();
+
         //Hide setting if showing
         if (Languages_isVisible()) {
             Languages_exit();
@@ -5759,7 +8672,13 @@
     function Main_LoadUrl(url) {
         if (Main_IsOnAndroid) Android.mloadUrl(url);
         else window.location = url;
-    } //Variable initialization
+    }
+
+    function Main_Log(text) {
+        if (Main_isDebug) console.log(text);
+    }
+
+    //Variable initialization
     var PlayClip_IsJumping = false;
     var PlayClip_jumpCount = 0;
     var PlayClip_TimeToJump = 0;
@@ -5792,6 +8711,8 @@
     //Variable initialization end
 
     function PlayClip_Start() {
+        Main_Log('PlayClip_Start');
+
         Play_showBufferDialog();
         Play_HideEndDialog();
 
@@ -5829,6 +8750,7 @@
         document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
         document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
         document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
+        document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
         PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
         Play_BufferSize = 0;
@@ -5893,6 +8815,7 @@
     }
 
     function PlayClip_GetStreamerInfo() {
+        Main_Log('PlayClip_GetStreamerInfo');
         var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
         BasehttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
@@ -6042,7 +8965,7 @@
     }
 
     function PlayClip_onPlayer() {
-        if (Main_isDebug) console.log('PlayClip_onPlayer:', '\n' + '\n"' + PlayClip_playingUrl + '"\n');
+        Main_Log('PlayClip_onPlayer ' + PlayClip_playingUrl);
 
         if (Main_IsOnAndroid && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
             PlayClip_replayOrNext ? -1 : Android.gettime());
@@ -6060,6 +8983,8 @@
     }
 
     function PlayClip_shutdownStream() {
+        Main_Log('PlayClip_shutdownStream ' + PlayClip_isOn);
+
         if (PlayClip_isOn) {
             PlayClip_All = false;
             PlayClip_PreshutdownStream(true);
@@ -6069,6 +8994,8 @@
     }
 
     function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
+        Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
+
         Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0, 'clip');
         PlayClip_hidePanel();
         if (Main_IsOnAndroid) {
@@ -6162,7 +9089,7 @@
 
     function PlayClip_PlayNextPreviously() {
         Play_ForceHidePannel();
-        Main_ready(function() {
+        Main_timeOut(function() {
             PlayClip_replayOrNext = true;
             PlayClip_PreshutdownStream(false);
             Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
@@ -6653,7 +9580,7 @@
                 document.body.addEventListener("keydown", Play_handleKeyDown, false);
 
                 Play_data.data[14] = Play_TargetHost.target_id;
-                Main_ready(Play_Start);
+                Main_timeOut(Play_Start);
             } else {
                 PlayClip_OpenVod();
                 if (!PlayClip_HasVOD) canhide = false;
@@ -6810,7 +9737,7 @@
             if (AddCode_IsFollowing) AddCode_UnFollow();
             else AddCode_Follow();
         } else {
-            Play_showWarningDialog(STR_NOKEY_WARN, 2000);
+            Play_showWarningMidleDialog(STR_NOKEY_WARN, 2000);
             Play_IsWarning = true;
         }
     }
@@ -6847,7 +9774,7 @@
             }
         }
 
-        if (!PreventWarn) Play_showWarningDialog(error, 1500);
+        if (!PreventWarn) Play_showWarningMidleDialog(error, 1500);
 
         if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
 
@@ -6861,7 +9788,7 @@
             if (PlayVodClip === 1) {
                 ChatLive_Playing = true;
                 ChatLive_MessagesRunAfterPause();
-            } else if (PlayClip_HasVOD) Chat_Play(Chat_Id);
+            } else if (PlayClip_HasVOD) Chat_Play(Chat_Id[0]);
 
             if (Play_isPanelShown()) {
                 if (PlayVodClip === 1) Play_hidePanel();
@@ -6917,8 +9844,11 @@
                     if (is_vod) PlayVod_shutdownStream();
                     else Play_shutdownStream();
                 }
-            } else if (Play_WarningDialogVisible()) {
+            } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
+                window.clearTimeout(Play_showWarningMidleDialogId);
+                window.clearTimeout(Play_showWarningDialogId);
                 Play_HideWarningDialog();
+                Play_HideWarningMidleDialog();
                 Play_showExitDialog();
             } else {
                 var text = PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN;
@@ -6967,7 +9897,7 @@
 
             Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
 
-            Play_showWarningDialog(
+            Play_showWarningMidleDialog(
                 STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
                 2000
             );
@@ -7274,6 +10204,9 @@
                     else if (PlayExtra_PicturePicture) Play_AudioChangeLeft();
 
                     break;
+                case KEY_4:
+                    Play_controls[Play_controlsChatSend].enterKey();
+                    break;
                 default:
                     break;
             }
@@ -7297,13 +10230,14 @@
     var Play_controlsAudio = 11;
     var Play_controlsAudioMulti = 12;
     var Play_controlsChat = 13;
-    var Play_controlsChatSide = 14;
-    var Play_controlsChatForceDis = 15;
-    var Play_controlsChatPos = 16;
-    var Play_controlsChatSize = 17;
-    var Play_controlsChatBright = 18;
-    var Play_controlsChatFont = 19;
-    var Play_controlsChatDelay = 20;
+    var Play_controlsChatSend = 14;
+    var Play_controlsChatSide = 15;
+    var Play_controlsChatForceDis = 16;
+    var Play_controlsChatPos = 17;
+    var Play_controlsChatSize = 18;
+    var Play_controlsChatBright = 19;
+    var Play_controlsChatFont = 20;
+    var Play_controlsChatDelay = 21;
 
     var Play_controlsDefault = Play_controlsChat;
     var Play_Panelcounter = Play_controlsDefault;
@@ -7611,7 +10545,7 @@
 
                 }
 
-                if (Play_LowLatency) Play_showWarningDialog(STR_LOW_LATENCY_SUMMARY, 3000);
+                if (Play_LowLatency) Play_showWarningMidleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
 
                 Main_setItem('Play_LowLatency', Play_LowLatency);
                 this.setLable();
@@ -7641,7 +10575,7 @@
 
                 var text = !this.defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
 
-                Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+                Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE +
                     ((this.defaultValue < 2) ? text : this.values[this.defaultValue]),
                     2000
                 );
@@ -7678,7 +10612,7 @@
                 this.setLable();
 
                 if (!preventShowWarning) {
-                    Play_showWarningDialog(STR_AUDIO_SOURCE + STR_SPACE +
+                    Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE +
                         ((this.defaultValue < 4) ? Play_MultiArray[this.defaultValue].data[1] : this.values[this.defaultValue]),
                         2000
                     );
@@ -7808,6 +10742,27 @@
 
                 Main_textContent('extra_button_' + this.position, '(' + string + ')');
             },
+        };
+
+        Play_controls[Play_controlsChatSend] = {
+            icons: "keyboard",
+            string: STR_CHAT_WRITE,
+            values: null,
+            defaultValue: null,
+            opacity: 0,
+            enterKey: function() {
+                if (Main_values.Play_ChatForceDisable) {
+                    Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
+                    return;
+                } else if (!AddUser_UsernameArray[0].access_token) {
+                    Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
+                    return;
+                }
+
+                if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
+                else ChatLiveControls_Show();
+
+            }
         };
 
         Play_controls[Play_controlsChatSide] = { //chat side
@@ -8094,13 +11049,11 @@
     }
 
     function Play_BottomOptionsPressed(PlayVodClip) {
-        Main_ready(function() {
-            if (Play_controls[Play_Panelcounter].enterKey) {
-                Play_controls[Play_Panelcounter].enterKey(PlayVodClip);
-            } else {
-                Play_Resetpanel(PlayVodClip);
-            }
-        });
+        if (Play_controls[Play_Panelcounter].enterKey) {
+            Play_controls[Play_Panelcounter].enterKey(PlayVodClip);
+        } else {
+            Play_Resetpanel(PlayVodClip);
+        }
         Main_SaveValues();
     }
 
@@ -8319,7 +11272,7 @@
     }
 
     function PlayExtra_RestorePlayData() {
-        Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+        Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
         PlayExtra_data = JSON.parse(JSON.stringify(PlayExtra_Save_data));
         PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -8364,7 +11317,7 @@
         //Some player ended switch and warn
         if (doSwitch) PlayExtra_SwitchPlayer();
 
-        Play_showWarningDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
+        Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 
         Play_CloseSmall();
     }
@@ -8445,7 +11398,7 @@
             Main_SaveValues();
         }
 
-        if (Main_isDebug) console.log('PlayExtra_onPlayer: Auto');
+        if (Main_isDebug) Main_Log('PlayExtra_onPlayer: Auto');
     }
 
     function PlayExtra_handleKeyDown(e) {
@@ -8468,7 +11421,7 @@
             if (Main_IsOnAndroid && !Play_isFullScreen) Android.mupdatesize(Play_isFullScreen);
             PlayExtra_UnSetPanel();
             Play_HideBufferDialog();
-            Play_showWarningDialog(Reason, 2500);
+            Play_showWarningMidleDialog(Reason, 2500);
         }
     }
 
@@ -8782,6 +11735,8 @@
     }
 
     function Play_Start() {
+        Main_Log('Play_Start');
+
         Play_showBufferDialog();
 
         Play_LoadLogoSucess = false;
@@ -8793,6 +11748,7 @@
         document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
         document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
         document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
+        document.getElementById('controls_' + Play_controlsChatSend).style.display = '';
 
         if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
@@ -8853,7 +11809,7 @@
 
     // To Force a warn, not used regularly so keep commented out
     //function Play_Warn(text) {
-    //    Play_showWarningDialog(text);
+    //    Play_showWarningMidleDialog(text);
     //}
 
     function Play_getStreamData(channel_name) {
@@ -8920,7 +11876,7 @@
         Play_HideBufferDialog();
         Play_CheckIfIsLiveCleanEnd();
 
-        Play_showWarningDialog(text, 2000);
+        Play_showWarningMidleDialog(text, 2000);
     }
 
     function Play_CheckIfIsLiveClean() { //called from java
@@ -8930,7 +11886,7 @@
                 STR_IS_OFFLINE + STR_TOO_ERRORS,
                 JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[1]
             );
-        } else Play_showWarningDialog(STR_STREAM_ERROR_SMALL, 2000);
+        } else Play_showWarningMidleDialog(STR_STREAM_ERROR_SMALL, 2000);
     }
 
     function Play_CheckIfIsLiveCleanEnd() {
@@ -9239,6 +12195,7 @@
     }
 
     function Play_loadDatanew() {
+        Main_Log('Play_loadDatanew');
         if (Main_IsOnAndroid) {
 
             var StreamData = Play_getStreamData(Play_data.data[6]);
@@ -9306,7 +12263,7 @@
             document.body.addEventListener("keydown", Play_EndUpclearCalback, false);
             Play_state = Play_STATE_PLAYING;
 
-            Play_showWarningDialog(error_410 ? STR_410_ERROR :
+            Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
                 Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
                 2000);
 
@@ -9328,7 +12285,7 @@
 
     function Play_ForbiddenLive() {
         Play_HideBufferDialog();
-        Play_showWarningDialog(STR_FORBIDDEN);
+        Play_showWarningMidleDialog(STR_FORBIDDEN);
         window.setTimeout(function() {
             if (Play_isOn) Play_CheckHostStart();
         }, 4000);
@@ -9418,6 +12375,7 @@
     }
 
     function Play_onPlayer() {
+        Main_Log('Play_onPlayer');
 
         if (Main_IsOnAndroid && Play_isOn) {
             Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
@@ -9451,7 +12409,7 @@
             Android.SetQuality(-1);
             Android.RestartPlayer(1, 0, 0);
             Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
-            Play_showWarningDialog(STR_PLAYER_LAG, 2000);
+            Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
         } else if (mwhocall === 2) {
 
@@ -9460,7 +12418,7 @@
             Android.SetQuality(-1);
             Android.RestartPlayer(2, Android.gettime(), 0);
             Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality);
-            Play_showWarningDialog(STR_PLAYER_LAG, 2000);
+            Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
         } else if (mwhocall === 3) {
             if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
@@ -9468,7 +12426,7 @@
                 PlayClip_qualityIndex++;
                 Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality);
                 PlayClip_qualityChanged();
-                Play_showWarningDialog(STR_PLAYER_SOURCE, 2000);
+                Play_showWarningMidleDialog(STR_PLAYER_SOURCE, 2000);
             } else Play_EndStart(false, 3);
 
         }
@@ -9530,6 +12488,7 @@
     }
 
     function Play_shutdownStream() {
+        Main_Log('Play_shutdownStream ' + Play_isOn);
         if (Play_isOn) {
             Play_PreshutdownStream(true);
             Play_data.qualities = [];
@@ -9539,6 +12498,7 @@
     }
 
     function Play_PreshutdownStream(closePlayer) {
+        Main_Log('Play_PreshutdownStream ' + closePlayer);
         if (Main_IsOnAndroid) {
             if (closePlayer) {
                 //We are closing the player on error or on end
@@ -9559,7 +12519,7 @@
     }
 
     function Play_exitMain() {
-
+        Main_Log('Play_exitMain');
         if (AddUser_UserIsSet()) {
             AddCode_IsFollowing = false;
             Play_setFollow();
@@ -9575,6 +12535,8 @@
     }
 
     function Play_ClearPlayer() {
+        Main_Log('Play_ClearPlayer');
+
         window.clearInterval(Play_ShowPanelStatusId);
         Play_hidePanel();
         Play_HideWarningDialog();
@@ -9605,6 +12567,8 @@
     }
 
     function Play_ClearPlay(clearChat) {
+        Main_Log('Play_ClearPlay');
+
         Play_Playing = false;
         document.body.removeEventListener("keydown", Play_handleKeyDown);
         if (clearChat) ChatLive_Clear(0);
@@ -9648,6 +12612,28 @@
 
     function Play_WarningDialogVisible() {
         return Main_isElementShowing('dialog_warning_play');
+    }
+
+    var Play_showWarningMidleDialogId;
+
+    function Play_showWarningMidleDialog(text, timeout) {
+        Main_innerHTML("dialog_warning_play_middle_text", text);
+        Main_ShowElement('dialog_warning_play_middle');
+
+        window.clearTimeout(Play_showWarningMidleDialogId);
+        if (timeout) {
+            Play_showWarningMidleDialogId = window.setTimeout(function() {
+                Play_HideWarningMidleDialog();
+            }, timeout);
+        }
+    }
+
+    function Play_HideWarningMidleDialog() {
+        Main_HideElement('dialog_warning_play_middle');
+    }
+
+    function Play_WarningMidleDialogVisible() {
+        return Main_isElementShowing('dialog_warning_play_middle');
     }
 
     function Play_showExitDialog() {
@@ -10033,7 +13019,7 @@
         Play_HideBufferDialog();
         Play_state = Play_STATE_PLAYING;
 
-        Play_showWarningDialog(error_410 ? STR_410_ERROR :
+        Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
             Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
             2500);
 
@@ -10097,7 +13083,7 @@
         Play_HideBufferDialog();
         Play_state = Play_STATE_PLAYING;
 
-        Play_showWarningDialog(error_410 ? STR_410_ERROR :
+        Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
             Play_data.data[1] + ' ' + STR_LIVE + STR_BR + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),
             2000);
 
@@ -10237,7 +13223,7 @@
     }
 
     function Play_MultiEnd(position) {
-        Play_showWarningDialog(Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+        Play_showWarningMidleDialog(Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiInfoReset(position);
@@ -10349,7 +13335,7 @@
     }
 
     function Play_MultiStartFail(pos, display_name, string_fail_reason) {
-        Play_showWarningDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE), 2000);
+        Play_showWarningMidleDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE), 2000);
         Play_HideBufferDialog();
 
         if (Play_OlddataSet()) {
@@ -10448,7 +13434,7 @@
 
             Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
 
-            Play_showWarningDialog(
+            Play_showWarningMidleDialog(
                 STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
                 2000
             );
@@ -10734,6 +13720,8 @@
     //Variable initialization end
 
     function PlayVod_Start() {
+        Main_Log('PlayVod_Start');
+
         Play_showBufferDialog();
         Play_HideEndDialog();
         //Play_SupportsSource = true;
@@ -10751,6 +13739,7 @@
         document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
         document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
         document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
+        document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
         PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
         Play_IconsResetFocus();
@@ -10803,6 +13792,8 @@
     }
 
     function PlayVod_PosStart() {
+        Main_Log('PlayVod_PosStart');
+
         window.setTimeout(function() {
             Main_ShowElement('controls_holder');
             Main_ShowElement('progress_pause_holder');
@@ -10984,6 +13975,8 @@
     var PlayVod_autoUrl;
 
     function PlayVod_loadDatanew() {
+        Main_Log('PlayVod_loadDatanew');
+
         if (Main_IsOnAndroid) {
             var StreamData = null;
 
@@ -11085,6 +14078,8 @@
     }
 
     function PlayVod_onPlayer() {
+        Main_Log('PlayVod_onPlayer');
+
         if (Main_IsOnAndroid) {
             if (Main_values.vodOffset) {
                 Chat_offset = Main_values.vodOffset;
@@ -11108,6 +14103,8 @@
     }
 
     function PlayVod_shutdownStream() {
+        Main_Log('PlayVod_shutdownStream ' + PlayVod_isOn);
+
         if (PlayVod_isOn) {
             PlayVod_PreshutdownStream(true);
             PlayVod_qualities = [];
@@ -11117,6 +14114,8 @@
     }
 
     function PlayVod_PreshutdownStream(saveOffset, PreventcleanQuailities) {
+        Main_Log('PlayVod_PreshutdownStream');
+
         if (saveOffset && Main_IsOnAndroid) {
             if ((Play_DurationSeconds - 300) > parseInt(Android.gettime() / 1000))
                 PlayVod_SaveVodIds();
@@ -11135,6 +14134,8 @@
     }
 
     function PlayVod_ClearVod() {
+        Main_Log('PlayVod_ClearVod');
+
         document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
         Main_values.vodOffset = 0;
         Play_DurationSeconds = 0;
@@ -11720,7 +14721,7 @@
         position = parseInt(position * PlayVod_previews_obj.count);
         var imagePos = parseInt(position / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length;
 
-        // console.log('position ' + position + ' w ' + (position % PlayVod_previews_obj.cols) + ' h ' +
+        // Main_Log('position ' + position + ' w ' + (position % PlayVod_previews_obj.cols) + ' h ' +
         //     parseInt(position / PlayVod_previews_obj.cols) + ' p ' + imagePos);
 
         if (!PlayVod_previews_images_load || imagePos !== PlayVod_previews_images_pos) {
@@ -11755,7 +14756,7 @@
 
     // function PlayVod_previews_start_test() {
     //     PlayVod_previews_clear();
-    //     console.log(PlayVod_previews_url);
+    //     Main_Log(PlayVod_previews_url);
 
     //     PlayVod_previews_hide();
     //     if (!PlayVod_previews_url) return;
@@ -11901,6 +14902,7 @@
     //Variable initialization end
 
     function Screens_init() {
+        Main_Log('Screens_init ' + inUseObj.screen);
         Main_addFocusVideoOffset = -1;
         Main_values.Main_Go = inUseObj.screen;
         inUseObj.label_init();
@@ -11920,6 +14922,8 @@
     }
 
     function Screens_exit() {
+        Main_Log('Screens_exit ' + inUseObj.screen);
+
         Main_addFocusVideoOffset = 0;
         if (inUseObj.label_exit) inUseObj.label_exit();
         document.body.removeEventListener("keydown", Screens_handleKeyDown);
@@ -11986,6 +14990,7 @@
     }
 
     function Screens_loadDataError(obj) {
+        Main_Log('Screens_loadDataError ' + obj.screen);
         obj.loadingDataTry++;
         if (obj.loadingDataTry < obj.loadingDataTryMax) {
             obj.loadingDataTimeout += 500;
@@ -12202,6 +15207,7 @@
     }
 
     function Screens_loadDataSuccessFinish(obj) {
+        Main_Log('Screens_loadDataSuccessFinish ' + obj.screen);
         if (!obj.status) {
             if (Main_values.Main_Go === Main_aGame) AGame_Checkfollow();
 
@@ -12237,12 +15243,16 @@
             obj.FirstLoad = false;
 
             if (Main_FirstRun) {
+                Main_Log('Main_FirstRun ' + Main_FirstRun);
                 //Force reset some values as I have reset the Never_run_new value and some things may crash
                 if (Main_values.Never_run_new) {
                     Main_GoBefore = Main_Live;
                     Main_values.Play_WasPlaying = 0;
                 }
                 Screens_ForceSync = false;
+
+                if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
+                Main_values.warning_extra = false;
 
                 if (Settings_value.start_user_screen.defaultValue) {
 
@@ -12255,69 +15265,73 @@
                     Screens_loadDataSuccessFinishEnd();
 
                 } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) { // && obj.status
+                    Main_Log('Play_WasPlaying');
 
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
                     Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
 
-                    Main_ready(function() {
+                    //History vod is so fast to load that this need to be set here to prevent a vod reset
+                    Main_FirstRun = false;
+                    Main_timeOut(function() {
                         if (Main_values.Play_WasPlaying === 1) {
                             if (Play_data.data.length > 0) {
+
+
                                 Main_openStream();
                                 Main_SwitchScreen(true);
+
+
                             } else Main_SwitchScreen(false);
                         } else {
                             if (!Main_values.vodOffset) Main_values.vodOffset = 1;
                             Play_DurationSeconds = 0;
-
-                            //History vod is so fast to load that this need to be set here to prevent a vod reset
-                            Main_FirstRun = false;
                             Main_openVod();
                             Main_SwitchScreen(true);
                         }
 
-                        window.setTimeout(function() {
+                        Main_timeOut(function() {
                             if (!Play_IsWarning) Play_HideWarningDialog();
                         }, 3000);
                         Screens_loadDataSuccessFinishEnd();
-                    });
+                    }, 500);
                 } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
                     Main_GoBefore !== Main_Search) {
+                    Main_Log('!Play_WasPlaying');
+
                     Main_HideElementWithEle(obj.ScrollDoc);
-                    Main_ready(function() {
-                        Main_ExitCurrent(Main_values.Main_Go);
-                        Main_values.Main_Go = Main_GoBefore;
-                        Screens_RemoveAllFocus();
-                        Main_SwitchScreen();
-                        if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
-                        else {
-                            Main_FirstRun = false;
-                            Main_HideLoadDialog();
-                        }
-                    });
+                    Main_ExitCurrent(Main_values.Main_Go);
+                    Main_values.Main_Go = Main_GoBefore;
+                    Screens_RemoveAllFocus();
+                    Main_SwitchScreen();
+                    if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
+                    else {
+                        Main_FirstRun = false;
+                        Main_HideLoadDialog();
+                    }
                 } else {
-                    Main_ready(function() {
-                        //Values that need to be reset to prevent app odd behavier
-                        Main_values.Search_isSearching = false;
-                        Main_values.Main_BeforeChannelisSet = false;
-                        Main_values.Main_BeforeAgameisSet = false;
+                    Main_Log('Play_WasPlaying else');
 
-                        if (Main_values.Never_run_new)
-                            Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+                    //Values that need to be reset to prevent app odd behavier
+                    Main_values.Search_isSearching = false;
+                    Main_values.Main_BeforeChannelisSet = false;
+                    Main_values.Main_BeforeAgameisSet = false;
 
-                        if (Main_values.Never_run_phone && !Main_isTV) {
-                            Main_showphoneDialog(Main_values.Never_run_new ?
-                                Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
-                        }
+                    if (Main_values.Never_run_new)
+                        Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
 
-                        if (!Main_values.Never_run_new) Screens_addFocus(true);
+                    if (Main_values.Never_run_phone && !Main_isTV) {
+                        Main_showphoneDialog(Main_values.Never_run_new ?
+                            Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
+                    }
 
-                        Main_values.Never_run_new = false;
-                        Main_values.Never_run_phone = false;
+                    if (!Main_values.Never_run_new) Screens_addFocus(true);
 
-                        Main_SaveValues();
-                        Screens_loadDataSuccessFinishEnd();
-                    });
+                    Main_values.Never_run_new = false;
+                    Main_values.Never_run_phone = false;
+
+                    Main_SaveValues();
+                    Screens_loadDataSuccessFinishEnd();
                 }
             } else {
                 Screens_addFocus(true);
@@ -12382,6 +15396,7 @@
         try {
             JSON.parse(Android.StopNotificationService());
         } catch (e) {}
+        Main_Log('Screens_loadDataSuccessFinishEnd');
     }
 
     function Screens_addFocus(forceScroll) {
@@ -13862,8 +16877,6 @@
     var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
     var Main_HistoryPos = 0;
 
-    var Vod_DoAnimateThumb = 1;
-
     var AGame_following = false;
 
     var DefaultloadingDataTimeout = 3500;
@@ -13956,7 +16969,7 @@
             } else Screens_OpenSidePanel();
         },
         concatenate: function(responseText) {
-            //console.log(responseText);
+            //Main_Log(responseText);
             if (this.data) {
                 responseText = JSON.parse(responseText);
 
@@ -14473,7 +17486,7 @@
         UserLive = Screens_assign(UserLive, Base_Live_obj);
 
         UserLive.concatenate = function(responseText) {
-            //console.log(responseText);
+            //Main_Log(responseText);
             if (this.token || this.followerChannelsDone) {
                 //User has added a key or followed channels list is done, concatenate live channels
                 if (this.data) {
@@ -15637,7 +18650,7 @@
 
     function ScreensObj_AnimateThumbId(screen) {
         window.clearInterval(screen.AnimateThumbId);
-        if (!Vod_DoAnimateThumb) return;
+        if (!Settings_Obj_default("videos_animation")) return;
         var div = document.getElementById(screen.ids[6] + screen.posY + '_' + screen.posX);
 
         // Only load the animation if it can be loaded
@@ -16379,7 +19392,6 @@
         }
         Main_SetThumb();
         if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
-        Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
         PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
         UserLiveFeed_Notify = Settings_Obj_default("live_notification");
         Settings_NotifyTimeout();
@@ -16463,8 +19475,7 @@
     function Settings_SetDefault(position) {
         position = Settings_value_keys[position];
 
-        if (position === "videos_animation") Vod_DoAnimateThumb = Settings_Obj_default("videos_animation");
-        else if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
+        if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
         else if (position === "live_notification") {
             UserLiveFeed_Notify = Settings_Obj_default("live_notification");
             Settings_notification_background();
@@ -18488,7 +21499,7 @@
     // function UserLiveFeed_CheckIfIsLiveFind720() {
     //     for (var i = 0; i < Play_CheckIfIsLiveResponseText; i++) {
     //         if (Main_A_includes_B(Play_CheckIfIsLiveResponseText[i].id, '720')) {
-    //             console.log(Play_CheckIfIsLiveResponseText[i].id);
+    //             Main_Log(Play_CheckIfIsLiveResponseText[i].id);
     //             return i;
     //         }
     //     }
@@ -18497,7 +21508,7 @@
 
     function UserLiveFeed_CheckIfIsLiveWarn(text) {
         UserLiveFeed_CheckIfIsLiveSTop();
-        Play_showWarningDialog(text, 2000);
+        Play_showWarningMidleDialog(text, 2000);
     }
 
     var UserLiveFeed_CheckIfIsLiveDelay = 0;
@@ -18760,10 +21771,10 @@
 
             if (NextPos > (userSet ? (UserLiveFeedobj_CurrentUserAGameEnable ? (UserLiveFeedobj_MAX + 1) : UserLiveFeedobj_MAX) : UserLiveFeedobj_MAX_No_user)) {
                 NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
-                if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
+                if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARN, 1000);
             } else if (NextPos < (UserLiveFeedobj_CurrentAGameEnable ? 0 : 1)) {
                 NextPos = userSet ? (UserLiveFeedobj_CurrentUserAGameEnable ? (UserLiveFeedobj_MAX + 1) : UserLiveFeedobj_MAX) : UserLiveFeedobj_MAX_No_user;
-                if (!userSet) Play_showWarningDialog(STR_NOKUSER_WARN, 1000);
+                if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARN, 1000);
             }
 
             if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
@@ -18812,7 +21823,7 @@
             if (doc !== null) UserLiveFeedobj_CurrentUserAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
             if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
-                Play_showWarningDialog(STR_NO_GAME, 1000);
+                Play_showWarningMidleDialog(STR_NO_GAME, 1000);
                 return;
             }
             UserLiveFeedobj_CurrentUserAGameEnable = true;
@@ -18833,7 +21844,7 @@
             if (doc !== null) UserLiveFeedobj_CurrentAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
             if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentAGameNameEnter, '')) {
-                Play_showWarningDialog(STR_NO_GAME, 1000);
+                Play_showWarningMidleDialog(STR_NO_GAME, 1000);
                 return;
             }
 
@@ -19119,14 +22130,12 @@
         Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
         Main_innerHTML('user_feed_notify_title', UserLiveFeed_NotifyLiveidObject[position].title);
 
-        Main_ready(function() {
-            Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
+        Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
 
-            window.clearTimeout(UserLiveFeedobj_LiveNotificationHideId);
-            UserLiveFeedobj_LiveNotificationHideId = window.setTimeout(function() {
-                UserLiveFeedobj_LiveNotificationHide(position);
-            }, UserLiveFeed_NotifyTimeout);
-        });
+        window.clearTimeout(UserLiveFeedobj_LiveNotificationHideId);
+        UserLiveFeedobj_LiveNotificationHideId = window.setTimeout(function() {
+            UserLiveFeedobj_LiveNotificationHide(position);
+        }, UserLiveFeed_NotifyTimeout);
     }
 
     var UserLiveFeedobj_LiveNotificationShowId;
@@ -20145,10 +23154,8 @@
         if (Main_newUsercode) {
             Main_HideElement('topbar');
             Main_HideElement('side_panel_new_holder');
-            Main_ready(function() {
-                Users_exit();
-                AddCode_CheckNewCode(Main_newUsercode);
-            });
+            Users_exit();
+            AddCode_CheckNewCode(Main_newUsercode);
             return;
         } else if (!AddUser_IsUserSet()) {
             Main_values.Main_Go = Main_Live;
@@ -20193,9 +23200,7 @@
         Users_cursorY = 0;
         Users_loadingData = true;
         Main_CounterDialogRst();
-        Main_ready(function() {
-            Users_loadData();
-        });
+        Main_ready(Users_loadData);
     }
 
     function Users_loadData() {
@@ -20257,7 +23262,7 @@
     }
 
     function Users_loadDataSuccessFinish() {
-        Main_ready(function() {
+        Main_timeOut(function() {
             if (!Users_status) {
                 Users_status = true;
                 Users_addFocus();
@@ -20527,7 +23532,12 @@
                             var type_code = 'code';
                             var client_id = Main_clientId;
                             var redirect_uri = AddCode_redirect_uri;
-                            var scope = 'user_read+user_follows_edit+user_subscriptions';
+                            var scope = '';
+                            for (i = 0; i < AddCode_Scopes.length; i++) {
+                                scope += AddCode_Scopes[i] + '+';
+                            }
+                            scope = scope.slice(0, -1);
+
                             var force_verify = 'true';
                             var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
                                 encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +
@@ -20840,25 +23850,11 @@
         return tokenizedMessage;
     }
 
-    function transformBadges(sets) {
-        return Object.keys(sets).map(function(b) {
-            var badge = sets[b];
-            badge.type = b;
-            badge.versions = Object.keys(sets[b].versions).map(function(v) {
-                var version = sets[b].versions[v];
-                version.type = v;
-                return version;
-            });
-            return badge;
-        });
-    }
-
     function tagCSS(type, version, url, doc) {
         var style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = '.' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
-        if (doc) doc.appendChild(style);
-        else document.head.appendChild(style);
+        doc.appendChild(style);
     } /*! https://mths.be/punycode v1.4.1 by @mathias */
 
     // https://cdnjs.cloudflare.com/ajax/libs/punycode/1.4.1/punycode.js
@@ -21692,7 +24688,8 @@
                     }
                     return ws.send(data);
                 } else {
-                    throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
+                    //throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
+                    Main_Log('INVALID_STATE_ERR : Pausing to reconnect websocket');
                 }
             };
 
@@ -21855,6 +24852,7 @@
                  *
                  */
                 parse: parse,
+                parseIcon: parseIcon,
 
                 /**
                  * Given a string, invokes the callback argument
@@ -21933,6 +24931,16 @@
                 var iconId = grabTheRightIcon(rawText);
 
                 return iconId ? '<img class="' + (emoticon ? 'emoticon' : 'emoji') + '" alt="" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
+            });
+        }
+
+        function parseIcon(str) {
+            if (!str) return '';
+
+            return replace(str, function(rawText) {
+                var iconId = grabTheRightIcon(rawText);
+
+                return iconId ? 'https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png' : rawText;
             });
         }
 
