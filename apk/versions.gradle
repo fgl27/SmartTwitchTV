@@ -5,7 +5,7 @@ ext.versions = [
         buildTools           : '29.0.3',
 
         publishVersion       : '3.0.',
-        publishVersionCode   : 171,
+        publishVersionCode   : 172,
 
         firebase             : '17.3.0',
         googleservices       : '4.3.3',
