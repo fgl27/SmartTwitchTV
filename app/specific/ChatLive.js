@@ -364,6 +364,7 @@ function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     cheers[ChatLive_selectedChannel_id[chat_number]] = {};
+    data = JSON.parse(data);
 
     try {
         data.actions.forEach(
