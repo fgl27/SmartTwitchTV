@@ -5157,7 +5157,6 @@
 
             data = JSON.parse(data);
             userEmote = {};
-            var Div, url;
 
             Object.keys(data.emoticon_sets).forEach(function(set) {
                 set = data.emoticon_sets[set];
@@ -5170,7 +5169,7 @@
 
                         emoticon.code = emoteReplace[emoticon.code] || emoticon.code;
 
-                        url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0';
+                        var url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0';
 
                         extraEmotes[emoticon.code] = {
                             code: emoticon.code,
@@ -5178,7 +5177,7 @@
                             '4x': url
                         };
 
-                        Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code]);
+                        var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code]);
 
                         userEmote[emoticon.code] = {
                             code: emoticon.code,
@@ -5225,20 +5224,17 @@
         if (!skipChannel) extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = {};
         else extraEmotesDone.bbtvGlobal = {};
 
-        var url, Div;
-
         data.emotes.forEach(function(emote) {
             if (data.urlTemplate) {
 
-                url = 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x');
-
+                var url = 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x');
                 extraEmotes[emote.code] = {
                     code: emote.code,
                     id: emote.id,
                     '4x': url
                 };
 
-                Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code]);
+                var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code]);
 
                 //Don't copy to prevent shallow clone
                 if (!skipChannel) {
@@ -5349,8 +5345,6 @@
         if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
         else extraEmotesDone.ffzGlobal = {};
 
-        var url, Div;
-
         Object.keys(data.sets).forEach(function(set) {
             set = data.sets[set];
             if (set.emoticons || Array.isArray(set.emoticons)) {
@@ -5365,15 +5359,14 @@
                     if (typeof emoticon.urls[1] !== 'string') return;
                     if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
 
-                    url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
+                    var url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
 
                     extraEmotes[emoticon.name] = {
                         code: emoticon.name,
                         id: emoticon.id,
                         '4x': url
                     };
-
-                    Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
+                    var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
 
                     //Don't copy to prevent shallow clone
                     if (!skipChannel) {
@@ -5822,23 +5815,18 @@
             nick,
             nickColor,
             action,
-            emotes = null,
-            badges, badge,
-            i, len;
+            emotes = {};
 
         if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
 
         //Add badges
         if (tags.hasOwnProperty('badges')) {
             if (typeof tags.badges === 'string') {
-
-                badges = tags.badges.split(',');
-
-                for (i = 0, len = badges.length; i < len; i++) {
-                    badge = badges[i].split('/');
+                tags.badges.split(',').forEach(function(badge) {
+                    badge = badge.split('/');
 
                     div += '<span class="' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
-                }
+                });
             }
         }
 
@@ -5855,12 +5843,14 @@
 
         //Add nick
         nick = tags['display-name'];
-        nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
+        nickColor = (typeof tags.color !== "boolean") ? tags.color :
+            (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
 
         nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
 
         div += '<span ' + (action ? ('class="class_bold" ' + nickColor) : '') +
-            nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
+            nickColor + '>' + nick + '</span>' +
+            (action ? '' : '&#58;') + '&nbsp;';
 
         //Add default emotes
         if (tags.hasOwnProperty('emotes')) {
@@ -5869,23 +5859,18 @@
 
                 tags.emotes = tags.emotes.split('/');
 
-                var emote;
-                emotes = {};
-
-                for (i = 0, len = tags.emotes.length; i < len; i++) {
-                    emote = tags.emotes[i].split(':');
+                tags.emotes.forEach(function(emote) {
+                    emote = emote.split(':');
 
                     if (!emotes[emote[0]]) emotes[emote[0]] = [];
 
-                    var replacements = emote[1].split(','),
-                        replacement;
-
-                    for (i = 0, len = replacements.length; i < len; i++) {
-                        replacement = replacements[i].split('-');
+                    var replacements = emote[1].split(',');
+                    replacements.forEach(function(replacement) {
+                        replacement = replacement.split('-');
 
                         emotes[emote[0]].push([parseInt(replacement[0]), parseInt(replacement[1])]);
-                    }
-                }
+                    });
+                });
             }
         }
 
@@ -5907,16 +5892,11 @@
 
     function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
 
-        for (var i = 0, len = tokenizedMessage.length; i < len; i++) {
-
+        for (var i = 0; i < tokenizedMessage.length; i++) {
             if (typeof tokenizedMessage[i] === 'string') {
-
                 tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags);
-
             } else {
-
                 tokenizedMessage[i] = tokenizedMessage[i][0];
-
             }
         }
 
@@ -6231,9 +6211,7 @@
         responseText = JSON.parse(responseText);
         var div,
             mmessage, null_next = (Chat_next === null),
-            nickColor,
-            comments, badges, fragment,
-            i, len, j, len_j;
+            nickColor;
 
         if (null_next) {
 
@@ -6244,57 +6222,43 @@
         Chat_offset = 0;
         Chat_next = responseText._next;
 
-        comments = responseText.comments;
-
-        for (i = 0, len = comments.length; i < len; i++) {
-
+        responseText.comments.forEach(function(comments) {
             div = '';
-            mmessage = comments[i].message;
+            mmessage = comments.message;
 
             //Add badges
             if (mmessage.hasOwnProperty('user_badges')) {
-
-                for (j = 0, len_j = mmessage.user_badges.length; j < len_j; j++) {
-                    badges = mmessage.user_badges[j];
-
+                mmessage.user_badges.forEach(function(badges) {
                     div += '<span class="' + badges._id + "0-" + badges.version + ' tag"></span>';
-
-                }
+                });
             }
 
             //Add nick
             nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
-                defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength];
+                defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
             nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
 
             div += '<span ' + (mmessage.is_action ? ('class="class_bold" ' + nickColor) : '') +
-                nickColor + '>' + comments[i].commenter.display_name + '</span>' +
+                nickColor + '>' + comments.commenter.display_name + '</span>' +
                 (mmessage.is_action ? '' : '&#58;') + '&nbsp;';
 
             //Add mesage
             div += '<span class="message' + (mmessage.is_action ? (' class_bold" ' + nickColor) : '"') + '>';
-
-            for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
-                fragment = mmessage.fragments[j];
-
-                if (fragment.hasOwnProperty('emoticon')) div += emoteTemplate(emoteURL(fragment.emoticon.emoticon_id));
+            mmessage.fragments.forEach(function(fragments) {
+                if (fragments.hasOwnProperty('emoticon')) div += emoteTemplate(emoteURL(fragments.emoticon.emoticon_id));
                 else div +=
                     ChatLive_extraMessageTokenize(
-                        [fragment.text],
+                        [fragments.text],
                         0,
                         ((mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0])) ? mmessage.bits_spent : 0)
                     );
-
-            }
+            });
 
             div += '</span>';
-            if (null_next) Chat_MessageVector(div, comments[i].content_offset_seconds);
-            else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments[i].content_offset_seconds);
-
-        }
-
-
+            if (null_next) Chat_MessageVector(div, comments.content_offset_seconds);
+            else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments.content_offset_seconds);
+        });
         if (null_next && Chat_Id[0] === id) {
             Chat_JustStarted = false;
             Chat_Play(id);
@@ -23909,23 +23873,21 @@
         if (!emotes) return [message];
 
         var tokenizedMessage = [],
-            property,
+            emotesList = Object.keys(emotes),
             replacements = [],
-            replacement,
-            emote, i, len;
+            emote, i;
 
-        for (property in emotes) {
-            emote = emotes[property];
+        emotesList.forEach(function(id) {
+            emote = emotes[id];
 
-            for (i = 0, len = emote.length; i < len; i++) {
+            for (i = emote.length - 1; i >= 0; i--) {
                 replacements.push({
-                    id: property,
+                    id: id,
                     first: emote[i][0],
                     last: emote[i][1]
                 });
             }
-
-        }
+        });
 
         replacements.sort(function(a, b) {
             return b.first - a.first;
@@ -23936,9 +23898,7 @@
         // punycode is used in the replacements loop below as well
         message = punycode.ucs2.decode(message);
 
-        for (i = 0, len = replacements.length; i < len; i++) {
-            replacement = replacements[i];
-
+        replacements.forEach(function(replacement) {
             // Unshift the end of the message (that doesn't contain the emote)
             tokenizedMessage.unshift(punycode.ucs2.encode(message.slice(replacement.last + 1)));
 
@@ -23947,8 +23907,7 @@
 
             // Splice the unparsed piece of the message
             message = message.slice(0, replacement.first);
-
-        }
+        });
 
         // Unshift the remaining part of the message (that contains no emotes)
         tokenizedMessage.unshift(punycode.ucs2.encode(message));
