@@ -100,7 +100,7 @@ function Chat_loadBadgesGlobalError(tryes) {
 function Chat_loadBadgesGlobalSuccess(responseText) {
     var versions, property, version, new_img, doc = document.head;
 
-    responseText = JSON.parse(responseText)
+    responseText = JSON.parse(responseText);
 
     for (property in responseText.badge_sets) {
         versions = responseText.badge_sets[property].versions;
