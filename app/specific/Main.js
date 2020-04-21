@@ -451,7 +451,7 @@ function Main_initWindows() {
     Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
 
     inUseObj = Live;
-    Main_timeOut(Screens_init, 500);
+    Screens_init();
 }
 
 function Main_SetStringsMain(isStarting) {

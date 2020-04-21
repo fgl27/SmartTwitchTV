@@ -246,16 +246,21 @@ function ChatLive_loadEmotesUserSuccess(data) {
 
                     emoticon.code = emoteReplace[emoticon.code] || emoticon.code;
 
+                    var url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0';
+
                     extraEmotes[emoticon.code] = {
                         code: emoticon.code,
                         id: emoticon.id,
-                        '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
+                        '4x': url
                     };
+
+                    var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code]);
 
                     userEmote[emoticon.code] = {
                         code: emoticon.code,
                         id: emoticon.id,
-                        '4x': 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0'
+                        '4x': url,
+                        div: Div
                     };
 
                 });
@@ -306,18 +311,22 @@ function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
                 '4x': url
             };
 
+            var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code]);
+
             //Don't copy to prevent shallow clone
             if (!skipChannel) {
                 extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
                     code: emote.code,
                     id: emote.id,
-                    '4x': url
+                    '4x': url,
+                    div: Div
                 };
             } else {
                 extraEmotesDone.bbtvGlobal[emote.code] = {
                     code: emote.code,
                     id: emote.id,
-                    '4x': url
+                    '4x': url,
+                    div: Div
                 };
             }
         }
@@ -434,19 +443,22 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
                     id: emoticon.id,
                     '4x': url
                 };
+                var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
 
                 //Don't copy to prevent shallow clone
                 if (!skipChannel) {
                     extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
                         code: emoticon.name,
                         id: emoticon.id,
-                        '4x': url
+                        '4x': url,
+                        div: Div
                     };
                 } else {
                     extraEmotesDone.ffzGlobal[emoticon.name] = {
                         code: emoticon.name,
                         id: emoticon.id,
-                        '4x': url
+                        '4x': url,
+                        div: Div
                     };
                 }
 

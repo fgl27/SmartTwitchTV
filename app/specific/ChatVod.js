@@ -61,6 +61,7 @@ function Chat_loadBadgesGlobal() {
     if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
     if (!extraEmotesDone.bbtvGlobal) Chat_loadBBTVGlobalEmotes(0);
     if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
+    if (!emojis[0].hasOwnProperty('div')) ChatLiveControls_SetEmojisObj();
 }
 
 function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
@@ -97,19 +98,34 @@ function Chat_loadBadgesGlobalError(tryes) {
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
-    Chat_loadBadgesTransform(JSON.parse(responseText), 0, document.head);
-    Chat_loadBadgesTransform(JSON.parse(responseText), 1, document.head);
+    var versions, property, version, new_img, doc = document.head;
+
+    responseText = JSON.parse(responseText)
+
+    for (property in responseText.badge_sets) {
+        versions = responseText.badge_sets[property].versions;
+        for (version in versions) {
+            tagCSS(property + 0, version, versions[version].image_url_4x, doc);
+            tagCSS(property + 1, version, versions[version].image_url_4x, doc);
+
+            new_img = new Image();
+            new_img.src = versions[version].image_url_4x;
+        }
+    }
 
     Chat_LoadGlobalBadges = true;
 }
 
 function Chat_loadBadgesTransform(responseText, chat_number, doc) {
-    var versions, property, version;
+    var versions, property, version, new_img;
 
     for (property in responseText.badge_sets) {
         versions = responseText.badge_sets[property].versions;
         for (version in versions) {
             tagCSS(property + chat_number, version, versions[version].image_url_4x, doc);
+
+            new_img = new Image();
+            new_img.src = versions[version].image_url_4x;
         }
     }
 }

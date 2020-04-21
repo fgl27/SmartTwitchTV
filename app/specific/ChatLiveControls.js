@@ -279,6 +279,8 @@ function ChatLiveControls_KeyboardEvent(event) {
 
 var ChatLiveControls_EmotesTotal = 0;
 var ChatLiveControls_EmotesPos = 0;
+var ChatLiveControls_EmotesArray = [];
+
 function ChatLiveControls_SetEmotesDiv(obj, text) {
     var array = [];
 
@@ -314,27 +316,31 @@ function ChatLiveControls_SetEmotesDiv(obj, text) {
 
     ChatLiveControls_EmotesTotal = array.length;
     ChatLiveControls_EmotesPos = 0;
+    ChatLiveControls_EmotesArray = [];
 
     for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
-        div_holder.appendChild(
-            ChatLiveControls_SetEmoteDiv(array[i], i)
-        );
+        ChatLiveControls_EmotesArray.push(array[i].code + array[i].id);
+        div_holder.appendChild(array[i].div);
     }
 
     ChatLiveControls_ShowEmotes();
 }
 
-function ChatLiveControls_SetEmoteDiv(obj, position) {
+function ChatLiveControls_SetEmoteDiv(obj) {
 
     var div = document.createElement('div');
 
-    div.setAttribute('id', 'chat_emotes' + position);
+    var id = obj.code + obj.id;
+    div.setAttribute('id', 'chat_emotes' + id);
     div.setAttribute(Main_DataAttribute, obj.code);
     div.classList.add('chat_emotes_img_holder');
 
-    div.innerHTML = '<div ><div id="chat_emotes_img' + position + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + obj['4x'] +
+    div.innerHTML = '<div ><div id="chat_emotes_img' + id + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + obj['4x'] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
-        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + position + '" class="chat_emotes_name opacity_zero">' + obj.code + '</div></div></div>';
+        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id + '" class="chat_emotes_name opacity_zero">' + obj.code + '</div></div></div>';
+
+    var new_img = new Image();
+    new_img.src = obj['4x'];
 
     return div;
 }
@@ -351,15 +357,20 @@ function ChatLiveControls_SetEmojisDiv() {
 
     var direction = OptionsShowObj.emote_sorting.defaultValue;
 
-    if (direction === 1) {//a-z
-        array = JSON.parse(JSON.stringify(array));
+    if (!direction) {
+        array.sort(
+            function(a, b) {
+                return a.id - b.id;
+            }
+        );
+    } if (direction === 1) {//a-z
         array.sort(
             function(a, b) {
                 return (a.tags < b.tags ? -1 : (a.tags > b.tags ? 1 : 0));
             }
         );
     } else if (direction === 2) {//z-a
-        array = JSON.parse(JSON.stringify(array));
+
         array.sort(
             function(a, b) {
                 return (a.tags > b.tags ? -1 : (a.tags < b.tags ? 1 : 0));
@@ -372,29 +383,42 @@ function ChatLiveControls_SetEmojisDiv() {
 
     ChatLiveControls_EmotesTotal = array.length;
     ChatLiveControls_EmotesPos = 0;
+    ChatLiveControls_EmotesArray = [];
 
     for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
-        div_holder.appendChild(
-            ChatLiveControls_SetEmojiDiv(array[i], i)
-        );
+        ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
+        div_holder.appendChild(array[i].div);
     }
 
     ChatLiveControls_ShowEmotes();
 }
 
-function ChatLiveControls_SetEmojiDiv(obj, position) {
+function ChatLiveControls_SetEmojiDiv(obj) {
 
     var div = document.createElement('div');
+    var id = obj.id + obj.tags;
 
-    div.setAttribute('id', 'chat_emotes' + position);
+    div.setAttribute('id', 'chat_emotes' + id);
     div.setAttribute(Main_DataAttribute, obj.unicode);
     div.classList.add('chat_emotes_img_holder');
 
-    div.innerHTML = '<div ><div id="chat_emotes_img' + position + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + twemoji.parseIcon(obj.unicode) +
+    var url = twemoji.parseIcon(obj.unicode);
+
+    div.innerHTML = '<div ><div id="chat_emotes_img' + id + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + twemoji.parseIcon(obj.unicode) +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
-        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + position + '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
+        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id + '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
+
+    var new_img = new Image();
+    new_img.src = url;
 
     return div;
+}
+
+function ChatLiveControls_SetEmojisObj() {
+    for (var i = 0; i < emojis.length; i++) {
+        emojis[i].id = i;
+        emojis[i].div = ChatLiveControls_SetEmojiDiv(emojis[i]);
+    }
 }
 
 function ChatLiveControls_ShowEmotes() {
@@ -419,6 +443,7 @@ function ChatLiveControls_HideEmotes() {
     document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown);
 
     Main_HideElement('chat_emotes_holder');
+    ChatLiveControls_EmotesRemoveFocus(ChatLiveControls_EmotesPos);
     ChatLiveControls_refreshInputFocusTools();
 }
 
@@ -449,23 +474,23 @@ function ChatLiveControls_EmotesEvent(event) {
 }
 
 function ChatLiveControls_AddToChat(position) {
-    var doc = document.getElementById('chat_emotes' + position);
+    var doc = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[position]);
     if (doc) ChatLiveControls_UpdateTextInput(doc.getAttribute(Main_DataAttribute));
 }
 
 function ChatLiveControls_EmotesAddFocus(position) {
-    Main_AddClass('chat_emotes_img' + position, 'chat_emotes_focus');
+    Main_AddClass('chat_emotes_img' + ChatLiveControls_EmotesArray[position], 'chat_emotes_focus');
     ChatLiveControls_EmotesUpdateCounter(ChatLiveControls_EmotesPos);
-    Main_RemoveClass('chat_emotes_name' + position, 'opacity_zero');
+    Main_RemoveClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'opacity_zero');
 }
 
 function ChatLiveControls_EmotesRemoveFocus(position) {
-    Main_RemoveClass('chat_emotes_img' + position, 'chat_emotes_focus');
-    Main_AddClass('chat_emotes_name' + position, 'opacity_zero');
+    Main_RemoveClass('chat_emotes_img' + ChatLiveControls_EmotesArray[position], 'chat_emotes_focus');
+    Main_AddClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'opacity_zero');
 }
 
 function ChatLiveControls_EmotesChangeFocus(position, adder) {
-    var doc = document.getElementById('chat_emotes' + (position + adder));
+    var doc = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[(position + adder)]);
     if (doc) {
         ChatLiveControls_EmotesRemoveFocus(position);
         ChatLiveControls_EmotesPos += adder;
@@ -475,7 +500,7 @@ function ChatLiveControls_EmotesChangeFocus(position, adder) {
         var postion_now = parseInt(position / 20);
         var postion_down = (postion_now + 1) * 20;
 
-        if (document.getElementById('chat_emotes' + postion_down)) {
+        if (document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_down])) {
             ChatLiveControls_EmotesRemoveFocus(position);
             ChatLiveControls_EmotesPos = ChatLiveControls_EmotesTotal - 1;
             ChatLiveControls_EmotesAddFocus(ChatLiveControls_EmotesPos);
@@ -496,9 +521,9 @@ function ChatLiveControls_EmotesScroll(position) {
         var postion_down = (postion_now + 2) * 20;
         var postion_up = (postion_now - 1) * 20;
 
-        var how_much = document.getElementById('chat_emotes' + postion_up).offsetHeight;
+        var how_much = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_up]).offsetHeight;
 
-        if (document.getElementById('chat_emotes' + postion_down)) {
+        if (document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_down])) {
 
             document.getElementById('chat_emotes').style.transform = 'translateY(-' + (how_much * (postion_now - 1)) + 'px)';
 
