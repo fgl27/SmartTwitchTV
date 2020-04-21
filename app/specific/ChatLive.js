@@ -795,7 +795,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 function ChatLive_UserNoticeWarn(message) {
     Main_Log(message);
 
-    if (message.params[1]) {
+    if (message.params[1] && !Main_A_includes_B(message.params[1], "NICK already set")) {
 
         Main_Log(message.params[1]);
 
