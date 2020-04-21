@@ -58,7 +58,7 @@ function ChatLiveControls_Hide() {
 function ChatLiveControls_RefreshRoomState(chat_number) {
     if (chat_number === ChatLiveControls_Channel) {
         ChatLiveControls_SetRoomState();
-        if (!ChatLiveControls_CanSend()) ChatLiveControls_CantSend();
+        if (Main_isElementShowing('chat_send') && !ChatLiveControls_CanSend()) ChatLiveControls_CantSend();
     }
 }
 
@@ -669,10 +669,11 @@ function ChatLiveControls_ChooseChat(event) {
 function ChatLiveControls_CantSend() {
     window.clearTimeout(ChatLiveControls_inputFocusId);
 
-    if (ChatLiveControls_keyBoardOn) {
-        ChatLiveControls_RemoveinputFocus(Main_isElementShowing('chat_send'));
+    if (Main_isElementShowing('chat_emotes_holder')) ChatLiveControls_HideEmotes();
+    else if (Main_isElementShowing('chat_send')) {
+        ChatLiveControls_RemoveinputFocus(true);
         ChatLiveControls_refreshInputFocusTools();
-    } else if (Main_isElementShowing('chat_emotes_holder')) ChatLiveControls_HideEmotes();
+    }
 
 }
 
