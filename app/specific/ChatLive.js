@@ -234,6 +234,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
 
         data = JSON.parse(data);
         userEmote = {};
+        var Div, url;
 
         Object.keys(data.emoticon_sets).forEach(function(set) {
             set = data.emoticon_sets[set];
@@ -246,7 +247,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
 
                     emoticon.code = emoteReplace[emoticon.code] || emoticon.code;
 
-                    var url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0';
+                    url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0';
 
                     extraEmotes[emoticon.code] = {
                         code: emoticon.code,
@@ -254,7 +255,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
                         '4x': url
                     };
 
-                    var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code]);
+                    Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code]);
 
                     userEmote[emoticon.code] = {
                         code: emoticon.code,
@@ -301,17 +302,20 @@ function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
     if (!skipChannel) extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = {};
     else extraEmotesDone.bbtvGlobal = {};
 
+    var url, Div;
+
     data.emotes.forEach(function(emote) {
         if (data.urlTemplate) {
 
-            var url = 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x');
+            url = 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x');
+
             extraEmotes[emote.code] = {
                 code: emote.code,
                 id: emote.id,
                 '4x': url
             };
 
-            var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code]);
+            Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code]);
 
             //Don't copy to prevent shallow clone
             if (!skipChannel) {
@@ -422,6 +426,8 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
     if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
     else extraEmotesDone.ffzGlobal = {};
 
+    var url, Div;
+
     Object.keys(data.sets).forEach(function(set) {
         set = data.sets[set];
         if (set.emoticons || Array.isArray(set.emoticons)) {
@@ -436,14 +442,15 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
                 if (typeof emoticon.urls[1] !== 'string') return;
                 if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
 
-                var url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
+                url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
 
                 extraEmotes[emoticon.name] = {
                     code: emoticon.name,
                     id: emoticon.id,
                     '4x': url
                 };
-                var Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
+
+                Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
 
                 //Don't copy to prevent shallow clone
                 if (!skipChannel) {
@@ -890,18 +897,23 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         nick,
         nickColor,
         action,
-        emotes = {};
+        emotes = null,
+        badges, badge,
+        i, len;
 
     if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
 
     //Add badges
     if (tags.hasOwnProperty('badges')) {
         if (typeof tags.badges === 'string') {
-            tags.badges.split(',').forEach(function(badge) {
-                badge = badge.split('/');
+
+            badges = tags.badges.split(',');
+
+            for (i = 0, len = badges.length; i < len; i++) {
+                badge = badges[i].split('/');
 
                 div += '<span class="' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
-            });
+            }
         }
     }
 
@@ -918,14 +930,12 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
     //Add nick
     nick = tags['display-name'];
-    nickColor = (typeof tags.color !== "boolean") ? tags.color :
-        (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
+    nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
 
     nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
 
     div += '<span ' + (action ? ('class="class_bold" ' + nickColor) : '') +
-        nickColor + '>' + nick + '</span>' +
-        (action ? '' : '&#58;') + '&nbsp;';
+        nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
     //Add default emotes
     if (tags.hasOwnProperty('emotes')) {
@@ -934,18 +944,23 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
             tags.emotes = tags.emotes.split('/');
 
-            tags.emotes.forEach(function(emote) {
-                emote = emote.split(':');
+            var emote;
+            emotes = {};
+
+            for (i = 0, len = tags.emotes.length; i < len; i++) {
+                emote = tags.emotes[i].split(':');
 
                 if (!emotes[emote[0]]) emotes[emote[0]] = [];
 
-                var replacements = emote[1].split(',');
-                replacements.forEach(function(replacement) {
-                    replacement = replacement.split('-');
+                var replacements = emote[1].split(','),
+                    replacement;
+
+                for (i = 0, len = replacements.length; i < len; i++) {
+                    replacement = replacements[i].split('-');
 
                     emotes[emote[0]].push([parseInt(replacement[0]), parseInt(replacement[1])]);
-                });
-            });
+                }
+            }
         }
     }
 
@@ -967,11 +982,16 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
 function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
 
-    for (var i = 0; i < tokenizedMessage.length; i++) {
+    for (var i = 0, len = tokenizedMessage.length; i < len; i++) {
+
         if (typeof tokenizedMessage[i] === 'string') {
+
             tokenizedMessage[i] = extraMessageTokenize(tokenizedMessage[i], chat_number, tags);
+
         } else {
+
             tokenizedMessage[i] = tokenizedMessage[i][0];
+
         }
     }
 

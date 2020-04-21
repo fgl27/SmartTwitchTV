@@ -103,21 +103,22 @@ function emoticonize(message, emotes) {
     if (!emotes) return [message];
 
     var tokenizedMessage = [],
-        emotesList = Object.keys(emotes),
-        replacements = [],
-        emote, i;
+        property,
+        replacements = [], replacement,
+        emote, i, len;
 
-    emotesList.forEach(function(id) {
-        emote = emotes[id];
+    for (property in emotes) {
+        emote = emotes[property];
 
-        for (i = emote.length - 1; i >= 0; i--) {
+        for (i = 0, len = emote.length; i < len; i++) {
             replacements.push({
-                id: id,
+                id: property,
                 first: emote[i][0],
                 last: emote[i][1]
             });
         }
-    });
+
+    }
 
     replacements.sort(function(a, b) {
         return b.first - a.first;
@@ -128,7 +129,9 @@ function emoticonize(message, emotes) {
     // punycode is used in the replacements loop below as well
     message = punycode.ucs2.decode(message);
 
-    replacements.forEach(function(replacement) {
+    for (i = 0, len = replacements.length; i < len; i++) {
+        replacement = replacements[i];
+
         // Unshift the end of the message (that doesn't contain the emote)
         tokenizedMessage.unshift(punycode.ucs2.encode(message.slice(replacement.last + 1)));
 
@@ -137,7 +140,8 @@ function emoticonize(message, emotes) {
 
         // Splice the unparsed piece of the message
         message = message.slice(0, replacement.first);
-    });
+
+    }
 
     // Unshift the remaining part of the message (that contains no emotes)
     tokenizedMessage.unshift(punycode.ucs2.encode(message));

@@ -209,7 +209,9 @@ function Chat_loadChatSuccess(responseText, id) {
     responseText = JSON.parse(responseText);
     var div,
         mmessage, null_next = (Chat_next === null),
-        nickColor;
+        nickColor,
+        comments, badges, fragment,
+        i, len, j, len_j;
 
     if (null_next) {
 
@@ -220,43 +222,57 @@ function Chat_loadChatSuccess(responseText, id) {
     Chat_offset = 0;
     Chat_next = responseText._next;
 
-    responseText.comments.forEach(function(comments) {
+    comments = responseText.comments;
+
+    for (i = 0, len = comments.length; i < len; i++) {
+
         div = '';
-        mmessage = comments.message;
+        mmessage = comments[i].message;
 
         //Add badges
         if (mmessage.hasOwnProperty('user_badges')) {
-            mmessage.user_badges.forEach(function(badges) {
+
+            for (j = 0, len_j = mmessage.user_badges.length; j < len_j; j++) {
+                badges = mmessage.user_badges[j];
+
                 div += '<span class="' + badges._id + "0-" + badges.version + ' tag"></span>';
-            });
+
+            }
         }
 
         //Add nick
         nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
-            defaultColors[(comments.commenter.display_name).charCodeAt(0) % defaultColorsLength];
+            defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
         nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
 
         div += '<span ' + (mmessage.is_action ? ('class="class_bold" ' + nickColor) : '') +
-            nickColor + '>' + comments.commenter.display_name + '</span>' +
+            nickColor + '>' + comments[i].commenter.display_name + '</span>' +
             (mmessage.is_action ? '' : '&#58;') + '&nbsp;';
 
         //Add mesage
         div += '<span class="message' + (mmessage.is_action ? (' class_bold" ' + nickColor) : '"') + '>';
-        mmessage.fragments.forEach(function(fragments) {
-            if (fragments.hasOwnProperty('emoticon')) div += emoteTemplate(emoteURL(fragments.emoticon.emoticon_id));
+
+        for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
+            fragment = mmessage.fragments[j];
+
+            if (fragment.hasOwnProperty('emoticon')) div += emoteTemplate(emoteURL(fragment.emoticon.emoticon_id));
             else div +=
                 ChatLive_extraMessageTokenize(
-                    [fragments.text],
+                    [fragment.text],
                     0,
                     ((mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0])) ? mmessage.bits_spent : 0)
                 );
-        });
+
+        }
 
         div += '</span>';
-        if (null_next) Chat_MessageVector(div, comments.content_offset_seconds);
-        else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments.content_offset_seconds);
-    });
+        if (null_next) Chat_MessageVector(div, comments[i].content_offset_seconds);
+        else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments[i].content_offset_seconds);
+
+    }
+
+
     if (null_next && Chat_Id[0] === id) {
         Chat_JustStarted = false;
         Chat_Play(id);
