@@ -5461,6 +5461,7 @@
                 case "001":
                     if (useToken[chat_number]) {
                         if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
+                            ChatLive_SetCheck(chat_number, id);
                             ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
                         }
                     }
@@ -5582,10 +5583,16 @@
             }
         };
 
+        ChatLive_SetCheck(chat_number, id);
+    }
+
+    function ChatLive_SetCheck(chat_number, id) {
         window.clearTimeout(ChatLive_CheckId[chat_number]);
-        ChatLive_CheckId[chat_number] = window.setTimeout(function() {
-            ChatLive_Check(chat_number, id);
-        }, 5000);
+        if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
+            ChatLive_CheckId[chat_number] = window.setTimeout(function() {
+                ChatLive_Check(chat_number, id);
+            }, 5000);
+        }
     }
 
     function ChatLive_Check(chat_number, id) {
@@ -5673,6 +5680,7 @@
                     case "001":
                         if (message.params[1]) {
                             if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
+                                ChatLive_socketSendSetCheck();
                                 ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
                             }
                         }
@@ -5693,10 +5701,7 @@
             };
         }
 
-        window.clearTimeout(ChatLive_socketSendCheckID);
-        ChatLive_socketSendCheckID = window.setTimeout(function() {
-            ChatLive_socketSendCheck();
-        }, 5000);
+        ChatLive_socketSendSetCheck();
     }
 
     function ChatLive_SendClose() {
@@ -5704,6 +5709,13 @@
             ChatLive_socketSend.close(1000);
         }
         ChatLive_socketSendJoin = false;
+    }
+
+    function ChatLive_socketSendSetCheck() {
+        window.clearTimeout(ChatLive_socketSendCheckID);
+        ChatLive_socketSendCheckID = window.setTimeout(function() {
+            ChatLive_socketSendCheck();
+        }, 5000);
     }
 
     function ChatLive_socketSendCheck() {
