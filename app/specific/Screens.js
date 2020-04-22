@@ -455,32 +455,27 @@ function Screens_loadDataSuccessFinish(obj) {
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;
-                Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
+                Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
 
                 //History vod is so fast to load that this need to be set here to prevent a vod reset
                 Main_FirstRun = false;
-                Main_timeOut(function() {
-                    if (Main_values.Play_WasPlaying === 1) {
-                        if (Play_data.data.length > 0) {
 
+                if (Main_values.Play_WasPlaying === 1) {
+                    if (Play_data.data.length > 0) {
 
-                            Main_openStream();
-                            Main_SwitchScreen(true);
-
-
-                        } else Main_SwitchScreen(false);
-                    } else {
-                        if (!Main_values.vodOffset) Main_values.vodOffset = 1;
-                        Play_DurationSeconds = 0;
-                        Main_openVod();
+                        Main_openStream();
                         Main_SwitchScreen(true);
-                    }
 
-                    Main_timeOut(function() {
-                        if (!Play_IsWarning) Play_HideWarningDialog();
-                    }, 3000);
-                    Screens_loadDataSuccessFinishEnd();
-                }, 500);
+                    } else Main_SwitchScreen(false);
+                } else {
+                    if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                    Play_DurationSeconds = 0;
+                    Main_openVod();
+                    Main_SwitchScreen(true);
+                }
+
+                Screens_loadDataSuccessFinishEnd();
+
             } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
                 Main_GoBefore !== Main_Search) {
                 Main_Log('!Play_WasPlaying');
