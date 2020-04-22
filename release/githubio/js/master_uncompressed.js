@@ -4433,7 +4433,7 @@
     }
 
     function ChatLiveControls_SetEmojisObj() {
-        if (!AddUser_UsernameArray[0].access_token && !emojis[0].hasOwnProperty('div')) return;
+        if (!AddUser_UsernameArray[0].access_token || emojis[0].hasOwnProperty('div')) return;
 
         for (var i = 0; i < emojis.length; i++) {
             emojis[i].id = i;
@@ -5003,8 +5003,6 @@
 
         ChatLive_loadBadgesChannel(0, chat_number, Chat_Id[chat_number]);
         ChatLive_loadCheersChannel(0, chat_number, Chat_Id[chat_number]);
-
-        ChatLiveControls_SetEmojisObj();
 
         ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
     }
@@ -6093,6 +6091,7 @@
         if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
         if (!extraEmotesDone.bbtvGlobal) Chat_loadBBTVGlobalEmotes(0);
         if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
+        ChatLiveControls_SetEmojisObj();
     }
 
     function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
