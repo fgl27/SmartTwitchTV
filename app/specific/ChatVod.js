@@ -61,6 +61,7 @@ function Chat_loadBadgesGlobal() {
     if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
     if (!extraEmotesDone.bbtvGlobal) Chat_loadBBTVGlobalEmotes(0);
     if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
+    ChatLiveControls_SetEmojisObj();
 }
 
 function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
