@@ -877,7 +877,7 @@ function ChatLive_CheckGiftSub(message) {
             ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
                 STR_GIFT_SUB, 10000);
         }
-    }
+    }// else console.log(JSON.stringify(message));
 
     // tag:
     // badge-info: "subscriber/2"
@@ -912,12 +912,25 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         tags = message.tags,
         nick,
         nickColor,
+        highlighted,
         action,
         emotes = null,
         badges, badge,
         i, len;
 
-    if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
+    if (!tags || !tags.hasOwnProperty('display-name')) {
+        return; //bad formatted message
+    }
+
+    if (tags.hasOwnProperty('msg-id')) {
+        if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
+            highlighted = ' chat_highlighted';
+            ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_HIGH + '</span>', chat_number);
+        } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
+            highlighted = ' chat_highlighted';
+            ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_SUB + '</span>', chat_number);
+        }
+    }
 
     //Add badges
     if (tags.hasOwnProperty('badges')) {
@@ -979,7 +992,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         }
     }
 
-    div += '<span class="message' + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
+    div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
         ChatLive_extraMessageTokenize(
             emoticonize(mmessage, emotes),
             chat_number,

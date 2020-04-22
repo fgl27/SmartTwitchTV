@@ -1601,8 +1601,8 @@ function Main_ready(func) {
 }
 
 function Main_timeOut(func, timeout) {
-    if (timeout && timeout > 0) window.setTimeout(func, timeout);
-    else window.setTimeout(func);
+    if (timeout && timeout > 0) setTimeout(func, timeout);
+    else setTimeout(func);
 }
 
 function Main_getclock() {

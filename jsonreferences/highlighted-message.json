@@ -1,0 +1,23 @@
+{
+	"raw": "@badge-info=;badges=;color=#00FF7F;display-name=gaming_fakers;emotes=425688:33-40/461298:42-49/425671:51-58;flags=;id=f8274293-7342-4cdc-b4df-d15ac42afdcc;mod=0;msg-id=highlighted-message;room-id=156037856;subscriber=0;tmi-sent-ts=1587546709316;turbo=0;user-id=221995786;user-type= :gaming_fakers!gaming_fakers@gaming_fakers.tmi.twitch.tv PRIVMSG #fextralife :Good luck with the keys people 🔑 PowerUpL DarkMode PowerUpR",
+	"tags": {
+		"badge-info": true,
+		"badges": true,
+		"color": "#00FF7F",
+		"display-name": "gaming_fakers",
+		"emotes": "425688:33-40/461298:42-49/425671:51-58",
+		"flags": true,
+		"id": "f8274293-7342-4cdc-b4df-d15ac42afdcc",
+		"mod": "0",
+		"msg-id": "highlighted-message",
+		"room-id": "156037856",
+		"subscriber": "0",
+		"tmi-sent-ts": "1587546709316",
+		"turbo": "0",
+		"user-id": "221995786",
+		"user-type": true
+	},
+	"prefix": "gaming_fakers!gaming_fakers@gaming_fakers.tmi.twitch.tv",
+	"command": "PRIVMSG",
+	"params": ["#fextralife", "Good luck with the keys people 🔑 PowerUpL DarkMode PowerUpR"]
+}

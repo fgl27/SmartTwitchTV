@@ -466,4 +466,6 @@ function en_USLang() {
     STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because chat permissions wasn't asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
     STR_NOKEY_CHAT_WARN = "Add an user authorization key to be able to logging and write to chat";
     STR_CHAT_NOT_READY = "Chat not ready to send! Try again is a second or two.";
+    STR_CHAT_REDEEMED_MESSAGE_HIGH = "Redeemed Highlight My Message";
+    STR_CHAT_REDEEMED_MESSAGE_SUB = "Redeemed Send a Message in Sub-Only Mode";
 }
