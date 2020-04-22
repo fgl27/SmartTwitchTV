@@ -492,8 +492,8 @@ function ChatLiveControls_EmotesRemoveFocus(position) {
 }
 
 function ChatLiveControls_EmotesChangeFocus(position, adder) {
-    var doc = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[(position + adder)]);
-    if (doc) {
+
+    if (document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[(position + adder)])) {
         ChatLiveControls_EmotesRemoveFocus(position);
         ChatLiveControls_EmotesPos += adder;
         ChatLiveControls_EmotesAddFocus(ChatLiveControls_EmotesPos);
@@ -509,6 +509,7 @@ function ChatLiveControls_EmotesChangeFocus(position, adder) {
             ChatLiveControls_EmotesScroll(ChatLiveControls_EmotesPos);
         }
     }
+
 }
 
 function ChatLiveControls_EmotesUpdateCounter(position) {
