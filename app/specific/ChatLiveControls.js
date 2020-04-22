@@ -348,7 +348,7 @@ function ChatLiveControls_SetEmoteDiv(obj) {
 function ChatLiveControls_SetEmojisDiv() {
     var array = emojis;
 
-    if (array && array.length > 1) {
+    if (array[0].hasOwnProperty('div')) {
         Main_textContent("chat_emotes_text", STR_CHAT_UNICODE_EMOJI);
     } else {
         ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);
@@ -404,7 +404,7 @@ function ChatLiveControls_SetEmojiDiv(obj) {
 
     var url = twemoji.parseIcon(obj.unicode);
 
-    div.innerHTML = '<div ><div id="chat_emotes_img' + id + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + twemoji.parseIcon(obj.unicode) +
+    div.innerHTML = '<div ><div id="chat_emotes_img' + id + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + url +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
         '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id + '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
 
@@ -415,6 +415,8 @@ function ChatLiveControls_SetEmojiDiv(obj) {
 }
 
 function ChatLiveControls_SetEmojisObj() {
+    if (!AddUser_UsernameArray[0].access_token && !emojis[0].hasOwnProperty('div')) return;
+
     for (var i = 0; i < emojis.length; i++) {
         emojis[i].id = i;
         emojis[i].div = ChatLiveControls_SetEmojiDiv(emojis[i]);

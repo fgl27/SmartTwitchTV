@@ -77,6 +77,8 @@ function ChatLive_Init(chat_number) {
     ChatLive_loadBadgesChannel(0, chat_number, Chat_Id[chat_number]);
     ChatLive_loadCheersChannel(0, chat_number, Chat_Id[chat_number]);
 
+    ChatLiveControls_SetEmojisObj();
+
     ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
 }
 
