@@ -5714,8 +5714,7 @@
         if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
 
             var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
-            ChatLiveControls_showWarningDialog(text, 5000);
-            Play_showWarningMidleDialog(text, 5000);
+            ChatLive_Warn(text, 5000);
 
             ChatLive_Banned[chat_number] = true;
 
@@ -5731,11 +5730,14 @@
         if (message.params[1] && !Main_A_includes_B(message.params[1], "NICK already set")) {
 
             Main_Log(message.params[1]);
-
-            ChatLiveControls_showWarningDialog(message.params[1], 5000);
-            Play_showWarningMidleDialog(message.params[1], 5000);
+            ChatLive_Warn(message.params[1], 5000);
 
         }
+    }
+
+    function ChatLive_Warn(message, time) {
+        ChatLiveControls_showWarningDialog('Chat: ' + message, time);
+        Play_showWarningMidleDialog('Chat: ' + message, time);
     }
 
     function ChatLive_SendMessage(message, chat_number) {
@@ -5784,7 +5786,7 @@
             if (Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
                 Main_A_equals_B(tags['msg-param-recipient-user-name'].toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + '')) {
 
-                Play_showWarningMidleDialog((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
+                ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
                     STR_GIFT_SUB, 10000);
             }
         }
