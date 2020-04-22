@@ -4228,7 +4228,7 @@
 
         } else if (ChatLiveControls_cursor === 7 && ChatLiveControls_CanSend()) {
 
-            ChatLiveControls_SetEmotesDiv(userEmote, STR_CHAT_TW_EMOTES);
+            ChatLiveControls_SetEmotesDiv(userEmote[AddUser_UsernameArray[0].id], STR_CHAT_TW_EMOTES);
 
         } else if (ChatLiveControls_cursor === 8 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
 
@@ -4365,7 +4365,7 @@
     function ChatLiveControls_SetEmojisDiv() {
         var array = emojis;
 
-        if (array && array.length > 1) {
+        if (array[0].hasOwnProperty('div')) {
             Main_textContent("chat_emotes_text", STR_CHAT_UNICODE_EMOJI);
         } else {
             ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);
@@ -4422,7 +4422,7 @@
 
         var url = twemoji.parseIcon(obj.unicode);
 
-        div.innerHTML = '<div ><div id="chat_emotes_img' + id + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + twemoji.parseIcon(obj.unicode) +
+        div.innerHTML = '<div ><div id="chat_emotes_img' + id + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + url +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
             '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id + '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
 
@@ -4433,6 +4433,8 @@
     }
 
     function ChatLiveControls_SetEmojisObj() {
+        if (!AddUser_UsernameArray[0].access_token && !emojis[0].hasOwnProperty('div')) return;
+
         for (var i = 0; i < emojis.length; i++) {
             emojis[i].id = i;
             emojis[i].div = ChatLiveControls_SetEmojiDiv(emojis[i]);
@@ -4921,7 +4923,8 @@
         Main_setItem(key, OptionsShowObj[key].defaultValue);
         Main_textContent(key, OptionsShowObj[key].values[OptionsShowObj[key].defaultValue]);
         ChatLiveControls_SetarrowsKey(key);
-    } //Variable initialization
+    }
+    //Variable initialization
     var ChatLive_loadingDataTryMax = 10;
     var Chat_Id = [];
     var ChatLive_loadBadgesChannelId;
@@ -4999,6 +5002,8 @@
 
         ChatLive_loadBadgesChannel(0, chat_number, Chat_Id[chat_number]);
         ChatLive_loadCheersChannel(0, chat_number, Chat_Id[chat_number]);
+
+        ChatLiveControls_SetEmojisObj();
 
         ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
     }
@@ -5156,8 +5161,9 @@
         try {
 
             data = JSON.parse(data);
-            userEmote = {};
-            var Div, url;
+            if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) userEmote[AddUser_UsernameArray[0].id] = {};
+
+            var url;
 
             Object.keys(data.emoticon_sets).forEach(function(set) {
                 set = data.emoticon_sets[set];
@@ -5170,7 +5176,9 @@
 
                         emoticon.code = emoteReplace[emoticon.code] || emoticon.code;
 
-                        url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0';
+                        if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
+
+                        url = emoteURL(emoticon.id);
 
                         extraEmotes[emoticon.code] = {
                             code: emoticon.code,
@@ -5178,13 +5186,11 @@
                             '4x': url
                         };
 
-                        Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code]);
-
-                        userEmote[emoticon.code] = {
+                        userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
                             code: emoticon.code,
                             id: emoticon.id,
                             '4x': url,
-                            div: Div
+                            div: ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code])
                         };
 
                     });
@@ -6021,7 +6027,8 @@
         };
 
         xmlHttp.send(null);
-    } //Variable initialization
+    }
+    //Variable initialization
     var Chat_loadingDataTry = 0;
     var Chat_Messages = [];
     var Chat_MessagesNext = [];
@@ -6085,7 +6092,6 @@
         if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
         if (!extraEmotesDone.bbtvGlobal) Chat_loadBBTVGlobalEmotes(0);
         if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
-        if (!emojis[0].hasOwnProperty('div')) ChatLiveControls_SetEmojisObj();
     }
 
     function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
