@@ -415,7 +415,7 @@ function ChatLiveControls_SetEmojiDiv(obj) {
 }
 
 function ChatLiveControls_SetEmojisObj() {
-    if (emojis[0].hasOwnProperty('div')) return;
+    if (!AddUser_IsUserSet() && !AddUser_UsernameArray[0].access_token || emojis[0].hasOwnProperty('div')) return;
 
     for (var i = 0; i < emojis.length; i++) {
         emojis[i].id = i;
