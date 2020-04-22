@@ -298,8 +298,10 @@ function en_USLang() {
     STR_SINGLE_EXIT = "Single back key press";
     STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
     STR_NOW_LIVE = "Now Live";
+    STR_NOTIFICATION_OPT = "Notification options";
     STR_NOW_LIVE_SHOW = "Show Now Live notification";
-    STR_NOW_DURATION = "Notification duration in seconds (background notification duration is based on system timeout)";
+    STR_NOW_DURATION = "Notification duration in seconds";
+    STR_NOW_DURATION_SUMMARY = "This only applies to in app notification, when doing background notification the duration is based on system timeout a value that can't be changed and is around 3 seconds";
     STR_NOW_BACKGROUND = "Now Live notification over other apps, when the app is on background";
     STR_GLOBAL_FONT = "Global app font size offset";
     STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
@@ -317,7 +319,7 @@ function en_USLang() {
     STR_LOW_LATENCY_SUMMARY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
         "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
     STR_LIVE_FEED_SORT = "Live feed sort";
-    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed (all option may not apply to all feeds)";
+    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed (not all option apply to all feeds types)";
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";

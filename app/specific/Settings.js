@@ -72,15 +72,15 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
-    "live_notification": {
+    "live_notification": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "live_notification_background": {
+    "live_notification_background": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "live_notification_time": {
+    "live_notification_time": {//Migrated to dialog
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         "defaultValue": 4
     },
@@ -130,6 +130,11 @@ var Settings_value = {
     },
     "content_lang": {
         "values": ["All"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "live_notification_opt": {
+        "values": ["None"],
         "set_values": [""],
         "defaultValue": 1
     },
@@ -278,14 +283,6 @@ function Settings_SetSettings() {
 
     div += Settings_Content('app_animations', array_no_yes, STR_APP_ANIMATIONS, null);
 
-    div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
-
-    div += Settings_Content('live_notification', array_no_yes, STR_NOW_LIVE_SHOW, null);
-
-    if (Main_isTV) div += Settings_Content('live_notification_background', array_no_yes, STR_NOW_BACKGROUND, null);
-
-    div += Settings_Content('live_notification_time', null, STR_NOW_DURATION, null);
-
     div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
 
     div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
@@ -296,13 +293,17 @@ function Settings_SetSettings() {
         div += Settings_Content('dpad_opacity', null, STR_DPAD_OPACITY, null);
     }
 
-    div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-    Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
+    div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
     div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
+
+    div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
+
+    div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+    Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
@@ -450,18 +451,6 @@ function Settings_SetStrings() {
     key = "clip_auto_play_next";
     Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
     Settings_value[key].values = [STR_NO, STR_YES];
-
-    key = "live_notification";
-    Main_textContent(key + '_name', STR_NOW_LIVE_SHOW);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    if (Main_isTV) {
-        key = "live_notification_background";
-        Main_textContent(key + '_name', STR_NOW_BACKGROUND);
-        Settings_value[key].values = [STR_NO, STR_YES];
-    }
-
-    Main_textContent('live_notification_time_name', STR_NOW_DURATION);
 
     key = "keep_panel_info_visible";
     Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
@@ -778,7 +767,7 @@ function Settings_ScrollTable() {
     var doc,
         offset = (!Main_isTV || !Main_IsOnAndroid) ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (17 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (14 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -786,7 +775,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 200);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (16 + offset)) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (13 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;
@@ -874,6 +863,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
             break;
         default:
             break;
@@ -1118,6 +1108,34 @@ function Settings_DialogShowSmallPayer() {
     };
 
     Settings_DialogShow(obj, STR_SIDE_PANEL_PLAYER);
+}
+
+function Settings_DialogShowNotification() {
+    Settings_value.live_notification.values = [STR_NO, STR_YES];
+    Settings_value.live_notification_background.values = [STR_NO, STR_YES];
+
+    var obj = {
+        live_notification: {
+            defaultValue: Settings_value.live_notification.defaultValue,
+            values: Settings_value.live_notification.values,
+            title: STR_NOW_LIVE_SHOW,
+            summary: null
+        },
+        live_notification_background: {
+            defaultValue: Settings_value.live_notification_background.defaultValue,
+            values: Settings_value.live_notification_background.values,
+            title: STR_NOW_BACKGROUND,
+            summary: null
+        },
+        live_notification_time: {
+            defaultValue: Settings_value.live_notification_time.defaultValue,
+            values: Settings_value.live_notification_time.values,
+            title: STR_NOW_DURATION,
+            summary: STR_NOW_DURATION_SUMMARY
+        }
+    };
+
+    Settings_DialogShow(obj, STR_NOTIFICATION_OPT);
 }
 
 function Settings_Dialog_isVisible() {
