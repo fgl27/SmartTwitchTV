@@ -216,6 +216,7 @@ function en_USLang() {
     STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user and restores what was previously playing on next start";
     STR_CHAT_FONT = "Chat font size";
     STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
+    STR_VIDEOS_ANIMATION_SUMMARY = "When a VOD or Highlight is selected animate the thumbnail if a animated thumbnail is available for that video (not all videos have one)";
     STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
     STR_SIZE = "Size ";
     STR_BRIGHTNESS = "Brightness ";
@@ -323,6 +324,8 @@ function en_USLang() {
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
+    STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
+    STR_ANIMATIONS = "Animations";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get stream link issue";
     STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -415,14 +418,17 @@ function en_USLang() {
     STR_SIDE_PANEL_PLAYER_DELAY = "Side panel or small player over the player live feed delay";
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a tile is selected";
     STR_SIDE_PANEL_PLAYER = "Side panel player and small player over the player live feed";
-    STR_START_AT_USER = "Always start the app in the user screen (overwrites Restore playback)";
+    STR_START_AT_USER = "Always start the app in the user screen";
+    STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work";
     STR_LAST_REFRESH = "(last refresh: ";
     STR_PP_VOD = "Exit PP or Multistream to open this VOD";
     STR_SETTINGS_ACCESSIBILITY = "Show accessibility service warning";
+    STR_SETTINGS_ACCESSIBILITY_SUMMARY = "Is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
     STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
-    STR_ACCESSIBILITY_WARN_EXTRA = "Is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.<br>Read more about this on bellow link:";
+    STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
     STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
     STR_AUTO_REFRESH = "Auto refresh content timeout (time in minutes)";
+    STR_AUTO_REFRESH_SUMMARY = "When enable this will refresh a screen after the time amount (the refresh happens only when the screen is selected), this also applies to the player live feed";
     STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
     STR_MAIN_WINDOW = "Main window";
     STR_MULTI_MAIN_WINDOW = "MultiStream main window";

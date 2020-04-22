@@ -21,6 +21,7 @@ var STR_SPACE = '&nbsp;';
 var STR_PAYPAL;
 var STR_BITCOIN;
 var STR_BITCOIN_WALLET = "1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x";
+var STR_APP_LAG = 'https://tinyurl.com/applag';
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
 function DefaultLang() {
@@ -105,8 +106,8 @@ function DefaultLang() {
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_ACCESSIBILITY_WARN_TEXT = STR_DIV_TITLE + STR_WARNING + STR_ACCESSIBILITY_WARN + '</div>' + STR_BR +
-        STR_ACCESSIBILITY_WARN_EXTRA + STR_BR + STR_BR +
-        STR_RED_DIV + 'https://tinyurl.com/applag' + '</div>' + STR_BR + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA2 + STR_BR + STR_BR +
+        STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA + STR_BR + STR_BR +
+        STR_RED_DIV + STR_APP_LAG + '</div>' + STR_BR + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA2 + STR_BR + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';

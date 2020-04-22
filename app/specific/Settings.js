@@ -25,7 +25,7 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "app_animations": {
+    "app_animations": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
     },
@@ -112,7 +112,7 @@ var Settings_value = {
         "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
         "defaultValue": 18
     },
-    "videos_animation": {
+    "videos_animation": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
     },
@@ -130,6 +130,11 @@ var Settings_value = {
     },
     "content_lang": {
         "values": ["All"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "animations_opt": {
+        "values": ["None"],
         "set_values": [""],
         "defaultValue": 1
     },
@@ -269,10 +274,13 @@ function Settings_SetSettings() {
         STR_LIVE_FEED_SORT_SUMMARY
     );
 
-    div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, null);
 
     Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
-    div += Settings_Content('auto_refresh_screen', Settings_value.auto_refresh_screen.values, STR_AUTO_REFRESH, null);
+    div += Settings_Content('auto_refresh_screen', Settings_value.auto_refresh_screen.values, STR_AUTO_REFRESH, STR_AUTO_REFRESH_SUMMARY);
+
+    div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
+
+    div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
     div += Settings_Content('thumb_quality',
         [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
@@ -280,18 +288,15 @@ function Settings_SetSettings() {
 
     div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
-    div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
-    div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, null);
 
-    div += Settings_Content('videos_animation', array_no_yes, STR_VIDEOS_ANIMATION, null);
-
-    div += Settings_Content('app_animations', array_no_yes, STR_APP_ANIMATIONS, null);
+    div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
 
     div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
 
     div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
+    div += Settings_Content('animations_opt', [STR_CONTENT_LANG_SUMMARY], STR_ANIMATIONS, null);
     div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
 
     if (!Main_isTV || !Main_IsOnAndroid) {
@@ -408,8 +413,12 @@ function Settings_SetStrings() {
     Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     key = "start_user_screen";
-    Main_textContent('start_user_screen_name', STR_START_AT_USER);
+    Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
     Settings_value[key].values = [STR_YES, STR_NO];
+
+    key = "auto_refresh_screen";
+    Settings_DivOptionChangeLang(key, STR_AUTO_REFRESH, STR_AUTO_REFRESH_SUMMARY);
+    Settings_value[key].values[0] = STR_DISABLE;
 
     //Player restore
     key = "restor_playback";
@@ -435,12 +444,7 @@ function Settings_SetStrings() {
 
     // accessibility_warn
     key = "accessibility_warn";
-    Main_textContent(key + '_name', STR_SETTINGS_ACCESSIBILITY);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    // Videos
-    key = "videos_animation";
-    Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
+    Settings_DivOptionChangeLang(key, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
     Settings_value[key].values = [STR_YES, STR_NO];
 
     key = "pp_workaround";
@@ -457,10 +461,6 @@ function Settings_SetStrings() {
 
     key = "single_click_exit";
     Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    key = "app_animations";
-    Main_textContent(key + '_name', STR_APP_ANIMATIONS);
     Settings_value[key].values = [STR_NO, STR_YES];
 
     for (key in Settings_value)
@@ -766,7 +766,7 @@ function Settings_ScrollTable() {
     var doc,
         offset = (!Main_isTV || !Main_IsOnAndroid) ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (13 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -774,7 +774,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 200);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (12 + offset)) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;
@@ -864,6 +864,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'animations_opt')) Settings_DialogShowAnimation();
             break;
         default:
             break;
@@ -1156,6 +1157,28 @@ function Settings_DialogShowDpad() {
     };
 
     Settings_DialogShow(obj, STR_DPAD_OPT);
+}
+
+function Settings_DialogShowAnimation() {
+    Settings_value.app_animations.values = [STR_NO, STR_YES];
+    Settings_value.videos_animation.values = [STR_NO, STR_YES];
+
+    var obj = {
+        app_animations: {
+            defaultValue: Settings_value.app_animations.defaultValue,
+            values: Settings_value.app_animations.values,
+            title: STR_APP_ANIMATIONS,
+            summary: STR_APP_ANIMATIONS_SUMMARY
+        },
+        videos_animation: {
+            defaultValue: Settings_value.videos_animation.defaultValue,
+            values: Settings_value.videos_animation.values,
+            title: STR_VIDEOS_ANIMATION,
+            summary: STR_VIDEOS_ANIMATION_SUMMARY
+        }
+    };
+
+    Settings_DialogShow(obj, STR_ANIMATIONS);
 }
 
 function Settings_Dialog_isVisible() {
