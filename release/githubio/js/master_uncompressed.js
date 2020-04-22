@@ -5825,8 +5825,7 @@
             action,
             emotes = null,
             badges, badge,
-            i, len,
-            j, len_j;
+            i, len;
 
         if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
 
@@ -5871,7 +5870,7 @@
 
                 tags.emotes = tags.emotes.split('/');
 
-                var emote, replacements, replacement;
+                var emote, replacements, replacement, j, len_j;
                 emotes = {};
 
                 for (i = 0, len = tags.emotes.length; i < len; i++) {
@@ -6598,7 +6597,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.174';
-    var Main_minversion = 'April 20, 2020';
+    var Main_minversion = 'April 21, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
