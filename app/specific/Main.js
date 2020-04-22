@@ -2163,6 +2163,10 @@ function Main_CheckStop() { // Called only by JAVA
             if (Settings_CodecsValue.length) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');
             document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
+        } else if (Settings_Dialog_isVisible()) {
+            if (Settings_DialogValue.length) Settings_DialoghandleKeyDown(Settings_DialogValue[Settings_DialogPos]);
+            Main_HideElement('dialog_settings');
+            document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
         }
         Settings_exit();
         Main_SwitchScreen();

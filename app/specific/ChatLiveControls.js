@@ -805,7 +805,6 @@ function ChatLiveControls_OptionsShow() {
 
     Main_innerHTML("chat_options_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
 
-
     ChatLiveControls_OptionsY = 0;
     Main_AddClass(OptionsShowArray[0], 'settings_value_focus');
     Main_AddClass(OptionsShowArray[0] + '_div', 'settings_div_focus');

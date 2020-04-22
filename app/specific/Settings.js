@@ -1,57 +1,57 @@
 //Variable initialization
 var Settings_cursorY = 0;
 var Settings_value = {
-    "restor_playback": { //restor_playback
+    "restor_playback": {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "clip_auto_play_next": { //clip_auto_play_next
+    "clip_auto_play_next": {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "pp_workaround": { //pp_workaround
+    "pp_workaround": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "keep_panel_info_visible": { //clip_auto_play_next
+    "keep_panel_info_visible": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "single_click_exit": { //single_click_exit
+    "single_click_exit": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "accessibility_warn": { //accessibility_warn
+    "accessibility_warn": {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "app_animations": { //app_animations
+    "app_animations": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "show_screen_counter": { //show_screen_counter
+    "show_screen_counter": {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "show_feed_player": { //show_feed_player
+    "show_feed_player": {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "disable_feed_player_multi": { //disable_feed_player_multi
+    "disable_feed_player_multi": {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "start_user_screen": { //start_user_screen
+    "start_user_screen": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "auto_refresh_screen": { //auto_refresh_screen
+    "auto_refresh_screen": {
         "values": [
             'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
         ],
         "defaultValue": 1
     },
-    "show_feed_player_delay": { //show_feed_player_delay
+    "show_feed_player_delay": {
         "values": [
             0, 100, 200, 300, 400, 500, 600,
             700, 800, 900, 1000, 1100, 1200,
@@ -59,7 +59,7 @@ var Settings_value = {
             1900, 2000],
         "defaultValue": 1
     },
-    "live_feed_sort": { //live_feed_sort
+    "live_feed_sort": {
         "values": [
             "views_more",
             "views_less",
@@ -72,77 +72,82 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
-    "live_notification": { //live_notification
+    "live_notification": {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "live_notification_background": { //live_notification_background
+    "live_notification_background": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "live_notification_time": { //live_notification_time
+    "live_notification_time": {
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         "defaultValue": 4
     },
-    "global_font_offset": { //live notification
+    "global_font_offset": {
         "values": [-3, -2, -1, 0, 1, 2, 3],
         "defaultValue": 4
     },
-    "buffer_live": { //buffer_live
+    "buffer_live": {//Migrated to dialog
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 2
     },
-    "buffer_vod": { //buffer_vod
+    "buffer_vod": {//Migrated to dialog
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 2
     },
-    "buffer_clip": { //buffer_clip
+    "buffer_clip": {//Migrated to dialog
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 2
     },
-    "end_dialog_counter": { //end_dialog_counter
+    "end_dialog_counter": {
         "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 4
     },
-    "bitrate_main": { //bitrate_main
+    "bitrate_main": {
         "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
         "defaultValue": 1
     },
-    "bitrate_min": { //bitrate_min
+    "bitrate_min": {
         "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
         "defaultValue": 18
     },
-    "videos_animation": { //videos_animation
+    "videos_animation": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "thumb_quality": { //thumbnail quality
+    "thumb_quality": {
         "values": ["very-low", "low", "normal", "high", "very-high"],
         "defaultValue": 3
     },
-    "default_quality": { //default player quality Auto or source
+    "default_quality": {
         "values": ["Auto", "source"],
         "defaultValue": 1
     },
-    "clock_offset": { //clock_offset
+    "clock_offset": {
         "values": Settings_GenerateClock(),
         "defaultValue": 49
     },
-    "content_lang": { //content_lang
+    "content_lang": {
         "values": ["All"],
         "set_values": [""],
         "defaultValue": 1
     },
-    "blocked_codecs": { //blocked_codecs
+    "blocked_codecs": {
         "values": ["None"],
         "set_values": [""],
         "defaultValue": 1
     },
-    "dpad_position": { //dpad postion
+    "player_buffers": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "dpad_position": {
         "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
         "defaultValue": 1
     },
-    "dpad_opacity": { //dpad opacity
+    "dpad_opacity": {
         "values": [
             "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%",
             "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
@@ -323,16 +328,7 @@ function Settings_SetSettings() {
     Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
     Settings_SetBitRate(0);
 
-    // Player buffer title/summary
-    div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
-        '<div id="setting_title_buffers_summary" class="settings_summary">' + STR_SETTINGS_BUFFER_SIZE_SUMMARY + '</div>';
-
-
-    div += Settings_Content('buffer_live', null, STR_SETTINGS_BUFFER_LIVE, null);
-
-    div += Settings_Content('buffer_vod', null, STR_SETTINGS_BUFFER_VOD, null);
-
-    div += Settings_Content('buffer_clip', null, STR_SETTINGS_BUFFER_CLIP, null);
+    div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
@@ -435,10 +431,6 @@ function Settings_SetStrings() {
     // Player buffer title/summary
     Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
     Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
-
-    Main_textContent('buffer_live_name', STR_SETTINGS_BUFFER_LIVE);
-    Main_textContent('buffer_vod_name', STR_SETTINGS_BUFFER_VOD);
-    Main_textContent('buffer_clip_name', STR_SETTINGS_BUFFER_CLIP);
 
     key = "start_user_screen";
     Main_textContent('start_user_screen_name', STR_START_AT_USER);
@@ -548,10 +540,6 @@ function Settings_Obj_values(key) {
     return Settings_value[key].values[Settings_Obj_default(key)];
 }
 
-//function Settings_Obj_set_values(key) {
-//    return Settings_value[key].set_values[Settings_Obj_default(key)];
-//}
-
 function Settings_Obj_default(key) {
     return Settings_value[key].defaultValue;
 }
@@ -584,7 +572,7 @@ function Settings_ChangeSettigs(position) {
     Main_setItem(key, Settings_Obj_default(key) + 1);
     Main_textContent(key, Settings_Obj_values(key));
     Settings_Setarrows(position);
-    Settings_SetDefault(position);
+    Settings_SetDefault(key);
 }
 
 function Settings_Setarrows(position) {
@@ -610,7 +598,6 @@ function Settings_SetarrowsKey(key) {
 }
 
 function Settings_SetDefault(position) {
-    position = Settings_value_keys[position];
 
     if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     else if (position === "live_notification") {
@@ -909,6 +896,7 @@ function Settings_handleKeyDown(event) {
         case KEY_ENTER:
             if (!Settings_cursorY) Languages_init();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
             break;
         default:
             break;
@@ -1081,4 +1069,111 @@ function Settings_ForceEnableAimations() {
     Settings_value.app_animations.defaultValue = 1;
     Main_setItem('app_animations', 2);
     Settings_SetAnimations();
+}
+
+function Settings_DialogShowBuffer() {
+    var obj = {
+        buffer_live: {
+            defaultValue: Settings_value.buffer_live.defaultValue,
+            values: Settings_value.buffer_live.values,
+            title: STR_SETTINGS_BUFFER_LIVE,
+            summary: null
+        },
+        buffer_vod: {
+            defaultValue: Settings_value.buffer_vod.defaultValue,
+            values: Settings_value.buffer_vod.values,
+            title: STR_SETTINGS_BUFFER_VOD,
+            summary: null
+        },
+        buffer_clip: {
+            defaultValue: Settings_value.buffer_clip.defaultValue,
+            values: Settings_value.buffer_clip.values,
+            title: STR_SETTINGS_BUFFER_CLIP,
+            summary: null
+        },
+    };
+
+    Settings_DialogShow(obj, STR_SETTINGS_BUFFER_SIZE + STR_BR + STR_SETTINGS_BUFFER_SIZE_SUMMARY);
+}
+
+
+function Settings_Dialog_isVisible() {
+    return Main_isElementShowing('dialog_settings');
+}
+
+var Settings_DialogValue = [];
+var Settings_DialogPos = 0;
+
+function Settings_DialogShow(obj, title) {
+    document.body.removeEventListener("keydown", Settings_handleKeyDown);
+
+    var dialogContent = title + STR_BR + STR_BR;
+    Settings_DialogValue = [];
+
+    for (var property in obj) {
+        Settings_DialogValue.push(property);
+        dialogContent += obj[property].summary ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary) :
+            Settings_DivOptionNoSummary(property, obj[property].title);
+    }
+
+    Main_innerHTML("dialog_settings_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+
+    Settings_DialogPos = 0;
+    Main_AddClass(Settings_DialogValue[0], 'settings_value_focus');
+    Main_AddClass(Settings_DialogValue[0] + '_div', 'settings_div_focus');
+    Settings_SetarrowsKey(Settings_DialogValue[0]);
+
+    Main_ShowElement('dialog_settings');
+    document.body.addEventListener("keydown", Settings_DialoghandleKeyDown, false);
+}
+
+function Settings_DialoghandleKeyDown(event) {
+    var key;
+    switch (event.keyCode) {
+        case KEY_ENTER:
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+            Main_HideElement('dialog_settings');
+            document.body.removeEventListener("keydown", Settings_DialoghandleKeyDown);
+            document.body.addEventListener("keydown", Settings_handleKeyDown, false);
+            break;
+        case KEY_LEFT:
+            key = Settings_DialogValue[Settings_DialogPos];
+            if (Settings_Obj_default(key) > 0) Settings_DialogRigthLeft(-1);
+            break;
+        case KEY_RIGHT:
+            key = Settings_DialogValue[Settings_DialogPos];
+            if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_DialogRigthLeft(1);
+            break;
+        case KEY_UP:
+            if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
+            break;
+        case KEY_DOWN:
+            if (Settings_DialogPos < (Settings_DialogValue.length - 1)) Settings_DialogUpDown(1);
+            break;
+        default:
+            break;
+    }
+}
+
+function Settings_DialogUpDown(offset) {
+    Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+    Settings_DialogPos += offset;
+
+    var key = Settings_DialogValue[Settings_DialogPos];
+    Main_AddClass(key, 'settings_value_focus');
+    Main_AddClass(key + '_div', 'settings_div_focus');
+    Settings_SetarrowsKey(key);
+}
+
+function Settings_DialogRigthLeft(offset) {
+    var key = Settings_DialogValue[Settings_DialogPos];
+
+    Settings_value[key].defaultValue += offset;
+
+    Main_setItem(key, Settings_Obj_default(key) + 1);
+    Main_textContent(key, Settings_Obj_values(key));
+    Settings_SetarrowsKey(key);
+    Settings_SetDefault(key);
 }
