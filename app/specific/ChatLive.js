@@ -900,7 +900,8 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         action,
         emotes = null,
         badges, badge,
-        i, len;
+        i, len,
+        j, len_j;
 
     if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
 
@@ -945,7 +946,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
             tags.emotes = tags.emotes.split('/');
 
-            var emote;
+            var emote, replacements, replacement;
             emotes = {};
 
             for (i = 0, len = tags.emotes.length; i < len; i++) {
@@ -953,11 +954,10 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
                 if (!emotes[emote[0]]) emotes[emote[0]] = [];
 
-                var replacements = emote[1].split(','),
-                    replacement;
+                replacements = emote[1].split(',');
 
-                for (i = 0, len = replacements.length; i < len; i++) {
-                    replacement = replacements[i].split('-');
+                for (j = 0, len_j = replacements.length; j < len_j; j++) {
+                    replacement = replacements[j].split('-');
 
                     emotes[emote[0]].push([parseInt(replacement[0]), parseInt(replacement[1])]);
                 }
