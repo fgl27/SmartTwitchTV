@@ -1343,7 +1343,7 @@ function Play_MakeControls() {
             if (Main_values.Play_ChatForceDisable) {
                 Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
                 return;
-            } else if (!AddUser_UsernameArray[0].access_token) {
+            } else if (!AddUser_UserIsSet() || !AddUser_UsernameArray[0].access_token) {
                 Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
                 return;
             }
