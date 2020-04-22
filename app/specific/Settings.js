@@ -33,11 +33,11 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "show_feed_player": {
+    "show_feed_player": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "disable_feed_player_multi": {
+    "disable_feed_player_multi": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
@@ -51,7 +51,7 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
-    "show_feed_player_delay": {
+    "show_feed_player_delay": {//Migrated to dialog
         "values": [
             0, 100, 200, 300, 400, 500, 600,
             700, 800, 900, 1000, 1100, 1200,
@@ -104,11 +104,11 @@ var Settings_value = {
         "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 4
     },
-    "bitrate_main": {
+    "bitrate_main": {//Migrated to dialog
         "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
         "defaultValue": 1
     },
-    "bitrate_min": {
+    "bitrate_min": {//Migrated to dialog
         "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
         "defaultValue": 18
     },
@@ -139,6 +139,11 @@ var Settings_value = {
         "defaultValue": 1
     },
     "player_buffers": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "small_feed_player": {
         "values": ["None"],
         "set_values": [""],
         "defaultValue": 1
@@ -297,21 +302,18 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    div += Settings_Content('show_feed_player', array_no_yes, STR_SHOW_FEED_PLAYER, null);
-
-    div += Settings_Content('disable_feed_player_multi', array_no_yes, STR_DISABLE_FEED_PLAYER_MULTI, null);
-
-    div += Settings_Content('show_feed_player_delay', null, STR_SIDE_PANEL_PLAYER_DELAY, STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY);
-
     div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
     div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
-    div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
-
     div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
+
+    div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
+    div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
+    div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+    div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     // Prepare the bitrates
     key = "bitrate_main";
@@ -321,9 +323,6 @@ function Settings_SetSettings() {
     Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
     Settings_value.bitrate_min.values = Settings_value[key].values;
     Settings_SetBitRate(0);
-
-    div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
-    div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
@@ -372,13 +371,6 @@ function Settings_SetStrings() {
     Main_textContent('clock_offset_name', STR_CLOCK_OFFSET);
 
     Main_textContent('show_screen_counter_name', STR_SCREEN_COUNTER);
-
-    Main_textContent('show_feed_player_name', STR_SHOW_FEED_PLAYER);
-
-    Main_textContent('show_feed_player_delay_name', STR_SIDE_PANEL_PLAYER_DELAY);
-    Main_textContent('show_feed_player_delay_summary', STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY);
-
-    Main_textContent('disable_feed_player_multi_name', STR_DISABLE_FEED_PLAYER_MULTI);
 
     Main_textContent('dpad_position_name', STR_DPAD_POSTION);
 
@@ -881,6 +873,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
             break;
         default:
             break;
@@ -1099,6 +1092,34 @@ function Settings_DialogShowBitrate() {
     Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_PLAYER_BITRATE_SUMMARY);
 }
 
+function Settings_DialogShowSmallPayer() {
+    Settings_value.show_feed_player.values = [STR_NO, STR_YES];
+    Settings_value.disable_feed_player_multi.values = [STR_NO, STR_YES];
+
+    var obj = {
+        show_feed_player: {
+            defaultValue: Settings_value.show_feed_player.defaultValue,
+            values: Settings_value.show_feed_player.values,
+            title: STR_SHOW_FEED_PLAYER,
+            summary: null
+        },
+        disable_feed_player_multi: {
+            defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
+            values: Settings_value.disable_feed_player_multi.values,
+            title: STR_DISABLE_FEED_PLAYER_MULTI,
+            summary: null
+        },
+        show_feed_player_delay: {
+            defaultValue: Settings_value.show_feed_player_delay.defaultValue,
+            values: Settings_value.show_feed_player_delay.values,
+            title: STR_SIDE_PANEL_PLAYER_DELAY,
+            summary: STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY
+        }
+    };
+
+    Settings_DialogShow(obj, STR_SIDE_PANEL_PLAYER);
+}
+
 function Settings_Dialog_isVisible() {
     return Main_isElementShowing('dialog_settings');
 }
@@ -1114,7 +1135,7 @@ function Settings_DialogShow(obj, title) {
 
     for (var property in obj) {
         Settings_DialogValue.push(property);
-        dialogContent += obj[property].summary ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary) :
+        dialogContent += obj[property].summary ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :
             Settings_DivOptionNoSummary(property, obj[property].title);
     }
 

@@ -408,9 +408,10 @@ function en_USLang() {
     STR_BACK_USER_GAMES = ' Press back key to ';
     STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
     STR_SHOW_FEED_PLAYER = 'Show small player over player live feed';
-    STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player over player live feed on multistream';
-    STR_SIDE_PANEL_PLAYER_DELAY = "Side panel or player feed small player delay";
+    STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player over the player live feed when multistream is enabled';
+    STR_SIDE_PANEL_PLAYER_DELAY = "Side panel or small player over the player live feed delay";
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a tile is selected";
+    STR_SIDE_PANEL_PLAYER = "Side panel player and small player over the player live feed";
     STR_START_AT_USER = "Always start the app in the user screen (overwrites Restore playback)";
     STR_LAST_REFRESH = "(last refresh: ";
     STR_PP_VOD = "Exit PP or Multistream to open this VOD";
