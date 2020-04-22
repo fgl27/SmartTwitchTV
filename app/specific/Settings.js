@@ -143,6 +143,11 @@ var Settings_value = {
         "set_values": [""],
         "defaultValue": 1
     },
+    "player_bitrate": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
     "dpad_position": {
         "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
         "defaultValue": 1
@@ -308,26 +313,16 @@ function Settings_SetSettings() {
 
     div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
-    // Player buffer title/summary
-    div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
-        '<div id="setting_title_bandwidth_summary" class="settings_summary">' + STR_PLAYER_BITRATE_SUMMARY + '</div>';
-
-    // Player buffer live
+    // Prepare the bitrates
     key = "bitrate_main";
-    Settings_value_keys.push(key);
-
     for (var i = 1; i < Settings_value[key].values.length; i++) {
         Settings_value[key].values[i] = Settings_value[key].values[i] + " Mbps";
     }
     Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-
-    div += Settings_DivOptionNoSummary(key, STR_PLAYER_BITRATE_MAIN);
-
-    div += Settings_Content('bitrate_min',
-        Settings_value.bitrate_main.values, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
-    Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+    Settings_value.bitrate_min.values = Settings_value[key].values;
     Settings_SetBitRate(0);
 
+    div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
     div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     Main_innerHTML("settings_main", div);
@@ -411,18 +406,6 @@ function Settings_SetStrings() {
 
     //Player settings
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
-
-    // Player buffer title/summary
-    Main_textContent('setting_title_bandwidth', STR_PLAYER_BITRATE);
-    Main_textContent('setting_title_bandwidth_summary', STR_PLAYER_BITRATE_SUMMARY);
-
-    key = "bitrate_main";
-    Main_textContent(key + '_name', STR_AUTO_REFRESH);
-    Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-
-    key = "bitrate_min";
-    Main_textContent(key + '_name', STR_START_AT_USER);
-    Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
 
     key = "auto_refresh_screen";
     Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
@@ -897,6 +880,7 @@ function Settings_handleKeyDown(event) {
             if (!Settings_cursorY) Languages_init();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
             break;
         default:
             break;
@@ -1096,6 +1080,24 @@ function Settings_DialogShowBuffer() {
     Settings_DialogShow(obj, STR_SETTINGS_BUFFER_SIZE + STR_BR + STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 }
 
+function Settings_DialogShowBitrate() {
+    var obj = {
+        bitrate_main: {
+            defaultValue: Settings_value.bitrate_main.defaultValue,
+            values: Settings_value.bitrate_main.values,
+            title: STR_PLAYER_BITRATE_MAIN,
+            summary: null
+        },
+        bitrate_min: {
+            defaultValue: Settings_value.bitrate_min.defaultValue,
+            values: Settings_value.bitrate_min.values,
+            title: STR_PLAYER_BITRATE_SMALL,
+            summary: STR_PLAYER_BITRATE_SMALL_SUMMARY
+        }
+    };
+
+    Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_PLAYER_BITRATE_SUMMARY);
+}
 
 function Settings_Dialog_isVisible() {
     return Main_isElementShowing('dialog_settings');
