@@ -328,9 +328,9 @@ function ChatLiveControls_SetEmotesDiv(obj, text) {
 
 function ChatLiveControls_SetEmoteDiv(obj) {
 
-    var div = document.createElement('div');
+    var div = document.createElement('div'),
+        id = obj.code + obj.id;
 
-    var id = obj.code + obj.id;
     div.setAttribute('id', 'chat_emotes' + id);
     div.setAttribute(Main_DataAttribute, obj.code);
     div.classList.add('chat_emotes_img_holder');
@@ -395,8 +395,8 @@ function ChatLiveControls_SetEmojisDiv() {
 
 function ChatLiveControls_SetEmojiDiv(obj) {
 
-    var div = document.createElement('div');
-    var id = obj.id + obj.tags;
+    var div = document.createElement('div'),
+        id = obj.id + obj.tags;
 
     div.setAttribute('id', 'chat_emotes' + id);
     div.setAttribute(Main_DataAttribute, obj.unicode);
@@ -493,7 +493,7 @@ function ChatLiveControls_EmotesRemoveFocus(position) {
 
 function ChatLiveControls_EmotesChangeFocus(position, adder) {
 
-    if (document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[(position + adder)])) {
+    if (ChatLiveControls_EmotesArray[(position + adder)]) {
         ChatLiveControls_EmotesRemoveFocus(position);
         ChatLiveControls_EmotesPos += adder;
         ChatLiveControls_EmotesAddFocus(ChatLiveControls_EmotesPos);
@@ -502,7 +502,7 @@ function ChatLiveControls_EmotesChangeFocus(position, adder) {
         var postion_now = parseInt(position / 20);
         var postion_down = (postion_now + 1) * 20;
 
-        if (document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_down])) {
+        if (ChatLiveControls_EmotesArray[postion_down]) {
             ChatLiveControls_EmotesRemoveFocus(position);
             ChatLiveControls_EmotesPos = ChatLiveControls_EmotesTotal - 1;
             ChatLiveControls_EmotesAddFocus(ChatLiveControls_EmotesPos);
@@ -526,7 +526,7 @@ function ChatLiveControls_EmotesScroll(position) {
 
         var how_much = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_up]).offsetHeight;
 
-        if (document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_down])) {
+        if (ChatLiveControls_EmotesArray[postion_down]) {
 
             document.getElementById('chat_emotes').style.transform = 'translateY(-' + (how_much * (postion_now - 1)) + 'px)';
 
