@@ -81,7 +81,7 @@ function ChatLive_Init(chat_number) {
 }
 
 function ChatLive_checkFallow(tryes, chat_number, id) {
-    if (!AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
+    if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
 
     ChatLive_FollowState[chat_number] = {};
 
@@ -143,7 +143,7 @@ function ChatLive_checkFallowError(tryes, chat_number, id) {
 }
 
 function ChatLive_checkSub(tryes, chat_number, id) {
-    if (!AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
+    if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
 
     ChatLive_SubState[chat_number] = {};
 
@@ -211,7 +211,7 @@ function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
 }
 
 function ChatLive_loadEmotesUser(tryes) {
-    if (AddUser_UsernameArray[0].access_token) {
+    if (AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
         ChatLive_BaseLoadUrl(
             0,
             Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
@@ -486,11 +486,11 @@ function ChatLive_loadChat(chat_number, id) {
         (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + '</span>', chat_number);
     ChatLive_loadChatRequest(chat_number, id);
 
-    useToken[chat_number] = !ChatLive_Banned[chat_number] && AddUser_UsernameArray[0].access_token;
+    useToken[chat_number] = !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
     if (!chat_number) {
         if (useToken[chat_number]) ChatLive_SendPrepared();
-        else if (!AddUser_UsernameArray[0].access_token) ChatLive_SendClose();
+        else if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) ChatLive_SendClose();
     }
 
 }
@@ -502,7 +502,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
         reconnectInterval: 3000
     });
 
-    if (!ChatLive_Banned[chat_number] && AddUser_UsernameArray[0].access_token) {
+    if (!ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
         ChatLive_socket[chat_number].onopen = function() {
             ChatLive_socket[chat_number].send('PASS oauth:' + AddUser_UsernameArray[0].access_token + '\r\n');
             ChatLive_socket[chat_number].send('NICK ' + AddUser_UsernameArray[0].name.toLowerCase() + '\r\n');
@@ -742,7 +742,7 @@ function ChatLive_SendPrepared() {
                     ChatLive_socketSend.send('PONG ' + message.params[0]);
                     break;
                 case "001":
-                    if (AddUser_UsernameArray[0].access_token && message.params[1]) {
+                    if (message.params[1]) {
                         if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
                             ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
                         }
@@ -1058,7 +1058,9 @@ function ChatLive_Clear(chat_number) {
 
     ChatLive_CheckClear(chat_number);
 
-    if (ChatLive_socket[chat_number] && ChatLive_loaded[chat_number] && ChatLive_socket[chat_number].readyState === 1 && AddUser_UsernameArray[0].access_token) {
+    if (ChatLive_socket[chat_number] && ChatLive_loaded[chat_number] &&
+        ChatLive_socket[chat_number].readyState === 1 &&
+        AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
         ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number] + '\r\n');
         ChatLive_socket[chat_number].close(1000);
     } else if (ChatLive_socket[chat_number]) {
