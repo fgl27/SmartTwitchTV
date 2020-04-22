@@ -158,11 +158,16 @@ var Settings_value = {
         "set_values": [""],
         "defaultValue": 1
     },
-    "dpad_position": {
+    "dpad_opt": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "dpad_position": {//Migrated to dialog
         "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
         "defaultValue": 1
     },
-    "dpad_opacity": {
+    "dpad_opacity": {//Migrated to dialog
         "values": [
             "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%",
             "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
@@ -287,13 +292,11 @@ function Settings_SetSettings() {
 
     div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
-    if (!Main_isTV || !Main_IsOnAndroid) {
-        div += Settings_Content('dpad_position', null, STR_DPAD_POSTION, null);
-
-        div += Settings_Content('dpad_opacity', null, STR_DPAD_OPACITY, null);
-    }
-
     div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
+
+    if (!Main_isTV || !Main_IsOnAndroid) {
+        div += Settings_Content('dpad_opt', [STR_CONTENT_LANG_SUMMARY], STR_DPAD_OPT, null);
+    }
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
@@ -372,10 +375,6 @@ function Settings_SetStrings() {
     Main_textContent('clock_offset_name', STR_CLOCK_OFFSET);
 
     Main_textContent('show_screen_counter_name', STR_SCREEN_COUNTER);
-
-    Main_textContent('dpad_position_name', STR_DPAD_POSTION);
-
-    Main_textContent('dpad_opacity_name', STR_DPAD_OPACITY);
 
     // Content Language selection
     key = "content_lang";
@@ -767,7 +766,7 @@ function Settings_ScrollTable() {
     var doc,
         offset = (!Main_isTV || !Main_IsOnAndroid) ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (14 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (13 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -775,7 +774,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 200);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (13 + offset)) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (12 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;
@@ -864,6 +863,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
             break;
         default:
             break;
@@ -1136,6 +1136,26 @@ function Settings_DialogShowNotification() {
     };
 
     Settings_DialogShow(obj, STR_NOTIFICATION_OPT);
+}
+
+function Settings_DialogShowDpad() {
+
+    var obj = {
+        dpad_position: {
+            defaultValue: Settings_value.dpad_position.defaultValue,
+            values: Settings_value.dpad_position.values,
+            title: STR_DPAD_POSTION,
+            summary: null
+        },
+        dpad_opacity: {
+            defaultValue: Settings_value.dpad_opacity.defaultValue,
+            values: Settings_value.dpad_opacity.values,
+            title: STR_DPAD_OPACITY,
+            summary: null
+        }
+    };
+
+    Settings_DialogShow(obj, STR_DPAD_OPT);
 }
 
 function Settings_Dialog_isVisible() {

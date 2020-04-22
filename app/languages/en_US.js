@@ -340,6 +340,7 @@ function en_USLang() {
     STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and back key controller (ESC works for back key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
     STR_DPAD_POSTION = "D-pad screen position";
     STR_DPAD_OPACITY = "D-pad opacity";
+    STR_DPAD_OPT = "D-pad options";
     STR_BLOCKED_CODEC = "Blocked Codecs";
     STR_BLOCKED_CODEC_SUMMARY = "List used codecs capabilities and allow to block a codec from be used";
     STR_CODEC_DIALOG_TITLE = 'Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block it and see if the performance of the app improves, <span style="color: #FF0000;">by default OMX.google decoder is disabled</span> (if other codec is available) a constant accumulation of skipped frames is a indicative of a codec issue.<br>The app content only uses avc/h264 decoders no other is listed.';
