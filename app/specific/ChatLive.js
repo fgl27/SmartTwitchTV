@@ -900,8 +900,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         action,
         emotes = null,
         badges, badge,
-        i, len,
-        j, len_j;
+        i, len;
 
     if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
 
@@ -946,7 +945,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
             tags.emotes = tags.emotes.split('/');
 
-            var emote, replacements, replacement;
+            var emote, replacements, replacement, j, len_j;
             emotes = {};
 
             for (i = 0, len = tags.emotes.length; i < len; i++) {
