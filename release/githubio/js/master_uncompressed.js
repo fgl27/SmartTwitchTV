@@ -463,7 +463,9 @@
     var STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY;
     var STR_CHAT_OPTIONS_FORCE_SHOW;
     var STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY;
-    var STR_CHAT_NOT_READY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_CHAT_NOT_READY;
+    var STR_CHAT_REDEEMED_MESSAGE_HIGH;
+    var STR_CHAT_REDEEMED_MESSAGE_SUB; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -1072,6 +1074,8 @@
         STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because chat permissions wasn't asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
         STR_NOKEY_CHAT_WARN = "Add an user authorization key to be able to logging and write to chat";
         STR_CHAT_NOT_READY = "Chat not ready to send! Try again is a second or two.";
+        STR_CHAT_REDEEMED_MESSAGE_HIGH = "Redeemed Highlight My Message";
+        STR_CHAT_REDEEMED_MESSAGE_SUB = "Redeemed Send a Message in Sub-Only Mode";
     }
     //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
@@ -5806,7 +5810,7 @@
                 ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
                     STR_GIFT_SUB, 10000);
             }
-        }
+        } // else console.log(JSON.stringify(message));
 
         // tag:
         // badge-info: "subscriber/2"
@@ -5841,12 +5845,25 @@
             tags = message.tags,
             nick,
             nickColor,
+            highlighted,
             action,
             emotes = null,
             badges, badge,
             i, len;
 
-        if (!tags || !tags.hasOwnProperty('display-name')) return; //bad formatted message
+        if (!tags || !tags.hasOwnProperty('display-name')) {
+            return; //bad formatted message
+        }
+
+        if (tags.hasOwnProperty('msg-id')) {
+            if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
+                highlighted = ' chat_highlighted';
+                ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_HIGH + '</span>', chat_number);
+            } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
+                highlighted = ' chat_highlighted';
+                ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_SUB + '</span>', chat_number);
+            }
+        }
 
         //Add badges
         if (tags.hasOwnProperty('badges')) {
@@ -5908,7 +5925,7 @@
             }
         }
 
-        div += '<span class="message' + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
+        div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
             ChatLive_extraMessageTokenize(
                 emoticonize(mmessage, emotes),
                 chat_number,
@@ -8089,8 +8106,8 @@
     }
 
     function Main_timeOut(func, timeout) {
-        if (timeout && timeout > 0) window.setTimeout(func, timeout);
-        else window.setTimeout(func);
+        if (timeout && timeout > 0) setTimeout(func, timeout);
+        else setTimeout(func);
     }
 
     function Main_getclock() {
@@ -15392,32 +15409,27 @@
 
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
-                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN);
+                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
 
                     //History vod is so fast to load that this need to be set here to prevent a vod reset
                     Main_FirstRun = false;
-                    Main_timeOut(function() {
-                        if (Main_values.Play_WasPlaying === 1) {
-                            if (Play_data.data.length > 0) {
 
+                    if (Main_values.Play_WasPlaying === 1) {
+                        if (Play_data.data.length > 0) {
 
-                                Main_openStream();
-                                Main_SwitchScreen(true);
-
-
-                            } else Main_SwitchScreen(false);
-                        } else {
-                            if (!Main_values.vodOffset) Main_values.vodOffset = 1;
-                            Play_DurationSeconds = 0;
-                            Main_openVod();
+                            Main_openStream();
                             Main_SwitchScreen(true);
-                        }
 
-                        Main_timeOut(function() {
-                            if (!Play_IsWarning) Play_HideWarningDialog();
-                        }, 3000);
-                        Screens_loadDataSuccessFinishEnd();
-                    }, 500);
+                        } else Main_SwitchScreen(false);
+                    } else {
+                        if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                        Play_DurationSeconds = 0;
+                        Main_openVod();
+                        Main_SwitchScreen(true);
+                    }
+
+                    Screens_loadDataSuccessFinishEnd();
+
                 } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
                     Main_GoBefore !== Main_Search) {
                     Main_Log('!Play_WasPlaying');
