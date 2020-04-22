@@ -211,7 +211,7 @@ function ChatLiveControls_HandleKeyEnter() {
 
     } else if (ChatLiveControls_cursor === 7 && ChatLiveControls_CanSend()) {
 
-        ChatLiveControls_SetEmotesDiv(userEmote, STR_CHAT_TW_EMOTES);
+        ChatLiveControls_SetEmotesDiv(userEmote[AddUser_UsernameArray[0].id], STR_CHAT_TW_EMOTES);
 
     } else if (ChatLiveControls_cursor === 8 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
 

@@ -233,8 +233,9 @@ function ChatLive_loadEmotesUserSuccess(data) {
     try {
 
         data = JSON.parse(data);
-        userEmote = {};
-        var Div, url;
+        if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) userEmote[AddUser_UsernameArray[0].id] = {};
+
+        var url;
 
         Object.keys(data.emoticon_sets).forEach(function(set) {
             set = data.emoticon_sets[set];
@@ -247,7 +248,9 @@ function ChatLive_loadEmotesUserSuccess(data) {
 
                     emoticon.code = emoteReplace[emoticon.code] || emoticon.code;
 
-                    url = 'https://static-cdn.jtvnw.net/emoticons/v1/' + emoticon.id + '/3.0';
+                    if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
+
+                    url = emoteURL(emoticon.id);
 
                     extraEmotes[emoticon.code] = {
                         code: emoticon.code,
@@ -255,13 +258,11 @@ function ChatLive_loadEmotesUserSuccess(data) {
                         '4x': url
                     };
 
-                    Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code]);
-
-                    userEmote[emoticon.code] = {
+                    userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
                         code: emoticon.code,
                         id: emoticon.id,
                         '4x': url,
-                        div: Div
+                        div: ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code])
                     };
 
                 });
