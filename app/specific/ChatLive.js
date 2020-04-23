@@ -1032,10 +1032,18 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
         if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
             highlighted = ' chat_highlighted ';
-            ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_HIGH + '</span>', chat_number);
+            ChatLive_LineAdd(
+                '<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_HIGH + '</span>',
+                chat_number,
+                0, 0, 0, 0, 1
+            );
         } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
             highlighted = ' chat_highlighted ';
-            ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_SUB + '</span>', chat_number);
+            ChatLive_LineAdd(
+                '<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_SUB + '</span>',
+                chat_number,
+                0, 0, 0, 0, 1
+            );
         }
     }
 
@@ -1153,7 +1161,7 @@ function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
     return twemoji.parse(tokenizedMessage.join(' '), true, true);
 }
 
-function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub) {
+function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub, skip_addline) {
     if (ChatLive_Playing) {
         var elem = document.createElement('div');
         var classname = 'chat_line';
@@ -1201,7 +1209,7 @@ function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub
             ChatLive_Individual_Background_flip[chat_number] = ChatLive_Individual_Background_flip[chat_number] ^ 1;
         }
 
-        if (chat_lineChatLive_Individual_Lines) classname += ' chat_line_ind';
+        if (chat_lineChatLive_Individual_Lines && !skip_addline) classname += ' chat_line_ind';
 
         elem.className = classname;
         elem.innerHTML = message;
@@ -1219,7 +1227,8 @@ function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub
                 atstreamer: atstreamer,
                 atuser: atuser,
                 hasbits: hasbits,
-                sub: sub
+                sub: sub,
+                skip_addline: skip_addline
             }
         );
     }
@@ -1243,7 +1252,8 @@ function ChatLive_MessagesRunAfterPause() {
                 Temp_Messages[i][j].atstreamer,
                 Temp_Messages[i][j].atuser,
                 Temp_Messages[i][j].hasbits,
-                Temp_Messages[i][j].sub
+                Temp_Messages[i][j].sub,
+                Temp_Messages[i][j].skip_addline
             );
         }
     }
