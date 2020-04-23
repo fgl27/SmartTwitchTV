@@ -1178,7 +1178,15 @@ function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub
             Chat_Clean(chat_number);
         }
     } else {
-        ChatLive_Messages[chat_number].push(message);
+        ChatLive_Messages[chat_number].push(
+            {
+                message: message,
+                atstreamer: atstreamer,
+                atuser: atuser,
+                hasbits: hasbits,
+                sub: sub
+            }
+        );
     }
 }
 
@@ -1194,7 +1202,14 @@ function ChatLive_MessagesRunAfterPause() {
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < Temp_Messages[i].length; j++) {
-            ChatLive_LineAdd(Temp_Messages[i][j], i);
+            ChatLive_LineAdd(
+                Temp_Messages[i][j].message,
+                i,
+                Temp_Messages[i][j].atstreamer,
+                Temp_Messages[i][j].atuser,
+                Temp_Messages[i][j].hasbits,
+                Temp_Messages[i][j].sub
+            );
         }
     }
 }
