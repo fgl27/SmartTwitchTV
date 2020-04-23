@@ -96,7 +96,8 @@ var ChatLive_Highlight_Bits;
 var ChatLive_Show_SUB;
 var ChatLive_User_Set;
 var chat_lineChatLive_Individual_Lines;
-var chat_Line_highlight = ' style="color: #4eff42;" ';
+var chat_Line_highlight_green = ' style="color: #4eff42;" ';
+var chat_Line_highlight_blue = ' style="color: #4AA4FD;" ';
 
 function ChatLive_SetOptions() {
     ChatLive_Logging = Settings_value.chat_logging.defaultValue;
@@ -1079,8 +1080,10 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
     //Add nick
     nick = tags['display-name'];
-    if (atstreamer || atuser || (ChatLive_Highlight_Bits && hasbits)) {
-        nickColor = chat_Line_highlight;
+    if (atstreamer || (ChatLive_Highlight_Bits && hasbits)) {
+        nickColor = chat_Line_highlight_green;
+    } else if (atuser) {
+        nickColor = chat_Line_highlight_blue;
     } else {
         nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
         nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';

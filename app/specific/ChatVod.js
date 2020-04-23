@@ -264,16 +264,17 @@ function Chat_loadChatSuccess(responseText, id) {
 
         hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
 
-        if (atstreamer || atuser || (ChatLive_Highlight_Bits && hasbits)) {
-            nickColor = chat_Line_highlight;
+        //Add nick
+        if (atstreamer || (ChatLive_Highlight_Bits && hasbits)) {
+            nickColor = chat_Line_highlight_green;
+        } else if (atuser) {
+            nickColor = chat_Line_highlight_blue;
         } else {
             nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
                 defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
             nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
         }
-
-        //Add nick
         div += '<span ' + (mmessage.is_action ? ('class="class_bold" ' + nickColor) : '') +
             nickColor + '>' + comments[i].commenter.display_name + '</span>' +
             (mmessage.is_action ? '' : '&#58;') + '&nbsp;';
