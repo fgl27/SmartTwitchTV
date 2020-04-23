@@ -254,9 +254,9 @@ function Chat_loadChatSuccess(responseText, id) {
 
         if (mmessage.fragments.length) message_text = JSON.stringify(mmessage.fragments).toLowerCase();
 
-        if (ChatLive_Highlight_AtStreamer && message_text && message_text.includes('@' + ChatLive_selectedChannel[0].toLowerCase() + ' ')) {
+        if (ChatLive_Highlight_AtStreamer && message_text && message_text.includes('@' + ChatLive_selectedChannel[0].toLowerCase())) {
             atstreamer = true;
-        } else if (ChatLive_Highlight_AtUser && message_text && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase() + ' ')) {
+        } else if (ChatLive_Highlight_AtUser && message_text && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase())) {
             atuser = true;
         } else if (ChatLive_Highlight_User_send && Main_A_includes_B((comments[i].commenter.display_name).toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
             atuser = true;

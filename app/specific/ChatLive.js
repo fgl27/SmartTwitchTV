@@ -1076,9 +1076,9 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
     message_text = mmessage.toLowerCase();
 
-    if (ChatLive_Highlight_AtStreamer && message_text.includes('@' + ChatLive_selectedChannel[chat_number].toLowerCase() + ' ')) {
+    if (ChatLive_Highlight_AtStreamer && message_text.includes('@' + ChatLive_selectedChannel[chat_number].toLowerCase())) {
         atstreamer = true;
-    } else if (ChatLive_Highlight_AtUser && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase() + ' ')) {
+    } else if (ChatLive_Highlight_AtUser && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase())) {
         atuser = true;
     } else if (ChatLive_Highlight_User_send && Main_A_includes_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
         atuser = true;
