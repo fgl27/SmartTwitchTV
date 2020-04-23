@@ -1127,8 +1127,8 @@
         STR_CHAT_HIGHLIGHT_USER_SEND = "Highlight yours sended messages (Dark Green background)";
         STR_CHAT_SHOW_SUB = "Show Sub messages in chat (Dark orange background)";
         STR_CHAT_HIGHLIGHT_BIT = "Highlight Bits message (Dark Yellow background)";
-        STR_CHAT_HIGHLIGHT_ACTIONS = "Show Actions messages (Usually they are stream Bots)";
-        STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = "This messages are usually equal to Sub messages but sended via a stream bot, so if you have Show sub disable this";
+        STR_CHAT_HIGHLIGHT_ACTIONS = "Show Actions messages (Usually this are from stream Bots)";
+        STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = 'This messages are usually equal to Sub messages but sended via a stream bot, so if you have "Show sub..." enable this is redundant';
         STR_CHAT_INDIVIDUAL_BACKGROUND = "Individual messages background color difference";
         STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Modes are disable, enable (auto mode), Bright or Darker, In auto mode if the chat is above the stream it odd message will have a darker background accent color from the even, if the chat is not above (side by side for example) the color will be brigh";
         STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
