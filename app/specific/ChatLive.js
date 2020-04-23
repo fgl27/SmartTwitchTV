@@ -1163,10 +1163,16 @@ function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub
             classname += ' chat_bits';
         } else if (sub) {
             classname += ' chat_sub';
-        } else {
-            if (ChatLive_Individual_Background && ChatLive_Individual_Background_flip[chat_number]) {
-                var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
-                elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+        } else if (ChatLive_Individual_Background) {
+            if (ChatLive_Individual_Background_flip[chat_number]) {
+                if (ChatLive_Individual_Background === 1) {
+                    var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
+                    elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+                } else if (ChatLive_Individual_Background === 2) {
+                    elem.style.backgroundColor = 'rgba(100,100,100, ' + Play_ChatBackground + ')';
+                } else if (ChatLive_Individual_Background === 3) {
+                    elem.style.backgroundColor = 'rgba(0,0,0, ' + Play_ChatBackground + ')';
+                }
             }
 
             ChatLive_Individual_Background_flip[chat_number] = ChatLive_Individual_Background_flip[chat_number] ^ 1;

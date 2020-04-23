@@ -216,7 +216,7 @@ var Settings_value = {
         "defaultValue": 2
     },
     "chat_individual_background": {//Migrated to dialog
-        "values": ["no", "yes"],
+        "values": ["disabled", "enabled", "bright", "dark"],
         "defaultValue": 1
     },
     "chat_logging": {//Migrated to dialog
@@ -1237,7 +1237,7 @@ function Settings_DialogShowChat() {
     Settings_value.show_sub.values = yes_no;
     Settings_value.highlight_bits.values = yes_no;
     Settings_value.show_actions.values = yes_no;
-    Settings_value.chat_individual_background.values = yes_no;
+    Settings_value.chat_individual_background.values = [STR_DISABLE, STR_ENABLE, STR_BRIGHT_MODE, STR_DARK_MODE];
     Settings_value.chat_logging.values = yes_no;
     Settings_value.individual_lines.values = yes_no;
 
