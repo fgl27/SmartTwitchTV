@@ -1057,7 +1057,9 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     if (Main_A_includes_B(mmessage, 'PRIVMSG')) mmessage = mmessage.split('@badge-info=')[0];
 
     if (/^\x01ACTION.*\x01$/.test(mmessage)) {
-        action = ChatLive_Highlight_Actions;
+        if (!ChatLive_Highlight_Actions) return;
+
+        action = true;
         mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
     }
 
@@ -1069,10 +1071,16 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         atuser = true;
     }
 
+    hasbits = (tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number]));
+
     //Add nick
     nick = tags['display-name'];
-    nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
-    nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+    if (atstreamer || atuser || hasbits) {
+        nickColor = 'style="color: #0fffff;"';
+    } else {
+        nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
+        nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+    }
 
     div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' +
         nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
@@ -1103,8 +1111,6 @@ function ChatLive_loadChatSuccess(message, chat_number) {
             }
         }
     }
-
-    hasbits = (tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number]));
 
     div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
         ChatLive_extraMessageTokenize(

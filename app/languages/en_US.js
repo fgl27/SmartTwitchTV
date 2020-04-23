@@ -492,7 +492,7 @@ function en_USLang() {
     STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
     STR_CHAT_LOGGING = "Logging in chat";
     STR_CHAT_LOGGING_SUMMARY = "Even if providing a key prevent from logging in chat using current username if this is set to NO";
-    STR_CHAT_JUST_SUB = "Subscribed at Tier";
+    STR_CHAT_JUST_SUB = "Subscribed with Tier";
     STR_CHAT_JUST_SUB_PRIME = "Subscribed with Prime";
     STR_GIFT_SUB_SENDER = " has gift a Tier";
     STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";

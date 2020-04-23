@@ -565,6 +565,7 @@ function Play_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
+                //ChatLive_Playing = false;
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                 else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();

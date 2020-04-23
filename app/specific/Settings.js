@@ -201,7 +201,7 @@ var Settings_value = {
     },
     "show_sub": {
         "values": ["no", "yes"],
-        "defaultValue": 1
+        "defaultValue": 2
     },
     "highlight_bits": {
         "values": ["no", "yes"],
@@ -209,11 +209,11 @@ var Settings_value = {
     },
     "show_actions": {
         "values": ["no", "yes"],
-        "defaultValue": 2
+        "defaultValue": 1
     },
     "individual_lines": {
         "values": ["no", "yes"],
-        "defaultValue": 1
+        "defaultValue": 2
     },
     "chat_individual_background": {
         "values": ["no", "yes"],
