@@ -465,7 +465,38 @@
     var STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY;
     var STR_CHAT_NOT_READY;
     var STR_CHAT_REDEEMED_MESSAGE_HIGH;
-    var STR_CHAT_REDEEMED_MESSAGE_SUB; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_CHAT_REDEEMED_MESSAGE_SUB;
+    var STR_SIDE_PANEL_PLAYER;
+    var STR_NOTIFICATION_OPT;
+    var STR_NOW_DURATION_SUMMARY;
+    var STR_DPAD_OPT;
+    var STR_ANIMATIONS;
+    var STR_APP_ANIMATIONS_SUMMARY;
+    var STR_VIDEOS_ANIMATION_SUMMARY;
+    var STR_SETTINGS_ACCESSIBILITY_SUMMARY;
+    var STR_START_AT_USER_SUMMARY;
+    var STR_AUTO_REFRESH_SUMMARY;
+    var STR_OPTIONS;
+    var STR_CHAT_HIGHLIGHT_STREAMER;
+    var STR_CHAT_HIGHLIGHT_USER;
+    var STR_CHAT_HIGHLIGHT_USER_SEND;
+    var STR_CHAT_SHOW_SUB;
+    var STR_CHAT_HIGHLIGHT_BIT;
+    var STR_CHAT_HIGHLIGHT_ACTIONS;
+    var STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY;
+    var STR_CHAT_INDIVIDUAL_BACKGROUND;
+    var STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY;
+    var STR_CHAT_LOGGING;
+    var STR_CHAT_LOGGING_SUMMARY;
+    var STR_CHAT_HIGHLIGHT_REDEEMED;
+    var STR_CHAT_JUST_SUB;
+    var STR_CHAT_JUST_SUB_PRIME;
+    var STR_GIFT_SUB_SENDER;
+    var STR_GIFT_SUB_SENDER_PRIME;
+    var STR_GIFT_SUB_MYSTERY;
+    var STR_CHAT_INDIVIDUAL_LINE;
+    var STR_BRIGHT_MODE;
+    var STR_DARK_MODE; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -488,6 +519,7 @@
     var STR_PAYPAL;
     var STR_BITCOIN;
     var STR_BITCOIN_WALLET = "1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x";
+    var STR_APP_LAG = 'https://tinyurl.com/applag';
 
     // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
     function DefaultLang() {
@@ -572,8 +604,8 @@
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
         STR_ACCESSIBILITY_WARN_TEXT = STR_DIV_TITLE + STR_WARNING + STR_ACCESSIBILITY_WARN + '</div>' + STR_BR +
-            STR_ACCESSIBILITY_WARN_EXTRA + STR_BR + STR_BR +
-            STR_RED_DIV + 'https://tinyurl.com/applag' + '</div>' + STR_BR + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA2 + STR_BR + STR_BR +
+            STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA + STR_BR + STR_BR +
+            STR_RED_DIV + STR_APP_LAG + '</div>' + STR_BR + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA2 + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
         STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
@@ -819,11 +851,14 @@
         STR_SWITCH_TYPE = "Switch: Most recent or views";
         STR_ENABLE = "Enabled";
         STR_DISABLE = "Disabled";
+        STR_DARK_MODE = "Dark mode";
+        STR_BRIGHT_MODE = "Bright mode";
         STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
         STR_RESTORE_PLAYBACK = "Restore playback";
         STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user and restores what was previously playing on next start";
         STR_CHAT_FONT = "Chat font size";
         STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
+        STR_VIDEOS_ANIMATION_SUMMARY = "When a VOD or Highlight is selected animate the thumbnail if a animated thumbnail is available for that video (not all videos have one)";
         STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
         STR_SIZE = "Size ";
         STR_BRIGHTNESS = "Brightness ";
@@ -906,8 +941,10 @@
         STR_SINGLE_EXIT = "Single back key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
         STR_NOW_LIVE = "Now Live";
+        STR_NOTIFICATION_OPT = "Notification options";
         STR_NOW_LIVE_SHOW = "Show Now Live notification";
-        STR_NOW_DURATION = "Notification duration in seconds (background notification duration is based on system timeout)";
+        STR_NOW_DURATION = "Notification duration in seconds";
+        STR_NOW_DURATION_SUMMARY = "This only applies to in app notification, when doing background notification the duration is based on system timeout a value that can't be changed and is around 3 seconds";
         STR_NOW_BACKGROUND = "Now Live notification over other apps, when the app is on background";
         STR_GLOBAL_FONT = "Global app font size offset";
         STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
@@ -925,10 +962,12 @@
         STR_LOW_LATENCY_SUMMARY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
             "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
         STR_LIVE_FEED_SORT = "Live feed sort";
-        STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed (all option may not apply to all feeds)";
+        STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed (not all option apply to all feeds types)";
         STR_A_Z = "Alphabetical A - Z";
         STR_Z_A = "Alphabetical Z - A";
         STR_APP_ANIMATIONS = "Enable app animations";
+        STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
+        STR_ANIMATIONS = "Animations";
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get stream link issue";
         STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -946,6 +985,7 @@
         STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and back key controller (ESC works for back key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
         STR_DPAD_POSTION = "D-pad screen position";
         STR_DPAD_OPACITY = "D-pad opacity";
+        STR_DPAD_OPT = "D-pad options";
         STR_BLOCKED_CODEC = "Blocked Codecs";
         STR_BLOCKED_CODEC_SUMMARY = "List used codecs capabilities and allow to block a codec from be used";
         STR_CODEC_DIALOG_TITLE = 'Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block it and see if the performance of the app improves, <span style="color: #FF0000;">by default OMX.google decoder is disabled</span> (if other codec is available) a constant accumulation of skipped frames is a indicative of a codec issue.<br>The app content only uses avc/h264 decoders no other is listed.';
@@ -1016,17 +1056,21 @@
         STR_BACK_USER_GAMES = ' Press back key to ';
         STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
         STR_SHOW_FEED_PLAYER = 'Show small player over player live feed';
-        STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player over player live feed on multistream';
-        STR_SIDE_PANEL_PLAYER_DELAY = "Side panel or player feed small player delay";
+        STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player over the player live feed when multistream is enabled';
+        STR_SIDE_PANEL_PLAYER_DELAY = "Side panel or small player over the player live feed delay";
         STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a tile is selected";
-        STR_START_AT_USER = "Always start the app in the user screen (overwrites Restore playback)";
+        STR_SIDE_PANEL_PLAYER = "Side panel player and small player over the player live feed";
+        STR_START_AT_USER = "Always start the app in the user screen";
+        STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work";
         STR_LAST_REFRESH = "(last refresh: ";
         STR_PP_VOD = "Exit PP or Multistream to open this VOD";
         STR_SETTINGS_ACCESSIBILITY = "Show accessibility service warning";
+        STR_SETTINGS_ACCESSIBILITY_SUMMARY = "Is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
         STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
-        STR_ACCESSIBILITY_WARN_EXTRA = "Is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.<br>Read more about this on bellow link:";
+        STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
         STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
         STR_AUTO_REFRESH = "Auto refresh content timeout (time in minutes)";
+        STR_AUTO_REFRESH_SUMMARY = "When enable this will refresh a screen after the time amount (the refresh happens only when the screen is selected), this also applies to the player live feed";
         STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
         STR_MAIN_WINDOW = "Main window";
         STR_MULTI_MAIN_WINDOW = "MultiStream main window";
@@ -1044,7 +1088,7 @@
         STR_PLACEHOLDER_CHAT = "When this seleceted, press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
         STR_CHAT_ROOMSTATE = "Chat ROOMSTATE:";
         STR_CHAT_NO_RESTRICTIONS = "No restrictions";
-        STR_CHAT_OPTIONS = "Options";
+        STR_OPTIONS = "Options";
         STR_CHAT_DELL_ALL = "Delete all";
         STR_CHAT_UNICODE_EMOJI = "Unicode Emoji";
         STR_CHAT_TW_EMOTES = "Twitch emotes";
@@ -1076,6 +1120,25 @@
         STR_CHAT_NOT_READY = "Chat not ready to send! Try again is a second or two.";
         STR_CHAT_REDEEMED_MESSAGE_HIGH = "Redeemed Highlight My Message";
         STR_CHAT_REDEEMED_MESSAGE_SUB = "Redeemed Send a Message in Sub-Only Mode";
+        STR_CHAT_OPTIONS = "Chat options";
+        STR_CHAT_HIGHLIGHT_REDEEMED = "Highlight rewards messages (Purple background message only)";
+        STR_CHAT_HIGHLIGHT_STREAMER = "Highlight @streamer messages (Dark red background, the @ is blue)";
+        STR_CHAT_HIGHLIGHT_USER = "Highlight yours @username messages (Dark Green background, the @ is blue)";
+        STR_CHAT_HIGHLIGHT_USER_SEND = "Highlight yours sended messages (Dark Green background)";
+        STR_CHAT_SHOW_SUB = "Show Sub messages in chat (Dark orange background)";
+        STR_CHAT_HIGHLIGHT_BIT = "Highlight Bits message (Dark Yellow background)";
+        STR_CHAT_HIGHLIGHT_ACTIONS = "Show Actions messages (Usually they are stream Bots)";
+        STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = "This messages are usually equal to Sub messages but sended via a stream bot, so if you have Show sub disable this";
+        STR_CHAT_INDIVIDUAL_BACKGROUND = "Individual messages background color difference";
+        STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Modes are disable, enable (auto mode), Bright or Darker, In auto mode if the chat is above the stream it odd message will have a darker background accent color from the even, if the chat is not above (side by side for example) the color will be brigh";
+        STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
+        STR_CHAT_LOGGING = "Logging in chat with current user";
+        STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat unless if chat is disable (player bottom controls), but this if set to NO will prevent logging using current username and sted will logging as anonymous, even if providing a authorization key";
+        STR_CHAT_JUST_SUB = "Subscribed with Tier";
+        STR_CHAT_JUST_SUB_PRIME = "Subscribed with Prime";
+        STR_GIFT_SUB_SENDER = " has gift a Tier";
+        STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";
+        STR_GIFT_SUB_MYSTERY = " has gift the channel ";
     }
     //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
@@ -1881,9 +1944,6 @@
         "unicode": "📃",
         "tags": "note"
     }, {
-        "unicode": "📄",
-        "tags": "document"
-    }, {
         "unicode": "📰",
         "tags": "newspaper"
     }, {
@@ -2346,29 +2406,23 @@
         "unicode": "🌸",
         "tags": "blossom"
     }, {
-        "unicode": "💮",
-        "tags": "flower"
-    }, {
-        "unicode": "🏵️",
-        "tags": "plant"
-    }, {
         "unicode": "🌹",
-        "tags": "flower2"
+        "tags": "flower"
     }, {
         "unicode": "🥀",
         "tags": "flower-wilted"
     }, {
         "unicode": "🌺",
-        "tags": "flower3"
+        "tags": "flower2"
     }, {
         "unicode": "🌻",
         "tags": "sun-flower"
     }, {
         "unicode": "🌼",
-        "tags": "flower4"
+        "tags": "flower3"
     }, {
         "unicode": "🌷",
-        "tags": "flower5"
+        "tags": "flower4"
     }, {
         "unicode": "🌱",
         "tags": "young-tree"
@@ -2379,14 +2433,8 @@
         "unicode": "🌳",
         "tags": "big-tree"
     }, {
-        "unicode": "🌴",
-        "tags": "palm-tree"
-    }, {
         "unicode": "🌵",
         "tags": "plant"
-    }, {
-        "unicode": "🌾",
-        "tags": "grain"
     }, {
         "unicode": "🌿",
         "tags": "leaf"
@@ -2399,12 +2447,6 @@
     }, {
         "unicode": "🍁",
         "tags": "falling-leaf"
-    }, {
-        "unicode": "🍂",
-        "tags": "falling-leaf2"
-    }, {
-        "unicode": "🍃",
-        "tags": "leaf2"
     }]; //Spacing for release maker not trow erros from jshint
     var IMG_404_GAME = "data:image/png;base64,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";
 
@@ -4830,7 +4872,6 @@
 
         Main_innerHTML("chat_options_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
 
-
         ChatLiveControls_OptionsY = 0;
         Main_AddClass(OptionsShowArray[0], 'settings_value_focus');
         Main_AddClass(OptionsShowArray[0] + '_div', 'settings_div_focus');
@@ -4943,6 +4984,7 @@
     var ChatLive_FollowState = [];
     var ChatLive_SubState = [];
     var ChatLive_Playing = true;
+    var ChatLive_SetCheckTimout = 10000;
     var extraEmotesDone = {
         bbtv: {},
         ffz: {},
@@ -4992,6 +5034,7 @@
             return;
         }
 
+        ChatLive_SetOptions();
         Chat_loadBadgesGlobal();
 
         Chat_Id[chat_number] = (new Date()).getTime();
@@ -5008,7 +5051,38 @@
         ChatLive_loadBadgesChannel(0, chat_number, Chat_Id[chat_number]);
         ChatLive_loadCheersChannel(0, chat_number, Chat_Id[chat_number]);
 
+        ChatLive_Individual_Background_flip[chat_number] = 0;
+
         ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
+    }
+
+    var ChatLive_Logging;
+    var ChatLive_Highlight_Rewards;
+    var ChatLive_Highlight_AtStreamer;
+    var ChatLive_Highlight_AtUser;
+    var ChatLive_Highlight_User_send;
+    var ChatLive_Individual_Background; //Play_ChatBackground
+    var ChatLive_Individual_Background_flip = [];
+    var ChatLive_Highlight_Actions;
+    var ChatLive_Highlight_Bits;
+    var ChatLive_Show_SUB;
+    var ChatLive_User_Set;
+    var chat_lineChatLive_Individual_Lines;
+    var chat_Line_highlight_green = ' style="color: #4eff42;" ';
+    var chat_Line_highlight_blue = ' style="color: #4AA4FD;" ';
+
+    function ChatLive_SetOptions() {
+        ChatLive_Logging = Settings_value.chat_logging.defaultValue;
+        ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
+        ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
+        ChatLive_Highlight_AtStreamer = Settings_value.highlight_atstreamer.defaultValue;
+        ChatLive_User_Set = AddUser_IsUserSet();
+        ChatLive_Highlight_AtUser = ChatLive_User_Set && Settings_value.highlight_atuser.defaultValue;
+        ChatLive_Highlight_User_send = ChatLive_User_Set && Settings_value.highlight_user_send.defaultValue;
+        ChatLive_Highlight_Actions = Settings_value.show_actions.defaultValue;
+        ChatLive_Highlight_Bits = Settings_value.highlight_bits.defaultValue;
+        ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
+        chat_lineChatLive_Individual_Lines = Settings_value.individual_lines.defaultValue;
     }
 
     function ChatLive_checkFallow(tryes, chat_number, id) {
@@ -5417,7 +5491,7 @@
             (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + '</span>', chat_number);
         ChatLive_loadChatRequest(chat_number, id);
 
-        useToken[chat_number] = !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
+        useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
         if (!chat_number) {
             if (useToken[chat_number]) ChatLive_SendPrepared();
@@ -5433,7 +5507,7 @@
             reconnectInterval: 3000
         });
 
-        if (!ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
+        if (useToken[chat_number]) {
             ChatLive_socket[chat_number].onopen = function() {
                 ChatLive_socket[chat_number].send('PASS oauth:' + AddUser_UsernameArray[0].access_token + '\r\n');
                 ChatLive_socket[chat_number].send('NICK ' + AddUser_UsernameArray[0].name.toLowerCase() + '\r\n');
@@ -5520,7 +5594,7 @@
                     ChatLive_loadChatSuccess(message, chat_number);
                     break;
                 case "USERNOTICE":
-                    if (useToken[chat_number]) ChatLive_CheckGiftSub(message, chat_number);
+                    ChatLive_CheckSubMessage(message, chat_number);
                     break;
                 case "USERSTATE":
                     Main_Log('USERSTATE chat ' + chat_number);
@@ -5595,7 +5669,7 @@
         if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
             ChatLive_CheckId[chat_number] = window.setTimeout(function() {
                 ChatLive_Check(chat_number, id);
-            }, 5000);
+            }, ChatLive_SetCheckTimout);
         }
     }
 
@@ -5719,7 +5793,7 @@
         window.clearTimeout(ChatLive_socketSendCheckID);
         ChatLive_socketSendCheckID = window.setTimeout(function() {
             ChatLive_socketSendCheck();
-        }, 5000);
+        }, ChatLive_SetCheckTimout);
     }
 
     function ChatLive_socketSendCheck() {
@@ -5797,20 +5871,90 @@
     //     ChatLive_loadChatSuccess(message, chat_number);
     // }
 
-    function ChatLive_CheckGiftSub(message) {
+    function ChatLive_CheckIfSub(message, chat_number) {
+        if (!ChatLive_Show_SUB) return;
+
+        var tags = message.tags;
+
+        var name = tags['display-name'] || '';
+        var msgid = tags['msg-id'] || '';
+        var plan = tags['msg-param-sub-plan'] || '';
+        var plan_is_numer = !isNaN(plan);
+        var gifter;
+
+        if (Main_A_equals_B(msgid, 'resub')) {
+
+            if (plan_is_numer) {
+
+                ChatLive_CheckIfSubSend(name, 'Re' + STR_SPACE + STR_CHAT_JUST_SUB + STR_SPACE + plan.charAt(0), chat_number);
+
+            } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
+
+                ChatLive_CheckIfSubSend(name, 'Re' + STR_SPACE + STR_CHAT_JUST_SUB_PRIME, chat_number);
+            }
+
+        } else if (Main_A_equals_B(msgid, 'sub')) {
+
+            if (plan_is_numer) {
+
+                ChatLive_CheckIfSubSend(name, STR_CHAT_JUST_SUB + STR_SPACE + plan.charAt(0), chat_number);
+
+            } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
+
+                ChatLive_CheckIfSubSend(name, STR_CHAT_JUST_SUB_PRIME, chat_number);
+
+            }
+
+        } else if (Main_A_includes_B(msgid, 'subgift')) {
+
+            gifter = Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : name;
+            var recipient = tags['msg-param-recipient-display-name'] || tags["msg-param-recipient-user-name"] || '';
+
+            if (plan_is_numer) {
+
+                ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_SENDER + STR_SPACE + plan.charAt(0) + ' sub to ' + recipient, chat_number);
+
+            } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
+
+                ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_SENDER_PRIME + STR_SPACE + ' sub to ' + recipient, chat_number);
+
+            }
+        } else if (Main_A_includes_B(msgid, 'submysterygift')) {
+
+            gifter = Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : name;
+            var count = tags["msg-param-mass-gift-count"] || '';
+
+            ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_MYSTERY + STR_SPACE + count + ' Tier ' + plan.charAt(0), chat_number);
+
+        }
+
+    }
+
+    function ChatLive_CheckIfSubSend(name, type, chat_number) {
+        ChatLive_LineAdd(
+            '<span style="color: #0fffff;">' + name + '</span><span class="message"><br>' + type + '</span>',
+            chat_number,
+            0, 0, 0, 1
+        );
+    }
+
+    function ChatLive_CheckSubMessage(message, chat_number) {
         var tags = message.tags;
 
         if (!tags || !tags.hasOwnProperty('msg-id')) return; //bad formatted message
 
-        if (Main_A_includes_B(tags['msg-id'], "subgift")) {
+        if (Main_A_includes_B(tags['msg-id'], 'subgift')) {
 
-            if (Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
+            if (ChatLive_User_Set && Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
                 Main_A_equals_B(tags['msg-param-recipient-user-name'].toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + '')) {
 
                 ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
                     STR_GIFT_SUB, 10000);
-            }
-        } // else console.log(JSON.stringify(message));
+            } else ChatLive_CheckIfSub(message);
+
+        } else {
+            ChatLive_CheckIfSub(message, chat_number);
+        }
 
         // tag:
         // badge-info: "subscriber/2"
@@ -5845,8 +5989,12 @@
             tags = message.tags,
             nick,
             nickColor,
-            highlighted,
+            highlighted = '',
+            atstreamer = false,
+            atuser = false,
+            hasbits = false,
             action,
+            message_text,
             emotes = null,
             badges, badge,
             i, len;
@@ -5855,13 +6003,21 @@
             return; //bad formatted message
         }
 
-        if (tags.hasOwnProperty('msg-id')) {
+        if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
             if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
-                highlighted = ' chat_highlighted';
-                ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_HIGH + '</span>', chat_number);
+                highlighted = ' chat_highlighted ';
+                ChatLive_LineAdd(
+                    '<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_HIGH + '</span>',
+                    chat_number,
+                    0, 0, 0, 0, 1
+                );
             } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
-                highlighted = ' chat_highlighted';
-                ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_SUB + '</span>', chat_number);
+                highlighted = ' chat_highlighted ';
+                ChatLive_LineAdd(
+                    '<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_SUB + '</span>',
+                    chat_number,
+                    0, 0, 0, 0, 1
+                );
             }
         }
 
@@ -5886,18 +6042,38 @@
         if (Main_A_includes_B(mmessage, 'PRIVMSG')) mmessage = mmessage.split('@badge-info=')[0];
 
         if (/^\x01ACTION.*\x01$/.test(mmessage)) {
+            if (!ChatLive_Highlight_Actions) return;
+
             action = true;
             mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
         }
 
+        message_text = mmessage.toLowerCase();
+
+        if (ChatLive_Highlight_AtStreamer && message_text.includes('@' + ChatLive_selectedChannel[chat_number].toLowerCase() + ' ')) {
+            atstreamer = true;
+        } else if (ChatLive_Highlight_AtUser && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase() + ' ')) {
+            atuser = true;
+        } else if (ChatLive_Highlight_User_send && Main_A_includes_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
+            atuser = true;
+        }
+
+        hasbits = (tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number]));
+
         //Add nick
         nick = tags['display-name'];
-        nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
+        if (atstreamer || (ChatLive_Highlight_Bits && hasbits)) {
+            nickColor = chat_Line_highlight_green;
+        } else if (atuser) {
+            nickColor = chat_Line_highlight_blue;
+        } else {
+            nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
+            nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+        }
 
-        nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+        div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' +
+            nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
-        div += '<span ' + (action ? ('class="class_bold" ' + nickColor) : '') +
-            nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
         //Add default emotes
         if (tags.hasOwnProperty('emotes')) {
@@ -5929,14 +6105,14 @@
             ChatLive_extraMessageTokenize(
                 emoticonize(mmessage, emotes),
                 chat_number,
-                ((tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number])) ? parseInt(tags.bits) : 0)
+                (hasbits ? parseInt(tags.bits) : 0)
             ) + '</span>';
 
-        if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number);
+        if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number, atstreamer, atuser, (hasbits && ChatLive_Highlight_Bits));
         else {
             var id = Chat_Id[chat_number];
             window.setTimeout(function() {
-                if (id === Chat_Id[chat_number]) ChatLive_LineAdd(div, chat_number);
+                if (id === Chat_Id[chat_number]) ChatLive_LineAdd(div, chat_number, atstreamer, atuser);
             }, (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000));
         }
     }
@@ -5959,12 +6135,58 @@
         return twemoji.parse(tokenizedMessage.join(' '), true, true);
     }
 
-    function ChatLive_LineAdd(message, chat_number) {
+    function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub, skip_addline) {
         if (ChatLive_Playing) {
             var elem = document.createElement('div');
-            elem.className = 'chat_line';
-            elem.innerHTML = message;
+            var classname = 'chat_line';
 
+            if (atstreamer) {
+
+                classname += ' chat_atstreamer';
+
+                message = message.replace(new RegExp('@' + ChatLive_selectedChannel[chat_number], "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+
+            } else if (atuser) {
+
+                classname += ' chat_atuser';
+
+                message = message.replace(new RegExp('@' + (AddUser_UsernameArray[0].name).toLowerCase(), "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+
+            } else if (ChatLive_Highlight_Bits && hasbits) {
+
+                classname += ' chat_bits';
+
+            } else if (sub) {
+
+                classname += ' chat_sub';
+
+            } else if (ChatLive_Individual_Background) {
+
+                if (ChatLive_Individual_Background_flip[chat_number]) {
+
+                    if (ChatLive_Individual_Background === 1) {
+
+                        var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
+                        elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+
+                    } else if (ChatLive_Individual_Background === 2) {
+
+                        elem.style.backgroundColor = 'rgba(100,100,100, ' + Play_ChatBackground + ')';
+
+                    } else if (ChatLive_Individual_Background === 3) {
+
+                        elem.style.backgroundColor = 'rgba(0,0,0, ' + Play_ChatBackground + ')';
+
+                    }
+                }
+
+                ChatLive_Individual_Background_flip[chat_number] = ChatLive_Individual_Background_flip[chat_number] ^ 1;
+            }
+
+            if (chat_lineChatLive_Individual_Lines && !skip_addline) classname += ' chat_line_ind';
+
+            elem.className = classname;
+            elem.innerHTML = message;
             Chat_div[chat_number].appendChild(elem);
 
             ChatLive_LineAddCounter[chat_number]++;
@@ -5973,7 +6195,14 @@
                 Chat_Clean(chat_number);
             }
         } else {
-            ChatLive_Messages[chat_number].push(message);
+            ChatLive_Messages[chat_number].push({
+                message: message,
+                atstreamer: atstreamer,
+                atuser: atuser,
+                hasbits: hasbits,
+                sub: sub,
+                skip_addline: skip_addline
+            });
         }
     }
 
@@ -5989,7 +6218,15 @@
 
         for (i = 0; i < 2; i++) {
             for (j = 0; j < Temp_Messages[i].length; j++) {
-                ChatLive_LineAdd(Temp_Messages[i][j], i);
+                ChatLive_LineAdd(
+                    Temp_Messages[i][j].message,
+                    i,
+                    Temp_Messages[i][j].atstreamer,
+                    Temp_Messages[i][j].atuser,
+                    Temp_Messages[i][j].hasbits,
+                    Temp_Messages[i][j].sub,
+                    Temp_Messages[i][j].skip_addline
+                );
             }
         }
     }
@@ -6101,6 +6338,7 @@
             return;
         }
 
+        ChatLive_SetOptions();
         Chat_loadBadgesGlobal();
 
         Chat_Id[0] = (new Date()).getTime();
@@ -6271,6 +6509,10 @@
         var div,
             mmessage, null_next = (Chat_next === null),
             nickColor,
+            atstreamer = false,
+            atuser = false,
+            hasbits = false,
+            message_text = null,
             comments, badges, fragment,
             i, len, j, len_j;
 
@@ -6287,8 +6529,15 @@
 
         for (i = 0, len = comments.length; i < len; i++) {
 
+            atstreamer = false;
+            atuser = false;
+            hasbits = false;
+            message_text = null;
+
             div = '';
             mmessage = comments[i].message;
+
+            if (!ChatLive_Highlight_Actions && mmessage.is_action) continue;
 
             //Add badges
             if (mmessage.hasOwnProperty('user_badges')) {
@@ -6301,12 +6550,29 @@
                 }
             }
 
+            if (mmessage.fragments.length) message_text = JSON.stringify(mmessage.fragments).toLowerCase();
+
+            if (ChatLive_Highlight_AtStreamer && message_text && message_text.includes('@' + ChatLive_selectedChannel[0].toLowerCase() + ' ')) {
+                atstreamer = true;
+            } else if (ChatLive_Highlight_AtUser && message_text && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase() + ' ')) {
+                atuser = true;
+            } else if (ChatLive_Highlight_User_send && Main_A_includes_B((comments[i].commenter.display_name).toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
+                atuser = true;
+            }
+
+            hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
+
             //Add nick
-            nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
-                defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength];
+            if (atstreamer || (ChatLive_Highlight_Bits && hasbits)) {
+                nickColor = chat_Line_highlight_green;
+            } else if (atuser) {
+                nickColor = chat_Line_highlight_blue;
+            } else {
+                nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
+                    defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
-            nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
-
+                nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+            }
             div += '<span ' + (mmessage.is_action ? ('class="class_bold" ' + nickColor) : '') +
                 nickColor + '>' + comments[i].commenter.display_name + '</span>' +
                 (mmessage.is_action ? '' : '&#58;') + '&nbsp;';
@@ -6322,17 +6588,16 @@
                     ChatLive_extraMessageTokenize(
                         [fragment.text],
                         0,
-                        ((mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0])) ? mmessage.bits_spent : 0)
+                        (hasbits ? mmessage.bits_spent : 0)
                     );
 
             }
 
             div += '</span>';
-            if (null_next) Chat_MessageVector(div, comments[i].content_offset_seconds);
-            else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments[i].content_offset_seconds);
+            if (null_next) Chat_MessageVector(div, comments[i].content_offset_seconds, atstreamer, atuser, hasbits);
+            else if (Chat_next !== undefined) Chat_MessageVectorNext(div, comments[i].content_offset_seconds, atstreamer, atuser, hasbits);
 
         }
-
 
         if (null_next && Chat_Id[0] === id) {
             Chat_JustStarted = false;
@@ -6341,17 +6606,23 @@
         }
     }
 
-    function Chat_MessageVector(message, time) {
+    function Chat_MessageVector(message, time, atstreamer, atuser, hasbits) {
         Chat_Messages.push({
-            'time': time,
-            'message': message
+            time: time,
+            message: message,
+            atstreamer: atstreamer,
+            atuser: atuser,
+            hasbits: hasbits
         });
     }
 
-    function Chat_MessageVectorNext(message, time) {
+    function Chat_MessageVectorNext(message, time, atstreamer, atuser, hasbits) {
         Chat_MessagesNext.push({
-            'time': time,
-            'message': message
+            time: time,
+            message: message,
+            atstreamer: atstreamer,
+            atuser: atuser,
+            hasbits: hasbits
         });
     }
 
@@ -6390,9 +6661,51 @@
             for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
                 if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
                     elem = document.createElement('div');
-                    elem.className = 'chat_line';
-                    elem.innerHTML = Chat_Messages[i].message;
+                    var classname = 'chat_line';
 
+                    if (Chat_Messages[i].atstreamer) {
+
+                        classname += ' chat_atstreamer';
+
+                        Chat_Messages[i].message = Chat_Messages[i].message.replace(new RegExp('@' + ChatLive_selectedChannel[0], "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+
+                    } else if (Chat_Messages[i].atuser) {
+
+                        classname += ' chat_atuser';
+
+                        Chat_Messages[i].message = Chat_Messages[i].message.replace(new RegExp('@' + (AddUser_UsernameArray[0].name).toLowerCase(), "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+
+                    } else if (ChatLive_Highlight_Bits && Chat_Messages[i].hasbits) {
+
+                        classname += ' chat_bits';
+
+                    } else if (ChatLive_Individual_Background) {
+
+                        if (ChatLive_Individual_Background_flip[0]) {
+
+                            if (ChatLive_Individual_Background === 1) {
+
+                                var color = !Play_isFullScreen ? '100,100,100,' : '0, 0, 0,';
+                                elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+
+                            } else if (ChatLive_Individual_Background === 2) {
+
+                                elem.style.backgroundColor = 'rgba(100,100,100, ' + Play_ChatBackground + ')';
+
+                            } else if (ChatLive_Individual_Background === 3) {
+
+                                elem.style.backgroundColor = 'rgba(0,0,0, ' + Play_ChatBackground + ')';
+
+                            }
+                        }
+
+                        ChatLive_Individual_Background_flip[0] = ChatLive_Individual_Background_flip[0] ^ 1;
+                    }
+
+                    if (chat_lineChatLive_Individual_Lines) classname += ' chat_line_ind';
+
+                    elem.className = classname;
+                    elem.innerHTML = Chat_Messages[i].message;
                     Chat_div[0].appendChild(elem);
                 } else {
                     break;
@@ -6636,7 +6949,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.174';
-    var Main_minversion = 'April 21, 2020';
+    var Main_minversion = 'April 23, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7052,7 +7365,7 @@
 
         Main_innerHTML("dialog_multi_help_text", STR_CONTROLS_MULTI);
 
-        Main_textContent("chat_send_button0", STR_CHAT_OPTIONS);
+        Main_textContent("chat_send_button0", STR_OPTIONS);
         Main_textContent("chat_send_button1", STR_CHAT_DELL_ALL);
         Main_textContent("chat_send_button2", STR_CHAT_UNICODE_EMOJI);
         Main_textContent("chat_send_button3", STR_CHAT_BBTV_GLOBAL);
@@ -8669,6 +8982,10 @@
                 if (Settings_CodecsValue.length) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
                 Main_HideElement('dialog_codecs');
                 document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
+            } else if (Settings_Dialog_isVisible()) {
+                if (Settings_DialogValue.length) Settings_DialoghandleKeyDown(Settings_DialogValue[Settings_DialogPos]);
+                Main_HideElement('dialog_settings');
+                document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
             }
             Settings_exit();
             Main_SwitchScreen();
@@ -10117,6 +10434,7 @@
         } else {
             switch (e.keyCode) {
                 case KEY_LEFT:
+                    //ChatLive_Playing = false;
                     if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                     else if (Play_MultiDialogVisible()) {
                         Play_MultiRemoveFocus();
@@ -18997,57 +19315,57 @@
     //Variable initialization
     var Settings_cursorY = 0;
     var Settings_value = {
-        "restor_playback": { //restor_playback
+        "restor_playback": {
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "clip_auto_play_next": { //clip_auto_play_next
+        "clip_auto_play_next": {
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "pp_workaround": { //pp_workaround
+        "pp_workaround": {
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "keep_panel_info_visible": { //clip_auto_play_next
+        "keep_panel_info_visible": {
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "single_click_exit": { //single_click_exit
+        "single_click_exit": {
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "accessibility_warn": { //accessibility_warn
+        "accessibility_warn": {
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "app_animations": { //app_animations
+        "app_animations": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "show_screen_counter": { //show_screen_counter
+        "show_screen_counter": {
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "show_feed_player": { //show_feed_player
+        "show_feed_player": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "disable_feed_player_multi": { //disable_feed_player_multi
+        "disable_feed_player_multi": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "start_user_screen": { //start_user_screen
+        "start_user_screen": {
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "auto_refresh_screen": { //auto_refresh_screen
+        "auto_refresh_screen": {
             "values": [
                 'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
             ],
             "defaultValue": 1
         },
-        "show_feed_player_delay": { //show_feed_player_delay
+        "show_feed_player_delay": { //Migrated to dialog
             "values": [
                 0, 100, 200, 300, 400, 500, 600,
                 700, 800, 900, 1000, 1100, 1200,
@@ -19056,7 +19374,7 @@
             ],
             "defaultValue": 1
         },
-        "live_feed_sort": { //live_feed_sort
+        "live_feed_sort": {
             "values": [
                 "views_more",
                 "views_less",
@@ -19069,83 +19387,158 @@
             ],
             "defaultValue": 1
         },
-        "live_notification": { //live_notification
+        "live_notification": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "live_notification_background": { //live_notification_background
+        "live_notification_background": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "live_notification_time": { //live_notification_time
+        "live_notification_time": { //Migrated to dialog
             "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             "defaultValue": 4
         },
-        "global_font_offset": { //live notification
+        "global_font_offset": {
             "values": [-3, -2, -1, 0, 1, 2, 3],
             "defaultValue": 4
         },
-        "buffer_live": { //buffer_live
+        "buffer_live": { //Migrated to dialog
             "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "defaultValue": 2
         },
-        "buffer_vod": { //buffer_vod
+        "buffer_vod": { //Migrated to dialog
             "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "defaultValue": 2
         },
-        "buffer_clip": { //buffer_clip
+        "buffer_clip": { //Migrated to dialog
             "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "defaultValue": 2
         },
-        "end_dialog_counter": { //end_dialog_counter
+        "end_dialog_counter": {
             "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "defaultValue": 4
         },
-        "bitrate_main": { //bitrate_main
+        "bitrate_main": { //Migrated to dialog
             "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
             "defaultValue": 1
         },
-        "bitrate_min": { //bitrate_min
+        "bitrate_min": { //Migrated to dialog
             "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
             "defaultValue": 18
         },
-        "videos_animation": { //videos_animation
+        "videos_animation": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "thumb_quality": { //thumbnail quality
+        "thumb_quality": {
             "values": ["very-low", "low", "normal", "high", "very-high"],
             "defaultValue": 3
         },
-        "default_quality": { //default player quality Auto or source
+        "default_quality": {
             "values": ["Auto", "source"],
             "defaultValue": 1
         },
-        "clock_offset": { //clock_offset
+        "clock_offset": {
             "values": Settings_GenerateClock(),
             "defaultValue": 49
         },
-        "content_lang": { //content_lang
+        "content_lang": {
             "values": ["All"],
             "set_values": [""],
             "defaultValue": 1
         },
-        "blocked_codecs": { //blocked_codecs
+        "animations_opt": {
             "values": ["None"],
             "set_values": [""],
             "defaultValue": 1
         },
-        "dpad_position": { //dpad postion
+        "live_notification_opt": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "blocked_codecs": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "player_buffers": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "small_feed_player": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "player_bitrate": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "dpad_opt": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "chat_opt": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "dpad_position": { //Migrated to dialog
             "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
             "defaultValue": 1
         },
-        "dpad_opacity": { //dpad opacity
+        "dpad_opacity": { //Migrated to dialog
             "values": [
                 "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%",
                 "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"
             ],
             "defaultValue": 12
-        }
+        },
+        "highlight_rewards": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
+        "highlight_atstreamer": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
+        "highlight_atuser": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
+        "highlight_user_send": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "show_sub": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
+        "highlight_bits": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "show_actions": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "individual_lines": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
+        "chat_individual_background": { //Migrated to dialog
+            "values": ["disabled", "enabled", "bright", "dark"],
+            "defaultValue": 1
+        },
+        "chat_logging": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
     };
 
     var Settings_FeedSort = [
@@ -19225,8 +19618,17 @@
         // General settings title
         //div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
+        //Dialog settings
         div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
+        div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
+        div += Settings_Content('animations_opt', [STR_CONTENT_LANG_SUMMARY], STR_ANIMATIONS, null);
+        div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
 
+        if (!Main_isTV || !Main_IsOnAndroid) {
+            div += Settings_Content('dpad_opt', [STR_CONTENT_LANG_SUMMARY], STR_DPAD_OPT, null);
+        }
+
+        //Individual settings
         div += Settings_Content('live_feed_sort',
             [
                 STR_VIWES_MOST,
@@ -19242,10 +19644,13 @@
             STR_LIVE_FEED_SORT_SUMMARY
         );
 
-        div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, null);
 
         Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
-        div += Settings_Content('auto_refresh_screen', Settings_value.auto_refresh_screen.values, STR_AUTO_REFRESH, null);
+        div += Settings_Content('auto_refresh_screen', Settings_value.auto_refresh_screen.values, STR_AUTO_REFRESH, STR_AUTO_REFRESH_SUMMARY);
+
+        div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
+
+        div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
         div += Settings_Content('thumb_quality',
             [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
@@ -19253,84 +19658,42 @@
 
         div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
-        div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
-
-        div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, null);
-
-        div += Settings_Content('videos_animation', array_no_yes, STR_VIDEOS_ANIMATION, null);
-
-        div += Settings_Content('app_animations', array_no_yes, STR_APP_ANIMATIONS, null);
-
-        div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
-
-        div += Settings_Content('live_notification', array_no_yes, STR_NOW_LIVE_SHOW, null);
-
-        if (Main_isTV) div += Settings_Content('live_notification_background', array_no_yes, STR_NOW_BACKGROUND, null);
-
-        div += Settings_Content('live_notification_time', null, STR_NOW_DURATION, null);
+        div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
 
         div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
 
         div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
-        if (!Main_isTV || !Main_IsOnAndroid) {
-            div += Settings_Content('dpad_position', null, STR_DPAD_POSTION, null);
-
-            div += Settings_Content('dpad_opacity', null, STR_DPAD_OPACITY, null);
-        }
-
-        div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-        Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
-
         // Player settings title
         div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-        div += Settings_Content('show_feed_player', array_no_yes, STR_SHOW_FEED_PLAYER, null);
-
-        div += Settings_Content('disable_feed_player_multi', array_no_yes, STR_DISABLE_FEED_PLAYER_MULTI, null);
-
-        div += Settings_Content('show_feed_player_delay', null, STR_SIDE_PANEL_PLAYER_DELAY, STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY);
-
         div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
+
+        div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
+
+        div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
+        Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
         div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
         div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
-        div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
-
         div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
-        // Player buffer title/summary
-        div += '<div id="setting_title_bandwidth" class="settings_title">' + STR_PLAYER_BITRATE + '</div>' +
-            '<div id="setting_title_bandwidth_summary" class="settings_summary">' + STR_PLAYER_BITRATE_SUMMARY + '</div>';
+        //Dialog settings
+        div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
+        div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
+        div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+        div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
-        // Player buffer live
+        // Prepare the bitrates
         key = "bitrate_main";
-        Settings_value_keys.push(key);
-
         for (var i = 1; i < Settings_value[key].values.length; i++) {
             Settings_value[key].values[i] = Settings_value[key].values[i] + " Mbps";
         }
         Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-
-        div += Settings_DivOptionNoSummary(key, STR_PLAYER_BITRATE_MAIN);
-
-        div += Settings_Content('bitrate_min',
-            Settings_value.bitrate_main.values, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
-        Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+        Settings_value.bitrate_min.values = Settings_value[key].values;
         Settings_SetBitRate(0);
-
-        // Player buffer title/summary
-        div += '<div id="setting_title_buffers" class="settings_title">' + STR_SETTINGS_BUFFER_SIZE + '</div>' +
-            '<div id="setting_title_buffers_summary" class="settings_summary">' + STR_SETTINGS_BUFFER_SIZE_SUMMARY + '</div>';
-
-
-        div += Settings_Content('buffer_live', null, STR_SETTINGS_BUFFER_LIVE, null);
-
-        div += Settings_Content('buffer_vod', null, STR_SETTINGS_BUFFER_VOD, null);
-
-        div += Settings_Content('buffer_clip', null, STR_SETTINGS_BUFFER_CLIP, null);
 
         Main_innerHTML("settings_main", div);
         Settings_positions_length = Settings_value_keys.length;
@@ -19380,17 +19743,6 @@
 
         Main_textContent('show_screen_counter_name', STR_SCREEN_COUNTER);
 
-        Main_textContent('show_feed_player_name', STR_SHOW_FEED_PLAYER);
-
-        Main_textContent('show_feed_player_delay_name', STR_SIDE_PANEL_PLAYER_DELAY);
-        Main_textContent('show_feed_player_delay_summary', STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY);
-
-        Main_textContent('disable_feed_player_multi_name', STR_DISABLE_FEED_PLAYER_MULTI);
-
-        Main_textContent('dpad_position_name', STR_DPAD_POSTION);
-
-        Main_textContent('dpad_opacity_name', STR_DPAD_OPACITY);
-
         // Content Language selection
         key = "content_lang";
         Main_textContent(key + '_name', STR_CONTENT_LANG);
@@ -19414,18 +19766,6 @@
         //Player settings
         Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
 
-        // Player buffer title/summary
-        Main_textContent('setting_title_bandwidth', STR_PLAYER_BITRATE);
-        Main_textContent('setting_title_bandwidth_summary', STR_PLAYER_BITRATE_SUMMARY);
-
-        key = "bitrate_main";
-        Main_textContent(key + '_name', STR_AUTO_REFRESH);
-        Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-
-        key = "bitrate_min";
-        Main_textContent(key + '_name', STR_START_AT_USER);
-        Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-
         key = "auto_refresh_screen";
         Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
         Settings_value[key].values[0] = STR_DISABLE;
@@ -19434,13 +19774,13 @@
         Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
         Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
-        Main_textContent('buffer_live_name', STR_SETTINGS_BUFFER_LIVE);
-        Main_textContent('buffer_vod_name', STR_SETTINGS_BUFFER_VOD);
-        Main_textContent('buffer_clip_name', STR_SETTINGS_BUFFER_CLIP);
-
         key = "start_user_screen";
-        Main_textContent('start_user_screen_name', STR_START_AT_USER);
+        Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
         Settings_value[key].values = [STR_YES, STR_NO];
+
+        key = "auto_refresh_screen";
+        Settings_DivOptionChangeLang(key, STR_AUTO_REFRESH, STR_AUTO_REFRESH_SUMMARY);
+        Settings_value[key].values[0] = STR_DISABLE;
 
         //Player restore
         key = "restor_playback";
@@ -19466,12 +19806,7 @@
 
         // accessibility_warn
         key = "accessibility_warn";
-        Main_textContent(key + '_name', STR_SETTINGS_ACCESSIBILITY);
-        Settings_value[key].values = [STR_YES, STR_NO];
-
-        // Videos
-        key = "videos_animation";
-        Main_textContent(key + '_name', STR_VIDEOS_ANIMATION);
+        Settings_DivOptionChangeLang(key, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
         Settings_value[key].values = [STR_YES, STR_NO];
 
         key = "pp_workaround";
@@ -19482,28 +19817,12 @@
         Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
         Settings_value[key].values = [STR_NO, STR_YES];
 
-        key = "live_notification";
-        Main_textContent(key + '_name', STR_NOW_LIVE_SHOW);
-        Settings_value[key].values = [STR_NO, STR_YES];
-
-        if (Main_isTV) {
-            key = "live_notification_background";
-            Main_textContent(key + '_name', STR_NOW_BACKGROUND);
-            Settings_value[key].values = [STR_NO, STR_YES];
-        }
-
-        Main_textContent('live_notification_time_name', STR_NOW_DURATION);
-
         key = "keep_panel_info_visible";
         Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
         Settings_value[key].values = [STR_NO, STR_YES];
 
         key = "single_click_exit";
         Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
-        Settings_value[key].values = [STR_NO, STR_YES];
-
-        key = "app_animations";
-        Main_textContent(key + '_name', STR_APP_ANIMATIONS);
         Settings_value[key].values = [STR_NO, STR_YES];
 
         for (key in Settings_value)
@@ -19546,10 +19865,6 @@
         return Settings_value[key].values[Settings_Obj_default(key)];
     }
 
-    //function Settings_Obj_set_values(key) {
-    //    return Settings_value[key].set_values[Settings_Obj_default(key)];
-    //}
-
     function Settings_Obj_default(key) {
         return Settings_value[key].defaultValue;
     }
@@ -19582,7 +19897,7 @@
         Main_setItem(key, Settings_Obj_default(key) + 1);
         Main_textContent(key, Settings_Obj_values(key));
         Settings_Setarrows(position);
-        Settings_SetDefault(position);
+        Settings_SetDefault(key);
     }
 
     function Settings_Setarrows(position) {
@@ -19608,7 +19923,6 @@
     }
 
     function Settings_SetDefault(position) {
-        position = Settings_value_keys[position];
 
         if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
         else if (position === "live_notification") {
@@ -19813,7 +20127,7 @@
         var doc,
             offset = (!Main_isTV || !Main_IsOnAndroid) ? 1 : 0;
 
-        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (17 + offset)) {
+        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (13 + offset)) {
             doc = document.getElementById('settings_scroll');
             doc.scrollTop = doc.scrollHeight;
             if (Settings_Obj_default("app_animations")) {
@@ -19821,7 +20135,7 @@
                 doc.scrollTop = 0;
                 scrollTo(doc, position, 200);
             }
-        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (16 + offset)) {
+        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (12 + offset)) {
             doc = document.getElementById('settings_scroll');
             if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
             else doc.scrollTop = 0;
@@ -19906,6 +20220,13 @@
             case KEY_ENTER:
                 if (!Settings_cursorY) Languages_init();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'animations_opt')) Settings_DialogShowAnimation();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat();
                 break;
             default:
                 break;
@@ -20103,7 +20424,308 @@
         Main_setItem('app_animations', 2);
         Settings_SetAnimations();
     }
-    //Variable initialization
+
+    function Settings_DialogShowBuffer() {
+        var obj = {
+            buffer_live: {
+                defaultValue: Settings_value.buffer_live.defaultValue,
+                values: Settings_value.buffer_live.values,
+                title: STR_SETTINGS_BUFFER_LIVE,
+                summary: null
+            },
+            buffer_vod: {
+                defaultValue: Settings_value.buffer_vod.defaultValue,
+                values: Settings_value.buffer_vod.values,
+                title: STR_SETTINGS_BUFFER_VOD,
+                summary: null
+            },
+            buffer_clip: {
+                defaultValue: Settings_value.buffer_clip.defaultValue,
+                values: Settings_value.buffer_clip.values,
+                title: STR_SETTINGS_BUFFER_CLIP,
+                summary: null
+            },
+        };
+
+        Settings_DialogShow(obj, STR_SETTINGS_BUFFER_SIZE + STR_BR + STR_SETTINGS_BUFFER_SIZE_SUMMARY);
+    }
+
+    function Settings_DialogShowBitrate() {
+        var obj = {
+            bitrate_main: {
+                defaultValue: Settings_value.bitrate_main.defaultValue,
+                values: Settings_value.bitrate_main.values,
+                title: STR_PLAYER_BITRATE_MAIN,
+                summary: null
+            },
+            bitrate_min: {
+                defaultValue: Settings_value.bitrate_min.defaultValue,
+                values: Settings_value.bitrate_min.values,
+                title: STR_PLAYER_BITRATE_SMALL,
+                summary: STR_PLAYER_BITRATE_SMALL_SUMMARY
+            }
+        };
+
+        Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_PLAYER_BITRATE_SUMMARY);
+    }
+
+    function Settings_DialogShowSmallPayer() {
+        Settings_value.show_feed_player.values = [STR_NO, STR_YES];
+        Settings_value.disable_feed_player_multi.values = [STR_NO, STR_YES];
+
+        var obj = {
+            show_feed_player: {
+                defaultValue: Settings_value.show_feed_player.defaultValue,
+                values: Settings_value.show_feed_player.values,
+                title: STR_SHOW_FEED_PLAYER,
+                summary: null
+            },
+            disable_feed_player_multi: {
+                defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
+                values: Settings_value.disable_feed_player_multi.values,
+                title: STR_DISABLE_FEED_PLAYER_MULTI,
+                summary: null
+            },
+            show_feed_player_delay: {
+                defaultValue: Settings_value.show_feed_player_delay.defaultValue,
+                values: Settings_value.show_feed_player_delay.values,
+                title: STR_SIDE_PANEL_PLAYER_DELAY,
+                summary: STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY
+            }
+        };
+
+        Settings_DialogShow(obj, STR_SIDE_PANEL_PLAYER);
+    }
+
+    function Settings_DialogShowNotification() {
+        Settings_value.live_notification.values = [STR_NO, STR_YES];
+        Settings_value.live_notification_background.values = [STR_NO, STR_YES];
+
+        var obj = {
+            live_notification: {
+                defaultValue: Settings_value.live_notification.defaultValue,
+                values: Settings_value.live_notification.values,
+                title: STR_NOW_LIVE_SHOW,
+                summary: null
+            },
+            live_notification_background: {
+                defaultValue: Settings_value.live_notification_background.defaultValue,
+                values: Settings_value.live_notification_background.values,
+                title: STR_NOW_BACKGROUND,
+                summary: null
+            },
+            live_notification_time: {
+                defaultValue: Settings_value.live_notification_time.defaultValue,
+                values: Settings_value.live_notification_time.values,
+                title: STR_NOW_DURATION,
+                summary: STR_NOW_DURATION_SUMMARY
+            }
+        };
+
+        Settings_DialogShow(obj, STR_NOTIFICATION_OPT);
+    }
+
+    function Settings_DialogShowDpad() {
+
+        var obj = {
+            dpad_position: {
+                defaultValue: Settings_value.dpad_position.defaultValue,
+                values: Settings_value.dpad_position.values,
+                title: STR_DPAD_POSTION,
+                summary: null
+            },
+            dpad_opacity: {
+                defaultValue: Settings_value.dpad_opacity.defaultValue,
+                values: Settings_value.dpad_opacity.values,
+                title: STR_DPAD_OPACITY,
+                summary: null
+            }
+        };
+
+        Settings_DialogShow(obj, STR_DPAD_OPT);
+    }
+
+    function Settings_DialogShowAnimation() {
+        Settings_value.app_animations.values = [STR_NO, STR_YES];
+        Settings_value.videos_animation.values = [STR_NO, STR_YES];
+
+        var obj = {
+            app_animations: {
+                defaultValue: Settings_value.app_animations.defaultValue,
+                values: Settings_value.app_animations.values,
+                title: STR_APP_ANIMATIONS,
+                summary: STR_APP_ANIMATIONS_SUMMARY
+            },
+            videos_animation: {
+                defaultValue: Settings_value.videos_animation.defaultValue,
+                values: Settings_value.videos_animation.values,
+                title: STR_VIDEOS_ANIMATION,
+                summary: STR_VIDEOS_ANIMATION_SUMMARY
+            }
+        };
+
+        Settings_DialogShow(obj, STR_ANIMATIONS);
+    }
+
+    function Settings_DialogShowChat() {
+        var yes_no = [STR_NO, STR_YES];
+        Settings_value.highlight_rewards.values = yes_no;
+        Settings_value.highlight_atstreamer.values = yes_no;
+        Settings_value.highlight_atuser.values = yes_no;
+        Settings_value.highlight_user_send.values = yes_no;
+        Settings_value.show_sub.values = yes_no;
+        Settings_value.highlight_bits.values = yes_no;
+        Settings_value.show_actions.values = yes_no;
+        Settings_value.chat_individual_background.values = [STR_DISABLE, STR_ENABLE, STR_BRIGHT_MODE, STR_DARK_MODE];
+        Settings_value.chat_logging.values = yes_no;
+        Settings_value.individual_lines.values = yes_no;
+
+        var obj = {
+            chat_logging: {
+                defaultValue: Settings_value.chat_logging.defaultValue,
+                values: Settings_value.chat_logging.values,
+                title: STR_CHAT_LOGGING,
+                summary: STR_CHAT_LOGGING_SUMMARY
+            },
+            individual_lines: {
+                defaultValue: Settings_value.individual_lines.defaultValue,
+                values: Settings_value.individual_lines.values,
+                title: STR_CHAT_INDIVIDUAL_LINE,
+                summary: null
+            },
+            chat_individual_background: {
+                defaultValue: Settings_value.chat_individual_background.defaultValue,
+                values: Settings_value.chat_individual_background.values,
+                title: STR_CHAT_INDIVIDUAL_BACKGROUND,
+                summary: STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY
+            },
+            highlight_rewards: {
+                defaultValue: Settings_value.highlight_rewards.defaultValue,
+                values: Settings_value.highlight_rewards.values,
+                title: STR_CHAT_HIGHLIGHT_REDEEMED,
+                summary: null
+            },
+            highlight_atstreamer: {
+                defaultValue: Settings_value.highlight_atstreamer.defaultValue,
+                values: Settings_value.highlight_atstreamer.values,
+                title: STR_CHAT_HIGHLIGHT_STREAMER,
+                summary: null
+            },
+            highlight_atuser: {
+                defaultValue: Settings_value.highlight_atuser.defaultValue,
+                values: Settings_value.highlight_atuser.values,
+                title: STR_CHAT_HIGHLIGHT_USER,
+                summary: null
+            },
+            highlight_user_send: {
+                defaultValue: Settings_value.highlight_user_send.defaultValue,
+                values: Settings_value.highlight_user_send.values,
+                title: STR_CHAT_HIGHLIGHT_USER_SEND,
+                summary: null
+            },
+            show_sub: {
+                defaultValue: Settings_value.show_sub.defaultValue,
+                values: Settings_value.show_sub.values,
+                title: STR_CHAT_SHOW_SUB,
+                summary: null
+            },
+            highlight_bits: {
+                defaultValue: Settings_value.highlight_bits.defaultValue,
+                values: Settings_value.highlight_bits.values,
+                title: STR_CHAT_HIGHLIGHT_BIT,
+                summary: null
+            },
+            show_actions: {
+                defaultValue: Settings_value.show_actions.defaultValue,
+                values: Settings_value.show_actions.values,
+                title: STR_CHAT_HIGHLIGHT_ACTIONS,
+                summary: STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY
+            },
+        };
+
+        Settings_DialogShow(obj, STR_CHAT_OPTIONS);
+    }
+
+    function Settings_Dialog_isVisible() {
+        return Main_isElementShowing('dialog_settings');
+    }
+
+    var Settings_DialogValue = [];
+    var Settings_DialogPos = 0;
+
+    function Settings_DialogShow(obj, title) {
+        document.body.removeEventListener("keydown", Settings_handleKeyDown);
+
+        var dialogContent = title + STR_BR + STR_BR;
+        Settings_DialogValue = [];
+
+        for (var property in obj) {
+            Settings_DialogValue.push(property);
+            dialogContent += obj[property].summary ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :
+                Settings_DivOptionNoSummary(property, obj[property].title);
+        }
+
+        Main_innerHTML("dialog_settings_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+
+        Settings_DialogPos = 0;
+        Main_AddClass(Settings_DialogValue[0], 'settings_value_focus');
+        Main_AddClass(Settings_DialogValue[0] + '_div', 'settings_div_focus');
+        Settings_SetarrowsKey(Settings_DialogValue[0]);
+
+        Main_ShowElement('dialog_settings');
+        document.body.addEventListener("keydown", Settings_DialoghandleKeyDown, false);
+    }
+
+    function Settings_DialoghandleKeyDown(event) {
+        var key;
+        switch (event.keyCode) {
+            case KEY_ENTER:
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+                Main_HideElement('dialog_settings');
+                document.body.removeEventListener("keydown", Settings_DialoghandleKeyDown);
+                document.body.addEventListener("keydown", Settings_handleKeyDown, false);
+                break;
+            case KEY_LEFT:
+                key = Settings_DialogValue[Settings_DialogPos];
+                if (Settings_Obj_default(key) > 0) Settings_DialogRigthLeft(-1);
+                break;
+            case KEY_RIGHT:
+                key = Settings_DialogValue[Settings_DialogPos];
+                if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_DialogRigthLeft(1);
+                break;
+            case KEY_UP:
+                if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
+                break;
+            case KEY_DOWN:
+                if (Settings_DialogPos < (Settings_DialogValue.length - 1)) Settings_DialogUpDown(1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function Settings_DialogUpDown(offset) {
+        Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+        Settings_DialogPos += offset;
+
+        var key = Settings_DialogValue[Settings_DialogPos];
+        Main_AddClass(key, 'settings_value_focus');
+        Main_AddClass(key + '_div', 'settings_div_focus');
+        Settings_SetarrowsKey(key);
+    }
+
+    function Settings_DialogRigthLeft(offset) {
+        var key = Settings_DialogValue[Settings_DialogPos];
+
+        Settings_value[key].defaultValue += offset;
+
+        Main_setItem(key, Settings_Obj_default(key) + 1);
+        Main_textContent(key, Settings_Obj_values(key));
+        Settings_SetarrowsKey(key);
+        Settings_SetDefault(key);
+    } //Variable initialization
     var Languages_cursorY = 0;
     var Languages_Selected = '';
     var Languages_value = {
