@@ -1,0 +1,88 @@
+{
+	"raw": "@badge-info=subscriber/1;badges=subscriber/0,premium/1;color=;display-name=hwarangsulsa;emotes=;flags=;id=97b3ad30-281f-4004-9c72-c3b059ae357c;login=hwarangsulsa;mod=0;msg-id=submysterygift;msg-param-mass-gift-count=1;msg-param-origin-id=60\\sde\\s3f\\sd7\\s67\\s81\\s60\\s9d\\s1c\\sb0\\s51\\s3a\\sef\\s26\\sc5\\se3\\s6a\\sce\\sa4\\s94;msg-param-sender-count=1;msg-param-sub-plan=1000;room-id=26490481;subscriber=1;system-msg=hwarangsulsa\\sis\\sgifting\\s1\\sTier\\s1\\sSubs\\sto\\ssummit1g's\\scommunity!\\sThey've\\sgifted\\sa\\stotal\\sof\\s1\\sin\\sthe\\schannel!;tmi-sent-ts=1587601265601;user-id=424515932;user-type= :tmi.twitch.tv USERNOTICE #summit1g",
+	"tags": {
+		"badge-info": "subscriber/1",
+		"badges": "subscriber/0,premium/1",
+		"color": true,
+		"display-name": "hwarangsulsa",
+		"emotes": true,
+		"flags": true,
+		"id": "97b3ad30-281f-4004-9c72-c3b059ae357c",
+		"login": "hwarangsulsa",
+		"mod": "0",
+		"msg-id": "submysterygift",
+		"msg-param-mass-gift-count": "1",
+		"msg-param-origin-id": "60\\sde\\s3f\\sd7\\s67\\s81\\s60\\s9d\\s1c\\sb0\\s51\\s3a\\sef\\s26\\sc5\\se3\\s6a\\sce\\sa4\\s94",
+		"msg-param-sender-count": "1",
+		"msg-param-sub-plan": "1000",
+		"room-id": "26490481",
+		"subscriber": "1",
+		"system-msg": "hwarangsulsa\\sis\\sgifting\\s1\\sTier\\s1\\sSubs\\sto\\ssummit1g's\\scommunity!\\sThey've\\sgifted\\sa\\stotal\\sof\\s1\\sin\\sthe\\schannel!",
+		"tmi-sent-ts": "1587601265601",
+		"user-id": "424515932",
+		"user-type": true
+	},
+	"prefix": "tmi.twitch.tv",
+	"command": "USERNOTICE",
+	"params": ["#summit1g"]
+}
+
+{
+	"raw": "@badge-info=;badges=premium/1;color=;display-name=lmzflicks;emotes=;flags=;id=9a188687-4deb-4142-b50e-b0a7b14db931;login=lmzflicks;mod=0;msg-id=sub;msg-param-cumulative-months=1;msg-param-months=0;msg-param-should-share-streak=0;msg-param-sub-plan-name=Literally\\sthe\\slargest\\spenile\\sdevice\\son\\sthe\\splanet.;msg-param-sub-plan=Prime;room-id=76508554;subscriber=0;system-msg=lmzflicks\\ssubscribed\\swith\\sTwitch\\sPrime.;tmi-sent-ts=1587601365532;user-id=233160545;user-type= :tmi.twitch.tv USERNOTICE #anomaly",
+	"tags": {
+		"badge-info": true,
+		"badges": "premium/1",
+		"color": true,
+		"display-name": "lmzflicks",
+		"emotes": true,
+		"flags": true,
+		"id": "9a188687-4deb-4142-b50e-b0a7b14db931",
+		"login": "lmzflicks",
+		"mod": "0",
+		"msg-id": "sub",
+		"msg-param-cumulative-months": "1",
+		"msg-param-months": "0",
+		"msg-param-should-share-streak": "0",
+		"msg-param-sub-plan-name": "Literally\\sthe\\slargest\\spenile\\sdevice\\son\\sthe\\splanet.",
+		"msg-param-sub-plan": "Prime",
+		"room-id": "76508554",
+		"subscriber": "0",
+		"system-msg": "lmzflicks\\ssubscribed\\swith\\sTwitch\\sPrime.",
+		"tmi-sent-ts": "1587601365532",
+		"user-id": "233160545",
+		"user-type": true
+	},
+	"prefix": "tmi.twitch.tv",
+	"command": "USERNOTICE",
+	"params": ["#anomaly"]
+}
+
+{
+	"raw": "@badge-info=subscriber/0;badges=subscriber/0,premium/1;color=;display-name=jontte120;emotes=;flags=;id=ee3cbc40-e0d1-48d0-bb27-d3c3f00a4eae;login=jontte120;mod=0;msg-id=sub;msg-param-cumulative-months=1;msg-param-months=0;msg-param-should-share-streak=0;msg-param-sub-plan-name=Literally\\sthe\\slargest\\spenile\\sdevice\\son\\sthe\\splanet.;msg-param-sub-plan=1000;room-id=76508554;subscriber=1;system-msg=jontte120\\ssubscribed\\sat\\sTier\\s1.;tmi-sent-ts=1587601631327;user-id=213594672;user-type= :tmi.twitch.tv USERNOTICE #anomaly",
+	"tags": {
+		"badge-info": "subscriber/0",
+		"badges": "subscriber/0,premium/1",
+		"color": true,
+		"display-name": "jontte120",
+		"emotes": true,
+		"flags": true,
+		"id": "ee3cbc40-e0d1-48d0-bb27-d3c3f00a4eae",
+		"login": "jontte120",
+		"mod": "0",
+		"msg-id": "sub",
+		"msg-param-cumulative-months": "1",
+		"msg-param-months": "0",
+		"msg-param-should-share-streak": "0",
+		"msg-param-sub-plan-name": "Literally\\sthe\\slargest\\spenile\\sdevice\\son\\sthe\\splanet.",
+		"msg-param-sub-plan": "1000",
+		"room-id": "76508554",
+		"subscriber": "1",
+		"system-msg": "jontte120\\ssubscribed\\sat\\sTier\\s1.",
+		"tmi-sent-ts": "1587601631327",
+		"user-id": "213594672",
+		"user-type": true
+	},
+	"prefix": "tmi.twitch.tv",
+	"command": "USERNOTICE",
+	"params": ["#anomaly"]
+}

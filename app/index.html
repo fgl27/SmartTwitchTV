@@ -1889,6 +1889,7 @@
             font-family: 'Roboto-Bold';
         }
 
+        .chat_line_ind,
         .chat_line {
             margin-left: 0.15em;
             margin-right: 0.15em;
@@ -1900,12 +1901,18 @@
             letter-spacing: 0.09ch;
         }
 
+        .chat_line_ind,
         .chat_line,
         .message {
             /*word-break: break-all;*/
             word-wrap: break-word;
             margin-bottom: 0.175em;
             line-height: 1.1em;
+        }
+
+        .chat_line_ind {
+            border-top: 0.025em solid rgba(255, 255, 255, 0.75);
+            border-bottom: 0.025em solid rgba(255, 255, 255, 0.75);
         }
 
         .chat_box {
@@ -1948,6 +1955,22 @@
 
         .chat_highlighted {
             background: #6441a4;
+        }
+
+        .chat_atstreamer {
+            background: rgba(150, 0, 0, 1);
+        }
+
+        .chat_atuser {
+            background: rgba(0, 200, 0, 1);
+        }
+
+        .chat_bits {
+            background: rgb(183, 161, 0);
+        }
+
+        .chat_sub {
+            background: rgb(175, 81, 0);
         }
 
         .chat_extra_small {

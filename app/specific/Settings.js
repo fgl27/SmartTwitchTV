@@ -168,6 +168,11 @@ var Settings_value = {
         "set_values": [""],
         "defaultValue": 1
     },
+    "chat_opt": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
     "dpad_position": {//Migrated to dialog
         "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
         "defaultValue": 1
@@ -177,7 +182,43 @@ var Settings_value = {
             "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%",
             "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
         "defaultValue": 12
-    }
+    },
+    "highlight_rewards": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "highlight_atstreamer": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "highlight_atuser": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "highlight_user_send": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "show_sub": {
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "highlight_bits": {
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "show_actions": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
+    "chat_individual_background": {
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "chat_logging": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
 };
 
 var Settings_FeedSort = [
@@ -288,14 +329,13 @@ function Settings_SetSettings() {
 
     div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
-
-
     div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
 
     div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
 
     div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
+    div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
     div += Settings_Content('animations_opt', [STR_CONTENT_LANG_SUMMARY], STR_ANIMATIONS, null);
     div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
 
@@ -766,7 +806,7 @@ function Settings_ScrollTable() {
     var doc,
         offset = (!Main_isTV || !Main_IsOnAndroid) ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (13 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -774,7 +814,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 200);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (12 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;
@@ -865,6 +905,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'animations_opt')) Settings_DialogShowAnimation();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat();
             break;
         default:
             break;
@@ -1179,6 +1220,78 @@ function Settings_DialogShowAnimation() {
     };
 
     Settings_DialogShow(obj, STR_ANIMATIONS);
+}
+
+function Settings_DialogShowChat() {
+    var yes_no = [STR_NO, STR_YES];
+    Settings_value.highlight_rewards.values = yes_no;
+    Settings_value.highlight_atstreamer.values = yes_no;
+    Settings_value.highlight_atuser.values = yes_no;
+    Settings_value.highlight_user_send.values = yes_no;
+    Settings_value.show_sub.values = yes_no;
+    Settings_value.highlight_bits.values = yes_no;
+    Settings_value.show_actions.values = yes_no;
+    Settings_value.chat_individual_background.values = yes_no;
+    Settings_value.chat_logging.values = yes_no;
+
+    var obj = {
+        chat_logging: {
+            defaultValue: Settings_value.chat_logging.defaultValue,
+            values: Settings_value.chat_logging.values,
+            title: STR_CHAT_LOGGING,
+            summary: STR_CHAT_LOGGING_SUMMARY
+        },
+        chat_individual_background: {
+            defaultValue: Settings_value.chat_individual_background.defaultValue,
+            values: Settings_value.chat_individual_background.values,
+            title: STR_CHAT_INDIVIDUAL_BACKGROUND,
+            summary: STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY
+        },
+        highlight_rewards: {
+            defaultValue: Settings_value.highlight_rewards.defaultValue,
+            values: Settings_value.highlight_rewards.values,
+            title: STR_CHAT_HIGHLIGHT_REDEEMED,
+            summary: null
+        },
+        highlight_atstreamer: {
+            defaultValue: Settings_value.highlight_atstreamer.defaultValue,
+            values: Settings_value.highlight_atstreamer.values,
+            title: STR_CHAT_HIGHLIGHT_STREAMER,
+            summary: null
+        },
+        highlight_atuser: {
+            defaultValue: Settings_value.highlight_atuser.defaultValue,
+            values: Settings_value.highlight_atuser.values,
+            title: STR_CHAT_HIGHLIGHT_USER,
+            summary: null
+        },
+        highlight_user_send: {
+            defaultValue: Settings_value.highlight_user_send.defaultValue,
+            values: Settings_value.highlight_user_send.values,
+            title: STR_CHAT_HIGHLIGHT_USER_SEND,
+            summary: null
+        },
+        show_sub: {
+            defaultValue: Settings_value.show_sub.defaultValue,
+            values: Settings_value.show_sub.values,
+            title: STR_CHAT_SHOW_SUB,
+            summary: null
+        },
+        highlight_bits: {
+            defaultValue: Settings_value.highlight_bits.defaultValue,
+            values: Settings_value.highlight_bits.values,
+            title: STR_CHAT_HIGHLIGHT_BIT,
+            summary: null
+        },
+        show_actions: {
+            defaultValue: Settings_value.show_actions.defaultValue,
+            values: Settings_value.show_actions.values,
+            title: STR_CHAT_HIGHLIGHT_ACTIONS,
+            summary: STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY
+        },
+    };
+
+    Settings_DialogShow(obj, STR_CHAT_OPTIONS);
 }
 
 function Settings_Dialog_isVisible() {

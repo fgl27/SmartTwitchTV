@@ -548,7 +548,7 @@ function Main_SetStringsSecondary() {
 
     Main_innerHTML("dialog_multi_help_text", STR_CONTROLS_MULTI);
 
-    Main_textContent("chat_send_button0", STR_CHAT_OPTIONS);
+    Main_textContent("chat_send_button0", STR_OPTIONS);
     Main_textContent("chat_send_button1", STR_CHAT_DELL_ALL);
     Main_textContent("chat_send_button2", STR_CHAT_UNICODE_EMOJI);
     Main_textContent("chat_send_button3", STR_CHAT_BBTV_GLOBAL);

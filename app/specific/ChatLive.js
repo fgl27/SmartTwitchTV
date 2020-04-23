@@ -12,6 +12,7 @@ var ChatLive_Banned = [];
 var ChatLive_FollowState = [];
 var ChatLive_SubState = [];
 var ChatLive_Playing = true;
+var ChatLive_SetCheckTimout = 10000;
 var extraEmotesDone = {
     bbtv: {},
     ffz: {},
@@ -61,6 +62,7 @@ function ChatLive_Init(chat_number) {
         return;
     }
 
+    ChatLive_SetOptions();
     Chat_loadBadgesGlobal();
 
     Chat_Id[chat_number] = (new Date()).getTime();
@@ -77,7 +79,34 @@ function ChatLive_Init(chat_number) {
     ChatLive_loadBadgesChannel(0, chat_number, Chat_Id[chat_number]);
     ChatLive_loadCheersChannel(0, chat_number, Chat_Id[chat_number]);
 
+    ChatLive_Individual_Background_flip[chat_number] = 0;
+
     ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
+}
+
+var ChatLive_Logging;
+var ChatLive_Highlight_Rewards;
+var ChatLive_Highlight_AtStreamer;
+var ChatLive_Highlight_AtUser;
+var ChatLive_Highlight_User_send;
+var ChatLive_Individual_Background;//Play_ChatBackground
+var ChatLive_Individual_Background_flip = [];
+var ChatLive_Highlight_Actions;
+var ChatLive_Highlight_Bits;
+var ChatLive_Show_SUB;
+var ChatLive_User_Set;
+
+function ChatLive_SetOptions() {
+    ChatLive_Logging = Settings_value.chat_logging.defaultValue;
+    ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
+    ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
+    ChatLive_Highlight_AtStreamer = Settings_value.highlight_atstreamer.defaultValue;
+    ChatLive_User_Set = AddUser_IsUserSet();
+    ChatLive_Highlight_AtUser = ChatLive_User_Set && Settings_value.highlight_atuser.defaultValue;
+    ChatLive_Highlight_User_send = ChatLive_User_Set && Settings_value.highlight_user_send.defaultValue;
+    ChatLive_Highlight_Actions = Settings_value.show_actions.defaultValue;
+    ChatLive_Highlight_Bits = Settings_value.highlight_bits.defaultValue;
+    ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
 }
 
 function ChatLive_checkFallow(tryes, chat_number, id) {
@@ -486,7 +515,7 @@ function ChatLive_loadChat(chat_number, id) {
         (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + '</span>', chat_number);
     ChatLive_loadChatRequest(chat_number, id);
 
-    useToken[chat_number] = !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
+    useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
     if (!chat_number) {
         if (useToken[chat_number]) ChatLive_SendPrepared();
@@ -502,7 +531,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
         reconnectInterval: 3000
     });
 
-    if (!ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
+    if (useToken[chat_number]) {
         ChatLive_socket[chat_number].onopen = function() {
             ChatLive_socket[chat_number].send('PASS oauth:' + AddUser_UsernameArray[0].access_token + '\r\n');
             ChatLive_socket[chat_number].send('NICK ' + AddUser_UsernameArray[0].name.toLowerCase() + '\r\n');
@@ -589,7 +618,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 ChatLive_loadChatSuccess(message, chat_number);
                 break;
             case "USERNOTICE":
-                if (useToken[chat_number]) ChatLive_CheckGiftSub(message, chat_number);
+                ChatLive_CheckSubMessage(message, chat_number);
                 break;
             case "USERSTATE":
                 Main_Log('USERSTATE chat ' + chat_number);
@@ -664,7 +693,7 @@ function ChatLive_SetCheck(chat_number, id) {
     if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
         ChatLive_CheckId[chat_number] = window.setTimeout(function() {
             ChatLive_Check(chat_number, id);
-        }, 5000);
+        }, ChatLive_SetCheckTimout);
     }
 }
 
@@ -786,7 +815,7 @@ function ChatLive_socketSendSetCheck() {
     window.clearTimeout(ChatLive_socketSendCheckID);
     ChatLive_socketSendCheckID = window.setTimeout(function() {
         ChatLive_socketSendCheck();
-    }, 5000);
+    }, ChatLive_SetCheckTimout);
 }
 
 function ChatLive_socketSendCheck() {
@@ -864,20 +893,90 @@ function ChatLive_SendMessage(message, chat_number) {
 //     ChatLive_loadChatSuccess(message, chat_number);
 // }
 
-function ChatLive_CheckGiftSub(message) {
+function ChatLive_CheckIfSub(message, chat_number) {
+    if (!ChatLive_Show_SUB) return;
+
+    var tags = message.tags;
+
+    var name = tags['display-name'] || '';
+    var msgid = tags['msg-id'] || '';
+    var plan = tags['msg-param-sub-plan'] || '';
+    var plan_is_numer = !isNaN(plan);
+    var gifter;
+
+    if (Main_A_equals_B(msgid, 'resub')) {
+
+        if (plan_is_numer) {
+
+            ChatLive_CheckIfSubSend(name, 'Re' + STR_SPACE + STR_CHAT_JUST_SUB + STR_SPACE + plan.charAt(0), chat_number);
+
+        } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
+
+            ChatLive_CheckIfSubSend(name, 'Re' + STR_SPACE + STR_CHAT_JUST_SUB_PRIME, chat_number);
+        }
+
+    } else if (Main_A_equals_B(msgid, 'sub')) {
+
+        if (plan_is_numer) {
+
+            ChatLive_CheckIfSubSend(name, STR_CHAT_JUST_SUB + STR_SPACE + plan.charAt(0), chat_number);
+
+        } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
+
+            ChatLive_CheckIfSubSend(name, STR_CHAT_JUST_SUB_PRIME, chat_number);
+
+        }
+
+    } else if (Main_A_includes_B(msgid, 'subgift')) {
+
+        gifter = Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : name;
+        var recipient = tags['msg-param-recipient-display-name'] || tags["msg-param-recipient-user-name"] || '';
+
+        if (plan_is_numer) {
+
+            ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_SENDER + STR_SPACE + plan.charAt(0) + ' sub to ' + recipient, chat_number);
+
+        } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
+
+            ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_SENDER_PRIME + STR_SPACE + ' sub to ' + recipient, chat_number);
+
+        }
+    } else if (Main_A_includes_B(msgid, 'submysterygift')) {
+
+        gifter = Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : name;
+        var count = tags["msg-param-mass-gift-count"] || '';
+
+        ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_MYSTERY + STR_SPACE + count + ' Tier ' + plan.charAt(0), chat_number);
+
+    }
+
+}
+
+function ChatLive_CheckIfSubSend(name, type, chat_number) {
+    ChatLive_LineAdd(
+        '<span style="color: #0fffff;">' + name + '</span><span class="message"><br>' + type + '</span>',
+        chat_number,
+        0, 0, 0, 1
+    );
+}
+
+function ChatLive_CheckSubMessage(message, chat_number) {
     var tags = message.tags;
 
     if (!tags || !tags.hasOwnProperty('msg-id')) return; //bad formatted message
 
-    if (Main_A_includes_B(tags['msg-id'], "subgift")) {
+    if (Main_A_includes_B(tags['msg-id'], 'subgift')) {
 
-        if (Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
+        if (ChatLive_User_Set && Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
             Main_A_equals_B(tags['msg-param-recipient-user-name'].toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + '')) {
 
             ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
                 STR_GIFT_SUB, 10000);
-        }
-    }// else console.log(JSON.stringify(message));
+        } else ChatLive_CheckIfSub(message);
+
+    } else {
+        ChatLive_CheckIfSub(message, chat_number);
+    }
 
     // tag:
     // badge-info: "subscriber/2"
@@ -912,7 +1011,10 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         tags = message.tags,
         nick,
         nickColor,
-        highlighted,
+        highlighted = '',
+        atstreamer = false,
+        atuser = false,
+        hasbits = false,
         action,
         emotes = null,
         badges, badge,
@@ -922,12 +1024,12 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         return; //bad formatted message
     }
 
-    if (tags.hasOwnProperty('msg-id')) {
+    if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
         if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
-            highlighted = ' chat_highlighted';
+            highlighted = ' chat_highlighted ';
             ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_HIGH + '</span>', chat_number);
         } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
-            highlighted = ' chat_highlighted';
+            highlighted = ' chat_highlighted ';
             ChatLive_LineAdd('<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_SUB + '</span>', chat_number);
         }
     }
@@ -953,18 +1055,26 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     if (Main_A_includes_B(mmessage, 'PRIVMSG')) mmessage = mmessage.split('@badge-info=')[0];
 
     if (/^\x01ACTION.*\x01$/.test(mmessage)) {
-        action = true;
+        action = ChatLive_Highlight_Actions;
         mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
+    }
+
+    if (ChatLive_Highlight_AtStreamer && mmessage.toLowerCase().includes('@' + ChatLive_selectedChannel[chat_number].toLowerCase() + ' ')) {
+        atstreamer = true;
+    } else if (ChatLive_Highlight_AtUser && mmessage.toLowerCase().includes('@' + (AddUser_UsernameArray[0].name).toLowerCase() + ' ')) {
+        atuser = true;
+    } else if (ChatLive_Highlight_User_send && Main_A_includes_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
+        atuser = true;
     }
 
     //Add nick
     nick = tags['display-name'];
     nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
-
     nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
 
-    div += '<span ' + (action ? ('class="class_bold" ' + nickColor) : '') +
-        nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
+    div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' +
+        nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
+
 
     //Add default emotes
     if (tags.hasOwnProperty('emotes')) {
@@ -992,18 +1102,20 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         }
     }
 
+    hasbits = (tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number]));
+
     div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
         ChatLive_extraMessageTokenize(
             emoticonize(mmessage, emotes),
             chat_number,
-            ((tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number])) ? parseInt(tags.bits) : 0)
+            (hasbits ? parseInt(tags.bits) : 0)
         ) + '</span>';
 
-    if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number);
+    if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number, atstreamer, atuser, (hasbits && ChatLive_Highlight_Bits));
     else {
         var id = Chat_Id[chat_number];
         window.setTimeout(function() {
-            if (id === Chat_Id[chat_number]) ChatLive_LineAdd(div, chat_number);
+            if (id === Chat_Id[chat_number]) ChatLive_LineAdd(div, chat_number, atstreamer, atuser);
         }, (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000));
     }
 }
@@ -1026,12 +1138,35 @@ function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
     return twemoji.parse(tokenizedMessage.join(' '), true, true);
 }
 
-function ChatLive_LineAdd(message, chat_number) {
+function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub) {
     if (ChatLive_Playing) {
         var elem = document.createElement('div');
-        elem.className = 'chat_line';
-        elem.innerHTML = message;
+        var classname = 'chat_line';
 
+        if (atstreamer) {
+            classname += ' chat_atstreamer';
+
+            message = message.replace(new RegExp('@' + ChatLive_selectedChannel[chat_number], "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+        } else if (atuser) {
+            classname += ' chat_atuser';
+
+            message = message.replace(new RegExp('@' + (AddUser_UsernameArray[0].name).toLowerCase(), "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+        } else if (hasbits) {
+            classname += ' chat_bits';
+        } else if (sub) {
+            classname += ' chat_sub';
+        } else {
+            if (ChatLive_Individual_Background && ChatLive_Individual_Background_flip[chat_number]) {
+                classname = 'chat_line_ind';
+                var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
+                elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+            }
+
+            ChatLive_Individual_Background_flip[chat_number] = ChatLive_Individual_Background_flip[chat_number] ^ 1;
+        }
+
+        elem.className = classname;
+        elem.innerHTML = message;
         Chat_div[chat_number].appendChild(elem);
 
         ChatLive_LineAddCounter[chat_number]++;

@@ -446,7 +446,7 @@ function en_USLang() {
     STR_PLACEHOLDER_CHAT = "When this seleceted, press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
     STR_CHAT_ROOMSTATE = "Chat ROOMSTATE:";
     STR_CHAT_NO_RESTRICTIONS = "No restrictions";
-    STR_CHAT_OPTIONS = "Options";
+    STR_OPTIONS = "Options";
     STR_CHAT_DELL_ALL = "Delete all";
     STR_CHAT_UNICODE_EMOJI = "Unicode Emoji";
     STR_CHAT_TW_EMOTES = "Twitch emotes";
@@ -478,4 +478,22 @@ function en_USLang() {
     STR_CHAT_NOT_READY = "Chat not ready to send! Try again is a second or two.";
     STR_CHAT_REDEEMED_MESSAGE_HIGH = "Redeemed Highlight My Message";
     STR_CHAT_REDEEMED_MESSAGE_SUB = "Redeemed Send a Message in Sub-Only Mode";
+    STR_CHAT_OPTIONS = "Chat options";
+    STR_CHAT_HIGHLIGHT_REDEEMED = "Highlight rewards messages (Purple background message only)";
+    STR_CHAT_HIGHLIGHT_STREAMER = "Highlight @streamer messages (Dark red background, blue @)";
+    STR_CHAT_HIGHLIGHT_USER = "Highlight yours @username messages (Green background, blue @)";
+    STR_CHAT_HIGHLIGHT_USER_SEND = "Highlight yours sended messages (Green background)";
+    STR_CHAT_SHOW_SUB = "Show Sub messages in a Highlighted for (Dark orange background)";
+    STR_CHAT_HIGHLIGHT_BIT = "Highlight Bits message (Dark Yellow background)";
+    STR_CHAT_HIGHLIGHT_ACTIONS = "Show and Highlight Actions messages (Bot name and message same color)";
+    STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = "This messages are usually equal to Sub messages but sended via a stream bot";
+    STR_CHAT_INDIVIDUAL_BACKGROUND = "Individual messages background color differences";
+    STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Display odd individual message with a different background accent color from the even";
+    STR_CHAT_LOGGING = "Logging in chat";
+    STR_CHAT_LOGGING_SUMMARY = "Even if providing a key prevent from logging in chat using current username if this is set to NO";
+    STR_CHAT_JUST_SUB = "Subscribed at Tier";
+    STR_CHAT_JUST_SUB_PRIME = "Subscribed with Prime";
+    STR_GIFT_SUB_SENDER = " has gift a Tier";
+    STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";
+    STR_GIFT_SUB_MYSTERY = " has gift the channel ";
 }
