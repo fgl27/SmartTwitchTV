@@ -803,9 +803,6 @@ var emojis = [
 		"unicode": "📃",
 		"tags": "note"
 	}, {
-		"unicode": "📄",
-		"tags": "document"
-	}, {
 		"unicode": "📰",
 		"tags": "newspaper"
 	}, {
@@ -1268,29 +1265,23 @@ var emojis = [
 		"unicode": "🌸",
 		"tags": "blossom"
 	}, {
-		"unicode": "💮",
-		"tags": "flower"
-	}, {
-		"unicode": "🏵️",
-		"tags": "plant"
-	}, {
 		"unicode": "🌹",
-		"tags": "flower2"
+		"tags": "flower"
 	}, {
 		"unicode": "🥀",
 		"tags": "flower-wilted"
 	}, {
 		"unicode": "🌺",
-		"tags": "flower3"
+		"tags": "flower2"
 	}, {
 		"unicode": "🌻",
 		"tags": "sun-flower"
 	}, {
 		"unicode": "🌼",
-		"tags": "flower4"
+		"tags": "flower3"
 	}, {
 		"unicode": "🌷",
-		"tags": "flower5"
+		"tags": "flower4"
 	}, {
 		"unicode": "🌱",
 		"tags": "young-tree"
@@ -1301,14 +1292,8 @@ var emojis = [
 		"unicode": "🌳",
 		"tags": "big-tree"
 	}, {
-		"unicode": "🌴",
-		"tags": "palm-tree"
-	}, {
 		"unicode": "🌵",
 		"tags": "plant"
-	}, {
-		"unicode": "🌾",
-		"tags": "grain"
 	}, {
 		"unicode": "🌿",
 		"tags": "leaf"
@@ -1321,11 +1306,5 @@ var emojis = [
 	}, {
 		"unicode": "🍁",
 		"tags": "falling-leaf"
-	}, {
-		"unicode": "🍂",
-		"tags": "falling-leaf2"
-	}, {
-		"unicode": "🍃",
-		"tags": "leaf2"
 	}
 ];
