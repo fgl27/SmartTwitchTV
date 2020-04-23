@@ -183,44 +183,43 @@ var Settings_value = {
             "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
         "defaultValue": 12
     },
-    "highlight_rewards": {
+    "highlight_rewards": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "highlight_atstreamer": {
+    "highlight_atstreamer": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "highlight_atuser": {
+    "highlight_atuser": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "highlight_user_send": {
+    "highlight_user_send": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "show_sub": {
+    "show_sub": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "highlight_bits": {
+    "highlight_bits": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "show_actions": {
+    "show_actions": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "individual_lines": {
+    "individual_lines": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "chat_individual_background": {
+    "chat_individual_background": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-
-    "chat_logging": {
+    "chat_logging": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
@@ -303,8 +302,17 @@ function Settings_SetSettings() {
     // General settings title
     //div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
 
+    //Dialog settings
     div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
+    div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
+    div += Settings_Content('animations_opt', [STR_CONTENT_LANG_SUMMARY], STR_ANIMATIONS, null);
+    div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
 
+    if (!Main_isTV || !Main_IsOnAndroid) {
+        div += Settings_Content('dpad_opt', [STR_CONTENT_LANG_SUMMARY], STR_DPAD_OPT, null);
+    }
+
+    //Individual settings
     div += Settings_Content('live_feed_sort',
         [
             STR_VIWES_MOST,
@@ -340,14 +348,6 @@ function Settings_SetSettings() {
 
     div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
-    div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
-    div += Settings_Content('animations_opt', [STR_CONTENT_LANG_SUMMARY], STR_ANIMATIONS, null);
-    div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
-
-    if (!Main_isTV || !Main_IsOnAndroid) {
-        div += Settings_Content('dpad_opt', [STR_CONTENT_LANG_SUMMARY], STR_DPAD_OPT, null);
-    }
-
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
@@ -364,6 +364,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
+    //Dialog settings
     div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
     div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
