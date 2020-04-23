@@ -488,7 +488,8 @@ function en_USLang() {
     STR_CHAT_HIGHLIGHT_ACTIONS = "Show and Highlight Actions messages (Bot name and message same color)";
     STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = "This messages are usually equal to Sub messages but sended via a stream bot";
     STR_CHAT_INDIVIDUAL_BACKGROUND = "Individual messages background color differences";
-    STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Display odd individual message with a different background accent color from the even";
+    STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Display odd individual message with a different background accent color from the even, if chat over strram mode will be darker else will be brighter";
+    STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
     STR_CHAT_LOGGING = "Logging in chat";
     STR_CHAT_LOGGING_SUMMARY = "Even if providing a key prevent from logging in chat using current username if this is set to NO";
     STR_CHAT_JUST_SUB = "Subscribed at Tier";

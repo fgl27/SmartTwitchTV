@@ -211,10 +211,15 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "individual_lines": {
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "chat_individual_background": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+
     "chat_logging": {
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -1233,6 +1238,7 @@ function Settings_DialogShowChat() {
     Settings_value.show_actions.values = yes_no;
     Settings_value.chat_individual_background.values = yes_no;
     Settings_value.chat_logging.values = yes_no;
+    Settings_value.individual_lines.values = yes_no;
 
     var obj = {
         chat_logging: {
@@ -1240,6 +1246,12 @@ function Settings_DialogShowChat() {
             values: Settings_value.chat_logging.values,
             title: STR_CHAT_LOGGING,
             summary: STR_CHAT_LOGGING_SUMMARY
+        },
+        individual_lines: {
+            defaultValue: Settings_value.individual_lines.defaultValue,
+            values: Settings_value.individual_lines.values,
+            title: STR_CHAT_INDIVIDUAL_LINE,
+            summary: null
         },
         chat_individual_background: {
             defaultValue: Settings_value.chat_individual_background.defaultValue,

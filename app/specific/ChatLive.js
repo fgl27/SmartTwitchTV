@@ -95,6 +95,7 @@ var ChatLive_Highlight_Actions;
 var ChatLive_Highlight_Bits;
 var ChatLive_Show_SUB;
 var ChatLive_User_Set;
+var chat_lineChatLive_Individual_Lines;
 
 function ChatLive_SetOptions() {
     ChatLive_Logging = Settings_value.chat_logging.defaultValue;
@@ -107,6 +108,7 @@ function ChatLive_SetOptions() {
     ChatLive_Highlight_Actions = Settings_value.show_actions.defaultValue;
     ChatLive_Highlight_Bits = Settings_value.highlight_bits.defaultValue;
     ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
+    chat_lineChatLive_Individual_Lines = Settings_value.individual_lines.defaultValue;
 }
 
 function ChatLive_checkFallow(tryes, chat_number, id) {
@@ -1157,13 +1159,14 @@ function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub
             classname += ' chat_sub';
         } else {
             if (ChatLive_Individual_Background && ChatLive_Individual_Background_flip[chat_number]) {
-                classname = 'chat_line_ind';
                 var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
                 elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
             }
 
             ChatLive_Individual_Background_flip[chat_number] = ChatLive_Individual_Background_flip[chat_number] ^ 1;
         }
+
+        if (chat_lineChatLive_Individual_Lines) classname += ' chat_line_ind';
 
         elem.className = classname;
         elem.innerHTML = message;
