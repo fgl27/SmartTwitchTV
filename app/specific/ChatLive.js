@@ -96,6 +96,7 @@ var ChatLive_Highlight_Bits;
 var ChatLive_Show_SUB;
 var ChatLive_User_Set;
 var chat_lineChatLive_Individual_Lines;
+var chat_Line_highlight = ' style="color: #4eff42;" ';
 
 function ChatLive_SetOptions() {
     ChatLive_Logging = Settings_value.chat_logging.defaultValue;
@@ -1018,6 +1019,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         atuser = false,
         hasbits = false,
         action,
+        message_text,
         emotes = null,
         badges, badge,
         i, len;
@@ -1063,9 +1065,11 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
     }
 
-    if (ChatLive_Highlight_AtStreamer && mmessage.toLowerCase().includes('@' + ChatLive_selectedChannel[chat_number].toLowerCase() + ' ')) {
+    message_text = mmessage.toLowerCase();
+
+    if (ChatLive_Highlight_AtStreamer && message_text.includes('@' + ChatLive_selectedChannel[chat_number].toLowerCase() + ' ')) {
         atstreamer = true;
-    } else if (ChatLive_Highlight_AtUser && mmessage.toLowerCase().includes('@' + (AddUser_UsernameArray[0].name).toLowerCase() + ' ')) {
+    } else if (ChatLive_Highlight_AtUser && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase() + ' ')) {
         atuser = true;
     } else if (ChatLive_Highlight_User_send && Main_A_includes_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
         atuser = true;
@@ -1075,8 +1079,8 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
     //Add nick
     nick = tags['display-name'];
-    if (atstreamer || atuser || hasbits) {
-        nickColor = 'style="color: #0fffff;"';
+    if (atstreamer || atuser || (ChatLive_Highlight_Bits && hasbits)) {
+        nickColor = chat_Line_highlight;
     } else {
         nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
         nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
@@ -1152,26 +1156,42 @@ function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub
         var classname = 'chat_line';
 
         if (atstreamer) {
+
             classname += ' chat_atstreamer';
 
             message = message.replace(new RegExp('@' + ChatLive_selectedChannel[chat_number], "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+
         } else if (atuser) {
+
             classname += ' chat_atuser';
 
             message = message.replace(new RegExp('@' + (AddUser_UsernameArray[0].name).toLowerCase(), "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
-        } else if (hasbits) {
+
+        } else if (ChatLive_Highlight_Bits && hasbits) {
+
             classname += ' chat_bits';
+
         } else if (sub) {
+
             classname += ' chat_sub';
+
         } else if (ChatLive_Individual_Background) {
+
             if (ChatLive_Individual_Background_flip[chat_number]) {
+
                 if (ChatLive_Individual_Background === 1) {
+
                     var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
                     elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+
                 } else if (ChatLive_Individual_Background === 2) {
+
                     elem.style.backgroundColor = 'rgba(100,100,100, ' + Play_ChatBackground + ')';
+
                 } else if (ChatLive_Individual_Background === 3) {
+
                     elem.style.backgroundColor = 'rgba(0,0,0, ' + Play_ChatBackground + ')';
+
                 }
             }
 
