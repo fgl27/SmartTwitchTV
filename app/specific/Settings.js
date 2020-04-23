@@ -197,7 +197,7 @@ var Settings_value = {
     },
     "highlight_user_send": {//Migrated to dialog
         "values": ["no", "yes"],
-        "defaultValue": 2
+        "defaultValue": 1
     },
     "show_sub": {//Migrated to dialog
         "values": ["no", "yes"],
