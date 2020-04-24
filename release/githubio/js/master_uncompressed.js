@@ -678,7 +678,7 @@
         STR_PLACEHOLDER_PRESS = "Press Enter or Select key to, ";
         STR_CHANNELS = "Channels";
         STR_CHANNEL = "Channel";
-        STR_GOBACK_START = "Back to previous screen: Back key";
+        STR_GOBACK_START = "Back to previous screen: return key";
         STR_IS_OFFLINE = " has ended";
         STR_IS_SUB_ONLY = "This video is only available to subscribers.";
         STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
@@ -740,8 +740,8 @@
         STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause or previews track media keys or key 1";
         STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
         STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
-        STR_CONTROLS_MAIN_5 = "Force close the application: Hold the back key until it auto force close";
-        STR_CONTROLS_MAIN_6 = " Switch screen: Back key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
+        STR_CONTROLS_MAIN_5 = "Force close the application: Hold the return key until it auto force close";
+        STR_CONTROLS_MAIN_6 = " Switch screen: return key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
         STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
         STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
         STR_ABOUT_INFO_1 = "This is a SmartTV Client for Twitch developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
@@ -769,7 +769,7 @@
 
         STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
         STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
-        STR_CONTROLS_PLAY_2 = "Close the video: press back key twice or media key Stop";
+        STR_CONTROLS_PLAY_2 = "Close the video: press return key twice or media key Stop";
         STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol";
         STR_CONTROLS_PLAY_4 = "Show user live channels feed: D-pad up";
         STR_CONTROLS_PLAY_5 = "Change video quality: use the player bottom controls Quality";
@@ -855,11 +855,11 @@
         STR_BRIGHT_MODE = "Bright mode";
         STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
         STR_RESTORE_PLAYBACK = "Restore playback";
-        STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user and restores what was previously playing on next start";
+        STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what it was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user on this case the app will restores what was previously playing on next start";
         STR_CHAT_FONT = "Chat font size";
         STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
         STR_VIDEOS_ANIMATION_SUMMARY = "When a VOD or Highlight is selected animate the thumbnail if a animated thumbnail is available for that video (not all videos have one)";
-        STR_SIDE_PANEL = "Side panel: D-pad left or Back key";
+        STR_SIDE_PANEL = "Side panel: D-pad left or return key";
         STR_SIZE = "Size ";
         STR_BRIGHTNESS = "Brightness ";
         STR_FORBIDDEN = "Forbidden content, this is restricted in yours region or is restrained to the official Twitch app only";
@@ -886,7 +886,7 @@
         STR_HOLD_UP = " Hold up or key 2";
         STR_LIVE_FEED = "Live Feed";
         STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
-        STR_END_DIALOG_SETTINGS_SUMMARY = "Set the time (in seconds) that will take for the default action happen";
+        STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default action happen";
         STR_END_DIALOG_DISABLE = "Disable the timer";
         STR_CHAT_SIZE = "Chat size";
         STR_CHAT_POS = "Chat position";
@@ -934,11 +934,11 @@
         STR_PICTURE_CONTROLS8 = "Player Restart: use the player bottom controls Player Restart, this will only restart all the players, usefully to sync player and chat, this will not sync a player content with another";
         STR_PICTURE_CONTROLS9 = "Manually Sync players: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa only works on PP mode";
         STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
-        STR_PICTURE_CONTROLS11 = "Close small or bottom window (Picture in Picture only): back key twice will exit PP or 50/50 mode";
+        STR_PICTURE_CONTROLS11 = "Close small or bottom window (Picture in Picture only): return key twice will exit PP or 50/50 mode";
         STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from live feed";
         STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
         STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
-        STR_SINGLE_EXIT = "Single back key press";
+        STR_SINGLE_EXIT = "Single return key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
         STR_NOW_LIVE = "Now Live";
         STR_NOTIFICATION_OPT = "Notification options";
@@ -982,7 +982,7 @@
         STR_LATENCY = "Latency To Broadcaster: ";
         STR_PING = "Ping to Twitch: ";
         STR_WARNING = "Warning";
-        STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and back key controller (ESC works for back key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
+        STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
         STR_DPAD_POSTION = "D-pad screen position";
         STR_DPAD_OPACITY = "D-pad opacity";
         STR_DPAD_OPT = "D-pad options";
@@ -999,7 +999,7 @@
         STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
         STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
         STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
-        STR_PP_WORKAROUND_SUMMARY = "On some devices running android N or older, is need to enable this, to have PP mode working, don't enable this on a device that doesn't need it as it will result is a lower image quality";
+        STR_PP_WORKAROUND_SUMMARY = "Some devices running android N or older, is need to enable this, to have PP mode working, don't enable this on a device that doesn't need it as it will result is a lower image quality";
         STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
             STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
         STR_HISTORY = "History";
@@ -1048,12 +1048,12 @@
         STR_CONTROLS_MULTI_2 = "Add streams: open live feed key up and click on a live stream";
         STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from live feed and chose one to replace from the dialog";
         STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left or media keys next previews track, hold down to audio source all windows";
-        STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or Back key twice";
+        STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or return key twice";
         STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
         STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
         STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
         STR_FEED_END_DIALOG = ', Press back to go back to top menu';
-        STR_BACK_USER_GAMES = ' Press back key to ';
+        STR_BACK_USER_GAMES = ' Press return key to ';
         STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
         STR_SHOW_FEED_PLAYER = 'Show small player over player live feed';
         STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player over the player live feed when multistream is enabled';
@@ -1061,11 +1061,11 @@
         STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a tile is selected";
         STR_SIDE_PANEL_PLAYER = "Side panel player and small player over the player live feed";
         STR_START_AT_USER = "Always start the app in the user screen";
-        STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work";
+        STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";
         STR_LAST_REFRESH = "(last refresh: ";
         STR_PP_VOD = "Exit PP or Multistream to open this VOD";
-        STR_SETTINGS_ACCESSIBILITY = "Show accessibility service warning";
-        STR_SETTINGS_ACCESSIBILITY_SUMMARY = "Is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
+        STR_SETTINGS_ACCESSIBILITY = 'Show "a accessibility service is running warning"';
+        STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If on current device has a accessibility service enabled the app will show a on screen warning, is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
         STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
         STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
         STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
@@ -1133,7 +1133,7 @@
         STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Modes are disable, enable (auto mode), Bright or Darker, In auto mode if the chat is above the stream it odd message will have a darker background accent color from the even, if the chat is not above (side by side for example) the color will be brigh";
         STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
         STR_CHAT_LOGGING = "Logging in chat with current user";
-        STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat unless if chat is disable (player bottom controls), but this if set to NO will prevent logging using current username and sted will logging as anonymous, even if providing a authorization key";
+        STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key";
         STR_CHAT_JUST_SUB = "Subscribed with Tier";
         STR_CHAT_JUST_SUB_PRIME = "Subscribed with Prime";
         STR_GIFT_SUB_SENDER = " has gift a Tier";
@@ -9108,11 +9108,7 @@
 
     function Main_CheckAccessibility(skipRefresCheck) {
         if (Main_IsOnAndroid && Settings_Obj_default("accessibility_warn")) {
-            var isenable;
-
-            isenable = Android.isAccessibilitySettingsOn();
-
-            if (isenable) Main_CheckAccessibilitySet();
+            if (Android.isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
             else {
                 Main_CheckAccessibilityHide(false);
                 //if focused and showing force a refresh check
