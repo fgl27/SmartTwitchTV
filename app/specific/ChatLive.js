@@ -527,8 +527,11 @@ function ChatLive_loadChat(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_CheckClear(chat_number);
-    ChatLive_LineAdd('<span class="message">' + STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
-        (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]) + '</span>', chat_number);
+    ChatLive_LineAddSimple(
+        STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
+        (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
+        chat_number
+    );
     ChatLive_loadChatRequest(chat_number, id);
 
     useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
@@ -597,16 +600,23 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
                 if (!ChatLive_loaded[chat_number]) {
                     ChatLive_loaded[chat_number] = true;
-                    ChatLive_LineAdd('<span class="message">' + STR_CHAT_CONNECTED + " as " +
-                        (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_GIFT_ANONYMOUS) + '</span>', chat_number);
+
+                    ChatLive_LineAddSimple(
+                        STR_CHAT_CONNECTED + " as " +
+                        (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_GIFT_ANONYMOUS),
+                        chat_number
+                    );
 
                     if (Play_ChatDelayPosition) {
                         var stringSec = STR_SECOND;
                         if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
 
-                        ChatLive_LineAdd('<span class="message">' + STR_CHAT_DELAY + ' ' +
+                        ChatLive_LineAddSimple(
+                            STR_CHAT_DELAY + ' ' +
                             Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
-                            stringSec + '</span>', chat_number);
+                            stringSec,
+                            chat_number
+                        );
                     }
 
                 }
@@ -716,7 +726,7 @@ function ChatLive_SetCheck(chat_number, id) {
 function ChatLive_Check(chat_number, id) {
     if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
         ChatLive_socket[chat_number].close(1000);
-        ChatLive_LineAdd('<span class="message">' + STR_LOADING_FAIL + '</span>', chat_number);
+        ChatLive_LineAddSimple(STR_LOADING_FAIL, chat_number);
         ChatLive_loadChat(chat_number, id);
     }
 }
@@ -1043,15 +1053,18 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
         if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
             highlighted = ' chat_highlighted ';
-            ChatLive_LineAdd(
-                '<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_HIGH + '</span>',
+
+            ChatLive_LineAddSimple(
+                STR_CHAT_REDEEMED_MESSAGE_HIGH,
                 chat_number,
                 0, 0, 0, 0, 1
             );
+
         } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
             highlighted = ' chat_highlighted ';
-            ChatLive_LineAdd(
-                '<span class="message">' + STR_BR + STR_CHAT_REDEEMED_MESSAGE_SUB + '</span>',
+
+            ChatLive_LineAddSimple(
+                STR_CHAT_REDEEMED_MESSAGE_SUB,
                 chat_number,
                 0, 0, 0, 0, 1
             );
@@ -1170,6 +1183,14 @@ function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
     return twemoji.parse(tokenizedMessage.join(' '), true, true);
 }
 
+function ChatLive_LineAddSimple(message, chat_number, atstreamer, atuser, hasbits, sub, skip_addline) {
+    ChatLive_LineAdd(
+        '<span class="message">' + message + '</span>',
+        chat_number,
+        atstreamer, atuser, hasbits, sub, skip_addline
+    );
+}
+
 function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub, skip_addline) {
     if (ChatLive_Playing) {
         var elem = document.createElement('div');
@@ -1219,6 +1240,7 @@ function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub
         }
 
         if (chat_lineChatLive_Individual_Lines && !skip_addline) classname += ' chat_line_ind';
+        else if (skip_addline) classname += ' chat_line_slim';
 
         elem.className = classname;
         elem.innerHTML = message;
