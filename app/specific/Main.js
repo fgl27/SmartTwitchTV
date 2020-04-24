@@ -2254,11 +2254,7 @@ function Main_SaveLiveObjt(position) {
 
 function Main_CheckAccessibility(skipRefresCheck) {
     if (Main_IsOnAndroid && Settings_Obj_default("accessibility_warn")) {
-        var isenable;
-
-        isenable = Android.isAccessibilitySettingsOn();
-
-        if (isenable) Main_CheckAccessibilitySet();
+        if (Android.isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
         else {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
