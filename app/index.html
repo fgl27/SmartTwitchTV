@@ -1388,6 +1388,13 @@
             text-shadow: -0.0175em -0.0175em 0 #000, 0.0175em -0.0175em 0 #000, -0.0175em 0.0175em 0 #000, 0.0175em 0.0175em 0 #000;
         }
 
+        .dialog_text {
+            background-color: rgba(0, 0, 0, 0.3);
+            width: fit-content;
+            text-align: center;
+            display: inline-block;
+        }
+
         .red_text {
             color: #FF2121;
         }
@@ -2453,9 +2460,8 @@
                 <div id="dialog_opt_text_end" class="exit_text"></div>
             </div>
         </div>
-        <div id="dialog_warning" class="strokedeline dialogs hide"
-            style="z-index:100; margin-top: 31%; width: 60%; margin-left: 20%;">
-            <div id="dialog_warning_text" class="strokedeline" style="font-size: 150%; "></div>
+        <div id="dialog_warning" class="strokedeline dialogs hide" style="z-index:100; margin-top: 31%;">
+            <div id="dialog_warning_text" class="strokedeline dialog_text" style="font-size: 150%; "></div>
         </div>
         <div id="dialog_about" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75);">
             <div class="about_dialogs" style="width: 96%; margin-left: 2%;">
@@ -2791,8 +2797,9 @@
                     </div>
                 </div>
                 <div id="sidepannel_dialog_warning" class="strokedeline dialogs hide"
-                    style="width: 100%; transform: translateY(-600%);">
-                    <div id="sidepannel_dialog_warning_text" class="strokedeline" style="font-size: 150%; "></div>
+                    style="transform: translateY(-600%);">
+                    <div id="sidepannel_dialog_warning_text" class="strokedeline dialog_text" style="font-size: 150%; ">
+                    </div>
                 </div>
             </div>
             <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide"
@@ -3181,9 +3188,8 @@
             </div>
         </div>
         <div id="chat_send" class="chat_send screen_holder hide">
-            <div id="dialog_warning_chat" class="dialogs hide"
-                style="z-index:7; margin-top: 1%; background: rgba(0, 0, 0, 0.65);">
-                <div id="dialog_warning_chat_text" class="strokedelinebig" style="font-size: 3vh;"></div>
+            <div id="dialog_warning_chat" class="dialogs hide" style="z-index:7; margin-top: 1%;">
+                <div id="dialog_warning_chat_text" class="strokedelinebig dialog_text" style="font-size: 3vh;"></div>
             </div>
             <div class="chat_input_text_box">
                 <!-- Options-->
@@ -3481,18 +3487,17 @@
                 </div>
             </div>
             <div id="play_dialog_exit" class="dialogs hide" style="z-index:6; margin-top: 6%;">
-                <div id="play_dialog_exit_text" class="strokedelinebig" style="font-size: 200%;"></div>
+                <div id="play_dialog_exit_text" class="strokedelinebig dialog_text" style="font-size: 200%;"></div>
             </div>
             <div id="dialog_warning_play" class="dialogs hide" style="z-index:7; margin-top: 10%; ">
-                <div id="dialog_warning_play_text" class="strokedelinebig" style="font-size: 140%;"></div>
+                <div id="dialog_warning_play_text" class="strokedelinebig dialog_text" style="font-size: 140%;"></div>
             </div>
             <div id="dialog_warning_play_middle" class="dialogs hide" style="z-index:7; margin-top: 50vh; ">
-                <div id="dialog_warning_play_middle_text" class="strokedelinebig"
+                <div id="dialog_warning_play_middle_text" class="strokedelinebig dialog_text"
                     style="font-size: 140%; background-color: rgba(0, 0, 0, 0.5);"></div>
             </div>
-            <div id="dialog_warning_muted" class="dialogs hide"
-                style="z-index:7; margin-top: 25%; background-color: rgba(0, 0, 0, 0.5);">
-                <div id="dialog_warning_muted_text" class="strokedelinebig" style="font-size: 100%;"></div>
+            <div id="dialog_warning_muted" class="dialogs hide" style="z-index:7; margin-top: 25%;">
+                <div id="dialog_warning_muted_text" class="strokedelinebig dialog_text" style="font-size: 100%;"></div>
             </div>
         </div>
         <div id="user_feed" class="avoidclicks user_feed opacity_zero"
