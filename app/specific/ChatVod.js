@@ -41,12 +41,12 @@ function Chat_Init() {
         return;
     }
 
-    ChatLive_SetOptions();
     Chat_loadBadgesGlobal();
 
     Chat_Id[0] = (new Date()).getTime();
     ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
     ChatLive_selectedChannel[0] = Main_values.Main_selectedChannel;
+    ChatLive_SetOptions(0);
 
     ChatLive_loadEmotesChannelbbtv(0, 0, Chat_Id[0]);
     ChatLive_loadEmotesChannelffz(0, 0, Chat_Id[0]);
@@ -211,10 +211,10 @@ function Chat_loadChatSuccess(responseText, id) {
     var div,
         mmessage, null_next = (Chat_next === null),
         nickColor,
-        atstreamer = false,
-        atuser = false,
-        hasbits = false,
-        message_text = null,
+        atstreamer,
+        atuser,
+        hasbits,
+        message_text,
         comments, badges, fragment,
         i, len, j, len_j;
 
@@ -234,7 +234,7 @@ function Chat_loadChatSuccess(responseText, id) {
         atstreamer = false;
         atuser = false;
         hasbits = false;
-        message_text = null;
+        message_text = '';
 
         div = '';
         mmessage = comments[i].message;
@@ -252,13 +252,28 @@ function Chat_loadChatSuccess(responseText, id) {
             }
         }
 
-        if (mmessage.fragments.length) message_text = JSON.stringify(mmessage.fragments).toLowerCase();
+        for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
+            fragment = mmessage.fragments[j];
 
-        if (ChatLive_Highlight_AtStreamer && message_text && message_text.includes('@' + ChatLive_selectedChannel[0].toLowerCase())) {
-            atstreamer = true;
-        } else if (ChatLive_Highlight_AtUser && message_text && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase())) {
-            atuser = true;
-        } else if (ChatLive_Highlight_User_send && Main_A_includes_B((comments[i].commenter.display_name).toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
+            if (fragment.hasOwnProperty('emoticon')) message_text += emoteTemplate(emoteURL(fragment.emoticon.emoticon_id));
+            else {
+                message_text +=
+                    ChatLive_extraMessageTokenize(
+                        [fragment.text],
+                        0,
+                        (hasbits ? mmessage.bits_spent : 0)
+                    );
+
+                if (!atstreamer && ChatLive_Highlight_AtStreamer && ChatLive_Channel_Regex_Search[0].test(fragment.text)) {
+                    atstreamer = true;
+                } else if (!atuser && ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(fragment.text)) {
+                    atuser = true;
+                }
+            }
+
+        }
+
+        if (ChatLive_Highlight_User_send && Main_A_includes_B((comments[i].commenter.display_name).toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
             atuser = true;
         }
 
@@ -281,19 +296,7 @@ function Chat_loadChatSuccess(responseText, id) {
 
         //Add mesage
         div += '<span class="message' + (mmessage.is_action ? (' class_bold" ' + nickColor) : '"') + '>';
-
-        for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
-            fragment = mmessage.fragments[j];
-
-            if (fragment.hasOwnProperty('emoticon')) div += emoteTemplate(emoteURL(fragment.emoticon.emoticon_id));
-            else div +=
-                ChatLive_extraMessageTokenize(
-                    [fragment.text],
-                    0,
-                    (hasbits ? mmessage.bits_spent : 0)
-                );
-
-        }
+        div += message_text;
 
         div += '</span>';
         if (null_next) Chat_MessageVector(div, comments[i].content_offset_seconds, atstreamer, atuser, hasbits);
@@ -369,13 +372,13 @@ function Main_Addline(id) {
 
                     classname += ' chat_atstreamer';
 
-                    Chat_Messages[i].message = Chat_Messages[i].message.replace(new RegExp('@' + ChatLive_selectedChannel[0], "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+                    Chat_Messages[i].message = Chat_Messages[i].message.replace(ChatLive_Channel_Regex_Replace[0], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
                 } else if (Chat_Messages[i].atuser) {
 
                     classname += ' chat_atuser';
 
-                    Chat_Messages[i].message = Chat_Messages[i].message.replace(new RegExp('@' + (AddUser_UsernameArray[0].name).toLowerCase(), "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+                    Chat_Messages[i].message = Chat_Messages[i].message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
                 } else if (ChatLive_Highlight_Bits && Chat_Messages[i].hasbits) {
 

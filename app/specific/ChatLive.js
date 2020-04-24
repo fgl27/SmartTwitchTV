@@ -62,12 +62,12 @@ function ChatLive_Init(chat_number) {
         return;
     }
 
-    ChatLive_SetOptions();
     Chat_loadBadgesGlobal();
 
     Chat_Id[chat_number] = (new Date()).getTime();
     ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
     ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
+    ChatLive_SetOptions(chat_number);
 
     ChatLive_loadEmotesUser(0);
     ChatLive_checkFallow(0, chat_number, Chat_Id[chat_number]);
@@ -98,19 +98,31 @@ var ChatLive_User_Set;
 var chat_lineChatLive_Individual_Lines;
 var chat_Line_highlight_green = ' style="color: #4eff42;" ';
 var chat_Line_highlight_blue = ' style="color: #4AA4FD;" ';
+var ChatLive_User_Regex_Search;
+var ChatLive_User_Regex_Replace;
+var ChatLive_Channel_Regex_Search = [];
+var ChatLive_Channel_Regex_Replace = [];
 
-function ChatLive_SetOptions() {
+function ChatLive_SetOptions(chat_number) {
+    ChatLive_User_Set = AddUser_IsUserSet();
+
     ChatLive_Logging = Settings_value.chat_logging.defaultValue;
     ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
     ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
     ChatLive_Highlight_AtStreamer = Settings_value.highlight_atstreamer.defaultValue;
-    ChatLive_User_Set = AddUser_IsUserSet();
     ChatLive_Highlight_AtUser = ChatLive_User_Set && Settings_value.highlight_atuser.defaultValue;
     ChatLive_Highlight_User_send = ChatLive_User_Set && Settings_value.highlight_user_send.defaultValue;
     ChatLive_Highlight_Actions = Settings_value.show_actions.defaultValue;
     ChatLive_Highlight_Bits = Settings_value.highlight_bits.defaultValue;
     ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
     chat_lineChatLive_Individual_Lines = Settings_value.individual_lines.defaultValue;
+
+    ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
+    ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
+    if (ChatLive_User_Set) {
+        ChatLive_User_Regex_Search = new RegExp('@' + AddUser_UsernameArray[0].name + '(?=\\s|$)', "i");
+        ChatLive_User_Regex_Replace = new RegExp('@' + AddUser_UsernameArray[0].name, "gi");
+    }
 }
 
 function ChatLive_checkFallow(tryes, chat_number, id) {
@@ -1020,7 +1032,6 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         atuser = false,
         hasbits = false,
         action,
-        message_text,
         emotes = null,
         badges, badge,
         i, len;
@@ -1074,11 +1085,9 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         mmessage = mmessage.replace(/^\x01ACTION/, '').replace(/\x01$/, '').trim();
     }
 
-    message_text = mmessage.toLowerCase();
-
-    if (ChatLive_Highlight_AtStreamer && message_text.includes('@' + ChatLive_selectedChannel[chat_number].toLowerCase())) {
+    if (ChatLive_Highlight_AtStreamer && ChatLive_Channel_Regex_Search[chat_number].test(mmessage)) {
         atstreamer = true;
-    } else if (ChatLive_Highlight_AtUser && message_text.includes('@' + (AddUser_UsernameArray[0].name).toLowerCase())) {
+    } else if (ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(mmessage)) {
         atuser = true;
     } else if (ChatLive_Highlight_User_send && Main_A_includes_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
         atuser = true;
@@ -1170,13 +1179,13 @@ function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub
 
             classname += ' chat_atstreamer';
 
-            message = message.replace(new RegExp('@' + ChatLive_selectedChannel[chat_number], "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+            message = message.replace(ChatLive_Channel_Regex_Replace[chat_number], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
         } else if (atuser) {
 
             classname += ' chat_atuser';
 
-            message = message.replace(new RegExp('@' + (AddUser_UsernameArray[0].name).toLowerCase(), "i"), "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+            message = message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
         } else if (ChatLive_Highlight_Bits && hasbits) {
 
