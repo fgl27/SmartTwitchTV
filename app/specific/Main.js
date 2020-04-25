@@ -165,101 +165,104 @@ function Main_Start() {
 function Main_loadTranslations(language) {
     Main_Checktylesheet();
 
-    try {
-        if (Main_A_includes_B(window.location.href, 'asset')) {
-            //Same as in smartTwitchTV/release/api.js
-            //The app is running from assets need to expose smartTwitchTV
-            smartTwitchTV = {
-                'mainstart': Main_Start,
-                'Play_PannelEndStart': Play_PannelEndStart,
-                'Play_PlayerCheck': Play_PlayerCheck,
-                'Play_UpdateDuration': Play_UpdateDuration,
-                'PlayExtra_End': PlayExtra_End,
-                'Play_MultiEnd': Play_MultiEnd,
-                'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
-                'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-                'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
-                'Main_CheckStop': Main_CheckStop,
-                'Main_CheckResume': Main_CheckResume,
-                'Play_getQualities': Play_getQualities,
-                'Play_ShowVideoStatus': Play_ShowVideoStatus,
-                'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                'PlayVod_previews_success': PlayVod_previews_success,
-                'Play_PlayPauseChange': Play_PlayPauseChange
-            };
-        }
-        Main_IsOnAndroid = Android.getAndroid();
-        Main_IsOnAndroidVersion = Android.getversion();
-
-    } catch (e) {
-        Main_IsOnAndroidVersion = '1.0.0';
-        Main_IsOnAndroid = 0;
-        document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
-        Main_isDebug = true;
-        Main_Log('Main_isReleased: ' + Main_isReleased);
-        Main_Log('Main_isDebug: ' + Main_isDebug);
-        Main_Log('Main_isBrowser: ' + !Main_IsOnAndroid);
-        //If we add the class on the android app for some reason it prevents input from release the focus
-        Main_AddClass('scenefeed', 'feed_screen_input');
-        //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
-        KEY_RETURN = 27;
-    }
-    try {
-        if (Main_IsOnAndroid) Main_isDebug = Android.getdebug();
-    } catch (e) {}
-
-    Main_showLoadDialog();
-
-    Main_initClick();
-    Settings_SetDefautls();
-    calculateFontSize();
-    en_USLang();
-    Languages_SetDefautls();
-
-    // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-    // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-
-    //var lang = language,
-    //    Savedlang = Main_getItemInt('user_language', 0);
-
-    //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-    //else Settings_CheckLang(lang);
-
-    //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-    //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
-
-    Main_Log("language is " + language);
-    DefaultLang();
-
-    if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
-
-    Main_SearchInput = document.getElementById("search_input");
-    Main_AddUserInput = document.getElementById("user_input");
-    Main_ChatLiveInput = document.getElementById("chat_send_input");
-    Main_Scene1Doc = document.getElementById('scene1');
-    Main_Scene2Doc = document.getElementById('scene2');
-
-    Main_RestoreValues();
-
-    Main_DoRestore = AddUser_RestoreUsers();
-
-    if (!Main_values.Restore_Backup_Check) {
+    Main_ready(function() {
 
         try {
-            Android.requestWr();
-            Main_HideLoadDialog();
-            Main_innerHTML("main_dialog_remove", STR_BACKUP);
-            Main_textContent('remove_cancel', STR_NO);
-            Main_textContent('remove_yes', STR_YES);
-            Main_ShowElement('main_remove_dialog');
-            Main_values.Restore_Backup_Check = true;
-            document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+            if (Main_A_includes_B(window.location.href, 'asset')) {
+                //Same as in smartTwitchTV/release/api.js
+                //The app is running from assets need to expose smartTwitchTV
+                smartTwitchTV = {
+                    'mainstart': Main_Start,
+                    'Play_PannelEndStart': Play_PannelEndStart,
+                    'Play_PlayerCheck': Play_PlayerCheck,
+                    'Play_UpdateDuration': Play_UpdateDuration,
+                    'PlayExtra_End': PlayExtra_End,
+                    'Play_MultiEnd': Play_MultiEnd,
+                    'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
+                    'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
+                    'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+                    'Main_CheckStop': Main_CheckStop,
+                    'Main_CheckResume': Main_CheckResume,
+                    'Play_getQualities': Play_getQualities,
+                    'Play_ShowVideoStatus': Play_ShowVideoStatus,
+                    'Play_ShowVideoQuality': Play_ShowVideoQuality,
+                    'PlayVod_previews_success': PlayVod_previews_success,
+                    'Play_PlayPauseChange': Play_PlayPauseChange
+                };
+            }
+            Main_IsOnAndroid = Android.getAndroid();
+            Main_IsOnAndroidVersion = Android.getversion();
+
         } catch (e) {
-            Main_timeOut(Main_initWindows, 500);
-            return;
+            Main_IsOnAndroidVersion = '1.0.0';
+            Main_IsOnAndroid = 0;
+            document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
+            Main_isDebug = true;
+            Main_Log('Main_isReleased: ' + Main_isReleased);
+            Main_Log('Main_isDebug: ' + Main_isDebug);
+            Main_Log('Main_isBrowser: ' + !Main_IsOnAndroid);
+            //If we add the class on the android app for some reason it prevents input from release the focus
+            Main_AddClass('scenefeed', 'feed_screen_input');
+            //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
+            KEY_RETURN = 27;
         }
-    } else Main_timeOut(Main_initWindows, 500);
+        try {
+            if (Main_IsOnAndroid) Main_isDebug = Android.getdebug();
+        } catch (e) {}
+
+        Main_showLoadDialog();
+
+        Main_initClick();
+        Settings_SetDefautls();
+        calculateFontSize();
+        en_USLang();
+        Languages_SetDefautls();
+
+        // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+        // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+        // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+        //var lang = language,
+        //    Savedlang = Main_getItemInt('user_language', 0);
+
+        //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
+        //else Settings_CheckLang(lang);
+
+        //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
+        //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
+
+        Main_Log("language is " + language);
+        DefaultLang();
+
+        if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
+
+        Main_SearchInput = document.getElementById("search_input");
+        Main_AddUserInput = document.getElementById("user_input");
+        Main_ChatLiveInput = document.getElementById("chat_send_input");
+        Main_Scene1Doc = document.getElementById('scene1');
+        Main_Scene2Doc = document.getElementById('scene2');
+
+        Main_RestoreValues();
+
+        Main_DoRestore = AddUser_RestoreUsers();
+
+        if (!Main_values.Restore_Backup_Check) {
+
+            try {
+                Android.requestWr();
+                Main_HideLoadDialog();
+                Main_innerHTML("main_dialog_remove", STR_BACKUP);
+                Main_textContent('remove_cancel', STR_NO);
+                Main_textContent('remove_yes', STR_YES);
+                Main_ShowElement('main_remove_dialog');
+                Main_values.Restore_Backup_Check = true;
+                document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+            } catch (e) {
+                Main_timeOut(Main_initWindows, 500);
+                return;
+            }
+        } else Main_timeOut(Main_initWindows, 500);
+    });
 
 }
 
