@@ -40,8 +40,10 @@ function Users_init() {
     Main_HideWarningDialog();
     ScreensObj_SetTopLable(STR_USER, STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
     document.body.addEventListener("keydown", Users_handleKeyDown, false);
-    if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (Users_status) {
+    if (Main_CheckAccessibilityVisible()) {
+        Main_Log('Users_init Main_CheckAccessibilityVisible');
+        Main_CheckAccessibilitySet();
+    } else if (Users_status) {
         Main_YRst(Users_cursorY);
         Main_ShowElement(Users_ids[5]);
         Users_addFocus();
@@ -59,6 +61,7 @@ function Users_exit() {
 }
 
 function Users_StartLoad() {
+    Main_Log('Users_StartLoad');
     Main_empty('stream_table_user');
     Main_HideElement(Users_ids[5]);
     Main_showLoadDialog();
@@ -69,7 +72,7 @@ function Users_StartLoad() {
     Users_cursorY = 0;
     Users_loadingData = true;
     Main_CounterDialogRst();
-    Main_ready(Users_loadData);
+    Users_loadData();
 }
 
 function Users_loadData() {
@@ -132,6 +135,7 @@ function Users_createCell(id, pos) {
 
 function Users_loadDataSuccessFinish() {
     Main_timeOut(function() {
+        Main_Log('Users_loadDataSuccessFinish');
         if (!Users_status) {
             Users_status = true;
             Users_addFocus();

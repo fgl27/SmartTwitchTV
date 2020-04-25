@@ -441,13 +441,13 @@ function Main_initWindows() {
     Play_SetControls();
     Play_SetFullScreen(Play_isFullScreen);
 
+    if (AddUser_UserIsSet()) {
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
+    }
     Main_updateclockId = window.setInterval(Main_updateclock, 60000);
     Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
     Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
-    if (AddUser_UserIsSet()) {
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 30000);
-        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
-    }
 
     inUseObj = Live;
     Screens_init();
@@ -1605,7 +1605,7 @@ function Main_ready(func) {
 
 function Main_timeOut(func, timeout) {
     if (timeout && timeout > 0) setTimeout(func, timeout);
-    else setTimeout(func);
+    else setTimeout(func, 10);
 }
 
 function Main_getclock() {
@@ -2320,6 +2320,10 @@ function Main_LoadUrl(url) {
 }
 
 function Main_Log(text) {
-    if (Main_isDebug) console.log(text);
+    if (Main_isDebug) console.log(text + ' ' + Main_LogDate(new Date()));
+}
+
+function Main_LogDate(date) {
+    return date.toLocaleTimeString([], {hour12: false}) + '.' + date.getMilliseconds();
 }
 
