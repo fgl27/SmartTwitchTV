@@ -20531,25 +20531,30 @@
         Settings_value.live_notification.values = [STR_NO, STR_YES];
         Settings_value.live_notification_background.values = [STR_NO, STR_YES];
 
-        var obj = {
-            live_notification: {
-                defaultValue: Settings_value.live_notification.defaultValue,
-                values: Settings_value.live_notification.values,
-                title: STR_NOW_LIVE_SHOW,
-                summary: null
-            },
-            live_notification_background: {
+        var obj = {};
+
+        obj.live_notification = {
+            defaultValue: Settings_value.live_notification.defaultValue,
+            values: Settings_value.live_notification.values,
+            title: STR_NOW_LIVE_SHOW,
+            summary: null
+        };
+
+        if (Main_isTV || !Main_IsOnAndroid) {
+
+            obj.live_notification_background = {
                 defaultValue: Settings_value.live_notification_background.defaultValue,
                 values: Settings_value.live_notification_background.values,
                 title: STR_NOW_BACKGROUND,
                 summary: null
-            },
-            live_notification_time: {
-                defaultValue: Settings_value.live_notification_time.defaultValue,
-                values: Settings_value.live_notification_time.values,
-                title: STR_NOW_DURATION,
-                summary: STR_NOW_DURATION_SUMMARY
-            }
+            };
+        }
+
+        obj.live_notification_time = {
+            defaultValue: Settings_value.live_notification_time.defaultValue,
+            values: Settings_value.live_notification_time.values,
+            title: STR_NOW_DURATION,
+            summary: STR_NOW_DURATION_SUMMARY
         };
 
         Settings_DialogShow(obj, STR_NOTIFICATION_OPT);
