@@ -722,7 +722,9 @@ function Settings_SetAnimations() {
                 el.classList.remove(Main_classThumb);
             }
         );
-    } catch (e) {}
+    } catch (e) {
+        Main_Log('Settings_SetAnimations ' + e);
+    }
 
     Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
     UserLiveFeed_FocusClass = animate ? 'feed_thumbnail_focused' : 'feed_thumbnail_focused_no_ani';

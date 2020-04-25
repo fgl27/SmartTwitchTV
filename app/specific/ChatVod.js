@@ -46,13 +46,7 @@ function Chat_Init() {
     Chat_Id[0] = (new Date()).getTime();
     ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
     ChatLive_selectedChannel[0] = Main_values.Main_selectedChannel;
-    ChatLive_SetOptions(0);
-
-    ChatLive_loadEmotesChannelbbtv(0, 0, Chat_Id[0]);
-    ChatLive_loadEmotesChannelffz(0, 0, Chat_Id[0]);
-
-    ChatLive_loadBadgesChannel(0, 0, Chat_Id[0]);
-    ChatLive_loadCheersChannel(0, 0, Chat_Id[0]);
+    ChatLive_SetOptions(0, Chat_Id[0]);
 
     Chat_loadChat(Chat_Id[0]);
 }

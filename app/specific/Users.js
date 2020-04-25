@@ -29,6 +29,8 @@ function Users_init() {
         return;
     }
 
+    Main_Log('Users_init');
+
     if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABLE);
@@ -48,6 +50,8 @@ function Users_init() {
 }
 
 function Users_exit() {
+    Main_Log('Users_exit');
+
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     document.body.removeEventListener("keydown", Users_handleKeyDown);
     Main_HideElement(Users_ids[5]);
@@ -260,6 +264,8 @@ function Users_RemoveCursorSet() {
 }
 
 function Users_handleKeyDown(event) {
+    Main_Log('Users_handleKeyDown ' + event.keyCode);
+
     if (Main_FirstLoad || Main_CantClick()) return;
 
     Main_keyClickDelayStart();

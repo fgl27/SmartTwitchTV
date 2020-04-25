@@ -205,7 +205,7 @@ function Main_loadTranslations(language) {
         KEY_RETURN = 27;
     }
     try {
-        Main_isDebug = Android.getdebug();
+        if (Main_IsOnAndroid) Main_isDebug = Android.getdebug();
     } catch (e) {}
 
     Main_showLoadDialog();
@@ -318,17 +318,19 @@ function Main_initRestoreBackups() {
 function Main_initWindows() {
     Main_Log('Main_initWindows');
     try {
-        Main_CanBackup = Android.canBackupFile();
+        if (Main_IsOnAndroid) {
+            Main_CanBackup = Android.canBackupFile();
 
-        //Backup at start as a backup may never be done yet
-        if (Main_CanBackup) {
-            if (AddUser_IsUserSet()) {
-                Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                window.setTimeout(function() {
-                    Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                }, 10000);
+            //Backup at start as a backup may never be done yet
+            if (Main_CanBackup) {
+                if (AddUser_IsUserSet()) {
+                    Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+                    window.setTimeout(function() {
+                        Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                    }, 10000);
+                }
             }
-        }
+        } else Main_CanBackup = false;
 
     } catch (e) {
         Main_CanBackup = false;
@@ -371,7 +373,7 @@ function Main_initWindows() {
         if (!Main_values.Codec_is_Check) {
             var getcodec = null;
             try {
-                getcodec = JSON.parse(Android.getcodecCapabilities('avc'));
+                if (Main_IsOnAndroid) getcodec = JSON.parse(Android.getcodecCapabilities('avc'));
             } catch (e) {}
 
             if (getcodec) {
@@ -402,11 +404,8 @@ function Main_initWindows() {
 
         }
 
-        try {
-            Main_AndroidSDK = Android.getSDK();
-        } catch (e) {
-            Main_AndroidSDK = 1000;
-        }
+        if (Main_IsOnAndroid) Main_AndroidSDK = Android.getSDK();
+        else Main_AndroidSDK = 1000;
 
         //Android N (sdk 25) and older don't properly support animations on surface_view
         //So enable the workaround by default
@@ -429,9 +428,6 @@ function Main_initWindows() {
     Play_PreStart();
     UserLiveFeed_Prepare();
 
-    if (AddUser_UserIsSet()) {
-        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
-    }
     Screens_InitScreens();
 
     document.getElementById("side_panel").style.transform = '';
@@ -448,7 +444,10 @@ function Main_initWindows() {
     Main_updateclockId = window.setInterval(Main_updateclock, 60000);
     Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
     Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
-    Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+    if (AddUser_UserIsSet()) {
+        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 30000);
+        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
+    }
 
     inUseObj = Live;
     Screens_init();
@@ -1160,6 +1159,8 @@ function Main_ReStartScreens() {
 }
 
 function Main_SwitchScreen(removekey) {
+    Main_Log('Main_SwitchScreen removekey ' + removekey + ' Main_Go ' + Main_values.Main_Go);
+
     Main_HideWarningDialog();
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
@@ -1197,6 +1198,7 @@ function Main_RestoreValues() {
 }
 
 function Main_ExitCurrent(ExitCurrent) {
+    Main_Log('Main_ExitCurrent ' + ExitCurrent);
     if (Main_Switchobj[ExitCurrent].exit_fun) Main_Switchobj[ExitCurrent].exit_fun();
     if (Main_isElementShowing('settings_holder')) Settings_exit();
 }
@@ -1475,6 +1477,7 @@ function Main_OPenAsVod_PreshutdownStream() {
 }
 
 function Main_openStream() {
+    Main_Log('Main_openStream');
     Main_hideScene1Doc();
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
@@ -1627,6 +1630,8 @@ function Main_updateclock() {
 }
 
 function Main_updateUserFeed() {
+    Main_Log('Main_updateUserFeed');
+
     if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
         !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
         UserLiveFeed_RefreshLive();
@@ -1667,6 +1672,7 @@ function Main_ExitDialog(event) {
 }
 
 function Main_ReloadScreen() {
+    Main_Log('Main_ReloadScreen ' + Main_values.Main_Go);
     Screens_clear = true;
     ChannelContent_clear = true;
 
@@ -1973,6 +1979,7 @@ function Main_Slice(arrayTocopy) {
     try {
         array = arrayTocopy.slice();
     } catch (e) {
+        Main_Log('Main_Slice ' + e);
         array = [];
         for (var i = 0; i < arrayTocopy.length; i++) {
             array.push(arrayTocopy[i]);
@@ -2112,6 +2119,7 @@ function Main_SetHistoryworker() {
 
 var Main_StartHistoryworkerId;
 function Main_StartHistoryworker() {
+    Main_Log('Main_StartHistoryworker');
     if (!AddUser_IsUserSet()) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
@@ -2209,7 +2217,7 @@ function Main_RestoreLiveObjt(position) {
     var oldLive = null;
     //TODO remove this try after some app updates
     try {
-        oldLive = Android.GetNotificationOld();
+        if (Main_IsOnAndroid) oldLive = Android.GetNotificationOld();
     } catch (e) {}
 
     if (oldLive) {
@@ -2253,6 +2261,8 @@ function Main_SaveLiveObjt(position) {
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
+    Main_Log('Main_CheckAccessibility');
+
     if (Main_IsOnAndroid && Settings_Obj_default("accessibility_warn")) {
         if (Android.isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
         else {
@@ -2268,6 +2278,8 @@ function Main_CheckAccessibility(skipRefresCheck) {
 }
 
 function Main_CheckAccessibilitySet() {
+    Main_Log('Main_CheckAccessibilitySet');
+
     Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
     Main_ShowElement('dialog_accessibility');
     document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);

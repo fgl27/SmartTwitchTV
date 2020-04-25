@@ -58,6 +58,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, o
                         } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                     } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                 } catch (e) {
+                    Main_Log('AddCode_refreshTokens e ' + e);
                     AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                 }
             }
@@ -73,11 +74,15 @@ function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFun
 }
 
 function AddCode_refreshTokensSucess(responseText, position, callbackFunc, obj) {
+    Main_Log('AddCode_refreshTokensSucess');
+    Main_Log(responseText);
+
     var response = JSON.parse(responseText);
     if (AddCode_TokensCheckScope(response.scope)) {
         AddUser_UsernameArray[position].access_token = response.access_token;
         AddUser_UsernameArray[position].refresh_token = response.refresh_token;
         AddUser_UsernameArray[position].expires_in = response.expires_in;
+        Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
 
         AddUser_SaveUserArray();
 
@@ -242,6 +247,8 @@ function AddCode_Refreshtimeout(position) {
 
         }, (parseInt(AddUser_UsernameArray[position].expires_in) - 60) * 1000);
     }
+
+    Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60));
 }
 
 function AddCode_CheckTokenError(position, tryes) {

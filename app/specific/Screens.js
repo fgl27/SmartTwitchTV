@@ -476,8 +476,7 @@ function Screens_loadDataSuccessFinish(obj) {
 
                 Screens_loadDataSuccessFinishEnd();
 
-            } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
-                Main_GoBefore !== Main_Search) {
+            } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
                 Main_Log('!Play_WasPlaying');
 
                 Main_HideElementWithEle(obj.ScrollDoc);
@@ -527,6 +526,7 @@ function Screens_loadDataSuccessFinish(obj) {
 
 var CheckAccessibilityVWasVisible = false;
 function Screens_handleKeyControls(event) {
+    Main_Log('Screens_handleKeyControls ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_ENTER:
@@ -1021,6 +1021,8 @@ function Screens_keyRight() {
 }
 
 function Screens_handleKeyDown(event) {
+    Main_Log('Screens_handleKeyDown ' + event.keyCode);
+
     if (inUseObj.FirstLoad || Main_CantClick()) return;
 
     Main_keyClickDelayStart();
@@ -1227,6 +1229,8 @@ function Screens_PeriodRemoveFocus(pos) {
 }
 
 function Screens_PeriodhandleKeyDown(event) {
+    Main_Log('Screens_PeriodhandleKeyDown ' + event.keyCode);
+
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
@@ -1314,6 +1318,8 @@ function Screens_OffSetAddFocus(pos) {
 }
 
 function Screens_OffSethandleKeyDown(event) {
+    Main_Log('Screens_OffSethandleKeyDown ' + event.keyCode);
+
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
@@ -1417,6 +1423,8 @@ function Screens_HideRemoveDialog() {
 }
 
 function Screens_histDeleteKeyDown(event) {
+    Main_Log('Screens_histDeleteKeyDown ' + event.keyCode);
+
     switch (event.keyCode) {
         case KEY_LEFT:
             Users_RemoveCursor--;
@@ -1510,6 +1518,8 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
 }
 
 function Screens_histhandleKeyDown(event) {
+    Main_Log('Screens_histhandleKeyDown ' + event.keyCode);
+
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
@@ -1685,6 +1695,8 @@ function Screens_ThumbOptionStringGetHistory() {
 }
 
 function Screens_ThumbOptionhandleKeyDown(event) {
+    Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
+
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:

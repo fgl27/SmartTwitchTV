@@ -295,6 +295,7 @@ function PlayVod_loadDatanew() {
     if (Main_IsOnAndroid) {
         var StreamData = null;
 
+        //TODO remove the try after some app updates
         try {
             StreamData = Android.getStreamData(
                 Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
@@ -963,6 +964,7 @@ function PlayVod_previews_clear() {
 }
 
 function PlayVod_previews_start() {
+    //TODO remove the try after some app updates
     try {
         Android.GetPreviews(PlayVod_previews_url);
     } catch (e) {}

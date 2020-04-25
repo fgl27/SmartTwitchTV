@@ -185,6 +185,7 @@ function UserLiveFeed_Prepare() {
 }
 
 function UserLiveFeed_RefreshLive() {
+    Main_Log('UserLiveFeed_RefreshLive');
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_loadDataPrepare();
         UserLiveFeedobj_CheckToken();

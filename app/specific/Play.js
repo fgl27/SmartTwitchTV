@@ -358,11 +358,14 @@ function Play_Start() {
 function Play_getStreamData(channel_name) {
     var result = null;
 
+    //TODO remove the try after some app updates
     try {
-        result = Android.getStreamData(
-            Play_live_token.replace('%x', channel_name),
-            Play_live_links.replace('%x', channel_name)
-        );
+        if (Main_IsOnAndroid) {
+            result = Android.getStreamData(
+                Play_live_token.replace('%x', channel_name),
+                Play_live_links.replace('%x', channel_name)
+            );
+        }
     } catch (e) {}
 
     return result;

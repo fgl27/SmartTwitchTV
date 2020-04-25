@@ -350,6 +350,8 @@ function AddUser_SaveUserArray() {
     Main_setItem('AddUser_UsernameArray', string);
 
     if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
+
+    Main_Log('AddUser_SaveUserArray');
 }
 
 function AddUser_UserMakeOne(position) {
