@@ -8476,8 +8476,8 @@
     }
 
     function Main_timeOut(func, timeout) {
-        if (timeout && timeout > 0) setTimeout(func, timeout);
-        else setTimeout(func, 10);
+        if (timeout && timeout > 0) window.setTimeout(func, timeout);
+        else window.setTimeout(func, 10);
     }
 
     function Main_getclock() {
