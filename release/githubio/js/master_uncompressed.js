@@ -2609,6 +2609,7 @@
                             } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                         } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                     } catch (e) {
+                        Main_Log('AddCode_refreshTokens e ' + e);
                         AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
                     }
                 }
@@ -2624,11 +2625,15 @@
     }
 
     function AddCode_refreshTokensSucess(responseText, position, callbackFunc, obj) {
+        Main_Log('AddCode_refreshTokensSucess');
+        Main_Log(responseText);
+
         var response = JSON.parse(responseText);
         if (AddCode_TokensCheckScope(response.scope)) {
             AddUser_UsernameArray[position].access_token = response.access_token;
             AddUser_UsernameArray[position].refresh_token = response.refresh_token;
             AddUser_UsernameArray[position].expires_in = response.expires_in;
+            Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
 
             AddUser_SaveUserArray();
 
@@ -2793,6 +2798,8 @@
 
             }, (parseInt(AddUser_UsernameArray[position].expires_in) - 60) * 1000);
         }
+
+        Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60));
     }
 
     function AddCode_CheckTokenError(position, tryes) {
@@ -3358,6 +3365,7 @@
 
             //Check and refresh all tokens at start
             for (var i = 0; i < AddUser_UsernameArray.length; i++) {
+                AddUser_UsernameArray[i].timeout_id = null;
                 if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
 
                 //Set user history obj
@@ -3521,6 +3529,8 @@
         Main_setItem('AddUser_UsernameArray', string);
 
         if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
+
+        Main_Log('AddUser_SaveUserArray');
     }
 
     function AddUser_UserMakeOne(position) {
@@ -5039,17 +5049,12 @@
         Chat_Id[chat_number] = (new Date()).getTime();
         ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
         ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
-        ChatLive_SetOptions(chat_number);
+
+        ChatLive_SetOptions(chat_number, Chat_Id[chat_number]);
 
         ChatLive_loadEmotesUser(0);
         ChatLive_checkFallow(0, chat_number, Chat_Id[chat_number]);
         ChatLive_checkSub(0, chat_number, Chat_Id[chat_number]);
-
-        ChatLive_loadEmotesChannelbbtv(0, chat_number, Chat_Id[chat_number]);
-        ChatLive_loadEmotesChannelffz(0, chat_number, Chat_Id[chat_number]);
-
-        ChatLive_loadBadgesChannel(0, chat_number, Chat_Id[chat_number]);
-        ChatLive_loadCheersChannel(0, chat_number, Chat_Id[chat_number]);
 
         ChatLive_Individual_Background_flip[chat_number] = 0;
 
@@ -5075,7 +5080,7 @@
     var ChatLive_Channel_Regex_Search = [];
     var ChatLive_Channel_Regex_Replace = [];
 
-    function ChatLive_SetOptions(chat_number) {
+    function ChatLive_SetOptions(chat_number, id) {
         ChatLive_User_Set = AddUser_IsUserSet();
 
         ChatLive_Logging = Settings_value.chat_logging.defaultValue;
@@ -5095,6 +5100,12 @@
             ChatLive_User_Regex_Search = new RegExp('@' + AddUser_UsernameArray[0].name + '(?=\\s|$)', "i");
             ChatLive_User_Regex_Replace = new RegExp('@' + AddUser_UsernameArray[0].name, "gi");
         }
+
+        ChatLive_loadEmotesChannelbbtv(0, chat_number, id);
+        ChatLive_loadEmotesChannelffz(0, chat_number, id);
+
+        ChatLive_loadBadgesChannel(0, chat_number, id);
+        ChatLive_loadCheersChannel(0, chat_number, id);
     }
 
     function ChatLive_checkFallow(tryes, chat_number, id) {
@@ -5286,7 +5297,9 @@
                 }
             });
 
-        } catch (e) {}
+        } catch (e) {
+            Main_Log('ChatLive_loadEmotesUserSuccess ' + e);
+        }
     }
 
     function ChatLive_loadEmotesChannelbbtv(tryes, chat_number, id) {
@@ -5322,37 +5335,42 @@
 
         var url, Div;
 
-        data.emotes.forEach(function(emote) {
-            if (data.urlTemplate) {
+        try {
+            data.emotes.forEach(function(emote) {
+                if (data.urlTemplate) {
 
-                url = 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x');
+                    url = 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x');
 
-                extraEmotes[emote.code] = {
-                    code: emote.code,
-                    id: emote.id,
-                    '4x': url
-                };
-
-                Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code]);
-
-                //Don't copy to prevent shallow clone
-                if (!skipChannel) {
-                    extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
+                    extraEmotes[emote.code] = {
                         code: emote.code,
                         id: emote.id,
-                        '4x': url,
-                        div: Div
+                        '4x': url
                     };
-                } else {
-                    extraEmotesDone.bbtvGlobal[emote.code] = {
-                        code: emote.code,
-                        id: emote.id,
-                        '4x': url,
-                        div: Div
-                    };
+
+                    Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code]);
+
+                    //Don't copy to prevent shallow clone
+                    if (!skipChannel) {
+                        extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
+                            code: emote.code,
+                            id: emote.id,
+                            '4x': url,
+                            div: Div
+                        };
+                    } else {
+                        extraEmotesDone.bbtvGlobal[emote.code] = {
+                            code: emote.code,
+                            id: emote.id,
+                            '4x': url,
+                            div: Div
+                        };
+                    }
                 }
-            }
-        });
+            });
+        } catch (e) {
+            Main_Log('ChatLive_loadEmotesbbtv ' + e);
+        }
+
 
     }
 
@@ -5399,7 +5417,9 @@
             );
 
             extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]] = 1;
-        } catch (e) {}
+        } catch (e) {
+            Main_Log('ChatLive_loadCheersChannelSuccess ' + e);
+        }
 
     }
 
@@ -5446,51 +5466,54 @@
         else extraEmotesDone.ffzGlobal = {};
 
         var url, Div;
+        try {
+            Object.keys(data.sets).forEach(function(set) {
+                set = data.sets[set];
+                if (set.emoticons || Array.isArray(set.emoticons)) {
 
-        Object.keys(data.sets).forEach(function(set) {
-            set = data.sets[set];
-            if (set.emoticons || Array.isArray(set.emoticons)) {
+                    set.emoticons.forEach(function(emoticon) {
 
-                set.emoticons.forEach(function(emoticon) {
+                        if (!emoticon.name || !emoticon.id) return;
+                        if (typeof emoticon.name !== 'string' || typeof emoticon.id !== 'number') return;
 
-                    if (!emoticon.name || !emoticon.id) return;
-                    if (typeof emoticon.name !== 'string' || typeof emoticon.id !== 'number') return;
+                        if (!emoticon.urls || typeof emoticon.urls !== 'object') return;
 
-                    if (!emoticon.urls || typeof emoticon.urls !== 'object') return;
+                        if (typeof emoticon.urls[1] !== 'string') return;
+                        if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
 
-                    if (typeof emoticon.urls[1] !== 'string') return;
-                    if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
+                        url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
 
-                    url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
-
-                    extraEmotes[emoticon.name] = {
-                        code: emoticon.name,
-                        id: emoticon.id,
-                        '4x': url
-                    };
-
-                    Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
-
-                    //Don't copy to prevent shallow clone
-                    if (!skipChannel) {
-                        extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
+                        extraEmotes[emoticon.name] = {
                             code: emoticon.name,
                             id: emoticon.id,
-                            '4x': url,
-                            div: Div
+                            '4x': url
                         };
-                    } else {
-                        extraEmotesDone.ffzGlobal[emoticon.name] = {
-                            code: emoticon.name,
-                            id: emoticon.id,
-                            '4x': url,
-                            div: Div
-                        };
-                    }
 
-                });
-            }
-        });
+                        Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
+
+                        //Don't copy to prevent shallow clone
+                        if (!skipChannel) {
+                            extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
+                                code: emoticon.name,
+                                id: emoticon.id,
+                                '4x': url,
+                                div: Div
+                            };
+                        } else {
+                            extraEmotesDone.ffzGlobal[emoticon.name] = {
+                                code: emoticon.name,
+                                id: emoticon.id,
+                                '4x': url,
+                                div: Div
+                            };
+                        }
+
+                    });
+                }
+            });
+        } catch (e) {
+            Main_Log('ChatLive_loadEmotesffz ' + e);
+        }
     }
 
     var useToken = [];
@@ -6374,13 +6397,7 @@
         Chat_Id[0] = (new Date()).getTime();
         ChatLive_selectedChannel_id[0] = Main_values.Main_selectedChannel_id;
         ChatLive_selectedChannel[0] = Main_values.Main_selectedChannel;
-        ChatLive_SetOptions(0);
-
-        ChatLive_loadEmotesChannelbbtv(0, 0, Chat_Id[0]);
-        ChatLive_loadEmotesChannelffz(0, 0, Chat_Id[0]);
-
-        ChatLive_loadBadgesChannel(0, 0, Chat_Id[0]);
-        ChatLive_loadCheersChannel(0, 0, Chat_Id[0]);
+        ChatLive_SetOptions(0, Chat_Id[0]);
 
         Chat_loadChat(Chat_Id[0]);
     }
@@ -6983,7 +7000,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.174';
-    var Main_minversion = 'April 23, 2020';
+    var Main_minversion = 'April 25, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7056,7 +7073,7 @@
             KEY_RETURN = 27;
         }
         try {
-            Main_isDebug = Android.getdebug();
+            if (Main_IsOnAndroid) Main_isDebug = Android.getdebug();
         } catch (e) {}
 
         Main_showLoadDialog();
@@ -7169,17 +7186,19 @@
     function Main_initWindows() {
         Main_Log('Main_initWindows');
         try {
-            Main_CanBackup = Android.canBackupFile();
+            if (Main_IsOnAndroid) {
+                Main_CanBackup = Android.canBackupFile();
 
-            //Backup at start as a backup may never be done yet
-            if (Main_CanBackup) {
-                if (AddUser_IsUserSet()) {
-                    Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                    window.setTimeout(function() {
-                        Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                    }, 10000);
+                //Backup at start as a backup may never be done yet
+                if (Main_CanBackup) {
+                    if (AddUser_IsUserSet()) {
+                        Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+                        window.setTimeout(function() {
+                            Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                        }, 10000);
+                    }
                 }
-            }
+            } else Main_CanBackup = false;
 
         } catch (e) {
             Main_CanBackup = false;
@@ -7222,7 +7241,7 @@
             if (!Main_values.Codec_is_Check) {
                 var getcodec = null;
                 try {
-                    getcodec = JSON.parse(Android.getcodecCapabilities('avc'));
+                    if (Main_IsOnAndroid) getcodec = JSON.parse(Android.getcodecCapabilities('avc'));
                 } catch (e) {}
 
                 if (getcodec) {
@@ -7253,11 +7272,8 @@
 
             }
 
-            try {
-                Main_AndroidSDK = Android.getSDK();
-            } catch (e) {
-                Main_AndroidSDK = 1000;
-            }
+            if (Main_IsOnAndroid) Main_AndroidSDK = Android.getSDK();
+            else Main_AndroidSDK = 1000;
 
             //Android N (sdk 25) and older don't properly support animations on surface_view
             //So enable the workaround by default
@@ -7280,9 +7296,6 @@
         Play_PreStart();
         UserLiveFeed_Prepare();
 
-        if (AddUser_UserIsSet()) {
-            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5); //it 5 min refresh
-        }
         Screens_InitScreens();
 
         document.getElementById("side_panel").style.transform = '';
@@ -7296,10 +7309,13 @@
         Play_SetControls();
         Play_SetFullScreen(Play_isFullScreen);
 
+        if (AddUser_UserIsSet()) {
+            Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+            Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5); //it 5 min refresh
+        }
         Main_updateclockId = window.setInterval(Main_updateclock, 60000);
         Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5); //Check it 5min
         Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
 
         inUseObj = Live;
         Screens_init();
@@ -8012,6 +8028,8 @@
     }
 
     function Main_SwitchScreen(removekey) {
+        Main_Log('Main_SwitchScreen removekey ' + removekey + ' Main_Go ' + Main_values.Main_Go);
+
         Main_HideWarningDialog();
         if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
         if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
@@ -8049,6 +8067,7 @@
     }
 
     function Main_ExitCurrent(ExitCurrent) {
+        Main_Log('Main_ExitCurrent ' + ExitCurrent);
         if (Main_Switchobj[ExitCurrent].exit_fun) Main_Switchobj[ExitCurrent].exit_fun();
         if (Main_isElementShowing('settings_holder')) Settings_exit();
     }
@@ -8327,6 +8346,7 @@
     }
 
     function Main_openStream() {
+        Main_Log('Main_openStream');
         Main_hideScene1Doc();
         document.body.removeEventListener("keydown", Play_handleKeyDown);
         document.body.addEventListener("keydown", Play_handleKeyDown, false);
@@ -8454,7 +8474,7 @@
 
     function Main_timeOut(func, timeout) {
         if (timeout && timeout > 0) setTimeout(func, timeout);
-        else setTimeout(func);
+        else setTimeout(func, 10);
     }
 
     function Main_getclock() {
@@ -8479,6 +8499,8 @@
     }
 
     function Main_updateUserFeed() {
+        Main_Log('Main_updateUserFeed');
+
         if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
             !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
             UserLiveFeed_RefreshLive();
@@ -8519,6 +8541,7 @@
     }
 
     function Main_ReloadScreen() {
+        Main_Log('Main_ReloadScreen ' + Main_values.Main_Go);
         Screens_clear = true;
         ChannelContent_clear = true;
 
@@ -8824,6 +8847,7 @@
         try {
             array = arrayTocopy.slice();
         } catch (e) {
+            Main_Log('Main_Slice ' + e);
             array = [];
             for (var i = 0; i < arrayTocopy.length; i++) {
                 array.push(arrayTocopy[i]);
@@ -8965,6 +8989,7 @@
     var Main_StartHistoryworkerId;
 
     function Main_StartHistoryworker() {
+        Main_Log('Main_StartHistoryworker');
         if (!AddUser_IsUserSet()) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
@@ -9063,7 +9088,7 @@
         var oldLive = null;
         //TODO remove this try after some app updates
         try {
-            oldLive = Android.GetNotificationOld();
+            if (Main_IsOnAndroid) oldLive = Android.GetNotificationOld();
         } catch (e) {}
 
         if (oldLive) {
@@ -9107,6 +9132,8 @@
     }
 
     function Main_CheckAccessibility(skipRefresCheck) {
+        Main_Log('Main_CheckAccessibility');
+
         if (Main_IsOnAndroid && Settings_Obj_default("accessibility_warn")) {
             if (Android.isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
             else {
@@ -9122,6 +9149,8 @@
     }
 
     function Main_CheckAccessibilitySet() {
+        Main_Log('Main_CheckAccessibilitySet');
+
         Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
         Main_ShowElement('dialog_accessibility');
         document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
@@ -9162,7 +9191,13 @@
     }
 
     function Main_Log(text) {
-        if (Main_isDebug) console.log(text);
+        if (Main_isDebug) console.log(text + ' ' + Main_LogDate(new Date()));
+    }
+
+    function Main_LogDate(date) {
+        return date.toLocaleTimeString([], {
+            hour12: false
+        }) + '.' + date.getMilliseconds();
     }
 
     //Variable initialization
@@ -12303,11 +12338,14 @@
     function Play_getStreamData(channel_name) {
         var result = null;
 
+        //TODO remove the try after some app updates
         try {
-            result = Android.getStreamData(
-                Play_live_token.replace('%x', channel_name),
-                Play_live_links.replace('%x', channel_name)
-            );
+            if (Main_IsOnAndroid) {
+                result = Android.getStreamData(
+                    Play_live_token.replace('%x', channel_name),
+                    Play_live_links.replace('%x', channel_name)
+                );
+            }
         } catch (e) {}
 
         return result;
@@ -14468,6 +14506,7 @@
         if (Main_IsOnAndroid) {
             var StreamData = null;
 
+            //TODO remove the try after some app updates
             try {
                 StreamData = Android.getStreamData(
                     Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
@@ -15137,6 +15176,7 @@
     }
 
     function PlayVod_previews_start() {
+        //TODO remove the try after some app updates
         try {
             Android.GetPreviews(PlayVod_previews_url);
         } catch (e) {}
@@ -15778,8 +15818,7 @@
 
                     Screens_loadDataSuccessFinishEnd();
 
-                } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser &&
-                    Main_GoBefore !== Main_Search) {
+                } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
                     Main_Log('!Play_WasPlaying');
 
                     Main_HideElementWithEle(obj.ScrollDoc);
@@ -15830,6 +15869,7 @@
     var CheckAccessibilityVWasVisible = false;
 
     function Screens_handleKeyControls(event) {
+        Main_Log('Screens_handleKeyControls ' + event.keyCode);
 
         switch (event.keyCode) {
             case KEY_ENTER:
@@ -16324,6 +16364,8 @@
     }
 
     function Screens_handleKeyDown(event) {
+        Main_Log('Screens_handleKeyDown ' + event.keyCode);
+
         if (inUseObj.FirstLoad || Main_CantClick()) return;
 
         Main_keyClickDelayStart();
@@ -16530,6 +16572,8 @@
     }
 
     function Screens_PeriodhandleKeyDown(event) {
+        Main_Log('Screens_PeriodhandleKeyDown ' + event.keyCode);
+
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
@@ -16617,6 +16661,8 @@
     }
 
     function Screens_OffSethandleKeyDown(event) {
+        Main_Log('Screens_OffSethandleKeyDown ' + event.keyCode);
+
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
@@ -16720,6 +16766,8 @@
     }
 
     function Screens_histDeleteKeyDown(event) {
+        Main_Log('Screens_histDeleteKeyDown ' + event.keyCode);
+
         switch (event.keyCode) {
             case KEY_LEFT:
                 Users_RemoveCursor--;
@@ -16813,6 +16861,8 @@
     }
 
     function Screens_histhandleKeyDown(event) {
+        Main_Log('Screens_histhandleKeyDown ' + event.keyCode);
+
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
@@ -16988,6 +17038,8 @@
     }
 
     function Screens_ThumbOptionhandleKeyDown(event) {
+        Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
+
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
@@ -20067,7 +20119,9 @@
                     el.classList.remove(Main_classThumb);
                 }
             );
-        } catch (e) {}
+        } catch (e) {
+            Main_Log('Settings_SetAnimations ' + e);
+        }
 
         Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
         UserLiveFeed_FocusClass = animate ? 'feed_thumbnail_focused' : 'feed_thumbnail_focused_no_ani';
@@ -21983,6 +22037,7 @@
     }
 
     function UserLiveFeed_RefreshLive() {
+        Main_Log('UserLiveFeed_RefreshLive');
         if (AddUser_UserIsSet()) {
             UserLiveFeedobj_loadDataPrepare();
             UserLiveFeedobj_CheckToken();
@@ -22743,6 +22798,8 @@
             UserLiveFeed_token = null;
             UserLiveFeedobj_loadChannels();
         }
+
+        Main_Log('UserLiveFeedobj_CheckToken end');
     }
 
     function UserLiveFeedobj_loadDataPrepare() {
@@ -22752,6 +22809,7 @@
     }
 
     function UserLiveFeedobj_loadChannels() {
+        Main_Log('UserLiveFeedobj_loadChannels');
         var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
 
@@ -22763,6 +22821,7 @@
     }
 
     function UserLiveFeedobj_loadDataError(pos) {
+        Main_Log('UserLiveFeedobj_loadChannels');
         UserLiveFeed_loadingDataTry++;
         if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
             UserLiveFeed_loadingDataTimeout += 500;
@@ -22794,6 +22853,8 @@
     }
 
     function UserLiveFeedobj_loadChannelLive(responseText) {
+        Main_Log('UserLiveFeedobj_loadChannelLive');
+
         var response = JSON.parse(responseText).follows,
             response_items = response.length;
 
@@ -22817,6 +22878,7 @@
     }
 
     function UserLiveFeedobj_loadChannelUserLive() {
+        Main_Log('UserLiveFeedobj_loadChannelUserLive');
         var theUrl = Main_kraken_api + 'streams/';
 
         if (UserLiveFeed_token) {
@@ -22830,6 +22892,7 @@
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
+        Main_Log('UserLiveFeedobj_loadChannelUserLiveGet');
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
@@ -22848,6 +22911,7 @@
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
+        Main_Log('UserLiveFeedobj_loadChannelUserLiveGetEnd ' + xmlHttp.status);
         if (xmlHttp.status === 200) {
             UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
         } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
@@ -22860,6 +22924,8 @@
     }
 
     function UserLiveFeedobj_loadDataRefreshTokenError() {
+        Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
+
         if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
         else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
     }
@@ -23505,6 +23571,8 @@
 
     //Base video fun
     function UserLiveFeedobj_loadDataSuccess(responseText) {
+        Main_Log('UserLiveFeedobj_loadDataSuccess');
+
         var response = JSON.parse(responseText),
             response_items,
             sorting = Settings_Obj_default('live_feed_sort'),
@@ -23599,7 +23667,7 @@
             //Remove the try after some app updates
             var Android_Notification_end_time = 0;
             try {
-                Android_Notification_end_time = Android.GetNotificationTime();
+                if (Main_IsOnAndroid) Android_Notification_end_time = Android.GetNotificationTime();
             } catch (e) {}
             //Check if the android service notification has end notifying before update things and show notifications on js side
             if (!Android_Notification_end_time || ((new Date().getTime()) > Android_Notification_end_time)) {
@@ -23956,6 +24024,8 @@
             return;
         }
 
+        Main_Log('Users_init');
+
         if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
         Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABLE);
@@ -23965,6 +24035,7 @@
         Main_HideWarningDialog();
         ScreensObj_SetTopLable(STR_USER, STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
         document.body.addEventListener("keydown", Users_handleKeyDown, false);
+
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
         else if (Users_status) {
             Main_YRst(Users_cursorY);
@@ -23975,6 +24046,8 @@
     }
 
     function Users_exit() {
+        Main_Log('Users_exit');
+
         Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
         document.body.removeEventListener("keydown", Users_handleKeyDown);
         Main_HideElement(Users_ids[5]);
@@ -23982,6 +24055,7 @@
     }
 
     function Users_StartLoad() {
+        Main_Log('Users_StartLoad');
         Main_empty('stream_table_user');
         Main_HideElement(Users_ids[5]);
         Main_showLoadDialog();
@@ -24055,6 +24129,7 @@
 
     function Users_loadDataSuccessFinish() {
         Main_timeOut(function() {
+            Main_Log('Users_loadDataSuccessFinish');
             if (!Users_status) {
                 Users_status = true;
                 Users_addFocus();
@@ -24187,6 +24262,8 @@
     }
 
     function Users_handleKeyDown(event) {
+        Main_Log('Users_handleKeyDown ' + event.keyCode);
+
         if (Main_FirstLoad || Main_CantClick()) return;
 
         Main_keyClickDelayStart();

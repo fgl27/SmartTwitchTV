@@ -1111,10 +1111,10 @@ public class PlayerActivity extends Activity {
         //when CORS affects a link that is needed to load one uses Tools.readUrl
         //websettings.setAllowUniversalAccessFromFileURLs(true);
         websettings.setUseWideViewPort(true);
-        //websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        //mWebView.clearCache(true);
-        //mWebView.clearHistory();
+        mWebView.clearCache(true);
+        mWebView.clearHistory();
 
         mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
