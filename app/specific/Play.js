@@ -278,7 +278,7 @@ function Play_SetChatFont() {
 }
 
 function Play_Start() {
-    Main_Log('Play_Start');
+    //Main_Log('Play_Start');
 
     Play_showBufferDialog();
 
@@ -741,7 +741,7 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 function Play_loadDatanew() {
-    Main_Log('Play_loadDatanew');
+    //Main_Log('Play_loadDatanew');
     if (Main_IsOnAndroid) {
 
         var StreamData = Play_getStreamData(Play_data.data[6]);
@@ -921,7 +921,7 @@ function Play_getQualities(position, skipchange) {
 }
 
 function Play_onPlayer() {
-    Main_Log('Play_onPlayer');
+    //Main_Log('Play_onPlayer');
 
     if (Main_IsOnAndroid && Play_isOn) {
         Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
@@ -1034,7 +1034,7 @@ function Play_timeDay(time) {
 }
 
 function Play_shutdownStream() {
-    Main_Log('Play_shutdownStream ' + Play_isOn);
+    //Main_Log('Play_shutdownStream ' + Play_isOn);
     if (Play_isOn) {
         Play_PreshutdownStream(true);
         Play_data.qualities = [];
@@ -1044,7 +1044,7 @@ function Play_shutdownStream() {
 }
 
 function Play_PreshutdownStream(closePlayer) {
-    Main_Log('Play_PreshutdownStream ' + closePlayer);
+    //Main_Log('Play_PreshutdownStream ' + closePlayer);
     if (Main_IsOnAndroid) {
         if (closePlayer) {
             //We are closing the player on error or on end
@@ -1065,7 +1065,7 @@ function Play_PreshutdownStream(closePlayer) {
 }
 
 function Play_exitMain() {
-    Main_Log('Play_exitMain');
+    //Main_Log('Play_exitMain');
     if (AddUser_UserIsSet()) {
         AddCode_IsFollowing = false;
         Play_setFollow();
@@ -1081,7 +1081,7 @@ function Play_exitMain() {
 }
 
 function Play_ClearPlayer() {
-    Main_Log('Play_ClearPlayer');
+    //Main_Log('Play_ClearPlayer');
 
     window.clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
@@ -1113,7 +1113,7 @@ function Play_ClearPlayer() {
 }
 
 function Play_ClearPlay(clearChat) {
-    Main_Log('Play_ClearPlay');
+    //Main_Log('Play_ClearPlay');
 
     Play_Playing = false;
     document.body.removeEventListener("keydown", Play_handleKeyDown);

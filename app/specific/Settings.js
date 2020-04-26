@@ -723,7 +723,7 @@ function Settings_SetAnimations() {
             }
         );
     } catch (e) {
-        Main_Log('Settings_SetAnimations ' + e);
+        //Main_Log('Settings_SetAnimations ' + e);
     }
 
     Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';

@@ -111,7 +111,7 @@ var Base_obj = {
         } else Screens_OpenSidePanel();
     },
     concatenate: function(responseText) {
-        //Main_Log(responseText);
+        ////Main_Log(responseText);
         if (this.data) {
             responseText = JSON.parse(responseText);
 
@@ -628,7 +628,7 @@ function ScreensObj_InitUserLive() {
     UserLive = Screens_assign(UserLive, Base_Live_obj);
 
     UserLive.concatenate = function(responseText) {
-        //Main_Log(responseText);
+        ////Main_Log(responseText);
         if (this.token || this.followerChannelsDone) {
             //User has added a key or followed channels list is done, concatenate live channels
             if (this.data) {

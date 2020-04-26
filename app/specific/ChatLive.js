@@ -316,7 +316,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
         });
 
     } catch (e) {
-        Main_Log('ChatLive_loadEmotesUserSuccess ' + e);
+        //Main_Log('ChatLive_loadEmotesUserSuccess ' + e);
     }
 }
 
@@ -386,7 +386,7 @@ function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
             }
         });
     } catch (e) {
-        Main_Log('ChatLive_loadEmotesbbtv ' + e);
+        //Main_Log('ChatLive_loadEmotesbbtv ' + e);
     }
 
 
@@ -436,7 +436,7 @@ function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
 
         extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]] = 1;
     } catch (e) {
-        Main_Log('ChatLive_loadCheersChannelSuccess ' + e);
+        //Main_Log('ChatLive_loadCheersChannelSuccess ' + e);
     }
 
 }
@@ -530,7 +530,7 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
             }
         });
     } catch (e) {
-        Main_Log('ChatLive_loadEmotesffz ' + e);
+        //Main_Log('ChatLive_loadEmotesffz ' + e);
     }
 }
 
@@ -583,13 +583,13 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
         if (!message.command) return;
 
-        //Main_Log(message);
-        //Main_Log(message.command);
+        ////Main_Log(message);
+        ////Main_Log(message.command);
 
         switch (message.command) {
             case "PING":
-                Main_Log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
-                Main_Log(message);
+                //Main_Log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
+                //Main_Log(message);
                 ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                 break;
             case "001":
@@ -653,15 +653,15 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
                 break;
             case "PRIVMSG":
-                //Main_Log(message);
+                ////Main_Log(message);
                 ChatLive_loadChatSuccess(message, chat_number);
                 break;
             case "USERNOTICE":
                 ChatLive_CheckSubMessage(message, chat_number);
                 break;
             case "USERSTATE":
-                Main_Log('USERSTATE chat ' + chat_number);
-                Main_Log(message);
+                //Main_Log('USERSTATE chat ' + chat_number);
+                //Main_Log(message);
                 // tags:
                 // badge-info: true
                 // badges: true
@@ -751,7 +751,7 @@ function ChatLive_CheckClear(chat_number) {
 
 var ChatLive_RoomState = [];
 function ChatLive_SetRoomState(array, chat_number) {
-    Main_Log('ChatLive_SetRoomState');
+    //Main_Log('ChatLive_SetRoomState');
 
     ChatLive_RoomState[chat_number] = {
         'emote-only': parseInt(array[1]),
@@ -761,13 +761,13 @@ function ChatLive_SetRoomState(array, chat_number) {
         'subs-only': parseInt(array[5])
     };
 
-    Main_Log(ChatLive_RoomState[chat_number]);
+    //Main_Log(ChatLive_RoomState[chat_number]);
     ChatLiveControls_RefreshRoomState(chat_number);
 }
 
 function ChatLive_UpdateRoomState(message, chat_number) {
-    Main_Log('ChatLive_UpdateRoomState');
-    Main_Log(message);
+    //Main_Log('ChatLive_UpdateRoomState');
+    //Main_Log(message);
     if (message.tags) {
 
         if (!ChatLive_RoomState[chat_number]) ChatLive_RoomState[chat_number] = {};
@@ -780,7 +780,7 @@ function ChatLive_UpdateRoomState(message, chat_number) {
         if (tags.hasOwnProperty('slow')) ChatLive_RoomState[chat_number].slow = parseInt(tags.slow);
         if (tags.hasOwnProperty('subs-only')) ChatLive_RoomState[chat_number]['subs-only'] = parseInt(tags['subs-only']);
 
-        Main_Log(ChatLive_RoomState[chat_number]);
+        //Main_Log(ChatLive_RoomState[chat_number]);
         ChatLiveControls_RefreshRoomState(chat_number);
     }
 }
@@ -807,13 +807,13 @@ function ChatLive_SendPrepared() {
 
             if (!message.command) return;
 
-            //Main_Log(message.command);
-            //Main_Log(message);
+            ////Main_Log(message.command);
+            ////Main_Log(message);
 
             switch (message.command) {
                 case "PING":
-                    Main_Log('ChatLive_socketSend PING');
-                    Main_Log(message);
+                    //Main_Log('ChatLive_socketSend PING');
+                    //Main_Log(message);
                     ChatLive_socketSend.send('PONG ' + message.params[0]);
                     break;
                 case "001":
@@ -831,8 +831,8 @@ function ChatLive_SendPrepared() {
                     ChatLive_UserNoticeWarn(message);
                     break;
                 case "USERSTATE":
-                    Main_Log('USERSTATE send');
-                    Main_Log(message);
+                    //Main_Log('USERSTATE send');
+                    //Main_Log(message);
                     break;
                 default:
                     break;
@@ -865,7 +865,7 @@ function ChatLive_socketSendCheck() {
 }
 
 function ChatLive_UserNoticeCheck(message, chat_number, id) {
-    Main_Log(message);
+    //Main_Log(message);
 
     if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
 
@@ -881,11 +881,11 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 }
 
 function ChatLive_UserNoticeWarn(message) {
-    Main_Log(message);
+    //Main_Log(message);
 
     if (message.params[1] && !Main_A_includes_B(message.params[1], "NICK already set")) {
 
-        Main_Log(message.params[1]);
+        //Main_Log(message.params[1]);
         ChatLive_Warn(message.params[1], 5000);
 
     }
@@ -897,10 +897,10 @@ function ChatLive_Warn(message, time) {
 }
 
 function ChatLive_SendMessage(message, chat_number) {
-    Main_Log('ChatLive_SendMessage ' + ChatLive_socketSendJoin + ' msg ' + message);
+    //Main_Log('ChatLive_SendMessage ' + ChatLive_socketSendJoin + ' msg ' + message);
 
     if (ChatLive_socketSendJoin && ChatLive_socketSend && ChatLive_socketSend.readyState === 1) {
-        Main_Log('ChatLive_SendMessage sended');
+        //Main_Log('ChatLive_SendMessage sended');
         ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
 
         return true;
@@ -910,7 +910,7 @@ function ChatLive_SendMessage(message, chat_number) {
 }
 
 // function ChatLive_FakeSendMessage(messageText, chat_number) {
-//     Main_Log('ChatLive_FakeSendMessage ' + messageText);
+//     //Main_Log('ChatLive_FakeSendMessage ' + messageText);
 
 //     var message = {
 //         params: [

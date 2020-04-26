@@ -198,9 +198,9 @@ function Main_loadTranslations(language) {
             Main_IsOnAndroid = 0;
             document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
             Main_isDebug = true;
-            Main_Log('Main_isReleased: ' + Main_isReleased);
-            Main_Log('Main_isDebug: ' + Main_isDebug);
-            Main_Log('Main_isBrowser: ' + !Main_IsOnAndroid);
+            //Main_Log('Main_isReleased: ' + Main_isReleased);
+            //Main_Log('Main_isDebug: ' + Main_isDebug);
+            //Main_Log('Main_isBrowser: ' + !Main_IsOnAndroid);
             //If we add the class on the android app for some reason it prevents input from release the focus
             Main_AddClass('scenefeed', 'feed_screen_input');
             //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
@@ -319,7 +319,7 @@ function Main_initRestoreBackups() {
 }
 
 function Main_initWindows() {
-    Main_Log('Main_initWindows');
+    //Main_Log('Main_initWindows');
     try {
         if (Main_IsOnAndroid) {
             Main_CanBackup = Android.canBackupFile();
@@ -1162,7 +1162,7 @@ function Main_ReStartScreens() {
 }
 
 function Main_SwitchScreen(removekey) {
-    Main_Log('Main_SwitchScreen removekey ' + removekey + ' Main_Go ' + Main_values.Main_Go);
+    //Main_Log('Main_SwitchScreen removekey ' + removekey + ' Main_Go ' + Main_values.Main_Go);
 
     Main_HideWarningDialog();
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
@@ -1201,7 +1201,7 @@ function Main_RestoreValues() {
 }
 
 function Main_ExitCurrent(ExitCurrent) {
-    Main_Log('Main_ExitCurrent ' + ExitCurrent);
+    //Main_Log('Main_ExitCurrent ' + ExitCurrent);
     if (Main_Switchobj[ExitCurrent].exit_fun) Main_Switchobj[ExitCurrent].exit_fun();
     if (Main_isElementShowing('settings_holder')) Settings_exit();
 }
@@ -1480,7 +1480,7 @@ function Main_OPenAsVod_PreshutdownStream() {
 }
 
 function Main_openStream() {
-    Main_Log('Main_openStream');
+    //Main_Log('Main_openStream');
     Main_hideScene1Doc();
     document.body.removeEventListener("keydown", Play_handleKeyDown);
     document.body.addEventListener("keydown", Play_handleKeyDown, false);
@@ -1633,7 +1633,7 @@ function Main_updateclock() {
 }
 
 function Main_updateUserFeed() {
-    Main_Log('Main_updateUserFeed');
+    //Main_Log('Main_updateUserFeed');
 
     if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
         !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
@@ -1675,7 +1675,7 @@ function Main_ExitDialog(event) {
 }
 
 function Main_ReloadScreen() {
-    Main_Log('Main_ReloadScreen ' + Main_values.Main_Go);
+    //Main_Log('Main_ReloadScreen ' + Main_values.Main_Go);
     Screens_clear = true;
     ChannelContent_clear = true;
 
@@ -1709,23 +1709,23 @@ function Main_getItemBool(item, default_value) {
 // use http://www.fileformat.info/info/unicode/char/16EB/index.html
 // Replace "16EB" with is the char ᛫ by the result of "string.charCodeAt(i).toString(16).toUpperCase()"
 // To see supported fonts and etc info about the unknown char
-function Main_PrintUnicode(string) { // jshint ignore:line
-    Main_Log(string);
-    for (var i = 0; i < string.length; i++)
-        Main_Log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
-}
+// function Main_PrintUnicode(string) { // jshint ignore:line
+//     Main_Log(string);
+//     for (var i = 0; i < string.length; i++)
+//         Main_Log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
+// }
 
 function processCode(pageUrl) {
-    Main_Log("processCode");
+    //Main_Log("processCode");
     var code = '';
     code = pageUrl.match(/code=(\w+)/);
     if (code) {
         code = code[1];
         CheckPage("?code=" + code);
-        Main_Log('if code ' + code);
+        //Main_Log('if code ' + code);
         Main_newUsercode = code;
     } else {
-        Main_Log('else code ' + code);
+        //Main_Log('else code ' + code);
         CheckPage('');
         Main_newUsercode = 0;
     }
@@ -2122,7 +2122,7 @@ function Main_SetHistoryworker() {
 
 var Main_StartHistoryworkerId;
 function Main_StartHistoryworker() {
-    Main_Log('Main_StartHistoryworker');
+    //Main_Log('Main_StartHistoryworker');
     if (!AddUser_IsUserSet()) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
@@ -2264,7 +2264,7 @@ function Main_SaveLiveObjt(position) {
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
-    Main_Log('Main_CheckAccessibility');
+    //Main_Log('Main_CheckAccessibility');
 
     if (Main_IsOnAndroid && Settings_Obj_default("accessibility_warn")) {
         if (Android.isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
@@ -2281,7 +2281,7 @@ function Main_CheckAccessibility(skipRefresCheck) {
 }
 
 function Main_CheckAccessibilitySet() {
-    Main_Log('Main_CheckAccessibilitySet');
+    //Main_Log('Main_CheckAccessibilitySet');
 
     Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
     Main_ShowElement('dialog_accessibility');

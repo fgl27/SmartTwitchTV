@@ -251,7 +251,7 @@ function PlayExtra_qualityChanged() {
         Main_SaveValues();
     }
 
-    if (Main_isDebug) Main_Log('PlayExtra_onPlayer: Auto');
+    //Main_Log('PlayExtra_onPlayer: Auto');
 }
 
 function PlayExtra_handleKeyDown(e) {

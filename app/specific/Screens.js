@@ -88,7 +88,7 @@ function Screens_assign() {
 //Variable initialization end
 
 function Screens_init() {
-    Main_Log('Screens_init ' + inUseObj.screen);
+    //Main_Log('Screens_init ' + inUseObj.screen);
     Main_addFocusVideoOffset = -1;
     Main_values.Main_Go = inUseObj.screen;
     inUseObj.label_init();
@@ -108,7 +108,7 @@ function Screens_init() {
 }
 
 function Screens_exit() {
-    Main_Log('Screens_exit ' + inUseObj.screen);
+    //Main_Log('Screens_exit ' + inUseObj.screen);
 
     Main_addFocusVideoOffset = 0;
     if (inUseObj.label_exit) inUseObj.label_exit();
@@ -176,7 +176,7 @@ function Screens_loadDataRequest(obj) {
 }
 
 function Screens_loadDataError(obj) {
-    Main_Log('Screens_loadDataError ' + obj.screen);
+    //Main_Log('Screens_loadDataError ' + obj.screen);
     obj.loadingDataTry++;
     if (obj.loadingDataTry < obj.loadingDataTryMax) {
         obj.loadingDataTimeout += 500;
@@ -393,7 +393,7 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodi
 }
 
 function Screens_loadDataSuccessFinish(obj) {
-    Main_Log('Screens_loadDataSuccessFinish ' + obj.screen);
+    //Main_Log('Screens_loadDataSuccessFinish ' + obj.screen);
     if (!obj.status) {
         if (Main_values.Main_Go === Main_aGame) AGame_Checkfollow();
 
@@ -429,7 +429,7 @@ function Screens_loadDataSuccessFinish(obj) {
         obj.FirstLoad = false;
 
         if (Main_FirstRun) {
-            Main_Log('Main_FirstRun ' + Main_FirstRun);
+            //Main_Log('Main_FirstRun ' + Main_FirstRun);
             //Force reset some values as I have reset the Never_run_new value and some things may crash
             if (Main_values.Never_run_new) {
                 Main_GoBefore = Main_Live;
@@ -451,7 +451,7 @@ function Screens_loadDataSuccessFinish(obj) {
                 Screens_loadDataSuccessFinishEnd();
 
             } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) {// && obj.status
-                Main_Log('Play_WasPlaying');
+                //Main_Log('Play_WasPlaying');
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;
@@ -477,7 +477,7 @@ function Screens_loadDataSuccessFinish(obj) {
                 Screens_loadDataSuccessFinishEnd();
 
             } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
-                Main_Log('!Play_WasPlaying');
+                //Main_Log('!Play_WasPlaying');
 
                 Main_HideElementWithEle(obj.ScrollDoc);
                 Main_ExitCurrent(Main_values.Main_Go);
@@ -490,7 +490,7 @@ function Screens_loadDataSuccessFinish(obj) {
                     Main_HideLoadDialog();
                 }
             } else {
-                Main_Log('Play_WasPlaying else');
+                //Main_Log('Play_WasPlaying else');
 
                 //Values that need to be reset to prevent app odd behavier
                 Main_values.Search_isSearching = false;
@@ -526,7 +526,7 @@ function Screens_loadDataSuccessFinish(obj) {
 
 var CheckAccessibilityVWasVisible = false;
 function Screens_handleKeyControls(event) {
-    Main_Log('Screens_handleKeyControls ' + event.keyCode);
+    //Main_Log('Screens_handleKeyControls ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_ENTER:
@@ -576,7 +576,7 @@ function Screens_loadDataSuccessFinishEnd() {
     try {
         JSON.parse(Android.StopNotificationService());
     } catch (e) {}
-    Main_Log('Screens_loadDataSuccessFinishEnd');
+    //Main_Log('Screens_loadDataSuccessFinishEnd');
 }
 
 function Screens_addFocus(forceScroll) {
@@ -1021,7 +1021,7 @@ function Screens_keyRight() {
 }
 
 function Screens_handleKeyDown(event) {
-    Main_Log('Screens_handleKeyDown ' + event.keyCode);
+    //Main_Log('Screens_handleKeyDown ' + event.keyCode);
 
     if (inUseObj.FirstLoad || Main_CantClick()) return;
 
@@ -1229,7 +1229,7 @@ function Screens_PeriodRemoveFocus(pos) {
 }
 
 function Screens_PeriodhandleKeyDown(event) {
-    Main_Log('Screens_PeriodhandleKeyDown ' + event.keyCode);
+    //Main_Log('Screens_PeriodhandleKeyDown ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1318,7 +1318,7 @@ function Screens_OffSetAddFocus(pos) {
 }
 
 function Screens_OffSethandleKeyDown(event) {
-    Main_Log('Screens_OffSethandleKeyDown ' + event.keyCode);
+    //Main_Log('Screens_OffSethandleKeyDown ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1423,7 +1423,7 @@ function Screens_HideRemoveDialog() {
 }
 
 function Screens_histDeleteKeyDown(event) {
-    Main_Log('Screens_histDeleteKeyDown ' + event.keyCode);
+    //Main_Log('Screens_histDeleteKeyDown ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_LEFT:
@@ -1518,7 +1518,7 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
 }
 
 function Screens_histhandleKeyDown(event) {
-    Main_Log('Screens_histhandleKeyDown ' + event.keyCode);
+    //Main_Log('Screens_histhandleKeyDown ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1695,7 +1695,7 @@ function Screens_ThumbOptionStringGetHistory() {
 }
 
 function Screens_ThumbOptionhandleKeyDown(event) {
-    Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
+    //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:

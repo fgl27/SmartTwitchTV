@@ -72,7 +72,7 @@ function UserLiveFeedobj_CheckToken() {
         UserLiveFeedobj_loadChannels();
     }
 
-    Main_Log('UserLiveFeedobj_CheckToken end');
+    //Main_Log('UserLiveFeedobj_CheckToken end');
 }
 
 function UserLiveFeedobj_loadDataPrepare() {
@@ -82,7 +82,7 @@ function UserLiveFeedobj_loadDataPrepare() {
 }
 
 function UserLiveFeedobj_loadChannels() {
-    Main_Log('UserLiveFeedobj_loadChannels');
+    //Main_Log('UserLiveFeedobj_loadChannels');
     var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
 
@@ -94,7 +94,7 @@ function UserLiveFeedobj_loadChannels() {
 }
 
 function UserLiveFeedobj_loadDataError(pos) {
-    Main_Log('UserLiveFeedobj_loadChannels');
+    //Main_Log('UserLiveFeedobj_loadChannels');
     UserLiveFeed_loadingDataTry++;
     if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
         UserLiveFeed_loadingDataTimeout += 500;
@@ -126,7 +126,7 @@ function UserLiveFeedobj_HooderDiv(pos, text) {
 }
 
 function UserLiveFeedobj_loadChannelLive(responseText) {
-    Main_Log('UserLiveFeedobj_loadChannelLive');
+    //Main_Log('UserLiveFeedobj_loadChannelLive');
 
     var response = JSON.parse(responseText).follows,
         response_items = response.length;
@@ -151,7 +151,7 @@ function UserLiveFeedobj_loadChannelLive(responseText) {
 }
 
 function UserLiveFeedobj_loadChannelUserLive() {
-    Main_Log('UserLiveFeedobj_loadChannelUserLive');
+    //Main_Log('UserLiveFeedobj_loadChannelUserLive');
     var theUrl = Main_kraken_api + 'streams/';
 
     if (UserLiveFeed_token) {
@@ -165,7 +165,7 @@ function UserLiveFeedobj_loadChannelUserLive() {
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
-    Main_Log('UserLiveFeedobj_loadChannelUserLiveGet');
+    //Main_Log('UserLiveFeedobj_loadChannelUserLiveGet');
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
@@ -184,7 +184,7 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
-    Main_Log('UserLiveFeedobj_loadChannelUserLiveGetEnd ' + xmlHttp.status);
+    //Main_Log('UserLiveFeedobj_loadChannelUserLiveGetEnd ' + xmlHttp.status);
     if (xmlHttp.status === 200) {
         UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
     } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
@@ -197,7 +197,7 @@ function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
 }
 
 function UserLiveFeedobj_loadDataRefreshTokenError() {
-    Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
+    //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
 
     if (!AddUser_UsernameArray[0].access_token) UserLiveFeedobj_CheckToken();
     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
@@ -832,7 +832,7 @@ function UserLiveFeedobj_CreatGameFeed(id, data) {
 
 //Base video fun
 function UserLiveFeedobj_loadDataSuccess(responseText) {
-    Main_Log('UserLiveFeedobj_loadDataSuccess');
+    //Main_Log('UserLiveFeedobj_loadDataSuccess');
 
     var response = JSON.parse(responseText),
         response_items,

@@ -185,7 +185,7 @@ function UserLiveFeed_Prepare() {
 }
 
 function UserLiveFeed_RefreshLive() {
-    Main_Log('UserLiveFeed_RefreshLive');
+    //Main_Log('UserLiveFeed_RefreshLive');
     if (AddUser_UserIsSet()) {
         UserLiveFeedobj_loadDataPrepare();
         UserLiveFeedobj_CheckToken();
@@ -494,7 +494,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 // function UserLiveFeed_CheckIfIsLiveFind720() {
 //     for (var i = 0; i < Play_CheckIfIsLiveResponseText; i++) {
 //         if (Main_A_includes_B(Play_CheckIfIsLiveResponseText[i].id, '720')) {
-//             Main_Log(Play_CheckIfIsLiveResponseText[i].id);
+//             //Main_Log(Play_CheckIfIsLiveResponseText[i].id);
 //             return i;
 //         }
 //     }
