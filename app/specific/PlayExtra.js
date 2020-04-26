@@ -244,8 +244,8 @@ function PlayExtra_qualityChanged() {
     if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
 
         Main_ShowElement('dialog_os');
-        document.body.removeEventListener("keydown", Play_handleKeyDown, false);
-        document.body.addEventListener("keydown", PlayExtra_handleKeyDown, false);
+        Main_removeEventListener("keydown", Play_handleKeyDown);
+        Main_addEventListener("keydown", PlayExtra_handleKeyDown);
 
         Main_values.check_pp_workaround = false;
         Main_SaveValues();
@@ -257,8 +257,8 @@ function PlayExtra_qualityChanged() {
 function PlayExtra_handleKeyDown(e) {
     if (e.keyCode === KEY_RETURN || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
 
-        document.body.removeEventListener("keydown", PlayExtra_handleKeyDown, false);
-        document.body.addEventListener("keydown", Play_handleKeyDown, false);
+        Main_removeEventListener("keydown", PlayExtra_handleKeyDown);
+        Main_addEventListener("keydown", Play_handleKeyDown);
         Main_HideElement('dialog_os');
 
     }

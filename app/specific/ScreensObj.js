@@ -1048,13 +1048,13 @@ var Base_Game_obj = {
         Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
         Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
 
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_removeEventListener("keydown", Screens_handleKeyDown);
         Main_values.Main_BeforeAgame = this.screen;
         Main_values.Main_Go = Main_aGame;
         Main_values.Main_BeforeAgameisSet = true;
 
         Main_addFocusVideoOffset = 0;
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_removeEventListener("keydown", Screens_handleKeyDown);
         Main_HideElementWithEle(this.ScrollDoc);
 
         Main_SwitchScreen();
@@ -1257,7 +1257,7 @@ function ScreensObj_InitUserChannels() {
             Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
             Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
 
-            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_removeEventListener("keydown", Screens_handleKeyDown);
             Main_values.Main_BeforeChannel = Main_UserChannels;
             Main_values.Main_Go = Main_ChannelContent;
             Main_values.Main_BeforeChannelisSet = true;
@@ -1313,7 +1313,7 @@ function ScreensObj_InitSearchChannels() {
             Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
             Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
 
-            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_removeEventListener("keydown", Screens_handleKeyDown);
             Main_values.Main_BeforeChannel = Main_SearchChannels;
             Main_values.Main_Go = Main_ChannelContent;
             Main_values.Main_BeforeChannelisSet = true;
@@ -1411,7 +1411,7 @@ var Base_History_obj = {
             this.posX = 0;
             Main_AddClass(this.ids[0] + '0_' + this.posX, Main_classThumb);
         }
-        document.body.removeEventListener("keydown", Screens_handleKeyDown);
+        Main_removeEventListener("keydown", Screens_handleKeyDown);
         Main_HideElementWithEle(this.ScrollDoc);
     },
     sethistMainDialog: function() {

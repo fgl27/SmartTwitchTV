@@ -139,20 +139,20 @@ var Languages_positions_length = 0;
 //Variable initialization end
 
 function Languages_init() {
-    document.body.removeEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener("keydown", Settings_handleKeyDown);
     Main_HideElement('settings_main');
     Main_ShowElement('settings_lang');
     Languages_HideShowAll();
     ScreensObj_SetTopLable(STR_SETTINGS + STR_SPACE + STR_CONTENT_LANG);
-    document.body.addEventListener("keydown", Languages_handleKeyDown, false);
+    Main_addEventListener("keydown", Languages_handleKeyDown);
     Languages_cursorY = 0;
     Languages_inputFocus(Languages_cursorY);
     Languages_ResetLang();
 }
 
 function Languages_exit() {
-    document.body.removeEventListener("keydown", Languages_handleKeyDown);
-    document.body.addEventListener("keydown", Settings_handleKeyDown, false);
+    Main_removeEventListener("keydown", Languages_handleKeyDown);
+    Main_addEventListener("keydown", Settings_handleKeyDown);
     Settings_ScrollTableReset();
     Main_ShowElement('settings_main');
     Main_HideElement('settings_lang');

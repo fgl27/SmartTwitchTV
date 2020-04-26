@@ -805,8 +805,8 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
         Play_EndDialogEnter = 0;
         Play_HideBufferDialog();
 
-        document.body.removeEventListener("keydown", Play_handleKeyDown);
-        document.body.addEventListener("keydown", Play_EndUpclearCalback, false);
+        Main_removeEventListener("keydown", Play_handleKeyDown);
+        Main_addEventListener("keydown", Play_EndUpclearCalback);
         Play_state = Play_STATE_PLAYING;
 
         Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
@@ -1116,7 +1116,7 @@ function Play_ClearPlay(clearChat) {
     //Main_Log('Play_ClearPlay');
 
     Play_Playing = false;
-    document.body.removeEventListener("keydown", Play_handleKeyDown);
+    Main_removeEventListener("keydown", Play_handleKeyDown);
     if (clearChat) ChatLive_Clear(0);
     window.clearInterval(Play_streamInfoTimerId);
     Play_IsWarning = false;
@@ -1648,8 +1648,8 @@ function Play_RestorePlayDataValues() {
 
 function Play_handleKeyUpClear() {
     window.clearTimeout(PlayExtra_KeyEnterID);
-    document.body.removeEventListener("keyup", Play_handleKeyUp);
-    if (!Main_isElementShowing('dialog_os')) document.body.addEventListener("keydown", Play_handleKeyDown, false);
+    Main_removeEventListener("keyup", Play_handleKeyUp);
+    if (!Main_isElementShowing('dialog_os')) Main_addEventListener("keydown", Play_handleKeyDown);
 }
 
 function Play_Exit() {

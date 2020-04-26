@@ -32,7 +32,7 @@ function ChannelContent_init() {
     if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
     Main_innerHTML("label_last_refresh", '');
-    document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
+    Main_addEventListener("keydown", ChannelContent_handleKeyDown);
     AddCode_PlayRequest = false;
 
     Main_innerHTML('top_lable', Main_values.Main_selectedChannelDisplayname);
@@ -56,7 +56,7 @@ function ChannelContent_init() {
 
 function ChannelContent_exit() {
     Main_RestoreTopLabel();
-    document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+    Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
     Main_HideElement(ChannelContent_ids[10]);
     Main_values.My_channel = false;
     ChannelContent_removeFocus();
@@ -323,7 +323,7 @@ function ChannelContent_removeAllFollowFocus() {
 function ChannelContent_keyEnter() {
     if (!ChannelContent_cursorY) {
         if (!ChannelContent_cursorX) {
-            document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+            Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
             Main_HideElement(ChannelContent_ids[10]);
             ChannelContent_removeFocus();
             Main_ready(function() {
@@ -331,7 +331,7 @@ function ChannelContent_keyEnter() {
                 Screens_init();
             });
         } else if (ChannelContent_cursorX === 1) {
-            document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+            Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
             Main_HideElement(ChannelContent_ids[10]);
             ChannelContent_removeFocus();
             Main_ready(function() {
@@ -350,7 +350,7 @@ function ChannelContent_keyEnter() {
             }
         }
     } else {
-        document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+        Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
         Main_HideElement(ChannelContent_ids[10]);
 
         Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
@@ -400,8 +400,8 @@ function ChannelContent_handleKeyUp(e) {
 
 function ChannelContent_handleKeyUpClear() {
     window.clearTimeout(ChannelContent_KeyEnterID);
-    document.body.removeEventListener("keyup", ChannelContent_handleKeyUp);
-    document.body.addEventListener("keydown", ChannelContent_handleKeyDown, false);
+    Main_removeEventListener("keyup", ChannelContent_handleKeyUp);
+    Main_addEventListener("keydown", ChannelContent_handleKeyDown);
 }
 
 function ChannelContent_handleKeyDown(event) {
@@ -416,7 +416,7 @@ function ChannelContent_handleKeyDown(event) {
             else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else {
                 ChannelContent_removeFocus();
-                document.body.removeEventListener("keydown", ChannelContent_handleKeyDown);
+                Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
                 Main_values.Main_Go = Main_values.Main_BeforeChannel;
                 Main_values.Main_BeforeChannel = Main_Live;
                 ChannelContent_exit();
@@ -473,8 +473,8 @@ function ChannelContent_handleKeyDown(event) {
             ChannelContent_keyEnter();
             break;
         case KEY_ENTER:
-            document.body.removeEventListener("keydown", ChannelContent_handleKeyDown, false);
-            document.body.addEventListener("keyup", ChannelContent_handleKeyUp, false);
+            Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
+            Main_addEventListener("keyup", ChannelContent_handleKeyUp);
             ChannelContent_clear = false;
             ChannelContent_KeyEnterID = window.setTimeout(Main_ReloadScreen, 500);
             break;

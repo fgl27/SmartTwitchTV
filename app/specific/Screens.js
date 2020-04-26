@@ -48,6 +48,8 @@ function Screens_InitScreens() {
     ScreensObj_HistoryLive();
     ScreensObj_HistoryVod();
     ScreensObj_HistoryClip();
+
+    Main_addEventListener("keyup", Screens_handleKeyUpAnimationFast);
 }
 
 //TODO cleanup not used when finished migrate all
@@ -93,7 +95,7 @@ function Screens_init() {
     Main_values.Main_Go = inUseObj.screen;
     inUseObj.label_init();
 
-    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_addEventListener("keydown", Screens_handleKeyDown);
     Main_ShowElementWithEle(inUseObj.ScrollDoc);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
@@ -112,7 +114,7 @@ function Screens_exit() {
 
     Main_addFocusVideoOffset = 0;
     if (inUseObj.label_exit) inUseObj.label_exit();
-    document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    Main_removeEventListener("keydown", Screens_handleKeyDown);
     Main_HideElementWithEle(inUseObj.ScrollDoc);
     Main_HideWarningDialog();
     Screens_ClearAnimation();
@@ -534,7 +536,7 @@ function Screens_handleKeyControls(event) {
         case KEY_RETURN:
             if (Main_CheckAccessibilityVisible()) {
                 CheckAccessibilityVWasVisible = true;
-                document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+                Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
                 Main_HideElement('dialog_accessibility');
             } else CheckAccessibilityVWasVisible = false;
 
@@ -545,11 +547,11 @@ function Screens_handleKeyControls(event) {
 
             Main_HideControlsDialog();
             Main_HideAboutDialog();
-            document.body.removeEventListener("keydown", Screens_handleKeyControls);
+            Main_removeEventListener("keydown", Screens_handleKeyControls);
 
             if (CheckAccessibilityVWasVisible) Main_CheckAccessibilitySet();
             else {
-                document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+                Main_addEventListener("keydown", Screens_handleKeyDown);
                 Screens_addFocus(true);
             }
 
@@ -962,7 +964,7 @@ function Screens_OpenSidePanel(forceFeed) {
     Screens_RemoveAllFocus();
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Screens_ClearAnimation();
-    document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    Main_removeEventListener("keydown", Screens_handleKeyDown);
     Sidepannel_Start(Screens_handleKeyDown, forceFeed);
 }
 
@@ -984,12 +986,12 @@ function Screens_handleKeyUp(e) {
         if (!Screens_clear) inUseObj.key_play();
     } else if (e.keyCode === KEY_LEFT) {
         window.clearTimeout(Screens_KeyEnterID);
-        document.body.removeEventListener("keyup", Screens_handleKeyUp);
+        Main_removeEventListener("keyup", Screens_handleKeyUp);
         if (!Screens_clear) {
             if (!inUseObj.posX) Screens_OpenSidePanel();
             else {
                 Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
-                document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+                Main_addEventListener("keydown", Screens_handleKeyDown);
             }
         }
     }
@@ -998,11 +1000,9 @@ function Screens_handleKeyUp(e) {
 
 function Screens_handleKeyUpClear() {
     window.clearTimeout(Screens_KeyEnterID);
-    document.body.removeEventListener("keyup", Screens_handleKeyUp);
-    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_removeEventListener("keyup", Screens_handleKeyUp);
+    Main_addEventListener("keydown", Screens_handleKeyDown);
 }
-
-document.body.addEventListener("keyup", Screens_handleKeyUpAnimationFast);
 
 function Screens_handleKeyUpAnimationFast() {
     Screens_ChangeFocusAnimationFast = false;
@@ -1069,8 +1069,8 @@ function Screens_handleKeyDown(event) {
             Screens_ThumbOptionSpecial = inUseObj.histPosXName ? false : true;
             Screens_handleKeyUpIsClear = false;
 
-            document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
-            document.body.addEventListener("keyup", Screens_handleKeyUp, false);
+            Main_removeEventListener("keydown", Screens_handleKeyDown);
+            Main_addEventListener("keyup", Screens_handleKeyUp);
             Screens_clear = false;
             Screens_KeyEnterID = window.setTimeout(Screens_ThumbOptionStart, 500);
             break;
@@ -1098,8 +1098,8 @@ function Screens_handleKeyDown(event) {
             inUseObj.key_play();
             break;
         case KEY_ENTER:
-            document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
-            document.body.addEventListener("keyup", Screens_handleKeyUp, false);
+            Main_removeEventListener("keydown", Screens_handleKeyDown);
+            Main_addEventListener("keyup", Screens_handleKeyUp);
             Screens_clear = false;
             Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 400);
             break;
@@ -1121,7 +1121,7 @@ function Screens_handleKeyDown(event) {
             break;
         case KEY_E:
         case KEY_9:
-            document.body.removeEventListener("keydown", Screens_handleKeyDown);
+            Main_removeEventListener("keydown", Screens_handleKeyDown);
             Main_showExitDialog();
             break;
         case KEY_CHAT:
@@ -1157,7 +1157,7 @@ function AGame_headerOptionsExit() {
         inUseObj.posX = 0;
         Main_AddClass(inUseObj.ids[0] + '0_' + inUseObj.posX, Main_classThumb);
     }
-    document.body.removeEventListener("keydown", Screens_handleKeyDown);
+    Main_removeEventListener("keydown", Screens_handleKeyDown);
     Main_HideElementWithEle(inUseObj.ScrollDoc);
 }
 
@@ -1193,8 +1193,8 @@ var Screens_PeriodDialogPos = 0;
 function Screens_PeriodStart() {
     Screens_setPeriodDialog();
     Main_ShowElement('dialog_period');
-    document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    document.body.addEventListener("keydown", Screens_PeriodhandleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_handleKeyDown);
+    Main_addEventListener("keydown", Screens_PeriodhandleKeyDown);
 }
 
 function Screens_clearPeriodDialogId() {
@@ -1215,8 +1215,8 @@ function Screens_setPeriodDialog() {
 function Screens_PeriodDialogHide() {
     Screens_clearPeriodDialogId();
     Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
-    document.body.removeEventListener("keydown", Screens_PeriodhandleKeyDown, false);
-    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_PeriodhandleKeyDown);
+    Main_addEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement('dialog_period');
 }
 
@@ -1276,8 +1276,8 @@ function Screens_OffSetStart() {
     inUseObj.OffSetPos = inUseObj.extraoffset / 100;
     Screens_setOffSetDialog();
     Main_ShowElement('dialog_OffSet');
-    document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    document.body.addEventListener("keydown", Screens_OffSethandleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_handleKeyDown);
+    Main_addEventListener("keydown", Screens_OffSethandleKeyDown);
 }
 
 function Screens_clearOffSetDialogId() {
@@ -1296,8 +1296,8 @@ function Screens_setOffSetDialog() {
 
 function Screens_OffSetDialogHide() {
     Screens_clearOffSetDialogId();
-    document.body.removeEventListener("keydown", Screens_OffSethandleKeyDown, false);
-    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_OffSethandleKeyDown);
+    Main_addEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement('dialog_OffSet');
 }
 
@@ -1361,8 +1361,8 @@ var Screens_histDialogID;
 function Screens_histStart() {
     inUseObj.sethistDialog();
     Main_ShowElement('dialog_hist_setting');
-    document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    document.body.addEventListener("keydown", Screens_histhandleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_handleKeyDown);
+    Main_addEventListener("keydown", Screens_histhandleKeyDown);
 }
 
 function Screens_clearhistDialogId() {
@@ -1381,8 +1381,8 @@ function Screens_histDialogHide(Update) {
 
     Screens_histAddFocus(0);
     Screens_clearhistDialogId();
-    document.body.removeEventListener("keydown", Screens_histhandleKeyDown, false);
-    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_histhandleKeyDown);
+    Main_addEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement('dialog_hist_setting');
 
     if (Update) {
@@ -1403,8 +1403,8 @@ function Screens_histDialogHide(Update) {
 function Screens_showDeleteDialog(text) {
     Main_innerHTML("main_dialog_remove", text);
     Main_ShowElement('main_remove_dialog');
-    document.body.removeEventListener("keydown", Screens_handleKeyDown, false);
-    document.body.addEventListener("keydown", Screens_histDeleteKeyDown, false);
+    Main_removeEventListener("keydown", Screens_handleKeyDown);
+    Main_addEventListener("keydown", Screens_histDeleteKeyDown);
     Screens_setRemoveDialog();
 }
 
@@ -1414,8 +1414,8 @@ function Screens_setRemoveDialog() {
 
 function Screens_HideRemoveDialog() {
     Users_clearRemoveDialog();
-    document.body.removeEventListener("keydown", Screens_histDeleteKeyDown);
-    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_histDeleteKeyDown);
+    Main_addEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement('main_remove_dialog');
     Users_RemoveCursor = 0;
     Users_UserCursorSet();
@@ -1589,8 +1589,8 @@ function Screens_ThumbOptionStart() {
 
     inUseObj.setTODialog();
     Screens_SeTODialogId();
-    document.body.removeEventListener("keydown", Screens_handleKeyDown);
-    document.body.addEventListener("keydown", Screens_ThumbOptionhandleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_handleKeyDown);
+    Main_addEventListener("keydown", Screens_ThumbOptionhandleKeyDown);
 
     Main_ShowElement('dialog_thumb_opt');
 }
@@ -1777,8 +1777,8 @@ function Screens_ThumbOptionDialogHide(Update) {
     Screens_histRemoveFocus(Screens_ThumbOptionPosY, 'thumb_opt');
 
     Screens_clearTODialogId();
-    document.body.removeEventListener("keydown", Screens_ThumbOptionhandleKeyDown, false);
-    document.body.addEventListener("keydown", Screens_handleKeyDown, false);
+    Main_removeEventListener("keydown", Screens_ThumbOptionhandleKeyDown);
+    Main_addEventListener("keydown", Screens_handleKeyDown);
     Main_HideElement('dialog_thumb_opt');
 
     if (Update) {

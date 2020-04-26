@@ -166,7 +166,7 @@ function Play_EndDialogPressed(PlayVodClip) {
             Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
             Play_PreshutdownStream(false);
 
-            document.body.addEventListener("keydown", Play_handleKeyDown, false);
+            Main_addEventListener("keydown", Play_handleKeyDown);
 
             Play_data.data[14] = Play_TargetHost.target_id;
             Main_timeOut(Play_Start);
@@ -541,8 +541,8 @@ function Play_keyUpEnd() {
 
 function Play_handleKeyUpEndClear() {
     window.clearTimeout(Play_EndUpclearID);
-    document.body.removeEventListener("keyup", Play_handleKeyUp);
-    document.body.addEventListener("keydown", Play_EndUpclearCalback, false);
+    Main_removeEventListener("keyup", Play_handleKeyUp);
+    Main_addEventListener("keydown", Play_EndUpclearCalback);
 }
 
 function Play_handleKeyDown(e) {
@@ -646,8 +646,8 @@ function Play_handleKeyDown(e) {
                 } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
                 else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
                     Play_EndTextClear();
-                    document.body.removeEventListener("keydown", Play_handleKeyDown, false);
-                    document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                    Main_removeEventListener("keydown", Play_handleKeyDown);
+                    Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
                     Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);
@@ -674,8 +674,8 @@ function Play_handleKeyDown(e) {
                 else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                 else if (PlayExtra_PicturePicture && !Play_MultiEnable) {
                     if (Play_isFullScreen) {
-                        document.body.removeEventListener("keydown", Play_handleKeyDown, false);
-                        document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                        Main_removeEventListener("keydown", Play_handleKeyDown);
+                        Main_addEventListener("keyup", Play_handleKeyUp);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = Play_handleKeyDown;
                         Play_EndUpclearID = window.setTimeout(Play_PPKeyDownHold, 250);
@@ -683,8 +683,8 @@ function Play_handleKeyDown(e) {
                         Play_PPKeyDownHold();
                     }
                 } else if (Play_MultiEnable) {
-                    document.body.removeEventListener("keydown", Play_handleKeyDown, false);
-                    document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                    Main_removeEventListener("keydown", Play_handleKeyDown);
+                    Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
                     Play_EndUpclearID = window.setTimeout(Play_MultiKeyDownHold, 250);
@@ -720,8 +720,8 @@ function Play_handleKeyDown(e) {
                         } else Play_MultiStartPrestart();
                     }
                     else {
-                        document.body.removeEventListener("keydown", Play_handleKeyDown, false);
-                        document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                        Main_removeEventListener("keydown", Play_handleKeyDown);
+                        Main_addEventListener("keyup", Play_handleKeyUp);
                         PlayExtra_clear = false;
                         UserLiveFeed_ResetFeedId();
                         PlayExtra_KeyEnterID = window.setTimeout(PlayExtra_KeyEnter, 250);

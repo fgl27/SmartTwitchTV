@@ -263,7 +263,7 @@ function Sidepannel_KeyEnterBase() {
                 (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
                 ChannelContent_SetChannelValue();
             Main_OpenSearch();
-        } else document.body.addEventListener("keydown", Sidepannel_Callback, false);
+        } else Main_addEventListener("keydown", Sidepannel_Callback);
     } else if (Main_values.Sidepannel_Pos === 10) {
         Main_showSettings();
     } else if (Main_values.Sidepannel_Pos === 11)
@@ -305,7 +305,7 @@ function Sidepannel_KeyEnter() {
 
 function Sidepannel_Go(GoTo) {
     if (GoTo === Main_values.Main_Go) {
-        document.body.addEventListener("keydown", Sidepannel_Callback, false);
+        Main_addEventListener("keydown", Sidepannel_Callback);
         Main_SwitchScreen();
     } else {
         Main_values.Main_Before = Main_values.Main_Go;
@@ -317,7 +317,7 @@ function Sidepannel_Go(GoTo) {
 
 function Sidepannel_Start(callback, forceFeed) {
     Sidepannel_Callback = callback;
-    document.body.removeEventListener("keydown", Sidepannel_Callback);
+    Main_removeEventListener("keydown", Sidepannel_Callback);
     if (!Sidepannel_IsMain || forceFeed) {
         if (AddUser_UserIsSet()) Sidepannel_StartFeed();
         else {
@@ -330,7 +330,7 @@ function Sidepannel_Start(callback, forceFeed) {
 
 function Sidepannel_StartFeed() {
     Sidepannel_IsMain = false;
-    document.body.addEventListener("keydown", Sidepannel_handleKeyDown, false);
+    Main_addEventListener("keydown", Sidepannel_handleKeyDown);
     Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     Sidepannel_ShowFeed();
     Sidepannel_HideMain(true);
@@ -356,7 +356,7 @@ function Sidepannel_StartMain() {
     Sidepannel_IsMain = true;
     Sidepannel_MovelDiv.style.transform = 'translateX(' + Sidepannel_FixdefaultMargin + '%)';
     Sidepannel_FixDiv.style.marginLeft = '';
-    document.body.addEventListener("keydown", Sidepannel_handleKeyDownMain, false);
+    Main_addEventListener("keydown", Sidepannel_handleKeyDownMain);
     Sidepannel_AddFocusMain();
 }
 
@@ -380,8 +380,8 @@ function Sidepannel_Hide(PreventcleanQuailities) {
     Main_HideElement('side_panel_feed_thumb');
     Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
-    document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
-    document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
+    Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
+    Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
 }
 
 function Sidepannel_HideEle(PreventcleanQuailities) {
@@ -544,7 +544,7 @@ function Sidepannel_handleKeyDown(event) {
             Sidepannel_HideEle();
             Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
             Main_HideElement('side_panel_feed_thumb');
-            document.body.removeEventListener("keydown", Sidepannel_handleKeyDown);
+            Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
             Sidepannel_StartMain();
             break;
         case KEY_REFRESH:
@@ -619,7 +619,7 @@ function Sidepannel_handleKeyDownMain(event) {
         case KEY_CHAT:
         case KEY_LEFT:
             if (AddUser_UserIsSet()) {
-                document.body.removeEventListener("keydown", Sidepannel_handleKeyDownMain);
+                Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
                 Sidepannel_StartFeed();
             } else {
                 Main_showWarningDialog(STR_NOKUSER_WARN);

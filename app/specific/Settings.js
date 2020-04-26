@@ -270,7 +270,7 @@ var Settings_positions_length = 0;
 //Variable initialization end
 
 function Settings_init() {
-    document.body.addEventListener("keydown", Settings_handleKeyDown, false);
+    Main_addEventListener("keydown", Settings_handleKeyDown);
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_ShowElement('settings_holder');
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
@@ -282,7 +282,7 @@ function Settings_init() {
 
 function Settings_exit() {
     Settings_ScrollTableReset();
-    document.body.removeEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener("keydown", Settings_handleKeyDown);
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     Main_ShowElement('label_refresh');
     Settings_RemoveinputFocus();
@@ -925,7 +925,7 @@ var Settings_CodecsPos;
 var Settings_DisableCodecsNames = [];
 
 function Settings_CodecsShow() {
-    document.body.removeEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener("keydown", Settings_handleKeyDown);
 
     if (!Settings_CodecsValue.length) {
 
@@ -976,7 +976,7 @@ function Settings_CodecsShow() {
     }
 
     Main_ShowElement('dialog_codecs');
-    document.body.addEventListener("keydown", Settings_handleKeyDownCodecs, false);
+    Main_addEventListener("keydown", Settings_handleKeyDownCodecs);
 }
 
 function Settings_handleKeyDownCodecs(event) {
@@ -987,8 +987,8 @@ function Settings_handleKeyDownCodecs(event) {
         case KEY_RETURN:
             Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');
-            document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
-            document.body.addEventListener("keydown", Settings_handleKeyDown, false);
+            Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
+            Main_addEventListener("keydown", Settings_handleKeyDown);
             break;
         case KEY_LEFT:
             key = Settings_CodecsValue[Settings_CodecsPos].name;
@@ -1322,7 +1322,7 @@ var Settings_DialogValue = [];
 var Settings_DialogPos = 0;
 
 function Settings_DialogShow(obj, title) {
-    document.body.removeEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener("keydown", Settings_handleKeyDown);
 
     var dialogContent = title + STR_BR + STR_BR;
     Settings_DialogValue = [];
@@ -1341,7 +1341,7 @@ function Settings_DialogShow(obj, title) {
     Settings_SetarrowsKey(Settings_DialogValue[0]);
 
     Main_ShowElement('dialog_settings');
-    document.body.addEventListener("keydown", Settings_DialoghandleKeyDown, false);
+    Main_addEventListener("keydown", Settings_DialoghandleKeyDown);
 }
 
 function Settings_DialoghandleKeyDown(event) {
@@ -1352,8 +1352,8 @@ function Settings_DialoghandleKeyDown(event) {
         case KEY_RETURN:
             Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
             Main_HideElement('dialog_settings');
-            document.body.removeEventListener("keydown", Settings_DialoghandleKeyDown);
-            document.body.addEventListener("keydown", Settings_handleKeyDown, false);
+            Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
+            Main_addEventListener("keydown", Settings_handleKeyDown);
             break;
         case KEY_LEFT:
             key = Settings_DialogValue[Settings_DialogPos];

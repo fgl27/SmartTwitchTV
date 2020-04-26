@@ -327,7 +327,7 @@ function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
     Play_ClearPlayer();
     UserLiveFeed_Hide(PreventcleanQuailities);
     PlayClip_qualities = [];
-    document.body.removeEventListener("keydown", PlayClip_handleKeyDown);
+    Main_removeEventListener("keydown", PlayClip_handleKeyDown);
     ChannelVod_vodOffset = 0;
 }
 
@@ -485,7 +485,7 @@ function PlayClip_OpenVod() {
         Play_DurationSeconds = 0;
         Main_values.vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream(true);
-        document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
+        Main_addEventListener("keydown", PlayVod_handleKeyDown);
         Play_IconsResetFocus();
         Main_ready(PlayVod_Start);
     } else {
@@ -577,8 +577,8 @@ function PlayClip_handleKeyDown(e) {
             case KEY_UP:
                 if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
                     Play_EndTextClear();
-                    document.body.removeEventListener("keydown", PlayClip_handleKeyDown, false);
-                    document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                    Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+                    Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = PlayClip_handleKeyDown;
                     Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);

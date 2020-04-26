@@ -147,6 +147,7 @@ var Main_UserBackupFile = 'user.json';
 var Main_HistoryBackupFile = 'history.json';
 var Main_Scene1Doc;
 var Main_Scene2Doc;
+var Main_body = document.body;
 //Variable initialization end
 
 // this function will be called only once the first time the app startup
@@ -196,7 +197,7 @@ function Main_loadTranslations(language) {
         } catch (e) {
             Main_IsOnAndroidVersion = '1.0.0';
             Main_IsOnAndroid = 0;
-            document.body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
+            Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
             Main_isDebug = true;
             //Main_Log('Main_isReleased: ' + Main_isReleased);
             //Main_Log('Main_isDebug: ' + Main_isDebug);
@@ -256,7 +257,7 @@ function Main_loadTranslations(language) {
                 Main_textContent('remove_yes', STR_YES);
                 Main_ShowElement('main_remove_dialog');
                 Main_values.Restore_Backup_Check = true;
-                document.body.addEventListener("keydown", Main_BackupDialodKeyDown, false);
+                Main_addEventListener("keydown", Main_BackupDialodKeyDown);
             } catch (e) {
                 Main_timeOut(Main_initWindows, 500);
                 return;
@@ -281,7 +282,7 @@ function Main_BackupDialodKeyDown(event) {
         case KEY_ENTER:
             Main_showLoadDialog();
             Main_HideElement('main_remove_dialog');
-            document.body.removeEventListener("keydown", Main_BackupDialodKeyDown);
+            Main_removeEventListener("keydown", Main_BackupDialodKeyDown);
             if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
             else Main_initWindows();
             break;
@@ -587,7 +588,7 @@ function Main_initClick() {
         Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
     }
 
-    document.body.onpointerup = function() {
+    Main_body.onpointerup = function() {
         Main_initbodyClickSet();
     };
     Main_initbodyClickSet();
@@ -748,11 +749,11 @@ function Main_setExitDialog() {
 function Main_showExitDialog() {
     Main_setExitDialog();
     Main_ShowElement('main_dialog_exit');
-    document.body.addEventListener("keydown", Main_ExitDialog, false);
+    Main_addEventListener("keydown", Main_ExitDialog);
 }
 
 function Main_HideExitDialog() {
-    document.body.removeEventListener("keydown", Main_ExitDialog, false);
+    Main_removeEventListener("keydown", Main_ExitDialog);
     Main_SwitchScreen();
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
@@ -800,8 +801,8 @@ function Main_AboutDialogUpdateTime() {
 }
 
 function Main_showAboutDialog(removeEventListener, addEventListener) {
-    document.body.removeEventListener("keydown", removeEventListener);
-    document.body.addEventListener("keydown", addEventListener, false);
+    Main_removeEventListener("keydown", removeEventListener);
+    Main_addEventListener("keydown", addEventListener);
     Main_HideControlsDialog();
     Main_AboutDialogUpdateTime();
     Main_ShowElement('dialog_about');
@@ -824,8 +825,8 @@ function Main_showSettings() {
 }
 
 function Main_showphoneDialog(removeEventListener, addEventListener) {
-    document.body.removeEventListener("keydown", removeEventListener);
-    document.body.addEventListener("keydown", addEventListener, false);
+    Main_removeEventListener("keydown", removeEventListener);
+    Main_addEventListener("keydown", addEventListener);
     Main_HideAboutDialog();
     Main_ShowElement('dialog_phone');
 }
@@ -839,8 +840,8 @@ function Main_isphoneDialogVisible() {
 }
 
 function Main_showControlsDialog(removeEventListener, addEventListener) {
-    document.body.removeEventListener("keydown", removeEventListener);
-    document.body.addEventListener("keydown", addEventListener, false);
+    Main_removeEventListener("keydown", removeEventListener);
+    Main_addEventListener("keydown", addEventListener);
     Main_HideAboutDialog();
     Main_ShowElement('dialog_controls');
 }
@@ -1178,7 +1179,7 @@ function Main_SwitchScreen(removekey) {
         Main_Switchobj[1].init_fun();
     }
 
-    if (removekey) document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+    if (removekey) Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
 }
 
 function Main_OpenSearch() {
@@ -1303,7 +1304,7 @@ function Main_ThumbOpenIsNull(id, thumbnail) {
 
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
+    Main_removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
     Play_data.data = Main_values_Play_data;
 
@@ -1482,8 +1483,8 @@ function Main_OPenAsVod_PreshutdownStream() {
 function Main_openStream() {
     //Main_Log('Main_openStream');
     Main_hideScene1Doc();
-    document.body.removeEventListener("keydown", Play_handleKeyDown);
-    document.body.addEventListener("keydown", Play_handleKeyDown, false);
+    Main_removeEventListener("keydown", Play_handleKeyDown);
+    Main_addEventListener("keydown", Play_handleKeyDown);
     Main_showScene2Doc();
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
@@ -1493,7 +1494,7 @@ function Main_openStream() {
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_hideScene1Doc();
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
+    Main_removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
     ChannelClip_playUrl = Main_values_Play_data[0];
@@ -1517,7 +1518,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     ChannelClip_views = Main_values_Play_data[14];
     ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
-    document.body.addEventListener("keydown", PlayClip_handleKeyDown, false);
+    Main_addEventListener("keydown", PlayClip_handleKeyDown);
     Main_showScene2Doc();
     Play_hideChat();
     Play_HideWarningDialog();
@@ -1527,7 +1528,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
 
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
-    document.body.removeEventListener("keydown", handleKeyDownFunction);
+    Main_removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
@@ -1555,7 +1556,7 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
 
 function Main_openVod() {
     Main_hideScene1Doc();
-    document.body.addEventListener("keydown", PlayVod_handleKeyDown, false);
+    Main_addEventListener("keydown", PlayVod_handleKeyDown);
     Main_showScene2Doc();
     PlayVod_hidePanel();
     Play_hideChat();
@@ -1575,7 +1576,7 @@ function Main_Checktylesheet() {
 
     span.className = 'fa';
     span.style.display = 'none';
-    document.body.insertBefore(span, document.body.firstChild);
+    Main_body.insertBefore(span, Main_body.firstChild);
 
     Main_ready(function() {
         if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
@@ -1583,7 +1584,7 @@ function Main_Checktylesheet() {
             Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
         } else Main_Log('Main_Checktylesheet loaded OK');
 
-        document.body.removeChild(span);
+        Main_body.removeChild(span);
     });
 }
 
@@ -2173,11 +2174,11 @@ function Main_CheckStop() { // Called only by JAVA
         if (Settings_Codecs_isVisible()) {
             if (Settings_CodecsValue.length) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');
-            document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
+            Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
         } else if (Settings_Dialog_isVisible()) {
             if (Settings_DialogValue.length) Settings_DialoghandleKeyDown(Settings_DialogValue[Settings_DialogPos]);
             Main_HideElement('dialog_settings');
-            document.body.removeEventListener("keydown", Settings_handleKeyDownCodecs);
+            Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
         }
         Settings_exit();
         Main_SwitchScreen();
@@ -2272,7 +2273,7 @@ function Main_CheckAccessibility(skipRefresCheck) {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
             if (Screens_Isfocused() && !skipRefresCheck) {
-                document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+                Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
                 Main_SwitchScreen();
             }
         }
@@ -2285,11 +2286,11 @@ function Main_CheckAccessibilitySet() {
 
     Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
     Main_ShowElement('dialog_accessibility');
-    document.body.removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
-    document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+    Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+    Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
     if (!Sidepannel_isShowing() && Main_isScene1DocShown()) {
         Sidepannel_Hide();
-        document.body.addEventListener("keydown", Main_CheckAccessibilityKey, false);
+        Main_addEventListener("keydown", Main_CheckAccessibilityKey);
     }
 }
 
@@ -2298,7 +2299,7 @@ function Main_CheckAccessibilityVisible() {
 }
 
 function Main_CheckAccessibilityHide(switchScreen) {
-    document.body.removeEventListener("keydown", Main_CheckAccessibilityKey, false);
+    Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
     Main_HideElement('dialog_accessibility');
     if (switchScreen) Main_SwitchScreen();
 }
@@ -2329,4 +2330,15 @@ function Main_Log(text) {
 function Main_LogDate(date) {
     return date.toLocaleTimeString([], {hour12: false}) + '.' + date.getMilliseconds();
 }
+
+function Main_addEventListener(type, fun) {
+    Main_removeEventListener(type, fun);
+    Main_body.addEventListener(type, fun);
+}
+
+function Main_removeEventListener(type, fun) {
+    Main_body.removeEventListener(type, fun);
+}
+
+
 

@@ -451,7 +451,7 @@ function PlayVod_PreshutdownStream(saveOffset, PreventcleanQuailities) {
 function PlayVod_ClearVod() {
     //Main_Log('PlayVod_ClearVod');
 
-    document.body.removeEventListener("keydown", PlayVod_handleKeyDown);
+    Main_removeEventListener("keydown", PlayVod_handleKeyDown);
     Main_values.vodOffset = 0;
     Play_DurationSeconds = 0;
 }
@@ -818,8 +818,8 @@ function PlayVod_handleKeyDown(e) {
             case KEY_UP:
                 if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
                     Play_EndTextClear();
-                    document.body.removeEventListener("keydown", PlayVod_handleKeyDown, false);
-                    document.body.addEventListener("keyup", Play_handleKeyUp, false);
+                    Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+                    Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = PlayVod_handleKeyDown;
                     Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);

@@ -12,9 +12,8 @@ function ChatLiveControls_Show() {
         return;
     }
 
-    document.body.removeEventListener("keydown", Play_handleKeyDown);
-    document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
-    document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
+    Main_removeEventListener("keydown", Play_handleKeyDown);
+    Main_addEventListener("keydown", ChatLiveControls_handleKeyDown);
     Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
     ChatLiveControls_SetRoomState();
     Main_ShowElement('chat_send');
@@ -37,14 +36,13 @@ function ChatLiveControls_Show() {
 function ChatLiveControls_Hide() {
     ChatLiveControls_Channel = 0;
     ChatLiveControls_PreventInputClear();
-    document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
-    document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
-    document.body.removeEventListener("keydown", ChatLiveControls_EmotesEvent);
-    document.body.removeEventListener("keydown", ChatLiveControls_ChooseChat);
-    document.body.removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
+    Main_removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
+    Main_removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+    Main_removeEventListener("keydown", ChatLiveControls_EmotesEvent);
+    Main_removeEventListener("keydown", ChatLiveControls_ChooseChat);
+    Main_removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
 
-    document.body.removeEventListener("keydown", Play_handleKeyDown);
-    document.body.addEventListener("keydown", Play_handleKeyDown, false);
+    Main_addEventListener("keydown", Play_handleKeyDown);
 
     Main_HideElement('chat_send');
     Main_HideElement('chat_emotes_holder');
@@ -95,7 +93,7 @@ function ChatLiveControls_SetRoomState() {
 function ChatLiveControls_inputFocus() {
     if (ChatLiveControls_CanSend()) {
         ChatLiveControls_resetInputFocusTools();
-        document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+        Main_removeEventListener("keydown", ChatLiveControls_handleKeyDown);
         Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
 
         window.clearTimeout(ChatLiveControls_inputFocusId);
@@ -109,8 +107,7 @@ function ChatLiveControls_inputFocus() {
                 }
             } catch (e) {}
             ChatLiveControls_keyBoardOn = true;
-            document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
-            document.body.addEventListener("keydown", ChatLiveControls_KeyboardEvent, false);
+            Main_addEventListener("keydown", ChatLiveControls_KeyboardEvent);
             //Set the avoidclicks only after focus
             Main_AddClass('scene_notify', 'avoidclicks');
             Main_AddClass('scenefeed', 'avoidclicks');
@@ -138,12 +135,11 @@ function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
     Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
     Main_ChatLiveInput.blur();
     ChatLiveControls_removeEventListener();
-    document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
+    Main_removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
     Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
 
     if (EnaKeydown) {
-        document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
-        document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
+        Main_addEventListener("keydown", ChatLiveControls_handleKeyDown);
     }
 
     ChatLiveControls_keyBoardOn = false;
@@ -425,11 +421,10 @@ function ChatLiveControls_SetEmojisObj() {
 
 function ChatLiveControls_ShowEmotes() {
     Main_ready(function() {
-        document.body.removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
-        document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
-        document.body.removeEventListener("keydown", ChatLiveControls_EmotesEvent);
+        Main_removeEventListener("keydown", ChatLiveControls_KeyboardEvent);
+        Main_removeEventListener("keydown", ChatLiveControls_handleKeyDown);
 
-        document.body.addEventListener("keydown", ChatLiveControls_EmotesEvent, false);
+        Main_addEventListener("keydown", ChatLiveControls_EmotesEvent);
         ChatLiveControls_resetInputFocusTools();
 
         document.getElementById('chat_emotes').style.transform = '';
@@ -440,9 +435,8 @@ function ChatLiveControls_ShowEmotes() {
 }
 
 function ChatLiveControls_HideEmotes() {
-    document.body.removeEventListener("keydown", ChatLiveControls_EmotesEvent);
-    document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
-    document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown);
+    Main_removeEventListener("keydown", ChatLiveControls_EmotesEvent);
+    Main_addEventListener("keydown", ChatLiveControls_handleKeyDown);
 
     Main_HideElement('chat_emotes_holder');
     ChatLiveControls_EmotesRemoveFocus(ChatLiveControls_EmotesPos);
@@ -581,9 +575,8 @@ function ChatLiveControls_CheckEmoteStatus() {
 }
 
 function ChatLiveControls_ShowChooseChat() {
-    document.body.removeEventListener("keydown", Play_handleKeyDown);
-    document.body.removeEventListener("keydown", ChatLiveControls_ChooseChat);
-    document.body.addEventListener("keydown", ChatLiveControls_ChooseChat, false);
+    Main_removeEventListener("keydown", Play_handleKeyDown);
+    Main_addEventListener("keydown", ChatLiveControls_ChooseChat);
 
     Main_textContent("chat_choose_dialog_text", STR_CHAT_CHOOSE);
     Main_textContent("chat_choose_dialog0", Play_data.data[1]);
@@ -601,7 +594,7 @@ function ChatLiveControls_ChooseChatFocus(position) {
 }
 
 function ChatLiveControls_HideChooseChat() {
-    document.body.removeEventListener("keydown", ChatLiveControls_ChooseChat);
+    Main_removeEventListener("keydown", ChatLiveControls_ChooseChat);
     Main_HideElement('chat_choose');
 }
 
@@ -771,7 +764,7 @@ function ChatLiveControls_OptionsUpdate_defautls() {
 }
 
 function ChatLiveControls_OptionsShow() {
-    document.body.removeEventListener("keydown", ChatLiveControls_handleKeyDown);
+    Main_removeEventListener("keydown", ChatLiveControls_handleKeyDown);
 
     OptionsShowObj = {
         keyboard_options: {
@@ -811,7 +804,7 @@ function ChatLiveControls_OptionsShow() {
     ChatLiveControls_SetarrowsKey(OptionsShowArray[0]);
 
     Main_ShowElement('chat_options');
-    document.body.addEventListener("keydown", ChatLiveControls_OptionsKeyDown, false);
+    Main_addEventListener("keydown", ChatLiveControls_OptionsKeyDown);
 }
 
 function ChatLiveControls_DivOptionWithSummary(key, string_title, string_summary) {
@@ -842,8 +835,8 @@ function ChatLiveControls_SetarrowsKey(key) {
 function ChatLiveControls_Optionshide() {
     Settings_RemoveinputFocusKey(OptionsShowArray[ChatLiveControls_OptionsY]);
     Main_HideElement('chat_options');
-    document.body.removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
-    document.body.addEventListener("keydown", ChatLiveControls_handleKeyDown, false);
+    Main_removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
+    Main_addEventListener("keydown", ChatLiveControls_handleKeyDown);
 }
 
 function ChatLiveControls_OptionsKeyDown(event) {

@@ -19,8 +19,8 @@ function AddUser_init() {
 
 function AddUser_exit() {
     AddUser_RemoveinputFocus(false);
-    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-    document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
+    Main_removeEventListener("keydown", AddUser_handleKeyDown);
+    Main_removeEventListener("keydown", AddUser_KeyboardEvent);
     Main_HideElement('add_user_scroll');
 }
 
@@ -54,8 +54,8 @@ var AddUser_inputFocusId;
 function AddUser_inputFocus() {
     Main_AddClass('scenefeed', 'avoidclicks');
     Main_AddClass('scene_notify', 'avoidclicks');
-    document.body.removeEventListener("keydown", AddUser_handleKeyDown);
-    document.body.addEventListener("keydown", AddUser_KeyboardEvent, false);
+    Main_removeEventListener("keydown", AddUser_handleKeyDown);
+    Main_addEventListener("keydown", AddUser_KeyboardEvent);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
 
     window.clearTimeout(AddUser_inputFocusId);
@@ -81,10 +81,10 @@ function AddUser_RemoveinputFocus(EnaKeydown) {
     window.clearTimeout(AddUser_inputFocusId);
     Main_AddUserInput.blur();
     AddUser_removeEventListener();
-    document.body.removeEventListener("keydown", AddUser_KeyboardEvent);
+    Main_removeEventListener("keydown", AddUser_KeyboardEvent);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_USER;
 
-    if (EnaKeydown) document.body.addEventListener("keydown", AddUser_handleKeyDown, false);
+    if (EnaKeydown) Main_addEventListener("keydown", AddUser_handleKeyDown);
     AddUser_keyBoardOn = false;
 }
 
@@ -144,7 +144,7 @@ function AddUser_loadDataRequest() {
 function AddUser_loadDataRequestSuccess(response) {
     if (JSON.parse(response)._total) {
         Main_AddUserInput.value = '';
-        document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+        Main_removeEventListener("keydown", AddUser_handleKeyDown);
         AddUser_SaveNewUser(response);
     } else AddUser_loadDataNoUser();
 }
@@ -270,7 +270,7 @@ function AddUser_UpdateUser(position, tryes) {
 function AddUser_UpdateUsertSuccess(response, position) {
     var user = JSON.parse(response);
     if (user._total) {
-        document.body.removeEventListener("keydown", AddUser_handleKeyDown);
+        Main_removeEventListener("keydown", AddUser_handleKeyDown);
         user = user.users[0];
         AddUser_UsernameArray[position].display_name = user.display_name;
         AddUser_UsernameArray[position].logo = user.logo;

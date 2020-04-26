@@ -39,7 +39,7 @@ function Users_init() {
     Main_values.Main_Go = Main_Users;
     Main_HideWarningDialog();
     ScreensObj_SetTopLable(STR_USER, STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
-    document.body.addEventListener("keydown", Users_handleKeyDown, false);
+    Main_addEventListener("keydown", Users_handleKeyDown);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
     else if (Users_status) {
@@ -54,7 +54,7 @@ function Users_exit() {
     //Main_Log('Users_exit');
 
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
-    document.body.removeEventListener("keydown", Users_handleKeyDown);
+    Main_removeEventListener("keydown", Users_handleKeyDown);
     Main_HideElement(Users_ids[5]);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 }
@@ -183,7 +183,7 @@ function Users_keyEnter() {
     if (!Users_cursorX && !Users_cursorY) {
         Main_values.Main_Before = Main_values.Main_Go;
         Main_HideElement(Users_ids[5]);
-        document.body.removeEventListener("keydown", Users_handleKeyDown);
+        Main_removeEventListener("keydown", Users_handleKeyDown);
         AddUser_init();
     } else Users_showUserDialog();
 }
@@ -394,7 +394,7 @@ function Users_handleKeyDown(event) {
                 Users_HideRemoveDialog();
                 if (!Users_Isautentication) {
                     if (temp_RemoveCursor) {
-                        document.body.removeEventListener("keydown", Users_handleKeyDown);
+                        Main_removeEventListener("keydown", Users_handleKeyDown);
                         Users_exit();
                         AddUser_removeUser(Users_showUserDialogPos);
                     }
