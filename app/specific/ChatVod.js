@@ -192,10 +192,13 @@ function Chat_loadChatError(id) {
     if (Chat_Id[0] === id) {
         if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatRequest(id);
         else {
-            window.clearTimeout(Chat_loadChatId);
-            Chat_loadChatId = window.setTimeout(function() {
-                Chat_loadChatRequest(id);
-            }, 2500);
+            Chat_loadChatId = Main_setTimeout(
+                function() {
+                    Chat_loadChatRequest(id);
+                },
+                2500,
+                Chat_loadChatId
+            );
         }
     }
 }
@@ -328,17 +331,20 @@ function Chat_MessageVectorNext(message, time, atstreamer, atuser, hasbits) {
 function Chat_Play(id) {
     if (!Chat_JustStarted && !Chat_hasEnded && Chat_Id[0] === id && !Main_values.Play_ChatForceDisable) {
         Main_Addline(id);
-        window.clearInterval(Chat_addlinesId);
-        Chat_addlinesId = window.setInterval(function() {
-            Main_Addline(id);
-        }, 1000);
+        Chat_addlinesId = Main_setInterval(
+            function() {
+                Main_Addline(id);
+            },
+            1000,
+            Chat_addlinesId
+        );
     }
 }
 
 function Chat_Pause() {
-    window.clearTimeout(Chat_loadChatId);
-    window.clearTimeout(Chat_loadChatNextId);
-    window.clearInterval(Chat_addlinesId);
+    Main_clearTimeout(Chat_loadChatId);
+    Main_clearTimeout(Chat_loadChatNextId);
+    Main_clearInterval(Chat_addlinesId);
 }
 
 function Chat_Clear() {
@@ -435,7 +441,7 @@ function Main_Addline(id) {
             if (!Chat_hasEnded) Chat_div[0].appendChild(elem);
 
             Chat_hasEnded = true;
-            window.clearInterval(Chat_addlinesId);
+            Main_clearInterval(Chat_addlinesId);
         }
     }
 }
@@ -473,10 +479,13 @@ function Chat_loadChatNextError(id) {
     if (Chat_Id[0] === id) {
         if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatNextRequest(id);
         else {
-            window.clearTimeout(Chat_loadChatNextId);
-            Chat_loadChatNextId = window.setTimeout(function() {
-                Chat_loadChatNextRequest(id);
-            }, 2500);
+            Chat_loadChatNextId = Main_setTimeout(
+                function() {
+                    Chat_loadChatNextRequest(id);
+                },
+                2500,
+                Chat_loadChatNextId
+            );
         }
     }
 }

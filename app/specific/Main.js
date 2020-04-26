@@ -259,10 +259,10 @@ function Main_loadTranslations(language) {
                 Main_values.Restore_Backup_Check = true;
                 Main_addEventListener("keydown", Main_BackupDialodKeyDown);
             } catch (e) {
-                Main_timeOut(Main_initWindows, 500);
+                Main_setTimeout(Main_initWindows, 500);
                 return;
             }
-        } else Main_timeOut(Main_initWindows, 500);
+        } else Main_setTimeout(Main_initWindows, 500);
     });
 
 }
@@ -329,7 +329,7 @@ function Main_initWindows() {
             if (Main_CanBackup) {
                 if (AddUser_IsUserSet()) {
                     Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                    window.setTimeout(function() {
+                    Main_setTimeout(function() {
                         Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
                     }, 10000);
                 }
@@ -446,12 +446,12 @@ function Main_initWindows() {
     Play_SetFullScreen(Play_isFullScreen);
 
     if (AddUser_UserIsSet()) {
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
-        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
+        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
+        Main_updateUserFeedId = Main_setTimeout(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId);//it 5 min refresh
     }
-    Main_updateclockId = window.setInterval(Main_updateclock, 60000);
-    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
-    Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 12000);
+    Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId);//Check it 5min
+    Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 12000, Main_CheckResumeVodsId);
 
     inUseObj = Live;
     Screens_init();
@@ -606,11 +606,11 @@ function Main_buttonsVisible() {
 }
 
 function Main_clearHideButtons() {
-    window.clearTimeout(Main_setHideButtonsId);
+    Main_clearTimeout(Main_setHideButtonsId);
 }
 
 function Main_setHideButtons() {
-    Main_setHideButtonsId = window.setTimeout(Main_HideButtons, 4000);
+    Main_setHideButtonsId = Main_setTimeout(Main_HideButtons, 4000, Main_setHideButtonsId);
 }
 
 function Main_HideButtons() {
@@ -627,12 +627,20 @@ function Main_initClickSet(doc, pos) {
 
         Main_Clickonpointerdown(pos);
 
-        Main_initClickTimeoutId = window.setTimeout(function() {
-            Main_ClickonpointerdownClear();
-            Main_initClickSetId = window.setInterval(function() {
-                Main_Clickonpointerdown(pos);
-            }, 50);
-        }, 600);
+        Main_initClickTimeoutId = Main_setTimeout(
+            function() {
+                Main_ClickonpointerdownClear();
+                Main_initClickSetId = Main_setInterval(
+                    function() {
+                        Main_Clickonpointerdown(pos);
+                    },
+                    50,
+                    Main_initClickSetId
+                );
+            },
+            600,
+            Main_initClickTimeoutId
+        );
     };
 
     doc.onpointerup = function() {
@@ -645,8 +653,8 @@ function Main_initClickSet(doc, pos) {
 }
 
 function Main_ClickonpointerdownClear() {
-    window.clearTimeout(Main_initClickTimeoutId);
-    window.clearInterval(Main_initClickSetId);
+    Main_clearTimeout(Main_initClickTimeoutId);
+    Main_clearInterval(Main_initClickSetId);
 }
 
 function Main_Clickonpointerdown(pos) {
@@ -739,11 +747,11 @@ function Main_HideLoadDialog() {
 }
 
 function Main_clearExitDialog() {
-    window.clearTimeout(Main_ExitDialogID);
+    Main_clearTimeout(Main_ExitDialogID);
 }
 
 function Main_setExitDialog() {
-    Main_ExitDialogID = window.setTimeout(Main_HideExitDialog, 6000);
+    Main_ExitDialogID = Main_setTimeout(Main_HideExitDialog, 6000, Main_ExitDialogID);
 }
 
 function Main_showExitDialog() {
@@ -782,9 +790,12 @@ function Main_CounterDialog(x, y, coloumns, total) {
 function Main_showWarningExtra(text) {
     Main_innerHTML('dialog_warning_extra_text', text);
     Main_ShowElement('dialog_warning_extra');
-    Main_timeOut(function() {
-        Main_HideElement('dialog_warning_extra');
-    }, 60000);
+    Main_setTimeout(
+        function() {
+            Main_HideElement('dialog_warning_extra');
+        },
+        60000
+    );
 }
 
 function Main_showWarningDialog(text) {
@@ -1291,7 +1302,7 @@ function Main_keyClickDelay() {
 
 function Main_keyClickDelayStart() {
     Main_LastClickFinish = false;
-    window.setTimeout(Main_keyClickDelay);
+    Main_setTimeout(Main_keyClickDelay);
 }
 
 function Main_CantClick() {
@@ -1444,9 +1455,12 @@ function Main_OPenAsVod(index) {
     Play_showWarningDialog(STR_LIVE_VOD);
     Main_openVod();
 
-    window.setTimeout(function() {
-        if (!Play_IsWarning) Play_HideWarningDialog();
-    }, 3000);
+    Main_setTimeout(
+        function() {
+            if (!Play_IsWarning) Play_HideWarningDialog();
+        },
+        3000
+    );
 }
 
 function Main_OPenAsVod_shutdownStream() {
@@ -1488,7 +1502,10 @@ function Main_openStream() {
     Main_showScene2Doc();
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
-    window.setTimeout(Play_Start, 25);
+    Main_setTimeout(
+        Play_Start,
+        25
+    );
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
@@ -1523,7 +1540,10 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_hideChat();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    window.setTimeout(PlayClip_Start, 25);
+    Main_setTimeout(
+        PlayClip_Start,
+        25
+    );
 }
 
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
@@ -1561,7 +1581,10 @@ function Main_openVod() {
     PlayVod_hidePanel();
     Play_hideChat();
     Play_CleanHideExit();
-    window.setTimeout(PlayVod_Start, 25);
+    Main_setTimeout(
+        PlayVod_Start,
+        25
+    );
 }
 
 function Main_removeFocus(id, idArray) {
@@ -1602,14 +1625,9 @@ function Main_ready(func) {
         (document.readyState !== "loading" && !document.documentElement.doScroll)) {
 
         // Handle it asynchronously to allow scripts the opportunity to delay ready
-        Main_timeOut(func);
+        Main_setTimeout(func);
 
     } else document.addEventListener("DOMContentLoaded", func);
-}
-
-function Main_timeOut(func, timeout) {
-    if (timeout && timeout > 0) window.setTimeout(func, timeout);
-    else window.setTimeout(func, 10);
 }
 
 function Main_getclock() {
@@ -1966,14 +1984,17 @@ function Main_History_Sort(array, msort, direction) {
 
 var Main_setHistoryItemId;
 function Main_setHistoryItem() {
-    window.clearTimeout(Main_setHistoryItemId);
-    Main_setHistoryItemId = window.setTimeout(function() {
+    Main_setHistoryItemId = Main_setTimeout(
+        function() {
 
-        var string = JSON.stringify(Main_values_History_data);
-        Main_setItem('Main_values_History_data', string);
-        if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
+            var string = JSON.stringify(Main_values_History_data);
+            Main_setItem('Main_values_History_data', string);
+            if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
 
-    }, 5000);
+        },
+        5000,
+        Main_setHistoryItemId
+    );
 }
 
 //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
@@ -2145,21 +2166,21 @@ function Main_CheckStop() { // Called only by JAVA
     ChatLive_Clear(1);
     Chat_Clear();
 
-    window.clearInterval(Play_ResumeAfterOnlineId);
-    window.clearInterval(Play_streamInfoTimerId);
-    window.clearInterval(Play_ShowPanelStatusId);
+    Main_clearInterval(Play_ResumeAfterOnlineId);
+    Main_clearInterval(Play_streamInfoTimerId);
+    Main_clearInterval(Play_ShowPanelStatusId);
 
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
-    window.clearInterval(PlayVod_SaveOffsetId);
+    Main_clearInterval(PlayVod_RefreshProgressBarrID);
+    Main_clearInterval(PlayVod_SaveOffsetId);
 
     if (PlayClip_isOn) PlayClip_Resume();
 
     //General related
     Screens_ClearAnimation();
 
-    window.clearInterval(Main_updateUserFeedId);
-    window.clearInterval(Main_updateclockId);
-    window.clearInterval(Main_StartHistoryworkerId);
+    Main_clearInterval(Main_updateUserFeedId);
+    Main_clearInterval(Main_updateclockId);
+    Main_clearInterval(Main_StartHistoryworkerId);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 
@@ -2198,21 +2219,17 @@ function Main_CheckResume() { // Called only by JAVA
             Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
         }
 
-        window.clearInterval(Main_updateUserFeedId);
-        Main_updateUserFeedId = window.setInterval(Main_updateUserFeed, 1000 * 60 * 5);//it 5 min refresh
+        Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, (1000 * 60 * 5), Main_updateUserFeedId);//it 5 min refresh
 
-        window.clearTimeout(Main_CheckResumeFeedId);
-        Main_CheckResumeFeedId = window.setTimeout(Main_updateUserFeed, 10000);
+        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
     }
-    window.clearInterval(Main_updateclockId);
-    Main_updateclockId = window.setInterval(Main_updateclock, 60000);
+
+    Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_updateclock();
 
-    window.clearInterval(Main_StartHistoryworkerId);
-    Main_StartHistoryworkerId = window.setInterval(Main_StartHistoryworker, 1000 * 60 * 5);//Check it 5min
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId);//Check it 5min
 
-    window.clearTimeout(Main_CheckResumeVodsId);
-    Main_CheckResumeVodsId = window.setTimeout(Main_StartHistoryworker, 10000);
+    Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
     Main_CheckAccessibility();
 }
@@ -2340,5 +2357,21 @@ function Main_removeEventListener(type, fun) {
     Main_body.removeEventListener(type, fun);
 }
 
+function Main_setTimeout(fun, timeout, id) {
+    Main_clearTimeout(id);
+    if (timeout && timeout > 0) return window.setTimeout(fun, timeout);
+    else return window.setTimeout(fun);
+}
 
+function Main_clearTimeout(id) {
+    window.clearTimeout(id);
+}
 
+function Main_setInterval(fun, timeout, id) {
+    Main_clearInterval(id);
+    if (timeout && timeout > 0) return window.setInterval(fun, timeout);
+}
+
+function Main_clearInterval(id) {
+    window.clearInterval(id);
+}

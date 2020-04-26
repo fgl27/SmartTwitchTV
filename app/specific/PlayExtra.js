@@ -301,10 +301,13 @@ function PlayExtra_updateStreamInfoValues(response) {
 
 function PlayExtra_updateStreamInfoError() {
     if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
-        window.setTimeout(function() {
-            if (Play_isOn) PlayExtra_updateStreamInfo();
-            //give a second for it retry as the TV may be on coming from resume
-        }, 2500);
+        Main_setTimeout(
+            function() {
+                if (Play_isOn) PlayExtra_updateStreamInfo();
+                //give a second for it retry as the TV may be on coming from resume
+            },
+            2500
+        );
         Play_updateStreamInfoErrorTry++;
     } else Play_updateStreamInfoErrorTry = 0;
 }

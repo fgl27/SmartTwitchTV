@@ -127,7 +127,7 @@ function Sidepannel_CheckIfIsLiveWarn(ErroText, Streamer) {
     Sidepannel_CheckIfIsLiveSTop();
     Sidepannel_UpdateThumbDiv();
     Sidepannel_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText);
-    window.setTimeout(Sidepannel_HideWarningDialog, 2000);
+    Main_setTimeout(Sidepannel_HideWarningDialog, 2000);
 }
 
 function Sidepannel_showWarningDialog(text) {
@@ -202,7 +202,7 @@ function Sidepannel_GetSize() {
 function Sidepannel_KeyEnterUser() {
     if (Main_values.Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
-        window.setTimeout(Main_HideWarningDialog, 5000);
+        Main_setTimeout(Main_HideWarningDialog, 5000);
         return;
     }
 
@@ -293,7 +293,7 @@ function Sidepannel_KeyEnter() {
             }
         } else {
             Main_showWarningDialog(STR_NOKUSER_WARN);
-            window.setTimeout(Main_HideWarningDialog, 2000);
+            Main_setTimeout(Main_HideWarningDialog, 2000);
         }
     } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
     else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
@@ -322,7 +322,7 @@ function Sidepannel_Start(callback, forceFeed) {
         if (AddUser_UserIsSet()) Sidepannel_StartFeed();
         else {
             Main_showWarningDialog(STR_NOKUSER_WARN);
-            window.setTimeout(Main_HideWarningDialog, 2000);
+            Main_setTimeout(Main_HideWarningDialog, 2000);
             Sidepannel_StartMain();
         }
     } else Sidepannel_StartMain();
@@ -520,9 +520,12 @@ function Sidepannel_Scroll(skipAnimation) {
 
         Sidepannel_ScroolDoc.style.transition = '';
 
-        window.setTimeout(function() {
-            Screens_ChangeFocusAnimationFinished = true;
-        }, Sidepannel_AnimationTimeout); //Same value as side_panel_holder_ani
+        Main_setTimeout(
+            function() {
+                Screens_ChangeFocusAnimationFinished = true;
+            },
+            Sidepannel_AnimationTimeout //Same value as side_panel_holder_ani
+        );
 
     } else {
         if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
@@ -623,7 +626,7 @@ function Sidepannel_handleKeyDownMain(event) {
                 Sidepannel_StartFeed();
             } else {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
-                window.setTimeout(Main_HideWarningDialog, 2000);
+                Main_setTimeout(Main_HideWarningDialog, 2000);
             }
             break;
         case KEY_PG_UP:

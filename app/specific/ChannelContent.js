@@ -346,7 +346,7 @@ function ChannelContent_keyEnter() {
                 else AddCode_Follow();
             } else {
                 Main_showWarningDialog(STR_NOKEY_WARN);
-                window.setTimeout(Main_HideWarningDialog, 2000);
+                Main_setTimeout(Main_HideWarningDialog, 2000);
             }
         }
     } else {
@@ -399,7 +399,7 @@ function ChannelContent_handleKeyUp(e) {
 }
 
 function ChannelContent_handleKeyUpClear() {
-    window.clearTimeout(ChannelContent_KeyEnterID);
+    Main_clearTimeout(ChannelContent_KeyEnterID);
     Main_removeEventListener("keyup", ChannelContent_handleKeyUp);
     Main_addEventListener("keydown", ChannelContent_handleKeyDown);
 }
@@ -476,7 +476,11 @@ function ChannelContent_handleKeyDown(event) {
             Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
             Main_addEventListener("keyup", ChannelContent_handleKeyUp);
             ChannelContent_clear = false;
-            ChannelContent_KeyEnterID = window.setTimeout(Main_ReloadScreen, 500);
+            ChannelContent_KeyEnterID = Main_setTimeout(
+                Main_ReloadScreen,
+                500,
+                ChannelContent_KeyEnterID
+            );
             break;
         case KEY_REFRESH:
             Main_ReloadScreen();
@@ -486,7 +490,11 @@ function ChannelContent_handleKeyDown(event) {
             Sidepannel_Start(ChannelContent_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
-                window.setTimeout(Main_HideWarningDialog, 2000);
+                Main_setTimeout(
+                    Main_HideWarningDialog,
+                    2000,
+                    ChannelContent_KeyEnterID
+                );
             }
             break;
         default:

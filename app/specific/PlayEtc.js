@@ -116,19 +116,27 @@ function Play_EndText(PlayVodClip) {
             }
 
         } else {
-            Play_EndTextID = window.setTimeout(function() {
-                Play_EndText(PlayVodClip);
-            }, 1000);
+            Play_EndTextID = Main_setTimeout(
+                function() {
+                    Play_EndText(PlayVodClip);
+                },
+                1000,
+                Play_EndTextID
+            );
         }
     } else {
-        Play_EndTextID = window.setTimeout(function() {
-            Play_EndText(PlayVodClip);
-        }, 50);
+        Play_EndTextID = Main_setTimeout(
+            function() {
+                Play_EndText(PlayVodClip);
+            },
+            50,
+            Play_EndTextID
+        );
     }
 }
 
 function Play_EndTextClear() {
-    window.clearTimeout(Play_EndTextID);
+    Main_clearTimeout(Play_EndTextID);
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END_EXIT);
 }
 
@@ -169,7 +177,7 @@ function Play_EndDialogPressed(PlayVodClip) {
             Main_addEventListener("keydown", Play_handleKeyDown);
 
             Play_data.data[14] = Play_TargetHost.target_id;
-            Main_timeOut(Play_Start);
+            Main_setTimeout(Play_Start);
         } else {
             PlayClip_OpenVod();
             if (!PlayClip_HasVOD) canhide = false;
@@ -434,8 +442,8 @@ function Play_KeyReturn(is_vod) {
                 else Play_shutdownStream();
             }
         } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
-            window.clearTimeout(Play_showWarningMidleDialogId);
-            window.clearTimeout(Play_showWarningDialogId);
+            Main_clearTimeout(Play_showWarningMidleDialogId);
+            Main_clearTimeout(Play_showWarningDialogId);
             Play_HideWarningDialog();
             Play_HideWarningMidleDialog();
             Play_showExitDialog();
@@ -540,7 +548,7 @@ function Play_keyUpEnd() {
 }
 
 function Play_handleKeyUpEndClear() {
-    window.clearTimeout(Play_EndUpclearID);
+    Main_clearTimeout(Play_EndUpclearID);
     Main_removeEventListener("keyup", Play_handleKeyUp);
     Main_addEventListener("keydown", Play_EndUpclearCalback);
 }
@@ -650,7 +658,7 @@ function Play_handleKeyDown(e) {
                     Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
-                    Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);
+                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, 250, Play_EndUpclearID);
                 }
                 break;
             case KEY_DOWN:
@@ -678,7 +686,7 @@ function Play_handleKeyDown(e) {
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = Play_handleKeyDown;
-                        Play_EndUpclearID = window.setTimeout(Play_PPKeyDownHold, 250);
+                        Play_EndUpclearID = Main_setTimeout(Play_PPKeyDownHold, 250, Play_EndUpclearID);
                     } else {
                         Play_PPKeyDownHold();
                     }
@@ -687,7 +695,7 @@ function Play_handleKeyDown(e) {
                     Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
-                    Play_EndUpclearID = window.setTimeout(Play_MultiKeyDownHold, 250);
+                    Play_EndUpclearID = Main_setTimeout(Play_MultiKeyDownHold, 250, Play_EndUpclearID);
                 } else if (Play_isFullScreen) Play_controls[Play_controlsChat].enterKey(1);
                 else Play_showPanel();
                 break;
@@ -724,7 +732,7 @@ function Play_handleKeyDown(e) {
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         PlayExtra_clear = false;
                         UserLiveFeed_ResetFeedId();
-                        PlayExtra_KeyEnterID = window.setTimeout(PlayExtra_KeyEnter, 250);
+                        PlayExtra_KeyEnterID = Main_setTimeout(PlayExtra_KeyEnter, 250, PlayExtra_KeyEnterID);
                     }
                 } else Play_showPanel();
                 break;

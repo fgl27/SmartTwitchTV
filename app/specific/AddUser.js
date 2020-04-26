@@ -58,11 +58,14 @@ function AddUser_inputFocus() {
     Main_addEventListener("keydown", AddUser_KeyboardEvent);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
 
-    window.clearTimeout(AddUser_inputFocusId);
-    AddUser_inputFocusId = window.setTimeout(function() {
-        Main_AddUserInput.focus();
-        AddUser_keyBoardOn = true;
-    }, 500);
+    AddUser_inputFocusId = Main_setTimeout(
+        function() {
+            Main_AddUserInput.focus();
+            AddUser_keyBoardOn = true;
+        },
+        500,
+        AddUser_inputFocusId
+    );
 }
 
 function AddUser_removeEventListener() {
@@ -78,7 +81,7 @@ function AddUser_removeEventListener() {
 }
 
 function AddUser_RemoveinputFocus(EnaKeydown) {
-    window.clearTimeout(AddUser_inputFocusId);
+    Main_clearTimeout(AddUser_inputFocusId);
     Main_AddUserInput.blur();
     AddUser_removeEventListener();
     Main_removeEventListener("keydown", AddUser_KeyboardEvent);
@@ -112,7 +115,7 @@ function AddUser_KeyboardEvent(event) {
 }
 
 function AddUser_KeyboardDismiss() {
-    window.clearTimeout(AddUser_inputFocusId);
+    Main_clearTimeout(AddUser_inputFocusId);
     if (Main_AddUserInput.value !== '' && Main_AddUserInput.value !== null) {
 
         AddUser_Username = Main_AddUserInput.value;
@@ -127,10 +130,13 @@ function AddUser_KeyboardDismiss() {
         } else {
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_USER + " " + AddUser_Username + STR_USER_SET);
-            window.setTimeout(function() {
-                Main_HideWarningDialog();
-                AddUser_inputFocus();
-            }, 1500);
+            Main_setTimeout(
+                function() {
+                    Main_HideWarningDialog();
+                    AddUser_inputFocus();
+                },
+                1500
+            );
         }
     } else AddUser_inputFocus();
 }
@@ -161,9 +167,12 @@ function AddUser_loadDataNoUser() {
     AddUser_Username = null;
     Main_HideLoadDialog();
     Main_showWarningDialog(STR_USER_ERROR);
-    window.setTimeout(function() {
-        AddUser_init();
-    }, 1000);
+    Main_setTimeout(
+        function() {
+            AddUser_init();
+        },
+        1000
+    );
     AddUser_loadingData = false;
 }
 
@@ -319,7 +328,7 @@ function AddUser_removeUser(position) {
     // remove the user
     var index = AddUser_UsernameArray.indexOf(AddUser_UsernameArray[position]);
     if (index > -1) {
-        window.clearTimeout(AddUser_UsernameArray[position].timeout_id);
+        Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
         AddUser_UsernameArray.splice(index, 1);
     }
 
@@ -356,7 +365,7 @@ function AddUser_SaveUserArray() {
 }
 
 function AddUser_UserMakeOne(position) {
-    window.clearTimeout(Main_CheckResumeFeedId);
+    Main_clearTimeout(Main_CheckResumeFeedId);
 
     var temp_Username = JSON.parse(JSON.stringify(AddUser_UsernameArray[0]));
     AddUser_UsernameArray[0] = JSON.parse(JSON.stringify(AddUser_UsernameArray[position]));

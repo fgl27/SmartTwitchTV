@@ -629,10 +629,13 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
         for (var i = for_in; i < for_out; i++)
             Screens_addrowtransition(y + i, (for_offset + i) * inUseObj.offsettop, '');
 
-        window.setTimeout(function() {
-            UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
-            Screens_ChangeFocusAnimationFinished = true;
-        }, Screens_ScrollAnimationTimeout);
+        Main_setTimeout(
+            function() {
+                UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+                Screens_ChangeFocusAnimationFinished = true;
+            },
+            Screens_ScrollAnimationTimeout
+        );
     });
 }
 
@@ -733,9 +736,12 @@ function Screens_addrowChannelDown(y) {
         //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
         //but this works, the issue is related to slow to load more content
         //Only happens if scroll too fast
-        window.setTimeout(function() {
-            Screens_addrowChannelDown(y);
-        }, 10);
+        Main_setTimeout(
+            function() {
+                Screens_addrowChannelDown(y);
+            },
+            10
+        );
     }
 }
 
@@ -816,9 +822,12 @@ function Screens_addrowDown(y) {
         //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
         //but this works, the issue is related to slow to load more content
         //Only happens if scroll too fast
-        window.setTimeout(function() {
-            Screens_addrowDown(y);
-        }, 10);
+        Main_setTimeout(
+            function() {
+                Screens_addrowDown(y);
+            },
+            10
+        );
     }
 }
 
@@ -943,7 +952,7 @@ function Screens_KeyUpDown(y) {
 
 function Screens_ClearAnimation() {
     if (inUseObj.HasAnimateThumb) {
-        window.clearInterval(inUseObj.AnimateThumbId);
+        Main_clearInterval(inUseObj.AnimateThumbId);
         if (Screens_ThumbNotNull(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX)) Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
     }
 }
@@ -985,7 +994,7 @@ function Screens_handleKeyUp(e) {
         Screens_handleKeyUpClear();
         if (!Screens_clear) inUseObj.key_play();
     } else if (e.keyCode === KEY_LEFT) {
-        window.clearTimeout(Screens_KeyEnterID);
+        Main_clearTimeout(Screens_KeyEnterID);
         Main_removeEventListener("keyup", Screens_handleKeyUp);
         if (!Screens_clear) {
             if (!inUseObj.posX) Screens_OpenSidePanel();
@@ -999,7 +1008,7 @@ function Screens_handleKeyUp(e) {
 }
 
 function Screens_handleKeyUpClear() {
-    window.clearTimeout(Screens_KeyEnterID);
+    Main_clearTimeout(Screens_KeyEnterID);
     Main_removeEventListener("keyup", Screens_handleKeyUp);
     Main_addEventListener("keydown", Screens_handleKeyDown);
 }
@@ -1072,7 +1081,7 @@ function Screens_handleKeyDown(event) {
             Main_removeEventListener("keydown", Screens_handleKeyDown);
             Main_addEventListener("keyup", Screens_handleKeyUp);
             Screens_clear = false;
-            Screens_KeyEnterID = window.setTimeout(Screens_ThumbOptionStart, 500);
+            Screens_KeyEnterID = Main_setTimeout(Screens_ThumbOptionStart, 500, Screens_KeyEnterID);
             break;
         case KEY_RIGHT:
             Screens_keyRight();
@@ -1101,7 +1110,7 @@ function Screens_handleKeyDown(event) {
             Main_removeEventListener("keydown", Screens_handleKeyDown);
             Main_addEventListener("keyup", Screens_handleKeyUp);
             Screens_clear = false;
-            Screens_KeyEnterID = window.setTimeout(Main_ReloadScreen, 400);
+            Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, 400, Screens_KeyEnterID);
             break;
         case KEY_MEDIA_NEXT:
         case KEY_REFRESH:
@@ -1128,7 +1137,7 @@ function Screens_handleKeyDown(event) {
             Screens_OpenSidePanel(AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
-                window.setTimeout(Main_HideWarningDialog, 2000);
+                Main_setTimeout(Main_HideWarningDialog, 2000);
             }
             break;
         default:
@@ -1167,10 +1176,13 @@ function AGame_follow() {
         else AddCode_FollowGame();
     } else {
         Main_showWarningDialog(STR_NOKEY_WARN);
-        window.setTimeout(function() {
-            if (inUseObj.emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
-            else Main_HideWarningDialog();
-        }, 2000);
+        Main_setTimeout(
+            function() {
+                if (inUseObj.emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
+                else Main_HideWarningDialog();
+            },
+            2000
+        );
     }
 }
 
@@ -1198,12 +1210,11 @@ function Screens_PeriodStart() {
 }
 
 function Screens_clearPeriodDialogId() {
-    window.clearTimeout(Screens_PeriodDialogID);
+    Main_clearTimeout(Screens_PeriodDialogID);
 }
 
 function Screens_SetPeriodDialogId() {
-    window.clearTimeout(Screens_PeriodDialogID);
-    Screens_PeriodDialogID = window.setTimeout(Screens_PeriodDialogHide, 6000);
+    Screens_PeriodDialogID = Main_setTimeout(Screens_PeriodDialogHide, 6000, Screens_PeriodDialogID);
 }
 
 function Screens_setPeriodDialog() {
@@ -1281,12 +1292,11 @@ function Screens_OffSetStart() {
 }
 
 function Screens_clearOffSetDialogId() {
-    window.clearTimeout(Screens_OffSetDialogID);
+    Main_clearTimeout(Screens_OffSetDialogID);
 }
 
 function Screens_SetOffSetDialogId() {
-    window.clearTimeout(Screens_OffSetDialogID);
-    Screens_OffSetDialogID = window.setTimeout(Screens_OffSetDialogHide, 6000);
+    Screens_OffSetDialogID = Main_setTimeout(Screens_OffSetDialogHide, 6000, Screens_OffSetDialogID);
 }
 
 function Screens_setOffSetDialog() {
@@ -1366,12 +1376,11 @@ function Screens_histStart() {
 }
 
 function Screens_clearhistDialogId() {
-    window.clearTimeout(Screens_histDialogID);
+    Main_clearTimeout(Screens_histDialogID);
 }
 
 function Screens_SethistDialogId() {
-    window.clearTimeout(Screens_histDialogID);
-    Screens_histDialogID = window.setTimeout(Screens_histDialogHide, 6000);
+    Screens_histDialogID = Main_setTimeout(Screens_histDialogHide, 6000, Screens_histDialogID);
 }
 
 var Screens_DeleteDialogAll = true;
@@ -1409,7 +1418,7 @@ function Screens_showDeleteDialog(text) {
 }
 
 function Screens_setRemoveDialog() {
-    Users_RemoveDialogID = window.setTimeout(Screens_HideRemoveDialog, 5000);
+    Users_RemoveDialogID = Main_setTimeout(Screens_HideRemoveDialog, 5000);
 }
 
 function Screens_HideRemoveDialog() {
@@ -1765,12 +1774,11 @@ function Screens_ThumbOptionhandleKeyDown(event) {
 var Screens_ThumbOptionDialogID;
 
 function Screens_clearTODialogId() {
-    window.clearTimeout(Screens_ThumbOptionDialogID);
+    Main_clearTimeout(Screens_ThumbOptionDialogID);
 }
 
 function Screens_SeTODialogId() {
-    window.clearTimeout(Screens_ThumbOptionDialogID);
-    Screens_ThumbOptionDialogID = window.setTimeout(Screens_ThumbOptionDialogHide, 6000);
+    Screens_ThumbOptionDialogID = Main_setTimeout(Screens_ThumbOptionDialogHide, 6000, Screens_ThumbOptionDialogID);
 }
 
 function Screens_ThumbOptionDialogHide(Update) {
@@ -1853,7 +1861,7 @@ function Screens_FollowUnfollow() {
         }
     } else {
         Main_showWarningDialog(STR_NOKEY_WARN);
-        window.setTimeout(Main_HideWarningDialog, 2000);
+        Main_setTimeout(Main_HideWarningDialog, 2000);
     }
 }
 
@@ -1886,7 +1894,7 @@ function Screens_OpenScreen() {
 
     if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] === 8 && !AddUser_UsernameArray[0].access_token) {
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
-        window.setTimeout(Main_HideWarningDialog, 3000);
+        Main_setTimeout(Main_HideWarningDialog, 3000);
         return;
     }
 
@@ -1906,7 +1914,7 @@ function Screens_OpenGame() {
     if (Play_data.data[3] === '') {
 
         Main_showWarningDialog(STR_NO_GAME);
-        window.setTimeout(Main_HideWarningDialog, 2000);
+        Main_setTimeout(Main_HideWarningDialog, 2000);
         return;
     }
 

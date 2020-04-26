@@ -603,10 +603,13 @@ function ChatLive_loadChatRequest(chat_number, id) {
             case "CAP":
                 if (useToken[chat_number]) {
                     //Delay the joing so the cap get fully accepted
-                    window.clearTimeout(ChatLive_JoinID[chat_number]);
-                    ChatLive_JoinID[chat_number] = window.setTimeout(function() {
-                        ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
-                    }, 500);
+                    ChatLive_JoinID[chat_number] = Main_setTimeout(
+                        function() {
+                            ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                        },
+                        500,
+                        ChatLive_JoinID[chat_number]
+                    );
                 }
                 break;
             case "JOIN":
@@ -644,10 +647,13 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
                     } else {
                         //try a join again so the ROOMSTATE get send
-                        window.clearTimeout(ChatLive_JoinID[chat_number]);
-                        ChatLive_JoinID[chat_number] = window.setTimeout(function() {
-                            ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
-                        }, 500);
+                        ChatLive_JoinID[chat_number] = Main_setTimeout(
+                            function() {
+                                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                            },
+                            500,
+                            ChatLive_JoinID[chat_number]
+                        );
                     }
                 }
 
@@ -728,11 +734,15 @@ function ChatLive_loadChatRequest(chat_number, id) {
 }
 
 function ChatLive_SetCheck(chat_number, id) {
-    window.clearTimeout(ChatLive_CheckId[chat_number]);
+    Main_clearTimeout(ChatLive_CheckId[chat_number]);
     if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
-        ChatLive_CheckId[chat_number] = window.setTimeout(function() {
-            ChatLive_Check(chat_number, id);
-        }, ChatLive_SetCheckTimout);
+        ChatLive_CheckId[chat_number] = Main_setTimeout(
+            function() {
+                ChatLive_Check(chat_number, id);
+            },
+            ChatLive_SetCheckTimout,
+            ChatLive_CheckId[chat_number]
+        );
     }
 }
 
@@ -745,8 +755,8 @@ function ChatLive_Check(chat_number, id) {
 }
 
 function ChatLive_CheckClear(chat_number) {
-    window.clearTimeout(ChatLive_JoinID[chat_number]);
-    window.clearTimeout(ChatLive_CheckId[chat_number]);
+    Main_clearTimeout(ChatLive_JoinID[chat_number]);
+    Main_clearTimeout(ChatLive_CheckId[chat_number]);
 }
 
 var ChatLive_RoomState = [];
@@ -851,10 +861,13 @@ function ChatLive_SendClose() {
 }
 
 function ChatLive_socketSendSetCheck() {
-    window.clearTimeout(ChatLive_socketSendCheckID);
-    ChatLive_socketSendCheckID = window.setTimeout(function() {
-        ChatLive_socketSendCheck();
-    }, ChatLive_SetCheckTimout);
+    ChatLive_socketSendCheckID = Main_setTimeout(
+        function() {
+            ChatLive_socketSendCheck();
+        },
+        ChatLive_SetCheckTimout,
+        ChatLive_socketSendCheckID
+    );
 }
 
 function ChatLive_socketSendCheck() {
@@ -874,7 +887,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 
         ChatLive_Banned[chat_number] = true;
 
-        window.clearTimeout(ChatLive_CheckId[chat_number]);
+        Main_clearTimeout(ChatLive_CheckId[chat_number]);
         ChatLive_Check(chat_number, id);
     } else ChatLive_UserNoticeWarn(message);
 
@@ -1172,9 +1185,12 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number, atstreamer, atuser, (hasbits && ChatLive_Highlight_Bits));
     else {
         var id = Chat_Id[chat_number];
-        window.setTimeout(function() {
-            if (id === Chat_Id[chat_number]) ChatLive_LineAdd(div, chat_number, atstreamer, atuser);
-        }, (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000));
+        Main_setTimeout(
+            function() {
+                if (id === Chat_Id[chat_number]) ChatLive_LineAdd(div, chat_number, atstreamer, atuser);
+            },
+            (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000)
+        );
     }
 }
 
@@ -1305,8 +1321,8 @@ function ChatLive_MessagesRunAfterPause() {
 
 function ChatLive_ClearIds(chat_number) {
     ChatLive_CheckClear(chat_number);
-    window.clearTimeout(ChatLive_socketSendCheckID);
-    window.clearTimeout(ChatLive_loadBadgesChannelId);
+    Main_clearTimeout(ChatLive_socketSendCheckID);
+    Main_clearTimeout(ChatLive_loadBadgesChannelId);
 }
 
 function ChatLive_Clear(chat_number) {

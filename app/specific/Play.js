@@ -345,8 +345,7 @@ function Play_Start() {
 
     if (!Main_IsOnAndroid) Play_UpdateMainStream(true, true);
 
-    window.clearInterval(Play_streamInfoTimerId);
-    Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
+    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 300000, Play_streamInfoTimerId);
     //PlayExtra_UpdatePanelTest();
 }
 
@@ -462,21 +461,19 @@ function Play_Resume() {
     Play_RestoreFromResume = true;
     Play_ResumeAfterOnlineCounter = 0;
 
-    window.clearInterval(Play_ResumeAfterOnlineId);
     if (navigator.onLine) Play_ResumeAfterOnline();
-    else Play_ResumeAfterOnlineId = window.setInterval(Play_ResumeAfterOnline, 100);
+    else Play_ResumeAfterOnlineId = Main_setInterval(Play_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
 
     if (!Play_MultiEnable) Play_data.watching_time = new Date().getTime();
 
-    window.clearInterval(Play_streamInfoTimerId);
-    Play_streamInfoTimerId = window.setInterval(Play_updateStreamInfo, 300000);
+    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 300000, Play_streamInfoTimerId);
     Play_ShowPanelStatus(1);
 
 }
 
 function Play_ResumeAfterOnline() {
     if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
-        window.clearInterval(Play_ResumeAfterOnlineId);
+        Main_clearInterval(Play_ResumeAfterOnlineId);
         Play_CheckIfIsLiveCleanEnd();
         if (Play_MultiEnable) {
             Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
@@ -572,9 +569,12 @@ function Play_updateStreamInfoEnd(response) {
 function Play_updateStreamInfoStartError() {
     if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
         Play_loadingInfoDataTimeout += 500;
-        window.setTimeout(function() {
-            if (Play_isOn) Play_updateStreamInfoStart();
-        }, 750);
+        Main_setTimeout(
+            function() {
+                if (Play_isOn) Play_updateStreamInfoStart();
+            },
+            750
+        );
         Play_loadingInfoDataTry++;
     } else Play_loadingInfoDataTry = 0;
 }
@@ -594,10 +594,13 @@ function Play_updateStreamInfoValues(response) {
 
 function Play_updateStreamInfoError() {
     if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
-        window.setTimeout(function() {
-            if (Play_isOn) Play_updateStreamInfo();
-            //give a second for it retry as the TV may be on coming from resume
-        }, 750);
+        Main_setTimeout(
+            function() {
+                if (Play_isOn) Play_updateStreamInfo();
+                //give a second for it retry as the TV may be on coming from resume
+            },
+            750
+        );
         Play_updateStreamInfoErrorTry++;
     } else Play_updateStreamInfoErrorTry = 0;
 }
@@ -626,9 +629,12 @@ function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
 
 function Play_updateVodInfoError(Channel_id, BroadcastID, tryes) {
     if (tryes < 10) {
-        window.setTimeout(function() {
-            if (Play_isOn) Play_updateVodInfo(Channel_id, BroadcastID, tryes + 1);
-        }, 500);
+        Main_setTimeout(
+            function() {
+                if (Play_isOn) Play_updateVodInfo(Channel_id, BroadcastID, tryes + 1);
+            },
+            500
+        );
     }
 }
 
@@ -700,10 +706,13 @@ function Play_updateStreamInfoMultiValues(response, pos) {
 
 function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
     if (tryes < Play_loadingInfoDataTryMax) {
-        window.setTimeout(function() {
-            if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
-            //give a second for it retry as the TV may be on coming from resume
-        }, 2500);
+        Main_setTimeout(
+            function() {
+                if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
+                //give a second for it retry as the TV may be on coming from resume
+            },
+            2500
+        );
     }
 }
 
@@ -720,15 +729,18 @@ function Play_updateStreamInfo() {
 }
 
 function Play_updateStreamInfoMulti(pos) {
-    window.setTimeout(function() {
-        if (Play_MultiArray[pos].data.length > 0) {
-            Play_RefreshMultiGet(
-                Main_kraken_api + 'streams/' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag_I,
-                0,
-                pos
-            );
-        }
-    }, pos * 2000);
+    Main_setTimeout(
+        function() {
+            if (Play_MultiArray[pos].data.length > 0) {
+                Play_RefreshMultiGet(
+                    Main_kraken_api + 'streams/' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag_I,
+                    0,
+                    pos
+                );
+            }
+        },
+        (pos * 2000)
+    );
 }
 
 function Play_LoadLogo(ImgObjet, link) {
@@ -832,9 +844,12 @@ function Play_OlddataSet() {
 function Play_ForbiddenLive() {
     Play_HideBufferDialog();
     Play_showWarningMidleDialog(STR_FORBIDDEN);
-    window.setTimeout(function() {
-        if (Play_isOn) Play_CheckHostStart();
-    }, 4000);
+    Main_setTimeout(
+        function() {
+            if (Play_isOn) Play_CheckHostStart();
+        },
+        4000
+    );
 }
 
 //Browsers crash trying to get the streams link
@@ -1083,7 +1098,7 @@ function Play_exitMain() {
 function Play_ClearPlayer() {
     //Main_Log('Play_ClearPlayer');
 
-    window.clearInterval(Play_ShowPanelStatusId);
+    Main_clearInterval(Play_ShowPanelStatusId);
     Play_hidePanel();
     Play_HideWarningDialog();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
@@ -1118,7 +1133,7 @@ function Play_ClearPlay(clearChat) {
     Play_Playing = false;
     Main_removeEventListener("keydown", Play_handleKeyDown);
     if (clearChat) ChatLive_Clear(0);
-    window.clearInterval(Play_streamInfoTimerId);
+    Main_clearInterval(Play_streamInfoTimerId);
     Play_IsWarning = false;
 }
 
@@ -1142,13 +1157,16 @@ function Play_showWarningDialog(text, timeout) {
     Main_innerHTML("dialog_warning_play_text", text);
     Main_ShowElement('dialog_warning_play');
 
-    window.clearTimeout(Play_showWarningDialogId);
     if (timeout) {
-        Play_showWarningDialogId = window.setTimeout(function() {
-            Play_IsWarning = false;
-            Play_HideWarningDialog();
-        }, timeout);
-    }
+        Play_showWarningDialogId = Main_setTimeout(
+            function() {
+                Play_IsWarning = false;
+                Play_HideWarningDialog();
+            },
+            timeout,
+            Play_showWarningDialogId
+        );
+    } else Main_clearTimeout(Play_showWarningDialogId);
 }
 
 function Play_HideWarningDialog() {
@@ -1164,12 +1182,15 @@ function Play_showWarningMidleDialog(text, timeout) {
     Main_innerHTML("dialog_warning_play_middle_text", text);
     Main_ShowElement('dialog_warning_play_middle');
 
-    window.clearTimeout(Play_showWarningMidleDialogId);
     if (timeout) {
-        Play_showWarningMidleDialogId = window.setTimeout(function() {
-            Play_HideWarningMidleDialog();
-        }, timeout);
-    }
+        Play_showWarningMidleDialogId = Main_setTimeout(
+            function() {
+                Play_HideWarningMidleDialog();
+            },
+            timeout,
+            Play_showWarningMidleDialogId
+        );
+    } else Main_clearTimeout(Play_showWarningMidleDialogId);
 }
 
 function Play_HideWarningMidleDialog() {
@@ -1183,14 +1204,14 @@ function Play_WarningMidleDialogVisible() {
 function Play_showExitDialog() {
     if (!Play_ExitDialogVisible()) {
         Main_ShowElement('play_dialog_exit');
-        Play_exitID = window.setTimeout(Play_showExitDialog, 3000);
+        Play_exitID = Main_setTimeout(Play_showExitDialog, 3000, Play_exitID);
     } else {
         Play_CleanHideExit();
     }
 }
 
 function Play_CleanHideExit() {
-    window.clearTimeout(Play_exitID);
+    Main_clearTimeout(Play_exitID);
     Main_HideElement('play_dialog_exit');
 }
 
@@ -1207,7 +1228,7 @@ function Play_hidePanel() {
     Play_clearHidePanel();
     Play_ForceHidePannel();
     Play_data.quality = Play_data.qualityPlaying;
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
+    Main_clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
 function Play_ForceShowPannel() {
@@ -1223,15 +1244,17 @@ function Play_ForceHidePannel() {
 }
 
 var Play_ShowPanelStatusId;
-
 function Play_ShowPanelStatus(mwhocall) {
-    window.clearInterval(Play_ShowPanelStatusId);
     if (Play_Status_Always_On) {
 
         if (Main_IsOnAndroid) {
-            Play_ShowPanelStatusId = window.setInterval(function() {
-                Play_UpdateStatus(mwhocall);
-            }, 1000);
+            Play_ShowPanelStatusId = Main_setInterval(
+                function() {
+                    Play_UpdateStatus(mwhocall);
+                },
+                1000,
+                Play_ShowPanelStatusId
+            );
         } else Play_VideoStatusTest();
 
         Main_ShowElement('playsideinfo');
@@ -1259,8 +1282,7 @@ function Play_showPanel() {
     PlayExtra_ResetAudio();
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
-    PlayVod_RefreshProgressBarrID = window.setInterval(Play_RefreshWatchingtime, 1000);
+    PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
     Play_clock();
     Play_CleanHideExit();
     Play_ForceShowPannel();
@@ -1360,12 +1382,12 @@ function Play_ShowVideoQuality(position) {
 }
 
 function Play_clearHidePanel() {
-    window.clearTimeout(Play_PanelHideID);
+    Main_clearTimeout(Play_PanelHideID);
     PlayVod_ProgressBaroffset = 0;
 }
 
 function Play_setHidePanel() {
-    Play_PanelHideID = window.setTimeout(Play_hidePanel, 5000);
+    Play_PanelHideID = Main_setTimeout(Play_hidePanel, 5000, Play_PanelHideID);
 }
 
 function Play_showChat() {
@@ -1427,10 +1449,9 @@ function Play_ChatPosition() {
 }
 
 function Play_showChatBackgroundDialog(DialogText) {
-    window.clearTimeout(Play_ChatBackgroundID);
     Main_textContent("play_chat_dialog_text", DialogText);
     Main_ShowElement('play_chat_dialog');
-    Play_ChatBackgroundID = window.setTimeout(Play_hideChatBackgroundDialog, 1000);
+    Play_ChatBackgroundID = Main_setTimeout(Play_hideChatBackgroundDialog, 1000, Play_ChatBackgroundID);
 }
 
 function Play_hideChatBackgroundDialog() {
@@ -1509,8 +1530,8 @@ function Play_CheckHostStart(error_410) {
     Play_loadingDataTimeout = 2000;
     ChatLive_Clear(0);
     ChatLive_Clear(1);
-    window.clearInterval(Play_streamInfoTimerId);
-    window.setTimeout(Play_loadDataCheckHost, 50);
+    Main_clearInterval(Play_streamInfoTimerId);
+    Main_setTimeout(Play_loadDataCheckHost, 50);
 }
 
 function Play_loadDataCheckHost() {
@@ -1647,7 +1668,7 @@ function Play_RestorePlayDataValues() {
 }
 
 function Play_handleKeyUpClear() {
-    window.clearTimeout(PlayExtra_KeyEnterID);
+    Main_clearTimeout(PlayExtra_KeyEnterID);
     Main_removeEventListener("keyup", Play_handleKeyUp);
     if (!Main_isElementShowing('dialog_os')) Main_addEventListener("keydown", Play_handleKeyDown);
 }
@@ -1940,11 +1961,14 @@ function Play_MultiUpdateMain() {
 }
 
 function Play_MultiCheckLiveFeed(pos) {
-    window.setTimeout(function() {
-        if (Play_CheckIfIsLiveResponseText &&
-            Main_A_equals_B(Play_MultiArray[pos].data[6], Play_CheckIfIsLiveChannel))
-            UserLiveFeed_CheckIfIsLiveSTop();
-    }, 1000);
+    Main_setTimeout(
+        function() {
+            if (Play_CheckIfIsLiveResponseText &&
+                Main_A_equals_B(Play_MultiArray[pos].data[6], Play_CheckIfIsLiveChannel))
+                UserLiveFeed_CheckIfIsLiveSTop();
+        },
+        1000
+    );
 }
 
 function Play_MultiEnableKeyRightLeft(adder) {
@@ -2148,7 +2172,7 @@ function Play_MultiDialogVisible() {
 }
 
 function Play_clearHideMultiDialog() {
-    window.clearTimeout(Play_HideMultiDialogID);
+    Main_clearTimeout(Play_HideMultiDialogID);
 }
 
 // function Play_FakeMulti() {
@@ -2188,7 +2212,7 @@ function Play_clearHideMultiDialog() {
 var Play_HideMultiDialogID;
 function Play_setHideMultiDialog() {
     Play_clearHideMultiDialog();
-    Play_HideMultiDialogID = window.setTimeout(Play_HideMultiDialog, 10000);
+    Play_HideMultiDialogID = Main_setTimeout(Play_HideMultiDialog, 10000, Play_HideMultiDialogID);
 }
 
 var Play_StoreChatPosValue = {

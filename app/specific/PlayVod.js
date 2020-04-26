@@ -109,16 +109,19 @@ function PlayVod_Start() {
 function PlayVod_PosStart() {
     //Main_Log('PlayVod_PosStart');
 
-    window.setTimeout(function() {
-        Main_ShowElement('controls_holder');
-        Main_ShowElement('progress_pause_holder');
-    }, 1000);
+    Main_setTimeout(
+        function() {
+            Main_ShowElement('controls_holder');
+            Main_ShowElement('progress_pause_holder');
+        },
+        1000
+    );
     Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
 
     Main_values.Play_WasPlaying = 2;
     Main_SaveValues();
 
-    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+    PlayVod_SaveOffsetId = Main_setInterval(PlayVod_SaveOffset, 60000, PlayVod_SaveOffsetId);
 
     Play_IsWarning = false;
     PlayVod_jumpCount = 0;
@@ -214,24 +217,24 @@ function PlayVod_Resume() {
     //Get the time from android as it can save it more reliably
     Main_values.vodOffset = Android.getsavedtime() / 1000;
 
-    window.clearInterval(Play_ResumeAfterOnlineId);
-
     if (navigator.onLine) PlayVod_ResumeAfterOnline();
-    else Play_ResumeAfterOnlineId = window.setInterval(PlayVod_ResumeAfterOnline, 100);
+    else Play_ResumeAfterOnlineId = Main_setInterval(PlayVod_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
 
     Play_EndSet(2);
-    window.clearInterval(PlayVod_SaveOffsetId);
-    PlayVod_SaveOffsetId = window.setInterval(PlayVod_SaveOffset, 60000);
+    PlayVod_SaveOffsetId = Main_setInterval(PlayVod_SaveOffset, 60000, PlayVod_SaveOffsetId, PlayVod_SaveOffsetId);
 
-    window.clearInterval(Play_ShowPanelStatusId);
-    Play_ShowPanelStatusId = window.setInterval(function() {
-        Play_UpdateStatus(2);
-    }, 1000);
+    Play_ShowPanelStatusId = Main_setInterval(
+        function() {
+            Play_UpdateStatus(2);
+        },
+        1000,
+        Play_ShowPanelStatusId
+    );
 }
 
 function PlayVod_ResumeAfterOnline(forced) {
     if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
-        window.clearInterval(Play_ResumeAfterOnlineId);
+        Main_clearInterval(Play_ResumeAfterOnlineId);
         PlayVod_state = Play_STATE_LOADING_TOKEN;
         PlayVod_loadDatanew();
     }
@@ -362,13 +365,16 @@ function PlayVod_WarnEnd(text) {
     Play_HideBufferDialog();
     Play_showWarningDialog(text);
 
-    window.clearTimeout(PlayVod_WarnEndId);
-    PlayVod_WarnEndId = window.setTimeout(function() {
-        if (PlayVod_isOn) {
-            Play_HideBufferDialog();
-            Play_PlayEndStart(2);
-        }
-    }, 4000);
+    PlayVod_WarnEndId = Main_setTimeout(
+        function() {
+            if (PlayVod_isOn) {
+                Play_HideBufferDialog();
+                Play_PlayEndStart(2);
+            }
+        },
+        4000,
+        PlayVod_WarnEndId
+    );
 }
 
 function PlayVod_qualityChanged() {
@@ -439,8 +445,8 @@ function PlayVod_PreshutdownStream(saveOffset, PreventcleanQuailities) {
     Main_ShowElement('controls_holder');
     Main_ShowElement('progress_pause_holder');
     PlayVod_isOn = false;
-    window.clearInterval(PlayVod_SaveOffsetId);
-    window.clearTimeout(PlayVod_WarnEndId);
+    Main_clearInterval(PlayVod_SaveOffsetId);
+    Main_clearTimeout(PlayVod_WarnEndId);
     Main_values.Play_WasPlaying = 0;
     Chat_Clear();
     UserLiveFeed_Hide(PreventcleanQuailities);
@@ -468,7 +474,7 @@ function PlayVod_hidePanel() {
     document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_previews_hide();
     PlayVod_quality = PlayVod_qualityPlaying;
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
+    Main_clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
 function PlayVod_showPanel(autoHide) {
@@ -476,10 +482,13 @@ function PlayVod_showPanel(autoHide) {
     PlayVod_RefreshProgressBarr(autoHide);
     Play_clock();
     Play_CleanHideExit();
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
-    PlayVod_RefreshProgressBarrID = window.setInterval(function() {
-        PlayVod_RefreshProgressBarr(autoHide);
-    }, 1000);
+    PlayVod_RefreshProgressBarrID = Main_setInterval(
+        function() {
+            PlayVod_RefreshProgressBarr(autoHide);
+        },
+        1000,
+        PlayVod_RefreshProgressBarrID
+    );
 
     if (autoHide) {
         PlayVod_IconsBottonResetFocus();
@@ -551,7 +560,7 @@ function PlayVod_IconsBottonFocus() {
 }
 
 function PlayVod_setHidePanel() {
-    Play_PanelHideID = window.setTimeout(PlayVod_hidePanel, 5000 + PlayVod_ProgressBaroffset); // time in ms
+    Play_PanelHideID = Main_setTimeout(PlayVod_hidePanel, (5000 + PlayVod_ProgressBaroffset), Play_PanelHideID); // time in ms
 }
 
 function PlayVod_qualityIndexReset() {
@@ -605,7 +614,7 @@ function PlayVod_jump() {
         if (Main_IsOnAndroid) {
             Android.mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
         }
-        window.setTimeout(PlayVod_SaveOffset, 1000);
+        Main_setTimeout(PlayVod_SaveOffset, 1000);
         if (PlayClip_HasVOD) Chat_Init();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
@@ -641,7 +650,7 @@ function PlayVod_jumpTime() {
 function PlayVod_jumpStart(multiplier, duration_seconds) {
     var currentTime = Main_IsOnAndroid ? (Android.gettime() / 1000) : 0;
 
-    window.clearTimeout(PlayVod_SizeClearID);
+    Main_clearTimeout(PlayVod_SizeClearID);
     PlayVod_IsJumping = true;
 
     if (PlayVod_jumpCount < (Play_DefaultjumpTimers.length - 1) && (PlayVod_StepsCount++ % 6) === 0) PlayVod_jumpCount++;
@@ -669,7 +678,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 
     PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
 
-    PlayVod_SizeClearID = window.setTimeout(PlayVod_SizeClear, 1000);
+    PlayVod_SizeClearID = Main_setTimeout(PlayVod_SizeClear, 1000, PlayVod_SizeClearID);
 }
 
 function PlayVod_SaveVodIds() {
@@ -677,7 +686,7 @@ function PlayVod_SaveVodIds() {
 }
 
 function Play_showVodDialog() {
-    window.clearTimeout(Play_HideVodDialogId);
+    Main_clearTimeout(Play_HideVodDialogId);
     Main_HideElement('controls_holder');
     PlayVod_showPanel(false);
     Main_textContent('stream_quality', '');
@@ -690,10 +699,13 @@ function Play_HideVodDialog() {
     PlayVod_hidePanel();
     Main_HideElement('dialog_vod_start');
     PlayVod_IconsResetFocus();
-    window.clearTimeout(Play_HideVodDialogId);
-    Play_HideVodDialogId = window.setTimeout(function() {
-        Main_ShowElement('controls_holder');
-    }, 1000);
+    Play_HideVodDialogId = Main_setTimeout(
+        function() {
+            Main_ShowElement('controls_holder');
+        },
+        1000,
+        Play_HideVodDialogId
+    );
 }
 
 function Play_isVodDialogVisible() {
@@ -822,7 +834,7 @@ function PlayVod_handleKeyDown(e) {
                     Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = PlayVod_handleKeyDown;
-                    Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);
+                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, 250, Play_EndUpclearID);
                 } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
@@ -1120,8 +1132,11 @@ function PlayVod_muted_WarningDialog() {
     Main_innerHTML("dialog_warning_muted_text", STR_VOD_MUTED);
     Main_ShowElement('dialog_warning_muted');
 
-    window.clearTimeout(PlayVod_muted_WarningDialogId);
-    PlayVod_muted_WarningDialogId = window.setTimeout(function() {
-        Main_HideElement('dialog_warning_muted');
-    }, 5000);
+    PlayVod_muted_WarningDialogId = Main_setTimeout(
+        function() {
+            Main_HideElement('dialog_warning_muted');
+        },
+        5000,
+        PlayVod_muted_WarningDialogId
+    );
 }

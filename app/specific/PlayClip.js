@@ -188,9 +188,12 @@ function PlayClip_loadDataRequest() {
 }
 
 function PlayClip_loadData410Recheck() {
-    window.setTimeout(function() {
-        PlayClip_loadData410 = false;
-    }, 30 * 60 * 1000);//try again after 30min
+    Main_setTimeout(
+        function() {
+            PlayClip_loadData410 = false;
+        },
+        (30 * 60 * 1000)//try again after 30min
+    );
 }
 
 function PlayClip_loadDataError() {
@@ -298,7 +301,7 @@ function PlayClip_onPlayer() {
 
 function PlayClip_Resume() {
     //return;
-    window.clearInterval(Play_ShowPanelStatusId);
+    Main_clearInterval(Play_ShowPanelStatusId);
     PlayClip_shutdownStream();
 }
 
@@ -427,14 +430,13 @@ function PlayClip_hidePanel() {
     if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
+    Main_clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
 function PlayClip_showPanel() {
     PlayVod_RefreshProgressBarr();
     Play_clock();
-    window.clearInterval(PlayVod_RefreshProgressBarrID);
-    PlayVod_RefreshProgressBarrID = window.setInterval(PlayVod_RefreshProgressBarr, 1000);
+    PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
@@ -473,7 +475,7 @@ function PlayClip_SetHtmlQuality(element) {
 }
 
 function PlayClip_setHidePanel() {
-    Play_PanelHideID = window.setTimeout(PlayClip_hidePanel, 5000 + PlayVod_ProgressBaroffset); // time in ms
+    Play_PanelHideID = Main_setTimeout(PlayClip_hidePanel, (5000 + PlayVod_ProgressBaroffset), Play_PanelHideID); // time in ms
 }
 
 function PlayClip_SetOpenVod() {
@@ -581,7 +583,7 @@ function PlayClip_handleKeyDown(e) {
                     Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = PlayClip_handleKeyDown;
-                    Play_EndUpclearID = window.setTimeout(Play_keyUpEnd, 250);
+                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, 250, Play_EndUpclearID);
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {

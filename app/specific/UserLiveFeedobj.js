@@ -212,19 +212,22 @@ function UserLiveFeedobj_LiveNotification() {
     }
 
     //Reset notifications after 2 times the time it takes just in case imf load and error fail some how
-    window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
-    UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(
+    UserLiveFeedobj_LiveNotificationClearId = Main_setTimeout(
         UserLiveFeedobj_LiveNotificationClear,
-        ((UserLiveFeed_NotifyTimeout + 1500) * 2 * UserLiveFeed_NotifyLiveidObject.length)
+        ((UserLiveFeed_NotifyTimeout + 1500) * 2 * UserLiveFeed_NotifyLiveidObject.length),
+        UserLiveFeedobj_LiveNotificationClearId
     );
 
     Main_ShowElement('user_feed_notify');
 
     UserLiveFeed_NotifyRunning = true;
 
-    window.setTimeout(function() {
-        UserLiveFeedobj_LiveNotificationShow(0);
-    }, 1000);
+    Main_setTimeout(
+        function() {
+            UserLiveFeedobj_LiveNotificationShow(0);
+        },
+        1000
+    );
 }
 
 function UserLiveFeedobj_LiveNotificationShow(position) {
@@ -261,10 +264,13 @@ function UserLiveFeedobj_LiveNotificationOnload(position) {
 
     Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
 
-    window.clearTimeout(UserLiveFeedobj_LiveNotificationHideId);
-    UserLiveFeedobj_LiveNotificationHideId = window.setTimeout(function() {
-        UserLiveFeedobj_LiveNotificationHide(position);
-    }, UserLiveFeed_NotifyTimeout);
+    UserLiveFeedobj_LiveNotificationHideId = Main_setTimeout(
+        function() {
+            UserLiveFeedobj_LiveNotificationHide(position);
+        },
+        UserLiveFeed_NotifyTimeout,
+        UserLiveFeedobj_LiveNotificationHideId
+    );
 }
 
 var UserLiveFeedobj_LiveNotificationShowId;
@@ -272,21 +278,28 @@ function UserLiveFeedobj_LiveNotificationHide(position) {
     Main_AddClass('user_feed_notify', 'user_feed_notify_hide');
 
     if (position < (UserLiveFeed_NotifyLiveidObject.length - 1)) {
-        window.clearTimeout(UserLiveFeedobj_LiveNotificationShowId);
-        UserLiveFeedobj_LiveNotificationShowId = window.setTimeout(function() {
-            UserLiveFeedobj_LiveNotificationShow(position + 1);
-        }, 800);
+        UserLiveFeedobj_LiveNotificationShowId = Main_setTimeout(
+            function() {
+                UserLiveFeedobj_LiveNotificationShow(position + 1);
+            },
+            800,
+            UserLiveFeedobj_LiveNotificationShowId
+        );
     } else UserLiveFeedobj_LiveNotificationClear();
 }
 
 function UserLiveFeedobj_LiveNotificationClear() {
-    window.clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
+    Main_clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
     UserLiveFeed_NotifyRunning = false;
     UserLiveFeed_NotifyLiveidObject = [];
 
-    UserLiveFeedobj_LiveNotificationClearId = window.setTimeout(function() {
-        Main_HideElement('user_feed_notify');
-    }, 10000);
+    UserLiveFeedobj_LiveNotificationClearId = Main_setTimeout(
+        function() {
+            Main_HideElement('user_feed_notify');
+        },
+        10000,
+        UserLiveFeedobj_LiveNotificationClearId
+    );
 }
 
 var UserLiveFeedobj_LiveFeedOldUserName = '';
@@ -961,10 +974,13 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
     UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos] = itemsCount;
 
-    window.setTimeout(function() {
-        Sidepannel_PreloadImgs();
-        UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
-    }, 25);
+    Main_setTimeout(
+        function() {
+            Sidepannel_PreloadImgs();
+            UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
+        },
+        25
+    );
 }
 
 
@@ -1058,9 +1074,12 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
         UserLiveFeed_obj[pos].loadingMore = false;
         if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     } else {
-        window.setTimeout(function() {
-            UserLiveFeed_loadDataSuccessFinish(false, pos);
-        }, 25);
+        Main_setTimeout(
+            function() {
+                UserLiveFeed_loadDataSuccessFinish(false, pos);
+            },
+            25
+        );
     }
 }
 
@@ -1145,9 +1164,12 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
         }
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserHostPos);
 
-    window.setTimeout(function() {
-        UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
-    }, 25);
+    Main_setTimeout(
+        function() {
+            UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
+        },
+        25
+    );
 }
 //Base video fun end
 
@@ -1241,9 +1263,12 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
         UserLiveFeed_obj[pos].loadingMore = false;
         if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     } else {
-        window.setTimeout(function() {
-            UserLiveFeed_loadDataSuccessFinish(false, pos);
-        }, 25);
+        Main_setTimeout(
+            function() {
+                UserLiveFeed_loadDataSuccessFinish(false, pos);
+            },
+            25
+        );
     }
 }
 //Base game fun end

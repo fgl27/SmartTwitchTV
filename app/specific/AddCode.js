@@ -129,13 +129,16 @@ function AddCode_requestTokensError() {
 function AddCode_requestTokensFail() {
     Main_HideLoadDialog();
     Main_showWarningDialog(STR_OAUTH_FAIL);
-    window.setTimeout(function() {
-        Main_HideWarningDialog();
-        Main_newUsercode = 0;
-        Main_SaveValues();
-        Main_values.Main_Go = Main_Users;
-        Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
-    }, 4000);
+    Main_setTimeout(
+        function() {
+            Main_HideWarningDialog();
+            Main_newUsercode = 0;
+            Main_SaveValues();
+            Main_values.Main_Go = Main_Users;
+            Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
+        },
+        4000
+    );
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
     AddUser_SaveUserArray();
@@ -181,20 +184,26 @@ function AddCode_CheckOauthTokenSucess(response) {
         Main_SaveValues();
         Main_showWarningDialog(STR_USER_CODE_OK);
         if (Main_IsOnAndroid) Android.clearCookie();
-        window.setTimeout(function() {
-            Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
-        }, 3000);
+        Main_setTimeout(
+            function() {
+                Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
+            },
+            3000
+        );
     } else {
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
         Main_showWarningDialog(STR_OAUTH_FAIL_USER + AddUser_UsernameArray[Main_values.Users_AddcodePosition].name);
-        window.setTimeout(function() {
-            Main_HideWarningDialog();
-            Main_newUsercode = 0;
-            Main_SaveValues();
-            Main_values.Main_Go = Main_Users;
-            Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
-        }, 4000);
+        Main_setTimeout(
+            function() {
+                Main_HideWarningDialog();
+                Main_newUsercode = 0;
+                Main_SaveValues();
+                Main_values.Main_Go = Main_Users;
+                Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
+            },
+            4000
+        );
     }
     return;
 }
@@ -238,15 +247,18 @@ function AddCode_CheckTokenSuccess(responseText, position) {
 }
 
 function AddCode_Refreshtimeout(position) {
-    window.clearTimeout(AddUser_UsernameArray[position].timeout_id);
 
     if (AddUser_UsernameArray[position].access_token) {
-        AddUser_UsernameArray[position].timeout_id = window.setTimeout(function() {
+        AddUser_UsernameArray[position].timeout_id = Main_setTimeout(
+            function() {
 
-            AddCode_refreshTokens(position, 0, null, null);
+                AddCode_refreshTokens(position, 0, null, null);
 
-        }, (parseInt(AddUser_UsernameArray[position].expires_in) - 60) * 1000);
-    }
+            },
+            (parseInt(AddUser_UsernameArray[position].expires_in) - 60) * 1000,
+            AddUser_UsernameArray[position].timeout_id
+        );
+    } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
 
     //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60));
 }
@@ -518,7 +530,7 @@ function AddCode_UnFollowGameRequestError() {
     if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestUnFollowGame();
     else {
         Main_showWarningDialog(STR_410_FEATURING);
-        window.setTimeout(Main_HideWarningDialog, 2000);
+        Main_setTimeout(Main_HideWarningDialog, 2000);
     }
 }
 

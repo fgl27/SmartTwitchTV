@@ -96,22 +96,25 @@ function ChatLiveControls_inputFocus() {
         Main_removeEventListener("keydown", ChatLiveControls_handleKeyDown);
         Main_ChatLiveInput.placeholder = STR_PLACEHOLDER_CHAT;
 
-        window.clearTimeout(ChatLiveControls_inputFocusId);
-        ChatLiveControls_inputFocusId = window.setTimeout(function() {
-            Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
-            Main_ChatLiveInput.focus();
-            try {
-                if (Main_IsOnAndroid) {
-                    if (OptionsShowObj.keyboard_options.defaultValue === 1) Android.KeyboardCheckAndHIde();
-                    else if (OptionsShowObj.keyboard_options.defaultValue === 2) Android.hideKeyboardFrom();
-                }
-            } catch (e) {}
-            ChatLiveControls_keyBoardOn = true;
-            Main_addEventListener("keydown", ChatLiveControls_KeyboardEvent);
-            //Set the avoidclicks only after focus
-            Main_AddClass('scene_notify', 'avoidclicks');
-            Main_AddClass('scenefeed', 'avoidclicks');
-        }, 200);
+        ChatLiveControls_inputFocusId = Main_setTimeout(
+            function() {
+                Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
+                Main_ChatLiveInput.focus();
+                try {
+                    if (Main_IsOnAndroid) {
+                        if (OptionsShowObj.keyboard_options.defaultValue === 1) Android.KeyboardCheckAndHIde();
+                        else if (OptionsShowObj.keyboard_options.defaultValue === 2) Android.hideKeyboardFrom();
+                    }
+                } catch (e) {}
+                ChatLiveControls_keyBoardOn = true;
+                Main_addEventListener("keydown", ChatLiveControls_KeyboardEvent);
+                //Set the avoidclicks only after focus
+                Main_AddClass('scene_notify', 'avoidclicks');
+                Main_AddClass('scenefeed', 'avoidclicks');
+            },
+            200,
+            ChatLiveControls_inputFocusId
+        );
     } else {
         ChatLiveControls_CantSend();
     }
@@ -127,7 +130,7 @@ function ChatLiveControls_removeEventListener() {
 
 function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
 
-    window.clearTimeout(ChatLiveControls_inputFocusId);
+    Main_clearTimeout(ChatLiveControls_inputFocusId);
     if (!Main_isTV && Main_IsOnAndroid) Android.mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
@@ -146,7 +149,7 @@ function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
 }
 
 function ChatLiveControls_KeyboardDismiss() {
-    window.clearTimeout(ChatLiveControls_inputFocusId);
+    Main_clearTimeout(ChatLiveControls_inputFocusId);
     ChatLiveControls_RemoveinputFocus(true);
     ChatLiveControls_cursor = 5;
     ChatLiveControls_refreshInputFocusTools();
@@ -167,11 +170,14 @@ function ChatLiveControls_showWarningDialog(text, timeout) {
     Main_innerHTML("dialog_warning_chat_text", text);
     Main_ShowElement('dialog_warning_chat');
 
-    window.clearTimeout(ChatLiveControls_showWarningDialogId);
+    Main_clearTimeout(ChatLiveControls_showWarningDialogId);
     if (timeout) {
-        ChatLiveControls_showWarningDialogId = window.setTimeout(function() {
-            Main_HideElement('dialog_warning_chat');
-        }, timeout);
+        ChatLiveControls_showWarningDialogId = Main_setTimeout(
+            function() {
+                Main_HideElement('dialog_warning_chat');
+            },
+            timeout
+        );
     }
 }
 
@@ -537,17 +543,20 @@ function ChatLiveControls_UpdateTextInput(text) {
 var ChatLiveControls_UpdateResultTextId;
 function ChatLiveControls_UpdateResultText() {
 
-    window.clearTimeout(ChatLiveControls_UpdateResultTextId);
     // delay the check to prevent lag on fun call spaming
-    ChatLiveControls_UpdateResultTextId = window.setTimeout(function() {
+    ChatLiveControls_UpdateResultTextId = Main_setTimeout(
+        function() {
 
-        if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
+            if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
 
-            Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize([Main_ChatLiveInput.value]));
+                Main_innerHTML("chat_result_text", ChatLiveControls_extraMessageTokenize([Main_ChatLiveInput.value]));
 
-        } else ChatLiveControls_UpdateResultTextEmpty();
+            } else ChatLiveControls_UpdateResultTextEmpty();
 
-    }, 10);
+        },
+        10,
+        ChatLiveControls_UpdateResultTextId
+    );
 }
 function ChatLiveControls_UpdateResultTextEmpty() {
     Main_textContent("chat_result_text", '');
@@ -663,7 +672,7 @@ function ChatLiveControls_ChooseChat(event) {
 // }
 
 function ChatLiveControls_CantSend() {
-    window.clearTimeout(ChatLiveControls_inputFocusId);
+    Main_clearTimeout(ChatLiveControls_inputFocusId);
 
     if (Main_isElementShowing('chat_emotes_holder')) ChatLiveControls_HideEmotes();
     else if (Main_isElementShowing('chat_send')) {

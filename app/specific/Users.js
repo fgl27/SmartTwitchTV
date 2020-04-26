@@ -133,24 +133,26 @@ function Users_createCell(id, pos) {
 }
 
 function Users_loadDataSuccessFinish() {
-    Main_timeOut(function() {
-        //Main_Log('Users_loadDataSuccessFinish');
-        if (!Users_status) {
-            Users_status = true;
-            Users_addFocus();
-            Main_HideLoadDialog();
-            Main_SaveValues();
+    Main_ready(
+        function() {
+            //Main_Log('Users_loadDataSuccessFinish');
+            if (!Users_status) {
+                Users_status = true;
+                Users_addFocus();
+                Main_HideLoadDialog();
+                Main_SaveValues();
+            }
+            Main_ShowElement(Users_ids[5]);
+            Main_FirstLoad = false;
+            Users_loadingData = false;
+            if (Users_ShowAutetication) {
+                Users_ShowAutetication = false;
+                Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
+                Users_Isautentication = true;
+                Users_showRemoveDialog();
+            }
         }
-        Main_ShowElement(Users_ids[5]);
-        Main_FirstLoad = false;
-        Users_loadingData = false;
-        if (Users_ShowAutetication) {
-            Users_ShowAutetication = false;
-            Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
-            Users_Isautentication = true;
-            Users_showRemoveDialog();
-        }
-    });
+    );
 }
 
 function Users_addFocus(forceScroll) {
@@ -189,11 +191,11 @@ function Users_keyEnter() {
 }
 
 function Users_clearUserDialog() {
-    window.clearTimeout(Users_UserDialogID);
+    Main_clearTimeout(Users_UserDialogID);
 }
 
 function Users_setUserDialog() {
-    Users_UserDialogID = window.setTimeout(Users_HideUserDialog, 20000);
+    Users_UserDialogID = Main_setTimeout(Users_HideUserDialog, 20000, Users_UserDialogID);
 }
 
 var Users_showUserDialogPos = 0;
@@ -231,11 +233,11 @@ function Users_UserCursorSet() {
 }
 
 function Users_clearRemoveDialog() {
-    window.clearTimeout(Users_RemoveDialogID);
+    Main_clearTimeout(Users_RemoveDialogID);
 }
 
 function Users_setRemoveDialog() {
-    Users_RemoveDialogID = window.setTimeout(Users_HideRemoveDialog, 30000);
+    Users_RemoveDialogID = Main_setTimeout(Users_HideRemoveDialog, 30000, Users_RemoveDialogID);
 }
 
 function Users_showRemoveDialog() {
@@ -426,7 +428,7 @@ function Users_handleKeyDown(event) {
                 } else if (temp_RemoveCursor === 1) {
                     if (AddUser_UsernameArray[Users_showUserDialogPos].access_token) {
                         Main_showWarningDialog(STR_USER_CODE_OK);
-                        window.setTimeout(Main_HideWarningDialog, 1500);
+                        Main_setTimeout(Main_HideWarningDialog, 1500);
                     } else {
                         Users_Isautentication = true;
                         Users_showRemoveDialog();
@@ -445,7 +447,7 @@ function Users_handleKeyDown(event) {
             Sidepannel_Start(Users_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
-                window.setTimeout(Main_HideWarningDialog, 2000);
+                Main_setTimeout(Main_HideWarningDialog, 2000);
             }
             break;
         default:

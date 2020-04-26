@@ -113,9 +113,12 @@ function Search_handleKeyDown(event) {
                     Search_loadData();
                 } else {
                     Main_showWarningDialog(STR_SEARCH_EMPTY);
-                    window.setTimeout(function() {
-                        Main_HideWarningDialog();
-                    }, 1000);
+                    Main_setTimeout(
+                        function() {
+                            Main_HideWarningDialog();
+                        },
+                        1000
+                    );
                 }
             }
             break;
@@ -132,16 +135,18 @@ function Search_inputFocus() {
     Main_addEventListener("keydown", Search_KeyboardEvent);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
 
-
-    window.clearTimeout(Search_inputFocusId);
-    Search_inputFocusId = window.setTimeout(function() {
-        Main_SearchInput.focus();
-        Search_keyBoardOn = true;
-    }, 500);
+    Search_inputFocusId = Main_setTimeout(
+        function() {
+            Main_SearchInput.focus();
+            Search_keyBoardOn = true;
+        },
+        500,
+        Search_inputFocusId
+    );
 }
 
 function Search_RemoveinputFocus(EnaKeydown) {
-    window.clearTimeout(Search_inputFocusId);
+    Main_clearTimeout(Search_inputFocusId);
     if (!Main_isTV && Main_IsOnAndroid) Android.mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
@@ -183,7 +188,7 @@ function Search_KeyboardEvent(event) {
 }
 
 function Search_KeyboardDismiss() {
-    window.clearTimeout(Search_inputFocusId);
+    Main_clearTimeout(Search_inputFocusId);
     Search_RemoveinputFocus(true);
     Search_cursorY = 1;
     Search_refreshInputFocusTools();

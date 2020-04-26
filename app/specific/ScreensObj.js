@@ -1789,7 +1789,7 @@ function ScreensObj_VodCellArray(cell) {
 }
 
 function ScreensObj_AnimateThumbId(screen) {
-    window.clearInterval(screen.AnimateThumbId);
+    Main_clearInterval(screen.AnimateThumbId);
     if (!Settings_Obj_default("videos_animation")) return;
     var div = document.getElementById(screen.ids[6] + screen.posY + '_' + screen.posX);
 
@@ -1800,10 +1800,14 @@ function ScreensObj_AnimateThumbId(screen) {
         Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
         div.style.backgroundSize = div.offsetWidth + "px";
         var frame = 0;
-        screen.AnimateThumbId = window.setInterval(function() {
-            // 10 = quantity of frames in the preview img
-            div.style.backgroundPosition = "0px " + ((++frame % 10) * (-div.offsetHeight)) + "px";
-        }, 650);
+        screen.AnimateThumbId = Main_setInterval(
+            function() {
+                // 10 = quantity of frames in the preview img
+                div.style.backgroundPosition = "0px " + ((++frame % 10) * (-div.offsetHeight)) + "px";
+            },
+            650,
+            screen.AnimateThumbId
+        );
     };
 
     screen.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, "$1");
