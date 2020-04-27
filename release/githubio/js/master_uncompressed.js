@@ -6168,8 +6168,12 @@
         } else if (atuser) {
             nickColor = chat_Line_highlight_blue;
         } else {
-            nickColor = (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
-            nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+
+            if (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) {
+                nickColor = 'style="color: ' + calculateColorReplacement(tags.color) + ';"';
+            } else {
+                nickColor = 'style="color: ' + (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]) + ';"';
+            }
         }
 
         div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' +
@@ -6420,11 +6424,11 @@
     var Chat_offset = 0;
     var Chat_title = '';
     var defaultColors = [
-        "#fe2424", "#fc5a24", "#ff9020", "#fEc723", "#ffff1d",
-        "#bfff00", "#c3ff12", "#56fe1d", "#1eff1e", "#16ff51",
-        "#00ff80", "#00ffbf", "#00ffff", "#1dc6ff", "#158aff",
-        "#3367ff", "#ff4dff", "#ff4ad2", "#ff62b1", "#ff4272"
+        "#FC4F4F", "#ff8736", "#ffd830", "#ffff35", "#81ff2c", "#2dff2d",
+        "#21ff7a", "#0fffc0", "#0fffff", "#20cfff", "#4d9bff", "#ff74ff",
+        "#ff93ff", "#ff63ab", "#63FFBF", "#A363FF", "#B3FF63", "#D463FF"
     ];
+
     var defaultColorsLength = defaultColors.length;
     var Chat_div = [];
     var Chat_Position = 0;
@@ -6693,14 +6697,16 @@
             } else if (atuser) {
                 nickColor = chat_Line_highlight_blue;
             } else {
-                nickColor = (!ChatLive_Custom_Nick_Color && mmessage.hasOwnProperty('user_color')) ? mmessage.user_color :
-                    defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
-                nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+                if (!ChatLive_Custom_Nick_Color && mmessage.hasOwnProperty('user_color')) {
+                    nickColor = 'style="color: ' + calculateColorReplacement(mmessage.user_color) + ';"';
+                } else {
+                    nickColor = 'style="color: ' + (defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength]) + ';"';
+                }
+
             }
-            div += '<span ' + (mmessage.is_action ? ('class="class_bold" ' + nickColor) : '') +
-                nickColor + '>' + comments[i].commenter.display_name + '</span>' +
-                (mmessage.is_action ? '' : '&#58;') + '&nbsp;';
+            div += '<span ' + (mmessage.is_action ? ('class="class_bold" ' + nickColor) : '') + nickColor + '>' +
+                comments[i].commenter.display_name + '</span>' + (mmessage.is_action ? '' : '&#58;') + '&nbsp;';
 
             //Add mesage
             div += '<span class="message' + (mmessage.is_action ? (' class_bold" ' + nickColor) : '"') + '>';
