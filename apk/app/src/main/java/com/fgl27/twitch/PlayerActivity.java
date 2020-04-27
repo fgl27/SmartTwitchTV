@@ -61,8 +61,8 @@ import static android.content.res.Configuration.KEYBOARD_QWERTY;
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/app/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/app/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
@@ -167,6 +167,7 @@ public class PlayerActivity extends Activity {
     public boolean onCreateReady;
     public boolean IsStopped;
     public boolean IsInAutoMode = true;
+    public boolean PingWarning = true;
     public AppPreferences appPreferences;
     public LoadControl[] loadControl = new LoadControl[PlayerAccount];
     //The default size for all loading dialog
@@ -918,7 +919,7 @@ public class PlayerActivity extends Activity {
                 PingErrorCounter = 0L;
                 //Prevent clear ShowNoNetworkWarning
                 if (warningShowing) MainThreadHandler.post(this::HideWarningText);
-            } else if (!warningShowing) {
+            } else if (!warningShowing && PingWarning && player[mainPlayer] == null) {//Prevent showing if playing or disabled by user
                 PingErrorCounter++;
                 if (PingErrorCounter > 2) {//> 0 1 2 = 30s... 5 seconds of postDelayed plus 5 seconds of postDelayed times 3 = 30s
                     PingErrorCounter = 0L;
@@ -1261,6 +1262,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void upNotificationId(String id) {
             appPreferences.put(Constants.PREF_USER_ID, id);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void Settings_SetPingWarning(boolean warning) {
+            PingWarning = warning;
         }
 
         @SuppressWarnings("unused")//called by JS

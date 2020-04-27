@@ -25,6 +25,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "ping_warn": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "app_animations": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -351,6 +355,7 @@ function Settings_SetSettings() {
     div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
     div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
+    div += Settings_Content('ping_warn', array_no_yes, STR_PING_WARNING, STR_PING_WARNING_SUMMARY);
 
     div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
 
@@ -518,6 +523,10 @@ function Settings_SetStrings() {
     Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
     Settings_value[key].values = [STR_NO, STR_YES];
 
+    key = "ping_warn";
+    Settings_DivOptionChangeLang(key, STR_PING_WARNING, STR_PING_WARNING_SUMMARY);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
     key = "single_click_exit";
     Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
     Settings_value[key].values = [STR_NO, STR_YES];
@@ -556,6 +565,7 @@ function Settings_SetDefautls() {
     UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Settings_CodecsSet();
+    Settings_SetPingWarning();
 }
 
 function Settings_Obj_values(key) {
@@ -628,6 +638,7 @@ function Settings_SetDefault(position) {
     } else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "live_notification_time") Settings_NotifyTimeout();
     else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
+    else if (position === "ping_warn") Settings_SetPingWarning();
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     else if (position === "app_animations") Settings_SetAnimations();
     else if (position === "buffer_live") Settings_SetBuffers(1);
@@ -661,6 +672,13 @@ function Settings_notification_background() {
     //TODO remove the try after some app updates
     try {
         if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
+    } catch (e) {}
+}
+
+function Settings_SetPingWarning() {
+    //TODO remove the try after some app updates
+    try {
+        if (Main_IsOnAndroid) Android.Settings_SetPingWarning(Settings_value.ping_warn.defaultValue === 1);
     } catch (e) {}
 }
 
