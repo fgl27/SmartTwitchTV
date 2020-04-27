@@ -19615,7 +19615,7 @@
         },
         "ping_warn": {
             "values": ["no", "yes"],
-            "defaultValue": 2
+            "defaultValue": 1
         },
         "app_animations": { //Migrated to dialog
             "values": ["no", "yes"],
