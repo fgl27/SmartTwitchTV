@@ -1386,6 +1386,34 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void getStreamDataAsync(String token_url, String hls_url, String ret_fun, String ret_check) {
+
+            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            DataResult = null;
+
+            ExtraPlayerHandler.post(() ->
+                    {
+                        ArrayList<String> ret = new ArrayList<>();
+                        ret.add(ret_check);
+                        String result = null;
+
+                        try {
+                            result = Tools.getStreamData(token_url, hls_url);
+                        } catch (UnsupportedEncodingException e) {
+                            Log.w(TAG, "getStreamDataAsync UnsupportedEncodingException ", e);
+                        } catch (NullPointerException e) {
+                            Log.w(TAG, "getStreamDataAsync NullPointerException ", e);
+                        }
+
+                        ret.add(result);
+                        DataResult = new Gson().toJson(ret);
+                        LoadUrlWebview("javascript:smartTwitchTV." + ret_fun + "(Android.GetDataResult())");
+                    }
+            );
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void GetClipData(String urlString, int timeout, int HeaderQuantity, String access_token,
                                 String overwriteID, String postMessage, String Method, String ret_fun, String ret_check) {
 

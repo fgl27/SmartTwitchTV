@@ -129,7 +129,7 @@ function PlayVod_PosStart() {
     Play_jumping = false;
     PlayVod_isOn = true;
 
-    if (!PlayVod_replay) PlayVod_loadDatanew();
+    if (!PlayVod_replay) PlayVod_loadData();
     else {
         PlayVod_state = Play_STATE_PLAYING;
         PlayVod_onPlayer();
@@ -236,7 +236,7 @@ function PlayVod_ResumeAfterOnline(forced) {
     if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         Main_clearInterval(Play_ResumeAfterOnlineId);
         PlayVod_state = Play_STATE_LOADING_TOKEN;
-        PlayVod_loadDatanew();
+        PlayVod_loadData();
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -292,41 +292,60 @@ function PlayVod_loadDataSuccessFake() {
 }
 
 var PlayVod_autoUrl;
-function PlayVod_loadDatanew() {
-    //Main_Log('PlayVod_loadDatanew');
+function PlayVod_loadData() {
+    //Main_Log('PlayVod_loadData');
 
     if (Main_IsOnAndroid) {
-        var StreamData = null;
 
         //TODO remove the try after some app updates
         try {
-            StreamData = Android.getStreamData(
+            Android.getStreamDataAsync(
                 Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
-                Play_vod_links.replace('%x', Main_values.ChannelVod_vodId)
+                Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
+                'PlayVod_loadDataResult',
+                Main_values.ChannelVod_vodId
             );
-        } catch (e) {}
-
-        if (StreamData) {
-            StreamData = JSON.parse(StreamData);//obj status url responseText
-
-            if (StreamData.status === 200) {
-                PlayVod_autoUrl = StreamData.url;
-                PlayVod_loadDataSuccessEnd(StreamData.responseText);
-                return;
-            } else if (StreamData.status === 1) {
-                PlayVod_loadDataCheckSub();
-                return;
-            } else if (StreamData.status === 410) {
-                //410 = api v3 is gone use v5 bug
-                PlayVod_WarnEnd(STR_410_ERROR);
-                return;
-            }
-
+        } catch (e) {
+            PlayVod_loadDataErrorFinish();
         }
 
-        PlayVod_loadDataErrorFinish();
-
     } else PlayVod_loadDataSuccessFake();
+}
+
+function PlayVod_loadDataResult(response) {
+
+    if (PlayVod_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (Main_A_equals_B(responseObj[0], Main_values.ChannelVod_vodId)) {
+            if (responseObj[1]) {//If the array contains pos 1
+
+                var StreamData = JSON.parse(responseObj[1]);
+
+                if (StreamData) {
+                    //StreamData = JSON.parse(StreamData);//obj status url responseText
+
+                    if (StreamData.status === 200) {
+                        PlayVod_autoUrl = StreamData.url;
+                        PlayVod_loadDataSuccessEnd(StreamData.responseText);
+                        return;
+                    } else if (StreamData.status === 1) {
+                        PlayVod_loadDataCheckSub();
+                        return;
+                    } else if (StreamData.status === 410) {
+                        //410 = api v3 is gone use v5 bug
+                        PlayVod_WarnEnd(STR_410_ERROR);
+                        return;
+                    }
+                }
+            }
+
+            PlayVod_loadDataErrorFinish();
+        }
+
+    }
+
 }
 
 function PlayVod_loadDataErrorFinish() {
@@ -337,9 +356,7 @@ function PlayVod_loadDataErrorFinish() {
 }
 
 function PlayVod_loadDataSuccessEnd(playlist) {
-
     PlayVod_playlist = playlist;
-    //TODO revise the needed for PlayVod_state
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_onPlayer();
 }

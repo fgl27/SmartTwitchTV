@@ -178,7 +178,9 @@ function PlayClip_loadDataRequest() {
             'PlayClip_loadDataResult',
             ChannelClip_playUrl
         );
-    } catch (e) {}
+    } catch (e) {
+        PlayClip_loadDataError();
+    }
 }
 
 function PlayClip_loadDataResult(response) {
