@@ -31,7 +31,6 @@ import androidx.core.app.NotificationCompat;
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
-import com.google.android.datatransport.runtime.TransportRuntime;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
