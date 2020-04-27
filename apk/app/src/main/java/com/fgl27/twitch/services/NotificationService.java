@@ -118,7 +118,6 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
         startNotification();
-        TransportRuntime.initialize(getApplicationContext());
     }
 
     private void StopService() {
