@@ -7,11 +7,11 @@ ext.versions = [
         publishVersion       : '3.0.',
         publishVersionCode   : 175,
 
-        firebase             : '17.3.0',
+        firebase             : '17.4.0',
         googleservices       : '4.3.3',
         tray                 : '0.12.0',
         leanback             : '1.0.0',
-        gradlePlugin         : '3.6.2',
+        gradlePlugin         : '3.6.3',
         benmanes             : '0.28.0',
         googlegson           : '2.8.6',
         webkit               : '1.2.0',
