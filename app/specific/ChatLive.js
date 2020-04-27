@@ -318,7 +318,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
         });
 
     } catch (e) {
-        //Main_Log('ChatLive_loadEmotesUserSuccess ' + e);
+        Main_Log('ChatLive_loadEmotesUserSuccess ' + e);
     }
 }
 
@@ -388,7 +388,7 @@ function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
             }
         });
     } catch (e) {
-        //Main_Log('ChatLive_loadEmotesbbtv ' + e);
+        Main_Log('ChatLive_loadEmotesbbtv ' + e);
     }
 
 
@@ -438,7 +438,7 @@ function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
 
         extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]] = 1;
     } catch (e) {
-        //Main_Log('ChatLive_loadCheersChannelSuccess ' + e);
+        Main_Log('ChatLive_loadCheersChannelSuccess ' + e);
     }
 
 }
@@ -532,7 +532,7 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
             }
         });
     } catch (e) {
-        //Main_Log('ChatLive_loadEmotesffz ' + e);
+        Main_Log('ChatLive_loadEmotesffz ' + e);
     }
 }
 
