@@ -163,31 +163,60 @@ function PlayClip_loadData() {
 function PlayClip_loadDataRequest() {
     var theUrl = 'https://gql.twitch.tv/gql',
         postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
-            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}',
-        xmlHttp;
+            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
 
-    for (var i = 0; i < 5; i++) {
-        xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout + (i * 500), 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
+    //TODO remove the try after some app updates
+    try {
+        Android.GetClipData(
+            theUrl,
+            PlayClip_loadingDataTimeout,
+            1,
+            null,
+            Main_Headers_Back[0][1],
+            postMessage,
+            'POST',
+            'PlayClip_loadDataResult',
+            ChannelClip_playUrl
+        );
+    } catch (e) {}
+}
 
-        if (xmlHttp) {
-            xmlHttp = JSON.parse(xmlHttp);
+function PlayClip_loadDataResult(response) {
 
-            if (xmlHttp.status === 200) {
-                PlayClip_QualityGenerate(xmlHttp.responseText);
-                return;
-            } else if (xmlHttp.status === 410) { //Workaround for future 410 issue
-                PlayClip_loadData410 = true;
-                PlayClip_loadData410Recheck();
-                PlayClip_loadDataSuccess410();
-                return;
+    if (PlayClip_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (Main_A_equals_B(responseObj[0], ChannelClip_playUrl)) {
+            if (responseObj[1]) {//If the array contains pos 1
+
+                responseObj = JSON.parse(responseObj[1]);
+
+                if (responseObj) {//If array pos 1 when parsed isn't null
+
+                    if (responseObj.status === 200) {
+                        PlayClip_QualityGenerate(responseObj.responseText);
+                        return;
+                    } else if (responseObj.status === 410) { //Workaround for future 410 issue
+                        PlayClip_loadData410 = true;
+                        PlayClip_loadData410Recheck();
+                        PlayClip_loadDataSuccess410();
+                        return;
+                    }
+
+                }
+
             }
+
+            PlayClip_loadDataError();
         }
+
     }
 
-    PlayClip_loadDataError();
 }
 
 function PlayClip_loadData410Recheck() {
+    Main_Log('PlayClip_loadData410Recheck');
     Main_setTimeout(
         function() {
             PlayClip_loadData410 = false;

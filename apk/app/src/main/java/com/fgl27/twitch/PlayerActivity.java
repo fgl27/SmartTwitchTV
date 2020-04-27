@@ -60,8 +60,8 @@ import static android.content.res.Configuration.KEYBOARD_QWERTY;
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/app/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/app/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
@@ -117,6 +117,7 @@ public class PlayerActivity extends Activity {
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
     public String PreviewsResult;
+    public String DataResult;
     public WebView mWebView;
     public boolean PicturePicture;
     public boolean deviceIsTV;
@@ -1364,7 +1365,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String fun, int x, int y) {
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String ret_fun, int x, int y) {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
             ExtraPlayerHandlerResult[x][y] = null;
 
@@ -1379,8 +1380,43 @@ public class PlayerActivity extends Activity {
                 }
 
                 if (ExtraPlayerHandlerResult[x][y] != null)
-                    LoadUrlWebview("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
+                    LoadUrlWebview("javascript:smartTwitchTV." + ret_fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
             }, 50 + Delay_ms);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void GetClipData(String urlString, int timeout, int HeaderQuantity, String access_token,
+                                String overwriteID, String postMessage, String Method, String ret_fun, String ret_check) {
+
+            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            DataResult = null;
+
+            ExtraPlayerHandler.post(() ->
+                    {
+                        Tools.ResponseObj response;
+                        ArrayList<String> ret = new ArrayList<>();
+                        ret.add(ret_check);
+
+                        for (int i = 0; i < 3; i++) {
+                            response = Tools.MethodUrl(urlString, timeout + (i * 500), HeaderQuantity, access_token, overwriteID, postMessage, Method);
+
+                            if (response != null) {
+                                ret.add(new Gson().toJson(response));
+                                break;
+                            }
+                        }
+
+                        DataResult = new Gson().toJson(ret);
+                        LoadUrlWebview("javascript:smartTwitchTV." + ret_fun + "(Android.GetDataResult())");
+                    }
+            );
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String GetDataResult() {
+            return DataResult;
         }
 
         @SuppressWarnings("unused")//called by JS

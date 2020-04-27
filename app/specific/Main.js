@@ -188,7 +188,8 @@ function Main_loadTranslations(language) {
                     'Play_ShowVideoStatus': Play_ShowVideoStatus,
                     'Play_ShowVideoQuality': Play_ShowVideoQuality,
                     'PlayVod_previews_success': PlayVod_previews_success,
-                    'Play_PlayPauseChange': Play_PlayPauseChange
+                    'Play_PlayPauseChange': Play_PlayPauseChange,
+                    'PlayClip_loadDataResult': PlayClip_loadDataResult
                 };
             }
             Main_IsOnAndroid = Android.getAndroid();
@@ -1780,16 +1781,19 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
 
         xmlHttp = JSON.parse(xmlHttp);
 
-        if (xmlHttp.status === 200) {
-            callbackSucess(xmlHttp.responseText, obj);
-        } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-            AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
-        } else if (xmlHttp.status === 500 && Main_isScene1DocShown() && obj.screen === Main_usergames) {
-            obj.key_refresh();
+        if (xmlHttp) {
+            if (xmlHttp.status === 200) {
+                callbackSucess(xmlHttp.responseText, obj);
+            } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
+            } else if (xmlHttp.status === 500 && Main_isScene1DocShown() && obj.screen === Main_usergames) {
+                obj.key_refresh();
+            } else {
+                calbackError(obj);
+            }
         } else {
             calbackError(obj);
         }
-
     } else {
         calbackError(obj);
     }
