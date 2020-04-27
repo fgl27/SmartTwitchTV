@@ -499,7 +499,9 @@
     var STR_DARK_MODE;
     var STR_CHAT_NICK_COLOR;
     var STR_CHAT_NICK_COLOR_SUMMARY;
-    var STR_OPEN_HOST_SETTINGS; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_OPEN_HOST_SETTINGS;
+    var STR_PING_WARNING;
+    var STR_PING_WARNING_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -1145,6 +1147,8 @@
         STR_CHAT_NICK_COLOR = "Better contrasted nick colors";
         STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be visible on a dark background, use a custom easy to see color";
         STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
+        STR_PING_WARNING = 'Show "Ping to Twitch fail warning"';
+        STR_PING_WARNING_SUMMARY = "The app is constantly checking the connection with Twitch via a ping, if that fails too much a warning will show, if that warning is showing unintentionaly set this to NO";
     }
     //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
@@ -7063,7 +7067,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.174';
+    var Main_stringVersion_Min = '.175';
     var Main_minversion = 'April 27, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
@@ -19609,6 +19613,10 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
+        "ping_warn": {
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
         "app_animations": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
@@ -19937,6 +19945,7 @@
         div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
 
         div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
+        div += Settings_Content('ping_warn', array_no_yes, STR_PING_WARNING, STR_PING_WARNING_SUMMARY);
 
         div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
 
@@ -20104,6 +20113,10 @@
         Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
         Settings_value[key].values = [STR_NO, STR_YES];
 
+        key = "ping_warn";
+        Settings_DivOptionChangeLang(key, STR_PING_WARNING, STR_PING_WARNING_SUMMARY);
+        Settings_value[key].values = [STR_NO, STR_YES];
+
         key = "single_click_exit";
         Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
         Settings_value[key].values = [STR_NO, STR_YES];
@@ -20142,6 +20155,7 @@
         UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
         Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
         Settings_CodecsSet();
+        Settings_SetPingWarning();
     }
 
     function Settings_Obj_values(key) {
@@ -20214,6 +20228,7 @@
         } else if (position === "live_notification_background") Settings_notification_background();
         else if (position === "live_notification_time") Settings_NotifyTimeout();
         else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
+        else if (position === "ping_warn") Settings_SetPingWarning();
         else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         else if (position === "app_animations") Settings_SetAnimations();
         else if (position === "buffer_live") Settings_SetBuffers(1);
@@ -20246,6 +20261,13 @@
         //TODO remove the try after some app updates
         try {
             if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
+        } catch (e) {}
+    }
+
+    function Settings_SetPingWarning() {
+        //TODO remove the try after some app updates
+        try {
+            if (Main_IsOnAndroid) Android.Settings_SetPingWarning(Settings_value.ping_warn.defaultValue === 1);
         } catch (e) {}
     }
 
