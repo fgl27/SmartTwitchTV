@@ -496,7 +496,10 @@
     var STR_GIFT_SUB_MYSTERY;
     var STR_CHAT_INDIVIDUAL_LINE;
     var STR_BRIGHT_MODE;
-    var STR_DARK_MODE; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_DARK_MODE;
+    var STR_CHAT_NICK_COLOR;
+    var STR_CHAT_NICK_COLOR_SUMMARY;
+    var STR_OPEN_HOST_SETTINGS; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -1139,6 +1142,9 @@
         STR_GIFT_SUB_SENDER = " has gift a Tier";
         STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";
         STR_GIFT_SUB_MYSTERY = " has gift the channel ";
+        STR_CHAT_NICK_COLOR = "Better contrasted nick colors";
+        STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be visible on a dark background, use a custom easy to see color";
+        STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
     }
     //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
@@ -5110,6 +5116,7 @@
     var ChatLive_User_Regex_Replace;
     var ChatLive_Channel_Regex_Search = [];
     var ChatLive_Channel_Regex_Replace = [];
+    var ChatLive_Custom_Nick_Color;
 
     function ChatLive_SetOptions(chat_number, id) {
         ChatLive_User_Set = AddUser_IsUserSet();
@@ -5124,6 +5131,7 @@
         ChatLive_Highlight_Bits = Settings_value.highlight_bits.defaultValue;
         ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
         chat_lineChatLive_Individual_Lines = Settings_value.individual_lines.defaultValue;
+        ChatLive_Custom_Nick_Color = Settings_value.chat_nickcolor.defaultValue;
 
         ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
         ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
@@ -5329,7 +5337,7 @@
             });
 
         } catch (e) {
-            //Main_Log('ChatLive_loadEmotesUserSuccess ' + e);
+            Main_Log('ChatLive_loadEmotesUserSuccess ' + e);
         }
     }
 
@@ -5399,7 +5407,7 @@
                 }
             });
         } catch (e) {
-            //Main_Log('ChatLive_loadEmotesbbtv ' + e);
+            Main_Log('ChatLive_loadEmotesbbtv ' + e);
         }
 
 
@@ -5449,7 +5457,7 @@
 
             extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]] = 1;
         } catch (e) {
-            //Main_Log('ChatLive_loadCheersChannelSuccess ' + e);
+            Main_Log('ChatLive_loadCheersChannelSuccess ' + e);
         }
 
     }
@@ -5543,7 +5551,7 @@
                 }
             });
         } catch (e) {
-            //Main_Log('ChatLive_loadEmotesffz ' + e);
+            Main_Log('ChatLive_loadEmotesffz ' + e);
         }
     }
 
@@ -6156,7 +6164,7 @@
         } else if (atuser) {
             nickColor = chat_Line_highlight_blue;
         } else {
-            nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
+            nickColor = (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
             nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
         }
 
@@ -6681,7 +6689,7 @@
             } else if (atuser) {
                 nickColor = chat_Line_highlight_blue;
             } else {
-                nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
+                nickColor = (!ChatLive_Custom_Nick_Color && mmessage.hasOwnProperty('user_color')) ? mmessage.user_color :
                     defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
                 nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
@@ -7056,7 +7064,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.174';
-    var Main_minversion = 'April 25, 2020';
+    var Main_minversion = 'April 27, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -10205,18 +10213,8 @@
                 }
             }
         } else if (Play_Endcounter === 1) {
-            if (Main_values.Play_isHost) {
-                Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
-                Play_data.data[6] = Play_TargetHost.target_login;
-                Play_data.data[1] = Play_TargetHost.target_display_name;
-                Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
-                Play_PreshutdownStream(false);
-
-                Main_addEventListener("keydown", Play_handleKeyDown);
-
-                Play_data.data[14] = Play_TargetHost.target_id;
-                Main_setTimeout(Play_Start);
-            } else {
+            if (Main_values.Play_isHost) Play_OpenHost();
+            else {
                 PlayClip_OpenVod();
                 if (!PlayClip_HasVOD) canhide = false;
             }
@@ -10292,6 +10290,20 @@
         Main_textContent("end_replay_title_text", '');
         Main_textContent("end_vod_name_text", '');
         Main_textContent("end_vod_title_text", '');
+    }
+
+    function Play_OpenHost() {
+        Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
+        Play_data.data[6] = Play_TargetHost.target_login;
+        Play_data.data[1] = Play_TargetHost.target_display_name;
+        Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
+        Play_PreshutdownStream(false);
+
+        Main_addEventListener("keydown", Play_handleKeyDown);
+
+        Play_data.data[14] = Play_TargetHost.target_id;
+        Main_setTimeout(Play_Start);
+
     }
 
     function Play_OpenChannel(PlayVodClip) {
@@ -13654,9 +13666,13 @@
         if (Play_TargetHost.target_login !== undefined) {
             Play_IsWarning = true;
             Play_showWarningDialog(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name, 4000);
-
-            Play_EndSet(0);
             Main_values.Play_isHost = true;
+
+            if (Settings_value.open_host.defaultValue) {
+                Play_OpenHost();
+                return;
+            } else Play_EndSet(0);
+
         } else {
             Play_EndSet(1);
             Main_values.Play_isHost = false;
@@ -19641,6 +19657,10 @@
             ],
             "defaultValue": 1
         },
+        "open_host": {
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "live_notification": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
@@ -19793,6 +19813,10 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
+        "chat_nickcolor": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
     };
 
     var Settings_FeedSort = [
@@ -19923,6 +19947,7 @@
 
         div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
+        div += Settings_Content('open_host', array_no_yes, STR_OPEN_HOST_SETTINGS, null);
         div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
 
         div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
@@ -20069,6 +20094,10 @@
 
         key = "clip_auto_play_next";
         Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
+        Settings_value[key].values = [STR_NO, STR_YES];
+
+        key = "open_host";
+        Main_textContent(key + '_name', STR_OPEN_HOST_SETTINGS);
         Settings_value[key].values = [STR_NO, STR_YES];
 
         key = "keep_panel_info_visible";
@@ -20840,6 +20869,7 @@
         Settings_value.chat_individual_background.values = [STR_DISABLE, STR_ENABLE, STR_BRIGHT_MODE, STR_DARK_MODE];
         Settings_value.chat_logging.values = yes_no;
         Settings_value.individual_lines.values = yes_no;
+        Settings_value.chat_nickcolor.values = yes_no;
 
         var obj = {
             chat_logging: {
@@ -20859,6 +20889,12 @@
                 values: Settings_value.chat_individual_background.values,
                 title: STR_CHAT_INDIVIDUAL_BACKGROUND,
                 summary: STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY
+            },
+            chat_nickcolor: {
+                defaultValue: Settings_value.chat_nickcolor.defaultValue,
+                values: Settings_value.chat_nickcolor.values,
+                title: STR_CHAT_NICK_COLOR,
+                summary: STR_CHAT_NICK_COLOR_SUMMARY
             },
             highlight_rewards: {
                 defaultValue: Settings_value.highlight_rewards.defaultValue,
