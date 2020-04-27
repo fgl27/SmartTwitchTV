@@ -1143,8 +1143,12 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     } else if (atuser) {
         nickColor = chat_Line_highlight_blue;
     } else {
-        nickColor = (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
-        nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
+
+        if (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) {
+            nickColor = 'style="color: ' + calculateColorReplacement(tags.color) + ';"';
+        } else {
+            nickColor = 'style="color: ' + (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]) + ';"';
+        }
     }
 
     div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' +
