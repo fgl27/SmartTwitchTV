@@ -282,7 +282,7 @@ function Chat_loadChatSuccess(responseText, id) {
         } else if (atuser) {
             nickColor = chat_Line_highlight_blue;
         } else {
-            nickColor = mmessage.hasOwnProperty('user_color') ? mmessage.user_color :
+            nickColor = (!ChatLive_Custom_Nick_Color && mmessage.hasOwnProperty('user_color')) ? mmessage.user_color :
                 defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength];
 
             nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
