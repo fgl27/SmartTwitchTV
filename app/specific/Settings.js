@@ -223,6 +223,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "chat_nickcolor": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
 };
 
 var Settings_FeedSort = [
@@ -1247,6 +1251,7 @@ function Settings_DialogShowChat() {
     Settings_value.chat_individual_background.values = [STR_DISABLE, STR_ENABLE, STR_BRIGHT_MODE, STR_DARK_MODE];
     Settings_value.chat_logging.values = yes_no;
     Settings_value.individual_lines.values = yes_no;
+    Settings_value.chat_nickcolor.values = yes_no;
 
     var obj = {
         chat_logging: {
@@ -1266,6 +1271,12 @@ function Settings_DialogShowChat() {
             values: Settings_value.chat_individual_background.values,
             title: STR_CHAT_INDIVIDUAL_BACKGROUND,
             summary: STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY
+        },
+        chat_nickcolor: {
+            defaultValue: Settings_value.chat_nickcolor.defaultValue,
+            values: Settings_value.chat_nickcolor.values,
+            title: STR_CHAT_NICK_COLOR,
+            summary: STR_CHAT_NICK_COLOR_SUMMARY
         },
         highlight_rewards: {
             defaultValue: Settings_value.highlight_rewards.defaultValue,

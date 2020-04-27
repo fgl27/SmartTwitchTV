@@ -97,6 +97,7 @@ var ChatLive_User_Regex_Search;
 var ChatLive_User_Regex_Replace;
 var ChatLive_Channel_Regex_Search = [];
 var ChatLive_Channel_Regex_Replace = [];
+var ChatLive_Custom_Nick_Color;
 
 function ChatLive_SetOptions(chat_number, id) {
     ChatLive_User_Set = AddUser_IsUserSet();
@@ -111,6 +112,7 @@ function ChatLive_SetOptions(chat_number, id) {
     ChatLive_Highlight_Bits = Settings_value.highlight_bits.defaultValue;
     ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
     chat_lineChatLive_Individual_Lines = Settings_value.individual_lines.defaultValue;
+    ChatLive_Custom_Nick_Color = Settings_value.chat_nickcolor.defaultValue;
 
     ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
     ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
@@ -1141,7 +1143,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     } else if (atuser) {
         nickColor = chat_Line_highlight_blue;
     } else {
-        nickColor = (typeof tags.color !== "boolean") ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
+        nickColor = (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) ? tags.color : (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]);
         nickColor = 'style="color: ' + calculateColorReplacement(nickColor) + ';"';
     }
 
