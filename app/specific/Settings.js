@@ -72,6 +72,10 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
+    "open_host": {
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "live_notification": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -357,6 +361,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
+    div += Settings_Content('open_host', array_no_yes, STR_OPEN_HOST_SETTINGS, null);
     div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
 
     div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
@@ -503,6 +508,10 @@ function Settings_SetStrings() {
 
     key = "clip_auto_play_next";
     Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
+    Settings_value[key].values = [STR_NO, STR_YES];
+
+    key = "open_host";
+    Main_textContent(key + '_name', STR_OPEN_HOST_SETTINGS);
     Settings_value[key].values = [STR_NO, STR_YES];
 
     key = "keep_panel_info_visible";

@@ -167,18 +167,8 @@ function Play_EndDialogPressed(PlayVodClip) {
             }
         }
     } else if (Play_Endcounter === 1) {
-        if (Main_values.Play_isHost) {
-            Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
-            Play_data.data[6] = Play_TargetHost.target_login;
-            Play_data.data[1] = Play_TargetHost.target_display_name;
-            Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
-            Play_PreshutdownStream(false);
-
-            Main_addEventListener("keydown", Play_handleKeyDown);
-
-            Play_data.data[14] = Play_TargetHost.target_id;
-            Main_setTimeout(Play_Start);
-        } else {
+        if (Main_values.Play_isHost) Play_OpenHost();
+        else {
             PlayClip_OpenVod();
             if (!PlayClip_HasVOD) canhide = false;
         }
@@ -256,6 +246,19 @@ function Play_EndTextsReset() {
     Main_textContent("end_vod_title_text", '');
 }
 
+function Play_OpenHost() {
+    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
+    Play_data.data[6] = Play_TargetHost.target_login;
+    Play_data.data[1] = Play_TargetHost.target_display_name;
+    Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
+    Play_PreshutdownStream(false);
+
+    Main_addEventListener("keydown", Play_handleKeyDown);
+
+    Play_data.data[14] = Play_TargetHost.target_id;
+    Main_setTimeout(Play_Start);
+
+}
 function Play_OpenChannel(PlayVodClip) {
     if (!Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) {
         Main_values.Main_BeforeChannel = (Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame) ? Main_values.Main_BeforeAgame : Main_values.Main_Go;

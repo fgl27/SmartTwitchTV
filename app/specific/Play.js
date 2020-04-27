@@ -1554,9 +1554,13 @@ function Play_CheckHost(responseText) {
     if (Play_TargetHost.target_login !== undefined) {
         Play_IsWarning = true;
         Play_showWarningDialog(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name, 4000);
-
-        Play_EndSet(0);
         Main_values.Play_isHost = true;
+
+        if (Settings_value.open_host.defaultValue) {
+            Play_OpenHost();
+            return;
+        } else Play_EndSet(0);
+
     } else {
         Play_EndSet(1);
         Main_values.Play_isHost = false;
