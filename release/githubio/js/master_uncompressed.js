@@ -23942,11 +23942,11 @@
         div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
             UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + image +
             (Extra_vodimg ?
-                ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + inUseObj.img_404 +
+                ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + IMG_404_VOD +
                     '\';};this.src=\'' + Extra_vodimg + '\';' +
                     'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hideimp\');' +
                     'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
-                ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
+                ('" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD + '\';"></div><div id="')) +
             UserLiveFeed_ids[2] + id +
             '" class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
             UserLiveFeed_ids[3] + id + '" class="stream_info_live_name" style="width:' +
