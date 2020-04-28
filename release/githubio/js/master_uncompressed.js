@@ -501,7 +501,9 @@
     var STR_CHAT_NICK_COLOR_SUMMARY;
     var STR_OPEN_HOST_SETTINGS;
     var STR_PING_WARNING;
-    var STR_PING_WARNING_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_PING_WARNING_SUMMARY;
+    var STR_SHOW_FEED_PLAYER_SUMMARY;
+    var STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -1060,11 +1062,13 @@
         STR_FEED_END_DIALOG = ', Press back to go back to top menu';
         STR_BACK_USER_GAMES = ' Press return key to ';
         STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
-        STR_SHOW_FEED_PLAYER = 'Show small player over player live feed';
-        STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player over the player live feed when multistream is enabled';
-        STR_SIDE_PANEL_PLAYER_DELAY = "Side panel or small player over the player live feed delay";
-        STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a tile is selected";
-        STR_SIDE_PANEL_PLAYER = "Side panel player and small player over the player live feed";
+        STR_SHOW_FEED_PLAYER = 'Show small player over the player live feed';
+        STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";
+        STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player when multistream is enabled';
+        STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'Because performance reasons some devices may lag when multi players are enable, if your is OK for multistream but when the small player is active on that mode the device lags set this to NO';
+        STR_SIDE_PANEL_PLAYER_DELAY = "Side panel player or small player delay";
+        STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a thumbnail is selected";
+        STR_SIDE_PANEL_PLAYER = "Side panel player and small player over the player live feed settings";
         STR_START_AT_USER = "Always start the app in the user screen";
         STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";
         STR_LAST_REFRESH = "(last refresh: ";
@@ -7073,7 +7077,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.176';
+    var Main_stringVersion_Min = '.177';
     var Main_minversion = 'April 27, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
@@ -7130,7 +7134,14 @@
                         'Play_ShowVideoStatus': Play_ShowVideoStatus,
                         'Play_ShowVideoQuality': Play_ShowVideoQuality,
                         'PlayVod_previews_success': PlayVod_previews_success,
-                        'Play_PlayPauseChange': Play_PlayPauseChange
+                        'Play_PlayPauseChange': Play_PlayPauseChange,
+                        'PlayClip_loadDataResult': PlayClip_loadDataResult,
+                        'PlayVod_loadDataResult': PlayVod_loadDataResult,
+                        'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
+                        'Play_loadDataResult': Play_loadDataResult,
+                        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
+                        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
+                        'Play_MultiResult': Play_MultiResult
                     };
                 }
                 Main_IsOnAndroid = Android.getAndroid();
@@ -9486,34 +9497,60 @@
         PlayClip_loadDataRequest();
     }
 
+    var PlayClip_loadDataRequestId = 0;
+
     function PlayClip_loadDataRequest() {
         var theUrl = 'https://gql.twitch.tv/gql',
             postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
-            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}',
-            xmlHttp;
+            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
 
-        for (var i = 0; i < 5; i++) {
-            xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout + (i * 500), 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
+        PlayClip_loadDataRequestId = (new Date().getTime());
 
-            if (xmlHttp) {
-                xmlHttp = JSON.parse(xmlHttp);
+        //TODO remove the try after some app updates
+        try {
+            Android.GetClipData(
+                theUrl,
+                PlayClip_loadingDataTimeout,
+                1,
+                null,
+                Main_Headers_Back[0][1],
+                postMessage,
+                'POST',
+                'PlayClip_loadDataResult',
+                PlayClip_loadDataRequestId
+            );
+        } catch (e) {
+            PlayClip_loadDataError();
+        }
+    }
 
-                if (xmlHttp.status === 200) {
-                    PlayClip_QualityGenerate(xmlHttp.responseText);
+    function PlayClip_loadDataResult(response) {
+
+        if (PlayClip_isOn && response) {
+
+            var responseObj = JSON.parse(response);
+
+            if (responseObj.checkResult > 0 && responseObj.checkResult === PlayClip_loadDataRequestId) {
+
+                if (responseObj.status === 200) {
+                    PlayClip_QualityGenerate(responseObj.responseText);
                     return;
-                } else if (xmlHttp.status === 410) { //Workaround for future 410 issue
+                } else if (responseObj.status === 410) { //Workaround for future 410 issue
                     PlayClip_loadData410 = true;
                     PlayClip_loadData410Recheck();
                     PlayClip_loadDataSuccess410();
                     return;
                 }
+
+                PlayClip_loadDataError();
             }
+
         }
 
-        PlayClip_loadDataError();
     }
 
     function PlayClip_loadData410Recheck() {
+        Main_Log('PlayClip_loadData410Recheck');
         Main_setTimeout(
             function() {
                 PlayClip_loadData410 = false;
@@ -9823,6 +9860,49 @@
         }
     }
 
+    //When update this check PlayVod_CheckIfIsLiveResult
+    function PlayClip_CheckIfIsLiveResult(response) {
+
+        if (PlayClip_isOn && response) {
+
+            var responseObj = JSON.parse(response);
+
+            if (responseObj.checkResult > 0 && responseObj.checkResult === Play_CheckIfIsLiveId) {
+                var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+
+                if (responseObj.status === 200) {
+
+                    Play_CheckIfIsLiveURL = responseObj.url;
+                    Play_CheckIfIsLiveResponseText = responseObj.responseText;
+                    PlayClip_OpenLiveStream();
+                    return;
+
+                } else if (doc && (responseObj.status === 1 || responseObj.status === 403)) {
+
+                    Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                    return;
+
+                } else if (doc && responseObj.status === 404) {
+
+                    Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                    return;
+
+                }
+
+                Play_CheckIfIsLiveStartFail(STR_PLAYER_PROBLEM_2);
+            }
+
+        }
+
+    }
+
+    function PlayClip_CheckIfIsLiveStart() {
+
+        if (!Main_IsOnAndroid || Play_CheckIfIsLiveResponseText) PlayClip_OpenLiveStream();
+        else Play_CheckIfIsLiveStart('PlayClip_CheckIfIsLiveResult');
+
+    }
+
     function PlayClip_OpenLiveStream() {
         PlayClip_PreshutdownStream(true, true);
         Main_OpenLiveStream(
@@ -9959,7 +10039,8 @@
                         PlayClip_setHidePanel();
                     } else if (UserLiveFeed_isFeedShow()) {
                         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else if (!UserLiveFeed_CheckVod() || Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
+                        else if (!UserLiveFeed_CheckVod()) PlayClip_OpenLiveStream();
+                        else PlayClip_CheckIfIsLiveStart();
                     } else PlayClip_showPanel();
                     break;
                 case KEY_STOP:
@@ -10007,7 +10088,7 @@
                 case KEY_1:
                     if (UserLiveFeed_isFeedShow()) {
                         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else if (Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
+                        else PlayClip_CheckIfIsLiveStart();
                     }
                     break;
                 case KEY_REFRESH:
@@ -11303,6 +11384,8 @@
             values: null,
             opacity: 0,
             enterKey: function(shutdown) {
+                if (!Main_IsOnAndroid) return;
+
                 Play_MultiEnable = !Play_MultiEnable;
                 if (Play_MultiEnable) {
                     if (Android.IsMainNotMain()) {
@@ -11858,7 +11941,7 @@
                 PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
             }
 
-            if (!Play_CheckIfIsLiveResponseText) PlayExtra_Resumenew();
+            if (!Play_CheckIfIsLiveResponseText) PlayExtra_Resume();
             else {
 
                 PlayExtra_data.AutoUrl = Play_CheckIfIsLiveURL;
@@ -11870,37 +11953,59 @@
         }
     }
 
-    function PlayExtra_Resumenew() {
+    var PlayExtra_ResumeId = 0;
+
+    function PlayExtra_Resume() {
         if (Main_IsOnAndroid) {
 
-            var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
+            PlayExtra_ResumeId = (new Date().getTime());
+            //TODO remove the try after some app updates
+            try {
+                Android.getStreamDataAsync(
+                    Play_live_token.replace('%x', PlayExtra_data.data[6]),
+                    Play_live_links.replace('%x', PlayExtra_data.data[6]),
+                    'PlayExtra_ResumeResult',
+                    PlayExtra_ResumeId,
+                    1
+                );
+            } catch (e) {
+                PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+            }
 
-            if (StreamData) {
-                StreamData = JSON.parse(StreamData); //obj status url responseText
+        } else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+    }
 
-                if (StreamData.status === 200) {
+    function PlayExtra_ResumeResult(response) {
 
-                    PlayExtra_data.AutoUrl = StreamData.url;
-                    PlayExtra_loadDataSuccessEnd(StreamData.responseText);
+        if (PlayExtra_PicturePicture && Play_isOn && response) {
+
+            var responseObj = JSON.parse(response);
+
+            if (responseObj.checkResult > 0 && responseObj.checkResult === PlayExtra_ResumeId) {
+
+                if (responseObj.status === 200) {
+
+                    PlayExtra_data.AutoUrl = responseObj.url;
+                    PlayExtra_loadDataSuccessEnd(responseObj.responseText);
                     return;
 
-                } else if (StreamData.status === 1 || StreamData.status === 403) {
+                } else if (responseObj.status === 1 || responseObj.status === 403) {
 
                     PlayExtra_loadDataFail(STR_FORBIDDEN);
                     return;
 
-                } else if (StreamData.status === 404) {
+                } else if (responseObj.status === 404) {
 
                     PlayExtra_loadDataFail(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
                     return;
 
                 }
 
+                PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
             }
 
         }
 
-        PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
     }
 
     function PlayExtra_loadDataSuccessEnd(playlist) {
@@ -12281,7 +12386,8 @@
         playlist: null,
         qualityPlaying: "Auto",
         quality: "Auto",
-        AutoUrl: ''
+        AutoUrl: '',
+        resultId: 0
     };
 
     var Play_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -12455,7 +12561,7 @@
         Play_Playing = false;
         Play_state = Play_STATE_LOADING_TOKEN;
 
-        if (!Play_CheckIfIsLiveResponseText) Play_loadDatanew();
+        if (!Play_CheckIfIsLiveResponseText) Play_loadData();
         else {
 
             Play_data.AutoUrl = Play_CheckIfIsLiveURL;
@@ -12475,67 +12581,34 @@
     //    Play_showWarningMidleDialog(text);
     //}
 
-    function Play_getStreamData(channel_name) {
-        var result = null;
-
-        //TODO remove the try after some app updates
-        try {
-            if (Main_IsOnAndroid) {
-                result = Android.getStreamData(
-                    Play_live_token.replace('%x', channel_name),
-                    Play_live_links.replace('%x', channel_name)
-                );
-            }
-        } catch (e) {}
-
-        return result;
-    }
-
     var Play_CheckIfIsLiveURL = '';
     var Play_CheckIfIsLiveChannel = '';
     var Play_CheckIfIsLiveResponseText = null;
+    var Play_CheckIfIsLiveId = 0;
 
-    function Play_CheckIfIsLiveStart() {
-        if (Play_CheckIfIsLiveResponseText) return true; //Reused for vod and clip checking from live feed already playing
+    function Play_CheckIfIsLiveStart(callback) {
+        var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-        Play_showBufferDialog();
+        if (doc) {
+            Play_showBufferDialog();
 
-        var selectedChannelDisplayname = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
-        Play_CheckIfIsLiveChannel = selectedChannelDisplayname[6];
-        selectedChannelDisplayname = selectedChannelDisplayname[1];
+            var selectedChannelDisplayname = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-        if (Main_IsOnAndroid) {
-
-            var StreamData = Play_getStreamData(Play_CheckIfIsLiveChannel);
-
-            if (StreamData) {
-                StreamData = JSON.parse(StreamData); //obj status url responseText
-
-                if (StreamData.status === 200) {
-
-                    Play_CheckIfIsLiveURL = StreamData.url;
-                    Play_CheckIfIsLiveResponseText = StreamData.responseText;
-
-                    return true;
-
-                } else if (StreamData.status === 1 || StreamData.status === 403) {
-
-                    Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
-                    return false;
-
-                } else if (StreamData.status === 404) {
-
-                    Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
-                    return false;
-
-                }
-
+            Play_CheckIfIsLiveId = (new Date().getTime());
+            //TODO remove the try after some app updates
+            try {
+                Android.getStreamDataAsync(
+                    Play_live_token.replace('%x', selectedChannelDisplayname[6]),
+                    Play_live_links.replace('%x', selectedChannelDisplayname[6]),
+                    callback,
+                    Play_CheckIfIsLiveId,
+                    2 //Main player runs on 0 extra player on 1 the check on 2
+                );
+            } catch (e) {
+                Play_HideBufferDialog();
             }
+        }
 
-            Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_PLAYER_PROBLEM_2);
-            return false;
-
-        } else return true;
     }
 
     function Play_CheckIfIsLiveStartFail(text) {
@@ -12605,11 +12678,7 @@
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
 
-                        Play_MultiStartNew(
-                            i,
-                            Play_MultiArray[i].data[6],
-                            Play_MultiArray[i].data[1]
-                        );
+                        Play_MultiStart(i);
 
                     }
                 }
@@ -12619,8 +12688,8 @@
                 // TO test a if a stream has ended during a resume process force change this
                 //PlayExtra_data.data[6] = 'testtt';
                 //Play_data.data[6] = 'testtt';
-                if (PlayExtra_PicturePicture) PlayExtra_Resumenew();
-                Play_loadDatanew();
+                if (PlayExtra_PicturePicture) PlayExtra_Resume();
+                Play_loadData();
             }
             Play_updateStreamInfo();
         }
@@ -12873,37 +12942,59 @@
         ImgObjet.src = link;
     }
 
-    function Play_loadDatanew() {
-        //Main_Log('Play_loadDatanew');
+    var Play_loadDataId = 0;
+
+    function Play_loadData() {
+        //Main_Log('Play_loadData');
+
         if (Main_IsOnAndroid) {
 
-            var StreamData = Play_getStreamData(Play_data.data[6]);
+            Play_loadDataId = (new Date().getTime());
+            //TODO remove the try after some app updates
+            try {
+                Android.getStreamDataAsync(
+                    Play_live_token.replace('%x', Play_data.data[6]),
+                    Play_live_links.replace('%x', Play_data.data[6]),
+                    'Play_loadDataResult',
+                    Play_loadDataId,
+                    0
+                );
+            } catch (e) {
+                Play_loadDataErrorFinish();
+            }
 
-            if (StreamData) {
-                StreamData = JSON.parse(StreamData); //obj status url responseText
+        } else Play_loadDataSuccessFake();
+    }
 
-                if (StreamData.status === 200) {
+    function Play_loadDataResult(response) {
 
-                    Play_data.AutoUrl = StreamData.url;
-                    Play_loadDataSuccessend(StreamData.responseText);
+        if (Play_isOn && response) {
+
+            var responseObj = JSON.parse(response);
+
+            if (responseObj.checkResult > 0 && responseObj.checkResult === Play_loadDataId) {
+
+                if (responseObj.status === 200) {
+
+                    Play_data.AutoUrl = responseObj.url;
+                    Play_loadDataSuccessend(responseObj.responseText);
                     return;
 
-                } else if (StreamData.status === 1 || StreamData.status === 403 || StreamData.status === 404 ||
-                    StreamData.status === 410) {
+                } else if (responseObj.status === 1 || responseObj.status === 403 ||
+                    responseObj.status === 404 || responseObj.status === 410) {
 
                     //404 = off line
                     //403 = forbidden access
                     //410 = api v3 is gone use v5 bug
-                    Play_loadDataErrorFinish(StreamData.status === 410, (StreamData.status === 403 || StreamData.status === 1));
+                    Play_loadDataErrorFinish(responseObj.status === 410, (responseObj.status === 403 || responseObj.status === 1));
                     return;
 
                 }
 
+                Play_loadDataErrorFinish();
             }
 
-            Play_loadDataErrorFinish();
-
-        } else Play_loadDataSuccessFake();
+        }
     }
 
     function Play_loadDataSuccessend(playlist) {
@@ -13981,16 +14072,12 @@
             Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
             Play_MultiArray[position].data = doc;
 
-            Play_MultiStartNew(
-                position,
-                Play_MultiArray[position].data[6],
-                Play_MultiArray[position].data[1]
-            );
+            Play_MultiStart(position);
 
         }
     }
 
-    function Play_MultiStartNew(pos, streamer, display_name) {
+    function Play_MultiStart(pos) {
         if (Play_CheckIfIsLiveResponseText) {
             Play_MultiStartQualitySucess(
                 pos,
@@ -14000,31 +14087,52 @@
             UserLiveFeed_CheckIfIsLiveSTop();
             return;
         }
-        var StreamData = Play_getStreamData(streamer);
 
-        if (StreamData) {
-            StreamData = JSON.parse(StreamData); //obj status url responseText
+        Play_MultiArray[pos].resultId = (new Date().getTime());
+        //TODO remove the try after some app updates
+        try {
+            Android.getStreamDataAsync(
+                Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
+                Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
+                'Play_MultiResult',
+                Play_MultiArray[pos].resultId,
+                pos
+            );
+        } catch (e) {
+            Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
+        }
 
-            if (StreamData.status === 200) {
+    }
 
-                Play_MultiStartQualitySucess(pos, StreamData.url, StreamData.responseText);
-                return;
+    function Play_MultiResult(response, pos) {
 
-            } else if (StreamData.status === 1 || StreamData.status === 403) {
+        if (Play_MultiEnable && Play_isOn && response) {
 
-                Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
-                return;
+            var responseObj = JSON.parse(response);
 
-            } else if (StreamData.status === 404) {
+            if (responseObj.checkResult > 0 && responseObj.checkResult === Play_MultiArray[pos].resultId) {
 
-                Play_MultiStartFail(pos, display_name);
-                return;
+                if (responseObj.status === 200) {
 
+                    Play_MultiStartQualitySucess(pos, responseObj.url, responseObj.responseText);
+                    return;
+
+                } else if (responseObj.status === 1 || responseObj.status === 403) {
+
+                    Play_MultiStartFail(pos, Play_MultiArray[pos].data[1], STR_FORBIDDEN);
+                    return;
+
+                } else if (responseObj.status === 404) {
+
+                    Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
+                    return;
+
+                }
+
+                Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
             }
 
         }
-
-        Play_MultiStartFail(pos, display_name);
     }
 
     function Play_MultiStartFail(pos, display_name, string_fail_reason) {
@@ -14510,7 +14618,7 @@
         Play_jumping = false;
         PlayVod_isOn = true;
 
-        if (!PlayVod_replay) PlayVod_loadDatanew();
+        if (!PlayVod_replay) PlayVod_loadData();
         else {
             PlayVod_state = Play_STATE_PLAYING;
             PlayVod_onPlayer();
@@ -14617,7 +14725,7 @@
         if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
             Main_clearInterval(Play_ResumeAfterOnlineId);
             PlayVod_state = Play_STATE_LOADING_TOKEN;
-            PlayVod_loadDatanew();
+            PlayVod_loadData();
         }
         Play_ResumeAfterOnlineCounter++;
     }
@@ -14672,42 +14780,56 @@
     }
 
     var PlayVod_autoUrl;
+    var PlayVod_loadDataId = 0;
 
-    function PlayVod_loadDatanew() {
-        //Main_Log('PlayVod_loadDatanew');
+    function PlayVod_loadData() {
+        //Main_Log('PlayVod_loadData');
 
         if (Main_IsOnAndroid) {
-            var StreamData = null;
 
+            PlayVod_loadDataId = (new Date().getTime());
             //TODO remove the try after some app updates
             try {
-                StreamData = Android.getStreamData(
+                Android.getStreamDataAsync(
                     Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
-                    Play_vod_links.replace('%x', Main_values.ChannelVod_vodId)
+                    Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
+                    'PlayVod_loadDataResult',
+                    PlayVod_loadDataId,
+                    0
                 );
-            } catch (e) {}
+            } catch (e) {
+                PlayVod_loadDataErrorFinish();
+            }
 
-            if (StreamData) {
-                StreamData = JSON.parse(StreamData); //obj status url responseText
+        } else PlayVod_loadDataSuccessFake();
+    }
 
-                if (StreamData.status === 200) {
-                    PlayVod_autoUrl = StreamData.url;
-                    PlayVod_loadDataSuccessEnd(StreamData.responseText);
+    function PlayVod_loadDataResult(response) {
+
+        if (PlayVod_isOn && response) {
+
+            var responseObj = JSON.parse(response);
+
+            if (responseObj.checkResult > 0 && responseObj.checkResult === PlayVod_loadDataId) {
+
+                if (responseObj.status === 200) {
+                    PlayVod_autoUrl = responseObj.url;
+                    PlayVod_loadDataSuccessEnd(responseObj.responseText);
                     return;
-                } else if (StreamData.status === 1) {
+                } else if (responseObj.status === 1) {
                     PlayVod_loadDataCheckSub();
                     return;
-                } else if (StreamData.status === 410) {
+                } else if (responseObj.status === 410) {
                     //410 = api v3 is gone use v5 bug
                     PlayVod_WarnEnd(STR_410_ERROR);
                     return;
                 }
 
+                PlayVod_loadDataErrorFinish();
             }
 
-            PlayVod_loadDataErrorFinish();
+        }
 
-        } else PlayVod_loadDataSuccessFake();
     }
 
     function PlayVod_loadDataErrorFinish() {
@@ -14718,9 +14840,7 @@
     }
 
     function PlayVod_loadDataSuccessEnd(playlist) {
-
         PlayVod_playlist = playlist;
-        //TODO revise the needed for PlayVod_state
         PlayVod_state = Play_STATE_PLAYING;
         if (PlayVod_isOn) PlayVod_onPlayer();
     }
@@ -15131,6 +15251,49 @@
         PlayVod_PosStart();
     }
 
+    //When update this check PlayClip_CheckIfIsLiveResult
+    function PlayVod_CheckIfIsLiveResult(response) {
+
+        if (PlayVod_isOn && response) {
+
+            var responseObj = JSON.parse(response);
+
+            if (responseObj.checkResult > 0 && responseObj.checkResult === Play_CheckIfIsLiveId) {
+                var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+
+                if (responseObj.status === 200) {
+
+                    Play_CheckIfIsLiveURL = responseObj.url;
+                    Play_CheckIfIsLiveResponseText = responseObj.responseText;
+                    PlayVod_OpenLiveStream();
+                    return;
+
+                } else if (doc && (responseObj.status === 1 || responseObj.status === 403)) {
+
+                    Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                    return;
+
+                } else if (doc && responseObj.status === 404) {
+
+                    Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                    return;
+
+                }
+
+                Play_CheckIfIsLiveStartFail(STR_PLAYER_PROBLEM_2);
+            }
+
+        }
+
+    }
+
+    function PlayVod_CheckIfIsLiveStart() {
+
+        if (!Main_IsOnAndroid || Play_CheckIfIsLiveResponseText) PlayVod_OpenLiveStream();
+        else Play_CheckIfIsLiveStart('PlayVod_CheckIfIsLiveResult');
+
+    }
+
     function PlayVod_OpenLiveStream() {
         PlayVod_PreshutdownStream(true, true);
         Main_OpenLiveStream(
@@ -15269,7 +15432,8 @@
                         PlayVod_setHidePanel();
                     } else if (UserLiveFeed_isFeedShow()) {
                         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else if (!UserLiveFeed_CheckVod() || Play_CheckIfIsLiveStart()) PlayVod_OpenLiveStream();
+                        else if (!UserLiveFeed_CheckVod()) PlayVod_OpenLiveStream();
+                        else PlayVod_CheckIfIsLiveStart();
                     } else PlayVod_showPanel(true);
                     break;
                 case KEY_STOP:
@@ -15288,7 +15452,7 @@
                 case KEY_1:
                     if (UserLiveFeed_isFeedShow()) {
                         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else if (Play_CheckIfIsLiveStart()) PlayVod_OpenLiveStream();
+                        else PlayVod_CheckIfIsLiveStart();
                     }
                     break;
                 case KEY_REFRESH:
@@ -20794,13 +20958,13 @@
                 defaultValue: Settings_value.show_feed_player.defaultValue,
                 values: Settings_value.show_feed_player.values,
                 title: STR_SHOW_FEED_PLAYER,
-                summary: null
+                summary: STR_SHOW_FEED_PLAYER_SUMMARY
             },
             disable_feed_player_multi: {
                 defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
                 values: Settings_value.disable_feed_player_multi.values,
                 title: STR_DISABLE_FEED_PLAYER_MULTI,
-                summary: null
+                summary: STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY
             },
             show_feed_player_delay: {
                 defaultValue: Settings_value.show_feed_player_delay.defaultValue,
@@ -26119,7 +26283,14 @@
         'Play_ShowVideoStatus': Play_ShowVideoStatus, // Play_ShowVideoStatus() func from app/specific/Play.js
         'Play_ShowVideoQuality': Play_ShowVideoQuality, // Play_ShowVideoQuality() func from app/specific/Play.js
         'PlayVod_previews_success': PlayVod_previews_success, // PlayVod_previews_success() func from app/specific/PlayVod.js
-        'Play_PlayPauseChange': Play_PlayPauseChange // Play_KeyPause() func from app/specific/PlayEtc.js
+        'Play_PlayPauseChange': Play_PlayPauseChange, // Play_KeyPause() func from app/specific/PlayEtc.js
+        'PlayClip_loadDataResult': PlayClip_loadDataResult, // PlayClip_QualityGenerate() func from app/specific/PlayClip.js
+        'PlayVod_loadDataResult': PlayVod_loadDataResult, // PlayVod_loadDataResult() func from app/specific/PlayVod.js
+        'PlayExtra_ResumeResult': PlayExtra_ResumeResult, // PlayExtra_ResumeResult() func from app/specific/PlayExtra.js
+        'Play_loadDataResult': Play_loadDataResult, // Play_loadDataResult() func from app/specific/Play.js
+        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult, // PlayClip_CheckIfIsLiveResult() func from app/specific/PlayClip.js
+        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult, // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
+        'Play_MultiResult': Play_MultiResult // Play_MultiResult() func from app/specific/Play.js
     };
 
     /** Expose `smartTwitchTV` */
