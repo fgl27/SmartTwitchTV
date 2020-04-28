@@ -498,7 +498,7 @@ function Play_ResumeAfterOnline() {
             // TO test a if a stream has ended during a resume process force change this
             //PlayExtra_data.data[6] = 'testtt';
             //Play_data.data[6] = 'testtt';
-            if (PlayExtra_PicturePicture) PlayExtra_Resumenew();
+            if (PlayExtra_PicturePicture) PlayExtra_Resume();
             Play_loadDatanew();
         }
         Play_updateStreamInfo();
