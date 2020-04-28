@@ -334,7 +334,7 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    if (!Play_CheckIfIsLiveResponseText) Play_loadDatanew();
+    if (!Play_CheckIfIsLiveResponseText) Play_loadData();
     else {
 
         Play_data.AutoUrl = Play_CheckIfIsLiveURL;
@@ -499,7 +499,7 @@ function Play_ResumeAfterOnline() {
             //PlayExtra_data.data[6] = 'testtt';
             //Play_data.data[6] = 'testtt';
             if (PlayExtra_PicturePicture) PlayExtra_Resume();
-            Play_loadDatanew();
+            Play_loadData();
         }
         Play_updateStreamInfo();
     }
@@ -752,37 +752,57 @@ function Play_LoadLogo(ImgObjet, link) {
     ImgObjet.src = link;
 }
 
-function Play_loadDatanew() {
-    //Main_Log('Play_loadDatanew');
+var Play_loadDataId = 0;
+function Play_loadData() {
+    //Main_Log('Play_loadData');
+
     if (Main_IsOnAndroid) {
 
-        var StreamData = Play_getStreamData(Play_data.data[6]);
+        Play_loadDataId = (new Date().getTime());
+        //TODO remove the try after some app updates
+        try {
+            Android.getStreamDataAsync(
+                Play_live_token.replace('%x', Play_data.data[6]),
+                Play_live_links.replace('%x', Play_data.data[6]),
+                'Play_loadDataResult',
+                Play_loadDataId
+            );
+        } catch (e) {
+            Play_loadDataErrorFinish();
+        }
 
-        if (StreamData) {
-            StreamData = JSON.parse(StreamData);//obj status url responseText
+    } else Play_loadDataSuccessFake();
+}
 
-            if (StreamData.status === 200) {
+function Play_loadDataResult(response) {
 
-                Play_data.AutoUrl = StreamData.url;
-                Play_loadDataSuccessend(StreamData.responseText);
+    if (Play_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_loadDataId) {
+
+            if (responseObj.status === 200) {
+
+                Play_data.AutoUrl = responseObj.url;
+                Play_loadDataSuccessend(responseObj.responseText);
                 return;
 
-            } else if (StreamData.status === 1 || StreamData.status === 403 || StreamData.status === 404 ||
-                StreamData.status === 410) {
+            } else if (responseObj.status === 1 || responseObj.status === 403 ||
+                responseObj.status === 404 || responseObj.status === 410) {
 
                 //404 = off line
                 //403 = forbidden access
                 //410 = api v3 is gone use v5 bug
-                Play_loadDataErrorFinish(StreamData.status === 410, (StreamData.status === 403 || StreamData.status === 1));
+                Play_loadDataErrorFinish(responseObj.status === 410, (responseObj.status === 403 || responseObj.status === 1));
                 return;
 
             }
 
+            Play_loadDataErrorFinish();
         }
 
-        Play_loadDataErrorFinish();
-
-    } else Play_loadDataSuccessFake();
+    }
 }
 
 function Play_loadDataSuccessend(playlist) {
