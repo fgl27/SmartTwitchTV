@@ -41,7 +41,8 @@
         'PlayExtra_ResumeResult': PlayExtra_ResumeResult, // PlayExtra_ResumeResult() func from app/specific/PlayExtra.js
         'Play_loadDataResult': Play_loadDataResult, // Play_loadDataResult() func from app/specific/Play.js
         'PlayClip_CheckIfIsLiveResult':PlayClip_CheckIfIsLiveResult, // PlayClip_CheckIfIsLiveResult() func from app/specific/PlayClip.js
-        'PlayVod_CheckIfIsLiveResult':PlayVod_CheckIfIsLiveResult // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
+        'PlayVod_CheckIfIsLiveResult':PlayVod_CheckIfIsLiveResult, // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
+        'Play_MultiResult': Play_MultiResult // Play_MultiResult() func from app/specific/Play.js
     };
 
     /** Expose `smartTwitchTV` */

@@ -1386,7 +1386,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult) {
+        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position) {
 
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
             DataResult = null;
@@ -1406,7 +1406,7 @@ public class PlayerActivity extends Activity {
                         if (result != null) DataResult = result;
                         else DataResult = Tools.ResponseObjToString(0, "", checkResult);
 
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult())");
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(), " + position +")");
                     }
             );
         }

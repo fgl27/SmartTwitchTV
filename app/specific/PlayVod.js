@@ -305,7 +305,8 @@ function PlayVod_loadData() {
                 Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
                 Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
                 'PlayVod_loadDataResult',
-                PlayVod_loadDataId
+                PlayVod_loadDataId,
+                0
             );
         } catch (e) {
             PlayVod_loadDataErrorFinish();

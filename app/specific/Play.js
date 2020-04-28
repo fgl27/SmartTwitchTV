@@ -160,7 +160,8 @@ var Play_data_base = {
     playlist: null,
     qualityPlaying: "Auto",
     quality: "Auto",
-    AutoUrl: ''
+    AutoUrl: '',
+    resultId: 0
 };
 
 var Play_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -354,22 +355,6 @@ function Play_Start() {
 //    Play_showWarningMidleDialog(text);
 //}
 
-function Play_getStreamData(channel_name) {
-    var result = null;
-
-    //TODO remove the try after some app updates
-    try {
-        if (Main_IsOnAndroid) {
-            result = Android.getStreamData(
-                Play_live_token.replace('%x', channel_name),
-                Play_live_links.replace('%x', channel_name)
-            );
-        }
-    } catch (e) {}
-
-    return result;
-}
-
 var Play_CheckIfIsLiveURL = '';
 var Play_CheckIfIsLiveChannel = '';
 var Play_CheckIfIsLiveResponseText = null;
@@ -390,7 +375,8 @@ function Play_CheckIfIsLiveStart(callback) {
                 Play_live_token.replace('%x', selectedChannelDisplayname[6]),
                 Play_live_links.replace('%x', selectedChannelDisplayname[6]),
                 callback,
-                Play_CheckIfIsLiveId
+                Play_CheckIfIsLiveId,
+                0
             );
         } catch (e) {
             Play_HideBufferDialog();
@@ -466,11 +452,7 @@ function Play_ResumeAfterOnline() {
             for (var i = 0; i < Play_MultiArray.length; i++) {
                 if (Play_MultiArray[i].data.length > 0) {
 
-                    Play_MultiStartNew(
-                        i,
-                        Play_MultiArray[i].data[6],
-                        Play_MultiArray[i].data[1]
-                    );
+                    Play_MultiStart(i);
 
                 }
             }
@@ -747,7 +729,8 @@ function Play_loadData() {
                 Play_live_token.replace('%x', Play_data.data[6]),
                 Play_live_links.replace('%x', Play_data.data[6]),
                 'Play_loadDataResult',
-                Play_loadDataId
+                Play_loadDataId,
+                0
             );
         } catch (e) {
             Play_loadDataErrorFinish();
@@ -1858,16 +1841,12 @@ function Play_MultiStartPrestart(position) {
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiArray[position].data = doc;
 
-        Play_MultiStartNew(
-            position,
-            Play_MultiArray[position].data[6],
-            Play_MultiArray[position].data[1]
-        );
+        Play_MultiStart(position);
 
     }
 }
 
-function Play_MultiStartNew(pos, streamer, display_name) {
+function Play_MultiStart(pos) {
     if (Play_CheckIfIsLiveResponseText) {
         Play_MultiStartQualitySucess(
             pos,
@@ -1877,31 +1856,52 @@ function Play_MultiStartNew(pos, streamer, display_name) {
         UserLiveFeed_CheckIfIsLiveSTop();
         return;
     }
-    var StreamData = Play_getStreamData(streamer);
 
-    if (StreamData) {
-        StreamData = JSON.parse(StreamData);//obj status url responseText
+    Play_MultiArray[pos].resultId = (new Date().getTime());
+    //TODO remove the try after some app updates
+    try {
+        Android.getStreamDataAsync(
+            Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
+            Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
+            'Play_MultiResult',
+            Play_MultiArray[pos].resultId,
+            pos
+        );
+    } catch (e) {
+        Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
+    }
 
-        if (StreamData.status === 200) {
+}
 
-            Play_MultiStartQualitySucess(pos, StreamData.url, StreamData.responseText);
-            return;
+function Play_MultiResult(response, pos) {
 
-        } else if (StreamData.status === 1 || StreamData.status === 403) {
+    if (Play_MultiEnable && Play_isOn && response) {
 
-            Play_MultiStartFail(pos, display_name, STR_FORBIDDEN);
-            return;
+        var responseObj = JSON.parse(response);
 
-        } else if (StreamData.status === 404) {
+        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_MultiArray[pos].resultId) {
 
-            Play_MultiStartFail(pos, display_name);
-            return;
+            if (responseObj.status === 200) {
 
+                Play_MultiStartQualitySucess(pos, responseObj.url, responseObj.responseText);
+                return;
+
+            } else if (responseObj.status === 1 || responseObj.status === 403) {
+
+                Play_MultiStartFail(pos, Play_MultiArray[pos].data[1], STR_FORBIDDEN);
+                return;
+
+            } else if (responseObj.status === 404) {
+
+                Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
+                return;
+
+            }
+
+            Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
         }
 
     }
-
-    Play_MultiStartFail(pos, display_name);
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
