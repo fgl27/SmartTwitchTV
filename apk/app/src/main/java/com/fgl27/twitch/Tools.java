@@ -128,13 +128,32 @@ public final class Tools {
 
     private static final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     public static class ResponseObj {
         private final int status;
         private final String responseText;
+        private final long checkResult;
+        private final String url;
 
         public ResponseObj(int status, String responseText) {
             this.status = status;
             this.responseText = responseText;
+            this.checkResult = 0L;
+            this.url = null;
+        }
+
+        public ResponseObj(int status, String responseText, long checkResult) {
+            this.status = status;
+            this.responseText = responseText;
+            this.checkResult = checkResult;
+            this.url = null;
+        }
+
+        public ResponseObj(int status, String url, String responseText, long checkResult) {
+            this.status = status;
+            this.responseText = responseText;
+            this.checkResult = checkResult;
+            this.url = url;
         }
 
         public int getStatus() {
@@ -146,22 +165,9 @@ public final class Tools {
         }
     }
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
-    private static class PlayListObj {
-        private final int status;
-        private final String url;
-        private final String responseText;
-
-        public PlayListObj(int status, String url, String responseText) {
-            this.status = status;
-            this.url = url;
-            this.responseText = responseText;
-        }
-    }
-
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    public static String getStreamData(String token_url, String hls_url) throws UnsupportedEncodingException, NullPointerException {
+    public static String getStreamData(String token_url, String hls_url, long checkResult) throws UnsupportedEncodingException, NullPointerException {
         ResponseObj response;
         int i, status;
         JsonObject Token;
@@ -186,7 +192,7 @@ public final class Tools {
                     }
 
                 } else if (status == 403 || status == 404 || status == 410)
-                    return ResponseObjToString(status, "token");
+                    return ResponseObjToString(status, "token", checkResult);
 
             }
         }
@@ -214,14 +220,15 @@ public final class Tools {
                     //410 = api v3 is gone use v5 bug
                     if (status == 200) {
                         return new Gson().toJson(
-                                new PlayListObj(
+                                new ResponseObj(
                                         status,
                                         url,
-                                        response.getResponseText()
+                                        response.getResponseText(),
+                                        checkResult
                                 )
                         );
                     } else if (status == 403 || status == 404 || status == 410)
-                        return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link");
+                        return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link", checkResult);
 
                 }
             }
@@ -243,11 +250,13 @@ public final class Tools {
         return false;
     }
 
-    private static String ResponseObjToString(int status, String responseText) {
+    public static String ResponseObjToString(int status, String responseText, long checkResult) {
         return new Gson().toJson(
                 new ResponseObj(
                         status,
-                        responseText)
+                        responseText,
+                        checkResult
+                )
         );
     }
 
@@ -355,7 +364,9 @@ public final class Tools {
     }
 
     //For other then get methods
-    public static ResponseObj MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
+    public static ResponseObj MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token,
+                                        String overwriteID, String postMessage, String Method, long checkResult) {
+
         HttpURLConnection urlConnection = null;
         String[][] HEADERS = {
                 {CLIENTIDHEADER, overwriteID != null ? overwriteID : CLIENTID},
@@ -397,7 +408,8 @@ public final class Tools {
                                 status != HttpURLConnection.HTTP_OK ?
                                         urlConnection.getErrorStream() :
                                         urlConnection.getInputStream()
-                        )
+                        ),
+                        checkResult
                 );
             } else {
                 return null;

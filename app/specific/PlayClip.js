@@ -160,10 +160,14 @@ function PlayClip_loadData() {
     PlayClip_loadDataRequest();
 }
 
+var PlayClip_loadDataRequestId = 0;
+
 function PlayClip_loadDataRequest() {
     var theUrl = 'https://gql.twitch.tv/gql',
         postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
             '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
+
+    PlayClip_loadDataRequestId = (new Date().getTime());
 
     //TODO remove the try after some app updates
     try {
@@ -176,7 +180,7 @@ function PlayClip_loadDataRequest() {
             postMessage,
             'POST',
             'PlayClip_loadDataResult',
-            ChannelClip_playUrl
+            PlayClip_loadDataRequestId
         );
     } catch (e) {
         PlayClip_loadDataError();
@@ -189,25 +193,16 @@ function PlayClip_loadDataResult(response) {
 
         var responseObj = JSON.parse(response);
 
-        if (Main_A_equals_B(responseObj[0], ChannelClip_playUrl)) {
-            if (responseObj[1]) {//If the array contains pos 1
+        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayClip_loadDataRequestId) {
 
-                responseObj = JSON.parse(responseObj[1]);
-
-                if (responseObj) {//If array pos 1 when parsed isn't null
-
-                    if (responseObj.status === 200) {
-                        PlayClip_QualityGenerate(responseObj.responseText);
-                        return;
-                    } else if (responseObj.status === 410) { //Workaround for future 410 issue
-                        PlayClip_loadData410 = true;
-                        PlayClip_loadData410Recheck();
-                        PlayClip_loadDataSuccess410();
-                        return;
-                    }
-
-                }
-
+            if (responseObj.status === 200) {
+                PlayClip_QualityGenerate(responseObj.responseText);
+                return;
+            } else if (responseObj.status === 410) { //Workaround for future 410 issue
+                PlayClip_loadData410 = true;
+                PlayClip_loadData410Recheck();
+                PlayClip_loadDataSuccess410();
+                return;
             }
 
             PlayClip_loadDataError();

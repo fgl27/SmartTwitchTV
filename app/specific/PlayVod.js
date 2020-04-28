@@ -292,18 +292,20 @@ function PlayVod_loadDataSuccessFake() {
 }
 
 var PlayVod_autoUrl;
+var PlayVod_loadDataId = 0;
 function PlayVod_loadData() {
     //Main_Log('PlayVod_loadData');
 
     if (Main_IsOnAndroid) {
 
+        PlayVod_loadDataId = (new Date().getTime());
         //TODO remove the try after some app updates
         try {
             Android.getStreamDataAsync(
                 Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
                 Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
                 'PlayVod_loadDataResult',
-                Main_values.ChannelVod_vodId
+                PlayVod_loadDataId
             );
         } catch (e) {
             PlayVod_loadDataErrorFinish();
@@ -318,27 +320,19 @@ function PlayVod_loadDataResult(response) {
 
         var responseObj = JSON.parse(response);
 
-        if (Main_A_equals_B(responseObj[0], Main_values.ChannelVod_vodId)) {
-            if (responseObj[1]) {//If the array contains pos 1
+        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayVod_loadDataId) {
 
-                var StreamData = JSON.parse(responseObj[1]);
-
-                if (StreamData) {
-                    //StreamData = JSON.parse(StreamData);//obj status url responseText
-
-                    if (StreamData.status === 200) {
-                        PlayVod_autoUrl = StreamData.url;
-                        PlayVod_loadDataSuccessEnd(StreamData.responseText);
-                        return;
-                    } else if (StreamData.status === 1) {
-                        PlayVod_loadDataCheckSub();
-                        return;
-                    } else if (StreamData.status === 410) {
-                        //410 = api v3 is gone use v5 bug
-                        PlayVod_WarnEnd(STR_410_ERROR);
-                        return;
-                    }
-                }
+            if (responseObj.status === 200) {
+                PlayVod_autoUrl = responseObj.url;
+                PlayVod_loadDataSuccessEnd(responseObj.responseText);
+                return;
+            } else if (responseObj.status === 1) {
+                PlayVod_loadDataCheckSub();
+                return;
+            } else if (responseObj.status === 410) {
+                //410 = api v3 is gone use v5 bug
+                PlayVod_WarnEnd(STR_410_ERROR);
+                return;
             }
 
             PlayVod_loadDataErrorFinish();
