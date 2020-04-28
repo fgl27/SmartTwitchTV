@@ -1386,6 +1386,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public String GetCheckIfIsLiveFeed(int x, int y) {
+            return ExtraPlayerHandlerResult[x][y];
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position) {
 
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
@@ -1455,12 +1461,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String GetDataResult() {
             return DataResult;
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String GetCheckIfIsLiveFeed(int x, int y) {
-            return ExtraPlayerHandlerResult[x][y];
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1929,19 +1929,6 @@ public class PlayerActivity extends Activity {
                 mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString, userAgent);
                 initializePlayerMulti(mposition, mediaSources[mposition]);
             });
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String getStreamData(String token_url, String hls_url) {
-            try {
-                return Tools.getStreamData(token_url, hls_url, 0L);
-            } catch (UnsupportedEncodingException e) {
-                Log.w(TAG, "getStreamData UnsupportedEncodingException ", e);
-            } catch (NullPointerException e) {
-                Log.w(TAG, "getStreamData NullPointerException ", e);
-            }
-            return null;
         }
 
         @SuppressWarnings("unused")//called by JS
