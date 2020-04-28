@@ -1172,13 +1172,13 @@ function Settings_DialogShowSmallPayer() {
             defaultValue: Settings_value.show_feed_player.defaultValue,
             values: Settings_value.show_feed_player.values,
             title: STR_SHOW_FEED_PLAYER,
-            summary: null
+            summary: STR_SHOW_FEED_PLAYER_SUMMARY
         },
         disable_feed_player_multi: {
             defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
             values: Settings_value.disable_feed_player_multi.values,
             title: STR_DISABLE_FEED_PLAYER_MULTI,
-            summary: null
+            summary: STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY
         },
         show_feed_player_delay: {
             defaultValue: Settings_value.show_feed_player_delay.defaultValue,
