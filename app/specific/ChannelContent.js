@@ -327,16 +327,14 @@ function ChannelContent_keyEnter() {
             Main_HideElement(ChannelContent_ids[10]);
             ChannelContent_removeFocus();
             Main_ready(function() {
-                ScreenObjKey = Main_ChannelVod;
-                Screens_init();
+                Screens_init(Main_ChannelVod);
             });
         } else if (ChannelContent_cursorX === 1) {
             Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
             Main_HideElement(ChannelContent_ids[10]);
             ChannelContent_removeFocus();
             Main_ready(function() {
-                ScreenObjKey = Main_ChannelClip;
-                Screens_init();
+                Screens_init(Main_ChannelClip);
             });
         } else if (ChannelContent_cursorX === 2) {
             if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {

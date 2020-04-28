@@ -32,14 +32,11 @@ function Search_loadData() {
     Search_exit();
     Main_ready(function() {
         if (!Search_cursorX) {
-            ScreenObjKey = Main_SearchChannels;
-            Screens_init();
+            Screens_init(Main_SearchChannels);
         } else if (Search_cursorX === 1) {
-            ScreenObjKey = Main_SearchGames;
-            Screens_init();
+            Screens_init(Main_SearchGames);
         } else if (Search_cursorX === 2) {
-            ScreenObjKey = Main_SearchLive;
-            Screens_init();
+            Screens_init(Main_SearchLive);
         }
     });
 }

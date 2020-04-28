@@ -104,70 +104,71 @@ function Screens_assign() {
 
 //Variable initialization end
 
-function Screens_init() {
-    //Main_Log('Screens_init ' + ScreenObj[ScreenObjKey].screen);
+function Screens_init(key) {
+    //Main_Log('Screens_init ' + ScreenObj[key].screen);
     Main_addFocusVideoOffset = -1;
-    Main_values.Main_Go = ScreenObj[ScreenObjKey].screen;
-    ScreenObj[ScreenObjKey].label_init();
+    ScreenObjKey = key;
+    Main_values.Main_Go = key;
+    ScreenObj[key].label_init();
 
     Main_addEventListener("keydown", Screens_handleKeyDown);
-    Main_ShowElementWithEle(ScreenObj[ScreenObjKey].ScrollDoc);
+    Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (!ScreenObj[ScreenObjKey].status || Screens_RefreshTimeout() || !ScreenObj[ScreenObjKey].offsettop ||
-        ScreenObj[ScreenObjKey].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+    else if (!ScreenObj[key].status || Screens_RefreshTimeout() || !ScreenObj[key].offsettop ||
+        ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
-        Screens_StartLoad();
+        Screens_StartLoad(key);
 
     } else {
-        Main_YRst(ScreenObj[ScreenObjKey].posY);
+        Main_YRst(ScreenObj[key].posY);
         Screens_addFocus(true);
         Main_SaveValues();
         Screens_SetLastRefresh();
     }
 }
 
-function Screens_exit() {
-    //Main_Log('Screens_exit ' + ScreenObj[ScreenObjKey].screen);
+function Screens_exit(key) {
+    //Main_Log('Screens_exit ' + ScreenObj[key].screen);
 
     Main_addFocusVideoOffset = 0;
-    if (ScreenObj[ScreenObjKey].label_exit) ScreenObj[ScreenObjKey].label_exit();
+    if (ScreenObj[key].label_exit) ScreenObj[key].label_exit();
     Main_removeEventListener("keydown", Screens_handleKeyDown);
-    Main_HideElementWithEle(ScreenObj[ScreenObjKey].ScrollDoc);
+    Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
     Main_HideWarningDialog();
     Screens_ClearAnimation();
 }
 
-function Screens_StartLoad() {
+function Screens_StartLoad(key) {
     Main_showLoadDialog();
-    ScreenObj[ScreenObjKey].lastRefresh = new Date().getTime();
+    ScreenObj[key].lastRefresh = new Date().getTime();
     Main_updateclock();
-    Main_empty(ScreenObj[ScreenObjKey].table);
+    Main_empty(ScreenObj[key].table);
     Main_HideWarningDialog();
 
-    ScreenObj[ScreenObjKey].cursor = null;
-    ScreenObj[ScreenObjKey].after = '';
-    ScreenObj[ScreenObjKey].status = false;
-    ScreenObj[ScreenObjKey].TopRowCreated = false;
-    ScreenObj[ScreenObjKey].offset = 0;
-    ScreenObj[ScreenObjKey].offsettop = 0;
-    ScreenObj[ScreenObjKey].idObject = {};
-    ScreenObj[ScreenObjKey].Cells = [];
-    ScreenObj[ScreenObjKey].FirstLoad = true;
-    ScreenObj[ScreenObjKey].itemsCount = 0;
-    ScreenObj[ScreenObjKey].posX = 0;
-    ScreenObj[ScreenObjKey].posY = 0;
-    ScreenObj[ScreenObjKey].row_id = 0;
-    ScreenObj[ScreenObjKey].currY = 0;
-    ScreenObj[ScreenObjKey].loadChannelOffsset = 0;
-    ScreenObj[ScreenObjKey].followerChannels = '';
-    ScreenObj[ScreenObjKey].followerChannelsDone = false;
-    ScreenObj[ScreenObjKey].coloumn_id = 0;
-    ScreenObj[ScreenObjKey].data = null;
-    ScreenObj[ScreenObjKey].data_cursor = 0;
-    ScreenObj[ScreenObjKey].dataEnded = false;
+    ScreenObj[key].cursor = null;
+    ScreenObj[key].after = '';
+    ScreenObj[key].status = false;
+    ScreenObj[key].TopRowCreated = false;
+    ScreenObj[key].offset = 0;
+    ScreenObj[key].offsettop = 0;
+    ScreenObj[key].idObject = {};
+    ScreenObj[key].Cells = [];
+    ScreenObj[key].FirstLoad = true;
+    ScreenObj[key].itemsCount = 0;
+    ScreenObj[key].posX = 0;
+    ScreenObj[key].posY = 0;
+    ScreenObj[key].row_id = 0;
+    ScreenObj[key].currY = 0;
+    ScreenObj[key].loadChannelOffsset = 0;
+    ScreenObj[key].followerChannels = '';
+    ScreenObj[key].followerChannelsDone = false;
+    ScreenObj[key].coloumn_id = 0;
+    ScreenObj[key].data = null;
+    ScreenObj[key].data_cursor = 0;
+    ScreenObj[key].dataEnded = false;
     Main_CounterDialogRst();
-    Screens_loadDataRequestStart(ScreenObjKey);
+    Screens_loadDataRequestStart(key);
 }
 
 function Screens_loadDataRequestStart(key) {
@@ -942,7 +943,7 @@ function Screens_BasicExit(before) {
     else {
         if (before === ScreenObj[ScreenObjKey].screen) Main_values.Main_Go = Main_Live;
         else Main_values.Main_Go = before;
-        Screens_exit();
+        Screens_exit(ScreenObjKey);
     }
 }
 
@@ -1290,7 +1291,7 @@ function Screens_PeriodhandleKeyDown(event) {
             if (ScreenObj[ScreenObjKey].periodPos !== Screens_PeriodDialogPos) {
                 ScreenObj[ScreenObjKey].periodPos = Screens_PeriodDialogPos;
                 ScreenObj[ScreenObjKey].SetPeriod();
-                Screens_StartLoad();
+                Screens_StartLoad(ScreenObjKey);
             }
             break;
         default:
@@ -1376,7 +1377,7 @@ function Screens_OffSethandleKeyDown(event) {
             if (ScreenObj[ScreenObjKey].extraoffset !== ScreenObj[ScreenObjKey].OffSetPos) {
                 ScreenObj[ScreenObjKey].extraoffset = ScreenObj[ScreenObjKey].OffSetPos * 100;
                 ScreenObj[ScreenObjKey].SetPeriod();
-                Screens_StartLoad();
+                Screens_StartLoad(ScreenObjKey);
             }
             break;
         default:

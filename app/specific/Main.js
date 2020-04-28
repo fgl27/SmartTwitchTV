@@ -460,8 +460,7 @@ function Main_initWindows() {
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId);//Check it 5min
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 12000, Main_CheckResumeVodsId);
 
-    ScreenObjKey = Main_Live;
-    Screens_init();
+    Screens_init(Main_Live);
 }
 
 function Main_SetStringsMain(isStarting) {

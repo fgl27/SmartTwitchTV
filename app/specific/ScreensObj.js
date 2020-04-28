@@ -51,14 +51,14 @@ var Base_obj = {
     data_cursor: 0,
     lastRefresh: 0,
     key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit,
+    exit_fun: function() {
+        Screens_exit(this.screen);
+    },
     init_fun: function() {
-        ScreenObjKey = this.screen;
-        Screens_init();
+        Screens_init(this.screen);
     },
     start_fun: function() {
-        ScreenObjKey = this.screen;
-        Screens_StartLoad();
+        Screens_StartLoad(this.screen);
     },
     loadDataSuccess: function() {
         Screens_loadDataSuccess(this.screen);
@@ -200,7 +200,7 @@ function ScreensObj_InitVod() {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
                     this.SetPeriod();
-                    Screens_StartLoad();
+                    Screens_StartLoad(this.screen);
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else Screens_PeriodStart();
             } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
@@ -258,13 +258,13 @@ function ScreensObj_InitChannelVod() {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
                     this.SetPeriod();
-                    Screens_StartLoad();
+                    Screens_StartLoad(this.screen);
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else if (this.posX === 1) {
                     this.periodPos++;
                     if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
                     this.SetPeriod();
-                    Screens_StartLoad();
+                    Screens_StartLoad(this.screen);
                 } else Screens_OffSetStart();
             } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
@@ -345,7 +345,7 @@ function ScreensObj_InitAGameVod() {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
                     this.SetPeriod();
-                    Screens_StartLoad();
+                    Screens_StartLoad(this.screen);
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else Screens_PeriodStart();
             } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
@@ -402,13 +402,13 @@ function ScreensObj_InitUserVod() {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
                     this.SetPeriod();
-                    Screens_StartLoad();
+                    Screens_StartLoad(this.screen);
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else {
                     this.periodPos++;
                     if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
                     this.SetPeriod();
-                    Screens_StartLoad();
+                    Screens_StartLoad(this.screen);
                 }
             } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
         },
@@ -1124,7 +1124,7 @@ function ScreensObj_InitUserGames() {
 
             ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FOLLOW_GAMES));
 
-            Screens_StartLoad();
+            Screens_StartLoad(this.screen);
 
             Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
         },
@@ -1250,7 +1250,7 @@ function ScreensObj_InitUserChannels() {
             Main_values.Main_BeforeChannelisSet = true;
             AddCode_IsFollowing = true;
             ChannelContent_UserChannels = true;
-            Screens_exit();
+            Screens_exit(this.screen);
             Main_SwitchScreen();
         },
         addCell: function(cell) {
@@ -1306,7 +1306,7 @@ function ScreensObj_InitSearchChannels() {
             Main_values.Main_BeforeChannelisSet = true;
             AddCode_IsFollowing = false;
             ChannelContent_UserChannels = false;
-            Screens_exit();
+            Screens_exit(this.screen);
             Main_SwitchScreen();
         },
         addCell: function(cell) {
