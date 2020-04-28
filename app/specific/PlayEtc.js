@@ -1243,6 +1243,8 @@ function Play_MakeControls() {
         values: null,
         opacity: 0,
         enterKey: function(shutdown) {
+            if (!Main_IsOnAndroid) return;
+
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {
                 if (Android.IsMainNotMain()) {

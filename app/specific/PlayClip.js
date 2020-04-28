@@ -160,34 +160,60 @@ function PlayClip_loadData() {
     PlayClip_loadDataRequest();
 }
 
+var PlayClip_loadDataRequestId = 0;
+
 function PlayClip_loadDataRequest() {
     var theUrl = 'https://gql.twitch.tv/gql',
         postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
-            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}',
-        xmlHttp;
+            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
 
-    for (var i = 0; i < 5; i++) {
-        xmlHttp = Android.mMethodUrl(theUrl, PlayClip_loadingDataTimeout + (i * 500), 1, null, Main_Headers_Back[0][1], postMessage, 'POST');
+    PlayClip_loadDataRequestId = (new Date().getTime());
 
-        if (xmlHttp) {
-            xmlHttp = JSON.parse(xmlHttp);
+    //TODO remove the try after some app updates
+    try {
+        Android.GetClipData(
+            theUrl,
+            PlayClip_loadingDataTimeout,
+            1,
+            null,
+            Main_Headers_Back[0][1],
+            postMessage,
+            'POST',
+            'PlayClip_loadDataResult',
+            PlayClip_loadDataRequestId
+        );
+    } catch (e) {
+        PlayClip_loadDataError();
+    }
+}
 
-            if (xmlHttp.status === 200) {
-                PlayClip_QualityGenerate(xmlHttp.responseText);
+function PlayClip_loadDataResult(response) {
+
+    if (PlayClip_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayClip_loadDataRequestId) {
+
+            if (responseObj.status === 200) {
+                PlayClip_QualityGenerate(responseObj.responseText);
                 return;
-            } else if (xmlHttp.status === 410) { //Workaround for future 410 issue
+            } else if (responseObj.status === 410) { //Workaround for future 410 issue
                 PlayClip_loadData410 = true;
                 PlayClip_loadData410Recheck();
                 PlayClip_loadDataSuccess410();
                 return;
             }
+
+            PlayClip_loadDataError();
         }
+
     }
 
-    PlayClip_loadDataError();
 }
 
 function PlayClip_loadData410Recheck() {
+    Main_Log('PlayClip_loadData410Recheck');
     Main_setTimeout(
         function() {
             PlayClip_loadData410 = false;
@@ -497,6 +523,49 @@ function PlayClip_OpenVod() {
     }
 }
 
+//When update this check PlayVod_CheckIfIsLiveResult
+function PlayClip_CheckIfIsLiveResult(response) {
+
+    if (PlayClip_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_CheckIfIsLiveId) {
+            var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+
+            if (responseObj.status === 200) {
+
+                Play_CheckIfIsLiveURL = responseObj.url;
+                Play_CheckIfIsLiveResponseText = responseObj.responseText;
+                PlayClip_OpenLiveStream();
+                return;
+
+            } else if (doc && (responseObj.status === 1 || responseObj.status === 403)) {
+
+                Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                return;
+
+            } else if (doc && responseObj.status === 404) {
+
+                Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                return;
+
+            }
+
+            Play_CheckIfIsLiveStartFail(STR_PLAYER_PROBLEM_2);
+        }
+
+    }
+
+}
+
+function PlayClip_CheckIfIsLiveStart() {
+
+    if (!Main_IsOnAndroid || Play_CheckIfIsLiveResponseText) PlayClip_OpenLiveStream();
+    else Play_CheckIfIsLiveStart('PlayClip_CheckIfIsLiveResult');
+
+}
+
 function PlayClip_OpenLiveStream() {
     PlayClip_PreshutdownStream(true, true);
     Main_OpenLiveStream(
@@ -633,7 +702,8 @@ function PlayClip_handleKeyDown(e) {
                     PlayClip_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (!UserLiveFeed_CheckVod() || Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
+                    else if (!UserLiveFeed_CheckVod()) PlayClip_OpenLiveStream();
+                    else PlayClip_CheckIfIsLiveStart();
                 }
                 else PlayClip_showPanel();
                 break;
@@ -682,7 +752,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_1:
                 if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (Play_CheckIfIsLiveStart()) PlayClip_OpenLiveStream();
+                    else PlayClip_CheckIfIsLiveStart();
                 }
                 break;
             case KEY_REFRESH:

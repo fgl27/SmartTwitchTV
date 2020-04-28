@@ -131,7 +131,7 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data_attribute';
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.176';
+var Main_stringVersion_Min = '.177';
 var Main_minversion = 'April 27, 2020';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsOnAndroidVersion = '';
@@ -188,7 +188,14 @@ function Main_loadTranslations(language) {
                     'Play_ShowVideoStatus': Play_ShowVideoStatus,
                     'Play_ShowVideoQuality': Play_ShowVideoQuality,
                     'PlayVod_previews_success': PlayVod_previews_success,
-                    'Play_PlayPauseChange': Play_PlayPauseChange
+                    'Play_PlayPauseChange': Play_PlayPauseChange,
+                    'PlayClip_loadDataResult': PlayClip_loadDataResult,
+                    'PlayVod_loadDataResult': PlayVod_loadDataResult,
+                    'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
+                    'Play_loadDataResult': Play_loadDataResult,
+                    'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
+                    'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
+                    'Play_MultiResult': Play_MultiResult
                 };
             }
             Main_IsOnAndroid = Android.getAndroid();

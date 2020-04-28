@@ -35,7 +35,14 @@
         'Play_ShowVideoStatus': Play_ShowVideoStatus, // Play_ShowVideoStatus() func from app/specific/Play.js
         'Play_ShowVideoQuality': Play_ShowVideoQuality, // Play_ShowVideoQuality() func from app/specific/Play.js
         'PlayVod_previews_success': PlayVod_previews_success, // PlayVod_previews_success() func from app/specific/PlayVod.js
-        'Play_PlayPauseChange': Play_PlayPauseChange // Play_KeyPause() func from app/specific/PlayEtc.js
+        'Play_PlayPauseChange': Play_PlayPauseChange, // Play_KeyPause() func from app/specific/PlayEtc.js
+        'PlayClip_loadDataResult': PlayClip_loadDataResult, // PlayClip_QualityGenerate() func from app/specific/PlayClip.js
+        'PlayVod_loadDataResult': PlayVod_loadDataResult, // PlayVod_loadDataResult() func from app/specific/PlayVod.js
+        'PlayExtra_ResumeResult': PlayExtra_ResumeResult, // PlayExtra_ResumeResult() func from app/specific/PlayExtra.js
+        'Play_loadDataResult': Play_loadDataResult, // Play_loadDataResult() func from app/specific/Play.js
+        'PlayClip_CheckIfIsLiveResult':PlayClip_CheckIfIsLiveResult, // PlayClip_CheckIfIsLiveResult() func from app/specific/PlayClip.js
+        'PlayVod_CheckIfIsLiveResult':PlayVod_CheckIfIsLiveResult, // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
+        'Play_MultiResult': Play_MultiResult // Play_MultiResult() func from app/specific/Play.js
     };
 
     /** Expose `smartTwitchTV` */

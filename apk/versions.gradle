@@ -5,7 +5,7 @@ ext.versions = [
         buildTools           : '29.0.3',
 
         publishVersion       : '3.0.',
-        publishVersionCode   : 176,
+        publishVersionCode   : 177,
 
         crashlytics          : '17.0.0',
         crashlyticsgradle    : '2.0.0',

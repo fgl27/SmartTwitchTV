@@ -50,7 +50,7 @@ function PlayExtra_KeyEnter() {
             PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
         }
 
-        if (!Play_CheckIfIsLiveResponseText) PlayExtra_Resumenew();
+        if (!Play_CheckIfIsLiveResponseText) PlayExtra_Resume();
         else {
 
             PlayExtra_data.AutoUrl = Play_CheckIfIsLiveURL;
@@ -62,37 +62,58 @@ function PlayExtra_KeyEnter() {
     }
 }
 
-function PlayExtra_Resumenew() {
+var PlayExtra_ResumeId = 0;
+function PlayExtra_Resume() {
     if (Main_IsOnAndroid) {
 
-        var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
+        PlayExtra_ResumeId = (new Date().getTime());
+        //TODO remove the try after some app updates
+        try {
+            Android.getStreamDataAsync(
+                Play_live_token.replace('%x', PlayExtra_data.data[6]),
+                Play_live_links.replace('%x', PlayExtra_data.data[6]),
+                'PlayExtra_ResumeResult',
+                PlayExtra_ResumeId,
+                1
+            );
+        } catch (e) {
+            PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+        }
 
-        if (StreamData) {
-            StreamData = JSON.parse(StreamData);//obj status url responseText
+    } else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+}
 
-            if (StreamData.status === 200) {
+function PlayExtra_ResumeResult(response) {
 
-                PlayExtra_data.AutoUrl = StreamData.url;
-                PlayExtra_loadDataSuccessEnd(StreamData.responseText);
+    if (PlayExtra_PicturePicture && Play_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayExtra_ResumeId) {
+
+            if (responseObj.status === 200) {
+
+                PlayExtra_data.AutoUrl = responseObj.url;
+                PlayExtra_loadDataSuccessEnd(responseObj.responseText);
                 return;
 
-            } else if (StreamData.status === 1 || StreamData.status === 403) {
+            } else if (responseObj.status === 1 || responseObj.status === 403) {
 
                 PlayExtra_loadDataFail(STR_FORBIDDEN);
                 return;
 
-            } else if (StreamData.status === 404) {
+            } else if (responseObj.status === 404) {
 
                 PlayExtra_loadDataFail(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
                 return;
 
             }
 
+            PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
         }
 
     }
 
-    PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
 }
 
 function PlayExtra_loadDataSuccessEnd(playlist) {

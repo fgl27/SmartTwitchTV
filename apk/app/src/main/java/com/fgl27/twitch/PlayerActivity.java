@@ -60,8 +60,8 @@ import static android.content.res.Configuration.KEYBOARD_QWERTY;
 public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
-    //public static final String PageUrl = "file:///android_asset/app/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/app/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
@@ -117,6 +117,9 @@ public class PlayerActivity extends Activity {
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
     public String PreviewsResult;
+    public String[] DataResult = new String[PlayerAccount];
+    public Handler[] DataResultHandler = new Handler[PlayerAccount];
+    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccount];
     public WebView mWebView;
     public boolean PicturePicture;
     public boolean deviceIsTV;
@@ -215,6 +218,12 @@ public class PlayerActivity extends Activity {
             RuntimeThread.start();
             RuntimeHandler = new Handler(RuntimeThread.getLooper());
             runtime = Runtime.getRuntime();
+
+            for (int i = 0; i < PlayerAccount; i++) {
+                DataResultThread[i] = new HandlerThread("DataResultThread" + i);
+                DataResultThread[i].start();
+                DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
+            }
 
             deviceIsTV = Tools.deviceIsTV(this);
             appPreferences = new AppPreferences(this);
@@ -1364,14 +1373,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String fun, int x, int y) {
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String ret_fun, int x, int y) {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
             ExtraPlayerHandlerResult[x][y] = null;
 
             ExtraPlayerHandler.postDelayed(() -> {
 
                 try {
-                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url);
+                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L);
                 } catch (UnsupportedEncodingException e) {
                     Log.w(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException ", e);
                 } catch (NullPointerException e) {
@@ -1379,7 +1388,7 @@ public class PlayerActivity extends Activity {
                 }
 
                 if (ExtraPlayerHandlerResult[x][y] != null)
-                    LoadUrlWebview("javascript:smartTwitchTV." + fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
+                    LoadUrlWebview("javascript:smartTwitchTV." + ret_fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
             }, 50 + Delay_ms);
         }
 
@@ -1387,6 +1396,78 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String GetCheckIfIsLiveFeed(int x, int y) {
             return ExtraPlayerHandlerResult[x][y];
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position) {
+            DataResultHandler[position].removeCallbacksAndMessages(null);
+            DataResult[position] = null;
+
+            DataResultHandler[position].post(() ->
+                    {
+                        String result = null;
+
+                        try {
+                            result = Tools.getStreamData(token_url, hls_url, checkResult);
+                        } catch (UnsupportedEncodingException e) {
+                            Log.w(TAG, "getStreamDataAsync UnsupportedEncodingException ", e);
+                        } catch (NullPointerException e) {
+                            Log.w(TAG, "getStreamDataAsync NullPointerException ", e);
+                        }
+
+                        if (result != null) DataResult[position] = result;
+                        else DataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
+
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position +")");
+                    }
+            );
+
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void GetClipData(String urlString, int timeout, int HeaderQuantity, String access_token,
+                                String overwriteID, String postMessage, String Method, String callback, long checkResult) {
+            DataResultHandler[0].removeCallbacksAndMessages(null);
+            DataResult[0] = null;
+
+            DataResultHandler[0].post(() ->
+                    {
+                        Tools.ResponseObj response;
+
+                        for (int i = 0; i < 3; i++) {
+
+                            response = Tools.MethodUrl(
+                                    urlString,
+                                    (timeout + (i * 500)),
+                                    HeaderQuantity,
+                                    access_token,
+                                    overwriteID,
+                                    postMessage,
+                                    Method,
+                                    checkResult
+                            );
+
+                            if (response != null)  {
+                                DataResult[0] = new Gson().toJson(response);
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(0))");
+                                return;
+                            }
+
+                        }
+
+                        //MethodUrl is null inform JS callback
+                        DataResult[0] = Tools.ResponseObjToString(0, "", checkResult);
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(0))");
+                    }
+            );
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String GetDataResult(int position) {
+            return DataResult[position];
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1535,7 +1616,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mMethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
-            return new Gson().toJson(Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method));
+            return new Gson().toJson(Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method, 0L));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1855,19 +1936,6 @@ public class PlayerActivity extends Activity {
                 mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString, userAgent);
                 initializePlayerMulti(mposition, mediaSources[mposition]);
             });
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String getStreamData(String token_url, String hls_url) {
-            try {
-                return Tools.getStreamData(token_url, hls_url);
-            } catch (UnsupportedEncodingException e) {
-                Log.w(TAG, "getStreamData UnsupportedEncodingException ", e);
-            } catch (NullPointerException e) {
-                Log.w(TAG, "getStreamData NullPointerException ", e);
-            }
-            return null;
         }
 
         @SuppressWarnings("unused")//called by JS
