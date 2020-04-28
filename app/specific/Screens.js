@@ -1,6 +1,6 @@
 //Variable initialization
 var ScreenObj = {};
-var ScreenObjKey = 0;
+var ScreenObjKey = 1;
 var Screens_clear = false;
 var Screens_KeyEnterID;
 var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
@@ -122,7 +122,7 @@ function Screens_init(key) {
 
     } else {
         Main_YRst(ScreenObj[key].posY);
-        Screens_addFocus(true);
+        Screens_addFocus(true, key);
         Main_SaveValues();
         Screens_SetLastRefresh();
     }
@@ -277,48 +277,52 @@ function Screens_loadDataSuccess(key) {
     Screens_loadDataSuccessFinish(key);
 }
 
-function Screens_createCell(id_attribute, Data_content, html_content) {
+function Screens_createCell(id_attribute, Data_content, html_content, key) {
     var div = document.createElement('div');
 
     div.setAttribute('id', id_attribute);
     div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
-    div.classList.add(ScreenObj[ScreenObjKey].thumbclass);
+    div.classList.add(ScreenObj[key].thumbclass);
 
     div.innerHTML = html_content;
 
     return div;
 }
 
-function Screens_createCellChannel(id, idArray, valuesArray) {
+function Screens_createCellChannel(id, idArray, valuesArray, key) {
     return Screens_createCell(
         idArray[8] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
         id + '" alt="" class="stream_img" src="' + valuesArray[2] +
-        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[ScreenObjKey].img_404 + '\';"></div>' +
+        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
         '<div id="' + idArray[2] + id + '" class="stream_thumbnail_channel_text_holder">' +
         '<div id="' + idArray[3] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
         (valuesArray[4] ? STR_SPACE + STR_SPACE +
             '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
-            IMG_PARTNER + '">' : "") + '</div></div></div>');
+            IMG_PARTNER + '">' : "") + '</div></div></div>',
+        key
+    );
 }
 
-function Screens_createCellGame(id, idArray, valuesArray) {
+function Screens_createCellGame(id, idArray, valuesArray, key) {
     return Screens_createCell(
         idArray[5] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
-        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[ScreenObjKey].img_404 + '\';"></div><div id="' +
+        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
         idArray[2] + id +
         '" class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="<div id="' +
         idArray[3] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
         (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
             '"class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
-            '</div>' : '') + '</div></div></div>');
+            '</div>' : '') + '</div></div></div>',
+        key
+    );
 }
 
-function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_until) {
+function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra_until) {
     var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
 
     return Screens_createCell(
@@ -326,7 +330,7 @@ function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_unti
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
-        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[ScreenObjKey].img_404 + '\';"></div><div id="' +
+        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
         idArray[2] + id +
         '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
@@ -343,10 +347,12 @@ function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_unti
         Play_timeS(valuesArray[1]) + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
             STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
-        '</div></div></div></div>');
+        '</div></div></div></div>',
+        key
+    );
 }
 
-function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until) {
+function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_until) {
 
     return Screens_createCell(
         idArray[8] + id,
@@ -354,7 +360,7 @@ function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[6] + id + '" class="stream_thumbnail_live_img" ' +
         (valuesArray[8] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[8] + ');"' : '') +
         '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
-        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[ScreenObjKey].img_404 + '\';"></div><div id="' +
+        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
         idArray[2] + id +
         '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
@@ -370,11 +376,13 @@ function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until
         Play_timeS(valuesArray[11]) + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
             STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
-        '</div></div></div>');
+        '</div></div></div>',
+        key
+    );
 }
 
 //TODO uncomplicate this ifs
-function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodimg, force_VOD) {
+function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra_vodimg, force_VOD) {
 
     if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
 
@@ -387,11 +395,11 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodi
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + image +
         (Extra_vodimg ?
-            ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + ScreenObj[ScreenObjKey].img_404 +
+            ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
                 '\';};this.src=\'' + Extra_vodimg + '\';' +
                 'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hideimp\');' +
                 'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
-            ('" onerror="this.onerror=null;this.src=\'' + ScreenObj[ScreenObjKey].img_404 + '\';"></div><div id="')) +
+            ('" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="')) +
         idArray[2] + id +
         '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
@@ -410,7 +418,9 @@ function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodi
         valuesArray[11] + valuesArray[4] + '</div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
-        '</div></div></div>');
+        '</div></div></div>',
+        key
+    );
 }
 
 function Screens_loadDataSuccessFinish(key) {
@@ -425,7 +435,7 @@ function Screens_loadDataSuccessFinish(key) {
 
             for (i = 0; i < (ScreenObj[key].Cells.length < ScreenObj[key].visiblerows ? ScreenObj[key].Cells.length : ScreenObj[key].visiblerows); i++) {
                 if (ScreenObj[key].Cells[i]) {
-                    ScreenObj[ScreenObjKey].tableDoc.appendChild(ScreenObj[key].Cells[i]);
+                    ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[i]);
                     ScreenObj[key].Cells[i].style.position = '';
                     ScreenObj[key].Cells[i].style.transition = 'none';
                 }
@@ -442,7 +452,7 @@ function Screens_loadDataSuccessFinish(key) {
 
             for (i = 0; i < (ScreenObj[key].Cells.length < ScreenObj[key].visiblerows ? ScreenObj[key].Cells.length : ScreenObj[key].visiblerows); i++) {
                 if (ScreenObj[key].Cells[i]) {
-                    ScreenObj[key].Cells[i].style.transform = 'translateY(' + (i * ScreenObj[ScreenObjKey].offsettop) + 'em)';
+                    ScreenObj[key].Cells[i].style.transform = 'translateY(' + (i * ScreenObj[key].offsettop) + 'em)';
                 }
             }
 
@@ -526,7 +536,7 @@ function Screens_loadDataSuccessFinish(key) {
                         Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
                 }
 
-                if (!Main_values.Never_run_new) Screens_addFocus(true);
+                if (!Main_values.Never_run_new) Screens_addFocus(true, key);
 
                 Main_values.Never_run_new = false;
                 Main_values.Never_run_phone = false;
@@ -535,13 +545,13 @@ function Screens_loadDataSuccessFinish(key) {
                 Screens_loadDataSuccessFinishEnd();
             }
         } else {
-            Screens_addFocus(true);
+            Screens_addFocus(true, key);
             Main_SaveValues();
             Main_HideLoadDialog();
         }
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
         Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
-        Screens_addFocus(true);
+        Screens_addFocus(true, key);
     }
 }
 
@@ -571,7 +581,7 @@ function Screens_handleKeyControls(event) {
             if (CheckAccessibilityVWasVisible) Main_CheckAccessibilitySet();
             else {
                 Main_addEventListener("keydown", Screens_handleKeyDown);
-                Screens_addFocus(true);
+                Screens_addFocus(true, ScreenObjKey);
             }
 
             break;
@@ -600,34 +610,34 @@ function Screens_loadDataSuccessFinishEnd() {
     //Main_Log('Screens_loadDataSuccessFinishEnd');
 }
 
-function Screens_addFocus(forceScroll) {
+function Screens_addFocus(forceScroll, key) {
 
-    if (ScreenObj[ScreenObjKey].emptyContent) {
-        if (ScreenObj[ScreenObjKey].HasSwitches) ScreenObj[ScreenObjKey].posY = -1;
+    if (ScreenObj[key].emptyContent) {
+        if (ScreenObj[key].HasSwitches) ScreenObj[key].posY = -1;
         else {
-            ScreenObj[ScreenObjKey].key_exit(ScreenObj[ScreenObjKey].emptyContent);
+            ScreenObj[key].key_exit(ScreenObj[key].emptyContent);
             return;
         }
     }
-    if (ScreenObj[ScreenObjKey].posY < 0) {
+    if (ScreenObj[key].posY < 0) {
         Screens_addFocusFollow();
 
-        if (!ScreenObj[ScreenObjKey].emptyContent)
-            Main_CounterDialog(ScreenObj[ScreenObjKey].posX, ScreenObj[ScreenObjKey].posY + 1, ScreenObj[ScreenObjKey].ColoumnsCount, ScreenObj[ScreenObjKey].itemsCount);
+        if (!ScreenObj[key].emptyContent)
+            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
         return;
     }
 
     //Load more as the data is getting used
-    if (ScreenObj[ScreenObjKey].data) {
-        if ((ScreenObj[ScreenObjKey].posY > 2) && (ScreenObj[ScreenObjKey].data_cursor + Main_ItemsLimitMax) > ScreenObj[ScreenObjKey].data.length && !ScreenObj[ScreenObjKey].dataEnded && !ScreenObj[ScreenObjKey].loadingData) {
-            Screens_loadDataRequestStart(ScreenObjKey);
-        } else if ((ScreenObj[ScreenObjKey].posY + ScreenObj[ScreenObjKey].ItemsReloadLimit) > (ScreenObj[ScreenObjKey].itemsCount / ScreenObj[ScreenObjKey].ColoumnsCount) && ScreenObj[ScreenObjKey].data_cursor < ScreenObj[ScreenObjKey].data.length) {
-            ScreenObj[ScreenObjKey].loadDataSuccess();
+    if (ScreenObj[key].data) {
+        if ((ScreenObj[key].posY > 2) && (ScreenObj[key].data_cursor + Main_ItemsLimitMax) > ScreenObj[key].data.length && !ScreenObj[key].dataEnded && !ScreenObj[key].loadingData) {
+            Screens_loadDataRequestStart(key);
+        } else if ((ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit) > (ScreenObj[key].itemsCount / ScreenObj[key].ColoumnsCount) && ScreenObj[key].data_cursor < ScreenObj[key].data.length) {
+            ScreenObj[key].loadDataSuccess();
         }
     }
 
-    ScreenObj[ScreenObjKey].addrow(forceScroll, ScreenObj[ScreenObjKey].posY);
+    ScreenObj[key].addrow(forceScroll, ScreenObj[key].posY);
 }
 
 function Screens_ThumbNotNull(thumbnail) {
@@ -920,7 +930,7 @@ function Screens_ChangeFocus(y, x) {
     ScreenObj[ScreenObjKey].posY += y;
     ScreenObj[ScreenObjKey].posX = x;
 
-    Screens_addFocus();
+    Screens_addFocus(false, ScreenObjKey);
 }
 
 function Screens_addFocusFollow() {
@@ -957,7 +967,7 @@ function Screens_KeyUpDown(y) {
         Screens_addFocusFollow();
     } else if (ScreenObj[ScreenObjKey].HasSwitches && (ScreenObj[ScreenObjKey].posY) === -1 && (Main_ThumbNull(0, ScreenObj[ScreenObjKey].posX, ScreenObj[ScreenObjKey].ids[0]))) {
         ScreenObj[ScreenObjKey].posY = 0;
-        Screens_addFocus();
+        Screens_addFocus(false, ScreenObjKey);
         Screens_removeFocusFollow();
     } else {
         for (var i = 0; i < ScreenObj[ScreenObjKey].ColoumnsCount; i++) {
@@ -1045,7 +1055,7 @@ function Screens_keyRight() {
         if (ScreenObj[ScreenObjKey].posX === (ScreenObj[ScreenObjKey].ColoumnsCount - 1)) {
             if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0);
         } else Screens_KeyLeftRight(1, 0);
-    } else Screens_addFocus(true);
+    } else Screens_addFocus(true, ScreenObjKey);
 }
 
 function Screens_handleKeyDown(event) {
@@ -1115,7 +1125,7 @@ function Screens_handleKeyDown(event) {
                 (ScreenObj[ScreenObjKey].Cells.length - 1) >= (ScreenObj[ScreenObjKey].posY + 1)) {
                 if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(1);
             } else {
-                Screens_addFocus(true);
+                Screens_addFocus(true, ScreenObjKey);
             }
             break;
         case KEY_1:

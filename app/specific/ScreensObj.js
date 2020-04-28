@@ -164,7 +164,8 @@ var Base_Vod_obj = {
                 Screens_createCellVod(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
-                    ScreensObj_VodCellArray(cell)
+                    ScreensObj_VodCellArray(cell),
+                    this.screen
                 )
             );
 
@@ -211,7 +212,8 @@ function ScreensObj_InitVod() {
                 [
                     STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
                     STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
-                ]
+                ],
+                this.screen
             );
         },
         label_init: function() {
@@ -275,7 +277,8 @@ function ScreensObj_InitChannelVod() {
                     STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
                     STR_SPACE + STR_SPACE + STR_SWITCH_TYPE,
                     STR_SPACE + STR_SPACE + STR_SWITCH_POS
-                ]
+                ],
+                this.screen
             );
         },
         lastselectedChannel: '',
@@ -296,7 +299,7 @@ function ScreensObj_InitChannelVod() {
 
             ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname,
                 (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + ScreenObj[ScreenObjKey].extraoffset);
+                (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + ScreenObj[this.screen].extraoffset);
 
         },
         label_exit: function() {
@@ -356,15 +359,18 @@ function ScreensObj_InitAGameVod() {
                 [
                     STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
                     STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
-                ]
+                ],
+                this.screen
             );
         },
         OldgameSelected: '',
         label_init: function() {
-            ScreensObj_TopLableAgameInit();
+            ScreensObj_TopLableAgameInit(this.screen);
             this.SetPeriod();
         },
-        label_exit: ScreensObj_TopLableAgameExit,
+        label_exit: function() {
+            ScreensObj_TopLableAgameExit(this.screen);
+        },
         SetPeriod: function() {
             Main_setItem('AGameVod_periodPos', this.periodPos);
 
@@ -418,12 +424,13 @@ function ScreensObj_InitUserVod() {
                 [
                     STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
                     STR_SPACE + STR_SPACE + STR_SWITCH_TYPE
-                ]
+                ],
+                this.screen
             );
         },
         label_init: function() {
             this.SetPeriod();
-            ScreensObj_TopLableUserInit();
+            ScreensObj_TopLableUserInit(this.screen);
         },
         SetPeriod: function() {
             Main_setItem('UserVod_periodPos', this.periodPos);
@@ -482,7 +489,8 @@ var Base_Live_obj = {
                 Screens_createCellLive(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
-                    ScreensObj_LiveCellArray(cell)
+                    ScreensObj_LiveCellArray(cell),
+                    this.screen
                 )
             );
 
@@ -604,7 +612,7 @@ function ScreensObj_InitUserLive() {
             }
         },
         label_init: function() {
-            ScreensObj_TopLableUserInit();
+            ScreensObj_TopLableUserInit(this.screen);
             ScreensObj_SetTopLable(STR_USER, STR_LIVE_CHANNELS);
         },
         key_play: function() {
@@ -692,7 +700,7 @@ function ScreensObj_InitUserHost() {
                 '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
         },
         label_init: function() {
-            ScreensObj_TopLableUserInit();
+            ScreensObj_TopLableUserInit(this.screen);
 
             ScreensObj_SetTopLable(STR_USER, STR_LIVE_HOSTS);
         },
@@ -730,7 +738,8 @@ function ScreensObj_InitUserHost() {
                         '',//12 stream creat at
                         cell.target.viewers,//13
                         cell.target._id//14
-                    ]
+                    ],
+                    this.screen
                 )
             );
 
@@ -758,7 +767,7 @@ function ScreensObj_InitAGame() {
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         label_init: function() {
-            ScreensObj_TopLableAgameInit();
+            ScreensObj_TopLableAgameInit(this.screen);
 
             if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
                 Main_cleanTopLabel();
@@ -766,7 +775,9 @@ function ScreensObj_InitAGame() {
 
             ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_LIVE);
         },
-        label_exit: ScreensObj_TopLableAgameExit,
+        label_exit: function() {
+            ScreensObj_TopLableAgameExit(this.screen);
+        },
         HasSwitches: true,
         SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
         addSwitches: function() {
@@ -775,7 +786,8 @@ function ScreensObj_InitAGame() {
                     STR_SPACE + STR_SPACE + STR_VIDEOS,
                     STR_SPACE + STR_SPACE + STR_CLIPS,
                     STR_SPACE + STR_SPACE + STR_FOLLOW
-                ]
+                ],
+                this.screen
             );
         },
         key_play: function() {
@@ -856,7 +868,8 @@ var Base_Clip_obj = {
             [
                 STR_SPACE + STR_SPACE + STR_SWITCH_CLIP,
                 STR_SPACE + STR_SPACE + STR_PLAY_ALL
-            ]
+            ],
+            this.screen
         );
     },
     setMax: function(tempObj) {
@@ -905,7 +918,8 @@ var Base_Clip_obj = {
                         Main_addCommas(cell.views) + STR_VIEWS,//14
                         cell.thumbnails.medium,//15
                         STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//16
-                    ]
+                    ],
+                    this.screen
                 )
             );
 
@@ -1004,10 +1018,12 @@ function ScreensObj_InitAGameClip() {
                 Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
-            ScreensObj_TopLableAgameInit();
+            ScreensObj_TopLableAgameInit(this.screen);
             this.SetPeriod();
         },
-        label_exit: ScreensObj_TopLableAgameExit,
+        label_exit: function() {
+            ScreensObj_TopLableAgameExit(this.screen);
+        },
     }, Base_obj);
 
     ScreenObj[Main_AGameClip] = Screens_assign(ScreenObj[Main_AGameClip], Base_Clip_obj);
@@ -1061,12 +1077,16 @@ var Base_Game_obj = {
             this.row.appendChild(
                 Screens_createCellGame(
                     this.row_id + '_' + this.coloumn_id,
-                    this.ids, [game.box.template.replace("{width}x{height}", Main_GameSize),
+                    this.ids,
+                    [game.box.template.replace("{width}x{height}", Main_GameSize),
                     game.name,
                     hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
                         Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',
                     game._id
-                ]));
+                    ],
+                    this.screen
+                )
+            );
 
             this.coloumn_id++;
         }
@@ -1129,7 +1149,7 @@ function ScreensObj_InitUserGames() {
             Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
         },
         label_init: function() {
-            ScreensObj_TopLableUserInit();
+            ScreensObj_TopLableUserInit(this.screen);
             Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FOLLOW_GAMES + ":" + STR_GUIDE);
 
             ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FOLLOW_GAMES));
@@ -1206,7 +1226,11 @@ var Base_Channel_obj = {
             this.row.appendChild(
                 Screens_createCellChannel(
                     this.row_id + '_' + this.coloumn_id,
-                    this.ids, [cell.name, cell._id, cell.logo, cell.display_name, cell.partner]));
+                    this.ids,
+                    [cell.name, cell._id, cell.logo, cell.display_name, cell.partner],
+                    this.screen
+                )
+            );
 
             this.coloumn_id++;
         }
@@ -1230,7 +1254,7 @@ function ScreensObj_InitUserChannels() {
                 '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
         },
         label_init: function() {
-            ScreensObj_TopLableUserInit();
+            ScreensObj_TopLableUserInit(this.screen);
 
             ScreensObj_SetTopLable(STR_USER, STR_USER_CHANNEL);
         },
@@ -1441,7 +1465,7 @@ function ScreensObj_HistoryLive() {
         },
         label_init: function() {
             Main_HistoryPos = 0;
-            ScreensObj_TopLableUserInit();
+            ScreensObj_TopLableUserInit(this.screen);
             ScreensObj_SetTopLable(
                 STR_USER,
                 STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE +
@@ -1478,6 +1502,7 @@ function ScreensObj_HistoryLive() {
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         cell.data,
+                        this.screen,
                         cell.date,
                         cell.vodimg,
                         (this.streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
@@ -1496,7 +1521,8 @@ function ScreensObj_HistoryLive() {
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE + STR_SETTINGS
-                ]
+                ],
+                this.screen
             );
         },
     }, Base_obj);
@@ -1532,7 +1558,7 @@ function ScreensObj_HistoryVod() {
         },
         label_init: function() {
             Main_HistoryPos = 1;
-            ScreensObj_TopLableUserInit();
+            ScreensObj_TopLableUserInit(this.screen);
 
             ScreensObj_SetTopLable(
                 STR_USER,
@@ -1566,6 +1592,7 @@ function ScreensObj_HistoryVod() {
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         cell.data,
+                        this.screen,
                         cell.date,
                         cell.watched
                     )
@@ -1581,7 +1608,8 @@ function ScreensObj_HistoryVod() {
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE + STR_SETTINGS
-                ]
+                ],
+                this.screen
             );
         },
     }, Base_obj);
@@ -1619,7 +1647,7 @@ function ScreensObj_HistoryClip() {
         },
         label_init: function() {
             Main_HistoryPos = 2;
-            ScreensObj_TopLableUserInit();
+            ScreensObj_TopLableUserInit(this.screen);
 
             ScreensObj_SetTopLable(
                 STR_USER,
@@ -1654,6 +1682,7 @@ function ScreensObj_HistoryClip() {
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         cell.data,
+                        this.screen,
                         cell.date,
                         cell.watched
                     )
@@ -1669,7 +1698,8 @@ function ScreensObj_HistoryClip() {
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
                     STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE + STR_SETTINGS
-                ]
+                ],
+                this.screen
             );
         },
     }, Base_obj);
@@ -1679,54 +1709,54 @@ function ScreensObj_HistoryClip() {
     ScreenObj[Main_HistoryClip].Set_Scroll();
 }
 
-function ScreensObj_addSwitches(StringsArray) {
-    ScreenObj[ScreenObjKey].TopRowCreated = true;
-    ScreenObj[ScreenObjKey].row = document.createElement('div');
+function ScreensObj_addSwitches(StringsArray, key) {
+    ScreenObj[key].TopRowCreated = true;
+    ScreenObj[key].row = document.createElement('div');
     var thumbfollow, div, i = 0;
 
     for (i; i < StringsArray.length; i++) {
-        thumbfollow = '<i class="icon-' + ScreenObj[ScreenObjKey].SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
+        thumbfollow = '<i class="icon-' + ScreenObj[key].SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
         div = document.createElement('div');
-        div.setAttribute('id', ScreenObj[ScreenObjKey].ids[8] + 'y_' + i);
+        div.setAttribute('id', ScreenObj[key].ids[8] + 'y_' + i);
         div.className = 'stream_cell_period';
-        div.innerHTML = '<div id="' + ScreenObj[ScreenObjKey].ids[0] +
-            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + ScreenObj[ScreenObjKey].ids[3] +
+        div.innerHTML = '<div id="' + ScreenObj[key].ids[0] +
+            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + ScreenObj[key].ids[3] +
             'y_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
-        ScreenObj[ScreenObjKey].row.appendChild(div);
+        ScreenObj[key].row.appendChild(div);
     }
-    ScreenObj[ScreenObjKey].tableDoc.appendChild(ScreenObj[ScreenObjKey].row);
+    ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
 }
 
-function ScreensObj_TopLableAgameInit() {
+function ScreensObj_TopLableAgameInit(key) {
     if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
     if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
-        ScreenObj[ScreenObjKey].gameSelected !== Main_values.Main_gameSelected)
-        ScreenObj[ScreenObjKey].status = false;
+        ScreenObj[key].gameSelected !== Main_values.Main_gameSelected)
+        ScreenObj[key].status = false;
 
-    ScreenObj[ScreenObjKey].gameSelected = Main_values.Main_gameSelected;
+    ScreenObj[key].gameSelected = Main_values.Main_gameSelected;
     Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
     if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_SetUserLables();
     else Sidepannel_SetDefaultLables();
 
-    Sidepannel_SetTopOpacity(ScreenObj[ScreenObjKey].screen);
+    Sidepannel_SetTopOpacity(ScreenObj[key].screen);
 }
 
-function ScreensObj_TopLableAgameExit() {
-    ScreenObj[ScreenObjKey].gameSelected = Main_values.Main_gameSelected;
+function ScreensObj_TopLableAgameExit(key) {
+    ScreenObj[key].gameSelected = Main_values.Main_gameSelected;
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
 }
 
-function ScreensObj_TopLableUserInit() {
-    if (ScreenObj[ScreenObjKey].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[ScreenObjKey].status = false;
-    ScreenObj[ScreenObjKey].OldUserName = AddUser_UsernameArray[0].name;
+function ScreensObj_TopLableUserInit(key) {
+    if (ScreenObj[key].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[key].status = false;
+    ScreenObj[key].OldUserName = AddUser_UsernameArray[0].name;
 
     Sidepannel_SetUserLables();
-    Sidepannel_SetTopOpacity(ScreenObj[ScreenObjKey].screen);
+    Sidepannel_SetTopOpacity(ScreenObj[key].screen);
 }
 
 function ScreensObj_SetTopLable(text, small_text) {
