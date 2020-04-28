@@ -50,6 +50,16 @@ var Base_obj = {
     token: null,
     data_cursor: 0,
     lastRefresh: 0,
+    key_fun: Screens_handleKeyDown,
+    exit_fun: Screens_exit,
+    init_fun: function() {
+        ScreenObjKey = this.screen;
+        Screens_init();
+    },
+    start_fun: function() {
+        ScreenObjKey = this.screen;
+        Screens_StartLoad();
+    },
     loadDataSuccess: function() {
         Screens_loadDataSuccess(this.screen);
     },

@@ -901,280 +901,6 @@ function Main_ThumbNull(y, x, thumbnail) {
     return document.getElementById(thumbnail + y + '_' + x) !== null;
 }
 
-var Main_Switchobj = {
-    // way not?... 'computed property names' is only available in ES6 (use 'esversion: 6').
-    //    [Main_Users]: Users_init
-};
-
-Main_Switchobj[Main_Users] = {
-    obj: function() {},
-    start_fun: Users_StartLoad,
-    init_fun: Users_init,
-    key_fun: Users_handleKeyDown,
-    exit_fun: Users_exit
-};
-Main_Switchobj[Main_ChannelContent] = {
-    obj: function() {},
-    start_fun: ChannelContent_StartLoad,
-    init_fun: ChannelContent_init,
-    key_fun: ChannelContent_handleKeyDown,
-    exit_fun: ChannelContent_exit
-};
-
-Main_Switchobj[Main_SearchChannels] = {
-    obj: function() {
-        ScreenObjKey = Main_SearchChannels;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_SearchLive] = {
-    obj: function() {
-        ScreenObjKey = Main_SearchLive;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_SearchGames] = {
-    obj: function() {
-        ScreenObjKey = Main_SearchGames;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_UserChannels] = {
-    obj: function() {
-        ScreenObjKey = Main_UserChannels;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_UserLive] = {
-    obj: function() {
-        ScreenObjKey = Main_UserLive;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_UserHost] = {
-    obj: function() {
-        ScreenObjKey = Main_UserHost;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_usergames] = {
-    obj: function() {
-        ScreenObjKey = Main_usergames;
-    },
-    start_fun: function() {
-        this.obj();
-        if (!ScreenObj[Main_usergames].loadingData) ScreenObj[Main_usergames].key_refresh();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_ChannelVod] = {
-    obj: function() {
-        ScreenObjKey = Main_ChannelVod;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_UserVod] = {
-    obj: function() {
-        ScreenObjKey = Main_UserVod;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_Live] = {
-    obj: function() {
-        ScreenObjKey = Main_Live;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_Featured] = {
-    obj: function() {
-        ScreenObjKey = Main_Featured;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_AGameClip] = {
-    obj: function() {
-        ScreenObjKey = Main_AGameClip;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_AGameVod] = {
-    obj: function() {
-        ScreenObjKey = Main_AGameVod;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_Clip] = {
-    obj: function() {
-        ScreenObjKey = Main_Clip;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_Vod] = {
-    obj: function() {
-        ScreenObjKey = Main_Vod;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_ChannelClip] = {
-    obj: function() {
-        ScreenObjKey = Main_ChannelClip;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_aGame] = {
-    obj: function() {
-        ScreenObjKey = Main_aGame;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_games] = {
-    obj: function() {
-        ScreenObjKey = Main_games;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_HistoryLive] = {
-    obj: function() {
-        ScreenObjKey = Main_HistoryLive;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_HistoryVod] = {
-    obj: function() {
-        ScreenObjKey = Main_HistoryVod;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit
-};
-Main_Switchobj[Main_HistoryClip] = {
-    obj: function() {
-        ScreenObjKey = Main_HistoryClip;
-    },
-    start_fun: function() {
-        this.obj();
-        Screens_StartLoad();
-    },
-    init_fun: Screens_init,
-    key_fun: Screens_handleKeyDown,
-    exit_fun: Screens_exit,
-};
-
 function Main_ReStartScreens() {
     Main_updateclock();
     Main_SwitchScreen();
@@ -1189,15 +915,10 @@ function Main_SwitchScreen(removekey) {
 
     Main_CounterDialogRst();
 
-    if (Main_Switchobj[Main_values.Main_Go]) {
-        Main_Switchobj[Main_values.Main_Go].obj();
-        Main_Switchobj[Main_values.Main_Go].init_fun();
-    } else {
-        Main_Switchobj[1].obj();
-        Main_Switchobj[1].init_fun();
-    }
+    if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun();
+    else ScreenObj[1].init_fun();
 
-    if (removekey) Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+    if (removekey) Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
 }
 
 function Main_OpenSearch() {
@@ -1221,7 +942,7 @@ function Main_RestoreValues() {
 
 function Main_ExitCurrent(ExitCurrent) {
     //Main_Log('Main_ExitCurrent ' + ExitCurrent);
-    if (Main_Switchobj[ExitCurrent].exit_fun) Main_Switchobj[ExitCurrent].exit_fun();
+    if (ScreenObj[ExitCurrent].exit_fun) ScreenObj[ExitCurrent].exit_fun();
     if (Main_isElementShowing('settings_holder')) Settings_exit();
 }
 
@@ -1710,7 +1431,7 @@ function Main_ReloadScreen() {
 
     Main_CounterDialogRst();
 
-    Main_Switchobj[Main_values.Main_Go].start_fun();
+    ScreenObj[Main_values.Main_Go].start_fun();
 }
 
 function Main_setItem(item, value) {
@@ -2300,7 +2021,7 @@ function Main_CheckAccessibility(skipRefresCheck) {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
             if (Screens_Isfocused() && !skipRefresCheck) {
-                Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+                Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
                 Main_SwitchScreen();
             }
         }
@@ -2313,7 +2034,7 @@ function Main_CheckAccessibilitySet() {
 
     Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
     Main_ShowElement('dialog_accessibility');
-    Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+    Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
     Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
     if (!Sidepannel_isShowing() && Main_isScene1DocShown()) {
         Sidepannel_Hide();

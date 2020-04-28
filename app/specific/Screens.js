@@ -50,6 +50,20 @@ function Screens_InitScreens() {
     ScreensObj_HistoryVod();
     ScreensObj_HistoryClip();
 
+    //Etc screen that makes in and out a screen to work
+    ScreenObj[Main_Users] = {
+        start_fun: Users_StartLoad,
+        init_fun: Users_init,
+        key_fun: Users_handleKeyDown,
+        exit_fun: Users_exit
+    };
+    ScreenObj[Main_ChannelContent] = {
+        start_fun: ChannelContent_StartLoad,
+        init_fun: ChannelContent_init,
+        key_fun: ChannelContent_handleKeyDown,
+        exit_fun: ChannelContent_exit
+    };
+
     Main_addEventListener("keyup", Screens_handleKeyUpAnimationFast);
 }
 
