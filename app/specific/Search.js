@@ -32,13 +32,13 @@ function Search_loadData() {
     Search_exit();
     Main_ready(function() {
         if (!Search_cursorX) {
-            inUseObj = SearchChannels;
+            ScreenObjKey = Main_SearchChannels;
             Screens_init();
         } else if (Search_cursorX === 1) {
-            inUseObj = SearchGames;
+            ScreenObjKey = Main_SearchGames;
             Screens_init();
         } else if (Search_cursorX === 2) {
-            inUseObj = SearchLive;
+            ScreenObjKey = Main_SearchLive;
             Screens_init();
         }
     });

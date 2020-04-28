@@ -24,29 +24,6 @@ var AGame_following = false;
 var DefaultloadingDataTimeout = 3500;
 var DefaultLoadingDataTryMax = 3;
 
-//Screens
-var Clip;
-var ChannelClip;
-var AGameClip;
-var Game;
-var UserGames;
-var Live;
-var Featured;
-var AGame;
-var Vod;
-var AGameVod;
-var UserVod;
-var ChannelVod;
-var UserHost;
-var UserLive;
-var UserChannels;
-var SearchGames;
-var SearchLive;
-var SearchChannels;
-var HistoryLive;
-var HistoryVod;
-var HistoryClip;
-
 var Base_obj = {
     posX: 0,
     posY: 0,
@@ -74,7 +51,7 @@ var Base_obj = {
     data_cursor: 0,
     lastRefresh: 0,
     loadDataSuccess: function() {
-        Screens_loadDataSuccess(this);
+        Screens_loadDataSuccess(this.screen);
     },
     Set_Scroll: function() {
         this.ScrollDoc = document.getElementById(this.ids[10]);
@@ -190,7 +167,7 @@ var Base_Vod_obj = {
 };
 
 function ScreensObj_InitVod() {
-    Vod = Screens_assign({
+    ScreenObj[Main_Vod] = Screens_assign({
         periodMaxPos: 4,
         HeaderQuatity: 2,
         key_pgDown: Main_Clip,
@@ -240,12 +217,12 @@ function ScreensObj_InitVod() {
         },
     }, Base_obj);
 
-    Vod = Screens_assign(Vod, Base_Vod_obj);
-    Vod.Set_Scroll();
+    ScreenObj[Main_Vod] = Screens_assign(ScreenObj[Main_Vod], Base_Vod_obj);
+    ScreenObj[Main_Vod].Set_Scroll();
 }
 
 function ScreensObj_InitChannelVod() {
-    ChannelVod = Screens_assign({
+    ScreenObj[Main_ChannelVod] = Screens_assign({
         periodMaxPos: 2,
         HeaderQuatity: 2,
         key_pgDown: Main_ChannelClip,
@@ -309,7 +286,7 @@ function ScreensObj_InitChannelVod() {
 
             ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname,
                 (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + inUseObj.extraoffset);
+                (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + ScreenObj[ScreenObjKey].extraoffset);
 
         },
         label_exit: function() {
@@ -317,9 +294,9 @@ function ScreensObj_InitChannelVod() {
         }
     }, Base_obj);
 
-    ChannelVod = Screens_assign(ChannelVod, Base_Vod_obj);
+    ScreenObj[Main_ChannelVod] = Screens_assign(ScreenObj[Main_ChannelVod], Base_Vod_obj);
 
-    ChannelVod.addCell = function(cell) {
+    ScreenObj[Main_ChannelVod].addCell = function(cell) {
 
         var thumbnail = cell.preview.template;
 
@@ -330,11 +307,11 @@ function ScreensObj_InitChannelVod() {
 
         this.addCellBase(cell, thumbnail);
     };
-    ChannelVod.Set_Scroll();
+    ScreenObj[Main_ChannelVod].Set_Scroll();
 }
 
 function ScreensObj_InitAGameVod() {
-    AGameVod = Screens_assign({
+    ScreenObj[Main_AGameVod] = Screens_assign({
         periodMaxPos: 4,
         HeaderQuatity: 2,
         object: 'vods',
@@ -385,12 +362,12 @@ function ScreensObj_InitAGameVod() {
         }
     }, Base_obj);
 
-    AGameVod = Screens_assign(AGameVod, Base_Vod_obj);
-    AGameVod.Set_Scroll();
+    ScreenObj[Main_AGameVod] = Screens_assign(ScreenObj[Main_AGameVod], Base_Vod_obj);
+    ScreenObj[Main_AGameVod].Set_Scroll();
 }
 
 function ScreensObj_InitUserVod() {
-    UserVod = Screens_assign({
+    ScreenObj[Main_UserVod] = Screens_assign({
         periodMaxPos: 2,
         HeaderQuatity: 3,
         object: 'videos',
@@ -446,8 +423,8 @@ function ScreensObj_InitUserVod() {
         }
     }, Base_obj);
 
-    UserVod = Screens_assign(UserVod, Base_Vod_obj);
-    UserVod.Set_Scroll();
+    ScreenObj[Main_UserVod] = Screens_assign(ScreenObj[Main_UserVod], Base_Vod_obj);
+    ScreenObj[Main_UserVod].Set_Scroll();
 }
 
 var Base_Live_obj = {
@@ -505,7 +482,7 @@ var Base_Live_obj = {
 };
 
 function ScreensObj_InitLive() {
-    Live = Screens_assign({
+    ScreenObj[Main_Live] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('Live'),
         table: 'stream_table_live',
@@ -532,12 +509,12 @@ function ScreensObj_InitLive() {
         }
     }, Base_obj);
 
-    Live = Screens_assign(Live, Base_Live_obj);
-    Live.Set_Scroll();
+    ScreenObj[Main_Live] = Screens_assign(ScreenObj[Main_Live], Base_Live_obj);
+    ScreenObj[Main_Live].Set_Scroll();
 }
 
 function ScreensObj_InitSearchLive() {
-    SearchLive = Screens_assign({
+    ScreenObj[Main_SearchLive] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('SearchLive'),
         table: 'stream_table_search_live',
@@ -567,18 +544,18 @@ function ScreensObj_InitSearchLive() {
         }
     }, Base_obj);
 
-    SearchLive = Screens_assign(SearchLive, Base_Live_obj);
+    ScreenObj[Main_SearchLive] = Screens_assign(ScreenObj[Main_SearchLive], Base_Live_obj);
 
     // SearchLive.setMax = function(tempObj) {
     //     this.MaxOffset = tempObj._total;
     //     if (typeof this.MaxOffset === 'undefined' || this.data.length >= this.MaxOffset ||
     //         (this.data.length < Main_ItemsLimitMax)) this.dataEnded = true;
     // };
-    SearchLive.Set_Scroll();
+    ScreenObj[Main_SearchLive].Set_Scroll();
 }
 
 function ScreensObj_InitUserLive() {
-    UserLive = Screens_assign({
+    ScreenObj[Main_UserLive] = Screens_assign({
         HeaderQuatity: 3,
         ids: Screens_ScreenIds('UserLive'),
         table: 'stream_table_user_live',
@@ -625,9 +602,9 @@ function ScreensObj_InitUserLive() {
         }
     }, Base_obj);
 
-    UserLive = Screens_assign(UserLive, Base_Live_obj);
+    ScreenObj[Main_UserLive] = Screens_assign(ScreenObj[Main_UserLive], Base_Live_obj);
 
-    UserLive.concatenate = function(responseText) {
+    ScreenObj[Main_UserLive].concatenate = function(responseText) {
         ////Main_Log(responseText);
         if (this.token || this.followerChannelsDone) {
             //User has added a key or followed channels list is done, concatenate live channels
@@ -682,11 +659,11 @@ function ScreensObj_InitUserLive() {
             Screens_loadDataRequest(this);
         }
     };
-    UserLive.Set_Scroll();
+    ScreenObj[Main_UserLive].Set_Scroll();
 }
 
 function ScreensObj_InitUserHost() {
-    UserHost = Screens_assign({
+    ScreenObj[Main_UserHost] = Screens_assign({
         HeaderQuatity: 1,
         ids: Screens_ScreenIds('UserHost'),
         table: 'stream_table_user_host',
@@ -714,9 +691,9 @@ function ScreensObj_InitUserHost() {
         }
     }, Base_obj);
 
-    UserHost = Screens_assign(UserHost, Base_Live_obj);
+    ScreenObj[Main_UserHost] = Screens_assign(ScreenObj[Main_UserHost], Base_Live_obj);
 
-    UserHost.addCell = function(cell) {
+    ScreenObj[Main_UserHost].addCell = function(cell) {
         if (!this.idObject[cell.target._id + '' + cell._id]) { //combined id host and hosted
 
             this.itemsCount++;
@@ -750,11 +727,11 @@ function ScreensObj_InitUserHost() {
             this.coloumn_id++;
         }
     };
-    UserHost.Set_Scroll();
+    ScreenObj[Main_UserHost].Set_Scroll();
 }
 
 function ScreensObj_InitAGame() {
-    AGame = Screens_assign({
+    ScreenObj[Main_aGame] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('AGame'),
         table: 'stream_table_a_game',
@@ -798,12 +775,12 @@ function ScreensObj_InitAGame() {
         },
     }, Base_obj);
 
-    AGame = Screens_assign(AGame, Base_Live_obj);
-    AGame.Set_Scroll();
+    ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
+    ScreenObj[Main_aGame].Set_Scroll();
 }
 
 function ScreensObj_InitFeatured() {
-    Featured = Screens_assign({
+    ScreenObj[Main_Featured] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('Featured'),
         table: 'stream_table_featured',
@@ -831,13 +808,13 @@ function ScreensObj_InitFeatured() {
         }
     }, Base_obj);
 
-    Featured = Screens_assign(Featured, Base_Live_obj);
+    ScreenObj[Main_Featured] = Screens_assign(ScreenObj[Main_Featured], Base_Live_obj);
 
-    Featured.addCell = function(cell) {
+    ScreenObj[Main_Featured].addCell = function(cell) {
         cell = cell.stream;
         this.addCellTemp(cell);
     };
-    Featured.Set_Scroll();
+    ScreenObj[Main_Featured].Set_Scroll();
 }
 
 var Base_Clip_obj = {
@@ -928,7 +905,7 @@ var Base_Clip_obj = {
 };
 
 function ScreensObj_InitClip() {
-    Clip = Screens_assign({
+    ScreenObj[Main_Clip] = Screens_assign({
         ids: Screens_ScreenIds('Clip'),
         table: 'stream_table_clip',
         screen: Main_Clip,
@@ -957,12 +934,12 @@ function ScreensObj_InitClip() {
         },
     }, Base_obj);
 
-    Clip = Screens_assign(Clip, Base_Clip_obj);
-    Clip.Set_Scroll();
+    ScreenObj[Main_Clip] = Screens_assign(ScreenObj[Main_Clip], Base_Clip_obj);
+    ScreenObj[Main_Clip].Set_Scroll();
 }
 
 function ScreensObj_InitChannelClip() {
-    ChannelClip = Screens_assign({
+    ScreenObj[Main_ChannelClip] = Screens_assign({
         ids: Screens_ScreenIds('ChannelClip'),
         table: 'stream_table_channel_clip',
         screen: Main_ChannelClip,
@@ -992,12 +969,12 @@ function ScreensObj_InitChannelClip() {
         label_exit: Main_RestoreTopLabel,
     }, Base_obj);
 
-    ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
-    ChannelClip.Set_Scroll();
+    ScreenObj[Main_ChannelClip] = Screens_assign(ScreenObj[Main_ChannelClip], Base_Clip_obj);
+    ScreenObj[Main_ChannelClip].Set_Scroll();
 }
 
 function ScreensObj_InitAGameClip() {
-    AGameClip = Screens_assign({
+    ScreenObj[Main_AGameClip] = Screens_assign({
         ids: Screens_ScreenIds('AGameClip'),
         table: 'stream_table_a_game_clip',
         screen: Main_AGameClip,
@@ -1023,8 +1000,8 @@ function ScreensObj_InitAGameClip() {
         label_exit: ScreensObj_TopLableAgameExit,
     }, Base_obj);
 
-    AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
-    AGameClip.Set_Scroll();
+    ScreenObj[Main_AGameClip] = Screens_assign(ScreenObj[Main_AGameClip], Base_Clip_obj);
+    ScreenObj[Main_AGameClip].Set_Scroll();
 }
 
 var Base_Game_obj = {
@@ -1087,7 +1064,7 @@ var Base_Game_obj = {
 };
 
 function ScreensObj_InitGame() {
-    Game = Screens_assign({
+    ScreenObj[Main_games] = Screens_assign({
         ids: Screens_ScreenIds('Game'),
         table: 'stream_table_games',
         screen: Main_games,
@@ -1108,12 +1085,12 @@ function ScreensObj_InitGame() {
         }
     }, Base_obj);
 
-    Game = Screens_assign(Game, Base_Game_obj);
-    Game.Set_Scroll();
+    ScreenObj[Main_games] = Screens_assign(ScreenObj[Main_games], Base_Game_obj);
+    ScreenObj[Main_games].Set_Scroll();
 }
 
 function ScreensObj_InitUserGames() {
-    UserGames = Screens_assign({
+    ScreenObj[Main_usergames] = Screens_assign({
         ids: Screens_ScreenIds('UserGames'),
         table: 'stream_table_user_games',
         screen: Main_usergames,
@@ -1152,13 +1129,13 @@ function ScreensObj_InitUserGames() {
         },
     }, Base_obj);
 
-    UserGames = Screens_assign(UserGames, Base_Game_obj);
-    UserGames.HeaderQuatity = 1;
-    UserGames.Set_Scroll();
+    ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
+    ScreenObj[Main_usergames].HeaderQuatity = 1;
+    ScreenObj[Main_usergames].Set_Scroll();
 }
 
 function ScreensObj_InitSearchGames() {
-    SearchGames = Screens_assign({
+    ScreenObj[Main_SearchGames] = Screens_assign({
         ids: Screens_ScreenIds('SearchGames'),
         table: 'stream_table_search_game',
         screen: Main_SearchGames,
@@ -1188,9 +1165,9 @@ function ScreensObj_InitSearchGames() {
         },
     }, Base_obj);
 
-    SearchGames = Screens_assign(SearchGames, Base_Game_obj);
-    SearchGames.ItemsLimit = 100;
-    SearchGames.Set_Scroll();
+    ScreenObj[Main_SearchGames] = Screens_assign(ScreenObj[Main_SearchGames], Base_Game_obj);
+    ScreenObj[Main_SearchGames].ItemsLimit = 100;
+    ScreenObj[Main_SearchGames].Set_Scroll();
 }
 
 var Base_Channel_obj = {
@@ -1227,7 +1204,7 @@ var Base_Channel_obj = {
 };
 
 function ScreensObj_InitUserChannels() {
-    UserChannels = Screens_assign({
+    ScreenObj[Main_UserChannels] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('UserChannels'),
         table: 'stream_table_user_channels',
@@ -1272,14 +1249,14 @@ function ScreensObj_InitUserChannels() {
         }
     }, Base_obj);
 
-    UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
-    UserChannels.addrow = Screens_addrowChannel;
-    UserChannels.visiblerows = 5;
-    UserChannels.Set_Scroll();
+    ScreenObj[Main_UserChannels] = Screens_assign(ScreenObj[Main_UserChannels], Base_Channel_obj);
+    ScreenObj[Main_UserChannels].addrow = Screens_addrowChannel;
+    ScreenObj[Main_UserChannels].visiblerows = 5;
+    ScreenObj[Main_UserChannels].Set_Scroll();
 }
 
 function ScreensObj_InitSearchChannels() {
-    SearchChannels = Screens_assign({
+    ScreenObj[Main_SearchChannels] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('SearchChannels'),
         table: 'stream_table_search_channel',
@@ -1327,10 +1304,10 @@ function ScreensObj_InitSearchChannels() {
         }
     }, Base_obj);
 
-    SearchChannels = Screens_assign(SearchChannels, Base_Channel_obj);
-    SearchChannels.addrow = Screens_addrowChannel;
-    SearchChannels.visiblerows = 5;
-    SearchChannels.Set_Scroll();
+    ScreenObj[Main_SearchChannels] = Screens_assign(ScreenObj[Main_SearchChannels], Base_Channel_obj);
+    ScreenObj[Main_SearchChannels].addrow = Screens_addrowChannel;
+    ScreenObj[Main_SearchChannels].visiblerows = 5;
+    ScreenObj[Main_SearchChannels].Set_Scroll();
 }
 
 var Base_History_obj = {
@@ -1432,7 +1409,7 @@ var Base_History_obj = {
 };
 
 function ScreensObj_HistoryLive() {
-    HistoryLive = Screens_assign({
+    ScreenObj[Main_HistoryLive] = Screens_assign({
         Type: 'live',
         ids: Screens_ScreenIds('HistoryLive'),
         table: 'stream_table_historylive',
@@ -1514,13 +1491,13 @@ function ScreensObj_HistoryLive() {
         },
     }, Base_obj);
 
-    HistoryLive = Screens_assign(HistoryLive, Base_History_obj);
-    HistoryLive.Upsorting();
-    HistoryLive.Set_Scroll();
+    ScreenObj[Main_HistoryLive] = Screens_assign(ScreenObj[Main_HistoryLive], Base_History_obj);
+    ScreenObj[Main_HistoryLive].Upsorting();
+    ScreenObj[Main_HistoryLive].Set_Scroll();
 }
 
 function ScreensObj_HistoryVod() {
-    HistoryVod = Screens_assign({
+    ScreenObj[Main_HistoryVod] = Screens_assign({
         Type: 'vod',
         ids: Screens_ScreenIds('HistoryVod'),
         table: 'stream_table_historyvod',
@@ -1599,18 +1576,18 @@ function ScreensObj_HistoryVod() {
         },
     }, Base_obj);
 
-    HistoryVod = Screens_assign(HistoryVod, Base_History_obj);
+    ScreenObj[Main_HistoryVod] = Screens_assign(ScreenObj[Main_HistoryVod], Base_History_obj);
 
-    HistoryVod.addFocus = function(y, x, idArray, forceScroll) {
+    ScreenObj[Main_HistoryVod].addFocus = function(y, x, idArray, forceScroll) {
         this.AnimateThumb(this);
         Screens_addFocusVideo(y, x, idArray, forceScroll);
     };
-    HistoryVod.Upsorting();
-    HistoryVod.Set_Scroll();
+    ScreenObj[Main_HistoryVod].Upsorting();
+    ScreenObj[Main_HistoryVod].Set_Scroll();
 }
 
 function ScreensObj_HistoryClip() {
-    HistoryClip = Screens_assign({
+    ScreenObj[Main_HistoryClip] = Screens_assign({
         Type: 'clip',
         ids: Screens_ScreenIds('HistoryClip'),
         table: 'stream_table_historyclip',
@@ -1687,27 +1664,27 @@ function ScreensObj_HistoryClip() {
         },
     }, Base_obj);
 
-    HistoryClip = Screens_assign(HistoryClip, Base_History_obj);
-    HistoryClip.Upsorting();
-    HistoryClip.Set_Scroll();
+    ScreenObj[Main_HistoryClip] = Screens_assign(ScreenObj[Main_HistoryClip], Base_History_obj);
+    ScreenObj[Main_HistoryClip].Upsorting();
+    ScreenObj[Main_HistoryClip].Set_Scroll();
 }
 
 function ScreensObj_addSwitches(StringsArray) {
-    inUseObj.TopRowCreated = true;
-    inUseObj.row = document.createElement('div');
+    ScreenObj[ScreenObjKey].TopRowCreated = true;
+    ScreenObj[ScreenObjKey].row = document.createElement('div');
     var thumbfollow, div, i = 0;
 
     for (i; i < StringsArray.length; i++) {
-        thumbfollow = '<i class="icon-' + inUseObj.SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
+        thumbfollow = '<i class="icon-' + ScreenObj[ScreenObjKey].SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
         div = document.createElement('div');
-        div.setAttribute('id', inUseObj.ids[8] + 'y_' + i);
+        div.setAttribute('id', ScreenObj[ScreenObjKey].ids[8] + 'y_' + i);
         div.className = 'stream_cell_period';
-        div.innerHTML = '<div id="' + inUseObj.ids[0] +
-            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
+        div.innerHTML = '<div id="' + ScreenObj[ScreenObjKey].ids[0] +
+            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + ScreenObj[ScreenObjKey].ids[3] +
             'y_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
-        inUseObj.row.appendChild(div);
+        ScreenObj[ScreenObjKey].row.appendChild(div);
     }
-    inUseObj.tableDoc.appendChild(inUseObj.row);
+    ScreenObj[ScreenObjKey].tableDoc.appendChild(ScreenObj[ScreenObjKey].row);
 }
 
 function ScreensObj_TopLableAgameInit() {
@@ -1717,29 +1694,29 @@ function ScreensObj_TopLableAgameInit() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
     if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
-        inUseObj.gameSelected !== Main_values.Main_gameSelected)
-        inUseObj.status = false;
+        ScreenObj[ScreenObjKey].gameSelected !== Main_values.Main_gameSelected)
+        ScreenObj[ScreenObjKey].status = false;
 
-    inUseObj.gameSelected = Main_values.Main_gameSelected;
+    ScreenObj[ScreenObjKey].gameSelected = Main_values.Main_gameSelected;
     Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
     if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_SetUserLables();
     else Sidepannel_SetDefaultLables();
 
-    Sidepannel_SetTopOpacity(inUseObj.screen);
+    Sidepannel_SetTopOpacity(ScreenObj[ScreenObjKey].screen);
 }
 
 function ScreensObj_TopLableAgameExit() {
-    inUseObj.gameSelected = Main_values.Main_gameSelected;
+    ScreenObj[ScreenObjKey].gameSelected = Main_values.Main_gameSelected;
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
 }
 
 function ScreensObj_TopLableUserInit() {
-    if (inUseObj.OldUserName !== AddUser_UsernameArray[0].name) inUseObj.status = false;
-    inUseObj.OldUserName = AddUser_UsernameArray[0].name;
+    if (ScreenObj[ScreenObjKey].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[ScreenObjKey].status = false;
+    ScreenObj[ScreenObjKey].OldUserName = AddUser_UsernameArray[0].name;
 
     Sidepannel_SetUserLables();
-    Sidepannel_SetTopOpacity(inUseObj.screen);
+    Sidepannel_SetTopOpacity(ScreenObj[ScreenObjKey].screen);
 }
 
 function ScreensObj_SetTopLable(text, small_text) {

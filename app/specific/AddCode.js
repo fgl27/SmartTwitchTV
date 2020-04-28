@@ -28,7 +28,7 @@ function AddCode_CheckNewCode(code) {
     AddCode_requestTokens();
 }
 
-function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, obj) {
+function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key) {
     //Main_Log('AddCode_refreshTokens');
     if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
 
@@ -47,19 +47,19 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, o
         if (xmlHttp.readyState === 4) {
             //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
             if (xmlHttp.status === 200) {
-                AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, obj);
+                AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
             } else {
                 try {
                     var response = JSON.parse(xmlHttp.responseText);
                     if (response.message) {
                         if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
                             AddCode_requestTokensFailRunning(position);
-                            if (callbackFuncNOK) callbackFuncNOK(obj);
-                        } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
-                    } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
+                            if (callbackFuncNOK) callbackFuncNOK(key);
+                        } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
+                    } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
                 } catch (e) {
                     //Main_Log('AddCode_refreshTokens e ' + e);
-                    AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
+                    AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
                 }
             }
         }
@@ -68,12 +68,12 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, o
     xmlHttp.send(null);
 }
 
-function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, obj) {
-    if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, obj);
-    else if (callbackFuncNOK) callbackFuncNOK(obj);
+function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key) {
+    if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, key);
+    else if (callbackFuncNOK) callbackFuncNOK(key);
 }
 
-function AddCode_refreshTokensSucess(responseText, position, callbackFunc, obj) {
+function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) {
     //Main_Log('AddCode_refreshTokensSucess');
     //Main_Log(responseText);
 
@@ -90,7 +90,7 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc, obj) 
 
     } else AddCode_requestTokensFailRunning(position);
 
-    if (callbackFunc) callbackFunc(obj);
+    if (callbackFunc) callbackFunc(key);
 }
 
 //Check if has all scopes, in canse they change

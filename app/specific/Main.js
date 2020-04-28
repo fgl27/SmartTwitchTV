@@ -460,7 +460,7 @@ function Main_initWindows() {
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId);//Check it 5min
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 12000, Main_CheckResumeVodsId);
 
-    inUseObj = Live;
+    ScreenObjKey = Main_Live;
     Screens_init();
 }
 
@@ -923,7 +923,7 @@ Main_Switchobj[Main_ChannelContent] = {
 
 Main_Switchobj[Main_SearchChannels] = {
     obj: function() {
-        inUseObj = SearchChannels;
+        ScreenObjKey = Main_SearchChannels;
     },
     start_fun: function() {
         this.obj();
@@ -935,7 +935,7 @@ Main_Switchobj[Main_SearchChannels] = {
 };
 Main_Switchobj[Main_SearchLive] = {
     obj: function() {
-        inUseObj = SearchLive;
+        ScreenObjKey = Main_SearchLive;
     },
     start_fun: function() {
         this.obj();
@@ -947,7 +947,7 @@ Main_Switchobj[Main_SearchLive] = {
 };
 Main_Switchobj[Main_SearchGames] = {
     obj: function() {
-        inUseObj = SearchGames;
+        ScreenObjKey = Main_SearchGames;
     },
     start_fun: function() {
         this.obj();
@@ -959,7 +959,7 @@ Main_Switchobj[Main_SearchGames] = {
 };
 Main_Switchobj[Main_UserChannels] = {
     obj: function() {
-        inUseObj = UserChannels;
+        ScreenObjKey = Main_UserChannels;
     },
     start_fun: function() {
         this.obj();
@@ -971,7 +971,7 @@ Main_Switchobj[Main_UserChannels] = {
 };
 Main_Switchobj[Main_UserLive] = {
     obj: function() {
-        inUseObj = UserLive;
+        ScreenObjKey = Main_UserLive;
     },
     start_fun: function() {
         this.obj();
@@ -983,7 +983,7 @@ Main_Switchobj[Main_UserLive] = {
 };
 Main_Switchobj[Main_UserHost] = {
     obj: function() {
-        inUseObj = UserHost;
+        ScreenObjKey = Main_UserHost;
     },
     start_fun: function() {
         this.obj();
@@ -995,11 +995,11 @@ Main_Switchobj[Main_UserHost] = {
 };
 Main_Switchobj[Main_usergames] = {
     obj: function() {
-        inUseObj = UserGames;
+        ScreenObjKey = Main_usergames;
     },
     start_fun: function() {
         this.obj();
-        if (!UserGames.loadingData) UserGames.key_refresh();
+        if (!ScreenObj[Main_usergames].loadingData) ScreenObj[Main_usergames].key_refresh();
         Screens_StartLoad();
     },
     init_fun: Screens_init,
@@ -1008,7 +1008,7 @@ Main_Switchobj[Main_usergames] = {
 };
 Main_Switchobj[Main_ChannelVod] = {
     obj: function() {
-        inUseObj = ChannelVod;
+        ScreenObjKey = Main_ChannelVod;
     },
     start_fun: function() {
         this.obj();
@@ -1020,7 +1020,7 @@ Main_Switchobj[Main_ChannelVod] = {
 };
 Main_Switchobj[Main_UserVod] = {
     obj: function() {
-        inUseObj = UserVod;
+        ScreenObjKey = Main_UserVod;
     },
     start_fun: function() {
         this.obj();
@@ -1032,7 +1032,7 @@ Main_Switchobj[Main_UserVod] = {
 };
 Main_Switchobj[Main_Live] = {
     obj: function() {
-        inUseObj = Live;
+        ScreenObjKey = Main_Live;
     },
     start_fun: function() {
         this.obj();
@@ -1044,7 +1044,7 @@ Main_Switchobj[Main_Live] = {
 };
 Main_Switchobj[Main_Featured] = {
     obj: function() {
-        inUseObj = Featured;
+        ScreenObjKey = Main_Featured;
     },
     start_fun: function() {
         this.obj();
@@ -1056,7 +1056,7 @@ Main_Switchobj[Main_Featured] = {
 };
 Main_Switchobj[Main_AGameClip] = {
     obj: function() {
-        inUseObj = AGameClip;
+        ScreenObjKey = Main_AGameClip;
     },
     start_fun: function() {
         this.obj();
@@ -1068,7 +1068,7 @@ Main_Switchobj[Main_AGameClip] = {
 };
 Main_Switchobj[Main_AGameVod] = {
     obj: function() {
-        inUseObj = AGameVod;
+        ScreenObjKey = Main_AGameVod;
     },
     start_fun: function() {
         this.obj();
@@ -1080,7 +1080,7 @@ Main_Switchobj[Main_AGameVod] = {
 };
 Main_Switchobj[Main_Clip] = {
     obj: function() {
-        inUseObj = Clip;
+        ScreenObjKey = Main_Clip;
     },
     start_fun: function() {
         this.obj();
@@ -1092,7 +1092,7 @@ Main_Switchobj[Main_Clip] = {
 };
 Main_Switchobj[Main_Vod] = {
     obj: function() {
-        inUseObj = Vod;
+        ScreenObjKey = Main_Vod;
     },
     start_fun: function() {
         this.obj();
@@ -1104,7 +1104,7 @@ Main_Switchobj[Main_Vod] = {
 };
 Main_Switchobj[Main_ChannelClip] = {
     obj: function() {
-        inUseObj = ChannelClip;
+        ScreenObjKey = Main_ChannelClip;
     },
     start_fun: function() {
         this.obj();
@@ -1116,7 +1116,7 @@ Main_Switchobj[Main_ChannelClip] = {
 };
 Main_Switchobj[Main_aGame] = {
     obj: function() {
-        inUseObj = AGame;
+        ScreenObjKey = Main_aGame;
     },
     start_fun: function() {
         this.obj();
@@ -1128,7 +1128,7 @@ Main_Switchobj[Main_aGame] = {
 };
 Main_Switchobj[Main_games] = {
     obj: function() {
-        inUseObj = Game;
+        ScreenObjKey = Main_games;
     },
     start_fun: function() {
         this.obj();
@@ -1140,7 +1140,7 @@ Main_Switchobj[Main_games] = {
 };
 Main_Switchobj[Main_HistoryLive] = {
     obj: function() {
-        inUseObj = HistoryLive;
+        ScreenObjKey = Main_HistoryLive;
     },
     start_fun: function() {
         this.obj();
@@ -1152,7 +1152,7 @@ Main_Switchobj[Main_HistoryLive] = {
 };
 Main_Switchobj[Main_HistoryVod] = {
     obj: function() {
-        inUseObj = HistoryVod;
+        ScreenObjKey = Main_HistoryVod;
     },
     start_fun: function() {
         this.obj();
@@ -1164,7 +1164,7 @@ Main_Switchobj[Main_HistoryVod] = {
 };
 Main_Switchobj[Main_HistoryClip] = {
     obj: function() {
-        inUseObj = HistoryClip;
+        ScreenObjKey = Main_HistoryClip;
     },
     start_fun: function() {
         this.obj();
@@ -1770,17 +1770,17 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
-    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
+function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+    if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
+    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
 }
 
-function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, callbackSucess, calbackError, obj);
-    else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
+function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+    if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, callbackSucess, calbackError, key);
+    else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
 }
 
-function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
     var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
 
     if (xmlHttp) {
@@ -1789,32 +1789,32 @@ function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callba
 
         if (xmlHttp) {
             if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText, obj);
+                callbackSucess(xmlHttp.responseText, key);
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
-            } else if (xmlHttp.status === 500 && Main_isScene1DocShown() && obj.screen === Main_usergames) {
-                obj.key_refresh();
+                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+            } else if (xmlHttp.status === 500 && Main_isScene1DocShown() && ScreenObj[key].screen === Main_usergames) {
+                ScreenObj[key].key_refresh();
             } else {
-                calbackError(obj);
+                calbackError(key);
             }
         } else {
-            calbackError(obj);
+            calbackError(key);
         }
     } else {
-        calbackError(obj);
+        calbackError(key);
     }
 
 }
 
-function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, obj);
+function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, key);
 }
 
-function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back, obj);
+function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back, key);
 }
 
-function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, obj) {
+function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, key) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -1830,15 +1830,15 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText, obj);
+                callbackSucess(xmlHttp.responseText, key);
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
+                AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
             } else if (xmlHttp.status === 500) {
-                if (Main_isScene1DocShown() && obj.screen === Main_usergames)
-                    obj.key_refresh();
-                else calbackError(obj);
+                if (Main_isScene1DocShown() && ScreenObj[key].screen === Main_usergames)
+                    ScreenObj[key].key_refresh();
+                else calbackError(key);
             } else {
-                calbackError(obj);
+                calbackError(key);
             }
         }
     };
@@ -1874,8 +1874,8 @@ function Main_ReplaceLargeFont(text) {
 
 function Main_Set_history(type, Data, skipUpdateDate) {
 
-    if (!AddUser_IsUserSet() || !Data || (type === 'live' && HistoryLive.histPosX[1]) ||
-        (type === 'vod' && HistoryVod.histPosX[1]) || (type === 'clip' && HistoryClip.histPosX[1])) return;
+    if (!AddUser_IsUserSet() || !Data || (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) ||
+        (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) || (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
 
     var index = Main_history_Exist(type, Data[7]);
 
@@ -1939,7 +1939,7 @@ function Main_history_Exist(type, id) {
 }
 
 function Main_history_UpdateLiveVod(id, vod, vod_img) {
-    if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
+    if (!AddUser_IsUserSet() || ScreenObj[Main_HistoryLive].histPosX[1]) return;
 
     var index = Main_history_Exist('live', id);
 
@@ -1955,8 +1955,8 @@ function Main_history_UpdateLiveVod(id, vod, vod_img) {
 }
 
 function Main_history_UpdateVodClip(id, time, type) {
-    if (!AddUser_IsUserSet() || (type === 'vod' && HistoryVod.histPosX[1]) ||
-        (type === 'clip' && HistoryClip.histPosX[1])) return;
+    if (!AddUser_IsUserSet() || (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
+        (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
 
     var index = Main_history_Exist(type, id);
 

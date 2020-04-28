@@ -362,7 +362,7 @@ function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
 
 function PlayClip_UpdateNext() {
     var nextid = PlayClip_getIdNext(1, 0);
-    var backid = PlayClip_getIdNext(-1, inUseObj.ColoumnsCount - 1);
+    var backid = PlayClip_getIdNext(-1, ScreenObj[ScreenObjKey].ColoumnsCount - 1);
     var data;
 
     PlayClip_HasNext = false;
@@ -370,7 +370,7 @@ function PlayClip_UpdateNext() {
 
     if (nextid) {
         PlayClip_HasNext = true;
-        data = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
+        data = JSON.parse(document.getElementById(ScreenObj[ScreenObjKey].ids[8] + nextid).getAttribute(Main_DataAttribute));
 
         PlayClip_NextImg(document.getElementById('next_button_img'), data[15]);
         Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(data[4]));
@@ -388,7 +388,7 @@ function PlayClip_UpdateNext() {
 
     if (backid) {
         PlayClip_HasBack = true;
-        data = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
+        data = JSON.parse(document.getElementById(ScreenObj[ScreenObjKey].ids[8] + backid).getAttribute(Main_DataAttribute));
 
         PlayClip_NextImg(document.getElementById('back_button_img'), data[15]);
         Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(data[4]));
@@ -407,10 +407,10 @@ function PlayClip_NextImg(ImgObjet, link) {
 }
 
 function PlayClip_getIdNext(y, x) {
-    if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
-        return inUseObj.posY + '_' + (inUseObj.posX + y);
-    else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
-        return (inUseObj.posY + y) + '_' + x;
+    if (Main_ThumbNull((ScreenObj[ScreenObjKey].posY), (ScreenObj[ScreenObjKey].posX + y), ScreenObj[ScreenObjKey].ids[0]))
+        return ScreenObj[ScreenObjKey].posY + '_' + (ScreenObj[ScreenObjKey].posX + y);
+    else if (Main_ThumbNull((ScreenObj[ScreenObjKey].posY + y), x, ScreenObj[ScreenObjKey].ids[0]))
+        return (ScreenObj[ScreenObjKey].posY + y) + '_' + x;
 
     return null;
 }
@@ -432,7 +432,7 @@ function PlayClip_PlayNext() {
 }
 
 function PlayClip_PlayPreviously() {
-    Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+    Screens_KeyLeftRight(-1, ScreenObj[ScreenObjKey].ColoumnsCount - 1);
     PlayClip_PlayNextPreviously();
 }
 
@@ -441,7 +441,7 @@ function PlayClip_PlayNextPreviously() {
     Main_ready(function() {
         PlayClip_replayOrNext = true;
         PlayClip_PreshutdownStream(false);
-        Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+        Main_OpenClip(ScreenObj[ScreenObjKey].posY + '_' + ScreenObj[ScreenObjKey].posX, ScreenObj[ScreenObjKey].ids, Screens_handleKeyDown);
     });
 }
 

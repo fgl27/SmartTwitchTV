@@ -327,7 +327,7 @@ function ChannelContent_keyEnter() {
             Main_HideElement(ChannelContent_ids[10]);
             ChannelContent_removeFocus();
             Main_ready(function() {
-                inUseObj = ChannelVod;
+                ScreenObjKey = Main_ChannelVod;
                 Screens_init();
             });
         } else if (ChannelContent_cursorX === 1) {
@@ -335,7 +335,7 @@ function ChannelContent_keyEnter() {
             Main_HideElement(ChannelContent_ids[10]);
             ChannelContent_removeFocus();
             Main_ready(function() {
-                inUseObj = ChannelClip;
+                ScreenObjKey = Main_ChannelClip;
                 Screens_init();
             });
         } else if (ChannelContent_cursorX === 2) {
