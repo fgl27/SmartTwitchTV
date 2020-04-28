@@ -1373,7 +1373,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String ret_fun, int x, int y) {
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y) {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
             ExtraPlayerHandlerResult[x][y] = null;
 
@@ -1388,7 +1388,7 @@ public class PlayerActivity extends Activity {
                 }
 
                 if (ExtraPlayerHandlerResult[x][y] != null)
-                    LoadUrlWebview("javascript:smartTwitchTV." + ret_fun + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
+                    LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
             }, 50 + Delay_ms);
         }
 
