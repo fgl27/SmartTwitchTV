@@ -117,7 +117,9 @@ public class PlayerActivity extends Activity {
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
     public String PreviewsResult;
-    public String DataResult;
+    public String[] DataResult = new String[PlayerAccount];
+    public Handler[] DataResultHandler = new Handler[PlayerAccount];
+    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccount];
     public WebView mWebView;
     public boolean PicturePicture;
     public boolean deviceIsTV;
@@ -216,6 +218,12 @@ public class PlayerActivity extends Activity {
             RuntimeThread.start();
             RuntimeHandler = new Handler(RuntimeThread.getLooper());
             runtime = Runtime.getRuntime();
+
+            for (int i = 0; i < PlayerAccount; i++) {
+                DataResultThread[i] = new HandlerThread("DataResultThread" + i);
+                DataResultThread[i].start();
+                DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
+            }
 
             deviceIsTV = Tools.deviceIsTV(this);
             appPreferences = new AppPreferences(this);
@@ -1393,11 +1401,10 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position) {
+            DataResultHandler[position].removeCallbacksAndMessages(null);
+            DataResult[position] = null;
 
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
-            DataResult = null;
-
-            ExtraPlayerHandler.post(() ->
+            DataResultHandler[position].post(() ->
                     {
                         String result = null;
 
@@ -1409,23 +1416,23 @@ public class PlayerActivity extends Activity {
                             Log.w(TAG, "getStreamDataAsync NullPointerException ", e);
                         }
 
-                        if (result != null) DataResult = result;
-                        else DataResult = Tools.ResponseObjToString(0, "", checkResult);
+                        if (result != null) DataResult[position] = result;
+                        else DataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
 
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(), " + position +")");
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position +")");
                     }
             );
+
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void GetClipData(String urlString, int timeout, int HeaderQuantity, String access_token,
                                 String overwriteID, String postMessage, String Method, String callback, long checkResult) {
+            DataResultHandler[0].removeCallbacksAndMessages(null);
+            DataResult[0] = null;
 
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
-            DataResult = null;
-
-            ExtraPlayerHandler.post(() ->
+            DataResultHandler[0].post(() ->
                     {
                         Tools.ResponseObj response;
 
@@ -1443,24 +1450,24 @@ public class PlayerActivity extends Activity {
                             );
 
                             if (response != null)  {
-                                DataResult = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult())");
+                                DataResult[0] = new Gson().toJson(response);
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(0))");
                                 return;
                             }
 
                         }
 
                         //MethodUrl is null inform JS callback
-                        DataResult = Tools.ResponseObjToString(0, "", checkResult);
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult())");
+                        DataResult[0] = Tools.ResponseObjToString(0, "", checkResult);
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(0))");
                     }
             );
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String GetDataResult() {
-            return DataResult;
+        public String GetDataResult(int position) {
+            return DataResult[position];
         }
 
         @SuppressWarnings("unused")//called by JS

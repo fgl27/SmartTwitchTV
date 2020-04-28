@@ -74,7 +74,7 @@ function PlayExtra_Resume() {
                 Play_live_links.replace('%x', PlayExtra_data.data[6]),
                 'PlayExtra_ResumeResult',
                 PlayExtra_ResumeId,
-                0
+                1
             );
         } catch (e) {
             PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
