@@ -759,6 +759,49 @@ function PlayVod_DialogPressedClick(time) {
     PlayVod_PosStart();
 }
 
+//When update this check PlayClip_CheckIfIsLiveResult
+function PlayVod_CheckIfIsLiveResult(response) {
+
+    if (PlayVod_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_CheckIfIsLiveId) {
+            var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+
+            if (responseObj.status === 200) {
+
+                Play_CheckIfIsLiveURL = responseObj.url;
+                Play_CheckIfIsLiveResponseText = responseObj.responseText;
+                PlayVod_OpenLiveStream();
+                return;
+
+            } else if (doc && (responseObj.status === 1 || responseObj.status === 403)) {
+
+                Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                return;
+
+            } else if (doc && responseObj.status === 404) {
+
+                Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                return;
+
+            }
+
+            Play_CheckIfIsLiveStartFail(STR_PLAYER_PROBLEM_2);
+        }
+
+    }
+
+}
+
+function PlayVod_CheckIfIsLiveStart() {
+
+    if (!Main_IsOnAndroid || Play_CheckIfIsLiveResponseText) PlayVod_OpenLiveStream();
+    else Play_CheckIfIsLiveStart('PlayVod_CheckIfIsLiveResult');
+
+}
+
 function PlayVod_OpenLiveStream() {
     PlayVod_PreshutdownStream(true, true);
     Main_OpenLiveStream(
@@ -897,7 +940,8 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (!UserLiveFeed_CheckVod() || Play_CheckIfIsLiveStart()) PlayVod_OpenLiveStream();
+                    else if (!UserLiveFeed_CheckVod()) PlayVod_OpenLiveStream();
+                    else PlayVod_CheckIfIsLiveStart();
                 }
                 else PlayVod_showPanel(true);
                 break;
@@ -917,7 +961,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_1:
                 if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (Play_CheckIfIsLiveStart()) PlayVod_OpenLiveStream();
+                    else PlayVod_CheckIfIsLiveStart();
                 }
                 break;
             case KEY_REFRESH:

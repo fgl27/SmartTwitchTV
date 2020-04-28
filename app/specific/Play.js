@@ -373,48 +373,30 @@ function Play_getStreamData(channel_name) {
 var Play_CheckIfIsLiveURL = '';
 var Play_CheckIfIsLiveChannel = '';
 var Play_CheckIfIsLiveResponseText = null;
+var Play_CheckIfIsLiveId = 0;
 
-function Play_CheckIfIsLiveStart() {
-    if (Play_CheckIfIsLiveResponseText) return true;//Reused for vod and clip checking from live feed already playing
+function Play_CheckIfIsLiveStart(callback) {
+    var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-    Play_showBufferDialog();
+    if (doc) {
+        Play_showBufferDialog();
 
-    var selectedChannelDisplayname = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).getAttribute(Main_DataAttribute));
-    Play_CheckIfIsLiveChannel = selectedChannelDisplayname[6];
-    selectedChannelDisplayname = selectedChannelDisplayname[1];
+        var selectedChannelDisplayname = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-    if (Main_IsOnAndroid) {
-
-        var StreamData = Play_getStreamData(Play_CheckIfIsLiveChannel);
-
-        if (StreamData) {
-            StreamData = JSON.parse(StreamData);//obj status url responseText
-
-            if (StreamData.status === 200) {
-
-                Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveResponseText = StreamData.responseText;
-
-                return true;
-
-            } else if (StreamData.status === 1 || StreamData.status === 403) {
-
-                Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
-                return false;
-
-            } else if (StreamData.status === 404) {
-
-                Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_IS_OFFLINE);
-                return false;
-
-            }
-
+        Play_CheckIfIsLiveId = (new Date().getTime());
+        //TODO remove the try after some app updates
+        try {
+            Android.getStreamDataAsync(
+                Play_live_token.replace('%x', selectedChannelDisplayname[6]),
+                Play_live_links.replace('%x', selectedChannelDisplayname[6]),
+                callback,
+                Play_CheckIfIsLiveId
+            );
+        } catch (e) {
+            Play_HideBufferDialog();
         }
+    }
 
-        Play_CheckIfIsLiveStartFail(selectedChannelDisplayname + ' ' + STR_LIVE + STR_PLAYER_PROBLEM_2);
-        return false;
-
-    } else return true;
 }
 
 function Play_CheckIfIsLiveStartFail(text) {

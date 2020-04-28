@@ -39,7 +39,9 @@
         'PlayClip_loadDataResult': PlayClip_loadDataResult, // PlayClip_QualityGenerate() func from app/specific/PlayClip.js
         'PlayVod_loadDataResult': PlayVod_loadDataResult, // PlayVod_loadDataResult() func from app/specific/PlayVod.js
         'PlayExtra_ResumeResult': PlayExtra_ResumeResult, // PlayExtra_ResumeResult() func from app/specific/PlayExtra.js
-        'Play_loadDataResult': Play_loadDataResult // Play_loadDataResult() func from app/specific/Play.js
+        'Play_loadDataResult': Play_loadDataResult, // Play_loadDataResult() func from app/specific/Play.js
+        'PlayClip_CheckIfIsLiveResult':PlayClip_CheckIfIsLiveResult, // PlayClip_CheckIfIsLiveResult() func from app/specific/PlayClip.js
+        'PlayVod_CheckIfIsLiveResult':PlayVod_CheckIfIsLiveResult // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
     };
 
     /** Expose `smartTwitchTV` */
