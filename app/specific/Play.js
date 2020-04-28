@@ -376,7 +376,7 @@ function Play_CheckIfIsLiveStart(callback) {
                 Play_live_links.replace('%x', selectedChannelDisplayname[6]),
                 callback,
                 Play_CheckIfIsLiveId,
-                0
+                2//Main player runs on 0 extra player on 1 the check on 2
             );
         } catch (e) {
             Play_HideBufferDialog();
