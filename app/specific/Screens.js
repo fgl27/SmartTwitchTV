@@ -132,7 +132,8 @@ function Screens_init(key) {
     else if (!ScreenObj[key].status || Screens_RefreshTimeout(key) || !ScreenObj[key].offsettop ||
         ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
-        Screens_StartLoad(key);
+        if (!ScreenObj[key].FirstLoad) Screens_StartLoad(key);
+        else Main_showLoadDialog();// the FirstLoad is running so just show the loading dialog prevent reload the screen
 
     } else {
         Main_YRst(ScreenObj[key].posY);
@@ -169,6 +170,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].offsettop = 0;
     ScreenObj[key].idObject = {};
     ScreenObj[key].Cells = [];
+    ScreenObj[key].FirstLoad = true;
     ScreenObj[key].itemsCount = 0;
     ScreenObj[key].posX = 0;
     ScreenObj[key].posY = 0;
@@ -293,6 +295,7 @@ function Screens_loadDatafail(key) {
     ScreenObj[key].loadingData = false;
     ScreenObj[key].loadingDataTry = 0;
     if (!ScreenObj[key].itemsCount) {
+        ScreenObj[key].FirstLoad = false;
         if (key === Screens_Current_Key) {
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
             ScreenObj[key].key_exit();
@@ -542,6 +545,7 @@ function Screens_loadDataSuccessFinish(key) {
             }
 
         }
+        ScreenObj[key].FirstLoad = false;
 
         if (Main_FirstRun) {
             //Main_Log('Main_FirstRun ' + Main_FirstRun);

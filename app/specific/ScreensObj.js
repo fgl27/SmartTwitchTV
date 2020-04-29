@@ -44,6 +44,7 @@ var Base_obj = {
     status: false,
     emptyContent: false,
     itemsCountCheck: false,
+    FirstLoad: false,
     row: 0,
     Headers: Main_Headers,
     data: null,
