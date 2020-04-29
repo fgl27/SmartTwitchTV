@@ -3,6 +3,8 @@ var ScreenObj = {};
 var Screens_Current_Key = 1;
 var Screens_clear = false;
 var Screens_KeyEnterID;
+var Screens_DialogHideTimout = 10000;
+var Screens_KeyUptimeout = 500;
 var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
@@ -1211,7 +1213,7 @@ function Screens_handleKeyDown(key, event) {
                 function() {
                     Screens_ThumbOptionStart(key);
                 },
-                500,
+                Screens_KeyUptimeout,
                 Screens_KeyEnterID
             );
             break;
@@ -1242,7 +1244,7 @@ function Screens_handleKeyDown(key, event) {
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_addEventListener("keyup", ScreenObj[key].key_up);
             Screens_clear = false;
-            Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, 400, Screens_KeyEnterID);
+            Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, Screens_KeyUptimeout, Screens_KeyEnterID);
             break;
         case KEY_MEDIA_NEXT:
         case KEY_REFRESH:
@@ -1346,7 +1348,7 @@ function Screens_SetPeriodDialogId(key) {
         function() {
             Screens_PeriodDialogHide(key);
         },
-        6000,
+        Screens_DialogHideTimout,
         Screens_PeriodDialogID
     );
 }
@@ -1428,7 +1430,7 @@ function Screens_SetOffSetDialogId(key) {
         function() {
             Screens_OffSetDialogHide(key);
         },
-        6000,
+        Screens_DialogHideTimout,
         Screens_OffSetDialogID
     );
 }
@@ -1512,7 +1514,7 @@ function Screens_SethistDialogId(key) {
         function() {
             Screens_histDialogHide(key);
         },
-        6000,
+        Screens_DialogHideTimout,
         Screens_histDialogID
     );
 }
@@ -1559,7 +1561,7 @@ function Screens_setRemoveDialog(key) {
         function() {
             Screens_HideRemoveDialog(key);
         },
-        6000,
+        Screens_DialogHideTimout,
         Users_RemoveDialogID
     );
 }
@@ -1910,7 +1912,7 @@ function Screens_SeTODialogId(key) {
         function() {
             Screens_ThumbOptionDialogHide(false, key);
         },
-        6000,
+        Screens_DialogHideTimout,
         Screens_ThumbOptionDialogID
     );
 }
