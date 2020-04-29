@@ -1113,7 +1113,7 @@ function Screens_RemoveAllFocus(key) {
 var Screens_handleKeyUpIsClear = false;
 
 function Screens_handleKeyUp(key, e) {
-    Main_Log('Screens_handleKeyUp e.keyCode ' + e.keyCode + ' key ' + key);
+    //Main_Log('Screens_handleKeyUp e.keyCode ' + e.keyCode + ' key ' + key);
 
     if (e.keyCode === KEY_ENTER) {
         Screens_handleKeyUpClear(key);
@@ -1156,7 +1156,7 @@ function Screens_keyRight(key) {
 
 
 function Screens_handleKeyDown(key, event) {
-    Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
+    //Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
     if (Main_CantClick()) return;
 
     Main_keyClickDelayStart();
@@ -1374,7 +1374,7 @@ function Screens_PeriodRemoveFocus(pos) {
 }
 
 function Screens_PeriodhandleKeyDown(key, event) {
-    Main_Log('ScreenObj[key].key_period ' + event.keyCode);
+    //Main_Log('ScreenObj[key].key_period ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1462,7 +1462,7 @@ function Screens_OffSetAddFocus(pos) {
 }
 
 function Screens_OffSethandleKeyDown(key, event) {
-    Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
+    //Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1669,7 +1669,7 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
 }
 
 function Screens_histhandleKeyDown(key, event) {
-    Main_Log('ScreenObj[key].key_hist ' + event.keyCode);
+    //Main_Log('ScreenObj[key].key_hist ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1842,7 +1842,7 @@ function Screens_ThumbOptionStringGetHistory(key) {
 }
 
 function Screens_ThumbOptionhandleKeyDown(key, event) {
-    Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
+    //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
