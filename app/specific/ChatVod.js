@@ -53,6 +53,7 @@ function Chat_Init() {
 
 var Chat_LoadGlobalBadges = false;
 function Chat_loadBadgesGlobal() {
+    //return;
     if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
     if (!extraEmotesDone.bbtvGlobal) Chat_loadBBTVGlobalEmotes(0);
     if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);

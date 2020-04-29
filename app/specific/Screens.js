@@ -8,7 +8,6 @@ var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
 var Screens_SettingDoAnimations = true;
 //Start the app in async mode by default
-var Screens_ForceSync = false;
 
 //Initiate all Secondary screens obj and they properties
 function Screens_InitScreens() {
@@ -155,7 +154,6 @@ function Screens_StartLoad(key) {
     ScreenObj[key].offsettop = 0;
     ScreenObj[key].idObject = {};
     ScreenObj[key].Cells = [];
-    ScreenObj[key].FirstLoad = true;
     ScreenObj[key].itemsCount = 0;
     ScreenObj[key].posX = 0;
     ScreenObj[key].posY = 0;
@@ -184,17 +182,86 @@ function Screens_loadDataPrepare(key) {
 }
 
 function Screens_loadDataRequest(key) {
-    ScreenObj[key].set_url();
-    if (ScreenObj[key].isHistory)
-        ScreenObj[key].history_concatenate();
-    else if (ScreenObj[key].use_hls)
-        BasehttpHlsGet(ScreenObj[key].url, ScreenObj[key].loadingDataTimeout, ScreenObj[key].HeaderQuatity, ScreenObj[key].token, Screens_concatenate, Screens_loadDataError, key);
-    else if (Main_IsOnAndroid && !ScreenObj[key].itemsCount && Screens_ForceSync)
-        BaseAndroidhttpGet(ScreenObj[key].url + Main_TwithcV5Flag, ScreenObj[key].loadingDataTimeout, ScreenObj[key].HeaderQuatity, ScreenObj[key].token, Screens_concatenate, Screens_loadDataError, key);
-    else
-        BasexmlHttpGet(ScreenObj[key].url + Main_TwithcV5Flag, ScreenObj[key].loadingDataTimeout, ScreenObj[key].HeaderQuatity, ScreenObj[key].token, Screens_concatenate, Screens_loadDataError, key);
 
-    Screens_ForceSync = true;
+    ScreenObj[key].set_url();
+
+    if (ScreenObj[key].isHistory) {
+
+        ScreenObj[key].history_concatenate();
+
+    } else {
+
+        Screens_BasexmlHttpGetExtra(
+            (ScreenObj[key].url + Main_TwithcV5Flag),
+            ScreenObj[key].loadingDataTimeout,
+            ScreenObj[key].HeaderQuatity,
+            ScreenObj[key].token,
+            ScreenObj[key].Headers,
+            key
+        );
+
+    }
+
+    // } else if (use android) {
+
+    //     Screens_BaseAndroidhttpGet(
+    //         (ScreenObj[key].url + Main_TwithcV5Flag),
+    //         ScreenObj[key].loadingDataTimeout,
+    //         ScreenObj[key].HeaderQuatity,
+    //         ScreenObj[key].token,
+    //         key
+    //     );
+
+}
+
+// function Screens_BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
+//     if (false) Screens_BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, key);
+//     else Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, Main_Headers_Back, key);
+// }
+
+// function Screens_BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
+//     Screens_AndroidResult(Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token), key);
+// }
+
+function Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = Timeout;
+
+    Main_Headers[2][1] = access_token;
+
+    for (var i = 0; i < HeaderQuatity; i++)
+        xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+
+    xmlHttp.ontimeout = function() {};
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            Screens_HttpResultStatus(xmlHttp, key);
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+// function Screens_AndroidResult(result, key) {
+//     if (result) Screens_HttpResultStatus(JSON.parse(result), key);
+//     else Screens_loadDataError(key);
+// }
+
+function Screens_HttpResultStatus(resultObj, key) {
+    //if (resultObj) {//only need for the android fun Screens_AndroidResult
+    if (resultObj.status === 200) {
+        Screens_concatenate(resultObj.responseText, key);
+    } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
+        AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+    } else if (resultObj.status === 500 && Main_isScene1DocShown() && key === Main_usergames) {
+        ScreenObj[key].key_refresh();
+    } else {
+        Screens_loadDataError(key);
+    }
+    //} else Screens_loadDataError(key);
 }
 
 function Screens_loadDataError(key) {
@@ -210,7 +277,6 @@ function Screens_loadDatafail(key) {
     ScreenObj[key].loadingData = false;
     ScreenObj[key].loadingDataTry = 0;
     if (!ScreenObj[key].itemsCount) {
-        ScreenObj[key].FirstLoad = false;
         Main_showWarningDialog(STR_REFRESH_PROBLEM);
         ScreenObj[key].key_exit();
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
@@ -458,7 +524,6 @@ function Screens_loadDataSuccessFinish(key) {
             }
 
         }
-        ScreenObj[key].FirstLoad = false;
 
         if (Main_FirstRun) {
             //Main_Log('Main_FirstRun ' + Main_FirstRun);
@@ -467,7 +532,6 @@ function Screens_loadDataSuccessFinish(key) {
                 Main_GoBefore = Main_Live;
                 Main_values.Play_WasPlaying = 0;
             }
-            Screens_ForceSync = false;
 
             if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
             Main_values.warning_extra = false;
@@ -874,9 +938,11 @@ function Screens_addrowDown(y, key) {
 function Screens_addrowEnd(forceScroll, key) {
     Main_ready(function() {
 
+        if (!ScreenObj[key].Cells[ScreenObj[key].posY]) return;
+
         Main_AddClass(ScreenObj[key].ids[0] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, Main_classThumb);
 
-        ScreenObj[key].addFocus(ScreenObj[key].posY, forceScroll, key);
+        ScreenObj[key].addFocus(forceScroll, key);
 
         Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
@@ -894,7 +960,8 @@ function Screens_setOffset(pos, y, key) {
     }
 }
 
-function Screens_addFocusChannel(y, forceScroll, key) {
+function Screens_addFocusChannel(forceScroll, key) {
+    var y = ScreenObj[key].posY;
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -919,7 +986,8 @@ function Screens_addFocusChannel(y, forceScroll, key) {
     }
 }
 
-function Screens_addFocusVideo(y, forceScroll, key) {
+function Screens_addFocusVideo(forceScroll, key) {
+    var y = ScreenObj[key].posY;
 
     if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -1075,7 +1143,7 @@ function Screens_keyRight(key) {
 var Screens_handleKeyDownStart;
 function Screens_handleKeyDown(key, event) {
     Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
-    if (ScreenObj[key].FirstLoad || Main_CantClick()) return;
+    if (Main_CantClick()) return;
 
     Main_keyClickDelayStart();
 

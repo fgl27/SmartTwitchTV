@@ -1498,11 +1498,6 @@ function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSuces
     else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
 }
 
-function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-    if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, callbackSucess, calbackError, key);
-    else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
-}
-
 function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
     var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
 

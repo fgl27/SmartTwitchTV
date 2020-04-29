@@ -44,8 +44,8 @@ var Base_obj = {
     status: false,
     emptyContent: false,
     itemsCountCheck: false,
-    FirstLoad: false,
     row: 0,
+    Headers: Main_Headers,
     data: null,
     token: null,
     data_cursor: 0,
@@ -134,9 +134,9 @@ var Base_Vod_obj = {
     rowClass: 'animate_height_transition',
     histPosXName: 'HistoryVod_histPosX',
     screenType: 1,
-    addFocus: function(y, forceScroll, key) {
+    addFocus: function(forceScroll, key) {
         this.AnimateThumb(this);
-        Screens_addFocusVideo(y, forceScroll, key);
+        Screens_addFocusVideo(forceScroll, key);
     },
     setTODialog: function() {
         Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
@@ -692,7 +692,6 @@ function ScreensObj_InitUserHost() {
         object: 'hosts',
         key_pgDown: Main_usergames,
         key_pgUp: Main_UserLive,
-        use_hls: true,
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if ((typeof this.MaxOffset !== 'undefined') &&
@@ -750,6 +749,7 @@ function ScreensObj_InitUserHost() {
         }
     };
     ScreenObj[Main_UserHost].Set_Scroll();
+    ScreenObj[Main_UserHost].Headers = Main_Headers_Back;
 }
 
 function ScreensObj_InitAGame() {
@@ -1133,7 +1133,6 @@ function ScreensObj_InitUserGames() {
         isLive: Main_getItemBool('user_Games_live', true),
         OldUserName: '',
         object: 'follows',
-        use_hls: true,
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -1164,7 +1163,12 @@ function ScreensObj_InitUserGames() {
 
     ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
     ScreenObj[Main_usergames].HeaderQuatity = 1;
+    ScreenObj[Main_usergames].start_fun = function() {
+        if (!this.loadingData) this.key_refresh();
+        Screens_StartLoad(this.screen);
+    };
     ScreenObj[Main_usergames].Set_Scroll();
+    ScreenObj[Main_usergames].Headers = Main_Headers_Back;
 }
 
 function ScreensObj_InitSearchGames() {
@@ -1619,9 +1623,9 @@ function ScreensObj_HistoryVod() {
 
     ScreenObj[Main_HistoryVod] = Screens_assign(ScreenObj[Main_HistoryVod], Base_History_obj);
 
-    ScreenObj[Main_HistoryVod].addFocus = function(y, x, idArray, forceScroll) {
+    ScreenObj[Main_HistoryVod].addFocus = function(forceScroll, key) {
         this.AnimateThumb(this);
-        Screens_addFocusVideo(y, x, idArray, forceScroll);
+        Screens_addFocusVideo(forceScroll, key);
     };
     ScreenObj[Main_HistoryVod].Upsorting();
     ScreenObj[Main_HistoryVod].Set_Scroll();
