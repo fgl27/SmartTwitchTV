@@ -1538,14 +1538,17 @@ function Play_CheckHost(responseText) {
 
     if (Play_TargetHost.target_login !== undefined) {
         Play_IsWarning = true;
-        Play_showWarningDialog(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name, 4000);
+        var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+
         Main_values.Play_isHost = true;
 
         if (Settings_value.open_host.defaultValue) {
             Play_OpenHost();
+            Play_showWarningDialog(warning_text, 4000);
             return;
         } else Play_EndSet(0);
 
+        Play_showWarningDialog(warning_text, 4000);
     } else {
         Play_EndSet(1);
         Main_values.Play_isHost = false;
