@@ -48,7 +48,7 @@ function UserLiveFeedobj_StartDefault(pos) {
 }
 
 function UserLiveFeedobj_CheckToken() {
-    if (UserLiveFeed_status[UserLiveFeed_FeedPosX]) {
+    if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) {
         if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
             UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
     }
@@ -67,7 +67,7 @@ function UserLiveFeedobj_CheckToken() {
         UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
         UserLiveFeedobj_loadChannelUserLive();
     } else {
-        UserLiveFeedobj_loadDataPrepare();
+        UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
         UserLiveFeed_token = null;
         UserLiveFeedobj_loadChannels();
     }
@@ -75,10 +75,10 @@ function UserLiveFeedobj_CheckToken() {
     //Main_Log('UserLiveFeedobj_CheckToken end');
 }
 
-function UserLiveFeedobj_loadDataPrepare() {
-    UserLiveFeed_loadingData = true;
-    UserLiveFeed_loadingDataTry = 0;
-    UserLiveFeed_loadingDataTimeout = 3500;
+function UserLiveFeedobj_loadDataPrepare(pos) {
+    UserLiveFeed_loadingData[pos] = true;
+    UserLiveFeed_loadingDataTry[pos] = 0;
+    UserLiveFeed_loadingDataTimeout[pos] = 3000;
 }
 
 function UserLiveFeedobj_loadChannels() {
@@ -86,7 +86,7 @@ function UserLiveFeedobj_loadChannels() {
     var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive,
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserLivePos], 2, null, UserLiveFeedobj_loadChannelLive,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
         }
@@ -95,14 +95,14 @@ function UserLiveFeedobj_loadChannels() {
 
 function UserLiveFeedobj_loadDataError(pos) {
     //Main_Log('UserLiveFeedobj_loadChannels');
-    UserLiveFeed_loadingDataTry++;
-    if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
-        UserLiveFeed_loadingDataTimeout += 500;
+    UserLiveFeed_loadingDataTry[pos]++;
+    if (UserLiveFeed_loadingDataTry[pos] < UserLiveFeed_loadingDataTryMax) {
+        UserLiveFeed_loadingDataTimeout[pos] += 500;
         UserLiveFeed_obj[pos].load();
     } else {
         if (!UserLiveFeed_obj[pos].loadingMore) {
-            UserLiveFeed_loadingDataTry = 0;
-            UserLiveFeed_loadingData = false;
+            UserLiveFeed_loadingDataTry[pos] = 0;
+            UserLiveFeed_loadingData[pos] = false;
             UserLiveFeed_Showloading(false);
             Main_HideElement('dialog_loading_side_feed');
 
@@ -141,11 +141,11 @@ function UserLiveFeedobj_loadChannelLive(responseText) {
         }
 
         UserLiveFeed_loadChannelOffsset += response_items;
-        UserLiveFeedobj_loadDataPrepare();
+        UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
         UserLiveFeedobj_loadChannels();
     } else { // end
         UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
-        UserLiveFeedobj_loadDataPrepare();
+        UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
         UserLiveFeedobj_loadChannelUserLive();
     }
 }
@@ -168,7 +168,7 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
     //Main_Log('UserLiveFeedobj_loadChannelUserLiveGet');
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
+    xmlHttp.timeout = UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserLivePos];
 
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -313,12 +313,26 @@ function UserLiveFeedobj_ShowFeed() {
 }
 
 function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
+
     if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
-    if ((forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
+    if (forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
-        UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
-    else {
+        UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) {
+
+        if (UserLiveFeed_loadingData[pos]) {
+
+            if (UserLiveFeed_isFeedShow()) {
+                UserLiveFeed_Showloading(true);
+                UserLiveFeed_obj[pos].div.classList.remove('hide');
+            }
+        } else {
+
+            UserLiveFeed_StartLoad();
+        }
+
+    } else {
+
         UserLiveFeed_obj[pos].div.classList.remove('hide');
 
         UserLiveFeed_FeedAddFocus(true, pos);
@@ -419,7 +433,7 @@ function UserLiveFeedobj_loadLive() {
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_LivePos);
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess,
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_LivePos], 2, null, UserLiveFeedobj_loadDataLiveSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_LivePos);
         }
@@ -457,7 +471,7 @@ function UserLiveFeedobj_loadFeatured() {
     var theUrl = Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
         AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess,
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_FeaturedPos], 2, null, UserLiveFeedobj_loadDataFeaturedSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_FeaturedPos);
         }
@@ -497,7 +511,7 @@ function UserLiveFeedobj_loadCurrentGame() {
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_CurrentGamePos);
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess,
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_CurrentGamePos], 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_CurrentGamePos);
         }
@@ -536,7 +550,7 @@ function UserLiveFeedobj_loadUserHost() {
     var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) +
         '/followed/hosting?limit=100';
 
-    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess,
+    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserHostPos], 2, null, UserLiveFeedobj_loadDataUserHostSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserHostPos);
         }
@@ -571,7 +585,7 @@ function UserLiveFeedobj_UserGames() {
 function UserLiveFeedobj_loadUserGames() {
     var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=150';//follows
 
-    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 1, null, UserLiveFeedobj_loadDataUserGamesSuccess,
+    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserGamesPos], 1, null, UserLiveFeedobj_loadDataUserGamesSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserGamesPos);
         }
@@ -611,7 +625,7 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_UserAGamesPos);
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess,
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserAGamesPos], 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserAGamesPos);
         }
@@ -656,7 +670,7 @@ function UserLiveFeedobj_loadGames() {
         (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset)
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].dataEnded = true;
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataGamesSuccess,
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_GamesPos], 2, null, UserLiveFeedobj_loadDataGamesSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_GamesPos);
         }
@@ -692,7 +706,7 @@ function UserLiveFeedobj_loadCurrentAGame() {
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_AGamesPos);
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess,
+    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_AGamesPos], 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_AGamesPos);
         }

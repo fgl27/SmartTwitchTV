@@ -1,7 +1,7 @@
 //Spacing for reease maker not trow erros frm jshint
-var UserLiveFeed_loadingData = false;
-var UserLiveFeed_loadingDataTry = 0;
-var UserLiveFeed_loadingDataTimeout = 3500;
+var UserLiveFeed_loadingData = [];
+var UserLiveFeed_loadingDataTry = [];
+var UserLiveFeed_loadingDataTimeout = [];
 var UserLiveFeed_loadChannelOffsset = 0;
 var UserLiveFeed_loadingDataTryMax = 5;
 var UserLiveFeed_followerChannels = '';
@@ -60,7 +60,7 @@ function UserLiveFeed_StartLoadPos(pos) {
 
     UserLiveFeed_CounterDialogRst();
     UserLiveFeed_Showloading(true);
-    UserLiveFeedobj_loadDataPrepare();
+    UserLiveFeedobj_loadDataPrepare(pos);
     UserLiveFeed_obj[pos].load();
 }
 
@@ -83,6 +83,9 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_FeedSetPosLast[i] = 0;
         UserLiveFeed_obj[i].offsettopFontsize = 0;
         UserLiveFeed_lastRefresh[i] = 0;
+        UserLiveFeed_loadingData[i] = false;
+        UserLiveFeed_loadingDataTry[i] = 0;
+        UserLiveFeed_loadingDataTimeout[i] = 3000;
     }
 
     //User live
@@ -187,7 +190,7 @@ function UserLiveFeed_Prepare() {
 function UserLiveFeed_RefreshLive() {
     //Main_Log('UserLiveFeed_RefreshLive');
     if (AddUser_UserIsSet()) {
-        UserLiveFeedobj_loadDataPrepare();
+        UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
         UserLiveFeedobj_CheckToken();
     }
 }
@@ -202,7 +205,7 @@ function UserLiveFeed_CounterDialog(pos, total) {
 }
 
 function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
-    UserLiveFeed_loadingData = false;
+    UserLiveFeed_loadingData[pos] = false;
     UserLiveFeed_status[pos] = true;
 
     var len = UserLiveFeed_cell[pos].length;
@@ -305,11 +308,11 @@ function UserLiveFeed_setHideFeed() {
 }
 
 function UserLiveFeed_FeedRefresh() {
-    if (!UserLiveFeed_loadingData) {
-        if (!UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
-            UserLiveFeed_clearHideFeed();
-            UserLiveFeed_StartLoad();
-        }
+    if (!UserLiveFeed_loadingData[UserLiveFeed_FeedPosX] && !UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
+
+        UserLiveFeed_clearHideFeed();
+        UserLiveFeed_StartLoad();
+
     }
 }
 
@@ -750,7 +753,7 @@ function UserLiveFeed_SetHoldUp() {
 
 function UserLiveFeed_KeyRightLeft(Adder) {
     UserLiveFeed_ResetFeedId();
-    if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
+    if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
         var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
         if (NextPos > (UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1) || NextPos < 0) return;
 
@@ -764,7 +767,7 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 
 function UserLiveFeed_KeyUpDown(Adder) {
     UserLiveFeed_ResetFeedId();
-    if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
+    if (Screens_ChangeFocusAnimationFinished) {
 
         var NextPos = UserLiveFeed_FeedPosX + Adder,
             userSet = AddUser_UserIsSet();
