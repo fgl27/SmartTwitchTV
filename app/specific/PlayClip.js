@@ -427,12 +427,12 @@ function PlayClip_Enter() {
 }
 
 function PlayClip_PlayNext() {
-    Screens_KeyLeftRight(1, 0);
+    Screens_KeyLeftRight(1, 0, Screens_Current_Key);
     PlayClip_PlayNextPreviously();
 }
 
 function PlayClip_PlayPreviously() {
-    Screens_KeyLeftRight(-1, ScreenObj[Screens_Current_Key].ColoumnsCount - 1);
+    Screens_KeyLeftRight(-1, ScreenObj[Screens_Current_Key].ColoumnsCount - 1, Screens_Current_Key);
     PlayClip_PlayNextPreviously();
 }
 
