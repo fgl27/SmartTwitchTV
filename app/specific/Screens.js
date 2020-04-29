@@ -106,7 +106,7 @@ function Screens_assign() {
 function Screens_init(key) {
     //Main_Log('Screens_init ' + ScreenObj[key].screen);
     Main_addFocusVideoOffset = -1;
-    ScreenObjKey = key;//Sidepannel, playclip, Main_updateclock Screens_Isfocused use this var
+    ScreenObjKey = key;//Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
     Main_values.Main_Go = key;
     ScreenObj[key].label_init();
 

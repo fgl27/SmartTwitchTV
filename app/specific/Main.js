@@ -1904,7 +1904,7 @@ function Main_CheckStop() { // Called only by JAVA
     if (PlayClip_isOn) PlayClip_Resume();
 
     //General related
-    Screens_ClearAnimation();
+    Screens_ClearAnimation(ScreenObjKey);
 
     Main_clearInterval(Main_updateUserFeedId);
     Main_clearInterval(Main_updateclockId);
