@@ -50,14 +50,6 @@ var Base_obj = {
     token: null,
     data_cursor: 0,
     lastRefresh: 0,
-    key_thumb: null,
-    key_hist: null,
-    key_histdelet: null,
-    key_offset: null,
-    key_period: null,
-    key_up: null,
-    key_controls: null,
-    key_fun: null,
     key_fun_start: function() {
         return Screens_handleKeyDown.bind(null, this.screen);
     },
