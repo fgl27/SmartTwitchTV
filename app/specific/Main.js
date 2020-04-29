@@ -1377,7 +1377,7 @@ function Main_updateclock() {
         Main_textContent('label_clock', Main_getclock());
         if (Main_RunningTime) Main_AboutDialogUpdateTime();
         Main_randomimg = '?' + parseInt(Math.random() * 100000);
-        Screens_SetLastRefresh(ScreenObjKey);
+        Screens_SetLastRefresh(Screens_Current_Key);
     }
 }
 
@@ -1904,7 +1904,7 @@ function Main_CheckStop() { // Called only by JAVA
     if (PlayClip_isOn) PlayClip_Resume();
 
     //General related
-    Screens_ClearAnimation(ScreenObjKey);
+    Screens_ClearAnimation(Screens_Current_Key);
 
     Main_clearInterval(Main_updateUserFeedId);
     Main_clearInterval(Main_updateclockId);

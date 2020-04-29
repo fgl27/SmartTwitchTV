@@ -1,6 +1,6 @@
 //Variable initialization
 var ScreenObj = {};
-var ScreenObjKey = 1;
+var Screens_Current_Key = 1;
 var Screens_clear = false;
 var Screens_KeyEnterID;
 var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
@@ -118,7 +118,7 @@ function Screens_assign() {
 function Screens_init(key) {
     //Main_Log('Screens_init ' + ScreenObj[key].screen);
     Main_addFocusVideoOffset = -1;
-    ScreenObjKey = key;//Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
+    Screens_Current_Key = key;//Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
     Main_values.Main_Go = key;
     ScreenObj[key].label_init();
 
@@ -137,6 +137,7 @@ function Screens_init(key) {
         Screens_addFocus(true, key);
         Main_SaveValues();
         Screens_SetLastRefresh(key);
+        Main_HideLoadDialog();
     }
 }
 
@@ -290,8 +291,10 @@ function Screens_loadDatafail(key) {
     ScreenObj[key].loadingData = false;
     ScreenObj[key].loadingDataTry = 0;
     if (!ScreenObj[key].itemsCount) {
-        Main_showWarningDialog(STR_REFRESH_PROBLEM);
-        ScreenObj[key].key_exit();
+        if (key === Screens_Current_Key) {
+            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            ScreenObj[key].key_exit();
+        }//esle the user has alredy exit the screen
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
         else Main_HideLoadDialog();
     } else ScreenObj[key].dataEnded = true;
@@ -2186,6 +2189,6 @@ function Screens_RefreshTimeout(key) {
 }
 
 function Screens_Isfocused() {
-    var doc = document.getElementById(ScreenObj[ScreenObjKey].ids[0] + ScreenObj[ScreenObjKey].posY + '_' + ScreenObj[ScreenObjKey].posX);
+    var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
     return doc ? Main_A_includes_B(doc.className, 'stream_thumbnail_focused') && Main_isScene1DocShown() : false;
 }
