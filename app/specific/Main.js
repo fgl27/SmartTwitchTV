@@ -336,9 +336,12 @@ function Main_initWindows() {
             if (Main_CanBackup) {
                 if (AddUser_IsUserSet()) {
                     Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                    Main_setTimeout(function() {
-                        Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                    }, 10000);
+                    Main_setTimeout(
+                        function() {
+                            Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                        },
+                        10000
+                    );
                 }
             }
         } else Main_CanBackup = false;
@@ -1374,7 +1377,7 @@ function Main_updateclock() {
         Main_textContent('label_clock', Main_getclock());
         if (Main_RunningTime) Main_AboutDialogUpdateTime();
         Main_randomimg = '?' + parseInt(Math.random() * 100000);
-        Screens_SetLastRefresh();
+        Screens_SetLastRefresh(ScreenObjKey);
     }
 }
 
