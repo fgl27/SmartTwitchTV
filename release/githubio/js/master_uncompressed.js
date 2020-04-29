@@ -2593,7 +2593,7 @@
         AddCode_requestTokens();
     }
 
-    function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, obj) {
+    function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key) {
         //Main_Log('AddCode_refreshTokens');
         if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
 
@@ -2612,19 +2612,19 @@
             if (xmlHttp.readyState === 4) {
                 //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
                 if (xmlHttp.status === 200) {
-                    AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, obj);
+                    AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
                 } else {
                     try {
                         var response = JSON.parse(xmlHttp.responseText);
                         if (response.message) {
                             if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
                                 AddCode_requestTokensFailRunning(position);
-                                if (callbackFuncNOK) callbackFuncNOK(obj);
-                            } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
-                        } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
+                                if (callbackFuncNOK) callbackFuncNOK(key);
+                            } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
+                        } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
                     } catch (e) {
                         //Main_Log('AddCode_refreshTokens e ' + e);
-                        AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, obj);
+                        AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
                     }
                 }
             }
@@ -2633,12 +2633,12 @@
         xmlHttp.send(null);
     }
 
-    function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, obj) {
-        if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, obj);
-        else if (callbackFuncNOK) callbackFuncNOK(obj);
+    function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key) {
+        if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, key);
+        else if (callbackFuncNOK) callbackFuncNOK(key);
     }
 
-    function AddCode_refreshTokensSucess(responseText, position, callbackFunc, obj) {
+    function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) {
         //Main_Log('AddCode_refreshTokensSucess');
         //Main_Log(responseText);
 
@@ -2655,7 +2655,7 @@
 
         } else AddCode_requestTokensFailRunning(position);
 
-        if (callbackFunc) callbackFunc(obj);
+        if (callbackFunc) callbackFunc(key);
     }
 
     //Check if has all scopes, in canse they change
@@ -3616,8 +3616,8 @@
     var ChannelContent_dataEnded = false;
     var ChannelContent_itemsCount = 0;
     var ChannelContent_loadingDataTry = 0;
-    var ChannelContent_loadingDataTryMax = 5;
-    var ChannelContent_loadingDataTimeout = 3500;
+    var ChannelContent_loadingDataTryMax = 3;
+    var ChannelContent_loadingDataTimeout = 3000;
     var ChannelContent_itemsCountOffset = 0;
     var ChannelContent_isoffline = false;
     var ChannelContent_UserChannels = false;
@@ -3699,7 +3699,7 @@
     function ChannelContent_loadDataPrepare() {
         Main_FirstLoad = true;
         ChannelContent_loadingDataTry = 0;
-        ChannelContent_loadingDataTimeout = 3500;
+        ChannelContent_loadingDataTimeout = DefaultloadingDataTimeout;
     }
 
     function ChannelContent_loadDataRequest() {
@@ -3939,16 +3939,14 @@
                 Main_HideElement(ChannelContent_ids[10]);
                 ChannelContent_removeFocus();
                 Main_ready(function() {
-                    inUseObj = ChannelVod;
-                    Screens_init();
+                    Screens_init(Main_ChannelVod);
                 });
             } else if (ChannelContent_cursorX === 1) {
                 Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
                 Main_HideElement(ChannelContent_ids[10]);
                 ChannelContent_removeFocus();
                 Main_ready(function() {
-                    inUseObj = ChannelClip;
-                    Screens_init();
+                    Screens_init(Main_ChannelClip);
                 });
             } else if (ChannelContent_cursorX === 2) {
                 if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
@@ -6472,6 +6470,7 @@
     var Chat_LoadGlobalBadges = false;
 
     function Chat_loadBadgesGlobal() {
+        //return;
         if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
         if (!extraEmotesDone.bbtvGlobal) Chat_loadBBTVGlobalEmotes(0);
         if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
@@ -7078,7 +7077,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.177';
-    var Main_minversion = 'April 27, 2020';
+    var Main_minversion = 'April 29, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7282,9 +7281,12 @@
                 if (Main_CanBackup) {
                     if (AddUser_IsUserSet()) {
                         Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                        Main_setTimeout(function() {
-                            Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                        }, 10000);
+                        Main_setTimeout(
+                            function() {
+                                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                            },
+                            10000
+                        );
                     }
                 }
             } else Main_CanBackup = false;
@@ -7406,8 +7408,7 @@
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId); //Check it 5min
         Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 12000, Main_CheckResumeVodsId);
 
-        inUseObj = Live;
-        Screens_init();
+        Screens_init(Main_Live);
     }
 
     function Main_SetStringsMain(isStarting) {
@@ -7848,280 +7849,6 @@
         return document.getElementById(thumbnail + y + '_' + x) !== null;
     }
 
-    var Main_Switchobj = {
-        // way not?... 'computed property names' is only available in ES6 (use 'esversion: 6').
-        //    [Main_Users]: Users_init
-    };
-
-    Main_Switchobj[Main_Users] = {
-        obj: function() {},
-        start_fun: Users_StartLoad,
-        init_fun: Users_init,
-        key_fun: Users_handleKeyDown,
-        exit_fun: Users_exit
-    };
-    Main_Switchobj[Main_ChannelContent] = {
-        obj: function() {},
-        start_fun: ChannelContent_StartLoad,
-        init_fun: ChannelContent_init,
-        key_fun: ChannelContent_handleKeyDown,
-        exit_fun: ChannelContent_exit
-    };
-
-    Main_Switchobj[Main_SearchChannels] = {
-        obj: function() {
-            inUseObj = SearchChannels;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_SearchLive] = {
-        obj: function() {
-            inUseObj = SearchLive;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_SearchGames] = {
-        obj: function() {
-            inUseObj = SearchGames;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_UserChannels] = {
-        obj: function() {
-            inUseObj = UserChannels;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_UserLive] = {
-        obj: function() {
-            inUseObj = UserLive;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_UserHost] = {
-        obj: function() {
-            inUseObj = UserHost;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_usergames] = {
-        obj: function() {
-            inUseObj = UserGames;
-        },
-        start_fun: function() {
-            this.obj();
-            if (!UserGames.loadingData) UserGames.key_refresh();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_ChannelVod] = {
-        obj: function() {
-            inUseObj = ChannelVod;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_UserVod] = {
-        obj: function() {
-            inUseObj = UserVod;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_Live] = {
-        obj: function() {
-            inUseObj = Live;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_Featured] = {
-        obj: function() {
-            inUseObj = Featured;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_AGameClip] = {
-        obj: function() {
-            inUseObj = AGameClip;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_AGameVod] = {
-        obj: function() {
-            inUseObj = AGameVod;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_Clip] = {
-        obj: function() {
-            inUseObj = Clip;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_Vod] = {
-        obj: function() {
-            inUseObj = Vod;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_ChannelClip] = {
-        obj: function() {
-            inUseObj = ChannelClip;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_aGame] = {
-        obj: function() {
-            inUseObj = AGame;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_games] = {
-        obj: function() {
-            inUseObj = Game;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_HistoryLive] = {
-        obj: function() {
-            inUseObj = HistoryLive;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_HistoryVod] = {
-        obj: function() {
-            inUseObj = HistoryVod;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit
-    };
-    Main_Switchobj[Main_HistoryClip] = {
-        obj: function() {
-            inUseObj = HistoryClip;
-        },
-        start_fun: function() {
-            this.obj();
-            Screens_StartLoad();
-        },
-        init_fun: Screens_init,
-        key_fun: Screens_handleKeyDown,
-        exit_fun: Screens_exit,
-    };
-
     function Main_ReStartScreens() {
         Main_updateclock();
         Main_SwitchScreen();
@@ -8136,15 +7863,10 @@
 
         Main_CounterDialogRst();
 
-        if (Main_Switchobj[Main_values.Main_Go]) {
-            Main_Switchobj[Main_values.Main_Go].obj();
-            Main_Switchobj[Main_values.Main_Go].init_fun();
-        } else {
-            Main_Switchobj[1].obj();
-            Main_Switchobj[1].init_fun();
-        }
+        if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun();
+        else ScreenObj[1].init_fun();
 
-        if (removekey) Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+        if (removekey) Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
     }
 
     function Main_OpenSearch() {
@@ -8168,7 +7890,7 @@
 
     function Main_ExitCurrent(ExitCurrent) {
         //Main_Log('Main_ExitCurrent ' + ExitCurrent);
-        if (Main_Switchobj[ExitCurrent].exit_fun) Main_Switchobj[ExitCurrent].exit_fun();
+        if (ScreenObj[ExitCurrent].exit_fun) ScreenObj[ExitCurrent].exit_fun();
         if (Main_isElementShowing('settings_holder')) Settings_exit();
     }
 
@@ -8601,7 +8323,7 @@
             Main_textContent('label_clock', Main_getclock());
             if (Main_RunningTime) Main_AboutDialogUpdateTime();
             Main_randomimg = '?' + parseInt(Math.random() * 100000);
-            Screens_SetLastRefresh();
+            Screens_SetLastRefresh(Screens_Current_Key);
         }
     }
 
@@ -8609,7 +8331,7 @@
         //Main_Log('Main_updateUserFeed');
 
         if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
-            !Sidepannel_isShowing() && !UserLiveFeed_loadingData) {
+            !Sidepannel_isShowing() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
             UserLiveFeed_RefreshLive();
             UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
         }
@@ -8657,7 +8379,7 @@
 
         Main_CounterDialogRst();
 
-        Main_Switchobj[Main_values.Main_Go].start_fun();
+        ScreenObj[Main_values.Main_Go].start_fun();
     }
 
     function Main_setItem(item, value) {
@@ -8717,17 +8439,12 @@
         }
     }
 
-    function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-        if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
-        else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
+    function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+        if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
+        else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
     }
 
-    function BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-        if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, callbackSucess, calbackError, obj);
-        else BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj);
-    }
-
-    function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
+    function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
         var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
 
         if (xmlHttp) {
@@ -8736,32 +8453,32 @@
 
             if (xmlHttp) {
                 if (xmlHttp.status === 200) {
-                    callbackSucess(xmlHttp.responseText, obj);
+                    callbackSucess(xmlHttp.responseText, key);
                 } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                    AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
-                } else if (xmlHttp.status === 500 && Main_isScene1DocShown() && obj.screen === Main_usergames) {
-                    obj.key_refresh();
+                    AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+                } else if (xmlHttp.status === 500 && Main_isScene1DocShown() && ScreenObj[key].screen === Main_usergames) {
+                    ScreenObj[key].key_refresh();
                 } else {
-                    calbackError(obj);
+                    calbackError(key);
                 }
             } else {
-                calbackError(obj);
+                calbackError(key);
             }
         } else {
-            calbackError(obj);
+            calbackError(key);
         }
 
     }
 
-    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, obj);
+    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, key);
     }
 
-    function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, obj) {
-        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back, obj);
+    function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back, key);
     }
 
-    function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, obj) {
+    function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, key) {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
@@ -8777,15 +8494,15 @@
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
-                    callbackSucess(xmlHttp.responseText, obj);
+                    callbackSucess(xmlHttp.responseText, key);
                 } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                    AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, obj);
+                    AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
                 } else if (xmlHttp.status === 500) {
-                    if (Main_isScene1DocShown() && obj.screen === Main_usergames)
-                        obj.key_refresh();
-                    else calbackError(obj);
+                    if (Main_isScene1DocShown() && ScreenObj[key].screen === Main_usergames)
+                        ScreenObj[key].key_refresh();
+                    else calbackError(key);
                 } else {
-                    calbackError(obj);
+                    calbackError(key);
                 }
             }
         };
@@ -8821,8 +8538,8 @@
 
     function Main_Set_history(type, Data, skipUpdateDate) {
 
-        if (!AddUser_IsUserSet() || !Data || (type === 'live' && HistoryLive.histPosX[1]) ||
-            (type === 'vod' && HistoryVod.histPosX[1]) || (type === 'clip' && HistoryClip.histPosX[1])) return;
+        if (!AddUser_IsUserSet() || !Data || (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) ||
+            (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) || (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
 
         var index = Main_history_Exist(type, Data[7]);
 
@@ -8884,7 +8601,7 @@
     }
 
     function Main_history_UpdateLiveVod(id, vod, vod_img) {
-        if (!AddUser_IsUserSet() || HistoryLive.histPosX[1]) return;
+        if (!AddUser_IsUserSet() || ScreenObj[Main_HistoryLive].histPosX[1]) return;
 
         var index = Main_history_Exist('live', id);
 
@@ -8900,8 +8617,8 @@
     }
 
     function Main_history_UpdateVodClip(id, time, type) {
-        if (!AddUser_IsUserSet() || (type === 'vod' && HistoryVod.histPosX[1]) ||
-            (type === 'clip' && HistoryClip.histPosX[1])) return;
+        if (!AddUser_IsUserSet() || (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
+            (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
 
         var index = Main_history_Exist(type, id);
 
@@ -9134,7 +8851,7 @@
         if (PlayClip_isOn) PlayClip_Resume();
 
         //General related
-        Screens_ClearAnimation();
+        Screens_ClearAnimation(Screens_Current_Key);
 
         Main_clearInterval(Main_updateUserFeedId);
         Main_clearInterval(Main_updateclockId);
@@ -9249,7 +8966,7 @@
                 Main_CheckAccessibilityHide(false);
                 //if focused and showing force a refresh check
                 if (Screens_Isfocused() && !skipRefresCheck) {
-                    Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+                    Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
                     Main_SwitchScreen();
                 }
             }
@@ -9262,7 +8979,7 @@
 
         Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
         Main_ShowElement('dialog_accessibility');
-        Main_removeEventListener("keydown", Main_Switchobj[Main_values.Main_Go].key_fun);
+        Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
         Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
         if (!Sidepannel_isShowing() && Main_isScene1DocShown()) {
             Sidepannel_Hide();
@@ -9699,7 +9416,7 @@
 
     function PlayClip_UpdateNext() {
         var nextid = PlayClip_getIdNext(1, 0);
-        var backid = PlayClip_getIdNext(-1, inUseObj.ColoumnsCount - 1);
+        var backid = PlayClip_getIdNext(-1, ScreenObj[Screens_Current_Key].ColoumnsCount - 1);
         var data;
 
         PlayClip_HasNext = false;
@@ -9707,7 +9424,7 @@
 
         if (nextid) {
             PlayClip_HasNext = true;
-            data = JSON.parse(document.getElementById(inUseObj.ids[8] + nextid).getAttribute(Main_DataAttribute));
+            data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[8] + nextid).getAttribute(Main_DataAttribute));
 
             PlayClip_NextImg(document.getElementById('next_button_img'), data[15]);
             Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(data[4]));
@@ -9725,7 +9442,7 @@
 
         if (backid) {
             PlayClip_HasBack = true;
-            data = JSON.parse(document.getElementById(inUseObj.ids[8] + backid).getAttribute(Main_DataAttribute));
+            data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[8] + backid).getAttribute(Main_DataAttribute));
 
             PlayClip_NextImg(document.getElementById('back_button_img'), data[15]);
             Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(data[4]));
@@ -9744,10 +9461,10 @@
     }
 
     function PlayClip_getIdNext(y, x) {
-        if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
-            return inUseObj.posY + '_' + (inUseObj.posX + y);
-        else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
-            return (inUseObj.posY + y) + '_' + x;
+        if (Main_ThumbNull((ScreenObj[Screens_Current_Key].posY), (ScreenObj[Screens_Current_Key].posX + y), ScreenObj[Screens_Current_Key].ids[0]))
+            return ScreenObj[Screens_Current_Key].posY + '_' + (ScreenObj[Screens_Current_Key].posX + y);
+        else if (Main_ThumbNull((ScreenObj[Screens_Current_Key].posY + y), x, ScreenObj[Screens_Current_Key].ids[0]))
+            return (ScreenObj[Screens_Current_Key].posY + y) + '_' + x;
 
         return null;
     }
@@ -9764,12 +9481,12 @@
     }
 
     function PlayClip_PlayNext() {
-        Screens_KeyLeftRight(1, 0);
+        Screens_KeyLeftRight(1, 0, Screens_Current_Key);
         PlayClip_PlayNextPreviously();
     }
 
     function PlayClip_PlayPreviously() {
-        Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
+        Screens_KeyLeftRight(-1, ScreenObj[Screens_Current_Key].ColoumnsCount - 1, Screens_Current_Key);
         PlayClip_PlayNextPreviously();
     }
 
@@ -9778,7 +9495,7 @@
         Main_ready(function() {
             PlayClip_replayOrNext = true;
             PlayClip_PreshutdownStream(false);
-            Main_OpenClip(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids, Screens_handleKeyDown);
+            Main_OpenClip(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids, ScreenObj[Screens_Current_Key].key_fun);
         });
     }
 
@@ -12553,7 +12270,7 @@
         }
 
         Play_updateStreamInfoErrorTry = 0;
-        Play_loadingInfoDataTimeout = 3000;
+        Play_loadingInfoDataTimeout = 10000;
         Play_isLive = true;
         Play_tokenResponse = 0;
         Play_playingTry = 0;
@@ -12651,7 +12368,7 @@
         ChatLive_Playing = true;
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
         Play_showBufferDialog();
-        Play_loadingInfoDataTimeout = 3000;
+        Play_loadingInfoDataTimeout = 10000;
         Play_RestoreFromResume = true;
         Play_ResumeAfterOnlineCounter = 0;
 
@@ -13769,14 +13486,17 @@
 
         if (Play_TargetHost.target_login !== undefined) {
             Play_IsWarning = true;
-            Play_showWarningDialog(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name, 4000);
+            var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+
             Main_values.Play_isHost = true;
 
             if (Settings_value.open_host.defaultValue) {
                 Play_OpenHost();
+                Play_showWarningDialog(warning_text, 4000);
                 return;
             } else Play_EndSet(0);
 
+            Play_showWarningDialog(warning_text, 4000);
         } else {
             Play_EndSet(1);
             Main_values.Play_isHost = false;
@@ -14642,7 +14362,7 @@
     function PlayVod_updateVodInfoError() {
         PlayVod_loadingInfoDataTry++;
         if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
-            PlayVod_loadingInfoDataTimeout += 2000;
+            PlayVod_loadingInfoDataTimeout += 500;
             PlayVod_updateVodInfo();
         }
     }
@@ -15235,7 +14955,7 @@
         Main_ready(function() {
             if (!fromStart) PlayVod_DialogPressedClick(PlayVod_VodOffset);
             else {
-                if (!HistoryVod.histPosX[1]) {
+                if (!ScreenObj[Main_HistoryVod].histPosX[1]) {
                     Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, 0, 'vod');
                     Main_values.vodOffset = 0;
                     PlayVod_Start();
@@ -15689,15 +15409,17 @@
             PlayVod_muted_WarningDialogId
         );
     } //Variable initialization
-    var inUseObj = {};
+    var ScreenObj = {};
+    var Screens_Current_Key = 1;
     var Screens_clear = false;
     var Screens_KeyEnterID;
+    var Screens_DialogHideTimout = 10000;
+    var Screens_KeyUptimeout = 500;
     var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
     var Screens_ChangeFocusAnimationFinished = true;
     var Screens_ChangeFocusAnimationFast = false;
     var Screens_SettingDoAnimations = true;
     //Start the app in async mode by default
-    var Screens_ForceSync = false;
 
     //Initiate all Secondary screens obj and they properties
     function Screens_InitScreens() {
@@ -15739,7 +15461,33 @@
         ScreensObj_HistoryVod();
         ScreensObj_HistoryClip();
 
+        //Etc screen that makes in and out a screen to work
+        ScreenObj[Main_Users] = {
+            start_fun: Users_StartLoad,
+            init_fun: Users_init,
+            key_fun: Users_handleKeyDown,
+            exit_fun: Users_exit
+        };
+        ScreenObj[Main_ChannelContent] = {
+            start_fun: ChannelContent_StartLoad,
+            init_fun: ChannelContent_init,
+            key_fun: ChannelContent_handleKeyDown,
+            exit_fun: ChannelContent_exit
+        };
+
         Main_addEventListener("keyup", Screens_handleKeyUpAnimationFast);
+
+        for (var property in ScreenObj) {
+            ScreenObj[property].key_fun = Screens_handleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_up = Screens_handleKeyUp.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
+        }
+
     }
 
     //TODO cleanup not used when finished migrate all
@@ -15779,121 +15527,200 @@
 
     //Variable initialization end
 
-    function Screens_init() {
-        //Main_Log('Screens_init ' + inUseObj.screen);
+    function Screens_init(key) {
+        //Main_Log('Screens_init ' + ScreenObj[key].screen);
         Main_addFocusVideoOffset = -1;
-        Main_values.Main_Go = inUseObj.screen;
-        inUseObj.label_init();
+        Screens_Current_Key = key; //Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
+        Main_values.Main_Go = key;
+        ScreenObj[key].label_init();
 
-        Main_addEventListener("keydown", Screens_handleKeyDown);
-        Main_ShowElementWithEle(inUseObj.ScrollDoc);
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
+
+        Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-        else if (!inUseObj.status || Screens_RefreshTimeout() || !inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset'))
-            Screens_StartLoad();
-        else {
-            Main_YRst(inUseObj.posY);
-            Screens_addFocus(true);
+        else if (!ScreenObj[key].status || Screens_RefreshTimeout(key) || !ScreenObj[key].offsettop ||
+            ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+
+            if (!ScreenObj[key].FirstLoad) Screens_StartLoad(key);
+            else Main_showLoadDialog(); // the FirstLoad is running so just show the loading dialog prevent reload the screen
+
+        } else {
+            Main_YRst(ScreenObj[key].posY);
+            Screens_addFocus(true, key);
+            Screens_SetLastRefresh(key);
+            Main_HideLoadDialog();
             Main_SaveValues();
-            Screens_SetLastRefresh();
         }
     }
 
-    function Screens_exit() {
-        //Main_Log('Screens_exit ' + inUseObj.screen);
+    function Screens_exit(key) {
+        //Main_Log('Screens_exit ' + ScreenObj[key].screen);
 
         Main_addFocusVideoOffset = 0;
-        if (inUseObj.label_exit) inUseObj.label_exit();
-        Main_removeEventListener("keydown", Screens_handleKeyDown);
-        Main_HideElementWithEle(inUseObj.ScrollDoc);
+        if (ScreenObj[key].label_exit) ScreenObj[key].label_exit();
+        Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
         Main_HideWarningDialog();
-        Screens_ClearAnimation();
+        Screens_ClearAnimation(key);
     }
 
-    function Screens_StartLoad() {
+    function Screens_StartLoad(key) {
         Main_showLoadDialog();
-        inUseObj.lastRefresh = new Date().getTime();
+        ScreenObj[key].lastRefresh = new Date().getTime();
         Main_updateclock();
-        Main_empty(inUseObj.table);
+        Main_empty(ScreenObj[key].table);
         Main_HideWarningDialog();
 
-        inUseObj.cursor = null;
-        inUseObj.after = '';
-        inUseObj.status = false;
-        inUseObj.TopRowCreated = false;
-        inUseObj.offset = 0;
-        inUseObj.offsettop = 0;
-        inUseObj.idObject = {};
-        inUseObj.Cells = [];
-        inUseObj.FirstLoad = true;
-        inUseObj.itemsCount = 0;
-        inUseObj.posX = 0;
-        inUseObj.posY = 0;
-        inUseObj.row_id = 0;
-        inUseObj.currY = 0;
-        inUseObj.loadChannelOffsset = 0;
-        inUseObj.followerChannels = '';
-        inUseObj.followerChannelsDone = false;
-        inUseObj.coloumn_id = 0;
-        inUseObj.data = null;
-        inUseObj.data_cursor = 0;
-        inUseObj.dataEnded = false;
+        ScreenObj[key].cursor = null;
+        ScreenObj[key].after = '';
+        ScreenObj[key].status = false;
+        ScreenObj[key].TopRowCreated = false;
+        ScreenObj[key].offset = 0;
+        ScreenObj[key].offsettop = 0;
+        ScreenObj[key].idObject = {};
+        ScreenObj[key].Cells = [];
+        ScreenObj[key].FirstLoad = true;
+        ScreenObj[key].itemsCount = 0;
+        ScreenObj[key].posX = 0;
+        ScreenObj[key].posY = 0;
+        ScreenObj[key].row_id = 0;
+        ScreenObj[key].currY = 0;
+        ScreenObj[key].loadChannelOffsset = 0;
+        ScreenObj[key].followerChannels = '';
+        ScreenObj[key].followerChannelsDone = false;
+        ScreenObj[key].coloumn_id = 0;
+        ScreenObj[key].data = null;
+        ScreenObj[key].data_cursor = 0;
+        ScreenObj[key].dataEnded = false;
         Main_CounterDialogRst();
-        Screens_loadDataRequestStart(inUseObj);
+        Screens_loadDataRequestStart(key);
     }
 
-    function Screens_loadDataRequestStart(obj) {
-        Screens_loadDataPrepare(obj);
-        Screens_loadDataRequest(obj);
+    function Screens_loadDataRequestStart(key) {
+        Screens_loadDataPrepare(key);
+        Screens_loadDataRequest(key);
     }
 
-    function Screens_loadDataPrepare(obj) {
-        obj.loadingData = true;
-        obj.loadingDataTry = 0;
-        obj.loadingDataTimeout = DefaultloadingDataTimeout;
+    function Screens_loadDataPrepare(key) {
+        ScreenObj[key].loadingData = true;
+        ScreenObj[key].loadingDataTry = 0;
+        ScreenObj[key].loadingDataTimeout = DefaultloadingDataTimeout;
     }
 
-    function Screens_loadDataRequest(obj) {
-        obj.set_url();
-        if (obj.isHistory)
-            obj.history_concatenate();
-        else if (obj.use_hls)
-            BasehttpHlsGet(obj.url, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
-        else if (Main_IsOnAndroid && !obj.itemsCount && Screens_ForceSync)
-            BaseAndroidhttpGet(obj.url + Main_TwithcV5Flag, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
-        else
-            BasexmlHttpGet(obj.url + Main_TwithcV5Flag, obj.loadingDataTimeout, obj.HeaderQuatity, obj.token, Screens_concatenate, Screens_loadDataError, obj);
+    function Screens_loadDataRequest(key) {
 
-        Screens_ForceSync = true;
+        ScreenObj[key].set_url();
+
+        if (ScreenObj[key].isHistory) {
+
+            ScreenObj[key].history_concatenate();
+
+        } else {
+
+            Screens_BasexmlHttpGetExtra(
+                (ScreenObj[key].url + Main_TwithcV5Flag),
+                ScreenObj[key].loadingDataTimeout,
+                ScreenObj[key].HeaderQuatity,
+                ScreenObj[key].token,
+                ScreenObj[key].Headers,
+                key
+            );
+
+        }
+
+        // } else if (use android) {
+
+        //     Screens_BaseAndroidhttpGet(
+        //         (ScreenObj[key].url + Main_TwithcV5Flag),
+        //         ScreenObj[key].loadingDataTimeout,
+        //         ScreenObj[key].HeaderQuatity,
+        //         ScreenObj[key].token,
+        //         key
+        //     );
+
     }
 
-    function Screens_loadDataError(obj) {
-        //Main_Log('Screens_loadDataError ' + obj.screen);
-        obj.loadingDataTry++;
-        if (obj.loadingDataTry < obj.loadingDataTryMax) {
-            obj.loadingDataTimeout += 500;
-            Screens_loadDataRequest(obj);
-        } else Screens_loadDatafail(obj);
+    // if (use android) {
+    // function Screens_BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
+    //     if (false) Screens_BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, key);
+    //     else Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, Main_Headers_Back, key);
+    // }
+
+    // function Screens_BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
+    //     Screens_AndroidResult(Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token), key);
+    // }
+
+    function Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = Timeout;
+
+        Main_Headers[2][1] = access_token;
+
+        for (var i = 0; i < HeaderQuatity; i++)
+            xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                Screens_HttpResultStatus(xmlHttp, key);
+            }
+        };
+
+        xmlHttp.send(null);
     }
 
-    function Screens_loadDatafail(obj) {
-        obj.loadingData = false;
-        obj.loadingDataTry = 0;
-        if (!obj.itemsCount) {
-            obj.FirstLoad = false;
-            Main_showWarningDialog(STR_REFRESH_PROBLEM);
-            obj.key_exit();
+    // function Screens_AndroidResult(result, key) {
+    //     if (result) Screens_HttpResultStatus(JSON.parse(result), key);
+    //     else Screens_loadDataError(key);
+    // }
+
+    function Screens_HttpResultStatus(resultObj, key) {
+        //if (resultObj) {//only need for the android fun Screens_AndroidResult
+        if (resultObj.status === 200) {
+            Screens_concatenate(resultObj.responseText, key);
+        } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
+            AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+        } else if (resultObj.status === 500 && Main_isScene1DocShown() && key === Main_usergames) {
+            ScreenObj[key].key_refresh();
+        } else {
+            Screens_loadDataError(key);
+        }
+        //} else Screens_loadDataError(key);
+    }
+
+    function Screens_loadDataError(key) {
+        //Main_Log('Screens_loadDataError ' + ScreenObj[key].screen);
+        ScreenObj[key].loadingDataTry++;
+        if (ScreenObj[key].loadingDataTry < ScreenObj[key].loadingDataTryMax) {
+            ScreenObj[key].loadingDataTimeout += 500;
+            Screens_loadDataRequest(key);
+        } else Screens_loadDatafail(key);
+    }
+
+    function Screens_loadDatafail(key) {
+        ScreenObj[key].loadingData = false;
+        ScreenObj[key].loadingDataTry = 0;
+        if (!ScreenObj[key].itemsCount) {
+            ScreenObj[key].FirstLoad = false;
+            if (key === Screens_Current_Key) {
+                Main_showWarningDialog(STR_REFRESH_PROBLEM);
+                ScreenObj[key].key_exit();
+            } //esle the user has alredy exit the screen
             if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
             else Main_HideLoadDialog();
-        } else obj.dataEnded = true;
+        } else ScreenObj[key].dataEnded = true;
     }
 
-    function Screens_concatenate(responseText, obj) {
-        obj.concatenate(responseText);
+    function Screens_concatenate(responseText, key) {
+        ScreenObj[key].concatenate(responseText);
     }
 
-    function Screens_loadDataSuccess(obj) {
-        var response_items = (obj.data.length - obj.data_cursor);
+    function Screens_loadDataSuccess(key) {
+        var response_items = (ScreenObj[key].data.length - ScreenObj[key].data_cursor);
 
         //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColoumnsCount,
         //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
@@ -15902,94 +15729,98 @@
 
         //appendDiv doesn't applies if the content end and we have less then ColoumnsCount to add for the last row
 
-        //var appendDiv = !obj.coloumn_id;
-        if (response_items > obj.ItemsLimit) response_items = obj.ItemsLimit;
-        else if (!obj.loadingData) obj.dataEnded = true;
+        //var appendDiv = !ScreenObj[key].coloumn_id;
+        if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
+        else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
 
-        if (obj.HasSwitches && !obj.TopRowCreated) obj.addSwitches();
+        if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) ScreenObj[key].addSwitches();
 
         if (response_items) {
 
-            if (!obj.row_id) {
-                obj.row = document.createElement('div');
-                if (obj.rowClass) obj.row.classList.add(obj.rowClass);
-                obj.row.id = obj.ids[12] + obj.row_id;
+            if (!ScreenObj[key].row_id) {
+                ScreenObj[key].row = document.createElement('div');
+                if (ScreenObj[key].rowClass) ScreenObj[key].row.classList.add(ScreenObj[key].rowClass);
+                ScreenObj[key].row.id = ScreenObj[key].ids[12] + ScreenObj[key].row_id;
             }
 
-            var response_rows = Math.ceil(response_items / obj.ColoumnsCount);
+            var response_rows = Math.ceil(response_items / ScreenObj[key].ColoumnsCount);
 
-            var max_row = obj.row_id + response_rows;
+            var max_row = ScreenObj[key].row_id + response_rows;
 
-            for (obj.row_id; obj.row_id < max_row;) {
+            for (ScreenObj[key].row_id; ScreenObj[key].row_id < max_row;) {
 
-                if (obj.coloumn_id === obj.ColoumnsCount) {
-                    obj.row = document.createElement('div');
-                    if (obj.rowClass) obj.row.classList.add(obj.rowClass);
-                    obj.row.id = obj.ids[12] + obj.row_id;
-                    obj.coloumn_id = 0;
+                if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
+                    ScreenObj[key].row = document.createElement('div');
+                    if (ScreenObj[key].rowClass) ScreenObj[key].row.classList.add(ScreenObj[key].rowClass);
+                    ScreenObj[key].row.id = ScreenObj[key].ids[12] + ScreenObj[key].row_id;
+                    ScreenObj[key].coloumn_id = 0;
                 }
 
-                for (obj.coloumn_id; obj.coloumn_id < obj.ColoumnsCount && obj.data_cursor < obj.data.length; obj.data_cursor++) {
+                for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < ScreenObj[key].data.length; ScreenObj[key].data_cursor++) {
                     //TODO understand and fix before the code reaches this point way a cell is undefined some times
-                    if (obj.data[obj.data_cursor]) obj.addCell(obj.data[obj.data_cursor]);
+                    if (ScreenObj[key].data[ScreenObj[key].data_cursor]) ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
                 }
 
-                //doc.appendChild(obj.row);
-                if (obj.coloumn_id === obj.ColoumnsCount) {
-                    obj.Cells[obj.row_id] = obj.row;
-                    obj.row_id++;
-                } else if (obj.data_cursor >= obj.data.length) {
-                    if (obj.row.innerHTML !== '') obj.Cells[obj.row_id] = obj.row;
+                //doc.appendChild(ScreenObj[key].row);
+                if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
+                    ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
+                    ScreenObj[key].row_id++;
+                } else if (ScreenObj[key].data_cursor >= ScreenObj[key].data.length) {
+                    if (ScreenObj[key].row.innerHTML !== '') ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
                     break;
                 }
             }
         }
-        obj.emptyContent = !response_items && !obj.status;
-        Screens_loadDataSuccessFinish(obj);
+        ScreenObj[key].emptyContent = !response_items && !ScreenObj[key].status;
+        Screens_loadDataSuccessFinish(key);
     }
 
-    function Screens_createCell(id_attribute, Data_content, html_content) {
+    function Screens_createCell(id_attribute, Data_content, html_content, key) {
         var div = document.createElement('div');
 
         div.setAttribute('id', id_attribute);
         div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
-        div.classList.add(inUseObj.thumbclass);
+        div.classList.add(ScreenObj[key].thumbclass);
 
         div.innerHTML = html_content;
 
         return div;
     }
 
-    function Screens_createCellChannel(id, idArray, valuesArray) {
+    function Screens_createCellChannel(id, idArray, valuesArray, key) {
         return Screens_createCell(
             idArray[8] + id,
             valuesArray,
             '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
             id + '" alt="" class="stream_img" src="' + valuesArray[2] +
-            '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div>' +
+            '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
             '<div id="' + idArray[2] + id + '" class="stream_thumbnail_channel_text_holder">' +
             '<div id="' + idArray[3] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
             (valuesArray[4] ? STR_SPACE + STR_SPACE +
                 '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
-                IMG_PARTNER + '">' : "") + '</div></div></div>');
+                IMG_PARTNER + '">' : "") + '</div></div></div>',
+            key
+        );
     }
 
-    function Screens_createCellGame(id, idArray, valuesArray) {
+    function Screens_createCellGame(id, idArray, valuesArray, key) {
         return Screens_createCell(
             idArray[5] + id,
             valuesArray,
             '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
-            '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="' +
+            '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
             idArray[2] + id +
             '" class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="<div id="' +
             idArray[3] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
             (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
                 '"class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
-                '</div>' : '') + '</div></div></div>');
+                '</div>' : '') + '</div></div></div>',
+            key
+        );
     }
 
-    function Screens_createCellClip(id, idArray, valuesArray, Extra_when, Extra_until) {
+    function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra_until) {
         var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
 
         return Screens_createCell(
@@ -15997,7 +15828,7 @@
             valuesArray,
             '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
-            '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="' +
+            '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
             idArray[2] + id +
             '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
@@ -16014,10 +15845,12 @@
             Play_timeS(valuesArray[1]) + '</div></div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
-            '</div></div></div></div>');
+            '</div></div></div></div>',
+            key
+        );
     }
 
-    function Screens_createCellVod(id, idArray, valuesArray, Extra_when, Extra_until) {
+    function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_until) {
 
         return Screens_createCell(
             idArray[8] + id,
@@ -16025,7 +15858,7 @@
             '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[6] + id + '" class="stream_thumbnail_live_img" ' +
             (valuesArray[8] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[8] + ');"' : '') +
             '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
-            '" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="' +
+            '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
             idArray[2] + id +
             '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
@@ -16041,11 +15874,13 @@
             Play_timeS(valuesArray[11]) + '</div></div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
-            '</div></div></div>');
+            '</div></div></div>',
+            key
+        );
     }
 
     //TODO uncomplicate this ifs
-    function Screens_createCellLive(id, idArray, valuesArray, Extra_when, Extra_vodimg, force_VOD) {
+    function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra_vodimg, force_VOD) {
 
         if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
 
@@ -16058,11 +15893,11 @@
             '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + image +
             (Extra_vodimg ?
-                ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + inUseObj.img_404 +
+                ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
                     '\';};this.src=\'' + Extra_vodimg + '\';' +
                     'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hideimp\');' +
                     'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
-                ('" onerror="this.onerror=null;this.src=\'' + inUseObj.img_404 + '\';"></div><div id="')) +
+                ('" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="')) +
             idArray[2] + id +
             '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
@@ -16081,24 +15916,26 @@
             valuesArray[11] + valuesArray[4] + '</div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
-            '</div></div></div>');
+            '</div></div></div>',
+            key
+        );
     }
 
-    function Screens_loadDataSuccessFinish(obj) {
-        //Main_Log('Screens_loadDataSuccessFinish ' + obj.screen);
-        if (!obj.status) {
+    function Screens_loadDataSuccessFinish(key) {
+        //Main_Log('Screens_loadDataSuccessFinish ' + ScreenObj[key].screen);
+        if (!ScreenObj[key].status) {
             if (Main_values.Main_Go === Main_aGame) AGame_Checkfollow();
 
-            if (obj.emptyContent) Main_showWarningDialog(obj.empty_str());
+            if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
             else {
-                obj.status = true;
+                ScreenObj[key].status = true;
                 var i;
 
-                for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
-                    if (obj.Cells[i]) {
-                        inUseObj.tableDoc.appendChild(obj.Cells[i]);
-                        obj.Cells[i].style.position = '';
-                        obj.Cells[i].style.transition = 'none';
+                for (i = 0; i < (ScreenObj[key].Cells.length < ScreenObj[key].visiblerows ? ScreenObj[key].Cells.length : ScreenObj[key].visiblerows); i++) {
+                    if (ScreenObj[key].Cells[i]) {
+                        ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[i]);
+                        ScreenObj[key].Cells[i].style.position = '';
+                        ScreenObj[key].Cells[i].style.transition = 'none';
                     }
                 }
 
@@ -16106,19 +15943,19 @@
                 if (!Main_isScene1DocShown()) {
                     Main_Scene1Doc.style.transform = 'translateY(-1000%)';
                     Main_ShowElementWithEle(Main_Scene1Doc);
-                    Screens_setOffset(1, 0);
+                    Screens_setOffset(1, 0, key);
                     Main_HideElementWithEle(Main_Scene1Doc);
                     Main_Scene1Doc.style.transform = 'translateY(0px)';
-                } else Screens_setOffset(1, 0);
+                } else Screens_setOffset(1, 0, key);
 
-                for (i = 0; i < (obj.Cells.length < obj.visiblerows ? obj.Cells.length : obj.visiblerows); i++) {
-                    if (obj.Cells[i]) {
-                        obj.Cells[i].style.transform = 'translateY(' + (i * inUseObj.offsettop) + 'em)';
+                for (i = 0; i < (ScreenObj[key].Cells.length < ScreenObj[key].visiblerows ? ScreenObj[key].Cells.length : ScreenObj[key].visiblerows); i++) {
+                    if (ScreenObj[key].Cells[i]) {
+                        ScreenObj[key].Cells[i].style.transform = 'translateY(' + (i * ScreenObj[key].offsettop) + 'em)';
                     }
                 }
 
             }
-            obj.FirstLoad = false;
+            ScreenObj[key].FirstLoad = false;
 
             if (Main_FirstRun) {
                 //Main_Log('Main_FirstRun ' + Main_FirstRun);
@@ -16127,7 +15964,6 @@
                     Main_GoBefore = Main_Live;
                     Main_values.Play_WasPlaying = 0;
                 }
-                Screens_ForceSync = false;
 
                 if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
                 Main_values.warning_extra = false;
@@ -16142,7 +15978,7 @@
                     Main_SwitchScreen(false);
                     Screens_loadDataSuccessFinishEnd();
 
-                } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) { // && obj.status
+                } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) { // && ScreenObj[key].status
                     //Main_Log('Play_WasPlaying');
 
                     Main_ExitCurrent(Main_values.Main_Go);
@@ -16171,10 +16007,10 @@
                 } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
                     //Main_Log('!Play_WasPlaying');
 
-                    Main_HideElementWithEle(obj.ScrollDoc);
+                    Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
-                    Screens_RemoveAllFocus();
+                    Screens_RemoveAllFocus(key);
                     Main_SwitchScreen();
                     if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
                     else {
@@ -16190,14 +16026,14 @@
                     Main_values.Main_BeforeAgameisSet = false;
 
                     if (Main_values.Never_run_new)
-                        Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+                        Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
 
                     if (Main_values.Never_run_phone && !Main_isTV) {
                         Main_showphoneDialog(Main_values.Never_run_new ?
-                            Screens_handleKeyControls : Screens_handleKeyDown, Screens_handleKeyControls);
+                            ScreenObj[key].key_controls : ScreenObj[key].key_fun, ScreenObj[key].key_controls);
                     }
 
-                    if (!Main_values.Never_run_new) Screens_addFocus(true);
+                    if (!Main_values.Never_run_new) Screens_addFocus(true, key);
 
                     Main_values.Never_run_new = false;
                     Main_values.Never_run_phone = false;
@@ -16206,19 +16042,19 @@
                     Screens_loadDataSuccessFinishEnd();
                 }
             } else {
-                Screens_addFocus(true);
+                Screens_addFocus(true, key);
                 Main_SaveValues();
                 Main_HideLoadDialog();
             }
-        } else if (Main_isElementShowingWithEle(obj.ScrollDoc)) {
-            Main_CounterDialog(obj.posX, obj.posY, obj.ColoumnsCount, obj.itemsCount);
-            Screens_addFocus(true);
+        } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
+            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+            Screens_addFocus(true, key);
         }
     }
 
-    var CheckAccessibilityVWasVisible = false;
+    var CheckAccessibilityWasVisible = false;
 
-    function Screens_handleKeyControls(event) {
+    function Screens_handleKeyControls(key, event) {
         //Main_Log('Screens_handleKeyControls ' + event.keyCode);
 
         switch (event.keyCode) {
@@ -16226,10 +16062,10 @@
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 if (Main_CheckAccessibilityVisible()) {
-                    CheckAccessibilityVWasVisible = true;
+                    CheckAccessibilityWasVisible = true;
                     Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
                     Main_HideElement('dialog_accessibility');
-                } else CheckAccessibilityVWasVisible = false;
+                } else CheckAccessibilityWasVisible = false;
 
                 if (Main_isphoneDialogVisible()) {
                     Main_HidephoneDialog();
@@ -16238,12 +16074,12 @@
 
                 Main_HideControlsDialog();
                 Main_HideAboutDialog();
-                Main_removeEventListener("keydown", Screens_handleKeyControls);
+                Main_removeEventListener("keydown", ScreenObj[key].key_controls);
 
-                if (CheckAccessibilityVWasVisible) Main_CheckAccessibilitySet();
+                if (CheckAccessibilityWasVisible) Main_CheckAccessibilitySet();
                 else {
-                    Main_addEventListener("keydown", Screens_handleKeyDown);
-                    Screens_addFocus(true);
+                    Main_addEventListener("keydown", ScreenObj[key].key_fun);
+                    Screens_addFocus(true, key);
                 }
 
                 break;
@@ -16272,57 +16108,57 @@
         //Main_Log('Screens_loadDataSuccessFinishEnd');
     }
 
-    function Screens_addFocus(forceScroll) {
+    function Screens_addFocus(forceScroll, key) {
 
-        if (inUseObj.emptyContent) {
-            if (inUseObj.HasSwitches) inUseObj.posY = -1;
+        if (ScreenObj[key].emptyContent) {
+            if (ScreenObj[key].HasSwitches) ScreenObj[key].posY = -1;
             else {
-                inUseObj.key_exit(inUseObj.emptyContent);
+                ScreenObj[key].key_exit(ScreenObj[key].emptyContent);
                 return;
             }
         }
-        if (inUseObj.posY < 0) {
-            Screens_addFocusFollow();
+        if (ScreenObj[key].posY < 0) {
+            Screens_addFocusFollow(key);
 
-            if (!inUseObj.emptyContent)
-                Main_CounterDialog(inUseObj.posX, inUseObj.posY + 1, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+            if (!ScreenObj[key].emptyContent)
+                Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
             return;
         }
 
         //Load more as the data is getting used
-        if (inUseObj.data) {
-            if ((inUseObj.posY > 2) && (inUseObj.data_cursor + Main_ItemsLimitMax) > inUseObj.data.length && !inUseObj.dataEnded && !inUseObj.loadingData) {
-                Screens_loadDataRequestStart(inUseObj);
-            } else if ((inUseObj.posY + inUseObj.ItemsReloadLimit) > (inUseObj.itemsCount / inUseObj.ColoumnsCount) && inUseObj.data_cursor < inUseObj.data.length) {
-                inUseObj.loadDataSuccess();
+        if (ScreenObj[key].data) {
+            if ((ScreenObj[key].posY > 2) && (ScreenObj[key].data_cursor + Main_ItemsLimitMax) > ScreenObj[key].data.length && !ScreenObj[key].dataEnded && !ScreenObj[key].loadingData) {
+                Screens_loadDataRequestStart(key);
+            } else if ((ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit) > (ScreenObj[key].itemsCount / ScreenObj[key].ColoumnsCount) && ScreenObj[key].data_cursor < ScreenObj[key].data.length) {
+                ScreenObj[key].loadDataSuccess();
             }
         }
 
-        inUseObj.addrow(forceScroll, inUseObj.posY);
+        ScreenObj[key].addrow(forceScroll, ScreenObj[key].posY, key);
     }
 
     function Screens_ThumbNotNull(thumbnail) {
         return document.getElementById(thumbnail) !== null;
     }
 
-    function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down) {
+    function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down, key) {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
 
-        inUseObj.Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * inUseObj.offsettop) + 'em)';
+        ScreenObj[key].Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * ScreenObj[key].offsettop) + 'em)';
 
-        if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
-        else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+        if (down) ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
+        else ScreenObj[key].tableDoc.insertBefore(ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]);
 
-        //Delay to make sure inUseObj.Cells[y + y_plus] is added and it's position is ready
+        //Delay to make sure ScreenObj[key].Cells[y + y_plus] is added and it's position is ready
         Main_ready(function() {
             for (var i = for_in; i < for_out; i++)
-                Screens_addrowtransition(y + i, (for_offset + i) * inUseObj.offsettop, '');
+                Screens_addrowtransition(y + i, (for_offset + i) * ScreenObj[key].offsettop, '', key);
 
             Main_setTimeout(
                 function() {
-                    UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+                    UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
                     Screens_ChangeFocusAnimationFinished = true;
                 },
                 Screens_ScrollAnimationTimeout
@@ -16330,33 +16166,33 @@
         });
     }
 
-    function Screens_addrowtransition(pos, offset, transition) {
-        if (inUseObj.Cells[pos]) {
-            inUseObj.Cells[pos].style.transition = transition;
-            inUseObj.Cells[pos].style.transform = 'translateY(' + offset + 'em)';
+    function Screens_addrowtransition(pos, offset, transition, key) {
+        if (ScreenObj[key].Cells[pos]) {
+            ScreenObj[key].Cells[pos].style.transition = transition;
+            ScreenObj[key].Cells[pos].style.transform = 'translateY(' + offset + 'em)';
         }
     }
 
-    function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down) {
+    function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down, key) {
 
-        if (down) inUseObj.tableDoc.appendChild(inUseObj.Cells[y + y_plus]);
-        else inUseObj.tableDoc.insertBefore(inUseObj.Cells[y + y_plus], inUseObj.tableDoc.childNodes[inUseObj.HasSwitches ? 1 : 0]);
+        if (down) ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
+        else ScreenObj[key].tableDoc.insertBefore(ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]);
 
         for (var i = for_in; i < for_out; i++)
-            Screens_addrowtransition(y + i, (for_offset + i) * inUseObj.offsettop, 'none');
+            Screens_addrowtransition(y + i, (for_offset + i) * ScreenObj[key].offsettop, 'none', key);
 
-        UserLiveFeed_RemoveElement(inUseObj.Cells[y + eleRemovePos]);
+        UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
     }
 
-    function Screens_addrowChannel(forceScroll, y) {
-        if (inUseObj.currY < y) { // down
+    function Screens_addrowChannel(forceScroll, y, key) {
+        if (ScreenObj[key].currY < y) { // down
 
-            if (y > 2) Screens_addrowChannelDown(y);
+            if (y > 2) Screens_addrowChannelDown(y, key);
 
-        } else if (inUseObj.currY > y) { // Up
+        } else if (ScreenObj[key].currY > y) { // Up
 
 
-            if (y > 1 && (inUseObj.Cells.length) > (y + 3)) {
+            if (y > 1 && (ScreenObj[key].Cells.length) > (y + 3)) {
 
                 if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                     !Screens_ChangeFocusAnimationFast) { //If with animation
@@ -16369,7 +16205,8 @@
                         6, //for_out
                         2, //for_offset
                         3, //eleRemovePos
-                        0 //down?
+                        0, //down?
+                        key
                     );
 
                 } else {
@@ -16381,19 +16218,20 @@
                         6, //for_out
                         2, //for_offset
                         3, //eleRemovePos
-                        0 //down?
+                        0, //down?
+                        key
                     );
 
                 }
             }
         }
 
-        inUseObj.currY = inUseObj.posY;
-        Screens_addrowEnd(forceScroll);
+        ScreenObj[key].currY = ScreenObj[key].posY;
+        Screens_addrowEnd(forceScroll, key);
     }
 
-    function Screens_addrowChannelDown(y) {
-        if (inUseObj.Cells[y + 2]) {
+    function Screens_addrowChannelDown(y, key) {
+        if (ScreenObj[key].Cells[y + 2]) {
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
@@ -16406,7 +16244,8 @@
                     5, //for_out
                     2, //for_offset
                     -3, //eleRemovePos
-                    1 //down?
+                    1, //down?
+                    key
                 );
 
             } else {
@@ -16418,30 +16257,31 @@
                     5, //for_out
                     2, //for_offset
                     -3, //eleRemovePos
-                    1 //down?
+                    1, //down?
+                    key
                 );
             }
 
-        } else if (inUseObj.loadingData) {
+        } else if (ScreenObj[key].loadingData) {
             //Technically we will not get here because
-            //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
+            //Key down or right (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 3) will hold the screen
             //but this works, the issue is related to slow to load more content
             //Only happens if scroll too fast
             Main_setTimeout(
                 function() {
-                    Screens_addrowChannelDown(y);
+                    Screens_addrowChannelDown(y, key);
                 },
                 10
             );
         }
     }
 
-    function Screens_addrow(forceScroll, y) {
-        if (inUseObj.currY < y) { // down
-            Screens_addrowDown(y);
-        } else if (inUseObj.currY > y) { // Up
+    function Screens_addrow(forceScroll, y, key) {
+        if (ScreenObj[key].currY < y) { // down
+            Screens_addrowDown(y, key);
+        } else if (ScreenObj[key].currY > y) { // Up
 
-            if (y && (inUseObj.Cells.length) > (y + 1) && inUseObj.Cells[y + 2]) {
+            if (y && (ScreenObj[key].Cells.length) > (y + 1) && ScreenObj[key].Cells[y + 2]) {
 
                 if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                     !Screens_ChangeFocusAnimationFast) { //If with animation
@@ -16454,7 +16294,8 @@
                         3, //for_out
                         1, //for_offset
                         2, //eleRemovePos
-                        0 //down?
+                        0, //down?
+                        key
                     );
 
                 } else {
@@ -16466,19 +16307,20 @@
                         3, //for_out
                         1, //for_offset
                         2, //eleRemovePos
-                        0 //down?
+                        0, //down?
+                        key
                     );
                 }
 
             }
         }
 
-        inUseObj.currY = inUseObj.posY;
-        Screens_addrowEnd(forceScroll);
+        ScreenObj[key].currY = ScreenObj[key].posY;
+        Screens_addrowEnd(forceScroll, key);
     }
 
-    function Screens_addrowDown(y) {
-        if (y > 1 && inUseObj.Cells[y + 1]) {
+    function Screens_addrowDown(y, key) {
+        if (y > 1 && ScreenObj[key].Cells[y + 1]) {
 
             if (Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
                 !Screens_ChangeFocusAnimationFast) { //If with animation
@@ -16491,7 +16333,8 @@
                     2, //for_out
                     1, //for_offset
                     -2, //eleRemovePos
-                    1 //down?
+                    1, //down?
+                    key
                 );
 
             } else {
@@ -16503,49 +16346,53 @@
                     2, //for_out
                     1, //for_offset
                     -2, //eleRemovePos
-                    1 //down?
+                    1, //down?
+                    key
                 );
 
             }
 
-        } else if (inUseObj.loadingData) {
+        } else if (ScreenObj[key].loadingData) {
             //Technically we will not get here because
-            //Key down or right (inUseObj.Cells.length - 1) >= (inUseObj.posY + 3) will hold the screen
+            //Key down or right (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 3) will hold the screen
             //but this works, the issue is related to slow to load more content
             //Only happens if scroll too fast
             Main_setTimeout(
                 function() {
-                    Screens_addrowDown(y);
+                    Screens_addrowDown(y, key);
                 },
                 10
             );
         }
     }
 
-    function Screens_addrowEnd(forceScroll) {
+    function Screens_addrowEnd(forceScroll, key) {
         Main_ready(function() {
 
-            Main_AddClass(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX, Main_classThumb);
+            if (!ScreenObj[key].Cells[ScreenObj[key].posY]) return;
 
-            inUseObj.addFocus(inUseObj.posY, forceScroll);
+            Main_AddClass(ScreenObj[key].ids[0] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, Main_classThumb);
 
-            Main_CounterDialog(inUseObj.posX, inUseObj.posY, inUseObj.ColoumnsCount, inUseObj.itemsCount);
+            ScreenObj[key].addFocus(forceScroll, key);
+
+            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
         });
     }
 
-    function Screens_setOffset(pos, y) {
-        if (!inUseObj.offsettop || inUseObj.offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+    function Screens_setOffset(pos, y, key) {
+        if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
             pos = !y ? (y + pos) : y;
-            if (inUseObj.Cells[pos]) {
-                inUseObj.offsettop = (document.getElementById(inUseObj.ids[12] + pos).offsetHeight + document.getElementById(inUseObj.ids[0] + pos + '_0').offsetTop) / BodyfontSize;
-            } else inUseObj.offsettop = 1;
+            if (ScreenObj[key].Cells[pos]) {
+                ScreenObj[key].offsettop = (document.getElementById(ScreenObj[key].ids[12] + pos).offsetHeight + document.getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+            } else ScreenObj[key].offsettop = 1;
 
-            inUseObj.offsettopFontsize = Settings_Obj_default('global_font_offset');
+            ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
         }
     }
 
-    function Screens_addFocusChannel(y, forceScroll) {
+    function Screens_addFocusChannel(forceScroll, key) {
+        var y = ScreenObj[key].posY;
 
         if (Main_YchangeAddFocus(y) || forceScroll) {
 
@@ -16553,177 +16400,180 @@
 
                 //Channels is a odd screen as thumb are small it need a minor workaround to get all working
                 //TODO revise this for a simple implementation
-                if (inUseObj.Cells.length < 6) {
-                    if (inUseObj.Cells[y + 1] && (y + 2) < inUseObj.Cells.length || inUseObj.Cells.length === 4)
-                        inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
-                    else if (inUseObj.Cells.length > 3)
-                        inUseObj.ScrollDoc.style.transform = 'translateY(-' + (inUseObj.offsettop * 2) + 'em)';
+                if (ScreenObj[key].Cells.length < 6) {
+                    if (ScreenObj[key].Cells[y + 1] && (y + 2) < ScreenObj[key].Cells.length || ScreenObj[key].Cells.length === 4)
+                        ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + ScreenObj[key].offsettop + 'em)';
+                    else if (ScreenObj[key].Cells.length > 3)
+                        ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + (ScreenObj[key].offsettop * 2) + 'em)';
                 } else {
-                    if (inUseObj.Cells[y + 2])
-                        inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
+                    if (ScreenObj[key].Cells[y + 2])
+                        ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + ScreenObj[key].offsettop + 'em)';
                     else
-                        inUseObj.ScrollDoc.style.transform = 'translateY(-' + (inUseObj.offsettop * 2) + 'em)';
+                        ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + (ScreenObj[key].offsettop * 2) + 'em)';
                 }
 
-            } else inUseObj.ScrollDoc.style.transform = '';
+            } else ScreenObj[key].ScrollDoc.style.transform = '';
 
         }
     }
 
-    function Screens_addFocusVideo(y, forceScroll) {
+    function Screens_addFocusVideo(forceScroll, key) {
+        var y = ScreenObj[key].posY;
 
         if (Main_YchangeAddFocus(y) || forceScroll) {
 
-            if (!y) inUseObj.ScrollDoc.style.transform = '';
+            if (!y) ScreenObj[key].ScrollDoc.style.transform = '';
             else if (y === 1) {
 
-                if (inUseObj.Cells[y + 1]) //We didn't reach the bottom yet
-                    inUseObj.ScrollDoc.style.transform = 'translateY(-' + inUseObj.offsettop + 'em)';
+                if (ScreenObj[key].Cells[y + 1]) //We didn't reach the bottom yet
+                    ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + ScreenObj[key].offsettop + 'em)';
 
             }
         }
     }
 
-    function Screens_ChangeFocus(y, x) {
-        if (inUseObj.posY > -1) Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-        else Screens_removeFocusFollow();
+    function Screens_ChangeFocus(y, x, key) {
+        if (ScreenObj[key].posY > -1) Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+        else Screens_removeFocusFollow(key);
 
-        Screens_ClearAnimation();
-        inUseObj.posY += y;
-        inUseObj.posX = x;
+        Screens_ClearAnimation(key);
+        ScreenObj[key].posY += y;
+        ScreenObj[key].posX = x;
 
-        Screens_addFocus();
+        Screens_addFocus(false, key);
     }
 
-    function Screens_addFocusFollow() {
-        if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 0;
-        else if (inUseObj.posX < 0) inUseObj.posX = inUseObj.SwitchesIcons.length - 1;
+    function Screens_addFocusFollow(key) {
+        if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 0;
+        else if (ScreenObj[key].posX < 0) ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
 
-        Main_AddClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, 'stream_switch_focused');
+        Main_AddClass(ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX, 'stream_switch_focused');
     }
 
-    function Screens_removeFocusFollow() {
-        if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 0;
-        else if (inUseObj.posX < 0) inUseObj.posX = inUseObj.SwitchesIcons.length - 1;
+    function Screens_removeFocusFollow(key) {
+        if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 0;
+        else if (ScreenObj[key].posX < 0) ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
 
-        Main_RemoveClass(inUseObj.ids[0] + 'y_' + inUseObj.posX, 'stream_switch_focused');
+        Main_RemoveClass(ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX, 'stream_switch_focused');
     }
 
-    function Screens_BasicExit(before) {
+    function Screens_BasicExit(before, key) {
         if (Main_isControlsDialogShown()) Main_HideControlsDialog();
         else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
         else {
-            if (before === inUseObj.screen) Main_values.Main_Go = Main_Live;
+            if (before === ScreenObj[key].screen) Main_values.Main_Go = Main_Live;
             else Main_values.Main_Go = before;
-            Screens_exit();
+            Screens_exit(key);
         }
     }
 
-    function Screens_KeyUpDown(y) {
+    function Screens_KeyUpDown(y, key) {
         //TODO improve this
-        if (inUseObj.HasSwitches && !inUseObj.posY && y === -1 && !inUseObj.emptyContent) {
-            Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-            Screens_ClearAnimation();
-            inUseObj.posY = -1;
-            if (inUseObj.posX > inUseObj.SwitchesIcons.length - 1) inUseObj.posX = 1;
-            Screens_addFocusFollow();
-        } else if (inUseObj.HasSwitches && (inUseObj.posY) === -1 && (Main_ThumbNull(0, inUseObj.posX, inUseObj.ids[0]))) {
-            inUseObj.posY = 0;
-            Screens_addFocus();
-            Screens_removeFocusFollow();
+        if (ScreenObj[key].HasSwitches && !ScreenObj[key].posY && y === -1 && !ScreenObj[key].emptyContent) {
+            Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+            Screens_ClearAnimation(key);
+            ScreenObj[key].posY = -1;
+            if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 1;
+            Screens_addFocusFollow(key);
+        } else if (ScreenObj[key].HasSwitches && (ScreenObj[key].posY) === -1 && (Main_ThumbNull(0, ScreenObj[key].posX, ScreenObj[key].ids[0]))) {
+            ScreenObj[key].posY = 0;
+            Screens_addFocus(false, key);
+            Screens_removeFocusFollow(key);
         } else {
-            for (var i = 0; i < inUseObj.ColoumnsCount; i++) {
-                if (Main_ThumbNull((inUseObj.posY + y), (inUseObj.posX - i), inUseObj.ids[0])) {
-                    Screens_ChangeFocus(y, inUseObj.posX - i);
+            for (var i = 0; i < ScreenObj[key].ColoumnsCount; i++) {
+                if (Main_ThumbNull((ScreenObj[key].posY + y), (ScreenObj[key].posX - i), ScreenObj[key].ids[0])) {
+                    Screens_ChangeFocus(y, ScreenObj[key].posX - i, key);
                     return;
                 }
             }
         }
     }
 
-    function Screens_ClearAnimation() {
-        if (inUseObj.HasAnimateThumb) {
-            Main_clearInterval(inUseObj.AnimateThumbId);
-            if (Screens_ThumbNotNull(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX)) Main_ShowElement(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX);
+    function Screens_ClearAnimation(key) {
+        if (ScreenObj[key].HasAnimateThumb) {
+            Main_clearInterval(ScreenObj[key].AnimateThumbId);
+            if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) Main_ShowElement(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
         }
     }
 
-    function Screens_KeyLeftRight(y, x) {
-        if (inUseObj.HasSwitches && inUseObj.posY === -1) {
-            inUseObj.posY = -1;
-            Screens_removeFocusFollow();
-            inUseObj.posX += (!x ? 1 : -1);
-            Screens_addFocusFollow();
-        } else if (Main_ThumbNull((inUseObj.posY), (inUseObj.posX + y), inUseObj.ids[0]))
-            Screens_ChangeFocus(0, (inUseObj.posX + y));
-        else if (Main_ThumbNull((inUseObj.posY + y), x, inUseObj.ids[0]))
-            Screens_ChangeFocus(y, x);
+    function Screens_KeyLeftRight(y, x, key) {
+        if (ScreenObj[key].HasSwitches && ScreenObj[key].posY === -1) {
+            ScreenObj[key].posY = -1;
+            Screens_removeFocusFollow(key);
+            ScreenObj[key].posX += (!x ? 1 : -1);
+            Screens_addFocusFollow(key);
+        } else if (Main_ThumbNull((ScreenObj[key].posY), (ScreenObj[key].posX + y), ScreenObj[key].ids[0]))
+            Screens_ChangeFocus(0, (ScreenObj[key].posX + y), key);
+        else if (Main_ThumbNull((ScreenObj[key].posY + y), x, ScreenObj[key].ids[0]))
+            Screens_ChangeFocus(y, x, key);
     }
 
-    function Screens_OpenSidePanel(forceFeed) {
-        Screens_RemoveAllFocus();
+    function Screens_OpenSidePanel(forceFeed, key) {
+        Screens_RemoveAllFocus(key);
         if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-        Screens_ClearAnimation();
-        Main_removeEventListener("keydown", Screens_handleKeyDown);
-        Sidepannel_Start(Screens_handleKeyDown, forceFeed);
+        Screens_ClearAnimation(key);
+        Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Sidepannel_Start(ScreenObj[key].key_fun, forceFeed);
     }
 
-    function Screens_RemoveAllFocus() {
-        if (Main_ThumbNull(inUseObj.posY, inUseObj.posX, inUseObj.ids[0])) {
-            Main_removeFocus(inUseObj.posY + '_' + inUseObj.posX, inUseObj.ids);
-        } else if (inUseObj.posY < 0) {
-            Screens_removeFocusFollow();
-            inUseObj.posY = 0;
-            inUseObj.posX = 0;
+    function Screens_RemoveAllFocus(key) {
+        if (Main_ThumbNull(ScreenObj[key].posY, ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+            Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+        } else if (ScreenObj[key].posY < 0) {
+            Screens_removeFocusFollow(key);
+            ScreenObj[key].posY = 0;
+            ScreenObj[key].posX = 0;
         }
     }
 
     var Screens_handleKeyUpIsClear = false;
 
-    function Screens_handleKeyUp(e) {
+    function Screens_handleKeyUp(key, e) {
+        //Main_Log('Screens_handleKeyUp e.keyCode ' + e.keyCode + ' key ' + key);
+
         if (e.keyCode === KEY_ENTER) {
-            Screens_handleKeyUpClear();
-            if (!Screens_clear) inUseObj.key_play();
+            Screens_handleKeyUpClear(key);
+            if (!Screens_clear) ScreenObj[key].key_play();
         } else if (e.keyCode === KEY_LEFT) {
             Main_clearTimeout(Screens_KeyEnterID);
-            Main_removeEventListener("keyup", Screens_handleKeyUp);
+            Main_removeEventListener("keyup", ScreenObj[key].key_up);
             if (!Screens_clear) {
-                if (!inUseObj.posX) Screens_OpenSidePanel();
+                if (!ScreenObj[key].posX) Screens_OpenSidePanel(false, key);
                 else {
-                    Screens_KeyLeftRight(-1, inUseObj.ColoumnsCount - 1);
-                    Main_addEventListener("keydown", Screens_handleKeyDown);
+                    Screens_KeyLeftRight(-1, ScreenObj[key].ColoumnsCount - 1, key);
+                    Main_addEventListener("keydown", ScreenObj[key].key_fun);
                 }
             }
         }
         Screens_handleKeyUpIsClear = true;
     }
 
-    function Screens_handleKeyUpClear() {
+    function Screens_handleKeyUpClear(key) {
         Main_clearTimeout(Screens_KeyEnterID);
-        Main_removeEventListener("keyup", Screens_handleKeyUp);
-        Main_addEventListener("keydown", Screens_handleKeyDown);
+        Main_removeEventListener("keyup", ScreenObj[key].key_up);
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
     }
 
     function Screens_handleKeyUpAnimationFast() {
         Screens_ChangeFocusAnimationFast = false;
     }
 
-    function Screens_keyRight() {
-        //Prevent scroll too fast out of inUseObj.Cells.length
-        //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
-        if (inUseObj.dataEnded ||
-            inUseObj.posX < (inUseObj.ColoumnsCount - 1) ||
-            (inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
-            if (inUseObj.posX === (inUseObj.ColoumnsCount - 1)) {
-                if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0);
-            } else Screens_KeyLeftRight(1, 0);
-        } else Screens_addFocus(true);
+    function Screens_keyRight(key) {
+        //Prevent scroll too fast out of ScreenObj[key].Cells.length
+        //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
+        if (ScreenObj[key].dataEnded ||
+            ScreenObj[key].posX < (ScreenObj[key].ColoumnsCount - 1) ||
+            (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 1)) {
+            if (ScreenObj[key].posX === (ScreenObj[key].ColoumnsCount - 1)) {
+                if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0, key);
+            } else Screens_KeyLeftRight(1, 0, key);
+        } else Screens_addFocus(true, key);
     }
 
-    function Screens_handleKeyDown(event) {
-        //Main_Log('Screens_handleKeyDown ' + event.keyCode);
 
-        if (inUseObj.FirstLoad || Main_CantClick()) return;
+    function Screens_handleKeyDown(key, event) {
+        //Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
+        if (Main_CantClick()) return;
 
         Main_keyClickDelayStart();
 
@@ -16731,63 +16581,70 @@
             case KEY_MEDIA_REWIND:
             case KEY_PG_UP:
                 //TODO improve this pg up and down so many unnecessary ifs
-                if (inUseObj.key_pgUp) {
-                    Screens_RemoveAllFocus();
-                    if (inUseObj.screen === Main_UserChannels)
-                        Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgUpNext : inUseObj.key_pgUp);
-                    else if (inUseObj.screen === Main_UserLive)
+                if (ScreenObj[key].key_pgUp) {
+                    Screens_RemoveAllFocus(key);
+                    if (ScreenObj[key].screen === Main_UserChannels)
+                        Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgUpNext : ScreenObj[key].key_pgUp);
+                    else if (ScreenObj[key].screen === Main_UserLive)
                         Sidepannel_Go(Main_History[Main_HistoryPos]);
-                    else if (inUseObj.screen === Main_aGame) {
+                    else if (ScreenObj[key].screen === Main_aGame) {
 
                         if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserHost);
                         else Sidepannel_Go(Main_Featured);
 
-                    } else Sidepannel_Go(inUseObj.key_pgUp);
+                    } else Sidepannel_Go(ScreenObj[key].key_pgUp);
                 }
                 break;
             case KEY_MEDIA_FAST_FORWARD:
             case KEY_PG_DOWN:
-                if (inUseObj.key_pgDown) {
-                    Screens_RemoveAllFocus();
-                    if (inUseObj.screen === Main_usergames)
-                        Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? inUseObj.key_pgDownNext : inUseObj.key_pgDown);
-                    else if (inUseObj.screen === Main_UserChannels)
+                if (ScreenObj[key].key_pgDown) {
+                    Screens_RemoveAllFocus(key);
+                    if (ScreenObj[key].screen === Main_usergames)
+                        Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgDownNext : ScreenObj[key].key_pgDown);
+                    else if (ScreenObj[key].screen === Main_UserChannels)
                         Sidepannel_Go(Main_History[Main_HistoryPos]);
-                    else if (inUseObj.screen === Main_aGame) {
+                    else if (ScreenObj[key].screen === Main_aGame) {
 
                         if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserVod);
                         else Sidepannel_Go(Main_Vod);
 
-                    } else Sidepannel_Go(inUseObj.key_pgDown);
+                    } else Sidepannel_Go(ScreenObj[key].key_pgDown);
                 }
                 break;
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                inUseObj.key_exit();
+                ScreenObj[key].key_exit();
                 break;
             case KEY_LEFT:
-                Screens_ThumbOptionSpecial = inUseObj.histPosXName ? false : true;
+                Screens_ThumbOptionSpecial = ScreenObj[key].histPosXName ? false : true;
                 Screens_handleKeyUpIsClear = false;
 
-                Main_removeEventListener("keydown", Screens_handleKeyDown);
-                Main_addEventListener("keyup", Screens_handleKeyUp);
+                Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+                Main_addEventListener("keyup", ScreenObj[key].key_up);
                 Screens_clear = false;
-                Screens_KeyEnterID = Main_setTimeout(Screens_ThumbOptionStart, 500, Screens_KeyEnterID);
+
+                Screens_KeyEnterID = Main_setTimeout(
+                    function() {
+                        Screens_ThumbOptionStart(key);
+                    },
+                    Screens_KeyUptimeout,
+                    Screens_KeyEnterID
+                );
                 break;
             case KEY_RIGHT:
-                Screens_keyRight();
+                Screens_keyRight(key);
                 break;
             case KEY_UP:
-                if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(-1);
+                if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(-1, key);
                 break;
             case KEY_DOWN:
-                //Prevent scroll too fast out of inUseObj.Cells.length
-                //here (inUseObj.posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (inUseObj.Cells[y + 2])
-                if (inUseObj.dataEnded ||
-                    (inUseObj.Cells.length - 1) >= (inUseObj.posY + 1)) {
-                    if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(1);
+                //Prevent scroll too fast out of ScreenObj[key].Cells.length
+                //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
+                if (ScreenObj[key].dataEnded ||
+                    (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 1)) {
+                    if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(1, key);
                 } else {
-                    Screens_addFocus(true);
+                    Screens_addFocus(true, key);
                 }
                 break;
             case KEY_1:
@@ -16795,13 +16652,13 @@
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
             case KEY_MEDIA_PREVIOUS:
-                inUseObj.key_play();
+                ScreenObj[key].key_play();
                 break;
             case KEY_ENTER:
-                Main_removeEventListener("keydown", Screens_handleKeyDown);
-                Main_addEventListener("keyup", Screens_handleKeyUp);
+                Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+                Main_addEventListener("keyup", ScreenObj[key].key_up);
                 Screens_clear = false;
-                Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, 400, Screens_KeyEnterID);
+                Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, Screens_KeyUptimeout, Screens_KeyEnterID);
                 break;
             case KEY_MEDIA_NEXT:
             case KEY_REFRESH:
@@ -16813,19 +16670,19 @@
                 break;
             case KEY_A:
             case KEY_7:
-                Main_showAboutDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+                Main_showAboutDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
                 break;
             case KEY_C:
             case KEY_8:
-                Main_showControlsDialog(Screens_handleKeyDown, Screens_handleKeyControls);
+                Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
                 break;
             case KEY_E:
             case KEY_9:
-                Main_removeEventListener("keydown", Screens_handleKeyDown);
+                Main_removeEventListener("keydown", ScreenObj[key].key_fun);
                 Main_showExitDialog();
                 break;
             case KEY_CHAT:
-                Screens_OpenSidePanel(AddUser_UserIsSet());
+                Screens_OpenSidePanel(AddUser_UserIsSet(), key);
                 if (!AddUser_UserIsSet()) {
                     Main_showWarningDialog(STR_NOKUSER_WARN);
                     Main_setTimeout(Main_HideWarningDialog, 2000);
@@ -16836,32 +16693,32 @@
         }
     }
 
-    function AGame_headerOptions() {
-        if (!inUseObj.posX) {
+    function AGame_headerOptions(key) {
+        if (!ScreenObj[key].posX) {
             Main_values.Main_Go = Main_AGameVod;
             Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-            AGame_headerOptionsExit();
+            AGame_headerOptionsExit(key);
             Main_SwitchScreen();
-        } else if (inUseObj.posX === 1) {
+        } else if (ScreenObj[key].posX === 1) {
             Main_values.Main_Go = Main_AGameClip;
             Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-            AGame_headerOptionsExit();
+            AGame_headerOptionsExit(key);
             Main_SwitchScreen();
-        } else AGame_follow();
+        } else AGame_follow(key);
     }
 
-    function AGame_headerOptionsExit() {
-        if (inUseObj.status && inUseObj.posY === -1) {
-            Screens_removeFocusFollow();
-            inUseObj.posY = 0;
-            inUseObj.posX = 0;
-            Main_AddClass(inUseObj.ids[0] + '0_' + inUseObj.posX, Main_classThumb);
+    function AGame_headerOptionsExit(key) {
+        if (ScreenObj[key].status && ScreenObj[key].posY === -1) {
+            Screens_removeFocusFollow(key);
+            ScreenObj[key].posY = 0;
+            ScreenObj[key].posX = 0;
+            Main_AddClass(ScreenObj[key].ids[0] + '0_' + ScreenObj[key].posX, Main_classThumb);
         }
-        Main_removeEventListener("keydown", Screens_handleKeyDown);
-        Main_HideElementWithEle(inUseObj.ScrollDoc);
+        Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
     }
 
-    function AGame_follow() {
+    function AGame_follow(key) {
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
             if (AGame_following) AddCode_UnFollowGame();
             else AddCode_FollowGame();
@@ -16869,7 +16726,7 @@
             Main_showWarningDialog(STR_NOKEY_WARN);
             Main_setTimeout(
                 function() {
-                    if (inUseObj.emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
+                    if (ScreenObj[key].emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
                     else Main_HideWarningDialog();
                 },
                 2000
@@ -16886,39 +16743,41 @@
     }
 
     function AGame_setFollow() {
-        if (AGame_following) Main_innerHTML(AGame.ids[3] + "y_2", '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FOLLOWING);
-        else Main_innerHTML(AGame.ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY));
+        if (AGame_following) Main_innerHTML(ScreenObj[Main_aGame].ids[3] + "y_2", '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FOLLOWING);
+        else Main_innerHTML(ScreenObj[Main_aGame].ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY));
     }
 
     var Screens_PeriodDialogID;
     var Screens_PeriodDialogPos = 0;
 
-    function Screens_PeriodStart() {
-        Screens_setPeriodDialog();
+    function Screens_PeriodStart(key) {
+        Screens_setPeriodDialog(key);
         Main_ShowElement('dialog_period');
-        Main_removeEventListener("keydown", Screens_handleKeyDown);
-        Main_addEventListener("keydown", Screens_PeriodhandleKeyDown);
+        Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Main_addEventListener("keydown", ScreenObj[key].key_period);
     }
 
-    function Screens_clearPeriodDialogId() {
-        Main_clearTimeout(Screens_PeriodDialogID);
+    function Screens_SetPeriodDialogId(key) {
+        Screens_PeriodDialogID = Main_setTimeout(
+            function() {
+                Screens_PeriodDialogHide(key);
+            },
+            Screens_DialogHideTimout,
+            Screens_PeriodDialogID
+        );
     }
 
-    function Screens_SetPeriodDialogId() {
-        Screens_PeriodDialogID = Main_setTimeout(Screens_PeriodDialogHide, 6000, Screens_PeriodDialogID);
-    }
-
-    function Screens_setPeriodDialog() {
-        Screens_PeriodDialogPos = inUseObj.periodPos;
+    function Screens_setPeriodDialog(key) {
+        Screens_PeriodDialogPos = ScreenObj[key].periodPos;
         Screens_PeriodAddFocus(Screens_PeriodDialogPos);
-        Screens_SetPeriodDialogId();
+        Screens_SetPeriodDialogId(key);
     }
 
-    function Screens_PeriodDialogHide() {
-        Screens_clearPeriodDialogId();
+    function Screens_PeriodDialogHide(key) {
+        Main_clearTimeout(Screens_PeriodDialogID);
         Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
-        Main_removeEventListener("keydown", Screens_PeriodhandleKeyDown);
-        Main_addEventListener("keydown", Screens_handleKeyDown);
+        Main_removeEventListener("keydown", ScreenObj[key].key_period);
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElement('dialog_period');
     }
 
@@ -16930,26 +16789,24 @@
         Main_RemoveClass('dialog_period_' + pos, 'button_dialog_focused');
     }
 
-    function Screens_PeriodhandleKeyDown(event) {
-        //Main_Log('Screens_PeriodhandleKeyDown ' + event.keyCode);
+    function Screens_PeriodhandleKeyDown(key, event) {
+        //Main_Log('ScreenObj[key].key_period ' + event.keyCode);
 
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
                 Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
-                Screens_PeriodDialogHide();
+                Screens_PeriodDialogHide(key);
                 break;
             case KEY_LEFT:
-                Screens_clearPeriodDialogId();
-                Screens_SetPeriodDialogId();
+                Screens_SetPeriodDialogId(key);
                 Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
                 Screens_PeriodDialogPos--;
                 if (Screens_PeriodDialogPos < 1) Screens_PeriodDialogPos = 4;
                 Screens_PeriodAddFocus(Screens_PeriodDialogPos);
                 break;
             case KEY_RIGHT:
-                Screens_clearPeriodDialogId();
-                Screens_SetPeriodDialogId();
+                Screens_SetPeriodDialogId(key);
                 Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
                 Screens_PeriodDialogPos++;
                 if (Screens_PeriodDialogPos > 4) Screens_PeriodDialogPos = 1;
@@ -16959,11 +16816,11 @@
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
-                Screens_PeriodDialogHide();
-                if (inUseObj.periodPos !== Screens_PeriodDialogPos) {
-                    inUseObj.periodPos = Screens_PeriodDialogPos;
-                    inUseObj.SetPeriod();
-                    Screens_StartLoad();
+                Screens_PeriodDialogHide(key);
+                if (ScreenObj[key].periodPos !== Screens_PeriodDialogPos) {
+                    ScreenObj[key].periodPos = Screens_PeriodDialogPos;
+                    ScreenObj[key].SetPeriod();
+                    Screens_StartLoad(key);
                 }
                 break;
             default:
@@ -16974,31 +16831,33 @@
     var Screens_OffSetDialogID;
     var Screens_ThumbOptionSpecial;
 
-    function Screens_OffSetStart() {
-        inUseObj.OffSetPos = inUseObj.extraoffset / 100;
-        Screens_setOffSetDialog();
+    function Screens_OffSetStart(key) {
+        ScreenObj[key].OffSetPos = ScreenObj[key].extraoffset / 100;
+        Screens_setOffSetDialog(key);
         Main_ShowElement('dialog_OffSet');
-        Main_removeEventListener("keydown", Screens_handleKeyDown);
-        Main_addEventListener("keydown", Screens_OffSethandleKeyDown);
+        Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Main_addEventListener("keydown", ScreenObj[key].key_offset);
     }
 
-    function Screens_clearOffSetDialogId() {
+    function Screens_SetOffSetDialogId(key) {
+        Screens_OffSetDialogID = Main_setTimeout(
+            function() {
+                Screens_OffSetDialogHide(key);
+            },
+            Screens_DialogHideTimout,
+            Screens_OffSetDialogID
+        );
+    }
+
+    function Screens_setOffSetDialog(key) {
+        Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+        Screens_SetOffSetDialogId(key);
+    }
+
+    function Screens_OffSetDialogHide(key) {
         Main_clearTimeout(Screens_OffSetDialogID);
-    }
-
-    function Screens_SetOffSetDialogId() {
-        Screens_OffSetDialogID = Main_setTimeout(Screens_OffSetDialogHide, 6000, Screens_OffSetDialogID);
-    }
-
-    function Screens_setOffSetDialog() {
-        Screens_OffSetAddFocus(inUseObj.OffSetPos * 100);
-        Screens_SetOffSetDialogId();
-    }
-
-    function Screens_OffSetDialogHide() {
-        Screens_clearOffSetDialogId();
-        Main_removeEventListener("keydown", Screens_OffSethandleKeyDown);
-        Main_addEventListener("keydown", Screens_handleKeyDown);
+        Main_removeEventListener("keydown", ScreenObj[key].key_offset);
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElement('dialog_OffSet');
     }
 
@@ -17018,38 +16877,36 @@
         }
     }
 
-    function Screens_OffSethandleKeyDown(event) {
-        //Main_Log('Screens_OffSethandleKeyDown ' + event.keyCode);
+    function Screens_OffSethandleKeyDown(key, event) {
+        //Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
 
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                Screens_OffSetDialogHide();
+                Screens_OffSetDialogHide(key);
                 break;
             case KEY_LEFT:
-                Screens_clearOffSetDialogId();
-                Screens_SetOffSetDialogId();
-                inUseObj.OffSetPos--;
-                if (inUseObj.OffSetPos < 0) inUseObj.OffSetPos = 0;
-                Screens_OffSetAddFocus(inUseObj.OffSetPos * 100);
+                Screens_SetOffSetDialogId(key);
+                ScreenObj[key].OffSetPos--;
+                if (ScreenObj[key].OffSetPos < 0) ScreenObj[key].OffSetPos = 0;
+                Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
                 break;
             case KEY_RIGHT:
-                Screens_clearOffSetDialogId();
-                Screens_SetOffSetDialogId();
-                inUseObj.OffSetPos++;
-                if (inUseObj.OffSetPos > 50) inUseObj.OffSetPos = 50;
-                Screens_OffSetAddFocus(inUseObj.OffSetPos * 100);
+                Screens_SetOffSetDialogId(key);
+                ScreenObj[key].OffSetPos++;
+                if (ScreenObj[key].OffSetPos > 50) ScreenObj[key].OffSetPos = 50;
+                Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
                 break;
             case KEY_PLAY:
             case KEY_PAUSE:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
-                Screens_OffSetDialogHide();
-                if (inUseObj.extraoffset !== inUseObj.OffSetPos) {
-                    inUseObj.extraoffset = inUseObj.OffSetPos * 100;
-                    inUseObj.SetPeriod();
-                    Screens_StartLoad();
+                Screens_OffSetDialogHide(key);
+                if (ScreenObj[key].extraoffset !== ScreenObj[key].OffSetPos) {
+                    ScreenObj[key].extraoffset = ScreenObj[key].OffSetPos * 100;
+                    ScreenObj[key].SetPeriod();
+                    Screens_StartLoad(key);
                 }
                 break;
             default:
@@ -17059,71 +16916,82 @@
 
     var Screens_histDialogID;
 
-    function Screens_histStart() {
-        inUseObj.sethistDialog();
+    function Screens_histStart(key) {
+        ScreenObj[key].sethistDialog();
         Main_ShowElement('dialog_hist_setting');
-        Main_removeEventListener("keydown", Screens_handleKeyDown);
-        Main_addEventListener("keydown", Screens_histhandleKeyDown);
+        Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Main_addEventListener("keydown", ScreenObj[key].key_hist);
     }
 
-    function Screens_clearhistDialogId() {
-        Main_clearTimeout(Screens_histDialogID);
-    }
-
-    function Screens_SethistDialogId() {
-        Screens_histDialogID = Main_setTimeout(Screens_histDialogHide, 6000, Screens_histDialogID);
+    function Screens_SethistDialogId(key) {
+        Screens_histDialogID = Main_setTimeout(
+            function() {
+                Screens_histDialogHide(key);
+            },
+            Screens_DialogHideTimout,
+            Screens_histDialogID
+        );
     }
 
     var Screens_DeleteDialogAll = true;
 
-    function Screens_histDialogHide(Update) {
-        Screens_histRemoveFocus(inUseObj.histPosY, 'hist');
+    function Screens_histDialogHide(Update, key) {
+        Screens_histRemoveFocus(ScreenObj[key].histPosY, 'hist');
 
-        Screens_histAddFocus(0);
-        Screens_clearhistDialogId();
-        Main_removeEventListener("keydown", Screens_histhandleKeyDown);
-        Main_addEventListener("keydown", Screens_handleKeyDown);
+        Screens_histAddFocus(0, key);
+        Main_clearTimeout(Screens_histDialogID);
+        Main_removeEventListener("keydown", ScreenObj[key].key_hist);
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElement('dialog_hist_setting');
 
         if (Update) {
-            if (inUseObj.histPosY === 2) {
+            if (ScreenObj[key].histPosY === 2) {
                 Screens_DeleteDialogAll = true;
-                Screens_showDeleteDialog(STR_DELETE_SURE + inUseObj.history_Type() + STR_SPACE + STR_HISTORY + '?');
-            } else if (inUseObj.histPosX[0] !== inUseObj.histPosXTemp[0]) {
-                inUseObj.label_init();
+                Screens_showDeleteDialog(
+                    STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE + STR_HISTORY + '?',
+                    key
+                );
+            } else if (ScreenObj[key].histPosX[0] !== ScreenObj[key].histPosXTemp[0]) {
+                ScreenObj[key].label_init();
                 Main_ReloadScreen();
             }
         } else {
-            inUseObj.histPosX = Main_Slice(inUseObj.histPosXTemp);
-            Main_setItem(inUseObj.histPosXName, JSON.stringify(inUseObj.histPosX));
+            ScreenObj[key].histPosX = Main_Slice(ScreenObj[key].histPosXTemp);
+            Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[key].histPosX));
         }
-        inUseObj.histPosY = 0;
+        ScreenObj[key].histPosY = 0;
     }
 
-    function Screens_showDeleteDialog(text) {
+    function Screens_showDeleteDialog(text, key) {
         Main_innerHTML("main_dialog_remove", text);
         Main_ShowElement('main_remove_dialog');
-        Main_removeEventListener("keydown", Screens_handleKeyDown);
-        Main_addEventListener("keydown", Screens_histDeleteKeyDown);
-        Screens_setRemoveDialog();
+        Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Main_addEventListener("keydown", ScreenObj[key].key_histdelet);
+        Screens_setRemoveDialog(key);
     }
 
-    function Screens_setRemoveDialog() {
-        Users_RemoveDialogID = Main_setTimeout(Screens_HideRemoveDialog, 5000);
+    function Screens_setRemoveDialog(key) {
+        Users_RemoveDialogID = Main_setTimeout(
+            function() {
+                Screens_HideRemoveDialog(key);
+            },
+            Screens_DialogHideTimout,
+            Users_RemoveDialogID
+        );
     }
 
-    function Screens_HideRemoveDialog() {
+    function Screens_HideRemoveDialog(key) {
         Users_clearRemoveDialog();
-        Main_removeEventListener("keydown", Screens_histDeleteKeyDown);
-        Main_addEventListener("keydown", Screens_handleKeyDown);
+        Main_removeEventListener("keydown", ScreenObj[key].key_histdelet);
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElement('main_remove_dialog');
         Users_RemoveCursor = 0;
         Users_UserCursorSet();
         Users_RemoveCursorSet();
     }
 
-    function Screens_histDeleteKeyDown(event) {
-        //Main_Log('Screens_histDeleteKeyDown ' + event.keyCode);
+    function Screens_histDeleteKeyDown(key, event) {
+        //Main_Log('ScreenObj[key].key_histdelet ' + event.keyCode);
 
         switch (event.keyCode) {
             case KEY_LEFT:
@@ -17131,14 +16999,14 @@
                 if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
                 Users_RemoveCursorSet();
                 Users_clearRemoveDialog();
-                Screens_setRemoveDialog();
+                Screens_setRemoveDialog(key);
                 break;
             case KEY_RIGHT:
                 Users_RemoveCursor++;
                 if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
                 Users_RemoveCursorSet();
                 Users_clearRemoveDialog();
-                Screens_setRemoveDialog();
+                Screens_setRemoveDialog(key);
                 break;
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
@@ -17146,25 +17014,24 @@
                 /* falls through */
             case KEY_ENTER:
                 var temp = Users_RemoveCursor;
-                Screens_HideRemoveDialog();
-
-                if (temp) Screens_histDelete();
+                Screens_HideRemoveDialog(key);
+                if (temp) Screens_histDelete(key);
                 break;
             default:
                 break;
         }
     }
 
-    function Screens_histDelete() {
+    function Screens_histDelete(key) {
         if (Screens_DeleteDialogAll) {
-            Main_values_History_data[AddUser_UsernameArray[0].id][inUseObj.Type] = [];
+            Main_values_History_data[AddUser_UsernameArray[0].id][ScreenObj[key].Type] = [];
             Main_setHistoryItem();
             Main_ReloadScreen();
         } else {
             var type = 'live';
 
-            if (inUseObj.screen === Main_HistoryVod) type = 'vod';
-            else if (inUseObj.screen === Main_HistoryClip) type = 'clip';
+            if (ScreenObj[key].screen === Main_HistoryVod) type = 'vod';
+            else if (ScreenObj[key].screen === Main_HistoryClip) type = 'clip';
 
             var index = Main_history_Exist(type, Screens_values_Play_data[7]);
             if (index > -1) {
@@ -17174,10 +17041,10 @@
         }
     }
 
-    function Screens_histAddFocus(divPos) {
+    function Screens_histAddFocus(divPos, key) {
         Main_AddClass('dialog_hist_setting_' + divPos, 'settings_div_focus');
         Main_AddClass('dialog_hist_val_' + divPos, 'settings_value_focus');
-        Screens_histSetArrow();
+        Screens_histSetArrow(key);
     }
 
     function Screens_histRemoveFocus(divPos, dialog) {
@@ -17187,16 +17054,16 @@
         document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
     }
 
-    function Screens_histSetArrow() {
+    function Screens_histSetArrow(key) {
         Screens_histArrow(
             'hist',
-            inUseObj.histPosX[inUseObj.histPosY],
-            inUseObj.histArrays[inUseObj.histPosY].length,
-            inUseObj.histArrays[inUseObj.histPosY][inUseObj.histPosX[inUseObj.histPosY]],
-            inUseObj.histPosY
+            ScreenObj[key].histPosX[ScreenObj[key].histPosY],
+            ScreenObj[key].histArrays[ScreenObj[key].histPosY].length,
+            ScreenObj[key].histArrays[ScreenObj[key].histPosY][ScreenObj[key].histPosX[ScreenObj[key].histPosY]],
+            ScreenObj[key].histPosY
         );
 
-        Main_setItem(inUseObj.histPosXName, JSON.stringify(inUseObj.histPosX));
+        Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[key].histPosX));
     }
 
     function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
@@ -17217,52 +17084,48 @@
         }
     }
 
-    function Screens_histhandleKeyDown(event) {
-        //Main_Log('Screens_histhandleKeyDown ' + event.keyCode);
+    function Screens_histhandleKeyDown(key, event) {
+        //Main_Log('ScreenObj[key].key_hist ' + event.keyCode);
 
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                Screens_histDialogHide();
+                Screens_histDialogHide(false, key);
                 break;
             case KEY_LEFT:
-                Screens_clearhistDialogId();
-                Screens_SethistDialogId();
-                inUseObj.histPosX[inUseObj.histPosY]--;
-                if (inUseObj.histPosX[inUseObj.histPosY] < 0) inUseObj.histPosX[inUseObj.histPosY] = 0;
-                else Screens_histSetArrow();
+                Screens_SethistDialogId(key);
+                ScreenObj[key].histPosX[ScreenObj[key].histPosY]--;
+                if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] < 0) ScreenObj[key].histPosX[ScreenObj[key].histPosY] = 0;
+                else Screens_histSetArrow(key);
                 break;
             case KEY_RIGHT:
-                Screens_clearhistDialogId();
-                Screens_SethistDialogId();
-                inUseObj.histPosX[inUseObj.histPosY]++;
-                if (inUseObj.histPosX[inUseObj.histPosY] > (inUseObj.histArrays[inUseObj.histPosY].length - 1))
-                    inUseObj.histPosX[inUseObj.histPosY] = inUseObj.histArrays[inUseObj.histPosY].length - 1;
-                else Screens_histSetArrow();
+                Screens_SethistDialogId(key);
+                ScreenObj[key].histPosX[ScreenObj[key].histPosY]++;
+                if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] > (ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1))
+                    ScreenObj[key].histPosX[ScreenObj[key].histPosY] = ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1;
+                else Screens_histSetArrow(key);
                 break;
             case KEY_UP:
-                Screens_clearhistDialogId();
-                Screens_SethistDialogId();
-                inUseObj.histPosY--;
-                if (inUseObj.histPosY < 0) inUseObj.histPosY = 0;
+                Screens_SethistDialogId(key);
+                ScreenObj[key].histPosY--;
+                if (ScreenObj[key].histPosY < 0) ScreenObj[key].histPosY = 0;
                 else {
-                    Screens_histRemoveFocus(inUseObj.histPosY + 1, 'hist');
-                    Screens_histAddFocus(inUseObj.histPosY);
+                    Screens_histRemoveFocus(ScreenObj[key].histPosY + 1, 'hist');
+                    Screens_histAddFocus(ScreenObj[key].histPosY, key);
                 }
                 break;
             case KEY_DOWN:
-                Screens_clearhistDialogId();
-                Screens_SethistDialogId();
-                inUseObj.histPosY++;
-                if (inUseObj.histPosY > (inUseObj.histArrays.length - 1))
-                    inUseObj.histPosY = inUseObj.histArrays.length - 1;
+                Screens_SethistDialogId(key);
+                ScreenObj[key].histPosY++;
+                if (ScreenObj[key].histPosY > (ScreenObj[key].histArrays.length - 1))
+                    ScreenObj[key].histPosY = ScreenObj[key].histArrays.length - 1;
                 else {
-                    Screens_histRemoveFocus(inUseObj.histPosY - 1, 'hist');
-                    Screens_histAddFocus(inUseObj.histPosY);
+                    Screens_histRemoveFocus(ScreenObj[key].histPosY - 1, 'hist');
+                    Screens_histAddFocus(ScreenObj[key].histPosY, key);
                 }
                 break;
             case KEY_ENTER:
-                Screens_histDialogHide(true);
+                Screens_histDialogHide(true, key);
                 break;
             default:
                 break;
@@ -17271,10 +17134,10 @@
 
     var Screens_ThumbOptionPosY = 0;
 
-    function Screens_ThumbOptionStart() {
+    function Screens_ThumbOptionStart(key) {
         Screens_clear = true;
 
-        Screens_ThumbOptionSetArrowArray();
+        Screens_ThumbOptionSetArrowArray(key);
 
         if (Screens_ThumbOptionSpecial) {
             Screens_ThumbOptionPosY = 5;
@@ -17283,14 +17146,14 @@
         } else {
             Screens_ThumbOptionShowSpecial();
 
-            Screens_ThumbOptionStringSet();
+            Screens_ThumbOptionStringSet(key);
             Screens_ThumbOptionPosY = 0;
         }
 
-        inUseObj.setTODialog();
-        Screens_SeTODialogId();
-        Main_removeEventListener("keydown", Screens_handleKeyDown);
-        Main_addEventListener("keydown", Screens_ThumbOptionhandleKeyDown);
+        ScreenObj[key].setTODialog();
+        Screens_SeTODialogId(key);
+        Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Main_addEventListener("keydown", ScreenObj[key].key_thumb);
 
         Main_ShowElement('dialog_thumb_opt');
     }
@@ -17309,34 +17172,34 @@
     var Screens_canFollow = false;
     var Screens_isFollowing = false;
 
-    function Screens_ThumbOptionStringSet() {
+    function Screens_ThumbOptionStringSet(key) {
         Screens_canFollow = false;
-        Screens_values_Play_data = JSON.parse(document.getElementById(inUseObj.ids[8] + inUseObj.posY + '_' + inUseObj.posX).getAttribute(Main_DataAttribute));
+        Screens_values_Play_data = JSON.parse(document.getElementById(ScreenObj[key].ids[8] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
 
         if (AddUser_UserIsSet()) {
-            Screens_ThumbOption_CheckFollow(Screens_values_Play_data);
+            Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
             Main_textContent('dialog_thumb_opt_setting_name_2', STR_CHECK_HISTORY);
         } else Main_textContent('dialog_thumb_opt_setting_name_2', STR_NOKEY + STR_CANT_FOLLOW);
 
         Main_textContent('dialog_thumb_opt_val_2', '...');
 
-        if (inUseObj.screenType < 2) {
+        if (ScreenObj[key].screenType < 2) {
             Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTING);
 
             if (Main_values.Play_isHost) {
                 Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1].split(STR_USER_HOSTING)[1]);
             } else Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1]);
 
-        } else if (inUseObj.screenType === 2) {
+        } else if (ScreenObj[key].screenType === 2) {
             Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[4]);
         }
 
         Main_textContent('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : ''));
 
-        if (inUseObj.screen === Main_HistoryLive &&
-            Main_A_includes_B(document.getElementById(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX).src, 's3_vods')) {
-            Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(HistoryVod.histPosXName, [0, 0, 0])[1]]);
-        } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory()]);
+        if (ScreenObj[key].screen === Main_HistoryLive &&
+            Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+            Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1]]);
+        } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
 
         Main_textContent('dialog_thumb_opt_val_4', Main_ContentLang === "" ? STR_LANG_ALL : Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]]);
         Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
@@ -17344,9 +17207,9 @@
 
     var Screens_ThumbOption_CheckFollow_ID;
 
-    function Screens_ThumbOption_CheckFollow(data) {
+    function Screens_ThumbOption_CheckFollow(data, key) {
         Screens_ThumbOption_CheckFollow_ID = (new Date()).getTime();
-        if (inUseObj.screenType < 2) Screens_ThumbOption_RequestCheckFollow(data[14], 0, Screens_ThumbOption_CheckFollow_ID);
+        if (ScreenObj[key].screenType < 2) Screens_ThumbOption_RequestCheckFollow(data[14], 0, Screens_ThumbOption_CheckFollow_ID);
         else Screens_ThumbOption_RequestCheckFollow(data[2], 0, Screens_ThumbOption_CheckFollow_ID);
     }
 
@@ -17390,21 +17253,20 @@
         }
     }
 
-    function Screens_ThumbOptionStringGetHistory() {
-        return Main_getItemJson(inUseObj.histPosXName, [0, 0, 0])[1];
+    function Screens_ThumbOptionStringGetHistory(key) {
+        return Main_getItemJson(ScreenObj[key].histPosXName, [0, 0, 0])[1];
     }
 
-    function Screens_ThumbOptionhandleKeyDown(event) {
+    function Screens_ThumbOptionhandleKeyDown(key, event) {
         //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
 
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                Screens_ThumbOptionDialogHide();
+                Screens_ThumbOptionDialogHide(false, key);
                 break;
             case KEY_LEFT:
-                Screens_clearTODialogId();
-                Screens_SeTODialogId();
+                Screens_SeTODialogId(key);
                 if (Screens_ThumbOptionPosY > 2) {
                     Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
                     if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0)
@@ -17414,8 +17276,7 @@
                 }
                 break;
             case KEY_RIGHT:
-                Screens_clearTODialogId();
-                Screens_SeTODialogId();
+                Screens_SeTODialogId(key);
                 if (!Screens_handleKeyUpIsClear) break;
                 if (Screens_ThumbOptionPosY > 2) {
                     Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
@@ -17429,8 +17290,7 @@
             case KEY_UP:
                 if (Screens_ThumbOptionSpecial) break;
                 var lower = !Main_A_includes_B(document.getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : 0;
-                Screens_clearTODialogId();
-                Screens_SeTODialogId();
+                Screens_SeTODialogId(key);
                 Screens_ThumbOptionPosY--;
                 if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
                 else {
@@ -17440,8 +17300,7 @@
                 break;
             case KEY_DOWN:
                 if (Screens_ThumbOptionSpecial) break;
-                Screens_clearTODialogId();
-                Screens_SeTODialogId();
+                Screens_SeTODialogId(key);
                 Screens_ThumbOptionPosY++;
                 if (Screens_ThumbOptionPosY > 5)
                     Screens_ThumbOptionPosY = 5;
@@ -17452,10 +17311,9 @@
                 break;
             case KEY_ENTER:
                 if (Screens_ThumbOptionPosY === 2) {
-                    Screens_clearTODialogId();
-                    Screens_SeTODialogId();
-                    Screens_FollowUnfollow();
-                } else Screens_ThumbOptionDialogHide(true);
+                    Screens_SeTODialogId(key);
+                    Screens_FollowUnfollow(key);
+                } else Screens_ThumbOptionDialogHide(true, key);
                 break;
             default:
                 break;
@@ -17464,61 +17322,65 @@
 
     var Screens_ThumbOptionDialogID;
 
-    function Screens_clearTODialogId() {
-        Main_clearTimeout(Screens_ThumbOptionDialogID);
+    function Screens_SeTODialogId(key) {
+        Screens_ThumbOptionDialogID = Main_setTimeout(
+            function() {
+                Screens_ThumbOptionDialogHide(false, key);
+            },
+            Screens_DialogHideTimout,
+            Screens_ThumbOptionDialogID
+        );
     }
 
-    function Screens_SeTODialogId() {
-        Screens_ThumbOptionDialogID = Main_setTimeout(Screens_ThumbOptionDialogHide, 6000, Screens_ThumbOptionDialogID);
-    }
-
-    function Screens_ThumbOptionDialogHide(Update) {
+    function Screens_ThumbOptionDialogHide(Update, key) {
         Screens_histRemoveFocus(Screens_ThumbOptionPosY, 'thumb_opt');
 
-        Screens_clearTODialogId();
-        Main_removeEventListener("keydown", Screens_ThumbOptionhandleKeyDown);
-        Main_addEventListener("keydown", Screens_handleKeyDown);
+        Main_clearTimeout(Screens_ThumbOptionDialogID);
+        Main_removeEventListener("keydown", ScreenObj[key].key_thumb);
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElement('dialog_thumb_opt');
 
         if (Update) {
 
             if (Screens_ThumbOptionPosY === -1) {
                 var streamer, title;
-                if (!inUseObj.screenType) {
+                if (!ScreenObj[key].screenType) {
                     streamer = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1];
                     title = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[2];
-                } else if (inUseObj.screenType === 1) {
+                } else if (ScreenObj[key].screenType === 1) {
                     streamer = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1];
                     title = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[10];
-                } else if (inUseObj.screenType === 2) {
+                } else if (ScreenObj[key].screenType === 2) {
                     streamer = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[4];
                     title = Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[10];
                 }
 
                 Screens_DeleteDialogAll = false;
                 Screens_showDeleteDialog(
-                    STR_DELETE_SURE + inUseObj.history_Type() + STR_SPACE + STR_HISTORY + STR_SPACE + STR_FOR + '?' +
+                    STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE + STR_HISTORY + STR_SPACE + STR_FOR + '?' +
                     STR_BR + STR_BR + streamer + STR_BR + title + STR_BR + STR_BR +
-                    STR_REFRESH_DELETE);
+                    STR_REFRESH_DELETE,
+                    key
+                );
 
-            } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel();
+            } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel(key);
             else if (Screens_ThumbOptionPosY === 1) Screens_OpenGame();
             else if (Screens_ThumbOptionPosY === 3) {
-                if (!inUseObj.screenType) {
-                    if (inUseObj.screen === Main_HistoryLive &&
-                        Main_A_includes_B(document.getElementById(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX).src, 's3_vods')) {
-                        HistoryVod.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
-                        Main_setItem(HistoryVod.histPosXName, JSON.stringify(HistoryVod.histPosX));
+                if (!ScreenObj[key].screenType) {
+                    if (ScreenObj[key].screen === Main_HistoryLive &&
+                        Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                        ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                        Main_setItem(ScreenObj[Main_HistoryVod].histPosXName, JSON.stringify(ScreenObj[Main_HistoryVod].histPosX));
                     } else {
-                        HistoryLive.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
-                        Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryLive.histPosX));
+                        ScreenObj[Main_HistoryLive].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                        Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryLive].histPosX));
                     }
-                } else if (inUseObj.screenType === 1) {
-                    HistoryVod.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
-                    Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryVod.histPosX));
-                } else if (inUseObj.screenType === 2) {
-                    HistoryClip.histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
-                    Main_setItem(inUseObj.histPosXName, JSON.stringify(HistoryClip.histPosX));
+                } else if (ScreenObj[key].screenType === 1) {
+                    ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                    Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryVod].histPosX));
+                } else if (ScreenObj[key].screenType === 2) {
+                    ScreenObj[Main_HistoryClip].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
+                    Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryClip].histPosX));
                 }
 
             } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang();
@@ -17539,9 +17401,9 @@
         if (!Main_A_equals_B(Main_ContentLang_old, Main_ContentLang)) Main_ReloadScreen();
     }
 
-    function Screens_FollowUnfollow() {
+    function Screens_FollowUnfollow(key) {
         if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-            var theUrl, channel_id = inUseObj.screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
+            var theUrl, channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
 
             if (Screens_isFollowing) {
                 theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
@@ -17563,9 +17425,9 @@
                 Screens_isFollowing = false;
                 Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
                 Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(0, 0, Screens_FollowUnfollow, null);
-            }
+            } // } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+            //     AddCode_refreshTokens(0, 0, Screens_FollowUnfollow, null);
+            // }
         }
     }
 
@@ -17575,9 +17437,9 @@
                 Screens_isFollowing = true;
                 Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
                 Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(0, 0, Screens_FollowUnfollow, null);
-            }
+            } // } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+            //     AddCode_refreshTokens(0, 0, Screens_FollowUnfollow, null);
+            // }
         }
     }
 
@@ -17621,13 +17483,13 @@
         Main_ReStartScreens();
     }
 
-    function Screens_OpenChannel() {
+    function Screens_OpenChannel(key) {
         if (!Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) {
             Main_values.Main_BeforeChannel = (Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame) ? Main_values.Main_BeforeAgame : Main_values.Main_Go;
             Main_values.Main_BeforeChannelisSet = true;
         }
 
-        if (inUseObj.screenType < 2) {
+        if (ScreenObj[key].screenType < 2) {
             Main_values.Main_selectedChannel_id = Screens_values_Play_data[14];
 
             Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTING);
@@ -17673,7 +17535,7 @@
     var Screens_ThumbOptionLanguages = [];
     var Main_ContentLang_old = '';
 
-    function Screens_ThumbOptionSetArrowArray() {
+    function Screens_ThumbOptionSetArrowArray(key) {
         Screens_ThumbOptionScreens = [
             STR_LIVE,
             STR_FEATURED,
@@ -17700,17 +17562,17 @@
         var isAll = Main_ContentLang === "";
         Main_ContentLang_old = Main_ContentLang;
         Screens_ThumbOptionLanguages = [];
-        for (var key in Languages_value) {
-            Screens_ThumbOptionLanguages.push(key);
-            if (!isAll && Languages_Obj_default(key)) default_lang = Screens_ThumbOptionLanguages.length - 1;
+        for (var property in Languages_value) {
+            Screens_ThumbOptionLanguages.push(property);
+            if (!isAll && Languages_Obj_default(property)) default_lang = Screens_ThumbOptionLanguages.length - 1;
         }
 
         Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionLanguages, Screens_ThumbOptionScreens];
 
-        var historyType = Screens_ThumbOptionStringGetHistory();
-        if (inUseObj.screen === Main_HistoryLive &&
-            Main_A_includes_B(document.getElementById(inUseObj.ids[1] + inUseObj.posY + '_' + inUseObj.posX).src, 's3_vods')) {
-            historyType = Main_getItemJson(HistoryVod.histPosXName, [0, 0, 0])[1];
+        var historyType = Screens_ThumbOptionStringGetHistory(key);
+        if (ScreenObj[key].screen === Main_HistoryLive &&
+            Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+            historyType = Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1];
         }
 
         Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, default_lang, 0];
@@ -17730,22 +17592,22 @@
         ];
     }
 
-    function Screens_SetLastRefresh() {
+    function Screens_SetLastRefresh(key) {
         if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
-            Main_values.Main_Go === Main_addUser || !inUseObj) return;
+            Main_values.Main_Go === Main_addUser || !ScreenObj[key]) return;
 
-        Main_innerHTML("label_last_refresh", STR_SPACE + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - inUseObj.lastRefresh) + ")");
+        Main_innerHTML("label_last_refresh", STR_SPACE + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
     }
 
-    function Screens_RefreshTimeout() {
+    function Screens_RefreshTimeout(key) {
         if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
-            Main_values.Main_Go === Main_addUser || !inUseObj || !Settings_Obj_default("auto_refresh_screen")) return false;
+            Main_values.Main_Go === Main_addUser || !ScreenObj || !Settings_Obj_default("auto_refresh_screen")) return false;
 
-        return (new Date().getTime()) > (inUseObj.lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000));
+        return (new Date().getTime()) > (ScreenObj[key].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000));
     }
 
     function Screens_Isfocused() {
-        var doc = document.getElementById(inUseObj.ids[0] + inUseObj.posY + '_' + inUseObj.posX);
+        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
         return doc ? Main_A_includes_B(doc.className, 'stream_thumbnail_focused') && Main_isScene1DocShown() : false;
     } //Spacing for reease maker not trow erros frm jshint
     var Main_ItemsLimitMax = 100;
@@ -17770,31 +17632,8 @@
 
     var AGame_following = false;
 
-    var DefaultloadingDataTimeout = 3500;
+    var DefaultloadingDataTimeout = 3000;
     var DefaultLoadingDataTryMax = 3;
-
-    //Screens
-    var Clip;
-    var ChannelClip;
-    var AGameClip;
-    var Game;
-    var UserGames;
-    var Live;
-    var Featured;
-    var AGame;
-    var Vod;
-    var AGameVod;
-    var UserVod;
-    var ChannelVod;
-    var UserHost;
-    var UserLive;
-    var UserChannels;
-    var SearchGames;
-    var SearchLive;
-    var SearchChannels;
-    var HistoryLive;
-    var HistoryVod;
-    var HistoryClip;
 
     var Base_obj = {
         posX: 0,
@@ -17818,12 +17657,25 @@
         itemsCountCheck: false,
         FirstLoad: false,
         row: 0,
+        Headers: Main_Headers,
         data: null,
         token: null,
         data_cursor: 0,
         lastRefresh: 0,
+        key_fun_start: function() {
+            return Screens_handleKeyDown.bind(null, this.screen);
+        },
+        exit_fun: function() {
+            Screens_exit(this.screen);
+        },
+        init_fun: function() {
+            Screens_init(this.screen);
+        },
+        start_fun: function() {
+            Screens_StartLoad(this.screen);
+        },
         loadDataSuccess: function() {
-            Screens_loadDataSuccess(this);
+            Screens_loadDataSuccess(this.screen);
         },
         Set_Scroll: function() {
             this.ScrollDoc = document.getElementById(this.ids[10]);
@@ -17831,7 +17683,7 @@
         },
         addrow: Screens_addrow,
         key_exit: function(goSidepanel) { //TODO overwrite this on if object
-            Screens_RemoveAllFocus();
+            Screens_RemoveAllFocus(this.screen);
 
             if ((this.screen === Main_aGame) && !goSidepanel) {
                 if (Main_values.Games_return) {
@@ -17842,22 +17694,22 @@
                     Main_values.Main_Go = Main_values.Main_BeforeAgame;
                     Main_values.Main_BeforeAgame = Main_games;
                 }
-                Screens_BasicExit(Main_values.Main_Go);
+                Screens_BasicExit(Main_values.Main_Go, this.screen);
                 Main_SwitchScreen();
             } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
                     this.screen === Main_SearchChannels) && !goSidepanel) {
                 if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                 else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                 Main_values.Search_isSearching = false;
-                Screens_BasicExit(Main_values.Main_Go);
+                Screens_BasicExit(Main_values.Main_Go, this.screen);
                 Main_SwitchScreen();
             } else if ((this.screen === Main_AGameClip || this.screen === Main_AGameVod) && !goSidepanel) {
-                Screens_BasicExit(Main_aGame);
+                Screens_BasicExit(Main_aGame, this.screen);
                 Main_SwitchScreen();
             } else if ((this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) && !goSidepanel) {
-                Screens_BasicExit(Main_ChannelContent);
+                Screens_BasicExit(Main_ChannelContent, this.screen);
                 Main_SwitchScreen();
-            } else Screens_OpenSidePanel();
+            } else Screens_OpenSidePanel(false, this.screen);
         },
         concatenate: function(responseText) {
             ////Main_Log(responseText);
@@ -17893,9 +17745,9 @@
         rowClass: 'animate_height_transition',
         histPosXName: 'HistoryVod_histPosX',
         screenType: 1,
-        addFocus: function(y, forceScroll) {
+        addFocus: function(forceScroll, key) {
             this.AnimateThumb(this);
-            Screens_addFocusVideo(y, forceScroll);
+            Screens_addFocusVideo(forceScroll, key);
         },
         setTODialog: function() {
             Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
@@ -17926,7 +17778,8 @@
                     Screens_createCellVod(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
-                        ScreensObj_VodCellArray(cell)
+                        ScreensObj_VodCellArray(cell),
+                        this.screen
                     )
                 );
 
@@ -17939,7 +17792,7 @@
     };
 
     function ScreensObj_InitVod() {
-        Vod = Screens_assign({
+        ScreenObj[Main_Vod] = Screens_assign({
             periodMaxPos: 4,
             HeaderQuatity: 2,
             key_pgDown: Main_Clip,
@@ -17962,10 +17815,10 @@
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
                         this.SetPeriod();
-                        Screens_StartLoad();
+                        Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
-                    } else Screens_PeriodStart();
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                    } else Screens_PeriodStart(this.screen);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -17973,7 +17826,8 @@
                     [
                         STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
                         STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
-                    ]
+                    ],
+                    this.screen
                 );
             },
             label_init: function() {
@@ -17989,12 +17843,12 @@
             },
         }, Base_obj);
 
-        Vod = Screens_assign(Vod, Base_Vod_obj);
-        Vod.Set_Scroll();
+        ScreenObj[Main_Vod] = Screens_assign(ScreenObj[Main_Vod], Base_Vod_obj);
+        ScreenObj[Main_Vod].Set_Scroll();
     }
 
     function ScreensObj_InitChannelVod() {
-        ChannelVod = Screens_assign({
+        ScreenObj[Main_ChannelVod] = Screens_assign({
             periodMaxPos: 2,
             HeaderQuatity: 2,
             key_pgDown: Main_ChannelClip,
@@ -18020,15 +17874,15 @@
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
                         this.SetPeriod();
-                        Screens_StartLoad();
+                        Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else if (this.posX === 1) {
                         this.periodPos++;
                         if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
                         this.SetPeriod();
-                        Screens_StartLoad();
-                    } else Screens_OffSetStart();
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                        Screens_StartLoad(this.screen);
+                    } else Screens_OffSetStart(this.screen);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
             },
             SwitchesIcons: ['movie-play', 'history', 'offset'],
             addSwitches: function() {
@@ -18037,7 +17891,8 @@
                         STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
                         STR_SPACE + STR_SPACE + STR_SWITCH_TYPE,
                         STR_SPACE + STR_SPACE + STR_SWITCH_POS
-                    ]
+                    ],
+                    this.screen
                 );
             },
             lastselectedChannel: '',
@@ -18058,7 +17913,7 @@
 
                 ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname,
                     (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                    (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + inUseObj.extraoffset);
+                    (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + ScreenObj[this.screen].extraoffset);
 
             },
             label_exit: function() {
@@ -18066,9 +17921,9 @@
             }
         }, Base_obj);
 
-        ChannelVod = Screens_assign(ChannelVod, Base_Vod_obj);
+        ScreenObj[Main_ChannelVod] = Screens_assign(ScreenObj[Main_ChannelVod], Base_Vod_obj);
 
-        ChannelVod.addCell = function(cell) {
+        ScreenObj[Main_ChannelVod].addCell = function(cell) {
 
             var thumbnail = cell.preview.template;
 
@@ -18079,11 +17934,11 @@
 
             this.addCellBase(cell, thumbnail);
         };
-        ChannelVod.Set_Scroll();
+        ScreenObj[Main_ChannelVod].Set_Scroll();
     }
 
     function ScreensObj_InitAGameVod() {
-        AGameVod = Screens_assign({
+        ScreenObj[Main_AGameVod] = Screens_assign({
             periodMaxPos: 4,
             HeaderQuatity: 2,
             object: 'vods',
@@ -18107,10 +17962,10 @@
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
                         this.SetPeriod();
-                        Screens_StartLoad();
+                        Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
-                    } else Screens_PeriodStart();
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                    } else Screens_PeriodStart(this.screen);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -18118,15 +17973,18 @@
                     [
                         STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
                         STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
-                    ]
+                    ],
+                    this.screen
                 );
             },
             OldgameSelected: '',
             label_init: function() {
-                ScreensObj_TopLableAgameInit();
+                ScreensObj_TopLableAgameInit(this.screen);
                 this.SetPeriod();
             },
-            label_exit: ScreensObj_TopLableAgameExit,
+            label_exit: function() {
+                ScreensObj_TopLableAgameExit(this.screen);
+            },
             SetPeriod: function() {
                 Main_setItem('AGameVod_periodPos', this.periodPos);
 
@@ -18134,12 +17992,12 @@
             }
         }, Base_obj);
 
-        AGameVod = Screens_assign(AGameVod, Base_Vod_obj);
-        AGameVod.Set_Scroll();
+        ScreenObj[Main_AGameVod] = Screens_assign(ScreenObj[Main_AGameVod], Base_Vod_obj);
+        ScreenObj[Main_AGameVod].Set_Scroll();
     }
 
     function ScreensObj_InitUserVod() {
-        UserVod = Screens_assign({
+        ScreenObj[Main_UserVod] = Screens_assign({
             periodMaxPos: 2,
             HeaderQuatity: 3,
             object: 'videos',
@@ -18164,15 +18022,15 @@
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
                         this.SetPeriod();
-                        Screens_StartLoad();
+                        Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else {
                         this.periodPos++;
                         if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
                         this.SetPeriod();
-                        Screens_StartLoad();
+                        Screens_StartLoad(this.screen);
                     }
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -18180,12 +18038,13 @@
                     [
                         STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
                         STR_SPACE + STR_SPACE + STR_SWITCH_TYPE
-                    ]
+                    ],
+                    this.screen
                 );
             },
             label_init: function() {
                 this.SetPeriod();
-                ScreensObj_TopLableUserInit();
+                ScreensObj_TopLableUserInit(this.screen);
             },
             SetPeriod: function() {
                 Main_setItem('UserVod_periodPos', this.periodPos);
@@ -18195,8 +18054,8 @@
             }
         }, Base_obj);
 
-        UserVod = Screens_assign(UserVod, Base_Vod_obj);
-        UserVod.Set_Scroll();
+        ScreenObj[Main_UserVod] = Screens_assign(ScreenObj[Main_UserVod], Base_Vod_obj);
+        ScreenObj[Main_UserVod].Set_Scroll();
     }
 
     var Base_Live_obj = {
@@ -18244,7 +18103,8 @@
                     Screens_createCellLive(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
-                        ScreensObj_LiveCellArray(cell)
+                        ScreensObj_LiveCellArray(cell),
+                        this.screen
                     )
                 );
 
@@ -18254,7 +18114,7 @@
     };
 
     function ScreensObj_InitLive() {
-        Live = Screens_assign({
+        ScreenObj[Main_Live] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('Live'),
             table: 'stream_table_live',
@@ -18277,16 +18137,16 @@
                 ScreensObj_SetTopLable(STR_LIVE);
             },
             key_play: function() {
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
             }
         }, Base_obj);
 
-        Live = Screens_assign(Live, Base_Live_obj);
-        Live.Set_Scroll();
+        ScreenObj[Main_Live] = Screens_assign(ScreenObj[Main_Live], Base_Live_obj);
+        ScreenObj[Main_Live].Set_Scroll();
     }
 
     function ScreensObj_InitSearchLive() {
-        SearchLive = Screens_assign({
+        ScreenObj[Main_SearchLive] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('SearchLive'),
             table: 'stream_table_search_live',
@@ -18312,22 +18172,22 @@
                 if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
             },
             key_play: function() {
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
             }
         }, Base_obj);
 
-        SearchLive = Screens_assign(SearchLive, Base_Live_obj);
+        ScreenObj[Main_SearchLive] = Screens_assign(ScreenObj[Main_SearchLive], Base_Live_obj);
 
         // SearchLive.setMax = function(tempObj) {
         //     this.MaxOffset = tempObj._total;
         //     if (typeof this.MaxOffset === 'undefined' || this.data.length >= this.MaxOffset ||
         //         (this.data.length < Main_ItemsLimitMax)) this.dataEnded = true;
         // };
-        SearchLive.Set_Scroll();
+        ScreenObj[Main_SearchLive].Set_Scroll();
     }
 
     function ScreensObj_InitUserLive() {
-        UserLive = Screens_assign({
+        ScreenObj[Main_UserLive] = Screens_assign({
             HeaderQuatity: 3,
             ids: Screens_ScreenIds('UserLive'),
             table: 'stream_table_user_live',
@@ -18366,17 +18226,17 @@
                 }
             },
             label_init: function() {
-                ScreensObj_TopLableUserInit();
+                ScreensObj_TopLableUserInit(this.screen);
                 ScreensObj_SetTopLable(STR_USER, STR_LIVE_CHANNELS);
             },
             key_play: function() {
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
             }
         }, Base_obj);
 
-        UserLive = Screens_assign(UserLive, Base_Live_obj);
+        ScreenObj[Main_UserLive] = Screens_assign(ScreenObj[Main_UserLive], Base_Live_obj);
 
-        UserLive.concatenate = function(responseText) {
+        ScreenObj[Main_UserLive].concatenate = function(responseText) {
             ////Main_Log(responseText);
             if (this.token || this.followerChannelsDone) {
                 //User has added a key or followed channels list is done, concatenate live channels
@@ -18431,11 +18291,11 @@
                 Screens_loadDataRequest(this);
             }
         };
-        UserLive.Set_Scroll();
+        ScreenObj[Main_UserLive].Set_Scroll();
     }
 
     function ScreensObj_InitUserHost() {
-        UserHost = Screens_assign({
+        ScreenObj[Main_UserHost] = Screens_assign({
             HeaderQuatity: 1,
             ids: Screens_ScreenIds('UserHost'),
             table: 'stream_table_user_host',
@@ -18443,7 +18303,6 @@
             object: 'hosts',
             key_pgDown: Main_usergames,
             key_pgUp: Main_UserLive,
-            use_hls: true,
             base_url: 'https://api.twitch.tv/api/users/',
             set_url: function() {
                 if ((typeof this.MaxOffset !== 'undefined') &&
@@ -18454,18 +18313,18 @@
                     '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
             },
             label_init: function() {
-                ScreensObj_TopLableUserInit();
+                ScreensObj_TopLableUserInit(this.screen);
 
                 ScreensObj_SetTopLable(STR_USER, STR_LIVE_HOSTS);
             },
             key_play: function() {
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
             }
         }, Base_obj);
 
-        UserHost = Screens_assign(UserHost, Base_Live_obj);
+        ScreenObj[Main_UserHost] = Screens_assign(ScreenObj[Main_UserHost], Base_Live_obj);
 
-        UserHost.addCell = function(cell) {
+        ScreenObj[Main_UserHost].addCell = function(cell) {
             if (!this.idObject[cell.target._id + '' + cell._id]) { //combined id host and hosted
 
                 this.itemsCount++;
@@ -18492,18 +18351,20 @@
                             '', //12 stream creat at
                             cell.target.viewers, //13
                             cell.target._id //14
-                        ]
+                        ],
+                        this.screen
                     )
                 );
 
                 this.coloumn_id++;
             }
         };
-        UserHost.Set_Scroll();
+        ScreenObj[Main_UserHost].Set_Scroll();
+        ScreenObj[Main_UserHost].Headers = Main_Headers_Back;
     }
 
     function ScreensObj_InitAGame() {
-        AGame = Screens_assign({
+        ScreenObj[Main_aGame] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('AGame'),
             table: 'stream_table_a_game',
@@ -18520,7 +18381,7 @@
                     (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
             },
             label_init: function() {
-                ScreensObj_TopLableAgameInit();
+                ScreensObj_TopLableAgameInit(this.screen);
 
                 if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
                     Main_cleanTopLabel();
@@ -18528,7 +18389,9 @@
 
                 ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_LIVE);
             },
-            label_exit: ScreensObj_TopLableAgameExit,
+            label_exit: function() {
+                ScreensObj_TopLableAgameExit(this.screen);
+            },
             HasSwitches: true,
             SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
             addSwitches: function() {
@@ -18537,22 +18400,23 @@
                         STR_SPACE + STR_SPACE + STR_VIDEOS,
                         STR_SPACE + STR_SPACE + STR_CLIPS,
                         STR_SPACE + STR_SPACE + STR_FOLLOW
-                    ]
+                    ],
+                    this.screen
                 );
             },
             key_play: function() {
                 if (this.posY !== -1) {
-                    Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
-                } else AGame_headerOptions();
+                    Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                } else AGame_headerOptions(this.screen);
             },
         }, Base_obj);
 
-        AGame = Screens_assign(AGame, Base_Live_obj);
-        AGame.Set_Scroll();
+        ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
+        ScreenObj[Main_aGame].Set_Scroll();
     }
 
     function ScreensObj_InitFeatured() {
-        Featured = Screens_assign({
+        ScreenObj[Main_Featured] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('Featured'),
             table: 'stream_table_featured',
@@ -18576,17 +18440,17 @@
             },
             object: 'featured',
             key_play: function() {
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
             }
         }, Base_obj);
 
-        Featured = Screens_assign(Featured, Base_Live_obj);
+        ScreenObj[Main_Featured] = Screens_assign(ScreenObj[Main_Featured], Base_Live_obj);
 
-        Featured.addCell = function(cell) {
+        ScreenObj[Main_Featured].addCell = function(cell) {
             cell = cell.stream;
             this.addCellTemp(cell);
         };
-        Featured.Set_Scroll();
+        ScreenObj[Main_Featured].Set_Scroll();
     }
 
     var Base_Clip_obj = {
@@ -18618,7 +18482,8 @@
                 [
                     STR_SPACE + STR_SPACE + STR_SWITCH_CLIP,
                     STR_SPACE + STR_SPACE + STR_PLAY_ALL
-                ]
+                ],
+                this.screen
             );
         },
         setMax: function(tempObj) {
@@ -18628,16 +18493,16 @@
         key_play: function() {
             if (this.posY === -1) {
                 if (!this.loadingData) {
-                    if (!this.posX) Screens_PeriodStart();
+                    if (!this.posX) Screens_PeriodStart(this.screen);
                     else {
                         PlayClip_All = true;
-                        Screens_removeFocusFollow();
+                        Screens_removeFocusFollow(this.screen);
                         this.posX = 0;
                         this.posY = 0;
-                        Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                        Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
                     }
                 }
-            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
         },
         Cells: [],
         addCell: function(cell) {
@@ -18667,7 +18532,8 @@
                             Main_addCommas(cell.views) + STR_VIEWS, //14
                             cell.thumbnails.medium, //15
                             STR_CREATED_AT + Main_videoCreatedAt(cell.created_at), //16
-                        ]
+                        ],
+                        this.screen
                     )
                 );
 
@@ -18677,7 +18543,7 @@
     };
 
     function ScreensObj_InitClip() {
-        Clip = Screens_assign({
+        ScreenObj[Main_Clip] = Screens_assign({
             ids: Screens_ScreenIds('Clip'),
             table: 'stream_table_clip',
             screen: Main_Clip,
@@ -18706,12 +18572,12 @@
             },
         }, Base_obj);
 
-        Clip = Screens_assign(Clip, Base_Clip_obj);
-        Clip.Set_Scroll();
+        ScreenObj[Main_Clip] = Screens_assign(ScreenObj[Main_Clip], Base_Clip_obj);
+        ScreenObj[Main_Clip].Set_Scroll();
     }
 
     function ScreensObj_InitChannelClip() {
-        ChannelClip = Screens_assign({
+        ScreenObj[Main_ChannelClip] = Screens_assign({
             ids: Screens_ScreenIds('ChannelClip'),
             table: 'stream_table_channel_clip',
             screen: Main_ChannelClip,
@@ -18741,12 +18607,12 @@
             label_exit: Main_RestoreTopLabel,
         }, Base_obj);
 
-        ChannelClip = Screens_assign(ChannelClip, Base_Clip_obj);
-        ChannelClip.Set_Scroll();
+        ScreenObj[Main_ChannelClip] = Screens_assign(ScreenObj[Main_ChannelClip], Base_Clip_obj);
+        ScreenObj[Main_ChannelClip].Set_Scroll();
     }
 
     function ScreensObj_InitAGameClip() {
-        AGameClip = Screens_assign({
+        ScreenObj[Main_AGameClip] = Screens_assign({
             ids: Screens_ScreenIds('AGameClip'),
             table: 'stream_table_a_game_clip',
             screen: Main_AGameClip,
@@ -18766,14 +18632,16 @@
                     Main_Periods[this.periodPos - 1]);
             },
             label_init: function() {
-                ScreensObj_TopLableAgameInit();
+                ScreensObj_TopLableAgameInit(this.screen);
                 this.SetPeriod();
             },
-            label_exit: ScreensObj_TopLableAgameExit,
+            label_exit: function() {
+                ScreensObj_TopLableAgameExit(this.screen);
+            },
         }, Base_obj);
 
-        AGameClip = Screens_assign(AGameClip, Base_Clip_obj);
-        AGameClip.Set_Scroll();
+        ScreenObj[Main_AGameClip] = Screens_assign(ScreenObj[Main_AGameClip], Base_Clip_obj);
+        ScreenObj[Main_AGameClip].Set_Scroll();
     }
 
     var Base_Game_obj = {
@@ -18797,13 +18665,13 @@
             Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
             Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
 
-            Main_removeEventListener("keydown", Screens_handleKeyDown);
+            Main_removeEventListener("keydown", this.key_fun);
             Main_values.Main_BeforeAgame = this.screen;
             Main_values.Main_Go = Main_aGame;
             Main_values.Main_BeforeAgameisSet = true;
 
             Main_addFocusVideoOffset = 0;
-            Main_removeEventListener("keydown", Screens_handleKeyDown);
+            Main_removeEventListener("keydown", this.key_fun);
             Main_HideElementWithEle(this.ScrollDoc);
 
             Main_SwitchScreen();
@@ -18823,12 +18691,16 @@
                 this.row.appendChild(
                     Screens_createCellGame(
                         this.row_id + '_' + this.coloumn_id,
-                        this.ids, [game.box.template.replace("{width}x{height}", Main_GameSize),
+                        this.ids,
+                        [game.box.template.replace("{width}x{height}", Main_GameSize),
                             game.name,
                             hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
                             Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',
                             game._id
-                        ]));
+                        ],
+                        this.screen
+                    )
+                );
 
                 this.coloumn_id++;
             }
@@ -18836,7 +18708,7 @@
     };
 
     function ScreensObj_InitGame() {
-        Game = Screens_assign({
+        ScreenObj[Main_games] = Screens_assign({
             ids: Screens_ScreenIds('Game'),
             table: 'stream_table_games',
             screen: Main_games,
@@ -18857,12 +18729,12 @@
             }
         }, Base_obj);
 
-        Game = Screens_assign(Game, Base_Game_obj);
-        Game.Set_Scroll();
+        ScreenObj[Main_games] = Screens_assign(ScreenObj[Main_games], Base_Game_obj);
+        ScreenObj[Main_games].Set_Scroll();
     }
 
     function ScreensObj_InitUserGames() {
-        UserGames = Screens_assign({
+        ScreenObj[Main_usergames] = Screens_assign({
             ids: Screens_ScreenIds('UserGames'),
             table: 'stream_table_user_games',
             screen: Main_usergames,
@@ -18872,7 +18744,6 @@
             isLive: Main_getItemBool('user_Games_live', true),
             OldUserName: '',
             object: 'follows',
-            use_hls: true,
             base_url: 'https://api.twitch.tv/api/users/',
             set_url: function() {
                 if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -18886,12 +18757,12 @@
 
                 ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FOLLOW_GAMES));
 
-                Screens_StartLoad();
+                Screens_StartLoad(this.screen);
 
                 Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
             },
             label_init: function() {
-                ScreensObj_TopLableUserInit();
+                ScreensObj_TopLableUserInit(this.screen);
                 Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FOLLOW_GAMES + ":" + STR_GUIDE);
 
                 ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FOLLOW_GAMES));
@@ -18901,13 +18772,18 @@
             },
         }, Base_obj);
 
-        UserGames = Screens_assign(UserGames, Base_Game_obj);
-        UserGames.HeaderQuatity = 1;
-        UserGames.Set_Scroll();
+        ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
+        ScreenObj[Main_usergames].HeaderQuatity = 1;
+        ScreenObj[Main_usergames].start_fun = function() {
+            if (!this.loadingData) this.key_refresh();
+            Screens_StartLoad(this.screen);
+        };
+        ScreenObj[Main_usergames].Set_Scroll();
+        ScreenObj[Main_usergames].Headers = Main_Headers_Back;
     }
 
     function ScreensObj_InitSearchGames() {
-        SearchGames = Screens_assign({
+        ScreenObj[Main_SearchGames] = Screens_assign({
             ids: Screens_ScreenIds('SearchGames'),
             table: 'stream_table_search_game',
             screen: Main_SearchGames,
@@ -18937,9 +18813,9 @@
             },
         }, Base_obj);
 
-        SearchGames = Screens_assign(SearchGames, Base_Game_obj);
-        SearchGames.ItemsLimit = 100;
-        SearchGames.Set_Scroll();
+        ScreenObj[Main_SearchGames] = Screens_assign(ScreenObj[Main_SearchGames], Base_Game_obj);
+        ScreenObj[Main_SearchGames].ItemsLimit = 100;
+        ScreenObj[Main_SearchGames].Set_Scroll();
     }
 
     var Base_Channel_obj = {
@@ -18968,7 +18844,11 @@
                 this.row.appendChild(
                     Screens_createCellChannel(
                         this.row_id + '_' + this.coloumn_id,
-                        this.ids, [cell.name, cell._id, cell.logo, cell.display_name, cell.partner]));
+                        this.ids,
+                        [cell.name, cell._id, cell.logo, cell.display_name, cell.partner],
+                        this.screen
+                    )
+                );
 
                 this.coloumn_id++;
             }
@@ -18976,7 +18856,7 @@
     };
 
     function ScreensObj_InitUserChannels() {
-        UserChannels = Screens_assign({
+        ScreenObj[Main_UserChannels] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('UserChannels'),
             table: 'stream_table_user_channels',
@@ -18992,7 +18872,7 @@
                     '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
             },
             label_init: function() {
-                ScreensObj_TopLableUserInit();
+                ScreensObj_TopLableUserInit(this.screen);
 
                 ScreensObj_SetTopLable(STR_USER, STR_USER_CHANNEL);
             },
@@ -19006,13 +18886,13 @@
                 Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
                 Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
 
-                Main_removeEventListener("keydown", Screens_handleKeyDown);
+                Main_removeEventListener("keydown", this.key_fun);
                 Main_values.Main_BeforeChannel = Main_UserChannels;
                 Main_values.Main_Go = Main_ChannelContent;
                 Main_values.Main_BeforeChannelisSet = true;
                 AddCode_IsFollowing = true;
                 ChannelContent_UserChannels = true;
-                Screens_exit();
+                Screens_exit(this.screen);
                 Main_SwitchScreen();
             },
             addCell: function(cell) {
@@ -19021,14 +18901,14 @@
             }
         }, Base_obj);
 
-        UserChannels = Screens_assign(UserChannels, Base_Channel_obj);
-        UserChannels.addrow = Screens_addrowChannel;
-        UserChannels.visiblerows = 5;
-        UserChannels.Set_Scroll();
+        ScreenObj[Main_UserChannels] = Screens_assign(ScreenObj[Main_UserChannels], Base_Channel_obj);
+        ScreenObj[Main_UserChannels].addrow = Screens_addrowChannel;
+        ScreenObj[Main_UserChannels].visiblerows = 5;
+        ScreenObj[Main_UserChannels].Set_Scroll();
     }
 
     function ScreensObj_InitSearchChannels() {
-        SearchChannels = Screens_assign({
+        ScreenObj[Main_SearchChannels] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('SearchChannels'),
             table: 'stream_table_search_channel',
@@ -19062,13 +18942,13 @@
                 Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
                 Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
 
-                Main_removeEventListener("keydown", Screens_handleKeyDown);
+                Main_removeEventListener("keydown", this.key_fun);
                 Main_values.Main_BeforeChannel = Main_SearchChannels;
                 Main_values.Main_Go = Main_ChannelContent;
                 Main_values.Main_BeforeChannelisSet = true;
                 AddCode_IsFollowing = false;
                 ChannelContent_UserChannels = false;
-                Screens_exit();
+                Screens_exit(this.screen);
                 Main_SwitchScreen();
             },
             addCell: function(cell) {
@@ -19076,10 +18956,10 @@
             }
         }, Base_obj);
 
-        SearchChannels = Screens_assign(SearchChannels, Base_Channel_obj);
-        SearchChannels.addrow = Screens_addrowChannel;
-        SearchChannels.visiblerows = 5;
-        SearchChannels.Set_Scroll();
+        ScreenObj[Main_SearchChannels] = Screens_assign(ScreenObj[Main_SearchChannels], Base_Channel_obj);
+        ScreenObj[Main_SearchChannels].addrow = Screens_addrowChannel;
+        ScreenObj[Main_SearchChannels].visiblerows = 5;
+        ScreenObj[Main_SearchChannels].Set_Scroll();
     }
 
     var Base_History_obj = {
@@ -19157,12 +19037,12 @@
         },
         history_exit: function() {
             if (this.status) {
-                Screens_removeFocusFollow();
+                Screens_removeFocusFollow(this.screen);
                 this.posY = 0;
                 this.posX = 0;
                 Main_AddClass(this.ids[0] + '0_' + this.posX, Main_classThumb);
             }
-            Main_removeEventListener("keydown", Screens_handleKeyDown);
+            Main_removeEventListener("keydown", this.key_fun);
             Main_HideElementWithEle(this.ScrollDoc);
         },
         sethistMainDialog: function() {
@@ -19183,7 +19063,7 @@
     };
 
     function ScreensObj_HistoryLive() {
-        HistoryLive = Screens_assign({
+        ScreenObj[Main_HistoryLive] = Screens_assign({
             Type: 'live',
             ids: Screens_ScreenIds('HistoryLive'),
             table: 'stream_table_historylive',
@@ -19205,7 +19085,7 @@
             },
             label_init: function() {
                 Main_HistoryPos = 0;
-                ScreensObj_TopLableUserInit();
+                ScreensObj_TopLableUserInit(this.screen);
                 ScreensObj_SetTopLable(
                     STR_USER,
                     STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE +
@@ -19226,8 +19106,8 @@
                         Main_values.Main_Go = Main_HistoryClip;
                         this.history_exit();
                         Main_SwitchScreen();
-                    } else Screens_histStart();
-                } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown, true);
+                    } else Screens_histStart(this.screen);
+                } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true);
 
             },
             addCell: function(cell) {
@@ -19242,6 +19122,7 @@
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             cell.data,
+                            this.screen,
                             cell.date,
                             cell.vodimg,
                             (this.streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
@@ -19260,18 +19141,19 @@
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE + STR_SETTINGS
-                    ]
+                    ],
+                    this.screen
                 );
             },
         }, Base_obj);
 
-        HistoryLive = Screens_assign(HistoryLive, Base_History_obj);
-        HistoryLive.Upsorting();
-        HistoryLive.Set_Scroll();
+        ScreenObj[Main_HistoryLive] = Screens_assign(ScreenObj[Main_HistoryLive], Base_History_obj);
+        ScreenObj[Main_HistoryLive].Upsorting();
+        ScreenObj[Main_HistoryLive].Set_Scroll();
     }
 
     function ScreensObj_HistoryVod() {
-        HistoryVod = Screens_assign({
+        ScreenObj[Main_HistoryVod] = Screens_assign({
             Type: 'vod',
             ids: Screens_ScreenIds('HistoryVod'),
             table: 'stream_table_historyvod',
@@ -19296,7 +19178,7 @@
             },
             label_init: function() {
                 Main_HistoryPos = 1;
-                ScreensObj_TopLableUserInit();
+                ScreensObj_TopLableUserInit(this.screen);
 
                 ScreensObj_SetTopLable(
                     STR_USER,
@@ -19315,8 +19197,8 @@
                         Main_values.Main_Go = Main_HistoryClip;
                         this.history_exit();
                         Main_SwitchScreen();
-                    } else Screens_histStart();
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                    } else Screens_histStart(this.screen);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
 
             },
             addCell: function(cell) {
@@ -19330,6 +19212,7 @@
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             cell.data,
+                            this.screen,
                             cell.date,
                             cell.watched
                         )
@@ -19345,23 +19228,24 @@
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE + STR_SETTINGS
-                    ]
+                    ],
+                    this.screen
                 );
             },
         }, Base_obj);
 
-        HistoryVod = Screens_assign(HistoryVod, Base_History_obj);
+        ScreenObj[Main_HistoryVod] = Screens_assign(ScreenObj[Main_HistoryVod], Base_History_obj);
 
-        HistoryVod.addFocus = function(y, x, idArray, forceScroll) {
+        ScreenObj[Main_HistoryVod].addFocus = function(forceScroll, key) {
             this.AnimateThumb(this);
-            Screens_addFocusVideo(y, x, idArray, forceScroll);
+            Screens_addFocusVideo(forceScroll, key);
         };
-        HistoryVod.Upsorting();
-        HistoryVod.Set_Scroll();
+        ScreenObj[Main_HistoryVod].Upsorting();
+        ScreenObj[Main_HistoryVod].Set_Scroll();
     }
 
     function ScreensObj_HistoryClip() {
-        HistoryClip = Screens_assign({
+        ScreenObj[Main_HistoryClip] = Screens_assign({
             Type: 'clip',
             ids: Screens_ScreenIds('HistoryClip'),
             table: 'stream_table_historyclip',
@@ -19383,7 +19267,7 @@
             },
             label_init: function() {
                 Main_HistoryPos = 2;
-                ScreensObj_TopLableUserInit();
+                ScreensObj_TopLableUserInit(this.screen);
 
                 ScreensObj_SetTopLable(
                     STR_USER,
@@ -19403,8 +19287,8 @@
                         Main_values.Main_Go = Main_HistoryVod;
                         this.history_exit();
                         Main_SwitchScreen();
-                    } else Screens_histStart();
-                } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, Screens_handleKeyDown);
+                    } else Screens_histStart(this.screen);
+                } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
 
             },
             addCell: function(cell) {
@@ -19418,6 +19302,7 @@
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             cell.data,
+                            this.screen,
                             cell.date,
                             cell.watched
                         )
@@ -19433,64 +19318,65 @@
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
                         STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE + STR_SETTINGS
-                    ]
+                    ],
+                    this.screen
                 );
             },
         }, Base_obj);
 
-        HistoryClip = Screens_assign(HistoryClip, Base_History_obj);
-        HistoryClip.Upsorting();
-        HistoryClip.Set_Scroll();
+        ScreenObj[Main_HistoryClip] = Screens_assign(ScreenObj[Main_HistoryClip], Base_History_obj);
+        ScreenObj[Main_HistoryClip].Upsorting();
+        ScreenObj[Main_HistoryClip].Set_Scroll();
     }
 
-    function ScreensObj_addSwitches(StringsArray) {
-        inUseObj.TopRowCreated = true;
-        inUseObj.row = document.createElement('div');
+    function ScreensObj_addSwitches(StringsArray, key) {
+        ScreenObj[key].TopRowCreated = true;
+        ScreenObj[key].row = document.createElement('div');
         var thumbfollow, div, i = 0;
 
         for (i; i < StringsArray.length; i++) {
-            thumbfollow = '<i class="icon-' + inUseObj.SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
+            thumbfollow = '<i class="icon-' + ScreenObj[key].SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
             div = document.createElement('div');
-            div.setAttribute('id', inUseObj.ids[8] + 'y_' + i);
+            div.setAttribute('id', ScreenObj[key].ids[8] + 'y_' + i);
             div.className = 'stream_cell_period';
-            div.innerHTML = '<div id="' + inUseObj.ids[0] +
-                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + inUseObj.ids[3] +
+            div.innerHTML = '<div id="' + ScreenObj[key].ids[0] +
+                'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + ScreenObj[key].ids[3] +
                 'y_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
-            inUseObj.row.appendChild(div);
+            ScreenObj[key].row.appendChild(div);
         }
-        inUseObj.tableDoc.appendChild(inUseObj.row);
+        ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
     }
 
-    function ScreensObj_TopLableAgameInit() {
+    function ScreensObj_TopLableAgameInit(key) {
         if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
         Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
         if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
-            inUseObj.gameSelected !== Main_values.Main_gameSelected)
-            inUseObj.status = false;
+            ScreenObj[key].gameSelected !== Main_values.Main_gameSelected)
+            ScreenObj[key].status = false;
 
-        inUseObj.gameSelected = Main_values.Main_gameSelected;
+        ScreenObj[key].gameSelected = Main_values.Main_gameSelected;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
         if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_SetUserLables();
         else Sidepannel_SetDefaultLables();
 
-        Sidepannel_SetTopOpacity(inUseObj.screen);
+        Sidepannel_SetTopOpacity(ScreenObj[key].screen);
     }
 
-    function ScreensObj_TopLableAgameExit() {
-        inUseObj.gameSelected = Main_values.Main_gameSelected;
+    function ScreensObj_TopLableAgameExit(key) {
+        ScreenObj[key].gameSelected = Main_values.Main_gameSelected;
         Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     }
 
-    function ScreensObj_TopLableUserInit() {
-        if (inUseObj.OldUserName !== AddUser_UsernameArray[0].name) inUseObj.status = false;
-        inUseObj.OldUserName = AddUser_UsernameArray[0].name;
+    function ScreensObj_TopLableUserInit(key) {
+        if (ScreenObj[key].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[key].status = false;
+        ScreenObj[key].OldUserName = AddUser_UsernameArray[0].name;
 
         Sidepannel_SetUserLables();
-        Sidepannel_SetTopOpacity(inUseObj.screen);
+        Sidepannel_SetTopOpacity(ScreenObj[key].screen);
     }
 
     function ScreensObj_SetTopLable(text, small_text) {
@@ -19597,14 +19483,11 @@
         Search_exit();
         Main_ready(function() {
             if (!Search_cursorX) {
-                inUseObj = SearchChannels;
-                Screens_init();
+                Screens_init(Main_SearchChannels);
             } else if (Search_cursorX === 1) {
-                inUseObj = SearchGames;
-                Screens_init();
+                Screens_init(Main_SearchGames);
             } else if (Search_cursorX === 2) {
-                inUseObj = SearchLive;
-                Screens_init();
+                Screens_init(Main_SearchLive);
             }
         });
     }
@@ -21845,9 +21728,9 @@
         } else if (Main_values.Sidepannel_Pos === 10) {
             Main_showSettings();
         } else if (Main_values.Sidepannel_Pos === 11)
-            Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+            Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
         else if (Main_values.Sidepannel_Pos === 12)
-            Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+            Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
         else if (Main_values.Sidepannel_Pos === 13) Main_showExitDialog();
     }
 
@@ -21921,7 +21804,7 @@
 
         if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
 
-        if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
+        if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
 
         if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
             Sidepannel_PreloadImgs();
@@ -22130,11 +22013,11 @@
                 break;
             case KEY_REFRESH:
             case KEY_LEFT:
-                if (!UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
+                if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
                 break;
             case KEY_PG_UP:
             case KEY_UP:
-                if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData) {
+                if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                     Sidepannel_RemoveFocusFeed();
                     Sidepannel_PosFeed--;
                     Sidepannel_AddFocusFeed();
@@ -22142,7 +22025,7 @@
                 break;
             case KEY_PG_DOWN:
             case KEY_DOWN:
-                if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData) {
+                if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                     Sidepannel_RemoveFocusFeed();
                     Sidepannel_PosFeed++;
                     Sidepannel_AddFocusFeed();
@@ -22153,7 +22036,7 @@
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
-                if (!UserLiveFeed_loadingData) {
+                if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                     Sidepannel_SidepannelDoc.style.transition = 'none';
                     Sidepannel_Hide(true);
                     Main_values.Play_isHost = false;
@@ -22171,12 +22054,12 @@
                 break;
             case KEY_A:
             case KEY_7:
-                Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+                Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
                 Sidepannel_Hide();
                 break;
             case KEY_C:
             case KEY_8:
-                Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+                Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
                 Sidepannel_Hide();
                 break;
             case KEY_E:
@@ -22239,12 +22122,12 @@
                 break;
             case KEY_A:
             case KEY_7:
-                Main_showAboutDialog(Sidepannel_Callback, Screens_handleKeyControls);
+                Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
                 Sidepannel_Hide();
                 break;
             case KEY_C:
             case KEY_8:
-                Main_showControlsDialog(Sidepannel_Callback, Screens_handleKeyControls);
+                Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
                 Sidepannel_Hide();
                 break;
             case KEY_E:
@@ -22257,9 +22140,9 @@
         }
     }
     //Spacing for reease maker not trow erros frm jshint
-    var UserLiveFeed_loadingData = false;
-    var UserLiveFeed_loadingDataTry = 0;
-    var UserLiveFeed_loadingDataTimeout = 3500;
+    var UserLiveFeed_loadingData = [];
+    var UserLiveFeed_loadingDataTry = [];
+    var UserLiveFeed_loadingDataTimeout = [];
     var UserLiveFeed_loadChannelOffsset = 0;
     var UserLiveFeed_loadingDataTryMax = 5;
     var UserLiveFeed_followerChannels = '';
@@ -22318,7 +22201,7 @@
 
         UserLiveFeed_CounterDialogRst();
         UserLiveFeed_Showloading(true);
-        UserLiveFeedobj_loadDataPrepare();
+        UserLiveFeedobj_loadDataPrepare(pos);
         UserLiveFeed_obj[pos].load();
     }
 
@@ -22341,6 +22224,9 @@
             UserLiveFeed_FeedSetPosLast[i] = 0;
             UserLiveFeed_obj[i].offsettopFontsize = 0;
             UserLiveFeed_lastRefresh[i] = 0;
+            UserLiveFeed_loadingData[i] = false;
+            UserLiveFeed_loadingDataTry[i] = 0;
+            UserLiveFeed_loadingDataTimeout[i] = DefaultloadingDataTimeout;
         }
 
         //User live
@@ -22445,7 +22331,7 @@
     function UserLiveFeed_RefreshLive() {
         //Main_Log('UserLiveFeed_RefreshLive');
         if (AddUser_UserIsSet()) {
-            UserLiveFeedobj_loadDataPrepare();
+            UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
             UserLiveFeedobj_CheckToken();
         }
     }
@@ -22460,7 +22346,7 @@
     }
 
     function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
-        UserLiveFeed_loadingData = false;
+        UserLiveFeed_loadingData[pos] = false;
         UserLiveFeed_status[pos] = true;
 
         var len = UserLiveFeed_cell[pos].length;
@@ -22563,11 +22449,11 @@
     }
 
     function UserLiveFeed_FeedRefresh() {
-        if (!UserLiveFeed_loadingData) {
-            if (!UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
-                UserLiveFeed_clearHideFeed();
-                UserLiveFeed_StartLoad();
-            }
+        if (!UserLiveFeed_loadingData[UserLiveFeed_FeedPosX] && !UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
+
+            UserLiveFeed_clearHideFeed();
+            UserLiveFeed_StartLoad();
+
         }
     }
 
@@ -23009,7 +22895,7 @@
 
     function UserLiveFeed_KeyRightLeft(Adder) {
         UserLiveFeed_ResetFeedId();
-        if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
+        if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
             var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
             if (NextPos > (UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1) || NextPos < 0) return;
 
@@ -23023,7 +22909,7 @@
 
     function UserLiveFeed_KeyUpDown(Adder) {
         UserLiveFeed_ResetFeedId();
-        if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData) {
+        if (Screens_ChangeFocusAnimationFinished) {
 
             var NextPos = UserLiveFeed_FeedPosX + Adder,
                 userSet = AddUser_UserIsSet();
@@ -23187,7 +23073,7 @@
     }
 
     function UserLiveFeedobj_CheckToken() {
-        if (UserLiveFeed_status[UserLiveFeed_FeedPosX]) {
+        if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) {
             if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
                 UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
         }
@@ -23206,7 +23092,7 @@
             UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
             UserLiveFeedobj_loadChannelUserLive();
         } else {
-            UserLiveFeedobj_loadDataPrepare();
+            UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
             UserLiveFeed_token = null;
             UserLiveFeedobj_loadChannels();
         }
@@ -23214,10 +23100,10 @@
         //Main_Log('UserLiveFeedobj_CheckToken end');
     }
 
-    function UserLiveFeedobj_loadDataPrepare() {
-        UserLiveFeed_loadingData = true;
-        UserLiveFeed_loadingDataTry = 0;
-        UserLiveFeed_loadingDataTimeout = 3500;
+    function UserLiveFeedobj_loadDataPrepare(pos) {
+        UserLiveFeed_loadingData[pos] = true;
+        UserLiveFeed_loadingDataTry[pos] = 0;
+        UserLiveFeed_loadingDataTimeout[pos] = DefaultloadingDataTimeout;
     }
 
     function UserLiveFeedobj_loadChannels() {
@@ -23225,7 +23111,7 @@
         var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
 
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadChannelLive,
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserLivePos], 2, null, UserLiveFeedobj_loadChannelLive,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
             }
@@ -23234,14 +23120,14 @@
 
     function UserLiveFeedobj_loadDataError(pos) {
         //Main_Log('UserLiveFeedobj_loadChannels');
-        UserLiveFeed_loadingDataTry++;
-        if (UserLiveFeed_loadingDataTry < UserLiveFeed_loadingDataTryMax) {
-            UserLiveFeed_loadingDataTimeout += 500;
+        UserLiveFeed_loadingDataTry[pos]++;
+        if (UserLiveFeed_loadingDataTry[pos] < UserLiveFeed_loadingDataTryMax) {
+            UserLiveFeed_loadingDataTimeout[pos] += 500;
             UserLiveFeed_obj[pos].load();
         } else {
             if (!UserLiveFeed_obj[pos].loadingMore) {
-                UserLiveFeed_loadingDataTry = 0;
-                UserLiveFeed_loadingData = false;
+                UserLiveFeed_loadingDataTry[pos] = 0;
+                UserLiveFeed_loadingData[pos] = false;
                 UserLiveFeed_Showloading(false);
                 Main_HideElement('dialog_loading_side_feed');
 
@@ -23280,11 +23166,11 @@
             }
 
             UserLiveFeed_loadChannelOffsset += response_items;
-            UserLiveFeedobj_loadDataPrepare();
+            UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
             UserLiveFeedobj_loadChannels();
         } else { // end
             UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
-            UserLiveFeedobj_loadDataPrepare();
+            UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
             UserLiveFeedobj_loadChannelUserLive();
         }
     }
@@ -23307,7 +23193,7 @@
         //Main_Log('UserLiveFeedobj_loadChannelUserLiveGet');
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = UserLiveFeed_loadingDataTimeout;
+        xmlHttp.timeout = UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserLivePos];
 
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -23456,12 +23342,26 @@
     }
 
     function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
+
         if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
 
-        if ((forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
-                (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
-                UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) && !UserLiveFeed_loadingData) UserLiveFeed_StartLoad();
-        else {
+        if (forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
+            (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
+            UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) {
+
+            if (UserLiveFeed_loadingData[pos]) {
+
+                if (UserLiveFeed_isFeedShow()) {
+                    UserLiveFeed_Showloading(true);
+                    UserLiveFeed_obj[pos].div.classList.remove('hide');
+                }
+            } else {
+
+                UserLiveFeed_StartLoad();
+            }
+
+        } else {
+
             UserLiveFeed_obj[pos].div.classList.remove('hide');
 
             UserLiveFeed_FeedAddFocus(true, pos);
@@ -23563,7 +23463,7 @@
 
         UserLiveFeedobj_CheckOffset(UserLiveFeedobj_LivePos);
 
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataLiveSuccess,
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_LivePos], 2, null, UserLiveFeedobj_loadDataLiveSuccess,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_LivePos);
             }
@@ -23601,7 +23501,7 @@
         var theUrl = Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
             AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
 
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataFeaturedSuccess,
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_FeaturedPos], 2, null, UserLiveFeedobj_loadDataFeaturedSuccess,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_FeaturedPos);
             }
@@ -23641,7 +23541,7 @@
 
         UserLiveFeedobj_CheckOffset(UserLiveFeedobj_CurrentGamePos);
 
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess,
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_CurrentGamePos], 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_CurrentGamePos);
             }
@@ -23681,7 +23581,7 @@
         var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) +
             '/followed/hosting?limit=100';
 
-        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataUserHostSuccess,
+        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserHostPos], 2, null, UserLiveFeedobj_loadDataUserHostSuccess,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserHostPos);
             }
@@ -23717,7 +23617,7 @@
     function UserLiveFeedobj_loadUserGames() {
         var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=150'; //follows
 
-        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout, 1, null, UserLiveFeedobj_loadDataUserGamesSuccess,
+        BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserGamesPos], 1, null, UserLiveFeedobj_loadDataUserGamesSuccess,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserGamesPos);
             }
@@ -23759,7 +23659,7 @@
 
         UserLiveFeedobj_CheckOffset(UserLiveFeedobj_UserAGamesPos);
 
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess,
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserAGamesPos], 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserAGamesPos);
             }
@@ -23805,7 +23705,7 @@
             (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset)
             UserLiveFeed_obj[UserLiveFeedobj_GamesPos].dataEnded = true;
 
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataGamesSuccess,
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_GamesPos], 2, null, UserLiveFeedobj_loadDataGamesSuccess,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_GamesPos);
             }
@@ -23842,7 +23742,7 @@
 
         UserLiveFeedobj_CheckOffset(UserLiveFeedobj_AGamesPos);
 
-        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout, 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess,
+        BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_AGamesPos], 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess,
             function() {
                 UserLiveFeedobj_loadDataError(UserLiveFeedobj_AGamesPos);
             }
