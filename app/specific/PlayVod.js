@@ -153,7 +153,7 @@ function PlayVod_updateVodInfo() {
 function PlayVod_updateVodInfoError() {
     PlayVod_loadingInfoDataTry++;
     if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
-        PlayVod_loadingInfoDataTimeout += 2000;
+        PlayVod_loadingInfoDataTimeout += 500;
         PlayVod_updateVodInfo();
     }
 }

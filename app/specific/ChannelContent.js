@@ -4,8 +4,8 @@ var ChannelContent_cursorX = 0;
 var ChannelContent_dataEnded = false;
 var ChannelContent_itemsCount = 0;
 var ChannelContent_loadingDataTry = 0;
-var ChannelContent_loadingDataTryMax = 5;
-var ChannelContent_loadingDataTimeout = 3500;
+var ChannelContent_loadingDataTryMax = 3;
+var ChannelContent_loadingDataTimeout = 3000;
 var ChannelContent_itemsCountOffset = 0;
 var ChannelContent_isoffline = false;
 var ChannelContent_UserChannels = false;
@@ -87,7 +87,7 @@ function ChannelContent_StartLoad() {
 function ChannelContent_loadDataPrepare() {
     Main_FirstLoad = true;
     ChannelContent_loadingDataTry = 0;
-    ChannelContent_loadingDataTimeout = 3500;
+    ChannelContent_loadingDataTimeout = DefaultloadingDataTimeout;
 }
 
 function ChannelContent_loadDataRequest() {

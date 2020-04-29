@@ -21,7 +21,7 @@ var Main_HistoryPos = 0;
 
 var AGame_following = false;
 
-var DefaultloadingDataTimeout = 3500;
+var DefaultloadingDataTimeout = 3000;
 var DefaultLoadingDataTryMax = 3;
 
 var Base_obj = {

@@ -78,7 +78,7 @@ function UserLiveFeedobj_CheckToken() {
 function UserLiveFeedobj_loadDataPrepare(pos) {
     UserLiveFeed_loadingData[pos] = true;
     UserLiveFeed_loadingDataTry[pos] = 0;
-    UserLiveFeed_loadingDataTimeout[pos] = 3000;
+    UserLiveFeed_loadingDataTimeout[pos] = DefaultloadingDataTimeout;
 }
 
 function UserLiveFeedobj_loadChannels() {

@@ -85,7 +85,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_lastRefresh[i] = 0;
         UserLiveFeed_loadingData[i] = false;
         UserLiveFeed_loadingDataTry[i] = 0;
-        UserLiveFeed_loadingDataTimeout[i] = 3000;
+        UserLiveFeed_loadingDataTimeout[i] = DefaultloadingDataTimeout;
     }
 
     //User live

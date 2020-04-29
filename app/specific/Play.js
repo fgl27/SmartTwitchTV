@@ -327,7 +327,7 @@ function Play_Start() {
     }
 
     Play_updateStreamInfoErrorTry = 0;
-    Play_loadingInfoDataTimeout = 3000;
+    Play_loadingInfoDataTimeout = 10000;
     Play_isLive = true;
     Play_tokenResponse = 0;
     Play_playingTry = 0;
@@ -425,7 +425,7 @@ function Play_Resume() {
     ChatLive_Playing = true;
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
     Play_showBufferDialog();
-    Play_loadingInfoDataTimeout = 3000;
+    Play_loadingInfoDataTimeout = 10000;
     Play_RestoreFromResume = true;
     Play_ResumeAfterOnlineCounter = 0;
 
