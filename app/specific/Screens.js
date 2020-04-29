@@ -135,9 +135,9 @@ function Screens_init(key) {
     } else {
         Main_YRst(ScreenObj[key].posY);
         Screens_addFocus(true, key);
-        Main_SaveValues();
         Screens_SetLastRefresh(key);
         Main_HideLoadDialog();
+        Main_SaveValues();
     }
 }
 
