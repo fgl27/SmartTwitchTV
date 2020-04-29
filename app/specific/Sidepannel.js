@@ -343,7 +343,7 @@ function Sidepannel_ShowFeed() {
 
     if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
 
-    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
+    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
 
     if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_PreloadImgs();
@@ -552,11 +552,11 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_REFRESH:
         case KEY_LEFT:
-            if (!UserLiveFeed_loadingData) UserLiveFeed_RefreshLive();
+            if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
             break;
         case KEY_PG_UP:
         case KEY_UP:
-            if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData) {
+            if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed--;
                 Sidepannel_AddFocusFeed();
@@ -564,7 +564,7 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_PG_DOWN:
         case KEY_DOWN:
-            if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData) {
+            if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed++;
                 Sidepannel_AddFocusFeed();
@@ -575,7 +575,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
-            if (!UserLiveFeed_loadingData) {
+            if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                 Sidepannel_SidepannelDoc.style.transition = 'none';
                 Sidepannel_Hide(true);
                 Main_values.Play_isHost = false;
