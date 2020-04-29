@@ -441,7 +441,7 @@ function PlayClip_PlayNextPreviously() {
     Main_ready(function() {
         PlayClip_replayOrNext = true;
         PlayClip_PreshutdownStream(false);
-        Main_OpenClip(ScreenObj[ScreenObjKey].posY + '_' + ScreenObj[ScreenObjKey].posX, ScreenObj[ScreenObjKey].ids, Screens_handleKeyDownStart);
+        Main_OpenClip(ScreenObj[ScreenObjKey].posY + '_' + ScreenObj[ScreenObjKey].posX, ScreenObj[ScreenObjKey].ids, ScreenObj[ScreenObjKey].key_fun);
     });
 }
 

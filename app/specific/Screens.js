@@ -110,7 +110,7 @@ function Screens_init(key) {
     Main_values.Main_Go = key;
     ScreenObj[key].label_init();
 
-    Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+    Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
 
     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
@@ -133,7 +133,7 @@ function Screens_exit(key) {
 
     Main_addFocusVideoOffset = 0;
     if (ScreenObj[key].label_exit) ScreenObj[key].label_exit();
-    Main_removeEventListener("keydown", Screens_handleKeyDownStart);
+    Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
     Main_HideWarningDialog();
     Screens_ClearAnimation(key);
@@ -214,6 +214,7 @@ function Screens_loadDataRequest(key) {
 
 }
 
+// if (use android) {
 // function Screens_BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
 //     if (false) Screens_BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, key);
 //     else Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, Main_Headers_Back, key);
@@ -594,11 +595,11 @@ function Screens_loadDataSuccessFinish(key) {
                 Main_values.Main_BeforeAgameisSet = false;
 
                 if (Main_values.Never_run_new)
-                    Main_showControlsDialog(Screens_handleKeyDownStart, Screens_handleKeyControlsStart = Screens_handleKeyControls.bind(null, key));
+                    Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls = Screens_handleKeyControls.bind(null, key));
 
                 if (Main_values.Never_run_phone && !Main_isTV) {
                     Main_showphoneDialog(Main_values.Never_run_new ?
-                        Screens_handleKeyControlsStart : Screens_handleKeyDownStart, Screens_handleKeyControlsStart = Screens_handleKeyControls.bind(null, key));
+                        ScreenObj[key].key_controls : ScreenObj[key].key_fun, ScreenObj[key].key_controls = Screens_handleKeyControls.bind(null, key));
                 }
 
                 if (!Main_values.Never_run_new) Screens_addFocus(true, key);
@@ -621,7 +622,6 @@ function Screens_loadDataSuccessFinish(key) {
 }
 
 var CheckAccessibilityWasVisible = false;
-var Screens_handleKeyControlsStart;
 
 function Screens_handleKeyControls(key, event) {
     //Main_Log('Screens_handleKeyControls ' + event.keyCode);
@@ -643,11 +643,11 @@ function Screens_handleKeyControls(key, event) {
 
             Main_HideControlsDialog();
             Main_HideAboutDialog();
-            Main_removeEventListener("keydown", Screens_handleKeyControlsStart);
+            Main_removeEventListener("keydown", ScreenObj[key].key_controls);
 
             if (CheckAccessibilityWasVisible) Main_CheckAccessibilitySet();
             else {
-                Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+                Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
                 Screens_addFocus(true, key);
             }
 
@@ -1081,8 +1081,8 @@ function Screens_OpenSidePanel(forceFeed, key) {
     Screens_RemoveAllFocus(key);
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Screens_ClearAnimation(key);
-    Main_removeEventListener("keydown", Screens_handleKeyDownStart);
-    Sidepannel_Start(Screens_handleKeyDownStart = ScreenObj[key].key_fun_start(), forceFeed);
+    Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+    Sidepannel_Start(ScreenObj[key].key_fun = ScreenObj[key].key_fun_start(), forceFeed);
 }
 
 function Screens_RemoveAllFocus(key) {
@@ -1096,7 +1096,6 @@ function Screens_RemoveAllFocus(key) {
 }
 
 var Screens_handleKeyUpIsClear = false;
-var Screens_handleKeyUpStart;
 
 function Screens_handleKeyUp(key, e) {
     Main_Log('Screens_handleKeyUp e.keyCode ' + e.keyCode + ' key ' + key);
@@ -1106,12 +1105,12 @@ function Screens_handleKeyUp(key, e) {
         if (!Screens_clear) ScreenObj[key].key_play();
     } else if (e.keyCode === KEY_LEFT) {
         Main_clearTimeout(Screens_KeyEnterID);
-        Main_removeEventListener("keyup", Screens_handleKeyUpStart);
+        Main_removeEventListener("keyup", ScreenObj[key].key_up);
         if (!Screens_clear) {
             if (!ScreenObj[key].posX) Screens_OpenSidePanel(false, key);
             else {
                 Screens_KeyLeftRight(-1, ScreenObj[key].ColoumnsCount - 1, key);
-                Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+                Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
             }
         }
     }
@@ -1120,8 +1119,8 @@ function Screens_handleKeyUp(key, e) {
 
 function Screens_handleKeyUpClear(key) {
     Main_clearTimeout(Screens_KeyEnterID);
-    Main_removeEventListener("keyup", Screens_handleKeyUpStart);
-    Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+    Main_removeEventListener("keyup", ScreenObj[key].key_up);
+    Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
 }
 
 function Screens_handleKeyUpAnimationFast() {
@@ -1140,7 +1139,7 @@ function Screens_keyRight(key) {
     } else Screens_addFocus(true, key);
 }
 
-var Screens_handleKeyDownStart;
+
 function Screens_handleKeyDown(key, event) {
     Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
     if (Main_CantClick()) return;
@@ -1189,8 +1188,8 @@ function Screens_handleKeyDown(key, event) {
             Screens_ThumbOptionSpecial = ScreenObj[key].histPosXName ? false : true;
             Screens_handleKeyUpIsClear = false;
 
-            Main_removeEventListener("keydown", Screens_handleKeyDownStart);
-            Main_addEventListener("keyup", Screens_handleKeyUpStart = Screens_handleKeyUp.bind(null, key));
+            Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+            Main_addEventListener("keyup", ScreenObj[key].key_up = Screens_handleKeyUp.bind(null, key));
             Screens_clear = false;
 
             Screens_KeyEnterID = Main_setTimeout(
@@ -1225,8 +1224,8 @@ function Screens_handleKeyDown(key, event) {
             ScreenObj[key].key_play();
             break;
         case KEY_ENTER:
-            Main_removeEventListener("keydown", Screens_handleKeyDownStart);
-            Main_addEventListener("keyup", Screens_handleKeyUpStart = Screens_handleKeyUp.bind(null, key));
+            Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+            Main_addEventListener("keyup", ScreenObj[key].key_up = Screens_handleKeyUp.bind(null, key));
             Screens_clear = false;
             Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, 400, Screens_KeyEnterID);
             break;
@@ -1240,15 +1239,15 @@ function Screens_handleKeyDown(key, event) {
             break;
         case KEY_A:
         case KEY_7:
-            Main_showAboutDialog(Screens_handleKeyDownStart, Screens_handleKeyControlsStart = Screens_handleKeyControls.bind(null, key));
+            Main_showAboutDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls = Screens_handleKeyControls.bind(null, key));
             break;
         case KEY_C:
         case KEY_8:
-            Main_showControlsDialog(Screens_handleKeyDownStart, Screens_handleKeyControlsStart = Screens_handleKeyControls.bind(null, key));
+            Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls = Screens_handleKeyControls.bind(null, key));
             break;
         case KEY_E:
         case KEY_9:
-            Main_removeEventListener("keydown", Screens_handleKeyDownStart);
+            Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_showExitDialog();
             break;
         case KEY_CHAT:
@@ -1284,7 +1283,7 @@ function AGame_headerOptionsExit(key) {
         ScreenObj[key].posX = 0;
         Main_AddClass(ScreenObj[key].ids[0] + '0_' + ScreenObj[key].posX, Main_classThumb);
     }
-    Main_removeEventListener("keydown", Screens_handleKeyDownStart);
+    Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
 }
 
@@ -1323,8 +1322,8 @@ var Screens_PeriodDialogPos = 0;
 function Screens_PeriodStart(key) {
     Screens_setPeriodDialog(key);
     Main_ShowElement('dialog_period');
-    Main_removeEventListener("keydown", Screens_handleKeyDownStart);
-    Main_addEventListener("keydown", Screens_PeriodhandleKeyDownStart = Screens_PeriodhandleKeyDown.bind(null, key));
+    Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+    Main_addEventListener("keydown", ScreenObj[key].key_period = Screens_PeriodhandleKeyDown.bind(null, key));
 }
 
 function Screens_SetPeriodDialogId(key) {
@@ -1346,8 +1345,8 @@ function Screens_setPeriodDialog(key) {
 function Screens_PeriodDialogHide(key) {
     Main_clearTimeout(Screens_PeriodDialogID);
     Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
-    Main_removeEventListener("keydown", Screens_PeriodhandleKeyDownStart);
-    Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+    Main_removeEventListener("keydown", ScreenObj[key].key_period);
+    Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
     Main_HideElement('dialog_period');
 }
 
@@ -1359,10 +1358,8 @@ function Screens_PeriodRemoveFocus(pos) {
     Main_RemoveClass('dialog_period_' + pos, 'button_dialog_focused');
 }
 
-var Screens_PeriodhandleKeyDownStart;
-
 function Screens_PeriodhandleKeyDown(key, event) {
-    Main_Log('Screens_PeriodhandleKeyDownStart ' + event.keyCode);
+    Main_Log('ScreenObj[key].key_period ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1407,8 +1404,8 @@ function Screens_OffSetStart(key) {
     ScreenObj[key].OffSetPos = ScreenObj[key].extraoffset / 100;
     Screens_setOffSetDialog(key);
     Main_ShowElement('dialog_OffSet');
-    Main_removeEventListener("keydown", Screens_handleKeyDownStart);
-    Main_addEventListener("keydown", Screens_OffSethandleKeyDownStart = Screens_OffSethandleKeyDown.bind(null, key));
+    Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+    Main_addEventListener("keydown", ScreenObj[key].key_offset = Screens_OffSethandleKeyDown.bind(null, key));
 }
 
 function Screens_SetOffSetDialogId(key) {
@@ -1428,8 +1425,8 @@ function Screens_setOffSetDialog(key) {
 
 function Screens_OffSetDialogHide(key) {
     Main_clearTimeout(Screens_OffSetDialogID);
-    Main_removeEventListener("keydown", Screens_OffSethandleKeyDownStart);
-    Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+    Main_removeEventListener("keydown", ScreenObj[key].key_offset);
+    Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
     Main_HideElement('dialog_OffSet');
 }
 
@@ -1449,10 +1446,8 @@ function Screens_OffSetAddFocus(pos) {
     }
 }
 
-var Screens_OffSethandleKeyDownStart;
-
 function Screens_OffSethandleKeyDown(key, event) {
-    Main_Log('Screens_OffSethandleKeyDownStart ' + event.keyCode);
+    Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1493,8 +1488,8 @@ var Screens_histDialogID;
 function Screens_histStart(key) {
     ScreenObj[key].sethistDialog();
     Main_ShowElement('dialog_hist_setting');
-    Main_removeEventListener("keydown", Screens_handleKeyDownStart);
-    Main_addEventListener("keydown", Screens_histhandleKeyDownStart = Screens_histhandleKeyDown.bind(null, key));
+    Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+    Main_addEventListener("keydown", ScreenObj[key].key_hist = Screens_histhandleKeyDown.bind(null, key));
 }
 
 function Screens_SethistDialogId(key) {
@@ -1514,8 +1509,8 @@ function Screens_histDialogHide(Update, key) {
 
     Screens_histAddFocus(0, key);
     Main_clearTimeout(Screens_histDialogID);
-    Main_removeEventListener("keydown", Screens_histhandleKeyDownStart);
-    Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+    Main_removeEventListener("keydown", ScreenObj[key].key_hist);
+    Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
     Main_HideElement('dialog_hist_setting');
 
     if (Update) {
@@ -1539,8 +1534,8 @@ function Screens_histDialogHide(Update, key) {
 function Screens_showDeleteDialog(text, key) {
     Main_innerHTML("main_dialog_remove", text);
     Main_ShowElement('main_remove_dialog');
-    Main_removeEventListener("keydown", Screens_handleKeyDownStart);
-    Main_addEventListener("keydown", Screens_histDeleteKeyDownStart = Screens_histDeleteKeyDown.bind(null, key));
+    Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+    Main_addEventListener("keydown", ScreenObj[key].key_histdelet = Screens_histDeleteKeyDown.bind(null, key));
     Screens_setRemoveDialog(key);
 }
 
@@ -1556,17 +1551,16 @@ function Screens_setRemoveDialog(key) {
 
 function Screens_HideRemoveDialog(key) {
     Users_clearRemoveDialog();
-    Main_removeEventListener("keydown", Screens_histDeleteKeyDownStart);
-    Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+    Main_removeEventListener("keydown", ScreenObj[key].key_histdelet);
+    Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
     Main_HideElement('main_remove_dialog');
     Users_RemoveCursor = 0;
     Users_UserCursorSet();
     Users_RemoveCursorSet();
 }
 
-var Screens_histDeleteKeyDownStart;
 function Screens_histDeleteKeyDown(key, event) {
-    //Main_Log('Screens_histDeleteKeyDownStart ' + event.keyCode);
+    //Main_Log('ScreenObj[key].key_histdelet ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_LEFT:
@@ -1659,9 +1653,8 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
     }
 }
 
-var Screens_histhandleKeyDownStart;
 function Screens_histhandleKeyDown(key, event) {
-    Main_Log('Screens_histhandleKeyDownStart ' + event.keyCode);
+    Main_Log('ScreenObj[key].key_hist ' + event.keyCode);
 
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -1728,8 +1721,8 @@ function Screens_ThumbOptionStart(key) {
 
     ScreenObj[key].setTODialog();
     Screens_SeTODialogId(key);
-    Main_removeEventListener("keydown", Screens_handleKeyDownStart);
-    Main_addEventListener("keydown", Screens_ThumbOptionhandleKeyDownStart = Screens_ThumbOptionhandleKeyDown.bind(null, key));
+    Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+    Main_addEventListener("keydown", ScreenObj[key].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, key));
 
     Main_ShowElement('dialog_thumb_opt');
 }
@@ -1833,7 +1826,6 @@ function Screens_ThumbOptionStringGetHistory(key) {
     return Main_getItemJson(ScreenObj[key].histPosXName, [0, 0, 0])[1];
 }
 
-var Screens_ThumbOptionhandleKeyDownStart;
 function Screens_ThumbOptionhandleKeyDown(key, event) {
     Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
 
@@ -1912,8 +1904,8 @@ function Screens_ThumbOptionDialogHide(Update, key) {
     Screens_histRemoveFocus(Screens_ThumbOptionPosY, 'thumb_opt');
 
     Main_clearTimeout(Screens_ThumbOptionDialogID);
-    Main_removeEventListener("keydown", Screens_ThumbOptionhandleKeyDownStart);
-    Main_addEventListener("keydown", Screens_handleKeyDownStart = ScreenObj[key].key_fun_start());
+    Main_removeEventListener("keydown", ScreenObj[key].key_thumb);
+    Main_addEventListener("keydown", ScreenObj[key].key_fun = ScreenObj[key].key_fun_start());
     Main_HideElement('dialog_thumb_opt');
 
     if (Update) {
