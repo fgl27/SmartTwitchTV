@@ -128,7 +128,7 @@ function Chat_loadBadgesTransform(responseText, chat_number, doc) {
 
 function Chat_loadBBTVGlobalEmotes(tryes) {
     Chat_BaseLoadUrl(
-        'https://api.betterttv.net/2/emotes',
+        'https://api.betterttv.net/3/cached/emotes/global',
         tryes,
         Chat_loadEmotesSuccess,
         Chat_loadEmotesError
@@ -140,7 +140,8 @@ function Chat_loadEmotesError(tryes) {
 }
 
 function Chat_loadEmotesSuccess(data) {
-    ChatLive_loadEmotesbbtv(JSON.parse(data), 0, true);
+    //ChatLive_loadEmotesbbtv(JSON.parse(data), 0, true);
+    ChatLive_loadEmotesbbtvGlobal(JSON.parse(data));
 }
 
 function Chat_loadEmotesffz(tryes) {
