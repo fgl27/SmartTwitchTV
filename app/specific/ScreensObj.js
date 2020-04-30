@@ -1437,7 +1437,7 @@ var Base_History_obj = {
         this.UpEna();
         this.UpArrays();
 
-        Screens_histSetArrow();
+        Screens_histSetArrow(this.screen);
 
         Main_textContent(
             'dialog_hist_val_1',
