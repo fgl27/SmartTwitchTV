@@ -55,7 +55,7 @@ var Chat_LoadGlobalBadges = false;
 function Chat_loadBadgesGlobal() {
     //return;
     if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
-    if (!extraEmotesDone.bbtvGlobal) Chat_loadBBTVGlobalEmotes(0);
+    if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes(0);
     if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
     ChatLiveControls_SetEmojisObj();
 }
@@ -126,7 +126,7 @@ function Chat_loadBadgesTransform(responseText, chat_number, doc) {
     }
 }
 
-function Chat_loadBBTVGlobalEmotes(tryes) {
+function Chat_loadBTTVGlobalEmotes(tryes) {
     Chat_BaseLoadUrl(
         'https://api.betterttv.net/3/cached/emotes/global',
         tryes,
@@ -136,12 +136,12 @@ function Chat_loadBBTVGlobalEmotes(tryes) {
 }
 
 function Chat_loadEmotesError(tryes) {
-    if (tryes < Chat_loadingDataTryMax) Chat_loadBBTVGlobalEmotes(tryes + 1);
+    if (tryes < Chat_loadingDataTryMax) Chat_loadBTTVGlobalEmotes(tryes + 1);
 }
 
 function Chat_loadEmotesSuccess(data) {
-    //ChatLive_loadEmotesbbtv(JSON.parse(data), 0, true);
-    ChatLive_loadEmotesbbtvGlobal(JSON.parse(data));
+    //ChatLive_loadEmotesbttv(JSON.parse(data), 0, true);
+    ChatLive_loadEmotesbttvGlobal(JSON.parse(data));
 }
 
 function Chat_loadEmotesffz(tryes) {

@@ -14,7 +14,7 @@ var ChatLive_SubState = [];
 var ChatLive_Playing = true;
 var ChatLive_SetCheckTimout = 10000;
 var extraEmotesDone = {
-    bbtv: {},
+    bttv: {},
     ffz: {},
     cheers: {},
     BadgesChannel: {}
@@ -121,7 +121,7 @@ function ChatLive_SetOptions(chat_number, id) {
         ChatLive_User_Regex_Replace = new RegExp('@' + AddUser_UsernameArray[0].name, "gi");
     }
 
-    ChatLive_loadEmotesChannelbbtv(0, chat_number, id);
+    ChatLive_loadEmotesChannelbttv(0, chat_number, id);
     ChatLive_loadEmotesChannelffz(0, chat_number, id);
 
     ChatLive_loadBadgesChannel(0, chat_number, id);
@@ -322,36 +322,36 @@ function ChatLive_loadEmotesUserSuccess(data) {
     }
 }
 
-function ChatLive_loadEmotesChannelbbtv(tryes, chat_number, id) {
+function ChatLive_loadEmotesChannelbttv(tryes, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
-    if (!extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]]) {
+    if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
         ChatLive_BaseLoadUrl(
             id,
             'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
             chat_number,
             tryes,
-            ChatLive_loadEmotesChannelbbtvSuccess,
+            ChatLive_loadEmotesChannelbttvSuccess,
             ChatLive_loadEmotesChannelError
         );
     } else {
-        ChatLive_updateExtraEmotes(extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]]);
+        ChatLive_updateExtraEmotes(extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]);
     }
 }
 
 function ChatLive_loadEmotesChannelError(tryes, chat_number, id) {
-    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelbbtv(tryes + 1, chat_number, id);
+    if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelbttv(tryes + 1, chat_number, id);
 }
 
-function ChatLive_loadEmotesChannelbbtvSuccess(data, chat_number, id) {
+function ChatLive_loadEmotesChannelbttvSuccess(data, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
-    ChatLive_loadEmotesbbtv(JSON.parse(data), chat_number, false);
+    ChatLive_loadEmotesbttv(JSON.parse(data), chat_number, false);
 }
 
-// function ChatLive_loadEmotesbbtv(data, chat_number, skipChannel) {
-//     if (!skipChannel) extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = {};
-//     else extraEmotesDone.bbtvGlobal = {};
+// function ChatLive_loadEmotesbttv(data, chat_number, skipChannel) {
+//     if (!skipChannel) extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]] = {};
+//     else extraEmotesDone.bttvGlobal = {};
 
 //     var url, Div;
 
@@ -371,14 +371,14 @@ function ChatLive_loadEmotesChannelbbtvSuccess(data, chat_number, id) {
 
 //                 //Don't copy to prevent shallow clone
 //                 if (!skipChannel) {
-//                     extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
+//                     extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
 //                         code: emote.code,
 //                         id: emote.id,
 //                         '4x': url,
 //                         div: Div
 //                     };
 //                 } else {
-//                     extraEmotesDone.bbtvGlobal[emote.code] = {
+//                     extraEmotesDone.bttvGlobal[emote.code] = {
 //                         code: emote.code,
 //                         id: emote.id,
 //                         '4x': url,
@@ -388,24 +388,24 @@ function ChatLive_loadEmotesChannelbbtvSuccess(data, chat_number, id) {
 //             }
 //         });
 //     } catch (e) {
-//         Main_Log('ChatLive_loadEmotesbbtv ' + e);
+//         Main_Log('ChatLive_loadEmotesbttv ' + e);
 //     }
 
 // }
 
-function ChatLive_loadEmotesbbtv(data, chat_number) {
-    extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]] = {};
+function ChatLive_loadEmotesbttv(data, chat_number) {
+    extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]] = {};
 
     try {
-        ChatLive_loadEmotesbbtvChannel(data.channelEmotes, chat_number);
-        ChatLive_loadEmotesbbtvChannel(data.sharedEmotes, chat_number);
+        ChatLive_loadEmotesbttvChannel(data.channelEmotes, chat_number);
+        ChatLive_loadEmotesbttvChannel(data.sharedEmotes, chat_number);
     } catch (e) {
-        Main_Log('ChatLive_loadEmotesbbtv ' + e);
+        Main_Log('ChatLive_loadEmotesbttv ' + e);
     }
 
 }
 
-function ChatLive_loadEmotesbbtvChannel(data, chat_number) {
+function ChatLive_loadEmotesbttvChannel(data, chat_number) {
 
     var url;
 
@@ -420,7 +420,7 @@ function ChatLive_loadEmotesbbtvChannel(data, chat_number) {
                 '4x': url
             };
 
-            extraEmotesDone.bbtv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
+            extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
                 code: emote.code,
                 id: emote.id,
                 '4x': url,
@@ -429,13 +429,13 @@ function ChatLive_loadEmotesbbtvChannel(data, chat_number) {
 
         });
     } catch (e) {
-        Main_Log('ChatLive_loadEmotesbbtvChannel ' + e);
+        Main_Log('ChatLive_loadEmotesbttvChannel ' + e);
     }
 
 }
 
-function ChatLive_loadEmotesbbtvGlobal(data) {
-    extraEmotesDone.bbtvGlobal = {};
+function ChatLive_loadEmotesbttvGlobal(data) {
+    extraEmotesDone.bttvGlobal = {};
 
     var url;
 
@@ -450,7 +450,7 @@ function ChatLive_loadEmotesbbtvGlobal(data) {
                 '4x': url
             };
 
-            extraEmotesDone.bbtvGlobal[emote.code] = {
+            extraEmotesDone.bttvGlobal[emote.code] = {
                 code: emote.code,
                 id: emote.id,
                 '4x': url,
@@ -458,7 +458,7 @@ function ChatLive_loadEmotesbbtvGlobal(data) {
             };
         });
     } catch (e) {
-        Main_Log('ChatLive_loadEmotesbbtvGlobal ' + e);
+        Main_Log('ChatLive_loadEmotesbttvGlobal ' + e);
     }
 
 }

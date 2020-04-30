@@ -454,8 +454,8 @@ function en_USLang() {
     STR_CHAT_DELL_ALL = "Delete all";
     STR_CHAT_UNICODE_EMOJI = "Unicode Emoji";
     STR_CHAT_TW_EMOTES = "Twitch emotes";
-    STR_CHAT_BBTV_GLOBAL = "BBTV global";
-    STR_CHAT_BBTV_STREAM = "BBTV streamer";
+    STR_CHAT_BTTV_GLOBAL = "BTTV global";
+    STR_CHAT_BTTV_STREAM = "BTTV streamer";
     STR_CHAT_FFZ_GLOBAL = "FFZ global";
     STR_CHAT_FFZ_STREAM = "FFZ streamer";
     STR_CHAT_AT_STREAM = "@streamer";
