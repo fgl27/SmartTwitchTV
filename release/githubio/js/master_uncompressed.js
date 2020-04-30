@@ -6545,16 +6545,16 @@
         Chat_BaseLoadUrl(
             'https://api.betterttv.net/3/cached/emotes/global',
             tryes,
-            Chat_loadEmotesSuccess,
-            Chat_loadEmotesError
+            Chat_loadEmotesSuccessBttv,
+            Chat_loadEmotesBttvError
         );
     }
 
-    function Chat_loadEmotesError(tryes) {
+    function Chat_loadEmotesBttvError(tryes) {
         if (tryes < Chat_loadingDataTryMax) Chat_loadBTTVGlobalEmotes(tryes + 1);
     }
 
-    function Chat_loadEmotesSuccess(data) {
+    function Chat_loadEmotesSuccessBttv(data) {
         Chat_loadEmotesbttvGlobal(JSON.parse(data));
     }
 
@@ -10345,18 +10345,19 @@
     }
 
     var Play_Oldaudio = 0;
+    var Play_AudioAll = false;
 
-    function Play_MultiKeyDownHold() {
+    function Play_MultiKeyDownHold(preventShowWarning) {
         Play_EndUpclear = true;
 
         if (Play_controls[Play_controlsAudioMulti].defaultValue !== 4) {
             Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
             Play_controls[Play_controlsAudioMulti].defaultValue = 4;
-            Play_controls[Play_controlsAudioMulti].enterKey();
+            Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
         } else {
             Play_controls[Play_controlsAudioMulti].defaultValue = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
             Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
-            Play_controls[Play_controlsAudioMulti].enterKey();
+            Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
         }
     }
 
@@ -11093,6 +11094,7 @@
             enterKey: function(preventShowWarning) {
 
                 Android.mSetPlayerAudioMulti(this.defaultValue);
+                Play_AudioAll = this.defaultValue === 4;
 
                 this.bottomArrows();
                 this.setLable();
@@ -13957,7 +13959,12 @@
 
     function Play_MultiEnableKeyRightLeft(adder) {
         //reset audio value if on big as it may had be changed via hold down or bottom controls
-        if (Play_Multi_MainBig) Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
+        var IsAUdio_All;
+
+        if (Play_Multi_MainBig) {
+            Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
+            IsAUdio_All = Play_AudioAll;
+        }
 
         Play_controls[Play_controlsAudioMulti].defaultValue += adder;
 
@@ -13979,8 +13986,6 @@
             return;
         }
 
-        Play_controls[Play_controlsAudioMulti].enterKey();
-
         if (Play_Multi_MainBig && Play_Multi_Offset !== Play_controls[Play_controlsAudioMulti].defaultValue) {
 
             Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
@@ -13994,7 +13999,10 @@
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_Multi_Offset]));
             Play_MultiUpdateinfoMainBig('_big');
             Play_MultiUpdateMain();
-        }
+
+            if (IsAUdio_All) Play_MultiKeyDownHold(true);
+
+        } else Play_controls[Play_controlsAudioMulti].enterKey();
     }
 
     function Play_MultiUpdateinfoMainBig(extraText) {
