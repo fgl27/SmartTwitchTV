@@ -460,17 +460,18 @@ function Play_KeyReturn(is_vod) {
 }
 
 var Play_Oldaudio = 0;
-function Play_MultiKeyDownHold() {
+var Play_AudioAll = false;
+function Play_MultiKeyDownHold(preventShowWarning) {
     Play_EndUpclear = true;
 
     if (Play_controls[Play_controlsAudioMulti].defaultValue !== 4) {
         Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
         Play_controls[Play_controlsAudioMulti].defaultValue = 4;
-        Play_controls[Play_controlsAudioMulti].enterKey();
+        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
     } else {
         Play_controls[Play_controlsAudioMulti].defaultValue = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
         Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
-        Play_controls[Play_controlsAudioMulti].enterKey();
+        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
     }
 }
 
@@ -1208,6 +1209,7 @@ function Play_MakeControls() {
         enterKey: function(preventShowWarning) {
 
             Android.mSetPlayerAudioMulti(this.defaultValue);
+            Play_AudioAll = this.defaultValue === 4;
 
             this.bottomArrows();
             this.setLable();
