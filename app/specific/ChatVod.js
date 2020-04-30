@@ -140,8 +140,36 @@ function Chat_loadEmotesError(tryes) {
 }
 
 function Chat_loadEmotesSuccess(data) {
-    //ChatLive_loadEmotesbttv(JSON.parse(data), 0, true);
-    ChatLive_loadEmotesbttvGlobal(JSON.parse(data));
+    Chat_loadEmotesbttvGlobal(JSON.parse(data));
+}
+
+function Chat_loadEmotesbttvGlobal(data) {
+    extraEmotesDone.bttvGlobal = {};
+
+    var url;
+
+    try {
+        data.forEach(function(emote) {
+
+            url = ChatLive_Base_BTTV_url + emote.id + '/3x';
+
+            extraEmotes[emote.code] = {
+                code: emote.code,
+                id: emote.id,
+                '4x': url
+            };
+
+            extraEmotesDone.bttvGlobal[emote.code] = {
+                code: emote.code,
+                id: emote.id,
+                '4x': url,
+                div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
+            };
+        });
+    } catch (e) {
+        Main_Log('Chat_loadEmotesbttvGlobal ' + e);
+    }
+
 }
 
 function Chat_loadEmotesffz(tryes) {

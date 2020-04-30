@@ -53,6 +53,8 @@ var emoteReplace = {
     "\\:-?[z|Z|\\|]": ":Z",
 };
 
+var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
+
 //Variable initialization end
 
 function ChatLive_Init(chat_number) {
@@ -349,50 +351,6 @@ function ChatLive_loadEmotesChannelbttvSuccess(data, chat_number, id) {
     ChatLive_loadEmotesbttv(JSON.parse(data), chat_number, false);
 }
 
-// function ChatLive_loadEmotesbttv(data, chat_number, skipChannel) {
-//     if (!skipChannel) extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]] = {};
-//     else extraEmotesDone.bttvGlobal = {};
-
-//     var url, Div;
-
-//     try {
-//         data.emotes.forEach(function(emote) {
-//             if (data.urlTemplate) {
-
-//                 url = 'https:' + data.urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '3x');
-
-//                 extraEmotes[emote.code] = {
-//                     code: emote.code,
-//                     id: emote.id,
-//                     '4x': url
-//                 };
-
-//                 Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code]);
-
-//                 //Don't copy to prevent shallow clone
-//                 if (!skipChannel) {
-//                     extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
-//                         code: emote.code,
-//                         id: emote.id,
-//                         '4x': url,
-//                         div: Div
-//                     };
-//                 } else {
-//                     extraEmotesDone.bttvGlobal[emote.code] = {
-//                         code: emote.code,
-//                         id: emote.id,
-//                         '4x': url,
-//                         div: Div
-//                     };
-//                 }
-//             }
-//         });
-//     } catch (e) {
-//         Main_Log('ChatLive_loadEmotesbttv ' + e);
-//     }
-
-// }
-
 function ChatLive_loadEmotesbttv(data, chat_number) {
     extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]] = {};
 
@@ -412,7 +370,7 @@ function ChatLive_loadEmotesbttvChannel(data, chat_number) {
     try {
         data.forEach(function(emote) {
 
-            url = 'https://cdn.betterttv.net/emote/' + emote.id + '/3x';
+            url = ChatLive_Base_BTTV_url + emote.id + '/3x';
 
             extraEmotes[emote.code] = {
                 code: emote.code,
@@ -430,35 +388,6 @@ function ChatLive_loadEmotesbttvChannel(data, chat_number) {
         });
     } catch (e) {
         Main_Log('ChatLive_loadEmotesbttvChannel ' + e);
-    }
-
-}
-
-function ChatLive_loadEmotesbttvGlobal(data) {
-    extraEmotesDone.bttvGlobal = {};
-
-    var url;
-
-    try {
-        data.forEach(function(emote) {
-
-            url = 'https://cdn.betterttv.net/emote/' + emote.id + '/3x';
-
-            extraEmotes[emote.code] = {
-                code: emote.code,
-                id: emote.id,
-                '4x': url
-            };
-
-            extraEmotesDone.bttvGlobal[emote.code] = {
-                code: emote.code,
-                id: emote.id,
-                '4x': url,
-                div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
-            };
-        });
-    } catch (e) {
-        Main_Log('ChatLive_loadEmotesbttvGlobal ' + e);
     }
 
 }
