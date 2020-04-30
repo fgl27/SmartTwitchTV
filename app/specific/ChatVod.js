@@ -130,16 +130,16 @@ function Chat_loadBTTVGlobalEmotes(tryes) {
     Chat_BaseLoadUrl(
         'https://api.betterttv.net/3/cached/emotes/global',
         tryes,
-        Chat_loadEmotesSuccess,
-        Chat_loadEmotesError
+        Chat_loadEmotesSuccessBttv,
+        Chat_loadEmotesBttvError
     );
 }
 
-function Chat_loadEmotesError(tryes) {
+function Chat_loadEmotesBttvError(tryes) {
     if (tryes < Chat_loadingDataTryMax) Chat_loadBTTVGlobalEmotes(tryes + 1);
 }
 
-function Chat_loadEmotesSuccess(data) {
+function Chat_loadEmotesSuccessBttv(data) {
     Chat_loadEmotesbttvGlobal(JSON.parse(data));
 }
 
