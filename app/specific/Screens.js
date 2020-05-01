@@ -208,7 +208,7 @@ function Screens_loadDataRequest(key) {
 
     } else {
 
-        Screens_BasexmlHttpGetExtra(
+        Screens_BasexmlHttpGet(
             (ScreenObj[key].url + Main_TwithcV5Flag),
             ScreenObj[key].loadingDataTimeout,
             ScreenObj[key].HeaderQuatity,
@@ -219,29 +219,40 @@ function Screens_loadDataRequest(key) {
 
     }
 
-    // } else if (use android) {
-
-    //     Screens_BaseAndroidhttpGet(
-    //         (ScreenObj[key].url + Main_TwithcV5Flag),
-    //         ScreenObj[key].loadingDataTimeout,
-    //         ScreenObj[key].HeaderQuatity,
-    //         ScreenObj[key].token,
-    //         key
-    //     );
-
 }
 
-// if (use android) {
-// function Screens_BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
-//     if (false) Screens_BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, key);
-//     else Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, Main_Headers_Back, key);
+// function Screens_BaseHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+//     if (Main_IsOnAndroid) Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
+//     else Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
 // }
 
-// function Screens_BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
-//     Screens_AndroidResult(Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token), key);
+// function Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+//     try {
+//         Android.GetMethodUrlAsync(
+//             theUrl,//urlString
+//             Timeout,//timeout
+//             HeaderQuatity,//HeaderQuantity
+//             access_token,//access_token
+//             HeaderArray[0][1],//overwriteID
+//             null,//postMessage, null for get
+//             null,//Method, null for get
+//             'Screens_AndroidResult',//callback
+//             0,//checkResult
+//             key,//key
+//             ScreenObj[key].thread//thread
+//         );
+
+//     } catch (e) {
+//         Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
+//     }
 // }
 
-function Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+// function Screens_AndroidResult(result, key) {
+//     if (result) Screens_HttpResultStatus(JSON.parse(result), key);
+//     else Screens_loadDataError(key);
+// }
+
+function Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
@@ -263,13 +274,7 @@ function Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_toke
     xmlHttp.send(null);
 }
 
-// function Screens_AndroidResult(result, key) {
-//     if (result) Screens_HttpResultStatus(JSON.parse(result), key);
-//     else Screens_loadDataError(key);
-// }
-
 function Screens_HttpResultStatus(resultObj, key) {
-    //if (resultObj) {//only need for the android fun Screens_AndroidResult
     if (resultObj.status === 200) {
         Screens_concatenate(resultObj.responseText, key);
     } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
@@ -279,7 +284,6 @@ function Screens_HttpResultStatus(resultObj, key) {
     } else {
         Screens_loadDataError(key);
     }
-    //} else Screens_loadDataError(key);
 }
 
 function Screens_loadDataError(key) {

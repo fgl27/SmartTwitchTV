@@ -200,6 +200,7 @@ function Main_loadTranslations(language) {
             }
             Main_IsOnAndroid = Android.getAndroid();
             Main_IsOnAndroidVersion = Android.getversion();
+            Main_isDebug = Android.getdebug();
 
         } catch (e) {
             Main_IsOnAndroidVersion = '1.0.0';
@@ -214,9 +215,6 @@ function Main_loadTranslations(language) {
             //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
             KEY_RETURN = 27;
         }
-        try {
-            if (Main_IsOnAndroid) Main_isDebug = Android.getdebug();
-        } catch (e) {}
 
         Main_showLoadDialog();
 
