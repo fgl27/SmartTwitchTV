@@ -159,12 +159,6 @@
 .icon-resize-down:before {
   content: "\54";
 }
-.icon-sound-off:before {
-  content: "\4d";
-}
-.icon-sound:before {
-  content: "\4e";
-}
 .icon-pp:before {
   content: "\56";
 }
@@ -220,4 +214,10 @@
 }
 .icon-keyboard:before {
   content: "\55";
+}
+.icon-mute:before {
+  content: "\47";
+}
+.icon-volume:before {
+  content: "\58";
 }
