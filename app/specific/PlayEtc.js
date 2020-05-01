@@ -84,7 +84,7 @@ function Play_EndText(PlayVodClip) {
     if (Play_EndTextCounter === -2) { //disable
         Play_state = Play_STATE_PLAYING;
         PlayVod_state = Play_STATE_PLAYING;
-        PlayClip_state = PlayClip_STATE_PLAYING;
+        PlayClip_state = Play_STATE_PLAYING;
         Play_EndTextClear();
         return;
     }
@@ -96,7 +96,7 @@ function Play_EndText(PlayVodClip) {
         Play_EndTextCounter--;
         Play_state = Play_STATE_PLAYING;
         PlayVod_state = Play_STATE_PLAYING;
-        PlayClip_state = PlayClip_STATE_PLAYING;
+        PlayClip_state = Play_STATE_PLAYING;
 
         if (Play_EndTextCounter === -1) {
             Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR + STR_STREAM_END +
