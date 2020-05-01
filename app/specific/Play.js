@@ -1628,7 +1628,7 @@ function Play_CloseSmall() {
 function Play_EndDialogUpDown(adder) {
 
     Play_EndTextClear();
-    if (UserLiveFeed_loadingData) return;
+    if (UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) return;
 
     if (Play_EndFocus) {
         Play_EndFocus = false;
