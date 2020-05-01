@@ -248,7 +248,7 @@ function PlayExtra_UpdatePanel() {
             Play_data.data[10],
             true,
             Play_data.data[5] ? Play_data.data[5].split(' ')[1] : '',
-            false
+            Play_data.data[8]
         )
     );
     document.getElementById('stream_info_ppimg0').src = Play_data.data[9];
@@ -264,7 +264,7 @@ function PlayExtra_UpdatePanel() {
             PlayExtra_data.data[10],
             true,
             PlayExtra_data.data[5] ? PlayExtra_data.data[5].split(' ')[1] : '',
-            true
+            PlayExtra_data.data[8]
         )
     );
     document.getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];

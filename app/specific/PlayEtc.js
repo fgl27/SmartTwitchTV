@@ -1,12 +1,11 @@
 //Etc player fun and controls
 
-function Play_partnerIcon(name, partner, islive, lang, isExtra) {
+function Play_partnerIcon(name, partner, islive, lang, rerun) {
     var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
         (partner ? ('<img class="partnericon_img" alt="" src="' +
             IMG_PARTNER + '">') : "");
 
     if (islive) {
-        var rerun = isExtra ? PlayExtra_data.data[8] : Play_data.data[8];
         div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #' +
             (rerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
             STR_SPACE + STR_SPACE + (rerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
@@ -521,9 +520,14 @@ function Play_MultiKeyDown() {
         Play_ResStoreChatPos();
         Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
     }
+    Play_SetAudioMultiIcon();
 }
 
 function Play_handleKeyUp(e) {
+    //To test multi dialog
+    // var mdoc = Play_CheckLiveThumb();
+    // if (mdoc) Play_MultiSetUpdateDialog(mdoc);
+    // return;
     if (e.keyCode === KEY_ENTER) {
         Play_handleKeyUpClear();
         if (!PlayExtra_clear) Play_OpenLiveFeedCheck();
@@ -1213,6 +1217,7 @@ function Play_MakeControls() {
 
             this.bottomArrows();
             this.setLable();
+            Play_SetAudioMultiIcon();
 
             if (!preventShowWarning) {
                 Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE +
@@ -1311,6 +1316,7 @@ function Play_MakeControls() {
                 }
 
                 if (Play_isChatShown()) Play_controls[Play_controlsChat].enterKey();
+                Play_SetAudioMultiIcon();
 
             } else {
                 Android.DisableMultiStream();
@@ -1623,6 +1629,23 @@ function Play_SetAudioIcon() {
 
         Main_innerHTML("stream_info_pp_audio_0", '<i class="icon-sound-off strokicon" ></i>');
         Main_innerHTML("stream_info_pp_audio_1", '<i class="icon-sound strokicon" ></i>');
+    }
+}
+
+function Play_SetAudioMultiIcon() {
+    var extraText = Play_Multi_MainBig ? 'big' : '',
+        audioPos = Play_controls[Play_controlsAudioMulti].defaultValue,
+        i;
+
+    if (audioPos === 4) {
+        for (i = 0; i < 4; i++)
+            Main_innerHTML("stream_info_multi_audio_" + extraText + i, '<i class="icon-sound strokicon" ></i>');
+    } else {
+        for (i = 0; i < 4; i++)
+            Main_innerHTML("stream_info_multi_audio_" + extraText + i, '<i class="icon-sound-off strokicon" ></i>');
+
+        audioPos = (audioPos + (4 - Play_Multi_Offset)) % 4;
+        Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, '<i class="icon-sound strokicon" ></i>');
     }
 }
 

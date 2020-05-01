@@ -548,7 +548,7 @@
         .stream_info_multi_diag_div,
         .stream_info_pp_div,
         .stream_info_multi_div {
-            width: 34%;
+            width: 35%;
             display: inline-block;
         }
 
@@ -1137,6 +1137,12 @@
             display: inline-block;
             width: 1.5ch;
             vertical-align: middle;
+        }
+
+        div.stream_info_pp_name {
+            display: inline-block;
+            width: auto;
+            max-width: 90%;
         }
 
         div.lang_text,
@@ -2061,6 +2067,7 @@
         div.side_panel_iner_div1_pp,
         div.side_panel_iner_div1,
         div.side_panel_iner_div2_multi,
+        div.side_panel_iner_div2_multi_dialog,
         div.side_panel_iner_div2_pp,
         div.side_panel_iner_div2,
         div.side_panel_iner_div3 {
@@ -2079,6 +2086,7 @@
 
         div.side_panel_iner_div2_pp,
         div.side_panel_iner_div2_multi,
+        div.side_panel_iner_div2_multi_dialog,
         div.side_panel_iner_div2 {
             width: 60%;
             padding-left: 0.2em;
@@ -2086,8 +2094,14 @@
         }
 
         div.side_panel_iner_div2_pp,
+        div.side_panel_iner_div2_multi_dialog,
         div.side_panel_iner_div2_multi {
             padding-top: 0;
+            width: 75%;
+        }
+
+        div.side_panel_iner_div2_multi {
+            padding-left: 6%;
         }
 
         div.side_panel_iner_div2_pp {
@@ -2107,14 +2121,38 @@
         }
 
         img.panel_pp_img,
+        img.multi_info_img,
+        img.multi_info_img_big,
         img.side_panel_channel_img {
-            width: 15%;
             position: absolute;
             top: 0;
         }
 
+        img.side_panel_channel_img {
+            width: 15%;
+        }
+
         img.panel_pp_img {
             width: 8.75%;
+        }
+
+        img.multi_info_img_big,
+        img.multi_info_img {
+            width: 22%;
+        }
+
+        img.multi_info_img_big {
+            margin-top: 0.5%;
+        }
+
+        img.panel_pp_img {
+            position: absolute;
+            top: 0;
+            width: 8.75%;
+        }
+
+        div.multi_info_line {
+            line-height: 1.1em;
         }
 
         div.notification_holder {
@@ -2901,7 +2939,6 @@
         <div id="scene_channel_panel" class="screen_size scene_channel_panel avoidclicks">
             <div class="playerinfo">
                 <div id="stream_clock" class="playclock"></div>
-                <div id="stream_watching_time_multi" class="playclock hide" style="padding-top: 1.65%;"></div>
                 <div id="stream_info">
                     <img id="stream_info_icon"
                         style="padding-left: 1%; padding-top: 1%; padding-bottom: 2.5%; display: inline-block; width: 9.5%;"
@@ -2924,20 +2961,24 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_ppimgholder0" class="side_panel_iner_div1_pp"></div>
                                         <div class="side_panel_iner_div2_pp">
-                                            <div class="side_panel_new_title">
-                                                <div id="stream_info_pp_name0" style="display: inline-block;
-                                                    width:auto; max-width:90%;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_pp_name0" class="stream_info_pp_name"></div>
                                                 <div id="stream_info_pp_audio_0" class="lang_text"></div>
                                             </div>
-                                            <div id="stream_info_pp_title0" class="side_panel_new_game"></div>
-                                            <div id="stream_info_pp_game0" class="side_panel_new_game"></div>
-                                            <div id="stream_info_pp_livetime0" class="side_panel_new_game"
+                                            <div id="stream_info_pp_title0" class="side_panel_new_game multi_info_line">
+                                            </div>
+                                            <div id="stream_info_pp_game0" class="side_panel_new_game multi_info_line">
+                                            </div>
+                                            <div id="stream_info_pp_livetime0"
+                                                class="side_panel_new_game multi_info_line"
                                                 style="display: inline-block; width:auto;">
                                             </div>
-                                            <div id="stream_info_pp_viewers0" class="side_panel_new_game"
+                                            <div id="stream_info_pp_viewers0"
+                                                class="side_panel_new_game multi_info_line"
                                                 style="display: inline-block; width:auto;">
                                             </div>
-                                            <div id="stream_info_pp_watching_time0" class="side_panel_new_game"
+                                            <div id="stream_info_pp_watching_time0"
+                                                class="side_panel_new_game multi_info_line"
                                                 style="display: inline-block; width:auto;"></div>
                                         </div>
                                     </div>
@@ -2952,17 +2993,20 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_ppimgholder1" class="side_panel_iner_div1_pp"></div>
                                         <div class="side_panel_iner_div2_pp">
-                                            <div class="side_panel_new_title">
-                                                <div id="stream_info_pp_name1" style="display: inline-block;
-                                                    width:auto; max-width:90%;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_pp_name1" class="stream_info_pp_name"></div>
                                                 <div id="stream_info_pp_audio_1" class="lang_text"></div>
                                             </div>
-                                            <div id="stream_info_pp_title1" class="side_panel_new_game"></div>
-                                            <div id="stream_info_pp_game1" class="side_panel_new_game"></div>
-                                            <div id="stream_info_pp_livetime1" class="side_panel_new_game"
+                                            <div id="stream_info_pp_title1" class="side_panel_new_game multi_info_line">
+                                            </div>
+                                            <div id="stream_info_pp_game1" class="side_panel_new_game multi_info_line">
+                                            </div>
+                                            <div id="stream_info_pp_livetime1"
+                                                class="side_panel_new_game multi_info_line"
                                                 style="display: inline-block; width:auto;">
                                             </div>
-                                            <div id="stream_info_pp_viewers1" class="side_panel_new_game"
+                                            <div id="stream_info_pp_viewers1"
+                                                class="side_panel_new_game multi_info_line"
                                                 style="display: inline-block; width:auto;">
                                             </div>
                                             <div id="stream_info_pp_watching_time1" class="side_panel_new_game"
@@ -2974,22 +3018,35 @@
                         </div>
                     </div>
                 </div>
-                <div id="stream_info_multi_big"
-                    style="padding-top: 1.5vh; padding-left: 2%; padding-bottom: 1.5%; font-size: 125%;" class="hide">
+                <div id="stream_info_multi_big" style="padding-top: 3.5vh; padding-left: 2%; font-size: 120%;"
+                    class="hide">
                     <div>
-                        <div class="stream_info_multi_div"
-                            style="transform: translateX(30%); width: 57%; margin-top: 1.8%;">
+                        <div class="stream_info_multi_div" style="transform: translateX(30%); width: 57%;">
                             <div class="side_panel_feed">
                                 <div class="side_panel_div" style="border: 0;">
                                     <div style="width: 100%;">
-                                        <div id="stream_info_multiimgholder_big0" class="side_panel_iner_div1"></div>
-                                        <div class="side_panel_iner_div2_multi" style="margin-top: 3%;">
-                                            <div id="stream_info_multi_name_big0" class="side_panel_new_title"></div>
-                                            <div id="stream_info_multi_title_big0" class="side_panel_new_game"></div>
-                                            <div id="stream_info_multi_game_big0" class="side_panel_new_game"></div>
-                                        </div>
-                                        <div class="side_panel_iner_div3">
-                                            <div id="stream_info_multi_views_big0" style="text-align: center;"></div>
+                                        <div id="stream_info_multiimgholder_big0" class="side_panel_iner_div1"
+                                            style="width: 13%;"></div>
+                                        <div class="side_panel_iner_div2_multi" style="margin-top: 1%;">
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_multi_name_big0" class="stream_info_pp_name"></div>
+                                                <div id="stream_info_multi_audio_big0" class="lang_text"></div>
+                                            </div>
+                                            <div id="stream_info_multi_title_big0"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div id="stream_info_multi_game_big0"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div class="side_panel_new_game multi_info_line">
+                                                <div id="stream_info_multi_livetimebig0"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                                <div id="stream_info_multi_views_big0"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                            </div>
+                                            <div id="stream_info_multi_watching_timebig0"
+                                                class="side_panel_new_game multi_info_line">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3003,12 +3060,25 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_multiimgholder_big1" class="side_panel_iner_div1"></div>
                                         <div class="side_panel_iner_div2_multi">
-                                            <div id="stream_info_multi_name_big1" class="side_panel_new_title"></div>
-                                            <div id="stream_info_multi_title_big1" class="side_panel_new_game"></div>
-                                            <div id="stream_info_multi_game_big1" class="side_panel_new_game"></div>
-                                        </div>
-                                        <div class="side_panel_iner_div3">
-                                            <div id="stream_info_multi_views_big1" style="text-align: center;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_multi_name_big1" class="stream_info_pp_name"></div>
+                                                <div id="stream_info_multi_audio_big1" class="lang_text"></div>
+                                            </div>
+                                            <div id="stream_info_multi_title_big1"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div id="stream_info_multi_game_big1"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
+                                                <div id="stream_info_multi_livetimebig1"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                                <div id="stream_info_multi_views_big1"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                            </div>
+                                            <div id="stream_info_multi_watching_timebig1"
+                                                class="side_panel_new_game multi_info_line">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3020,12 +3090,25 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_multiimgholder_big2" class="side_panel_iner_div1"></div>
                                         <div class="side_panel_iner_div2_multi">
-                                            <div id="stream_info_multi_name_big2" class="side_panel_new_title"></div>
-                                            <div id="stream_info_multi_title_big2" class="side_panel_new_game"></div>
-                                            <div id="stream_info_multi_game_big2" class="side_panel_new_game"></div>
-                                        </div>
-                                        <div class="side_panel_iner_div3">
-                                            <div id="stream_info_multi_views_big2" style="text-align: center;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_multi_name_big2" class="stream_info_pp_name"></div>
+                                                <div id="stream_info_multi_audio_big2" class="lang_text"></div>
+                                            </div>
+                                            <div id="stream_info_multi_title_big2"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div id="stream_info_multi_game_big2"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
+                                                <div id="stream_info_multi_livetimebig2"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                                <div id="stream_info_multi_views_big2"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                            </div>
+                                            <div id="stream_info_multi_watching_timebig2"
+                                                class="side_panel_new_game multi_info_line">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3037,12 +3120,25 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_multiimgholder_big3" class="side_panel_iner_div1"></div>
                                         <div class="side_panel_iner_div2_multi">
-                                            <div id="stream_info_multi_name_big3" class="side_panel_new_title"></div>
-                                            <div id="stream_info_multi_title_big3" class="side_panel_new_game"></div>
-                                            <div id="stream_info_multi_game_big3" class="side_panel_new_game"></div>
-                                        </div>
-                                        <div class="side_panel_iner_div3">
-                                            <div id="stream_info_multi_views_big3" style="text-align: center;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_multi_name_big3" class="stream_info_pp_name"></div>
+                                                <div id="stream_info_multi_audio_big3" class="lang_text"></div>
+                                            </div>
+                                            <div id="stream_info_multi_title_big3"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div id="stream_info_multi_game_big3"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
+                                                <div id="stream_info_multi_livetimebig3"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                                <div id="stream_info_multi_views_big3"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                            </div>
+                                            <div id="stream_info_multi_watching_timebig3"
+                                                class="side_panel_new_game multi_info_line">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3051,7 +3147,7 @@
                     </div>
                 </div>
                 <div id="stream_info_multi"
-                    style="padding-top: 3.5%; padding-left: 2%; padding-bottom: 0.75%; font-size: 125%;" class="hide">
+                    style="padding-top: 2%; padding-left: 2%; padding-bottom: 0.75%; font-size: 120%;" class="hide">
                     <div>
                         <div class="stream_info_multi_div">
                             <div class="side_panel_feed">
@@ -3059,12 +3155,25 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_multiimgholder0" class="side_panel_iner_div1"></div>
                                         <div class="side_panel_iner_div2_multi">
-                                            <div id="stream_info_multi_name0" class="side_panel_new_title"></div>
-                                            <div id="stream_info_multi_title0" class="side_panel_new_game"></div>
-                                            <div id="stream_info_multi_game0" class="side_panel_new_game"></div>
-                                        </div>
-                                        <div class="side_panel_iner_div3">
-                                            <div id="stream_info_multi_views0" style="text-align: center;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_multi_name0" class="stream_info_pp_name"></div>
+                                                <div id="stream_info_multi_audio_0" class="lang_text"></div>
+                                            </div>
+                                            <div id="stream_info_multi_title0"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div id="stream_info_multi_game0"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
+                                                <div id="stream_info_multi_livetime0"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                                <div id="stream_info_multi_views0"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                            </div>
+                                            <div id="stream_info_multi_watching_time0"
+                                                class="side_panel_new_game multi_info_line">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3076,12 +3185,25 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_multiimgholder1" class="side_panel_iner_div1"></div>
                                         <div class="side_panel_iner_div2_multi">
-                                            <div id="stream_info_multi_name1" class="side_panel_new_title"></div>
-                                            <div id="stream_info_multi_title1" class="side_panel_new_game"></div>
-                                            <div id="stream_info_multi_game1" class="side_panel_new_game"></div>
-                                        </div>
-                                        <div class="side_panel_iner_div3">
-                                            <div id="stream_info_multi_views1" style="text-align: center;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_multi_name1" class="stream_info_pp_name"></div>
+                                                <div id="stream_info_multi_audio_1" class="lang_text"></div>
+                                            </div>
+                                            <div id="stream_info_multi_title1"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div id="stream_info_multi_game1"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
+                                                <div id="stream_info_multi_livetime1"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                                <div id="stream_info_multi_views1"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                            </div>
+                                            <div id="stream_info_multi_watching_time1"
+                                                class="side_panel_new_game multi_info_line">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3095,12 +3217,25 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_multiimgholder2" class="side_panel_iner_div1"></div>
                                         <div class="side_panel_iner_div2_multi">
-                                            <div id="stream_info_multi_name2" class="side_panel_new_title"></div>
-                                            <div id="stream_info_multi_title2" class="side_panel_new_game"></div>
-                                            <div id="stream_info_multi_game2" class="side_panel_new_game"></div>
-                                        </div>
-                                        <div class="side_panel_iner_div3">
-                                            <div id="stream_info_multi_views2" style="text-align: center;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_multi_name2" class="stream_info_pp_name"></div>
+                                                <div id="stream_info_multi_audio_2" class="lang_text"></div>
+                                            </div>
+                                            <div id="stream_info_multi_title2"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div id="stream_info_multi_game2"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
+                                                <div id="stream_info_multi_livetime2"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                                <div id="stream_info_multi_views2"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                            </div>
+                                            <div id="stream_info_multi_watching_time2"
+                                                class="side_panel_new_game multi_info_line">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3112,12 +3247,25 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_multiimgholder3" class="side_panel_iner_div1"></div>
                                         <div class="side_panel_iner_div2_multi">
-                                            <div id="stream_info_multi_name3" class="side_panel_new_title"></div>
-                                            <div id="stream_info_multi_title3" class="side_panel_new_game"></div>
-                                            <div id="stream_info_multi_game3" class="side_panel_new_game"></div>
-                                        </div>
-                                        <div class="side_panel_iner_div3">
-                                            <div id="stream_info_multi_views3" style="text-align: center;"></div>
+                                            <div class="side_panel_new_title multi_info_line">
+                                                <div id="stream_info_multi_name3" class="stream_info_pp_name"></div>
+                                                <div id="stream_info_multi_audio_3" class="lang_text"></div>
+                                            </div>
+                                            <div id="stream_info_multi_title3"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div id="stream_info_multi_game3"
+                                                class="side_panel_new_game multi_info_line"></div>
+                                            <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
+                                                <div id="stream_info_multi_livetime3"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                                <div id="stream_info_multi_views3"
+                                                    style="display: inline-block; width:auto;">
+                                                </div>
+                                            </div>
+                                            <div id="stream_info_multi_watching_time3"
+                                                class="side_panel_new_game multi_info_line">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -3286,7 +3434,7 @@
                         <div class="multi_dialog_div">
                             <div style="width: 100%; text-align: left;">
                                 <div id="stream_dialog_multiimgholder-1" class="side_panel_iner_div1"></div>
-                                <div class="side_panel_iner_div2_multi">
+                                <div class="side_panel_iner_div2_multi_dialog">
                                     <div id="stream_dialog_multi_name-1" class="side_panel_new_title"></div>
                                     <div id="stream_dialog_multi_title-1" class="side_panel_new_game"></div>
                                     <div id="stream_dialog_multi_game-1" class="side_panel_new_game"></div>
@@ -3303,7 +3451,7 @@
                                 <div id="stream_dialog_multi_div_big0" class="multi_dialog_div">
                                     <div style="width: 100%; text-align: left;">
                                         <div id="stream_dialog_multiimgholder_big0" class="side_panel_iner_div1"></div>
-                                        <div class="side_panel_iner_div2_multi" style="margin-top: 2%;">
+                                        <div class="side_panel_iner_div2_multi_dialog" style="margin-top: 2%;">
                                             <div id="stream_dialog_multi_name_big0" class="side_panel_new_title"></div>
                                             <div id="stream_dialog_multi_title_big0" class="side_panel_new_game"></div>
                                             <div id="stream_dialog_multi_game_big0" class="side_panel_new_game"></div>
@@ -3319,7 +3467,7 @@
                                 <div id="stream_dialog_multi_div_big1" class="multi_dialog_div">
                                     <div style="width: 100%; text-align: left;">
                                         <div id="stream_dialog_multiimgholder_big1" class="side_panel_iner_div1"></div>
-                                        <div class="side_panel_iner_div2_multi">
+                                        <div class="side_panel_iner_div2_multi_dialog">
                                             <div id="stream_dialog_multi_name_big1" class="side_panel_new_title"></div>
                                             <div id="stream_dialog_multi_title_big1" class="side_panel_new_game"></div>
                                             <div id="stream_dialog_multi_game_big1" class="side_panel_new_game"></div>
@@ -3333,7 +3481,7 @@
                                 <div id="stream_dialog_multi_div_big2" class="multi_dialog_div">
                                     <div style="width: 100%; text-align: left;">
                                         <div id="stream_dialog_multiimgholder_big2" class="side_panel_iner_div1"></div>
-                                        <div class="side_panel_iner_div2_multi">
+                                        <div class="side_panel_iner_div2_multi_dialog">
                                             <div id="stream_dialog_multi_name_big2" class="side_panel_new_title"></div>
                                             <div id="stream_dialog_multi_title_big2" class="side_panel_new_game"></div>
                                             <div id="stream_dialog_multi_game_big2" class="side_panel_new_game"></div>
@@ -3347,7 +3495,7 @@
                                 <div id="stream_dialog_multi_div_big3" class="multi_dialog_div">
                                     <div style="width: 100%; text-align: left;">
                                         <div id="stream_dialog_multiimgholder_big3" class="side_panel_iner_div1"></div>
-                                        <div class="side_panel_iner_div2_multi">
+                                        <div class="side_panel_iner_div2_multi_dialog">
                                             <div id="stream_dialog_multi_name_big3" class="side_panel_new_title"></div>
                                             <div id="stream_dialog_multi_title_big3" class="side_panel_new_game"></div>
                                             <div id="stream_dialog_multi_game_big3" class="side_panel_new_game"></div>
@@ -3365,7 +3513,7 @@
                                 <div id="stream_dialog_multi_div0" class="multi_dialog_div">
                                     <div style="width: 100%; text-align: left;">
                                         <div id="stream_dialog_multiimgholder0" class="side_panel_iner_div1"></div>
-                                        <div class="side_panel_iner_div2_multi">
+                                        <div class="side_panel_iner_div2_multi_dialog">
                                             <div id="stream_dialog_multi_name0" class="side_panel_new_title"></div>
                                             <div id="stream_dialog_multi_title0" class="side_panel_new_game"></div>
                                             <div id="stream_dialog_multi_game0" class="side_panel_new_game"></div>
@@ -3379,7 +3527,7 @@
                                 <div id="stream_dialog_multi_div1" class="multi_dialog_div">
                                     <div style="width: 100%; text-align: left;">
                                         <div id="stream_dialog_multiimgholder1" class="side_panel_iner_div1"></div>
-                                        <div class="side_panel_iner_div2_multi">
+                                        <div class="side_panel_iner_div2_multi_dialog">
                                             <div id="stream_dialog_multi_name1" class="side_panel_new_title"></div>
                                             <div id="stream_dialog_multi_title1" class="side_panel_new_game"></div>
                                             <div id="stream_dialog_multi_game1" class="side_panel_new_game"></div>

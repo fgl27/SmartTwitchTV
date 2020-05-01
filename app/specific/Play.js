@@ -347,6 +347,7 @@ function Play_Start() {
 
     Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 300000, Play_streamInfoTimerId);
     //PlayExtra_UpdatePanelTest();
+    //Play_FakeMulti();
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -665,7 +666,6 @@ function Play_updateStreamInfoMultiValues(response, pos) {
             (pos + (4 - Play_Multi_Offset)) % 4,
             response.stream.game,
             response.stream.viewers,
-            Main_is_rerun(response.stream.broadcast_platform),
             twemoji.parse(response.stream.channel.status, false, true),
             (Play_Multi_MainBig ? '_big' : '')
         );
@@ -1284,7 +1284,20 @@ function Play_showPanel() {
 
 function Play_RefreshWatchingtime() {
     if (Play_MultiEnable) {
-        Main_innerHTML("stream_watching_time_multi", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+
+        var extraText = Play_Multi_MainBig ? 'big' : '', pos, i;
+
+        for (i = 0; i < 4; i++) {
+            pos = (i + (4 - Play_Multi_Offset)) % 4;
+            if (Play_MultiArray[i].data.length > 0) {
+                Main_innerHTML("stream_info_multi_watching_time" + extraText + pos, STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_MultiArray[i].watching_time)));
+                Main_innerHTML('stream_info_multi_livetime' + extraText + pos, STR_SINCE + Play_streamLiveAt(Play_MultiArray[i].data[12]));
+            } else {
+                Main_innerHTML("stream_info_multi_watching_time" + extraText + pos, STR_SPACE);
+                Main_innerHTML('stream_info_multi_livetime' + extraText + pos, STR_SPACE);
+            }
+        }
+
     } else if (PlayExtra_PicturePicture) {
         Main_innerHTML("stream_info_pp_watching_time0", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
 
@@ -1696,7 +1709,6 @@ function Play_Multi_SetPanel() {
     Main_HideElement('stream_info');
     Main_ShowElement('dialog_multi_help');
     Main_ShowElement('stream_info_multi');
-    Main_ShowElement('stream_watching_time_multi');
 }
 
 function Play_Multi_UnSetPanelDivs(checkChat) {
@@ -1711,7 +1723,6 @@ function Play_Multi_UnSetPanelDivs(checkChat) {
     Main_HideElement('stream_info_multi');
     Main_HideElement('stream_info_multi_big');
     Main_HideElement('dialog_multi_help');
-    Main_HideElement('stream_watching_time_multi');
     if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
     Main_SaveValues();
     Play_IconsRemoveFocus();
@@ -2042,14 +2053,23 @@ function Play_MultiUpdateinfoMainBig(extraText) {
         if (Play_MultiArray[i].data.length > 0) {
             pos = (i + (4 - Play_Multi_Offset)) % 4;
 
-            Main_innerHTML('stream_info_multi_name' + extraText + pos, Play_MultiArray[i].data[1]);
+            Main_innerHTML(
+                'stream_info_multi_name' + extraText + pos,
+                Play_partnerIcon(
+                    Play_MultiArray[i].data[1],
+                    Play_MultiArray[i].data[10],
+                    true,
+                    Play_MultiArray[i].data[5] ? Play_MultiArray[i].data[5].split(' ')[1] : '',
+                    Play_MultiArray[i].data[8]
+                )
+            );
+
             document.getElementById('stream_info_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
 
             Play_MultiUpdateinfo(
                 pos,
                 Play_MultiArray[i].data[3],
                 Play_MultiArray[i].data[13],
-                Play_MultiArray[i].data[8],
                 twemoji.parse(Play_MultiArray[i].data[2]),
                 extraText
             );
@@ -2061,9 +2081,9 @@ function Play_MultiUpdateinfoMainBig(extraText) {
 function Play_MultiInfoReset(pos) {
     Play_MultiSetinfo(
         pos,
-        STR_SPACE,
+        '',
         -1,
-        STR_SPACE,
+        '',
         false,
         IMG_404_LOGO,
         STR_MULTI_EMPTY
@@ -2080,22 +2100,31 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
         displayname = Play_MultiArray[pos].data[1];
     }
 
+    var partner = Play_MultiArray[pos].data[10];
+    var lang = Play_MultiArray[pos].data[5] ? Play_MultiArray[pos].data[5].split(' ')[1] : '';
+
     pos = (pos + (4 - Play_Multi_Offset)) % 4;
     var extraText = Play_Multi_MainBig ? '_big' : '';
-    Main_innerHTML('stream_info_multi_name' + extraText + pos, displayname);
     document.getElementById('stream_info_multiimg' + extraText + pos).src = logo;
-    Play_MultiUpdateinfo(pos, game, views, is_rerun, title, extraText);
+
+    Main_innerHTML(
+        'stream_info_multi_name' + extraText + pos,
+        displayname === '' ? STR_SPACE :
+            Play_partnerIcon(
+                displayname,
+                partner,
+                true,
+                lang,
+                is_rerun
+            )
+    );
+    Play_MultiUpdateinfo(pos, game, views, title, extraText);
 }
 
-function Play_MultiUpdateinfo(pos, game, views, is_rerun, title, extraText) {
+function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
     Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
-    Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE : game);
-    if (views < 0) Main_textContent('stream_info_multi_views' + extraText + pos, '');
-    else {
-        Main_innerHTML('stream_info_multi_views' + extraText + pos,
-            '<i class="icon-' + (!is_rerun ? 'circle" style="color: red;' : 'refresh" style="') +
-            ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(views));
-    }
+    Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE : STR_PLAYING + game);
+    Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER) : STR_SPACE);
 }
 
 function Play_MultiSetpannelInfo() {
@@ -2103,11 +2132,11 @@ function Play_MultiSetpannelInfo() {
     Main_textContent('stream_dialog_multi_end', STR_REPLACE_MULTI_ENTER);
     for (var i = 0; i < 4; i++) {
         Main_innerHTML("stream_info_multiimgholder" + i,
-            '<img id="stream_info_multiimg' + i + '" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
+            '<img id="stream_info_multiimg' + i + '" class="multi_info_img" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 
         Main_innerHTML("stream_info_multiimgholder_big" + i,
-            '<img id="stream_info_multiimg_big' + i + '" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
+            '<img id="stream_info_multiimg_big' + i + '" class="multi_info_img_big" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 
         Main_innerHTML("stream_dialog_multiimgholder_big" + i,
@@ -2118,6 +2147,11 @@ function Play_MultiSetpannelInfo() {
             '<img id="stream_dialog_multiimg' + i + '" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
     }
+
+    var doc = document.getElementById('stream_info_multiimg_big0');
+    doc.style.width = '16.5%';
+    doc.style.marginTop = '-0.5%';
+
     Main_innerHTML("stream_dialog_multiimgholder-1",
         '<img id="stream_dialog_multiimg-1" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
         'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
@@ -2183,6 +2217,7 @@ function Play_ShowMultiDialog() {
 }
 
 function Play_HideMultiDialog(PreventcleanQuailities) {
+    //return;
     Main_HideElement('dialog_multi');
     Play_clearHideMultiDialog();
     Play_MultiRemoveFocus();
@@ -2198,35 +2233,50 @@ function Play_clearHideMultiDialog() {
 }
 
 // function Play_FakeMulti() {
-//     Play_MultiEnable = true;
+//     //Play_MultiEnable = true;
+//     //Play_Multi_MainBig = true;
+//     //Main_ShowElement('stream_info_multi_big');
+//     Play_Multi_SetPanel();
+//     //Main_HideElement('stream_info_multi');
 //     var i = 0;
 //     for (i; i < 4; i++) {
-//         Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
-//         Play_MultiArray[i].data = [
-//             IMG_404_VIDEO,
-//             "ashlynn",
-//             "title",
-//             "game",
-//             "for 67,094&nbsp;Viewers",
-//             "720p30 [EN]",
-//             "ashlynn",
-//             616702257,
-//             false,
-//             "https://static-cdn.jtvnw.net/jtv_user_pictures/9a67eb66-66b8-47fa-b388-61f2f74ce213-profile_image-300x300.png",
-//             true,
-//             "Since 11:04:36&nbsp;",
-//             "2020-01-25T09:49:05Z",
-//             67094,
-//             213749122];
+//         Play_MultiArray[i] = Play_data;
+//         // Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
+//         // Play_MultiArray[i].data = [
+//         //     IMG_404_VIDEO,
+//         //     "ashlynn",
+//         //     "title",
+//         //     "game",
+//         //     "for 67,094&nbsp;Viewers",
+//         //     "720p30 [EN]",
+//         //     "ashlynn",
+//         //     616702257,
+//         //     false,
+//         //     "https://static-cdn.jtvnw.net/jtv_user_pictures/9a67eb66-66b8-47fa-b388-61f2f74ce213-profile_image-300x300.png",
+//         //     true,
+//         //     "Since 11:04:36&nbsp;",
+//         //     "2020-01-25T09:49:05Z",
+//         //     67094,
+//         //     213749122];
+
+//         // Play_MultiSetinfo(
+//         //     i,
+//         //     Play_MultiArray[i].data[3],
+//         //     Play_MultiArray[i].data[13],
+//         //     Play_MultiArray[i].data[1],
+//         //     Play_MultiArray[i].data[8],
+//         //     Play_MultiArray[i].data[9],
+//         //     twemoji.parse(Play_MultiArray[i].data[2])
+//         // );
 
 //         Play_MultiSetinfo(
 //             i,
-//             Play_MultiArray[i].data[3],
-//             Play_MultiArray[i].data[13],
-//             Play_MultiArray[i].data[1],
-//             Play_MultiArray[i].data[8],
-//             Play_MultiArray[i].data[9],
-//             twemoji.parse(Play_MultiArray[i].data[2])
+//             Play_data.data[3],
+//             Play_data.data[13],
+//             Play_data.data[1],
+//             Play_data.data[8],
+//             Play_data.data[9],
+//             twemoji.parse(Play_data.data[2])
 //         );
 //     }
 // }
