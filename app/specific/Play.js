@@ -1555,6 +1555,7 @@ function Play_loadDataCheckHostError() {
 
 function Play_CheckHost(responseText) {
     Play_TargetHost = JSON.parse(responseText).hosts[0];
+    Play_state = Play_STATE_PLAYING;
 
     if (Play_TargetHost.target_login !== undefined) {
         Play_IsWarning = true;

@@ -14,7 +14,7 @@ var PlayClip_replayOrNext = false;
 var PlayClip_replay = false;
 var PlayClip_currentTime = 0;
 var PlayClip_state = 0;
-var PlayClip_STATE_PLAYING = 1;
+var Play_STATE_PLAYING = 1;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 2000;
 var PlayClip_loadData410 = false;
@@ -247,7 +247,7 @@ function PlayClip_loadDataSuccessFake() {
         'url': 'https://fake'
     },
     ];
-    PlayClip_state = PlayClip_STATE_PLAYING;
+    PlayClip_state = Play_STATE_PLAYING;
     PlayClip_qualityChanged();
     Main_Set_history('clip', Main_values_Play_data);
 }
@@ -259,7 +259,7 @@ function PlayClip_loadDataSuccess410() {
         'url': ChannelClip_playUrl2
     });
 
-    PlayClip_state = PlayClip_STATE_PLAYING;
+    PlayClip_state = Play_STATE_PLAYING;
     PlayClip_qualityChanged();
     Main_Set_history('clip', Main_values_Play_data);
 }
@@ -287,7 +287,7 @@ function PlayClip_QualityGenerate(response) {
         }
     }
 
-    PlayClip_state = PlayClip_STATE_PLAYING;
+    PlayClip_state = Play_STATE_PLAYING;
     PlayClip_qualityChanged();
     Main_Set_history('clip', Main_values_Play_data);
 }
@@ -312,7 +312,7 @@ function PlayClip_qualityChanged() {
         }
     }
 
-    PlayClip_state = PlayClip_STATE_PLAYING;
+    PlayClip_state = Play_STATE_PLAYING;
 
     PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
     PlayClip_qualityPlaying = PlayClip_quality;
@@ -585,7 +585,7 @@ function PlayClip_OpenLiveStream() {
 }
 
 function PlayClip_handleKeyDown(e) {
-    if (PlayClip_state !== PlayClip_STATE_PLAYING) {
+    if (PlayClip_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
             case KEY_STOP:
                 Play_CleanHideExit();
