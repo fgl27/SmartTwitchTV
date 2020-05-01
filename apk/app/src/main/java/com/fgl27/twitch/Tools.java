@@ -709,7 +709,7 @@ public final class Tools {
     }
 
     private static MediaItem MediaItemBuilder(Uri uri) {
-        return new MediaItem.Builder().setSourceUri(uri).build();
+        return new MediaItem.Builder().setUri(uri).build();
     }
 
     public static int DeviceRam(Context context) {
