@@ -14,7 +14,6 @@ var PlayClip_replayOrNext = false;
 var PlayClip_replay = false;
 var PlayClip_currentTime = 0;
 var PlayClip_state = 0;
-var Play_STATE_PLAYING = 1;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 2000;
 var PlayClip_loadData410 = false;
