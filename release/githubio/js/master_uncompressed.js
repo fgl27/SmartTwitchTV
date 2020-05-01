@@ -11044,7 +11044,7 @@
         };
 
         Play_controls[Play_controlsAudio] = { //Audio
-            icons: "sound",
+            icons: "volume",
             string: STR_AUDIO_SOURCE,
             values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
             defaultValue: Play_controlsAudioPos,
@@ -11087,7 +11087,7 @@
         };
 
         Play_controls[Play_controlsAudioMulti] = { //Audio multi
-            icons: "sound",
+            icons: "volume",
             string: STR_AUDIO_SOURCE,
             values: [STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4, STR_PLAYER_MULTI_ALL],
             defaultValue: 0,
@@ -11497,20 +11497,20 @@
             Main_innerHTML("chat_container_sound_icon", '<i class="icon-volume strokicon" ></i>');
             Main_innerHTML("chat_container2_sound_icon", '<i class="icon-volume strokicon" ></i>');
 
-            Main_innerHTML("stream_info_pp_audio_0", '<i class="icon-volume strokicon" ></i>');
-            Main_innerHTML("stream_info_pp_audio_1", '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
         } else if (Play_controlsAudioPos === 1) {
             Main_innerHTML("chat_container_sound_icon", '<i class="icon-volume strokicon" ></i>');
             Main_innerHTML("chat_container2_sound_icon", '<i class="icon-mute strokicon" ></i>');
 
-            Main_innerHTML("stream_info_pp_audio_0", '<i class="icon-volume strokicon" ></i>');
-            Main_innerHTML("stream_info_pp_audio_1", '<i class="icon-mute strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
         } else {
             Main_innerHTML("chat_container_sound_icon", '<i class="icon-mute strokicon" ></i>');
             Main_innerHTML("chat_container2_sound_icon", '<i class="icon-volume strokicon" ></i>');
 
-            Main_innerHTML("stream_info_pp_audio_0", '<i class="icon-mute strokicon" ></i>');
-            Main_innerHTML("stream_info_pp_audio_1", '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
         }
     }
 
@@ -11521,13 +11521,13 @@
 
         if (audioPos === 4) {
             for (i = 0; i < 4; i++)
-                Main_innerHTML("stream_info_multi_audio_" + extraText + i, '<i class="icon-volume strokicon" ></i>');
+                Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
         } else {
             for (i = 0; i < 4; i++)
-                Main_innerHTML("stream_info_multi_audio_" + extraText + i, '<i class="icon-mute strokicon" ></i>');
+                Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-mute strokicon" ></i>');
 
             audioPos = (audioPos + (4 - Play_Multi_Offset)) % 4;
-            Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
         }
     }
 
