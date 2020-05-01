@@ -235,21 +235,38 @@ function PlayExtra_ClearExtra() {
 // function PlayExtra_UpdatePanelTest() {
 //     PlayExtra_data = Play_data;
 //     PlayExtra_UpdatePanel();
+//     Play_SetAudioIcon();
 //     Main_HideElement('stream_info');
 //     Main_ShowElement('stream_info_pp');
 // }
 
 function PlayExtra_UpdatePanel() {
-    Main_innerHTML('stream_info_pp_name0',
-        Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''));
+    Main_innerHTML(
+        'stream_info_pp_name0',
+        Play_partnerIcon(
+            Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
+            Play_data.data[10],
+            true,
+            Play_data.data[5] ? Play_data.data[5].split(' ')[1] : '',
+            false
+        )
+    );
     document.getElementById('stream_info_ppimg0').src = Play_data.data[9];
 
     Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
     Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE : STR_PLAYING + Play_data.data[3]);
     Main_innerHTML('stream_info_pp_viewers0', STR_FOR + Main_addCommas((Play_data.data[13] > 0) ? Play_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
 
-    Main_innerHTML('stream_info_pp_name1',
-        Play_partnerIcon(PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1], PlayExtra_data.data[10], true, PlayExtra_data.data[5] ? PlayExtra_data.data[5].split(' ')[1] : '', true));
+    Main_innerHTML(
+        'stream_info_pp_name1',
+        Play_partnerIcon(
+            PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1],
+            PlayExtra_data.data[10],
+            true,
+            PlayExtra_data.data[5] ? PlayExtra_data.data[5].split(' ')[1] : '',
+            true
+        )
+    );
     document.getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
     Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
 

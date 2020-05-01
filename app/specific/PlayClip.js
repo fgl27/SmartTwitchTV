@@ -148,7 +148,15 @@ function PlayClip_GetStreamerInfoSuccessError() {
 
 function PlayClip_GetStreamerInfoSuccess(response) {
     Main_values.Main_selectedChannelPartner = JSON.parse(response).partner;
-    Main_innerHTML("stream_info_name", Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false, ChannelClip_language));
+    Main_innerHTML(
+        "stream_info_name",
+        Play_partnerIcon(
+            Main_values.Main_selectedChannelDisplayname,
+            Main_values.Main_selectedChannelPartner,
+            false,
+            ChannelClip_language
+        )
+    );
 }
 
 function PlayClip_loadData() {

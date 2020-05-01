@@ -74,7 +74,15 @@ function PlayVod_Start() {
 
     if (!Main_values.vodOffset) {//we have some vod info
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-        Main_innerHTML("stream_info_name", Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false, ' [' + (ChannelVod_language).toUpperCase() + ']'));
+        Main_innerHTML(
+            "stream_info_name",
+            Play_partnerIcon(
+                Main_values.Main_selectedChannelDisplayname,
+                Main_values.Main_selectedChannelPartner,
+                false,
+                ' [' + (ChannelVod_language).toUpperCase() + ']'
+            )
+        );
         Main_innerHTML("stream_info_title", ChannelVod_title);
         Main_textContent("stream_info_game", ChannelVod_game);
         Main_innerHTML("stream_live_time", ChannelVod_createdAt + ',' + STR_SPACE + ChannelVod_views);
@@ -175,8 +183,15 @@ function PlayVod_updateVodInfoPannel(response) {
     ChannelVod_title = twemoji.parse(response.title, false, true);
 
     Main_values.Main_selectedChannelPartner = response.channel.partner;
-    Main_innerHTML("stream_info_name", Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, false,
-        '[' + (response.channel.broadcaster_language).toUpperCase() + ']'));
+    Main_innerHTML(
+        "stream_info_name",
+        Play_partnerIcon(
+            Main_values.Main_selectedChannelDisplayname,
+            Main_values.Main_selectedChannelPartner,
+            false,
+            '[' + (response.channel.broadcaster_language).toUpperCase() + ']'
+        )
+    );
 
     Main_innerHTML("stream_info_title", ChannelVod_title);
     Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +

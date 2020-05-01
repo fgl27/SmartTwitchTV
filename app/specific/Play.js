@@ -210,7 +210,6 @@ function Play_PreStart() {
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
-    Play_SetAudioIcon();
 
     Main_innerHTML('user_feed_notify_img_holder',
         '<img id="user_feed_notify_img" alt="" class="notify_img" src="' + IMG_404_LOGO +
@@ -478,7 +477,15 @@ function Play_updateStreamInfoStart() {
 function Play_UpdateMainStreamDiv() {
     //Restore or set info panel
     Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[2], false, true));
-    Main_innerHTML("stream_info_name", Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], true, Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''));
+    Main_innerHTML(
+        "stream_info_name",
+        Play_partnerIcon(
+            Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
+            Play_data.data[10],
+            true,
+            Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''
+        )
+    );
     Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
     Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
     Play_LoadLogoSucess = true;

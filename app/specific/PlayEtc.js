@@ -1608,12 +1608,21 @@ function Play_SetAudioIcon() {
     if (Play_controlsAudioPos === 2) {
         Main_innerHTML("chat_container_sound_icon", '<i class="icon-sound strokicon" ></i>');
         Main_innerHTML("chat_container2_sound_icon", '<i class="icon-sound strokicon" ></i>');
+
+        Main_innerHTML("stream_info_pp_audio_0", '<i class="icon-sound strokicon" ></i>');
+        Main_innerHTML("stream_info_pp_audio_1", '<i class="icon-sound strokicon" ></i>');
     } else if (Play_controlsAudioPos === 1) {
         Main_innerHTML("chat_container_sound_icon", '<i class="icon-sound strokicon" ></i>');
         Main_innerHTML("chat_container2_sound_icon", '<i class="icon-sound-off strokicon" ></i>');
+
+        Main_innerHTML("stream_info_pp_audio_0", '<i class="icon-sound strokicon" ></i>');
+        Main_innerHTML("stream_info_pp_audio_1", '<i class="icon-sound-off strokicon" ></i>');
     } else {
         Main_innerHTML("chat_container_sound_icon", '<i class="icon-sound-off strokicon" ></i>');
         Main_innerHTML("chat_container2_sound_icon", '<i class="icon-sound strokicon" ></i>');
+
+        Main_innerHTML("stream_info_pp_audio_0", '<i class="icon-sound-off strokicon" ></i>');
+        Main_innerHTML("stream_info_pp_audio_1", '<i class="icon-sound strokicon" ></i>');
     }
 }
 

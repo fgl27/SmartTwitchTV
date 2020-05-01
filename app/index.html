@@ -1127,6 +1127,10 @@
         div.partnericon_div {
             display: inline-block;
             width: auto;
+            max-width: 85%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transform: translateY(12%);
         }
 
         img.partnericon_img {
@@ -1150,6 +1154,7 @@
             text-shadow: none;
             font-size: 60%;
             font-family: 'Roboto-Bold';
+            transform: translateY(-12%);
         }
 
         div.vodicon_text {
@@ -2911,7 +2916,7 @@
                         <div id="stream_watching_time" class="playsideinfotext"></div>
                     </div>
                 </div>
-                <div id="stream_info_pp" style="padding-top: 0.5%; padding-left: 2%; font-size: 122%;" class="hide">
+                <div id="stream_info_pp" style="padding-top: 2%; padding-left: 2%; font-size: 122%;" class="hide">
                     <div>
                         <div class="stream_info_pp_div">
                             <div class="side_panel_feed" style="padding: 0;">
@@ -2919,7 +2924,11 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_ppimgholder0" class="side_panel_iner_div1_pp"></div>
                                         <div class="side_panel_iner_div2_pp">
-                                            <div id="stream_info_pp_name0" class="side_panel_new_title"></div>
+                                            <div class="side_panel_new_title">
+                                                <div id="stream_info_pp_name0" style="display: inline-block;
+                                                    width:auto; max-width:90%;"></div>
+                                                <div id="stream_info_pp_audio_0" class="lang_text"></div>
+                                            </div>
                                             <div id="stream_info_pp_title0" class="side_panel_new_game"></div>
                                             <div id="stream_info_pp_game0" class="side_panel_new_game"></div>
                                             <div id="stream_info_pp_livetime0" class="side_panel_new_game"
@@ -2943,7 +2952,11 @@
                                     <div style="width: 100%;">
                                         <div id="stream_info_ppimgholder1" class="side_panel_iner_div1_pp"></div>
                                         <div class="side_panel_iner_div2_pp">
-                                            <div id="stream_info_pp_name1" class="side_panel_new_title"></div>
+                                            <div class="side_panel_new_title">
+                                                <div id="stream_info_pp_name1" style="display: inline-block;
+                                                    width:auto; max-width:90%;"></div>
+                                                <div id="stream_info_pp_audio_1" class="lang_text"></div>
+                                            </div>
                                             <div id="stream_info_pp_title1" class="side_panel_new_game"></div>
                                             <div id="stream_info_pp_game1" class="side_panel_new_game"></div>
                                             <div id="stream_info_pp_livetime1" class="side_panel_new_game"
