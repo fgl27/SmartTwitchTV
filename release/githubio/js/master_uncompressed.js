@@ -7103,7 +7103,7 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.177';
+    var Main_stringVersion_Min = '.178';
     var Main_minversion = 'May 01, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
@@ -7172,6 +7172,7 @@
                 }
                 Main_IsOnAndroid = Android.getAndroid();
                 Main_IsOnAndroidVersion = Android.getversion();
+                Main_isDebug = Android.getdebug();
 
             } catch (e) {
                 Main_IsOnAndroidVersion = '1.0.0';
@@ -7186,9 +7187,6 @@
                 //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
                 KEY_RETURN = 27;
             }
-            try {
-                if (Main_IsOnAndroid) Main_isDebug = Android.getdebug();
-            } catch (e) {}
 
             Main_showLoadDialog();
 
@@ -15773,7 +15771,7 @@
 
         } else {
 
-            Screens_BasexmlHttpGetExtra(
+            Screens_BasexmlHttpGet(
                 (ScreenObj[key].url + Main_TwithcV5Flag),
                 ScreenObj[key].loadingDataTimeout,
                 ScreenObj[key].HeaderQuatity,
@@ -15784,29 +15782,40 @@
 
         }
 
-        // } else if (use android) {
-
-        //     Screens_BaseAndroidhttpGet(
-        //         (ScreenObj[key].url + Main_TwithcV5Flag),
-        //         ScreenObj[key].loadingDataTimeout,
-        //         ScreenObj[key].HeaderQuatity,
-        //         ScreenObj[key].token,
-        //         key
-        //     );
-
     }
 
-    // if (use android) {
-    // function Screens_BasehttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
-    //     if (false) Screens_BaseAndroidhttpGet(theUrl, Timeout, 0, access_token, key);
-    //     else Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, Main_Headers_Back, key);
+    // function Screens_BaseHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+    //     if (Main_IsOnAndroid) Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
+    //     else Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
     // }
 
-    // function Screens_BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, key) {
-    //     Screens_AndroidResult(Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token), key);
+    // function Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+    //     try {
+    //         Android.GetMethodUrlAsync(
+    //             theUrl,//urlString
+    //             Timeout,//timeout
+    //             HeaderQuatity,//HeaderQuantity
+    //             access_token,//access_token
+    //             HeaderArray[0][1],//overwriteID
+    //             null,//postMessage, null for get
+    //             null,//Method, null for get
+    //             'Screens_AndroidResult',//callback
+    //             0,//checkResult
+    //             key,//key
+    //             ScreenObj[key].thread//thread
+    //         );
+
+    //     } catch (e) {
+    //         Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
+    //     }
     // }
 
-    function Screens_BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+    // function Screens_AndroidResult(result, key) {
+    //     if (result) Screens_HttpResultStatus(JSON.parse(result), key);
+    //     else Screens_loadDataError(key);
+    // }
+
+    function Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
@@ -15828,13 +15837,7 @@
         xmlHttp.send(null);
     }
 
-    // function Screens_AndroidResult(result, key) {
-    //     if (result) Screens_HttpResultStatus(JSON.parse(result), key);
-    //     else Screens_loadDataError(key);
-    // }
-
     function Screens_HttpResultStatus(resultObj, key) {
-        //if (resultObj) {//only need for the android fun Screens_AndroidResult
         if (resultObj.status === 200) {
             Screens_concatenate(resultObj.responseText, key);
         } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
@@ -15844,7 +15847,6 @@
         } else {
             Screens_loadDataError(key);
         }
-        //} else Screens_loadDataError(key);
     }
 
     function Screens_loadDataError(key) {
@@ -17956,6 +17958,7 @@
             ids: Screens_ScreenIds('Vod'),
             table: 'stream_table_vod',
             screen: Main_Vod,
+            thread: 3,
             highlightSTR: 'Vod_highlight',
             highlight: Main_getItemBool('Vod_highlight', false),
             periodPos: Main_getItemInt('vod_periodPos', 2),
@@ -18014,6 +18017,7 @@
             time: ['time', 'views'],
             extraoffset: 0,
             OffSetPos: 0,
+            thread: 1,
             highlightSTR: 'ChannelVod_highlight',
             highlight: Main_getItemBool('ChannelVod_highlight', false),
             periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
@@ -18102,6 +18106,7 @@
             ids: Screens_ScreenIds('AGameVod'),
             table: 'stream_table_a_game_vod',
             screen: Main_AGameVod,
+            thread: 1,
             highlightSTR: 'AGameVod_highlight',
             highlight: Main_getItemBool('AGameVod_highlight', false),
             periodPos: Main_getItemInt('AGameVod_periodPos', 2),
@@ -18161,6 +18166,7 @@
             ids: Screens_ScreenIds('UserVod'),
             table: 'stream_table_user_vod',
             screen: Main_UserVod,
+            thread: 4,
             time: ['time', 'views'],
             highlightSTR: 'UserVod_highlight',
             highlight: Main_getItemBool('UserVod_highlight', false),
@@ -18274,6 +18280,7 @@
             ids: Screens_ScreenIds('Live'),
             table: 'stream_table_live',
             screen: Main_Live,
+            thread: 0,
             object: 'streams',
             key_pgDown: Main_Featured,
             key_pgUp: Main_Clip,
@@ -18306,6 +18313,7 @@
             ids: Screens_ScreenIds('SearchLive'),
             table: 'stream_table_search_live',
             screen: Main_SearchLive,
+            thread: 1,
             object: 'streams',
             base_url: Main_kraken_api + 'search/streams?limit=' + Main_ItemsLimitMax + '&query=',
             set_url: function() {
@@ -18347,6 +18355,7 @@
             ids: Screens_ScreenIds('UserLive'),
             table: 'stream_table_user_live',
             screen: Main_UserLive,
+            thread: 0,
             object: 'streams',
             key_pgDown: Main_UserHost,
             key_pgUp: Main_HistoryLive,
@@ -18456,6 +18465,7 @@
             table: 'stream_table_user_host',
             screen: Main_UserHost,
             object: 'hosts',
+            thread: 1,
             key_pgDown: Main_usergames,
             key_pgUp: Main_UserLive,
             base_url: 'https://api.twitch.tv/api/users/',
@@ -18525,6 +18535,7 @@
             table: 'stream_table_a_game',
             screen: Main_aGame,
             object: 'streams',
+            thread: 1,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             base_url: Main_kraken_api + 'streams?game=',
@@ -18576,6 +18587,7 @@
             ids: Screens_ScreenIds('Featured'),
             table: 'stream_table_featured',
             screen: Main_Featured,
+            thread: 1,
             key_pgDown: Main_games,
             key_pgUp: Main_Live,
             base_url: Main_kraken_api + 'streams/featured?limit=' + Main_ItemsLimitMax,
@@ -18704,6 +18716,7 @@
             screen: Main_Clip,
             key_pgDown: Main_Live,
             key_pgUp: Main_Vod,
+            thread: 4,
             periodPos: Main_getItemInt('Clip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
             set_url: function() {
@@ -18736,6 +18749,7 @@
             ids: Screens_ScreenIds('ChannelClip'),
             table: 'stream_table_channel_clip',
             screen: Main_ChannelClip,
+            thread: 2,
             key_pgUp: Main_ChannelVod,
             periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?channel=',
@@ -18771,6 +18785,7 @@
             ids: Screens_ScreenIds('AGameClip'),
             table: 'stream_table_a_game_clip',
             screen: Main_AGameClip,
+            thread: 2,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             periodPos: Main_getItemInt('AGameClip_periodPos', 2),
@@ -18867,6 +18882,7 @@
             ids: Screens_ScreenIds('Game'),
             table: 'stream_table_games',
             screen: Main_games,
+            thread: 2,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             object: 'top',
@@ -18893,6 +18909,7 @@
             ids: Screens_ScreenIds('UserGames'),
             table: 'stream_table_user_games',
             screen: Main_usergames,
+            thread: 2,
             key_pgDownNext: Main_UserChannels,
             key_pgDown: Main_UserVod,
             key_pgUp: Main_UserHost,
@@ -18942,6 +18959,7 @@
             ids: Screens_ScreenIds('SearchGames'),
             table: 'stream_table_search_game',
             screen: Main_SearchGames,
+            thread: 1,
             isLive: false,
             OldUserName: '',
             object: 'games',
@@ -19016,6 +19034,7 @@
             ids: Screens_ScreenIds('UserChannels'),
             table: 'stream_table_user_channels',
             screen: Main_UserChannels,
+            thread: 4,
             object: 'follows',
             key_pgDown: Main_History[Main_HistoryPos],
             key_pgUp: Main_UserVod,
@@ -19068,6 +19087,7 @@
             ids: Screens_ScreenIds('SearchChannels'),
             table: 'stream_table_search_channel',
             screen: Main_SearchChannels,
+            thread: 1,
             object: 'channels',
             base_url: Main_kraken_api + 'search/channels?limit=' + Main_ItemsLimitMax + '&query=',
             set_url: function() {
