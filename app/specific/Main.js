@@ -196,7 +196,8 @@ function Main_loadTranslations(language) {
                     'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
                     'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
                     'Play_MultiResult': Play_MultiResult,
-                    'ChannelContent_CheckHostResult':ChannelContent_CheckHostResult
+                    'ChannelContent_CheckHostResult':ChannelContent_CheckHostResult,
+                    'Play_CheckHostResult':Play_CheckHostResult
                 };
             }
             Main_IsOnAndroid = Android.getAndroid();
