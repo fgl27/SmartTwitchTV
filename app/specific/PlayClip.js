@@ -50,7 +50,16 @@ function PlayClip_Start() {
     Main_ShowElement('end_button_img');
 
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
-    Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
+    Main_innerHTML(
+        "stream_info_name",
+        Play_partnerIcon(
+            Main_values.Main_selectedChannelDisplayname,
+            false,
+            false,
+            ChannelClip_language
+        )
+    );
+
     Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game);
 
