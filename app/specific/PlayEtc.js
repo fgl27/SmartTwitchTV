@@ -256,8 +256,8 @@ function Play_OpenHost() {
 
     Play_data.data[14] = Play_TargetHost.target_id;
     Main_setTimeout(Play_Start);
-
 }
+
 function Play_OpenChannel(PlayVodClip) {
     if (!Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) {
         Main_values.Main_BeforeChannel = (Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame) ? Main_values.Main_BeforeAgame : Main_values.Main_Go;

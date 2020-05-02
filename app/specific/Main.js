@@ -196,8 +196,9 @@ function Main_loadTranslations(language) {
                     'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
                     'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
                     'Play_MultiResult': Play_MultiResult,
-                    'ChannelContent_CheckHostResult':ChannelContent_CheckHostResult,
-                    'Play_CheckHostResult':Play_CheckHostResult
+                    'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
+                    'Play_CheckHostResult': Play_CheckHostResult,
+                    'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult
                 };
             }
             Main_IsOnAndroid = Android.getAndroid();
@@ -1079,7 +1080,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
 
     if (Main_values.Play_isHost) {
-        Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
+        Play_data.DisplaynameHost = Play_data.data[1];
         Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
     }
 

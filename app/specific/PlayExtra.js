@@ -34,6 +34,13 @@ function PlayExtra_KeyEnter() {
         PlayExtra_data.data = doc;
         PlayExtra_data.watching_time = new Date().getTime();
 
+        PlayExtra_data.isHost = Main_A_includes_B(PlayExtra_data.data[1], STR_USER_HOSTING);
+
+        if (PlayExtra_data.isHost) {
+            PlayExtra_data.DisplaynameHost = PlayExtra_data.data[1];
+            PlayExtra_data.data[1] = PlayExtra_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+        }
+
         PlayExtra_PicturePicture = true;
         Play_UserLiveFeedPressed = true;
 
@@ -136,7 +143,7 @@ function PlayExtra_loadDataSuccessEnd(playlist) {
     ChatLive_Playing = true;
 
 
-    Main_Set_history('live', PlayExtra_data.data);
+    if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
     Play_loadingInfoDataTry = 0;
     Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
 }
@@ -188,12 +195,104 @@ function PlayExtra_HideChat() {
 }
 
 function PlayExtra_End(doSwitch) { // Called only by JAVA
+    if (Settings_value.open_host.defaultValue) {
+        Play_loadingDataTry = 0;
+        Play_loadingDataTimeout = 2000;
+        PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
+    } else PlayExtra_End_success(doSwitch);
+}
+
+function PlayExtra_End_success(doSwitch) {
     //Some player ended switch and warn
     if (doSwitch) PlayExtra_SwitchPlayer();
 
     Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 
     Play_CloseSmall();
+}
+
+function PlayExtra_loadDataCheckHost(doSwitch) {
+    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]);
+
+    //TODO remove the try after some app updates
+    try {
+        Android.GetMethodUrlAsync(
+            theUrl,//urlString
+            Play_loadingDataTimeout,//timeout
+            1,//HeaderQuantity
+            null,//access_token
+            null,//overwriteID
+            null,//postMessage, null for get
+            null,//Method, null for get
+            'PlayExtra_CheckHostResult',//callback
+            0,//checkResult
+            doSwitch,//key
+            11//thread
+        );
+
+    } catch (e) {
+        PlayExtra_End_success(doSwitch);
+    }
+}
+
+function PlayExtra_CheckHostResult(result, doSwitch) {
+    if (result) {
+        var resultObj = JSON.parse(result);
+        if (resultObj.status === 200) {
+            PlayExtra_CheckHost(resultObj.responseText, doSwitch);
+        } else {
+            PlayExtra_loadDataCheckHostError(doSwitch);
+        }
+    }
+    else PlayExtra_loadDataCheckHostError(doSwitch);
+}
+
+function PlayExtra_loadDataCheckHostError(doSwitch) {
+    Play_loadingDataTry++;
+    if (Play_loadingDataTry < Play_loadingDataTryMax) {
+        Play_loadingDataTimeout += 250;
+        PlayExtra_loadDataCheckHost(doSwitch);
+    } else PlayExtra_End_success(doSwitch);
+}
+
+function PlayExtra_CheckHost(responseText, doSwitch) {
+    var TargetHost = JSON.parse(responseText).hosts[0],
+        warning_text;
+
+    if (TargetHost.target_login !== undefined) {
+        if (doSwitch) {
+            Play_IsWarning = true;
+            warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+
+            Main_values.Play_isHost = true;
+
+            Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
+            Play_data.data[6] = TargetHost.target_login;
+            Play_data.data[1] = TargetHost.target_display_name;
+            Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
+            Play_data.data[14] = TargetHost.target_id;
+
+            Main_setTimeout(Play_Start);
+
+            Play_showWarningDialog(warning_text, 4000);
+
+        } else {
+            Play_IsWarning = true;
+            warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+
+            PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
+            PlayExtra_data.data[6] = TargetHost.target_login;
+            PlayExtra_data.data[1] = TargetHost.target_display_name;
+            Play_data.DisplaynameHost = PlayExtra_data.DisplaynameHost + PlayExtra_data.data[1];
+            PlayExtra_data.data[14] = TargetHost.target_id;
+            PlayExtra_data.isHost = true;
+
+            Main_setTimeout(PlayExtra_Resume);
+
+            Play_showWarningDialog(warning_text, 4000);
+        }
+    } else PlayExtra_End_success(doSwitch);
+
 }
 
 function PlayExtra_SetPanel() {
