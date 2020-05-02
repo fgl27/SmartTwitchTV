@@ -51,6 +51,19 @@ function Screens_InitScreens() {
     ScreensObj_HistoryVod();
     ScreensObj_HistoryClip();
 
+    Main_addEventListener("keyup", Screens_handleKeyUpAnimationFast);
+
+    for (var property in ScreenObj) {
+        ScreenObj[property].key_fun = Screens_handleKeyDown.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_up = Screens_handleKeyUp.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
+        ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
+    }
+
     //Etc screen that makes in and out a screen to work
     ScreenObj[Main_Users] = {
         start_fun: Users_StartLoad,
@@ -64,19 +77,6 @@ function Screens_InitScreens() {
         key_fun: ChannelContent_handleKeyDown,
         exit_fun: ChannelContent_exit
     };
-
-    Main_addEventListener("keyup", Screens_handleKeyUpAnimationFast);
-
-    for (var property in ScreenObj) {
-        ScreenObj[property].key_fun = Screens_handleKeyDown.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_up = Screens_handleKeyUp.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
-        ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
-    }
 
 }
 
