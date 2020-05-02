@@ -144,7 +144,7 @@ function AddUser_KeyboardDismiss() {
 function AddUser_loadDataRequest() {
     var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_Username) + Main_TwithcV5Flag;
 
-    BasehttpGet(theUrl, AddUser_loadingDataTimeout, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataError);
+    BasexmlHttpGet(theUrl, AddUser_loadingDataTimeout, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataError);
 }
 
 function AddUser_loadDataRequestSuccess(response) {

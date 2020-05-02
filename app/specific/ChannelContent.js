@@ -95,7 +95,7 @@ function ChannelContent_loadDataRequest() {
         encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
         Main_TwithcV5Flag_I;
 
-    BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
+    BasexmlHttpGet(theUrl, ChannelContent_loadingDataTimeout, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
 }
 
 function ChannelContent_loadDataRequestSuccess(response) {
@@ -128,7 +128,37 @@ function ChannelContent_loadDataError() {
 function ChannelContent_loadDataCheckHost() {
     var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
-    BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError);
+    //TODO remove the try after some app updates
+    try {
+        Android.GetMethodUrlAsync(
+            theUrl,//urlString
+            ChannelContent_loadingDataTimeout,//timeout
+            1,//HeaderQuantity
+            null,//access_token
+            null,//overwriteID
+            null,//postMessage, null for get
+            null,//Method, null for get
+            'ChannelContent_CheckHostResult',//callback
+            0,//checkResult
+            0,//key
+            11//thread
+        );
+
+    } catch (e) {
+        BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError);
+    }
+}
+
+function ChannelContent_CheckHostResult(result) {
+    if (result) {
+        var resultObj = JSON.parse(result);
+        if (resultObj.status === 200) {
+            ChannelContent_CheckHost(resultObj.responseText);
+        } else {
+            ChannelContent_loadDataCheckHostError();
+        }
+    }
+    else ChannelContent_loadDataCheckHostError();
 }
 
 function ChannelContent_loadDataCheckHostError() {
@@ -146,6 +176,7 @@ function ChannelContent_loadDataCheckHostError() {
 function ChannelContent_CheckHost(responseText) {
     var response = JSON.parse(responseText);
     ChannelContent_TargetId = response.hosts[0].target_id;
+
     if (ChannelContent_TargetId !== undefined) {
         ChannelContent_loadDataPrepare();
         ChannelContent_loadDataRequest();
@@ -159,7 +190,7 @@ function ChannelContent_CheckHost(responseText) {
 function ChannelContent_GetStreamerInfo() {
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasehttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
+    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
 }
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
