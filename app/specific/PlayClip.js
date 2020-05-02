@@ -137,7 +137,7 @@ function PlayClip_GetStreamerInfo() {
     //Main_Log('PlayClip_GetStreamerInfo');
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasehttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
+    BasexmlHttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
 }
 
 function PlayClip_GetStreamerInfoSuccessError() {
