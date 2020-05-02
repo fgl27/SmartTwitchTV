@@ -1024,12 +1024,13 @@ function ChatLive_CheckSubMessage(message, chat_number) {
 
             ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
                 STR_GIFT_SUB, 10000);
-        } else ChatLive_CheckIfSub(message);
 
-    } else {
-        ChatLive_CheckIfSub(message, chat_number);
+            return;
+        }
+
     }
 
+    ChatLive_CheckIfSub(message, chat_number);
     // tag:
     // badge-info: "subscriber/2"
     // badges: "subscriber/0,premium/1"
