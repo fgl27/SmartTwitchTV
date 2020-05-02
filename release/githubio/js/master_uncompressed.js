@@ -3348,7 +3348,7 @@
     function AddUser_loadDataRequest() {
         var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_Username) + Main_TwithcV5Flag;
 
-        BasehttpGet(theUrl, AddUser_loadingDataTimeout, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataError);
+        BasexmlHttpGet(theUrl, AddUser_loadingDataTimeout, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataError);
     }
 
     function AddUser_loadDataRequestSuccess(response) {
@@ -3707,7 +3707,7 @@
             encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
             Main_TwithcV5Flag_I;
 
-        BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
+        BasexmlHttpGet(theUrl, ChannelContent_loadingDataTimeout, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
     }
 
     function ChannelContent_loadDataRequestSuccess(response) {
@@ -3740,7 +3740,36 @@
     function ChannelContent_loadDataCheckHost() {
         var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
-        BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError);
+        //TODO remove the try after some app updates
+        try {
+            Android.GetMethodUrlAsync(
+                theUrl, //urlString
+                ChannelContent_loadingDataTimeout, //timeout
+                1, //HeaderQuantity
+                null, //access_token
+                null, //overwriteID
+                null, //postMessage, null for get
+                null, //Method, null for get
+                'ChannelContent_CheckHostResult', //callback
+                0, //checkResult
+                0, //key
+                11 //thread
+            );
+
+        } catch (e) {
+            BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError);
+        }
+    }
+
+    function ChannelContent_CheckHostResult(result) {
+        if (result) {
+            var resultObj = JSON.parse(result);
+            if (resultObj.status === 200) {
+                ChannelContent_CheckHost(resultObj.responseText);
+            } else {
+                ChannelContent_loadDataCheckHostError();
+            }
+        } else ChannelContent_loadDataCheckHostError();
     }
 
     function ChannelContent_loadDataCheckHostError() {
@@ -3758,6 +3787,7 @@
     function ChannelContent_CheckHost(responseText) {
         var response = JSON.parse(responseText);
         ChannelContent_TargetId = response.hosts[0].target_id;
+
         if (ChannelContent_TargetId !== undefined) {
             ChannelContent_loadDataPrepare();
             ChannelContent_loadDataRequest();
@@ -3771,7 +3801,7 @@
     function ChannelContent_GetStreamerInfo() {
         var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-        BasehttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
+        BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
     }
 
     function ChannelContent_GetStreamerInfoSuccess(responseText) {
@@ -7167,7 +7197,9 @@
                         'Play_loadDataResult': Play_loadDataResult,
                         'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
                         'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
-                        'Play_MultiResult': Play_MultiResult
+                        'Play_MultiResult': Play_MultiResult,
+                        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
+                        'Play_CheckHostResult': Play_CheckHostResult
                     };
                 }
                 Main_IsOnAndroid = Android.getAndroid();
@@ -9119,7 +9151,16 @@
         Main_ShowElement('end_button_img');
 
         Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
-        Main_textContent("stream_info_name", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML(
+            "stream_info_name",
+            Play_partnerIcon(
+                Main_values.Main_selectedChannelDisplayname,
+                false,
+                false,
+                ChannelClip_language
+            )
+        );
+
         Main_innerHTML("stream_info_title", ChannelClip_title);
         Main_innerHTML("stream_info_game", ChannelClip_game);
 
@@ -9206,7 +9247,7 @@
         //Main_Log('PlayClip_GetStreamerInfo');
         var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-        BasehttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
+        BasexmlHttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
     }
 
     function PlayClip_GetStreamerInfoSuccessError() {
@@ -13564,7 +13605,36 @@
     function Play_loadDataCheckHost() {
         var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
-        BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
+        //TODO remove the try after some app updates
+        try {
+            Android.GetMethodUrlAsync(
+                theUrl, //urlString
+                Play_loadingDataTimeout, //timeout
+                1, //HeaderQuantity
+                null, //access_token
+                null, //overwriteID
+                null, //postMessage, null for get
+                null, //Method, null for get
+                'Play_CheckHostResult', //callback
+                0, //checkResult
+                0, //key
+                11 //thread
+            );
+
+        } catch (e) {
+            BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
+        }
+    }
+
+    function Play_CheckHostResult(result) {
+        if (result) {
+            var resultObj = JSON.parse(result);
+            if (resultObj.status === 200) {
+                Play_CheckHost(resultObj.responseText);
+            } else {
+                Play_loadDataCheckHostError();
+            }
+        } else Play_loadDataCheckHostError();
     }
 
     function Play_loadDataCheckHostError() {
@@ -26365,7 +26435,9 @@
         'Play_loadDataResult': Play_loadDataResult, // Play_loadDataResult() func from app/specific/Play.js
         'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult, // PlayClip_CheckIfIsLiveResult() func from app/specific/PlayClip.js
         'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult, // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
-        'Play_MultiResult': Play_MultiResult // Play_MultiResult() func from app/specific/Play.js
+        'Play_MultiResult': Play_MultiResult, // Play_MultiResult() func from app/specific/Play.js
+        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult, // ChannelContent_CheckHostResult() func from app/specific/ChannelContent.js
+        'Play_CheckHostResult': Play_CheckHostResult // Play_CheckHostResult() func from app/specific/Play.js
     };
 
     /** Expose `smartTwitchTV` */
