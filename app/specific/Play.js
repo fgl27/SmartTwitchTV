@@ -2155,7 +2155,7 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
 function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
     Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
     Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE : STR_PLAYING + game);
-    Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER) : STR_SPACE);
+    Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_SPACE + STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER) : STR_SPACE);
 }
 
 function Play_MultiSetpannelInfo() {
