@@ -9771,7 +9771,7 @@
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = PlayClip_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, 250, Play_EndUpclearID);
+                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
                     } else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
@@ -10588,7 +10588,7 @@
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = Play_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, 250, Play_EndUpclearID);
+                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
                     }
                     break;
                 case KEY_DOWN:
@@ -10616,7 +10616,7 @@
                             Main_addEventListener("keyup", Play_handleKeyUp);
                             Play_EndUpclear = false;
                             Play_EndUpclearCalback = Play_handleKeyDown;
-                            Play_EndUpclearID = Main_setTimeout(Play_PPKeyDownHold, 250, Play_EndUpclearID);
+                            Play_EndUpclearID = Main_setTimeout(Play_PPKeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
                         } else {
                             Play_PPKeyDownHold();
                         }
@@ -10625,7 +10625,7 @@
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = Play_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_MultiKeyDownHold, 250, Play_EndUpclearID);
+                        Play_EndUpclearID = Main_setTimeout(Play_MultiKeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
                     } else if (Play_isFullScreen) Play_controls[Play_controlsChat].enterKey(1);
                     else Play_showPanel();
                     break;
@@ -10661,7 +10661,7 @@
                             Main_addEventListener("keyup", Play_handleKeyUp);
                             PlayExtra_clear = false;
                             UserLiveFeed_ResetFeedId();
-                            PlayExtra_KeyEnterID = Main_setTimeout(PlayExtra_KeyEnter, 250, PlayExtra_KeyEnterID);
+                            PlayExtra_KeyEnterID = Main_setTimeout(PlayExtra_KeyEnter, Screens_KeyUptimeout, PlayExtra_KeyEnterID);
                         }
                     } else Play_showPanel();
                     break;
@@ -15419,7 +15419,7 @@
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = PlayVod_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, 250, Play_EndUpclearID);
+                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
                     } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
@@ -15733,7 +15733,7 @@
     var Screens_clear = false;
     var Screens_KeyEnterID;
     var Screens_DialogHideTimout = 10000;
-    var Screens_KeyUptimeout = 500;
+    var Screens_KeyUptimeout = 250;
     var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
     var Screens_ChangeFocusAnimationFinished = true;
     var Screens_ChangeFocusAnimationFast = false;
