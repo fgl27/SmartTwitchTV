@@ -665,7 +665,7 @@ function Play_handleKeyDown(e) {
                     Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
-                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, 250, Play_EndUpclearID);
+                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
                 }
                 break;
             case KEY_DOWN:
@@ -693,7 +693,7 @@ function Play_handleKeyDown(e) {
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = Play_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_PPKeyDownHold, 250, Play_EndUpclearID);
+                        Play_EndUpclearID = Main_setTimeout(Play_PPKeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
                     } else {
                         Play_PPKeyDownHold();
                     }
@@ -702,7 +702,7 @@ function Play_handleKeyDown(e) {
                     Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
-                    Play_EndUpclearID = Main_setTimeout(Play_MultiKeyDownHold, 250, Play_EndUpclearID);
+                    Play_EndUpclearID = Main_setTimeout(Play_MultiKeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
                 } else if (Play_isFullScreen) Play_controls[Play_controlsChat].enterKey(1);
                 else Play_showPanel();
                 break;
@@ -739,7 +739,7 @@ function Play_handleKeyDown(e) {
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         PlayExtra_clear = false;
                         UserLiveFeed_ResetFeedId();
-                        PlayExtra_KeyEnterID = Main_setTimeout(PlayExtra_KeyEnter, 250, PlayExtra_KeyEnterID);
+                        PlayExtra_KeyEnterID = Main_setTimeout(PlayExtra_KeyEnter, Screens_KeyUptimeout, PlayExtra_KeyEnterID);
                     }
                 } else Play_showPanel();
                 break;

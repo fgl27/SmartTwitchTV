@@ -4,7 +4,7 @@ var Screens_Current_Key = 1;
 var Screens_clear = false;
 var Screens_KeyEnterID;
 var Screens_DialogHideTimout = 10000;
-var Screens_KeyUptimeout = 500;
+var Screens_KeyUptimeout = 250;
 var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transition
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
