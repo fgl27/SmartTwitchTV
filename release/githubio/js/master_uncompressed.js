@@ -6081,12 +6081,13 @@
 
                 ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
                     STR_GIFT_SUB, 10000);
-            } else ChatLive_CheckIfSub(message);
 
-        } else {
-            ChatLive_CheckIfSub(message, chat_number);
+                return;
+            }
+
         }
 
+        ChatLive_CheckIfSub(message, chat_number);
         // tag:
         // badge-info: "subscriber/2"
         // badges: "subscriber/0,premium/1"
@@ -7134,7 +7135,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.178';
-    var Main_minversion = 'May 01, 2020';
+    var Main_minversion = 'May 02, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7199,7 +7200,8 @@
                         'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
                         'Play_MultiResult': Play_MultiResult,
                         'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
-                        'Play_CheckHostResult': Play_CheckHostResult
+                        'Play_CheckHostResult': Play_CheckHostResult,
+                        'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult
                     };
                 }
                 Main_IsOnAndroid = Android.getAndroid();
@@ -8083,7 +8085,7 @@
         Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
 
         if (Main_values.Play_isHost) {
-            Play_data.DisplaynameHost = document.getElementById(idsArray[3] + id).textContent;
+            Play_data.DisplaynameHost = Play_data.data[1];
             Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
         }
 
@@ -10166,17 +10168,15 @@
     }
 
     function Play_OpenHost() {
-        Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
+        Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + Play_TargetHost.target_display_name;
         Play_data.data[6] = Play_TargetHost.target_login;
         Play_data.data[1] = Play_TargetHost.target_display_name;
-        Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
         Play_PreshutdownStream(false);
 
         Main_addEventListener("keydown", Play_handleKeyDown);
 
         Play_data.data[14] = Play_TargetHost.target_id;
         Main_setTimeout(Play_Start);
-
     }
 
     function Play_OpenChannel(PlayVodClip) {
@@ -11739,6 +11739,13 @@
             PlayExtra_data.data = doc;
             PlayExtra_data.watching_time = new Date().getTime();
 
+            PlayExtra_data.isHost = Main_A_includes_B(PlayExtra_data.data[1], STR_USER_HOSTING);
+
+            if (PlayExtra_data.isHost) {
+                PlayExtra_data.DisplaynameHost = PlayExtra_data.data[1];
+                PlayExtra_data.data[1] = PlayExtra_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+            }
+
             PlayExtra_PicturePicture = true;
             Play_UserLiveFeedPressed = true;
 
@@ -11842,7 +11849,7 @@
         ChatLive_Playing = true;
 
 
-        Main_Set_history('live', PlayExtra_data.data);
+        if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
         Play_loadingInfoDataTry = 0;
         Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
     }
@@ -11894,12 +11901,101 @@
     }
 
     function PlayExtra_End(doSwitch) { // Called only by JAVA
+        if (Settings_value.open_host.defaultValue) {
+            Play_loadingDataTry = 0;
+            Play_loadingDataTimeout = 2000;
+            PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
+        } else PlayExtra_End_success(doSwitch);
+    }
+
+    function PlayExtra_End_success(doSwitch) {
         //Some player ended switch and warn
         if (doSwitch) PlayExtra_SwitchPlayer();
 
         Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 
         Play_CloseSmall();
+    }
+
+    function PlayExtra_loadDataCheckHost(doSwitch) {
+        var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]);
+
+        //TODO remove the try after some app updates
+        try {
+            Android.GetMethodUrlAsync(
+                theUrl, //urlString
+                Play_loadingDataTimeout, //timeout
+                1, //HeaderQuantity
+                null, //access_token
+                null, //overwriteID
+                null, //postMessage, null for get
+                null, //Method, null for get
+                'PlayExtra_CheckHostResult', //callback
+                0, //checkResult
+                doSwitch, //key
+                11 //thread
+            );
+
+        } catch (e) {
+            PlayExtra_End_success(doSwitch);
+        }
+    }
+
+    function PlayExtra_CheckHostResult(result, doSwitch) {
+        if (result) {
+            var resultObj = JSON.parse(result);
+            if (resultObj.status === 200) {
+                PlayExtra_CheckHost(resultObj.responseText, doSwitch);
+            } else {
+                PlayExtra_loadDataCheckHostError(doSwitch);
+            }
+        } else PlayExtra_loadDataCheckHostError(doSwitch);
+    }
+
+    function PlayExtra_loadDataCheckHostError(doSwitch) {
+        Play_loadingDataTry++;
+        if (Play_loadingDataTry < Play_loadingDataTryMax) {
+            Play_loadingDataTimeout += 250;
+            PlayExtra_loadDataCheckHost(doSwitch);
+        } else PlayExtra_End_success(doSwitch);
+    }
+
+    function PlayExtra_CheckHost(responseText, doSwitch) {
+        var TargetHost = JSON.parse(responseText).hosts[0],
+            warning_text;
+
+        if (TargetHost.target_login !== undefined) {
+            if (doSwitch) {
+                Play_IsWarning = true;
+                warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+
+                Main_values.Play_isHost = true;
+
+                Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
+                Play_data.data[6] = TargetHost.target_login;
+                Play_data.data[1] = TargetHost.target_display_name;
+                Play_data.data[14] = TargetHost.target_id;
+
+                Main_setTimeout(Play_Start);
+
+                Play_showWarningDialog(warning_text, 4000);
+
+            } else {
+                Play_IsWarning = true;
+                warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+
+                PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
+                PlayExtra_data.data[6] = TargetHost.target_login;
+                PlayExtra_data.data[1] = TargetHost.target_display_name;
+                PlayExtra_data.data[14] = TargetHost.target_id;
+                PlayExtra_data.isHost = true;
+
+                Main_setTimeout(PlayExtra_Resume);
+
+                Play_showWarningDialog(warning_text, 4000);
+            }
+        } else PlayExtra_End_success(doSwitch);
+
     }
 
     function PlayExtra_SetPanel() {
@@ -15684,6 +15780,19 @@
         ScreensObj_HistoryVod();
         ScreensObj_HistoryClip();
 
+        Main_addEventListener("keyup", Screens_handleKeyUpAnimationFast);
+
+        for (var property in ScreenObj) {
+            ScreenObj[property].key_fun = Screens_handleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_up = Screens_handleKeyUp.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
+            ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
+        }
+
         //Etc screen that makes in and out a screen to work
         ScreenObj[Main_Users] = {
             start_fun: Users_StartLoad,
@@ -15697,19 +15806,6 @@
             key_fun: ChannelContent_handleKeyDown,
             exit_fun: ChannelContent_exit
         };
-
-        Main_addEventListener("keyup", Screens_handleKeyUpAnimationFast);
-
-        for (var property in ScreenObj) {
-            ScreenObj[property].key_fun = Screens_handleKeyDown.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_up = Screens_handleKeyUp.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
-        }
 
     }
 
@@ -26437,7 +26533,8 @@
         'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult, // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
         'Play_MultiResult': Play_MultiResult, // Play_MultiResult() func from app/specific/Play.js
         'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult, // ChannelContent_CheckHostResult() func from app/specific/ChannelContent.js
-        'Play_CheckHostResult': Play_CheckHostResult // Play_CheckHostResult() func from app/specific/Play.js
+        'Play_CheckHostResult': Play_CheckHostResult, // Play_CheckHostResult() func from app/specific/Play.js
+        'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult // PlayExtra_CheckHostResult() func from app/specific/PlayExtra.js
     };
 
     /** Expose `smartTwitchTV` */
