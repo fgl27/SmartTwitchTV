@@ -11964,43 +11964,39 @@
         var TargetHost = JSON.parse(responseText).hosts[0],
             warning_text;
 
-        if (TargetHost.target_login !== undefined) {
+        if (TargetHost.target_login !== undefined &&
+            TargetHost.target_id !== PlayExtra_data.data[14] && TargetHost.target_id !== Play_data.data[14]) {
             if (doSwitch) {
-                if (TargetHost.target_id !== PlayExtra_data.data[14]) {
 
-                    Play_IsWarning = true;
-                    warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+                Play_IsWarning = true;
+                warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
 
-                    Main_values.Play_isHost = true;
+                Main_values.Play_isHost = true;
 
-                    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
-                    Play_data.data[6] = TargetHost.target_login;
-                    Play_data.data[1] = TargetHost.target_display_name;
-                    Play_data.data[14] = TargetHost.target_id;
+                Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
+                Play_data.data[6] = TargetHost.target_login;
+                Play_data.data[1] = TargetHost.target_display_name;
+                Play_data.data[14] = TargetHost.target_id;
 
-                    Main_setTimeout(Play_Start);
+                Main_setTimeout(Play_Start);
 
-                    Play_showWarningDialog(warning_text, 4000);
-
-                } else PlayExtra_End_success(doSwitch);
+                Play_showWarningDialog(warning_text, 4000);
 
             } else {
-                if (TargetHost.target_id !== Play_data.data[14]) {
 
-                    Play_IsWarning = true;
-                    warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+                Play_IsWarning = true;
+                warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
 
-                    PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
-                    PlayExtra_data.data[6] = TargetHost.target_login;
-                    PlayExtra_data.data[1] = TargetHost.target_display_name;
-                    PlayExtra_data.data[14] = TargetHost.target_id;
-                    PlayExtra_data.isHost = true;
+                PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
+                PlayExtra_data.data[6] = TargetHost.target_login;
+                PlayExtra_data.data[1] = TargetHost.target_display_name;
+                PlayExtra_data.data[14] = TargetHost.target_id;
+                PlayExtra_data.isHost = true;
 
-                    Main_setTimeout(PlayExtra_Resume);
+                Main_setTimeout(PlayExtra_Resume);
 
-                    Play_showWarningDialog(warning_text, 4000);
+                Play_showWarningDialog(warning_text, 4000);
 
-                } else PlayExtra_End_success(doSwitch);
             }
         } else PlayExtra_End_success(doSwitch);
 
