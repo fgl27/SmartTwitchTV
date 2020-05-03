@@ -266,10 +266,9 @@ function PlayExtra_CheckHost(responseText, doSwitch) {
 
             Main_values.Play_isHost = true;
 
-            Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
+            Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
             Play_data.data[6] = TargetHost.target_login;
             Play_data.data[1] = TargetHost.target_display_name;
-            Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
             Play_data.data[14] = TargetHost.target_id;
 
             Main_setTimeout(Play_Start);
@@ -280,10 +279,9 @@ function PlayExtra_CheckHost(responseText, doSwitch) {
             Play_IsWarning = true;
             warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
 
-            PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
+            PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
             PlayExtra_data.data[6] = TargetHost.target_login;
             PlayExtra_data.data[1] = TargetHost.target_display_name;
-            Play_data.DisplaynameHost = PlayExtra_data.DisplaynameHost + PlayExtra_data.data[1];
             PlayExtra_data.data[14] = TargetHost.target_id;
             PlayExtra_data.isHost = true;
 

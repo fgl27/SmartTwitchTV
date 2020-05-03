@@ -246,10 +246,9 @@ function Play_EndTextsReset() {
 }
 
 function Play_OpenHost() {
-    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING;
+    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + Play_TargetHost.target_display_name;
     Play_data.data[6] = Play_TargetHost.target_login;
     Play_data.data[1] = Play_TargetHost.target_display_name;
-    Play_data.DisplaynameHost = Play_data.DisplaynameHost + Play_data.data[1];
     Play_PreshutdownStream(false);
 
     Main_addEventListener("keydown", Play_handleKeyDown);
