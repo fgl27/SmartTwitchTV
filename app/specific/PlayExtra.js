@@ -333,14 +333,6 @@ function PlayExtra_ClearExtra() {
     PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
 }
 
-// function PlayExtra_UpdatePanelTest() {
-//     PlayExtra_data = Play_data;
-//     PlayExtra_UpdatePanel();
-//     Play_SetAudioIcon();
-//     Main_HideElement('stream_info');
-//     Main_ShowElement('stream_info_pp');
-// }
-
 function PlayExtra_UpdatePanel() {
     Main_innerHTML(
         'stream_info_pp_name0',

@@ -346,8 +346,6 @@ function Play_Start() {
     if (!Main_IsOnAndroid) Play_UpdateMainStream(true, true);
 
     Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 300000, Play_streamInfoTimerId);
-    //PlayExtra_UpdatePanelTest();
-    //Play_FakeMulti();
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -419,7 +417,6 @@ function Play_CheckResume() {
 }
 
 function Play_Resume() {
-    //Play_FakeMulti();
     UserLiveFeed_Hide();
 
     ChatLive_Playing = true;
@@ -2262,55 +2259,6 @@ function Play_MultiDialogVisible() {
 function Play_clearHideMultiDialog() {
     Main_clearTimeout(Play_HideMultiDialogID);
 }
-
-// function Play_FakeMulti() {
-//     //Play_MultiEnable = true;
-//     //Play_Multi_MainBig = true;
-//     //Main_ShowElement('stream_info_multi_big');
-//     Play_Multi_SetPanel();
-//     //Main_HideElement('stream_info_multi');
-//     var i = 0;
-//     for (i; i < 4; i++) {
-//         Play_MultiArray[i] = Play_data;
-//         // Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
-//         // Play_MultiArray[i].data = [
-//         //     IMG_404_VIDEO,
-//         //     "ashlynn",
-//         //     "title",
-//         //     "game",
-//         //     "for 67,094&nbsp;Viewers",
-//         //     "720p30 [EN]",
-//         //     "ashlynn",
-//         //     616702257,
-//         //     false,
-//         //     "https://static-cdn.jtvnw.net/jtv_user_pictures/9a67eb66-66b8-47fa-b388-61f2f74ce213-profile_image-300x300.png",
-//         //     true,
-//         //     "Since 11:04:36&nbsp;",
-//         //     "2020-01-25T09:49:05Z",
-//         //     67094,
-//         //     213749122];
-
-//         // Play_MultiSetinfo(
-//         //     i,
-//         //     Play_MultiArray[i].data[3],
-//         //     Play_MultiArray[i].data[13],
-//         //     Play_MultiArray[i].data[1],
-//         //     Play_MultiArray[i].data[8],
-//         //     Play_MultiArray[i].data[9],
-//         //     twemoji.parse(Play_MultiArray[i].data[2])
-//         // );
-
-//         Play_MultiSetinfo(
-//             i,
-//             Play_data.data[3],
-//             Play_data.data[13],
-//             Play_data.data[1],
-//             Play_data.data[8],
-//             Play_data.data[9],
-//             twemoji.parse(Play_data.data[2])
-//         );
-//     }
-// }
 
 var Play_HideMultiDialogID;
 function Play_setHideMultiDialog() {
