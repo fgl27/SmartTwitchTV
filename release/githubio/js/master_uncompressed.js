@@ -503,7 +503,8 @@
     var STR_PING_WARNING;
     var STR_PING_WARNING_SUMMARY;
     var STR_SHOW_FEED_PLAYER_SUMMARY;
-    var STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY;
+    var STR_CHECK_HOST; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -687,6 +688,7 @@
         STR_CHANNEL = "Channel";
         STR_GOBACK_START = "Back to previous screen: return key";
         STR_IS_OFFLINE = " has ended";
+        STR_CHECK_HOST = ", checking host";
         STR_IS_SUB_ONLY = "This video is only available to subscribers.";
         STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
         STR_NO = "No";
@@ -7134,8 +7136,8 @@
     var Main_DataAttribute = 'data_attribute';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.178';
-    var Main_minversion = 'May 02, 2020';
+    var Main_stringVersion_Min = '.179';
+    var Main_minversion = 'May 04, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -10176,7 +10178,7 @@
         Main_addEventListener("keydown", Play_handleKeyDown);
 
         Play_data.data[14] = Play_TargetHost.target_id;
-        Main_setTimeout(Play_Start);
+        Play_Start();
     }
 
     function Play_OpenChannel(PlayVodClip) {
@@ -11831,7 +11833,7 @@
 
     function PlayExtra_loadDataSuccessEnd(playlist) {
         UserLiveFeed_Hide();
-        Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+        Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
         PlayExtra_data.watching_time = new Date().getTime();
         Play_SetAudioIcon();
         PlayExtra_data.playlist = playlist;
@@ -11902,15 +11904,19 @@
 
     function PlayExtra_End(doSwitch) { // Called only by JAVA
         if (Settings_value.open_host.defaultValue) {
+            Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2500);
             Play_loadingDataTry = 0;
-            Play_loadingDataTimeout = 2000;
+            Play_loadingDataTimeout = 3000;
             PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
         } else PlayExtra_End_success(doSwitch);
     }
 
     function PlayExtra_End_success(doSwitch) {
         //Some player ended switch and warn
-        if (doSwitch) PlayExtra_SwitchPlayer();
+        if (doSwitch) { //Main player has end switch and close
+            Android.mSwitchPlayer();
+            PlayExtra_SwitchPlayer();
+        }
 
         Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 
@@ -11978,10 +11984,11 @@
                 Play_data.data[1] = TargetHost.target_display_name;
                 Play_data.data[14] = TargetHost.target_id;
 
-                Main_setTimeout(Play_Start);
+                Play_Start();
 
                 Play_showWarningDialog(warning_text, 4000);
-
+                //Java will reset audio source reset it
+                Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
             } else {
 
                 Play_IsWarning = true;
@@ -11993,7 +12000,7 @@
                 PlayExtra_data.data[14] = TargetHost.target_id;
                 PlayExtra_data.isHost = true;
 
-                Main_setTimeout(PlayExtra_Resume);
+                PlayExtra_Resume();
 
                 Play_showWarningDialog(warning_text, 4000);
 
@@ -12037,14 +12044,6 @@
         PlayExtra_PicturePicture = false;
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
     }
-
-    // function PlayExtra_UpdatePanelTest() {
-    //     PlayExtra_data = Play_data;
-    //     PlayExtra_UpdatePanel();
-    //     Play_SetAudioIcon();
-    //     Main_HideElement('stream_info');
-    //     Main_ShowElement('stream_info_pp');
-    // }
 
     function PlayExtra_UpdatePanel() {
         Main_innerHTML(
@@ -12503,8 +12502,6 @@
         if (!Main_IsOnAndroid) Play_UpdateMainStream(true, true);
 
         Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 300000, Play_streamInfoTimerId);
-        //PlayExtra_UpdatePanelTest();
-        //Play_FakeMulti();
     }
 
     // To Force a warn, not used regularly so keep commented out
@@ -12576,7 +12573,6 @@
     }
 
     function Play_Resume() {
-        //Play_FakeMulti();
         UserLiveFeed_Hide();
 
         ChatLive_Playing = true;
@@ -14425,55 +14421,6 @@
     function Play_clearHideMultiDialog() {
         Main_clearTimeout(Play_HideMultiDialogID);
     }
-
-    // function Play_FakeMulti() {
-    //     //Play_MultiEnable = true;
-    //     //Play_Multi_MainBig = true;
-    //     //Main_ShowElement('stream_info_multi_big');
-    //     Play_Multi_SetPanel();
-    //     //Main_HideElement('stream_info_multi');
-    //     var i = 0;
-    //     for (i; i < 4; i++) {
-    //         Play_MultiArray[i] = Play_data;
-    //         // Play_MultiArray[i] = JSON.parse(JSON.stringify(Play_data_base));
-    //         // Play_MultiArray[i].data = [
-    //         //     IMG_404_VIDEO,
-    //         //     "ashlynn",
-    //         //     "title",
-    //         //     "game",
-    //         //     "for 67,094&nbsp;Viewers",
-    //         //     "720p30 [EN]",
-    //         //     "ashlynn",
-    //         //     616702257,
-    //         //     false,
-    //         //     "https://static-cdn.jtvnw.net/jtv_user_pictures/9a67eb66-66b8-47fa-b388-61f2f74ce213-profile_image-300x300.png",
-    //         //     true,
-    //         //     "Since 11:04:36&nbsp;",
-    //         //     "2020-01-25T09:49:05Z",
-    //         //     67094,
-    //         //     213749122];
-
-    //         // Play_MultiSetinfo(
-    //         //     i,
-    //         //     Play_MultiArray[i].data[3],
-    //         //     Play_MultiArray[i].data[13],
-    //         //     Play_MultiArray[i].data[1],
-    //         //     Play_MultiArray[i].data[8],
-    //         //     Play_MultiArray[i].data[9],
-    //         //     twemoji.parse(Play_MultiArray[i].data[2])
-    //         // );
-
-    //         Play_MultiSetinfo(
-    //             i,
-    //             Play_data.data[3],
-    //             Play_data.data[13],
-    //             Play_data.data[1],
-    //             Play_data.data[8],
-    //             Play_data.data[9],
-    //             twemoji.parse(Play_data.data[2])
-    //         );
-    //     }
-    // }
 
     var Play_HideMultiDialogID;
 
@@ -18039,7 +17986,7 @@
             } else Screens_OpenSidePanel(false, this.screen);
         },
         concatenate: function(responseText) {
-            ////Main_Log(responseText);
+            //Main_Log(responseText);
             if (this.data) {
                 responseText = JSON.parse(responseText);
 
@@ -26546,3 +26493,5 @@
 }(this));
 
 smartTwitchTV.mainstart();
+//If running from fs and not from internet add a timeout to prevet crash as the parsing of the file will not be defer
+//window.setTimeout(smartTwitchTV.mainstart, 10000);
