@@ -40,6 +40,7 @@ function en_USLang() {
     STR_CHANNEL = "Channel";
     STR_GOBACK_START = "Back to previous screen: return key";
     STR_IS_OFFLINE = " has ended";
+    STR_CHECK_HOST = ", checking host";
     STR_IS_SUB_ONLY = "This video is only available to subscribers.";
     STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
     STR_NO = "No";

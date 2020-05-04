@@ -196,15 +196,19 @@ function PlayExtra_HideChat() {
 
 function PlayExtra_End(doSwitch) { // Called only by JAVA
     if (Settings_value.open_host.defaultValue) {
+        Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2500);
         Play_loadingDataTry = 0;
-        Play_loadingDataTimeout = 2000;
+        Play_loadingDataTimeout = 3000;
         PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
     } else PlayExtra_End_success(doSwitch);
 }
 
 function PlayExtra_End_success(doSwitch) {
     //Some player ended switch and warn
-    if (doSwitch) PlayExtra_SwitchPlayer();
+    if (doSwitch) {//Main player has end switch and close
+        Android.mSwitchPlayer();
+        PlayExtra_SwitchPlayer();
+    }
 
     Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 
@@ -273,7 +277,7 @@ function PlayExtra_CheckHost(responseText, doSwitch) {
             Play_data.data[1] = TargetHost.target_display_name;
             Play_data.data[14] = TargetHost.target_id;
 
-            Main_setTimeout(Play_Start);
+            Play_Start();
 
             Play_showWarningDialog(warning_text, 4000);
 
@@ -288,7 +292,7 @@ function PlayExtra_CheckHost(responseText, doSwitch) {
             PlayExtra_data.data[14] = TargetHost.target_id;
             PlayExtra_data.isHost = true;
 
-            Main_setTimeout(PlayExtra_Resume);
+            PlayExtra_Resume();
 
             Play_showWarningDialog(warning_text, 4000);
 

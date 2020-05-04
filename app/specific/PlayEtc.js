@@ -254,7 +254,7 @@ function Play_OpenHost() {
     Main_addEventListener("keydown", Play_handleKeyDown);
 
     Play_data.data[14] = Play_TargetHost.target_id;
-    Main_setTimeout(Play_Start);
+    Play_Start();
 }
 
 function Play_OpenChannel(PlayVodClip) {

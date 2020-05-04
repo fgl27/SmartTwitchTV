@@ -2220,16 +2220,13 @@ public class PlayerActivity extends Activity {
             ClearPlayer(position);
             WebViewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
         } else if (PicturePicture) {
-            boolean mswitch = (mainPlayer == position);
 
             PicturePicture = false;
-
-            if (mswitch) SwitchPlayer();
 
             ClearPlayer(position);
             AudioSource = 1;
 
-            WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + mswitch + ")";
+            WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + (mainPlayer == position) + ")";
 
         } else WebViewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
 
