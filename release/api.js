@@ -53,4 +53,6 @@
 }(this));
 
 smartTwitchTV.mainstart();
+//If running from fs and not from internet add a timeout to prevet crash as the parsing of the file will not be defer
+//window.setTimeout(smartTwitchTV.mainstart, 10000);
 //APIEND this line is here so release_maker can work don't remove

@@ -101,7 +101,7 @@ var Base_obj = {
         } else Screens_OpenSidePanel(false, this.screen);
     },
     concatenate: function(responseText) {
-        ////Main_Log(responseText);
+        //Main_Log(responseText);
         if (this.data) {
             responseText = JSON.parse(responseText);
 

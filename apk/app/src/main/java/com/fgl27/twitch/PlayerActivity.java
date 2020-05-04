@@ -61,7 +61,7 @@ public class PlayerActivity extends Activity {
     public final String TAG = PlayerActivity.class.getName();
 
     //public static final String PageUrl = "file:///android_asset/app/index.html";
-    spublic final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
