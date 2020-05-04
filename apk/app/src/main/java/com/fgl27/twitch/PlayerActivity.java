@@ -2223,7 +2223,7 @@ public class PlayerActivity extends Activity {
             WebViewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
 
         } else if (PicturePicture) {
-            
+
             ClearPlayer(position);
             WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + (mainPlayer == position) + ")";
 
