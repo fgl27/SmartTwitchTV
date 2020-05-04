@@ -2216,16 +2216,15 @@ public class PlayerActivity extends Activity {
         hideLoading(position);
         CurrentPositionHandler.removeCallbacksAndMessages(null);
         String WebViewLoad;
+
         if (MultiStreamEnable) {
+
             ClearPlayer(position);
             WebViewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
+
         } else if (PicturePicture) {
-
-            PicturePicture = false;
-
+            
             ClearPlayer(position);
-            AudioSource = 1;
-
             WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + (mainPlayer == position) + ")";
 
         } else WebViewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
