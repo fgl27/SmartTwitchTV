@@ -125,7 +125,7 @@ function PlayExtra_ResumeResult(response) {
 
 function PlayExtra_loadDataSuccessEnd(playlist) {
     UserLiveFeed_Hide();
-    Android.mSwitchPlayerAudio(Play_controlsAudioPos);
+    Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
     PlayExtra_data.playlist = playlist;
@@ -280,7 +280,8 @@ function PlayExtra_CheckHost(responseText, doSwitch) {
             Play_Start();
 
             Play_showWarningDialog(warning_text, 4000);
-
+            //Java will reset audio source reset it
+            Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
         } else {
 
             Play_IsWarning = true;
