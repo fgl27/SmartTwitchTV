@@ -11,7 +11,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:' + versions.gradlePlugin
         classpath 'com.github.ben-manes:gradle-versions-plugin:' + versions.benmanes
-        classpath 'com.google.gms:google-services:' + versions.googleservices
         //classpath 'com.google.firebase:firebase-crashlytics-gradle:' + versions.crashlyticsgradle
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

@@ -1,7 +1,5 @@
 apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-//apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -58,13 +56,11 @@ repositories {
 }
 
 dependencies {
-    //implementation 'com.google.firebase:firebase-crashlytics:' + versions.crashlytics
-    implementation 'com.google.firebase:firebase-analytics:' + versions.firebase
-    implementation 'net.grandcentrix.tray:tray:' + versions.tray
-    implementation 'androidx.leanback:leanback:' + versions.leanback
     implementation project(':exoplayer-library-core')
     implementation project(':exoplayer-library-ui')
     implementation project(':exoplayer-library-hls')
-    implementation 'com.google.code.gson:gson:' + versions.googlegson
+    implementation 'androidx.leanback:leanback:' + versions.leanback
     implementation 'androidx.webkit:webkit:' + versions.webkit
+    implementation 'com.google.code.gson:gson:' + versions.googlegson
+    implementation 'net.grandcentrix.tray:tray:' + versions.tray
 }

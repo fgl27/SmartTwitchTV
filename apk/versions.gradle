@@ -7,10 +7,6 @@ ext.versions = [
         publishVersion       : '3.0.',
         publishVersionCode   : 180,
 
-        crashlytics          : '17.0.0',
-        crashlyticsgradle    : '2.0.0',
-        firebase             : '17.4.0',
-        googleservices       : '4.3.3',
         tray                 : '0.12.0',
         leanback             : '1.0.0',
         gradlePlugin         : '3.6.3',
