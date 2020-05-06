@@ -337,12 +337,11 @@ function ChatLiveControls_SetEmoteDiv(obj) {
     div.setAttribute(Main_DataAttribute, obj.code);
     div.classList.add('chat_emotes_img_holder');
 
-    div.innerHTML = '<div ><div id="chat_emotes_img' + id + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + obj['4x'] +
+    div.innerHTML = '<div ><div id="chat_emotes_img' + id +
+        '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + obj['4x'] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
-        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id + '" class="chat_emotes_name opacity_zero">' + obj.code + '</div></div></div>';
-
-    var new_img = new Image();
-    new_img.src = obj['4x'];
+        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id +
+        '" class="chat_emotes_name opacity_zero">' + obj.code + '</div></div></div>';
 
     return div;
 }
@@ -406,12 +405,11 @@ function ChatLiveControls_SetEmojiDiv(obj) {
 
     var url = twemoji.parseIcon(obj.unicode);
 
-    div.innerHTML = '<div ><div id="chat_emotes_img' + id + '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + url +
+    div.innerHTML = '<div ><div id="chat_emotes_img' + id +
+        '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + url +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
-        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id + '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
-
-    var new_img = new Image();
-    new_img.src = url;
+        '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id +
+        '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
 
     return div;
 }

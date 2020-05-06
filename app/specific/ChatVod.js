@@ -94,18 +94,16 @@ function Chat_loadBadgesGlobalError(tryes) {
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
-    var versions, property, version, new_img, innerHTML = '';
+    var versions, property, version, url, innerHTML = '';
 
-    responseText = JSON.parse(responseText);
+    var responseObjt = JSON.parse(responseText);
 
-    for (property in responseText.badge_sets) {
-        versions = responseText.badge_sets[property].versions;
+    for (property in responseObjt.badge_sets) {
+        versions = responseObjt.badge_sets[property].versions;
         for (version in versions) {
-            innerHTML += Chat_BasetagCSS(property + 0, version, versions[version].image_url_4x);
-            innerHTML += Chat_BasetagCSS(property + 1, version, versions[version].image_url_4x);
-
-            new_img = new Image();
-            new_img.src = versions[version].image_url_4x;
+            url = Chat_BasetagCSSUrl(versions[version].image_url_4x);
+            innerHTML += Chat_BasetagCSS(property + 0, version, url);
+            innerHTML += Chat_BasetagCSS(property + 1, version, url);
         }
     }
     Chat_tagCSS(innerHTML, document.head);
@@ -113,7 +111,7 @@ function Chat_loadBadgesGlobalSuccess(responseText) {
 }
 
 function Chat_loadBadgesTransform(responseText) {
-    var versions, property, version, new_img, innerHTML = [];
+    var versions, property, version, url, innerHTML = [];
 
     innerHTML[0] = '';
     innerHTML[1] = '';
@@ -121,11 +119,9 @@ function Chat_loadBadgesTransform(responseText) {
     for (property in responseText.badge_sets) {
         versions = responseText.badge_sets[property].versions;
         for (version in versions) {
-            innerHTML[0] += Chat_BasetagCSS(property + 0, version, versions[version].image_url_4x);
-            innerHTML[1] += Chat_BasetagCSS(property + 1, version, versions[version].image_url_4x);
-
-            new_img = new Image();
-            new_img.src = versions[version].image_url_4x;
+            url = Chat_BasetagCSSUrl(versions[version].image_url_4x);
+            innerHTML[0] += Chat_BasetagCSS(property + 0, version, url);
+            innerHTML[1] += Chat_BasetagCSS(property + 1, version, url);
         }
     }
 
@@ -134,7 +130,12 @@ function Chat_loadBadgesTransform(responseText) {
 
 function Chat_BasetagCSS(type, version, url) {
     //a prevent class starting with numbers
-    return ('.a' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }');
+    return ('.a' + type + '-' + version + url);
+}
+
+function Chat_BasetagCSSUrl(url) {
+    //a prevent class starting with numbers
+    return (' { background-image: url("' + url.replace('http:', 'https:') + '"); }');
 }
 
 function Chat_tagCSS(content, doc) {
