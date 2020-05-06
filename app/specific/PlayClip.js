@@ -386,7 +386,7 @@ function PlayClip_UpdateNext() {
 
     if (nextid) {
         PlayClip_HasNext = true;
-        data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[8] + nextid).getAttribute(Main_DataAttribute));
+        data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + nextid).getAttribute(Main_DataAttribute));
 
         PlayClip_NextImg(document.getElementById('next_button_img'), data[15]);
         Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(data[4]));
@@ -404,7 +404,7 @@ function PlayClip_UpdateNext() {
 
     if (backid) {
         PlayClip_HasBack = true;
-        data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[8] + backid).getAttribute(Main_DataAttribute));
+        data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + backid).getAttribute(Main_DataAttribute));
 
         PlayClip_NextImg(document.getElementById('back_button_img'), data[15]);
         Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(data[4]));
@@ -547,7 +547,7 @@ function PlayClip_CheckIfIsLiveResult(response) {
         var responseObj = JSON.parse(response);
 
         if (responseObj.checkResult > 0 && responseObj.checkResult === Play_CheckIfIsLiveId) {
-            var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (responseObj.status === 200) {
 

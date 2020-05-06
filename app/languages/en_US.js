@@ -414,7 +414,7 @@ function en_USLang() {
     STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
     STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
     STR_FEED_END_DIALOG = ', Press back to go back to top menu';
-    STR_BACK_USER_GAMES = ' Press return key to ';
+    STR_BACK_USER_GAMES = ' Press return key to go back to ';
     STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
     STR_SHOW_FEED_PLAYER = 'Show small player over the player live feed';
     STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";

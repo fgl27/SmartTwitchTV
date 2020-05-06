@@ -67,7 +67,7 @@ var Base_obj = {
         Screens_loadDataSuccess(this.screen);
     },
     Set_Scroll: function() {
-        this.ScrollDoc = document.getElementById(this.ids[10]);
+        this.ScrollDoc = document.getElementById(this.ids[4]);
         this.tableDoc = document.getElementById(this.table);
     },
     addrow: Screens_addrow,
@@ -1063,7 +1063,7 @@ var Base_Game_obj = {
     key_play: function() {
         Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
-        Main_values.Main_gameSelected = JSON.parse(document.getElementById(this.ids[5] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+        Main_values.Main_gameSelected = JSON.parse(document.getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
         Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
         Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
 
@@ -1258,6 +1258,25 @@ var Base_Channel_obj = {
             this.coloumn_id++;
         }
     },
+    base_key_play: function(go_screen, IsFollowing) {
+        if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
+
+        Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+
+        Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
+        Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
+        Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
+        Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
+
+        Main_removeEventListener("keydown", this.key_fun);
+        Main_values.Main_BeforeChannel = go_screen;
+        Main_values.Main_Go = Main_ChannelContent;
+        Main_values.Main_BeforeChannelisSet = true;
+        AddCode_IsFollowing = IsFollowing;
+        ChannelContent_UserChannels = IsFollowing;
+        Screens_exit(this.screen);
+        Main_SwitchScreen();
+    },
 };
 
 function ScreensObj_InitUserChannels() {
@@ -1283,23 +1302,7 @@ function ScreensObj_InitUserChannels() {
             ScreensObj_SetTopLable(STR_USER, STR_USER_CHANNEL);
         },
         key_play: function() {
-            if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
-
-            Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[8] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
-
-            Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
-            Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
-            Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
-            Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
-
-            Main_removeEventListener("keydown", this.key_fun);
-            Main_values.Main_BeforeChannel = Main_UserChannels;
-            Main_values.Main_Go = Main_ChannelContent;
-            Main_values.Main_BeforeChannelisSet = true;
-            AddCode_IsFollowing = true;
-            ChannelContent_UserChannels = true;
-            Screens_exit(this.screen);
-            Main_SwitchScreen();
+            this.base_key_play(Main_UserChannels, true);
         },
         addCell: function(cell) {
             cell = cell.channel;
@@ -1340,23 +1343,7 @@ function ScreensObj_InitSearchChannels() {
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
         },
         key_play: function() {
-            if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
-
-            Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[8] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
-
-            Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
-            Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
-            Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
-            Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
-
-            Main_removeEventListener("keydown", this.key_fun);
-            Main_values.Main_BeforeChannel = Main_SearchChannels;
-            Main_values.Main_Go = Main_ChannelContent;
-            Main_values.Main_BeforeChannelisSet = true;
-            AddCode_IsFollowing = false;
-            ChannelContent_UserChannels = false;
-            Screens_exit(this.screen);
-            Main_SwitchScreen();
+            this.base_key_play(Main_SearchChannels, false);
         },
         addCell: function(cell) {
             this.addCellTemp(cell);
@@ -1742,10 +1729,10 @@ function ScreensObj_addSwitches(StringsArray, key) {
     for (i; i < StringsArray.length; i++) {
         thumbfollow = '<i class="icon-' + ScreenObj[key].SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
         div = document.createElement('div');
-        div.setAttribute('id', ScreenObj[key].ids[8] + 'y_' + i);
+        div.setAttribute('id', ScreenObj[key].ids[3] + 'y_' + i);
         div.className = 'stream_cell_period';
         div.innerHTML = '<div id="' + ScreenObj[key].ids[0] +
-            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + ScreenObj[key].ids[3] +
+            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + ScreenObj[key].ids[2] +
             'y_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
         ScreenObj[key].row.appendChild(div);
     }
@@ -1833,7 +1820,7 @@ function ScreensObj_VodCellArray(cell) {
 function ScreensObj_AnimateThumbId(screen) {
     Main_clearInterval(screen.AnimateThumbId);
     if (!Settings_Obj_default("videos_animation")) return;
-    var div = document.getElementById(screen.ids[6] + screen.posY + '_' + screen.posX);
+    var div = document.getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
 
     // Only load the animation if it can be loaded
     // This prevent starting animating before it has loaded or animated a empty image

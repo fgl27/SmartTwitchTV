@@ -359,7 +359,7 @@ var Play_CheckIfIsLiveResponseText = null;
 var Play_CheckIfIsLiveId = 0;
 
 function Play_CheckIfIsLiveStart(callback) {
-    var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+    var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
     if (doc) {
         Play_showBufferDialog();
@@ -395,7 +395,7 @@ function Play_CheckIfIsLiveClean() {//called from java
     if (Sidepannel_isShowing()) {
         Sidepannel_CheckIfIsLiveWarn(
             STR_IS_OFFLINE + STR_TOO_ERRORS,
-            JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[1]
+            JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[1]
         );
     } else Play_showWarningMidleDialog(STR_STREAM_ERROR_SMALL, 2000);
 }

@@ -342,7 +342,7 @@ function Play_FollowUnfollow() {
 
 function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
-    var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
+    var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
         error = STR_STREAM_ERROR;
 
     if (doc) {

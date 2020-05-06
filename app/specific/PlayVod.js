@@ -783,7 +783,7 @@ function PlayVod_CheckIfIsLiveResult(response) {
         var responseObj = JSON.parse(response);
 
         if (responseObj.checkResult > 0 && responseObj.checkResult === Play_CheckIfIsLiveId) {
-            var doc = document.getElementById(UserLiveFeed_ids[8] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (responseObj.status === 200) {
 

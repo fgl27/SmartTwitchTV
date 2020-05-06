@@ -46,7 +46,7 @@ function Sidepannel_isShowing() {
 }
 
 function Sidepannel_UpdateThumbDiv() {
-    var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
+    var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
     if (doc) {
         var info = JSON.parse(doc.getAttribute(Main_DataAttribute));
@@ -71,7 +71,7 @@ function Sidepannel_UpdateThumb() {
     if (Sidepannel_isShowing()) {
         Main_ShowElement('side_panel_feed_thumb');
 
-        var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
+        var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
         if (doc) {
             var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
@@ -89,7 +89,7 @@ function Sidepannel_UpdateThumb() {
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
-        var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
+        var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
         if (StreamData && doc) {
             StreamData = JSON.parse(StreamData);
@@ -143,7 +143,7 @@ function Sidepannel_CheckIfIsLiveStart() {
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsOnAndroid) return;
-    var doc = document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed);
+    var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
     if (doc) {
         try {
@@ -508,9 +508,9 @@ function Sidepannel_Scroll(skipAnimation) {
 
     if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
-            value = document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_PosFeed - center)).offsetTop;
+            value = document.getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_PosFeed - center)).offsetTop;
         else if (((Sidepannel_GetSize() - center) - center) > 0) //if we are in the 7 left
-            value = document.getElementById(UserLiveFeed_side_ids[8] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
+            value = document.getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
     }
 
     if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&

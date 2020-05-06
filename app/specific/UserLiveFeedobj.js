@@ -21,7 +21,7 @@ var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {
         if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
-            UserLiveFeed_LastPos[pos] = JSON.parse(document.getElementById(UserLiveFeed_ids[8] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[6];
+            UserLiveFeed_LastPos[pos] = JSON.parse(document.getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[6];
     } else {
         UserSidePannel_LastPos[pos] = null;
         UserLiveFeed_LastPos[pos] = null;
@@ -50,7 +50,7 @@ function UserLiveFeedobj_StartDefault(pos) {
 function UserLiveFeedobj_CheckToken() {
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) {
         if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
-            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[8] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
     }
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
@@ -770,20 +770,18 @@ function UserLiveFeedobj_SetBottomText(pos) {
 function UserLiveFeedobj_CreatSideFeed(id, data) {
 
     var div = document.createElement('div');
-    div.setAttribute('id', UserLiveFeed_side_ids[8] + id);
+    div.setAttribute('id', UserLiveFeed_side_ids[3] + id);
     div.setAttribute(Main_DataAttribute, JSON.stringify(data));
     div.className = 'side_panel_feed';
 
     div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
         '" class="side_panel_div"><div id="' + UserLiveFeed_side_ids[2] + id +
-        '" style="width: 100%;"><div id="' + UserLiveFeed_side_ids[3] + id +
-        '" style="display: none;">' + data[1] +
+        '" style="width: 100%;"><div style="display: none;">' + data[1] +
         '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
         '" alt="" class="side_panel_channel_img" src="' + data[9] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
-        '\';"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
-        '" class="side_panel_new_title">' + Main_ReplaceLargeFont(data[1]) + '</div><div id="' +
-        UserLiveFeed_side_ids[5] + id + '" class="side_panel_new_game">' + data[3] +
+        '\';"></div><div class="side_panel_iner_div2"><div class="side_panel_new_title">' + Main_ReplaceLargeFont(data[1]) +
+        '</div><div class="side_panel_new_game">' + data[3] +
         '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
         (!data[8] ? 'circle" style="color: red;' : 'refresh" style="') +
         ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(data[13]) + '</div></div></div></div></div></div>';
@@ -795,7 +793,7 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
     if (!data[1]) data[1] = data[6];
     var div = document.createElement('div');
 
-    div.setAttribute('id', UserLiveFeed_ids[8] + id);
+    div.setAttribute('id', UserLiveFeed_ids[3] + id);
     div.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     div.className = 'user_feed_thumb';
@@ -808,24 +806,21 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
             ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + IMG_404_VOD +
                 '\';};this.src=\'' + Extra_vodimg + '\';' +
                 'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hideimp\');' +
-                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
-            ('" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD + '\';"></div><div id="')) +
-        UserLiveFeed_ids[2] + id +
-        '" class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
-        UserLiveFeed_ids[3] + id + '" class="stream_info_live_name" style="width:' +
+                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div ') :
+            ('" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD + '\';"></div><div')) +
+        ' class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
+        UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:' +
         (ishosting ? '99%; max-height: 2.4em; white-space: normal;' : '63.5%; white-space: nowrap; text-overflow: ellipsis;') + ' display: inline-block; overflow: hidden;">' +
         '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
         (data[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
         (Extra_vodimg || force_VOD ? ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
             '<span style="display: none;"></span>') + //empty span to prevent error when childNodes[2].classList.remove
-        data[1] + '</div><div id="' + UserLiveFeed_ids[7] + id +
-        '"class="stream_info_live" style="width:' + (ishosting ? 0 : 36) + '%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
-        data[5] + '</div></div>' +
-        '<div id="' + UserLiveFeed_ids[4] + id + '"class="' +
-        (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) + '</div>' +
-        '<div id="' + UserLiveFeed_ids[5] + id + '"class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
-        '</div><div id="' + UserLiveFeed_ids[6] + id + '"class="stream_info_live">' +
-        data[11] + data[4] + '</div>' +
+        data[1] + '</div><div class="stream_info_live" style="width:' + (ishosting ? 0 : 36) +
+        '%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
+        data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
+        '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) +
+        '</div><div class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
+        '</div><div class="stream_info_live">' + data[11] + data[4] + '</div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
         '</div></div></div>';
@@ -837,22 +832,18 @@ function UserLiveFeedobj_CreatGameFeed(id, data) {
     var div = document.createElement('div');
     data[6] = data[0];//To make UserLiveFeed_LastPos work
 
-    div.setAttribute('id', UserLiveFeed_ids[8] + id);
+    div.setAttribute('id', UserLiveFeed_ids[3] + id);
     div.setAttribute(Main_DataAttribute, JSON.stringify(data));
 
     div.className = 'user_feed_thumb_game';
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
         '" class="stream_thumbnail_game_feed"><div class="stream_thumbnail_feed_game"><img id="' +
         UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' +
-        data[3].replace("{width}x{height}", Main_GameSize) +
-        '" onerror="this.onerror=null;this.src=\'' +
-        IMG_404_GAME + '\';"></div><div id="' +
-        UserLiveFeed_ids[2] + id +
-        '" class="stream_thumbnail_game_feed_text_holder"><div class="stream_text_holder"><div id="' +
-        UserLiveFeed_ids[3] + id + '" class="stream_info_game_name">' + data[0] + '</div>' +
-        (data[1] !== '' ? '<div id="' + UserLiveFeed_ids[4] + id +
-            '"class="stream_info_live" style="width: 100%; display: inline-block;">' + data[1] +
-            '</div>' : '') + '</div></div></div>';
+        data[3].replace("{width}x{height}", Main_GameSize) + '" onerror="this.onerror=null;this.src=\'' +
+        IMG_404_GAME + '\';"></div><div class="stream_thumbnail_game_feed_text_holder"><div class="stream_text_holder"><div id="' +
+        UserLiveFeed_ids[2] + id + '" class="stream_info_game_name">' + data[0] + '</div>' +
+        (data[1] !== '' ? '<div class="stream_info_live" style="width: 100%; display: inline-block;">' + data[1] + '</div>' : '') +
+        '</div></div></div>';
 
     return div;
 }

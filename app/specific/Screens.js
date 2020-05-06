@@ -85,17 +85,11 @@ function Screens_ScreenIds(base) {
     return [
         base + '_thumbdiv',//0
         base + '_img',//1
-        base + '_infodiv',//2
-        base + '_title',//3
-        base + '_createdon',//4
-        base + '_game',//5
-        base + '_viewers',//6
-        base + '_duration',//7
-        base + '_cell',//8
-        base + '_extra',//9
-        base + '_scroll',//10
-        base + '_lang',//11
-        base + '_row'//12
+        base + '_title',//2
+        base + '_data',//3
+        base + '_scroll',//4
+        base + '_animated',//5
+        base + '_row'//6
     ];
 }
 
@@ -334,7 +328,7 @@ function Screens_loadDataSuccess(key) {
         if (!ScreenObj[key].row_id) {
             ScreenObj[key].row = document.createElement('div');
             if (ScreenObj[key].rowClass) ScreenObj[key].row.classList.add(ScreenObj[key].rowClass);
-            ScreenObj[key].row.id = ScreenObj[key].ids[12] + ScreenObj[key].row_id;
+            ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
         }
 
         var response_rows = Math.ceil(response_items / ScreenObj[key].ColoumnsCount);
@@ -346,7 +340,7 @@ function Screens_loadDataSuccess(key) {
             if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
                 ScreenObj[key].row = document.createElement('div');
                 if (ScreenObj[key].rowClass) ScreenObj[key].row.classList.add(ScreenObj[key].rowClass);
-                ScreenObj[key].row.id = ScreenObj[key].ids[12] + ScreenObj[key].row_id;
+                ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
                 ScreenObj[key].coloumn_id = 0;
             }
 
@@ -383,13 +377,13 @@ function Screens_createCell(id_attribute, Data_content, html_content, key) {
 
 function Screens_createCellChannel(id, idArray, valuesArray, key) {
     return Screens_createCell(
-        idArray[8] + id,
+        idArray[3] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
         id + '" alt="" class="stream_img" src="' + valuesArray[2] +
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
-        '<div id="' + idArray[2] + id + '" class="stream_thumbnail_channel_text_holder">' +
-        '<div id="' + idArray[3] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
+        '<div class="stream_thumbnail_channel_text_holder">' +
+        '<div id="' + idArray[2] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
         (valuesArray[4] ? STR_SPACE + STR_SPACE +
             '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
             IMG_PARTNER + '">' : "") + '</div></div></div>',
@@ -399,16 +393,14 @@ function Screens_createCellChannel(id, idArray, valuesArray, key) {
 
 function Screens_createCellGame(id, idArray, valuesArray, key) {
     return Screens_createCell(
-        idArray[5] + id,
+        idArray[3] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
-        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
-        idArray[2] + id +
-        '" class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="' +
-        idArray[3] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
-        (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
-            '"class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
+        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
+        '\';"></div><div class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="' +
+        idArray[2] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
+        (valuesArray[2] !== '' ? '<div class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
             '</div>' : '') + '</div></div></div>',
         key
     );
@@ -418,24 +410,19 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
     var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
 
     return Screens_createCell(
-        idArray[8] + id,
+        idArray[3] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
-        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
-        idArray[2] + id +
-        '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
-        valuesArray[4] + '</div><div id="' + idArray[7] + id +
-        '"class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[11] + '</div></div><div id="' + idArray[11] + id + '"class="' +
-        (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
-        valuesArray[10] + '</div>' +
-        '<div id="' + idArray[4] + id + '"class="stream_info_live">' + playing + '</div>' +
-        '<div style="line-height: 1.3ch;"><div id="' + idArray[6] + id +
-        '"class="stream_info_live" style="width: auto; display: inline-block;">' + (valuesArray[16] ? valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE + //Old sorting fix
-        valuesArray[14] + '</div><div id="' + idArray[5] + id +
-        '"class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
+        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
+        '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+        idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
+        valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[11] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
+        valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
+        '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
+        (valuesArray[16] ? valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE + //Old sorting fix
+        valuesArray[14] + '</div><div class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
         Play_timeS(valuesArray[1]) + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
             STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
@@ -447,24 +434,20 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
 function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_until) {
 
     return Screens_createCell(
-        idArray[8] + id,
+        idArray[3] + id,
         valuesArray,
-        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[6] + id + '" class="stream_thumbnail_live_img" ' +
+        '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[5] + id + '" class="stream_thumbnail_live_img" ' +
         (valuesArray[8] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[8] + ');"' : '') +
         '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
-        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
-        idArray[2] + id +
-        '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[3] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
-        valuesArray[1] + '</div><div id="' + idArray[7] + id +
-        '"class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' + valuesArray[5] +
-        '</div></div><div id="' + idArray[11] + id +
-        '"class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + valuesArray[10] + '</div>' +
-        '<div id="' + idArray[9] + id + '"class="stream_info_live">' +
+        '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
+        '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+        idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
+        valuesArray[1] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
+        '">' + valuesArray[10] + '</div>' + '<div class="stream_info_live">' +
         (valuesArray[3] !== "" && valuesArray[3] !== null ? STR_STARTED + STR_PLAYING + valuesArray[3] : "") + '</div>' +
-        '<div style="line-height: 1.3ch;"><div id="' + idArray[4] + id + '"class="stream_info_live" style="width: auto; display: inline-block;">' +
-        valuesArray[2] + ',' + STR_SPACE + valuesArray[4] + '</div><div id="' + idArray[5] + id +
-        '"class="stream_info_live" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
+        '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
+        valuesArray[2] + ',' + STR_SPACE + valuesArray[4] + '</div><div class="stream_info_live" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
         Play_timeS(valuesArray[11]) + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
             STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
@@ -482,7 +465,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
         image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
     return Screens_createCell(
-        idArray[8] + id,
+        idArray[3] + id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + image +
@@ -490,24 +473,20 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
             ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
                 '\';};this.src=\'' + Extra_vodimg + '\';' +
                 'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hideimp\');' +
-                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div id="') :
-            ('" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="')) +
-        idArray[2] + id +
-        '" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[3] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
+                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div ') :
+            ('" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div')) +
+        ' class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+        idArray[2] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
         '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
         (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
         (Extra_vodimg || force_VOD ?
             ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
             '<span style="display: none;"></span>') + //empty span to prevent error when childNodes[2].classList.remove
-        valuesArray[1] + '</div><div id="' + idArray[7] + id +
-        '"class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[5] + '</div></div>' +
-        '<div id="' + idArray[4] + id + '"class="' +
+        valuesArray[1] + '</div><div class="stream_info_live" style="width:' + (ishosting ? 0 : 33) + '%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + '</div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(valuesArray[2])) + '</div>' +
-        '<div id="' + idArray[5] + id + '"class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-        '</div><div id="' + idArray[6] + id + '"class="stream_info_live">' +
-        valuesArray[11] + valuesArray[4] + '</div>' +
+        '<div class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
+        '</div><div class="stream_info_live">' + valuesArray[11] + valuesArray[4] + '</div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
         '</div></div></div>',
@@ -978,7 +957,7 @@ function Screens_setOffset(pos, y, key) {
     if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
         pos = !y ? (y + pos) : y;
         if (ScreenObj[key].Cells[pos]) {
-            ScreenObj[key].offsettop = (document.getElementById(ScreenObj[key].ids[12] + pos).offsetHeight + document.getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+            ScreenObj[key].offsettop = (document.getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + document.getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
         } else ScreenObj[key].offsettop = 1;
 
         ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
@@ -1337,8 +1316,17 @@ function AGame_Checkfollow() {
 }
 
 function AGame_setFollow() {
-    if (AGame_following) Main_innerHTML(ScreenObj[Main_aGame].ids[3] + "y_2", '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FOLLOWING);
-    else Main_innerHTML(ScreenObj[Main_aGame].ids[3] + "y_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY));
+    if (AGame_following) {
+        Main_innerHTML(
+            ScreenObj[Main_aGame].ids[2] + "y_2",
+            '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FOLLOWING
+        );
+    } else {
+        Main_innerHTML(
+            ScreenObj[Main_aGame].ids[2] + "y_2",
+            '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY)
+        );
+    }
 }
 
 var Screens_PeriodDialogID;
@@ -1768,7 +1756,7 @@ var Screens_isFollowing = false;
 
 function Screens_ThumbOptionStringSet(key) {
     Screens_canFollow = false;
-    Screens_values_Play_data = JSON.parse(document.getElementById(ScreenObj[key].ids[8] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
+    Screens_values_Play_data = JSON.parse(document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);

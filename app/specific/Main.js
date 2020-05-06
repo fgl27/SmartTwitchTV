@@ -1047,7 +1047,7 @@ function Main_ThumbOpenIsNull(id, thumbnail) {
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_removeEventListener("keydown", handleKeyDownFunction);
-    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
     Play_data.data = Main_values_Play_data;
 
     if (checkHistory) {
@@ -1063,12 +1063,12 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
 
             } else if (Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
 
-                Main_CheckBroadcastID(index, idsArray[3] + id);
+                Main_CheckBroadcastID(index, idsArray[2] + id);
                 return;
 
             } else {//is live check is is really
 
-                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[3] + id);
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[2] + id);
                 else Main_openStream();
 
                 return;
@@ -1243,7 +1243,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_hideScene1Doc();
     Main_removeEventListener("keydown", handleKeyDownFunction);
-    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
     ChannelClip_playUrl = Main_values_Play_data[0];
     Play_DurationSeconds = parseInt(Main_values_Play_data[1]);
@@ -1280,7 +1280,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_removeEventListener("keydown", handleKeyDownFunction);
-    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[8] + id).getAttribute(Main_DataAttribute));
+    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
     ChannelVod_createdAt = Main_values_Play_data[2];
