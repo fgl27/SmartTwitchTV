@@ -620,7 +620,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
                     ChatLive_LineAddSimple(
                         STR_CHAT_CONNECTED + " as " +
-                        (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_GIFT_ANONYMOUS),
+                        (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS_USER),
                         chat_number
                     );
 
@@ -664,7 +664,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 ChatLive_loadChatSuccess(message, chat_number);
                 break;
             case "USERNOTICE":
-                ChatLive_CheckSubMessage(message, chat_number);
+                ChatLive_CheckIfSub(message, chat_number);
                 break;
             case "USERSTATE":
                 //Main_Log('USERSTATE chat ' + chat_number);
@@ -951,6 +951,8 @@ function ChatLive_CheckIfSub(message, chat_number) {
 
     var tags = message.tags;
 
+    if (!tags || !tags.hasOwnProperty('msg-id')) return; //bad formatted message
+
     var name = tags['display-name'] || '';
     var msgid = tags['msg-id'] || '';
     var plan = tags['msg-param-sub-plan'] || '';
@@ -994,6 +996,13 @@ function ChatLive_CheckIfSub(message, chat_number) {
             ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_SENDER_PRIME + STR_SPACE + ' sub to ' + recipient, chat_number);
 
         }
+
+        if (ChatLive_User_Set && Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
+            Main_A_equals_B(tags['msg-param-recipient-user-name'].toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + '')) {
+
+            ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
+        }
+
     } else if (Main_A_includes_B(msgid, 'submysterygift')) {
 
         gifter = Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : name;
@@ -1003,35 +1012,6 @@ function ChatLive_CheckIfSub(message, chat_number) {
 
     }
 
-}
-
-function ChatLive_CheckIfSubSend(name, type, chat_number) {
-    ChatLive_LineAdd(
-        '<span style="color: #0fffff;">' + name + '</span><span class="message"><br>' + type + '</span>',
-        chat_number,
-        0, 0, 0, 1
-    );
-}
-
-function ChatLive_CheckSubMessage(message, chat_number) {
-    var tags = message.tags;
-
-    if (!tags || !tags.hasOwnProperty('msg-id')) return; //bad formatted message
-
-    if (Main_A_includes_B(tags['msg-id'], 'subgift')) {
-
-        if (ChatLive_User_Set && Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
-            Main_A_equals_B(tags['msg-param-recipient-user-name'].toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + '')) {
-
-            ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) +
-                STR_GIFT_SUB, 10000);
-
-            return;
-        }
-
-    }
-
-    ChatLive_CheckIfSub(message, chat_number);
     // tag:
     // badge-info: "subscriber/2"
     // badges: "subscriber/0,premium/1"
@@ -1057,7 +1037,14 @@ function ChatLive_CheckSubMessage(message, chat_number) {
     // tmi-sent-ts: "1586752394924"
     // user-id: "496014406"
     // user-type: true
+}
 
+function ChatLive_CheckIfSubSend(name, type, chat_number) {
+    ChatLive_LineAdd(
+        '<span style="color: #0fffff;">' + name + '</span><span class="message"><br>' + type + '</span>',
+        chat_number,
+        0, 0, 0, 1
+    );
 }
 
 function ChatLive_loadChatSuccess(message, chat_number) {

@@ -445,7 +445,8 @@ function en_USLang() {
     STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
     STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
     STR_GIFT_SUB = " has gift you a sub!";
-    STR_GIFT_ANONYMOUS = "A anonymous user ";
+    STR_ANONYMOUS_USER = "anonymous user ";
+    STR_GIFT_ANONYMOUS = "A " + STR_ANONYMOUS_USER;
     STR_CHAT_BANNED = "You are permanently banned from talking in  ";
     STR_CHAT_WRITE = "Write to chat";
     STR_PLACEHOLDER_CHAT = "When this seleceted, press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
