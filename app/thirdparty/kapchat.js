@@ -148,9 +148,3 @@ function emoticonize(message, emotes) {
 
     return tokenizedMessage;
 }
-
-function tagCSS(type, version, url, doc) {
-    var style = document.createElement('style');
-    style.innerHTML = '.' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
-    doc.appendChild(style);
-}

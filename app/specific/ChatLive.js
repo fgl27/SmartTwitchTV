@@ -245,15 +245,15 @@ function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
         );
 
     } else {
-        Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number, Chat_div[chat_number]);
+        Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
     }
 }
 
 function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
-    extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = JSON.parse(responseText);
-    Chat_loadBadgesTransform(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], chat_number, Chat_div[chat_number]);
+    extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] =
+        Chat_loadBadgesTransform(JSON.parse(responseText), chat_number, Chat_div[chat_number]);
 }
 
 function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
@@ -1107,7 +1107,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
             for (i = 0, len = badges.length; i < len; i++) {
                 badge = badges[i].split('/');
 
-                div += '<span class="' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
+                div += '<span class="a' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
             }
         }
     }
@@ -1337,8 +1337,7 @@ function ChatLive_Clear(chat_number) {
     ChatLive_LineAddCounter[chat_number] = 0;
     ChatLive_Messages[chat_number] = [];
 
-    if (!chat_number) Main_empty('chat_box');
-    else Main_empty('chat_box2');
+    Main_emptyWithEle(Chat_div[chat_number]);
 
     ChatLive_loaded[chat_number] = false;
     ChatLive_Banned[chat_number] = false;

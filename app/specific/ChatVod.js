@@ -24,8 +24,8 @@ var Chat_JustStarted = true;
 //Variable initialization end
 
 function Chat_Preinit() {
-    Chat_div[0] = document.getElementById('chat_box');
-    Chat_div[1] = document.getElementById('chat_box2');
+    Chat_div[0] = document.getElementById('chat_box0');
+    Chat_div[1] = document.getElementById('chat_box1');
     ChatLive_LineAddCounter[0] = 0;
     ChatLive_LineAddCounter[1] = 0;
     ChatLive_Messages[0] = [];
@@ -94,36 +94,50 @@ function Chat_loadBadgesGlobalError(tryes) {
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
-    var versions, property, version, new_img, doc = document.head;
+    var versions, property, version, new_img, innerHTML = '', doc = document.head;
 
     responseText = JSON.parse(responseText);
 
     for (property in responseText.badge_sets) {
         versions = responseText.badge_sets[property].versions;
         for (version in versions) {
-            tagCSS(property + 0, version, versions[version].image_url_4x, doc);
-            tagCSS(property + 1, version, versions[version].image_url_4x, doc);
+            innerHTML += Chat_BasetagCSS(property + 0, version, versions[version].image_url_4x);
+            innerHTML += Chat_BasetagCSS(property + 1, version, versions[version].image_url_4x);
 
             new_img = new Image();
             new_img.src = versions[version].image_url_4x;
         }
     }
-
+    Chat_tagCSS(innerHTML, doc);
     Chat_LoadGlobalBadges = true;
 }
 
 function Chat_loadBadgesTransform(responseText, chat_number, doc) {
-    var versions, property, version, new_img;
+    var versions, property, version, new_img, innerHTML = '';
 
     for (property in responseText.badge_sets) {
         versions = responseText.badge_sets[property].versions;
         for (version in versions) {
-            tagCSS(property + chat_number, version, versions[version].image_url_4x, doc);
+            innerHTML += Chat_BasetagCSS(property + chat_number, version, versions[version].image_url_4x);
 
             new_img = new Image();
             new_img.src = versions[version].image_url_4x;
         }
     }
+    Chat_tagCSS(innerHTML, doc);
+
+    return innerHTML;
+}
+
+function Chat_BasetagCSS(type, version, url) {
+    //a prevent class starting with numbers
+    return ('.a' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }');
+}
+
+function Chat_tagCSS(content, doc) {
+    var style = document.createElement('style');
+    style.innerHTML = content;
+    doc.appendChild(style);
 }
 
 function Chat_loadBTTVGlobalEmotes(tryes) {
@@ -274,7 +288,7 @@ function Chat_loadChatSuccess(responseText, id) {
             for (j = 0, len_j = mmessage.user_badges.length; j < len_j; j++) {
                 badges = mmessage.user_badges[j];
 
-                div += '<span class="' + badges._id + "0-" + badges.version + ' tag"></span>';
+                div += '<span class="a' + badges._id + "0-" + badges.version + ' tag"></span>';
 
             }
         }
@@ -384,8 +398,8 @@ function Chat_Clear() {
     Chat_hasEnded = false;
     Chat_Pause();
     Chat_Id[0] = 0;
-    Main_empty('chat_box');
-    Main_empty('chat_box2');
+    Main_emptyWithEle(Chat_div[0]);
+    Main_emptyWithEle(Chat_div[1]);
     Chat_next = null;
     Chat_Messages = [];
     Chat_MessagesNext = [];
