@@ -13467,8 +13467,8 @@
             Main_innerHTML("stream_info_pp_livetime1", STR_SINCE +
                 (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(PlayExtra_data.data[12])));
         } else {
-            Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_SPACE +
-                STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+            Main_innerHTML("stream_watching_time", "," +
+                STR_SPACE + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
 
             Main_innerHTML("stream_live_time", STR_SINCE +
                 (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_created)));
