@@ -92,7 +92,7 @@ function Screens_ScreenIds(base) {
         base + '_viewers',//6
         base + '_duration',//7
         base + '_cell',//8
-        'cpempty_',//9
+        base + '_extra',//9
         base + '_scroll',//10
         base + '_lang',//11
         base + '_row'//12
@@ -405,7 +405,7 @@ function Screens_createCellGame(id, idArray, valuesArray, key) {
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div><div id="' +
         idArray[2] + id +
-        '" class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="<div id="' +
+        '" class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="' +
         idArray[3] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
         (valuesArray[2] !== '' ? '<div id="' + idArray[4] + id +
             '"class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
@@ -1795,7 +1795,7 @@ function Screens_ThumbOptionStringSet(key) {
         Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1]]);
     } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
 
-    Main_textContent('dialog_thumb_opt_val_4', Main_ContentLang === "" ? STR_LANG_ALL : Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]]);
+    Main_textContent('dialog_thumb_opt_val_4', Main_ContentLang === "" ? STR_LANG_ALL : Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
     Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
 }
 
@@ -2106,7 +2106,7 @@ function Screens_ThumbOptionAddFocus(divPos) {
     Main_AddClass('dialog_thumb_opt_setting_' + divPos, 'settings_div_focus');
     Main_AddClass('dialog_thumb_opt_val_' + divPos, 'settings_value_focus');
     if (Screens_ThumbOptionPosY === 3) Screens_ThumbOptionSetArrow(Screens_YesNo);
-    else if (Screens_ThumbOptionPosY === 4) Screens_ThumbOptionSetArrow(Screens_ThumbOptionLanguages);
+    else if (Screens_ThumbOptionPosY === 4) Screens_ThumbOptionSetArrow(Screens_ThumbOptionLanguagesTitles);
     else if (Screens_ThumbOptionPosY === 5) Screens_ThumbOptionSetArrow(Screens_ThumbOptionScreens);
 }
 
@@ -2126,6 +2126,7 @@ var Screens_ThumbOptionArrays = [];
 var Screens_ThumbOptionPosXArrays = [];
 var Screens_ThumbOptionGOTO = [];
 var Screens_ThumbOptionLanguages = [];
+var Screens_ThumbOptionLanguagesTitles = [];
 var Main_ContentLang_old = '';
 
 function Screens_ThumbOptionSetArrowArray(key) {
@@ -2155,12 +2156,14 @@ function Screens_ThumbOptionSetArrowArray(key) {
     var isAll = Main_ContentLang === "";
     Main_ContentLang_old = Main_ContentLang;
     Screens_ThumbOptionLanguages = [];
+    Screens_ThumbOptionLanguagesTitles = [];
     for (var property in Languages_value) {
         Screens_ThumbOptionLanguages.push(property);
+        Screens_ThumbOptionLanguagesTitles.push(Languages_value[property].title);
         if (!isAll && Languages_Obj_default(property)) default_lang = Screens_ThumbOptionLanguages.length - 1;
     }
 
-    Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionLanguages, Screens_ThumbOptionScreens];
+    Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionLanguagesTitles, Screens_ThumbOptionScreens];
 
     var historyType = Screens_ThumbOptionStringGetHistory(key);
     if (ScreenObj[key].screen === Main_HistoryLive &&

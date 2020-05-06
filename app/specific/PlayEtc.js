@@ -11,7 +11,7 @@ function Play_partnerIcon(name, partner, islive, lang, rerun) {
             STR_SPACE + STR_SPACE + (rerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
     }
 
-    return div + '<div class="lang_text" ">' + STR_SPACE + STR_SPACE + lang + '</div>';
+    return div + '<div class="lang_text">' + STR_SPACE + STR_SPACE + lang + '</div>';
 }
 
 function Play_IconsResetFocus() {

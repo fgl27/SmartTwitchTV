@@ -5,132 +5,158 @@ var Languages_value = {
     "All": {
         "values": ["off", "on"],
         "defaultValue": 2,
-        "set_values": ""
+        "set_values": "",
+        "title": "All"
     },
-    "Bulgarian [BG]": {
+    "bg": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "bg"
+        "set_values": "bg",
+        "title": "Bulgarian [BG]"
     },
-    "Čeština [CS]": {
+    "cs": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "cs"
+        "set_values": "cs",
+        "title": "Čeština [CS]"
     },
-    "Dansk [DA]": {
+    "da": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "da"
+        "set_values": "da",
+        "title": "Dansk [DA]"
     },
-    "Deutsch [DE]": {
+    "de": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "de"
+        "set_values": "de",
+        "title": "Deutsch [DE]"
     },
-    "Ελληνικά [EL]": {
+    "el": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "el"
+        "set_values": "el",
+        "title": "Ελληνικά [EL]"
     },
-    "English [EN]": {
+    "en": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "en"
+        "set_values": "en",
+        "title": "English [EN]"
     },
-    "Español [ES]": {
+    "es": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "es"
+        "set_values": "es",
+        "title": "Español [ES]"
     },
-    "Suomi [FI]": {
+    "fi": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "fi"
+        "set_values": "fi",
+        "title": "Suomi [FI]"
     },
-    "Français [FR]": {
+    "fr": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "fr"
+        "set_values": "fr",
+        "title": "Français [FR]"
     },
-    "Italiano [IT]": {
+    "it": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "it"
+        "set_values": "it",
+        "title": "Italiano [IT]"
     },
-    "Magyar [HU]": {
+    "hu": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "hu"
+        "set_values": "hu",
+        "title": "Magyar [HU]"
     },
-    "日本語 [JA]": {
+    "ja": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "ja"
+        "set_values": "ja",
+        "title": "日本語 [JA]"
     },
-    "한국어 [KO]": {
+    "ko": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "ko"
+        "set_values": "ko",
+        "title": "한국어 [KO]"
     },
-    "Nederlands [NL]": {
+    "nl": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "nl"
+        "set_values": "nl",
+        "title": "Nederlands [NL]"
     },
-    "Norsk [NO]": {
+    "no": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "no"
+        "set_values": "no",
+        "title": "Norsk [NO]"
     },
-    "Polski [PL]": {
+    "pl": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "pl"
+        "set_values": "pl",
+        "title": "Polski [PL]"
     },
-    "Português [PT]": {
+    "pt": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "pt"
+        "set_values": "pt",
+        "title": "Português [PT]"
     },
-    "Română [RO]": {
+    "ro": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "ro"
+        "set_values": "ro",
+        "title": "Română [RO]"
     },
-    "Русский [RU]": {
+    "ru": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "ru"
+        "set_values": "ru",
+        "title": "Русский [RU]"
     },
-    "Slovenčina [SK]": {
+    "sk": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "sk"
+        "set_values": "sk",
+        "title": "Slovenčina [SK]"
     },
-    "Svenska [SV]": {
+    "sv": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "sv"
+        "set_values": "sv",
+        "title": "Svenska [SV]"
     },
-    "ภาษาไทย [TH]": {
+    "th": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "th"
+        "set_values": "th",
+        "title": "ภาษาไทย [TH]"
     },
-    "Türkçe [TR]": {
+    "tr": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "tr"
+        "set_values": "tr",
+        "title": "Türkçe [TR]"
     },
-    "Tiếng Việt [VI]": {
+    "vi": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "vi"
+        "set_values": "vi",
+        "title": "Tiếng Việt [VI]"
     },
-    "中文 [ZH]": {
+    "zh": {
         "values": ["off", "on"],
         "defaultValue": 1,
-        "set_values": "zh"
+        "set_values": "zh",
+        "title": "中文 [ZH]"
     }
 };
 
@@ -172,7 +198,11 @@ function Languages_ResetLang() {
         Languages_ChangeSettigs(0);
         Main_AddClass(Languages_value_keys[0], 'red_text');
         Languages_HideShowAll();
+    } else {
+        Main_textContent(Main_ContentLang, Languages_Obj_values(Main_ContentLang));
+        Main_AddClass(Main_ContentLang, 'red_text');
     }
+
     Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
 }
 
@@ -200,7 +230,7 @@ function Languages_SetSettings() {
     for (var key in Languages_value) {
         Languages_value_keys.push(key);
         Languages_value[key].values = [STR_NO, STR_YES];
-        div += Languages_DivOptionNoSummary(key, key);
+        div += Languages_DivOptionNoSummary(key, Languages_value[key].title);
     }
 
     Main_innerHTML("settings_lang", div);

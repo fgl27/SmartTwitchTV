@@ -779,7 +779,7 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
         '" style="width: 100%;"><div id="' + UserLiveFeed_side_ids[3] + id +
         '" style="display: none;">' + data[1] +
         '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
-        '" class="side_panel_channel_img" src="' + data[9] +
+        '" alt="" class="side_panel_channel_img" src="' + data[9] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO +
         '\';"></div><div class="side_panel_iner_div2"><div id="' + UserLiveFeed_side_ids[4] + id +
         '" class="side_panel_new_title">' + Main_ReplaceLargeFont(data[1]) + '</div><div id="' +
@@ -848,7 +848,7 @@ function UserLiveFeedobj_CreatGameFeed(id, data) {
         '" onerror="this.onerror=null;this.src=\'' +
         IMG_404_GAME + '\';"></div><div id="' +
         UserLiveFeed_ids[2] + id +
-        '" class="stream_thumbnail_game_feed_text_holder"><div class="stream_text_holder"><div id="<div id="' +
+        '" class="stream_thumbnail_game_feed_text_holder"><div class="stream_text_holder"><div id="' +
         UserLiveFeed_ids[3] + id + '" class="stream_info_game_name">' + data[0] + '</div>' +
         (data[1] !== '' ? '<div id="' + UserLiveFeed_ids[4] + id +
             '"class="stream_info_live" style="width: 100%; display: inline-block;">' + data[1] +

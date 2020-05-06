@@ -128,7 +128,7 @@ var Main_TwithcV5Flag = '&api_version=5';
 var Main_TwithcV5Flag_I = '?api_version=5';
 
 var Main_classThumb = 'stream_thumbnail_focused';
-var Main_DataAttribute = 'data_attribute';
+var Main_DataAttribute = 'data-array';
 
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.181';

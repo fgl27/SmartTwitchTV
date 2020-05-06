@@ -2160,19 +2160,19 @@ function Play_MultiSetpannelInfo() {
     Main_textContent('stream_dialog_multi_end', STR_REPLACE_MULTI_ENTER);
     for (var i = 0; i < 4; i++) {
         Main_innerHTML("stream_info_multiimgholder" + i,
-            '<img id="stream_info_multiimg' + i + '" class="multi_info_img" src="' + IMG_404_BANNER + '"' +
+            '<img id="stream_info_multiimg' + i + '" alt="" class="multi_info_img" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 
         Main_innerHTML("stream_info_multiimgholder_big" + i,
-            '<img id="stream_info_multiimg_big' + i + '" class="multi_info_img_big" src="' + IMG_404_BANNER + '"' +
+            '<img id="stream_info_multiimg_big' + i + '" alt="" class="multi_info_img_big" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 
         Main_innerHTML("stream_dialog_multiimgholder_big" + i,
-            '<img id="stream_dialog_multiimg_big' + i + '" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
+            '<img id="stream_dialog_multiimg_big' + i + '" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 
         Main_innerHTML("stream_dialog_multiimgholder" + i,
-            '<img id="stream_dialog_multiimg' + i + '" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
+            '<img id="stream_dialog_multiimg' + i + '" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
     }
 
@@ -2181,15 +2181,15 @@ function Play_MultiSetpannelInfo() {
     doc.style.marginTop = '-0.5%';
 
     Main_innerHTML("stream_dialog_multiimgholder-1",
-        '<img id="stream_dialog_multiimg-1" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
+        '<img id="stream_dialog_multiimg-1" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
         'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 
     Main_innerHTML("stream_info_ppimgholder0",
-        '<img id="stream_info_ppimg0" class="panel_pp_img" src="' + IMG_404_BANNER + '"' +
+        '<img id="stream_info_ppimg0" alt="" class="panel_pp_img" src="' + IMG_404_BANNER + '"' +
         'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 
     Main_innerHTML("stream_info_ppimgholder1",
-        '<img id="stream_info_ppimg1" class="panel_pp_img" src="' + IMG_404_BANNER + '"' +
+        '<img id="stream_info_ppimg1" alt="" class="panel_pp_img" src="' + IMG_404_BANNER + '"' +
         'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
 }
 

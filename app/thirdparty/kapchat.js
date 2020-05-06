@@ -151,7 +151,6 @@ function emoticonize(message, emotes) {
 
 function tagCSS(type, version, url, doc) {
     var style = document.createElement('style');
-    style.type = 'text/css';
     style.innerHTML = '.' + type + '-' + version + ' { background-image: url("' + url.replace('http:', 'https:') + '"); }';
     doc.appendChild(style);
 }
