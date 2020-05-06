@@ -1070,14 +1070,9 @@
             opacity: 0;
         }
 
-        div.playsideinfostatus,
-        div.playsideinfotext {
+        div.playsideinfostatus {
             word-wrap: break-word;
-            line-height: 2.2ch
-        }
-
-        div.playsideinfotext {
-            display: inline-block;
+            line-height: 2.1ch
         }
 
         div.playsideinfo {
@@ -2157,6 +2152,11 @@
             width: 8.75%;
         }
 
+        div.stream_info_timers {
+            display: inline-block;
+            width: auto;
+        }
+
         div.multi_info_line {
             line-height: 1.1em;
         }
@@ -2955,9 +2955,9 @@
                         </div>
                         <div id="stream_info_title"></div>
                         <div id="stream_info_game"></div>
-                        <div id="stream_live_time" style="display: inline-block; width:auto;"></div>
-                        <div id="stream_live_viewers" style="display: inline-block; width:auto;"></div>
-                        <div id="stream_watching_time" class="playsideinfotext"></div>
+                        <div id="stream_live_time" class="stream_info_timers"></div>
+                        <div id="stream_live_viewers" class="stream_info_timers"></div>
+                        <div id="stream_watching_time" class="stream_info_timers"></div>
                     </div>
                 </div>
                 <div id="stream_info_pp" style="padding-top: 2%; padding-left: 2%; font-size: 122%;" class="hide">
@@ -2977,16 +2977,13 @@
                                             <div id="stream_info_pp_game0" class="side_panel_new_game multi_info_line">
                                             </div>
                                             <div id="stream_info_pp_livetime0"
-                                                class="side_panel_new_game multi_info_line"
-                                                style="display: inline-block; width:auto;">
+                                                class="side_panel_new_game multi_info_line stream_info_timers">
                                             </div>
                                             <div id="stream_info_pp_viewers0"
-                                                class="side_panel_new_game multi_info_line"
-                                                style="display: inline-block; width:auto;">
+                                                class="side_panel_new_game multi_info_line stream_info_timers">
                                             </div>
                                             <div id="stream_info_pp_watching_time0"
-                                                class="side_panel_new_game multi_info_line"
-                                                style="display: inline-block; width:auto;"></div>
+                                                class="side_panel_new_game multi_info_line stream_info_timers"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -3009,15 +3006,13 @@
                                             <div id="stream_info_pp_game1" class="side_panel_new_game multi_info_line">
                                             </div>
                                             <div id="stream_info_pp_livetime1"
-                                                class="side_panel_new_game multi_info_line"
-                                                style="display: inline-block; width:auto;">
+                                                class="side_panel_new_game multi_info_line stream_info_timers">
                                             </div>
                                             <div id="stream_info_pp_viewers1"
-                                                class="side_panel_new_game multi_info_line"
-                                                style="display: inline-block; width:auto;">
+                                                class="side_panel_new_game multi_info_line stream_info_timers">
                                             </div>
-                                            <div id="stream_info_pp_watching_time1" class="side_panel_new_game"
-                                                style="display: inline-block; width:auto;"></div>
+                                            <div id="stream_info_pp_watching_time1"
+                                                class="side_panel_new_game stream_info_timers"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -3044,11 +3039,9 @@
                                             <div id="stream_info_multi_game_big0"
                                                 class="side_panel_new_game multi_info_line"></div>
                                             <div class="side_panel_new_game multi_info_line">
-                                                <div id="stream_info_multi_livetimebig0"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_livetimebig0" class="stream_info_timers">
                                                 </div>
-                                                <div id="stream_info_multi_views_big0"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_views_big0" class="stream_info_timers">
                                                 </div>
                                             </div>
                                             <div id="stream_info_multi_watching_timebig0"
@@ -3076,11 +3069,9 @@
                                             <div id="stream_info_multi_game_big1"
                                                 class="side_panel_new_game multi_info_line"></div>
                                             <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
-                                                <div id="stream_info_multi_livetimebig1"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_livetimebig1" class="stream_info_timers">
                                                 </div>
-                                                <div id="stream_info_multi_views_big1"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_views_big1" class="stream_info_timers">
                                                 </div>
                                             </div>
                                             <div id="stream_info_multi_watching_timebig1"
@@ -3106,11 +3097,9 @@
                                             <div id="stream_info_multi_game_big2"
                                                 class="side_panel_new_game multi_info_line"></div>
                                             <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
-                                                <div id="stream_info_multi_livetimebig2"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_livetimebig2" class="stream_info_timers">
                                                 </div>
-                                                <div id="stream_info_multi_views_big2"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_views_big2" class="stream_info_timers">
                                                 </div>
                                             </div>
                                             <div id="stream_info_multi_watching_timebig2"
@@ -3136,11 +3125,9 @@
                                             <div id="stream_info_multi_game_big3"
                                                 class="side_panel_new_game multi_info_line"></div>
                                             <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
-                                                <div id="stream_info_multi_livetimebig3"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_livetimebig3" class="stream_info_timers">
                                                 </div>
-                                                <div id="stream_info_multi_views_big3"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_views_big3" class="stream_info_timers">
                                                 </div>
                                             </div>
                                             <div id="stream_info_multi_watching_timebig3"
@@ -3171,11 +3158,9 @@
                                             <div id="stream_info_multi_game0"
                                                 class="side_panel_new_game multi_info_line"></div>
                                             <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
-                                                <div id="stream_info_multi_livetime0"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_livetime0" class="stream_info_timers">
                                                 </div>
-                                                <div id="stream_info_multi_views0"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_views0" class="stream_info_timers">
                                                 </div>
                                             </div>
                                             <div id="stream_info_multi_watching_time0"
@@ -3201,11 +3186,9 @@
                                             <div id="stream_info_multi_game1"
                                                 class="side_panel_new_game multi_info_line"></div>
                                             <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
-                                                <div id="stream_info_multi_livetime1"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_livetime1" class="stream_info_timers">
                                                 </div>
-                                                <div id="stream_info_multi_views1"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_views1" class="stream_info_timers">
                                                 </div>
                                             </div>
                                             <div id="stream_info_multi_watching_time1"
@@ -3233,11 +3216,9 @@
                                             <div id="stream_info_multi_game2"
                                                 class="side_panel_new_game multi_info_line"></div>
                                             <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
-                                                <div id="stream_info_multi_livetime2"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_livetime2" class="stream_info_timers">
                                                 </div>
-                                                <div id="stream_info_multi_views2"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_views2" class="stream_info_timers">
                                                 </div>
                                             </div>
                                             <div id="stream_info_multi_watching_time2"
@@ -3263,11 +3244,9 @@
                                             <div id="stream_info_multi_game3"
                                                 class="side_panel_new_game multi_info_line"></div>
                                             <div class="side_panel_new_game multi_info_line" style="line-height: 1em;">
-                                                <div id="stream_info_multi_livetime3"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_livetime3" class="stream_info_timers">
                                                 </div>
-                                                <div id="stream_info_multi_views3"
-                                                    style="display: inline-block; width:auto;">
+                                                <div id="stream_info_multi_views3" class="stream_info_timers">
                                                 </div>
                                             </div>
                                             <div id="stream_info_multi_watching_time3"
