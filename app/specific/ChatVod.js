@@ -94,7 +94,7 @@ function Chat_loadBadgesGlobalError(tryes) {
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
-    var versions, property, version, new_img, innerHTML = '', doc = document.head;
+    var versions, property, version, new_img, innerHTML = '';
 
     responseText = JSON.parse(responseText);
 
@@ -108,7 +108,7 @@ function Chat_loadBadgesGlobalSuccess(responseText) {
             new_img.src = versions[version].image_url_4x;
         }
     }
-    Chat_tagCSS(innerHTML, doc);
+    Chat_tagCSS(innerHTML, document.head);
     Chat_LoadGlobalBadges = true;
 }
 
