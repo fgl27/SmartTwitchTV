@@ -245,15 +245,16 @@ function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
         );
 
     } else {
-        Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
+        Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number], Chat_div[chat_number]);
     }
 }
 
 function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
-    extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] =
-        Chat_loadBadgesTransform(JSON.parse(responseText), chat_number, Chat_div[chat_number]);
+    extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(JSON.parse(responseText));
+
+    Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number], Chat_div[chat_number]);
 }
 
 function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {

@@ -112,19 +112,22 @@ function Chat_loadBadgesGlobalSuccess(responseText) {
     Chat_LoadGlobalBadges = true;
 }
 
-function Chat_loadBadgesTransform(responseText, chat_number, doc) {
-    var versions, property, version, new_img, innerHTML = '';
+function Chat_loadBadgesTransform(responseText) {
+    var versions, property, version, new_img, innerHTML = [];
+
+    innerHTML[0] = '';
+    innerHTML[1] = '';
 
     for (property in responseText.badge_sets) {
         versions = responseText.badge_sets[property].versions;
         for (version in versions) {
-            innerHTML += Chat_BasetagCSS(property + chat_number, version, versions[version].image_url_4x);
+            innerHTML[0] += Chat_BasetagCSS(property + 0, version, versions[version].image_url_4x);
+            innerHTML[1] += Chat_BasetagCSS(property + 1, version, versions[version].image_url_4x);
 
             new_img = new Image();
             new_img.src = versions[version].image_url_4x;
         }
     }
-    Chat_tagCSS(innerHTML, doc);
 
     return innerHTML;
 }
