@@ -1235,7 +1235,7 @@ function Main_openStream() {
     if (!Play_EndDialogEnter) Play_HideEndDialog();
     Main_setTimeout(
         Play_Start,
-        25
+        20
     );
 }
 

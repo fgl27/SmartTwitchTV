@@ -337,10 +337,15 @@ function Play_Start() {
     if (!Play_CheckIfIsLiveResponseText) Play_loadData();
     else {
 
-        Play_data.AutoUrl = Play_CheckIfIsLiveURL;
-        Play_loadDataSuccessend(Play_CheckIfIsLiveResponseText);
+        Main_setTimeout(
+            function() {
+                Play_data.AutoUrl = Play_CheckIfIsLiveURL;
+                Play_loadDataSuccessend(Play_CheckIfIsLiveResponseText);
 
-        Play_CheckIfIsLiveCleanEnd();
+                Play_CheckIfIsLiveCleanEnd();
+            },
+            20
+        );
     }
 
     if (!Main_IsOnAndroid) Play_UpdateMainStream(true, true);
