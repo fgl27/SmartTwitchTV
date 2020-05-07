@@ -1,6 +1,8 @@
 //A general file with fun for testing proposes
 
 //Call this from a key down
+//Also one can use Android.PlayerEventListenerClearTest() for testing this from android side
+//PLus change   PlayExtra_data.data[6] = 'channel hosting name'; PlayExtra_data.data[14] = 'channel hosting id';
 function PlayExtra_End_Test() {
     //Enable PP before call this
     Play_data.data[14] = 70661496;//The id of a channel that is hosting

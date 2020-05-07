@@ -1409,6 +1409,14 @@ public class PlayerActivity extends Activity {
             return ExtraPlayerHandlerResult[x][y];
         }
 
+//        @SuppressWarnings("unused")//called by JS
+//        @JavascriptInterface
+//        public void PlayerEventListenerClearTest() {
+//
+//            MainThreadHandler.post(() -> PlayerEventListenerClear(mainPlayer ^ 1));
+//
+//        }
+
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getStreamData(String token_url, String hls_url) {
