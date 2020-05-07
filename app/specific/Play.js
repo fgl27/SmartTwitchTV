@@ -462,7 +462,7 @@ function Play_ResumeAfterOnline() {
             //Play_data.data[6] = 'testtt';
             //Play_data.data[14] = id;
             if (PlayExtra_PicturePicture) PlayExtra_Resume(true);
-            Play_loadData(PlayExtra_PicturePicture);
+            Play_loadData();
         }
         Play_updateStreamInfo();
     }
