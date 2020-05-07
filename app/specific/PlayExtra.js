@@ -247,7 +247,7 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
             'PlayExtra_CheckHostResult',//callback
             0,//checkResult
             doSwitch,//key
-            11//thread
+            3//thread
         );
 
     } catch (e) {

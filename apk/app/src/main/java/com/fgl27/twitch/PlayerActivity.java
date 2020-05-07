@@ -120,11 +120,6 @@ public class PlayerActivity extends Activity {
     public String[] DataResult = new String[PlayerAccount];
     public Handler[] DataResultHandler = new Handler[PlayerAccount];
     public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccount];
-
-    public String[] MethodUrlResult = new String[12];//5 for screesn 7 for live feed
-    public Handler[] MethodUrlResultHandler = new Handler[12];
-    public HandlerThread[] MethodUrlResultThread = new HandlerThread[12];
-
     public WebView mWebView;
     public boolean PicturePicture;
     public boolean deviceIsTV;
@@ -228,12 +223,6 @@ public class PlayerActivity extends Activity {
                 DataResultThread[i] = new HandlerThread("DataResultThread" + i);
                 DataResultThread[i].start();
                 DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
-            }
-
-            for (int i = 0; i < 12; i++) {
-                MethodUrlResultThread[i] = new HandlerThread("MethodUrlResultThread" + i);
-                MethodUrlResultThread[i].start();
-                MethodUrlResultHandler[i] = new Handler(MethodUrlResultThread[i].getLooper());
             }
 
             deviceIsTV = Tools.deviceIsTV(this);
@@ -1507,10 +1496,10 @@ public class PlayerActivity extends Activity {
         public void GetMethodUrlAsync(String urlString, int timeout, int HeaderQuantity, String access_token,
                                 String overwriteID, String postMessage, String Method, String callback, long checkResult, int key, int thread) {
 
-            MethodUrlResultHandler[thread].removeCallbacksAndMessages(null);
-            MethodUrlResult[thread] = null;
+            DataResultHandler[thread].removeCallbacksAndMessages(null);
+            DataResultHandler[thread] = null;
 
-            MethodUrlResultHandler[thread].post(() ->
+            DataResultHandler[thread].post(() ->
                     {
                         Tools.ResponseObj response;
 
@@ -1528,24 +1517,18 @@ public class PlayerActivity extends Activity {
                             );
 
                             if (response != null)  {
-                                MethodUrlResult[thread] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetMethodUrlResult(" + thread + "), " + key +")");
+                                DataResult[thread] = new Gson().toJson(response);
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key +")");
                                 return;
                             }
 
                         }
 
                         //MethodUrl is null inform JS callback
-                        MethodUrlResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetMethodUrlResult(" + thread + "), " + key +")");
+                        DataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key +")");
                     }
             );
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String GetMethodUrlResult(int position) {
-            return MethodUrlResult[position];
         }
 
         @SuppressWarnings("unused")//called by JS
