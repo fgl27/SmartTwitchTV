@@ -1411,6 +1411,19 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public String getStreamData(String token_url, String hls_url) {
+            try {
+                return Tools.getStreamData(token_url, hls_url, 0L);
+            } catch (UnsupportedEncodingException e) {
+                Log.w(TAG, "getStreamData UnsupportedEncodingException ", e);
+            } catch (NullPointerException e) {
+                Log.w(TAG, "getStreamData NullPointerException ", e);
+            }
+            return null;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position) {
             DataResultHandler[position].removeCallbacksAndMessages(null);
             DataResult[position] = null;

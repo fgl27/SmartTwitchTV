@@ -458,13 +458,29 @@ function Play_ResumeAfterOnline() {
             Play_state = Play_STATE_LOADING_TOKEN;
             // TO test a if a stream has ended during a resume process force change this
             //PlayExtra_data.data[6] = 'testtt';
+            //PlayExtra_data.data[14] = 'id';
             //Play_data.data[6] = 'testtt';
-            if (PlayExtra_PicturePicture) PlayExtra_Resume();
-            Play_loadData();
+            //Play_data.data[14] = id;
+            if (PlayExtra_PicturePicture) PlayExtra_Resume(true);
+            Play_loadData(PlayExtra_PicturePicture);
         }
         Play_updateStreamInfo();
     }
     Play_ResumeAfterOnlineCounter++;
+}
+
+function Play_getStreamData(channel_name) {
+    var result = null;
+
+    //TODO remove the try after some app updates
+    try {
+        result = Android.getStreamData(
+            Play_live_token.replace('%x', channel_name),
+            Play_live_links.replace('%x', channel_name)
+        );
+    } catch (e) {}
+
+    return result;
 }
 
 function Play_updateStreamInfoStart() {
@@ -721,7 +737,7 @@ function Play_LoadLogo(ImgObjet, link) {
 }
 
 var Play_loadDataId = 0;
-function Play_loadData() {
+function Play_loadData(synchronous) {
     //Main_Log('Play_loadData');
 
     if (Main_IsOnAndroid) {
@@ -729,13 +745,23 @@ function Play_loadData() {
         Play_loadDataId = (new Date().getTime());
         //TODO remove the try after some app updates
         try {
-            Android.getStreamDataAsync(
-                Play_live_token.replace('%x', Play_data.data[6]),
-                Play_live_links.replace('%x', Play_data.data[6]),
-                'Play_loadDataResult',
-                Play_loadDataId,
-                0
-            );
+            //On resume to avoid out of sync resumes we run PP synchronous
+            if (synchronous) {
+
+                var StreamData = Play_getStreamData(Play_data.data[6]);
+
+                if (StreamData) Play_loadDataResultEnd(JSON.parse(StreamData));
+                else Play_loadDataErrorFinish();
+
+            } else {
+                Android.getStreamDataAsync(
+                    Play_live_token.replace('%x', Play_data.data[6]),
+                    Play_live_links.replace('%x', Play_data.data[6]),
+                    'Play_loadDataResult',
+                    Play_loadDataId,
+                    0
+                );
+            }
         } catch (e) {
             Play_loadDataErrorFinish();
         }
@@ -751,27 +777,32 @@ function Play_loadDataResult(response) {
 
         if (responseObj.checkResult > 0 && responseObj.checkResult === Play_loadDataId) {
 
-            if (responseObj.status === 200) {
-
-                Play_data.AutoUrl = responseObj.url;
-                Play_loadDataSuccessend(responseObj.responseText);
-                return;
-
-            } else if (responseObj.status === 1 || responseObj.status === 403 ||
-                responseObj.status === 404 || responseObj.status === 410) {
-
-                //404 = off line
-                //403 = forbidden access
-                //410 = api v3 is gone use v5 bug
-                Play_loadDataErrorFinish(responseObj.status === 410, (responseObj.status === 403 || responseObj.status === 1));
-                return;
-
-            }
-
-            Play_loadDataErrorFinish();
+            Play_loadDataResultEnd(responseObj);
         }
 
     }
+}
+
+function Play_loadDataResultEnd(responseObj) {
+
+    if (responseObj.status === 200) {
+
+        Play_data.AutoUrl = responseObj.url;
+        Play_loadDataSuccessend(responseObj.responseText);
+        return;
+
+    } else if (responseObj.status === 1 || responseObj.status === 403 ||
+        responseObj.status === 404 || responseObj.status === 410) {
+
+        //404 = off line
+        //403 = forbidden access
+        //410 = api v3 is gone use v5 bug
+        Play_loadDataErrorFinish(responseObj.status === 410, (responseObj.status === 403 || responseObj.status === 1));
+        return;
+
+    }
+
+    Play_loadDataErrorFinish();
 }
 
 function Play_loadDataSuccessend(playlist) {

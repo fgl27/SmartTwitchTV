@@ -70,19 +70,28 @@ function PlayExtra_KeyEnter() {
 }
 
 var PlayExtra_ResumeId = 0;
-function PlayExtra_Resume() {
+function PlayExtra_Resume(synchronous) {
     if (Main_IsOnAndroid) {
 
         PlayExtra_ResumeId = (new Date().getTime());
         //TODO remove the try after some app updates
         try {
-            Android.getStreamDataAsync(
-                Play_live_token.replace('%x', PlayExtra_data.data[6]),
-                Play_live_links.replace('%x', PlayExtra_data.data[6]),
-                'PlayExtra_ResumeResult',
-                PlayExtra_ResumeId,
-                1
-            );
+            //On resume to avoid out of sync resumes we run PP synchronous
+            if (synchronous) {
+                var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
+
+                if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData));
+                else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+
+            } else {
+                Android.getStreamDataAsync(
+                    Play_live_token.replace('%x', PlayExtra_data.data[6]),
+                    Play_live_links.replace('%x', PlayExtra_data.data[6]),
+                    'PlayExtra_ResumeResult',
+                    PlayExtra_ResumeId,
+                    1
+                );
+            }
         } catch (e) {
             PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
         }
@@ -98,28 +107,35 @@ function PlayExtra_ResumeResult(response) {
 
         if (responseObj.checkResult > 0 && responseObj.checkResult === PlayExtra_ResumeId) {
 
-            if (responseObj.status === 200) {
+            PlayExtra_ResumeResultEnd(responseObj);
 
-                PlayExtra_data.AutoUrl = responseObj.url;
-                PlayExtra_loadDataSuccessEnd(responseObj.responseText);
-                return;
-
-            } else if (responseObj.status === 1 || responseObj.status === 403) {
-
-                PlayExtra_loadDataFail(STR_FORBIDDEN);
-                return;
-
-            } else if (responseObj.status === 404) {
-
-                PlayExtra_loadDataFail(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
-                return;
-
-            }
-
-            PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
         }
 
     }
+
+}
+
+function PlayExtra_ResumeResultEnd(responseObj) {
+
+    if (responseObj.status === 200) {
+
+        PlayExtra_data.AutoUrl = responseObj.url;
+        PlayExtra_loadDataSuccessEnd(responseObj.responseText);
+        return;
+
+    } else if (responseObj.status === 1 || responseObj.status === 403) {
+
+        PlayExtra_loadDataFail(STR_FORBIDDEN);
+        return;
+
+    } else if (responseObj.status === 404) {
+
+        PlayExtra_loadDataFail(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+        return;
+
+    }
+
+    PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
 
 }
 

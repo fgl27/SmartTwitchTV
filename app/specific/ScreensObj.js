@@ -1267,6 +1267,8 @@ var Base_Channel_obj = {
         Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
         Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
         Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
+        //console.log(Main_values.Main_selectedChannel);
+        //console.log(Main_values.Main_selectedChannel_id);
 
         Main_removeEventListener("keydown", this.key_fun);
         Main_values.Main_BeforeChannel = go_screen;
