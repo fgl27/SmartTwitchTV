@@ -267,10 +267,10 @@ function Main_loadTranslations(language) {
                 Main_values.Restore_Backup_Check = true;
                 Main_addEventListener("keydown", Main_BackupDialodKeyDown);
             } catch (e) {
-                Main_setTimeout(Main_initWindows, 500);
+                Main_setTimeout(Main_initWindows, 250);
                 return;
             }
-        } else Main_setTimeout(Main_initWindows, 500);
+        } else Main_setTimeout(Main_initWindows, 250);
     });
 
 }
@@ -341,7 +341,7 @@ function Main_initWindows() {
                         function() {
                             Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
                         },
-                        10000
+                        25000
                     );
                 }
             }
@@ -438,7 +438,6 @@ function Main_initWindows() {
 
     Main_GoBefore = Main_values.Main_Go;
 
-
     Chat_Preinit();
     Play_PreStart();
     UserLiveFeed_Prepare();
@@ -448,23 +447,22 @@ function Main_initWindows() {
     document.getElementById("side_panel").style.transform = '';
     document.getElementById("user_feed_notify").style.transform = '';
 
-    Main_checkVersion();
-
-    Main_SetStringsSecondary();
-
     Play_MakeControls();
     Play_SetControls();
     Play_SetFullScreen(Play_isFullScreen);
 
     if (AddUser_UserIsSet()) {
-        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
+        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 15000, Main_CheckResumeFeedId);
         Main_updateUserFeedId = Main_setTimeout(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId);//it 5 min refresh
     }
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId);//Check it 5min
-    Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 12000, Main_CheckResumeVodsId);
+    Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 20000, Main_CheckResumeVodsId);
 
     Screens_init(Main_Live);
+
+    Main_SetStringsSecondary();
+    Main_checkVersion();
 }
 
 function Main_SetStringsMain(isStarting) {
