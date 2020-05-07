@@ -257,14 +257,16 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
 function PlayExtra_CheckHostResult(result, doSwitch) {
     if (result) {
+
         var resultObj = JSON.parse(result);
+
         if (resultObj.status === 200) {
             PlayExtra_CheckHost(resultObj.responseText, doSwitch);
         } else {
             PlayExtra_loadDataCheckHostError(doSwitch);
         }
-    }
-    else PlayExtra_loadDataCheckHostError(doSwitch);
+
+    } else PlayExtra_loadDataCheckHostError(doSwitch);
 }
 
 function PlayExtra_loadDataCheckHostError(doSwitch) {
