@@ -211,11 +211,16 @@ function Play_PreStart() {
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
 
-    Main_innerHTML('user_feed_notify_img_holder',
+    Main_innerHTML(
+        'user_feed_notify_img_holder',
         '<img id="user_feed_notify_img" alt="" class="notify_img" src="' + IMG_404_LOGO +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';" >');
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';" >'
+    );
     Play_MultiSetpannelInfo();
 
+    Play_MakeControls();
+    Play_SetControls();
+    Play_SetFullScreen(Play_isFullScreen);
 }
 
 function Play_SetQuality() {
