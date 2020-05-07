@@ -4564,7 +4564,7 @@
     }
 
     function ChatLiveControls_SetEmojisObj() {
-        if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || emojis[0].hasOwnProperty('div')) return;
+        if (emojis[0].hasOwnProperty('div') || !AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
         for (var i = 0; i < emojis.length; i++) {
             emojis[i].id = i;
@@ -6492,7 +6492,7 @@
         if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
         if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes(0);
         if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
-        ChatLiveControls_SetEmojisObj();
+        Main_ready(ChatLiveControls_SetEmojisObj);
     }
 
     function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
