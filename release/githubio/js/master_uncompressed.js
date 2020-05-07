@@ -7277,7 +7277,7 @@
                     Main_values.Restore_Backup_Check = true;
                     Main_addEventListener("keydown", Main_BackupDialodKeyDown);
                 } catch (e) {
-                    Main_setTimeout(Main_initWindows, 250);
+                    Main_setTimeout(Main_initWindows, 250); //Small delays here to make sure user restore function has finished checking at least user 0 token
                     return;
                 }
             } else Main_setTimeout(Main_initWindows, 250);
@@ -7457,19 +7457,22 @@
         document.getElementById("side_panel").style.transform = '';
         document.getElementById("user_feed_notify").style.transform = '';
 
-        Play_MakeControls();
-        Play_SetControls();
-        Play_SetFullScreen(Play_isFullScreen);
+        Screens_init(Main_Live);
 
         if (AddUser_UserIsSet()) {
-            Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 15000, Main_CheckResumeFeedId);
+            Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
             Main_updateUserFeedId = Main_setTimeout(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId); //it 5 min refresh
         }
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId); //Check it 5min
-        Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 20000, Main_CheckResumeVodsId);
-
-        Screens_init(Main_Live);
+        Main_CheckResumeVodsId = Main_setTimeout(
+            function() {
+                Main_SetHistoryworker();
+                Main_StartHistoryworker();
+            },
+            15000,
+            Main_CheckResumeVodsId
+        );
 
         Main_SetStringsSecondary();
         Main_checkVersion();
@@ -7478,7 +7481,6 @@
     function Main_SetStringsMain(isStarting) {
         Main_updateclock();
         Main_Setworker();
-        Main_SetHistoryworker();
 
         //set top bar labels
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -7494,8 +7496,7 @@
         Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
         Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
         Main_textContent("dialog_end_game_text", STR_GAME_CONT);
-        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER +
-            '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
+        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
 
         Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
@@ -12389,11 +12390,16 @@
         Play_ChatBackgroundChange(false);
         Play_SetChatFont();
 
-        Main_innerHTML('user_feed_notify_img_holder',
+        Main_innerHTML(
+            'user_feed_notify_img_holder',
             '<img id="user_feed_notify_img" alt="" class="notify_img" src="' + IMG_404_LOGO +
-            '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';" >');
+            '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';" >'
+        );
         Play_MultiSetpannelInfo();
 
+        Play_MakeControls();
+        Play_SetControls();
+        Play_SetFullScreen(Play_isFullScreen);
     }
 
     function Play_SetQuality() {
