@@ -267,7 +267,7 @@ function Main_loadTranslations(language) {
                 Main_values.Restore_Backup_Check = true;
                 Main_addEventListener("keydown", Main_BackupDialodKeyDown);
             } catch (e) {
-                Main_setTimeout(Main_initWindows, 250);
+                Main_setTimeout(Main_initWindows, 250);//Small delays here to make sure user restore function has finished checking at least user 0 token
                 return;
             }
         } else Main_setTimeout(Main_initWindows, 250);
