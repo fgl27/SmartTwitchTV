@@ -282,8 +282,8 @@ public final class Tools {
             } else {
                 return null;
             }
-        } catch (IOException e) {
-            Log.w(TAG, "getStreamData IOException ", e);
+        } catch (Exception e) {
+            Log.w(TAG, "getStreamData Exception ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -318,16 +318,16 @@ public final class Tools {
                 return new ResponseObj(
                         status,
                         readFullyString(
-                                status != HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getErrorStream() :
-                                        urlConnection.getInputStream()
+                                status == HttpURLConnection.HTTP_OK ?
+                                        urlConnection.getInputStream() :
+                                        urlConnection.getErrorStream()
                         )
                 );
             } else {
                 return null;
             }
-        } catch (IOException e) {
-            Log.w(TAG, "readUrl IOException ", e);
+        } catch (Exception e) {
+            Log.w(TAG, "readUrl Exception ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -352,10 +352,8 @@ public final class Tools {
             Matcher matcher = TIME_NAME.matcher(readFullyString(process.getInputStream()));
 
             return matcher.find() ? matcher.group(1) : null;
-        } catch (InterruptedException e) {
-            Log.w(TAG, "GetPing InterruptedException ", e);
-        } catch (IOException e) {
-            Log.w(TAG, "GetPing IOException ", e);
+        } catch (Exception e) {
+            Log.w(TAG, "GetPing Exception ", e);
         } finally {
             if (process != null) process.destroy();
         }
@@ -405,17 +403,17 @@ public final class Tools {
                 return new ResponseObj(
                         status,
                         readFullyString(
-                                status != HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getErrorStream() :
-                                        urlConnection.getInputStream()
+                                status == HttpURLConnection.HTTP_OK ?
+                                        urlConnection.getInputStream() :
+                                        urlConnection.getErrorStream()
                         ),
                         checkResult
                 );
             } else {
                 return null;
             }
-        } catch (IOException e) {
-            Log.w(TAG, "postUrl IOException ", e);
+        } catch (Exception e) {
+            Log.w(TAG, "postUrl Exception ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -423,7 +421,7 @@ public final class Tools {
         }
     }
 
-    private static String readFullyString(InputStream in) throws IOException {
+    private static String readFullyString(InputStream in) throws Exception {//IOException and or NullPointerException
         try {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
