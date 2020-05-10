@@ -312,7 +312,8 @@ function en_USLang() {
     STR_MAIN_MENU = "Main Menu";
     STR_USER_MENU = "User Menu";
     STR_CH_IS_OFFLINE = "Is offline";
-    STR_SCREEN_COUNTER = "Show screen position counter";
+    STR_SCREEN_COUNTER = "Show thumbnail position counter";
+    STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
     STR_SWITCH_POS = "Switch: Starting Position offset";
     STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
     STR_USER_OPTION = "Choose a option for user";
@@ -328,7 +329,7 @@ function en_USLang() {
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
     STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-    STR_ANIMATIONS = "Animations";
+    STR_ANIMATIONS = "Animations, Style and related";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get stream link issue";
     STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -343,6 +344,7 @@ function en_USLang() {
     STR_LATENCY = "Latency To Broadcaster: ";
     STR_PING = "Ping to Twitch: ";
     STR_WARNING = "Warning";
+    STR_WARNINGS = STR_WARNING + 's';
     STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
     STR_DPAD_POSTION = "D-pad screen position";
     STR_DPAD_OPACITY = "D-pad opacity";
