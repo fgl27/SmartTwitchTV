@@ -505,7 +505,11 @@
     var STR_SHOW_FEED_PLAYER_SUMMARY;
     var STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY;
     var STR_CHECK_HOST;
-    var STR_ANONYMOUS_USER; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_ANONYMOUS_USER;
+    var STR_SCREEN_COUNTER_SUMMARY;
+    var STR_WARNINGS;
+    var STR_KEY_UP_TIMEOUT;
+    var STR_KEY_UP_TIMEOUT_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -961,7 +965,8 @@
         STR_MAIN_MENU = "Main Menu";
         STR_USER_MENU = "User Menu";
         STR_CH_IS_OFFLINE = "Is offline";
-        STR_SCREEN_COUNTER = "Show screen position counter";
+        STR_SCREEN_COUNTER = "Show thumbnail position counter";
+        STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
         STR_SWITCH_POS = "Switch: Starting Position offset";
         STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
         STR_USER_OPTION = "Choose a option for user";
@@ -977,7 +982,7 @@
         STR_Z_A = "Alphabetical Z - A";
         STR_APP_ANIMATIONS = "Enable app animations";
         STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-        STR_ANIMATIONS = "Animations";
+        STR_ANIMATIONS = "Animations, Style and related";
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get stream link issue";
         STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -992,6 +997,7 @@
         STR_LATENCY = "Latency To Broadcaster: ";
         STR_PING = "Ping to Twitch: ";
         STR_WARNING = "Warning";
+        STR_WARNINGS = STR_WARNING + 's';
         STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
         STR_DPAD_POSTION = "D-pad screen position";
         STR_DPAD_OPACITY = "D-pad opacity";
@@ -1157,6 +1163,8 @@
         STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
         STR_PING_WARNING = 'Show "Ping to Twitch fail warning"';
         STR_PING_WARNING_SUMMARY = "The app is constantly checking the connection with Twitch via a ping, if that fails too much a warning will show, if that warning is showing unintentionaly set this to NO";
+        STR_KEY_UP_TIMEOUT = "Key hold timeout (in milliseconds)";
+        STR_KEY_UP_TIMEOUT_SUMMARY = "How long you need to hold a key for a hold action happens, actions are refresh a screen, show thumbnails options etc.";
     }
     //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
@@ -4122,7 +4130,7 @@
                 ChannelContent_clear = false;
                 ChannelContent_KeyEnterID = Main_setTimeout(
                     Main_ReloadScreen,
-                    500,
+                    Screens_KeyUptimeout,
                     ChannelContent_KeyEnterID
                 );
                 break;
@@ -7142,7 +7150,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.185';
-    var Main_minversion = 'May 09, 2020';
+    var Main_minversion = 'May 10, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -20001,11 +20009,11 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "accessibility_warn": {
+        "accessibility_warn": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "ping_warn": {
+        "ping_warn": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
         },
@@ -20013,7 +20021,7 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "show_screen_counter": {
+        "show_screen_counter": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
         },
@@ -20044,6 +20052,15 @@
             ],
             "defaultValue": 1
         },
+        "key_up_timeout": { //Migrated to dialog
+            "values": [
+                100, 150, 200, 250, 300, 350, 400,
+                450, 500, 550, 600, 650, 700, 750,
+                800, 900, 1000, 1100, 1200, 1300,
+                1400, 1500, 1600, 1700, 1800, 1900, 2000
+            ],
+            "defaultValue": 4
+        },
         "live_feed_sort": {
             "values": [
                 "views_more",
@@ -20073,7 +20090,7 @@
             "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             "defaultValue": 4
         },
-        "global_font_offset": {
+        "global_font_offset": { //Migrated to dialog
             "values": [-3, -2, -1, 0, 1, 2, 3],
             "defaultValue": 4
         },
@@ -20105,7 +20122,7 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "thumb_quality": {
+        "thumb_quality": { //Migrated to dialog
             "values": ["very-low", "low", "normal", "high", "very-high"],
             "defaultValue": 3
         },
@@ -20113,7 +20130,7 @@
             "values": ["Auto", "source"],
             "defaultValue": 1
         },
-        "clock_offset": {
+        "clock_offset": { //Migrated to dialog
             "values": Settings_GenerateClock(),
             "defaultValue": 49
         },
@@ -20158,6 +20175,11 @@
             "defaultValue": 1
         },
         "chat_opt": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "warnings_opt": {
             "values": ["None"],
             "set_values": [""],
             "defaultValue": 1
@@ -20301,6 +20323,7 @@
         div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
         div += Settings_Content('animations_opt', [STR_CONTENT_LANG_SUMMARY], STR_ANIMATIONS, null);
         div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
+        div += Settings_Content('warnings_opt', [STR_CONTENT_LANG_SUMMARY], STR_WARNINGS, null);
 
         if (!Main_isTV || !Main_IsOnAndroid) {
             div += Settings_Content('dpad_opt', [STR_CONTENT_LANG_SUMMARY], STR_DPAD_OPT, null);
@@ -20329,19 +20352,6 @@
         div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
 
         div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
-
-        div += Settings_Content('thumb_quality',
-            [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH],
-            STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMMARY);
-
-        div += Settings_Content('global_font_offset', null, STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
-
-        div += Settings_Content('accessibility_warn', array_no_yes, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
-        div += Settings_Content('ping_warn', array_no_yes, STR_PING_WARNING, STR_PING_WARNING_SUMMARY);
-
-        div += Settings_Content('clock_offset', null, STR_CLOCK_OFFSET, null);
-
-        div += Settings_Content('show_screen_counter', array_no_yes, STR_SCREEN_COUNTER, null);
 
         // Player settings title
         div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
@@ -20419,10 +20429,6 @@
         //General settings
         //Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
 
-        Main_textContent('clock_offset_name', STR_CLOCK_OFFSET);
-
-        Main_textContent('show_screen_counter_name', STR_SCREEN_COUNTER);
-
         // Content Language selection
         key = "content_lang";
         Main_textContent(key + '_name', STR_CONTENT_LANG);
@@ -20467,13 +20473,6 @@
         Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
         Settings_value[key].values = [STR_YES, STR_NO];
 
-        //Thumb quality
-        key = "thumb_quality";
-        Settings_DivOptionChangeLang(key, STR_THUMB_RESOLUTION, STR_THUMB_RESOLUTION_SUMMARY);
-        Settings_value[key].values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
-
-        Settings_DivOptionChangeLang('global_font_offset', STR_GLOBAL_FONT, STR_GLOBAL_FONT_SUMMARY);
-
         //Player restore
         key = "default_quality";
         Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
@@ -20483,11 +20482,6 @@
         key = "end_dialog_counter";
         Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
         Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
-
-        // accessibility_warn
-        key = "accessibility_warn";
-        Settings_DivOptionChangeLang(key, STR_SETTINGS_ACCESSIBILITY, STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG);
-        Settings_value[key].values = [STR_YES, STR_NO];
 
         key = "pp_workaround";
         Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
@@ -20503,10 +20497,6 @@
 
         key = "keep_panel_info_visible";
         Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
-        Settings_value[key].values = [STR_NO, STR_YES];
-
-        key = "ping_warn";
-        Settings_DivOptionChangeLang(key, STR_PING_WARNING, STR_PING_WARNING_SUMMARY);
         Settings_value[key].values = [STR_NO, STR_YES];
 
         key = "single_click_exit";
@@ -20546,6 +20536,7 @@
         UserLiveFeed_CheckIfIsLiveDelay = Settings_Obj_values("show_feed_player_delay");
         UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
         Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
+        Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
         Settings_CodecsSet();
         Settings_SetPingWarning();
     }
@@ -20624,6 +20615,7 @@
         else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         else if (position === "app_animations") Settings_SetAnimations();
         else if (position === "buffer_live") Settings_SetBuffers(1);
+        else if (position === "key_up_timeout") Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
         else if (position === "buffer_vod") Settings_SetBuffers(2);
         else if (position === "buffer_clip") Settings_SetBuffers(3);
         else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -20744,8 +20736,13 @@
     }
 
     function Settings_ShowCounter(show) {
-        if (show) Main_ShowElement('dialog_counter_text');
-        else Main_HideElement('dialog_counter_text');
+        if (show) {
+            Main_ShowElement('dialog_counter_text');
+            Main_ShowElement('feed_counter');
+        } else {
+            Main_HideElement('dialog_counter_text');
+            Main_HideElement('feed_counter');
+        }
     }
 
     function Settings_SetBitRate(whocall) {
@@ -20925,6 +20922,7 @@
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'animations_opt')) Settings_DialogShowAnimation();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'warnings_opt')) Settings_DialogShowWarnings();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat();
                 break;
             default:
@@ -21252,6 +21250,8 @@
     function Settings_DialogShowAnimation() {
         Settings_value.app_animations.values = [STR_NO, STR_YES];
         Settings_value.videos_animation.values = [STR_NO, STR_YES];
+        Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
+        Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
         var obj = {
             app_animations: {
@@ -21265,10 +21265,62 @@
                 values: Settings_value.videos_animation.values,
                 title: STR_VIDEOS_ANIMATION,
                 summary: STR_VIDEOS_ANIMATION_SUMMARY
+            },
+            key_up_timeout: {
+                defaultValue: Settings_value.key_up_timeout.defaultValue,
+                values: Settings_value.key_up_timeout.values,
+                title: STR_KEY_UP_TIMEOUT,
+                summary: STR_KEY_UP_TIMEOUT_SUMMARY
+            },
+            global_font_offset: {
+                defaultValue: Settings_value.global_font_offset.defaultValue,
+                values: Settings_value.global_font_offset.values,
+                title: STR_GLOBAL_FONT,
+                summary: STR_GLOBAL_FONT_SUMMARY
+            },
+            thumb_quality: {
+                defaultValue: Settings_value.thumb_quality.defaultValue,
+                values: Settings_value.thumb_quality.values,
+                title: STR_THUMB_RESOLUTION,
+                summary: STR_THUMB_RESOLUTION_SUMMARY
+            },
+            show_screen_counter: {
+                defaultValue: Settings_value.show_screen_counter.defaultValue,
+                values: Settings_value.show_screen_counter.values,
+                title: STR_SCREEN_COUNTER,
+                summary: STR_SCREEN_COUNTER_SUMMARY
+            },
+            clock_offset: {
+                defaultValue: Settings_value.clock_offset.defaultValue,
+                values: Settings_value.clock_offset.values,
+                title: STR_CLOCK_OFFSET,
+                summary: null
             }
         };
 
         Settings_DialogShow(obj, STR_ANIMATIONS);
+    }
+
+    function Settings_DialogShowWarnings() {
+        Settings_value.accessibility_warn.values = [STR_NO, STR_YES];
+        Settings_value.ping_warn.values = [STR_NO, STR_YES];
+
+        var obj = {
+            accessibility_warn: {
+                defaultValue: Settings_value.accessibility_warn.defaultValue,
+                values: Settings_value.accessibility_warn.values,
+                title: STR_SETTINGS_ACCESSIBILITY,
+                summary: STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG
+            },
+            ping_warn: {
+                defaultValue: Settings_value.ping_warn.defaultValue,
+                values: Settings_value.ping_warn.values,
+                title: STR_PING_WARNING,
+                summary: STR_PING_WARNING_SUMMARY
+            }
+        };
+
+        Settings_DialogShow(obj, STR_WARNINGS);
     }
 
     function Settings_DialogShowChat() {
