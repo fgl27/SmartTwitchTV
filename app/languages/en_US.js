@@ -89,8 +89,8 @@ function en_USLang() {
     STR_HR = " Hr";
     STR_SOURCE = "Source";
     STR_TWITCH_TV = "SmartTV Client for Twitch";
-    STR_CLOSE_THIS = "Press back or enter key to close this.";
-    STR_CLOSE_THIS2 = "Press back to close this.";
+    STR_CLOSE_THIS = "Press return or enter to close this.";
+    STR_CLOSE_THIS2 = "Press return to close this.";
     STR_PLAYER = "Player Related:";
     STR_CHAT = "Chat Related:";
     STR_CHAT_SHOW = "Chat show";
@@ -182,7 +182,7 @@ function en_USLang() {
     STR_VIDEO = " Video";
     STR_REPLAY = "Replay";
     STR_STREAM_END = "exiting in ";
-    STR_STREAM_END_EXIT = 'press "Back" to exit';
+    STR_STREAM_END_EXIT = 'press "Return" to exit';
     STR_FEATURED = 'Featured';
     STR_CREATED_AT = "Created ";
     STR_OPEN_BROADCAST = "Open the Broadcast";
@@ -193,7 +193,7 @@ function en_USLang() {
     STR_OPEN_HOST = "Open the Hosting";
     STR_SETTINGS_PLAYER = "Player related";
     STR_SETTINGS_BUFFER_SIZE = "Start Buffer size:";
-    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "How much is needed to buffer before starting the playback, this is not related to maximum size the buffer can be, a lower value here will make the player start playing sooner, but it may cause re-buffering which will cause the player to pause to buffer.";
+    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "How much is needed to buffer before starting the playback, this is not related to maximum size the buffer can be, a lower value here will cause the playback to start sooner, but it may cause re-buffering which will cause the player to pause to buffer. Change this if you have constant buffering issues";
     STR_SETTINGS_BUFFER_LIVE = "Live streams Start buffer";
     STR_SETTINGS_BUFFER_VOD = "Videos (Past Broadcast and Highlight) Start buffer";
     STR_SETTINGS_BUFFER_CLIP = "Clips Start buffer";
@@ -216,7 +216,7 @@ function en_USLang() {
     STR_BRIGHT_MODE = "Bright mode";
     STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
-    STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what it was playing in case it gets close unintentionally (changing apps the system may run out of memory and close it) or force closed by the user on this case the app will restores what was previously playing on next start";
+    STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what it was playing in case it gets close unintentionally, changing apps the system may run out of memory and close it or force closed by the user on those cases the app will restores what was previously playing on next start";
     STR_CHAT_FONT = "Chat font size";
     STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
     STR_VIDEOS_ANIMATION_SUMMARY = "When a VOD or Highlight is selected animate the thumbnail if a animated thumbnail is available for that video (not all videos have one)";
@@ -247,7 +247,7 @@ function en_USLang() {
     STR_HOLD_UP = " Hold up or key 2";
     STR_LIVE_FEED = "Live Feed";
     STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
-    STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default action happen";
+    STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";
     STR_END_DIALOG_DISABLE = "Disable the timer";
     STR_CHAT_SIZE = "Chat size";
     STR_CHAT_POS = "Chat position";
@@ -279,7 +279,7 @@ function en_USLang() {
     STR_PLAYER_WINDOW = "Window ";
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
     STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-    STR_PLAYER_BITRATE_SUMMARY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3Mbps for small and unlimited for main for most devices.";
+    STR_PLAYER_BITRATE_SUMMARY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3 Mbps for small and unlimited for main for most low end devices.";
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
     STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
@@ -300,7 +300,7 @@ function en_USLang() {
     STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
     STR_SINGLE_EXIT = "Single return key press";
-    STR_SINGLE_EXIT_SUMMARY = "Exit the player or exit picture in picture or exit 50/50 mode with a single key back click";
+    STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture or 50/50 mode with a single key return click";
     STR_NOW_LIVE = "Now Live";
     STR_NOTIFICATION_OPT = "Notification options";
     STR_NOW_LIVE_SHOW = "Show Now Live notification";
@@ -349,7 +349,7 @@ function en_USLang() {
     STR_DPAD_OPT = "D-pad options";
     STR_BLOCKED_CODEC = "Blocked Codecs";
     STR_BLOCKED_CODEC_SUMMARY = "List used codecs capabilities and allow to block a codec from be used";
-    STR_CODEC_DIALOG_TITLE = 'Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block it and see if the performance of the app improves, <span style="color: #FF0000;">by default OMX.google decoder is disabled</span> (if other codec is available) a constant accumulation of skipped frames is a indicative of a codec issue.<br>The app content only uses avc/h264 decoders no other is listed.';
+    STR_CODEC_DIALOG_TITLE = 'Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block those and see if the performance of the playback improves, <span style="color: #FF0000;">by default OMX.google decoder is disabled</span> (if other codec is available) a constant accumulation of skipped frames is a indicative of a codec issue.<br>The app content only uses avc/h264 decoders no other is listed.';
     STR_SUPPORTED_CODEC = "Supported codecs:";
     STR_MAX_RES = "Max resolution: ";
     STR_MAX_BIT = "Max bitrate: ";
@@ -360,7 +360,7 @@ function en_USLang() {
     STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
     STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
-    STR_PP_WORKAROUND_SUMMARY = "Some devices running android N or older, is need to enable this, to have PP mode working, don't enable this on a device that doesn't need it as it will result is a lower image quality";
+    STR_PP_WORKAROUND_SUMMARY = "For devices running android N or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need as it will result is a lower image quality";
     STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
         STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
     STR_HISTORY = "History";
@@ -377,7 +377,7 @@ function en_USLang() {
     STR_NEWEST = "Watched newest";
     STR_OLDEST = "Watched Oldest";
     STR_PRESS_ENTER_D = "Press enter to delete";
-    STR_PRESS_ENTER_APPLY = "Press enter apply the changes, back to exit without applying";
+    STR_PRESS_ENTER_APPLY = "Press enter to apply the changes, return to exit without applying";
     STR_LIVE_VOD = "This Live stream is now a VOD<br>opening the VOD from where you last stop watching the Live";
     STR_BACKUP = "Allow the app to make and restore backups?<br>(Users and they history will be backup)" + "<br><br>" +
         "Click Yes the app will save backups for future use, and restore a saved backup if app data is empty." +
@@ -393,13 +393,13 @@ function en_USLang() {
     STR_HISTORY_CLIP_DIS = "Clip history enable";
     STR_OPEN_GAME = "Open the game";
     STR_OPEN_CHANNEL = "Open the channel";
-    STR_THUMB_OPTIONS_KEY = "Press enter above a action (to open or apply it), back to exit without applying";
+    STR_THUMB_OPTIONS_KEY = "Press enter above a action (to open or apply it), return to exit without applying";
     STR_DELETE_FROM_HISTORY = "Delete this from history";
     STR_CHECK_HISTORY = "Checking follow status";
     STR_REFRESH_DELETE = "Refresh the screen after delete to see the change.";
     STR_THUMB_OPTIONS_TOP = "Hold left for thumbnail options";
     STR_REPLACE_MULTI = "Choose with to replace by the above?";
-    STR_REPLACE_MULTI_ENTER = "Press enter to replace or back to exit without.";
+    STR_REPLACE_MULTI_ENTER = "Press enter to replace or return to exit without.";
     STR_ALREDY_PLAYING = "Already playing this";
     STR_STREAM_ERROR = "Stream error";
     STR_MULTI_EMPTY = "Ended and/or empty";
@@ -413,7 +413,7 @@ function en_USLang() {
     STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
     STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
     STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
-    STR_FEED_END_DIALOG = ', Press back to go back to top menu';
+    STR_FEED_END_DIALOG = ', Press return to go back to top menu';
     STR_BACK_USER_GAMES = ' Press return key to go back to ';
     STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
     STR_SHOW_FEED_PLAYER = 'Show small player over the player live feed';
@@ -428,7 +428,7 @@ function en_USLang() {
     STR_LAST_REFRESH = "(last refresh: ";
     STR_PP_VOD = "Exit PP or Multistream to open this VOD";
     STR_SETTINGS_ACCESSIBILITY = 'Show "a accessibility service is running warning"';
-    STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If on current device has a accessibility service enabled the app will show a on screen warning, is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
+    STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If the device has a accessibility service enabled the app will show a warning, is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
     STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
     STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
     STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
