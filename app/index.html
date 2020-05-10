@@ -1367,6 +1367,17 @@
             display: inline-block
         }
 
+        div.dialog_end_stream_text {
+            margin-top: 13%;
+            font-size: 4.25vh;
+            padding-bottom: 0.75%;
+            width: 50%;
+            margin-left: 25%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
         div.about_dialogs {
             position: absolute;
             z-index: 99;
@@ -1472,7 +1483,6 @@
             width: 24.25%;
             height: 3%;
             background-color: #000;
-            overflow: hidden;
             border: 0.09em solid #FFFFFF;
             color: #FFFFFF;
             text-align: center;
@@ -3573,8 +3583,7 @@
             </div>
             <div id="dialog_end_stream" class="dialogs hide"
                 style="z-index:4; font-size: 0; height: 100%; background-color: rgba(0, 0, 0, 0.8);">
-                <div id="dialog_end_stream_text" class="strokedeline"
-                    style="margin-top: 12%; font-size: 5.5vh; padding-bottom: 0.75%;">
+                <div id="dialog_end_stream_text" class="strokedeline dialog_end_stream_text">
                 </div>
                 <!-- next-->
                 <div id="dialog_end_-1" class="dialog_end_icons hide">
