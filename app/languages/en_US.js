@@ -510,4 +510,6 @@ function en_USLang() {
     STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
     STR_PING_WARNING = 'Show "Ping to Twitch fail warning"';
     STR_PING_WARNING_SUMMARY = "The app is constantly checking the connection with Twitch via a ping, if that fails too much a warning will show, if that warning is showing unintentionaly set this to NO";
+    STR_KEY_UP_TIMEOUT = "Key hold timeout (in milliseconds)";
+    STR_KEY_UP_TIMEOUT_SUMMARY = "How long you need to hold a key for a hold action happens, actions are refresh a screen, show thumbnails options etc.";
 }

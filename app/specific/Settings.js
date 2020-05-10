@@ -63,6 +63,15 @@ var Settings_value = {
             1900, 2000],
         "defaultValue": 1
     },
+    "key_up_timeout": {//Migrated to dialog
+        "values": [
+            100, 150, 200, 250, 300, 350, 400,
+            450, 500, 550, 600, 650, 700, 750,
+            800, 900, 1000, 1100, 1200, 1300,
+            1400, 1500, 1600, 1700, 1800, 1900, 2000
+        ],
+        "defaultValue": 4
+    },
     "live_feed_sort": {
         "values": [
             "views_more",
@@ -537,6 +546,7 @@ function Settings_SetDefautls() {
     UserLiveFeed_CheckIfIsLiveDelay = Settings_Obj_values("show_feed_player_delay");
     UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
+    Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     Settings_CodecsSet();
     Settings_SetPingWarning();
 }
@@ -615,6 +625,7 @@ function Settings_SetDefault(position) {
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     else if (position === "app_animations") Settings_SetAnimations();
     else if (position === "buffer_live") Settings_SetBuffers(1);
+    else if (position === "key_up_timeout") Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     else if (position === "buffer_vod") Settings_SetBuffers(2);
     else if (position === "buffer_clip") Settings_SetBuffers(3);
     else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -1241,6 +1252,12 @@ function Settings_DialogShowAnimation() {
             values: Settings_value.videos_animation.values,
             title: STR_VIDEOS_ANIMATION,
             summary: STR_VIDEOS_ANIMATION_SUMMARY
+        },
+        key_up_timeout: {
+            defaultValue: Settings_value.key_up_timeout.defaultValue,
+            values: Settings_value.key_up_timeout.values,
+            title: STR_KEY_UP_TIMEOUT,
+            summary: STR_KEY_UP_TIMEOUT_SUMMARY
         },
         global_font_offset: {
             defaultValue: Settings_value.global_font_offset.defaultValue,

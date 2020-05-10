@@ -507,7 +507,7 @@ function ChannelContent_handleKeyDown(event) {
             ChannelContent_clear = false;
             ChannelContent_KeyEnterID = Main_setTimeout(
                 Main_ReloadScreen,
-                500,
+                Screens_KeyUptimeout,
                 ChannelContent_KeyEnterID
             );
             break;
