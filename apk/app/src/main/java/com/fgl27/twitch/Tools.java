@@ -77,7 +77,7 @@ import static com.google.gson.JsonParser.parseString;
 
 public final class Tools {
 
-    private static final String TAG = Tools.class.getName();
+    private static final String TAG = "STTV_Tools";
 
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
     private static final String[] AvcLevels = {

@@ -56,7 +56,7 @@ import java.util.zip.GZIPInputStream;
 //public final class ByteArrayDataSource extends BaseDataSource {
 public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSource {
 
-    private static final String TAG = "DefaultHttpDataSource";
+    private static final String TAG = "STTV_DefaultHttpDataSource";
     private static final int MAX_REDIRECTS = 20; // Same limit as okhttp.
     private static final int HTTP_STATUS_TEMPORARY_REDIRECT = 307;
     private static final int HTTP_STATUS_PERMANENT_REDIRECT = 308;

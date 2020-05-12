@@ -58,7 +58,7 @@ import java.util.ArrayList;
 import static android.content.res.Configuration.KEYBOARD_QWERTY;
 
 public class PlayerActivity extends Activity {
-    public final String TAG = PlayerActivity.class.getName();
+    public final String TAG = "STTV_PlayerActivity";
 
     //public static final String PageUrl = "file:///android_asset/app/index.html";
     public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
@@ -370,7 +370,7 @@ public class PlayerActivity extends Activity {
         player[position].setMediaSource(
                 mediaSources[position],
                 ((mResumePosition > 0) && (mWho_Called > 1)) ? mResumePosition : C.TIME_UNSET);
-
+        Log.w(TAG, "player[" + position + "].prepare");
         player[position].prepare();
 
         hideLoading(5);
@@ -2117,11 +2117,14 @@ public class PlayerActivity extends Activity {
                 return;
 
             if (playbackState == Player.STATE_ENDED) {
+                Log.w(TAG, "onPlaybackStateChanged player[" + position + "] Player.STATE_ENDED");
+
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 player[position].setPlayWhenReady(false);
 
                 PlayerEventListenerClear(position);
             } else if (playbackState == Player.STATE_BUFFERING) {
+                Log.w(TAG, "onPlaybackStateChanged player[" + position + "] Player.STATE_BUFFERING");
                 //Use the player buffer as a player check state to prevent be buffering for ever
                 //If buffer for as long as (BUFFER_SIZE * 2 + etc) do something because player is frozen
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
@@ -2134,6 +2137,8 @@ public class PlayerActivity extends Activity {
                     PlayerEventListenerCheckCounter(position, false);
                 }, Delay_ms);
             } else if (playbackState == Player.STATE_READY) {
+                Log.w(TAG, "onPlaybackStateChanged player[" + position + "] Player.STATE_READY");
+
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
                 //Delay the counter reset to make sure the connection is fine now when not on a auto mode
@@ -2164,6 +2169,9 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
+            Log.w(TAG, "onPlayerError player[" + position + "]");
+            Log.w(TAG, "onPlayerError e " + e);
+
             PlayerCheckHandler[position].removeCallbacksAndMessages(null);
             PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
         }
@@ -2232,6 +2240,8 @@ public class PlayerActivity extends Activity {
             WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + (mainPlayer == position) + ")";
 
         } else WebViewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
+
+        Log.w(TAG, "PlayerEventListenerClear player[" + position + "]");
 
         LoadUrlWebview(WebViewLoad);
     }
