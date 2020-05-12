@@ -370,7 +370,7 @@ public class PlayerActivity extends Activity {
         player[position].setMediaSource(
                 mediaSources[position],
                 ((mResumePosition > 0) && (mWho_Called > 1)) ? mResumePosition : C.TIME_UNSET);
-        Log.w(TAG, "player[" + position + "].prepare");
+
         player[position].prepare();
 
         hideLoading(5);
@@ -2169,11 +2169,10 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
-            Log.w(TAG, "onPlayerError player[" + position + "]");
-            Log.w(TAG, "onPlayerError e " + e);
 
             PlayerCheckHandler[position].removeCallbacksAndMessages(null);
             PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
+
         }
 
     }
@@ -2240,8 +2239,6 @@ public class PlayerActivity extends Activity {
             WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + (mainPlayer == position) + ")";
 
         } else WebViewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
-
-        Log.w(TAG, "PlayerEventListenerClear player[" + position + "]");
 
         LoadUrlWebview(WebViewLoad);
     }
