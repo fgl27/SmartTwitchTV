@@ -103,6 +103,10 @@ function SettingsColor_DialogColorsHide() {
     SettingsColor_ColorsObj[SettingsColor_canvasPosY].removefocus();
 }
 
+function SettingsColor_DialogisVisible() {
+    return Main_isElementShowing('dialog_color');
+}
+
 function SettingsColor_DialogColorKeyDown(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:

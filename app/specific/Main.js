@@ -1869,7 +1869,7 @@ function Main_SetHistoryworker() {
 var Main_StartHistoryworkerId;
 function Main_StartHistoryworker() {
     //Main_Log('Main_StartHistoryworker');
-    if (!AddUser_IsUserSet()) return;
+    if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
@@ -1921,9 +1921,10 @@ function Main_CheckStop() { // Called only by JAVA
             Main_HideElement('dialog_codecs');
             Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
         } else if (Settings_Dialog_isVisible()) {
+            if (SettingsColor_DialogisVisible()) SettingsColor_DialogColorsHide();
             if (Settings_DialogValue.length) Settings_DialoghandleKeyDown(Settings_DialogValue[Settings_DialogPos]);
             Main_HideElement('dialog_settings');
-            Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
+            Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
         }
         Settings_exit();
         Main_SwitchScreen();
