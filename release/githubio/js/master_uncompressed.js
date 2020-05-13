@@ -509,7 +509,26 @@
     var STR_SCREEN_COUNTER_SUMMARY;
     var STR_WARNINGS;
     var STR_KEY_UP_TIMEOUT;
-    var STR_KEY_UP_TIMEOUT_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_KEY_UP_TIMEOUT_SUMMARY;
+    var STR_CURRENT_THUMB_STYLE;
+    var STR_NEW_THUMB_STYLE;
+    var STR_COLOR_STYLE_TEXT;
+    var STR_SHADOWS;
+    var STR_COLORS;
+    var STR_RESULT;
+    var STR_SHADOWS_NONE;
+    var STR_SHADOWS_WHITE;
+    var STR_SHADOWS_GRAY;
+    var STR_SHADOWS_BLACK;
+    var STR_APPLY;
+    var STR_COLOR_TYPE;
+    var STR_STYLES;
+    var STR_ENTER;
+    var STR_COLOR_ARRAY;
+    var STR_STYLES_ARRAY;
+    var STR_ENTER_RGB;
+    var STR_THUMB_STYLE;
+    var STR_END_DIALOG_OPT; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_BR = "<br>";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
@@ -899,6 +918,7 @@
         STR_UP = " Press up";
         STR_HOLD_UP = " Hold up or key 2";
         STR_LIVE_FEED = "Live Feed";
+        STR_END_DIALOG_OPT = "Player end dialog options";
         STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
         STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";
         STR_END_DIALOG_DISABLE = "Disable the timer";
@@ -982,7 +1002,7 @@
         STR_Z_A = "Alphabetical Z - A";
         STR_APP_ANIMATIONS = "Enable app animations";
         STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-        STR_ANIMATIONS = "Animations, Style and related";
+        STR_ANIMATIONS = "Customizations, Style, Animations, Timeouts and related";
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get stream link issue";
         STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -1165,6 +1185,24 @@
         STR_PING_WARNING_SUMMARY = "The app is constantly checking the connection with Twitch via a ping, if that fails too much a warning will show, if that warning is showing unintentionaly set this to NO";
         STR_KEY_UP_TIMEOUT = "Key hold timeout (in milliseconds)";
         STR_KEY_UP_TIMEOUT_SUMMARY = "How long you need to hold a key for a hold action happens, actions are refresh a screen, show thumbnails options etc.";
+        STR_CURRENT_THUMB_STYLE = "Current focus style";
+        STR_NEW_THUMB_STYLE = "New focus style";
+        STR_COLOR_STYLE_TEXT = 'Press up/down to select a option, press return to exit this, press enter on "Apply changes" to confirm before exit.';
+        STR_SHADOWS = "Shadows";
+        STR_SHADOWS_NONE = "None";
+        STR_SHADOWS_WHITE = "White";
+        STR_SHADOWS_GRAY = "Gray";
+        STR_SHADOWS_BLACK = "Black";
+        STR_COLORS = "Colors";
+        STR_RESULT = "Result";
+        STR_APPLY = "Apply changes";
+        STR_COLOR_TYPE = "Color type";
+        STR_STYLES = "Styles";
+        STR_ENTER = "Press enter";
+        STR_COLOR_ARRAY = "Background,Text,Border";
+        STR_STYLES_ARRAY = "Default,Custom,Black,Grey,Red,Orange,Yellow,Green,Blue,Purple,Pink";
+        STR_ENTER_RGB = STR_ENTER + " to accept RGB change";
+        STR_THUMB_STYLE = "Selected thumbnail style";
     }
     //Used as based https://kevinfaguiar.github.io/vue-twemoji-picker/docs/emoji-datasets/
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
@@ -7150,7 +7188,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.185';
-    var Main_minversion = 'May 10, 2020';
+    var Main_minversion = 'May 13, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7605,8 +7643,14 @@
         if (Main_IsOnAndroid) {
             Main_isTV = Android.deviceIsTV();
             //Only show virtual d-pad on none TV devices
-            if (Main_isTV) return;
-        } else return;
+            if (Main_isTV) {
+                Main_HideElement('scene_notify'); //Hide so is easier to select a item to inspect
+                return;
+            }
+        } else {
+            Main_HideElement('scene_notify'); //Hide so is easier to select a item to inspect
+            return;
+        }
 
         Main_ShowElement('scenekeys');
         Main_scenekeysDoc = document.getElementById('scenekeys');
@@ -8883,7 +8927,7 @@
 
     function Main_StartHistoryworker() {
         //Main_Log('Main_StartHistoryworker');
-        if (!AddUser_IsUserSet()) return;
+        if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
@@ -8935,9 +8979,10 @@
                 Main_HideElement('dialog_codecs');
                 Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
             } else if (Settings_Dialog_isVisible()) {
+                if (SettingsColor_DialogisVisible()) SettingsColor_DialogColorsHide();
                 if (Settings_DialogValue.length) Settings_DialoghandleKeyDown(Settings_DialogValue[Settings_DialogPos]);
                 Main_HideElement('dialog_settings');
-                Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
+                Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
             }
             Settings_exit();
             Main_SwitchScreen();
@@ -19986,14 +20031,715 @@
         Search_cursorY = 1;
         Search_refreshInputFocusTools();
     }
-    //Variable initialization
+    var SettingsColor_DefaultColorsPos = 0;
+    //Add a new Theme add the array pos + a name on STR_STYLES_ARRAY that is it
+    var SettingsColor_DefaultColors = [
+        [ //Default
+            'rgba(235,235,235,1)', //background
+            'rgba(0,0,0,1)', //TextColor
+            'rgba(235,235,235,1)' //border
+        ],
+        [], //Custom
+        [ //Black
+            'rgba(0,0,0,1)',
+            'rgba(235,235,235,1)',
+            'rgba(235,235,235,1)'
+        ],
+        [ //Grey
+            'rgba(56,56,56,1)',
+            'rgba(255,255,255,1)',
+            'rgba(56,56,56,1)',
+        ],
+        [ //Red
+            'rgba(235,0,0,1)',
+            'rgba(255,255,255,1)',
+            'rgba(235,0,0,1)'
+        ],
+        [ //Orange
+            'rgba(255,75,0,1)',
+            'rgba(255,255,255,1)',
+            'rgba(255,75,0,1)',
+        ],
+        [ //Yellow
+            'rgba(255,208,0,1)',
+            'rgba(0,0,0,1)',
+            'rgba(255,208,0,1)',
+        ],
+        [ //Green
+            'rgba(0,200,0,1)',
+            'rgba(0,0,0,1)',
+            'rgba(0,200,0,1)',
+        ],
+        [ //Blue
+            'rgba(0,0,255,1)',
+            'rgba(255,255,255,1)',
+            'rgba(0,0,255,1)',
+        ],
+        [ //Purple
+            'rgba(100,65,164,1)',
+            'rgba(255,255,255,1)',
+            'rgba(100,65,164,1)',
+        ],
+        [ //Pink
+            'rgba(255,0,180,1)',
+            'rgba(255,255,255,1)',
+            'rgba(255,0,180,1)',
+        ],
+    ];
+
+    var SettingsColor_InitialColors = [];
+
+    var SettingsColor_DialogColorPosStep = 0.5;
+    var SettingsColor_DialogColorPosMax = 99.5;
+    var SettingsColor_canvasPosY = 2;
+    var SettingsColor_canvasPosX;
+    var SettingsColor_canvasDiv;
+    var SettingsColor_DivColorResult;
+    var SettingsColor_canvasPosDiv;
+    var SettingsColor_canvasDivContext;
+
+    var SettingsColor_ColorsObjCavasShadow = 0;
+    var SettingsColor_ColorsObjCavasColor = 1;
+    var SettingsColor_ColorsObjStyles = 2;
+    var SettingsColor_ColorsObjApply = 3;
+    var SettingsColor_ColorsObjColorType = 4;
+    var SettingsColor_ColorsObjR = 5;
+    var SettingsColor_ColorsObjG = 6;
+    var SettingsColor_ColorsObjB = 7;
+    var SettingsColor_ColorsObj = {};
+
+    var SettingsColor_DialogColorsResultRGBA;
+    var SettingsColor_ColorTemp;
+    var SettingsColor_RBG_temp;
+
+    function SettingsColor_DialogColorsShow() {
+        if (!SettingsColor_canvasDivContext) SettingsColor_DialogColorsStart();
+
+        Main_ShowElement('dialog_color');
+        Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
+        Main_addEventListener("keydown", SettingsColor_DialogColorKeyDown);
+        SettingsColor_canvasPosY = 2;
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos = SettingsColor_DefaultColorsPos;
+
+        SettingsColor_ColorsReset(
+            SettingsColor_ColorsObj[SettingsColor_canvasPosY],
+            SettingsColor_ColorsObj[SettingsColor_canvasPosY].pos
+        );
+
+        SettingsColor_ColorsObj[SettingsColor_canvasPosY].focus();
+    }
+
+    function SettingsColor_DialogColorsHide() {
+        Main_HideElement('dialog_color');
+        Main_removeEventListener("keydown", SettingsColor_DialogColorKeyDown);
+        Main_addEventListener("keydown", Settings_DialoghandleKeyDown);
+        SettingsColor_ColorsObj[SettingsColor_canvasPosY].removefocus();
+    }
+
+    function SettingsColor_DialogisVisible() {
+        return Main_isElementShowing('dialog_color');
+    }
+
+    function SettingsColor_DialogColorKeyDown(event) {
+        switch (event.keyCode) {
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                SettingsColor_DialogColorsHide();
+                break;
+            case KEY_LEFT:
+                SettingsColor_ColorsObj[SettingsColor_canvasPosY].left();
+                break;
+            case KEY_RIGHT:
+                SettingsColor_ColorsObj[SettingsColor_canvasPosY].right();
+                break;
+            case KEY_UP:
+                SettingsColor_ColorsObj[SettingsColor_canvasPosY].removefocus();
+                SettingsColor_canvasPosY--;
+                if (SettingsColor_canvasPosY < 0) SettingsColor_canvasPosY = 0;
+                SettingsColor_ColorsObj[SettingsColor_canvasPosY].focus();
+                break;
+            case KEY_DOWN:
+                SettingsColor_ColorsObj[SettingsColor_canvasPosY].removefocus();
+                SettingsColor_canvasPosY++;
+                if (SettingsColor_canvasPosY > 7) SettingsColor_canvasPosY = 7;
+                SettingsColor_ColorsObj[SettingsColor_canvasPosY].focus();
+                break;
+            case KEY_ENTER:
+                if (SettingsColor_ColorsObj[SettingsColor_canvasPosY].enter) SettingsColor_ColorsObj[SettingsColor_canvasPosY].enter();
+                break;
+            default:
+                break;
+        }
+    }
+
+    function SettingsColor_DivShadowsUpdate() {
+        SettingsColor_canvasPosDiv[0].style.left = SettingsColor_canvasPosX[0] + '%';
+        SettingsColor_DialogColorsResultSet();
+    }
+
+    function SettingsColor_DivColorsUpdate() {
+        SettingsColor_DivShadowsSet();
+        SettingsColor_DialogColorsResultSet();
+    }
+
+    function SettingsColor_DialogColorsGet() {
+        SettingsColor_canvasPosDiv[1].style.left = SettingsColor_canvasPosX[1] + '%';
+
+        var imgData = SettingsColor_canvasDivContext[1].getImageData(
+                SettingsColor_canvasPosX[1],
+                50,
+                1,
+                1
+            ),
+            rgba = imgData.data;
+
+        return "rgba(" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", 1)";
+    }
+
+    function SettingsColor_DialogColorsResultSet() {
+        SettingsColor_ColorUPdateResult(
+            SettingsColor_canvasDivContext[0].getImageData(
+                SettingsColor_canvasPosX[0],
+                50,
+                1,
+                1
+            ).data
+        );
+    }
+
+    function SettingsColor_ColorUPdateResult(rgba) {
+        SettingsColor_ColorTemp = "rgba(" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", 1)";
+
+        SettingsColor_DivColorResult.style.backgroundColor = SettingsColor_ColorTemp;
+
+        Main_textContent('cavas_text2', STR_RESULT + ' R: ' + rgba[0] + ' G: ' + rgba[1] + ' B: ' + rgba[2]);
+        SettingsColor_DialogColorsResultRGBA = rgba;
+        SettingsColor_ColorsSetRGBTest();
+    }
+
+    function SettingsColor_DivShadowsSet() {
+        var color = SettingsColor_DialogColorsGet();
+        var gradient = SettingsColor_canvasDivContext[0].createLinearGradient(0, 0, SettingsColor_canvasDiv[0].width, 0);
+
+        gradient.addColorStop(0, color);
+        gradient.addColorStop(1, color);
+
+        SettingsColor_canvasDivContext[0].fillStyle = gradient;
+        SettingsColor_canvasDivContext[0].fillRect(0, 0, SettingsColor_canvasDiv[0].width, SettingsColor_canvasDiv[0].height);
+
+        gradient = SettingsColor_canvasDivContext[0].createLinearGradient(0, 0, SettingsColor_canvasDiv[0].width, 0);
+
+        gradient.addColorStop(0.04, 'rgba(255, 255, 255, 0)');
+        gradient.addColorStop(0.36, 'rgba(255, 255, 255, 1)');
+        gradient.addColorStop(0.36, 'rgba(125, 125, 125, 1)');
+        gradient.addColorStop(0.68, 'rgba(125, 125, 125, 0)');
+        gradient.addColorStop(0.68, 'rgba(0, 0, 0, 0)');
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
+
+        SettingsColor_canvasDivContext[0].fillStyle = gradient;
+        SettingsColor_canvasDivContext[0].fillRect(0, 0, SettingsColor_canvasDiv[0].width, SettingsColor_canvasDiv[0].height);
+    }
+
+    function SettingsColor_DialogColorsStart() {
+        SettingsColor_SetColorsObj();
+
+        var DivContent = '';
+
+        DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjStyles, STR_STYLES, (STR_STYLES_ARRAY).split(',')[0]);
+        DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjApply, STR_APPLY, STR_ENTER);
+        DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjColorType, STR_COLOR_TYPE, (STR_COLOR_ARRAY).split(',')[0]);
+        DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjR, 'R', SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[0]);
+        DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjG, 'G', SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[0]);
+        DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjB, 'B', SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[0]) + STR_BR + STR_BR;
+
+        Main_innerHTML("dialog_color_options", DivContent);
+
+        Main_textContent('cavas_text0', STR_SHADOWS);
+        Main_textContent('cavas_text1', STR_COLORS);
+        Main_textContent('cavas_text2', STR_RESULT);
+        Main_textContent('dialog_color_text', STR_COLOR_STYLE_TEXT);
+
+        Main_textContent('cavas_shadows0', STR_SHADOWS_NONE);
+        Main_textContent('cavas_shadows1', STR_SHADOWS_WHITE);
+        Main_textContent('cavas_shadows2', STR_SHADOWS_GRAY);
+        Main_textContent('cavas_shadows3', STR_SHADOWS_BLACK);
+
+        SettingsColor_DivColorResult = document.getElementById('color_result');
+        SettingsColor_canvasPosX = [];
+        SettingsColor_canvasPosX[0] = 0;
+        SettingsColor_canvasPosX[1] = 0;
+
+        SettingsColor_canvasPosDiv = [];
+        SettingsColor_canvasPosDiv[0] = document.getElementById('colorCanvas_pos0');
+        SettingsColor_canvasPosDiv[1] = document.getElementById('colorCanvas_pos1');
+
+        SettingsColor_canvasDiv = [];
+        SettingsColor_canvasDivContext = [];
+
+        SettingsColor_canvasDiv[0] = document.getElementById('colorCanvas0');
+        SettingsColor_canvasDiv[1] = document.getElementById('colorCanvas1');
+        SettingsColor_canvasDivContext[0] = SettingsColor_canvasDiv[0].getContext('2d');
+        SettingsColor_canvasDivContext[1] = SettingsColor_canvasDiv[1].getContext('2d');
+
+        var offset = 0.008;
+        var divider = 8;
+        var gradient = SettingsColor_canvasDivContext[1].createLinearGradient(0, 0, SettingsColor_canvasDiv[1].width, 0);
+        //Separate it color with a offset so that they look defined
+        gradient.addColorStop(0, '#ff0000');
+        gradient.addColorStop(offset, '#ff0000');
+
+        gradient.addColorStop(1 / divider, '#ffff00');
+        gradient.addColorStop((1 / divider) + offset, '#ffff00');
+
+        gradient.addColorStop((1 / divider) * 2, '#00ff00');
+        gradient.addColorStop(((1 / divider) * 2) + offset, '#00ff00');
+
+        gradient.addColorStop((1 / divider) * 3, '#00ffff');
+        gradient.addColorStop(((1 / divider) * 3) + offset, '#00ffff');
+
+        gradient.addColorStop((1 / divider) * 4, '#0000ff');
+        gradient.addColorStop(((1 / divider) * 4) + offset, '#0000ff');
+
+        gradient.addColorStop((1 / divider) * 5, '#ff00ff');
+        gradient.addColorStop(((1 / divider) * 5) + offset, '#ff00ff');
+
+        gradient.addColorStop((1 / divider) * 6, '#ff0000');
+        gradient.addColorStop(((1 / divider) * 6) + offset, '#ff0000');
+
+        gradient.addColorStop((1 / divider) * 7, '#ffffff');
+        gradient.addColorStop(((1 / divider) * 7) + offset, '#ffffff');
+
+        gradient.addColorStop(1 - offset, '#000000');
+        gradient.addColorStop(1, '#000000');
+        SettingsColor_canvasDivContext[1].fillStyle = gradient;
+        SettingsColor_canvasDivContext[1].fillRect(0, 0, SettingsColor_canvasDiv[1].width, SettingsColor_canvasDiv[1].height);
+
+        SettingsColor_canvasPosDiv[0].style.left = 0;
+        SettingsColor_DivColorsUpdate();
+
+        document.getElementById('color_thumb0_img').src = IMG_404_VIDEO;
+        //Main_AddClass('color_thumb0', Main_classThumb);
+        SettingsColor_DivResultUpdate('color_thumb0_text', STR_CURRENT_THUMB_STYLE);
+
+        document.getElementById('color_thumb1_img').src = IMG_404_VIDEO;
+        SettingsColor_DivResultUpdate('color_thumb1_text', STR_NEW_THUMB_STYLE);
+    }
+
+    function SettingsColor_DivColorText(key, title, result) {
+        return '<div id="' + key + '_div" class="settings_div" style="width: 96%;"><div id="' +
+            key + '_name" class="settings_name color_name">' + title + '</div>' +
+            '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
+            '<div id="' + key + '" class="strokedeline settings_value">' + result + '</div>' +
+            '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    }
+
+    function SettingsColor_DivResultUpdate(div, text) {
+        Main_innerHTML(
+            div,
+            '<i class="icon-circle live_icon strokedeline" style="color: red;"></i>' + STR_SPACE +
+            '<i class="icon-circle live_icon strokedeline" style="color: #FED000;">' + STR_SPACE +
+            '</i><i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i>' + STR_SPACE +
+            '</i><i class="icon-refresh live_icon strokedeline" style="color: #FFFFFF;"></i>' + STR_SPACE +
+            text
+        );
+    }
+
+    function SettingsColor_ColorExtrackRGB(DefaultColorsPos) {
+        var rgba = [],
+            tempArray = [];
+
+        for (var i = 0; i < DefaultColorsPos.length; i++) {
+            tempArray.push((DefaultColorsPos[i].replace(/\s/g, '')).split('(')[1].split(','));
+        }
+
+        for (i = 0; i < tempArray.length; i++) {
+            rgba.push(
+                [
+                    parseInt(tempArray[0][i]),
+                    parseInt(tempArray[1][i]),
+                    parseInt(tempArray[2][i])
+                ]
+            );
+        }
+
+        return rgba;
+    }
+
+    function SettingsColor_SetAnimationStyleRestore() {
+        SettingsColor_DefaultColorsPos = Main_getItemInt('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, 0);
+
+        SettingsColor_InitialColors = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[0]);
+        //Restore custom color
+        var rgba = [];
+        for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+            rgba.push(Main_getItemJson('colo_rgb' + i, SettingsColor_InitialColors[(i - SettingsColor_ColorsObjR)]));
+        }
+        for (i = 0; i < rgba.length; i++) {
+            SettingsColor_DefaultColors[1][i] = "rgba(" +
+                rgba[0][i] + ", " +
+                rgba[1][i] + ", " +
+                rgba[2][i] + ", 1)";
+        }
+
+        SettingsColor_SetAnimationStyle(SettingsColor_DefaultColorsPos);
+    }
+
+    function SettingsColor_SetAnimationStyle(pos) {
+        var background = SettingsColor_DefaultColors[pos][0],
+            TextColor = SettingsColor_DefaultColors[pos][1],
+            border = SettingsColor_DefaultColors[pos][2],
+            cssClass = '.feed_thumbnail_focused_no_ani,.feed_thumbnail_focused,.stream_thumbnail_focused_no_ani,.stream_thumbnail_focused {background-color:' +
+            background + ' !important;color:' + TextColor + ' !important;border-color:' + border + ' !important;}' +
+            //feed_thumbnail_focused same animation time as user_feed_scroll
+            '.feed_thumbnail_focused {transition:background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;}' +
+            //stream_thumbnail_focused same animation time as animate_height_transition
+            '.stream_thumbnail_focused {transition:background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;}';
+
+        Main_innerHTML(
+            'focus_class_holder',
+            cssClass
+        );
+
+        SettingsColor_SetAnimationStyleTest(
+            background,
+            TextColor,
+            border
+        );
+    }
+
+    function SettingsColor_SetAnimationStyleTest(background, TextColor, border) {
+        var cssClass = '.stream_thumbnail_focused_test {background-color:' +
+            background + ' !important;color:' + TextColor + ' !important;border-color:' + border + ' !important;}';
+
+        Main_innerHTML(
+            'focus_class_test',
+            cssClass
+        );
+    }
+
+    function SettingsColor_SetColorsObj() {
+        var baseCavasObj = {
+            left: function() {
+                SettingsColor_DialogColorsLeftRight(-SettingsColor_DialogColorPosStep);
+            },
+            right: function() {
+                SettingsColor_DialogColorsLeftRight(SettingsColor_DialogColorPosStep);
+            },
+            focus: function() {
+                SettingsColor_AddCavasFocus();
+                Main_innerHTML('cavas_text' + this.property, this.str + STR_SPACE + '(' + STR_ENTER_RGB + ')');
+            },
+            removefocus: function() {
+                SettingsColor_RemoveCavasFocus();
+                Main_innerHTML('cavas_text' + this.property, this.str);
+            },
+            enter: SettingsColor_SetRGB
+        };
+
+        var baseRGBObj = {
+            left: function() {
+                SettingsColor_ColorsObjRGBLeftRight(this, -1, 255);
+            },
+            right: function() {
+                SettingsColor_ColorsObjRGBLeftRight(this, 1, 255);
+            },
+            focus: function() {
+                SettingsColor_optFocus();
+
+                Main_textContent(
+                    'color_options' + this.property,
+                    this.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]
+                );
+
+                SettingsColor_ColorSetarrowsKey(
+                    this.property,
+                    this.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos],
+                    255
+                );
+
+            },
+            removefocus: SettingsColor_RemoveoptFocus
+        };
+
+        var baseStrigbj = {
+            left: function() {
+                SettingsColor_ColorsObjLeftRight(this, -1, (this.values.length - 1));
+            },
+            right: function() {
+                SettingsColor_ColorsObjLeftRight(this, 1, (this.values.length - 1));
+            },
+            focus: function() {
+                SettingsColor_optFocus();
+
+                Main_textContent(
+                    'color_options' + this.property,
+                    this.values[this.pos]
+                );
+
+                SettingsColor_ColorSetarrowsKey(
+                    this.property,
+                    this.pos,
+                    (this.values.length - 1)
+                );
+                SettingsColor_ColorsSetRGB();
+            },
+            removefocus: SettingsColor_RemoveoptFocus
+        };
+
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjApply] = {
+            left: function() {},
+            right: function() {},
+            focus: SettingsColor_optFocus,
+            removefocus: SettingsColor_RemoveoptFocus,
+            enter: SettingsColor_CollorApply
+        };
+
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjCavasShadow] = Screens_assign({
+                property: SettingsColor_ColorsObjCavasShadow,
+                str: STR_SHADOWS
+            },
+            baseCavasObj
+        );
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjCavasColor] = Screens_assign({
+                property: SettingsColor_ColorsObjCavasColor,
+                str: STR_COLORS
+            },
+            baseCavasObj
+        );
+
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType] = Screens_assign({
+                pos: 0,
+                property: SettingsColor_ColorsObjColorType,
+                values: (STR_COLOR_ARRAY).split(',')
+            },
+            baseStrigbj
+        );
+
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles] = Screens_assign({
+                pos: SettingsColor_DefaultColorsPos,
+                property: SettingsColor_ColorsObjStyles,
+                values: (STR_STYLES_ARRAY).split(',')
+            },
+            baseStrigbj
+        );
+
+        for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+
+            SettingsColor_ColorsObj[i] = Screens_assign({
+                    property: i,
+                    pos: Main_getItemJson('colo_rgb' + i, SettingsColor_InitialColors[i - SettingsColor_ColorsObjR])
+                },
+                baseRGBObj
+            );
+        }
+    }
+
+    function SettingsColor_CollorApply() {
+        SettingsColor_DefaultColorsPos = SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos;
+        Main_setItem('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, SettingsColor_DefaultColorsPos);
+
+        if (SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos === 1) { //Custom
+            var i;
+            for (i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+                Main_setItem('colo_rgb' + i, JSON.stringify(SettingsColor_ColorsObj[i].pos));
+            }
+
+            for (i = 0; i < 3; i++) {
+                SettingsColor_DefaultColors[1][i] = "rgba(" +
+                    SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[i] + ", " +
+                    SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[i] + ", " +
+                    SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[i] + ", 1)";
+            }
+        }
+
+        SettingsColor_SetAnimationStyle(SettingsColor_DefaultColorsPos);
+    }
+
+    function SettingsColor_SetRGB() {
+        SettingsColor_DialogColorsResultSet();
+        for (var i = 0; i < 3; i++) {
+            SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = SettingsColor_DialogColorsResultRGBA[i];
+            Main_textContent("color_options" + (i + SettingsColor_ColorsObjR), SettingsColor_DialogColorsResultRGBA[i]);
+        }
+    }
+
+    function SettingsColor_DialogColorsLeftRight(adder) {
+        SettingsColor_canvasPosX[SettingsColor_canvasPosY] += adder;
+
+        if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] > SettingsColor_DialogColorPosMax)
+            SettingsColor_canvasPosX[SettingsColor_canvasPosY] = 0;
+        else if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] < 0)
+            SettingsColor_canvasPosX[SettingsColor_canvasPosY] = SettingsColor_DialogColorPosMax;
+
+        if (!SettingsColor_canvasPosY) SettingsColor_DivShadowsUpdate();
+        else SettingsColor_DivColorsUpdate();
+
+        SettingsColor_ColorsSetAsCustom();
+        SettingsColor_ColorsSetRGBTest();
+    }
+
+    function SettingsColor_ColorsObjRGBLeftRight(obj, adder, maxValue) {
+        obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] += adder;
+
+        if (obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] > maxValue) {
+
+            obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = maxValue;
+
+        } else if (obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] < 0) {
+
+            obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = 0;
+
+        }
+
+        obj.focus();
+        SettingsColor_ColorsSetAsCustom();
+        SettingsColor_ColorsSetRGB();
+        SettingsColor_ColorsSetRGBTest();
+    }
+
+    function SettingsColor_ColorsSetAsCustom() {
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos = 1;
+
+        Main_textContent(
+            "color_options" + SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].property,
+            SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].values[1]
+        );
+    }
+
+    function SettingsColor_ColorsSetRGBTest() {
+
+        if (SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos === 1) {
+            var rgba = [],
+                colors = [];
+            for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+                rgba.push(SettingsColor_ColorsObj[i].pos);
+            }
+            for (i = 0; i < rgba.length; i++) {
+                colors.push("rgba(" +
+                    rgba[0][i] + ", " +
+                    rgba[1][i] + ", " +
+                    rgba[2][i] + ", 1)"
+                );
+            }
+
+            colors[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = SettingsColor_ColorTemp;
+
+            SettingsColor_SetAnimationStyleTest(
+                colors[0],
+                colors[1],
+                colors[2]
+            );
+        } else {
+            SettingsColor_SetAnimationStyleTest(
+                SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos][0],
+                SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos][1],
+                SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos][2]
+            );
+        }
+    }
+
+    function SettingsColor_ColorsSetRGB() {
+        SettingsColor_ColorUPdateResult(
+            [
+                SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos],
+                SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos],
+                SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]
+            ]
+        );
+    }
+
+    function SettingsColor_ColorsSetRGBText() {
+        for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+            Main_textContent("color_options" + i, SettingsColor_ColorsObj[i].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]);
+        }
+    }
+
+    function SettingsColor_ColorsObjLeftRight(obj, adder, maxValue) {
+        var currpos = obj.pos;
+
+        obj.pos += adder;
+
+        if (obj.pos > maxValue) obj.pos = maxValue;
+        else if (obj.pos < 0) obj.pos = 0;
+
+        obj.focus();
+        SettingsColor_ColorsReset(obj, currpos);
+    }
+
+    function SettingsColor_ColorsReset(obj, currpos) {
+        if (obj.property === SettingsColor_ColorsObjStyles) {
+            var i, array = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[obj.pos]);
+
+            if (obj.pos === 1) {
+                if (SettingsColor_RBG_temp) {
+                    for (i = 0; i < array.length; i++) {
+                        array[i] = SettingsColor_RBG_temp[i];
+                    }
+                    SettingsColor_RBG_temp = null;
+                }
+            } else if (currpos === 1) {
+
+                SettingsColor_RBG_temp = [];
+                for (i = 0; i < array.length; i++) {
+                    SettingsColor_RBG_temp.push(SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos);
+                }
+
+            }
+
+            for (i = 0; i < array.length; i++) {
+                SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos = array[i];
+            }
+
+        }
+
+        SettingsColor_ColorsSetRGB();
+        SettingsColor_ColorsSetRGBText();
+    }
+
+    function SettingsColor_AddCavasFocus() {
+        Main_ShowElement('colorCanvas_pos' + SettingsColor_canvasPosY);
+        Main_AddClass('Canvas_holder' + SettingsColor_canvasPosY, 'cavas_holder_focused');
+        SettingsColor_DivColorsUpdate();
+    }
+
+    function SettingsColor_RemoveCavasFocus() {
+        Main_HideElement('colorCanvas_pos' + SettingsColor_canvasPosY);
+        Main_RemoveClass('Canvas_holder' + SettingsColor_canvasPosY, 'cavas_holder_focused');
+    }
+
+    function SettingsColor_optFocus() {
+        Main_AddClass('color_options' + SettingsColor_canvasPosY, 'settings_value_focus');
+        Main_AddClass('color_options' + SettingsColor_canvasPosY + '_div', 'settings_div_focus');
+    }
+
+    function SettingsColor_RemoveoptFocus() {
+        var key = 'color_options' + SettingsColor_canvasPosY;
+        Main_RemoveClass(key, 'settings_value_focus');
+        Main_RemoveClass(key + '_div', 'settings_div_focus');
+        document.getElementById(key + "arrow_left").style.opacity = "0";
+        document.getElementById(key + "arrow_right").style.opacity = "0";
+    }
+
+    function SettingsColor_ColorSetarrowsKey(pos, currentValue, maxValue) {
+
+        if (currentValue > 0 && currentValue < maxValue) {
+            document.getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
+            document.getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
+        } else if (currentValue === maxValue) {
+            document.getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
+            document.getElementById('color_options' + pos + "arrow_right").style.opacity = "0.2";
+        } else {
+            document.getElementById('color_options' + pos + "arrow_left").style.opacity = "0.2";
+            document.getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
+        }
+    } //Variable initialization
     var Settings_cursorY = 0;
     var Settings_value = {
         "restor_playback": {
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "clip_auto_play_next": {
+        "clip_auto_play_next": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
         },
@@ -20037,7 +20783,7 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "auto_refresh_screen": {
+        "auto_refresh_screen": { //Migrated to dialog
             "values": [
                 'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
             ],
@@ -20061,7 +20807,7 @@
             ],
             "defaultValue": 4
         },
-        "live_feed_sort": {
+        "live_feed_sort": { //Migrated to dialog
             "values": [
                 "views_more",
                 "views_less",
@@ -20074,7 +20820,7 @@
             ],
             "defaultValue": 1
         },
-        "open_host": {
+        "open_host": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
         },
@@ -20106,7 +20852,7 @@
             "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "defaultValue": 2
         },
-        "end_dialog_counter": {
+        "end_dialog_counter": { //Migrated to dialog
             "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "defaultValue": 4
         },
@@ -20134,6 +20880,11 @@
             "values": Settings_GenerateClock(),
             "defaultValue": 49
         },
+        "thumb_background": { //Migrated to dialog
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
         "content_lang": {
             "values": ["All"],
             "set_values": [""],
@@ -20155,6 +20906,11 @@
             "defaultValue": 1
         },
         "player_buffers": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "player_end_opt": {
             "values": ["None"],
             "set_values": [""],
             "defaultValue": 1
@@ -20330,25 +21086,6 @@
         }
 
         //Individual settings
-        div += Settings_Content('live_feed_sort',
-            [
-                STR_VIWES_MOST,
-                STR_VIWES_LOWEST,
-                STR_NAME_A_Z,
-                STR_NAME_Z_A,
-                STR_GAME_A_Z,
-                STR_GAME_Z_A,
-                STR_CREATED_NEWEST,
-                STR_CREATED_OLDEST
-            ],
-            STR_LIVE_FEED_SORT,
-            STR_LIVE_FEED_SORT_SUMMARY
-        );
-
-
-        Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
-        div += Settings_Content('auto_refresh_screen', Settings_value.auto_refresh_screen.values, STR_AUTO_REFRESH, STR_AUTO_REFRESH_SUMMARY);
-
         div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
 
         div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
@@ -20358,12 +21095,6 @@
 
         div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
-        div += Settings_Content('open_host', array_no_yes, STR_OPEN_HOST_SETTINGS, null);
-        div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
-
-        div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-        Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
-
         div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
         div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
@@ -20371,6 +21102,7 @@
         div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
         //Dialog settings
+        div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
         div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
         div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
         div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
@@ -20435,26 +21167,8 @@
         Main_textContent(key, Settings_Obj_values(key));
         Settings_value[key].values = [STR_CONTENT_LANG_SUMMARY];
 
-        key = "live_feed_sort";
-        Settings_DivOptionChangeLang(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
-        Main_textContent(key, Settings_Obj_values(key));
-        Settings_value[key].values = [
-            STR_VIWES_MOST,
-            STR_VIWES_LOWEST,
-            STR_NAME_A_Z,
-            STR_NAME_Z_A,
-            STR_GAME_A_Z,
-            STR_GAME_Z_A,
-            STR_CREATED_NEWEST,
-            STR_CREATED_OLDEST
-        ];
-
         //Player settings
         Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
-
-        key = "auto_refresh_screen";
-        Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
-        Settings_value[key].values[0] = STR_DISABLE;
 
         // Player buffer title/summary
         Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
@@ -20463,10 +21177,6 @@
         key = "start_user_screen";
         Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
         Settings_value[key].values = [STR_YES, STR_NO];
-
-        key = "auto_refresh_screen";
-        Settings_DivOptionChangeLang(key, STR_AUTO_REFRESH, STR_AUTO_REFRESH_SUMMARY);
-        Settings_value[key].values[0] = STR_DISABLE;
 
         //Player restore
         key = "restor_playback";
@@ -20478,22 +21188,9 @@
         Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
         Settings_value[key].values = [STR_AUTO, STR_SOURCE];
 
-        // Chat size
-        key = "end_dialog_counter";
-        Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-        Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
-
         key = "pp_workaround";
         Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
         Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
-
-        key = "clip_auto_play_next";
-        Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
-        Settings_value[key].values = [STR_NO, STR_YES];
-
-        key = "open_host";
-        Main_textContent(key + '_name', STR_OPEN_HOST_SETTINGS);
-        Settings_value[key].values = [STR_NO, STR_YES];
 
         key = "keep_panel_info_visible";
         Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
@@ -20539,6 +21236,7 @@
         Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
         Settings_CodecsSet();
         Settings_SetPingWarning();
+        SettingsColor_SetAnimationStyleRestore();
     }
 
     function Settings_Obj_values(key) {
@@ -20915,6 +21613,7 @@
                 break;
             case KEY_ENTER:
                 if (!Settings_cursorY) Languages_init();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_end_opt')) Settings_PlayerEnd();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
@@ -21252,25 +21951,26 @@
         Settings_value.videos_animation.values = [STR_NO, STR_YES];
         Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
         Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
+        Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
+
+        Settings_value.live_feed_sort.values = [
+            STR_VIWES_MOST,
+            STR_VIWES_LOWEST,
+            STR_NAME_A_Z,
+            STR_NAME_Z_A,
+            STR_GAME_A_Z,
+            STR_GAME_Z_A,
+            STR_CREATED_NEWEST,
+            STR_CREATED_OLDEST
+        ];
 
         var obj = {
-            app_animations: {
-                defaultValue: Settings_value.app_animations.defaultValue,
-                values: Settings_value.app_animations.values,
-                title: STR_APP_ANIMATIONS,
-                summary: STR_APP_ANIMATIONS_SUMMARY
-            },
-            videos_animation: {
-                defaultValue: Settings_value.videos_animation.defaultValue,
-                values: Settings_value.videos_animation.values,
-                title: STR_VIDEOS_ANIMATION,
-                summary: STR_VIDEOS_ANIMATION_SUMMARY
-            },
-            key_up_timeout: {
-                defaultValue: Settings_value.key_up_timeout.defaultValue,
-                values: Settings_value.key_up_timeout.values,
-                title: STR_KEY_UP_TIMEOUT,
-                summary: STR_KEY_UP_TIMEOUT_SUMMARY
+            thumb_background: {
+                defaultValue: Settings_value.thumb_background.defaultValue,
+                values: Settings_value.thumb_background.values,
+                title: STR_THUMB_STYLE,
+                summary: null,
+                keyenter: true
             },
             global_font_offset: {
                 defaultValue: Settings_value.global_font_offset.defaultValue,
@@ -21284,6 +21984,36 @@
                 title: STR_THUMB_RESOLUTION,
                 summary: STR_THUMB_RESOLUTION_SUMMARY
             },
+            app_animations: {
+                defaultValue: Settings_value.app_animations.defaultValue,
+                values: Settings_value.app_animations.values,
+                title: STR_APP_ANIMATIONS,
+                summary: STR_APP_ANIMATIONS_SUMMARY
+            },
+            videos_animation: {
+                defaultValue: Settings_value.videos_animation.defaultValue,
+                values: Settings_value.videos_animation.values,
+                title: STR_VIDEOS_ANIMATION,
+                summary: STR_VIDEOS_ANIMATION_SUMMARY
+            },
+            live_feed_sort: {
+                defaultValue: Settings_value.live_feed_sort.defaultValue,
+                values: Settings_value.live_feed_sort.values,
+                title: STR_LIVE_FEED_SORT,
+                summary: STR_LIVE_FEED_SORT_SUMMARY
+            },
+            auto_refresh_screen: {
+                defaultValue: Settings_value.auto_refresh_screen.defaultValue,
+                values: Settings_value.auto_refresh_screen.values,
+                title: STR_AUTO_REFRESH,
+                summary: STR_AUTO_REFRESH_SUMMARY
+            },
+            key_up_timeout: {
+                defaultValue: Settings_value.key_up_timeout.defaultValue,
+                values: Settings_value.key_up_timeout.values,
+                title: STR_KEY_UP_TIMEOUT,
+                summary: STR_KEY_UP_TIMEOUT_SUMMARY
+            },
             show_screen_counter: {
                 defaultValue: Settings_value.show_screen_counter.defaultValue,
                 values: Settings_value.show_screen_counter.values,
@@ -21295,7 +22025,7 @@
                 values: Settings_value.clock_offset.values,
                 title: STR_CLOCK_OFFSET,
                 summary: null
-            }
+            },
         };
 
         Settings_DialogShow(obj, STR_ANIMATIONS);
@@ -21321,6 +22051,35 @@
         };
 
         Settings_DialogShow(obj, STR_WARNINGS);
+    }
+
+    function Settings_PlayerEnd() {
+        var yes_no = [STR_NO, STR_YES];
+        Settings_value.open_host.values = yes_no;
+        Settings_value.clip_auto_play_next.values = yes_no;
+        Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
+
+        var obj = {
+            open_host: {
+                defaultValue: Settings_value.open_host.defaultValue,
+                values: Settings_value.open_host.values,
+                title: STR_OPEN_HOST_SETTINGS,
+                summary: null
+            },
+            clip_auto_play_next: {
+                defaultValue: Settings_value.clip_auto_play_next.defaultValue,
+                values: Settings_value.clip_auto_play_next.values,
+                title: STR_AUTO_PLAY_NEXT,
+                summary: null
+            },
+            end_dialog_counter: {
+                defaultValue: Settings_value.end_dialog_counter.defaultValue,
+                values: Settings_value.end_dialog_counter.values,
+                title: STR_END_DIALOG_SETTINGS,
+                summary: STR_END_DIALOG_SETTINGS_SUMMARY
+            },
+        };
+        Settings_DialogShow(obj, STR_END_DIALOG_OPT);
     }
 
     function Settings_DialogShowChat() {
@@ -21424,8 +22183,13 @@
 
         for (var property in obj) {
             Settings_DialogValue.push(property);
-            dialogContent += obj[property].summary ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :
-                Settings_DivOptionNoSummary(property, obj[property].title);
+            if (obj[property].keyenter) {
+                dialogContent += Settings_Content(property, [STR_CONTENT_LANG_SUMMARY], obj[property].title, null);
+            } else {
+                dialogContent += obj[property].summary ?
+                    Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :
+                    Settings_DivOptionNoSummary(property, obj[property].title);
+            }
         }
 
         Main_innerHTML("dialog_settings_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
@@ -21443,29 +22207,34 @@
         var key;
         switch (event.keyCode) {
             case KEY_ENTER:
-            case KEY_KEYBOARD_BACKSPACE:
-            case KEY_RETURN:
-                Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
-                Main_HideElement('dialog_settings');
-                Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
-                Main_addEventListener("keydown", Settings_handleKeyDown);
-                break;
-            case KEY_LEFT:
-                key = Settings_DialogValue[Settings_DialogPos];
-                if (Settings_Obj_default(key) > 0) Settings_DialogRigthLeft(-1);
-                break;
-            case KEY_RIGHT:
-                key = Settings_DialogValue[Settings_DialogPos];
-                if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_DialogRigthLeft(1);
-                break;
-            case KEY_UP:
-                if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
-                break;
-            case KEY_DOWN:
-                if (Settings_DialogPos < (Settings_DialogValue.length - 1)) Settings_DialogUpDown(1);
-                break;
-            default:
-                break;
+                if ((Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'thumb_background'))) {
+                    SettingsColor_DialogColorsShow();
+                    break;
+                }
+                /* falls through */
+                case KEY_KEYBOARD_BACKSPACE:
+                case KEY_RETURN:
+                    Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+                    Main_HideElement('dialog_settings');
+                    Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
+                    Main_addEventListener("keydown", Settings_handleKeyDown);
+                    break;
+                case KEY_LEFT:
+                    key = Settings_DialogValue[Settings_DialogPos];
+                    if (Settings_Obj_default(key) > 0) Settings_DialogRigthLeft(-1);
+                    break;
+                case KEY_RIGHT:
+                    key = Settings_DialogValue[Settings_DialogPos];
+                    if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_DialogRigthLeft(1);
+                    break;
+                case KEY_UP:
+                    if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
+                    break;
+                case KEY_DOWN:
+                    if (Settings_DialogPos < (Settings_DialogValue.length - 1)) Settings_DialogUpDown(1);
+                    break;
+                default:
+                    break;
         }
     }
 
