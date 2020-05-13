@@ -20481,7 +20481,6 @@
                     this.pos,
                     (this.values.length - 1)
                 );
-                SettingsColor_ColorsSetRGB();
             },
             removefocus: SettingsColor_RemoveoptFocus
         };
