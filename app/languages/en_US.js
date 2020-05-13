@@ -246,6 +246,7 @@ function en_USLang() {
     STR_UP = " Press up";
     STR_HOLD_UP = " Hold up or key 2";
     STR_LIVE_FEED = "Live Feed";
+    STR_END_DIALOG_OPT = "Player end dialog options";
     STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
     STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";
     STR_END_DIALOG_DISABLE = "Disable the timer";
@@ -329,7 +330,7 @@ function en_USLang() {
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
     STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-    STR_ANIMATIONS = "Animations, Style and related";
+    STR_ANIMATIONS = "Customizations, Style, Animations, Timeouts and related";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get stream link issue";
     STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -512,4 +513,22 @@ function en_USLang() {
     STR_PING_WARNING_SUMMARY = "The app is constantly checking the connection with Twitch via a ping, if that fails too much a warning will show, if that warning is showing unintentionaly set this to NO";
     STR_KEY_UP_TIMEOUT = "Key hold timeout (in milliseconds)";
     STR_KEY_UP_TIMEOUT_SUMMARY = "How long you need to hold a key for a hold action happens, actions are refresh a screen, show thumbnails options etc.";
+    STR_CURRENT_THUMB_STYLE = "Current focus style";
+    STR_NEW_THUMB_STYLE = "New focus style";
+    STR_COLOR_STYLE_TEXT = 'Press up/down to select a option, press return to exit this, press enter on "Apply changes" to confirm before exit.';
+    STR_SHADOWS = "Shadows";
+    STR_SHADOWS_NONE = "None";
+    STR_SHADOWS_WHITE = "White";
+    STR_SHADOWS_GRAY = "Gray";
+    STR_SHADOWS_BLACK = "Black";
+    STR_COLORS = "Colors";
+    STR_RESULT = "Result";
+    STR_APPLY = "Apply changes";
+    STR_COLOR_TYPE = "Color type";
+    STR_STYLES = "Styles";
+    STR_ENTER = "Press enter";
+    STR_COLOR_ARRAY = "Background,Text,Border";
+    STR_STYLES_ARRAY = "Default,Custom,Black,Grey,Red,Orange,Yellow,Green,Blue,Purple,Pink";
+    STR_ENTER_RGB = STR_ENTER + " to accept RGB change";
+    STR_THUMB_STYLE = "Selected thumbnail style";
 }

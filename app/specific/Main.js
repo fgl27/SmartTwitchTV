@@ -586,8 +586,14 @@ function Main_initClick() {
     if (Main_IsOnAndroid) {
         Main_isTV = Android.deviceIsTV();
         //Only show virtual d-pad on none TV devices
-        if (Main_isTV) return;
-    } else return;
+        if (Main_isTV) {
+            Main_HideElement('scene_notify');//Hide so is easier to select a item to inspect
+            return;
+        }
+    } else {
+        Main_HideElement('scene_notify');//Hide so is easier to select a item to inspect
+        return;
+    }
 
     Main_ShowElement('scenekeys');
     Main_scenekeysDoc = document.getElementById('scenekeys');
