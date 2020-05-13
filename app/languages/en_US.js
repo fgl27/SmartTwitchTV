@@ -330,7 +330,7 @@ function en_USLang() {
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
     STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-    STR_ANIMATIONS = "Customizations, Style, Animations and related";
+    STR_ANIMATIONS = "Customizations, Style, Animations, Timeouts and related";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get stream link issue";
     STR_410_FEATURING = "Third party app are current without access for this featuring.";

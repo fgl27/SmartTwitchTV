@@ -49,7 +49,7 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "auto_refresh_screen": {
+    "auto_refresh_screen": {//Migrated to dialog
         "values": [
             'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
         ],
@@ -72,7 +72,7 @@ var Settings_value = {
         ],
         "defaultValue": 4
     },
-    "live_feed_sort": {
+    "live_feed_sort": {//Migrated to dialog
         "values": [
             "views_more",
             "views_less",
@@ -350,25 +350,6 @@ function Settings_SetSettings() {
     }
 
     //Individual settings
-    div += Settings_Content('live_feed_sort',
-        [
-            STR_VIWES_MOST,
-            STR_VIWES_LOWEST,
-            STR_NAME_A_Z,
-            STR_NAME_Z_A,
-            STR_GAME_A_Z,
-            STR_GAME_Z_A,
-            STR_CREATED_NEWEST,
-            STR_CREATED_OLDEST
-        ],
-        STR_LIVE_FEED_SORT,
-        STR_LIVE_FEED_SORT_SUMMARY
-    );
-
-
-    Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
-    div += Settings_Content('auto_refresh_screen', Settings_value.auto_refresh_screen.values, STR_AUTO_REFRESH, STR_AUTO_REFRESH_SUMMARY);
-
     div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
 
     div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
@@ -450,26 +431,8 @@ function Settings_SetStrings() {
     Main_textContent(key, Settings_Obj_values(key));
     Settings_value[key].values = [STR_CONTENT_LANG_SUMMARY];
 
-    key = "live_feed_sort";
-    Settings_DivOptionChangeLang(key, STR_LIVE_FEED_SORT, STR_LIVE_FEED_SORT_SUMMARY);
-    Main_textContent(key, Settings_Obj_values(key));
-    Settings_value[key].values = [
-        STR_VIWES_MOST,
-        STR_VIWES_LOWEST,
-        STR_NAME_A_Z,
-        STR_NAME_Z_A,
-        STR_GAME_A_Z,
-        STR_GAME_Z_A,
-        STR_CREATED_NEWEST,
-        STR_CREATED_OLDEST
-    ];
-
     //Player settings
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
-
-    key = "auto_refresh_screen";
-    Settings_DivOptionChangeLang(key, STR_PLAYER_BITRATE_SMALL, STR_PLAYER_BITRATE_SMALL_SUMMARY);
-    Settings_value[key].values[0] = STR_DISABLE;
 
     // Player buffer title/summary
     Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
@@ -478,10 +441,6 @@ function Settings_SetStrings() {
     key = "start_user_screen";
     Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
     Settings_value[key].values = [STR_YES, STR_NO];
-
-    key = "auto_refresh_screen";
-    Settings_DivOptionChangeLang(key, STR_AUTO_REFRESH, STR_AUTO_REFRESH_SUMMARY);
-    Settings_value[key].values[0] = STR_DISABLE;
 
     //Player restore
     key = "restor_playback";
@@ -1233,6 +1192,18 @@ function Settings_DialogShowAnimation() {
     Settings_value.videos_animation.values = [STR_NO, STR_YES];
     Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
+    Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
+
+    Settings_value.live_feed_sort.values = [
+        STR_VIWES_MOST,
+        STR_VIWES_LOWEST,
+        STR_NAME_A_Z,
+        STR_NAME_Z_A,
+        STR_GAME_A_Z,
+        STR_GAME_Z_A,
+        STR_CREATED_NEWEST,
+        STR_CREATED_OLDEST
+    ];
 
     var obj = {
         thumb_background: {
@@ -1265,6 +1236,18 @@ function Settings_DialogShowAnimation() {
             values: Settings_value.videos_animation.values,
             title: STR_VIDEOS_ANIMATION,
             summary: STR_VIDEOS_ANIMATION_SUMMARY
+        },
+        live_feed_sort: {
+            defaultValue: Settings_value.live_feed_sort.defaultValue,
+            values: Settings_value.live_feed_sort.values,
+            title: STR_LIVE_FEED_SORT,
+            summary: STR_LIVE_FEED_SORT_SUMMARY
+        },
+        auto_refresh_screen: {
+            defaultValue: Settings_value.auto_refresh_screen.defaultValue,
+            values: Settings_value.auto_refresh_screen.values,
+            title: STR_AUTO_REFRESH,
+            summary: STR_AUTO_REFRESH_SUMMARY
         },
         key_up_timeout: {
             defaultValue: Settings_value.key_up_timeout.defaultValue,
