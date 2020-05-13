@@ -26,6 +26,8 @@
     <title>SmartTV Twitch</title>
     <link rel="shortcut icon" type="image/png"
         href="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/favicon.png" />
+    <style id="focus_class_holder"></style>
+    <style id="focus_class_test"></style>
     <style>
         body,
         html {
@@ -264,31 +266,6 @@
             background: #000000;
             color: #FFFFFF;
             border: 0.06em solid rgba(0, 0, 0, 0);
-        }
-
-        div.feed_thumbnail_focused_no_ani,
-        div.feed_thumbnail_focused,
-        div.stream_thumbnail_focused_no_ani,
-        div.stream_thumbnail_focused {
-            background-color: #ebebeb !important;
-            color: #000000 !important;
-            border-color: #ebebeb !important;
-        }
-
-        div.feed_thumbnail_focused {
-            /* same animation time as user_feed_scroll*/
-            transition:
-                background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
-                color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
-                border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
-        }
-
-        div.stream_thumbnail_focused {
-            /* same animation time as animate_height_transition*/
-            transition:
-                background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
-                color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,
-                border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.stream_switch_focused {
@@ -1702,6 +1679,74 @@
             background: linear-gradient(to top, black, rgba(0, 0, 0, 0.085));
         }
 
+        .colorCanvas {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            vertical-align: middle;
+        }
+
+        .color_name {
+            width: 15% !important;
+        }
+
+        .cavas_holder {
+            z-index: 99;
+            border-radius: 0.2em;
+            border: 0.4vh solid #000000;
+            width: 96%;
+            margin-left: 2%;
+            height: 5vh;
+            position: relative;
+        }
+
+        .cavas_holder_focused {
+            border-color: #FFFFFF !important;
+        }
+
+        .colorCanvas_pos {
+            transform: translateY(-100%);
+            left: 50%;
+            position: absolute;
+            width: 0.4em;
+            height: 100%;
+            border-radius: 1em;
+            box-shadow: 0 0 0 0.25vh #FFFFFF, 0 0 0 0.5vh #000000;
+        }
+
+        .color_options {
+            font-size: 2.7vh !important;
+            position: absolute !important;
+            width: 96% !important;
+            margin-left: 2% !important;
+            position: relative !important;
+            transform: translateY(-75%) !important;
+        }
+
+        .cavas_text_shadows,
+        .cavas_text,
+        .color_result {
+            height: 5%;
+            width: 96%;
+            margin-left: 2%;
+        }
+
+        .cavas_text_shadows,
+        .cavas_text {
+            color: #ffffff;
+            text-align: center;
+            height: 1.2em;
+            margin-top: 0.5%;
+        }
+
+        .cavas_text_shadows {
+            width: 23%;
+            margin: 0;
+            display: inline-block;
+            text-align: left;
+        }
+
         .progress_pause_holder {
             bottom: 8.5ch;
             position: absolute;
@@ -2308,6 +2353,7 @@
     <script src="thirdparty/punycode.js" defer></script>
     <script src="thirdparty/kapchat.js" defer></script>
     <script src="specific/Settings.js" defer></script>
+    <script src="specific/SettingsColor.js" defer></script>
     <script src="specific/SettingsLanguages.js" defer></script>
     <script src="specific/ChannelContent.js" defer></script>
     <script src="specific/Search.js" defer></script>
@@ -2546,6 +2592,62 @@
         <div id="dialog_settings" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75);">
             <div class="about_dialogs" style="width: 96%; margin-left: 2%;">
                 <div id="dialog_settings_text" class="about_text" style="font-size: 98%;"></div>
+            </div>
+        </div>
+        <div id="dialog_color" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75); font-size: 0;">
+            <div id="color_options" class="about_dialogs controls_text color_options">
+                <div id="cavas_text0" class="cavas_text class_bold"></div>
+                <div id="cavas_shadows0" class="cavas_text_shadows"></div>
+                <div id="cavas_shadows1" class="cavas_text_shadows"></div>
+                <div id="cavas_shadows2" class="cavas_text_shadows"></div>
+                <div id="cavas_shadows3" class="cavas_text_shadows" style="text-align: right;"></div>
+                <div id="Canvas_holder0" class="cavas_holder">
+                    <canvas id="colorCanvas0" class="colorCanvas" width="100%" height="100%"></canvas>
+                    <div id="colorCanvas_pos0" class="colorCanvas_pos hide" style="left: 0px;"></div>
+                </div>
+                <div id="cavas_text1" class="cavas_text class_bold"></div>
+                <div id="Canvas_holder1" class="cavas_holder">
+                    <canvas id="colorCanvas1" class="colorCanvas" width="100%" height="100%"></canvas>
+                    <div id="colorCanvas_pos1" class="colorCanvas_pos hide" style="left: 50%;"></div>
+                </div>
+                <div id="cavas_text2" class="cavas_text class_bold"></div>
+                <div id="color_result" class="cavas_holder"></div>
+                <div id="dialog_color_text" class="cavas_text class_bold"></div>
+                <div id="dialog_color_options"></div>
+            </div>
+            <div class="stream_thumbnail_live_holder"
+                style="position: absolute; width: 24%; left: 17.33%; bottom: 0; font-size: 2.75vh;">
+                <div id="color_thumb0" class="stream_thumbnail_live stream_thumbnail_focused_no_ani"
+                    style="padding-bottom: 70%;">
+                    <div class="stream_thumbnail_live_img">
+                        <img id="color_thumb0_img" class="stream_img" alt=""
+                            src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
+                    </div>
+                    <div class="stream_thumbnail_live_text_holder" style="height: 2em;">
+                        <div class="stream_text_holder">
+                            <div style="line-height: 1.6ch;">
+                                <div id="color_thumb0_text" class="stream_info_live_name"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stream_thumbnail_live_holder"
+                style="position: absolute; width: 24%; right: 17.33%; display: inline-block; bottom: 0;font-size: 2.75vh;">
+                <div id="color_thumb1" class="stream_thumbnail_live stream_thumbnail_focused_test"
+                    style="padding-bottom: 70%;">
+                    <div class="stream_thumbnail_live_img">
+                        <img id="color_thumb1_img" class="stream_img" alt=""
+                            src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
+                    </div>
+                    <div class="stream_thumbnail_live_text_holder" style="height: 2em;">
+                        <div class="stream_text_holder">
+                            <div style="line-height: 1.6ch;">
+                                <div id="color_thumb1_text" class="stream_info_live_name"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="dialog_counter" style="position: absolute; z-index:99; width: 100%; bottom: 0;">

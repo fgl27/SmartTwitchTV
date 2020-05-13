@@ -145,6 +145,11 @@ var Settings_value = {
         "values": Settings_GenerateClock(),
         "defaultValue": 49
     },
+    "thumb_background": {//Migrated to dialog
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
     "content_lang": {
         "values": ["All"],
         "set_values": [""],
@@ -549,6 +554,7 @@ function Settings_SetDefautls() {
     Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     Settings_CodecsSet();
     Settings_SetPingWarning();
+    SettingsColor_SetAnimationStyleRestore();
 }
 
 function Settings_Obj_values(key) {
@@ -1241,6 +1247,25 @@ function Settings_DialogShowAnimation() {
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
     var obj = {
+        thumb_background: {
+            defaultValue: Settings_value.thumb_background.defaultValue,
+            values: Settings_value.thumb_background.values,
+            title: STR_THUMB_STYLE,
+            summary: null,
+            keyenter: true
+        },
+        global_font_offset: {
+            defaultValue: Settings_value.global_font_offset.defaultValue,
+            values: Settings_value.global_font_offset.values,
+            title: STR_GLOBAL_FONT,
+            summary: STR_GLOBAL_FONT_SUMMARY
+        },
+        thumb_quality: {
+            defaultValue: Settings_value.thumb_quality.defaultValue,
+            values: Settings_value.thumb_quality.values,
+            title: STR_THUMB_RESOLUTION,
+            summary: STR_THUMB_RESOLUTION_SUMMARY
+        },
         app_animations: {
             defaultValue: Settings_value.app_animations.defaultValue,
             values: Settings_value.app_animations.values,
@@ -1259,18 +1284,6 @@ function Settings_DialogShowAnimation() {
             title: STR_KEY_UP_TIMEOUT,
             summary: STR_KEY_UP_TIMEOUT_SUMMARY
         },
-        global_font_offset: {
-            defaultValue: Settings_value.global_font_offset.defaultValue,
-            values: Settings_value.global_font_offset.values,
-            title: STR_GLOBAL_FONT,
-            summary: STR_GLOBAL_FONT_SUMMARY
-        },
-        thumb_quality: {
-            defaultValue: Settings_value.thumb_quality.defaultValue,
-            values: Settings_value.thumb_quality.values,
-            title: STR_THUMB_RESOLUTION,
-            summary: STR_THUMB_RESOLUTION_SUMMARY
-        },
         show_screen_counter: {
             defaultValue: Settings_value.show_screen_counter.defaultValue,
             values: Settings_value.show_screen_counter.values,
@@ -1282,7 +1295,7 @@ function Settings_DialogShowAnimation() {
             values: Settings_value.clock_offset.values,
             title: STR_CLOCK_OFFSET,
             summary: null
-        }
+        },
     };
 
     Settings_DialogShow(obj, STR_ANIMATIONS);
@@ -1411,8 +1424,13 @@ function Settings_DialogShow(obj, title) {
 
     for (var property in obj) {
         Settings_DialogValue.push(property);
-        dialogContent += obj[property].summary ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :
-            Settings_DivOptionNoSummary(property, obj[property].title);
+        if (obj[property].keyenter) {
+            dialogContent += Settings_Content(property, [STR_CONTENT_LANG_SUMMARY], obj[property].title, null);
+        } else {
+            dialogContent += obj[property].summary ?
+                Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :
+                Settings_DivOptionNoSummary(property, obj[property].title);
+        }
     }
 
     Main_innerHTML("dialog_settings_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
@@ -1430,6 +1448,11 @@ function Settings_DialoghandleKeyDown(event) {
     var key;
     switch (event.keyCode) {
         case KEY_ENTER:
+            if ((Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'thumb_background'))) {
+                SettingsColor_DialogColorsShow();
+                break;
+            }
+        /* falls through */
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
