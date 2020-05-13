@@ -5,7 +5,7 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "clip_auto_play_next": {
+    "clip_auto_play_next": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
     },
@@ -85,7 +85,7 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
-    "open_host": {
+    "open_host": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
     },
@@ -117,7 +117,7 @@ var Settings_value = {
         "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 2
     },
-    "end_dialog_counter": {
+    "end_dialog_counter": {//Migrated to dialog
         "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 4
     },
@@ -171,6 +171,11 @@ var Settings_value = {
         "defaultValue": 1
     },
     "player_buffers": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "player_end_opt": {
         "values": ["None"],
         "set_values": [""],
         "defaultValue": 1
@@ -373,12 +378,6 @@ function Settings_SetSettings() {
 
     div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
 
-    div += Settings_Content('open_host', array_no_yes, STR_OPEN_HOST_SETTINGS, null);
-    div += Settings_Content('clip_auto_play_next', array_no_yes, STR_AUTO_PLAY_NEXT, null);
-
-    div += Settings_Content('end_dialog_counter', null, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-    Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
-
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
     div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
@@ -386,6 +385,7 @@ function Settings_SetSettings() {
     div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
     //Dialog settings
+    div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
     div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
     div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
@@ -493,22 +493,9 @@ function Settings_SetStrings() {
     Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
     Settings_value[key].values = [STR_AUTO, STR_SOURCE];
 
-    // Chat size
-    key = "end_dialog_counter";
-    Settings_DivOptionChangeLang(key, STR_END_DIALOG_SETTINGS, STR_END_DIALOG_SETTINGS_SUMMARY);
-    Settings_value[key].values[0] = STR_END_DIALOG_DISABLE;
-
     key = "pp_workaround";
     Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
     Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
-
-    key = "clip_auto_play_next";
-    Main_textContent(key + '_name', STR_AUTO_PLAY_NEXT);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    key = "open_host";
-    Main_textContent(key + '_name', STR_OPEN_HOST_SETTINGS);
-    Settings_value[key].values = [STR_NO, STR_YES];
 
     key = "keep_panel_info_visible";
     Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
@@ -932,6 +919,7 @@ function Settings_handleKeyDown(event) {
             break;
         case KEY_ENTER:
             if (!Settings_cursorY) Languages_init();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_end_opt')) Settings_PlayerEnd();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
@@ -1321,6 +1309,35 @@ function Settings_DialogShowWarnings() {
     };
 
     Settings_DialogShow(obj, STR_WARNINGS);
+}
+
+function Settings_PlayerEnd() {
+    var yes_no = [STR_NO, STR_YES];
+    Settings_value.open_host.values = yes_no;
+    Settings_value.clip_auto_play_next.values = yes_no;
+    Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
+
+    var obj = {
+        open_host: {
+            defaultValue: Settings_value.open_host.defaultValue,
+            values: Settings_value.open_host.values,
+            title: STR_OPEN_HOST_SETTINGS,
+            summary: null
+        },
+        clip_auto_play_next: {
+            defaultValue: Settings_value.clip_auto_play_next.defaultValue,
+            values: Settings_value.clip_auto_play_next.values,
+            title: STR_AUTO_PLAY_NEXT,
+            summary: null
+        },
+        end_dialog_counter: {
+            defaultValue: Settings_value.end_dialog_counter.defaultValue,
+            values: Settings_value.end_dialog_counter.values,
+            title: STR_END_DIALOG_SETTINGS,
+            summary: STR_END_DIALOG_SETTINGS_SUMMARY
+        },
+    };
+    Settings_DialogShow(obj, STR_END_DIALOG_OPT);
 }
 
 function Settings_DialogShowChat() {

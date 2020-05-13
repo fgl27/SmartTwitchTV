@@ -246,6 +246,7 @@ function en_USLang() {
     STR_UP = " Press up";
     STR_HOLD_UP = " Hold up or key 2";
     STR_LIVE_FEED = "Live Feed";
+    STR_END_DIALOG_OPT = "Player end dialog options";
     STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
     STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";
     STR_END_DIALOG_DISABLE = "Disable the timer";
@@ -329,7 +330,7 @@ function en_USLang() {
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
     STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-    STR_ANIMATIONS = "Style, Animations and related";
+    STR_ANIMATIONS = "Customizations, Style, Animations and related";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get stream link issue";
     STR_410_FEATURING = "Third party app are current without access for this featuring.";
