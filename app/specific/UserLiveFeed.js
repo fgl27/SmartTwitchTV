@@ -253,6 +253,8 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
         }
     }
 
+    if (pos !== UserLiveFeed_FeedPosX) UserLiveFeed_obj[pos].div.classList.add('hide');
+
     Main_HideElement('dialog_loading_side_feed');
     Sidepannel_AddFocusFeed(true);
     UserLiveFeed_FeedAddFocus(true, pos, 1);
