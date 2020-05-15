@@ -363,7 +363,7 @@ public final class Tools {
     }
 
     public static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
-                                                 String Method, long checkResult, String JsonString) {
+                                               String Method, long checkResult, String JsonString) {
 
         JsonArray DEFAULT_HEADERS = parseString(JsonString).getAsJsonArray();
         JsonArray temp_array;
@@ -414,14 +414,17 @@ public final class Tools {
 
             if (Method != null) {//If Method == null this will use the default get method, same as readUrl
                 urlConnection.setRequestMethod(Method);
-                urlConnection.setDoOutput(true);
             }
 
             if (postMessage != null) {//If postMessage == null we don't send a thing
+                urlConnection.setDoOutput(true);
+
                 OutputStream mOutputStream = urlConnection.getOutputStream();
                 OutputStreamWriter mOutputStreamWriter = new OutputStreamWriter(mOutputStream, StandardCharsets.UTF_8);
+
                 mOutputStreamWriter.write(postMessage);
                 mOutputStreamWriter.flush();
+
                 closeQuietly(mOutputStreamWriter);
                 closeQuietly(mOutputStream);
             }

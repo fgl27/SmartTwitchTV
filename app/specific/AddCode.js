@@ -1,3 +1,4 @@
+
 //Variable initialization
 var AddCode_loadingDataTry = 0;
 var AddCode_loadingDataTryMax = 5;
@@ -29,44 +30,75 @@ function AddCode_CheckNewCode(code) {
     AddCode_requestTokens();
 }
 
-function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key) {
+function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
     //Main_Log('AddCode_refreshTokens');
     if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
-
-    var xmlHttp = new XMLHttpRequest();
+    var xmlHttp;
 
     var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
         encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
         '&refresh_token=' + encodeURIComponent(AddUser_UsernameArray[position].refresh_token) +
         '&redirect_uri=' + AddCode_redirect_uri;
 
-    xmlHttp.open("POST", url, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout;
-    xmlHttp.ontimeout = function() {};
+    if (sync) {
+        try {
+            xmlHttp = Android.mMethodUrlHeaders(
+                url,
+                AddCode_loadingDataTimeout,
+                'POST',
+                null,
+                0,
+                JSON.stringify([])
+            );
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-            if (xmlHttp.status === 200) {
-                AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
-            } else {
-                try {
-                    var response = JSON.parse(xmlHttp.responseText);
-                    if (response.message) {
-                        if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
-                            AddCode_requestTokensFailRunning(position);
-                            if (callbackFuncNOK) callbackFuncNOK(key);
-                        } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
-                    } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
-                } catch (e) {
-                    //Main_Log('AddCode_refreshTokens e ' + e);
-                    AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
-                }
+            if (xmlHttp) {
+
+                xmlHttp = JSON.parse(xmlHttp);
+
+                if (xmlHttp) AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp);
+
+                return;
             }
-        }
-    };
 
-    xmlHttp.send(null);
+            AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
+        } catch (e) {
+            AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, false);
+        }
+    } else {
+        xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("POST", url, true);
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
+        xmlHttp.ontimeout = function() {};
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
+                AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp);
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+}
+
+function AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp) {
+    if (xmlHttp.status === 200) {
+        AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
+    } else {
+        try {
+            var response = JSON.parse(xmlHttp.responseText);
+            if (response.message) {
+                if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
+                    AddCode_requestTokensFailRunning(position);
+                    if (callbackFuncNOK) callbackFuncNOK(key);
+                } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
+            } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
+        } catch (e) {
+            //Main_Log('AddCode_refreshTokens e ' + e);
+            AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
+        }
+    }
 }
 
 function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key) {
@@ -228,7 +260,7 @@ function AddCode_CheckTokenSync(position, tryes) {
     try {
         var xmlHttp = Android.mMethodUrlHeaders(
             AddCode_ValidateUrl,
-            10000,
+            AddCode_loadingDataTimeout,
             null,
             null,
             0,
@@ -250,7 +282,6 @@ function AddCode_CheckTokenSync(position, tryes) {
 
         AddCode_CheckTokenError(position, tryes);
     } catch (e) {
-        console.log('AddCode_CheckTokenSync error ' + e);
         AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
 
     }
@@ -268,9 +299,8 @@ function AddCode_CheckTokenReady(xmlHttp, position, tryes) {
 function AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes) {
     //Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
     if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-    else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-        AddCode_refreshTokens(position, 0, null, null);
-    } else AddCode_CheckTokenError(position, tryes);
+    else if (xmlHttp.status === 401 || xmlHttp.status === 403) AddCode_refreshTokens(position, 0, null, null, null, !position); //token expired
+    else AddCode_CheckTokenError(position, tryes);
 }
 
 function AddCode_CheckTokenSuccess(responseText, position) {
@@ -645,7 +675,7 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
     xmlHttp.open("GET", AddCode_ValidateUrl, true);
     xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
 
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = AddCode_loadingDataTimeout;
     xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
