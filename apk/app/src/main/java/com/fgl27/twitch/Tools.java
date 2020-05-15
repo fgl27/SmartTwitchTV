@@ -382,7 +382,8 @@ public final class Tools {
         return Internal_MethodUrl(urlString, timeout, postMessage, Method, checkResult, HEADERS);
     }
 
-    //For other then get methods
+    //TODO on future app update replace the use of MethodUrl with MethodUrlHeaders
+    //And add a async version of mMethodUrlHeaders
     public static ResponseObj MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token,
                                         String overwriteID, String postMessage, String Method, long checkResult) {
 
@@ -399,6 +400,7 @@ public final class Tools {
         return Internal_MethodUrl(urlString, timeout, postMessage, Method, checkResult, HEADERS);
     }
 
+    //For other then get methods
     private static ResponseObj Internal_MethodUrl(String urlString, int timeout, String postMessage, String Method, long checkResult, String[][] HEADERS) {
 
         HttpURLConnection urlConnection = null;
