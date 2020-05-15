@@ -242,15 +242,8 @@
                 this.reconnectAttempts = 0;
             }
 
-            if (self.debug || ReconnectingWebSocket.debugAll) {
-                console.debug('ReconnectingWebSocket', 'attempt-connect', self.url);
-            }
-
             var localWs = ws;
             var timeout = setTimeout(function() {
-                if (self.debug || ReconnectingWebSocket.debugAll) {
-                    console.debug('ReconnectingWebSocket', 'connection-timeout', self.url);
-                }
                 timedOut = true;
                 localWs.close();
                 timedOut = false;
@@ -258,9 +251,6 @@
 
             ws.onopen = function() {
                 clearTimeout(timeout);
-                if (self.debug || ReconnectingWebSocket.debugAll) {
-                    console.debug('ReconnectingWebSocket', 'onopen', self.url);
-                }
                 self.protocol = ws.protocol;
                 self.readyState = WebSocket.OPEN;
                 self.reconnectAttempts = 0;
@@ -284,9 +274,6 @@
                     e.wasClean = event.wasClean;
                     eventTarget.dispatchEvent(e);
                     if (!reconnectAttempt && !timedOut) {
-                        if (self.debug || ReconnectingWebSocket.debugAll) {
-                            console.debug('ReconnectingWebSocket', 'onclose', self.url);
-                        }
                         eventTarget.dispatchEvent(generateEvent('close'));
                     }
 
@@ -298,17 +285,11 @@
                 }
             };
             ws.onmessage = function(event) {
-                if (self.debug || ReconnectingWebSocket.debugAll) {
-                    console.debug('ReconnectingWebSocket', 'onmessage', self.url, event.data);
-                }
                 var e = generateEvent('message');
                 e.data = event.data;
                 eventTarget.dispatchEvent(e);
             };
-            ws.onerror = function(event) {
-                if (self.debug || ReconnectingWebSocket.debugAll) {
-                    console.debug('ReconnectingWebSocket', 'onerror', self.url, event);
-                }
+            ws.onerror = function() {
                 eventTarget.dispatchEvent(generateEvent('error'));
             };
         };
@@ -325,9 +306,6 @@
          */
         this.send = function(data) {
             if (ws) {
-                if (self.debug || ReconnectingWebSocket.debugAll) {
-                    console.debug('ReconnectingWebSocket', 'send', self.url, data);
-                }
                 return ws.send(data);
             } else {
                 //throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
