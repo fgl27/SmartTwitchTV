@@ -2616,7 +2616,6 @@
 
     //Variable initialization
     var AddCode_loadingDataTry = 0;
-    var AddCode_loadingDataTryMax = 5;
     var AddCode_loadingDataTimeout = 10000;
     var AddCode_Code = 0;
     var AddCode_IsFollowing = false;
@@ -2777,7 +2776,7 @@
 
     function AddCode_requestTokensError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) {
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) {
             AddCode_requestTokens();
         } else AddCode_requestTokensFail();
 
@@ -2867,7 +2866,7 @@
 
     function AddCode_CheckOauthTokenError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_CheckOauthToken();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_CheckOauthToken();
         else AddCode_requestTokensFail();
     }
 
@@ -2964,7 +2963,7 @@
 
     function AddCode_CheckTokenError(position, tryes) {
 
-        if (tryes < AddCode_loadingDataTryMax) {
+        if (tryes < DefaultLoadingDataTryMax) {
 
             if (!position) AddCode_CheckTokenSync(position, tryes + 1);
             else AddCode_CheckToken(position, tryes + 1);
@@ -3016,7 +3015,7 @@
 
     function AddCode_RequestCheckFollowError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestCheckFollow();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestCheckFollow();
         else {
             if (AddCode_PlayRequest) Play_setFollow();
             else ChannelContent_setFollow();
@@ -3053,7 +3052,7 @@
 
     function AddCode_FollowRequestError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_FollowRequest();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_FollowRequest();
     }
 
     function AddCode_UnFollow() {
@@ -3086,7 +3085,7 @@
 
     function AddCode_UnFollowRequestError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_UnFollowRequest();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_UnFollowRequest();
     }
 
     function AddCode_CheckSub() {
@@ -3125,7 +3124,7 @@
 
     function AddCode_RequestCheckSubError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestCheckSub();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestCheckSub();
         else AddCode_RequestCheckSubfail();
     }
 
@@ -3161,7 +3160,7 @@
 
     function AddCode_GetGameIdError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_GetGameId();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_GetGameId();
     }
 
     function AddCode_RequestFollowGame() {
@@ -3187,7 +3186,7 @@
 
     function AddCode_FollowGameRequestError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestFollowGame();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestFollowGame();
     }
 
     function AddCode_UnFollowGame() {
@@ -3233,7 +3232,7 @@
 
     function AddCode_UnFollowGameRequestError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestUnFollowGame();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestUnFollowGame();
         else {
             Main_showWarningDialog(STR_410_FEATURING);
             Main_setTimeout(Main_HideWarningDialog, 2000);
@@ -3271,7 +3270,7 @@
 
     function AddCode_CheckFollowGameError() {
         AddCode_loadingDataTry++;
-        if (AddCode_loadingDataTry < AddCode_loadingDataTryMax) AddCode_RequestCheckFollowGame();
+        if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestCheckFollowGame();
         else {
             AGame_following = false;
             AGame_setFollow();
@@ -3342,7 +3341,6 @@
         xmlHttp.send(null);
     } //Variable initialization
     var AddUser_loadingDataTry = 0;
-    var AddUser_loadingDataTryMax = 5;
     var AddUser_loadingDataTimeout = 3500;
     var AddUser_UsernameArray = [];
     var AddUser_Username = null;
@@ -3500,7 +3498,7 @@
 
     function AddUser_loadDataError() {
         AddUser_loadingDataTry++;
-        if (AddUser_loadingDataTry < AddUser_loadingDataTryMax) {
+        if (AddUser_loadingDataTry < DefaultLoadingDataTryMax) {
             AddUser_loadingDataTimeout += 500;
             AddUser_loadDataRequest();
         } else AddUser_loadDataNoUser();
@@ -3633,7 +3631,7 @@
 
     function AddUser_UpdateUserError(position, tryes) {
         tryes++;
-        if (tryes < AddUser_loadingDataTryMax) AddUser_UpdateUser(position, tryes);
+        if (tryes < DefaultLoadingDataTryMax) AddUser_UpdateUser(position, tryes);
     }
 
     function AddUser_SaveNewUser(responseText) {
@@ -3756,7 +3754,6 @@
     var ChannelContent_dataEnded = false;
     var ChannelContent_itemsCount = 0;
     var ChannelContent_loadingDataTry = 0;
-    var ChannelContent_loadingDataTryMax = 3;
     var ChannelContent_loadingDataTimeout = 3000;
     var ChannelContent_itemsCountOffset = 0;
     var ChannelContent_isoffline = false;
@@ -3867,7 +3864,7 @@
 
     function ChannelContent_loadDataError() {
         ChannelContent_loadingDataTry++;
-        if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+        if (ChannelContent_loadingDataTry < DefaultLoadingDataTryMax) {
             ChannelContent_loadingDataTimeout += 500;
             ChannelContent_loadDataRequest();
         } else {
@@ -3914,7 +3911,7 @@
 
     function ChannelContent_loadDataCheckHostError() {
         ChannelContent_loadingDataTry++;
-        if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+        if (ChannelContent_loadingDataTry < DefaultLoadingDataTryMax) {
             ChannelContent_loadingDataTimeout += 500;
             ChannelContent_loadDataCheckHost();
         } else {
@@ -3960,7 +3957,7 @@
 
     function ChannelContent_GetStreamerInfoError() {
         ChannelContent_loadingDataTry++;
-        if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+        if (ChannelContent_loadingDataTry < DefaultLoadingDataTryMax) {
             ChannelContent_loadingDataTimeout += 500;
             ChannelContent_GetStreamerInfo();
         } else {
@@ -5192,7 +5189,6 @@
         ChatLiveControls_SetarrowsKey(key);
     }
     //Variable initialization
-    var ChatLive_loadingDataTryMax = 10;
     var Chat_Id = [];
     var ChatLive_loadBadgesChannelId;
     var ChatLive_socket = [];
@@ -5382,7 +5378,7 @@
     }
 
     function ChatLive_checkFallowError(tryes, chat_number, id) {
-        if (tryes < ChatLive_loadingDataTryMax) ChatLive_checkFallow(tryes + 1, chat_number, id);
+        if (tryes < DefaultLoadingDataTryMax) ChatLive_checkFallow(tryes + 1, chat_number, id);
     }
 
     function ChatLive_checkSub(tryes, chat_number, id) {
@@ -5411,6 +5407,8 @@
                     if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) { //no
                         ChatLive_SubState[chat_number].state = false;
                     } else ChatLive_checkSubError(tryes, chat_number, id);
+                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                    AddCode_refreshTokens(0, 0, null, null);
                 } else { // internet error
                     ChatLive_checkSubError(tryes, chat_number, id);
                 }
@@ -5421,7 +5419,7 @@
     }
 
     function ChatLive_checkSubError(tryes, chat_number, id) {
-        if (tryes < ChatLive_loadingDataTryMax) ChatLive_checkSub(tryes + 1, chat_number, id);
+        if (tryes < DefaultLoadingDataTryMax) ChatLive_checkSub(tryes + 1, chat_number, id);
     }
 
     function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
@@ -5451,7 +5449,7 @@
     }
 
     function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
-        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
+        if (tryes < DefaultLoadingDataTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
     }
 
     function ChatLive_loadEmotesUser(tryes) {
@@ -5470,7 +5468,7 @@
     }
 
     function ChatLive_loadEmotesUserError(tryes) {
-        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesUser(tryes + 1);
+        if (tryes < DefaultLoadingDataTryMax) ChatLive_loadEmotesUser(tryes + 1);
     }
 
     function ChatLive_loadEmotesUserSuccess(data) {
@@ -5536,7 +5534,7 @@
     }
 
     function ChatLive_loadEmotesChannelError(tryes, chat_number, id) {
-        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelbttv(tryes + 1, chat_number, id);
+        if (tryes < DefaultLoadingDataTryMax) ChatLive_loadEmotesChannelbttv(tryes + 1, chat_number, id);
     }
 
     function ChatLive_loadEmotesChannelbttvSuccess(data, chat_number, id) {
@@ -5605,7 +5603,7 @@
     }
 
     function ChatLive_loadCheersChannelError(tryes, chat_number, id) {
-        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadCheersChannel(tryes + 1, chat_number, id);
+        if (tryes < DefaultLoadingDataTryMax) ChatLive_loadCheersChannel(tryes + 1, chat_number, id);
     }
 
     function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
@@ -5664,7 +5662,7 @@
     }
 
     function ChatLive_loadEmotesChannelffzError(tryes, chat_number, id) {
-        if (tryes < ChatLive_loadingDataTryMax) ChatLive_loadEmotesChannelffz(tryes + 1, chat_number, id);
+        if (tryes < DefaultLoadingDataTryMax) ChatLive_loadEmotesChannelffz(tryes + 1, chat_number, id);
     }
 
     function ChatLive_loadEmotesChannelffzSuccess(data, chat_number, id) {
@@ -5739,9 +5737,10 @@
             (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
             chat_number
         );
-        ChatLive_loadChatRequest(chat_number, id);
 
         useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
+
+        ChatLive_loadChatRequest(chat_number, id);
 
         if (!chat_number) {
             if (useToken[chat_number]) ChatLive_SendPrepared();
@@ -5753,8 +5752,8 @@
     function ChatLive_loadChatRequest(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
-        ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
-            reconnectInterval: 3000
+        ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
+            reconnectInterval: ChatLive_SetCheckTimout
         });
 
         if (useToken[chat_number]) {
@@ -5777,8 +5776,8 @@
 
             if (!message.command) return;
 
-            ////Main_Log(message);
-            ////Main_Log(message.command);
+            //Main_Log(message);
+            //Main_Log(message.command);
 
             switch (message.command) {
                 case "PING":
@@ -5998,8 +5997,8 @@
         if (!ChatLive_socketSend || ChatLive_socketSend.readyState !== 1) {
             ChatLive_SendClose();
 
-            ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
-                reconnectInterval: 3000
+            ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
+                reconnectInterval: ChatLive_SetCheckTimout
             });
 
             ChatLive_socketSend.onopen = function() {
@@ -6034,7 +6033,9 @@
                         ChatLive_socketSendJoin = true;
                         break;
                     case "NOTICE":
-                        ChatLive_UserNoticeWarn(message);
+                        if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed"))
+                            AddCode_refreshTokens(0, 0, null, null);
+                        else ChatLive_UserNoticeWarn(message);
                         break;
                     case "USERSTATE":
                         //Main_Log('USERSTATE send');
@@ -6085,6 +6086,8 @@
 
             Main_clearTimeout(ChatLive_CheckId[chat_number]);
             ChatLive_Check(chat_number, id);
+        } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed")) {
+            AddCode_refreshTokens(0, 0, null, null);
         } else ChatLive_UserNoticeWarn(message);
 
     }
@@ -6560,6 +6563,8 @@
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
                     callbackSucess(xmlHttp.responseText, chat_number, id);
+                } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                    AddCode_refreshTokens(0, 0, null, null);
                 } else if (xmlHttp.status !== 404) { //404 ignore the result is empty
                     callbackError(tryes, chat_number, id);
                 }
@@ -6572,7 +6577,6 @@
     var Chat_loadingDataTry = 0;
     var Chat_Messages = [];
     var Chat_MessagesNext = [];
-    var Chat_loadingDataTryMax = 10;
     var Chat_addlinesId;
     var Chat_next = null;
     var Chat_loadChatId;
@@ -6661,7 +6665,7 @@
     }
 
     function Chat_loadBadgesGlobalError(tryes) {
-        if (tryes < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest(tryes + 1);
+        if (tryes < DefaultLoadingDataTryMax) Chat_loadBadgesGlobalRequest(tryes + 1);
     }
 
     function Chat_loadBadgesGlobalSuccess(responseText) {
@@ -6725,7 +6729,7 @@
     }
 
     function Chat_loadEmotesBttvError(tryes) {
-        if (tryes < Chat_loadingDataTryMax) Chat_loadBTTVGlobalEmotes(tryes + 1);
+        if (tryes < DefaultLoadingDataTryMax) Chat_loadBTTVGlobalEmotes(tryes + 1);
     }
 
     function Chat_loadEmotesSuccessBttv(data) {
@@ -6771,7 +6775,7 @@
     }
 
     function Chat_loadEmotesErrorffz(tryes) {
-        if (tryes < Chat_loadingDataTryMax) Chat_loadEmotesffz(tryes + 1);
+        if (tryes < DefaultLoadingDataTryMax) Chat_loadEmotesffz(tryes + 1);
     }
 
     function Chat_loadEmotesSuccessffz(data) {
@@ -6809,7 +6813,7 @@
     function Chat_loadChatError(id) {
         Chat_loadingDataTry++;
         if (Chat_Id[0] === id) {
-            if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatRequest(id);
+            if (Chat_loadingDataTry < DefaultLoadingDataTryMax) Chat_loadChatRequest(id);
             else {
                 Chat_loadChatId = Main_setTimeout(
                     function() {
@@ -7098,7 +7102,7 @@
     function Chat_loadChatNextError(id) {
         Chat_loadingDataTry++;
         if (Chat_Id[0] === id) {
-            if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatNextRequest(id);
+            if (Chat_loadingDataTry < DefaultLoadingDataTryMax) Chat_loadChatNextRequest(id);
             else {
                 Chat_loadChatNextId = Main_setTimeout(
                     function() {
@@ -9261,7 +9265,6 @@
     var PlayClip_TimeToJump = 0;
     var PlayClip_isOn = false;
     var PlayClip_loadingDataTimeout = 2000;
-    var PlayClip_loadingDataTryMax = 3;
     var PlayClip_quality = 'source';
     var PlayClip_qualityPlaying = PlayClip_quality;
     var PlayClip_qualityIndex = 0;
@@ -9396,7 +9399,7 @@
 
     function PlayClip_updateVodInfoError() {
         PlayVod_loadingInfoDataTry++;
-        if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) PlayClip_updateVodInfo();
+        if (PlayVod_loadingInfoDataTry < DefaultLoadingDataTryMax) PlayClip_updateVodInfo();
     }
 
     function PlayClip_GetStreamerInfo() {
@@ -9408,7 +9411,7 @@
 
     function PlayClip_GetStreamerInfoSuccessError() {
         PlayClip_loadingtreamerInfoTry++;
-        if (PlayClip_loadingtreamerInfoTry < PlayClip_loadingDataTryMax) PlayClip_GetStreamerInfo();
+        if (PlayClip_loadingtreamerInfoTry < DefaultLoadingDataTryMax) PlayClip_GetStreamerInfo();
     }
 
     function PlayClip_GetStreamerInfoSuccess(response) {
@@ -12131,7 +12134,7 @@
 
     function PlayExtra_loadDataCheckHostError(doSwitch) {
         Play_loadingDataTry++;
-        if (Play_loadingDataTry < Play_loadingDataTryMax) {
+        if (Play_loadingDataTry < DefaultLoadingDataTryMax) {
             Play_loadingDataTimeout += 250;
             PlayExtra_loadDataCheckHost(doSwitch);
         } else PlayExtra_End_success(doSwitch);
@@ -12314,7 +12317,7 @@
     }
 
     function PlayExtra_updateStreamInfoError() {
-        if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
+        if (Play_updateStreamInfoErrorTry < DefaultLoadingDataTryMax) {
             Main_setTimeout(
                 function() {
                     if (Play_isOn) PlayExtra_updateStreamInfo();
@@ -12370,10 +12373,7 @@
     var Play_created = '';
 
     var Play_loadingDataTry = 0;
-    var Play_loadingDataTryMax = 5;
-
     var Play_loadingInfoDataTry = 0;
-    var Play_loadingInfoDataTryMax = 5;
 
     var Play_ResumeAfterOnlineCounter = 0;
     var Play_ResumeAfterOnlineId;
@@ -12889,7 +12889,7 @@
     }
 
     function Play_updateStreamInfoStartError() {
-        if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
+        if (Play_loadingInfoDataTry < DefaultLoadingDataTryMax) {
             Play_loadingInfoDataTimeout += 500;
             Main_setTimeout(
                 function() {
@@ -12915,7 +12915,7 @@
     }
 
     function Play_updateStreamInfoError() {
-        if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
+        if (Play_updateStreamInfoErrorTry < DefaultLoadingDataTryMax) {
             Main_setTimeout(
                 function() {
                     if (Play_isOn) Play_updateStreamInfo();
@@ -13026,7 +13026,7 @@
     }
 
     function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
-        if (tryes < Play_loadingInfoDataTryMax) {
+        if (tryes < DefaultLoadingDataTryMax) {
             Main_setTimeout(
                 function() {
                     if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
@@ -13947,7 +13947,7 @@
 
     function Play_loadDataCheckHostError() {
         Play_loadingDataTry++;
-        if (Play_loadingDataTry < Play_loadingDataTryMax) {
+        if (Play_loadingDataTry < DefaultLoadingDataTryMax) {
             Play_loadingDataTimeout += 250;
             Play_loadDataCheckHost();
         } else Play_EndStart(false, 1);
@@ -14688,7 +14688,6 @@
     var PlayVod_Buffer = 2000;
 
     var PlayVod_loadingInfoDataTry = 0;
-    var PlayVod_loadingInfoDataTryMax = 5;
     var PlayVod_loadingInfoDataTimeout = 10000;
 
     var Play_jumping = false;
@@ -14825,7 +14824,6 @@
 
     function PlayVod_PrepareLoad() {
         PlayVod_loadingInfoDataTry = 0;
-        PlayVod_loadingInfoDataTryMax = 6;
         PlayVod_loadingInfoDataTimeout = 10000;
     }
 
@@ -14836,7 +14834,7 @@
 
     function PlayVod_updateVodInfoError() {
         PlayVod_loadingInfoDataTry++;
-        if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
+        if (PlayVod_loadingInfoDataTry < DefaultLoadingDataTryMax) {
             PlayVod_loadingInfoDataTimeout += 500;
             PlayVod_updateVodInfo();
         }
@@ -23427,7 +23425,6 @@
     var UserLiveFeed_loadingDataTry = [];
     var UserLiveFeed_loadingDataTimeout = [];
     var UserLiveFeed_loadChannelOffsset = 0;
-    var UserLiveFeed_loadingDataTryMax = 5;
     var UserLiveFeed_followerChannels = '';
     var UserLiveFeed_idObject = [];
     var UserLiveFeed_status = [];
@@ -24402,7 +24399,7 @@
     function UserLiveFeedobj_loadDataError(pos) {
         //Main_Log('UserLiveFeedobj_loadChannels');
         UserLiveFeed_loadingDataTry[pos]++;
-        if (UserLiveFeed_loadingDataTry[pos] < UserLiveFeed_loadingDataTryMax) {
+        if (UserLiveFeed_loadingDataTry[pos] < DefaultLoadingDataTryMax) {
             UserLiveFeed_loadingDataTimeout[pos] += 500;
             UserLiveFeed_obj[pos].load();
         } else {
@@ -27078,15 +27075,8 @@
                     this.reconnectAttempts = 0;
                 }
 
-                if (self.debug || ReconnectingWebSocket.debugAll) {
-                    console.debug('ReconnectingWebSocket', 'attempt-connect', self.url);
-                }
-
                 var localWs = ws;
                 var timeout = setTimeout(function() {
-                    if (self.debug || ReconnectingWebSocket.debugAll) {
-                        console.debug('ReconnectingWebSocket', 'connection-timeout', self.url);
-                    }
                     timedOut = true;
                     localWs.close();
                     timedOut = false;
@@ -27094,9 +27084,6 @@
 
                 ws.onopen = function() {
                     clearTimeout(timeout);
-                    if (self.debug || ReconnectingWebSocket.debugAll) {
-                        console.debug('ReconnectingWebSocket', 'onopen', self.url);
-                    }
                     self.protocol = ws.protocol;
                     self.readyState = WebSocket.OPEN;
                     self.reconnectAttempts = 0;
@@ -27120,9 +27107,6 @@
                         e.wasClean = event.wasClean;
                         eventTarget.dispatchEvent(e);
                         if (!reconnectAttempt && !timedOut) {
-                            if (self.debug || ReconnectingWebSocket.debugAll) {
-                                console.debug('ReconnectingWebSocket', 'onclose', self.url);
-                            }
                             eventTarget.dispatchEvent(generateEvent('close'));
                         }
 
@@ -27134,17 +27118,11 @@
                     }
                 };
                 ws.onmessage = function(event) {
-                    if (self.debug || ReconnectingWebSocket.debugAll) {
-                        console.debug('ReconnectingWebSocket', 'onmessage', self.url, event.data);
-                    }
                     var e = generateEvent('message');
                     e.data = event.data;
                     eventTarget.dispatchEvent(e);
                 };
-                ws.onerror = function(event) {
-                    if (self.debug || ReconnectingWebSocket.debugAll) {
-                        console.debug('ReconnectingWebSocket', 'onerror', self.url, event);
-                    }
+                ws.onerror = function() {
                     eventTarget.dispatchEvent(generateEvent('error'));
                 };
             };
@@ -27161,9 +27139,6 @@
              */
             this.send = function(data) {
                 if (ws) {
-                    if (self.debug || ReconnectingWebSocket.debugAll) {
-                        console.debug('ReconnectingWebSocket', 'send', self.url, data);
-                    }
                     return ws.send(data);
                 } else {
                     //throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
