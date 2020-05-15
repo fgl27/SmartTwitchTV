@@ -1932,7 +1932,12 @@ var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume() { // Called only by JAVA
     var UserIsSet = AddUser_UserIsSet();
-    if (UserIsSet && AddUser_UsernameArray[0].access_token) AddCode_CheckTokenStart(0);
+
+    //Check on resume if token has expired and refresh
+    if (UserIsSet && AddUser_UsernameArray[0].access_token &&
+        (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
+        AddCode_refreshTokens(0, 0, null, null, null, true);
+    }
 
     if (Main_isElementShowing('main_remove_dialog')) return;
 

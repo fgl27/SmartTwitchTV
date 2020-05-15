@@ -303,6 +303,7 @@ function AddUser_SaveNewUser(responseText) {
         access_token: 0,
         refresh_token: 0,
         expires_in: 0,
+        expires_when: 0,
         timeout_id: null,
     });
 

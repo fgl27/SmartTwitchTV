@@ -8,6 +8,7 @@ var AddCode_IsFollowing = false;
 var AddCode_IsSub = false;
 var AddCode_PlayRequest = false;
 var AddCode_Channel_id = '';
+var AddCode_Expires_in_offset = 100;
 
 var AddCode_Scopes = [
     'user_read',
@@ -121,7 +122,8 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) 
     if (AddCode_TokensCheckScope(response.scope)) {
         AddUser_UsernameArray[position].access_token = response.access_token;
         AddUser_UsernameArray[position].refresh_token = response.refresh_token;
-        AddUser_UsernameArray[position].expires_in = response.expires_in;
+        AddUser_UsernameArray[position].expires_in = (parseInt(response.expires_in) - AddCode_Expires_in_offset) * 1000;
+        AddUser_UsernameArray[position].expires_when = (new Date().getTime()) + AddUser_UsernameArray[position].expires_in;
         //Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
 
         AddUser_SaveUserArray();
@@ -319,7 +321,8 @@ function AddCode_CheckTokenSuccess(responseText, position) {
     if (token.hasOwnProperty('scopes') && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
     else if (token.hasOwnProperty('expires_in')) {
 
-        AddUser_UsernameArray[position].expires_in = token.expires_in;
+        AddUser_UsernameArray[position].expires_in = (parseInt(token.expires_in) - AddCode_Expires_in_offset) * 1000;
+        AddUser_UsernameArray[position].expires_when = (new Date().getTime()) + AddUser_UsernameArray[position].expires_in;
         AddCode_Refreshtimeout(position);
 
     }
@@ -335,13 +338,13 @@ function AddCode_Refreshtimeout(position) {
                 AddCode_refreshTokens(position, 0, null, null);
 
             },
-            (parseInt(AddUser_UsernameArray[position].expires_in) - 60) * 1000,
+            AddUser_UsernameArray[position].expires_in,
             AddUser_UsernameArray[position].timeout_id
         );
 
     } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
 
-    //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60));
+    //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60000) + ' plus offset ' + AddCode_Expires_in_offset + ' s');
 }
 
 function AddCode_CheckTokenError(position, tryes) {
