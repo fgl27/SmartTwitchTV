@@ -7419,10 +7419,10 @@
                     Main_PreventCheckResume = true;
                     Main_addEventListener("keydown", Main_BackupDialodKeyDown);
                 } catch (e) {
-                    Main_setTimeout(Main_initWindows, 250); //Small delays here to make sure user restore function has finished checking at least user 0 token
+                    Main_ready(Main_initWindows); //Small delays here to make sure user restore function has finished checking at least user 0 token
                     return;
                 }
-            } else Main_setTimeout(Main_initWindows, 250);
+            } else Main_ready(Main_initWindows);
         });
 
     }
@@ -9094,6 +9094,10 @@
         var UserIsSet = AddUser_UserIsSet();
 
         //Check on resume if token has expired and refresh
+        //The token may expire while the device is on standby and on that case even if the app is running
+        //the internet connection may be down (do to standby), on that case the update token fun will run and not work
+        //On that case the expires_when will be less the time now and we need to update on resume
+        //If the app closes next reopen the same check will happen but somewhere else
         if (UserIsSet && AddUser_UsernameArray[0].access_token &&
             (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
             AddCode_refreshTokens(0, 0, null, null, null, true);
