@@ -2613,6 +2613,7 @@
     var KEY_A = 65;
     var KEY_C = 67;
     var KEY_E = 69;
+
     //Variable initialization
     var AddCode_loadingDataTry = 0;
     var AddCode_loadingDataTryMax = 5;
@@ -2634,6 +2635,7 @@
     var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
     var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
     var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
+    var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
     //Variable initialization end
 
     function AddCode_CheckNewCode(code) {
@@ -2643,48 +2645,86 @@
         AddCode_requestTokens();
     }
 
-    function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key) {
+    function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
         //Main_Log('AddCode_refreshTokens');
         if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
 
-        var xmlHttp = new XMLHttpRequest();
-
-        var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
+        var xmlHttp,
+            url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
             encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
             '&refresh_token=' + encodeURIComponent(AddUser_UsernameArray[position].refresh_token) +
             '&redirect_uri=' + AddCode_redirect_uri;
 
-        xmlHttp.open("POST", url, true);
-        xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.ontimeout = function() {};
+        //Run in synchronous mode to prevent anything happening until user token is restored
+        if (sync) {
+            try {
+                xmlHttp = Android.mMethodUrlHeaders(
+                    url,
+                    AddCode_loadingDataTimeout,
+                    'POST',
+                    null,
+                    0,
+                    JSON.stringify([])
+                );
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-                if (xmlHttp.status === 200) {
-                    AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
-                } else {
-                    try {
-                        var response = JSON.parse(xmlHttp.responseText);
-                        if (response.message) {
-                            if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
-                                AddCode_requestTokensFailRunning(position);
-                                if (callbackFuncNOK) callbackFuncNOK(key);
-                            } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
-                        } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
-                    } catch (e) {
-                        //Main_Log('AddCode_refreshTokens e ' + e);
-                        AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
-                    }
+                if (xmlHttp) {
+
+                    xmlHttp = JSON.parse(xmlHttp);
+
+                    if (xmlHttp) AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync);
+
+                    return;
                 }
-            }
-        };
 
-        xmlHttp.send(null);
+                AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
+            } catch (e) {
+                AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, false);
+            }
+        } else {
+            xmlHttp = new XMLHttpRequest();
+
+            xmlHttp.open("POST", url, true);
+            xmlHttp.timeout = AddCode_loadingDataTimeout;
+            xmlHttp.ontimeout = function() {};
+
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) {
+                    //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
+                    AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync);
+                }
+            };
+
+            xmlHttp.send(null);
+        }
     }
 
-    function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key) {
-        if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, key);
+    function AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync) {
+        if (xmlHttp.status === 200) {
+            AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
+            return;
+        } else {
+
+            try {
+                var response = JSON.parse(xmlHttp.responseText);
+                if (response.message) {
+                    if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
+
+                        AddCode_requestTokensFailRunning(position);
+                        if (callbackFuncNOK) callbackFuncNOK(key);
+
+                        return;
+                    }
+                }
+            } catch (e) {
+                //Main_Log('AddCode_refreshTokens e ' + e);
+            }
+
+        }
+        AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
+    }
+
+    function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key, sync) {
+        if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, key, sync);
         else if (callbackFuncNOK) callbackFuncNOK(key);
     }
 
@@ -2832,7 +2872,42 @@
     function AddCode_CheckTokenStart(position) {
         //Main_Log('AddCode_CheckTokenStart');
 
-        AddCode_CheckToken(position, 0);
+        if (!position) AddCode_CheckTokenSync(position, 0);
+        else AddCode_CheckToken(position, 0);
+    }
+
+    //Run in synchronous mode to prevent anything happening until user token is checked and if needed restored
+    function AddCode_CheckTokenSync(position, tryes) {
+        //Main_Log('AddCode_CheckToken');
+
+        try {
+            var xmlHttp = Android.mMethodUrlHeaders(
+                AddCode_ValidateUrl,
+                AddCode_loadingDataTimeout,
+                null,
+                null,
+                0,
+                JSON.stringify(
+                    [
+                        [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
+                    ]
+                )
+            );
+
+            if (xmlHttp) {
+
+                xmlHttp = JSON.parse(xmlHttp);
+
+                if (xmlHttp) AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes);
+
+                return;
+            }
+
+            AddCode_CheckTokenError(position, tryes);
+        } catch (e) {
+            AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
+
+        }
     }
 
     function AddCode_CheckToken(position, tryes) {
@@ -2841,23 +2916,27 @@
     }
 
     function AddCode_CheckTokenReady(xmlHttp, position, tryes) {
-        if (xmlHttp.readyState === 4) {
-            //Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
-            if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-            else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(position, 0, null, null);
-            } else AddCode_CheckTokenError(position, tryes);
-        }
+        if (xmlHttp.readyState === 4) AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes);
+    }
+
+    function AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes) {
+        //Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
+        if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
+        else if (xmlHttp.status === 401 || xmlHttp.status === 403) AddCode_refreshTokens(position, 0, null, null, null, !position); //token expired
+        else AddCode_CheckTokenError(position, tryes);
     }
 
     function AddCode_CheckTokenSuccess(responseText, position) {
         //Main_Log('AddCode_CheckTokenSuccess ' + responseText);
 
         var token = JSON.parse(responseText);
-        if (token.scopes && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
-        else if (token.expires_in) {
+
+        if (token.hasOwnProperty('scopes') && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
+        else if (token.hasOwnProperty('expires_in')) {
+
             AddUser_UsernameArray[position].expires_in = token.expires_in;
             AddCode_Refreshtimeout(position);
+
         }
     }
 
@@ -2881,7 +2960,14 @@
     }
 
     function AddCode_CheckTokenError(position, tryes) {
-        if (tryes < AddCode_loadingDataTryMax) AddCode_CheckToken(position, tryes + 1);
+
+        if (tryes < AddCode_loadingDataTryMax) {
+
+            if (!position) AddCode_CheckTokenSync(position, tryes + 1);
+            else AddCode_CheckToken(position, tryes + 1);
+
+        }
+
     }
 
     function AddCode_CheckFollow() {
@@ -3210,14 +3296,12 @@
     }
 
     function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
-        var theUrl = 'https://id.twitch.tv/oauth2/validate';
-
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.open("GET", AddCode_ValidateUrl, true);
         xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
 
-        xmlHttp.timeout = 10000;
+        xmlHttp.timeout = AddCode_loadingDataTimeout;
         xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
@@ -7189,8 +7273,8 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.185';
-    var Main_minversion = 'May 13, 2020';
+    var Main_stringVersion_Min = '.186';
+    var Main_minversion = 'May 14, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -9352,15 +9436,15 @@
         //TODO remove the try after some app updates
         try {
             Android.GetClipData(
-                theUrl,
-                PlayClip_loadingDataTimeout,
-                1,
-                null,
-                Main_Headers_Back[0][1],
-                postMessage,
-                'POST',
-                'PlayClip_loadDataResult',
-                PlayClip_loadDataRequestId
+                theUrl, //urlString
+                PlayClip_loadingDataTimeout, //timeout
+                1, //HeaderQuantity
+                null, //access_token
+                Main_Headers_Back[0][1], //overwriteID
+                postMessage, //postMessage
+                'POST', //Method
+                'PlayClip_loadDataResult', //callback
+                PlayClip_loadDataRequestId //checkResult
             );
         } catch (e) {
             PlayClip_loadDataError();
