@@ -269,7 +269,7 @@ function Main_loadTranslations(language) {
                 Main_PreventCheckResume = true;
                 Main_addEventListener("keydown", Main_BackupDialodKeyDown);
             } catch (e) {
-                Main_ready(Main_initWindows);//Small delays here to make sure user restore function has finished checking at least user 0 token
+                Main_ready(Main_initWindows);
                 return;
             }
         } else Main_ready(Main_initWindows);
