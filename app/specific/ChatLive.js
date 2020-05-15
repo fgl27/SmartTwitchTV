@@ -562,7 +562,7 @@ function ChatLive_loadChat(chat_number, id) {
 function ChatLive_loadChatRequest(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
-    ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
+    ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
         reconnectInterval: ChatLive_SetCheckTimout
     });
 
@@ -805,7 +805,7 @@ function ChatLive_SendPrepared() {
     if (!ChatLive_socketSend || ChatLive_socketSend.readyState !== 1) {
         ChatLive_SendClose();
 
-        ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
+        ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
             reconnectInterval: ChatLive_SetCheckTimout
         });
 
