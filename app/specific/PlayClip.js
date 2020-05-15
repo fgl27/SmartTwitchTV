@@ -188,15 +188,15 @@ function PlayClip_loadDataRequest() {
     //TODO remove the try after some app updates
     try {
         Android.GetClipData(
-            theUrl,
-            PlayClip_loadingDataTimeout,
-            1,
-            null,
-            Main_Headers_Back[0][1],
-            postMessage,
-            'POST',
-            'PlayClip_loadDataResult',
-            PlayClip_loadDataRequestId
+            theUrl,//urlString
+            PlayClip_loadingDataTimeout,//timeout
+            1,//HeaderQuantity
+            null,//access_token
+            Main_Headers_Back[0][1],//overwriteID
+            postMessage,//postMessage
+            'POST',//Method
+            'PlayClip_loadDataResult',//callback
+            PlayClip_loadDataRequestId//checkResult
         );
     } catch (e) {
         PlayClip_loadDataError();

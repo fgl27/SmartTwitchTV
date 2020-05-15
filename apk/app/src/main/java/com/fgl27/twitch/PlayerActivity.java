@@ -1450,6 +1450,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void GetClipData(String urlString, int timeout, int HeaderQuantity, String access_token,
                                 String overwriteID, String postMessage, String Method, String callback, long checkResult) {
+
             DataResultHandler[0].removeCallbacksAndMessages(null);
             DataResult[0] = null;
 
@@ -1494,7 +1495,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void GetMethodUrlAsync(String urlString, int timeout, int HeaderQuantity, String access_token,
-                                String overwriteID, String postMessage, String Method, String callback, long checkResult, int key, int thread) {
+                                      String overwriteID, String postMessage, String Method, String callback, long checkResult, int key, int thread) {
 
             DataResultHandler[thread].removeCallbacksAndMessages(null);
             DataResultHandler[thread] = null;
@@ -1678,6 +1679,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String mMethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
             return new Gson().toJson(Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method, 0L));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonString) {
+            return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonString));
         }
 
         @SuppressWarnings("unused")//called by JS

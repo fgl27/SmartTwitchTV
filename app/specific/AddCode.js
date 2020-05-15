@@ -19,6 +19,7 @@ var AddCode_Scopes = [
 var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
 var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
+var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
 //Variable initialization end
 
 function AddCode_CheckNewCode(code) {
@@ -217,7 +218,42 @@ function AddCode_CheckOauthTokenError() {
 function AddCode_CheckTokenStart(position) {
     //Main_Log('AddCode_CheckTokenStart');
 
-    AddCode_CheckToken(position, 0);
+    if (!position) AddCode_CheckTokenSync(position, 0);
+    else AddCode_CheckToken(position, 0);
+}
+
+function AddCode_CheckTokenSync(position, tryes) {
+    //Main_Log('AddCode_CheckToken');
+
+    try {
+        var xmlHttp = Android.mMethodUrlHeaders(
+            AddCode_ValidateUrl,
+            10000,
+            null,
+            null,
+            0,
+            JSON.stringify(
+                [
+                    [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
+                ]
+            )
+        );
+
+        if (xmlHttp) {
+
+            xmlHttp = JSON.parse(xmlHttp);
+
+            if (xmlHttp) AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes);
+
+            return;
+        }
+
+        AddCode_CheckTokenError(position, tryes);
+    } catch (e) {
+        console.log('AddCode_CheckTokenSync error ' + e);
+        AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
+
+    }
 }
 
 function AddCode_CheckToken(position, tryes) {
@@ -226,13 +262,15 @@ function AddCode_CheckToken(position, tryes) {
 }
 
 function AddCode_CheckTokenReady(xmlHttp, position, tryes) {
-    if (xmlHttp.readyState === 4) {
-        //Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
-        if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-        else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            AddCode_refreshTokens(position, 0, null, null);
-        } else AddCode_CheckTokenError(position, tryes);
-    }
+    if (xmlHttp.readyState === 4) AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes);
+}
+
+function AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes) {
+    //Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
+    if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
+    else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+        AddCode_refreshTokens(position, 0, null, null);
+    } else AddCode_CheckTokenError(position, tryes);
 }
 
 function AddCode_CheckTokenSuccess(responseText, position) {
@@ -266,7 +304,14 @@ function AddCode_Refreshtimeout(position) {
 }
 
 function AddCode_CheckTokenError(position, tryes) {
-    if (tryes < AddCode_loadingDataTryMax) AddCode_CheckToken(position, tryes + 1);
+
+    if (tryes < AddCode_loadingDataTryMax) {
+
+        if (!position) AddCode_CheckTokenSync(position, tryes + 1);
+        else AddCode_CheckToken(position, tryes + 1);
+
+    }
+
 }
 
 function AddCode_CheckFollow() {
@@ -595,11 +640,9 @@ function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, cal
 }
 
 function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
-    var theUrl = 'https://id.twitch.tv/oauth2/validate';
-
     var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.open("GET", AddCode_ValidateUrl, true);
     xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
 
     xmlHttp.timeout = 10000;

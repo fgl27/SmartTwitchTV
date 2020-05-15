@@ -45,6 +45,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -361,22 +362,52 @@ public final class Tools {
         return null;
     }
 
+    public static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
+                                                 String Method, long checkResult, String JsonString) {
+
+        JsonArray DEFAULT_HEADERS = parseString(JsonString).getAsJsonArray();
+        JsonArray temp_array;
+
+        String[][] HEADERS = new String[DEFAULT_HEADERS.size()][2];
+
+        for(int i = 0; i< HEADERS.length; i++) {
+
+            temp_array = DEFAULT_HEADERS.get(i).getAsJsonArray();
+
+            HEADERS[i][0] = temp_array.get(0).getAsString();
+            HEADERS[i][1] = temp_array.get(1).getAsString();
+
+        }
+
+        return Internal_MethodUrl(urlString, timeout, postMessage, Method, checkResult, HEADERS);
+    }
+
     //For other then get methods
     public static ResponseObj MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token,
                                         String overwriteID, String postMessage, String Method, long checkResult) {
 
-        HttpURLConnection urlConnection = null;
-        String[][] HEADERS = {
+        String[][] DEFAULT_HEADERS = {
                 {CLIENTIDHEADER, overwriteID != null ? overwriteID : CLIENTID},
                 {ACCEPTHEADER, TWITHCV5JSON},
                 {AUTHORIZATION, access_token}
         };
 
+        String[][] HEADERS = new String[HeaderQuantity][2];
+
+        System.arraycopy(DEFAULT_HEADERS, 0, HEADERS, 0, HEADERS.length);
+
+        return Internal_MethodUrl(urlString, timeout, postMessage, Method, checkResult, HEADERS);
+    }
+
+    private static ResponseObj Internal_MethodUrl(String urlString, int timeout, String postMessage, String Method, long checkResult, String[][] HEADERS) {
+
+        HttpURLConnection urlConnection = null;
+
         try {
             urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
 
-            for (int i = 0; i < HeaderQuantity; i++)
-                urlConnection.setRequestProperty(HEADERS[i][0], HEADERS[i][1]);
+            for (String[] header : HEADERS)
+                urlConnection.setRequestProperty(header[0], header[1]);
 
             urlConnection.setConnectTimeout(timeout);
             urlConnection.setReadTimeout(timeout);
