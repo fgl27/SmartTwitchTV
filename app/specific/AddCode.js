@@ -315,10 +315,13 @@ function AddCode_CheckTokenSuccess(responseText, position) {
     //Main_Log('AddCode_CheckTokenSuccess ' + responseText);
 
     var token = JSON.parse(responseText);
-    if (token.scopes && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
-    else if (token.expires_in) {
+
+    if (token.hasOwnProperty('scopes') && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
+    else if (token.hasOwnProperty('expires_in')) {
+
         AddUser_UsernameArray[position].expires_in = token.expires_in;
         AddCode_Refreshtimeout(position);
+
     }
 }
 
