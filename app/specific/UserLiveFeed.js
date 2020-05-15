@@ -253,6 +253,7 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
         }
     }
 
+    //Async tasks the show may come after the hide, so re check the hide here
     if (pos !== UserLiveFeed_FeedPosX) UserLiveFeed_obj[pos].div.classList.add('hide');
 
     Main_HideElement('dialog_loading_side_feed');

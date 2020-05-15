@@ -1546,7 +1546,7 @@ function Screens_histDialogHide(Update, key) {
 
 function Screens_showDeleteDialog(text, key) {
     Main_innerHTML("main_dialog_remove", text);
-    Main_ShowElement('main_remove_dialog');
+    Main_ShowElement('main_yes_no_dialog');
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_addEventListener("keydown", ScreenObj[key].key_histdelet);
     Screens_setRemoveDialog(key);
@@ -1566,7 +1566,7 @@ function Screens_HideRemoveDialog(key) {
     Users_clearRemoveDialog();
     Main_removeEventListener("keydown", ScreenObj[key].key_histdelet);
     Main_addEventListener("keydown", ScreenObj[key].key_fun);
-    Main_HideElement('main_remove_dialog');
+    Main_HideElement('main_yes_no_dialog');
     Users_RemoveCursor = 0;
     Users_UserCursorSet();
     Users_RemoveCursorSet();

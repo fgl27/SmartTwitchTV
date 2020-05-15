@@ -244,18 +244,18 @@ function Users_showRemoveDialog() {
     Users_setRemoveDialog();
     if (!Users_Isautentication) Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
     else Main_innerHTML("main_dialog_remove", STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
-    Main_ShowElement('main_remove_dialog');
+    Main_ShowElement('main_yes_no_dialog');
 }
 
 function Users_HideRemoveDialog() {
     Users_clearRemoveDialog();
-    Main_HideElement('main_remove_dialog');
+    Main_HideElement('main_yes_no_dialog');
     Users_RemoveCursor = 0;
     Users_RemoveCursorSet();
 }
 
 function Users_isRemoveDialogShown() {
-    return Main_isElementShowing('main_remove_dialog');
+    return Main_isElementShowing('main_yes_no_dialog');
 }
 
 function Users_RemoveCursorSet() {

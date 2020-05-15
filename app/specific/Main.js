@@ -100,6 +100,7 @@ var Main_FirstRun = true;
 var Main_FirstLoad = false;
 var Main_RunningTime = 0;
 var Main_Hash = "ncx6brgo";
+var Main_PreventCheckResume = false;
 
 //The values of thumbnail and related for it screen type
 var Main_ReloadLimitOffsetGames = 1.35;
@@ -263,8 +264,9 @@ function Main_loadTranslations(language) {
                 Main_innerHTML("main_dialog_remove", STR_BACKUP);
                 Main_textContent('remove_cancel', STR_NO);
                 Main_textContent('remove_yes', STR_YES);
-                Main_ShowElement('main_remove_dialog');
+                Main_ShowElement('main_yes_no_dialog');
                 Main_values.Restore_Backup_Check = true;
+                Main_PreventCheckResume = true;
                 Main_addEventListener("keydown", Main_BackupDialodKeyDown);
             } catch (e) {
                 Main_setTimeout(Main_initWindows, 250);//Small delays here to make sure user restore function has finished checking at least user 0 token
@@ -288,8 +290,9 @@ function Main_BackupDialodKeyDown(event) {
             Users_RemoveCursorSet();
             break;
         case KEY_ENTER:
+            Main_PreventCheckResume = false;
             Main_showLoadDialog();
-            Main_HideElement('main_remove_dialog');
+            Main_HideElement('main_yes_no_dialog');
             Main_removeEventListener("keydown", Main_BackupDialodKeyDown);
             if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
             else Main_initWindows();
@@ -1931,6 +1934,10 @@ function Main_CheckStop() { // Called only by JAVA
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume() { // Called only by JAVA
+    //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
+    //but the aap is not ready for the rest of the check on this fun
+    if (Main_PreventCheckResume) return;
+
     var UserIsSet = AddUser_UserIsSet();
 
     //Check on resume if token has expired and refresh
@@ -1938,8 +1945,6 @@ function Main_CheckResume() { // Called only by JAVA
         (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
         AddCode_refreshTokens(0, 0, null, null, null, true);
     }
-
-    if (Main_isElementShowing('main_remove_dialog')) return;
 
     if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
 
