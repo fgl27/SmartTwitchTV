@@ -269,10 +269,10 @@ function Main_loadTranslations(language) {
                 Main_PreventCheckResume = true;
                 Main_addEventListener("keydown", Main_BackupDialodKeyDown);
             } catch (e) {
-                Main_setTimeout(Main_initWindows, 250);//Small delays here to make sure user restore function has finished checking at least user 0 token
+                Main_ready(Main_initWindows);//Small delays here to make sure user restore function has finished checking at least user 0 token
                 return;
             }
-        } else Main_setTimeout(Main_initWindows, 250);
+        } else Main_ready(Main_initWindows);
     });
 
 }
