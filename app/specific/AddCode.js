@@ -249,6 +249,7 @@ function AddCode_CheckTokenSuccess(responseText, position) {
 function AddCode_Refreshtimeout(position) {
 
     if (AddUser_UsernameArray[position].access_token) {
+
         AddUser_UsernameArray[position].timeout_id = Main_setTimeout(
             function() {
 
@@ -258,6 +259,7 @@ function AddCode_Refreshtimeout(position) {
             (parseInt(AddUser_UsernameArray[position].expires_in) - 60) * 1000,
             AddUser_UsernameArray[position].timeout_id
         );
+
     } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
 
     //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60));

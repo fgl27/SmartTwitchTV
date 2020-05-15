@@ -1931,11 +1931,14 @@ function Main_CheckStop() { // Called only by JAVA
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume() { // Called only by JAVA
+    var UserIsSet = AddUser_UserIsSet();
+    if (UserIsSet && AddUser_UsernameArray[0].access_token) AddCode_CheckTokenStart(0);
+
     if (Main_isElementShowing('main_remove_dialog')) return;
 
     if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
 
-    if (AddUser_UserIsSet()) {
+    if (UserIsSet) {
         //Restore UserLiveFeed_WasLiveidObject array from java if it exist
         if (UserLiveFeed_Notify_Background && UserLiveFeed_Notify) {
             Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
