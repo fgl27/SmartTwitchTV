@@ -43,10 +43,7 @@ var Play_exitID = null;
 var Play_created = '';
 
 var Play_loadingDataTry = 0;
-var Play_loadingDataTryMax = 5;
-
 var Play_loadingInfoDataTry = 0;
-var Play_loadingInfoDataTryMax = 5;
 
 var Play_ResumeAfterOnlineCounter = 0;
 var Play_ResumeAfterOnlineId;
@@ -562,7 +559,7 @@ function Play_updateStreamInfoEnd(response) {
 }
 
 function Play_updateStreamInfoStartError() {
-    if (Play_loadingInfoDataTry < Play_loadingInfoDataTryMax) {
+    if (Play_loadingInfoDataTry < DefaultLoadingDataTryMax) {
         Play_loadingInfoDataTimeout += 500;
         Main_setTimeout(
             function() {
@@ -588,7 +585,7 @@ function Play_updateStreamInfoValues(response) {
 }
 
 function Play_updateStreamInfoError() {
-    if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
+    if (Play_updateStreamInfoErrorTry < DefaultLoadingDataTryMax) {
         Main_setTimeout(
             function() {
                 if (Play_isOn) Play_updateStreamInfo();
@@ -699,7 +696,7 @@ function Play_updateStreamInfoMultiValues(response, pos) {
 }
 
 function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
-    if (tryes < Play_loadingInfoDataTryMax) {
+    if (tryes < DefaultLoadingDataTryMax) {
         Main_setTimeout(
             function() {
                 if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
@@ -1615,7 +1612,7 @@ function Play_CheckHostResult(result) {
 
 function Play_loadDataCheckHostError() {
     Play_loadingDataTry++;
-    if (Play_loadingDataTry < Play_loadingDataTryMax) {
+    if (Play_loadingDataTry < DefaultLoadingDataTryMax) {
         Play_loadingDataTimeout += 250;
         Play_loadDataCheckHost();
     } else Play_EndStart(false, 1);

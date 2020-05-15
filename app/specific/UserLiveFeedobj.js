@@ -96,7 +96,7 @@ function UserLiveFeedobj_loadChannels() {
 function UserLiveFeedobj_loadDataError(pos) {
     //Main_Log('UserLiveFeedobj_loadChannels');
     UserLiveFeed_loadingDataTry[pos]++;
-    if (UserLiveFeed_loadingDataTry[pos] < UserLiveFeed_loadingDataTryMax) {
+    if (UserLiveFeed_loadingDataTry[pos] < DefaultLoadingDataTryMax) {
         UserLiveFeed_loadingDataTimeout[pos] += 500;
         UserLiveFeed_obj[pos].load();
     } else {

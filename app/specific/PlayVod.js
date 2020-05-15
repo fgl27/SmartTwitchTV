@@ -12,7 +12,6 @@ var PlayVod_isOn = false;
 var PlayVod_Buffer = 2000;
 
 var PlayVod_loadingInfoDataTry = 0;
-var PlayVod_loadingInfoDataTryMax = 5;
 var PlayVod_loadingInfoDataTimeout = 10000;
 
 var Play_jumping = false;
@@ -149,7 +148,6 @@ function PlayVod_PosStart() {
 
 function PlayVod_PrepareLoad() {
     PlayVod_loadingInfoDataTry = 0;
-    PlayVod_loadingInfoDataTryMax = 6;
     PlayVod_loadingInfoDataTimeout = 10000;
 }
 
@@ -160,7 +158,7 @@ function PlayVod_updateVodInfo() {
 
 function PlayVod_updateVodInfoError() {
     PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < PlayVod_loadingInfoDataTryMax) {
+    if (PlayVod_loadingInfoDataTry < DefaultLoadingDataTryMax) {
         PlayVod_loadingInfoDataTimeout += 500;
         PlayVod_updateVodInfo();
     }

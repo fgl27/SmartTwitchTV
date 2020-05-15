@@ -2,7 +2,6 @@
 var Chat_loadingDataTry = 0;
 var Chat_Messages = [];
 var Chat_MessagesNext = [];
-var Chat_loadingDataTryMax = 10;
 var Chat_addlinesId;
 var Chat_next = null;
 var Chat_loadChatId;
@@ -90,7 +89,7 @@ function Chat_loadBadgesGlobalRequest(tryes) {
 }
 
 function Chat_loadBadgesGlobalError(tryes) {
-    if (tryes < Chat_loadingDataTryMax) Chat_loadBadgesGlobalRequest(tryes + 1);
+    if (tryes < DefaultLoadingDataTryMax) Chat_loadBadgesGlobalRequest(tryes + 1);
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
@@ -154,7 +153,7 @@ function Chat_loadBTTVGlobalEmotes(tryes) {
 }
 
 function Chat_loadEmotesBttvError(tryes) {
-    if (tryes < Chat_loadingDataTryMax) Chat_loadBTTVGlobalEmotes(tryes + 1);
+    if (tryes < DefaultLoadingDataTryMax) Chat_loadBTTVGlobalEmotes(tryes + 1);
 }
 
 function Chat_loadEmotesSuccessBttv(data) {
@@ -200,7 +199,7 @@ function Chat_loadEmotesffz(tryes) {
 }
 
 function Chat_loadEmotesErrorffz(tryes) {
-    if (tryes < Chat_loadingDataTryMax) Chat_loadEmotesffz(tryes + 1);
+    if (tryes < DefaultLoadingDataTryMax) Chat_loadEmotesffz(tryes + 1);
 }
 
 function Chat_loadEmotesSuccessffz(data) {
@@ -238,7 +237,7 @@ function Chat_loadChatRequest(id) {
 function Chat_loadChatError(id) {
     Chat_loadingDataTry++;
     if (Chat_Id[0] === id) {
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatRequest(id);
+        if (Chat_loadingDataTry < DefaultLoadingDataTryMax) Chat_loadChatRequest(id);
         else {
             Chat_loadChatId = Main_setTimeout(
                 function() {
@@ -527,7 +526,7 @@ function Chat_loadChatNextRequest(id) {
 function Chat_loadChatNextError(id) {
     Chat_loadingDataTry++;
     if (Chat_Id[0] === id) {
-        if (Chat_loadingDataTry < Chat_loadingDataTryMax) Chat_loadChatNextRequest(id);
+        if (Chat_loadingDataTry < DefaultLoadingDataTryMax) Chat_loadChatNextRequest(id);
         else {
             Chat_loadChatNextId = Main_setTimeout(
                 function() {

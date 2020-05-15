@@ -4,7 +4,6 @@ var ChannelContent_cursorX = 0;
 var ChannelContent_dataEnded = false;
 var ChannelContent_itemsCount = 0;
 var ChannelContent_loadingDataTry = 0;
-var ChannelContent_loadingDataTryMax = 3;
 var ChannelContent_loadingDataTimeout = 3000;
 var ChannelContent_itemsCountOffset = 0;
 var ChannelContent_isoffline = false;
@@ -115,7 +114,7 @@ function ChannelContent_loadDataRequestSuccess(response) {
 
 function ChannelContent_loadDataError() {
     ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+    if (ChannelContent_loadingDataTry < DefaultLoadingDataTryMax) {
         ChannelContent_loadingDataTimeout += 500;
         ChannelContent_loadDataRequest();
     } else {
@@ -163,7 +162,7 @@ function ChannelContent_CheckHostResult(result) {
 
 function ChannelContent_loadDataCheckHostError() {
     ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+    if (ChannelContent_loadingDataTry < DefaultLoadingDataTryMax) {
         ChannelContent_loadingDataTimeout += 500;
         ChannelContent_loadDataCheckHost();
     } else {
@@ -209,7 +208,7 @@ function ChannelContent_GetStreamerInfoSuccess(responseText) {
 
 function ChannelContent_GetStreamerInfoError() {
     ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < ChannelContent_loadingDataTryMax) {
+    if (ChannelContent_loadingDataTry < DefaultLoadingDataTryMax) {
         ChannelContent_loadingDataTimeout += 500;
         ChannelContent_GetStreamerInfo();
     } else {

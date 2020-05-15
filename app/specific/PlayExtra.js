@@ -271,7 +271,7 @@ function PlayExtra_CheckHostResult(result, doSwitch) {
 
 function PlayExtra_loadDataCheckHostError(doSwitch) {
     Play_loadingDataTry++;
-    if (Play_loadingDataTry < Play_loadingDataTryMax) {
+    if (Play_loadingDataTry < DefaultLoadingDataTryMax) {
         Play_loadingDataTimeout += 250;
         PlayExtra_loadDataCheckHost(doSwitch);
     } else PlayExtra_End_success(doSwitch);
@@ -454,7 +454,7 @@ function PlayExtra_updateStreamInfoValues(response) {
 }
 
 function PlayExtra_updateStreamInfoError() {
-    if (Play_updateStreamInfoErrorTry < Play_loadingInfoDataTryMax) {
+    if (Play_updateStreamInfoErrorTry < DefaultLoadingDataTryMax) {
         Main_setTimeout(
             function() {
                 if (Play_isOn) PlayExtra_updateStreamInfo();

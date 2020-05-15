@@ -3,7 +3,6 @@ var UserLiveFeed_loadingData = [];
 var UserLiveFeed_loadingDataTry = [];
 var UserLiveFeed_loadingDataTimeout = [];
 var UserLiveFeed_loadChannelOffsset = 0;
-var UserLiveFeed_loadingDataTryMax = 5;
 var UserLiveFeed_followerChannels = '';
 var UserLiveFeed_idObject = [];
 var UserLiveFeed_status = [];

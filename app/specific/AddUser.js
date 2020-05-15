@@ -1,6 +1,5 @@
 //Variable initialization
 var AddUser_loadingDataTry = 0;
-var AddUser_loadingDataTryMax = 5;
 var AddUser_loadingDataTimeout = 3500;
 var AddUser_UsernameArray = [];
 var AddUser_Username = null;
@@ -157,7 +156,7 @@ function AddUser_loadDataRequestSuccess(response) {
 
 function AddUser_loadDataError() {
     AddUser_loadingDataTry++;
-    if (AddUser_loadingDataTry < AddUser_loadingDataTryMax) {
+    if (AddUser_loadingDataTry < DefaultLoadingDataTryMax) {
         AddUser_loadingDataTimeout += 500;
         AddUser_loadDataRequest();
     } else AddUser_loadDataNoUser();
@@ -290,7 +289,7 @@ function AddUser_UpdateUsertSuccess(response, position) {
 
 function AddUser_UpdateUserError(position, tryes) {
     tryes++;
-    if (tryes < AddUser_loadingDataTryMax) AddUser_UpdateUser(position, tryes);
+    if (tryes < DefaultLoadingDataTryMax) AddUser_UpdateUser(position, tryes);
 }
 
 function AddUser_SaveNewUser(responseText) {
