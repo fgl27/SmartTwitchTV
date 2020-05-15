@@ -33,13 +33,14 @@ function AddCode_CheckNewCode(code) {
 function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
     //Main_Log('AddCode_refreshTokens');
     if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
-    var xmlHttp;
 
-    var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
-        encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
-        '&refresh_token=' + encodeURIComponent(AddUser_UsernameArray[position].refresh_token) +
-        '&redirect_uri=' + AddCode_redirect_uri;
+    var xmlHttp,
+        url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
+            encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
+            '&refresh_token=' + encodeURIComponent(AddUser_UsernameArray[position].refresh_token) +
+            '&redirect_uri=' + AddCode_redirect_uri;
 
+    //Run in synchronous mode to prevent anything happening until user token is restored
     if (sync) {
         try {
             xmlHttp = Android.mMethodUrlHeaders(
@@ -55,12 +56,12 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
 
                 xmlHttp = JSON.parse(xmlHttp);
 
-                if (xmlHttp) AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp);
+                if (xmlHttp) AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync);
 
                 return;
             }
 
-            AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
+            AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
         } catch (e) {
             AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, false);
         }
@@ -74,7 +75,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-                AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp);
+                AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync);
             }
         };
 
@@ -82,27 +83,33 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
     }
 }
 
-function AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp) {
+function AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync) {
     if (xmlHttp.status === 200) {
         AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
+        return;
     } else {
+
         try {
             var response = JSON.parse(xmlHttp.responseText);
             if (response.message) {
                 if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
+
                     AddCode_requestTokensFailRunning(position);
                     if (callbackFuncNOK) callbackFuncNOK(key);
-                } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
-            } else AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
+
+                    return;
+                }
+            }
         } catch (e) {
             //Main_Log('AddCode_refreshTokens e ' + e);
-            AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key);
         }
+
     }
+    AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
 }
 
-function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key) {
-    if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, key);
+function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key, sync) {
+    if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, key, sync);
     else if (callbackFuncNOK) callbackFuncNOK(key);
 }
 
@@ -254,6 +261,7 @@ function AddCode_CheckTokenStart(position) {
     else AddCode_CheckToken(position, 0);
 }
 
+//Run in synchronous mode to prevent anything happening until user token is checked and if needed restored
 function AddCode_CheckTokenSync(position, tryes) {
     //Main_Log('AddCode_CheckToken');
 
