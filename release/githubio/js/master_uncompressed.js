@@ -2623,6 +2623,7 @@
     var AddCode_IsSub = false;
     var AddCode_PlayRequest = false;
     var AddCode_Channel_id = '';
+    var AddCode_Expires_in_offset = 100;
 
     var AddCode_Scopes = [
         'user_read',
@@ -2736,7 +2737,8 @@
         if (AddCode_TokensCheckScope(response.scope)) {
             AddUser_UsernameArray[position].access_token = response.access_token;
             AddUser_UsernameArray[position].refresh_token = response.refresh_token;
-            AddUser_UsernameArray[position].expires_in = response.expires_in;
+            AddUser_UsernameArray[position].expires_in = (parseInt(response.expires_in) - AddCode_Expires_in_offset) * 1000;
+            AddUser_UsernameArray[position].expires_when = (new Date().getTime()) + AddUser_UsernameArray[position].expires_in;
             //Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
 
             AddUser_SaveUserArray();
@@ -2934,7 +2936,8 @@
         if (token.hasOwnProperty('scopes') && !AddCode_TokensCheckScope(token.scopes)) AddCode_requestTokensFailRunning(position);
         else if (token.hasOwnProperty('expires_in')) {
 
-            AddUser_UsernameArray[position].expires_in = token.expires_in;
+            AddUser_UsernameArray[position].expires_in = (parseInt(token.expires_in) - AddCode_Expires_in_offset) * 1000;
+            AddUser_UsernameArray[position].expires_when = (new Date().getTime()) + AddUser_UsernameArray[position].expires_in;
             AddCode_Refreshtimeout(position);
 
         }
@@ -2950,13 +2953,13 @@
                     AddCode_refreshTokens(position, 0, null, null);
 
                 },
-                (parseInt(AddUser_UsernameArray[position].expires_in) - 60) * 1000,
+                AddUser_UsernameArray[position].expires_in,
                 AddUser_UsernameArray[position].timeout_id
             );
 
         } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
 
-        //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60));
+        //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60000) + ' plus offset ' + AddCode_Expires_in_offset + ' s');
     }
 
     function AddCode_CheckTokenError(position, tryes) {
@@ -3643,6 +3646,7 @@
             access_token: 0,
             refresh_token: 0,
             expires_in: 0,
+            expires_when: 0,
             timeout_id: null,
         });
 
@@ -9077,7 +9081,12 @@
 
     function Main_CheckResume() { // Called only by JAVA
         var UserIsSet = AddUser_UserIsSet();
-        if (UserIsSet && AddUser_UsernameArray[0].access_token) AddCode_CheckTokenStart(0);
+
+        //Check on resume if token has expired and refresh
+        if (UserIsSet && AddUser_UsernameArray[0].access_token &&
+            (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
+            AddCode_refreshTokens(0, 0, null, null, null, true);
+        }
 
         if (Main_isElementShowing('main_remove_dialog')) return;
 
