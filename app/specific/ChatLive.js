@@ -217,6 +217,8 @@ function ChatLive_checkSub(tryes, chat_number, id) {
                 if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) {//no
                     ChatLive_SubState[chat_number].state = false;
                 } else ChatLive_checkSubError(tryes, chat_number, id);
+            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                AddCode_refreshTokens(0, 0, null, null);
             } else { // internet error
                 ChatLive_checkSubError(tryes, chat_number, id);
             }
@@ -545,9 +547,10 @@ function ChatLive_loadChat(chat_number, id) {
         (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
         chat_number
     );
-    ChatLive_loadChatRequest(chat_number, id);
 
     useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
+
+    ChatLive_loadChatRequest(chat_number, id);
 
     if (!chat_number) {
         if (useToken[chat_number]) ChatLive_SendPrepared();
@@ -560,7 +563,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
-        reconnectInterval: 3000
+        reconnectInterval: ChatLive_SetCheckTimout
     });
 
     if (useToken[chat_number]) {
@@ -583,8 +586,8 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
         if (!message.command) return;
 
-        ////Main_Log(message);
-        ////Main_Log(message.command);
+        //Main_Log(message);
+        //Main_Log(message.command);
 
         switch (message.command) {
             case "PING":
@@ -803,7 +806,7 @@ function ChatLive_SendPrepared() {
         ChatLive_SendClose();
 
         ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
-            reconnectInterval: 3000
+            reconnectInterval: ChatLive_SetCheckTimout
         });
 
         ChatLive_socketSend.onopen = function() {
@@ -838,7 +841,9 @@ function ChatLive_SendPrepared() {
                     ChatLive_socketSendJoin = true;
                     break;
                 case "NOTICE":
-                    ChatLive_UserNoticeWarn(message);
+                    if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed"))
+                        AddCode_refreshTokens(0, 0, null, null);
+                    else ChatLive_UserNoticeWarn(message);
                     break;
                 case "USERSTATE":
                     //Main_Log('USERSTATE send');
@@ -889,6 +894,8 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 
         Main_clearTimeout(ChatLive_CheckId[chat_number]);
         ChatLive_Check(chat_number, id);
+    } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed")) {
+        AddCode_refreshTokens(0, 0, null, null);
     } else ChatLive_UserNoticeWarn(message);
 
 }
@@ -1366,6 +1373,8 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 callbackSucess(xmlHttp.responseText, chat_number, id);
+            } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                AddCode_refreshTokens(0, 0, null, null);
             } else if (xmlHttp.status !== 404) {//404 ignore the result is empty
                 callbackError(tryes, chat_number, id);
             }
