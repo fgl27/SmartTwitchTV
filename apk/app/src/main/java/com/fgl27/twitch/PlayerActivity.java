@@ -943,6 +943,7 @@ public class PlayerActivity extends Activity {
     public void onResume() {
         super.onResume();
         IsStopped = false;
+        if (warningShowing) return;
 
         if (Tools.isConnectedOrConnecting(this)) DoResume();
         else if (AlreadyStarted) {
@@ -970,7 +971,10 @@ public class PlayerActivity extends Activity {
             if (Tools.isConnectedOrConnecting(this)){
                 HideWarningText();
                 DoResume();
-            } else if (!IsStopped) NetworkResumeCheck();
+            } else {
+                if (!IsStopped) NetworkResumeCheck();
+                else HideWarningText();
+            }
         }, 250);
     }
 
