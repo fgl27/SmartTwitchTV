@@ -1172,7 +1172,7 @@
         STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Modes are disable, enable (auto mode), Bright or Darker, In auto mode if the chat is above the stream it odd message will have a darker background accent color from the even, if the chat is not above (side by side for example) the color will be brigh";
         STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
         STR_CHAT_LOGGING = "Logging in chat with current user";
-        STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key";
+        STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key. This doesn't prevent from send chat message for this user if a key ws added but prevents form know if you are banned on the chat and prevent knowing the chat ROOMSTATE";
         STR_CHAT_JUST_SUB = "Subscribed with Tier";
         STR_CHAT_JUST_SUB_PRIME = "Subscribed with Prime";
         STR_GIFT_SUB_SENDER = " has gift a Tier";
@@ -5204,7 +5204,7 @@
     var ChatLive_FollowState = [];
     var ChatLive_SubState = [];
     var ChatLive_Playing = true;
-    var ChatLive_SetCheckTimout = 15000;
+    var ChatLive_SetCheckTimout = 7500;
     var extraEmotesDone = {
         bttv: {},
         ffz: {},
@@ -5244,6 +5244,8 @@
         "\\&gt\\;\\(": ">(",
         "\\:-?[z|Z|\\|]": ":Z",
     };
+
+    var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
 
     var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
 
@@ -5741,35 +5743,40 @@
             chat_number
         );
 
-        useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
+        var DochatSend = !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
+        useToken[chat_number] = ChatLive_Logging && DochatSend;
 
         ChatLive_loadChatRequest(chat_number, id);
 
         if (!chat_number) {
-            if (useToken[chat_number]) ChatLive_SendPrepared();
-            else if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) ChatLive_SendClose();
+            if (DochatSend) ChatLive_SendPrepared();
+            else ChatLive_SendClose();
         }
 
     }
 
     function ChatLive_loadChatRequest(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
+        //Main_Log('ChatLive_loadChatRequest');
 
         ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
-            reconnectInterval: ChatLive_SetCheckTimout
+            reconnectInterval: 3000
         });
 
         if (useToken[chat_number]) {
             ChatLive_socket[chat_number].onopen = function() {
-                ChatLive_socket[chat_number].send('PASS oauth:' + AddUser_UsernameArray[0].access_token + '\r\n');
-                ChatLive_socket[chat_number].send('NICK ' + AddUser_UsernameArray[0].name.toLowerCase() + '\r\n');
+                var username = AddUser_UsernameArray[0].name.toLowerCase();
+
+                ChatLive_socket[chat_number].send('PASS oauth:' + AddUser_UsernameArray[0].access_token);
+                ChatLive_socket[chat_number].send('NICK ' + username);
+                ChatLive_socket[chat_number].send('USER ' + username + ' 8 * :' + username);
             };
         } else {
             ChatLive_socket[chat_number].onopen = function() {
-                ChatLive_socket[chat_number].send('PASS blah\r\n');
-                ChatLive_socket[chat_number].send('NICK justinfan12345\r\n');
-                ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
-                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                ChatLive_socket[chat_number].send('PASS blah');
+                ChatLive_socket[chat_number].send('NICK justinfan12345');
+                ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags');
+                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
             };
         }
 
@@ -5779,7 +5786,7 @@
 
             if (!message.command) return;
 
-            //Main_Log(message);
+            //console.log(message);
             //Main_Log(message.command);
 
             switch (message.command) {
@@ -5789,11 +5796,12 @@
                     ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                     break;
                 case "001":
-                    if (useToken[chat_number]) {
-                        if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
-                            ChatLive_SetCheck(chat_number, id);
-                            ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
-                        }
+                    if (useToken[chat_number] &&
+                        Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
+
+                        ChatLive_SetCheck(chat_number, id);
+                        ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags');
+
                     }
                     break;
                 case "CAP":
@@ -5801,7 +5809,7 @@
                         //Delay the joing so the cap get fully accepted
                         ChatLive_JoinID[chat_number] = Main_setTimeout(
                             function() {
-                                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
                             },
                             500,
                             ChatLive_JoinID[chat_number]
@@ -5809,7 +5817,7 @@
                     }
                     break;
                 case "JOIN":
-
+                    //Main_Log("JOIN");
                     if (!ChatLive_loaded[chat_number]) {
                         ChatLive_loaded[chat_number] = true;
 
@@ -5837,15 +5845,14 @@
                         //1: "tmi.twitch.tv USERSTATE #cyr↵@emote-only=0;followers-only=-1;r9k=0;rituals=0;room-id=37522866;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #cyr"
                         if (message.params[1] && Main_A_includes_B(message.params[1], "ROOMSTATE")) {
 
-                            var Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
-                            var array = Regex.exec(message.params[1]);
+                            var array = ChatLive_ROOMSTATE_Regex.exec(message.params[1]);
                             if (array && array.length === 6) ChatLive_SetRoomState(array, chat_number);
 
                         } else {
                             //try a join again so the ROOMSTATE get send
                             ChatLive_JoinID[chat_number] = Main_setTimeout(
                                 function() {
-                                    ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                                    ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
                                 },
                                 500,
                                 ChatLive_JoinID[chat_number]
@@ -5997,58 +6004,62 @@
     var ChatLive_socketSendCheckID;
 
     function ChatLive_SendPrepared() {
-        if (!ChatLive_socketSend || ChatLive_socketSend.readyState !== 1) {
-            ChatLive_SendClose();
+        //Main_Log('ChatLive_SendPrepared');
 
-            ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
-                reconnectInterval: ChatLive_SetCheckTimout
-            });
+        ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
+            reconnectInterval: 3000
+        });
 
-            ChatLive_socketSend.onopen = function() {
-                ChatLive_socketSend.send('PASS oauth:' + AddUser_UsernameArray[0].access_token + '\r\n');
-                ChatLive_socketSend.send('NICK ' + AddUser_UsernameArray[0].name.toLowerCase() + '\r\n');
-            };
+        ChatLive_socketSend.onopen = function() {
+            var username = AddUser_UsernameArray[0].name.toLowerCase();
 
-            ChatLive_socketSend.onmessage = function(data) {
+            ChatLive_socketSend.send('PASS oauth:' + AddUser_UsernameArray[0].access_token);
+            ChatLive_socketSend.send('NICK ' + username);
+            ChatLive_socketSend.send('USER ' + username + ' 8 * :' + username);
+        };
 
-                var message = window.parseIRC(data.data.trim());
+        ChatLive_socketSend.onmessage = function(data) {
 
-                if (!message.command) return;
+            var message = window.parseIRC(data.data.trim());
 
-                ////Main_Log(message.command);
-                ////Main_Log(message);
+            if (!message.command) return;
 
-                switch (message.command) {
-                    case "PING":
-                        //Main_Log('ChatLive_socketSend PING');
-                        //Main_Log(message);
-                        ChatLive_socketSend.send('PONG ' + message.params[0]);
-                        break;
-                    case "001":
-                        if (message.params[1]) {
-                            if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
-                                ChatLive_socketSendSetCheck();
-                                ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
-                            }
-                        }
-                        break;
-                    case "CAP":
-                        ChatLive_socketSendJoin = true;
-                        break;
-                    case "NOTICE":
-                        if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed"))
-                            AddCode_refreshTokens(0, 0, null, null);
-                        else ChatLive_UserNoticeWarn(message);
-                        break;
-                    case "USERSTATE":
-                        //Main_Log('USERSTATE send');
-                        //Main_Log(message);
-                        break;
-                    default:
-                        break;
-                }
-            };
-        }
+            //Main_Log(message.command);
+            //Main_Log(message);
+
+            switch (message.command) {
+                case "PING":
+                    //Main_Log('ChatLive_socketSend PING');
+                    //Main_Log(message);
+                    ChatLive_socketSend.send('PONG ' + message.params[0]);
+                    break;
+                case "001":
+                    if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
+
+                        ChatLive_socketSendSetCheck();
+                        ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags');
+
+                    }
+                    break;
+                case "CAP":
+                    ChatLive_socketSendJoin = true;
+                    break;
+                case "NOTICE":
+                    if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed"))
+                        AddCode_refreshTokens(0, 0, null, null);
+                    else ChatLive_UserNoticeWarn(message);
+                    break;
+                case "USERSTATE":
+                    //Main_Log('USERSTATE send');
+                    //Main_Log(message);
+                    break;
+                case "PART":
+                    if (ChatLive_socketSend) ChatLive_socketSend.close(1000);
+                    break;
+                default:
+                    break;
+            }
+        };
 
         ChatLive_socketSendSetCheck();
     }
@@ -6116,7 +6127,7 @@
 
         if (ChatLive_socketSendJoin && ChatLive_socketSend && ChatLive_socketSend.readyState === 1) {
             //Main_Log('ChatLive_SendMessage sended');
-            ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
+            ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message);
 
             return true;
         }
@@ -6535,13 +6546,16 @@
         if (ChatLive_socket[chat_number] && ChatLive_loaded[chat_number] &&
             ChatLive_socket[chat_number].readyState === 1 &&
             AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
-            ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number] + '\r\n');
+            ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number]);
             ChatLive_socket[chat_number].close(1000);
         } else if (ChatLive_socket[chat_number]) {
             ChatLive_socket[chat_number].close(1000);
         }
 
-        if (!chat_number) ChatLive_SendClose();
+        if (!chat_number) {
+            if (ChatLive_socketSend && ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
+            ChatLive_SendClose();
+        }
 
     }
 
