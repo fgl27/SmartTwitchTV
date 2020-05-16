@@ -759,11 +759,29 @@ function ChatLive_SetCheck(chat_number, id) {
     }
 }
 
+function ChatLive_Close(chat_number) {
+    if (ChatLive_socket[chat_number]) {
+
+        if (ChatLive_socket[chat_number].readyState === 1)
+            ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number]);
+
+        ChatLive_socket[chat_number].close(1000);
+
+    }
+}
+
 function ChatLive_Check(chat_number, id) {
     if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
-        ChatLive_socket[chat_number].close(1000);
-        ChatLive_LineAddSimple(STR_LOADING_FAIL, chat_number);
-        ChatLive_loadChat(chat_number, id);
+        ChatLive_Close(chat_number);
+
+        ChatLive_CheckId[chat_number] = Main_setTimeout(
+            function() {
+                ChatLive_LineAddSimple(STR_LOADING_FAIL, chat_number);
+                ChatLive_loadChat(chat_number, id);
+            },
+            1000,
+            ChatLive_CheckId[chat_number]
+        );
     }
 }
 
@@ -907,8 +925,16 @@ function ChatLive_socketSendSetCheck(chat_number, id) {
     ChatLive_socketSendCheckID = Main_setTimeout(
         function() {
             if (!ChatLive_socketSendJoin) {
-                ChatLive_socketSend.close(1000);
-                ChatLive_SendStart(chat_number, id);
+                ChatLive_SendClose();
+
+                ChatLive_socketSendCheckID = Main_setTimeout(
+                    function() {
+                        ChatLive_SendStart(chat_number, id);
+                    },
+                    1000,
+                    ChatLive_socketSendCheckID
+                );
+
             }
         },
         ChatLive_SetCheckTimout * 2,
@@ -1381,14 +1407,7 @@ function ChatLive_Clear(chat_number) {
 
     ChatLive_CheckClear(chat_number);
 
-    if (ChatLive_socket[chat_number] && ChatLive_loaded[chat_number] &&
-        ChatLive_socket[chat_number].readyState === 1 &&
-        AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
-        ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number]);
-        ChatLive_socket[chat_number].close(1000);
-    } else if (ChatLive_socket[chat_number]) {
-        ChatLive_socket[chat_number].close(1000);
-    }
+    ChatLive_Close(chat_number);
 
     if (!chat_number) {
         ChatLive_SendClose();
