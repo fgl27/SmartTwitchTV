@@ -5273,6 +5273,7 @@
         ChatLive_Individual_Background_flip[chat_number] = 0;
 
         ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
+        ChatLive_SendStart(chat_number, Chat_Id[chat_number]);
     }
 
     var ChatLive_Logging;
@@ -5737,22 +5738,16 @@
         if (id !== Chat_Id[chat_number]) return;
 
         ChatLive_CheckClear(chat_number);
+
         ChatLive_LineAddSimple(
             STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
             (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
             chat_number
         );
 
-        var DochatSend = !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
-        useToken[chat_number] = ChatLive_Logging && DochatSend;
+        useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
         ChatLive_loadChatRequest(chat_number, id);
-
-        if (!chat_number) {
-            if (DochatSend) ChatLive_SendPrepared();
-            else ChatLive_SendClose();
-        }
-
     }
 
     function ChatLive_loadChatRequest(chat_number, id) {
@@ -5763,22 +5758,20 @@
             reconnectInterval: 3000
         });
 
-        if (useToken[chat_number]) {
-            ChatLive_socket[chat_number].onopen = function() {
+        ChatLive_socket[chat_number].onopen = function() {
+            if (useToken[chat_number]) {
                 var username = AddUser_UsernameArray[0].name.toLowerCase();
 
                 ChatLive_socket[chat_number].send('PASS oauth:' + AddUser_UsernameArray[0].access_token);
                 ChatLive_socket[chat_number].send('NICK ' + username);
                 ChatLive_socket[chat_number].send('USER ' + username + ' 8 * :' + username);
-            };
-        } else {
-            ChatLive_socket[chat_number].onopen = function() {
+            } else {
                 ChatLive_socket[chat_number].send('PASS blah');
                 ChatLive_socket[chat_number].send('NICK justinfan12345');
                 ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags');
                 ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
-            };
-        }
+            }
+        };
 
         ChatLive_socket[chat_number].onmessage = function(data) {
 
@@ -5787,7 +5780,7 @@
             if (!message.command) return;
 
             //console.log(message);
-            //Main_Log(message.command);
+            //if (message.command !== "PRIVMSG") Main_Log(message.command + ' Main');
 
             switch (message.command) {
                 case "PING":
@@ -5999,11 +5992,23 @@
         }
     }
 
+    function ChatLive_SendStart(chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        if (!chat_number) {
+            if (!ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token)
+                ChatLive_SendPrepared(chat_number, id);
+            else
+                ChatLive_SendClose();
+        }
+
+    }
+
     var ChatLive_socketSend;
     var ChatLive_socketSendJoin = false;
     var ChatLive_socketSendCheckID;
 
-    function ChatLive_SendPrepared() {
+    function ChatLive_SendPrepared(chat_number, id) {
         //Main_Log('ChatLive_SendPrepared');
 
         ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
@@ -6024,7 +6029,7 @@
 
             if (!message.command) return;
 
-            //Main_Log(message.command);
+            //Main_Log(message.command + ' send');
             //Main_Log(message);
 
             switch (message.command) {
@@ -6036,7 +6041,7 @@
                 case "001":
                     if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
 
-                        ChatLive_socketSendSetCheck();
+                        ChatLive_socketSendSetCheck(chat_number, id);
                         ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags');
 
                     }
@@ -6061,31 +6066,28 @@
             }
         };
 
-        ChatLive_socketSendSetCheck();
+        ChatLive_socketSendSetCheck(chat_number, id);
     }
 
     function ChatLive_SendClose() {
         if (ChatLive_socketSend) {
+            if (ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
             ChatLive_socketSend.close(1000);
         }
         ChatLive_socketSendJoin = false;
     }
 
-    function ChatLive_socketSendSetCheck() {
+    function ChatLive_socketSendSetCheck(chat_number, id) {
         ChatLive_socketSendCheckID = Main_setTimeout(
             function() {
-                ChatLive_socketSendCheck();
+                if (!ChatLive_socketSendJoin) {
+                    ChatLive_socketSend.close(1000);
+                    ChatLive_SendStart(chat_number, id);
+                }
             },
             ChatLive_SetCheckTimout * 2,
             ChatLive_socketSendCheckID
         );
-    }
-
-    function ChatLive_socketSendCheck() {
-        if (!ChatLive_socketSendJoin) {
-            ChatLive_socketSend.close(1000);
-            ChatLive_SendPrepared();
-        }
     }
 
     function ChatLive_UserNoticeCheck(message, chat_number, id) {
@@ -6553,7 +6555,6 @@
         }
 
         if (!chat_number) {
-            if (ChatLive_socketSend && ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
             ChatLive_SendClose();
         }
 
