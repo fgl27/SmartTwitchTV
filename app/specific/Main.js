@@ -1884,7 +1884,27 @@ function Main_StartHistoryworker() {
     }
 }
 
+//the internet connection may be down do to standby after resume
+//java will not call Main_CheckResume() until the internet connection is recognized
+function Main_PreventClick(prevent) {
+    if (prevent) {
+        window.addEventListener("keydown", Main_PreventClickfun, true);
+        window.addEventListener("keyup", Main_PreventClickfun, true);
+        window.addEventListener("keypress", Main_PreventClickfun, true);
+    } else {
+        window.removeEventListener("keydown", Main_PreventClickfun, true);
+        window.removeEventListener("keyup", Main_PreventClickfun, true);
+        window.removeEventListener("keypress", Main_PreventClickfun, true);
+    }
+}
+
+function Main_PreventClickfun(e) {
+    e.stopPropagation();
+}
+
 function Main_CheckStop() { // Called only by JAVA
+    Main_PreventClick(true);
+
     //Player related
     ChatLive_Clear(0);
     ChatLive_Clear(1);
@@ -1934,6 +1954,8 @@ function Main_CheckStop() { // Called only by JAVA
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume() { // Called only by JAVA
+    Main_PreventClick(false);
+
     //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
     //but the aap is not ready for the rest of the check on this fun
     if (Main_PreventCheckResume) return;

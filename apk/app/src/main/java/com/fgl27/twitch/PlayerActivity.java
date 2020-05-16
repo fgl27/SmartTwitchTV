@@ -896,7 +896,7 @@ public class PlayerActivity extends Activity {
                 HideWarningText();
                 mWebView.loadUrl(PageUrl);
             } else NetworkCheck();
-        }, 1000);
+        }, 100);
     }
 
     private void ShowWarningText(String text) {
@@ -944,12 +944,34 @@ public class PlayerActivity extends Activity {
         super.onResume();
         IsStopped = false;
 
+        if (Tools.isConnectedOrConnecting(this)) DoResume();
+        else if (AlreadyStarted) {
+            ShowNoNetworkResumeWarning();
+        }
+
+        AlreadyStarted = true;
+    }
+
+    private void DoResume() {
         if (mWebView != null && AlreadyStarted) {
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
             GetPing();
             StopService();
         }
-        AlreadyStarted = true;
+    }
+
+    private void ShowNoNetworkResumeWarning() {
+        ShowWarningText(getString(R.string.no_network));
+        NetworkResumeCheck();
+    }
+
+    private void NetworkResumeCheck() {
+        MainThreadHandler.postDelayed(() -> {
+            if (Tools.isConnectedOrConnecting(this)){
+                HideWarningText();
+                DoResume();
+            } else if (!IsStopped) NetworkResumeCheck();
+        }, 100);
     }
 
     //This function is called when home key is pressed
@@ -1045,6 +1067,7 @@ public class PlayerActivity extends Activity {
             closeThis();
             return true;
         }
+
         return super.onKeyLongPress(keyCode, event);
     }
 
@@ -1058,6 +1081,7 @@ public class PlayerActivity extends Activity {
             mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F2));
             return true;
         }
+
         return super.onKeyUp(keyCode, event);
     }
 
@@ -1070,11 +1094,13 @@ public class PlayerActivity extends Activity {
             event.startTracking();
             return true;
         }
+
         return super.onKeyDown(keyCode, event);
     }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+
         //Override key play and pause as those get send to js as KEYCODE_MEDIA_PLAY_PAUSE
         if (event.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PLAY) {
             //Prevent send it up down and up
