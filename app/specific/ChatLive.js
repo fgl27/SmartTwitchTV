@@ -866,9 +866,13 @@ function ChatLive_SendPrepared(chat_number, id) {
                 ChatLive_socketSendJoin = true;
                 break;
             case "NOTICE":
-                if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed"))
+                if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed")) {
+                    ChatLive_LineAddSimple(
+                        message.params[1] + ' for chat send',
+                        chat_number
+                    );
                     AddCode_refreshTokens(0, 0, null, null);
-                else ChatLive_UserNoticeWarn(message);
+                } else ChatLive_UserNoticeWarn(message);
                 break;
             case "USERSTATE":
                 //Main_Log('USERSTATE send');
@@ -925,6 +929,10 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
         Main_clearTimeout(ChatLive_CheckId[chat_number]);
         ChatLive_Check(chat_number, id);
     } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed")) {
+        ChatLive_LineAddSimple(
+            message.params[1] + ' for main chat',
+            chat_number
+        );
         AddCode_refreshTokens(0, 0, null, null);
     } else ChatLive_UserNoticeWarn(message);
 
