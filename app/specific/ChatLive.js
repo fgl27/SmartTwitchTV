@@ -11,7 +11,7 @@ var ChatLive_Banned = [];
 var ChatLive_FollowState = [];
 var ChatLive_SubState = [];
 var ChatLive_Playing = true;
-var ChatLive_SetCheckTimout = 10000;
+var ChatLive_SetCheckTimout = 15000;
 var extraEmotesDone = {
     bttv: {},
     ffz: {},
@@ -743,7 +743,7 @@ function ChatLive_SetCheck(chat_number, id) {
             function() {
                 ChatLive_Check(chat_number, id);
             },
-            ChatLive_SetCheckTimout,
+            ChatLive_SetCheckTimout * (useToken[chat_number] ? 2 : 1),
             ChatLive_CheckId[chat_number]
         );
     }
@@ -870,7 +870,7 @@ function ChatLive_socketSendSetCheck() {
         function() {
             ChatLive_socketSendCheck();
         },
-        ChatLive_SetCheckTimout,
+        ChatLive_SetCheckTimout * 2,
         ChatLive_socketSendCheckID
     );
 }
