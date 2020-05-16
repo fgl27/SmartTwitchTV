@@ -42,7 +42,7 @@ var Base_obj = {
     offset: 0,
     visiblerows: 3,
     status: false,
-    emptyContent: false,
+    emptyContent: true,
     itemsCountCheck: false,
     FirstLoad: false,
     row: 0,

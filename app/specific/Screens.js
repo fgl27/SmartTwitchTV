@@ -162,6 +162,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].TopRowCreated = false;
     ScreenObj[key].offset = 0;
     ScreenObj[key].offsettop = 0;
+    ScreenObj[key].emptyContent = true;
     ScreenObj[key].idObject = {};
     ScreenObj[key].Cells = [];
     ScreenObj[key].FirstLoad = true;
