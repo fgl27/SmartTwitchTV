@@ -52,6 +52,8 @@ var emoteReplace = {
     "\\:-?[z|Z|\\|]": ":Z",
 };
 
+var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
+
 var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
 
 //Variable initialization end
@@ -649,8 +651,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                     //1: "tmi.twitch.tv USERSTATE #cyr↵@emote-only=0;followers-only=-1;r9k=0;rituals=0;room-id=37522866;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #cyr"
                     if (message.params[1] && Main_A_includes_B(message.params[1], "ROOMSTATE")) {
 
-                        var Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
-                        var array = Regex.exec(message.params[1]);
+                        var array = ChatLive_ROOMSTATE_Regex.exec(message.params[1]);
                         if (array && array.length === 6) ChatLive_SetRoomState(array, chat_number);
 
                     } else {
