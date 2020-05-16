@@ -580,10 +580,10 @@ function ChatLive_loadChatRequest(chat_number, id) {
         };
     } else {
         ChatLive_socket[chat_number].onopen = function() {
-            ChatLive_socket[chat_number].send('PASS blah\r\n');
-            ChatLive_socket[chat_number].send('NICK justinfan12345\r\n');
-            ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
-            ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+            ChatLive_socket[chat_number].send('PASS blah');
+            ChatLive_socket[chat_number].send('NICK justinfan12345');
+            ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags');
+            ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
         };
     }
 
@@ -605,8 +605,9 @@ function ChatLive_loadChatRequest(chat_number, id) {
             case "001":
                 if (useToken[chat_number] &&
                     Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
+
                     ChatLive_SetCheck(chat_number, id);
-                    ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
+                    ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags');
 
                 }
                 break;
@@ -615,7 +616,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                     //Delay the joing so the cap get fully accepted
                     ChatLive_JoinID[chat_number] = Main_setTimeout(
                         function() {
-                            ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                            ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
                         },
                         500,
                         ChatLive_JoinID[chat_number]
@@ -658,7 +659,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                         //try a join again so the ROOMSTATE get send
                         ChatLive_JoinID[chat_number] = Main_setTimeout(
                             function() {
-                                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number] + '\r\n');
+                                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
                             },
                             500,
                             ChatLive_JoinID[chat_number]
@@ -841,7 +842,7 @@ function ChatLive_SendPrepared() {
                 if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
 
                     ChatLive_socketSendSetCheck();
-                    ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags\r\n');
+                    ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags');
 
                 }
                 break;
@@ -931,7 +932,7 @@ function ChatLive_SendMessage(message, chat_number) {
 
     if (ChatLive_socketSendJoin && ChatLive_socketSend && ChatLive_socketSend.readyState === 1) {
         //Main_Log('ChatLive_SendMessage sended');
-        ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message + '\r\n');
+        ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message);
 
         return true;
     }
@@ -1352,14 +1353,14 @@ function ChatLive_Clear(chat_number) {
     if (ChatLive_socket[chat_number] && ChatLive_loaded[chat_number] &&
         ChatLive_socket[chat_number].readyState === 1 &&
         AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
-        ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number] + '\r\n');
+        ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number]);
         ChatLive_socket[chat_number].close(1000);
     } else if (ChatLive_socket[chat_number]) {
         ChatLive_socket[chat_number].close(1000);
     }
 
     if (!chat_number) {
-        if (ChatLive_socketSend && ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART \r\n');
+        if (ChatLive_socketSend && ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
         ChatLive_SendClose();
     }
 
