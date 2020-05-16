@@ -261,6 +261,7 @@ public final class Tools {
         );
     }
 
+    //TODO add a header version of this fun
     public static ResponseObj GetResponseObj(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
@@ -383,7 +384,6 @@ public final class Tools {
     }
 
     //TODO on future app update replace the use of MethodUrl with MethodUrlHeaders
-    //And add a async version of mMethodUrlHeaders
     public static ResponseObj MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token,
                                         String overwriteID, String postMessage, String Method, long checkResult) {
 

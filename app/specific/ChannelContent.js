@@ -143,6 +143,22 @@ function ChannelContent_loadDataCheckHost() {
             3//thread
         );
 
+        // Android.GetMethodUrlHeadersAsync(
+        //     theUrl,//urlString
+        //     ChannelContent_loadingDataTimeout,//timeout
+        //     null,//postMessage, null for get
+        //     null,//Method, null for get
+        //     JSON.stringify(
+        //         [
+        //             [Main_clientIdHeader, Main_clientId]
+        //         ]
+        //     ),//JsonString
+        //     'ChannelContent_CheckHostResult',//callback
+        //     0,//checkResult
+        //     0,//key
+        //     3//thread
+        // );
+
     } catch (e) {
         BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError);
     }

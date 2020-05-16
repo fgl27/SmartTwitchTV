@@ -1524,7 +1524,7 @@ public class PlayerActivity extends Activity {
                                       String overwriteID, String postMessage, String Method, String callback, long checkResult, int key, int thread) {
 
             DataResultHandler[thread].removeCallbacksAndMessages(null);
-            DataResultHandler[thread] = null;
+            DataResult[thread] = null;
 
             DataResultHandler[thread].post(() ->
                     {
@@ -1541,6 +1541,44 @@ public class PlayerActivity extends Activity {
                                     postMessage,
                                     Method,
                                     checkResult
+                            );
+
+                            if (response != null)  {
+                                DataResult[thread] = new Gson().toJson(response);
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key +")");
+                                return;
+                            }
+
+                        }
+
+                        //MethodUrl is null inform JS callback
+                        DataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key +")");
+                    }
+            );
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonString,
+                                             String callback, long checkResult, int key, int thread) {
+
+            DataResultHandler[thread].removeCallbacksAndMessages(null);
+            DataResult[thread] = null;
+
+            DataResultHandler[thread].post(() ->
+                    {
+                        Tools.ResponseObj response;
+
+                        for (int i = 0; i < 3; i++) {
+
+                            response = Tools.MethodUrlHeaders(
+                                    urlString,
+                                    (timeout + (i * 500)),
+                                    postMessage,
+                                    Method,
+                                    checkResult,
+                                    JsonString
                             );
 
                             if (response != null)  {
