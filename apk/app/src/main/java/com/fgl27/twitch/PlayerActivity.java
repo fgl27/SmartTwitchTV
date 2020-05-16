@@ -148,6 +148,7 @@ public class PlayerActivity extends Activity {
     public long PingCounter = 0L;
     public long PingErrorCounter = 0L;
     public boolean warningShowing = false;
+    public boolean WebviewLoaded = false;
     public long PlayerCurrentPosition = 0L;
     public boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
     public Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
@@ -895,6 +896,7 @@ public class PlayerActivity extends Activity {
             if (Tools.isConnectedOrConnecting(this)){
                 HideWarningText();
                 mWebView.loadUrl(PageUrl);
+                WebviewLoaded = true;
             } else NetworkCheck();
         }, 250);
     }
@@ -943,7 +945,7 @@ public class PlayerActivity extends Activity {
     public void onResume() {
         super.onResume();
         IsStopped = false;
-        if (warningShowing) return;
+        if (!WebviewLoaded) return;
 
         if (Tools.isConnectedOrConnecting(this)) DoResume();
         else if (AlreadyStarted) {
@@ -1174,8 +1176,10 @@ public class PlayerActivity extends Activity {
 
         });
 
-        if (Tools.isConnectedOrConnecting(this)) mWebView.loadUrl(PageUrl);
-        else ShowNoNetworkWarning();
+        if (Tools.isConnectedOrConnecting(this)) {
+            mWebView.loadUrl(PageUrl);
+            WebviewLoaded = true;
+        } else ShowNoNetworkWarning();
 
         mWebView.requestFocus();
     }
