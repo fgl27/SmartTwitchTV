@@ -3879,14 +3879,17 @@
 
         //TODO remove the try after some app updates
         try {
-            Android.GetMethodUrlAsync(
+
+            Android.GetMethodUrlHeadersAsync(
                 theUrl, //urlString
                 ChannelContent_loadingDataTimeout, //timeout
-                1, //HeaderQuantity
-                null, //access_token
-                null, //overwriteID
                 null, //postMessage, null for get
                 null, //Method, null for get
+                JSON.stringify(
+                    [
+                        [Main_clientIdHeader, Main_clientId]
+                    ]
+                ), //JsonString
                 'ChannelContent_CheckHostResult', //callback
                 0, //checkResult
                 0, //key
@@ -7282,8 +7285,8 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.186';
-    var Main_minversion = 'May 14, 2020';
+    var Main_stringVersion_Min = '.187';
+    var Main_minversion = 'May 16, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7419,7 +7422,7 @@
                     Main_PreventCheckResume = true;
                     Main_addEventListener("keydown", Main_BackupDialodKeyDown);
                 } catch (e) {
-                    Main_ready(Main_initWindows); //Small delays here to make sure user restore function has finished checking at least user 0 token
+                    Main_ready(Main_initWindows);
                     return;
                 }
             } else Main_ready(Main_initWindows);
@@ -9036,7 +9039,27 @@
         }
     }
 
+    //the internet connection may be down do to standby after resume
+    //java will not call Main_CheckResume() until the internet connection is recognized
+    function Main_PreventClick(prevent) {
+        if (prevent) {
+            window.addEventListener("keydown", Main_PreventClickfun, true);
+            window.addEventListener("keyup", Main_PreventClickfun, true);
+            window.addEventListener("keypress", Main_PreventClickfun, true);
+        } else {
+            window.removeEventListener("keydown", Main_PreventClickfun, true);
+            window.removeEventListener("keyup", Main_PreventClickfun, true);
+            window.removeEventListener("keypress", Main_PreventClickfun, true);
+        }
+    }
+
+    function Main_PreventClickfun(e) {
+        e.stopPropagation();
+    }
+
     function Main_CheckStop() { // Called only by JAVA
+        Main_PreventClick(true);
+
         //Player related
         ChatLive_Clear(0);
         ChatLive_Clear(1);
@@ -9087,6 +9110,8 @@
     var Main_CheckResumeVodsId;
 
     function Main_CheckResume() { // Called only by JAVA
+        Main_PreventClick(false);
+
         //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
         //but the aap is not ready for the rest of the check on this fun
         if (Main_PreventCheckResume) return;
@@ -12106,25 +12131,34 @@
     function PlayExtra_loadDataCheckHost(doSwitch) {
         var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]);
 
-        //TODO remove the try after some app updates
-        try {
-            Android.GetMethodUrlAsync(
-                theUrl, //urlString
-                Play_loadingDataTimeout, //timeout
-                1, //HeaderQuantity
-                null, //access_token
-                null, //overwriteID
-                null, //postMessage, null for get
-                null, //Method, null for get
-                'PlayExtra_CheckHostResult', //callback
-                0, //checkResult
-                doSwitch, //key
-                3 //thread
-            );
+        Main_setTimeout(
+            function() {
+                //TODO remove the try after some app updates
+                //TODO make a simple fun for this
+                try {
 
-        } catch (e) {
-            PlayExtra_End_success(doSwitch);
-        }
+                    Android.GetMethodUrlHeadersAsync(
+                        theUrl, //urlString
+                        Play_loadingDataTimeout, //timeout
+                        null, //postMessage, null for get
+                        null, //Method, null for get
+                        JSON.stringify(
+                            [
+                                [Main_clientIdHeader, Main_clientId]
+                            ]
+                        ), //JsonString
+                        'PlayExtra_CheckHostResult', //callback
+                        0, //checkResult
+                        doSwitch, //key
+                        3 //thread
+                    );
+
+                } catch (e) {
+                    PlayExtra_End_success(doSwitch);
+                }
+            },
+            100 //Delay as the stream just ended and may not show as host yet
+        );
     }
 
     function PlayExtra_CheckHostResult(result, doSwitch) {
@@ -13922,25 +13956,34 @@
     function Play_loadDataCheckHost() {
         var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
-        //TODO remove the try after some app updates
-        try {
-            Android.GetMethodUrlAsync(
-                theUrl, //urlString
-                Play_loadingDataTimeout, //timeout
-                1, //HeaderQuantity
-                null, //access_token
-                null, //overwriteID
-                null, //postMessage, null for get
-                null, //Method, null for get
-                'Play_CheckHostResult', //callback
-                0, //checkResult
-                0, //key
-                3 //thread
-            );
+        Main_setTimeout(
+            function() {
+                //TODO remove the try after some app updates
+                //TODO make a simple fun for this
+                try {
 
-        } catch (e) {
-            BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
-        }
+                    Android.GetMethodUrlHeadersAsync(
+                        theUrl, //urlString
+                        Play_loadingDataTimeout, //timeout
+                        null, //postMessage, null for get
+                        null, //Method, null for get
+                        JSON.stringify(
+                            [
+                                [Main_clientIdHeader, Main_clientId]
+                            ]
+                        ), //JsonString
+                        'Play_CheckHostResult', //callback
+                        0, //checkResult
+                        0, //key
+                        3 //thread
+                    );
+
+                } catch (e) {
+                    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
+                }
+            },
+            100 //Delay as the stream just ended and may not show as host yet
+        );
     }
 
     function Play_CheckHostResult(result) {
@@ -16121,19 +16164,18 @@
 
     // function Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
     //     try {
-    //         Android.GetMethodUrlAsync(
-    //             theUrl,//urlString
-    //             Timeout,//timeout
-    //             HeaderQuatity,//HeaderQuantity
-    //             access_token,//access_token
-    //             HeaderArray[0][1],//overwriteID
-    //             null,//postMessage, null for get
-    //             null,//Method, null for get
-    //             'Screens_AndroidResult',//callback
-    //             0,//checkResult
-    //             key,//key
-    //             ScreenObj[key].thread//thread
-    //         );
+
+    // Android.GetMethodUrlHeadersAsync(
+    //     theUrl,//urlString
+    //     Timeout,//timeout
+    //     null,//postMessage, null for get
+    //     null,//Method, null for get
+    //     '',//TODO add a fun to generate the JsonString
+    //     'Screens_AndroidResult',//callback
+    //     0,//checkResult
+    //     key,//key
+    //     ScreenObj[key].thread//TODO update thread numebr 0 to 3 only thread
+    // );
 
     //     } catch (e) {
     //         Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
