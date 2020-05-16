@@ -234,25 +234,34 @@ function PlayExtra_End_success(doSwitch) {
 function PlayExtra_loadDataCheckHost(doSwitch) {
     var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]);
 
-    //TODO remove the try after some app updates
-    try {
-        Android.GetMethodUrlAsync(
-            theUrl,//urlString
-            Play_loadingDataTimeout,//timeout
-            1,//HeaderQuantity
-            null,//access_token
-            null,//overwriteID
-            null,//postMessage, null for get
-            null,//Method, null for get
-            'PlayExtra_CheckHostResult',//callback
-            0,//checkResult
-            doSwitch,//key
-            3//thread
-        );
+    Main_setTimeout(
+        function() {
+            //TODO remove the try after some app updates
+            //TODO make a simple fun for this
+            try {
 
-    } catch (e) {
-        PlayExtra_End_success(doSwitch);
-    }
+                Android.GetMethodUrlHeadersAsync(
+                    theUrl,//urlString
+                    Play_loadingDataTimeout,//timeout
+                    null,//postMessage, null for get
+                    null,//Method, null for get
+                    JSON.stringify(
+                        [
+                            [Main_clientIdHeader, Main_clientId]
+                        ]
+                    ),//JsonString
+                    'PlayExtra_CheckHostResult',//callback
+                    0,//checkResult
+                    doSwitch,//key
+                    3//thread
+                );
+
+            } catch (e) {
+                PlayExtra_End_success(doSwitch);
+            }
+        },
+        100//Delay as the stream just ended and may not show as host yet
+    );
 }
 
 function PlayExtra_CheckHostResult(result, doSwitch) {

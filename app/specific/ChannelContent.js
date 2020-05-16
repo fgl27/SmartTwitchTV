@@ -129,35 +129,22 @@ function ChannelContent_loadDataCheckHost() {
 
     //TODO remove the try after some app updates
     try {
-        Android.GetMethodUrlAsync(
+
+        Android.GetMethodUrlHeadersAsync(
             theUrl,//urlString
             ChannelContent_loadingDataTimeout,//timeout
-            1,//HeaderQuantity
-            null,//access_token
-            null,//overwriteID
             null,//postMessage, null for get
             null,//Method, null for get
+            JSON.stringify(
+                [
+                    [Main_clientIdHeader, Main_clientId]
+                ]
+            ),//JsonString
             'ChannelContent_CheckHostResult',//callback
             0,//checkResult
             0,//key
             3//thread
         );
-
-        // Android.GetMethodUrlHeadersAsync(
-        //     theUrl,//urlString
-        //     ChannelContent_loadingDataTimeout,//timeout
-        //     null,//postMessage, null for get
-        //     null,//Method, null for get
-        //     JSON.stringify(
-        //         [
-        //             [Main_clientIdHeader, Main_clientId]
-        //         ]
-        //     ),//JsonString
-        //     'ChannelContent_CheckHostResult',//callback
-        //     0,//checkResult
-        //     0,//key
-        //     3//thread
-        // );
 
     } catch (e) {
         BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError);

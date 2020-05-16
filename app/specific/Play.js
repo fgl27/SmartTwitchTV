@@ -1577,25 +1577,34 @@ function Play_CheckHostStart(error_410) {
 function Play_loadDataCheckHost() {
     var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
-    //TODO remove the try after some app updates
-    try {
-        Android.GetMethodUrlAsync(
-            theUrl,//urlString
-            Play_loadingDataTimeout,//timeout
-            1,//HeaderQuantity
-            null,//access_token
-            null,//overwriteID
-            null,//postMessage, null for get
-            null,//Method, null for get
-            'Play_CheckHostResult',//callback
-            0,//checkResult
-            0,//key
-            3//thread
-        );
+    Main_setTimeout(
+        function() {
+            //TODO remove the try after some app updates
+            //TODO make a simple fun for this
+            try {
 
-    } catch (e) {
-        BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
-    }
+                Android.GetMethodUrlHeadersAsync(
+                    theUrl,//urlString
+                    Play_loadingDataTimeout,//timeout
+                    null,//postMessage, null for get
+                    null,//Method, null for get
+                    JSON.stringify(
+                        [
+                            [Main_clientIdHeader, Main_clientId]
+                        ]
+                    ),//JsonString
+                    'Play_CheckHostResult',//callback
+                    0,//checkResult
+                    0,//key
+                    3//thread
+                );
+
+            } catch (e) {
+                BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
+            }
+        },
+        100//Delay as the stream just ended and may not show as host yet
+    );
 }
 
 function Play_CheckHostResult(result) {

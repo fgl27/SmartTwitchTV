@@ -222,19 +222,18 @@ function Screens_loadDataRequest(key) {
 
 // function Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
 //     try {
-//         Android.GetMethodUrlAsync(
-//             theUrl,//urlString
-//             Timeout,//timeout
-//             HeaderQuatity,//HeaderQuantity
-//             access_token,//access_token
-//             HeaderArray[0][1],//overwriteID
-//             null,//postMessage, null for get
-//             null,//Method, null for get
-//             'Screens_AndroidResult',//callback
-//             0,//checkResult
-//             key,//key
-//             ScreenObj[key].thread//thread
-//         );
+
+// Android.GetMethodUrlHeadersAsync(
+//     theUrl,//urlString
+//     Timeout,//timeout
+//     null,//postMessage, null for get
+//     null,//Method, null for get
+//     '',//TODO add a fun to generate the JsonString
+//     'Screens_AndroidResult',//callback
+//     0,//checkResult
+//     key,//key
+//     ScreenObj[key].thread//TODO update thread numebr 0 to 3 only thread
+// );
 
 //     } catch (e) {
 //         Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
