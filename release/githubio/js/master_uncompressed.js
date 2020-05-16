@@ -16104,6 +16104,7 @@
         ScreenObj[key].TopRowCreated = false;
         ScreenObj[key].offset = 0;
         ScreenObj[key].offsettop = 0;
+        ScreenObj[key].emptyContent = true;
         ScreenObj[key].idObject = {};
         ScreenObj[key].Cells = [];
         ScreenObj[key].FirstLoad = true;
@@ -18179,7 +18180,7 @@
         offset: 0,
         visiblerows: 3,
         status: false,
-        emptyContent: false,
+        emptyContent: true,
         itemsCountCheck: false,
         FirstLoad: false,
         row: 0,
