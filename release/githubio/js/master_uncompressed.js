@@ -6232,7 +6232,11 @@
 
             } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
 
-                ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_SENDER_PRIME + STR_SPACE + ' sub to ' + recipient, chat_number);
+                ChatLive_CheckIfSubSend(
+                    gifter,
+                    STR_GIFT_SUB_SENDER_PRIME + STR_SPACE + ' sub to ' + '<span style="color: #0fffff;">' + recipient + '</span>',
+                    chat_number
+                );
 
             }
 
