@@ -896,7 +896,7 @@ public class PlayerActivity extends Activity {
                 HideWarningText();
                 mWebView.loadUrl(PageUrl);
             } else NetworkCheck();
-        }, 100);
+        }, 250);
     }
 
     private void ShowWarningText(String text) {
@@ -971,7 +971,7 @@ public class PlayerActivity extends Activity {
                 HideWarningText();
                 DoResume();
             } else if (!IsStopped) NetworkResumeCheck();
-        }, 100);
+        }, 250);
     }
 
     //This function is called when home key is pressed
