@@ -562,7 +562,8 @@ function ChatLive_loadChatRequest(chat_number, id) {
     //Main_Log('ChatLive_loadChatRequest');
 
     ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
-        reconnectInterval: 3000
+        reconnectInterval: 3000,
+        automaticOpen: false
     });
 
     ChatLive_socket[chat_number].onopen = function() {
@@ -587,7 +588,10 @@ function ChatLive_loadChatRequest(chat_number, id) {
         if (!message.command) return;
 
         //console.log(message);
-        //if (message.command !== "PRIVMSG") Main_Log(message.command + ' Main');
+        // if (message.command !== "PRIVMSG") {
+        //     Main_Log(message.command + ' Main');
+        //     Main_Log(JSON.stringify(message));
+        // }
 
         switch (message.command) {
             case "PING":
@@ -733,6 +737,12 @@ function ChatLive_loadChatRequest(chat_number, id) {
         }
     };
 
+    // ChatLive_socket[chat_number].onerror = function(error) {
+    //     Main_Log(JSON.stringify(error) + ' main');
+    // };
+
+    ChatLive_socket[chat_number].open();
+
     ChatLive_SetCheck(chat_number, id);
 }
 
@@ -817,7 +827,8 @@ function ChatLive_SendPrepared(chat_number, id) {
     //Main_Log('ChatLive_SendPrepared');
 
     ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
-        reconnectInterval: 3000
+        reconnectInterval: 3000,
+        automaticOpen: false
     });
 
     ChatLive_socketSend.onopen = function() {
@@ -834,8 +845,8 @@ function ChatLive_SendPrepared(chat_number, id) {
 
         if (!message.command) return;
 
-        //Main_Log(message.command + ' send');
-        //Main_Log(message);
+        // Main_Log(message.command + ' send');
+        // Main_Log(JSON.stringify(message));
 
         switch (message.command) {
             case "PING":
@@ -870,6 +881,12 @@ function ChatLive_SendPrepared(chat_number, id) {
                 break;
         }
     };
+
+    // ChatLive_socketSend.onerror = function(error) {
+    //     Main_Log(JSON.stringify(error) + ' send');
+    // };
+
+    ChatLive_socketSend.open();
 
     ChatLive_socketSendSetCheck(chat_number, id);
 }
