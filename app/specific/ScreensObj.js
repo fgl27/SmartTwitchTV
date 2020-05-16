@@ -1079,8 +1079,10 @@ var Base_Game_obj = {
         Main_SwitchScreen();
     },
     setMax: function(tempObj) {
+
         this.MaxOffset = tempObj._total;
         if (this.data.length >= this.MaxOffset) this.dataEnded = true;
+
     },
     addCell: function(cell) {
         var hasLive = this.isLive || this.screen === Main_games;
@@ -1150,6 +1152,7 @@ function ScreensObj_InitUserGames() {
         object: 'follows',
         base_url: 'https://api.twitch.tv/api/users/',
         set_url: function() {
+
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
             this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games';
 
@@ -1180,7 +1183,6 @@ function ScreensObj_InitUserGames() {
     ScreenObj[Main_usergames].HeaderQuatity = 1;
     ScreenObj[Main_usergames].start_fun = function() {
         if (!this.loadingData) this.key_refresh();
-        Screens_StartLoad(this.screen);
     };
     ScreenObj[Main_usergames].Set_Scroll();
     ScreenObj[Main_usergames].Headers = Main_Headers_Back;
