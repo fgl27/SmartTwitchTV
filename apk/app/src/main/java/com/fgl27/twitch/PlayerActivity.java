@@ -989,6 +989,8 @@ public class PlayerActivity extends Activity {
 
     private void monStop() {
         IsStopped = true;
+        if (!WebviewLoaded) return;
+
         StartService();
         int temp_AudioMulti = AudioMulti;
 
