@@ -2168,14 +2168,13 @@ public class PlayerActivity extends Activity {
                 return;
 
             if (playbackState == Player.STATE_ENDED) {
-                Log.w(TAG, "onPlaybackStateChanged player[" + position + "] Player.STATE_ENDED");
 
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 player[position].setPlayWhenReady(false);
 
                 PlayerEventListenerClear(position);
             } else if (playbackState == Player.STATE_BUFFERING) {
-                Log.w(TAG, "onPlaybackStateChanged player[" + position + "] Player.STATE_BUFFERING");
+
                 //Use the player buffer as a player check state to prevent be buffering for ever
                 //If buffer for as long as (BUFFER_SIZE * 2 + etc) do something because player is frozen
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
@@ -2188,7 +2187,6 @@ public class PlayerActivity extends Activity {
                     PlayerEventListenerCheckCounter(position, false);
                 }, Delay_ms);
             } else if (playbackState == Player.STATE_READY) {
-                Log.w(TAG, "onPlaybackStateChanged player[" + position + "] Player.STATE_READY");
 
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
