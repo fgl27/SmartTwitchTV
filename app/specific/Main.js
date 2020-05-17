@@ -1545,8 +1545,6 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
     for (var i = 0; i < HeaderQuatity; i++)
         xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
 
-    xmlHttp.ontimeout = function() {};
-
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
@@ -1748,7 +1746,6 @@ function Main_Setworker() {
                     xmlHttp.responseType = 'blob';
                     xmlHttp.open('GET', event.data, true);
                     xmlHttp.timeout = 3000;
-                    xmlHttp.ontimeout = function() {};
                     xmlHttp.send();
                 }
             );

@@ -257,8 +257,6 @@ function Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, He
     for (var i = 0; i < HeaderQuatity; i++)
         xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
 
-    xmlHttp.ontimeout = function() {};
-
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             Screens_HttpResultStatus(xmlHttp, key);
@@ -1805,8 +1803,6 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, trye, ID) {
 
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, trye, ID);

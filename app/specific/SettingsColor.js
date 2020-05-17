@@ -452,8 +452,8 @@ function SettingsColor_SetColorsObj() {
     };
 
     SettingsColor_ColorsObj[SettingsColor_ColorsObjApply] = {
-        left: function() {},
-        right: function() {},
+        left: empty_fun,
+        right: empty_fun,
         focus: SettingsColor_optFocus,
         removefocus: SettingsColor_RemoveoptFocus,
         enter: SettingsColor_CollorApply

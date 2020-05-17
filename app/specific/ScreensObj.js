@@ -23,6 +23,7 @@ var AGame_following = false;
 
 var DefaultloadingDataTimeout = 3000;
 var DefaultLoadingDataTryMax = 3;
+var empty_fun = function() {};
 
 var Base_obj = {
     posX: 0,

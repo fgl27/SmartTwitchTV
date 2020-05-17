@@ -56,7 +56,6 @@ var emoteReplace = {
 var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
 
 var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
-
 //Variable initialization end
 
 function ChatLive_Init(chat_number) {
@@ -147,7 +146,6 @@ function ChatLive_checkFallow(tryes, chat_number, id) {
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -210,7 +208,6 @@ function ChatLive_checkSub(tryes, chat_number, id) {
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -768,10 +765,10 @@ function ChatLive_SetCheck(chat_number, id) {
 }
 
 function ChatLive_reset(chat_number) {
-    ChatLive_socket[chat_number].onclose = function() {};
-    ChatLive_socket[chat_number].onerror = function() {};
-    ChatLive_socket[chat_number].onmessage = function() {};
-    ChatLive_socket[chat_number].onopen = function() {};
+    ChatLive_socket[chat_number].onclose = empty_fun;
+    ChatLive_socket[chat_number].onerror = empty_fun;
+    ChatLive_socket[chat_number].onmessage = empty_fun;
+    ChatLive_socket[chat_number].onopen = empty_fun;
 }
 
 function ChatLive_Close(chat_number) {
@@ -935,10 +932,10 @@ function ChatLive_SendPrepared(chat_number, id) {
 }
 
 function ChatLive_SendReeset() {
-    ChatLive_socketSend.onclose = function() {};
-    ChatLive_socketSend.onerror = function() {};
-    ChatLive_socketSend.onmessage = function() {};
-    ChatLive_socketSend.onopen = function() {};
+    ChatLive_socketSend.onclose = empty_fun;
+    ChatLive_socketSend.onerror = empty_fun;
+    ChatLive_socketSend.onmessage = empty_fun;
+    ChatLive_socketSend.onopen = empty_fun;
 }
 
 function ChatLive_SendClose() {
@@ -1465,7 +1462,6 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
     }
 
     xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {

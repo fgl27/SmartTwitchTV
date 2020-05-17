@@ -263,8 +263,6 @@ function AddUser_UpdateUser(position, tryes) {
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-    xmlHttp.ontimeout = function() {};
-
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) AddUser_UpdateUsertSuccess(xmlHttp.responseText, position);

@@ -174,8 +174,6 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
     if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
 
-    xmlHttp.ontimeout = function() {};
-
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
     };

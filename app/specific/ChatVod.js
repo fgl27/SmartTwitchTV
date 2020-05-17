@@ -64,7 +64,6 @@ function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
 
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -219,7 +218,6 @@ function Chat_loadChatRequest(id) {
     xmlHttp.open("GET", theUrl, true);
 
     xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -508,7 +506,6 @@ function Chat_loadChatNextRequest(id) {
     xmlHttp.open("GET", theUrl, true);
 
     xmlHttp.timeout = 10000;
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {

@@ -70,7 +70,6 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
 
         xmlHttp.open("POST", url, true);
         xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -673,8 +672,6 @@ function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, cal
     for (var i = 0; i < HeaderQuatity; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-    xmlHttp.ontimeout = function() {};
-
     xmlHttp.onreadystatechange = function() {
         callbackready(xmlHttp);
     };
@@ -689,7 +686,6 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
     xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
 
     xmlHttp.timeout = AddCode_loadingDataTimeout;
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         callbackready(xmlHttp, position, tryes);
@@ -716,8 +712,6 @@ function AddCode_BasexmlHttpGetBack(theUrl, type, HeaderQuatity, access_token, c
 
     for (var i = 0; i < HeaderQuatity; i++)
         xmlHttp.setRequestHeader(Main_Headers_Back[i][0], Main_Headers_Back[i][1]);
-
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         callbackready(xmlHttp);

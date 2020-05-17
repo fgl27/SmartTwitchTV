@@ -607,8 +607,6 @@ function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-    xmlHttp.ontimeout = function() {};
-
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) Play_updateVodInfoSuccess(xmlHttp.responseText, BroadcastID);
@@ -656,8 +654,6 @@ function Play_RefreshMultiGet(theUrl, tryes, pos) {
 
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.ontimeout = function() {};
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
