@@ -21023,7 +21023,7 @@
                 800, 900, 1000, 1100, 1200, 1300,
                 1400, 1500, 1600, 1700, 1800, 1900, 2000
             ],
-            "defaultValue": 4
+            "defaultValue": 6
         },
         "live_feed_sort": { //Migrated to dialog
             "values": [
