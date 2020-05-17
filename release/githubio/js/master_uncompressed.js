@@ -2685,7 +2685,6 @@
 
             xmlHttp.open("POST", url, true);
             xmlHttp.timeout = AddCode_loadingDataTimeout;
-            xmlHttp.ontimeout = function() {};
 
             xmlHttp.onreadystatechange = function() {
                 if (xmlHttp.readyState === 4) {
@@ -3288,8 +3287,6 @@
         for (var i = 0; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-        xmlHttp.ontimeout = function() {};
-
         xmlHttp.onreadystatechange = function() {
             callbackready(xmlHttp);
         };
@@ -3304,7 +3301,6 @@
         xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
 
         xmlHttp.timeout = AddCode_loadingDataTimeout;
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             callbackready(xmlHttp, position, tryes);
@@ -3331,8 +3327,6 @@
 
         for (var i = 0; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(Main_Headers_Back[i][0], Main_Headers_Back[i][1]);
-
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             callbackready(xmlHttp);
@@ -3604,8 +3598,6 @@
 
         for (var i = 0; i < 2; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -5249,7 +5241,6 @@
     var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
 
     var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
-
     //Variable initialization end
 
     function ChatLive_Init(chat_number) {
@@ -5340,7 +5331,6 @@
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -5403,7 +5393,6 @@
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -5961,10 +5950,10 @@
     }
 
     function ChatLive_reset(chat_number) {
-        ChatLive_socket[chat_number].onclose = function() {};
-        ChatLive_socket[chat_number].onerror = function() {};
-        ChatLive_socket[chat_number].onmessage = function() {};
-        ChatLive_socket[chat_number].onopen = function() {};
+        ChatLive_socket[chat_number].onclose = empty_fun;
+        ChatLive_socket[chat_number].onerror = empty_fun;
+        ChatLive_socket[chat_number].onmessage = empty_fun;
+        ChatLive_socket[chat_number].onopen = empty_fun;
     }
 
     function ChatLive_Close(chat_number) {
@@ -6129,10 +6118,10 @@
     }
 
     function ChatLive_SendReeset() {
-        ChatLive_socketSend.onclose = function() {};
-        ChatLive_socketSend.onerror = function() {};
-        ChatLive_socketSend.onmessage = function() {};
-        ChatLive_socketSend.onopen = function() {};
+        ChatLive_socketSend.onclose = empty_fun;
+        ChatLive_socketSend.onerror = empty_fun;
+        ChatLive_socketSend.onmessage = empty_fun;
+        ChatLive_socketSend.onopen = empty_fun;
     }
 
     function ChatLive_SendClose() {
@@ -6657,7 +6646,6 @@
         }
 
         xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -6740,7 +6728,6 @@
 
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -6895,7 +6882,6 @@
         xmlHttp.open("GET", theUrl, true);
 
         xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -7184,7 +7170,6 @@
         xmlHttp.open("GET", theUrl, true);
 
         xmlHttp.timeout = 10000;
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -8796,8 +8781,6 @@
         for (var i = 0; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
 
-        xmlHttp.ontimeout = function() {};
-
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) {
@@ -8999,7 +8982,6 @@
                         xmlHttp.responseType = 'blob';
                         xmlHttp.open('GET', event.data, true);
                         xmlHttp.timeout = 3000;
-                        xmlHttp.ontimeout = function() {};
                         xmlHttp.send();
                     }
                 );
@@ -13077,8 +13059,6 @@
         for (var i = 0; i < 2; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-        xmlHttp.ontimeout = function() {};
-
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) Play_updateVodInfoSuccess(xmlHttp.responseText, BroadcastID);
@@ -13126,8 +13106,6 @@
 
         for (var i = 0; i < 2; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -16296,8 +16274,6 @@
         for (var i = 0; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
 
-        xmlHttp.ontimeout = function() {};
-
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 Screens_HttpResultStatus(xmlHttp, key);
@@ -17845,8 +17821,6 @@
         for (var i = 0; i < 2; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-        xmlHttp.ontimeout = function() {};
-
         xmlHttp.onreadystatechange = function() {
             if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, trye, ID);
         };
@@ -18258,6 +18232,7 @@
 
     var DefaultloadingDataTimeout = 3000;
     var DefaultLoadingDataTryMax = 3;
+    var empty_fun = function() {};
 
     var Base_obj = {
         posX: 0,
@@ -20730,8 +20705,8 @@
         };
 
         SettingsColor_ColorsObj[SettingsColor_ColorsObjApply] = {
-            left: function() {},
-            right: function() {},
+            left: empty_fun,
+            right: empty_fun,
             focus: SettingsColor_optFocus,
             removefocus: SettingsColor_RemoveoptFocus,
             enter: SettingsColor_CollorApply
@@ -22215,17 +22190,23 @@
                 summary: null,
                 keyenter: true
             },
-            global_font_offset: {
-                defaultValue: Settings_value.global_font_offset.defaultValue,
-                values: Settings_value.global_font_offset.values,
-                title: STR_GLOBAL_FONT,
-                summary: STR_GLOBAL_FONT_SUMMARY
+            show_screen_counter: {
+                defaultValue: Settings_value.show_screen_counter.defaultValue,
+                values: Settings_value.show_screen_counter.values,
+                title: STR_SCREEN_COUNTER,
+                summary: STR_SCREEN_COUNTER_SUMMARY
             },
             thumb_quality: {
                 defaultValue: Settings_value.thumb_quality.defaultValue,
                 values: Settings_value.thumb_quality.values,
                 title: STR_THUMB_RESOLUTION,
                 summary: STR_THUMB_RESOLUTION_SUMMARY
+            },
+            global_font_offset: {
+                defaultValue: Settings_value.global_font_offset.defaultValue,
+                values: Settings_value.global_font_offset.values,
+                title: STR_GLOBAL_FONT,
+                summary: STR_GLOBAL_FONT_SUMMARY
             },
             app_animations: {
                 defaultValue: Settings_value.app_animations.defaultValue,
@@ -22256,12 +22237,6 @@
                 values: Settings_value.key_up_timeout.values,
                 title: STR_KEY_UP_TIMEOUT,
                 summary: STR_KEY_UP_TIMEOUT_SUMMARY
-            },
-            show_screen_counter: {
-                defaultValue: Settings_value.show_screen_counter.defaultValue,
-                values: Settings_value.show_screen_counter.values,
-                title: STR_SCREEN_COUNTER,
-                summary: STR_SCREEN_COUNTER_SUMMARY
             },
             clock_offset: {
                 defaultValue: Settings_value.clock_offset.defaultValue,
@@ -24631,8 +24606,6 @@
         xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
         xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
         if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
-
-        xmlHttp.ontimeout = function() {};
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
