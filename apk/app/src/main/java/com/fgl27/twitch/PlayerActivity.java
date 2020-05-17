@@ -261,8 +261,8 @@ public class PlayerActivity extends Activity {
             setPlayerSurface(true);
 
             DeviceRam = Tools.DeviceRam(this);
-            //Ram too big.bigger then max int value... use 500MB
-            if (DeviceRam < 0) DeviceRam = 500000000;
+            //Ram too big.bigger then max int value... use 128MB
+            if (DeviceRam < 0) DeviceRam = 128000000;
 
             initializeWebview();
         }

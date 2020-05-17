@@ -603,7 +603,7 @@ public final class Tools {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
-                        90000, //DEFAULT_MIN_BUFFER_MS
+                        50000, //DEFAULT_MIN_BUFFER_MS
                         36000000, //DEFAULT_MAX_BUFFER_MS... technically infinity setTargetBufferBytes controls it
                         buffer, //DEFAULT_BUFFER_FOR_PLAYBACK_MS
                         buffer + 1000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
@@ -751,9 +751,9 @@ public final class Tools {
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         if (actManager != null) {
             actManager.getMemoryInfo(memInfo);
-        } else return 100000000;
+        } else return 500000000;
 
-        return (int) (memInfo.totalMem / 16);
+        return (int) (memInfo.totalMem / 24);
     }
 
     public static Point ScreenSize(Display display) {
