@@ -19366,7 +19366,7 @@
                 if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
                 this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games';
 
-                if (this.isLive) this.url += '/live?limit=150';
+                if (this.isLive) this.url += '/live?limit=250';
                 else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
             },
             key_refresh: function() {
@@ -25021,7 +25021,7 @@
     }
 
     function UserLiveFeedobj_loadUserGames() {
-        var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=150'; //follows
+        var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=250'; //follows
 
         BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserGamesPos], 1, null, UserLiveFeedobj_loadDataUserGamesSuccess,
             function() {
