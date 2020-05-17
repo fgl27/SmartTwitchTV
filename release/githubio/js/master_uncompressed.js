@@ -18894,7 +18894,7 @@
                     this.followerChannels = this.followerChannels.slice(0, -1);
                     this.followerChannelsDone = true;
                 }
-                Screens_loadDataRequest(this);
+                Screens_loadDataRequest(this.screen);
             }
         };
         ScreenObj[Main_UserLive].Set_Scroll();
@@ -19629,9 +19629,7 @@
                 [STR_PRESS_ENTER_D]
             ];
         },
-        set_url: function() {
-            return;
-        },
+        set_url: empty_fun,
         empty_str: function() {
             return STR_NO + STR_SPACE + STR_HISTORY;
         },
