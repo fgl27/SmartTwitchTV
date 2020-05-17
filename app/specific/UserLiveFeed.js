@@ -269,6 +269,7 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
             UserLiveFeed_CheckNotifycation = true;
         }
     }
+    //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
 }
 
 function UserLiveFeed_GetSize(pos) {

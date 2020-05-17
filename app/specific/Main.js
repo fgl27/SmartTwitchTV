@@ -454,7 +454,7 @@ function Main_initWindows() {
 
     if (AddUser_UserIsSet()) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
-        Main_updateUserFeedId = Main_setTimeout(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId);//it 5 min refresh
+        Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId);//it 5 min refresh
     }
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId);//Check it 5min

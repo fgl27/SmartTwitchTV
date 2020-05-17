@@ -11,7 +11,8 @@ var ChatLive_Banned = [];
 var ChatLive_FollowState = [];
 var ChatLive_SubState = [];
 var ChatLive_Playing = true;
-var ChatLive_SetCheckTimout = 7500;
+var ChatLive_SetCheckTimout = 10000;
+var ChatLive_ReTryDelay = 1000;
 var extraEmotesDone = {
     bttv: {},
     ffz: {},
@@ -541,16 +542,18 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
 
 var useToken = [];
 
-function ChatLive_loadChat(chat_number, id) {
+function ChatLive_loadChat(chat_number, id, silent) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_CheckClear(chat_number);
 
-    ChatLive_LineAddSimple(
-        STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
-        (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
-        chat_number
-    );
+    if (!silent) {
+        ChatLive_LineAddSimple(
+            STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
+            (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
+            chat_number
+        );
+    }
 
     useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
@@ -561,10 +564,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
     //Main_Log('ChatLive_loadChatRequest');
 
-    ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
-        reconnectInterval: 3000,
-        automaticOpen: false
-    });
+    ChatLive_socket[chat_number] = new WebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc');
 
     ChatLive_socket[chat_number].onopen = function() {
         if (useToken[chat_number]) {
@@ -587,7 +587,6 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
         if (!message.command) return;
 
-        //console.log(message);
         // if (message.command !== "PRIVMSG") {
         //     Main_Log(message.command + ' Main');
         //     Main_Log(JSON.stringify(message));
@@ -604,7 +603,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                     Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
 
                     ChatLive_SetCheck(chat_number, id);
-                    ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags');
+                    ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/tags twitch.tv/commands');
 
                 }
                 break;
@@ -730,18 +729,27 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 // __proto__: Object
                 break;
             case "PART":
-                if (ChatLive_socket[chat_number]) ChatLive_socket[chat_number].close(1000);
+                if (ChatLive_socket[chat_number]) {
+                    ChatLive_reset(chat_number);
+                    ChatLive_socket[chat_number].close(1000);
+                }
                 break;
             default:
                 break;
         }
     };
 
-    // ChatLive_socket[chat_number].onerror = function(error) {
-    //     Main_Log(JSON.stringify(error) + ' main');
-    // };
+    ChatLive_socket[chat_number].onclose =
+        function(event) {// jshint ignore:line
+            //Main_Log(JSON.stringify(event) + ' onclose main ');
+            ChatLive_Check(chat_number, id, ChatLive_ReTryDelay, true);
+        };
 
-    ChatLive_socket[chat_number].open();
+    ChatLive_socket[chat_number].onerror =
+        function(error) {// jshint ignore:line
+            //Main_Log(JSON.stringify(error) + ' erro main');
+            ChatLive_Check(chat_number, id, ChatLive_ReTryDelay, true);
+        };
 
     ChatLive_SetCheck(chat_number, id);
 }
@@ -751,12 +759,19 @@ function ChatLive_SetCheck(chat_number, id) {
     if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
         ChatLive_CheckId[chat_number] = Main_setTimeout(
             function() {
-                ChatLive_Check(chat_number, id);
+                ChatLive_Check(chat_number, id, 0);
             },
             ChatLive_SetCheckTimout * (useToken[chat_number] ? 2 : 1),
             ChatLive_CheckId[chat_number]
         );
     }
+}
+
+function ChatLive_reset(chat_number) {
+    ChatLive_socket[chat_number].onclose = function() {};
+    ChatLive_socket[chat_number].onerror = function() {};
+    ChatLive_socket[chat_number].onmessage = function() {};
+    ChatLive_socket[chat_number].onopen = function() {};
 }
 
 function ChatLive_Close(chat_number) {
@@ -765,21 +780,21 @@ function ChatLive_Close(chat_number) {
         if (ChatLive_socket[chat_number].readyState === 1)
             ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number]);
 
+        ChatLive_reset(chat_number);
         ChatLive_socket[chat_number].close(1000);
-
     }
 }
 
-function ChatLive_Check(chat_number, id) {
+function ChatLive_Check(chat_number, id, timeout, silent) {
     if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
         ChatLive_Close(chat_number);
 
         ChatLive_CheckId[chat_number] = Main_setTimeout(
             function() {
-                ChatLive_LineAddSimple(STR_LOADING_FAIL, chat_number);
-                ChatLive_loadChat(chat_number, id);
+                if (!silent) ChatLive_LineAddSimple(STR_LOADING_FAIL, chat_number);
+                ChatLive_loadChat(chat_number, id, silent);
             },
-            1000,
+            timeout ? timeout : 0,
             ChatLive_CheckId[chat_number]
         );
     }
@@ -827,6 +842,7 @@ function ChatLive_UpdateRoomState(message, chat_number) {
 }
 
 function ChatLive_SendStart(chat_number, id) {
+    //Main_Log('ChatLive_SendStart');
     if (id !== Chat_Id[chat_number]) return;
 
     if (!chat_number) {
@@ -841,13 +857,11 @@ function ChatLive_SendStart(chat_number, id) {
 var ChatLive_socketSend;
 var ChatLive_socketSendJoin = false;
 var ChatLive_socketSendCheckID;
+
 function ChatLive_SendPrepared(chat_number, id) {
     //Main_Log('ChatLive_SendPrepared');
 
-    ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
-        reconnectInterval: 3000,
-        automaticOpen: false
-    });
+    ChatLive_socketSend = new WebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc');
 
     ChatLive_socketSend.onopen = function() {
         var username = AddUser_UsernameArray[0].name.toLowerCase();
@@ -863,8 +877,8 @@ function ChatLive_SendPrepared(chat_number, id) {
 
         if (!message.command) return;
 
-        // Main_Log(message.command + ' send');
-        // Main_Log(JSON.stringify(message));
+        //Main_Log(message.command + ' send');
+        //Main_Log(JSON.stringify(message));
 
         switch (message.command) {
             case "PING":
@@ -874,10 +888,8 @@ function ChatLive_SendPrepared(chat_number, id) {
                 break;
             case "001":
                 if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
-
                     ChatLive_socketSendSetCheck(chat_number, id);
-                    ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags');
-
+                    ChatLive_socketSend.send('CAP REQ :twitch.tv/tags twitch.tv/commands');
                 }
                 break;
             case "CAP":
@@ -897,26 +909,44 @@ function ChatLive_SendPrepared(chat_number, id) {
                 //Main_Log(message);
                 break;
             case "PART":
-                if (ChatLive_socketSend) ChatLive_socketSend.close(1000);
+                if (ChatLive_socketSend) {
+                    ChatLive_SendReeset();
+                    ChatLive_socketSend.close(1000);
+                }
                 break;
             default:
                 break;
         }
     };
 
-    // ChatLive_socketSend.onerror = function(error) {
-    //     Main_Log(JSON.stringify(error) + ' send');
-    // };
+    ChatLive_socketSend.onclose =
+        function(event) {// jshint ignore:line
+            //Main_Log(JSON.stringify(event) + ' onclose send');
+            ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay);
+        };
 
-    ChatLive_socketSend.open();
+    ChatLive_socketSend.onerror =
+        function(error) {// jshint ignore:line
+            //Main_Log(JSON.stringify(error) + ' error send');
+            ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay);
+        };
 
     ChatLive_socketSendSetCheck(chat_number, id);
+}
+
+function ChatLive_SendReeset() {
+    ChatLive_socketSend.onclose = function() {};
+    ChatLive_socketSend.onerror = function() {};
+    ChatLive_socketSend.onmessage = function() {};
+    ChatLive_socketSend.onopen = function() {};
 }
 
 function ChatLive_SendClose() {
     if (ChatLive_socketSend) {
         if (ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
+        ChatLive_SendReeset();
         ChatLive_socketSend.close(1000);
+
     }
     ChatLive_socketSendJoin = false;
 }
@@ -924,22 +954,27 @@ function ChatLive_SendClose() {
 function ChatLive_socketSendSetCheck(chat_number, id) {
     ChatLive_socketSendCheckID = Main_setTimeout(
         function() {
-            if (!ChatLive_socketSendJoin) {
-                ChatLive_SendClose();
-
-                ChatLive_socketSendCheckID = Main_setTimeout(
-                    function() {
-                        ChatLive_SendStart(chat_number, id);
-                    },
-                    1000,
-                    ChatLive_socketSendCheckID
-                );
-
-            }
+            ChatLive_socketSendCheck(chat_number, id, 0);
         },
         ChatLive_SetCheckTimout * 2,
         ChatLive_socketSendCheckID
     );
+}
+
+function ChatLive_socketSendCheck(chat_number, id, timeout) {
+    if (!ChatLive_socketSendJoin) {
+        ChatLive_SendClose();
+
+        ChatLive_socketSendCheckID = Main_setTimeout(
+            function() {
+                ChatLive_SendStart(chat_number, id);
+            },
+            timeout ? timeout : 0,
+            ChatLive_socketSendCheckID
+        );
+
+    }
+
 }
 
 function ChatLive_UserNoticeCheck(message, chat_number, id) {
@@ -953,7 +988,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
         ChatLive_Banned[chat_number] = true;
 
         Main_clearTimeout(ChatLive_CheckId[chat_number]);
-        ChatLive_Check(chat_number, id);
+        ChatLive_Check(chat_number, id, 0);
     } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed")) {
         ChatLive_LineAddSimple(
             message.params[1] + ' for main chat',
