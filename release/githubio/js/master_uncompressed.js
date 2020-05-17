@@ -1,5 +1,5 @@
 /* jshint undef: true, unused: true, node: true, browser: true */
-/*globals Android, ReconnectingWebSocket, punycode, smartTwitchTV */
+/*globals Android, punycode, smartTwitchTV */
 /* exported Play_CheckResume */
 (function(root) {
 
@@ -5204,7 +5204,8 @@
     var ChatLive_FollowState = [];
     var ChatLive_SubState = [];
     var ChatLive_Playing = true;
-    var ChatLive_SetCheckTimout = 7500;
+    var ChatLive_SetCheckTimout = 10000;
+    var ChatLive_ReTryDelay = 1000;
     var extraEmotesDone = {
         bttv: {},
         ffz: {},
@@ -5734,16 +5735,18 @@
 
     var useToken = [];
 
-    function ChatLive_loadChat(chat_number, id) {
+    function ChatLive_loadChat(chat_number, id, silent) {
         if (id !== Chat_Id[chat_number]) return;
 
         ChatLive_CheckClear(chat_number);
 
-        ChatLive_LineAddSimple(
-            STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
-            (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
-            chat_number
-        );
+        if (!silent) {
+            ChatLive_LineAddSimple(
+                STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
+                (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
+                chat_number
+            );
+        }
 
         useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
@@ -5754,10 +5757,7 @@
         if (id !== Chat_Id[chat_number]) return;
         //Main_Log('ChatLive_loadChatRequest');
 
-        ChatLive_socket[chat_number] = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv', 'irc', {
-            reconnectInterval: 3000,
-            automaticOpen: false
-        });
+        ChatLive_socket[chat_number] = new WebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc');
 
         ChatLive_socket[chat_number].onopen = function() {
             if (useToken[chat_number]) {
@@ -5780,7 +5780,6 @@
 
             if (!message.command) return;
 
-            //console.log(message);
             // if (message.command !== "PRIVMSG") {
             //     Main_Log(message.command + ' Main');
             //     Main_Log(JSON.stringify(message));
@@ -5797,7 +5796,7 @@
                         Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
 
                         ChatLive_SetCheck(chat_number, id);
-                        ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/commands twitch.tv/tags');
+                        ChatLive_socket[chat_number].send('CAP REQ :twitch.tv/tags twitch.tv/commands');
 
                     }
                     break;
@@ -5923,18 +5922,27 @@
                     // __proto__: Object
                     break;
                 case "PART":
-                    if (ChatLive_socket[chat_number]) ChatLive_socket[chat_number].close(1000);
+                    if (ChatLive_socket[chat_number]) {
+                        ChatLive_reset(chat_number);
+                        ChatLive_socket[chat_number].close(1000);
+                    }
                     break;
                 default:
                     break;
             }
         };
 
-        // ChatLive_socket[chat_number].onerror = function(error) {
-        //     Main_Log(JSON.stringify(error) + ' main');
-        // };
+        ChatLive_socket[chat_number].onclose =
+            function(event) { // jshint ignore:line
+                //Main_Log(JSON.stringify(event) + ' onclose main ');
+                ChatLive_Check(chat_number, id, ChatLive_ReTryDelay, true);
+            };
 
-        ChatLive_socket[chat_number].open();
+        ChatLive_socket[chat_number].onerror =
+            function(error) { // jshint ignore:line
+                //Main_Log(JSON.stringify(error) + ' erro main');
+                ChatLive_Check(chat_number, id, ChatLive_ReTryDelay, true);
+            };
 
         ChatLive_SetCheck(chat_number, id);
     }
@@ -5944,12 +5952,19 @@
         if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
             ChatLive_CheckId[chat_number] = Main_setTimeout(
                 function() {
-                    ChatLive_Check(chat_number, id);
+                    ChatLive_Check(chat_number, id, 0);
                 },
                 ChatLive_SetCheckTimout * (useToken[chat_number] ? 2 : 1),
                 ChatLive_CheckId[chat_number]
             );
         }
+    }
+
+    function ChatLive_reset(chat_number) {
+        ChatLive_socket[chat_number].onclose = function() {};
+        ChatLive_socket[chat_number].onerror = function() {};
+        ChatLive_socket[chat_number].onmessage = function() {};
+        ChatLive_socket[chat_number].onopen = function() {};
     }
 
     function ChatLive_Close(chat_number) {
@@ -5958,21 +5973,21 @@
             if (ChatLive_socket[chat_number].readyState === 1)
                 ChatLive_socket[chat_number].send('PART ' + ChatLive_selectedChannel[chat_number]);
 
+            ChatLive_reset(chat_number);
             ChatLive_socket[chat_number].close(1000);
-
         }
     }
 
-    function ChatLive_Check(chat_number, id) {
+    function ChatLive_Check(chat_number, id, timeout, silent) {
         if (!ChatLive_loaded[chat_number] && id === Chat_Id[chat_number]) {
             ChatLive_Close(chat_number);
 
             ChatLive_CheckId[chat_number] = Main_setTimeout(
                 function() {
-                    ChatLive_LineAddSimple(STR_LOADING_FAIL, chat_number);
-                    ChatLive_loadChat(chat_number, id);
+                    if (!silent) ChatLive_LineAddSimple(STR_LOADING_FAIL, chat_number);
+                    ChatLive_loadChat(chat_number, id, silent);
                 },
-                1000,
+                timeout ? timeout : 0,
                 ChatLive_CheckId[chat_number]
             );
         }
@@ -6021,6 +6036,7 @@
     }
 
     function ChatLive_SendStart(chat_number, id) {
+        //Main_Log('ChatLive_SendStart');
         if (id !== Chat_Id[chat_number]) return;
 
         if (!chat_number) {
@@ -6039,10 +6055,7 @@
     function ChatLive_SendPrepared(chat_number, id) {
         //Main_Log('ChatLive_SendPrepared');
 
-        ChatLive_socketSend = new ReconnectingWebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc', {
-            reconnectInterval: 3000,
-            automaticOpen: false
-        });
+        ChatLive_socketSend = new WebSocket('wss://irc-ws.chat.twitch.tv:443', 'irc');
 
         ChatLive_socketSend.onopen = function() {
             var username = AddUser_UsernameArray[0].name.toLowerCase();
@@ -6058,8 +6071,8 @@
 
             if (!message.command) return;
 
-            // Main_Log(message.command + ' send');
-            // Main_Log(JSON.stringify(message));
+            //Main_Log(message.command + ' send');
+            //Main_Log(JSON.stringify(message));
 
             switch (message.command) {
                 case "PING":
@@ -6069,10 +6082,8 @@
                     break;
                 case "001":
                     if (Main_A_includes_B(message.params[1], AddUser_UsernameArray[0].name.toLowerCase())) {
-
                         ChatLive_socketSendSetCheck(chat_number, id);
-                        ChatLive_socketSend.send('CAP REQ :twitch.tv/commands twitch.tv/tags');
-
+                        ChatLive_socketSend.send('CAP REQ :twitch.tv/tags twitch.tv/commands');
                     }
                     break;
                 case "CAP":
@@ -6092,26 +6103,44 @@
                     //Main_Log(message);
                     break;
                 case "PART":
-                    if (ChatLive_socketSend) ChatLive_socketSend.close(1000);
+                    if (ChatLive_socketSend) {
+                        ChatLive_SendReeset();
+                        ChatLive_socketSend.close(1000);
+                    }
                     break;
                 default:
                     break;
             }
         };
 
-        // ChatLive_socketSend.onerror = function(error) {
-        //     Main_Log(JSON.stringify(error) + ' send');
-        // };
+        ChatLive_socketSend.onclose =
+            function(event) { // jshint ignore:line
+                //Main_Log(JSON.stringify(event) + ' onclose send');
+                ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay);
+            };
 
-        ChatLive_socketSend.open();
+        ChatLive_socketSend.onerror =
+            function(error) { // jshint ignore:line
+                //Main_Log(JSON.stringify(error) + ' error send');
+                ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay);
+            };
 
         ChatLive_socketSendSetCheck(chat_number, id);
+    }
+
+    function ChatLive_SendReeset() {
+        ChatLive_socketSend.onclose = function() {};
+        ChatLive_socketSend.onerror = function() {};
+        ChatLive_socketSend.onmessage = function() {};
+        ChatLive_socketSend.onopen = function() {};
     }
 
     function ChatLive_SendClose() {
         if (ChatLive_socketSend) {
             if (ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
+            ChatLive_SendReeset();
             ChatLive_socketSend.close(1000);
+
         }
         ChatLive_socketSendJoin = false;
     }
@@ -6119,22 +6148,27 @@
     function ChatLive_socketSendSetCheck(chat_number, id) {
         ChatLive_socketSendCheckID = Main_setTimeout(
             function() {
-                if (!ChatLive_socketSendJoin) {
-                    ChatLive_SendClose();
-
-                    ChatLive_socketSendCheckID = Main_setTimeout(
-                        function() {
-                            ChatLive_SendStart(chat_number, id);
-                        },
-                        1000,
-                        ChatLive_socketSendCheckID
-                    );
-
-                }
+                ChatLive_socketSendCheck(chat_number, id, 0);
             },
             ChatLive_SetCheckTimout * 2,
             ChatLive_socketSendCheckID
         );
+    }
+
+    function ChatLive_socketSendCheck(chat_number, id, timeout) {
+        if (!ChatLive_socketSendJoin) {
+            ChatLive_SendClose();
+
+            ChatLive_socketSendCheckID = Main_setTimeout(
+                function() {
+                    ChatLive_SendStart(chat_number, id);
+                },
+                timeout ? timeout : 0,
+                ChatLive_socketSendCheckID
+            );
+
+        }
+
     }
 
     function ChatLive_UserNoticeCheck(message, chat_number, id) {
@@ -6148,7 +6182,7 @@
             ChatLive_Banned[chat_number] = true;
 
             Main_clearTimeout(ChatLive_CheckId[chat_number]);
-            ChatLive_Check(chat_number, id);
+            ChatLive_Check(chat_number, id, 0);
         } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed")) {
             ChatLive_LineAddSimple(
                 message.params[1] + ' for main chat',
@@ -7670,7 +7704,7 @@
 
         if (AddUser_UserIsSet()) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
-            Main_updateUserFeedId = Main_setTimeout(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId); //it 5 min refresh
+            Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId); //it 5 min refresh
         }
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId); //Check it 5min
@@ -23808,6 +23842,7 @@
                 UserLiveFeed_CheckNotifycation = true;
             }
         }
+        //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
     }
 
     function UserLiveFeed_GetSize(pos) {
@@ -26952,375 +26987,7 @@
         /** Expose `punycode` */
         root.punycode = punycode;
 
-    }(this)); // https://github.com/joewalnes/reconnecting-websocket/
-
-    // MIT License:
-    //
-    // Copyright (c) 2010-2012, Joe Walnes
-    //
-    // Permission is hereby granted, free of charge, to any person obtaining a copy
-    // of this software and associated documentation files (the "Software"), to deal
-    // in the Software without restriction, including without limitation the rights
-    // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    // copies of the Software, and to permit persons to whom the Software is
-    // furnished to do so, subject to the following conditions:
-    //
-    // The above copyright notice and this permission notice shall be included in
-    // all copies or substantial portions of the Software.
-    //
-    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    // THE SOFTWARE.
-
-    /**
-     * This behaves like a WebSocket in every way, except if it fails to connect,
-     * or it gets disconnected, it will repeatedly poll until it successfully connects
-     * again.
-     *
-     * It is API compatible, so when you have:
-     *   ws = new WebSocket('ws://....');
-     * you can replace with:
-     *   ws = new ReconnectingWebSocket('ws://....');
-     *
-     * The event stream will typically look like:
-     *  onconnecting
-     *  onopen
-     *  onmessage
-     *  onmessage
-     *  onclose // lost connection
-     *  onconnecting
-     *  onopen  // sometime later...
-     *  onmessage
-     *  onmessage
-     *  etc...
-     *
-     * It is API compatible with the standard WebSocket API, apart from the following members:
-     *
-     * - `bufferedAmount`
-     * - `extensions`
-     * - `binaryType`
-     *
-     * Latest version: https://github.com/joewalnes/reconnecting-websocket/
-     * - Joe Walnes
-     *
-     * Syntax
-     * ======
-     * var socket = new ReconnectingWebSocket(url, protocols, options);
-     *
-     * Parameters
-     * ==========
-     * url - The url you are connecting to.
-     * protocols - Optional string or array of protocols.
-     * options - See below
-     *
-     * Options
-     * =======
-     * Options can either be passed upon instantiation or set after instantiation:
-     *
-     * var socket = new ReconnectingWebSocket(url, null, { debug: true, reconnectInterval: 4000 });
-     *
-     * or
-     *
-     * var socket = new ReconnectingWebSocket(url);
-     * socket.debug = true;
-     * socket.reconnectInterval = 4000;
-     *
-     * debug
-     * - Whether this instance should log debug messages. Accepts true or false. Default: false.
-     *
-     * automaticOpen
-     * - Whether or not the websocket should attempt to connect immediately upon instantiation. The socket can be manually opened or closed at any time using ws.open() and ws.close().
-     *
-     * reconnectInterval
-     * - The number of milliseconds to delay before attempting to reconnect. Accepts integer. Default: 1000.
-     *
-     * maxReconnectInterval
-     * - The maximum number of milliseconds to delay a reconnection attempt. Accepts integer. Default: 30000.
-     *
-     * reconnectDecay
-     * - The rate of increase of the reconnect delay. Allows reconnect attempts to back off when problems persist. Accepts integer or float. Default: 1.5.
-     *
-     * timeoutInterval
-     * - The maximum time in milliseconds to wait for a connection to succeed before closing and retrying. Accepts integer. Default: 2000.
-     *
-     */
-    (function(global, factory) {
-        global.ReconnectingWebSocket = factory();
-    })(this, function() {
-
-        if (!('WebSocket' in window)) {
-            return;
-        }
-
-        function ReconnectingWebSocket(url, protocols, options) {
-
-            // Default settings
-            var settings = {
-
-                /** Whether this instance should log debug messages. */
-                debug: false,
-
-                /** Whether or not the websocket should attempt to connect immediately upon instantiation. */
-                automaticOpen: true,
-
-                /** The number of milliseconds to delay before attempting to reconnect. */
-                reconnectInterval: 1000,
-                /** The maximum number of milliseconds to delay a reconnection attempt. */
-                maxReconnectInterval: 30000,
-                /** The rate of increase of the reconnect delay. Allows reconnect attempts to back off when problems persist. */
-                reconnectDecay: 1.5,
-
-                /** The maximum time in milliseconds to wait for a connection to succeed before closing and retrying. */
-                timeoutInterval: 3000,
-
-                /** The maximum number of reconnection attempts to make. Unlimited if null. */
-                maxReconnectAttempts: 50,
-
-                /** The binary type, possible values 'blob' or 'arraybuffer', default 'blob'. */
-                binaryType: 'blob'
-            };
-            if (!options) {
-                options = {};
-            }
-
-            // Overwrite and define settings with options if they exist.
-            for (var key in settings) {
-                if (typeof options[key] !== 'undefined') {
-                    this[key] = options[key];
-                } else {
-                    this[key] = settings[key];
-                }
-            }
-
-            // These should be treated as read-only properties
-
-            /** The URL as resolved by the constructor. This is always an absolute URL. Read only. */
-            this.url = url;
-
-            /** The number of attempted reconnects since starting, or the last successful connection. Read only. */
-            this.reconnectAttempts = 0;
-
-            /**
-             * The current state of the connection.
-             * Can be one of: WebSocket.CONNECTING, WebSocket.OPEN, WebSocket.CLOSING, WebSocket.CLOSED
-             * Read only.
-             */
-            this.readyState = WebSocket.CONNECTING;
-
-            /**
-             * A string indicating the name of the sub-protocol the server selected; this will be one of
-             * the strings specified in the protocols parameter when creating the WebSocket object.
-             * Read only.
-             */
-            this.protocol = null;
-
-            // Private state variables
-
-            var self = this;
-            var ws;
-            var forcedClose = false;
-            var timedOut = false;
-            var eventTarget = document.createElement('div');
-
-            // Wire up "on*" properties as event handlers
-
-            eventTarget.addEventListener('open',
-                function(event) {
-                    self.onopen(event);
-                }
-            );
-            eventTarget.addEventListener('close',
-                function(event) {
-                    self.onclose(event);
-                }
-            );
-            eventTarget.addEventListener('connecting',
-                function(event) {
-                    self.onconnecting(event);
-                }
-            );
-            eventTarget.addEventListener('message',
-                function(event) {
-                    self.onmessage(event);
-                }
-            );
-            eventTarget.addEventListener('error',
-                function(event) {
-                    self.onerror(event);
-                });
-            eventTarget.addEventListener('maxAttemptsExceed',
-                function(event) {
-                    self.onmaxattemptsexceed(event);
-                }
-            );
-
-
-            // Expose the API required by EventTarget
-
-            this.addEventListener = eventTarget.addEventListener.bind(eventTarget);
-            this.removeEventListener = eventTarget.removeEventListener.bind(eventTarget);
-            this.dispatchEvent = eventTarget.dispatchEvent.bind(eventTarget);
-
-            /**
-             * This function generates an event that is compatible with standard
-             * compliant browsers and IE9 - IE11
-             *
-             * This will prevent the error:
-             * Object doesn't support this action
-             *
-             * http://stackoverflow.com/questions/19345392/why-arent-my-parameters-getting-passed-through-to-a-dispatched-event/19345563#19345563
-             * @param s String The name that the event should use
-             * @param args Object an optional object that the event will use
-             */
-            function generateEvent(s, args) {
-                var evt = document.createEvent("CustomEvent");
-                evt.initCustomEvent(s, false, false, args);
-                return evt;
-            }
-
-            this.open = function(reconnectAttempt) {
-                if (reconnectAttempt && this.reconnectAttempts > this.maxReconnectAttempts) {
-                    return;
-                }
-
-                ws = new WebSocket(self.url, protocols || []);
-                ws.binaryType = this.binaryType;
-
-                if (!reconnectAttempt) {
-                    eventTarget.dispatchEvent(generateEvent('connecting'));
-                    this.reconnectAttempts = 0;
-                }
-
-                var localWs = ws;
-                var timeout = setTimeout(function() {
-                    timedOut = true;
-                    localWs.close();
-                    timedOut = false;
-                }, self.timeoutInterval);
-
-                ws.onopen = function() {
-                    clearTimeout(timeout);
-                    self.protocol = ws.protocol;
-                    self.readyState = WebSocket.OPEN;
-                    self.reconnectAttempts = 0;
-                    var e = generateEvent('open');
-                    e.isReconnect = reconnectAttempt;
-                    reconnectAttempt = false;
-                    eventTarget.dispatchEvent(e);
-                };
-
-                ws.onclose = function(event) {
-                    clearTimeout(timeout);
-                    ws = null;
-                    if (forcedClose) {
-                        self.readyState = WebSocket.CLOSED;
-                        eventTarget.dispatchEvent(generateEvent('close'));
-                    } else {
-                        self.readyState = WebSocket.CONNECTING;
-                        var e = generateEvent('connecting');
-                        e.code = event.code;
-                        e.reason = event.reason;
-                        e.wasClean = event.wasClean;
-                        eventTarget.dispatchEvent(e);
-                        if (!reconnectAttempt && !timedOut) {
-                            eventTarget.dispatchEvent(generateEvent('close'));
-                        }
-
-                        var mtimeout = self.reconnectInterval * Math.pow(self.reconnectDecay, self.reconnectAttempts);
-                        setTimeout(function() {
-                            self.reconnectAttempts++;
-                            self.open(true);
-                        }, mtimeout > self.maxReconnectInterval ? self.maxReconnectInterval : mtimeout);
-                    }
-                };
-                ws.onmessage = function(event) {
-                    var e = generateEvent('message');
-                    e.data = event.data;
-                    eventTarget.dispatchEvent(e);
-                };
-                ws.onerror = function() {
-                    eventTarget.dispatchEvent(generateEvent('error'));
-                };
-            };
-
-            // Whether or not to create a websocket upon instantiation
-            if (this.automaticOpen === true) {
-                this.open(false);
-            }
-
-            /**
-             * Transmits data to the server over the WebSocket connection.
-             *
-             * @param data a text string, ArrayBuffer or Blob to send to the server.
-             */
-            this.send = function(data) {
-                if (ws) {
-                    return ws.send(data);
-                } else {
-                    //throw 'INVALID_STATE_ERR : Pausing to reconnect websocket';
-                    Main_Log('INVALID_STATE_ERR : Pausing to reconnect websocket');
-                }
-            };
-
-            /**
-             * Closes the WebSocket connection or connection attempt, if any.
-             * If the connection is already CLOSED, this method does nothing.
-             */
-            this.close = function(code, reason) {
-                // Default CLOSE_NORMAL code
-                if (typeof code === 'undefined') {
-                    code = 1000;
-                }
-                forcedClose = true;
-                if (ws) {
-                    ws.close(code, reason);
-                }
-            };
-
-            /**
-             * Additional public API method to refresh the connection if still open (close, re-open).
-             * For example, if the app suspects bad data / missed heart beats, it can try to refresh.
-             */
-            this.refresh = function() {
-                if (ws) {
-                    ws.close();
-                }
-            };
-        }
-
-        /**
-         * An event listener to be called when the WebSocket connection's readyState changes to OPEN;
-         * this indicates that the connection is ready to send and receive data.
-         */
-        ReconnectingWebSocket.prototype.onopen = function() {};
-        /** An event listener to be called when the WebSocket connection's readyState changes to CLOSED. */
-        ReconnectingWebSocket.prototype.onclose = function() {};
-        /** An event listener to be called when a connection begins being attempted. */
-        ReconnectingWebSocket.prototype.onconnecting = function() {};
-        /** An event listener to be called when a message is received from the server. */
-        ReconnectingWebSocket.prototype.onmessage = function() {};
-        /** An event listener to be called when an error occurs. */
-        ReconnectingWebSocket.prototype.onerror = function() {};
-        /** An event listener to be called when connecting attempts exceeded */
-        ReconnectingWebSocket.prototype.onmaxattemptsexceed = function() {};
-
-        /**
-         * Whether all instances of ReconnectingWebSocket should log debug messages.
-         * Setting this to true is the equivalent of setting all instances of ReconnectingWebSocket.debug to true.
-         */
-        ReconnectingWebSocket.debugAll = false;
-
-        ReconnectingWebSocket.CONNECTING = WebSocket.CONNECTING;
-        ReconnectingWebSocket.OPEN = WebSocket.OPEN;
-        ReconnectingWebSocket.CLOSING = WebSocket.CLOSING;
-        ReconnectingWebSocket.CLOSED = WebSocket.CLOSED;
-
-        return ReconnectingWebSocket;
-    }); // https://github.com/twitter/twemoji
+    }(this)); // https://github.com/twitter/twemoji
 
     // This is a moded version of twemoji, I only need this from this file, check original in they github
     var twemoji = (function(
