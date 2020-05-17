@@ -285,7 +285,7 @@ function SettingsColor_DialogColorsStart() {
     SettingsColor_DivColorsUpdate();
 
     document.getElementById('color_thumb0_img').src = IMG_404_VIDEO;
-    //Main_AddClass('color_thumb0', Main_classThumb);
+    Main_AddClass('color_thumb0', 'stream_thumbnail_focused_no_ani');
     SettingsColor_DivResultUpdate('color_thumb0_text', STR_CURRENT_THUMB_STYLE);
 
     document.getElementById('color_thumb1_img').src = IMG_404_VIDEO;
