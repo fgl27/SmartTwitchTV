@@ -60,7 +60,7 @@ import static android.content.res.Configuration.KEYBOARD_QWERTY;
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
 
-    //public static final String PageUrl = "file:///android_asset/app/index.html";
+    // public static final String PageUrl = "file:///android_asset/app/index.html";
     public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
@@ -980,6 +980,15 @@ public class PlayerActivity extends Activity {
         }, 250);
     }
 
+    private void ClearWebViewChache() {
+        if (mWebView != null) {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+            mWebView.clearCache(true);
+            mWebView.clearHistory();
+        }
+    }
+
     //This function is called when home key is pressed
     @Override
     public void onStop() {
@@ -991,6 +1000,7 @@ public class PlayerActivity extends Activity {
         IsStopped = true;
         if (!WebviewLoaded) return;
 
+        ClearWebViewChache();
         StartService();
         int temp_AudioMulti = AudioMulti;
 
