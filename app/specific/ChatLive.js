@@ -1089,15 +1089,21 @@ function ChatLive_CheckIfSub(message, chat_number) {
         gifter = Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : name;
         var recipient = tags['msg-param-recipient-display-name'] || tags["msg-param-recipient-user-name"] || '';
 
+        recipient = '<span style="color: #0fffff;">' + recipient + '</span>';
+
         if (plan_is_numer) {
 
-            ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_SENDER + STR_SPACE + plan.charAt(0) + ' sub to ' + recipient, chat_number);
+            ChatLive_CheckIfSubSend(
+                gifter,
+                STR_GIFT_SUB_SENDER + STR_SPACE + plan.charAt(0) + ' sub to ' + recipient,
+                chat_number
+            );
 
         } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
 
             ChatLive_CheckIfSubSend(
                 gifter,
-                STR_GIFT_SUB_SENDER_PRIME + STR_SPACE + ' sub to ' + '<span style="color: #0fffff;">' + recipient + '</span>',
+                STR_GIFT_SUB_SENDER_PRIME + STR_SPACE + ' sub to ' + recipient,
                 chat_number
             );
 
