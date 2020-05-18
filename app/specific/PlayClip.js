@@ -167,7 +167,10 @@ function PlayClip_GetStreamerInfoSuccess(response) {
 }
 
 function PlayClip_loadData() {
-    if (PlayClip_loadData410 || !Main_IsOnAndroid) {
+    if (!Main_IsOnAndroid) {
+        PlayClip_loadDataSuccessFake();
+        return;
+    } else if (PlayClip_loadData410) {
         PlayClip_loadDataSuccess410();
         return;
     }
@@ -245,15 +248,17 @@ function PlayClip_loadDataError() {
 }
 
 function PlayClip_loadDataSuccessFake() {
-    PlayClip_qualities = [{
-        'id': 'Auto',
-        'url': ''
-    },
-    {
-        'id': '1080p60 | source | mp4',
-        'url': 'https://fake'
-    },
+    PlayClip_qualities = [
+        {
+            'id': 'Auto',
+            'url': 'https://fake_auto'
+        },
+        {
+            'id': '1080p60 | source | mp4',
+            'url': 'https://fake_1080p60'
+        },
     ];
+    Play_SetExternalQualities(PlayClip_qualities, 1);
     PlayClip_state = Play_STATE_PLAYING;
     PlayClip_qualityChanged();
     Main_Set_history('clip', Main_values_Play_data);
@@ -294,6 +299,7 @@ function PlayClip_QualityGenerate(response) {
         }
     }
 
+    Play_SetExternalQualities(PlayClip_qualities, 0);
     PlayClip_state = Play_STATE_PLAYING;
     PlayClip_qualityChanged();
     Main_Set_history('clip', Main_values_Play_data);
@@ -482,7 +488,7 @@ function PlayClip_showPanel() {
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
     PlayExtra_ResetSpeed();
-    Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality);
+    Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);
     Play_ForceShowPannel();
     Play_clearHidePanel();
     PlayClip_setHidePanel();

@@ -52,7 +52,7 @@ function PlayExtra_KeyEnter() {
 
             Play_data.quality = "Auto";
             Play_data.qualityPlaying = Play_data.quality;
-            Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
+            Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
             PlayExtra_data.quality = "Auto";
             PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
         }
@@ -196,6 +196,7 @@ function PlayExtra_SwitchPlayer() {
     Play_UpdateMainStream(true, false);
     Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
     Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
+    Play_SetExternalUrl(Play_data.playlist, Play_data.data[1]);
 }
 
 function PlayExtra_ShowChat() {

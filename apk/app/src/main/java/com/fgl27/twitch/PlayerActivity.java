@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -60,7 +61,7 @@ import static android.content.res.Configuration.KEYBOARD_QWERTY;
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
 
-    // public static final String PageUrl = "file:///android_asset/app/index.html";
+    //public static final String PageUrl = "file:///android_asset/app/index.html";
     public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
@@ -1244,13 +1245,25 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        /**
-         * Show a toast from the web page
-         */
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showToast(String toast) {
             MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void OpenExternal(String url) {
+
+            MainThreadHandler.post(() -> {
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(url), "video/*");
+                startActivity(Intent.createChooser(intent, getString(R.string.external_player)));
+                minimizeThis();
+
+            });
+
         }
 
         @SuppressWarnings("unused")//called by JS

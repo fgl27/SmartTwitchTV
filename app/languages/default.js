@@ -1,6 +1,7 @@
 // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
-var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
 var STR_BR = "<br>";
+var STR_SPACE = '&nbsp;';
+var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
 var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
 var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
@@ -17,7 +18,6 @@ var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
 var STR_ACCESSIBILITY_WARN_TEXT = '';
 var STR_CONTROLS_PLAY_0 = '';
-var STR_SPACE = '&nbsp;';
 var STR_PAYPAL;
 var STR_BITCOIN;
 var STR_BITCOIN_WALLET = "1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x";

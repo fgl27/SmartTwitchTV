@@ -20,6 +20,44 @@ function Play_IconsResetFocus() {
     Play_IconsAddFocus();
 }
 
+function Play_updownquality(adder, PlayVodClip, Play_controls) {
+
+    var total;
+
+    if (PlayVodClip === 1) {
+        //TODO fix this reversed logic
+        Play_data.qualityIndex += adder * -1;
+        total = Play_getQualitiesCount() - 1;
+        Play_data.qualityIndex = Play_updownqualityCheckTotal(Play_data.qualityIndex, total);
+
+        Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controls);
+    } else if (PlayVodClip === 2) {
+        //TODO fix this reversed logic
+        PlayVod_qualityIndex += adder * -1;
+        total = PlayVod_getQualitiesCount() - 1;
+        PlayVod_qualityIndex = Play_updownqualityCheckTotal(PlayVod_qualityIndex, total);
+
+        Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controls);
+    } else if (PlayVodClip === 3) {
+        //TODO fix this reversed logic
+        PlayClip_qualityIndex += adder * -1;
+        total = PlayClip_getQualitiesCount() - 1;
+        PlayClip_qualityIndex = Play_updownqualityCheckTotal(PlayClip_qualityIndex, total);
+
+        Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls);
+    }
+
+}
+
+function Play_updownqualityCheckTotal(index, total) {
+    if (index > total)
+        return total;
+    else if (index < 0)
+        return 0;
+
+    return index;
+}
+
 function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_state = -1;
     PlayVod_state = -1;
@@ -827,22 +865,23 @@ var Play_controlsGameCont = 2;
 var Play_controlsOpenVod = 3;
 var Play_controlsFollow = 4;
 var Play_controlsSpeed = 5;
-var Play_controlsQuality = 6;
-var Play_controlsQualityMini = 7;
-var Play_controlsQualityMulti = 8;
-var Play_controlsLowLatency = 9;
-var Play_MultiStream = 10;
-var Play_controlsAudio = 11;
-var Play_controlsAudioMulti = 12;
-var Play_controlsChat = 13;
-var Play_controlsChatSend = 14;
-var Play_controlsChatSide = 15;
-var Play_controlsChatForceDis = 16;
-var Play_controlsChatPos = 17;
-var Play_controlsChatSize = 18;
-var Play_controlsChatBright = 19;
-var Play_controlsChatFont = 20;
-var Play_controlsChatDelay = 21;
+var Play_controlsExternal = 6;
+var Play_controlsQuality = 7;
+var Play_controlsQualityMini = 8;
+var Play_controlsQualityMulti = 9;
+var Play_controlsLowLatency = 10;
+var Play_MultiStream = 11;
+var Play_controlsAudio = 12;
+var Play_controlsAudioMulti = 13;
+var Play_controlsChat = 14;
+var Play_controlsChatSend = 15;
+var Play_controlsChatSide = 16;
+var Play_controlsChatForceDis = 17;
+var Play_controlsChatPos = 18;
+var Play_controlsChatSize = 19;
+var Play_controlsChatBright = 20;
+var Play_controlsChatFont = 21;
+var Play_controlsChatDelay = 22;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -966,6 +1005,46 @@ function Play_MakeControls() {
         },
     };
 
+    Play_controls[Play_controlsExternal] = { //quality
+        icons: "external",
+        string: STR_OPEN_EXTERNAL_PLAYER,
+        values: ['1080p60 | Source | 10.00Mbps | avc'],
+        defaultValue: 0,
+        opacity: 0,
+        enterKey: function(PlayVodClip) {
+            if (PlayVodClip === 1) {
+                Play_hidePanel();
+            } else if (PlayVodClip === 2) {
+                PlayVod_hidePanel();
+            } else if (PlayVodClip === 3) {
+                PlayClip_hidePanel();
+            }
+            console.log(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
+
+            //TODO remove the try after some app updates
+            try {
+                Android.OpenExternal(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
+            } catch (e) {}
+        },
+        updown: function(adder) {
+            this.defaultValue += adder;
+            if (this.defaultValue < 0)
+                this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1))
+                this.defaultValue = (this.values.length - 1);
+
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+            this.bottomArrows();
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
     Play_controls[Play_controlsQuality] = { //quality
         icons: "videocamera",
         string: STR_QUALITY,
@@ -1004,39 +1083,7 @@ function Play_MakeControls() {
             }
         },
         updown: function(adder, PlayVodClip) {
-
-            if (PlayVodClip === 1) {
-                //TODO fix this reversed logic
-                Play_data.qualityIndex += adder * -1;
-
-                if (Play_data.qualityIndex > (Play_getQualitiesCount() - 1))
-                    Play_data.qualityIndex = (Play_getQualitiesCount() - 1);
-                else if (Play_data.qualityIndex < 0)
-                    Play_data.qualityIndex = 0;
-
-                Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality);
-            } else if (PlayVodClip === 2) {
-                //TODO fix this reversed logic
-                PlayVod_qualityIndex += adder * -1;
-
-                if (PlayVod_qualityIndex > (PlayVod_getQualitiesCount() - 1))
-                    PlayVod_qualityIndex = (PlayVod_getQualitiesCount() - 1);
-                else if (PlayVod_qualityIndex < 0)
-                    PlayVod_qualityIndex = 0;
-
-                Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality);
-            } else if (PlayVodClip === 3) {
-                //TODO fix this reversed logic
-                PlayClip_qualityIndex += adder * -1;
-
-                if (PlayClip_qualityIndex > (PlayClip_getQualitiesCount() - 1))
-                    PlayClip_qualityIndex = (PlayClip_getQualitiesCount() - 1);
-                else if (PlayClip_qualityIndex < 0)
-                    PlayClip_qualityIndex = 0;
-
-                Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality);
-            }
-
+            Play_updownquality(adder, PlayVodClip, Play_controlsQuality);
         },
     };
 
@@ -1268,7 +1315,7 @@ function Play_MakeControls() {
                     Play_data.quality = "Auto";
                     Play_data.qualityPlaying = Play_data.quality;
                     Android.SetQuality(-1);
-                    Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
+                    Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
                 }
 
                 Android.EnableMultiStream(Play_Multi_MainBig, 0);
@@ -1779,5 +1826,9 @@ function Play_SetControls() {
 }
 
 function Play_SetControlsArrows(key) {
-    return '<div id="controls_arrows_' + key + '" style="font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' + key + '" class="up"></div><div id="control_arrow_down' + key + '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key + '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
+    return '<div id="controls_arrows_' + key +
+        '" style="font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
+        key + '" class="up"></div><div id="control_arrow_down' + key +
+        '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key +
+        '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
 }

@@ -531,4 +531,5 @@ function en_USLang() {
     STR_STYLES_ARRAY = "Default,Custom,Black,Grey,Red,Orange,Yellow,Green,Blue,Purple,Pink";
     STR_ENTER_RGB = STR_ENTER + " to accept RGB change";
     STR_THUMB_STYLE = "Selected thumbnail style";
+    STR_OPEN_EXTERNAL_PLAYER = "Open in a external player";
 }

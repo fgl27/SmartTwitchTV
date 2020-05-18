@@ -300,6 +300,7 @@ function PlayVod_loadDataSuccessFake() {
             'codec': ' | avc',
         },
     ];
+    Play_SetExternalQualities(PlayVod_qualities, 1);
     PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_qualityChanged();
 }
@@ -518,7 +519,7 @@ function PlayVod_showPanel(autoHide) {
     if (autoHide) {
         PlayVod_IconsBottonResetFocus();
         PlayVod_qualityIndexReset();
-        Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality);
+        Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controlsQuality);
         if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality('stream_quality');
         Play_clearHidePanel();
         PlayExtra_ResetSpeed();

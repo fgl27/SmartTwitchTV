@@ -909,6 +909,7 @@ function Play_loadDataSuccessFake() {
             'codec': ' | avc',
         },
     ];
+    Play_SetExternalQualities(Play_data.qualities, 1);
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
     if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
@@ -951,11 +952,81 @@ function Play_getQualities(position, skipchange) {
         if (position === 1) {
             Play_data.qualities = result;
             if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
+            Play_SetExternalUrl(Play_data.playlist, Play_data.data[1]);
         } else {
             PlayVod_qualities = result;
             if (!skipchange && !Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
+            Play_SetExternalUrl(PlayVod_playlist);
         }
     } else Play_getQualitiesFail = true;
+}
+
+var Play_ExternalUrls = [];
+function Play_SetExternalQualities(array, startPos) {
+    var i;
+
+    Play_controls[Play_controlsExternal].values = [];
+    Play_ExternalUrls = [];
+
+    for (i = array.length - 1; i >= startPos; i--) {
+        Play_ExternalUrls.push(array[i].url);
+        Play_controls[Play_controlsExternal].values.push(array[i].id);
+    }
+    Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
+    Play_controls[Play_controlsExternal].setLable();
+}
+
+function Play_SetExternalUrl(playlist, name) {
+    Play_SetExternalQualities(Play_extractQualities(playlist), 0);
+    Main_innerHTML('extra_button_text' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
+
+}
+
+function Play_extractQualities(input) {
+    var result = [],
+        addedresolution = {},
+        marray,
+        marray2,
+        Regexp = /#EXT-X-MEDIA:(.)*\n#EXT-X-STREAM-INF:(.)*\n(.)*/g,
+        Regexp2 = /NAME="(.+?)".*BANDWIDTH=(\d+).*CODECS="(.+?)".*(http(.*))/g;
+
+    while ((marray = Regexp.exec(input))) {
+        while ((marray2 = Regexp2.exec(marray[0].replace(/(\r\n|\n|\r)/gm, "")))) {
+            if (!result.length) {
+
+                if (!Main_A_includes_B(marray2[1], 'ource')) marray2[1] = marray2[1] + ' | ' + STR_SOURCE;
+                else if (marray2[1]) marray2[1] = marray2[1].replace('(', '| ').replace(')', '').replace("source", STR_SOURCE);
+
+                result.push({
+                    'id': marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
+                    'url': marray2[4]
+                });
+                addedresolution[marray2[2].split(' | ')[0]] = 1;
+            } else {
+                //Prevent duplicated resolution 720p60 source and 720p60
+                if (!addedresolution[marray2[2]]) {
+                    result.push({
+                        'id': marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
+                        'url': marray2[4]
+                    });
+                    addedresolution[marray2[2]] = 1;
+                }
+            }
+        }
+    }
+    return result;
+}
+
+function Play_extractBand(input) {
+    input = parseInt(input);
+    return input > 0 ? ' | ' + parseFloat(input / 1000000).toFixed(2) + 'Mbps' : '';
+}
+
+function Play_extractCodec(input) {
+    if (Main_A_includes_B(input, 'avc')) return ' | avc';
+    else if (Main_A_includes_B(input, 'vp9')) return ' | vp9';
+    else if (Main_A_includes_B(input, 'mp4')) return ' | mp4';
+    return '';
 }
 
 function Play_onPlayer() {
@@ -992,7 +1063,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         Play_data.qualityPlaying = Play_data.quality;
         Android.SetQuality(-1);
         Android.RestartPlayer(1, 0, 0);
-        Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality);
+        Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
         Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 2) {
@@ -1001,14 +1072,14 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         PlayVod_qualityPlaying = PlayVod_quality;
         Android.SetQuality(-1);
         Android.RestartPlayer(2, Android.gettime(), 0);
-        Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality);
+        Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controlsQuality);
         Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 3) {
         if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
         else if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
             PlayClip_qualityIndex++;
-            Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality);
+            Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);
             PlayClip_qualityChanged();
             Play_showWarningMidleDialog(STR_PLAYER_SOURCE, 2000);
         } else Play_EndStart(false, 3);
@@ -1300,7 +1371,7 @@ function Play_showPanel() {
     if (Play_getQualitiesFail) Play_getQualities(1, true);
     PlayVod_IconsBottonResetFocus();
     Play_qualityIndexReset();
-    Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality);
+    Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controlsQuality);
     PlayExtra_ResetSpeed();
     PlayExtra_ResetAudio();
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
@@ -1494,11 +1565,12 @@ function Play_hideChatBackgroundDialog() {
     Main_HideElement('play_chat_dialog');
 }
 
-function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback) {
-    var doc_up = document.getElementById("control_arrow_up_" + Play_controlsQuality),
-        doc_down = document.getElementById("control_arrow_down" + Play_controlsQuality);
+function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, Play_controls) {
+    var doc_up = document.getElementById("control_arrow_up_" + Play_controls),
+        doc_down = document.getElementById("control_arrow_down" + Play_controls),
+        total = getQualitiesCount();
 
-    if (getQualitiesCount() === 1) {
+    if (total === 1) {
         doc_up.classList.add('hide');
         doc_down.classList.add('hide');
     } else if (!qualityIndex) {
@@ -1507,7 +1579,7 @@ function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback) {
 
         doc_up.style.opacity = "0.2";
         doc_down.style.opacity = "1";
-    } else if (qualityIndex === getQualitiesCount() - 1) {
+    } else if (qualityIndex === total - 1) {
         doc_up.classList.remove('hide');
         doc_down.classList.remove('hide');
 
@@ -1521,7 +1593,7 @@ function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback) {
         doc_down.style.opacity = "1";
     }
 
-    callback('controls_name_' + Play_controlsQuality);
+    callback('controls_name_' + Play_controls);
 }
 
 function Play_qualityIndexReset() {
@@ -2043,6 +2115,7 @@ function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
     if (!tempPos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
         Play_MultiUpdateMain();
+        Play_SetExternalUrl(Play_data.playlist, Play_data.data[1]);
     }
     Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
@@ -2109,6 +2182,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
         Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_Multi_Offset]));
+        Play_SetExternalUrl(Play_data.playlist, Play_data.data[1]);
         Play_MultiUpdateinfoMainBig('_big');
         Play_MultiUpdateMain();
 
