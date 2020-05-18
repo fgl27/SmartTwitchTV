@@ -199,7 +199,7 @@ function en_USLang() {
     STR_SETTINGS_BUFFER_CLIP = "Clips Start buffer";
     STR_SETTINGS_LANG = "Language";
     STR_LOADING_CHAT = "Chat: Connecting to";
-    STR_LOADING_FAIL = "Chat: Connecting Fail... Trying again...";
+    STR_LOADING_FAIL = "Connecting timeout, Fail to logging...";
     STR_CHAT_CONNECTED = "Chat: Connected";
     STR_CHAT_DELAY = "Chat: delay";
     STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";

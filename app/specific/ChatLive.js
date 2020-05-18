@@ -539,18 +539,16 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
 
 var useToken = [];
 
-function ChatLive_loadChat(chat_number, id, silent) {
+function ChatLive_loadChat(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_CheckClear(chat_number);
 
-    if (!silent) {
-        ChatLive_LineAddSimple(
-            STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
-            (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
-            chat_number
-        );
-    }
+    ChatLive_LineAddSimple(
+        STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
+        (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
+        chat_number
+    );
 
     useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
@@ -737,14 +735,16 @@ function ChatLive_loadChatRequest(chat_number, id) {
     };
 
     ChatLive_socket[chat_number].onclose =
-        function(event) {// jshint ignore:line
+        function(event) {
             //Main_Log(JSON.stringify(event) + ' onclose main ');
+            ChatLive_LineAddErro('Websocket closed remotely... ' + JSON.stringify(event), chat_number);
             ChatLive_Check(chat_number, id, ChatLive_ReTryDelay, true);
         };
 
     ChatLive_socket[chat_number].onerror =
-        function(error) {// jshint ignore:line
+        function(error) {
             //Main_Log(JSON.stringify(error) + ' erro main');
+            ChatLive_LineAddErro('Error... ' + JSON.stringify(error), chat_number);
             ChatLive_Check(chat_number, id, ChatLive_ReTryDelay, true);
         };
 
@@ -788,13 +788,22 @@ function ChatLive_Check(chat_number, id, timeout, silent) {
 
         ChatLive_CheckId[chat_number] = Main_setTimeout(
             function() {
-                if (!silent) ChatLive_LineAddSimple(STR_LOADING_FAIL, chat_number);
-                ChatLive_loadChat(chat_number, id, silent);
+                //Silent error message already added
+                if (!silent) ChatLive_LineAddErro(STR_LOADING_FAIL, chat_number);
+                ChatLive_loadChat(chat_number, id);
             },
             timeout ? timeout : 0,
             ChatLive_CheckId[chat_number]
         );
     }
+}
+
+function ChatLive_LineAddErro(message, chat_number, chatsend) {
+    ChatLive_LineAdd(
+        '<span class="message">' + (chatsend ? 'ChatSend:' : 'Chat:') + STR_SPACE + message + '</span>',
+        chat_number,
+        0, 0, 0, 0, 0
+    );
 }
 
 function ChatLive_CheckClear(chat_number) {
@@ -893,11 +902,8 @@ function ChatLive_SendPrepared(chat_number, id) {
                 ChatLive_socketSendJoin = true;
                 break;
             case "NOTICE":
-                if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed")) {
-                    ChatLive_LineAddSimple(
-                        message.params[1] + ' for chat send',
-                        chat_number
-                    );
+                if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
+                    ChatLive_LineAddErro(message.params[1], 0, true);
                     AddCode_refreshTokens(0, 0, null, null);
                 } else ChatLive_UserNoticeWarn(message);
                 break;
@@ -917,15 +923,17 @@ function ChatLive_SendPrepared(chat_number, id) {
     };
 
     ChatLive_socketSend.onclose =
-        function(event) {// jshint ignore:line
+        function(event) {
             //Main_Log(JSON.stringify(event) + ' onclose send');
-            ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay);
+            ChatLive_LineAddErro('Websocket closed remotely... ' + JSON.stringify(event), 0, true);
+            ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay, true);
         };
 
     ChatLive_socketSend.onerror =
-        function(error) {// jshint ignore:line
+        function(error) {
             //Main_Log(JSON.stringify(error) + ' error send');
-            ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay);
+            ChatLive_LineAddErro('Error... ' + JSON.stringify(error), 0, true);
+            ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay, true);
         };
 
     ChatLive_socketSendSetCheck(chat_number, id);
@@ -958,12 +966,13 @@ function ChatLive_socketSendSetCheck(chat_number, id) {
     );
 }
 
-function ChatLive_socketSendCheck(chat_number, id, timeout) {
+function ChatLive_socketSendCheck(chat_number, id, timeout, silent) {
     if (!ChatLive_socketSendJoin) {
         ChatLive_SendClose();
 
         ChatLive_socketSendCheckID = Main_setTimeout(
             function() {
+                if (!silent) ChatLive_LineAddErro(STR_LOADING_FAIL, chat_number, true);
                 ChatLive_SendStart(chat_number, id);
             },
             timeout ? timeout : 0,
@@ -986,11 +995,8 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 
         Main_clearTimeout(ChatLive_CheckId[chat_number]);
         ChatLive_Check(chat_number, id, 0);
-    } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', "authentication failed")) {
-        ChatLive_LineAddSimple(
-            message.params[1] + ' for main chat',
-            chat_number
-        );
+    } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
+        ChatLive_LineAddErro(message.params[1], chat_number);
         AddCode_refreshTokens(0, 0, null, null);
     } else ChatLive_UserNoticeWarn(message);
 
