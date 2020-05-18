@@ -47,7 +47,7 @@
             </intent-filter>
         </receiver>
 
-       <service android:enabled="true" android:process=":background" android:name=".services.NotificationService" />
+        <service android:enabled="true" android:process=":background" android:name=".services.NotificationService" />
     </application>
 
 </manifest>
