@@ -7369,7 +7369,7 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.194';
+    var Main_stringVersion_Min = '.195';
     var Main_minversion = 'May 17, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
@@ -11218,7 +11218,6 @@
                 } else if (PlayVodClip === 3) {
                     PlayClip_hidePanel();
                 }
-                console.log(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
 
                 //TODO remove the try after some app updates
                 try {
