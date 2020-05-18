@@ -1001,15 +1001,15 @@ function Play_extractQualities(input) {
                     'id': marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
                     'url': marray2[4]
                 });
-                addedresolution[marray2[2].split(' | ')[0]] = 1;
+                addedresolution[marray2[1].split(' | ')[0]] = 1;
             } else {
                 //Prevent duplicated resolution 720p60 source and 720p60
-                if (!addedresolution[marray2[2]]) {
+                if (!addedresolution[marray2[1]]) {
                     result.push({
                         'id': marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
                         'url': marray2[4]
                     });
-                    addedresolution[marray2[2]] = 1;
+                    addedresolution[marray2[1]] = 1;
                 }
             }
         }
