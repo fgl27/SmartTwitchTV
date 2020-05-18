@@ -5,7 +5,7 @@ ext.versions = [
         buildTools           : '29.0.3',
 
         publishVersion       : '3.0.',
-        publishVersionCode   : 194,
+        publishVersionCode   : 195,
 
         tray                 : '0.12.0',
         leanback             : '1.0.0',

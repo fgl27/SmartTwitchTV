@@ -1019,7 +1019,6 @@ function Play_MakeControls() {
             } else if (PlayVodClip === 3) {
                 PlayClip_hidePanel();
             }
-            console.log(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
 
             //TODO remove the try after some app updates
             try {
