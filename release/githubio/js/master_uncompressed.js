@@ -13513,15 +13513,15 @@
                         'id': marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
                         'url': marray2[4]
                     });
-                    addedresolution[marray2[2].split(' | ')[0]] = 1;
+                    addedresolution[marray2[1].split(' | ')[0]] = 1;
                 } else {
                     //Prevent duplicated resolution 720p60 source and 720p60
-                    if (!addedresolution[marray2[2]]) {
+                    if (!addedresolution[marray2[1]]) {
                         result.push({
                             'id': marray2[1] + Play_extractBand(marray2[2]) + Play_extractCodec(marray2[3]),
                             'url': marray2[4]
                         });
-                        addedresolution[marray2[2]] = 1;
+                        addedresolution[marray2[1]] = 1;
                     }
                 }
             }
@@ -16247,13 +16247,16 @@
     function Screens_assign() {
         var ret = {},
             i = 0,
-            j;
-        for (i; i < arguments.length; i++) {
+            j,
+            arguments_length = arguments.length;
+
+        for (i; i < arguments_length; i++) {
 
             var obj = arguments[i],
-                keys = Object.keys(obj);
+                keys = Object.keys(obj),
+                keys_length = keys.length;
 
-            for (j = 0; j < keys.length; j++)
+            for (j = 0; j < keys_length; j++)
                 ret[keys[j]] = obj[keys[j]];
 
         }
@@ -16457,7 +16460,8 @@
     }
 
     function Screens_loadDataSuccess(key) {
-        var response_items = (ScreenObj[key].data.length - ScreenObj[key].data_cursor);
+        var data_length = ScreenObj[key].data.length,
+            response_items = data_length - ScreenObj[key].data_cursor;
 
         //Use appendDiv only if is the intention to add on it run of loadDataSuccess to the row less content then ColoumnsCount,
         //with will make the row not be full, intentionally to add more in a new run of loadDataSuccess to that same row
@@ -16493,7 +16497,7 @@
                     ScreenObj[key].coloumn_id = 0;
                 }
 
-                for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < ScreenObj[key].data.length; ScreenObj[key].data_cursor++) {
+                for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++) {
                     //TODO understand and fix before the code reaches this point way a cell is undefined some times
                     if (ScreenObj[key].data[ScreenObj[key].data_cursor]) ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
                 }
@@ -16502,7 +16506,7 @@
                 if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
                     ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
                     ScreenObj[key].row_id++;
-                } else if (ScreenObj[key].data_cursor >= ScreenObj[key].data.length) {
+                } else if (ScreenObj[key].data_cursor >= data_length) {
                     if (ScreenObj[key].row.innerHTML !== '') ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
                     break;
                 }
@@ -16651,9 +16655,9 @@
             if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
             else {
                 ScreenObj[key].status = true;
-                var i;
+                var i, Cells_length = ScreenObj[key].Cells.length;
 
-                for (i = 0; i < (ScreenObj[key].Cells.length < ScreenObj[key].visiblerows ? ScreenObj[key].Cells.length : ScreenObj[key].visiblerows); i++) {
+                for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
                     if (ScreenObj[key].Cells[i]) {
                         ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[i]);
                         ScreenObj[key].Cells[i].style.position = '';
@@ -16670,7 +16674,7 @@
                     Main_Scene1Doc.style.transform = 'translateY(0px)';
                 } else Screens_setOffset(1, 0, key);
 
-                for (i = 0; i < (ScreenObj[key].Cells.length < ScreenObj[key].visiblerows ? ScreenObj[key].Cells.length : ScreenObj[key].visiblerows); i++) {
+                for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
                     if (ScreenObj[key].Cells[i]) {
                         ScreenObj[key].Cells[i].style.transform = 'translateY(' + (i * ScreenObj[key].offsettop) + 'em)';
                     }
