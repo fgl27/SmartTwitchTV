@@ -7707,14 +7707,8 @@
         }
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId); //Check it 5min
-        Main_CheckResumeVodsId = Main_setTimeout(
-            function() {
-                Main_SetHistoryworker();
-                Main_StartHistoryworker();
-            },
-            15000,
-            Main_CheckResumeVodsId
-        );
+        Main_SetHistoryworker();
+        Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
 
         Main_SetStringsSecondary();
         Main_checkVersion();
@@ -8385,7 +8379,7 @@
     }
 
     function Main_CheckBroadcastIDStartError() {
-        if (Main_CheckBroadcastIDErrorTry < 5) {
+        if (Main_CheckBroadcastIDErrorTry < DefaultLoadingDataTryMax) {
             Main_CheckBroadcastIDStart();
             Main_CheckBroadcastIDErrorTry++;
         } else Main_openStream();
@@ -9068,7 +9062,7 @@
                         xmlHttp.mData = event.data;
 
                         xmlHttp.open("GET", theUrl, true);
-                        xmlHttp.timeout = 3000;
+                        xmlHttp.timeout = 15000;
 
                         xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
                         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
