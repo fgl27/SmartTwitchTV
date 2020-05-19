@@ -962,7 +962,7 @@ function Play_getQualities(position, skipchange) {
 }
 
 var Play_ExternalUrls = [];
-function Play_SetExternalQualities(array, startPos) {
+function Play_SetExternalQualities(array, startPos, name) {
     var i;
 
     Play_controls[Play_controlsExternal].values = [];
@@ -974,12 +974,12 @@ function Play_SetExternalQualities(array, startPos) {
     }
     Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
     Play_controls[Play_controlsExternal].setLable();
+
+    Main_innerHTML('extra_button_text' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
 }
 
 function Play_SetExternalUrl(playlist, name) {
-    Play_SetExternalQualities(Play_extractQualities(playlist), 0);
-    Main_innerHTML('extra_button_text' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
-
+    Play_SetExternalQualities(Play_extractQualities(playlist), 0, name);
 }
 
 function Play_extractQualities(input) {
