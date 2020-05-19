@@ -1262,7 +1262,6 @@ public class PlayerActivity extends Activity {
                 intent.setDataAndType(Uri.parse(url), "video/*");
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
-                    Toast.makeText(mwebContext, getString(R.string.external_player), Toast.LENGTH_LONG).show();
                     startActivityForResult(intent, 101);
                 } else {
                     Toast.makeText(mwebContext, getString(R.string.external_player_fail), Toast.LENGTH_LONG).show();
