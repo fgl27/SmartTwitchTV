@@ -3,5 +3,6 @@
     <string name="notification" translatable="false">Now Live (SmartTV for Twitch)</string>
     <string name="no_network" translatable="false">No internet connection available!\n\nConnect to a network so the app finishes load\n\nor\n\nHold return key to close the app.</string>
     <string name="no_internet" translatable="false">Ping to Twitch fail for the last 30 seconds!\n\nIf the app is not working properly revise yours local internet connection\n\nHold return key to close the app in case it freeze or stop working.\n\nThis will auto hide in 30 seconds or if the connection return\n\nThis warning can be disabled in settings</string>
-    <string name="external_player" translatable="false">Choose a player:\nRecommended popup player: Best video Popup player (needs a mouse not available on TV play store)\nRecommended external full screen player: Kodi\nHold enter to pin a player, if yours device lag using popup player choose a lower resolution</string>
+    <string name="external_player_fail" translatable="false">No external video player app available</string>
+    <string name="external_player" translatable="false">Choose a player:\n\nRecommended popup player: Best video Popup player (needs a mouse not available on TV play store)\n\nRecommended external full screen player: Kodi\n\nIf yours device lag using popup player choose a lower resolution</string>
 </resources>

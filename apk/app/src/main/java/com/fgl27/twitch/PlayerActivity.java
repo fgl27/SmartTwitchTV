@@ -199,6 +199,7 @@ public class PlayerActivity extends Activity {
             SetDefaultLoadingLayout();
 
             IsStopped = false;
+            AlreadyStarted = true;
             onCreateReady = true;
 
             MainThreadHandler = new Handler(Looper.getMainLooper());
@@ -945,6 +946,8 @@ public class PlayerActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        if (!IsStopped) return;//Prevent onResume call after startActivityForResult() from OpenExternal()
+
         IsStopped = false;
         if (!WebviewLoaded) return;
 
@@ -952,8 +955,6 @@ public class PlayerActivity extends Activity {
         else if (AlreadyStarted) {
             ShowNoNetworkResumeWarning();
         }
-
-        AlreadyStarted = true;
     }
 
     private void DoResume() {
@@ -1248,7 +1249,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showToast(String toast) {
-            MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_SHORT).show());
+            MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_LONG).show());
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1259,8 +1260,13 @@ public class PlayerActivity extends Activity {
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.parse(url), "video/*");
-                startActivity(Intent.createChooser(intent, getString(R.string.external_player)));
-                minimizeThis();
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    Toast.makeText(mwebContext, getString(R.string.external_player), Toast.LENGTH_LONG).show();
+                    startActivityForResult(intent, 101);
+                } else {
+                    Toast.makeText(mwebContext, getString(R.string.external_player_fail), Toast.LENGTH_LONG).show();
+                }
 
             });
 
@@ -2408,4 +2414,5 @@ public class PlayerActivity extends Activity {
                     123);
         }
     }
+
 }
