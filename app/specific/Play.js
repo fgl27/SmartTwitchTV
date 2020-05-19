@@ -952,11 +952,11 @@ function Play_getQualities(position, skipchange) {
         if (position === 1) {
             Play_data.qualities = result;
             if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
-            Play_SetExternalUrl(Play_data.playlist, Play_data.data[1]);
+            Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
         } else {
             PlayVod_qualities = result;
             if (!skipchange && !Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
-            Play_SetExternalUrl(PlayVod_playlist);
+            Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
         }
     } else Play_getQualitiesFail = true;
 }
@@ -976,10 +976,6 @@ function Play_SetExternalQualities(array, startPos, name) {
     Play_controls[Play_controlsExternal].setLable();
 
     Main_innerHTML('extra_button_text' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
-}
-
-function Play_SetExternalUrl(playlist, name) {
-    Play_SetExternalQualities(Play_extractQualities(playlist), 0, name);
 }
 
 function Play_extractQualities(input) {
@@ -2115,7 +2111,7 @@ function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
     if (!tempPos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
         Play_MultiUpdateMain();
-        Play_SetExternalUrl(Play_data.playlist, Play_data.data[1]);
+        Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
     }
     Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
@@ -2182,7 +2178,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
         Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_Multi_Offset]));
-        Play_SetExternalUrl(Play_data.playlist, Play_data.data[1]);
+        Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
         Play_MultiUpdateinfoMainBig('_big');
         Play_MultiUpdateMain();
 

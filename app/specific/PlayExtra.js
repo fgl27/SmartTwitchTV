@@ -196,7 +196,7 @@ function PlayExtra_SwitchPlayer() {
     Play_UpdateMainStream(true, false);
     Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
     Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
-    Play_SetExternalUrl(Play_data.playlist, Play_data.data[1]);
+    Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
 }
 
 function PlayExtra_ShowChat() {
