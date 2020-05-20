@@ -6083,6 +6083,8 @@
 
         ChatLive_socketSend.onmessage = function(data) {
 
+            if (!data.data) return;
+
             var message = window.parseIRC(data.data.trim());
 
             if (!message.command) return;
