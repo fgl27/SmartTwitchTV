@@ -578,6 +578,8 @@ function ChatLive_loadChatRequest(chat_number, id) {
 
     ChatLive_socket[chat_number].onmessage = function(data) {
 
+        if (!data.data) return;
+
         var message = window.parseIRC(data.data.trim());
 
         if (!message.command) return;

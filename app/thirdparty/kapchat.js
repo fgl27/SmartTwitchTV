@@ -1,4 +1,4 @@
-// The bellow are some function or adptations of function from
+// The bellow are some function or adaptations of function from
 // https://www.nightdev.com/kapchat/
 function extraEmoticonize(message, emote) {
     return message.replace(emote.code, extraEmoteTemplate(emote));
