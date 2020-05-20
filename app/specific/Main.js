@@ -796,16 +796,16 @@ function Main_CounterDialog(x, y, coloumns, total) {
     else Main_CounterDialogRst();
 }
 
-function Main_showWarningExtra(text) {
-    Main_innerHTML('dialog_warning_extra_text', text);
-    Main_ShowElement('dialog_warning_extra');
-    Main_setTimeout(
-        function() {
-            Main_HideElement('dialog_warning_extra');
-        },
-        60000
-    );
-}
+// function Main_showWarningExtra(text) {
+//     Main_innerHTML('dialog_warning_extra_text', text);
+//     Main_ShowElement('dialog_warning_extra');
+//     Main_setTimeout(
+//         function() {
+//             Main_HideElement('dialog_warning_extra');
+//         },
+//         60000
+//     );
+// }
 
 function Main_showWarningDialog(text) {
     Main_innerHTML('dialog_warning_text', text);
