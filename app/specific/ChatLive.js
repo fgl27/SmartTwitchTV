@@ -638,28 +638,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                     }
 
                 }
-
-                if (useToken[chat_number]) {
-                    //params = ["#yogscast\r\n@badge-info=;badges=;color=;display-name=fglfgl27;emote-sets=0,300374282;mod=0;subscriber=0;user-type=", "tmi.twitch.tv USERSTATE #yogscast\r\n@emote-only=0;followers-only=5;r9k=0;rituals=0;room-id=20786541;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #yogscast\r\n:fglfgl27.tmi.twitch.tv 353 fglfgl27 = #yogscast :fglfgl27\r\n:fglfgl27.tmi.twitch.tv 366 fglfgl27 #yogscast :End of /NAMES list"]
-                    var mparams = message.hasOwnProperty('params') ? JSON.stringify(message.params) : '';
-
-                    if (Main_A_includes_B(mparams, "ROOMSTATE")) {
-
-                        var array = ChatLive_ROOMSTATE_Regex.exec(mparams);
-                        ChatLive_ROOMSTATE_Regex.lastIndex = 0;//Reset index after use,only need for /g ... may not be using it but force reset in case I change and forget it
-                        if (array && array.length === 6) ChatLive_SetRoomState(array, chat_number);
-
-                    } else {
-                        //try a join again so the ROOMSTATE get send
-                        ChatLive_JoinID[chat_number] = Main_setTimeout(
-                            function() {
-                                ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
-                            },
-                            500,
-                            ChatLive_JoinID[chat_number]
-                        );
-                    }
-                }
+                ChatLive_CheckRoomState(message, chat_number, true);
 
                 break;
             case "PRIVMSG":
@@ -672,6 +651,10 @@ function ChatLive_loadChatRequest(chat_number, id) {
             case "USERSTATE":
                 //Main_Log('USERSTATE chat ' + chat_number);
                 //Main_Log(message);
+                ChatLive_CheckRoomState(message, chat_number);
+                //ROOMSTATE
+                //{"raw":"@badge-info=;badges=;color=;display-name=fglfgl27;emote-sets=0,300374282;mod=0;subscriber=0;user-type= :tmi.twitch.tv USERSTATE #kimchi\r\n@emote-only=0;followers-only=-1;r9k=0;rituals=0;room-id=54281335;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #kimchi\r\n:fglfgl27.tmi.twitch.tv 353 fglfgl27 = #kimchi :fglfgl27\r\n:fglfgl27.tmi.twitch.tv 366 fglfgl27 #kimchi :End of /NAMES list","tags":{"badge-info":true,"badges":true,"color":true,"display-name":"fglfgl27","emote-sets":"0,300374282","mod":"0","subscriber":"0","user-type":true},"prefix":"tmi.twitch.tv","command":"USERSTATE","params":["#kimchi\r\n@emote-only=0;followers-only=-1;r9k=0;rituals=0;room-id=54281335;slow=0;subs-only=0","tmi.twitch.tv ROOMSTATE #kimchi\r\n:fglfgl27.tmi.twitch.tv 353 fglfgl27 = #kimchi :fglfgl27\r\n:fglfgl27.tmi.twitch.tv 366 fglfgl27 #kimchi :End of /NAMES list"]}
+
                 // tags:
                 // badge-info: true
                 // badges: true
@@ -812,6 +795,34 @@ function ChatLive_LineAddErro(message, chat_number, chatsend) {
 function ChatLive_CheckClear(chat_number) {
     Main_clearTimeout(ChatLive_JoinID[chat_number]);
     Main_clearTimeout(ChatLive_CheckId[chat_number]);
+}
+
+function ChatLive_CheckRoomState(message, chat_number, retry) {
+    if (useToken[chat_number]) {
+        //params = ["#yogscast\r\n@badge-info=;badges=;color=;display-name=fglfgl27;emote-sets=0,300374282;mod=0;subscriber=0;user-type=", "tmi.twitch.tv USERSTATE #yogscast\r\n@emote-only=0;followers-only=5;r9k=0;rituals=0;room-id=20786541;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #yogscast\r\n:fglfgl27.tmi.twitch.tv 353 fglfgl27 = #yogscast :fglfgl27\r\n:fglfgl27.tmi.twitch.tv 366 fglfgl27 #yogscast :End of /NAMES list"]
+        var mparams = message.hasOwnProperty('params') ? JSON.stringify(message.params) : '';
+        var array = ChatLive_ROOMSTATE_Regex.exec(mparams);
+        ChatLive_ROOMSTATE_Regex.lastIndex = 0;//Reset index after use,only need for /g ... may not be using it but force reset in case I change and forget it
+
+        if (array && array.length === 6) {
+
+            Main_clearTimeout(ChatLive_JoinID[chat_number]);
+            ChatLive_SetRoomState(array, chat_number);
+            return;
+
+        }
+
+        if (retry) {//Don't retry for USERSTATE only on join
+            //try a join again so the ROOMSTATE get send
+            ChatLive_JoinID[chat_number] = Main_setTimeout(
+                function() {
+                    ChatLive_socket[chat_number].send('JOIN #' + ChatLive_selectedChannel[chat_number]);
+                },
+                1000,
+                ChatLive_JoinID[chat_number]
+            );
+        }
+    }
 }
 
 var ChatLive_RoomState = [];
