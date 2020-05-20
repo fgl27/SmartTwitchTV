@@ -458,7 +458,6 @@
     var STR_CHAT_OPTIONS_KEYBOARD_2;
     var STR_CHAT_OPTIONS_KEYBOARD_3;
     var STR_CHAT_OPTIONS_EMOTE_SORT;
-    var STR_WARNING_NEW;
     var STR_NOKEY_CHAT_WARN;
     var STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY;
     var STR_CHAT_OPTIONS_FORCE_SHOW;
@@ -1155,7 +1154,7 @@
         STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY = "If disable the list of emotes will show in the order provider by the server";
         STR_CHAT_OPTIONS_FORCE_SHOW = "Force show chat";
         STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY = "If you wanna see the chat when enable write to chat enable this";
-        STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because chat permissions wasn't asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
+        //STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because chat permissions wasn't asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
         STR_NOKEY_CHAT_WARN = "Add an user authorization key to be able to logging and write to chat";
         STR_CHAT_NOT_READY = "Chat not ready to send! Try again is a second or two.";
         STR_CHAT_REDEEMED_MESSAGE_HIGH = "Redeemed Highlight My Message";
@@ -8064,16 +8063,16 @@
         else Main_CounterDialogRst();
     }
 
-    function Main_showWarningExtra(text) {
-        Main_innerHTML('dialog_warning_extra_text', text);
-        Main_ShowElement('dialog_warning_extra');
-        Main_setTimeout(
-            function() {
-                Main_HideElement('dialog_warning_extra');
-            },
-            60000
-        );
-    }
+    // function Main_showWarningExtra(text) {
+    //     Main_innerHTML('dialog_warning_extra_text', text);
+    //     Main_ShowElement('dialog_warning_extra');
+    //     Main_setTimeout(
+    //         function() {
+    //             Main_HideElement('dialog_warning_extra');
+    //         },
+    //         60000
+    //     );
+    // }
 
     function Main_showWarningDialog(text) {
         Main_innerHTML('dialog_warning_text', text);
@@ -16712,7 +16711,7 @@
                     Main_values.Play_WasPlaying = 0;
                 }
 
-                if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
+                //if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
                 Main_values.warning_extra = false;
 
                 if (Settings_value.start_user_screen.defaultValue) {
