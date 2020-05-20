@@ -53,7 +53,7 @@ var emoteReplace = {
     "\\:-?[z|Z|\\|]": ":Z",
 };
 
-var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/g;
+var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/;
 
 var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
 //Variable initialization end
@@ -640,11 +640,13 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 }
 
                 if (useToken[chat_number]) {
-                    //1: "tmi.twitch.tv USERSTATE #cyr↵@emote-only=0;followers-only=-1;r9k=0;rituals=0;room-id=37522866;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #cyr"
-                    if (message.params[1] && Main_A_includes_B(message.params[1], "ROOMSTATE")) {
+                    //params = ["#yogscast\r\n@badge-info=;badges=;color=;display-name=fglfgl27;emote-sets=0,300374282;mod=0;subscriber=0;user-type=", "tmi.twitch.tv USERSTATE #yogscast\r\n@emote-only=0;followers-only=5;r9k=0;rituals=0;room-id=20786541;slow=0;subs-only=0 :tmi.twitch.tv ROOMSTATE #yogscast\r\n:fglfgl27.tmi.twitch.tv 353 fglfgl27 = #yogscast :fglfgl27\r\n:fglfgl27.tmi.twitch.tv 366 fglfgl27 #yogscast :End of /NAMES list"]
+                    var mparams = message.hasOwnProperty('params') ? JSON.stringify(message.params) : '';
 
-                        var array = ChatLive_ROOMSTATE_Regex.exec(message.params[1]);
-                        ChatLive_ROOMSTATE_Regex.lastIndex = 0;//Reset index after use
+                    if (Main_A_includes_B(mparams, "ROOMSTATE")) {
+
+                        var array = ChatLive_ROOMSTATE_Regex.exec(mparams);
+                        ChatLive_ROOMSTATE_Regex.lastIndex = 0;//Reset index after use,only need for /g ... may not be using it but force reset in case I change and forget it
                         if (array && array.length === 6) ChatLive_SetRoomState(array, chat_number);
 
                     } else {
