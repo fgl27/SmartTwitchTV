@@ -5765,6 +5765,8 @@
 
         ChatLive_socket[chat_number].onmessage = function(data) {
 
+            if (!data.data) return;
+
             var message = window.parseIRC(data.data.trim());
 
             if (!message.command) return;
@@ -26336,7 +26338,30 @@
                 break;
         }
     }
-    //Spacing for reease maker not trow erros frm jshint
+    /*
+        Copyright (c) 2013-2015, Fionn Kelleher All rights reserved.
+        Redistribution and use in source and binary forms, with or without modification,
+        are permitted provided that the following conditions are met:
+            Redistributions of source code must retain the above copyright notice,
+            this list of conditions and the following disclaimer.
+            Redistributions in binary form must reproduce the above copyright notice,
+            this list of conditions and the following disclaimer in the documentation and/or other materials
+            provided with the distribution.
+        THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+        ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+        WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+        IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+        INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+        (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+        OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+        WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+        ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+        OF SUCH DAMAGE.
+    */
+    //From:
+    //https://github.com/sigkell/irc-message/blob/master/index.js
+    //Updated version:
+    //https://github.com/tmijs/tmi.js/blob/master/lib/parser.js
     window.parseIRC = function(data) {
         var message = {
             raw: data,
@@ -26354,7 +26379,7 @@
         // http://ircv3.atheme.org/specification/message-tags-3.2
 
         if (data.charCodeAt(0) === 64) {
-            nextspace = data ? data.indexOf(' ') : -1;
+            nextspace = data.indexOf(' ');
 
             if (nextspace === -1) {
                 // Malformed IRC message.
@@ -26367,8 +26392,9 @@
             for (var i = 0; i < rawTags.length; i++) {
                 // Tags delimited by an equals sign are key=value tags.
                 // If there's no equals, we assign the tag a value of true.
-                var pair = rawTags[i].split('=');
-                message.tags[pair[0]] = pair[1] || true;
+                var tag = rawTags[i];
+                var pair = tag.split('=');
+                message.tags[pair[0]] = tag.substring(tag.indexOf('=') + 1) || true;
             }
 
             position = nextspace + 1;
@@ -26383,7 +26409,7 @@
         // with a colon.
 
         if (data.charCodeAt(position) === 58) {
-            nextspace = data ? data.indexOf(' ', position) : -1;
+            nextspace = data.indexOf(' ', position);
 
             // If there's nothing after the prefix, deem this message to be
             // malformed.
@@ -26401,7 +26427,7 @@
             }
         }
 
-        nextspace = data ? data.indexOf(' ', position) : -1;
+        nextspace = data.indexOf(' ', position);
 
         // If there's no more whitespace left, extract everything from the
         // current position to the end of the string as the command.
@@ -26426,7 +26452,7 @@
         }
 
         while (position < data.length) {
-            nextspace = data ? data.indexOf(' ', position) : -1;
+            nextspace = data.indexOf(' ', position);
 
             // If the character is a colon, we've got a trailing parameter.
             // At this point, there are no extra params, so we push everything
@@ -26460,7 +26486,7 @@
             }
         }
         return message;
-    }; // The bellow are some function or adptations of function from
+    }; // The bellow are some function or adaptations of function from
     // https://www.nightdev.com/kapchat/
     function extraEmoticonize(message, emote) {
         return message.replace(emote.code, extraEmoteTemplate(emote));
