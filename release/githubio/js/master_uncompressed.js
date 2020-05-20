@@ -5831,6 +5831,7 @@
                         if (message.params[1] && Main_A_includes_B(message.params[1], "ROOMSTATE")) {
 
                             var array = ChatLive_ROOMSTATE_Regex.exec(message.params[1]);
+                            ChatLive_ROOMSTATE_Regex.lastIndex = 0; //Reset index after use
                             if (array && array.length === 6) ChatLive_SetRoomState(array, chat_number);
 
                         } else {
