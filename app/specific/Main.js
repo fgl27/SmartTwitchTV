@@ -1101,7 +1101,7 @@ function Main_CheckBroadcastID(index, doc) {
 
 function Main_CheckBroadcastIDStart() {
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, 3000, 2, null, Main_CheckBroadcastIDStartSucess, Main_CheckBroadcastIDStartError, false);
+    BasexmlHttpGet(theUrl, 10000, 2, null, Main_CheckBroadcastIDStartSucess, Main_CheckBroadcastIDStartError, false);
 }
 
 function Main_CheckBroadcastIDStartSucess(response) {
@@ -1771,6 +1771,7 @@ function Main_SetHistoryworker() {
         function() {
             this.addEventListener('message',
                 function(event) {
+
                     var theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.data[14] + '?api_version=5';
 
                     var onload = function(obj) {
@@ -1814,7 +1815,7 @@ function Main_SetHistoryworker() {
                     xmlHttp.mData = event.data;
 
                     xmlHttp.open("GET", theUrl, true);
-                    xmlHttp.timeout = 15000;
+                    xmlHttp.timeout = 30000;
 
                     xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
                     xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
