@@ -94,3 +94,52 @@ params: Array(2)
 1: "gachiHYPER
 @badge-info=;badges=;color=;display-name=joosdid911;emotes=;flags=0-9:A.3,22-35:P.6/S.6;id=4166abed-58f4-47bf-b675-ba9e015dff03;mod=0;room-id=71190292;subscriber=0;tmi-sent-ts=1579189769994;turbo=0;user-id=479107568;user-type= :joosdid911!joosdid911@joosdid911.tmi.twitch.tv PRIVMSG #trainwreckstv :YOU SUCK!! NO ONE STO SUCK YOUR DICK AHHAHA"
 length: 2
+
+{
+	"raw": "@ban-duration=1;room-id=163836275;target-user-id=166028179;tmi-sent-ts=1590033328040 :tmi.twitch.tv CLEARCHAT #lord_kebun :mazen_01",
+	"tags": {
+		"ban-duration": "1",
+		"room-id": "163836275",
+		"target-user-id": "166028179",
+		"tmi-sent-ts": "1590033328040"
+	},
+	"prefix": "tmi.twitch.tv",
+	"command": "CLEARCHAT",
+	"params": ["#lord_kebun", "mazen_01"]
+}
+
+{
+	"raw": "@login=alansito;room-id=;target-msg-id=93d8927e-f739-4220-b181-23af92a13d71;tmi-sent-ts=1590034170574 :tmi.twitch.tv CLEARMSG #neeko :CAN ANYONE GIFT ME A SUB chicaGasm chicaGasm chicaGasm mellyGASM mellyGASM",
+	"tags": {
+		"login": "alansito",
+		"room-id": true,
+		"target-msg-id": "93d8927e-f739-4220-b181-23af92a13d71",
+		"tmi-sent-ts": "1590034170574"
+	},
+	"prefix": "tmi.twitch.tv",
+	"command": "CLEARMSG",
+	"params": ["#neeko", "CAN ANYONE GIFT ME A SUB chicaGasm chicaGasm chicaGasm mellyGASM mellyGASM"]
+}
+
+{
+	"raw": "@badge-info=;badges=;color=#00E6D5;display-name=amirrin2000;emotes=;flags=;id=ed90c2e7-79c4-4cb2-b341-15f61b63ea6c;mod=0;room-id=169188075;subscriber=0;tmi-sent-ts=1590034260634;turbo=0;user-id=159756290;user-type= :amirrin2000!amirrin2000@amirrin2000.tmi.twitch.tv PRIVMSG #neeko :Te gustaría vivir en Mexico?",
+	"tags": {
+		"badge-info": true,
+		"badges": true,
+		"color": "#00E6D5",
+		"display-name": "amirrin2000",
+		"emotes": true,
+		"flags": true,
+		"id": "ed90c2e7-79c4-4cb2-b341-15f61b63ea6c",
+		"mod": "0",
+		"room-id": "169188075",
+		"subscriber": "0",
+		"tmi-sent-ts": "1590034260634",
+		"turbo": "0",
+		"user-id": "159756290",
+		"user-type": true
+	},
+	"prefix": "amirrin2000!amirrin2000@amirrin2000.tmi.twitch.tv",
+	"command": "PRIVMSG",
+	"params": ["#neeko", "Te gustaría vivir en Mexico?"]
+}

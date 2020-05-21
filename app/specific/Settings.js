@@ -243,6 +243,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "clear_chat": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "individual_lines": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -690,7 +694,7 @@ function Settings_SetAnimations() {
             }
         );
     } catch (e) {
-        //Main_Log('Settings_SetAnimations ' + e);
+        Main_Log('Settings_SetAnimations Array.prototype crash ' + e);
     }
 
     Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
@@ -1336,6 +1340,7 @@ function Settings_DialogShowChat() {
     Settings_value.chat_logging.values = yes_no;
     Settings_value.individual_lines.values = yes_no;
     Settings_value.chat_nickcolor.values = yes_no;
+    Settings_value.clear_chat.values = yes_no;
 
     var obj = {
         chat_logging: {
@@ -1397,6 +1402,12 @@ function Settings_DialogShowChat() {
             values: Settings_value.highlight_bits.values,
             title: STR_CHAT_HIGHLIGHT_BIT,
             summary: null
+        },
+        clear_chat: {
+            defaultValue: Settings_value.clear_chat.defaultValue,
+            values: Settings_value.clear_chat.values,
+            title: STR_CHAT_CLEAR_MSG,
+            summary: STR_CHAT_CLEAR_MSG_SUMMARY
         },
         show_actions: {
             defaultValue: Settings_value.show_actions.defaultValue,
