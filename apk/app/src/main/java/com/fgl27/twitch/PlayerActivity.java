@@ -1520,7 +1520,7 @@ public class PlayerActivity extends Activity {
 
                             response = Tools.MethodUrl(
                                     urlString,
-                                    (timeout + (i * 500)),
+                                    (timeout + (i * 1000)),
                                     HeaderQuantity,
                                     access_token,
                                     overwriteID,
@@ -1566,7 +1566,7 @@ public class PlayerActivity extends Activity {
 
                             response = Tools.MethodUrlHeaders(
                                     urlString,
-                                    (timeout + (i * 500)),
+                                    (timeout + (i * 1000)),
                                     postMessage,
                                     Method,
                                     checkResult,
@@ -1979,7 +1979,7 @@ public class PlayerActivity extends Activity {
             PreviewsHandler.post(() -> {
                 Tools.ResponseObj response;
                 for (int i = 0; i < 3; i++) {
-                    response = Tools.GetResponseObj(url, 3000 + (500 * i));
+                    response = Tools.GetResponseObj(url, 3000 + (1000 * i));
 
                     if (response != null) {
                         if (response.getStatus() == 200) {
