@@ -982,6 +982,8 @@ function Play_SetExternalQualities(array, startPos, name) {
     Play_controls[Play_controlsExternal].setLable();
 
     Main_innerHTML('extra_button_text' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
+
+    Main_Log('Play_SetExternalQualities ' + JSON.stringify(array) + ' name ' + name);
 }
 
 function Play_extractQualities(input) {

@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -33,7 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.webkit.WebViewCompat;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -125,6 +123,7 @@ public class PlayerActivity extends Activity {
     public boolean deviceIsTV;
     public boolean MultiStreamEnable;
     public boolean isFullScreen = true;
+    public boolean DebugEnable;
     public int mainPlayer = 0;
     public int MultiMainPlayer = 0;
     public int PicturePicturePosition = 0;
@@ -200,6 +199,7 @@ public class PlayerActivity extends Activity {
             IsStopped = false;
             AlreadyStarted = true;
             onCreateReady = true;
+            DebugEnable = BuildConfig.DEBUG;
 
             MainThreadHandler = new Handler(Looper.getMainLooper());
             CurrentPositionHandler = new Handler(Looper.getMainLooper());
@@ -266,6 +266,7 @@ public class PlayerActivity extends Activity {
             if (DeviceRam < 0) DeviceRam = 196000000;
 
             initializeWebview();
+            if (DebugEnable) DevLogs.LogDevice(this);
         }
     }
 
@@ -392,6 +393,10 @@ public class PlayerActivity extends Activity {
 
         //Player can only be acceed from main thread so start a "position listener" to pass the value to webview
         if (mWho_Called > 1) GetCurrentPosition();
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "initializePlayer position " + position);
+        }
     }
 
     private void initializeSmallPlayer(MediaSource NewMediaSource) {
@@ -399,6 +404,7 @@ public class PlayerActivity extends Activity {
             monStop();
             return;
         }
+
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
 
         if (player[4] == null) {
@@ -441,8 +447,13 @@ public class PlayerActivity extends Activity {
 
         KeepScreenOn(true);
 
-        if (PlayerView[4].getVisibility() != View.VISIBLE)
+        if (PlayerView[4].getVisibility() != View.VISIBLE) {
             PlayerView[4].setVisibility(View.VISIBLE);
+        }
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "initializeSmallPlayer");
+        }
     }
 
     private void ClearSmallPlayer() {
@@ -459,6 +470,10 @@ public class PlayerActivity extends Activity {
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
             KeepScreenOn(false);
         }
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "ClearSmallPlayer");
+        }
     }
 
     private void initializePlayerMulti(int position, MediaSource NewMediaSource) {
@@ -466,7 +481,6 @@ public class PlayerActivity extends Activity {
             monStop();
             return;
         }
-
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         if (PlayerView[position].getVisibility() != View.VISIBLE)
@@ -515,6 +529,10 @@ public class PlayerActivity extends Activity {
 
         KeepScreenOn(true);
         droppedFrames = 0;
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "initializePlayerMulti position " + position);
+        }
     }
 
     private void ClearPlayer(int position) {
@@ -537,6 +555,10 @@ public class PlayerActivity extends Activity {
         //All players are close enable screen saver
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
             KeepScreenOn(false);
+        }
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "ClearPlayer position " + position);
         }
     }
 
@@ -565,6 +587,10 @@ public class PlayerActivity extends Activity {
             player[position].release();
             player[position] = null;
             trackSelector[position] = null;
+        }
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "releasePlayer position " + position);
         }
     }
 
@@ -954,6 +980,10 @@ public class PlayerActivity extends Activity {
         else if (AlreadyStarted) {
             ShowNoNetworkResumeWarning();
         }
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "onResume");
+        }
     }
 
     private void DoResume() {
@@ -1033,6 +1063,10 @@ public class PlayerActivity extends Activity {
         netActivity = 0f;
         NetActivityAVG = 0f;
         NetCounter = 0L;
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "onStop");
+        }
     }
 
     @Override
@@ -1040,6 +1074,10 @@ public class PlayerActivity extends Activity {
         super.onDestroy();
         for (int i = 0; i < PlayerAccountPlus; i++) {
             ClearPlayer(i);
+        }
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "onDestroy");
         }
     }
 
@@ -1150,7 +1188,7 @@ public class PlayerActivity extends Activity {
     private void initializeWebview() {
         mWebView = findViewById(R.id.WebView);
         mWebView.setBackgroundColor(Color.TRANSPARENT);
-        if (BuildConfig.DEBUG)
+        if (DebugEnable)
             WebView.setWebContentsDebuggingEnabled(true);
 
         WebSettings websettings = mWebView.getSettings();
@@ -1837,7 +1875,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getdebug() {
-            return BuildConfig.DEBUG;
+            return DebugEnable;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2081,15 +2119,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getWebviewVersion() {
-            PackageInfo pInfo = WebViewCompat.getCurrentWebViewPackage(mwebContext);
-
-            return pInfo != null ? pInfo.versionName: null;
+            return Tools.getWebviewVersion(mwebContext);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getQualities() {
-            return Tools.getQualities(trackSelector[mainPlayer]);
+            return Tools.getQualities(trackSelector[mainPlayer], DebugEnable);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2098,6 +2134,11 @@ public class PlayerActivity extends Activity {
             mSetQuality(position);
         }
 
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void LongLog(String log) {
+            DevLogs.LongLog(DevLogs.TAG, log);
+        }
     }
 
     public void mSetQuality(int position) {
@@ -2185,6 +2226,10 @@ public class PlayerActivity extends Activity {
                 player[position].setPlayWhenReady(false);
 
                 PlayerEventListenerClear(position);
+
+                if (DebugEnable) {
+                    Log.i(DevLogs.TAG, "onPlaybackStateChanged STATE_ENDED position " + position);
+                }
             } else if (playbackState == Player.STATE_BUFFERING) {
 
                 //Use the player buffer as a player check state to prevent be buffering for ever
@@ -2198,6 +2243,10 @@ public class PlayerActivity extends Activity {
 
                     PlayerEventListenerCheckCounter(position, false);
                 }, Delay_ms);
+
+                if (DebugEnable) {
+                    Log.i(DevLogs.TAG, "onPlaybackStateChanged STATE_BUFFERING position " + position);
+                }
             } else if (playbackState == Player.STATE_READY) {
 
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
@@ -2225,15 +2274,23 @@ public class PlayerActivity extends Activity {
                     LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" +
                             player[position].getDuration() + ")");
                 }
+
+                if (DebugEnable) {
+                    Log.i(DevLogs.TAG, "onPlaybackStateChanged STATE_READY position " + position);
+                }
             }
         }
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
+            boolean isBehindLiveWindow = Tools.isBehindLiveWindow(e);
 
             PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounter(position, Tools.isBehindLiveWindow(e));
+            PlayerEventListenerCheckCounter(position, isBehindLiveWindow);
 
+            if (DebugEnable) {
+                Log.i(DevLogs.TAG, "onPlaybackStateChanged onPlayerError position " + position + " isBehindLiveWindow " + isBehindLiveWindow);
+            }
         }
 
     }
@@ -2267,6 +2324,9 @@ public class PlayerActivity extends Activity {
 
         } else PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);//first check just reset
 
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "PlayerEventListenerCheckCounter position " + position + " mclearResumePosition " + mclearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+        }
     }
 
     //First check only reset the player as it may be stuck
@@ -2281,6 +2341,9 @@ public class PlayerActivity extends Activity {
 
         } else initializePlayer(position);
 
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "PlayerEventListenerCheckCounterEnd position " + position + " ClearResumePosition " + ClearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+        }
     }
 
     public void PlayerEventListenerClear(int position) {
@@ -2302,6 +2365,10 @@ public class PlayerActivity extends Activity {
         } else WebViewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
 
         LoadUrlWebview(WebViewLoad);
+
+        if (DebugEnable) {
+            Log.i(DevLogs.TAG, "PlayerEventListenerClear position " + position);
+        }
     }
 
     private class PlayerEventListenerSmall implements Player.EventListener {
@@ -2319,6 +2386,10 @@ public class PlayerActivity extends Activity {
                 ClearSmallPlayer();
 
                 LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
+
+                if (DebugEnable) {
+                    Log.i(DevLogs.TAG, "PlayerEventListenerSmall onPlaybackStateChanged STATE_ENDED");
+                }
             } else if (playbackState == Player.STATE_BUFFERING) {
                 //Use the player buffer as a player check state to prevent be buffering for ever
                 //If buffer for as long as BUFFER_SIZE * 2 + etc do something because player is frozen
@@ -2332,9 +2403,17 @@ public class PlayerActivity extends Activity {
                     PlayerEventListenerCheckCounterSmall();
 
                 }, (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0));
+
+                if (DebugEnable) {
+                    Log.i(DevLogs.TAG, "PlayerEventListenerSmall onPlaybackStateChanged STATE_BUFFERING");
+                }
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckCounter[4] = 0;
+
+                if (DebugEnable) {
+                    Log.i(DevLogs.TAG, "PlayerEventListenerSmall onPlaybackStateChanged STATE_READY");
+                }
             }
 
         }
@@ -2343,6 +2422,10 @@ public class PlayerActivity extends Activity {
         public void onPlayerError(@NonNull ExoPlaybackException e) {
             PlayerCheckHandler[4].removeCallbacksAndMessages(null);
             PlayerEventListenerCheckCounterSmall();
+
+            if (DebugEnable) {
+                Log.i(DevLogs.TAG, "onPlayerError");
+            }
         }
 
     }

@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.UiModeManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -23,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.webkit.WebViewCompat;
 
 import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
 import com.fgl27.twitch.services.NotificationService;
@@ -96,7 +98,7 @@ public final class Tools {
             16384, 32768, 65536,
             131072, 262144, 524288};
 
-    private static final Integer[] resolutionsWidth = {
+    public static final Integer[] resolutionsWidth = {
             240,
             480,
             640,
@@ -106,7 +108,7 @@ public final class Tools {
             3840
     };
 
-    private static final Integer[] resolutionsHeight = {
+    public static final Integer[] resolutionsHeight = {
             160,
             360,
             480,
@@ -578,7 +580,7 @@ public final class Tools {
         return new Gson().toJson(result);
     }
 
-    private static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
+    public static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
         try {
             //Check if is bigger then smallest and smaller then the biggest
             return (width >= lowerWidth && width <= UperWidth) ?
@@ -752,6 +754,12 @@ public final class Tools {
         return (int) (memInfo.totalMem / 18);
     }
 
+    public static String getWebviewVersion(Context context) {
+        PackageInfo pInfo = WebViewCompat.getCurrentWebViewPackage(context);
+
+        return pInfo != null ? pInfo.versionName: null;
+    }
+
     public static Point ScreenSize(Display display) {
         Point size = new Point();
         display.getSize(size);
@@ -759,7 +767,7 @@ public final class Tools {
         return size;
     }
 
-    public static String getQualities(DefaultTrackSelector trackSelector) {
+    public static String getQualities(DefaultTrackSelector trackSelector, boolean DebugEnable) {
         if (trackSelector != null) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
 
@@ -771,6 +779,12 @@ public final class Tools {
 
                         TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
                         if (trackGroupArray.length > 0) {
+
+                            if (DebugEnable) {
+                                Log.i(DevLogs.TAG, "trackGroupArray:");
+                                DevLogs.LongLog(DevLogs.TAG, new Gson().toJson(trackGroupArray));
+                            }
+
                             ArrayList<QualitiesObj> result = new ArrayList<>();
                             Format format;
                             TrackGroup groupIndex = trackGroupArray.get(0);
@@ -919,4 +933,5 @@ public final class Tools {
             imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
         }
     }
+
 }

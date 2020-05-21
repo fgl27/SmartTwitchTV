@@ -2094,7 +2094,13 @@ function Main_LoadUrl(url) {
 }
 
 function Main_Log(text) {
-    if (Main_isDebug) console.log(text + ' ' + Main_LogDate(new Date()));
+    if (Main_isDebug) {
+        text = text + ' ' + Main_LogDate(new Date());
+        console.log(text);
+        try {
+            Android.LongLog(text);
+        } catch (e) {}
+    }
 }
 
 function Main_LogDate(date) {
