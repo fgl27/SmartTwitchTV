@@ -1377,6 +1377,19 @@ function ChatLive_LineAddSimple(message) {
     return '<span class="message">' + message + '</span>';
 }
 
+//Full messageObj current is
+// messageObj = {
+//     chat_number: chat_number,
+//     message: message,
+//     atstreamer: atstreamer,
+//     atuser: atuser,
+//     hasbits: hasbits,
+//     sub: sub,
+//     skip_addline: skip_addline,
+//     user_id: user_id,
+//     message_id: message_id
+// };
+
 function ChatLive_LineAdd(messageObj) {
     if (ChatLive_Playing) {
         var elem = document.createElement('div');
@@ -1532,6 +1545,9 @@ function ChatLive_CleanUser(chat_number, message) {
             Array.prototype.forEach.call(array,
                 function(el) {
                     Chat_div[chat_number].removeChild(el);
+                    // console.log('ChatLive_CleanUser');
+                    // console.log(JSON.stringify(message));
+                    // console.log(el);
                 }
             );
         } catch (e) {
