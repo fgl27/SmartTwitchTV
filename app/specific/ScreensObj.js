@@ -21,8 +21,8 @@ var Main_HistoryPos = 0;
 
 var AGame_following = false;
 
-var DefaultloadingDataTimeout = 4000;
-var DefaultLoadingDataTryMax = 3;
+var DefaultHttpGetTimeout = 5000;
+var DefaultHttpGetReTryMax = 3;
 var empty_fun = function() {};
 
 var Base_obj = {
@@ -37,8 +37,8 @@ var Base_obj = {
     idObject: {},
     loadingData: false,
     itemsCount: 0,
-    loadingDataTryMax: DefaultLoadingDataTryMax,
-    loadingDataTimeout: DefaultloadingDataTimeout,
+    loadingDataTryMax: DefaultHttpGetReTryMax,
+    loadingDataTimeout: DefaultHttpGetTimeout,
     MaxOffset: 0,
     offset: 0,
     visiblerows: 3,

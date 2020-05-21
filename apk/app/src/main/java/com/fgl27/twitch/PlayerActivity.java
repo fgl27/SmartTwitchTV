@@ -53,7 +53,6 @@ import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import static android.content.res.Configuration.KEYBOARD_QWERTY;
@@ -1437,18 +1436,16 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y) {
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout) {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
             ExtraPlayerHandlerResult[x][y] = null;
 
             ExtraPlayerHandler.postDelayed(() -> {
 
                 try {
-                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L);
-                } catch (UnsupportedEncodingException e) {
-                    Log.w(TAG, "CheckIfIsLiveFeed UnsupportedEncodingException ", e);
-                } catch (NullPointerException e) {
-                    Log.w(TAG, "CheckIfIsLiveFeed NullPointerException ", e);
+                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
+                } catch (Exception e) {
+                    Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
                 }
 
                 if (ExtraPlayerHandlerResult[x][y] != null)
@@ -1472,20 +1469,19 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String getStreamData(String token_url, String hls_url) {
+        public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout) {
             try {
-                return Tools.getStreamData(token_url, hls_url, 0L);
-            } catch (UnsupportedEncodingException e) {
-                Log.w(TAG, "getStreamData UnsupportedEncodingException ", e);
-            } catch (NullPointerException e) {
-                Log.w(TAG, "getStreamData NullPointerException ", e);
+                return Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
+            } catch (Exception e) {
+                Log.w(TAG, "getStreamData Exception ", e);
             }
+
             return null;
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position) {
+        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int ReTryMax, int Timeout) {
             DataResultHandler[position].removeCallbacksAndMessages(null);
             DataResult[position] = null;
 
@@ -1494,11 +1490,9 @@ public class PlayerActivity extends Activity {
                         String result = null;
 
                         try {
-                            result = Tools.getStreamData(token_url, hls_url, checkResult);
-                        } catch (UnsupportedEncodingException e) {
-                            Log.w(TAG, "getStreamDataAsync UnsupportedEncodingException ", e);
-                        } catch (NullPointerException e) {
-                            Log.w(TAG, "getStreamDataAsync NullPointerException ", e);
+                            result = Tools.getStreamData(token_url, hls_url, checkResult, ReTryMax, Timeout);
+                        } catch (Exception e) {
+                            Log.w(TAG, "getStreamDataAsync Exception ", e);
                         }
 
                         if (result != null) DataResult[position] = result;

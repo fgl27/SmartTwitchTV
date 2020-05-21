@@ -160,7 +160,7 @@ function AddCode_requestTokensReady(xmlHttp) {
 
 function AddCode_requestTokensError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) {
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) {
         AddCode_requestTokens();
     } else AddCode_requestTokensFail();
 
@@ -250,7 +250,7 @@ function AddCode_CheckOauthTokenSucess(response) {
 
 function AddCode_CheckOauthTokenError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_CheckOauthToken();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_CheckOauthToken();
     else AddCode_requestTokensFail();
 }
 
@@ -347,7 +347,7 @@ function AddCode_Refreshtimeout(position) {
 
 function AddCode_CheckTokenError(position, tryes) {
 
-    if (tryes < DefaultLoadingDataTryMax) {
+    if (tryes < DefaultHttpGetReTryMax) {
 
         if (!position) AddCode_CheckTokenSync(position, tryes + 1);
         else AddCode_CheckToken(position, tryes + 1);
@@ -399,7 +399,7 @@ function AddCode_RequestCheckFollowNOK(response) {
 
 function AddCode_RequestCheckFollowError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestCheckFollow();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_RequestCheckFollow();
     else {
         if (AddCode_PlayRequest) Play_setFollow();
         else ChannelContent_setFollow();
@@ -436,7 +436,7 @@ function AddCode_FollowRequestReady(xmlHttp) {
 
 function AddCode_FollowRequestError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_FollowRequest();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_FollowRequest();
 }
 
 function AddCode_UnFollow() {
@@ -469,7 +469,7 @@ function AddCode_UnFollowRequestReady(xmlHttp) {
 
 function AddCode_UnFollowRequestError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_UnFollowRequest();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_UnFollowRequest();
 }
 
 function AddCode_CheckSub() {
@@ -508,7 +508,7 @@ function AddCode_RequestCheckSubReady(xmlHttp) {
 
 function AddCode_RequestCheckSubError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestCheckSub();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_RequestCheckSub();
     else AddCode_RequestCheckSubfail();
 }
 
@@ -544,7 +544,7 @@ function AddCode_GetGameIdReady(xmlHttp) {
 
 function AddCode_GetGameIdError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_GetGameId();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_GetGameId();
 }
 
 function AddCode_RequestFollowGame() {
@@ -570,7 +570,7 @@ function AddCode_RequestFollowGameReady(xmlHttp) {
 
 function AddCode_FollowGameRequestError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestFollowGame();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_RequestFollowGame();
 }
 
 function AddCode_UnFollowGame() {
@@ -616,7 +616,7 @@ function AddCode_UnFollowGameEnd(xmlHttp) {
 
 function AddCode_UnFollowGameRequestError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestUnFollowGame();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_RequestUnFollowGame();
     else {
         Main_showWarningDialog(STR_410_FEATURING);
         Main_setTimeout(Main_HideWarningDialog, 2000);
@@ -654,7 +654,7 @@ function AddCode_CheckFollowGameReady(xmlHttp) {
 
 function AddCode_CheckFollowGameError() {
     AddCode_loadingDataTry++;
-    if (AddCode_loadingDataTry < DefaultLoadingDataTryMax) AddCode_RequestCheckFollowGame();
+    if (AddCode_loadingDataTry < DefaultHttpGetReTryMax) AddCode_RequestCheckFollowGame();
     else {
         AGame_following = false;
         AGame_setFollow();

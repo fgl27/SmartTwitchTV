@@ -1129,7 +1129,7 @@ function Main_CheckBroadcastIDStartSucess(response) {
 }
 
 function Main_CheckBroadcastIDStartError() {
-    if (Main_CheckBroadcastIDErrorTry < DefaultLoadingDataTryMax) {
+    if (Main_CheckBroadcastIDErrorTry < DefaultHttpGetReTryMax) {
         Main_CheckBroadcastIDStart();
         Main_CheckBroadcastIDErrorTry++;
     } else Main_openStream();

@@ -1,6 +1,6 @@
 //Variable initialization
 var AddUser_loadingDataTry = 0;
-var AddUser_loadingDataTimeout = 3500;
+var AddUser_loadingDataTimeout = 5000;
 var AddUser_UsernameArray = [];
 var AddUser_Username = null;
 var AddUser_loadingData = false;
@@ -121,7 +121,7 @@ function AddUser_KeyboardDismiss() {
 
         if (!AddUser_UserCodeExist(AddUser_Username)) {
             AddUser_loadingDataTry = 0;
-            AddUser_loadingDataTimeout = 3500;
+            AddUser_loadingDataTimeout = DefaultHttpGetTimeout;
             AddUser_loadingData = true;
             Main_HideElement('add_user_scroll');
             Main_showLoadDialog();
@@ -156,7 +156,7 @@ function AddUser_loadDataRequestSuccess(response) {
 
 function AddUser_loadDataError() {
     AddUser_loadingDataTry++;
-    if (AddUser_loadingDataTry < DefaultLoadingDataTryMax) {
+    if (AddUser_loadingDataTry < DefaultHttpGetReTryMax) {
         AddUser_loadingDataTimeout += 500;
         AddUser_loadDataRequest();
     } else AddUser_loadDataNoUser();
@@ -287,7 +287,7 @@ function AddUser_UpdateUsertSuccess(response, position) {
 
 function AddUser_UpdateUserError(position, tryes) {
     tryes++;
-    if (tryes < DefaultLoadingDataTryMax) AddUser_UpdateUser(position, tryes);
+    if (tryes < DefaultHttpGetReTryMax) AddUser_UpdateUser(position, tryes);
 }
 
 function AddUser_SaveNewUser(responseText) {

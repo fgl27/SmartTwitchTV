@@ -89,7 +89,9 @@ function PlayExtra_Resume(synchronous) {
                     Play_live_links.replace('%x', PlayExtra_data.data[6]),
                     'PlayExtra_ResumeResult',
                     PlayExtra_ResumeId,
-                    1
+                    1,
+                    DefaultHttpGetReTryMax,
+                    DefaultHttpGetTimeout
                 );
             }
         } catch (e) {
@@ -215,7 +217,7 @@ function PlayExtra_End(doSwitch) { // Called only by JAVA
     if (Settings_value.open_host.defaultValue) {
         Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2500);
         Play_loadingDataTry = 0;
-        Play_loadingDataTimeout = 3000;
+        Play_loadingDataTimeout = DefaultHttpGetTimeout;
         PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
     } else PlayExtra_End_success(doSwitch);
 }
@@ -281,7 +283,7 @@ function PlayExtra_CheckHostResult(result, doSwitch) {
 
 function PlayExtra_loadDataCheckHostError(doSwitch) {
     Play_loadingDataTry++;
-    if (Play_loadingDataTry < DefaultLoadingDataTryMax) {
+    if (Play_loadingDataTry < DefaultHttpGetReTryMax) {
         Play_loadingDataTimeout += 250;
         PlayExtra_loadDataCheckHost(doSwitch);
     } else PlayExtra_End_success(doSwitch);
@@ -464,7 +466,7 @@ function PlayExtra_updateStreamInfoValues(response) {
 }
 
 function PlayExtra_updateStreamInfoError() {
-    if (Play_updateStreamInfoErrorTry < DefaultLoadingDataTryMax) {
+    if (Play_updateStreamInfoErrorTry < DefaultHttpGetReTryMax) {
         Main_setTimeout(
             function() {
                 if (Play_isOn) PlayExtra_updateStreamInfo();

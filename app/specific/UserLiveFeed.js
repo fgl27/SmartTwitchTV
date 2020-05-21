@@ -82,7 +82,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_lastRefresh[i] = 0;
         UserLiveFeed_loadingData[i] = false;
         UserLiveFeed_loadingDataTry[i] = 0;
-        UserLiveFeed_loadingDataTimeout[i] = DefaultloadingDataTimeout;
+        UserLiveFeed_loadingDataTimeout[i] = DefaultHttpGetTimeout;
     }
 
     //User live
@@ -530,7 +530,9 @@ function UserLiveFeed_CheckIfIsLiveStart() {
             UserLiveFeed_CheckIfIsLiveDelay,
             "UserLiveFeed_CheckIfIsLiveResult",
             UserLiveFeed_FeedPosX,
-            (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100)
+            (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
         );
 
     } else UserLiveFeed_CheckIfIsLiveSTop();

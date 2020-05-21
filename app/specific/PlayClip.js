@@ -3,7 +3,7 @@ var PlayClip_IsJumping = false;
 var PlayClip_jumpCount = 0;
 var PlayClip_TimeToJump = 0;
 var PlayClip_isOn = false;
-var PlayClip_loadingDataTimeout = 2000;
+var PlayClip_loadingDataTimeout = 5000;
 var PlayClip_quality = 'source';
 var PlayClip_qualityPlaying = PlayClip_quality;
 var PlayClip_qualityIndex = 0;
@@ -138,7 +138,7 @@ function PlayClip_updateVodInfoSucess(response) {
 
 function PlayClip_updateVodInfoError() {
     PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < DefaultLoadingDataTryMax) PlayClip_updateVodInfo();
+    if (PlayVod_loadingInfoDataTry < DefaultHttpGetReTryMax) PlayClip_updateVodInfo();
 }
 
 function PlayClip_GetStreamerInfo() {
@@ -150,7 +150,7 @@ function PlayClip_GetStreamerInfo() {
 
 function PlayClip_GetStreamerInfoSuccessError() {
     PlayClip_loadingtreamerInfoTry++;
-    if (PlayClip_loadingtreamerInfoTry < DefaultLoadingDataTryMax) PlayClip_GetStreamerInfo();
+    if (PlayClip_loadingtreamerInfoTry < DefaultHttpGetReTryMax) PlayClip_GetStreamerInfo();
 }
 
 function PlayClip_GetStreamerInfoSuccess(response) {
@@ -174,7 +174,7 @@ function PlayClip_loadData() {
         PlayClip_loadDataSuccess410();
         return;
     }
-    PlayClip_loadingDataTimeout = 2000;
+    PlayClip_loadingDataTimeout = DefaultHttpGetTimeout;
     PlayClip_loadDataRequest();
 }
 

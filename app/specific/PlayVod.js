@@ -158,7 +158,7 @@ function PlayVod_updateVodInfo() {
 
 function PlayVod_updateVodInfoError() {
     PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < DefaultLoadingDataTryMax) {
+    if (PlayVod_loadingInfoDataTry < DefaultHttpGetReTryMax) {
         PlayVod_loadingInfoDataTimeout += 500;
         PlayVod_updateVodInfo();
     }
@@ -320,7 +320,9 @@ function PlayVod_loadData() {
                 Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
                 'PlayVod_loadDataResult',
                 PlayVod_loadDataId,
-                0
+                0,
+                DefaultHttpGetReTryMax,
+                DefaultHttpGetTimeout
             );
         } catch (e) {
             PlayVod_loadDataErrorFinish();

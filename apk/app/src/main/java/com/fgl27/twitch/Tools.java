@@ -60,7 +60,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -124,9 +123,6 @@ public final class Tools {
     private static final String TWITHCV5JSON = "application/vnd.twitchtv.v5+json";
     private static final String AUTHORIZATION = "Authorization";
 
-    private static final int DefaultTimeout = 3000;
-    private static final int DefaultLoadingDataTryMax = 3;
-
     private static final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
@@ -168,16 +164,16 @@ public final class Tools {
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    public static String getStreamData(String token_url, String hls_url, long checkResult) throws UnsupportedEncodingException, NullPointerException {
+    public static String getStreamData(String token_url, String hls_url, long checkResult, int ReTryMax, int Timeout) throws Exception {
         ResponseObj response;
         int i, status;
         JsonObject Token;
         String StreamSig = null;
         String StreamToken = null;
 
-        for (i = 0; i < DefaultLoadingDataTryMax; i++) {
+        for (i = 0; i < ReTryMax; i++) {
 
-            response = GetResponseObj(token_url, DefaultTimeout + (500 * i));
+            response = GetResponseObj(token_url, Timeout + (500 * i));
 
             if (response != null) {
 
@@ -208,9 +204,9 @@ public final class Tools {
                     ThreadLocalRandom.current().nextInt(1, 1000)
             );
 
-            for (i = 0; i < DefaultLoadingDataTryMax; i++) {
+            for (i = 0; i < ReTryMax; i++) {
 
-                response = GetResponseObj(url, DefaultTimeout + (500 * i));
+                response = GetResponseObj(url, Timeout + (500 * i));
 
                 if (response != null) {
 

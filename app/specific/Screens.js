@@ -193,7 +193,7 @@ function Screens_loadDataRequestStart(key) {
 function Screens_loadDataPrepare(key) {
     ScreenObj[key].loadingData = true;
     ScreenObj[key].loadingDataTry = 0;
-    ScreenObj[key].loadingDataTimeout = DefaultloadingDataTimeout;
+    ScreenObj[key].loadingDataTimeout = DefaultHttpGetTimeout;
 }
 
 function Screens_loadDataRequest(key) {

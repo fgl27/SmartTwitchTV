@@ -190,7 +190,7 @@ function ChatLive_RequestCheckFollowNOK(response, tryes, chat_number, id) {
 }
 
 function ChatLive_checkFallowError(tryes, chat_number, id) {
-    if (tryes < DefaultLoadingDataTryMax) ChatLive_checkFallow(tryes + 1, chat_number, id);
+    if (tryes < DefaultHttpGetReTryMax) ChatLive_checkFallow(tryes + 1, chat_number, id);
 }
 
 function ChatLive_checkSub(tryes, chat_number, id) {
@@ -230,7 +230,7 @@ function ChatLive_checkSub(tryes, chat_number, id) {
 }
 
 function ChatLive_checkSubError(tryes, chat_number, id) {
-    if (tryes < DefaultLoadingDataTryMax) ChatLive_checkSub(tryes + 1, chat_number, id);
+    if (tryes < DefaultHttpGetReTryMax) ChatLive_checkSub(tryes + 1, chat_number, id);
 }
 
 function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
@@ -260,7 +260,7 @@ function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
 }
 
 function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
-    if (tryes < DefaultLoadingDataTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
+    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
 }
 
 function ChatLive_loadEmotesUser(tryes) {
@@ -279,7 +279,7 @@ function ChatLive_loadEmotesUser(tryes) {
 }
 
 function ChatLive_loadEmotesUserError(tryes) {
-    if (tryes < DefaultLoadingDataTryMax) ChatLive_loadEmotesUser(tryes + 1);
+    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesUser(tryes + 1);
 }
 
 function ChatLive_loadEmotesUserSuccess(data) {
@@ -345,7 +345,7 @@ function ChatLive_loadEmotesChannelbttv(tryes, chat_number, id) {
 }
 
 function ChatLive_loadEmotesChannelError(tryes, chat_number, id) {
-    if (tryes < DefaultLoadingDataTryMax) ChatLive_loadEmotesChannelbttv(tryes + 1, chat_number, id);
+    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesChannelbttv(tryes + 1, chat_number, id);
 }
 
 function ChatLive_loadEmotesChannelbttvSuccess(data, chat_number, id) {
@@ -414,7 +414,7 @@ function ChatLive_loadCheersChannel(tryes, chat_number, id) {
 }
 
 function ChatLive_loadCheersChannelError(tryes, chat_number, id) {
-    if (tryes < DefaultLoadingDataTryMax) ChatLive_loadCheersChannel(tryes + 1, chat_number, id);
+    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadCheersChannel(tryes + 1, chat_number, id);
 }
 
 function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
@@ -473,7 +473,7 @@ function ChatLive_loadEmotesChannelffz(tryes, chat_number, id) {
 }
 
 function ChatLive_loadEmotesChannelffzError(tryes, chat_number, id) {
-    if (tryes < DefaultLoadingDataTryMax) ChatLive_loadEmotesChannelffz(tryes + 1, chat_number, id);
+    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesChannelffz(tryes + 1, chat_number, id);
 }
 
 function ChatLive_loadEmotesChannelffzSuccess(data, chat_number, id) {

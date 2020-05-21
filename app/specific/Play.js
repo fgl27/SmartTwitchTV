@@ -381,7 +381,9 @@ function Play_CheckIfIsLiveStart(callback) {
                 Play_live_links.replace('%x', selectedChannelDisplayname[6]),
                 callback,
                 Play_CheckIfIsLiveId,
-                2//Main player runs on 0 extra player on 1 the check on 2
+                2,//Main player runs on 0 extra player on 1 the check on 2
+                DefaultHttpGetReTryMax,
+                DefaultHttpGetTimeout
             );
         } catch (e) {
             Play_HideBufferDialog();
@@ -483,7 +485,9 @@ function Play_getStreamData(channel_name) {
     try {
         result = Android.getStreamData(
             Play_live_token.replace('%x', channel_name),
-            Play_live_links.replace('%x', channel_name)
+            Play_live_links.replace('%x', channel_name),
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
         );
     } catch (e) {}
 
@@ -559,7 +563,7 @@ function Play_updateStreamInfoEnd(response) {
 }
 
 function Play_updateStreamInfoStartError() {
-    if (Play_loadingInfoDataTry < DefaultLoadingDataTryMax) {
+    if (Play_loadingInfoDataTry < DefaultHttpGetReTryMax) {
         Play_loadingInfoDataTimeout += 500;
         Main_setTimeout(
             function() {
@@ -585,7 +589,7 @@ function Play_updateStreamInfoValues(response) {
 }
 
 function Play_updateStreamInfoError() {
-    if (Play_updateStreamInfoErrorTry < DefaultLoadingDataTryMax) {
+    if (Play_updateStreamInfoErrorTry < DefaultHttpGetReTryMax) {
         Main_setTimeout(
             function() {
                 if (Play_isOn) Play_updateStreamInfo();
@@ -692,7 +696,7 @@ function Play_updateStreamInfoMultiValues(response, pos) {
 }
 
 function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
-    if (tryes < DefaultLoadingDataTryMax) {
+    if (tryes < DefaultHttpGetReTryMax) {
         Main_setTimeout(
             function() {
                 if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
@@ -762,7 +766,9 @@ function Play_loadData(synchronous) {
                     Play_live_links.replace('%x', Play_data.data[6]),
                     'Play_loadDataResult',
                     Play_loadDataId,
-                    0
+                    0,
+                    DefaultHttpGetReTryMax,
+                    DefaultHttpGetTimeout
                 );
             }
         } catch (e) {
@@ -1631,7 +1637,7 @@ function Play_CheckHostStart(error_410) {
     Play_showBufferDialog();
     Play_state = -1;
     Play_loadingDataTry = 0;
-    Play_loadingDataTimeout = 2000;
+    Play_loadingDataTimeout = DefaultHttpGetTimeout;
     ChatLive_Clear(0);
     ChatLive_Clear(1);
     Main_clearInterval(Play_streamInfoTimerId);
@@ -1685,7 +1691,7 @@ function Play_CheckHostResult(result) {
 
 function Play_loadDataCheckHostError() {
     Play_loadingDataTry++;
-    if (Play_loadingDataTry < DefaultLoadingDataTryMax) {
+    if (Play_loadingDataTry < DefaultHttpGetReTryMax) {
         Play_loadingDataTimeout += 250;
         Play_loadDataCheckHost();
     } else Play_EndStart(false, 1);
@@ -2025,7 +2031,9 @@ function Play_MultiStart(pos) {
             Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
             'Play_MultiResult',
             Play_MultiArray[pos].resultId,
-            pos
+            pos,
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
         );
     } catch (e) {
         Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);

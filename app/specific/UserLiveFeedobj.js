@@ -78,7 +78,7 @@ function UserLiveFeedobj_CheckToken() {
 function UserLiveFeedobj_loadDataPrepare(pos) {
     UserLiveFeed_loadingData[pos] = true;
     UserLiveFeed_loadingDataTry[pos] = 0;
-    UserLiveFeed_loadingDataTimeout[pos] = DefaultloadingDataTimeout;
+    UserLiveFeed_loadingDataTimeout[pos] = DefaultHttpGetTimeout;
 }
 
 function UserLiveFeedobj_loadChannels() {
@@ -96,7 +96,7 @@ function UserLiveFeedobj_loadChannels() {
 function UserLiveFeedobj_loadDataError(pos) {
     //Main_Log('UserLiveFeedobj_loadChannels');
     UserLiveFeed_loadingDataTry[pos]++;
-    if (UserLiveFeed_loadingDataTry[pos] < DefaultLoadingDataTryMax) {
+    if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
         UserLiveFeed_loadingDataTimeout[pos] += 500;
         UserLiveFeed_obj[pos].load();
     } else {

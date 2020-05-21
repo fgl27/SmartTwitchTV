@@ -155,7 +155,9 @@ function Sidepannel_CheckIfIsLiveStart() {
                 UserLiveFeed_CheckIfIsLiveDelay,
                 "Sidepannel_CheckIfIsLiveResult",
                 1,
-                (Sidepannel_PosFeed % 100)
+                (Sidepannel_PosFeed % 100),
+                DefaultHttpGetReTryMax,
+                DefaultHttpGetTimeout
             );
         } catch (e) {
             Play_CheckIfIsLiveCleanEnd();
