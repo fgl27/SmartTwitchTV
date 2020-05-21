@@ -564,7 +564,7 @@ function Play_updateStreamInfoEnd(response) {
 
 function Play_updateStreamInfoStartError() {
     if (Play_loadingInfoDataTry < DefaultHttpGetReTryMax) {
-        Play_loadingInfoDataTimeout += 500;
+        Play_loadingInfoDataTimeout += DefaultHttpGetTimeoutPlus;
         Main_setTimeout(
             function() {
                 if (Play_isOn) Play_updateStreamInfoStart();
@@ -1692,7 +1692,7 @@ function Play_CheckHostResult(result) {
 function Play_loadDataCheckHostError() {
     Play_loadingDataTry++;
     if (Play_loadingDataTry < DefaultHttpGetReTryMax) {
-        Play_loadingDataTimeout += 250;
+        Play_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         Play_loadDataCheckHost();
     } else Play_EndStart(false, 1);
 }

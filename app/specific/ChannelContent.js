@@ -115,7 +115,7 @@ function ChannelContent_loadDataRequestSuccess(response) {
 function ChannelContent_loadDataError() {
     ChannelContent_loadingDataTry++;
     if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_loadingDataTimeout += 500;
+        ChannelContent_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         ChannelContent_loadDataRequest();
     } else {
         ChannelContent_responseText = null;
@@ -166,7 +166,7 @@ function ChannelContent_CheckHostResult(result) {
 function ChannelContent_loadDataCheckHostError() {
     ChannelContent_loadingDataTry++;
     if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_loadingDataTimeout += 500;
+        ChannelContent_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         ChannelContent_loadDataCheckHost();
     } else {
         ChannelContent_responseText = null;
@@ -212,7 +212,7 @@ function ChannelContent_GetStreamerInfoSuccess(responseText) {
 function ChannelContent_GetStreamerInfoError() {
     ChannelContent_loadingDataTry++;
     if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_loadingDataTimeout += 500;
+        ChannelContent_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         ChannelContent_GetStreamerInfo();
     } else {
         ChannelContent_offline_image = null;

@@ -157,7 +157,7 @@ function AddUser_loadDataRequestSuccess(response) {
 function AddUser_loadDataError() {
     AddUser_loadingDataTry++;
     if (AddUser_loadingDataTry < DefaultHttpGetReTryMax) {
-        AddUser_loadingDataTimeout += 500;
+        AddUser_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         AddUser_loadDataRequest();
     } else AddUser_loadDataNoUser();
 }

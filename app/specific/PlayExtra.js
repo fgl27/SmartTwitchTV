@@ -284,7 +284,7 @@ function PlayExtra_CheckHostResult(result, doSwitch) {
 function PlayExtra_loadDataCheckHostError(doSwitch) {
     Play_loadingDataTry++;
     if (Play_loadingDataTry < DefaultHttpGetReTryMax) {
-        Play_loadingDataTimeout += 250;
+        Play_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         PlayExtra_loadDataCheckHost(doSwitch);
     } else PlayExtra_End_success(doSwitch);
 }

@@ -285,7 +285,7 @@ function Screens_loadDataError(key) {
     //Main_Log('Screens_loadDataError ' + ScreenObj[key].screen);
     ScreenObj[key].loadingDataTry++;
     if (ScreenObj[key].loadingDataTry < ScreenObj[key].loadingDataTryMax) {
-        ScreenObj[key].loadingDataTimeout += 500;
+        ScreenObj[key].loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         Screens_loadDataRequest(key);
     } else Screens_loadDatafail(key);
 }
