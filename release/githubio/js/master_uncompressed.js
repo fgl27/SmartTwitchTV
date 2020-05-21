@@ -528,7 +528,9 @@
     var STR_ENTER_RGB;
     var STR_THUMB_STYLE;
     var STR_END_DIALOG_OPT;
-    var STR_OPEN_EXTERNAL_PLAYER; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_OPEN_EXTERNAL_PLAYER;
+    var STR_CHAT_CLEAR_MSG;
+    var STR_CHAT_CLEAR_MSG_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_BR = "<br>";
     var STR_SPACE = '&nbsp;';
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
@@ -1180,6 +1182,8 @@
         STR_GIFT_SUB_MYSTERY = " has gift the channel ";
         STR_CHAT_NICK_COLOR = "Better contrasted nick colors";
         STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be visible on a dark background, use a custom easy to see color";
+        STR_CHAT_CLEAR_MSG = "Clear chat, purge a user’s message";
+        STR_CHAT_CLEAR_MSG_SUMMARY = "Purges chat messages from a specific user (typically after a timeout or ban)";
         STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
         STR_PING_WARNING = 'Show "Ping to Twitch fail warning"';
         STR_PING_WARNING_SUMMARY = "The app is constantly checking the connection with Twitch via a ping, if that fails too much a warning will show, if that warning is showing unintentionaly set this to NO";
@@ -5288,6 +5292,7 @@
     var ChatLive_Channel_Regex_Search = [];
     var ChatLive_Channel_Regex_Replace = [];
     var ChatLive_Custom_Nick_Color;
+    var ChatLive_ClearChat;
 
     function ChatLive_SetOptions(chat_number, id) {
         ChatLive_User_Set = AddUser_IsUserSet();
@@ -5303,6 +5308,7 @@
         ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
         chat_lineChatLive_Individual_Lines = Settings_value.individual_lines.defaultValue;
         ChatLive_Custom_Nick_Color = Settings_value.chat_nickcolor.defaultValue;
+        ChatLive_ClearChat = Settings_value.clear_chat.defaultValue;
 
         ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
         ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
@@ -5730,11 +5736,11 @@
 
         ChatLive_CheckClear(chat_number);
 
-        ChatLive_LineAddSimple(
-            STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
-            (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]),
-            chat_number
-        );
+        ChatLive_LineAdd({
+            chat_number: chat_number,
+            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
+                (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]))
+        });
 
         useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
@@ -5807,22 +5813,21 @@
                     if (!ChatLive_loaded[chat_number]) {
                         ChatLive_loaded[chat_number] = true;
 
-                        ChatLive_LineAddSimple(
-                            STR_CHAT_CONNECTED + " as " +
-                            (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS_USER),
-                            chat_number
-                        );
+                        ChatLive_LineAdd({
+                            chat_number: chat_number,
+                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + " as " +
+                                (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS_USER))
+                        });
 
                         if (Play_ChatDelayPosition) {
                             var stringSec = STR_SECOND;
                             if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
 
-                            ChatLive_LineAddSimple(
-                                STR_CHAT_DELAY + ' ' +
-                                Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
-                                stringSec,
-                                chat_number
-                            );
+                            ChatLive_LineAdd({
+                                chat_number: chat_number,
+                                message: ChatLive_LineAddSimple(STR_CHAT_DELAY + ' ' +
+                                    Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] + stringSec)
+                            });
                         }
 
                     }
@@ -5830,7 +5835,7 @@
 
                     break;
                 case "PRIVMSG":
-                    ////Main_Log(message);
+                    //Main_Log(JSON.stringify(message));
                     ChatLive_loadChatSuccess(message, chat_number);
                     break;
                 case "USERNOTICE":
@@ -5903,6 +5908,14 @@
                         ChatLive_socket[chat_number].close(1000);
                     }
                     break;
+                case "CLEARCHAT":
+                    //Main_Log(JSON.stringify(message));
+                    ChatLive_CleanUser(chat_number, message);
+                    break;
+                case "CLEARMSG":
+                    //Main_Log(JSON.stringify(message));
+                    ChatLive_CleanMessage(chat_number, message);
+                    break;
                 default:
                     break;
             }
@@ -5973,11 +5986,10 @@
     }
 
     function ChatLive_LineAddErro(message, chat_number, chatsend) {
-        ChatLive_LineAdd(
-            '<span class="message">' + (chatsend ? 'ChatSend:' : 'Chat:') + STR_SPACE + message + '</span>',
-            chat_number,
-            0, 0, 0, 0, 0
-        );
+        ChatLive_LineAdd({
+            chat_number: chat_number,
+            message: '<span class="message">' + (chatsend ? 'ChatSend:' : 'Chat:') + STR_SPACE + message + '</span>'
+        });
     }
 
     function ChatLive_CheckClear(chat_number) {
@@ -6363,11 +6375,11 @@
     }
 
     function ChatLive_CheckIfSubSend(name, type, chat_number) {
-        ChatLive_LineAdd(
-            '<span style="color: #0fffff;">' + name + '</span><span class="message"><br>' + type + '</span>',
-            chat_number,
-            0, 0, 0, 1
-        );
+        ChatLive_LineAdd({
+            chat_number: chat_number,
+            message: '<span style="color: #0fffff;">' + name + '</span><span class="message"><br>' + type + '</span>',
+            sub: 1,
+        });
     }
 
     function ChatLive_loadChatSuccess(message, chat_number) {
@@ -6392,20 +6404,20 @@
             if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
                 highlighted = ' chat_highlighted ';
 
-                ChatLive_LineAddSimple(
-                    STR_CHAT_REDEEMED_MESSAGE_HIGH,
-                    chat_number,
-                    0, 0, 0, 0, 1
-                );
+                ChatLive_LineAdd({
+                    chat_number: chat_number,
+                    message: ChatLive_LineAddSimple(STR_CHAT_REDEEMED_MESSAGE_HIGH),
+                    skip_addline: 1
+                });
 
             } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
                 highlighted = ' chat_highlighted ';
 
-                ChatLive_LineAddSimple(
-                    STR_CHAT_REDEEMED_MESSAGE_SUB,
-                    chat_number,
-                    0, 0, 0, 0, 1
-                );
+                ChatLive_LineAdd({
+                    chat_number: chat_number,
+                    message: ChatLive_LineAddSimple(STR_CHAT_REDEEMED_MESSAGE_SUB),
+                    skip_addline: 1
+                });
             }
         }
 
@@ -6498,12 +6510,22 @@
                 (hasbits ? parseInt(tags.bits) : 0)
             ) + '</span>';
 
-        if (!Play_ChatDelayPosition) ChatLive_LineAdd(div, chat_number, atstreamer, atuser, (hasbits && ChatLive_Highlight_Bits));
+        var messageObj = {
+            chat_number: chat_number,
+            message: div,
+            atstreamer: atstreamer,
+            atuser: atuser,
+            hasbits: (hasbits && ChatLive_Highlight_Bits),
+            user_id: tags['user-id'] || '_',
+            message_id: tags.id || '_'
+        };
+
+        if (!Play_ChatDelayPosition) ChatLive_LineAdd(messageObj);
         else {
             var id = Chat_Id[chat_number];
             Main_setTimeout(
                 function() {
-                    if (id === Chat_Id[chat_number]) ChatLive_LineAdd(div, chat_number, atstreamer, atuser);
+                    if (id === Chat_Id[chat_number]) ChatLive_LineAdd(messageObj);
                 },
                 (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000)
             );
@@ -6528,42 +6550,51 @@
         return twemoji.parse(tokenizedMessage.join(' '), true, true);
     }
 
-    function ChatLive_LineAddSimple(message, chat_number, atstreamer, atuser, hasbits, sub, skip_addline) {
-        ChatLive_LineAdd(
-            '<span class="message">' + message + '</span>',
-            chat_number,
-            atstreamer, atuser, hasbits, sub, skip_addline
-        );
+    function ChatLive_LineAddSimple(message) {
+        return '<span class="message">' + message + '</span>';
     }
 
-    function ChatLive_LineAdd(message, chat_number, atstreamer, atuser, hasbits, sub, skip_addline) {
+    //Full messageObj current is
+    // messageObj = {
+    //     chat_number: chat_number,
+    //     message: message,
+    //     atstreamer: atstreamer,
+    //     atuser: atuser,
+    //     hasbits: hasbits,
+    //     sub: sub,
+    //     skip_addline: skip_addline,
+    //     user_id: user_id,
+    //     message_id: message_id
+    // };
+
+    function ChatLive_LineAdd(messageObj) {
         if (ChatLive_Playing) {
             var elem = document.createElement('div');
             var classname = 'chat_line';
 
-            if (atstreamer) {
+            if (messageObj.atstreamer) {
 
                 classname += ' chat_atstreamer';
 
-                message = message.replace(ChatLive_Channel_Regex_Replace[chat_number], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+                messageObj.message = messageObj.message.replace(ChatLive_Channel_Regex_Replace[messageObj.chat_number], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
-            } else if (atuser) {
+            } else if (messageObj.atuser) {
 
                 classname += ' chat_atuser';
 
-                message = message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+                messageObj.message = messageObj.message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
-            } else if (ChatLive_Highlight_Bits && hasbits) {
+            } else if (ChatLive_Highlight_Bits && messageObj.hasbits) {
 
                 classname += ' chat_bits';
 
-            } else if (sub) {
+            } else if (messageObj.sub) {
 
                 classname += ' chat_sub';
 
             } else if (ChatLive_Individual_Background) {
 
-                if (ChatLive_Individual_Background_flip[chat_number]) {
+                if (ChatLive_Individual_Background_flip[messageObj.chat_number]) {
 
                     if (ChatLive_Individual_Background === 1) {
 
@@ -6581,30 +6612,26 @@
                     }
                 }
 
-                ChatLive_Individual_Background_flip[chat_number] = ChatLive_Individual_Background_flip[chat_number] ^ 1;
+                ChatLive_Individual_Background_flip[messageObj.chat_number] = ChatLive_Individual_Background_flip[messageObj.chat_number] ^ 1;
             }
 
-            if (chat_lineChatLive_Individual_Lines && !skip_addline) classname += ' chat_line_ind';
-            else if (skip_addline) classname += ' chat_line_slim';
+            if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
+            else if (messageObj.skip_addline) classname += ' chat_line_slim';
 
-            elem.className = classname;
-            elem.innerHTML = message;
-            Chat_div[chat_number].appendChild(elem);
+            elem.className = classname + (messageObj.user_id ? ' ' + messageObj.user_id : '');
+            if (messageObj.message_id) elem.setAttribute('id', messageObj.message_id);
 
-            ChatLive_LineAddCounter[chat_number]++;
-            if (ChatLive_LineAddCounter[chat_number] > Chat_CleanMax) {
-                ChatLive_LineAddCounter[chat_number] = 0;
-                Chat_Clean(chat_number);
+            elem.innerHTML = messageObj.message;
+
+            Chat_div[messageObj.chat_number].appendChild(elem);
+
+            ChatLive_LineAddCounter[messageObj.chat_number]++;
+            if (ChatLive_LineAddCounter[messageObj.chat_number] > Chat_CleanMax) {
+                ChatLive_LineAddCounter[messageObj.chat_number] = 0;
+                Chat_Clean(messageObj.chat_number);
             }
         } else {
-            ChatLive_Messages[chat_number].push({
-                message: message,
-                atstreamer: atstreamer,
-                atuser: atuser,
-                hasbits: hasbits,
-                sub: sub,
-                skip_addline: skip_addline
-            });
+            ChatLive_Messages[messageObj.chat_number].push(messageObj);
         }
     }
 
@@ -6620,15 +6647,7 @@
 
         for (i = 0; i < 2; i++) {
             for (j = 0; j < Temp_Messages[i].length; j++) {
-                ChatLive_LineAdd(
-                    Temp_Messages[i][j].message,
-                    i,
-                    Temp_Messages[i][j].atstreamer,
-                    Temp_Messages[i][j].atuser,
-                    Temp_Messages[i][j].hasbits,
-                    Temp_Messages[i][j].sub,
-                    Temp_Messages[i][j].skip_addline
-                );
+                ChatLive_LineAdd(Temp_Messages[i][j]);
             }
         }
     }
@@ -6692,7 +6711,35 @@
 
         xmlHttp.send(null);
     }
-    //Variable initialization
+
+    function ChatLive_CleanUser(chat_number, message) {
+        if (ChatLive_ClearChat && message.tags && message.tags.hasOwnProperty('target-user-id')) {
+
+            var array = Chat_div[chat_number].getElementsByClassName(message.tags['target-user-id']); //The user id is added as a class
+
+            try {
+                //Array.prototype maybe not supported by all browsers
+                Array.prototype.forEach.call(array,
+                    function(el) {
+                        Chat_div[chat_number].removeChild(el);
+                        // console.log('ChatLive_CleanUser');
+                        // console.log(JSON.stringify(message));
+                        // console.log(el);
+                    }
+                );
+            } catch (e) {
+                Main_Log('ChatLive_Clean Array.prototype message ' + JSON.stringify(message) + ' e ' + e);
+            }
+        }
+    }
+
+    function ChatLive_CleanMessage(chat_number, message) {
+        if (ChatLive_ClearChat && message.tags && message.tags.hasOwnProperty('target-msg-id')) {
+            //Elem may not be there anymore
+            var el = document.getElementById(message.tags['target-msg-id']);
+            if (el) Chat_div[chat_number].removeChild(el);
+        }
+    } //Variable initialization
     var Chat_loadingDataTry = 0;
     var Chat_Messages = [];
     var Chat_MessagesNext = [];
@@ -12026,8 +12073,7 @@
         var div, doc = document.getElementById('controls_holder');
         for (var key in Play_controls) {
             div = document.createElement('div');
-            div.classList.add('controls_button_holder');
-            div.classList.add('shadow_text');
+            div.className = 'controls_button_holder shadow_text';
             div.setAttribute('id', 'controls_' + key);
 
             div.innerHTML = '<div id="controls_button_' + key +
@@ -21367,6 +21413,10 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
+        "clear_chat": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 2
+        },
         "individual_lines": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
@@ -21813,7 +21863,7 @@
                 }
             );
         } catch (e) {
-            //Main_Log('Settings_SetAnimations ' + e);
+            Main_Log('Settings_SetAnimations Array.prototype crash ' + e);
         }
 
         Main_classThumb = animate ? 'stream_thumbnail_focused' : 'stream_thumbnail_focused_no_ani';
@@ -22483,6 +22533,7 @@
         Settings_value.chat_logging.values = yes_no;
         Settings_value.individual_lines.values = yes_no;
         Settings_value.chat_nickcolor.values = yes_no;
+        Settings_value.clear_chat.values = yes_no;
 
         var obj = {
             chat_logging: {
@@ -22544,6 +22595,12 @@
                 values: Settings_value.highlight_bits.values,
                 title: STR_CHAT_HIGHLIGHT_BIT,
                 summary: null
+            },
+            clear_chat: {
+                defaultValue: Settings_value.clear_chat.defaultValue,
+                values: Settings_value.clear_chat.values,
+                title: STR_CHAT_CLEAR_MSG,
+                summary: STR_CHAT_CLEAR_MSG_SUMMARY
             },
             show_actions: {
                 defaultValue: Settings_value.show_actions.defaultValue,
