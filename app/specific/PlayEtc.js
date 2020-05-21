@@ -1804,6 +1804,7 @@ function Play_SetControls() {
     for (var key in Play_controls) {
         div = document.createElement('div');
         div.classList.add('controls_button_holder');
+        div.classList.add('shadow_text');
         div.setAttribute('id', 'controls_' + key);
 
         div.innerHTML = '<div id="controls_button_' + key +

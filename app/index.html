@@ -238,6 +238,7 @@
             text-align: left;
             margin-left: 1%;
             font-size: 2.05vh;
+            filter: drop-shadow(0 0.05em 0.15em #000000) drop-shadow(0 0.05em 0.15em #000000);
         }
 
         div.stream_thumbnail_game_feed,
@@ -711,7 +712,7 @@
             height: 42.75%;
             width: 100%;
             overflow: hidden;
-            background: linear-gradient(to top, black, rgba(0, 0, 0, 0.3));
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.1));
         }
 
         div.user_feed_scroll_game,
@@ -1061,7 +1062,7 @@
 
         div.playsideinfofocus {
             border-radius: 0.75em;
-            background-color: rgba(0, 0, 0, 0.60);
+            background-color: rgba(0, 0, 0, 0.25);
         }
 
         div.playclock {
@@ -1089,7 +1090,7 @@
 
         div.playerinfo {
             width: 100%;
-            background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0.5));
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3));
         }
 
         div.partnericon_div {
@@ -1385,10 +1386,14 @@
         }
 
         .dialog_text {
-            background-color: rgba(0, 0, 0, 0.3);
             width: fit-content;
             text-align: center;
             display: inline-block;
+            filter: drop-shadow(0 0.05em 0.15em #000000) drop-shadow(0 0.05em 0.15em #000000);
+        }
+
+        .shadow_text {
+            filter: drop-shadow(0 0.05em 0.15em rgba(0, 0, 0, 0.8)) drop-shadow(0 0.05em 0.15em rgba(0, 0, 0, 0.5));
         }
 
         .red_text {
@@ -1677,7 +1682,7 @@
             width: 100%;
             height: auto;
             text-align: center;
-            background: linear-gradient(to top, black, rgba(0, 0, 0, 0.085));
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.015));
         }
 
         .colorCanvas {
@@ -1770,7 +1775,6 @@
             padding-left: 0.35em;
             padding-right: 0.35em;
             max-width: 96%;
-            background-color: rgba(0, 0, 0, 0.35);
         }
 
         .pause_button {
@@ -1881,7 +1885,7 @@
         }
 
         .progress_bar_div_focus {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.35);
             border-color: #FFFFFF;
         }
 
@@ -3053,7 +3057,7 @@
         <div id="scene_channel_panel" class="screen_size scene_channel_panel avoidclicks">
             <div class="playerinfo">
                 <div id="stream_clock" class="playclock"></div>
-                <div id="stream_info">
+                <div id="stream_info" class="shadow_text">
                     <img id="stream_info_icon"
                         style="padding-left: 1%; padding-top: 1%; padding-bottom: 2.5%; display: inline-block; width: 9.5%;"
                         alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
@@ -3067,7 +3071,8 @@
                         <div id="stream_watching_time" class="stream_info_timers"></div>
                     </div>
                 </div>
-                <div id="stream_info_pp" style="padding-top: 2%; padding-left: 2%; font-size: 122%;" class="hide">
+                <div id="stream_info_pp" class="shadow_text" style="padding-top: 2%; padding-left: 2%; font-size: 122%;"
+                    class="hide">
                     <div>
                         <div class="stream_info_pp_div">
                             <div class="side_panel_feed" style="padding: 0;">
@@ -3127,8 +3132,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="stream_info_multi_big" style="padding-top: 3.5vh; padding-left: 2%; font-size: 120%;"
-                    class="hide">
+                <div id="stream_info_multi_big" class="shadow_text hide"
+                    style="padding-top: 3.5vh; padding-left: 2%; font-size: 120%;">
                     <div>
                         <div class="stream_info_multi_div" style="transform: translateX(25%); width: 57%;">
                             <div class="side_panel_feed">
@@ -3247,8 +3252,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="stream_info_multi"
-                    style="padding-top: 2%; padding-left: 2%; padding-bottom: 0.75%; font-size: 120%;" class="hide">
+                <div id="stream_info_multi" class="shadow_text hide"
+                    style="padding-top: 2%; padding-left: 2%; padding-bottom: 0.75%; font-size: 120%;">
                     <div>
                         <div class="stream_info_multi_div">
                             <div class="side_panel_feed">
@@ -3369,7 +3374,7 @@
             </div>
             <div id="controls_holder" class="controls_holder avoidclicks">
             </div>
-            <div id="progress_pause_holder" class="progress_pause_holder avoidclicks">
+            <div id="progress_pause_holder" class="progress_pause_holder shadow_text avoidclicks">
                 <div id="progress_bar_div" class="progress_bar_div">
                     <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline"
                         style="transform: translateY(-25%);"></div>
@@ -3405,7 +3410,7 @@
                             <img id="back_button_img" class="next_img" alt=""
                                 src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
                         </div>
-                        <div id="back_button" class="next_button" style="opacity: 0;">
+                        <div id="back_button" class="next_button shadow_text" style="opacity: 0;">
                             <div id="back_button_text" class="next_text">
                                 <div id="back_button_text_name" class="next_channel strokedeline"
                                     style="text-align: right;"></div>
@@ -3504,7 +3509,7 @@
 
             <div id="chat_emotes_counter" class="chat_emotes_counter"></div>
         </div>
-        <div id="playsideinfo" class="avoidclicks playsideinfo hide">
+        <div id="playsideinfo" class="avoidclicks playsideinfo shadow_text hide">
             <div id="stream_quality" class="playsideinfostatus"></div>
             <div id="stream_status" class="playsideinfostatus"></div>
         </div>
