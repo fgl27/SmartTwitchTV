@@ -91,6 +91,13 @@ if [ "$1" == 2 ]; then
 	exit;
 fi;
 
+if [ "$1" == 3 ]; then
+	echo -e "\n Run lint:\n";
+	./gradlew lint
+	sensible-browser "$FOLDER"/app/build/reports/lint-results.html
+	exit;
+fi;
+
 old='                <!-- <category android:name="android.intent.category.LAUNCHER"/> -->'
 new='                <category android:name="android.intent.category.LAUNCHER"/>'
 sed  --in-place "s%$old%$new%g" app/src/main/AndroidManifest.xml
