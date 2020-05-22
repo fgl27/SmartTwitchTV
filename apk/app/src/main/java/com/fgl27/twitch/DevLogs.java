@@ -71,7 +71,8 @@ public final class DevLogs {
                     MediaCodecInfo.AudioCapabilities audioCapabilities = codecCapabilities.getAudioCapabilities();
 
                     Log.i(TAG, "Codec codecCapabilities:");
-                    LongLog(TAG, new Gson().toJson(codecCapabilities));
+                    //Older devices Oreo and older can handle this call
+                    //LongLog(TAG, new Gson().toJson(codecCapabilities));
 
                     if (videoCapabilities != null) {
                         Log.i(TAG, "Codec videoCapabilities:");
@@ -130,7 +131,7 @@ public final class DevLogs {
             if (actManager != null) {
                 actManager.getMemoryInfo(memInfo);
                 Log.i(TAG, "memInfo: Start...");
-                LongLog(TAG, memInfo.toString());
+                LongLog(TAG, new Gson().toJson(memInfo));
                 Log.i(TAG, "memInfo: end...");
             }
 
@@ -167,21 +168,27 @@ public final class DevLogs {
     }
 
     public static void LogDevice(Context context) {
-        HandlerThread LogThread = new HandlerThread("LogThread");
-        LogThread.start();
-        Handler LogHandler = new Handler(LogThread.getLooper());
+        try {
+            HandlerThread LogThread = new HandlerThread("LogThread");
+            LogThread.start();
+            Handler LogHandler = new Handler(LogThread.getLooper());
 
-        LogHandler.post(() -> {
-            Log.i(TAG, "LogDevice: Start...");
-            Log.i(TAG, "LogDevice: Max line length 1000 character");
-            LogBUILD();
-            LogMediaInfo();
-            LogMemoryInfo(context);
-            LogDisplay(context);
-            LogExoInfo(context);
-            Log.i(TAG, "WebviewVersion: " + Tools.getWebviewVersion(context));
-            Log.i(TAG, "LogDevice: End...");
-        });
+            LogHandler.post(() -> {
+                        Log.i(TAG, "LogDevice: Start...");
+                        Log.i(TAG, "LogDevice: Max line length 1000 character");
+                        LogBUILD();
+                        LogMediaInfo();
+                        LogMemoryInfo(context);
+                        LogDisplay(context);
+                        LogExoInfo(context);
+                        Log.i(TAG, "WebviewVersion: " + Tools.getWebviewVersion(context));
+                        Log.i(TAG, "LogDevice: End...");
+                    }
+            );
+
+        } catch (Exception e) {//Just in case
+            Log.w(TAG, "LogDevice Exception ", e);
+        }
 
     }
 
