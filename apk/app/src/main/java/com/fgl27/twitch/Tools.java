@@ -767,7 +767,7 @@ public final class Tools {
         return size;
     }
 
-    public static String getQualities(DefaultTrackSelector trackSelector, boolean DebugEnable) {
+    public static String getQualities(DefaultTrackSelector trackSelector) {
         if (trackSelector != null) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
 
@@ -780,10 +780,10 @@ public final class Tools {
                         TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
                         if (trackGroupArray.length > 0) {
 
-                            if (DebugEnable) {
-                                Log.i(DevLogs.TAG, "trackGroupArray:");
-                                DevLogs.LongLog(DevLogs.TAG, new Gson().toJson(trackGroupArray));
-                            }
+//                            if (BuildConfig.DEBUG) {
+//                                Log.i(TAG, "trackGroupArray:");
+//                                LongLog(TAG, new Gson().toJson(trackGroupArray));
+//                            }
 
                             ArrayList<QualitiesObj> result = new ArrayList<>();
                             Format format;
@@ -934,4 +934,19 @@ public final class Tools {
         }
     }
 
+    public static void LongLog(String TAG, String veryLongString) {
+        int maxLogSize = 1000;
+        int len = veryLongString.length();
+
+        for(int i = 0; i <= len / maxLogSize; i++) {
+            Log.i(
+                    TAG,
+                    veryLongString.substring(
+                            (i * maxLogSize),
+                            Math.min((i + 1) * maxLogSize, len)
+                    )
+            );
+        }
+
+    }
 }
