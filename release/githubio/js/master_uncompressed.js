@@ -7445,8 +7445,8 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.197';
-    var Main_minversion = 'May 21, 2020';
+    var Main_stringVersion_Min = '.198';
+    var Main_minversion = 'May 22, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -9410,7 +9410,13 @@
     }
 
     function Main_Log(text) {
-        if (Main_isDebug) console.log(text + ' ' + Main_LogDate(new Date()));
+        if (Main_isDebug) {
+            text = text + ' ' + Main_LogDate(new Date());
+            console.log(text);
+            try {
+                Android.LongLog(text);
+            } catch (e) {}
+        }
     }
 
     function Main_LogDate(date) {
@@ -13567,6 +13573,8 @@
         Play_controls[Play_controlsExternal].setLable();
 
         Main_innerHTML('extra_button_text' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
+
+        Main_Log('Play_SetExternalQualities ' + JSON.stringify(array) + ' name ' + name);
     }
 
     function Play_extractQualities(input) {
