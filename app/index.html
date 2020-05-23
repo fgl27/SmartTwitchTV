@@ -819,7 +819,7 @@
             background-color: #FFFFFF;
         }
 
-        img.chat_emotes_img {
+        .chat_emotes_img {
             width: 5vh;
             height: 5vh;
             object-fit: contain;
@@ -1975,7 +1975,6 @@
 
         .chat_line,
         .message {
-            /*word-break: break-all;*/
             word-wrap: break-word;
             margin-bottom: 0.175em;
             line-height: 1.25em;
@@ -1996,7 +1995,7 @@
             background-color: transparent;
             font-size: 0.65em;
             margin: 0.25em;
-            text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
+            text-shadow: -0.07em -0.07em 0 #000, 0.07em -0.07em 0 #000, -0.07em 0.07em 0 #000, 0.07em 0.07em 0 #000;
         }
 
         .chat_box_holder {
@@ -2027,6 +2026,14 @@
             margin-right: 0.1em;
             margin-left: 0.1em;
             margin-bottom: -0.2em;
+        }
+
+        .chat_emotes_img,
+        .tag,
+        .emoticon,
+        .emoji {
+            transform: translateZ(0);
+            filter: contrast(1.25) drop-shadow(0 0 0.1em #000000) drop-shadow(0 0 0.1em #000000);
         }
 
         .chat_highlighted {
