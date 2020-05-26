@@ -1,7 +1,7 @@
 SmartTwitchTV
 ==============
 
-This is an web application designed to watch Twitch.tv broadcasts on SmartTV's , A good official Twitch.TV app is not available for most devices, that is way this project exist.
+This is an web application designed to watch Twitch broadcasts on SmartTV's , A good official Twitch app is not available for most devices, that is way this project exist.
 
 The intention of this is to make a web app that runs on all modern browser and can be easily ported to any OS that can run a web app's.
 
@@ -22,7 +22,7 @@ Download
 Contributing instructions
 ==============
 
-Any Help is welcome as today this repo is maintain by one single developer, if you can help by developing push a PR, if you can't but have ideas on how to improve this share it via a [email](mailto:fglfgl27@gmail.com) or [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
+Any Help is welcome you can use a github PR, [issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or send a [email](mailto:fglfgl27@gmail.com).
 
 About this fork
 ===============
@@ -30,21 +30,22 @@ About this fork
 I initially fork this from https://github.com/CazuzaCzz/SmartTwitchTV/commits/tizen
 The original fork is https://github.com/nikitakatchik/SmartTwitchTV
 
-I have started this project because the above Repos of the app did not fully support my TV model, it had many bugs and the app did not had all Twitch.TV featuring like a more complete users interface (For VOD, Cips, basic Channel off line content, Chat and etc related) it also didn't fully support the latest version of Samsung smart remote.
+I have started this project because the above Repos of the app did not fully support my TV model and don't have all possible Twitch featuring.
 
-So I start this new repo keep the original name and commit history, work a long time writing this a new application basically from scratch focusing on performance and all available Twitch.TV featuring, with the help of some users reporting bugs and making featuring request, I add many features and work to resolve all the bugs, today the application is very complete, can be easily used to watch all available Twitch.TV content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but as today there is only one main developer working on this project the process is slow, but fell free to report bugs and make request, for that use the [open a issue option of this repo](https://github.com/fgl27/SmartTwitchTV/issues/new/choose).
+I start this new repo keep the original name and commit history, work a long time writing this a new application basically from scratch focusing on performance and all available Twitch featuring, with the help of some users reporting bugs and features request, I add many features and work to resolve all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but that proccess is slow.
 
 Project Web Dependencies
 ==============
 
-* [Nightdev KapChat - KapChat captures (kaptures ![kapa](https://static-cdn.jtvnw.net/emoticons/v1/25/1.0)) Twitch chat directly into OBS or XSplit.](https://www.nightdev.com/kapchat/)
-* [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
-* [Twemoji - A simple library that provides standard Unicode emoji support across all platforms](https://github.com/twitter/twemoji)
+* [irc-message - Performant, streaming IRC message parser](https://github.com/sigkell/irc-message)
+* [punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891](https://github.com/bestiejs/punycode.js)
+* [crass - A CSS minification, pretty printing, and general utility library written in JS](https://github.com/mattbasta/crass)
 * [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
-* [HTMLMinifier - is a highly configurable, well-tested, JavaScript-based HTML minifier.](https://github.com/kangax/html-minifier)
-* [JS Beautifier - Beautify, unpack or deobfuscate JavaScript and HTML, make JSON/JSONP readable, etc.](https://github.com/beautify-web/js-beautify)
+* [HTMLMinifier - is a highly configurable, well-tested, JavaScript-based HTML minifier](https://github.com/kangax/html-minifier)
 * [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
-* [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
+* [Twemoji - A simple library that provides standard Unicode emoji support across all platforms](https://github.com/twitter/twemoji)
+* [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
+* [Twitch Developer Documentation](https://dev.Twitch/docs/)
 
 [Project Android Dependencies](https://github.com/fgl27/SmartTwitchTV/tree/master/apk#project-apk-dependencies)
 ==============
@@ -70,35 +71,35 @@ That key will be used to access twitch content for that account, when accessing 
 
 **The app user current permision:**
 
-* user_read, user_follows_edit, user_subscriptions, chat:edit, chat:read they are summarized here [authentication twitch-api-v5](https://dev.twitch.tv/docs/authentication#twitch-api-v5)<br>
+* user_read, user_follows_edit, user_subscriptions, chat:edit, chat:read they are summarized here [authentication twitch-api-v5](https://dev.Twitch/docs/authentication#twitch-api-v5)<br>
 
 **It of the permission has a reason:**
 
 **Manage your followed channels:**
 
-* The permission used for this is **user_follows_edit** the API used on this is [Follow Channel](https://dev.twitch.tv/docs/v5/reference/users/#follow-channel)
+* The permission used for this is **user_follows_edit** the API used on this is [Follow Channel](https://dev.Twitch/docs/v5/reference/users/#follow-channel)
 * Allow to follow or unfollow streamers or games for that user (unfollow a game is current not supported by Twitch for third party app, but follow is).<br>
 
 **Send live Stream Chat and Rooms messages:**
 
-* The permission used for this is **chat:edit** the API used on this is [Connecting to Twitch IRC](https://dev.twitch.tv/docs/irc/guide/#connecting-to-twitch-irc)
+* The permission used for this is **chat:edit** the API used on this is [Connecting to Twitch IRC](https://dev.Twitch/docs/irc/guide/#connecting-to-twitch-irc)
 * Allows access so you can use the app to logging in on Twitch chat using yours username to send chat messages.
 * Also enable you to receive gifted sub give for user in chat.<br>
 
 **View your email address:**
 
-* The permission used for this is **user_read** the API used on this is [Get Followed Streams](https://dev.twitch.tv/docs/v5/reference/streams#get-followed-streams)
+* The permission used for this is **user_read** the API used on this is [Get Followed Streams](https://dev.Twitch/docs/v5/reference/streams#get-followed-streams)
 * Email will not be read! (you can search the source code if you are in doubt no user email is accessed), this permission has many uses, as the above API, it allows to access user live channels list in a faster way, the app can load user live list without this but it can be really slow if you follow too many streamers (100+ you already notice the slow down).<br>
 
 **View your paid subscriptions:**
 
-* The permission used for this is **user_subscriptions** the API's used on this are [Get User Emotes](https://dev.twitch.tv/docs/v5/reference/users/#get-user-emotes ) and [Check User Subscription by Channel](https://dev.twitch.tv/docs/v5/reference/users#check-user-subscription-by-channel)
+* The permission used for this is **user_subscriptions** the API's used on this are [Get User Emotes](https://dev.Twitch/docs/v5/reference/users/#get-user-emotes ) and [Check User Subscription by Channel](https://dev.Twitch/docs/v5/reference/users#check-user-subscription-by-channel)
 * Allows to get yours emotes list from all subscriptions you have, even if you aren't sub to a channel this is needed to get yours available Twitch emotes, this list will be used on the write to chat implementation.
 * Allows to check if you are sub to a particularly channel, that information is used to give a on screen warning when a content is block for Sub-only (a Sub-only chat ROOM (write mode, read will always work) or a VOD for example) and you don't have access because you aren't a sub of a particularly channel (unfortunately twitch has blocked all third party app's to access sub-only VOD's so this warning will let you know that, on the past that wasn't a issue for sub-only VOD's)<br>
 
 **View live Stream Chat and Rooms messages:**
 
-* The permission used for this is **chat:read** the API used on this is [Connecting to Twitch IRC](https://dev.twitch.tv/docs/irc/guide/#connecting-to-twitch-irc)
+* The permission used for this is **chat:read** the API used on this is [Connecting to Twitch IRC](https://dev.Twitch/docs/irc/guide/#connecting-to-twitch-irc)
 * Allows access so you can use the app to logging in on Twitch chat using yours username to read chat messages as yours user (technically the app can read chat without a user but the bellow option will not work on that case as the login is as anonymous).
 * Also enable you to receive gifted sub give for user in chat.<br>
 
