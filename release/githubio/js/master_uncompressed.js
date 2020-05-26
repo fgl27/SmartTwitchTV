@@ -530,7 +530,9 @@
     var STR_END_DIALOG_OPT;
     var STR_OPEN_EXTERNAL_PLAYER;
     var STR_CHAT_CLEAR_MSG;
-    var STR_CHAT_CLEAR_MSG_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_CHAT_CLEAR_MSG_SUMMARY;
+    var STR_ABOUT_INFO_23;
+    var STR_ABOUT_INFO_24; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_BR = "<br>";
     var STR_SPACE = '&nbsp;';
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
@@ -658,14 +660,16 @@
             STR_BR +
             STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
             STR_DIV_MIDLE_LEFT + STR_BR +
-            STR_SPACE + STR_SPACE + STR_ABOUT_INFO_14 + STR_BR +
+            STR_SPACE + STR_SPACE + STR_SPACE + STR_ABOUT_INFO_14 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_7 + STR_BR +
-            STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
-            STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
+            STR_DOT + STR_ABOUT_INFO_23 + STR_BR +
+            STR_DOT + STR_ABOUT_INFO_24 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_10 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_12 + STR_BR +
-            STR_DOT + STR_ABOUT_INFO_13 + STR_BR + STR_BR +
-            STR_SPACE + STR_SPACE + STR_ABOUT_INFO_15 + STR_BR +
+            STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
+            STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
+            STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
+            STR_SPACE + STR_SPACE + STR_SPACE + STR_ABOUT_INFO_15 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_21 + STR_BR +
@@ -781,11 +785,11 @@
         STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
         STR_ABOUT_INFO_1 = "This is a SmartTV Client for Twitch developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
         STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
-        STR_ABOUT_INFO_3 = "Developer information:";
+        STR_ABOUT_INFO_3 = "Contact information:";
         STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on GitHub";
         STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
         STR_ABOUT_INFO_6 = "This application uses following dependencies:";
-        STR_ABOUT_INFO_7 = "Nightdev KapChat - KapChat captures Twitch chat directly into OBS or XSplit (https://www.nightdev.com/kapchat/)";
+        STR_ABOUT_INFO_7 = "irc-message - Performant, streaming IRC message parser (https://github.com/sigkell/irc-message)";
         STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)";
         STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms (https://github.com/twitter/twemoji)";
         STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
@@ -801,6 +805,8 @@
         STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
         STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle plugin to discover dependency updates (https://github.com/ben-manes/gradle-versions-plugin)";
         STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
+        STR_ABOUT_INFO_23 = "punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891 (https://github.com/bestiejs/punycode.js)";
+        STR_ABOUT_INFO_24 = "crass - A CSS minification, pretty printing, and general utility library written in JS (https://github.com/mattbasta/crass)";
 
         STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
         STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
