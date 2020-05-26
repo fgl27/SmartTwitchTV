@@ -32,7 +32,7 @@ The original fork is https://github.com/nikitakatchik/SmartTwitchTV
 
 I have started this project because the above Repos of the app did not fully support my TV model and don't have all possible Twitch featuring.
 
-I start this new repo keep the original name and commit history, work a long time writing this a new application basically from scratch focusing on performance and all available Twitch featuring, with the help of some users reporting bugs and features request, I add many features and work to resolve all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but that proccess is slow.
+I start this new repo keep the original name and commit history, work a long time writing this a new application basically from scratch focusing on performance and all available Twitch featuring, with the help of some users reporting bugs and features request, I add many features and work to resolve all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but that process is slow.
 
 Project Web Dependencies
 ==============
