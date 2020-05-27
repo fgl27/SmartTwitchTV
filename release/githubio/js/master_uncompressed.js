@@ -90,7 +90,6 @@
     var STR_CLOSE_THIS;
     var STR_PLAYER;
     var STR_CHAT;
-    var STR_GENERAL;
     var STR_UPDATE;
     var STR_CURRENT_VERSION;
     var STR_LATEST_VERSION;
@@ -622,7 +621,6 @@
             STR_DIV_TITLE + STR_CONTROLS_MULTI_6 + '</div>';
 
         STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + STR_BR + STR_RED_DIV + STR_CONTROLS_ETC + '</div></div>' +
-            STR_DIV_TITLE + STR_GENERAL + '</div>' +
             STR_DIV_MIDLE_LEFT +
             STR_DOT + STR_SIDE_PANEL + STR_BR +
             STR_DOT + STR_USER_LIVE + STR_BR +
@@ -774,7 +772,6 @@
         STR_PLAYER = "Player Related:";
         STR_CHAT = "Chat Related:";
         STR_CHAT_SHOW = "Chat show";
-        STR_GENERAL = "General Related:";
         STR_UPDATE = 'Update';
         STR_CURRENT_VERSION = "Current installed version ";
         STR_LATEST_VERSION = " latest available version ";
