@@ -532,7 +532,8 @@
     var STR_CHAT_CLEAR_MSG;
     var STR_CHAT_CLEAR_MSG_SUMMARY;
     var STR_ABOUT_INFO_23;
-    var STR_ABOUT_INFO_24; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_ABOUT_INFO_24;
+    var STR_CONTROLS_ETC; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_BR = "<br>";
     var STR_SPACE = '&nbsp;';
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
@@ -620,7 +621,7 @@
             STR_DOT + STR_CONTROLS_MULTI_5 + STR_BR + '</div>' +
             STR_DIV_TITLE + STR_CONTROLS_MULTI_6 + '</div>';
 
-        STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
+        STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + STR_BR + STR_RED_DIV + STR_CONTROLS_ETC + '</div></div>' +
             STR_DIV_TITLE + STR_GENERAL + '</div>' +
             STR_DIV_MIDLE_LEFT +
             STR_DOT + STR_SIDE_PANEL + STR_BR +
@@ -693,6 +694,7 @@
         STR_SEARCH = "Search";
         STR_SETTINGS = "Settings";
         STR_CONTROLS = "Controls";
+        STR_CONTROLS_ETC = "See play store video to better understand how the app works and how to use it's settings and controls ";
         STR_ABOUT = "About";
         STR_HIDE = "Hide";
         STR_SEARCH_EMPTY = "The text you entered is empty.";
