@@ -215,13 +215,6 @@ function Sidepannel_KeyEnterUser() {
         Sidepannel_SetDefaultLables();
         Sidepannel_UnSetTopOpacity();
 
-        if (!Sidepannel_MainISuser()) {
-            Sidepannel_RemoveFocusMain();
-            Main_values.Sidepannel_Pos++;
-            Sidepannel_SetTopOpacity(Main_values.Main_Go);
-            Sidepannel_AddFocusMain();
-        }
-
     } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
     else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
     else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
@@ -288,11 +281,6 @@ function Sidepannel_KeyEnter() {
             Sidepannel_SetUserLables();
             Sidepannel_UnSetTopOpacity();
 
-            if (Sidepannel_MainISuser()) {
-                Sidepannel_RemoveFocusMain();
-                Sidepannel_SetTopOpacity(Main_values.Main_Go);
-                Sidepannel_AddFocusMain();
-            }
         } else {
             Main_showWarningDialog(STR_NOKUSER_WARN);
             Main_setTimeout(Main_HideWarningDialog, 2000);
