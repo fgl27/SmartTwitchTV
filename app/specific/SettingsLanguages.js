@@ -179,6 +179,7 @@ function Languages_init() {
 function Languages_exit() {
     Main_removeEventListener("keydown", Languages_handleKeyDown);
     Main_addEventListener("keydown", Settings_handleKeyDown);
+    ScreensObj_SetTopLable(STR_SETTINGS);
     Settings_ScrollTableReset();
     Main_ShowElement('settings_main');
     Main_HideElement('settings_lang');
