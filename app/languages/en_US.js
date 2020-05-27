@@ -105,7 +105,7 @@ function en_USLang() {
     STR_CONTROLS_MAIN_6 = " Switch screen: return key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
     STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
-    STR_ABOUT_INFO_1 = "This is a SmartTV Client for Twitch developed by a individual on his free time, for TVs that don't have access to a good official application, released for free to anyone who wants to use it.";
+    STR_ABOUT_INFO_1 = "This is a Android TV Twitch Client, released for free to anyone who wants to use it";
     STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
     STR_ABOUT_INFO_3 = "Contact information:";
     STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on GitHub";
