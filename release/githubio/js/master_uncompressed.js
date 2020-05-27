@@ -7319,7 +7319,7 @@
     }
     //Variable initialization
     var smartTwitchTV;
-    var Main_isReleased = true;
+    var Main_isReleased = false;
     var Main_isDebug = false;
 
     var Main_cursorYAddFocus = -1;
@@ -7452,7 +7452,7 @@
 
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.198';
-    var Main_minversion = 'May 22, 2020';
+    var Main_minversion = 'May 27, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOnAndroidVersion = '';
     var Main_AndroidSDK = 1000;
@@ -22897,6 +22897,7 @@
     function Languages_exit() {
         Main_removeEventListener("keydown", Languages_handleKeyDown);
         Main_addEventListener("keydown", Settings_handleKeyDown);
+        ScreensObj_SetTopLable(STR_SETTINGS);
         Settings_ScrollTableReset();
         Main_ShowElement('settings_main');
         Main_HideElement('settings_lang');
@@ -23322,13 +23323,6 @@
             Sidepannel_SetDefaultLables();
             Sidepannel_UnSetTopOpacity();
 
-            if (!Sidepannel_MainISuser()) {
-                Sidepannel_RemoveFocusMain();
-                Main_values.Sidepannel_Pos++;
-                Sidepannel_SetTopOpacity(Main_values.Main_Go);
-                Sidepannel_AddFocusMain();
-            }
-
         } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
         else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
         else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
@@ -23350,14 +23344,6 @@
         } else if (Main_values.Sidepannel_Pos === 9) Sidepannel_Go(Main_History[Main_HistoryPos]);
         else Sidepannel_KeyEnterBase();
 
-    }
-
-    function Sidepannel_MainISuser() {
-        return Main_values.Main_Go === Main_UserLive || Main_values.Main_Go === Main_UserHost ||
-            Main_values.Main_Go === Main_usergames || Main_values.Main_Go === Main_UserVod ||
-            Main_values.Main_Go === Main_UserChannels || Main_values.Main_Go === Main_ChannelContent ||
-            Main_values.Main_Go === Main_HistoryLive || Main_values.Main_Go === Main_HistoryVod ||
-            Main_values.Main_Go === Main_HistoryClip;
     }
 
     function Sidepannel_KeyEnterBase() {
@@ -23395,11 +23381,6 @@
                 Sidepannel_SetUserLables();
                 Sidepannel_UnSetTopOpacity();
 
-                if (Sidepannel_MainISuser()) {
-                    Sidepannel_RemoveFocusMain();
-                    Sidepannel_SetTopOpacity(Main_values.Main_Go);
-                    Sidepannel_AddFocusMain();
-                }
             } else {
                 Main_showWarningDialog(STR_NOKUSER_WARN);
                 Main_setTimeout(Main_HideWarningDialog, 2000);
