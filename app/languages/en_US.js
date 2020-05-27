@@ -95,7 +95,6 @@ function en_USLang() {
     STR_PLAYER = "Player Related:";
     STR_CHAT = "Chat Related:";
     STR_CHAT_SHOW = "Chat show";
-    STR_GENERAL = "General Related:";
     STR_UPDATE = 'Update';
     STR_CURRENT_VERSION = "Current installed version ";
     STR_LATEST_VERSION = " latest available version ";
