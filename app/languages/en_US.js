@@ -15,6 +15,7 @@ function en_USLang() {
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
     STR_CONTROLS = "Controls";
+    STR_CONTROLS_ETC = "See play store video to better understand how the app works and how to use it's settings and controls ";
     STR_ABOUT = "About";
     STR_HIDE = "Hide";
     STR_SEARCH_EMPTY = "The text you entered is empty.";
