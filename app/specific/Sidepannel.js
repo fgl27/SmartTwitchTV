@@ -238,14 +238,6 @@ function Sidepannel_KeyEnterUser() {
 
 }
 
-function Sidepannel_MainISuser() {
-    return Main_values.Main_Go === Main_UserLive || Main_values.Main_Go === Main_UserHost ||
-        Main_values.Main_Go === Main_usergames || Main_values.Main_Go === Main_UserVod ||
-        Main_values.Main_Go === Main_UserChannels || Main_values.Main_Go === Main_ChannelContent ||
-        Main_values.Main_Go === Main_HistoryLive || Main_values.Main_Go === Main_HistoryVod ||
-        Main_values.Main_Go === Main_HistoryClip;
-}
-
 function Sidepannel_KeyEnterBase() {
     if (!Main_values.Sidepannel_Pos) {
         Main_values.Main_Before = Main_values.Main_Go;
