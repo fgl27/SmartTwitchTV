@@ -1475,6 +1475,20 @@ public class PlayerActivity extends Activity {
             });
         }
 
+//        @SuppressWarnings("unused")//called by JS
+//        @JavascriptInterface
+//        public void PlayerEventListenerClearTest() {
+//
+//            MainThreadHandler.post(() -> PlayerEventListenerClear(mainPlayer ^ 1));
+//
+//        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String GetCheckIfIsLiveFeed(int x, int y) {
+            return ExtraPlayerHandlerResult[x][y];
+        }
+
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout) {
@@ -1493,20 +1507,6 @@ public class PlayerActivity extends Activity {
                     LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
             }, 50 + Delay_ms);
         }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String GetCheckIfIsLiveFeed(int x, int y) {
-            return ExtraPlayerHandlerResult[x][y];
-        }
-
-//        @SuppressWarnings("unused")//called by JS
-//        @JavascriptInterface
-//        public void PlayerEventListenerClearTest() {
-//
-//            MainThreadHandler.post(() -> PlayerEventListenerClear(mainPlayer ^ 1));
-//
-//        }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
@@ -1549,6 +1549,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public String GetDataResult(int position) {
             return DataResult[position];
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonString) {
+            return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonString));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1724,12 +1730,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public int getAndroid() {
             return 1;
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonString) {
-            return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonString));
         }
 
         @SuppressWarnings("unused")//called by JS
