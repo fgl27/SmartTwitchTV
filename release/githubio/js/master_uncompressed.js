@@ -3204,19 +3204,10 @@
     }
 
     function AddCode_RequestUnFollowGame() {
-        var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[0].name +
-            '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) + '?oauth_token=' +
-            AddUser_UsernameArray[0].access_token + Main_TwithcV5Flag;
+        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/games/' +
+            Main_values.Main_gameSelected_id + Main_TwithcV5Flag_I;
 
-        if (Main_IsOnAndroid)
-            AddCode_BasereadwritedUrl(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameAndroid);
-        else
-            AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameJs);
-    }
-
-    function AddCode_UnFollowGameAndroid(xmlHttp) {
-        if (xmlHttp !== null) AddCode_UnFollowGameEnd(xmlHttp);
-        else AddCode_UnFollowGameRequestError();
+        AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameJs);
     }
 
     function AddCode_UnFollowGameJs(xmlHttp) {
@@ -3317,14 +3308,6 @@
         };
 
         xmlHttp.send(null);
-    }
-
-    function AddCode_BasereadwritedUrl(theUrl, Method, HeaderQuatity, access_token, callbackready) {
-        var xmlHttp = Android.mMethodUrl(theUrl, 5000, HeaderQuatity, access_token, null, null, Method);
-
-        if (xmlHttp) callbackready(JSON.parse(xmlHttp));
-        else callbackready(xmlHttp);
-
     }
 
     function AddCode_BasexmlHttpGetBack(theUrl, type, HeaderQuatity, access_token, callbackready) {
@@ -3879,28 +3862,22 @@
     function ChannelContent_loadDataCheckHost() {
         var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
-        //TODO remove the try after some app updates
-        try {
+        Android.GetMethodUrlHeadersAsync(
+            theUrl, //urlString
+            ChannelContent_loadingDataTimeout, //timeout
+            null, //postMessage, null for get
+            null, //Method, null for get
+            JSON.stringify(
+                [
+                    [Main_clientIdHeader, Main_clientId]
+                ]
+            ), //JsonString
+            'ChannelContent_CheckHostResult', //callback
+            0, //checkResult
+            0, //key
+            3 //thread
+        );
 
-            Android.GetMethodUrlHeadersAsync(
-                theUrl, //urlString
-                ChannelContent_loadingDataTimeout, //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                JSON.stringify(
-                    [
-                        [Main_clientIdHeader, Main_clientId]
-                    ]
-                ), //JsonString
-                'ChannelContent_CheckHostResult', //callback
-                0, //checkResult
-                0, //key
-                3 //thread
-            );
-
-        } catch (e) {
-            BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError);
-        }
     }
 
     function ChannelContent_CheckHostResult(result) {
@@ -8812,33 +8789,6 @@
         }
     }
 
-    function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-        if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
-        else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
-    }
-
-    function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-        var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
-
-        if (xmlHttp) {
-
-            xmlHttp = JSON.parse(xmlHttp);
-
-            if (xmlHttp) {
-                if (xmlHttp.status === 200) {
-                    callbackSucess(xmlHttp.responseText, key);
-                } else {
-                    calbackError(key);
-                }
-            } else {
-                calbackError(key);
-            }
-        } else {
-            calbackError(key);
-        }
-
-    }
-
     function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
         BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, key);
     }
@@ -9647,16 +9597,20 @@
 
         //TODO remove the try after some app updates
         try {
-            Android.GetClipData(
+            Android.GetMethodUrlHeadersAsync(
                 theUrl, //urlString
                 PlayClip_loadingDataTimeout, //timeout
-                1, //HeaderQuantity
-                null, //access_token
-                Main_Headers_Back[0][1], //overwriteID
-                postMessage, //postMessage
-                'POST', //Method
+                postMessage, //postMessage, null for get
+                'POST', //Method, null for get
+                JSON.stringify(
+                    [
+                        [Main_clientIdHeader, Main_Headers_Back[0][1]]
+                    ]
+                ), //JsonString
                 'PlayClip_loadDataResult', //callback
-                PlayClip_loadDataRequestId //checkResult
+                PlayClip_loadDataRequestId, //checkResult
+                0, //key
+                0 //thread
             );
         } catch (e) {
             PlayClip_loadDataError();
@@ -14261,29 +14215,23 @@
 
         Main_setTimeout(
             function() {
-                //TODO remove the try after some app updates
-                //TODO make a simple fun for this
-                try {
 
-                    Android.GetMethodUrlHeadersAsync(
-                        theUrl, //urlString
-                        Play_loadingDataTimeout, //timeout
-                        null, //postMessage, null for get
-                        null, //Method, null for get
-                        JSON.stringify(
-                            [
-                                [Main_clientIdHeader, Main_clientId]
-                            ]
-                        ), //JsonString
-                        'Play_CheckHostResult', //callback
-                        0, //checkResult
-                        0, //key
-                        3 //thread
-                    );
+                Android.GetMethodUrlHeadersAsync(
+                    theUrl, //urlString
+                    Play_loadingDataTimeout, //timeout
+                    null, //postMessage, null for get
+                    null, //Method, null for get
+                    JSON.stringify(
+                        [
+                            [Main_clientIdHeader, Main_clientId]
+                        ]
+                    ), //JsonString
+                    'Play_CheckHostResult', //callback
+                    0, //checkResult
+                    0, //key
+                    3 //thread
+                );
 
-                } catch (e) {
-                    BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
-                }
             },
             100 //Delay as the stream just ended and may not show as host yet
         );
@@ -18470,7 +18418,7 @@
     var AGame_following = false;
 
     var DefaultHttpGetTimeout = 5000;
-    var DefaultHttpGetTimeoutPlus = 1000;
+    var DefaultHttpGetTimeoutPlus = 2500;
     var DefaultHttpGetReTryMax = 3;
     var empty_fun = function() {};
 
