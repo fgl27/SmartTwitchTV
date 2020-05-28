@@ -745,6 +745,7 @@ function Play_handleKeyDown(e) {
                 else Play_showPanel();
                 break;
             case KEY_ENTER:
+                //ChatLive_Playing = false;
                 if (Play_isEndDialogVisible()) {
                     if (Play_EndFocus) Play_EndDialogPressed(1);
                     else {

@@ -1439,7 +1439,7 @@ function ChatLive_LineAdd(messageObj) {
         }
 
         if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
-        else if (messageObj.skip_addline) classname += ' chat_line_slim';
+        else classname += ' chat_line_slim';
 
         elem.className = classname + (messageObj.user_id ? ' ' + messageObj.user_id : '');
         if (messageObj.message_id) elem.setAttribute('id', messageObj.message_id);
