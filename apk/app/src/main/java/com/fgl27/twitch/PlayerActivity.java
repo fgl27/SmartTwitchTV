@@ -1547,46 +1547,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void GetClipData(String urlString, int timeout, int HeaderQuantity, String access_token,
-                                String overwriteID, String postMessage, String Method, String callback, long checkResult) {
-
-            DataResultHandler[0].removeCallbacksAndMessages(null);
-            DataResult[0] = null;
-
-            DataResultHandler[0].post(() ->
-                    {
-                        Tools.ResponseObj response;
-
-                        for (int i = 0; i < 3; i++) {
-
-                            response = Tools.MethodUrl(
-                                    urlString,
-                                    (timeout + (i * 1000)),
-                                    HeaderQuantity,
-                                    access_token,
-                                    overwriteID,
-                                    postMessage,
-                                    Method,
-                                    checkResult
-                            );
-
-                            if (response != null)  {
-                                DataResult[0] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(0))");
-                                return;
-                            }
-
-                        }
-
-                        //MethodUrl is null inform JS callback
-                        DataResult[0] = Tools.ResponseObjToString(0, "", checkResult);
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(0))");
-                    }
-            );
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public String GetDataResult(int position) {
             return DataResult[position];
         }
