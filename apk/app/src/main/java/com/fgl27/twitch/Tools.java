@@ -120,13 +120,6 @@ public final class Tools {
             2160
     };
 
-    //Same values as in the js counterpart
-    private static final String CLIENTIDHEADER = "Client-ID";
-    private static final String CLIENTID = "5seja5ptej058mxqy7gh5tcudjqtm9";
-    private static final String ACCEPTHEADER = "Accept";
-    private static final String TWITHCV5JSON = "application/vnd.twitchtv.v5+json";
-    private static final String AUTHORIZATION = "Authorization";
-
     private static final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
@@ -293,50 +286,6 @@ public final class Tools {
         }
     }
 
-    //This isn't asynchronous it will freeze js, so in function that proxy is not need and we don't wanna the freeze
-    //use default js XMLHttpRequest
-    public static ResponseObj readUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-        HttpURLConnection urlConnection = null;
-        String[][] HEADERS = {
-                {CLIENTIDHEADER, CLIENTID},
-                {ACCEPTHEADER, TWITHCV5JSON},
-                {AUTHORIZATION, access_token}
-        };
-
-        try {
-            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
-
-            for (int i = 0; i < HeaderQuantity; i++)
-                urlConnection.setRequestProperty(HEADERS[i][0], HEADERS[i][1]);
-
-            urlConnection.setConnectTimeout(timeout);
-            urlConnection.setReadTimeout(timeout);
-
-            urlConnection.connect();
-
-            int status = urlConnection.getResponseCode();
-
-            if (status != -1) {
-                return new ResponseObj(
-                        status,
-                        readFullyString(
-                                status == HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getInputStream() :
-                                        urlConnection.getErrorStream()
-                        )
-                );
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            Log.w(TAG, "readUrl Exception ", e);
-            return null;
-        } finally {
-            if (urlConnection != null)
-                urlConnection.disconnect();
-        }
-    }
-
     public static String GetPing(Runtime runtime) {
         Process process = null;
         try {
@@ -383,25 +332,8 @@ public final class Tools {
         return Internal_MethodUrl(urlString, timeout, postMessage, Method, checkResult, HEADERS);
     }
 
-    //TODO on future app update replace the use of MethodUrl with MethodUrlHeaders
-    public static ResponseObj MethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token,
-                                        String overwriteID, String postMessage, String Method, long checkResult) {
-
-        String[][] DEFAULT_HEADERS = {
-                {CLIENTIDHEADER, overwriteID != null ? overwriteID : CLIENTID},
-                {ACCEPTHEADER, TWITHCV5JSON},
-                {AUTHORIZATION, access_token}
-        };
-
-        String[][] HEADERS = new String[HeaderQuantity][2];
-
-        System.arraycopy(DEFAULT_HEADERS, 0, HEADERS, 0, HEADERS.length);
-
-        return Internal_MethodUrl(urlString, timeout, postMessage, Method, checkResult, HEADERS);
-    }
-
     //For other then get methods
-    private static ResponseObj Internal_MethodUrl(String urlString, int timeout, String postMessage, String Method, long checkResult, String[][] HEADERS) {
+    public static ResponseObj Internal_MethodUrl(String urlString, int timeout, String postMessage, String Method, long checkResult, String[][] HEADERS) {
 
         HttpURLConnection urlConnection = null;
 

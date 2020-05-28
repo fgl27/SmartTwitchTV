@@ -1728,12 +1728,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String mreadUrl(String urlString, int timeout, int HeaderQuantity, String access_token) {
-            return new Gson().toJson(Tools.readUrl(urlString, timeout, HeaderQuantity, access_token));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonString) {
             return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonString));
         }

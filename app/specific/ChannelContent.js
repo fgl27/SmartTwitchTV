@@ -127,28 +127,22 @@ function ChannelContent_loadDataError() {
 function ChannelContent_loadDataCheckHost() {
     var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
-    //TODO remove the try after some app updates
-    try {
+    Android.GetMethodUrlHeadersAsync(
+        theUrl,//urlString
+        ChannelContent_loadingDataTimeout,//timeout
+        null,//postMessage, null for get
+        null,//Method, null for get
+        JSON.stringify(
+            [
+                [Main_clientIdHeader, Main_clientId]
+            ]
+        ),//JsonString
+        'ChannelContent_CheckHostResult',//callback
+        0,//checkResult
+        0,//key
+        3//thread
+    );
 
-        Android.GetMethodUrlHeadersAsync(
-            theUrl,//urlString
-            ChannelContent_loadingDataTimeout,//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            JSON.stringify(
-                [
-                    [Main_clientIdHeader, Main_clientId]
-                ]
-            ),//JsonString
-            'ChannelContent_CheckHostResult',//callback
-            0,//checkResult
-            0,//key
-            3//thread
-        );
-
-    } catch (e) {
-        BasehttpGet(theUrl, ChannelContent_loadingDataTimeout, 1, null, ChannelContent_CheckHost, ChannelContent_loadDataCheckHostError);
-    }
 }
 
 function ChannelContent_CheckHostResult(result) {

@@ -1659,29 +1659,23 @@ function Play_loadDataCheckHost() {
 
     Main_setTimeout(
         function() {
-            //TODO remove the try after some app updates
-            //TODO make a simple fun for this
-            try {
 
-                Android.GetMethodUrlHeadersAsync(
-                    theUrl,//urlString
-                    Play_loadingDataTimeout,//timeout
-                    null,//postMessage, null for get
-                    null,//Method, null for get
-                    JSON.stringify(
-                        [
-                            [Main_clientIdHeader, Main_clientId]
-                        ]
-                    ),//JsonString
-                    'Play_CheckHostResult',//callback
-                    0,//checkResult
-                    0,//key
-                    3//thread
-                );
+            Android.GetMethodUrlHeadersAsync(
+                theUrl,//urlString
+                Play_loadingDataTimeout,//timeout
+                null,//postMessage, null for get
+                null,//Method, null for get
+                JSON.stringify(
+                    [
+                        [Main_clientIdHeader, Main_clientId]
+                    ]
+                ),//JsonString
+                'Play_CheckHostResult',//callback
+                0,//checkResult
+                0,//key
+                3//thread
+            );
 
-            } catch (e) {
-                BasehttpGet(theUrl, Play_loadingDataTimeout, 1, null, Play_CheckHost, Play_loadDataCheckHostError);
-            }
         },
         100//Delay as the stream just ended and may not show as host yet
     );

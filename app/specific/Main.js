@@ -1493,33 +1493,6 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BasehttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-    if (Main_IsOnAndroid) BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
-    else BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key);
-}
-
-function BaseAndroidhttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-    var xmlHttp = Android.mreadUrl(theUrl, Timeout, HeaderQuatity, access_token);
-
-    if (xmlHttp) {
-
-        xmlHttp = JSON.parse(xmlHttp);
-
-        if (xmlHttp) {
-            if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText, key);
-            } else {
-                calbackError(key);
-            }
-        } else {
-            calbackError(key);
-        }
-    } else {
-        calbackError(key);
-    }
-
-}
-
 function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
     BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, key);
 }

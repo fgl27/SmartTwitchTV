@@ -78,6 +78,11 @@ public class NotificationService extends Service {
     private float textSizeSmall;
     private float textSizeBig;
 
+    private String[][] DEFAULT_HEADERS = {
+            {"Client-ID", "5seja5ptej058mxqy7gh5tcudjqtm9"},
+            {"Accept", "application/vnd.twitchtv.v5+json"}
+    };
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -231,7 +236,7 @@ public class NotificationService extends Service {
 
         for (int i = 0; i < 3; i++) {
 
-            response = Tools.readUrl(url, 25000  + (2500 * i), 2, null);
+            response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, DEFAULT_HEADERS);
 
             if (response != null) {
 
@@ -367,7 +372,7 @@ public class NotificationService extends Service {
 
         for (int i = 0; i < 3; i++) {
 
-            response = Tools.readUrl(url, 25000  + (2500 * i), 2, null);
+            response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, DEFAULT_HEADERS);
 
             if (response != null) {
 
