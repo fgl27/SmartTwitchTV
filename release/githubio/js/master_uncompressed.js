@@ -7355,7 +7355,7 @@
         "Play_ChatForceDisable": false,
         "Never_run_new": true,
         "warning_extra": true,
-        "Chat_font_size": 3,
+        "Chat_font_size_new": 75,
         "ChatBackground": 12,
         "IsRerun": false,
         "Main_selectedChannelPartner": false,
@@ -10855,7 +10855,6 @@
         } else {
             switch (e.keyCode) {
                 case KEY_LEFT:
-                    //ChatLive_Playing = false;
                     if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                     else if (Play_MultiDialogVisible()) {
                         Play_MultiRemoveFocus();
@@ -11828,8 +11827,8 @@
         Play_controls[Play_controlsChatFont] = { //Chat font size
             icons: "chat-font",
             string: STR_CHAT_FONT,
-            values: ["Extra extra small", "Extra small", "Small", "Medium (Default)", "Large", "Extra large", "Extra extra large"],
-            defaultValue: Main_values.Chat_font_size,
+            values: Play_ChatFontObj,
+            defaultValue: Main_values.Chat_font_size_new,
             opacity: 0,
             isChat: true,
             updown: function(adder) {
@@ -11839,16 +11838,15 @@
                 if (this.defaultValue < 0)
                     this.defaultValue = 0;
                 else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
-                Main_values.Chat_font_size = this.defaultValue;
+                Main_values.Chat_font_size_new = this.defaultValue;
 
                 Play_SetChatFont();
-                this.setLable();
                 this.bottomArrows();
+                this.setLable();
                 Main_SaveValues();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
-                    this.values[this.defaultValue]);
+                Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + '%');
             },
             bottomArrows: function() {
                 Play_BottomArrows(this.position);
@@ -12696,15 +12694,7 @@
         "dialogTop": -120
     }];
 
-    var Play_ChatFontObj = [
-        85,
-        100,
-        115,
-        130,
-        165,
-        195,
-        227,
-    ];
+    var Play_ChatFontObj = [];
 
     var Play_data_base = {
         data: [],
@@ -12762,6 +12752,9 @@
 
         Play_SetQuality();
 
+        for (var i = 25; i < 301; i++) {
+            Play_ChatFontObj.push(i);
+        }
         Play_ChatSize(false);
         Play_ChatBackgroundChange(false);
         Play_SetChatFont();
@@ -12828,8 +12821,8 @@
     }
 
     function Play_SetChatFont() {
-        document.getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size] + '%';
-        document.getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size] + '%';
+        document.getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
+        document.getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
     }
 
     function Play_Start() {
