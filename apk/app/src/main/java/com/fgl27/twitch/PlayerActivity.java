@@ -1734,12 +1734,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String mMethodUrl(String urlString, int timeout, int HeaderQuantity, String access_token, String overwriteID, String postMessage, String Method) {
-            return new Gson().toJson(Tools.MethodUrl(urlString, timeout, HeaderQuantity, access_token, overwriteID, postMessage, Method, 0L));
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonString) {
             return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonString));
         }
