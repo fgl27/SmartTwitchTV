@@ -12697,13 +12697,13 @@
     }];
 
     var Play_ChatFontObj = [
-        'chat_size_xxs',
-        'chat_size_xs',
-        'chat_size_s',
-        'chat_size_m',
-        'chat_size_l',
-        'chat_size_xl',
-        'chat_size_xxl',
+        85,
+        100,
+        115,
+        130,
+        165,
+        195,
+        227,
     ];
 
     var Play_data_base = {
@@ -12828,13 +12828,8 @@
     }
 
     function Play_SetChatFont() {
-        for (var i = 0; i < Play_ChatFontObj.length; i++) {
-            Main_RemoveClass('chat_inner_container', Play_ChatFontObj[i]);
-            Main_RemoveClass('chat_inner_container2', Play_ChatFontObj[i]);
-        }
-
-        Main_AddClass('chat_inner_container', Play_ChatFontObj[Main_values.Chat_font_size]);
-        Main_AddClass('chat_inner_container2', Play_ChatFontObj[Main_values.Chat_font_size]);
+        document.getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size] + '%';
+        document.getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size] + '%';
     }
 
     function Play_Start() {
