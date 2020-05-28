@@ -1591,7 +1591,7 @@ function Play_MakeControls() {
     Play_controls[Play_controlsChatFont] = { //Chat font size
         icons: "chat-font",
         string: STR_CHAT_FONT,
-        values: ["60%", "80%", "100%", "120%", "140%"],
+        values: ["Extra extra small", "Extra small", "Small", "Medium (Default)", "Large", "Extra large", "Extra extra large"],
         defaultValue: Main_values.Chat_font_size,
         opacity: 0,
         isChat: true,

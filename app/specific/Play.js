@@ -146,7 +146,15 @@ var Play_ChatSizeVal = [{
     "dialogTop": -120
 }];
 
-var Play_ChatFontObj = ['chat_extra_small', 'chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
+var Play_ChatFontObj = [
+    'chat_size_xxs',
+    'chat_size_xs',
+    'chat_size_s',
+    'chat_size_m',
+    'chat_size_l',
+    'chat_size_xl',
+    'chat_size_xxl',
+];
 
 var Play_data_base = {
     data: [],
