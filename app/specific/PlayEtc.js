@@ -618,7 +618,6 @@ function Play_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                //ChatLive_Playing = false;
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                 else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
@@ -1592,8 +1591,8 @@ function Play_MakeControls() {
     Play_controls[Play_controlsChatFont] = { //Chat font size
         icons: "chat-font",
         string: STR_CHAT_FONT,
-        values: ["Extra extra small", "Extra small", "Small", "Medium (Default)", "Large", "Extra large", "Extra extra large"],
-        defaultValue: Main_values.Chat_font_size,
+        values: Play_ChatFontObj,
+        defaultValue: Main_values.Chat_font_size_new,
         opacity: 0,
         isChat: true,
         updown: function(adder) {
@@ -1603,16 +1602,15 @@ function Play_MakeControls() {
             if (this.defaultValue < 0)
                 this.defaultValue = 0;
             else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
-            Main_values.Chat_font_size = this.defaultValue;
+            Main_values.Chat_font_size_new = this.defaultValue;
 
             Play_SetChatFont();
-            this.setLable();
             this.bottomArrows();
+            this.setLable();
             Main_SaveValues();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
-                this.values[this.defaultValue]);
+            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + '%');
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);

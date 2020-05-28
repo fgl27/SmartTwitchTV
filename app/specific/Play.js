@@ -146,15 +146,7 @@ var Play_ChatSizeVal = [{
     "dialogTop": -120
 }];
 
-var Play_ChatFontObj = [
-    85,
-    100,
-    115,
-    130,
-    165,
-    195,
-    227,
-];
+var Play_ChatFontObj = [];
 
 var Play_data_base = {
     data: [],
@@ -212,6 +204,9 @@ function Play_PreStart() {
 
     Play_SetQuality();
 
+    for (var i = 25; i < 301; i++) {
+        Play_ChatFontObj.push(i);
+    }
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
@@ -278,8 +273,8 @@ function Play_SetChatSide() {
 }
 
 function Play_SetChatFont() {
-    document.getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size] + '%';
-    document.getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size] + '%';
+    document.getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
+    document.getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
 }
 
 function Play_Start() {

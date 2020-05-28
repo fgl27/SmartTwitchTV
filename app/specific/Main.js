@@ -59,7 +59,7 @@ var Main_values = {
     "Play_ChatForceDisable": false,
     "Never_run_new": true,
     "warning_extra": true,
-    "Chat_font_size": 3,
+    "Chat_font_size_new": 75,
     "ChatBackground": 12,
     "IsRerun": false,
     "Main_selectedChannelPartner": false,
