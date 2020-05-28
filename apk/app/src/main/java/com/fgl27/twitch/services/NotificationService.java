@@ -231,7 +231,7 @@ public class NotificationService extends Service {
 
         for (int i = 0; i < 3; i++) {
 
-            response = Tools.readUrl(url, 5000  + (1000 * i), 2, null);
+            response = Tools.readUrl(url, 25000  + (2500 * i), 2, null);
 
             if (response != null) {
 
@@ -367,7 +367,7 @@ public class NotificationService extends Service {
 
         for (int i = 0; i < 3; i++) {
 
-            response = Tools.readUrl(url, 5000  + (1000 * i), 2, null);
+            response = Tools.readUrl(url, 25000  + (2500 * i), 2, null);
 
             if (response != null) {
 
