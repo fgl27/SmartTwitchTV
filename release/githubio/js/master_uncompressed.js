@@ -7377,7 +7377,7 @@
         "Play_ChatForceDisable": false,
         "Never_run_new": true,
         "warning_extra": true,
-        "Chat_font_size": 2,
+        "Chat_font_size": 3,
         "ChatBackground": 12,
         "IsRerun": false,
         "Main_selectedChannelPartner": false,
@@ -11872,7 +11872,7 @@
         Play_controls[Play_controlsChatFont] = { //Chat font size
             icons: "chat-font",
             string: STR_CHAT_FONT,
-            values: ["60%", "80%", "100%", "120%", "140%"],
+            values: ["Extra extra small", "Extra small", "Small", "Medium (Default)", "Large", "Extra large", "Extra extra large"],
             defaultValue: Main_values.Chat_font_size,
             opacity: 0,
             isChat: true,
@@ -12740,7 +12740,15 @@
         "dialogTop": -120
     }];
 
-    var Play_ChatFontObj = ['chat_extra_small', 'chat_size_small', 'chat_size_default', 'chat_size_biger', 'chat_size_bigest'];
+    var Play_ChatFontObj = [
+        'chat_size_xxs',
+        'chat_size_xs',
+        'chat_size_s',
+        'chat_size_m',
+        'chat_size_l',
+        'chat_size_xl',
+        'chat_size_xxl',
+    ];
 
     var Play_data_base = {
         data: [],
