@@ -170,7 +170,7 @@ public final class Tools {
 
         for (i = 0; i < ReTryMax; i++) {
 
-            response = GetResponseObj(token_url, Timeout + (1000 * i));
+            response = GetResponseObj(token_url, Timeout + (2500 * i));
 
             if (response != null) {
 
@@ -203,7 +203,7 @@ public final class Tools {
 
             for (i = 0; i < ReTryMax; i++) {
 
-                response = GetResponseObj(url, Timeout + (1000 * i));
+                response = GetResponseObj(url, Timeout + (2500 * i));
 
                 if (response != null) {
 

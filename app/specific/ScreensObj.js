@@ -22,7 +22,7 @@ var Main_HistoryPos = 0;
 var AGame_following = false;
 
 var DefaultHttpGetTimeout = 5000;
-var DefaultHttpGetTimeoutPlus = 1000;
+var DefaultHttpGetTimeoutPlus = 2500;
 var DefaultHttpGetReTryMax = 3;
 var empty_fun = function() {};
 
