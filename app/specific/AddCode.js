@@ -579,19 +579,10 @@ function AddCode_UnFollowGame() {
 }
 
 function AddCode_RequestUnFollowGame() {
-    var theUrl = 'https://api.twitch.tv/api/users/' + AddUser_UsernameArray[0].name +
-        '/follows/games/' + encodeURIComponent(Main_values.Main_gameSelected) + '?oauth_token=' +
-        AddUser_UsernameArray[0].access_token + Main_TwithcV5Flag;
+    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/games/' +
+        Main_values.Main_gameSelected_id + Main_TwithcV5Flag_I;
 
-    if (Main_IsOnAndroid)
-        AddCode_BasereadwritedUrl(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameAndroid);
-    else
-        AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameJs);
-}
-
-function AddCode_UnFollowGameAndroid(xmlHttp) {
-    if (xmlHttp !== null) AddCode_UnFollowGameEnd(xmlHttp);
-    else AddCode_UnFollowGameRequestError();
+    AddCode_BasexmlHttpGet(theUrl, 'DELETE', 2, null, AddCode_UnFollowGameJs);
 }
 
 function AddCode_UnFollowGameJs(xmlHttp) {
@@ -692,14 +683,6 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
     };
 
     xmlHttp.send(null);
-}
-
-function AddCode_BasereadwritedUrl(theUrl, Method, HeaderQuatity, access_token, callbackready) {
-    var xmlHttp = Android.mMethodUrl(theUrl, 5000, HeaderQuatity, access_token, null, null, Method);
-
-    if (xmlHttp) callbackready(JSON.parse(xmlHttp));
-    else callbackready(xmlHttp);
-
 }
 
 function AddCode_BasexmlHttpGetBack(theUrl, type, HeaderQuatity, access_token, callbackready) {
