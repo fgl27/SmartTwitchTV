@@ -455,6 +455,7 @@ function Main_Addline(id) {
                 }
 
                 if (chat_lineChatLive_Individual_Lines) classname += ' chat_line_ind';
+                else classname += ' chat_line_slim';
 
                 elem.className = classname;
                 elem.innerHTML = Chat_Messages[i].message;
