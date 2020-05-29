@@ -204,9 +204,12 @@ function Play_PreStart() {
 
     Play_SetQuality();
 
-    for (var i = 25; i < 301; i++) {
+    var i = 25, max = 301;
+    for (i; i < max; i++) {
         Play_ChatFontObj.push(i);
     }
+    if (Main_values.Chat_font_size_new > (Play_ChatFontObj.length - 1)) Main_values.Chat_font_size_new = Play_ChatFontObj.length - 1;
+
     Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
