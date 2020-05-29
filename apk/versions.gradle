@@ -9,7 +9,7 @@ ext.versions = [
 
         tray                 : '0.12.0',
         leanback             : '1.0.0',
-        gradlePlugin         : '3.6.3',
+        gradlePlugin         : '4.0.0',
         benmanes             : '0.28.0',
         googlegson           : '2.8.6',
         webkit               : '1.2.0',
