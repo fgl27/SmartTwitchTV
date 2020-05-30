@@ -107,9 +107,9 @@ public class PlayerActivity extends Activity {
     public DefaultTrackSelector.Parameters trackSelectorParametersPP;
     public DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
     public TrackGroupArray lastSeenTrackGroupArray;
-    public int mainPlayerBandwidth = Integer.MAX_VALUE;
-    public int PP_PlayerBandwidth = 3000000;
-    public final int ExtraSmallPlayerBandwidth = 4000000;
+    public int mainPlayerBitrate = Integer.MAX_VALUE;
+    public int PP_PlayerBitrate = 3000000;
+    public final int ExtraSmallPlayerBitrate = 4000000;
     public long mResumePosition;
     public int mWho_Called = 1;
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
@@ -163,7 +163,7 @@ public class PlayerActivity extends Activity {
     public long NetCounter = 0L;
     public long SpeedCounter = 0L;
     public boolean mLowLatency = false;
-    public boolean UseFullBandwidth = false;
+    public boolean UseFullBitrate = false;
     public boolean AlreadyStarted;
     public boolean onCreateReady;
     public boolean IsStopped;
@@ -243,17 +243,17 @@ public class PlayerActivity extends Activity {
             // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
             trackSelectorParametersPP = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(PP_PlayerBandwidth)
+                    .setMaxVideoBitrate(PP_PlayerBitrate)
                     .build();
 
             trackSelectorParameters = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(mainPlayerBandwidth)
+                    .setMaxVideoBitrate(mainPlayerBitrate)
                     .build();
 
             trackSelectorParametersExtraSmall = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(ExtraSmallPlayerBandwidth)
+                    .setMaxVideoBitrate(ExtraSmallPlayerBitrate)
                     .build();
 
             VideoHolder = findViewById(R.id.videoholder);
@@ -412,7 +412,7 @@ public class PlayerActivity extends Activity {
         if (player[4] == null) {
             trackSelector[4] = new DefaultTrackSelector(this);
             trackSelector[4].setParameters(
-                    UseFullBandwidth ? trackSelectorParameters : trackSelectorParametersExtraSmall
+                    UseFullBitrate ? trackSelectorParameters : trackSelectorParametersExtraSmall
             );
 
             if (BLACKLISTEDCODECS != null) {
@@ -468,7 +468,7 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerCheckCounter[4] = 0;
-        UseFullBandwidth = false;
+        UseFullBitrate = false;
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
             KeepScreenOn(false);
         }
@@ -788,7 +788,7 @@ public class PlayerActivity extends Activity {
         PlayerView[mainPlayer].setVisibility(View.GONE);
         PlayerView[mainPlayer].setVisibility(View.VISIBLE);
 
-        //change trackSelector to limit video bandwidth
+        //change trackSelector to limit video Bitrate
         if (trackSelector[WillBeMain] != null)
             trackSelector[WillBeMain].setParameters(trackSelectorParameters);
         if (trackSelector[mainPlayer] != null)
@@ -1238,13 +1238,14 @@ public class PlayerActivity extends Activity {
         mWebView.requestFocus();
     }
 
+    //TO understand better the use of it WebAppInterface functon is used check the file app/specific/Android.js
     public class WebAppInterface {
-        final Context mwebContext;
+        final Context mWebViewContext;
         /**
          * Instantiate the interface and set the context
          */
         WebAppInterface(Context context) {
-            mwebContext = context;
+            mWebViewContext = context;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1289,7 +1290,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showToast(String toast) {
-            MainThreadHandler.post(() -> Toast.makeText(mwebContext, toast, Toast.LENGTH_LONG).show());
+            MainThreadHandler.post(() -> Toast.makeText(mWebViewContext, toast, Toast.LENGTH_LONG).show());
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1304,7 +1305,7 @@ public class PlayerActivity extends Activity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, 101);
                 } else {
-                    Toast.makeText(mwebContext, getString(R.string.external_player_fail), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mWebViewContext, getString(R.string.external_player_fail), Toast.LENGTH_LONG).show();
                 }
 
             });
@@ -1322,7 +1323,7 @@ public class PlayerActivity extends Activity {
         public void KeyboardCheckAndHIde() {
             MainThreadHandler.post(() -> {
                 if (getResources().getConfiguration().keyboard == KEYBOARD_QWERTY) {
-                    Tools.hideKeyboardFrom(mwebContext, mWebView);
+                    Tools.hideKeyboardFrom(mWebViewContext, mWebView);
                 }
             });
         }
@@ -1330,13 +1331,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void hideKeyboardFrom() {
-            MainThreadHandler.post(() -> Tools.hideKeyboardFrom(mwebContext, mWebView));
+            MainThreadHandler.post(() -> Tools.hideKeyboardFrom(mWebViewContext, mWebView));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showKeyboardFrom() {
-            MainThreadHandler.post(() -> Tools.showKeyboardFrom(mwebContext, mWebView));
+            MainThreadHandler.post(() -> Tools.showKeyboardFrom(mWebViewContext, mWebView));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1359,8 +1360,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetNotificationOld(String values) {
-            appPreferences.put(Constants.PREF_NOTIFY_OLD_LIST, values);
+        public void SetNotificationOld(String list) {
+            appPreferences.put(Constants.PREF_NOTIFY_OLD_LIST, list);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1413,27 +1414,9 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void startVideo(String videoAddress, int who_called) {
-            MainThreadHandler.post(() -> {
-                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mwebContext, who_called, mLowLatency, "", userAgent);
-                PreInitializePlayer(who_called, -1, mainPlayer);
-            });
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void startVideoOffset(String videoAddress, int who_called, long ResumePosition) {
-            MainThreadHandler.post(() -> {
-                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mwebContext, who_called, mLowLatency, "", userAgent);
-                PreInitializePlayer(who_called, ResumePosition, mainPlayer);
-            });
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
-                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString, userAgent);
+                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, who_called, mLowLatency, masterPlaylistString, userAgent);
                 PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
                 if (player == 1) {
                     PicturePicture = true;
@@ -1448,7 +1431,7 @@ public class PlayerActivity extends Activity {
                 PicturePicture = false;
                 ClearPlayer(mainPlayer);
                 mainPlayer = mainPlayer ^ 1;
-                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString, userAgent);
+                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, mLowLatency, masterPlaylistString, userAgent);
                 PreInitializePlayer(1, 0, mainPlayer);
             });
         }
@@ -1466,10 +1449,10 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBandwidth) {
+        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate) {
             MainThreadHandler.post(() -> {
-                UseFullBandwidth = fullBandwidth;
-                mediaSources[4] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, (mLowLatency && UseFullBandwidth), masterPlaylistString, userAgent);
+                UseFullBitrate = fullBitrate;
+                mediaSources[4] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, (mLowLatency && UseFullBitrate), masterPlaylistString, userAgent);
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
                 initializeSmallPlayer(mediaSources[4]);
             });
@@ -1483,7 +1466,7 @@ public class PlayerActivity extends Activity {
 //
 //        }
 
-        @SuppressWarnings("unused")//called by JS
+        @SuppressWarnings("unused")//called by CheckIfIsLiveFeed
         @JavascriptInterface
         public String GetCheckIfIsLiveFeed(int x, int y) {
             return ExtraPlayerHandlerResult[x][y];
@@ -1545,7 +1528,7 @@ public class PlayerActivity extends Activity {
 
         }
 
-        @SuppressWarnings("unused")//called by JS
+        @SuppressWarnings("unused")//called by getStreamDataAsync & GetMethodUrlHeadersAsync
         @JavascriptInterface
         public String GetDataResult(int position) {
             return DataResult[position];
@@ -1553,13 +1536,13 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonString) {
-            return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonString));
+        public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray) {
+            return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonHeadersArray));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonString,
+        public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
                                              String callback, long checkResult, int key, int thread) {
 
             DataResultHandler[thread].removeCallbacksAndMessages(null);
@@ -1577,7 +1560,7 @@ public class PlayerActivity extends Activity {
                                     postMessage,
                                     Method,
                                     checkResult,
-                                    JsonString
+                                    JsonHeadersArray
                             );
 
                             if (response != null)  {
@@ -1637,28 +1620,28 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mSwitchPlayerPosition(int position) {
-            PicturePicturePosition = position;
+        public void mSwitchPlayerPosition(int mPicturePicturePosition) {
+            PicturePicturePosition = mPicturePicturePosition;
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mSetPlayerPosition(int position) {
-            PicturePicturePosition = position;
+        public void mSetPlayerPosition(int PicturePicturePos) {
+            PicturePicturePosition = PicturePicturePos;
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mSwitchPlayerSize(int position) {
-            PicturePictureSize = position;
+        public void mSwitchPlayerSize(int mPicturePictureSize) {
+            PicturePictureSize = mPicturePictureSize;
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mSetPlayerSize(int position) {
-            PicturePictureSize = position;
+        public void mSetPlayerSize(int mPicturePictureSize) {
+            PicturePictureSize = mPicturePictureSize;
             MainThreadHandler.post(PlayerActivity.this::SetDefaultLayouts);
         }
 
@@ -1689,28 +1672,28 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetMainPlayerBandwidth(int band) {
-            mainPlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
+        public void SetMainPlayerBitrate(int Bitrate) {
+            mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
             trackSelectorParameters = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(mainPlayerBandwidth)
+                    .setMaxVideoBitrate(mainPlayerBitrate)
                     .build();
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetSmallPlayerBandwidth(int band) {
-            PP_PlayerBandwidth = band == 0 ? Integer.MAX_VALUE : band;
+        public void SetSmallPlayerBitrate(int Bitrate) {
+            PP_PlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
 
             trackSelectorParametersPP = trackSelectorParameters
                     .buildUpon()
-                    .setMaxVideoBitrate(PP_PlayerBandwidth)
+                    .setMaxVideoBitrate(PP_PlayerBitrate)
                     .build();
 
             trackSelectorParametersExtraSmall = trackSelectorParameters
                     .buildUpon()
                     .setMaxVideoBitrate(
-                            Math.min(PP_PlayerBandwidth, ExtraSmallPlayerBandwidth)
+                            Math.min(PP_PlayerBitrate, ExtraSmallPlayerBitrate)
                     ).build();
         }
 
@@ -1726,6 +1709,7 @@ public class PlayerActivity extends Activity {
             return PlayerCurrentPosition;
         }
 
+        //TODO remove this function after some app update
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public int getAndroid() {
@@ -1809,8 +1793,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetBuffer(int who_called, int value) {
-            BUFFER_SIZE[who_called] = Math.min(value, 15000);
+        public void SetBuffer(int who_called, int buffer_size) {
+            BUFFER_SIZE[who_called] = Math.min(buffer_size, 15000);
             loadControl[who_called] = Tools.getLoadControl(BUFFER_SIZE[who_called], DeviceRam);
 
             //MUltiStream and small feed player
@@ -1844,7 +1828,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void getVideoQuality(int position) {
+        public void getVideoQuality(int who_called) {
             VideoQualityResult = null;
 
             MainThreadHandler.post(() -> {
@@ -1853,7 +1837,7 @@ public class PlayerActivity extends Activity {
                 if (player[playerPos] != null) VideoQualityResult = Tools.GetVideoQuality(player[playerPos].getVideoFormat());
                 else VideoQualityResult = null;
 
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + position + ")");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + who_called + ")");
             });
         }
 
@@ -1921,8 +1905,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void setBlackListMediaCodec(String CodecType) {
-            BLACKLISTEDCODECS = !CodecType.isEmpty() ? CodecType.split(",") : null;
+        public void setBlackListMediaCodec(String CodecList) {
+            BLACKLISTEDCODECS = !CodecList.isEmpty() ? CodecList.split(",") : null;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1946,22 +1930,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void BackupFile(String file, String file_content) {
-            SaveBackupJsonHandler.removeCallbacksAndMessages(null);
-
-            SaveBackupJsonHandler.postDelayed(() -> {
-                if (Tools.WR_storage(mwebContext)) {
-                    Tools.BackupJson(
-                            mwebContext.getPackageName(),
-                            file,
-                            file_content
-                    );
-                }
-            }, 5000);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public void GetPreviews(String url) {
             PreviewsResult = null;
 
@@ -1981,7 +1949,7 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
+        @SuppressWarnings("unused")//called by GetPreviews
         @JavascriptInterface
         public String GetPreviewsResult() {
             return PreviewsResult;
@@ -1989,14 +1957,30 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void BackupFile(String file, String file_content) {
+            SaveBackupJsonHandler.removeCallbacksAndMessages(null);
+
+            SaveBackupJsonHandler.postDelayed(() -> {
+                if (Tools.WR_storage(mWebViewContext)) {
+                    Tools.BackupJson(
+                            mWebViewContext.getPackageName(),
+                            file,
+                            file_content
+                    );
+                }
+            }, 5000);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public boolean HasBackupFile(String file) {
-            return Tools.HasBackupFile(file, mwebContext);
+            return Tools.HasBackupFile(file, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String RestoreBackupFile(String file) {
-            if (Tools.WR_storage(mwebContext)) return Tools.RestoreBackupFile(file, mwebContext);
+            if (Tools.WR_storage(mWebViewContext)) return Tools.RestoreBackupFile(file, mWebViewContext);
 
             return null;
         }
@@ -2010,7 +1994,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean canBackupFile() {
-            return Tools.WR_storage(mwebContext);
+            return Tools.WR_storage(mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2046,7 +2030,7 @@ public class PlayerActivity extends Activity {
                 if (position == 0) mposition = mainPlayer;
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
-                mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), mwebContext, 1, mLowLatency, masterPlaylistString, userAgent);
+                mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, mLowLatency, masterPlaylistString, userAgent);
                 initializePlayerMulti(mposition, mediaSources[mposition]);
             });
         }
@@ -2056,7 +2040,7 @@ public class PlayerActivity extends Activity {
         public boolean isAccessibilitySettingsOn() {
             try {
                 return Settings.Secure.getInt(
-                        mwebContext.getContentResolver(),
+                        mWebViewContext.getContentResolver(),
                         android.provider.Settings.Secure.ACCESSIBILITY_ENABLED
                 ) == 1;
 
@@ -2070,7 +2054,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getWebviewVersion() {
-            return Tools.getWebviewVersion(mwebContext);
+            return Tools.getWebviewVersion(mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS

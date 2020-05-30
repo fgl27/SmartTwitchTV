@@ -35,7 +35,7 @@ function Chat_Preinit() {
 function Chat_Init() {
     Chat_JustStarted = true;
     Chat_Clear();
-    if (!Main_IsOnAndroid || Main_values.Play_ChatForceDisable) {
+    if (!Main_IsOn_OSInterface || Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
     }
@@ -411,7 +411,7 @@ function Main_Addline(id) {
     var elem, i;
     if (Chat_Position < (Chat_Messages.length - 1)) {
         for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
-            if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
+            if (Chat_Messages[i].time < (ChannelVod_vodOffset + (OSInterface_gettime() / 1000))) {
                 elem = document.createElement('div');
                 var classname = 'chat_line';
 

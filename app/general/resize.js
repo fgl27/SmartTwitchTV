@@ -43,5 +43,5 @@ function calculateFontSize() {
 window.addEventListener('resize', calculateFontSizeTizen, false);
 
 function calculateFontSizeTizen() {
-    if (!Main_IsOnAndroid) calculateFontSize();
+    if (!Main_IsOn_OSInterface) calculateFontSize();
 }

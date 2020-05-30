@@ -101,9 +101,9 @@ function ChatLiveControls_inputFocus() {
                 Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
                 Main_ChatLiveInput.focus();
                 try {
-                    if (Main_IsOnAndroid) {
-                        if (OptionsShowObj.keyboard_options.defaultValue === 1) Android.KeyboardCheckAndHIde();
-                        else if (OptionsShowObj.keyboard_options.defaultValue === 2) Android.hideKeyboardFrom();
+                    if (Main_IsOn_OSInterface) {
+                        if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
+                        else if (OptionsShowObj.keyboard_options.defaultValue === 2) OSInterface_hideKeyboardFrom();
                     }
                 } catch (e) {}
                 ChatLiveControls_keyBoardOn = true;
@@ -131,7 +131,7 @@ function ChatLiveControls_removeEventListener() {
 function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
 
     Main_clearTimeout(ChatLiveControls_inputFocusId);
-    if (!Main_isTV && Main_IsOnAndroid) Android.mhideSystemUI();
+    if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
     Main_RemoveClass('scene_notify', 'avoidclicks');

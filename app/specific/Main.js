@@ -135,10 +135,10 @@ var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.200';
 var Main_minversion = 'May 29, 2020';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
-var Main_IsOnAndroidVersion = '';
+var Main_IsOn_OSInterfaceVersion = '';
 var Main_AndroidSDK = 1000;
 var Main_ClockOffset = 0;
-var Main_IsOnAndroid = 0;
+var Main_IsOn_OSInterface = 0;
 var Main_randomimg = '?' + Math.random();
 var Main_updateUserFeedId;
 var Main_Fix = "kimne78kx3";
@@ -202,18 +202,18 @@ function Main_loadTranslations(language) {
                     'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult
                 };
             }
-            Main_IsOnAndroid = Android.getAndroid();
-            Main_IsOnAndroidVersion = Android.getversion();
-            Main_isDebug = Android.getdebug();
+            Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
+            Main_isDebug = OSInterface_getdebug();
+            Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
         } catch (e) {
-            Main_IsOnAndroidVersion = '1.0.0';
-            Main_IsOnAndroid = 0;
+            Main_IsOn_OSInterfaceVersion = '1.0.0';
+            Main_IsOn_OSInterface = 0;
             Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
             Main_isDebug = true;
             //Main_Log('Main_isReleased: ' + Main_isReleased);
             //Main_Log('Main_isDebug: ' + Main_isDebug);
-            //Main_Log('Main_isBrowser: ' + !Main_IsOnAndroid);
+            //Main_Log('Main_isBrowser: ' + !Main_IsOn_OSInterface);
             //If we add the class on the android app for some reason it prevents input from release the focus
             Main_AddClass('scenefeed', 'feed_screen_input');
             //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
@@ -259,7 +259,7 @@ function Main_loadTranslations(language) {
         if (!Main_values.Restore_Backup_Check) {
 
             try {
-                Android.requestWr();
+                OSInterface_requestWr();
                 Main_HideLoadDialog();
                 Main_innerHTML("main_dialog_remove", STR_BACKUP);
                 Main_textContent('remove_cancel', STR_NO);
@@ -305,9 +305,9 @@ function Main_BackupDialodKeyDown(event) {
 function Main_initRestoreBackups() {
     try {
 
-        if (Android.HasBackupFile(Main_UserBackupFile)) {
+        if (OSInterface_HasBackupFile(Main_UserBackupFile)) {
 
-            var tempBackup = Android.RestoreBackupFile(Main_UserBackupFile);
+            var tempBackup = OSInterface_RestoreBackupFile(Main_UserBackupFile);
 
             if (tempBackup !== null) {
                 var tempBackupArray = JSON.parse(tempBackup) || [];
@@ -315,7 +315,7 @@ function Main_initRestoreBackups() {
                 if (tempBackupArray.length > 0) {
                     Main_setItem('AddUser_UsernameArray', tempBackup);
 
-                    tempBackup = Android.RestoreBackupFile(Main_HistoryBackupFile);
+                    tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
                     if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
 
                     AddUser_RestoreUsers();
@@ -333,16 +333,16 @@ function Main_initRestoreBackups() {
 function Main_initWindows() {
     //Main_Log('Main_initWindows');
     try {
-        if (Main_IsOnAndroid) {
-            Main_CanBackup = Android.canBackupFile();
+        if (Main_IsOn_OSInterface) {
+            Main_CanBackup = OSInterface_canBackupFile();
 
             //Backup at start as a backup may never be done yet
             if (Main_CanBackup) {
                 if (AddUser_IsUserSet()) {
-                    Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+                    OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
                     Main_setTimeout(
                         function() {
-                            Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                            OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
                         },
                         25000
                     );
@@ -357,13 +357,13 @@ function Main_initWindows() {
     Users_RemoveCursor = 0;
     Users_RemoveCursorSet();
 
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
 
         if (!Main_values.DeviceCheckNew) {
 
             Main_values.DeviceCheckNew = true;
-            var device = Android.getDevice();
-            var Manufacturer = Android.getManufacturer();
+            var device = OSInterface_getDevice();
+            var Manufacturer = OSInterface_getManufacturer();
             device = device ? device.toLowerCase() : "";
             Manufacturer = Manufacturer ? Manufacturer.toLowerCase() : "";
 
@@ -374,7 +374,7 @@ function Main_initWindows() {
                 //bitrate to max possible
                 Settings_value.bitrate_min.defaultValue = 0;
                 Main_setItem('bitrate_min', 1);
-                Android.SetSmallPlayerBandwidth(0);
+                OSInterface_SetSmallPlayerBandwidth(0);
 
                 //enable small player over feed on multi
                 Settings_value.disable_feed_player_multi.defaultValue = 0;
@@ -391,7 +391,7 @@ function Main_initWindows() {
         if (!Main_values.Codec_is_Check) {
             var getcodec = null;
             try {
-                if (Main_IsOnAndroid) getcodec = JSON.parse(Android.getcodecCapabilities('avc'));
+                if (Main_IsOn_OSInterface) getcodec = JSON.parse(OSInterface_getcodecCapabilities('avc'));
             } catch (e) {}
 
             if (getcodec) {
@@ -413,7 +413,7 @@ function Main_initWindows() {
                         Main_setItem(codecsnames[0], 1);
                         Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
 
-                        Android.setBlackListMediaCodec(codecsnames.join());
+                        OSInterface_setBlackListMediaCodec(codecsnames.join());
 
                     }
                 }
@@ -422,7 +422,7 @@ function Main_initWindows() {
 
         }
 
-        if (Main_IsOnAndroid) Main_AndroidSDK = Android.getSDK();
+        if (Main_IsOn_OSInterface) Main_AndroidSDK = OSInterface_getSDK();
         else Main_AndroidSDK = 1000;
 
         //Android N (sdk 25) and older don't properly support animations on surface_view
@@ -580,8 +580,8 @@ var Main_scenekeysPositionDoc;
 var Main_isTV;
 
 function Main_initClick() {
-    if (Main_IsOnAndroid) {
-        Main_isTV = Android.deviceIsTV();
+    if (Main_IsOn_OSInterface) {
+        Main_isTV = OSInterface_deviceIsTV();
         //Only show virtual d-pad on none TV devices
         if (Main_isTV) return;
     } else {
@@ -656,7 +656,7 @@ function Main_initClickSet(doc, pos) {
         Main_ClickonpointerdownClear();
         if (!Main_buttonsVisible()) return;
 
-        if (Main_IsOnAndroid) Android.keyEvent(pos, 1);
+        if (Main_IsOn_OSInterface) OSInterface_keyEvent(pos, 1);
         else Main_Log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
     };
 }
@@ -667,7 +667,7 @@ function Main_ClickonpointerdownClear() {
 }
 
 function Main_Clickonpointerdown(pos) {
-    if (Main_IsOnAndroid) Android.keyEvent(pos, 0);
+    if (Main_IsOn_OSInterface) OSInterface_keyEvent(pos, 0);
     else Main_Log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
 }
 
@@ -746,12 +746,12 @@ function Main_replaceClassEmoji(div) {
 
 function Main_showLoadDialog() {
     Main_YRst(-1);
-    if (Main_IsOnAndroid) Android.mshowLoading(true);
+    if (Main_IsOn_OSInterface) OSInterface_mshowLoading(true);
     else Main_ShowElement('dialog_loading');
 }
 
 function Main_HideLoadDialog() {
-    if (Main_IsOnAndroid) Android.mshowLoading(false);
+    if (Main_IsOn_OSInterface) OSInterface_mshowLoading(false);
     else Main_HideElement('dialog_loading');
 }
 
@@ -973,15 +973,15 @@ function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or m
 //TODO remove this check after some app updates
 var Main_oldReturnCheck;
 function Main_checkVersion() {
-    if (Main_IsOnAndroid) {
-        var device = Android.getDevice();
-        var Webviewversion = Android.getWebviewVersion();
+    if (Main_IsOn_OSInterface) {
+        var device = OSInterface_getDevice();
+        var Webviewversion = OSInterface_getWebviewVersion();
         Main_Log('Webviewversion ' + Webviewversion);
 
-        Main_versionTag = "Apk: " + Main_IsOnAndroidVersion + ' Web: ' + Main_minversion +
+        Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +
             (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
 
-        if (Main_needUpdate(Main_IsOnAndroidVersion)) {
+        if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) {
             //Temp to support old app version that used number 1 key as back key
             if (Main_oldReturnCheck) KEY_RETURN = 49;
             Main_ShowElement('label_update');
@@ -1209,10 +1209,9 @@ function Main_OPenAsVod_shutdownStream() {
 }
 
 function Main_OPenAsVod_PreshutdownStream() {
-    if (Main_IsOnAndroid) {
-        //We are closing the player on error or on end
-        Android.mClearSmallPlayer();
-        Android.stopVideo(1);
+    if (Main_IsOn_OSInterface) {
+        OSInterface_mClearSmallPlayer();
+        OSInterface_stopVideo(1);
     }
 
     Play_isOn = false;
@@ -1412,11 +1411,11 @@ function Main_ExitDialog(event) {
             Main_setExitDialog();
             break;
         case KEY_ENTER:
-            if (!Main_IsOnAndroid || !Main_ExitCursor) Main_HideExitDialog();
+            if (!Main_IsOn_OSInterface || !Main_ExitCursor) Main_HideExitDialog();
             else if (Main_ExitCursor === 1) {
                 Main_HideExitDialog();
-                Android.mclose(false);
-            } else if (Main_ExitCursor === 2) Android.mclose(true);
+                OSInterface_mclose(false);
+            } else if (Main_ExitCursor === 2) OSInterface_mclose(true);
             break;
         default:
             break;
@@ -1482,11 +1481,11 @@ function processCode(pageUrl) {
 
 //Redirect to assets if running from it
 function CheckPage(pageUrlCode) {
-    if (Main_IsOnAndroid) {
-        var PageUrl = Android.mPageUrl();
+    if (Main_IsOn_OSInterface) {
+        var PageUrl = OSInterface_mPageUrl();
         if (PageUrl) {
             if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
-                Android.mloadUrl(PageUrl + pageUrlCode);
+                OSInterface_mloadUrl(PageUrl + pageUrlCode);
                 return;
             }
         }
@@ -1678,7 +1677,7 @@ function Main_setHistoryItem() {
 
             var string = JSON.stringify(Main_values_History_data);
             Main_setItem('Main_values_History_data', string);
-            if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
+            if (Main_CanBackup) OSInterface_BackupFile(Main_HistoryBackupFile, string);
 
         },
         5000,
@@ -1961,11 +1960,7 @@ function Main_CheckResume() { // Called only by JAVA
 }
 
 function Main_RestoreLiveObjt(position) {
-    var oldLive = null;
-    //TODO remove this try after some app updates
-    try {
-        if (Main_IsOnAndroid) oldLive = Android.GetNotificationOld();
-    } catch (e) {}
+    var oldLive = OSInterface_GetNotificationOld();
 
     if (oldLive) {
 
@@ -2001,17 +1996,14 @@ function Main_SaveLiveObjt(position) {
 
     }
 
-    //TODO remove this try after some app updates
-    try {
-        if (Main_IsOnAndroid) Android.SetNotificationOld(JSON.stringify(array));
-    } catch (e) {}
+    OSInterface_SetNotificationOld(JSON.stringify(array));
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
     //Main_Log('Main_CheckAccessibility');
 
-    if (Main_IsOnAndroid && Settings_Obj_default("accessibility_warn")) {
-        if (Android.isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
+    if (Main_IsOn_OSInterface && Settings_Obj_default("accessibility_warn")) {
+        if (OSInterface_isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
         else {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
@@ -2062,7 +2054,7 @@ function Main_CheckAccessibilityKey(event) {
 }
 
 function Main_LoadUrl(url) {
-    if (Main_IsOnAndroid) Android.mloadUrl(url);
+    if (Main_IsOn_OSInterface) OSInterface_mloadUrl(url);
     else window.location = url;
 }
 
@@ -2070,9 +2062,7 @@ function Main_Log(text) {
     if (Main_isDebug) {
         text = text + ' ' + Main_LogDate(new Date());
         console.log(text);
-        try {
-            Android.LongLog(text);
-        } catch (e) {}
+        OSInterface_LongLog(text);
     }
 }
 

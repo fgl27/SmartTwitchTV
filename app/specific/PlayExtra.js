@@ -46,9 +46,9 @@ function PlayExtra_KeyEnter() {
 
         Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
 
-        if (Main_IsOnAndroid) {
+        if (Main_IsOn_OSInterface) {
             //Not on auto mode for change to auto before start picture in picture
-            if (!Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetQuality(-1);
+            if (!Main_A_includes_B(Play_data.quality, 'Auto')) OSInterface_SetQuality(-1);
 
             Play_data.quality = "Auto";
             Play_data.qualityPlaying = Play_data.quality;
@@ -71,31 +71,27 @@ function PlayExtra_KeyEnter() {
 
 var PlayExtra_ResumeId = 0;
 function PlayExtra_Resume(synchronous) {
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
 
         PlayExtra_ResumeId = (new Date().getTime());
-        //TODO remove the try after some app updates
-        try {
-            //On resume to avoid out of sync resumes we run PP synchronous
-            if (synchronous) {
-                var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
-                if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData));
-                else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+        //On resume to avoid out of sync resumes we run PP synchronous
+        if (synchronous) {
+            var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
-            } else {
-                Android.getStreamDataAsync(
-                    Play_live_token.replace('%x', PlayExtra_data.data[6]),
-                    Play_live_links.replace('%x', PlayExtra_data.data[6]),
-                    'PlayExtra_ResumeResult',
-                    PlayExtra_ResumeId,
-                    1,
-                    DefaultHttpGetReTryMax,
-                    DefaultHttpGetTimeout
-                );
-            }
-        } catch (e) {
-            PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+            if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData));
+            else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+
+        } else {
+            OSInterface_getStreamDataAsync(
+                Play_live_token.replace('%x', PlayExtra_data.data[6]),
+                Play_live_links.replace('%x', PlayExtra_data.data[6]),
+                'PlayExtra_ResumeResult',
+                PlayExtra_ResumeId,
+                1,
+                DefaultHttpGetReTryMax,
+                DefaultHttpGetTimeout
+            );
         }
 
     } else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
@@ -143,17 +139,17 @@ function PlayExtra_ResumeResultEnd(responseObj) {
 
 function PlayExtra_loadDataSuccessEnd(playlist) {
     UserLiveFeed_Hide();
-    Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+    OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
     PlayExtra_data.playlist = playlist;
     PlayExtra_SetPanel();
 
     if (!Play_isFullScreen) {
-        Android.mupdatesizePP(Play_isFullScreen);
+        OSInterface_mupdatesizePP(Play_isFullScreen);
         ChatLive_Init(1);
         PlayExtra_ShowChat();
-    } else Android.mSwitchPlayerSize(Play_PicturePictureSize);
+    } else OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
 
     if (Play_isOn) PlayExtra_qualityChanged();
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -225,7 +221,7 @@ function PlayExtra_End(doSwitch) { // Called only by JAVA
 function PlayExtra_End_success(doSwitch) {
     //Some player ended switch and warn
     if (doSwitch) {//Main player has end switch and close
-        Android.mSwitchPlayer();
+        OSInterface_mSwitchPlayer();
         PlayExtra_SwitchPlayer();
     }
 
@@ -243,7 +239,7 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
             //TODO make a simple fun for this
             try {
 
-                Android.GetMethodUrlHeadersAsync(
+                OSInterface_GetMethodUrlHeadersAsync(
                     theUrl,//urlString
                     Play_loadingDataTimeout,//timeout
                     null,//postMessage, null for get
@@ -311,7 +307,7 @@ function PlayExtra_CheckHost(responseText, doSwitch) {
 
             Play_showWarningDialog(warning_text, 4000);
             //Java will reset audio source reset it
-            Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+            OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
         } else {
 
             Play_IsWarning = true;
@@ -403,8 +399,8 @@ function PlayExtra_UpdatePanel() {
 }
 
 function PlayExtra_qualityChanged() {
-    if (Main_IsOnAndroid && Play_isOn) {
-        Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+    if (Main_IsOn_OSInterface && Play_isOn) {
+        OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
     }
 
     if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
@@ -437,7 +433,7 @@ function PlayExtra_loadDataFail(Reason) {
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         ChatLive_Clear(1);
         Main_HideElement('chat_container2');
-        if (Main_IsOnAndroid && !Play_isFullScreen) Android.mupdatesize(Play_isFullScreen);
+        if (Main_IsOn_OSInterface && !Play_isFullScreen) OSInterface_mupdatesizePP(Play_isFullScreen);
         PlayExtra_UnSetPanel();
         Play_HideBufferDialog();
         Play_showWarningMidleDialog(Reason, 2500);

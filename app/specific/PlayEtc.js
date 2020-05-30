@@ -531,7 +531,7 @@ function Play_MultiKeyDown() {
         //reset audio value if on big as it may had be changed via hold down or bootm controls
         Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
 
-        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+        OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
 
         Play_showWarningMidleDialog(
             STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
@@ -555,7 +555,7 @@ function Play_MultiKeyDown() {
         Main_ShowElement('stream_info_multi');
         Main_HideElement('stream_info_multi_big');
         Play_ResStoreChatPos();
-        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+        OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
     }
     Play_SetAudioMultiIcon();
 }
@@ -579,7 +579,7 @@ function Play_handleKeyUp(e) {
         if (!Play_EndUpclear) {
             if (Play_MultiEnable) Play_MultiKeyDown();
             else {
-                if (Main_IsOnAndroid) Android.mSwitchPlayer();
+                if (Main_IsOn_OSInterface) OSInterface_mSwitchPlayer();
                 PlayExtra_SwitchPlayer();
             }
         }
@@ -642,7 +642,7 @@ function Play_handleKeyDown(e) {
                     Play_PicturePicturePos++;
                     if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
 
-                    Android.mSwitchPlayerPosition(Play_PicturePicturePos);
+                    OSInterface_mSwitchPlayerPosition(Play_PicturePicturePos);
                     Main_setItem('Play_PicturePicturePos', Play_PicturePicturePos);
                 } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeLeft();
                 else Play_showPanel();
@@ -671,7 +671,7 @@ function Play_handleKeyDown(e) {
                 } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePictureSize++;
                     if (Play_PicturePictureSize > 2) Play_PicturePictureSize = 0;
-                    Android.mSwitchPlayerSize(Play_PicturePictureSize);
+                    OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
                     Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                 } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeRight();
                 else Play_showPanel();
@@ -758,7 +758,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 1) {
-                        if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                        if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                     } else Play_BottomOptionsPressed(1);
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
@@ -791,7 +791,7 @@ function Play_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_KEYBOARD_SPACE:
             case KEY_PLAYPAUSE:
-                if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                 break;
             case KEY_1:
                 if (UserLiveFeed_isFeedShow()) {
@@ -985,7 +985,7 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
             Play_CurrentSpeed = this.defaultValue;
-            Android.setPlaybackSpeed(this.values[this.defaultValue]);
+            OSInterface_setPlaybackSpeed(this.values[this.defaultValue]);
         },
         updown: function(adder) {
             this.defaultValue += adder;
@@ -1020,10 +1020,7 @@ function Play_MakeControls() {
                 PlayClip_hidePanel();
             }
 
-            //TODO remove the try after some app updates
-            try {
-                Android.OpenExternal(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
-            } catch (e) {}
+            OSInterface_OpenExternal(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
         },
         updown: function(adder) {
             this.defaultValue += adder;
@@ -1059,8 +1056,8 @@ function Play_MakeControls() {
                 Play_data.qualityPlaying = Play_data.quality;
                 Play_SetHtmlQuality('stream_quality');
 
-                if (oldQuality !== Play_data.quality) Android.SetQuality(Play_data.qualityIndex - 1);//just quality change
-                else Android.RestartPlayer(1, 0, 0);//resetart the player
+                if (oldQuality !== Play_data.quality) OSInterface_SetQuality(Play_data.qualityIndex - 1);//just quality change
+                else OSInterface_RestartPlayer(1, 0, 0);//resetart the player
 
             } else if (PlayVodClip === 2) {
                 PlayVod_hidePanel();
@@ -1069,8 +1066,8 @@ function Play_MakeControls() {
                 PlayVod_qualityPlaying = PlayVod_quality;
                 PlayVod_SetHtmlQuality('stream_quality');
 
-                if (oldQuality !== PlayVod_quality) Android.SetQuality(PlayVod_qualityIndex - 1);//just quality change
-                else Android.RestartPlayer(2, Android.gettime(), 0);//resetart the player
+                if (oldQuality !== PlayVod_quality) OSInterface_SetQuality(PlayVod_qualityIndex - 1);//just quality change
+                else OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);//resetart the player
 
             } else if (PlayVodClip === 3) {
                 PlayClip_hidePanel();
@@ -1095,10 +1092,10 @@ function Play_MakeControls() {
         enterKey: function() {
 
             if (this.defaultValue === 2) {//both
-                Android.RestartPlayer(1, 0, 0);
-                Android.RestartPlayer(1, 0, 1);
-            } else if (this.defaultValue) Android.RestartPlayer(1, 0, 0);//main
-            else Android.RestartPlayer(1, 0, 1);//small
+                OSInterface_RestartPlayer(1, 0, 0);
+                OSInterface_RestartPlayer(1, 0, 1);
+            } else if (this.defaultValue) OSInterface_RestartPlayer(1, 0, 0);//main
+            else OSInterface_RestartPlayer(1, 0, 1);//small
 
             Play_hidePanel();
             this.defaultValue = 2;
@@ -1136,10 +1133,10 @@ function Play_MakeControls() {
 
                 for (var i = 0; i < Play_MultiArray.length; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
-                        Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
+                        OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                     }
                 }
-            } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl, Play_MultiArray[this.defaultValue - 1].playlist);
+            } else OSInterface_StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl, Play_MultiArray[this.defaultValue - 1].playlist);
 
             Play_hidePanel();
             this.defaultValue = 0;
@@ -1176,22 +1173,22 @@ function Play_MakeControls() {
 
             Play_LowLatency = !Play_LowLatency;
 
-            if (Main_IsOnAndroid) {
-                Android.mSetlatency(Play_LowLatency);
+            if (Main_IsOn_OSInterface) {
+                OSInterface_mSetlatency(Play_LowLatency);
 
                 if (Play_MultiEnable) {
 
                     for (var i = 0; i < Play_MultiArray.length; i++) {
                         if (Play_MultiArray[i].data.length > 0) {
-                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
+                            OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                         }
                     }
 
                 } else if (PlayExtra_PicturePicture) {
-                    Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
-                    Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+                    OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                    OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
                 } else {
-                    Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                    OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
                 }
 
             }
@@ -1214,7 +1211,7 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
 
-            Android.mSwitchPlayerAudio(this.defaultValue);
+            OSInterface_mSwitchPlayerAudio(this.defaultValue);
 
             Play_controlsAudioPos = this.defaultValue;
 
@@ -1257,7 +1254,7 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function(preventShowWarning) {
 
-            Android.mSetPlayerAudioMulti(this.defaultValue);
+            OSInterface_mSetPlayerAudioMulti(this.defaultValue);
             Play_AudioAll = this.defaultValue === 4;
 
             this.bottomArrows();
@@ -1295,16 +1292,16 @@ function Play_MakeControls() {
         values: null,
         opacity: 0,
         enterKey: function(shutdown) {
-            if (!Main_IsOnAndroid) return;
+            if (!Main_IsOn_OSInterface) return;
 
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {
-                if (Android.IsMainNotMain()) {
+                if (OSInterface_IsMainNotMain()) {
                     if (PlayExtra_PicturePicture) {
-                        Android.mSwitchPlayer();
+                        OSInterface_mSwitchPlayer();
                         PlayExtra_SwitchPlayer();
                     } else {
-                        Android.PrepareForMulti(Play_data.AutoUrl, Play_data.playlist);
+                        OSInterface_PrepareForMulti(Play_data.AutoUrl, Play_data.playlist);
                     }
                 }
 
@@ -1313,11 +1310,11 @@ function Play_MakeControls() {
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                     Play_data.quality = "Auto";
                     Play_data.qualityPlaying = Play_data.quality;
-                    Android.SetQuality(-1);
+                    OSInterface_SetQuality(-1);
                     Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
                 }
 
-                Android.EnableMultiStream(Play_Multi_MainBig, 0);
+                OSInterface_EnableMultiStream(Play_Multi_MainBig, 0);
 
                 var i = 0;
                 for (i; i < 4; i++) {
@@ -1364,7 +1361,7 @@ function Play_MakeControls() {
                 Play_SetAudioMultiIcon();
 
             } else {
-                Android.DisableMultiStream();
+                OSInterface_DisableMultiStream();
                 Play_Multi_UnSetPanel(shutdown);
                 Play_CleanHideExit();
                 Play_getQualities(1, true);

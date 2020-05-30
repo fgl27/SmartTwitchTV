@@ -349,7 +349,7 @@ function Settings_SetSettings() {
     div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
     div += Settings_Content('warnings_opt', [STR_CONTENT_LANG_SUMMARY], STR_WARNINGS, null);
 
-    if (!Main_isTV || !Main_IsOnAndroid) {
+    if (!Main_isTV || !Main_IsOn_OSInterface) {
         div += Settings_Content('dpad_opt', [STR_CONTENT_LANG_SUMMARY], STR_DPAD_OPT, null);
     }
 
@@ -608,18 +608,11 @@ function Settings_SetDefault(position) {
 
 function Settings_notification_background() {
     UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
-
-    //TODO remove the try after some app updates
-    try {
-        if (Main_IsOnAndroid) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
-    } catch (e) {}
+    OSInterface_upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
 }
 
 function Settings_SetPingWarning() {
-    //TODO remove the try after some app updates
-    try {
-        if (Main_IsOnAndroid) Android.Settings_SetPingWarning(Settings_value.ping_warn.defaultValue === 1);
-    } catch (e) {}
+    OSInterface_Settings_SetPingWarning(Settings_value.ping_warn.defaultValue === 1);
 }
 
 function Settings_NotifyTimeout() {
@@ -627,11 +620,11 @@ function Settings_NotifyTimeout() {
 }
 
 function Settings_PP_Workaround() {
-    if (Main_IsOnAndroid) Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
+    OSInterface_msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
 }
 
 function Settings_DpadOpacity() {
-    if (!Main_IsOnAndroid) return;
+    if (!Main_IsOn_OSInterface) return;
     Main_clearHideButtons();
     Main_setHideButtons();
     Main_scenekeysDoc.style.opacity = Settings_Obj_default("dpad_opacity") * 0.05;
@@ -645,7 +638,7 @@ var Settings_DpadPOsitions = [
 ];
 
 function Settings_DpadPOsition() {
-    if (!Main_IsOnAndroid) return;
+    if (!Main_IsOn_OSInterface) return;
     Settings_DpadOpacity();
     Main_clearHideButtons();
     Main_setHideButtons();
@@ -713,7 +706,7 @@ function Settings_ShowCounter(show) {
 }
 
 function Settings_SetBitRate(whocall) {
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
         if (!whocall) {
             Settings_SetBitRateMain();
             Settings_SetBitRateMin();
@@ -729,7 +722,7 @@ function Settings_SetBitRateMain() {
         value = parseInt(Settings_Obj_values("bitrate_main").split(" ")[0] * 1000000);
     else value = 0;
 
-    Android.SetMainPlayerBandwidth(value);
+    OSInterface_SetMainPlayerBitrate(value);
 }
 
 function Settings_SetBitRateMin() {
@@ -739,7 +732,7 @@ function Settings_SetBitRateMin() {
         value = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
     else value = 0;
 
-    Android.SetSmallPlayerBandwidth(value);
+    OSInterface_SetSmallPlayerBandwidth(value);
 }
 
 function Settings_SetBuffers(whocall) {
@@ -747,20 +740,18 @@ function Settings_SetBuffers(whocall) {
         Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
         PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
         PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-        if (Main_IsOnAndroid) {
-            Android.SetBuffer(1, Play_Buffer);
-            Android.SetBuffer(2, PlayVod_Buffer);
-            Android.SetBuffer(3, PlayClip_Buffer);
-        }
+        OSInterface_SetBuffer(1, Play_Buffer);
+        OSInterface_SetBuffer(2, PlayVod_Buffer);
+        OSInterface_SetBuffer(3, PlayClip_Buffer);
     } else if (whocall === 1) {
         Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
-        if (Main_IsOnAndroid) Android.SetBuffer(1, Play_Buffer);
+        OSInterface_SetBuffer(1, Play_Buffer);
     } else if (whocall === 2) {
         PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
-        if (Main_IsOnAndroid) Android.SetBuffer(2, PlayVod_Buffer);
+        OSInterface_SetBuffer(2, PlayVod_Buffer);
     } else if (whocall === 3) {
         PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-        if (Main_IsOnAndroid) Android.SetBuffer(3, PlayClip_Buffer);
+        OSInterface_SetBuffer(3, PlayClip_Buffer);
     }
 }
 
@@ -788,7 +779,7 @@ var Settings_CurY = 0;
 
 function Settings_ScrollTable() {
     var doc,
-        offset = (!Main_isTV || !Main_IsOnAndroid) ? 1 : 0;
+        offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
     if (Settings_CurY < Settings_cursorY && Settings_cursorY === (13 + offset)) {
         doc = document.getElementById('settings_scroll');
@@ -907,10 +898,10 @@ function Settings_CodecsShow() {
 
     if (!Settings_CodecsValue.length) {
 
-        if (!Main_IsOnAndroid) Settings_CodecsValue = [{"instances": 32, "maxbitrate": "120 Mbps", "maxlevel": "5.2", "maxresolution": "3840x2176", "name": "OMX.Nvidia.h264.decode", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps", "type": "video/avc"}, {"instances": 32, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.google.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}, {"instances": -1, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.chico.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}];
+        if (!Main_IsOn_OSInterface) Settings_CodecsValue = [{"instances": 32, "maxbitrate": "120 Mbps", "maxlevel": "5.2", "maxresolution": "3840x2176", "name": "OMX.Nvidia.h264.decode", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps", "type": "video/avc"}, {"instances": 32, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.google.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}, {"instances": -1, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.chico.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}];
         else {
             try {
-                Settings_CodecsValue = JSON.parse(Android.getcodecCapabilities('avc'));
+                Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
             } catch (e) {
                 Settings_CodecsValue = [];
             }
@@ -1057,7 +1048,7 @@ function Settings_CodecsRigthLeft(offset) {
 }
 
 function Settings_CodecsSet() {
-    if (Main_IsOnAndroid) Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+    if (Main_IsOn_OSInterface) OSInterface_setBlackListMediaCodec(Settings_DisableCodecsNames.join());
 }
 
 function Settings_ForceEnableAimations() {
@@ -1151,7 +1142,7 @@ function Settings_DialogShowNotification() {
         summary: null
     };
 
-    if (Main_isTV || !Main_IsOnAndroid) {
+    if (Main_isTV || !Main_IsOn_OSInterface) {
 
         obj.live_notification_background = {
             defaultValue: Settings_value.live_notification_background.defaultValue,

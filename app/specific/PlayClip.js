@@ -167,7 +167,7 @@ function PlayClip_GetStreamerInfoSuccess(response) {
 }
 
 function PlayClip_loadData() {
-    if (!Main_IsOnAndroid) {
+    if (!Main_IsOn_OSInterface) {
         PlayClip_loadDataSuccessFake();
         return;
     } else if (PlayClip_loadData410) {
@@ -189,7 +189,7 @@ function PlayClip_loadDataRequest() {
 
     //TODO remove the try after some app updates
     try {
-        Android.GetMethodUrlHeadersAsync(
+        OSInterface_GetMethodUrlHeadersAsync(
             theUrl,//urlString
             PlayClip_loadingDataTimeout,//timeout
             postMessage,//postMessage, null for get
@@ -245,7 +245,7 @@ function PlayClip_loadData410Recheck() {
 }
 
 function PlayClip_loadDataError() {
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
         Play_HideBufferDialog();
         Play_PlayEndStart(3);
     } else PlayClip_loadDataSuccessFake();
@@ -341,8 +341,15 @@ function PlayClip_qualityChanged() {
 function PlayClip_onPlayer() {
     //Main_Log('PlayClip_onPlayer ' + PlayClip_playingUrl);
 
-    if (Main_IsOnAndroid && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
-        PlayClip_replayOrNext ? -1 : Android.gettime());
+    if (Main_IsOn_OSInterface && PlayClip_isOn) {
+        OSInterface_StartAuto(
+            PlayClip_playingUrl,
+            '',
+            3,
+            PlayClip_replayOrNext ? -1 : OSInterface_gettime(),
+            0
+        );
+    }
 
     PlayClip_replayOrNext = false;
 
@@ -370,11 +377,11 @@ function PlayClip_shutdownStream() {
 function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
     //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
 
-    Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0, 'clip');
+    Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
     PlayClip_hidePanel();
-    if (Main_IsOnAndroid) {
-        if (closePlayer) Android.stopVideo(3);
-        else Android.PlayPause(false);
+    if (Main_IsOn_OSInterface) {
+        if (closePlayer) OSInterface_stopVideo(3);
+        else OSInterface_PlayPause(false);
     }
     if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();
@@ -446,7 +453,7 @@ function PlayClip_HideShowNext(which, val) {
 
 function PlayClip_Enter() {
     if (!PlayClip_EnterPos) {
-        if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+        if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
     } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
     else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
 }
@@ -478,7 +485,7 @@ function PlayClip_hidePanel() {
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     Play_ForceHidePannel();
-    if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, true);
+    if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     Main_clearInterval(PlayVod_RefreshProgressBarrID);
@@ -586,7 +593,7 @@ function PlayClip_CheckIfIsLiveResult(response) {
 
 function PlayClip_CheckIfIsLiveStart() {
 
-    if (!Main_IsOnAndroid || Play_CheckIfIsLiveResponseText) PlayClip_OpenLiveStream();
+    if (!Main_IsOn_OSInterface || Play_CheckIfIsLiveResponseText) PlayClip_OpenLiveStream();
     else Play_CheckIfIsLiveStart('PlayClip_CheckIfIsLiveResult');
 
 }
@@ -772,7 +779,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
-                if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                 break;
             case KEY_1:
                 if (UserLiveFeed_isFeedShow()) {

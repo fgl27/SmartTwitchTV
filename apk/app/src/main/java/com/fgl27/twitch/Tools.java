@@ -313,9 +313,9 @@ public final class Tools {
     }
 
     public static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
-                                               String Method, long checkResult, String JsonString) {
+                                               String Method, long checkResult, String JsonHeadersArray) {
 
-        JsonArray DEFAULT_HEADERS = parseString(JsonString).getAsJsonArray();
+        JsonArray DEFAULT_HEADERS = parseString(JsonHeadersArray).getAsJsonArray();
         JsonArray temp_array;
 
         String[][] HEADERS = new String[DEFAULT_HEADERS.size()][2];

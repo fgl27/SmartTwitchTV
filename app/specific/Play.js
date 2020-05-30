@@ -190,15 +190,15 @@ function Play_PreStart() {
 
     Play_LowLatency = Main_getItemBool('Play_LowLatency', false);
 
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
         //TODO remove this after some app updates
         if (Play_PicturePictureSize > 2) {
             Play_PicturePictureSize = 0;
             Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
         }
-        Android.mSetPlayerPosition(Play_PicturePicturePos);
-        Android.mSetPlayerSize(Play_PicturePictureSize);
-        Android.mSetlatency(Play_LowLatency);
+        OSInterface_mSetPlayerPosition(Play_PicturePicturePos);
+        OSInterface_mSetPlayerSize(Play_PicturePictureSize);
+        OSInterface_mSetlatency(Play_LowLatency);
         Settings_PP_Workaround();
     }
 
@@ -259,9 +259,9 @@ function Play_SetFullScreen(isfull) {
     }
     Play_ChatSize(false);
 
-    if (Main_IsOnAndroid) {
-        if (PlayExtra_PicturePicture) Android.mupdatesizePP(Play_isFullScreen);
-        else Android.mupdatesize(Play_isFullScreen);
+    if (Main_IsOn_OSInterface) {
+        if (PlayExtra_PicturePicture) OSInterface_mupdatesizePP(Play_isFullScreen);
+        else OSInterface_mupdatesize(Play_isFullScreen);
     }
 
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
@@ -351,7 +351,7 @@ function Play_Start() {
         );
     }
 
-    if (!Main_IsOnAndroid) Play_UpdateMainStream(true, true);
+    if (!Main_IsOn_OSInterface) Play_UpdateMainStream(true, true);
 
     Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 300000, Play_streamInfoTimerId);
 }
@@ -377,7 +377,7 @@ function Play_CheckIfIsLiveStart(callback) {
         Play_CheckIfIsLiveId = (new Date().getTime());
         //TODO remove the try after some app updates
         try {
-            Android.getStreamDataAsync(
+            OSInterface_getStreamDataAsync(
                 Play_live_token.replace('%x', selectedChannelDisplayname[6]),
                 Play_live_links.replace('%x', selectedChannelDisplayname[6]),
                 callback,
@@ -484,7 +484,7 @@ function Play_getStreamData(channel_name) {
 
     //TODO remove the try after some app updates
     try {
-        result = Android.getStreamData(
+        result = OSInterface_getStreamData(
             Play_live_token.replace('%x', channel_name),
             Play_live_links.replace('%x', channel_name),
             DefaultHttpGetReTryMax,
@@ -748,7 +748,7 @@ var Play_loadDataId = 0;
 function Play_loadData(synchronous) {
     //Main_Log('Play_loadData');
 
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
 
         Play_loadDataId = (new Date().getTime());
         //TODO remove the try after some app updates
@@ -762,7 +762,7 @@ function Play_loadData(synchronous) {
                 else Play_loadDataErrorFinish();
 
             } else {
-                Android.getStreamDataAsync(
+                OSInterface_getStreamDataAsync(
                     Play_live_token.replace('%x', Play_data.data[6]),
                     Play_live_links.replace('%x', Play_data.data[6]),
                     'Play_loadDataResult',
@@ -938,16 +938,16 @@ function Play_qualityChanged() {
     Play_data.qualityPlaying = Play_data.quality;
 
     Play_SetHtmlQuality('stream_quality');
-    if (Main_IsOnAndroid) Android.SetQuality(Play_data.qualityIndex - 1);
+    if (Main_IsOn_OSInterface) OSInterface_SetQuality(Play_data.qualityIndex - 1);
     else Play_onPlayer();
     //Play_PannelEndStart(1);
 }
 
 var Play_getQualitiesFail = false;
 function Play_getQualities(position, skipchange) {
-    if (!Main_IsOnAndroid) return;
+    if (!Main_IsOn_OSInterface) return;
 
-    var baseQualities = Android.getQualities();
+    var baseQualities = OSInterface_getQualities();
     var result;
 
     if (baseQualities) {
@@ -1037,8 +1037,8 @@ function Play_extractCodec(input) {
 function Play_onPlayer() {
     //Main_Log('Play_onPlayer');
 
-    if (Main_IsOnAndroid && Play_isOn) {
-        Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+    if (Main_IsOn_OSInterface && Play_isOn) {
+        OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
     }
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
@@ -1066,8 +1066,8 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
 
         Play_data.quality = "Auto";
         Play_data.qualityPlaying = Play_data.quality;
-        Android.SetQuality(-1);
-        Android.RestartPlayer(1, 0, 0);
+        OSInterface_SetQuality(-1);
+        OSInterface_RestartPlayer(1, 0, 0);
         Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
         Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
@@ -1075,8 +1075,8 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
 
         PlayVod_quality = "Auto";
         PlayVod_qualityPlaying = PlayVod_quality;
-        Android.SetQuality(-1);
-        Android.RestartPlayer(2, Android.gettime(), 0);
+        OSInterface_SetQuality(-1);
+        OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);
         Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controlsQuality);
         Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
@@ -1159,11 +1159,11 @@ function Play_shutdownStream() {
 
 function Play_PreshutdownStream(closePlayer) {
     //Main_Log('Play_PreshutdownStream ' + closePlayer);
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
         if (closePlayer) {
             //We are closing the player on error or on end
-            Android.mClearSmallPlayer();
-            Android.stopVideo(1);
+            OSInterface_mClearSmallPlayer();
+            OSInterface_stopVideo(1);
         }
     }
 
@@ -1242,12 +1242,12 @@ function Play_hideFollow() {
 }
 
 function Play_showBufferDialog() {
-    if (Main_IsOnAndroid) Android.mshowLoading(true);
+    if (Main_IsOn_OSInterface) OSInterface_mshowLoading(true);
     else Main_ShowElement('dialog_loading_play');
 }
 
 function Play_HideBufferDialog() {
-    if (Main_IsOnAndroid) Android.mshowLoading(false);
+    if (Main_IsOn_OSInterface) OSInterface_mshowLoading(false);
     else Main_HideElement('dialog_loading_play');
 }
 
@@ -1346,7 +1346,7 @@ var Play_ShowPanelStatusId;
 function Play_ShowPanelStatus(mwhocall) {
     if (Play_Status_Always_On) {
 
-        if (Main_IsOnAndroid) {
+        if (Main_IsOn_OSInterface) {
             Play_ShowPanelStatusId = Main_setInterval(
                 function() {
                     Play_UpdateStatus(mwhocall);
@@ -1367,9 +1367,9 @@ function Play_ShowPanelStatus(mwhocall) {
 function Play_UpdateStatus(mwhocall) {
     var isLive = mwhocall === 1;
 
-    if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(0);
-    else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) Play_getVideoQuality(1);
-    Play_VideoStatus(isLive);
+    if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
+    else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) OSInterface_getVideoQuality(1);
+    OSInterface_getVideoStatus(isLive);
 }
 
 function Play_showPanel() {
@@ -1424,9 +1424,9 @@ function Play_RefreshWatchingtime() {
     }
 
     if (!Play_Status_Always_On) {
-        if (Main_IsOnAndroid) {
-            if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(0);
-            Play_VideoStatus(true);
+        if (Main_IsOn_OSInterface) {
+            if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
+            OSInterface_getVideoStatus(true);
         } else Play_VideoStatusTest();
     }
 }
@@ -1439,13 +1439,9 @@ function Play_VideoStatusTest() {
         STR_BR + STR_PING + " 100.00 (99.00 Avg) ms");
 }
 
-function Play_VideoStatus(showLatency) {
-    Android.getVideoStatus(showLatency);
-}
-
 var Play_BufferSize = 0;
 function Play_ShowVideoStatus(showLatency, Who_Called) {
-    var value = Android.getVideoStatusString();
+    var value = OSInterface_getVideoStatusString();
 
     if (value) value = JSON.parse(value);
     else return;
@@ -1460,7 +1456,7 @@ function Play_ShowVideoStatus(showLatency, Who_Called) {
 
     if (Who_Called > 1) {
         Play_BufferSize = parseInt(value[7]);
-        PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+        PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
     }
 }
 
@@ -1476,15 +1472,11 @@ function Play_getBuffer(value) {
     return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
 }
 
-function Play_getVideoQuality(position) {
-    Android.getVideoQuality(position);
-}
-
-function Play_ShowVideoQuality(position) {
-    var value = Android.getVideoQualityString();
+function Play_ShowVideoQuality(who_called) {
+    var value = OSInterface_getVideoQualityString();
 
     if (!value) {
-        if (!position) Play_SetHtmlQuality('stream_quality');
+        if (!who_called) Play_SetHtmlQuality('stream_quality');
         else PlayVod_SetHtmlQuality('stream_quality');
 
         return;
@@ -1653,7 +1645,7 @@ function Play_loadDataCheckHost() {
     Main_setTimeout(
         function() {
 
-            Android.GetMethodUrlHeadersAsync(
+            OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,//urlString
                 Play_loadingDataTimeout,//timeout
                 null,//postMessage, null for get
@@ -1724,7 +1716,7 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
         Play_DurationSeconds = duration / 1000;
         Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
         PlayVod_RefreshProgressBarr();
-        if (!Play_Status_Always_On) Play_VideoStatus(false);
+        if (!Play_Status_Always_On) OSInterface_getVideoStatus(false);
         if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true);//duration may have changed update the positions
     }
 }
@@ -1742,12 +1734,12 @@ function Play_CloseBigAndSwich(error_410) {
         2500);
 
     if (PlayExtra_data.data.length > 0) {
-        if (Main_IsOnAndroid) Android.mSwitchPlayer();
+        if (Main_IsOn_OSInterface) OSInterface_mSwitchPlayer();
         PlayExtra_SwitchPlayer();
         Play_CloseSmall();
 
     } else {
-        if (Main_IsOnAndroid) Android.mClearSmallPlayer();
+        if (Main_IsOn_OSInterface) OSInterface_mClearSmallPlayer();
         Play_CheckHostStart(error_410);
     }
     PlayExtra_UnSetPanel();
@@ -1757,8 +1749,8 @@ function Play_CloseSmall() {
     PlayExtra_updateStreamInfo();
     PlayExtra_PicturePicture = false;
 
-    if (Main_IsOnAndroid) {
-        Android.mClearSmallPlayer();
+    if (Main_IsOn_OSInterface) {
+        OSInterface_mClearSmallPlayer();
         Play_SetFullScreen(Play_isFullScreen);
     }
     PlayExtra_UnSetPanel();
@@ -1894,10 +1886,10 @@ function Play_Multi_UnSetPanel(shutdown) {
         if (PlayExtra_PicturePicture) {
             PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[pos_1]));
             PlayExtra_SetPanel();
-            Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+            OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
 
             if (Play_Multi_Offset) {
-                Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+                OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
             }
 
             if (!Play_isFullScreen) {
@@ -1920,7 +1912,7 @@ function Play_Multi_UnSetPanel(shutdown) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
         if ((name !== Play_data.data[14] || Play_Multi_Offset) && First) {
-            Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+            OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
             Play_UpdateMainStream(true, true);
             Play_MultiUpdateMain();
         } else Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
@@ -1945,7 +1937,7 @@ function Play_MultiEnd(position) {
     Play_MultiInfoReset(position);
     if (!Play_MultiHasOne()) {
         Play_MultiEnable = false;
-        Android.DisableMultiStream();
+        OSInterface_DisableMultiStream();
         Play_Multi_UnSetPanelDivs(true);
         PlayExtra_ClearExtra();
         Play_CheckHostStart();
@@ -2023,7 +2015,7 @@ function Play_MultiStart(pos) {
     Play_MultiArray[pos].resultId = (new Date().getTime());
     //TODO remove the try after some app updates
     try {
-        Android.getStreamDataAsync(
+        OSInterface_getStreamDataAsync(
             Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
             Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
             'Play_MultiResult',
@@ -2082,7 +2074,7 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
         Play_MultiInfoReset(pos);
         if (!Play_MultiHasOne()) {
             Play_MultiEnable = false;
-            Android.DisableMultiStream();
+            OSInterface_DisableMultiStream();
             Play_Multi_UnSetPanelDivs(true);
             PlayExtra_ClearExtra();
             Play_CheckHostStart();
@@ -2094,7 +2086,7 @@ function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
     Play_MultiArray[pos].AutoUrl = theUrl;
     if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
-    Android.StartMultiStream(pos, theUrl, playlist);
+    OSInterface_StartMultiStream(pos, theUrl, playlist);
 
     Play_MultiArray[pos].playlist = playlist;
 
@@ -2181,7 +2173,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
             2000
         );
 
-        Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+        OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_Multi_Offset]));
         Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
         Play_MultiUpdateinfoMainBig('_big');

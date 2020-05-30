@@ -941,13 +941,9 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             }
         }
 
-        //Remove the try after some app updates
-        var Android_Notification_end_time = 0;
-        try {
-            if (Main_IsOnAndroid) Android_Notification_end_time = Android.GetNotificationTime();
-        } catch (e) {}
+        var OSInterface_Notification_end_time = OSInterface_GetNotificationTime();
         //Check if the android service notification has end notifying before update things and show notifications on js side
-        if (!Android_Notification_end_time || ((new Date().getTime()) > Android_Notification_end_time)) {
+        if (!OSInterface_Notification_end_time || ((new Date().getTime()) > OSInterface_Notification_end_time)) {
             UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
             Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
         } else UserLiveFeed_NotifyLiveidObject = [];

@@ -220,14 +220,14 @@ function Screens_loadDataRequest(key) {
 }
 
 // function Screens_BaseHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
-//     if (Main_IsOnAndroid) Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
+//     if (Main_IsOn_OSInterface) Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
 //     else Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
 // }
 
 // function Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
 //     try {
 
-// Android.GetMethodUrlHeadersAsync(
+// OSInterface_GetMethodUrlHeadersAsync(
 //     theUrl,//urlString
 //     Timeout,//timeout
 //     null,//postMessage, null for get
@@ -675,11 +675,8 @@ function Screens_loadDataSuccessFinishEnd() {
 
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_CheckAccessibility(true);
-    //Remove the try after some app updates
     //Make sure the service is stop
-    try {
-        JSON.parse(Android.StopNotificationService());
-    } catch (e) {}
+    OSInterface_StopNotificationService();
     //Main_Log('Screens_loadDataSuccessFinishEnd');
 }
 

@@ -228,7 +228,7 @@ function PlayVod_Resume() {
     Play_ResumeAfterOnlineCounter = 0;
 
     //Get the time from android as it can save it more reliably
-    Main_values.vodOffset = Android.getsavedtime() / 1000;
+    Main_values.vodOffset = OSInterface_getsavedtime() / 1000;
 
     if (navigator.onLine) PlayVod_ResumeAfterOnline();
     else Play_ResumeAfterOnlineId = Main_setInterval(PlayVod_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
@@ -257,7 +257,7 @@ function PlayVod_ResumeAfterOnline(forced) {
 function PlayVod_SaveOffset() {
     //Prevent setting it to 0 before it was used
     if (!Main_values.vodOffset) {
-        Main_values.vodOffset = Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0;
+        Main_values.vodOffset = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0;
         if (Main_values.vodOffset > 0) {
             Main_SaveValues();
             PlayVod_SaveVodIds();
@@ -310,12 +310,12 @@ var PlayVod_loadDataId = 0;
 function PlayVod_loadData() {
     //Main_Log('PlayVod_loadData');
 
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
 
         PlayVod_loadDataId = (new Date().getTime());
         //TODO remove the try after some app updates
         try {
-            Android.getStreamDataAsync(
+            OSInterface_getStreamDataAsync(
                 Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
                 Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
                 'PlayVod_loadDataResult',
@@ -360,7 +360,7 @@ function PlayVod_loadDataResult(response) {
 }
 
 function PlayVod_loadDataErrorFinish() {
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
         Play_HideBufferDialog();
         Play_PlayEndStart(2);
     } else PlayVod_loadDataSuccessFake();
@@ -421,7 +421,7 @@ function PlayVod_qualityChanged() {
     PlayVod_qualityPlaying = PlayVod_quality;
 
     PlayVod_SetHtmlQuality('stream_quality');
-    if (Main_IsOnAndroid) Android.SetQuality(PlayVod_qualityIndex - 1);
+    if (Main_IsOn_OSInterface) OSInterface_SetQuality(PlayVod_qualityIndex - 1);
     else PlayVod_onPlayer();
     //Play_PannelEndStart(2);
 }
@@ -429,14 +429,14 @@ function PlayVod_qualityChanged() {
 function PlayVod_onPlayer() {
     //Main_Log('PlayVod_onPlayer');
 
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
         if (Main_values.vodOffset) {
             Chat_offset = Main_values.vodOffset;
             Chat_Init();
             PlayVod_onPlayerStartPlay(Main_values.vodOffset * 1000);
             Main_values.vodOffset = 0;
         } else {
-            PlayVod_onPlayerStartPlay(Android.gettime());
+            PlayVod_onPlayerStartPlay(OSInterface_gettime());
         }
     }
 
@@ -446,8 +446,8 @@ function PlayVod_onPlayer() {
 }
 
 function PlayVod_onPlayerStartPlay(time) {
-    if (Main_IsOnAndroid && PlayVod_isOn) {
-        Android.StartAuto(PlayVod_autoUrl, PlayVod_playlist, 2, PlayVod_replay ? -1 : time, 0);
+    if (Main_IsOn_OSInterface && PlayVod_isOn) {
+        OSInterface_StartAuto(PlayVod_autoUrl, PlayVod_playlist, 2, PlayVod_replay ? -1 : time, 0);
     }
 }
 
@@ -465,11 +465,11 @@ function PlayVod_shutdownStream() {
 function PlayVod_PreshutdownStream(saveOffset, PreventcleanQuailities) {
     //Main_Log('PlayVod_PreshutdownStream');
 
-    if (saveOffset && Main_IsOnAndroid) {
-        if ((Play_DurationSeconds - 300) > parseInt(Android.gettime() / 1000))
+    if (saveOffset && Main_IsOn_OSInterface) {
+        if ((Play_DurationSeconds - 300) > parseInt(OSInterface_gettime() / 1000))
             PlayVod_SaveVodIds();
     }
-    if (Main_IsOnAndroid) Android.stopVideo(2);
+    if (Main_IsOn_OSInterface) OSInterface_stopVideo(2);
     Main_ShowElement('controls_holder');
     Main_ShowElement('progress_pause_holder');
     PlayVod_isOn = false;
@@ -497,7 +497,7 @@ function PlayVod_hidePanel() {
     PlayVod_addToJump = 0;
     Play_clearHidePanel();
     Play_ForceHidePannel();
-    if (Main_IsOnAndroid) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, true);
+    if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_previews_hide();
@@ -533,10 +533,10 @@ function PlayVod_showPanel(autoHide) {
 
 function PlayVod_RefreshProgressBarr(show) {
     if (!Play_Status_Always_On) {
-        if (Main_IsOnAndroid && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
-            Play_getVideoQuality(1);
+        if (Main_IsOn_OSInterface && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
+            OSInterface_getVideoQuality(1);
 
-        if (Main_IsOnAndroid) Play_VideoStatus(false);
+        if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(false);
         else Play_VideoStatusTest();
     }
 }
@@ -639,8 +639,8 @@ function PlayVod_jump() {
             Main_values.vodOffset = 0;
         } else Chat_offset = ChannelVod_vodOffset;
 
-        if (Main_IsOnAndroid) {
-            Android.mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
+        if (Main_IsOn_OSInterface) {
+            OSInterface_mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
         }
         Main_setTimeout(PlayVod_SaveOffset, 1000);
         if (PlayClip_HasVOD) Chat_Init();
@@ -676,7 +676,7 @@ function PlayVod_jumpTime() {
 }
 
 function PlayVod_jumpStart(multiplier, duration_seconds) {
-    var currentTime = Main_IsOnAndroid ? (Android.gettime() / 1000) : 0;
+    var currentTime = Main_IsOn_OSInterface ? (OSInterface_gettime() / 1000) : 0;
 
     Main_clearTimeout(PlayVod_SizeClearID);
     PlayVod_IsJumping = true;
@@ -710,7 +710,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
 }
 
 function PlayVod_SaveVodIds() {
-    Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, Main_IsOnAndroid ? (parseInt(Android.gettime() / 1000)) : 0, 'vod');
+    Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'vod');
 }
 
 function Play_showVodDialog() {
@@ -814,7 +814,7 @@ function PlayVod_CheckIfIsLiveResult(response) {
 
 function PlayVod_CheckIfIsLiveStart() {
 
-    if (!Main_IsOnAndroid || Play_CheckIfIsLiveResponseText) PlayVod_OpenLiveStream();
+    if (!Main_IsOn_OSInterface || Play_CheckIfIsLiveResponseText) PlayVod_OpenLiveStream();
     else Play_CheckIfIsLiveStart('PlayVod_CheckIfIsLiveResult');
 
 }
@@ -952,7 +952,7 @@ function PlayVod_handleKeyDown(e) {
                     if (!PlayVod_PanelY) {
                         if (PlayVod_IsJumping) PlayVod_jump();
                     } else if (PlayVod_PanelY === 1) {
-                        if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                        if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                     } else Play_BottomOptionsPressed(2);
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
@@ -973,7 +973,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PLAY:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
-                if (Main_IsOnAndroid && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                 break;
             case KEY_1:
                 if (UserLiveFeed_isFeedShow()) {
@@ -1037,7 +1037,7 @@ function PlayVod_previews_pre_start(seek_previews_url) {
     PlayVod_previews_url = seek_previews_url;
     PlayVod_previews_clear();
 
-    if (Main_IsOnAndroid) PlayVod_previews_start();
+    if (Main_IsOn_OSInterface) OSInterface_GetPreviews(PlayVod_previews_url);
     //else PlayVod_previews_start_test();
 }
 
@@ -1045,13 +1045,6 @@ function PlayVod_previews_clear() {
     PlayVod_previews_hide();
     PlayVod_previews_obj.images = [];
     PlayVod_previews_images_pos = -1;
-}
-
-function PlayVod_previews_start() {
-    //TODO remove the try after some app updates
-    try {
-        Android.GetPreviews(PlayVod_previews_url);
-    } catch (e) {}
 }
 
 var PlayVod_previews_obj = {};

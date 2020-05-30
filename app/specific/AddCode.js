@@ -43,7 +43,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
     //Run in synchronous mode to prevent anything happening until user token is restored
     if (sync) {
         try {
-            xmlHttp = Android.mMethodUrlHeaders(
+            xmlHttp = OSInterface_mMethodUrlHeaders(
                 url,
                 AddCode_loadingDataTimeout,
                 'POST',
@@ -175,7 +175,7 @@ function AddCode_requestTokensFail() {
             Main_newUsercode = 0;
             Main_SaveValues();
             Main_values.Main_Go = Main_Users;
-            Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
+            Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
         },
         4000
     );
@@ -223,10 +223,10 @@ function AddCode_CheckOauthTokenSucess(response) {
         Main_values.Main_Go = Main_Users;
         Main_SaveValues();
         Main_showWarningDialog(STR_USER_CODE_OK);
-        if (Main_IsOnAndroid) Android.clearCookie();
+        OSInterface_clearCookie();
         Main_setTimeout(
             function() {
-                Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
+                Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
             },
             3000
         );
@@ -240,7 +240,7 @@ function AddCode_CheckOauthTokenSucess(response) {
                 Main_newUsercode = 0;
                 Main_SaveValues();
                 Main_values.Main_Go = Main_Users;
-                Main_LoadUrl(Main_IsOnAndroid ? Android.mPageUrl() : AddCode_redirect_uri);
+                Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
             },
             4000
         );
@@ -266,7 +266,7 @@ function AddCode_CheckTokenSync(position, tryes) {
     //Main_Log('AddCode_CheckToken');
 
     try {
-        var xmlHttp = Android.mMethodUrlHeaders(
+        var xmlHttp = OSInterface_mMethodUrlHeaders(
             AddCode_ValidateUrl,
             AddCode_loadingDataTimeout,
             null,

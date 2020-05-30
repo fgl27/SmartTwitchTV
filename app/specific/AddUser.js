@@ -68,7 +68,7 @@ function AddUser_inputFocus() {
 }
 
 function AddUser_removeEventListener() {
-    if (!Main_isTV && Main_IsOnAndroid) Android.mhideSystemUI();
+    if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
     Main_RemoveClass('scene_notify', 'avoidclicks');
@@ -184,8 +184,8 @@ function AddUser_RestoreUsers() {
 
         //TODO remove this try after some app updates
         try {
-            if (Main_IsOnAndroid) {
-                Android.upNotificationId(AddUser_UsernameArray[0].id);
+            if (Main_IsOn_OSInterface) {
+                OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
                 UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
                 Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
             }
@@ -357,7 +357,7 @@ function AddUser_SaveUserArray() {
     var string = JSON.stringify(AddUser_UsernameArray);
     Main_setItem('AddUser_UsernameArray', string);
 
-    if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
+    if (Main_CanBackup) OSInterface_BackupFile(Main_UserBackupFile, string);
 
     //Main_Log('AddUser_SaveUserArray');
 }
@@ -377,10 +377,10 @@ function AddUser_UserMakeOne(position) {
     AddUser_UpdateSidepanel();
     Users_init();
 
-    if (Main_IsOnAndroid) {
+    if (Main_IsOn_OSInterface) {
         //TODO remove the try after some app updates
         try {
-            Android.upNotificationId(AddUser_UsernameArray[0].id);
+            OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
         } catch (e) {}
         Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
     }

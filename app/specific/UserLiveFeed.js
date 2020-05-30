@@ -407,7 +407,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
                 if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
                     UserLiveFeed_CheckIfIsLiveStart();
                 } else if (Play_CheckIfIsLiveResponseText) {
-                    Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+                    OSInterface_SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
                 }
             }
 
@@ -454,9 +454,9 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
 }
 
 function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
-    if (!Main_IsOnAndroid) return;
+    if (!Main_IsOn_OSInterface) return;
 
-    Android.ClearFeedPlayer();
+    OSInterface_ClearFeedPlayer();
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
 }
 
@@ -476,7 +476,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Play_CheckIfIsLiveResponseText = StreamData.responseText;
                 Play_CheckIfIsLiveChannel = StreamInfo[6];
 
-                Android.StartFeedPlayer(
+                OSInterface_StartFeedPlayer(
                     Play_CheckIfIsLiveURL,
                     Play_CheckIfIsLiveResponseText,
                     UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
@@ -518,13 +518,13 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsOnAndroid) return;
+    if (!Main_IsOn_OSInterface) return;
 
     var doc = Play_CheckLiveThumb(false, true);
 
     if (doc) {
 
-        Android.CheckIfIsLiveFeed(
+        OSInterface_CheckIfIsLiveFeed(
             Play_live_token.replace('%x', doc[6]),
             Play_live_links.replace('%x', doc[6]),
             UserLiveFeed_CheckIfIsLiveDelay,
@@ -872,13 +872,8 @@ function UserLiveFeed_KeyEnter(pos) {
 }
 
 function UserLiveFeed_Showloading(show) {
-    if (Main_IsOnAndroid) {
-        try {
-            Android.mshowLoadingBottom(show);
-        } catch (e) {
-            if (show) Main_ShowElement('dialog_loading_feed');
-            else Main_HideElement('dialog_loading_feed');
-        }
+    if (Main_IsOn_OSInterface) {
+        OSInterface_mshowLoadingBottom(show);
     } else {
         if (show) Main_ShowElement('dialog_loading_feed');
         else Main_HideElement('dialog_loading_feed');
