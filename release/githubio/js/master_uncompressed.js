@@ -2668,7 +2668,7 @@
         //Run in synchronous mode to prevent anything happening until user token is restored
         if (sync) {
             try {
-                xmlHttp = Android.mMethodUrlHeaders(
+                xmlHttp = OSInterface_mMethodUrlHeaders(
                     url,
                     AddCode_loadingDataTimeout,
                     'POST',
@@ -2800,7 +2800,7 @@
                 Main_newUsercode = 0;
                 Main_SaveValues();
                 Main_values.Main_Go = Main_Users;
-                Main_LoadUrl(Main_IsOn_OSInterface ? Android.mPageUrl() : AddCode_redirect_uri);
+                Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
             },
             4000
         );
@@ -2848,10 +2848,10 @@
             Main_values.Main_Go = Main_Users;
             Main_SaveValues();
             Main_showWarningDialog(STR_USER_CODE_OK);
-            if (Main_IsOn_OSInterface) Android.clearCookie();
+            OSInterface_clearCookie();
             Main_setTimeout(
                 function() {
-                    Main_LoadUrl(Main_IsOn_OSInterface ? Android.mPageUrl() : AddCode_redirect_uri);
+                    Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
                 },
                 3000
             );
@@ -2865,7 +2865,7 @@
                     Main_newUsercode = 0;
                     Main_SaveValues();
                     Main_values.Main_Go = Main_Users;
-                    Main_LoadUrl(Main_IsOn_OSInterface ? Android.mPageUrl() : AddCode_redirect_uri);
+                    Main_LoadUrl(Main_IsOn_OSInterface ? OSInterface_mPageUrl() : AddCode_redirect_uri);
                 },
                 4000
             );
@@ -2891,7 +2891,7 @@
         //Main_Log('AddCode_CheckToken');
 
         try {
-            var xmlHttp = Android.mMethodUrlHeaders(
+            var xmlHttp = OSInterface_mMethodUrlHeaders(
                 AddCode_ValidateUrl,
                 AddCode_loadingDataTimeout,
                 null,
@@ -3397,7 +3397,7 @@
     }
 
     function AddUser_removeEventListener() {
-        if (!Main_isTV && Main_IsOn_OSInterface) Android.mhideSystemUI();
+        if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
         Main_RemoveClass('scenefeed', 'avoidclicks');
         Main_RemoveClass('scene_notify', 'avoidclicks');
@@ -3514,7 +3514,7 @@
             //TODO remove this try after some app updates
             try {
                 if (Main_IsOn_OSInterface) {
-                    Android.upNotificationId(AddUser_UsernameArray[0].id);
+                    OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
                     UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
                     Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
                 }
@@ -3686,7 +3686,7 @@
         var string = JSON.stringify(AddUser_UsernameArray);
         Main_setItem('AddUser_UsernameArray', string);
 
-        if (Main_CanBackup) Android.BackupFile(Main_UserBackupFile, string);
+        if (Main_CanBackup) OSInterface_BackupFile(Main_UserBackupFile, string);
 
         //Main_Log('AddUser_SaveUserArray');
     }
@@ -3709,7 +3709,7 @@
         if (Main_IsOn_OSInterface) {
             //TODO remove the try after some app updates
             try {
-                Android.upNotificationId(AddUser_UsernameArray[0].id);
+                OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
             } catch (e) {}
             Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
         }
@@ -3862,7 +3862,7 @@
     function ChannelContent_loadDataCheckHost() {
         var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
-        Android.GetMethodUrlHeadersAsync(
+        OSInterface_GetMethodUrlHeadersAsync(
             theUrl, //urlString
             ChannelContent_loadingDataTimeout, //timeout
             null, //postMessage, null for get
@@ -4364,8 +4364,8 @@
                     Main_ChatLiveInput.focus();
                     try {
                         if (Main_IsOn_OSInterface) {
-                            if (OptionsShowObj.keyboard_options.defaultValue === 1) Android.KeyboardCheckAndHIde();
-                            else if (OptionsShowObj.keyboard_options.defaultValue === 2) Android.hideKeyboardFrom();
+                            if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
+                            else if (OptionsShowObj.keyboard_options.defaultValue === 2) OSInterface_hideKeyboardFrom();
                         }
                     } catch (e) {}
                     ChatLiveControls_keyBoardOn = true;
@@ -4393,7 +4393,7 @@
     function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
 
         Main_clearTimeout(ChatLiveControls_inputFocusId);
-        if (!Main_isTV && Main_IsOn_OSInterface) Android.mhideSystemUI();
+        if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
         Main_RemoveClass('scenefeed', 'avoidclicks');
         Main_RemoveClass('scene_notify', 'avoidclicks');
@@ -7135,7 +7135,7 @@
         var elem, i;
         if (Chat_Position < (Chat_Messages.length - 1)) {
             for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
-                if (Chat_Messages[i].time < (ChannelVod_vodOffset + (Android.gettime() / 1000))) {
+                if (Chat_Messages[i].time < (ChannelVod_vodOffset + (OSInterface_gettime() / 1000))) {
                     elem = document.createElement('div');
                     var classname = 'chat_line';
 
@@ -7428,8 +7428,8 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.200';
-    var Main_minversion = 'May 29, 2020';
+    var Main_stringVersion_Min = '.201';
+    var Main_minversion = 'May 30, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOn_OSInterfaceVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7498,9 +7498,9 @@
                         'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult
                     };
                 }
-                Main_IsOn_OSInterface = Android.getAndroid();
-                Main_IsOn_OSInterfaceVersion = Android.getversion();
-                Main_isDebug = Android.getdebug();
+                Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
+                Main_isDebug = OSInterface_getdebug();
+                Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
             } catch (e) {
                 Main_IsOn_OSInterfaceVersion = '1.0.0';
@@ -7555,7 +7555,7 @@
             if (!Main_values.Restore_Backup_Check) {
 
                 try {
-                    Android.requestWr();
+                    OSInterface_requestWr();
                     Main_HideLoadDialog();
                     Main_innerHTML("main_dialog_remove", STR_BACKUP);
                     Main_textContent('remove_cancel', STR_NO);
@@ -7601,9 +7601,9 @@
     function Main_initRestoreBackups() {
         try {
 
-            if (Android.HasBackupFile(Main_UserBackupFile)) {
+            if (OSInterface_HasBackupFile(Main_UserBackupFile)) {
 
-                var tempBackup = Android.RestoreBackupFile(Main_UserBackupFile);
+                var tempBackup = OSInterface_RestoreBackupFile(Main_UserBackupFile);
 
                 if (tempBackup !== null) {
                     var tempBackupArray = JSON.parse(tempBackup) || [];
@@ -7611,7 +7611,7 @@
                     if (tempBackupArray.length > 0) {
                         Main_setItem('AddUser_UsernameArray', tempBackup);
 
-                        tempBackup = Android.RestoreBackupFile(Main_HistoryBackupFile);
+                        tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
                         if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
 
                         AddUser_RestoreUsers();
@@ -7630,15 +7630,15 @@
         //Main_Log('Main_initWindows');
         try {
             if (Main_IsOn_OSInterface) {
-                Main_CanBackup = Android.canBackupFile();
+                Main_CanBackup = OSInterface_canBackupFile();
 
                 //Backup at start as a backup may never be done yet
                 if (Main_CanBackup) {
                     if (AddUser_IsUserSet()) {
-                        Android.BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+                        OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
                         Main_setTimeout(
                             function() {
-                                Android.BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                                OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
                             },
                             25000
                         );
@@ -7658,8 +7658,8 @@
             if (!Main_values.DeviceCheckNew) {
 
                 Main_values.DeviceCheckNew = true;
-                var device = Android.getDevice();
-                var Manufacturer = Android.getManufacturer();
+                var device = OSInterface_getDevice();
+                var Manufacturer = OSInterface_getManufacturer();
                 device = device ? device.toLowerCase() : "";
                 Manufacturer = Manufacturer ? Manufacturer.toLowerCase() : "";
 
@@ -7670,7 +7670,7 @@
                     //bitrate to max possible
                     Settings_value.bitrate_min.defaultValue = 0;
                     Main_setItem('bitrate_min', 1);
-                    Android.SetSmallPlayerBandwidth(0);
+                    OSInterface_SetSmallPlayerBandwidth(0);
 
                     //enable small player over feed on multi
                     Settings_value.disable_feed_player_multi.defaultValue = 0;
@@ -7687,7 +7687,7 @@
             if (!Main_values.Codec_is_Check) {
                 var getcodec = null;
                 try {
-                    if (Main_IsOn_OSInterface) getcodec = JSON.parse(Android.getcodecCapabilities('avc'));
+                    if (Main_IsOn_OSInterface) getcodec = JSON.parse(OSInterface_getcodecCapabilities('avc'));
                 } catch (e) {}
 
                 if (getcodec) {
@@ -7709,7 +7709,7 @@
                             Main_setItem(codecsnames[0], 1);
                             Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
 
-                            Android.setBlackListMediaCodec(codecsnames.join());
+                            OSInterface_setBlackListMediaCodec(codecsnames.join());
 
                         }
                     }
@@ -7718,7 +7718,7 @@
 
             }
 
-            if (Main_IsOn_OSInterface) Main_AndroidSDK = Android.getSDK();
+            if (Main_IsOn_OSInterface) Main_AndroidSDK = OSInterface_getSDK();
             else Main_AndroidSDK = 1000;
 
             //Android N (sdk 25) and older don't properly support animations on surface_view
@@ -7878,7 +7878,7 @@
 
     function Main_initClick() {
         if (Main_IsOn_OSInterface) {
-            Main_isTV = Android.deviceIsTV();
+            Main_isTV = OSInterface_deviceIsTV();
             //Only show virtual d-pad on none TV devices
             if (Main_isTV) return;
         } else {
@@ -7953,7 +7953,7 @@
             Main_ClickonpointerdownClear();
             if (!Main_buttonsVisible()) return;
 
-            if (Main_IsOn_OSInterface) Android.keyEvent(pos, 1);
+            if (Main_IsOn_OSInterface) OSInterface_keyEvent(pos, 1);
             else Main_Log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
         };
     }
@@ -7964,7 +7964,7 @@
     }
 
     function Main_Clickonpointerdown(pos) {
-        if (Main_IsOn_OSInterface) Android.keyEvent(pos, 0);
+        if (Main_IsOn_OSInterface) OSInterface_keyEvent(pos, 0);
         else Main_Log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
     }
 
@@ -8043,12 +8043,12 @@
 
     function Main_showLoadDialog() {
         Main_YRst(-1);
-        if (Main_IsOn_OSInterface) Android.mshowLoading(true);
+        if (Main_IsOn_OSInterface) OSInterface_mshowLoading(true);
         else Main_ShowElement('dialog_loading');
     }
 
     function Main_HideLoadDialog() {
-        if (Main_IsOn_OSInterface) Android.mshowLoading(false);
+        if (Main_IsOn_OSInterface) OSInterface_mshowLoading(false);
         else Main_HideElement('dialog_loading');
     }
 
@@ -8272,8 +8272,8 @@
 
     function Main_checkVersion() {
         if (Main_IsOn_OSInterface) {
-            var device = Android.getDevice();
-            var Webviewversion = Android.getWebviewVersion();
+            var device = OSInterface_getDevice();
+            var Webviewversion = OSInterface_getWebviewVersion();
             Main_Log('Webviewversion ' + Webviewversion);
 
             Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +
@@ -8507,9 +8507,8 @@
 
     function Main_OPenAsVod_PreshutdownStream() {
         if (Main_IsOn_OSInterface) {
-            //We are closing the player on error or on end
-            Android.mClearSmallPlayer();
-            Android.stopVideo(1);
+            OSInterface_mClearSmallPlayer();
+            OSInterface_stopVideo(1);
         }
 
         Play_isOn = false;
@@ -8712,8 +8711,8 @@
                 if (!Main_IsOn_OSInterface || !Main_ExitCursor) Main_HideExitDialog();
                 else if (Main_ExitCursor === 1) {
                     Main_HideExitDialog();
-                    Android.mclose(false);
-                } else if (Main_ExitCursor === 2) Android.mclose(true);
+                    OSInterface_mclose(false);
+                } else if (Main_ExitCursor === 2) OSInterface_mclose(true);
                 break;
             default:
                 break;
@@ -8780,10 +8779,10 @@
     //Redirect to assets if running from it
     function CheckPage(pageUrlCode) {
         if (Main_IsOn_OSInterface) {
-            var PageUrl = Android.mPageUrl();
+            var PageUrl = OSInterface_mPageUrl();
             if (PageUrl) {
                 if (!Main_A_includes_B(window.location.href, 'asset') && Main_A_includes_B(PageUrl, 'asset')) {
-                    Android.mloadUrl(PageUrl + pageUrlCode);
+                    OSInterface_mloadUrl(PageUrl + pageUrlCode);
                     return;
                 }
             }
@@ -8974,7 +8973,7 @@
 
                 var string = JSON.stringify(Main_values_History_data);
                 Main_setItem('Main_values_History_data', string);
-                if (Main_CanBackup) Android.BackupFile(Main_HistoryBackupFile, string);
+                if (Main_CanBackup) OSInterface_BackupFile(Main_HistoryBackupFile, string);
 
             },
             5000,
@@ -9260,11 +9259,7 @@
     }
 
     function Main_RestoreLiveObjt(position) {
-        var oldLive = null;
-        //TODO remove this try after some app updates
-        try {
-            if (Main_IsOn_OSInterface) oldLive = Android.GetNotificationOld();
-        } catch (e) {}
+        var oldLive = OSInterface_GetNotificationOld();
 
         if (oldLive) {
 
@@ -9300,17 +9295,14 @@
 
         }
 
-        //TODO remove this try after some app updates
-        try {
-            if (Main_IsOn_OSInterface) Android.SetNotificationOld(JSON.stringify(array));
-        } catch (e) {}
+        OSInterface_SetNotificationOld(JSON.stringify(array));
     }
 
     function Main_CheckAccessibility(skipRefresCheck) {
         //Main_Log('Main_CheckAccessibility');
 
         if (Main_IsOn_OSInterface && Settings_Obj_default("accessibility_warn")) {
-            if (Android.isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
+            if (OSInterface_isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
             else {
                 Main_CheckAccessibilityHide(false);
                 //if focused and showing force a refresh check
@@ -9361,7 +9353,7 @@
     }
 
     function Main_LoadUrl(url) {
-        if (Main_IsOn_OSInterface) Android.mloadUrl(url);
+        if (Main_IsOn_OSInterface) OSInterface_mloadUrl(url);
         else window.location = url;
     }
 
@@ -9369,9 +9361,7 @@
         if (Main_isDebug) {
             text = text + ' ' + Main_LogDate(new Date());
             console.log(text);
-            try {
-                Android.LongLog(text);
-            } catch (e) {}
+            OSInterface_LongLog(text);
         }
     }
 
@@ -9407,7 +9397,755 @@
 
     function Main_clearInterval(id) {
         window.clearInterval(id);
-    } //Variable initialization
+    } //This file holds all 'Android.' function of the app
+    //Android is the JavascriptInterface or the OSInterface
+    //In order to port this web app to some other OS one must port some of this OSInterface function
+    //If a function is Android specific, the feature that it provides may only be needed on a Android device
+    //Check what the function does and if the new OS provides the function make a new one or find a way to adapt
+
+    //public long GetNotificationTime()
+    //Android specific: true
+    //with time im ms of when notifications will end
+    //To prevent show in app notification when background notification have ended showing
+    function OSInterface_GetNotificationTime() {
+        return Main_IsOn_OSInterface ? Android.GetNotificationTime() : 0;
+    }
+
+    //public String GetNotificationOld()
+    //Android specific: true
+    //returns the last know list of live channels
+    function OSInterface_GetNotificationOld() {
+        return Main_IsOn_OSInterface ? Android.GetNotificationOld() : null;
+    }
+
+    //public void SetNotificationOld(String list)
+    //Android specific: true
+    //returns the last know list of live channels
+    function OSInterface_SetNotificationOld(list) {
+        if (Main_IsOn_OSInterface) Android.SetNotificationOld(list);
+    }
+
+    //public void StopNotificationService()
+    //Android specific: true
+    //Allows to stop the notification service from js side
+    function OSInterface_StopNotificationService() {
+        if (Main_IsOn_OSInterface) Android.StopNotificationService();
+    }
+
+    //public void upNotificationState(boolean Notify)
+    //Notify  background notification are enable
+    //Android specific: true
+    //Allows to stop the notification service from js side
+    function OSInterface_upNotificationState(Notify) {
+        if (Main_IsOn_OSInterface) Android.upNotificationState(Notify);
+    }
+
+    //public void Settings_SetPingWarning(boolean warning)
+    //warning enable or not the warning if ping fail for too long
+    //Android specific: true
+    //Allows to enable disable ping ail warning
+    function OSInterface_Settings_SetPingWarning(warning) {
+        if (Main_IsOn_OSInterface) Android.Settings_SetPingWarning(warning);
+    }
+
+    //public void SetQuality(int position)
+    //position = the track position of the track group, the array of current available qualities of the player, -1 equals auto
+    //Android specific: false
+    //Allows to change the main player quality
+    function OSInterface_SetQuality(position) {
+        Android.SetQuality(position);
+    }
+
+    //public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int ReTryMax, int Timeout)
+    //token_url = the base token url
+    //hls_url = the base hls playlist url
+    //callback = the call back function
+    //checkResult = a uniq ID number to prevent the callback answer to the wrong request, as this is a Async fun
+    //position = the position of the arrays that this function uses, arrays of string result and threads
+    //ReTryMax = the retry quanity in case the http request fails
+    //Timeout = http request timeout
+    //Android specific: false
+    //Allows to get the stream data, that if called from JS will fail do to CORS error
+    function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, ReTryMax, Timeout) {
+        Android.getStreamDataAsync(
+            token_url,
+            hls_url,
+            callback,
+            checkResult,
+            position,
+            ReTryMax,
+            Timeout
+        );
+    }
+
+    //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
+    //token_url = the base token url
+    //hls_url = the base hls playlist url
+    //Delay_ms = Delay in ms to start the check
+    //callback = the call back function
+    //x & y the position of the array that hold the result also used to check the received info can be used by callback 
+    //ReTryMax = the retry quanity in case the http request fails
+    //Timeout = http request timeout
+    //Android specific: false
+    //Allows to get the stream data, that if called from JS will fail do to CORS error
+    function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, Delay_ms, callback, x, y, ReTryMax, Timeout) {
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            hls_url,
+            Delay_ms,
+            callback,
+            x,
+            y,
+            ReTryMax,
+            Timeout
+        );
+    }
+
+    //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
+    //token_url = the base token url
+    //hls_url = the base hls playlist url
+    //ReTryMax = the retry quanity in case the http request fails
+    //Timeout = http request timeout
+    //Android specific: false
+    //Allows to get the stream data, that if called from JS will fail do to CORS error
+    function OSInterface_getStreamData(token_url, hls_url, ReTryMax, Timeout) {
+        return Android.getStreamData(
+            token_url,
+            hls_url,
+            ReTryMax,
+            Timeout
+        );
+    }
+
+    //public String getQualities()
+    //Android specific: true
+    //Allows to get the stream data, that if called from JS will fail do to CORS error
+    function OSInterface_getQualities() {
+        return Android.getQualities();
+    }
+
+    //public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonString,
+    //                                            String callback, long checkResult, int key, int thread)
+    //urlString = the url to to the http request
+    //timeout = http request timeout
+    //postMessage = if is a output message if not null
+    //Method = http Method 'GET, POST, PUT, DELETE'
+    //JsonHeadersArray = The stringify array contain the http request headers
+    //callback = the call back function
+    //checkResult = a uniq ID number to prevent the callback answer to the wrong request, as this is a Async fun
+    //key = the return key used by Screens, 0 if not a Screen call
+    //thread = the thread number to be used there is 4 thread, 0 to 3
+    //Android specific: false
+    //Allows to make a http request in a async function on a url that if called from JS will fail do to CORS error
+    function OSInterface_GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, thread) {
+        Android.GetMethodUrlHeadersAsync(
+            urlString,
+            timeout,
+            postMessage,
+            Method,
+            JsonHeadersArray,
+            callback,
+            checkResult,
+            key,
+            thread
+        );
+    }
+
+    //public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray)
+    //urlString = the url to to the http request
+    //timeout = http request timeout
+    //postMessage = if is a output message if not null
+    //Method = http Method 'GET, POST, PUT, DELETE'
+    //checkResult = a uniq ID number to prevent the callback answer to the wrong request, as this is a Async fun
+    //JsonHeadersArray = The stringify array contain the http request headers
+    //callback = the call back function
+    //Android specific: false
+    //Allows to make a http request in a sync function on a url that if called from JS will fail do to CORS error
+    function OSInterface_mMethodUrlHeaders(urlString, timeout, postMessage, Method, checkResult, JsonHeadersArray) {
+        return Android.mMethodUrlHeaders(
+            urlString,
+            timeout,
+            postMessage,
+            Method,
+            checkResult,
+            JsonHeadersArray
+        );
+    }
+
+    //public void mSwitchPlayerAudio(int position)
+    //position = the audio position, 2 enables both player audio, 1 only Main player, 0 small player
+    //Android specific: false
+    //Allows to change the audio source on PP or 50/50 mode
+    function OSInterface_mSwitchPlayerAudio(position) {
+        Android.mSwitchPlayerAudio(position);
+    }
+
+    //public void mupdatesizePP(boolean FullScreen)
+    //FullScreen = if true Main player full size small player will be small in relation to PlayerViewSmallSize[][], if false 50/50 mode
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Allows to change player size on PP mode
+    function OSInterface_mupdatesizePP(isFullScreen) {
+        Android.mupdatesizePP(isFullScreen);
+    }
+
+    //public void mupdatesize(boolean FullScreen)
+    //FullScreen = if true Main player full size small player will be small in relation to PlayerViewSmallSize[][], if false 50/50 mode
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Allows to change player size on PP mode
+    function OSInterface_mupdatesize(isFullScreen) {
+        Android.mupdatesize(isFullScreen);
+    }
+
+    //public void mSetPlayerPosition(int PicturePicturePos)
+    //PicturePicturePos = The position of the small player
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Changes small player position on the screen
+    function OSInterface_mSetPlayerPosition(PicturePicturePos) {
+        Android.mSetPlayerPosition(PicturePicturePos);
+    }
+
+    //public void mSetPlayerSize(int mPicturePictureSize)
+    //mPicturePictureSize = The size of the small player
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Changes small player size
+    function OSInterface_mSetPlayerSize(mPicturePictureSize) {
+        Android.mSetPlayerSize(mPicturePictureSize);
+    }
+
+    //public void msetPlayer(boolean surface_view, boolean FullScreen)
+    //surface_view = surface_view or texture_view
+    //FullScreen updae updateVideSizePP else updateVideSize
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //changes all player to surface_view or texture_view for PP workaround
+    function OSInterface_msetPlayer(surface_view, FullScreen) {
+        if (Main_IsOn_OSInterface) Android.msetPlayer(surface_view, FullScreen);
+    }
+
+    //public void SetBuffer(int who_called, int buffer_size)
+    //who_called = 0 live, 1 vod, 2 clip
+    //buffer_size = buffer size in ms
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Change the player starting buffer
+    function OSInterface_SetBuffer(who_called, buffer_size) {
+        if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
+    }
+
+    //public void mSetlatency(boolean LowLatency)
+    //LowLatency = if true LowLatency is enable
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Changes small player size
+    function OSInterface_mSetlatency(LowLatency) {
+        Android.mSetlatency(LowLatency);
+    }
+
+    //public void mSwitchPlayerSize(int mPicturePictureSize)
+    //mPicturePictureSize = PicturePictureSize sizes are 0 , 1 , 2, of the 
+    //Array PlayerViewSmallSize[][PicturePictureSize] PicturePictureSize is the width size... 0 50% or 1/2, 1 33% or 1/3, 2 25% or 1/4
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Allows to change small player size
+    function OSInterface_mSwitchPlayerSize(PicturePictureSize) {
+        Android.mSwitchPlayerSize(PicturePictureSize);
+    }
+
+    //public void mSwitchPlayer()
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Allows to change with will be the bigger player on PP mode
+    function OSInterface_mSwitchPlayer() {
+        Android.mSwitchPlayer();
+    }
+
+    //public void mSwitchPlayerPosition(int mPicturePicturePosition)
+    //mPicturePicturePosition = the small player position on the screen
+    //Array PlayerViewSmallSize[mPicturePicturePosition][] 8 positions it screen side and corner
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Allows to change the small player position
+    function OSInterface_mSwitchPlayerPosition(mPicturePicturePosition) {
+        Android.mSwitchPlayerPosition(mPicturePicturePosition);
+    }
+
+    //public void RestartPlayer(int who_called, long ResumePosition, int player)
+    //who_called = 0 live, 1 vod, 2 clip
+    //ResumePosition =  the position to start the video, if a live this is always 0
+    //player = the player position, there is several player to do multistream support
+    //Android specific: true
+    //Allows to get the stream data, that if called from JS will fail do to CORS error
+    function OSInterface_RestartPlayer(who_called, ResumePosition, player) {
+        Android.RestartPlayer(who_called, ResumePosition, player);
+    }
+
+    //public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player)
+    //uri =  the url of the playlist or the clip
+    //masterPlaylistString = the stringify version of the url playlist content
+    //who_called = 0 live, 1 vod, 2 clip
+    //ResumePosition =  the position to start the video, if a live this is always 0
+    //player = the player position, there is several player to do multistream support
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Sets mediaSources and start the player
+    function OSInterface_StartAuto(uri, masterPlaylistString, who_called, ResumePosition, player) {
+        Android.StartAuto(
+            uri,
+            masterPlaylistString,
+            who_called,
+            ResumePosition,
+            player
+        );
+    }
+
+    //public void mhideSystemUI()
+    //Android specific: true
+    //hides android SystemUI on a phone, top bar and sw navigation keys
+    function OSInterface_mhideSystemUI() {
+        Android.mhideSystemUI();
+    }
+
+    //public void upNotificationId(String id)
+    //id =  the user id
+    //Android specific: true
+    //Sets the user id used by the notification services
+    function OSInterface_upNotificationId(id) {
+        Android.upNotificationId(id);
+    }
+
+    //public void BackupFile(String file, String file_content)
+    //file =  the file name and or path
+    //file_content = the file content
+    //Android specific: true
+    //Backups user array and user history to a file
+    function OSInterface_BackupFile(file, file_content) {
+        Android.BackupFile(file, file_content);
+    }
+
+    //public String mPageUrl()
+    //Android specific: true
+    //return the apk main url
+    function OSInterface_mPageUrl() {
+        return Android.mPageUrl();
+    }
+
+    //public void clearCookie()
+    //Android specific: true
+    //Clears saved cookies to prevent show a already logged authentication page, as the app has multi users cookies are automatic saved after a login
+    function OSInterface_clearCookie() {
+        if (Main_IsOn_OSInterface) Android.clearCookie();
+    }
+
+    //public long getsavedtime()
+    //Android specific: false
+    //returns mResumePosition to be used after the app has stopped, because the app was minimized or user changed apps
+    function OSInterface_getsavedtime() {
+        return Android.getsavedtime();
+    }
+
+    //public long gettime()
+    //Android specific: false
+    //returns PlayerCurrentPosition valued used to show vod/clip position and sync vod/clip chat and video
+    function OSInterface_gettime() {
+        return Android.gettime();
+    }
+
+    //public void stopVideo(int who_called)
+    //who_called = 0 live, 1 vod, 2 clip
+    //Android specific: false
+    //Allows to stop the player when the user chooses to end the playback
+    function OSInterface_stopVideo(who_called) {
+        Android.stopVideo(who_called);
+    }
+
+    //public void mClearSmallPlayer()
+    //Android specific: false
+    //Clears the SmallPlayer
+    function OSInterface_mClearSmallPlayer() {
+        Android.mClearSmallPlayer();
+    }
+
+    //public void mseekTo(long position)
+    //position in ms to seek to
+    //Android specific: false
+    //Allows to seek to a position
+    function OSInterface_mseekTo(position) {
+        Android.mseekTo(position);
+    }
+
+    //public void PlayPauseChange()
+    //Android specific: false
+    //Allows to change the playback state, if playing pauses and vice versa
+    function OSInterface_PlayPauseChange() {
+        Android.PlayPauseChange();
+    }
+
+    //public void PlayPause(boolean state)
+    //state the playback state
+    //Android specific: false
+    //Allows to set the playback state
+    function OSInterface_PlayPause(state) {
+        Android.PlayPause(state);
+    }
+
+    //public void GetPreviews(String url)
+    //url = the url that contains the vod previews
+    //Android specific: false
+    //Allows to get the vod previews in a async function, need to call this as the url may not work do to CORS
+    function OSInterface_GetPreviews(url) {
+        Android.GetPreviews(url);
+    }
+
+    //public String getversion()
+    //Android specific: true
+    //Allows to get app version
+    function OSInterface_getversion() {
+        return Android.getversion();
+    }
+
+    //public boolean getdebug()
+    //Android specific: true
+    //Allows to get the app debug state
+    function OSInterface_getdebug() {
+        return Android.getdebug();
+    }
+
+    //public void requestWr()
+    //Android specific: true
+    //Runs only once, this functions check for storage access and request the user to give the permission
+    function OSInterface_requestWr() {
+        Android.requestWr();
+    }
+
+    //public boolean HasBackupFile(String file)
+    //file =  the file path to check
+    //Android specific: true
+    //Check if the file exist before restore it
+    function OSInterface_HasBackupFile(file) {
+        return Android.HasBackupFile(file);
+    }
+
+    //public String RestoreBackupFile(String file)
+    //file =  the file path to restore
+    //Android specific: true
+    //Check if the file exist before restore it
+    function OSInterface_RestoreBackupFile(file) {
+        return Android.RestoreBackupFile(file);
+    }
+
+    //public boolean canBackupFile()
+    //Android specific: true
+    //Check if storage access is available
+    function OSInterface_canBackupFile() {
+        return Android.canBackupFile();
+    }
+
+    //public String getDevice()
+    //Android specific: true
+    //Returns Build.MODEL
+    function OSInterface_getDevice() {
+        return Android.getDevice();
+    }
+
+    //public String getManufacturer()
+    //Android specific: true
+    //Returns Build.MANUFACTURER
+    function OSInterface_getManufacturer() {
+        return Android.getManufacturer();
+    }
+
+    //public int getSDK()
+    //Android specific: true
+    //Returns Build.VERSION.SDK_INT
+    function OSInterface_getSDK() {
+        return Android.getSDK();
+    }
+
+    //public boolean deviceIsTV()
+    //Android specific: true
+    //Returns true if device is a TV
+    function OSInterface_deviceIsTV() {
+        return Android.deviceIsTV();
+    }
+
+    //public void keyEvent(int key, int keyaction)
+    //key = the key value
+    //keyaction =  the key action up down etc
+    //Android specific: true
+    //Sends a key event
+    function OSInterface_keyEvent(key, keyaction) {
+        Android.keyEvent(key, keyaction);
+    }
+
+    //public void SetSmallPlayerBandwidth(int Bitrate)
+    //Bitrate = set mainPlayerBitrate, if 0 the value will be set to Integer.MAX_VALUE
+    //Android specific: true
+    //Sets small player max Bitrate
+    function OSInterface_SetSmallPlayerBandwidth(Bitrate) {
+        //TODO remove the try after some app updates fun change name
+        try {
+            Android.SetSmallPlayerBitrate(Bitrate);
+        } catch (e) {
+            Android.SetSmallPlayerBandwidth(Bitrate);
+        }
+    }
+
+    //public void SetSmallPlayerBandwidth(int Bitrate)
+    //Bitrate = set PP_PlayerBitrate, if 0 the value will be set to Integer.MAX_VALUE
+    //Android specific: true
+    //Sets Big player max Bitrate
+    function OSInterface_SetMainPlayerBitrate(Bitrate) {
+        //TODO remove the try after some app updates fun change name
+        try {
+            Android.SetMainPlayerBitrate(Bitrate);
+        } catch (e) {
+            Android.SetMainPlayerBandwidth(Bitrate);
+        }
+    }
+
+    //public String getcodecCapabilities(String CodecType)
+    //CodecType = avc vp9 a codec type
+    //Android specific: true
+    //Returns the codecCapabilities for that codec type
+    function OSInterface_getcodecCapabilities(CodecType) {
+        return Android.getcodecCapabilities(CodecType);
+    }
+
+    //public void setBlackListMediaCodec(String CodecList)
+    //CodecType = avc vp9 a codec type
+    //Android specific: true
+    //Returns the codecCapabilities for that codec type
+    function OSInterface_setBlackListMediaCodec(CodecList) {
+        Android.setBlackListMediaCodec(CodecList);
+    }
+
+    //public void mshowLoading(boolean show)
+    //show = show or not
+    //Android specific: true
+    //Shows a spinning ProgressBar
+    function OSInterface_mshowLoading(show) {
+        Android.mshowLoading(show);
+    }
+
+    //public String getWebviewVersion()
+    //Android specific: true
+    //returns the webview version
+    function OSInterface_getWebviewVersion() {
+        return Android.getWebviewVersion();
+    }
+
+    //public void mclose(boolean close)
+    //close = close == true close else minimize
+    //Android specific: true
+    //closes or minimize the app
+    function OSInterface_mclose(close) {
+        Android.mclose(close);
+    }
+
+    //public void mloadUrl(String url)
+    //url = the url to open
+    //Android specific: true
+    //opens a url on the main webview of the apk
+    function OSInterface_mloadUrl(url) {
+        Android.mloadUrl(url);
+    }
+
+    //public boolean isAccessibilitySettingsOn()
+    //Android specific: true
+    //Checks is a Accessibility service is enable
+    function OSInterface_isAccessibilitySettingsOn() {
+        Android.isAccessibilitySettingsOn();
+    }
+
+    //public void LongLog(String log)
+    //Android specific: true
+    //Logs to logcat the console.log of the app
+    function OSInterface_LongLog(log) {
+        if (Main_IsOn_OSInterface) Android.LongLog(log);
+    }
+
+    //public void getVideoStatus(boolean showLatency)
+    //Android specific: true
+    //request the video status dropped frames, buffer size etc
+    function OSInterface_getVideoStatus(showLatency) {
+        Android.getVideoStatus(showLatency);
+    }
+
+    //public String getVideoStatusString()
+    //Android specific: true
+    //request the video status dropped frames, buffer size etc
+    function OSInterface_getVideoStatusString() {
+        return Android.getVideoStatusString();
+    }
+
+    //public void getVideoQuality(int who_called)
+    //who_called = 0 live 1 vod
+    //Android specific: true
+    //request the video quality for the auto playback
+    function OSInterface_getVideoQuality(who_called) {
+        Android.getVideoQuality(who_called);
+    }
+
+    //public String getVideoStatusString()
+    //Android specific: true
+    //returns the video quality for the auto playback
+    function OSInterface_getVideoQualityString() {
+        return Android.getVideoQualityString();
+    }
+
+    //public void DisableMultiStream()
+    //Android specific: true
+    //Disables MultiStream
+    function OSInterface_DisableMultiStream() {
+        Android.DisableMultiStream();
+    }
+
+    //public void StartMultiStream(int position, String uri, String masterPlaylistString)
+    //position = position of the player
+    //uri = uri of the playlist
+    //masterPlaylistString = master Playlist String
+    //Android specific: true
+    //Start MultiStream at position
+    function OSInterface_StartMultiStream(position, uri, masterPlaylistString) {
+        Android.StartMultiStream(position, uri, masterPlaylistString);
+    }
+
+    //public void EnableMultiStream(boolean MainBig, int offset)
+    //MainBig = MainBig mode if true the main player is bigger
+    //offset = is the player position offset on the screen, one can click left right to change with will be the main player, the offset determines the position of it player
+    //masterPlaylistString = master Playlist String
+    //Android specific: true
+    //Start MultiStream and allows to change its mode
+    function OSInterface_EnableMultiStream(MainBig, offset) {
+        Android.EnableMultiStream(MainBig, offset);
+    }
+
+    //public void setPlaybackSpeed(float speed)
+    //speed = the playback speed
+    //Android specific: true
+    //Allows to change the playback speed
+    function OSInterface_setPlaybackSpeed(speed) {
+        Android.setPlaybackSpeed(speed);
+    }
+
+    //public void OpenExternal(String url)
+    //url = the url of the video
+    //Android specific: true
+    //Allows to open current video on a external player
+    function OSInterface_OpenExternal(url) {
+        Android.OpenExternal(url);
+    }
+
+    //public void mSetPlayerAudioMulti(int position)
+    //position = the player position to enable the audio 0 to 3, 4 all player enable
+    //Android specific: true
+    //Allows to set with player will produce audio
+    function OSInterface_mSetPlayerAudioMulti(position) {
+        Android.mSetPlayerAudioMulti(position);
+    }
+
+    //public boolean IsMainNotMain()
+    //Android specific: true
+    //boolean if true the main player is not the original main player and a change is needed to prevent odd behavior when changing multistream players positon
+    function OSInterface_IsMainNotMain() {
+        return Android.IsMainNotMain();
+    }
+
+    //public void PrepareForMulti(String uri, String masterPlaylistString)
+    //uri =  the url of the playlist or the clip
+    //masterPlaylistString = the stringify version of the url playlist content
+    //Android specific: true
+    //If IsMainNotMain fix player position
+    function OSInterface_PrepareForMulti(uri, masterPlaylistString) {
+        Android.PrepareForMulti(uri, masterPlaylistString);
+    }
+
+    //public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate)
+    //uri =  the url of the playlist or the clip
+    //masterPlaylistString = the stringify version of the url playlist content
+    //position = position of the player on the screen
+    //fullBitrate = if is side panel the player can use max Bitrate if not no
+    //Android specific: true
+    //Start MultiStream at position
+    function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, fullBitrate) {
+        Android.StartFeedPlayer(uri, masterPlaylistString, position, fullBitrate);
+    }
+
+    //public void ClearFeedPlayer()
+    //Android specific: true
+    //Clear the side panel or small player over the live feed play removes it from the screen
+    function OSInterface_ClearFeedPlayer() {
+        Android.ClearFeedPlayer();
+    }
+
+    //public void SetFeedPosition(int position)
+    //position the position on the screen
+    //Android specific: true
+    //Clear the side panel or small player over the live feed play removes it from the screen
+    function OSInterface_SetFeedPosition(position) {
+        Android.SetFeedPosition(position);
+    }
+
+    //public void mshowLoadingBottom(boolean show)
+    //show =  show or hide
+    //Android specific: true
+    //Shows a spinning ProgressBar over live feed
+    function OSInterface_mshowLoadingBottom(show) {
+        Android.mshowLoadingBottom(show);
+    }
+
+    //public void KeyboardCheckAndHIde()
+    //Android specific: true
+    //Checks and hide the on screen keyboard if a hw keyboard is connected to the devices
+    function OSInterface_KeyboardCheckAndHIde() {
+        Android.KeyboardCheckAndHIde();
+    }
+
+    //public void hideKeyboardFrom()
+    //Android specific: true
+    //Hides the on screen keyboard
+    function OSInterface_hideKeyboardFrom() {
+        Android.hideKeyboardFrom();
+    }
+
+    //public boolean isKeyboardConnected()
+    //Android specific: true
+    //informs if a hw Keyboard is connected to the devices
+    // function OSInterface_isKeyboardConnected() {//Not be used
+    //     return Android.isKeyboardConnected();
+    // }
+
+    //public boolean showKeyboardFrom()
+    //Android specific: true
+    //force show sw Keyboard
+    // function OSInterface_showKeyboardFrom() {//Not be used
+    //     Android.showKeyboardFrom();
+    // }
+
+    //public boolean getPlaybackState()
+    //Android specific: true
+    //return the playback state
+    // function OSInterface_getPlaybackState() {//Not be used
+    //     return Android.getPlaybackState();
+    // }
+
+    //public void mKeepScreenOn(boolean keepOn)
+    //Android specific: true
+    //Allows to control if the screen will be on or not from js side
+    // function OSInterface_mKeepScreenOn(keepOn) {//Not be used
+    //     Android.mKeepScreenOn(keepOn);
+    // }
+
+    //public void mSetAudio(int position, float volume)
+    //position player position
+    //volume the player volume
+    //Android specific: true
+    //Allows to control individual player volume
+    // function OSInterface_mSetAudio(position, volume) {//Not be used
+    //     Android.mSetAudio(position, volume);
+    // }
+
+    //public void showToast(String toast)
+    //position player position
+    //volume the player volume
+    //Android specific: true
+    //Allows to control individual player volume
+    // function OSInterface_showToast(toast) {//Not be used
+    //     Android.showToast(toast);
+    // }//Variable initialization
     var PlayClip_IsJumping = false;
     var PlayClip_jumpCount = 0;
     var PlayClip_TimeToJump = 0;
@@ -9598,7 +10336,7 @@
 
         //TODO remove the try after some app updates
         try {
-            Android.GetMethodUrlHeadersAsync(
+            OSInterface_GetMethodUrlHeadersAsync(
                 theUrl, //urlString
                 PlayClip_loadingDataTimeout, //timeout
                 postMessage, //postMessage, null for get
@@ -9749,8 +10487,15 @@
     function PlayClip_onPlayer() {
         //Main_Log('PlayClip_onPlayer ' + PlayClip_playingUrl);
 
-        if (Main_IsOn_OSInterface && PlayClip_isOn) Android.startVideoOffset(PlayClip_playingUrl, 3,
-            PlayClip_replayOrNext ? -1 : Android.gettime());
+        if (Main_IsOn_OSInterface && PlayClip_isOn) {
+            OSInterface_StartAuto(
+                PlayClip_playingUrl,
+                '',
+                3,
+                PlayClip_replayOrNext ? -1 : OSInterface_gettime(),
+                0
+            );
+        }
 
         PlayClip_replayOrNext = false;
 
@@ -9778,11 +10523,11 @@
     function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
         //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
 
-        Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(Android.gettime() / 1000)) : 0, 'clip');
+        Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
         PlayClip_hidePanel();
         if (Main_IsOn_OSInterface) {
-            if (closePlayer) Android.stopVideo(3);
-            else Android.PlayPause(false);
+            if (closePlayer) OSInterface_stopVideo(3);
+            else OSInterface_PlayPause(false);
         }
         if (closePlayer) PlayClip_isOn = false;
         Chat_Clear();
@@ -9854,7 +10599,7 @@
 
     function PlayClip_Enter() {
         if (!PlayClip_EnterPos) {
-            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
         } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
         else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
     }
@@ -9886,7 +10631,7 @@
         Play_clearHidePanel();
         PlayClip_quality = PlayClip_qualityPlaying;
         Play_ForceHidePannel();
-        if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, true);
+        if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
         Main_innerHTML('progress_bar_jump_to', STR_SPACE);
         document.getElementById('progress_bar_steps').style.display = 'none';
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
@@ -10179,7 +10924,7 @@
                 case KEY_PLAY:
                 case KEY_PLAYPAUSE:
                 case KEY_KEYBOARD_SPACE:
-                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                     break;
                 case KEY_1:
                     if (UserLiveFeed_isFeedShow()) {
@@ -10768,7 +11513,7 @@
             //reset audio value if on big as it may had be changed via hold down or bootm controls
             Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
 
-            Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+            OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
 
             Play_showWarningMidleDialog(
                 STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
@@ -10792,7 +11537,7 @@
             Main_ShowElement('stream_info_multi');
             Main_HideElement('stream_info_multi_big');
             Play_ResStoreChatPos();
-            Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+            OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
         }
         Play_SetAudioMultiIcon();
     }
@@ -10816,7 +11561,7 @@
             if (!Play_EndUpclear) {
                 if (Play_MultiEnable) Play_MultiKeyDown();
                 else {
-                    if (Main_IsOn_OSInterface) Android.mSwitchPlayer();
+                    if (Main_IsOn_OSInterface) OSInterface_mSwitchPlayer();
                     PlayExtra_SwitchPlayer();
                 }
             }
@@ -10879,7 +11624,7 @@
                         Play_PicturePicturePos++;
                         if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
 
-                        Android.mSwitchPlayerPosition(Play_PicturePicturePos);
+                        OSInterface_mSwitchPlayerPosition(Play_PicturePicturePos);
                         Main_setItem('Play_PicturePicturePos', Play_PicturePicturePos);
                     } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeLeft();
                     else Play_showPanel();
@@ -10908,7 +11653,7 @@
                     } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                         Play_PicturePictureSize++;
                         if (Play_PicturePictureSize > 2) Play_PicturePictureSize = 0;
-                        Android.mSwitchPlayerSize(Play_PicturePictureSize);
+                        OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
                         Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                     } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeRight();
                     else Play_showPanel();
@@ -10995,7 +11740,7 @@
                     } else if (Play_isPanelShown()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY === 1) {
-                            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                         } else Play_BottomOptionsPressed(1);
                         Play_setHidePanel();
                     } else if (Play_MultiDialogVisible()) {
@@ -11027,7 +11772,7 @@
                 case KEY_PLAY:
                 case KEY_KEYBOARD_SPACE:
                 case KEY_PLAYPAUSE:
-                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                     break;
                 case KEY_1:
                     if (UserLiveFeed_isFeedShow()) {
@@ -11221,7 +11966,7 @@
             opacity: 0,
             enterKey: function() {
                 Play_CurrentSpeed = this.defaultValue;
-                Android.setPlaybackSpeed(this.values[this.defaultValue]);
+                OSInterface_setPlaybackSpeed(this.values[this.defaultValue]);
             },
             updown: function(adder) {
                 this.defaultValue += adder;
@@ -11256,10 +12001,7 @@
                     PlayClip_hidePanel();
                 }
 
-                //TODO remove the try after some app updates
-                try {
-                    Android.OpenExternal(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
-                } catch (e) {}
+                OSInterface_OpenExternal(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
             },
             updown: function(adder) {
                 this.defaultValue += adder;
@@ -11295,8 +12037,8 @@
                     Play_data.qualityPlaying = Play_data.quality;
                     Play_SetHtmlQuality('stream_quality');
 
-                    if (oldQuality !== Play_data.quality) Android.SetQuality(Play_data.qualityIndex - 1); //just quality change
-                    else Android.RestartPlayer(1, 0, 0); //resetart the player
+                    if (oldQuality !== Play_data.quality) OSInterface_SetQuality(Play_data.qualityIndex - 1); //just quality change
+                    else OSInterface_RestartPlayer(1, 0, 0); //resetart the player
 
                 } else if (PlayVodClip === 2) {
                     PlayVod_hidePanel();
@@ -11305,8 +12047,8 @@
                     PlayVod_qualityPlaying = PlayVod_quality;
                     PlayVod_SetHtmlQuality('stream_quality');
 
-                    if (oldQuality !== PlayVod_quality) Android.SetQuality(PlayVod_qualityIndex - 1); //just quality change
-                    else Android.RestartPlayer(2, Android.gettime(), 0); //resetart the player
+                    if (oldQuality !== PlayVod_quality) OSInterface_SetQuality(PlayVod_qualityIndex - 1); //just quality change
+                    else OSInterface_RestartPlayer(2, OSInterface_gettime(), 0); //resetart the player
 
                 } else if (PlayVodClip === 3) {
                     PlayClip_hidePanel();
@@ -11331,10 +12073,10 @@
             enterKey: function() {
 
                 if (this.defaultValue === 2) { //both
-                    Android.RestartPlayer(1, 0, 0);
-                    Android.RestartPlayer(1, 0, 1);
-                } else if (this.defaultValue) Android.RestartPlayer(1, 0, 0); //main
-                else Android.RestartPlayer(1, 0, 1); //small
+                    OSInterface_RestartPlayer(1, 0, 0);
+                    OSInterface_RestartPlayer(1, 0, 1);
+                } else if (this.defaultValue) OSInterface_RestartPlayer(1, 0, 0); //main
+                else OSInterface_RestartPlayer(1, 0, 1); //small
 
                 Play_hidePanel();
                 this.defaultValue = 2;
@@ -11372,10 +12114,10 @@
 
                     for (var i = 0; i < Play_MultiArray.length; i++) {
                         if (Play_MultiArray[i].data.length > 0) {
-                            Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
+                            OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                         }
                     }
-                } else Android.StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl, Play_MultiArray[this.defaultValue - 1].playlist);
+                } else OSInterface_StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl, Play_MultiArray[this.defaultValue - 1].playlist);
 
                 Play_hidePanel();
                 this.defaultValue = 0;
@@ -11413,21 +12155,21 @@
                 Play_LowLatency = !Play_LowLatency;
 
                 if (Main_IsOn_OSInterface) {
-                    Android.mSetlatency(Play_LowLatency);
+                    OSInterface_mSetlatency(Play_LowLatency);
 
                     if (Play_MultiEnable) {
 
                         for (var i = 0; i < Play_MultiArray.length; i++) {
                             if (Play_MultiArray[i].data.length > 0) {
-                                Android.StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
+                                OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                             }
                         }
 
                     } else if (PlayExtra_PicturePicture) {
-                        Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
-                        Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+                        OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                        OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
                     } else {
-                        Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                        OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
                     }
 
                 }
@@ -11450,7 +12192,7 @@
             opacity: 0,
             enterKey: function() {
 
-                Android.mSwitchPlayerAudio(this.defaultValue);
+                OSInterface_mSwitchPlayerAudio(this.defaultValue);
 
                 Play_controlsAudioPos = this.defaultValue;
 
@@ -11493,7 +12235,7 @@
             opacity: 0,
             enterKey: function(preventShowWarning) {
 
-                Android.mSetPlayerAudioMulti(this.defaultValue);
+                OSInterface_mSetPlayerAudioMulti(this.defaultValue);
                 Play_AudioAll = this.defaultValue === 4;
 
                 this.bottomArrows();
@@ -11535,12 +12277,12 @@
 
                 Play_MultiEnable = !Play_MultiEnable;
                 if (Play_MultiEnable) {
-                    if (Android.IsMainNotMain()) {
+                    if (OSInterface_IsMainNotMain()) {
                         if (PlayExtra_PicturePicture) {
-                            Android.mSwitchPlayer();
+                            OSInterface_mSwitchPlayer();
                             PlayExtra_SwitchPlayer();
                         } else {
-                            Android.PrepareForMulti(Play_data.AutoUrl, Play_data.playlist);
+                            OSInterface_PrepareForMulti(Play_data.AutoUrl, Play_data.playlist);
                         }
                     }
 
@@ -11549,11 +12291,11 @@
                     if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                         Play_data.quality = "Auto";
                         Play_data.qualityPlaying = Play_data.quality;
-                        Android.SetQuality(-1);
+                        OSInterface_SetQuality(-1);
                         Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
                     }
 
-                    Android.EnableMultiStream(Play_Multi_MainBig, 0);
+                    OSInterface_EnableMultiStream(Play_Multi_MainBig, 0);
 
                     var i = 0;
                     for (i; i < 4; i++) {
@@ -11600,7 +12342,7 @@
                     Play_SetAudioMultiIcon();
 
                 } else {
-                    Android.DisableMultiStream();
+                    OSInterface_DisableMultiStream();
                     Play_Multi_UnSetPanel(shutdown);
                     Play_CleanHideExit();
                     Play_getQualities(1, true);
@@ -12116,7 +12858,7 @@
 
             if (Main_IsOn_OSInterface) {
                 //Not on auto mode for change to auto before start picture in picture
-                if (!Main_A_includes_B(Play_data.quality, 'Auto')) Android.SetQuality(-1);
+                if (!Main_A_includes_B(Play_data.quality, 'Auto')) OSInterface_SetQuality(-1);
 
                 Play_data.quality = "Auto";
                 Play_data.qualityPlaying = Play_data.quality;
@@ -12143,28 +12885,24 @@
         if (Main_IsOn_OSInterface) {
 
             PlayExtra_ResumeId = (new Date().getTime());
-            //TODO remove the try after some app updates
-            try {
-                //On resume to avoid out of sync resumes we run PP synchronous
-                if (synchronous) {
-                    var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
-                    if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData));
-                    else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+            //On resume to avoid out of sync resumes we run PP synchronous
+            if (synchronous) {
+                var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
-                } else {
-                    Android.getStreamDataAsync(
-                        Play_live_token.replace('%x', PlayExtra_data.data[6]),
-                        Play_live_links.replace('%x', PlayExtra_data.data[6]),
-                        'PlayExtra_ResumeResult',
-                        PlayExtra_ResumeId,
-                        1,
-                        DefaultHttpGetReTryMax,
-                        DefaultHttpGetTimeout
-                    );
-                }
-            } catch (e) {
-                PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+                if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData));
+                else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+
+            } else {
+                OSInterface_getStreamDataAsync(
+                    Play_live_token.replace('%x', PlayExtra_data.data[6]),
+                    Play_live_links.replace('%x', PlayExtra_data.data[6]),
+                    'PlayExtra_ResumeResult',
+                    PlayExtra_ResumeId,
+                    1,
+                    DefaultHttpGetReTryMax,
+                    DefaultHttpGetTimeout
+                );
             }
 
         } else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
@@ -12212,17 +12950,17 @@
 
     function PlayExtra_loadDataSuccessEnd(playlist) {
         UserLiveFeed_Hide();
-        Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+        OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
         PlayExtra_data.watching_time = new Date().getTime();
         Play_SetAudioIcon();
         PlayExtra_data.playlist = playlist;
         PlayExtra_SetPanel();
 
         if (!Play_isFullScreen) {
-            Android.mupdatesizePP(Play_isFullScreen);
+            OSInterface_mupdatesizePP(Play_isFullScreen);
             ChatLive_Init(1);
             PlayExtra_ShowChat();
-        } else Android.mSwitchPlayerSize(Play_PicturePictureSize);
+        } else OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
 
         if (Play_isOn) PlayExtra_qualityChanged();
         PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -12294,7 +13032,7 @@
     function PlayExtra_End_success(doSwitch) {
         //Some player ended switch and warn
         if (doSwitch) { //Main player has end switch and close
-            Android.mSwitchPlayer();
+            OSInterface_mSwitchPlayer();
             PlayExtra_SwitchPlayer();
         }
 
@@ -12312,7 +13050,7 @@
                 //TODO make a simple fun for this
                 try {
 
-                    Android.GetMethodUrlHeadersAsync(
+                    OSInterface_GetMethodUrlHeadersAsync(
                         theUrl, //urlString
                         Play_loadingDataTimeout, //timeout
                         null, //postMessage, null for get
@@ -12380,7 +13118,7 @@
 
                 Play_showWarningDialog(warning_text, 4000);
                 //Java will reset audio source reset it
-                Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+                OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
             } else {
 
                 Play_IsWarning = true;
@@ -12473,7 +13211,7 @@
 
     function PlayExtra_qualityChanged() {
         if (Main_IsOn_OSInterface && Play_isOn) {
-            Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+            OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
         }
 
         if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
@@ -12506,7 +13244,7 @@
             PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
             ChatLive_Clear(1);
             Main_HideElement('chat_container2');
-            if (Main_IsOn_OSInterface && !Play_isFullScreen) Android.mupdatesize(Play_isFullScreen);
+            if (Main_IsOn_OSInterface && !Play_isFullScreen) OSInterface_mupdatesizePP(Play_isFullScreen);
             PlayExtra_UnSetPanel();
             Play_HideBufferDialog();
             Play_showWarningMidleDialog(Reason, 2500);
@@ -12744,9 +13482,9 @@
                 Play_PicturePictureSize = 0;
                 Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
             }
-            Android.mSetPlayerPosition(Play_PicturePicturePos);
-            Android.mSetPlayerSize(Play_PicturePictureSize);
-            Android.mSetlatency(Play_LowLatency);
+            OSInterface_mSetPlayerPosition(Play_PicturePicturePos);
+            OSInterface_mSetPlayerSize(Play_PicturePictureSize);
+            OSInterface_mSetlatency(Play_LowLatency);
             Settings_PP_Workaround();
         }
 
@@ -12809,8 +13547,8 @@
         Play_ChatSize(false);
 
         if (Main_IsOn_OSInterface) {
-            if (PlayExtra_PicturePicture) Android.mupdatesizePP(Play_isFullScreen);
-            else Android.mupdatesize(Play_isFullScreen);
+            if (PlayExtra_PicturePicture) OSInterface_mupdatesizePP(Play_isFullScreen);
+            else OSInterface_mupdatesize(Play_isFullScreen);
         }
 
         Main_setItem('Play_isFullScreen', Play_isFullScreen);
@@ -12926,7 +13664,7 @@
             Play_CheckIfIsLiveId = (new Date().getTime());
             //TODO remove the try after some app updates
             try {
-                Android.getStreamDataAsync(
+                OSInterface_getStreamDataAsync(
                     Play_live_token.replace('%x', selectedChannelDisplayname[6]),
                     Play_live_links.replace('%x', selectedChannelDisplayname[6]),
                     callback,
@@ -13033,7 +13771,7 @@
 
         //TODO remove the try after some app updates
         try {
-            result = Android.getStreamData(
+            result = OSInterface_getStreamData(
                 Play_live_token.replace('%x', channel_name),
                 Play_live_links.replace('%x', channel_name),
                 DefaultHttpGetReTryMax,
@@ -13200,63 +13938,6 @@
         }
     }
 
-    function Play_RefreshMultiGet(theUrl, tryes, pos) {
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = 5000;
-
-        for (var i = 0; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_updateStreamInfoMultiValues(xmlHttp.responseText, pos);
-                } else {
-                    Play_updateStreamInfoMultiError(theUrl, tryes, pos);
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
-
-    function Play_updateStreamInfoMultiValues(response, pos) {
-        response = JSON.parse(response);
-        if (response.stream !== null) {
-            Play_MultiArray[pos].data = ScreensObj_LiveCellArray(response.stream);
-
-            if (!pos) {
-                Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
-                Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
-            }
-
-            Play_MultiUpdateinfo(
-                (pos + (4 - Play_Multi_Offset)) % 4,
-                response.stream.game,
-                response.stream.viewers,
-                twemoji.parse(response.stream.channel.status, false, true),
-                (Play_Multi_MainBig ? '_big' : '')
-            );
-
-            Main_Set_history('live', Play_MultiArray[pos].data);
-
-        }
-    }
-
-    function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
-        if (tryes < DefaultHttpGetReTryMax) {
-            Main_setTimeout(
-                function() {
-                    if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
-                    //give a second for it retry as the TV may be on coming from resume
-                },
-                2500
-            );
-        }
-    }
-
     //When update this also update PlayExtra_updateStreamInfo
     function Play_updateStreamInfo() {
         if (Play_MultiEnable) {
@@ -13312,7 +13993,7 @@
                     else Play_loadDataErrorFinish();
 
                 } else {
-                    Android.getStreamDataAsync(
+                    OSInterface_getStreamDataAsync(
                         Play_live_token.replace('%x', Play_data.data[6]),
                         Play_live_links.replace('%x', Play_data.data[6]),
                         'Play_loadDataResult',
@@ -13487,7 +14168,7 @@
         Play_data.qualityPlaying = Play_data.quality;
 
         Play_SetHtmlQuality('stream_quality');
-        if (Main_IsOn_OSInterface) Android.SetQuality(Play_data.qualityIndex - 1);
+        if (Main_IsOn_OSInterface) OSInterface_SetQuality(Play_data.qualityIndex - 1);
         else Play_onPlayer();
         //Play_PannelEndStart(1);
     }
@@ -13497,7 +14178,7 @@
     function Play_getQualities(position, skipchange) {
         if (!Main_IsOn_OSInterface) return;
 
-        var baseQualities = Android.getQualities();
+        var baseQualities = OSInterface_getQualities();
         var result;
 
         if (baseQualities) {
@@ -13589,7 +14270,7 @@
         //Main_Log('Play_onPlayer');
 
         if (Main_IsOn_OSInterface && Play_isOn) {
-            Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+            OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
         }
 
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
@@ -13617,8 +14298,8 @@
 
             Play_data.quality = "Auto";
             Play_data.qualityPlaying = Play_data.quality;
-            Android.SetQuality(-1);
-            Android.RestartPlayer(1, 0, 0);
+            OSInterface_SetQuality(-1);
+            OSInterface_RestartPlayer(1, 0, 0);
             Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
             Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
@@ -13626,8 +14307,8 @@
 
             PlayVod_quality = "Auto";
             PlayVod_qualityPlaying = PlayVod_quality;
-            Android.SetQuality(-1);
-            Android.RestartPlayer(2, Android.gettime(), 0);
+            OSInterface_SetQuality(-1);
+            OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);
             Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controlsQuality);
             Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
@@ -13713,8 +14394,8 @@
         if (Main_IsOn_OSInterface) {
             if (closePlayer) {
                 //We are closing the player on error or on end
-                Android.mClearSmallPlayer();
-                Android.stopVideo(1);
+                OSInterface_mClearSmallPlayer();
+                OSInterface_stopVideo(1);
             }
         }
 
@@ -13793,12 +14474,12 @@
     }
 
     function Play_showBufferDialog() {
-        if (Main_IsOn_OSInterface) Android.mshowLoading(true);
+        if (Main_IsOn_OSInterface) OSInterface_mshowLoading(true);
         else Main_ShowElement('dialog_loading_play');
     }
 
     function Play_HideBufferDialog() {
-        if (Main_IsOn_OSInterface) Android.mshowLoading(false);
+        if (Main_IsOn_OSInterface) OSInterface_mshowLoading(false);
         else Main_HideElement('dialog_loading_play');
     }
 
@@ -13921,9 +14602,9 @@
     function Play_UpdateStatus(mwhocall) {
         var isLive = mwhocall === 1;
 
-        if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(0);
-        else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) Play_getVideoQuality(1);
-        Play_VideoStatus(isLive);
+        if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
+        else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) OSInterface_getVideoQuality(1);
+        OSInterface_getVideoStatus(isLive);
     }
 
     function Play_showPanel() {
@@ -13980,8 +14661,8 @@
 
         if (!Play_Status_Always_On) {
             if (Main_IsOn_OSInterface) {
-                if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_getVideoQuality(0);
-                Play_VideoStatus(true);
+                if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
+                OSInterface_getVideoStatus(true);
             } else Play_VideoStatusTest();
         }
     }
@@ -13994,14 +14675,10 @@
             STR_BR + STR_PING + " 100.00 (99.00 Avg) ms");
     }
 
-    function Play_VideoStatus(showLatency) {
-        Android.getVideoStatus(showLatency);
-    }
-
     var Play_BufferSize = 0;
 
     function Play_ShowVideoStatus(showLatency, Who_Called) {
-        var value = Android.getVideoStatusString();
+        var value = OSInterface_getVideoStatusString();
 
         if (value) value = JSON.parse(value);
         else return;
@@ -14016,7 +14693,7 @@
 
         if (Who_Called > 1) {
             Play_BufferSize = parseInt(value[7]);
-            PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+            PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
         }
     }
 
@@ -14032,15 +14709,11 @@
         return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
     }
 
-    function Play_getVideoQuality(position) {
-        Android.getVideoQuality(position);
-    }
-
-    function Play_ShowVideoQuality(position) {
-        var value = Android.getVideoQualityString();
+    function Play_ShowVideoQuality(who_called) {
+        var value = OSInterface_getVideoQualityString();
 
         if (!value) {
-            if (!position) Play_SetHtmlQuality('stream_quality');
+            if (!who_called) Play_SetHtmlQuality('stream_quality');
             else PlayVod_SetHtmlQuality('stream_quality');
 
             return;
@@ -14209,7 +14882,7 @@
         Main_setTimeout(
             function() {
 
-                Android.GetMethodUrlHeadersAsync(
+                OSInterface_GetMethodUrlHeadersAsync(
                     theUrl, //urlString
                     Play_loadingDataTimeout, //timeout
                     null, //postMessage, null for get
@@ -14279,7 +14952,7 @@
             Play_DurationSeconds = duration / 1000;
             Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
             PlayVod_RefreshProgressBarr();
-            if (!Play_Status_Always_On) Play_VideoStatus(false);
+            if (!Play_Status_Always_On) OSInterface_getVideoStatus(false);
             if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true); //duration may have changed update the positions
         }
     }
@@ -14297,12 +14970,12 @@
             2500);
 
         if (PlayExtra_data.data.length > 0) {
-            if (Main_IsOn_OSInterface) Android.mSwitchPlayer();
+            if (Main_IsOn_OSInterface) OSInterface_mSwitchPlayer();
             PlayExtra_SwitchPlayer();
             Play_CloseSmall();
 
         } else {
-            if (Main_IsOn_OSInterface) Android.mClearSmallPlayer();
+            if (Main_IsOn_OSInterface) OSInterface_mClearSmallPlayer();
             Play_CheckHostStart(error_410);
         }
         PlayExtra_UnSetPanel();
@@ -14313,7 +14986,7 @@
         PlayExtra_PicturePicture = false;
 
         if (Main_IsOn_OSInterface) {
-            Android.mClearSmallPlayer();
+            OSInterface_mClearSmallPlayer();
             Play_SetFullScreen(Play_isFullScreen);
         }
         PlayExtra_UnSetPanel();
@@ -14389,6 +15062,98 @@
         Play_shutdownStream();
     }
 
+    var Play_StoreChatPosValue = {
+        height: '',
+        marginTop: '',
+        top: '',
+        left: ''
+    };
+
+    function Play_StoreChatPos() {
+        Play_StoreChatPosValue.height = Play_chat_container.style.height;
+        Play_StoreChatPosValue.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
+        Play_StoreChatPosValue.top = Play_chat_container.style.top;
+        Play_StoreChatPosValue.left = Play_chat_container.style.left;
+    }
+
+    function Play_ResStoreChatPos() {
+        Play_chat_container.style.width = '';
+        if (!Play_ChatEnable) Play_hideChat();
+        Play_chat_container.style.height = Play_StoreChatPosValue.height;
+        document.getElementById("play_chat_dialog").style.marginTop = Play_StoreChatPosValue.marginTop;
+        Play_chat_container.style.top = Play_StoreChatPosValue.top;
+        Play_chat_container.style.left = Play_StoreChatPosValue.left;
+    }
+
+    function Play_AudioChangeRight() {
+        Play_controls[Play_controlsAudio].defaultValue++;
+        if (Play_controls[Play_controlsAudio].defaultValue > (Play_controls[Play_controlsAudio].values.length - 2)) Play_controls[Play_controlsAudio].defaultValue = 0;
+        Play_controls[Play_controlsAudio].enterKey();
+    }
+
+    function Play_AudioChangeLeft() {
+        Play_controls[Play_controlsAudio].defaultValue--;
+        if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = (Play_controls[Play_controlsAudio].values.length - 2);
+        Play_controls[Play_controlsAudio].enterKey();
+    } //All multistream related fun are placed here
+
+    function Play_RefreshMultiGet(theUrl, tryes, pos) {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = 5000;
+
+        for (var i = 0; i < 2; i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    Play_updateStreamInfoMultiValues(xmlHttp.responseText, pos);
+                } else {
+                    Play_updateStreamInfoMultiError(theUrl, tryes, pos);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+
+    function Play_updateStreamInfoMultiValues(response, pos) {
+        response = JSON.parse(response);
+        if (response.stream !== null) {
+            Play_MultiArray[pos].data = ScreensObj_LiveCellArray(response.stream);
+
+            if (!pos) {
+                Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
+                Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+            }
+
+            Play_MultiUpdateinfo(
+                (pos + (4 - Play_Multi_Offset)) % 4,
+                response.stream.game,
+                response.stream.viewers,
+                twemoji.parse(response.stream.channel.status, false, true),
+                (Play_Multi_MainBig ? '_big' : '')
+            );
+
+            Main_Set_history('live', Play_MultiArray[pos].data);
+
+        }
+    }
+
+    function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
+        if (tryes < DefaultHttpGetReTryMax) {
+            Main_setTimeout(
+                function() {
+                    if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
+                    //give a second for it retry as the TV may be on coming from resume
+                },
+                2500
+            );
+        }
+    }
+
     function Play_Multi_SetPanel() {
         document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
         document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
@@ -14449,10 +15214,10 @@
             if (PlayExtra_PicturePicture) {
                 PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[pos_1]));
                 PlayExtra_SetPanel();
-                Android.mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+                OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
 
                 if (Play_Multi_Offset) {
-                    Android.StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+                    OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
                 }
 
                 if (!Play_isFullScreen) {
@@ -14475,7 +15240,7 @@
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
             if ((name !== Play_data.data[14] || Play_Multi_Offset) && First) {
-                Android.StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+                OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
                 Play_UpdateMainStream(true, true);
                 Play_MultiUpdateMain();
             } else Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
@@ -14500,7 +15265,7 @@
         Play_MultiInfoReset(position);
         if (!Play_MultiHasOne()) {
             Play_MultiEnable = false;
-            Android.DisableMultiStream();
+            OSInterface_DisableMultiStream();
             Play_Multi_UnSetPanelDivs(true);
             PlayExtra_ClearExtra();
             Play_CheckHostStart();
@@ -14578,7 +15343,7 @@
         Play_MultiArray[pos].resultId = (new Date().getTime());
         //TODO remove the try after some app updates
         try {
-            Android.getStreamDataAsync(
+            OSInterface_getStreamDataAsync(
                 Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
                 Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
                 'Play_MultiResult',
@@ -14637,7 +15402,7 @@
             Play_MultiInfoReset(pos);
             if (!Play_MultiHasOne()) {
                 Play_MultiEnable = false;
-                Android.DisableMultiStream();
+                OSInterface_DisableMultiStream();
                 Play_Multi_UnSetPanelDivs(true);
                 PlayExtra_ClearExtra();
                 Play_CheckHostStart();
@@ -14649,7 +15414,7 @@
         Play_MultiArray[pos].AutoUrl = theUrl;
         if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
-        Android.StartMultiStream(pos, theUrl, playlist);
+        OSInterface_StartMultiStream(pos, theUrl, playlist);
 
         Play_MultiArray[pos].playlist = playlist;
 
@@ -14736,7 +15501,7 @@
                 2000
             );
 
-            Android.EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+            OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_Multi_Offset]));
             Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
             Play_MultiUpdateinfoMainBig('_big');
@@ -14939,41 +15704,6 @@
     function Play_setHideMultiDialog() {
         Play_clearHideMultiDialog();
         Play_HideMultiDialogID = Main_setTimeout(Play_HideMultiDialog, 10000, Play_HideMultiDialogID);
-    }
-
-    var Play_StoreChatPosValue = {
-        height: '',
-        marginTop: '',
-        top: '',
-        left: ''
-    };
-
-    function Play_StoreChatPos() {
-        Play_StoreChatPosValue.height = Play_chat_container.style.height;
-        Play_StoreChatPosValue.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
-        Play_StoreChatPosValue.top = Play_chat_container.style.top;
-        Play_StoreChatPosValue.left = Play_chat_container.style.left;
-    }
-
-    function Play_ResStoreChatPos() {
-        Play_chat_container.style.width = '';
-        if (!Play_ChatEnable) Play_hideChat();
-        Play_chat_container.style.height = Play_StoreChatPosValue.height;
-        document.getElementById("play_chat_dialog").style.marginTop = Play_StoreChatPosValue.marginTop;
-        Play_chat_container.style.top = Play_StoreChatPosValue.top;
-        Play_chat_container.style.left = Play_StoreChatPosValue.left;
-    }
-
-    function Play_AudioChangeRight() {
-        Play_controls[Play_controlsAudio].defaultValue++;
-        if (Play_controls[Play_controlsAudio].defaultValue > (Play_controls[Play_controlsAudio].values.length - 2)) Play_controls[Play_controlsAudio].defaultValue = 0;
-        Play_controls[Play_controlsAudio].enterKey();
-    }
-
-    function Play_AudioChangeLeft() {
-        Play_controls[Play_controlsAudio].defaultValue--;
-        if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = (Play_controls[Play_controlsAudio].values.length - 2);
-        Play_controls[Play_controlsAudio].enterKey();
     } //Variable initialization
     var PlayVod_quality = 'Auto';
     var PlayVod_qualityPlaying = PlayVod_quality;
@@ -15204,7 +15934,7 @@
         Play_ResumeAfterOnlineCounter = 0;
 
         //Get the time from android as it can save it more reliably
-        Main_values.vodOffset = Android.getsavedtime() / 1000;
+        Main_values.vodOffset = OSInterface_getsavedtime() / 1000;
 
         if (navigator.onLine) PlayVod_ResumeAfterOnline();
         else Play_ResumeAfterOnlineId = Main_setInterval(PlayVod_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
@@ -15233,7 +15963,7 @@
     function PlayVod_SaveOffset() {
         //Prevent setting it to 0 before it was used
         if (!Main_values.vodOffset) {
-            Main_values.vodOffset = Main_IsOn_OSInterface ? (parseInt(Android.gettime() / 1000)) : 0;
+            Main_values.vodOffset = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0;
             if (Main_values.vodOffset > 0) {
                 Main_SaveValues();
                 PlayVod_SaveVodIds();
@@ -15291,7 +16021,7 @@
             PlayVod_loadDataId = (new Date().getTime());
             //TODO remove the try after some app updates
             try {
-                Android.getStreamDataAsync(
+                OSInterface_getStreamDataAsync(
                     Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
                     Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
                     'PlayVod_loadDataResult',
@@ -15398,7 +16128,7 @@
         PlayVod_qualityPlaying = PlayVod_quality;
 
         PlayVod_SetHtmlQuality('stream_quality');
-        if (Main_IsOn_OSInterface) Android.SetQuality(PlayVod_qualityIndex - 1);
+        if (Main_IsOn_OSInterface) OSInterface_SetQuality(PlayVod_qualityIndex - 1);
         else PlayVod_onPlayer();
         //Play_PannelEndStart(2);
     }
@@ -15413,7 +16143,7 @@
                 PlayVod_onPlayerStartPlay(Main_values.vodOffset * 1000);
                 Main_values.vodOffset = 0;
             } else {
-                PlayVod_onPlayerStartPlay(Android.gettime());
+                PlayVod_onPlayerStartPlay(OSInterface_gettime());
             }
         }
 
@@ -15424,7 +16154,7 @@
 
     function PlayVod_onPlayerStartPlay(time) {
         if (Main_IsOn_OSInterface && PlayVod_isOn) {
-            Android.StartAuto(PlayVod_autoUrl, PlayVod_playlist, 2, PlayVod_replay ? -1 : time, 0);
+            OSInterface_StartAuto(PlayVod_autoUrl, PlayVod_playlist, 2, PlayVod_replay ? -1 : time, 0);
         }
     }
 
@@ -15443,10 +16173,10 @@
         //Main_Log('PlayVod_PreshutdownStream');
 
         if (saveOffset && Main_IsOn_OSInterface) {
-            if ((Play_DurationSeconds - 300) > parseInt(Android.gettime() / 1000))
+            if ((Play_DurationSeconds - 300) > parseInt(OSInterface_gettime() / 1000))
                 PlayVod_SaveVodIds();
         }
-        if (Main_IsOn_OSInterface) Android.stopVideo(2);
+        if (Main_IsOn_OSInterface) OSInterface_stopVideo(2);
         Main_ShowElement('controls_holder');
         Main_ShowElement('progress_pause_holder');
         PlayVod_isOn = false;
@@ -15474,7 +16204,7 @@
         PlayVod_addToJump = 0;
         Play_clearHidePanel();
         Play_ForceHidePannel();
-        if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((Android.gettime() / 1000), Play_DurationSeconds, true);
+        if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
         Main_innerHTML('progress_bar_jump_to', STR_SPACE);
         document.getElementById('progress_bar_steps').style.display = 'none';
         PlayVod_previews_hide();
@@ -15511,9 +16241,9 @@
     function PlayVod_RefreshProgressBarr(show) {
         if (!Play_Status_Always_On) {
             if (Main_IsOn_OSInterface && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
-                Play_getVideoQuality(1);
+                OSInterface_getVideoQuality(1);
 
-            if (Main_IsOn_OSInterface) Play_VideoStatus(false);
+            if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(false);
             else Play_VideoStatusTest();
         }
     }
@@ -15617,7 +16347,7 @@
             } else Chat_offset = ChannelVod_vodOffset;
 
             if (Main_IsOn_OSInterface) {
-                Android.mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
+                OSInterface_mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
             }
             Main_setTimeout(PlayVod_SaveOffset, 1000);
             if (PlayClip_HasVOD) Chat_Init();
@@ -15653,7 +16383,7 @@
     }
 
     function PlayVod_jumpStart(multiplier, duration_seconds) {
-        var currentTime = Main_IsOn_OSInterface ? (Android.gettime() / 1000) : 0;
+        var currentTime = Main_IsOn_OSInterface ? (OSInterface_gettime() / 1000) : 0;
 
         Main_clearTimeout(PlayVod_SizeClearID);
         PlayVod_IsJumping = true;
@@ -15687,7 +16417,7 @@
     }
 
     function PlayVod_SaveVodIds() {
-        Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, Main_IsOn_OSInterface ? (parseInt(Android.gettime() / 1000)) : 0, 'vod');
+        Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'vod');
     }
 
     function Play_showVodDialog() {
@@ -15930,7 +16660,7 @@
                         if (!PlayVod_PanelY) {
                             if (PlayVod_IsJumping) PlayVod_jump();
                         } else if (PlayVod_PanelY === 1) {
-                            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                         } else Play_BottomOptionsPressed(2);
                         PlayVod_setHidePanel();
                     } else if (UserLiveFeed_isFeedShow()) {
@@ -15950,7 +16680,7 @@
                 case KEY_PLAY:
                 case KEY_PLAYPAUSE:
                 case KEY_KEYBOARD_SPACE:
-                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) Android.PlayPauseChange();
+                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                     break;
                 case KEY_1:
                     if (UserLiveFeed_isFeedShow()) {
@@ -16014,7 +16744,7 @@
         PlayVod_previews_url = seek_previews_url;
         PlayVod_previews_clear();
 
-        if (Main_IsOn_OSInterface) PlayVod_previews_start();
+        if (Main_IsOn_OSInterface) OSInterface_GetPreviews(PlayVod_previews_url);
         //else PlayVod_previews_start_test();
     }
 
@@ -16022,13 +16752,6 @@
         PlayVod_previews_hide();
         PlayVod_previews_obj.images = [];
         PlayVod_previews_images_pos = -1;
-    }
-
-    function PlayVod_previews_start() {
-        //TODO remove the try after some app updates
-        try {
-            Android.GetPreviews(PlayVod_previews_url);
-        } catch (e) {}
     }
 
     var PlayVod_previews_obj = {};
@@ -16420,7 +17143,7 @@
     // function Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
     //     try {
 
-    // Android.GetMethodUrlHeadersAsync(
+    // OSInterface_GetMethodUrlHeadersAsync(
     //     theUrl,//urlString
     //     Timeout,//timeout
     //     null,//postMessage, null for get
@@ -16868,11 +17591,8 @@
 
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
         Main_CheckAccessibility(true);
-        //Remove the try after some app updates
         //Make sure the service is stop
-        try {
-            JSON.parse(Android.StopNotificationService());
-        } catch (e) {}
+        OSInterface_StopNotificationService();
         //Main_Log('Screens_loadDataSuccessFinishEnd');
     }
 
@@ -20383,7 +21103,7 @@
 
     function Search_RemoveinputFocus(EnaKeydown) {
         Main_clearTimeout(Search_inputFocusId);
-        if (!Main_isTV && Main_IsOn_OSInterface) Android.mhideSystemUI();
+        if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
         Main_RemoveClass('scenefeed', 'avoidclicks');
         Main_RemoveClass('scene_notify', 'avoidclicks');
@@ -21740,18 +22460,11 @@
 
     function Settings_notification_background() {
         UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
-
-        //TODO remove the try after some app updates
-        try {
-            if (Main_IsOn_OSInterface) Android.upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
-        } catch (e) {}
+        OSInterface_upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
     }
 
     function Settings_SetPingWarning() {
-        //TODO remove the try after some app updates
-        try {
-            if (Main_IsOn_OSInterface) Android.Settings_SetPingWarning(Settings_value.ping_warn.defaultValue === 1);
-        } catch (e) {}
+        OSInterface_Settings_SetPingWarning(Settings_value.ping_warn.defaultValue === 1);
     }
 
     function Settings_NotifyTimeout() {
@@ -21759,7 +22472,7 @@
     }
 
     function Settings_PP_Workaround() {
-        if (Main_IsOn_OSInterface) Android.msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
+        OSInterface_msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
     }
 
     function Settings_DpadOpacity() {
@@ -21861,7 +22574,7 @@
             value = parseInt(Settings_Obj_values("bitrate_main").split(" ")[0] * 1000000);
         else value = 0;
 
-        Android.SetMainPlayerBandwidth(value);
+        OSInterface_SetMainPlayerBitrate(value);
     }
 
     function Settings_SetBitRateMin() {
@@ -21871,7 +22584,7 @@
             value = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
         else value = 0;
 
-        Android.SetSmallPlayerBandwidth(value);
+        OSInterface_SetSmallPlayerBandwidth(value);
     }
 
     function Settings_SetBuffers(whocall) {
@@ -21879,20 +22592,18 @@
             Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
             PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
             PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-            if (Main_IsOn_OSInterface) {
-                Android.SetBuffer(1, Play_Buffer);
-                Android.SetBuffer(2, PlayVod_Buffer);
-                Android.SetBuffer(3, PlayClip_Buffer);
-            }
+            OSInterface_SetBuffer(1, Play_Buffer);
+            OSInterface_SetBuffer(2, PlayVod_Buffer);
+            OSInterface_SetBuffer(3, PlayClip_Buffer);
         } else if (whocall === 1) {
             Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
-            if (Main_IsOn_OSInterface) Android.SetBuffer(1, Play_Buffer);
+            OSInterface_SetBuffer(1, Play_Buffer);
         } else if (whocall === 2) {
             PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
-            if (Main_IsOn_OSInterface) Android.SetBuffer(2, PlayVod_Buffer);
+            OSInterface_SetBuffer(2, PlayVod_Buffer);
         } else if (whocall === 3) {
             PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
-            if (Main_IsOn_OSInterface) Android.SetBuffer(3, PlayClip_Buffer);
+            OSInterface_SetBuffer(3, PlayClip_Buffer);
         }
     }
 
@@ -22066,7 +22777,7 @@
             }];
             else {
                 try {
-                    Settings_CodecsValue = JSON.parse(Android.getcodecCapabilities('avc'));
+                    Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
                 } catch (e) {
                     Settings_CodecsValue = [];
                 }
@@ -22213,7 +22924,7 @@
     }
 
     function Settings_CodecsSet() {
-        if (Main_IsOn_OSInterface) Android.setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+        if (Main_IsOn_OSInterface) OSInterface_setBlackListMediaCodec(Settings_DisableCodecsNames.join());
     }
 
     function Settings_ForceEnableAimations() {
@@ -23159,7 +23870,7 @@
                     Play_CheckIfIsLiveResponseText = StreamData.responseText;
                     Play_CheckIfIsLiveChannel = StreamInfo[6];
 
-                    Android.StartFeedPlayer(
+                    OSInterface_StartFeedPlayer(
                         Play_CheckIfIsLiveURL,
                         Play_CheckIfIsLiveResponseText,
                         5,
@@ -23206,7 +23917,7 @@
             try {
                 var channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
 
-                Android.CheckIfIsLiveFeed(
+                OSInterface_CheckIfIsLiveFeed(
                     Play_live_token.replace('%x', channel),
                     Play_live_links.replace('%x', channel),
                     UserLiveFeed_CheckIfIsLiveDelay,
@@ -23225,7 +23936,7 @@
     function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
         if (!Main_IsOn_OSInterface) return;
 
-        Android.ClearFeedPlayer();
+        OSInterface_ClearFeedPlayer();
         if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
     }
 
@@ -24128,7 +24839,7 @@
                     if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
                         UserLiveFeed_CheckIfIsLiveStart();
                     } else if (Play_CheckIfIsLiveResponseText) {
-                        Android.SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+                        OSInterface_SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
                     }
                 }
 
@@ -24177,7 +24888,7 @@
     function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
         if (!Main_IsOn_OSInterface) return;
 
-        Android.ClearFeedPlayer();
+        OSInterface_ClearFeedPlayer();
         if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
     }
 
@@ -24197,7 +24908,7 @@
                     Play_CheckIfIsLiveResponseText = StreamData.responseText;
                     Play_CheckIfIsLiveChannel = StreamInfo[6];
 
-                    Android.StartFeedPlayer(
+                    OSInterface_StartFeedPlayer(
                         Play_CheckIfIsLiveURL,
                         Play_CheckIfIsLiveResponseText,
                         UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
@@ -24246,7 +24957,7 @@
 
         if (doc) {
 
-            Android.CheckIfIsLiveFeed(
+            OSInterface_CheckIfIsLiveFeed(
                 Play_live_token.replace('%x', doc[6]),
                 Play_live_links.replace('%x', doc[6]),
                 UserLiveFeed_CheckIfIsLiveDelay,
@@ -24595,12 +25306,7 @@
 
     function UserLiveFeed_Showloading(show) {
         if (Main_IsOn_OSInterface) {
-            try {
-                Android.mshowLoadingBottom(show);
-            } catch (e) {
-                if (show) Main_ShowElement('dialog_loading_feed');
-                else Main_HideElement('dialog_loading_feed');
-            }
+            OSInterface_mshowLoadingBottom(show);
         } else {
             if (show) Main_ShowElement('dialog_loading_feed');
             else Main_HideElement('dialog_loading_feed');
@@ -25561,13 +26267,9 @@
                 }
             }
 
-            //Remove the try after some app updates
-            var Android_Notification_end_time = 0;
-            try {
-                if (Main_IsOn_OSInterface) Android_Notification_end_time = Android.GetNotificationTime();
-            } catch (e) {}
+            var OSInterface_Notification_end_time = OSInterface_GetNotificationTime();
             //Check if the android service notification has end notifying before update things and show notifications on js side
-            if (!Android_Notification_end_time || ((new Date().getTime()) > Android_Notification_end_time)) {
+            if (!OSInterface_Notification_end_time || ((new Date().getTime()) > OSInterface_Notification_end_time)) {
                 UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
                 Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
             } else UserLiveFeed_NotifyLiveidObject = [];
