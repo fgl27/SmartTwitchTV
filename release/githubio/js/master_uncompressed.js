@@ -12780,7 +12780,7 @@
         var div, doc = document.getElementById('controls_holder');
         for (var key in Play_controls) {
             div = document.createElement('div');
-            div.className = 'controls_button_holder shadow_text';
+            div.className = 'controls_button_holder';
             div.setAttribute('id', 'controls_' + key);
 
             div.innerHTML = '<div id="controls_button_' + key +
