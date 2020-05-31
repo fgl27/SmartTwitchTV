@@ -811,12 +811,12 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_PG_UP:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
-                else if (Play_isChatShown()) Play_KeyChatPosChage();
+                else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatPosChage();
                 else Play_showPanel();
                 break;
             case KEY_PG_DOWN:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
-                else if (Play_isChatShown()) Play_KeyChatSizeChage();
+                else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
                 else Play_showPanel();
                 break;
             case KEY_REFRESH:
