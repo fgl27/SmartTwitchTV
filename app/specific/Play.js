@@ -454,7 +454,8 @@ function Play_ResumeAfterOnline() {
             ChatLive_Init(0);
             Play_data.watching_time = new Date().getTime();
 
-            for (var i = 0; i < Play_MultiArray.length; i++) {
+            var i = 0, len = Play_MultiArray.length;
+            for (i; i < len; i++) {
                 if (Play_MultiArray[i].data.length > 0) {
 
                     Play_MultiStart(i);
