@@ -108,7 +108,12 @@ function Play_Multi_UnSetPanelDivsCheckChat() {
 
 function Play_Multi_UnSetPanel(shutdown) {
     Play_Multi_UnSetPanelDivs();
-    for (var i = 0; i < 4; i++) Play_MultiInfoReset(i);
+    for (var i = 0; i < 4; i++) {
+        if (Play_MultiArray[i].data.length > 0)
+            Main_Set_history('live', Play_MultiArray[i].data);
+
+        Play_MultiInfoReset(i);
+    }
 
     var pos_0 = Play_Multi_Offset % 4;
     var pos_1 = (1 + Play_Multi_Offset) % 4;

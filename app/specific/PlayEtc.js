@@ -475,6 +475,7 @@ function Play_KeyReturn(is_vod) {
             if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
             else if (PlayExtra_PicturePicture) Play_CloseSmall();
             else {
+                if (Play_isOn && Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
                 Play_CleanHideExit();
                 Play_hideChat();
                 if (is_vod) PlayVod_shutdownStream();
@@ -763,7 +764,9 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
                     Play_HideMultiDialog(true);
-                    Play_MultiStartPrestart((Play_MultiDialogPos + Play_Multi_Offset) % 4);
+                    var pos = (Play_MultiDialogPos + Play_Multi_Offset) % 4;
+                    Main_Set_history('live', Play_MultiArray[pos].data);
+                    Play_MultiStartPrestart(pos);
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_MultiEnable) {

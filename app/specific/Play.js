@@ -1802,6 +1802,7 @@ function Play_RestorePlayData(error_410, Isforbiden) {
 
 function Play_SavePlayData() {
     Play_data_old = JSON.parse(JSON.stringify(Play_data));
+    Main_Set_history('live', Play_data.data);
 }
 
 function Play_RestorePlayDataValues() {

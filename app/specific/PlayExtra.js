@@ -164,6 +164,7 @@ function PlayExtra_loadDataSuccessEnd(playlist) {
 
 function PlayExtra_SavePlayData() {
     PlayExtra_Save_data = JSON.parse(JSON.stringify(PlayExtra_data));
+    Main_Set_history('live', PlayExtra_data.data);
 }
 
 function PlayExtra_RestorePlayData() {
