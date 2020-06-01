@@ -1552,8 +1552,10 @@ function Main_ReplaceLargeFont(text) {
 
 function Main_Set_history(type, Data, skipUpdateDate) {
 
-    if (!AddUser_IsUserSet() || !Data || (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) ||
-        (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) || (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
+    if (!AddUser_IsUserSet() || !Data ||//Check is user is set, and data is valid
+        (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) || //Check if the history for this type is enable
+        (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
+        (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
 
     var index = Main_history_Exist(type, Data[7]);
 
