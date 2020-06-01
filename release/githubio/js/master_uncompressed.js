@@ -11456,6 +11456,7 @@
                 if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
                 else if (PlayExtra_PicturePicture) Play_CloseSmall();
                 else {
+                    if (Play_isOn && Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
                     Play_CleanHideExit();
                     Play_hideChat();
                     if (is_vod) PlayVod_shutdownStream();
@@ -11745,7 +11746,9 @@
                         Play_setHidePanel();
                     } else if (Play_MultiDialogVisible()) {
                         Play_HideMultiDialog(true);
-                        Play_MultiStartPrestart((Play_MultiDialogPos + Play_Multi_Offset) % 4);
+                        var pos = (Play_MultiDialogPos + Play_Multi_Offset) % 4;
+                        Main_Set_history('live', Play_MultiArray[pos].data);
+                        Play_MultiStartPrestart(pos);
                     } else if (UserLiveFeed_isFeedShow()) {
                         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                         else if (Play_MultiEnable) {
@@ -12975,6 +12978,7 @@
 
     function PlayExtra_SavePlayData() {
         PlayExtra_Save_data = JSON.parse(JSON.stringify(PlayExtra_data));
+        Main_Set_history('live', PlayExtra_data.data);
     }
 
     function PlayExtra_RestorePlayData() {
@@ -15068,6 +15072,7 @@
 
     function Play_SavePlayData() {
         Play_data_old = JSON.parse(JSON.stringify(Play_data));
+        Main_Set_history('live', Play_data.data);
     }
 
     function Play_RestorePlayDataValues() {
@@ -15233,7 +15238,12 @@
 
     function Play_Multi_UnSetPanel(shutdown) {
         Play_Multi_UnSetPanelDivs();
-        for (var i = 0; i < 4; i++) Play_MultiInfoReset(i);
+        for (var i = 0; i < 4; i++) {
+            if (Play_MultiArray[i].data.length > 0)
+                Main_Set_history('live', Play_MultiArray[i].data);
+
+            Play_MultiInfoReset(i);
+        }
 
         var pos_0 = Play_Multi_Offset % 4;
         var pos_1 = (1 + Play_Multi_Offset) % 4;
