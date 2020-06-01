@@ -160,7 +160,8 @@ function Play_Multi_UnSetPanel(shutdown) {
 }
 
 function Play_MultiFirstAvailable() {
-    for (var i = 0; i < Play_MultiArray.length; i++) {
+    var i = 0, len = Play_MultiArray.length;
+    for (i; i < len; i++) {
         if (Play_MultiArray[i].data.length > 0) return i;
     }
     return null;
@@ -188,14 +189,16 @@ function Play_MultiEnd(position) {
 }
 
 function Play_MultiFirstClear() {
-    for (var i = 0; i < Play_MultiArray.length; i++) {
+    var i = 0, len = Play_MultiArray.length;
+    for (i; i < len; i++) {
         if (Play_MultiArray[i].data.length < 1) return i;
     }
     return 0;
 }
 
 function Play_MultiIsAlredyOPen(Id) {
-    for (var i = 0; i < Play_MultiArray.length; i++) {
+    var i = 0, len = Play_MultiArray.length;
+    for (i; i < len; i++) {
         if (Play_MultiArray[i].data.length > 0 && Play_MultiArray[i].data[14] === Id) {
             UserLiveFeed_ResetFeedId();
             return true;
@@ -421,8 +424,8 @@ function Play_MultiEnableKeyRightLeft(adder) {
 }
 
 function Play_MultiUpdateinfoMainBig(extraText) {
-    var pos;
-    for (var i = 0; i < Play_MultiArray.length; i++) {
+    var pos, i = 0, len = Play_MultiArray.length;
+    for (i; i < len; i++) {
 
         if (Play_MultiArray[i].data.length > 0) {
             pos = (i + (4 - Play_Multi_Offset)) % 4;

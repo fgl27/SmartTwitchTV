@@ -312,13 +312,15 @@ function SettingsColor_DivResultUpdate(div, text) {
 }
 
 function SettingsColor_ColorExtrackRGB(DefaultColorsPos) {
-    var rgba = [], tempArray = [];
+    var rgba = [], tempArray = [], i = 0, len = DefaultColorsPos.length;
 
-    for (var i = 0; i < DefaultColorsPos.length; i++) {
+    for (i; i < len; i++) {
         tempArray.push((DefaultColorsPos[i].replace(/\s/g, '')).split('(')[1].split(','));
     }
 
-    for (i = 0; i < tempArray.length; i++) {
+    i = 0;
+    len = tempArray.length;
+    for (i; i < len; i++) {
         rgba.push(
             [
                 parseInt(tempArray[0][i]),
@@ -336,11 +338,17 @@ function SettingsColor_SetAnimationStyleRestore() {
 
     SettingsColor_InitialColors = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[0]);
     //Restore custom color
-    var rgba = [];
-    for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+    var rgba = [],
+        i = SettingsColor_ColorsObjR,
+        len = (SettingsColor_ColorsObjB + 1);
+
+    for (i; i < len; i++) {
         rgba.push(Main_getItemJson('colo_rgb' + i, SettingsColor_InitialColors[(i - SettingsColor_ColorsObjR)]));
     }
-    for (i = 0; i < rgba.length; i++) {
+
+    i = 0;
+    len = rgba.length;
+    for (i; i < len; i++) {
         SettingsColor_DefaultColors[1][i] = "rgba(" +
             rgba[0][i] + ", " +
             rgba[1][i] + ", " +
@@ -579,11 +587,18 @@ function SettingsColor_ColorsSetAsCustom() {
 function SettingsColor_ColorsSetRGBTest() {
 
     if (SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos === 1) {
-        var rgba = [], colors = [];
-        for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+        var rgba = [],
+            colors = [],
+            i = SettingsColor_ColorsObjR,
+            len = (SettingsColor_ColorsObjB + 1);
+
+        for (i; i < len; i++) {
             rgba.push(SettingsColor_ColorsObj[i].pos);
         }
-        for (i = 0; i < rgba.length; i++) {
+
+        i = 0;
+        len = rgba.length;
+        for (i; i < len; i++) {
             colors.push("rgba(" +
                 rgba[0][i] + ", " +
                 rgba[1][i] + ", " +
@@ -637,11 +652,15 @@ function SettingsColor_ColorsObjLeftRight(obj, adder, maxValue) {
 
 function SettingsColor_ColorsReset(obj, currpos) {
     if (obj.property === SettingsColor_ColorsObjStyles) {
-        var i, array = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[obj.pos]);
+        var i,
+            array = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[obj.pos]),
+            len;
 
         if (obj.pos === 1) {
             if (SettingsColor_RBG_temp) {
-                for (i = 0; i < array.length; i++) {
+                i = 0;
+                len = array.length;
+                for (i; i < len; i++) {
                     array[i] = SettingsColor_RBG_temp[i];
                 }
                 SettingsColor_RBG_temp = null;
@@ -649,13 +668,17 @@ function SettingsColor_ColorsReset(obj, currpos) {
         } else if (currpos === 1) {
 
             SettingsColor_RBG_temp = [];
-            for (i = 0; i < array.length; i++) {
+            i = 0;
+            len = array.length;
+            for (i; i < len; i++) {
                 SettingsColor_RBG_temp.push(SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos);
             }
 
         }
 
-        for (i = 0; i < array.length; i++) {
+        i = 0;
+        len = array.length;
+        for (i; i < len; i++) {
             SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos = array[i];
         }
 

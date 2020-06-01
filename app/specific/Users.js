@@ -404,12 +404,15 @@ function Users_handleKeyDown(event) {
                     if (temp_RemoveCursor) {
                         Main_values.Users_AddcodePosition = Users_showUserDialogPos;
                         Main_SaveValues();
-                        var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?';
-                        var type_code = 'code';
-                        var client_id = Main_clientId;
-                        var redirect_uri = AddCode_redirect_uri;
-                        var scope = '';
-                        for (i = 0; i < AddCode_Scopes.length; i++) {
+                        var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?',
+                            type_code = 'code',
+                            client_id = Main_clientId,
+                            redirect_uri = AddCode_redirect_uri,
+                            scope = '',
+                            len = AddCode_Scopes.length;
+
+                        i = 0;
+                        for (i; i < len; i++) {
                             scope += AddCode_Scopes[i] + '+';
                         }
                         scope = scope.slice(0, -1);

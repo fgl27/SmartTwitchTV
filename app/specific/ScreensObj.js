@@ -1730,9 +1730,9 @@ function ScreensObj_HistoryClip() {
 function ScreensObj_addSwitches(StringsArray, key) {
     ScreenObj[key].TopRowCreated = true;
     ScreenObj[key].row = document.createElement('div');
-    var thumbfollow, div, i = 0;
+    var thumbfollow, div, i = 0, len = StringsArray.length;
 
-    for (i; i < StringsArray.length; i++) {
+    for (i; i < len; i++) {
         thumbfollow = '<i class="icon-' + ScreenObj[key].SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
         div = document.createElement('div');
         div.setAttribute('id', ScreenObj[key].ids[3] + 'y_' + i);

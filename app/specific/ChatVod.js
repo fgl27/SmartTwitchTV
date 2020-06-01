@@ -408,9 +408,10 @@ function Chat_Clear() {
 }
 
 function Main_Addline(id) {
-    var elem, i;
-    if (Chat_Position < (Chat_Messages.length - 1)) {
-        for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
+    var elem, i, len = Chat_Messages.length;
+    if (Chat_Position < (len - 1)) {
+        i = Chat_Position;
+        for (i; i < len; i++, Chat_Position++) {
             if (Chat_Messages[i].time < (ChannelVod_vodOffset + (OSInterface_gettime() / 1000))) {
                 elem = document.createElement('div');
                 var classname = 'chat_line';

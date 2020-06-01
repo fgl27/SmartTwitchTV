@@ -401,7 +401,8 @@ function Main_initWindows() {
                 if (getcodec.length > 1) {
                     var codecsnames = [];
 
-                    for (var i = 0; i < getcodec.length; i++) {
+                    var i = 0, len = getcodec.length;
+                    for (i; i < len; i++) {
 
                         if (Main_A_includes_B(getcodec[i].name ? getcodec[i].name.toLowerCase() : "", 'google'))
                             codecsnames.push(getcodec[i].name);
@@ -593,7 +594,8 @@ function Main_initClick() {
     Main_scenekeysDoc = document.getElementById('scenekeys');
     Main_scenekeysPositionDoc = document.getElementById('scenekeys_position');
 
-    for (var i = 0; i < Main_initClickDoc.length; i++) {
+    var i = 0, len = Main_initClickDoc.length;
+    for (i; i < len; i++) {
         Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
     }
 
@@ -734,12 +736,15 @@ function Main_textContentWithEle(ele, value) {
 function Main_replaceClassEmoji(div) {
     var emojiel = document.getElementById(div).getElementsByClassName("emoji");
     if (emojiel) {
-        var i = 0;
-        for (i; i < emojiel.length; i++)
+
+        var i = 0, len = emojiel.length;
+        for (i; i < len; i++)
             emojiel[i].classList.add('emoticon');
 
         emojiel = document.getElementById(div).getElementsByClassName("emoticon");
-        for (i = 0; i < emojiel.length; i++)
+        i = 0;
+        len = emojiel.length;
+        for (i; i < len; i++)
             emojiel[i].classList.remove('emoji');
     }
 }
@@ -1459,7 +1464,8 @@ function Main_getItemBool(item, default_value) {
 // To see supported fonts and etc info about the unknown char
 // function Main_PrintUnicode(string) { // jshint ignore:line
 //     Main_Log(string);
-//     for (var i = 0; i < string.length; i++)
+//var i = 0, len = string.length;
+//     for (i; i < len; i++) 
 //         Main_Log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
 // }
 
@@ -1696,7 +1702,8 @@ function Main_Slice(arrayTocopy) {
     } catch (e) {
         Main_Log('Main_Slice ' + e);
         array = [];
-        for (var i = 0; i < arrayTocopy.length; i++) {
+        var i = 0, len = arrayTocopy.length;
+        for (i; i < len; i++) {
             array.push(arrayTocopy[i]);
         }
     }
@@ -1839,7 +1846,8 @@ function Main_StartHistoryworker() {
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
-    for (var i = 0; i < array.length; i++) {
+    var i = 0, len = array.length;
+    for (i; i < len; i++) {
         if (!array[i].forceVod) {
             if (array[i].data[14] !== '') {
                 BradcastCheckerWorker.postMessage(
@@ -1989,7 +1997,8 @@ function Main_RestoreLiveObjt(position) {
 
             UserLiveFeed_WasLiveidObject[position] = {};
 
-            for (var i = 0; i < oldLive.length; i++) {
+            var i = 0, len = oldLive.length;
+            for (i; i < len; i++) {
                 UserLiveFeed_WasLiveidObject[position][oldLive[i]] = 1;
             }
 

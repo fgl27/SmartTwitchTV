@@ -47,9 +47,11 @@ window.parseIRC = function(data) {
         }
 
         // Tags are split by a semi colon.
-        var rawTags = data.slice(1, nextspace).split(';');
+        var rawTags = data.slice(1, nextspace).split(';'),
+            i = 0,
+            len = rawTags.length;
 
-        for (var i = 0; i < rawTags.length; i++) {
+        for (i; i < len; i++) {
             // Tags delimited by an equals sign are key=value tags.
             // If there's no equals, we assign the tag a value of true.
             var tag = rawTags[i];

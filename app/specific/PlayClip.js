@@ -287,7 +287,9 @@ function PlayClip_QualityGenerate(response) {
 
     if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip')) {
         response = response.data.clip.videoQualities;
-        for (var i = 0; i < response.length; i++) {
+
+        var i = 0, len = response.length;
+        for (i; i < len; i++) {
 
             if (!PlayClip_qualities.length) {
                 PlayClip_qualities.push({

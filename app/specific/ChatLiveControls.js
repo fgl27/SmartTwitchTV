@@ -417,7 +417,8 @@ function ChatLiveControls_SetEmojiDiv(obj) {
 function ChatLiveControls_SetEmojisObj() {
     if (emojis[0].hasOwnProperty('div') || !AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
-    for (var i = 0; i < emojis.length; i++) {
+    var i = 0, len = emojis.length;
+    for (i; i < len; i++) {
         emojis[i].id = i;
         emojis[i].div = ChatLiveControls_SetEmojiDiv(emojis[i]);
     }
@@ -562,7 +563,8 @@ function ChatLiveControls_UpdateResultTextEmpty() {
 
 function ChatLiveControls_extraMessageTokenize(message) {
 
-    for (var i = 0; i < message.length; i++) {
+    var i = 0, len = message.length;
+    for (i; i < len; i++) {
         message[i] = extraMessageTokenize(message[i], 0, null);
     }
 

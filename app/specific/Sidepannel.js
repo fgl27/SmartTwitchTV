@@ -190,7 +190,8 @@ function Sidepannel_PreloadImgs() {
     }
     UserLiveFeed_PreloadImgs.splice(Sidepannel_PosFeed, 1);
 
-    for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++) {
+    var i = 0, len = UserLiveFeed_PreloadImgs.length;
+    for (i; i < len; i++) {
         Main_ImageLoaderWorker.postMessage(
             UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
         );

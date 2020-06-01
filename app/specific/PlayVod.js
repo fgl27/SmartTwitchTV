@@ -1094,7 +1094,8 @@ function PlayVod_previews_success_end() {
     var base_url = PlayVod_previews_url.split(Main_values.ChannelVod_vodId)[0];
     PlayVod_previews_tmp_images = [];
 
-    for (var i = 0; i < PlayVod_previews_obj.images.length; i++) {
+    var i = 0, len = PlayVod_previews_obj.images.length;
+    for (i; i < len; i++) {
         PlayVod_previews_obj.images[i] = base_url + PlayVod_previews_obj.images[i];
 
         PlayVod_previews_tmp_images[i] = new Image();
@@ -1175,7 +1176,8 @@ function PlayVod_muted_segments(muted_segments, skipwarning) {
         var doc = document.getElementById('inner_progress_bar_muted'), div;
         Main_emptyWithEle(doc);
 
-        for (var i = 0; i < muted_segments.length; i++) {
+        var i = 0, len = muted_segments.length;
+        for (i; i < len; i++) {
 
             div = document.createElement('div');
             div.classList.add('inner_progress_bar_muted_segment');

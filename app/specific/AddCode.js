@@ -135,7 +135,8 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) 
 
 //Check if has all scopes, in canse they change
 function AddCode_TokensCheckScope(scope) {
-    for (var i = 0; i < AddCode_Scopes.length; i++) {
+    var i = 0, len = AddCode_Scopes.length;
+    for (i; i < len; i++) {
         if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
     }
     return true;

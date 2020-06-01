@@ -617,7 +617,8 @@ function Play_updateVodInfoError(Channel_id, BroadcastID, tryes) {
 function Play_updateVodInfoSuccess(response, BroadcastID) {
     response = JSON.parse(response).videos;
 
-    for (var i = 0; i < response.length; i++) {
+    var i = 0, len = response.length;
+    for (i; i < len; i++) {
         if (Main_A_includes_B(response[i].status, 'recording')) {
 
             Main_history_UpdateLiveVod(
@@ -634,7 +635,8 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
 
 function Play_updateStreamInfo() {
     if (Play_MultiEnable) {
-        for (var i = 0; i < Play_MultiArray.length; i++) {
+        var i = 0, len = Play_MultiArray.length;
+        for (i; i < len; i++) {
             Play_updateStreamInfoMulti(i);
         }
     } else {

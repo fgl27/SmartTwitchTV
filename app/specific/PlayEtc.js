@@ -1134,7 +1134,8 @@ function Play_MakeControls() {
 
             if (!this.defaultValue) {
 
-                for (var i = 0; i < Play_MultiArray.length; i++) {
+                var i = 0, len = Play_MultiArray.length;
+                for (i; i < len; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
                         OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                     }
@@ -1181,7 +1182,8 @@ function Play_MakeControls() {
 
                 if (Play_MultiEnable) {
 
-                    for (var i = 0; i < Play_MultiArray.length; i++) {
+                    var i = 0, len = Play_MultiArray.length;
+                    for (i; i < len; i++) {
                         if (Play_MultiArray[i].data.length > 0) {
                             OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                         }

@@ -378,7 +378,8 @@ function Settings_SetSettings() {
 
     // Prepare the bitrates
     key = "bitrate_main";
-    for (var i = 1; i < Settings_value[key].values.length; i++) {
+    var i = 1, len = Settings_value[key].values.length;
+    for (i; i < len; i++) {
         Settings_value[key].values[i] = Settings_value[key].values[i] + " Mbps";
     }
     Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
@@ -647,7 +648,7 @@ function Settings_DpadPOsition() {
 }
 
 function Settings_SetAnimations() {
-    var i, array,
+    var i, array, len,
         classes = ['screen_holder',
             'screen_holder_channel',
             'screen_holder_switch',
@@ -669,8 +670,9 @@ function Settings_SetAnimations() {
     classes.forEach(
         function(classe) {
             array = document.getElementsByClassName(classe);
-
-            for (i = 0; i < array.length; i++)
+            i = 0;
+            len = array.length;
+            for (i; i < len; i++)
                 array[i].style.transition = mtransition;
         }
     );
@@ -915,7 +917,8 @@ function Settings_CodecsShow() {
             dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR +
                 STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
 
-            for (var i = 0; i < Settings_CodecsValue.length; i++) {
+            var i = 0, len = Settings_CodecsValue.length;
+            for (i; i < len; i++) {
 
                 Settings_value[Settings_CodecsValue[i].name] = {
                     "values": [STR_ENABLE, STR_DISABLE],
@@ -1014,18 +1017,23 @@ function Settings_CodecsRigthLeft(offset) {
 
         //Make sure at least one is enable
         var oneEnable = false,
-            i = 0;
+            i = 0,
+            len = Settings_CodecsValue.length;
 
-        for (i; i < Settings_CodecsValue.length; i++) {
+        for (i; i < len; i++) {
             if (!Settings_value[Settings_CodecsValue[i].name].defaultValue) {
                 oneEnable = true;
                 break;
             }
         }
+
         if (!oneEnable) {
             Main_showWarningDialog(STR_ONE_CODEC_ENA);
             Main_setTimeout(Main_HideWarningDialog, 2000);
-            for (i = 0; i < Settings_CodecsValue.length; i++) {
+
+            i = 0;
+            len = Settings_CodecsValue.length;
+            for (i; i < len; i++) {
                 if (Settings_CodecsPos !== i) {
                     key = Settings_CodecsValue[i].name;
                     Settings_value[key].defaultValue += -1;

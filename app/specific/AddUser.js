@@ -194,7 +194,8 @@ function AddUser_RestoreUsers() {
         AddUser_UpdateSidepanel();
 
         //Check and refresh all tokens at start
-        for (var i = 0; i < AddUser_UsernameArray.length; i++) {
+        var i = 0, len = AddUser_UsernameArray.length;
+        for (i; i < len; i++) {
             AddUser_UsernameArray[i].timeout_id = null;
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
 

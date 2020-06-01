@@ -23,9 +23,11 @@ function mescape(message) {
 function extraMessageTokenize(message, chat_number, bits) {
     var tokenizedString = message.split(' '),
         emote,
-        cheer;
+        cheer,
+        i = 0,
+        len = tokenizedString.length;
 
-    for (var i = 0; i < tokenizedString.length; i++) {
+    for (i; i < len; i++) {
         message = tokenizedString[i];
 
         cheer = bits ? findCheerInToken(message, chat_number) : 0;
@@ -68,10 +70,11 @@ function calculateColorReplacement(color) {
 function findCheerInToken(message, chat_number) {
     var cheerPrefixes = Object.keys(cheers[ChatLive_selectedChannel_id[chat_number]]),
         tokenLower = message.toLowerCase(),
-        index = -1;
+        index = -1,
+        i = 0,
+        len = cheerPrefixes.length;
 
-
-    for (var i = 0; i < cheerPrefixes.length; i++) {
+    for (i; i < len; i++) {
         //Try  case sensitive first as some prefixes start the same, but some users type without carrying about case
         if (message.startsWith(cheerPrefixes[i]))
             return getCheer(cheerPrefixes[i], parseInt(message.substr(cheerPrefixes[i].length), 10), chat_number);
