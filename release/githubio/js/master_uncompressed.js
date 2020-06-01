@@ -2760,7 +2760,9 @@
 
     //Check if has all scopes, in canse they change
     function AddCode_TokensCheckScope(scope) {
-        for (var i = 0; i < AddCode_Scopes.length; i++) {
+        var i = 0,
+            len = AddCode_Scopes.length;
+        for (i; i < len; i++) {
             if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
         }
         return true;
@@ -3523,7 +3525,9 @@
             AddUser_UpdateSidepanel();
 
             //Check and refresh all tokens at start
-            for (var i = 0; i < AddUser_UsernameArray.length; i++) {
+            var i = 0,
+                len = AddUser_UsernameArray.length;
+            for (i; i < len; i++) {
                 AddUser_UsernameArray[i].timeout_id = null;
                 if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
 
@@ -4681,7 +4685,9 @@
     function ChatLiveControls_SetEmojisObj() {
         if (emojis[0].hasOwnProperty('div') || !AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
-        for (var i = 0; i < emojis.length; i++) {
+        var i = 0,
+            len = emojis.length;
+        for (i; i < len; i++) {
             emojis[i].id = i;
             emojis[i].div = ChatLiveControls_SetEmojiDiv(emojis[i]);
         }
@@ -4828,7 +4834,9 @@
 
     function ChatLiveControls_extraMessageTokenize(message) {
 
-        for (var i = 0; i < message.length; i++) {
+        var i = 0,
+            len = message.length;
+        for (i; i < len; i++) {
             message[i] = extraMessageTokenize(message[i], 0, null);
         }
 
@@ -7132,9 +7140,10 @@
     }
 
     function Main_Addline(id) {
-        var elem, i;
-        if (Chat_Position < (Chat_Messages.length - 1)) {
-            for (i = Chat_Position; i < Chat_Messages.length; i++, Chat_Position++) {
+        var elem, i, len = Chat_Messages.length;
+        if (Chat_Position < (len - 1)) {
+            i = Chat_Position;
+            for (i; i < len; i++, Chat_Position++) {
                 if (Chat_Messages[i].time < (ChannelVod_vodOffset + (OSInterface_gettime() / 1000))) {
                     elem = document.createElement('div');
                     var classname = 'chat_line';
@@ -7697,7 +7706,9 @@
                     if (getcodec.length > 1) {
                         var codecsnames = [];
 
-                        for (var i = 0; i < getcodec.length; i++) {
+                        var i = 0,
+                            len = getcodec.length;
+                        for (i; i < len; i++) {
 
                             if (Main_A_includes_B(getcodec[i].name ? getcodec[i].name.toLowerCase() : "", 'google'))
                                 codecsnames.push(getcodec[i].name);
@@ -7890,7 +7901,9 @@
         Main_scenekeysDoc = document.getElementById('scenekeys');
         Main_scenekeysPositionDoc = document.getElementById('scenekeys_position');
 
-        for (var i = 0; i < Main_initClickDoc.length; i++) {
+        var i = 0,
+            len = Main_initClickDoc.length;
+        for (i; i < len; i++) {
             Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
         }
 
@@ -8031,12 +8044,16 @@
     function Main_replaceClassEmoji(div) {
         var emojiel = document.getElementById(div).getElementsByClassName("emoji");
         if (emojiel) {
-            var i = 0;
-            for (i; i < emojiel.length; i++)
+
+            var i = 0,
+                len = emojiel.length;
+            for (i; i < len; i++)
                 emojiel[i].classList.add('emoticon');
 
             emojiel = document.getElementById(div).getElementsByClassName("emoticon");
-            for (i = 0; i < emojiel.length; i++)
+            i = 0;
+            len = emojiel.length;
+            for (i; i < len; i++)
                 emojiel[i].classList.remove('emoji');
         }
     }
@@ -8756,7 +8773,8 @@
     // To see supported fonts and etc info about the unknown char
     // function Main_PrintUnicode(string) { // jshint ignore:line
     //     Main_Log(string);
-    //     for (var i = 0; i < string.length; i++)
+    //var i = 0, len = string.length;
+    //     for (i; i < len; i++) 
     //         Main_Log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
     // }
 
@@ -8849,8 +8867,10 @@
 
     function Main_Set_history(type, Data, skipUpdateDate) {
 
-        if (!AddUser_IsUserSet() || !Data || (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) ||
-            (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) || (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
+        if (!AddUser_IsUserSet() || !Data || //Check is user is set, and data is valid
+            (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) || //Check if the history for this type is enable
+            (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
+            (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
 
         var index = Main_history_Exist(type, Data[7]);
 
@@ -8990,7 +9010,9 @@
         } catch (e) {
             Main_Log('Main_Slice ' + e);
             array = [];
-            for (var i = 0; i < arrayTocopy.length; i++) {
+            var i = 0,
+                len = arrayTocopy.length;
+            for (i; i < len; i++) {
                 array.push(arrayTocopy[i]);
             }
         }
@@ -9135,7 +9157,9 @@
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
-        for (var i = 0; i < array.length; i++) {
+        var i = 0,
+            len = array.length;
+        for (i; i < len; i++) {
             if (!array[i].forceVod) {
                 if (array[i].data[14] !== '') {
                     BradcastCheckerWorker.postMessage(
@@ -9287,7 +9311,9 @@
 
                 UserLiveFeed_WasLiveidObject[position] = {};
 
-                for (var i = 0; i < oldLive.length; i++) {
+                var i = 0,
+                    len = oldLive.length;
+                for (i; i < len; i++) {
                     UserLiveFeed_WasLiveidObject[position][oldLive[i]] = 1;
                 }
 
@@ -10451,7 +10477,10 @@
 
         if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip')) {
             response = response.data.clip.videoQualities;
-            for (var i = 0; i < response.length; i++) {
+
+            var i = 0,
+                len = response.length;
+            for (i; i < len; i++) {
 
                 if (!PlayClip_qualities.length) {
                     PlayClip_qualities.push({
@@ -12133,7 +12162,9 @@
 
                 if (!this.defaultValue) {
 
-                    for (var i = 0; i < Play_MultiArray.length; i++) {
+                    var i = 0,
+                        len = Play_MultiArray.length;
+                    for (i; i < len; i++) {
                         if (Play_MultiArray[i].data.length > 0) {
                             OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                         }
@@ -12180,7 +12211,9 @@
 
                     if (Play_MultiEnable) {
 
-                        for (var i = 0; i < Play_MultiArray.length; i++) {
+                        var i = 0,
+                            len = Play_MultiArray.length;
+                        for (i; i < len; i++) {
                             if (Play_MultiArray[i].data.length > 0) {
                                 OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                             }
@@ -13900,7 +13933,9 @@
     function Play_updateVodInfoSuccess(response, BroadcastID) {
         response = JSON.parse(response).videos;
 
-        for (var i = 0; i < response.length; i++) {
+        var i = 0,
+            len = response.length;
+        for (i; i < len; i++) {
             if (Main_A_includes_B(response[i].status, 'recording')) {
 
                 Main_history_UpdateLiveVod(
@@ -13917,7 +13952,9 @@
 
     function Play_updateStreamInfo() {
         if (Play_MultiEnable) {
-            for (var i = 0; i < Play_MultiArray.length; i++) {
+            var i = 0,
+                len = Play_MultiArray.length;
+            for (i; i < len; i++) {
                 Play_updateStreamInfoMulti(i);
             }
         } else {
@@ -15310,7 +15347,9 @@
     }
 
     function Play_MultiFirstAvailable() {
-        for (var i = 0; i < Play_MultiArray.length; i++) {
+        var i = 0,
+            len = Play_MultiArray.length;
+        for (i; i < len; i++) {
             if (Play_MultiArray[i].data.length > 0) return i;
         }
         return null;
@@ -15338,14 +15377,18 @@
     }
 
     function Play_MultiFirstClear() {
-        for (var i = 0; i < Play_MultiArray.length; i++) {
+        var i = 0,
+            len = Play_MultiArray.length;
+        for (i; i < len; i++) {
             if (Play_MultiArray[i].data.length < 1) return i;
         }
         return 0;
     }
 
     function Play_MultiIsAlredyOPen(Id) {
-        for (var i = 0; i < Play_MultiArray.length; i++) {
+        var i = 0,
+            len = Play_MultiArray.length;
+        for (i; i < len; i++) {
             if (Play_MultiArray[i].data.length > 0 && Play_MultiArray[i].data[14] === Id) {
                 UserLiveFeed_ResetFeedId();
                 return true;
@@ -15571,8 +15614,9 @@
     }
 
     function Play_MultiUpdateinfoMainBig(extraText) {
-        var pos;
-        for (var i = 0; i < Play_MultiArray.length; i++) {
+        var pos, i = 0,
+            len = Play_MultiArray.length;
+        for (i; i < len; i++) {
 
             if (Play_MultiArray[i].data.length > 0) {
                 pos = (i + (4 - Play_Multi_Offset)) % 4;
@@ -16859,7 +16903,9 @@
         var base_url = PlayVod_previews_url.split(Main_values.ChannelVod_vodId)[0];
         PlayVod_previews_tmp_images = [];
 
-        for (var i = 0; i < PlayVod_previews_obj.images.length; i++) {
+        var i = 0,
+            len = PlayVod_previews_obj.images.length;
+        for (i; i < len; i++) {
             PlayVod_previews_obj.images[i] = base_url + PlayVod_previews_obj.images[i];
 
             PlayVod_previews_tmp_images[i] = new Image();
@@ -16942,7 +16988,9 @@
                 div;
             Main_emptyWithEle(doc);
 
-            for (var i = 0; i < muted_segments.length; i++) {
+            var i = 0,
+                len = muted_segments.length;
+            for (i; i < len; i++) {
 
                 div = document.createElement('div');
                 div.classList.add('inner_progress_bar_muted_segment');
@@ -20897,9 +20945,10 @@
     function ScreensObj_addSwitches(StringsArray, key) {
         ScreenObj[key].TopRowCreated = true;
         ScreenObj[key].row = document.createElement('div');
-        var thumbfollow, div, i = 0;
+        var thumbfollow, div, i = 0,
+            len = StringsArray.length;
 
-        for (i; i < StringsArray.length; i++) {
+        for (i; i < len; i++) {
             thumbfollow = '<i class="icon-' + ScreenObj[key].SwitchesIcons[i] + ' stream_channel_follow_icon"></i>' + StringsArray[i];
             div = document.createElement('div');
             div.setAttribute('id', ScreenObj[key].ids[3] + 'y_' + i);
@@ -21522,13 +21571,17 @@
 
     function SettingsColor_ColorExtrackRGB(DefaultColorsPos) {
         var rgba = [],
-            tempArray = [];
+            tempArray = [],
+            i = 0,
+            len = DefaultColorsPos.length;
 
-        for (var i = 0; i < DefaultColorsPos.length; i++) {
+        for (i; i < len; i++) {
             tempArray.push((DefaultColorsPos[i].replace(/\s/g, '')).split('(')[1].split(','));
         }
 
-        for (i = 0; i < tempArray.length; i++) {
+        i = 0;
+        len = tempArray.length;
+        for (i; i < len; i++) {
             rgba.push(
                 [
                     parseInt(tempArray[0][i]),
@@ -21546,11 +21599,17 @@
 
         SettingsColor_InitialColors = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[0]);
         //Restore custom color
-        var rgba = [];
-        for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+        var rgba = [],
+            i = SettingsColor_ColorsObjR,
+            len = (SettingsColor_ColorsObjB + 1);
+
+        for (i; i < len; i++) {
             rgba.push(Main_getItemJson('colo_rgb' + i, SettingsColor_InitialColors[(i - SettingsColor_ColorsObjR)]));
         }
-        for (i = 0; i < rgba.length; i++) {
+
+        i = 0;
+        len = rgba.length;
+        for (i; i < len; i++) {
             SettingsColor_DefaultColors[1][i] = "rgba(" +
                 rgba[0][i] + ", " +
                 rgba[1][i] + ", " +
@@ -21785,11 +21844,17 @@
 
         if (SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos === 1) {
             var rgba = [],
-                colors = [];
-            for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+                colors = [],
+                i = SettingsColor_ColorsObjR,
+                len = (SettingsColor_ColorsObjB + 1);
+
+            for (i; i < len; i++) {
                 rgba.push(SettingsColor_ColorsObj[i].pos);
             }
-            for (i = 0; i < rgba.length; i++) {
+
+            i = 0;
+            len = rgba.length;
+            for (i; i < len; i++) {
                 colors.push("rgba(" +
                     rgba[0][i] + ", " +
                     rgba[1][i] + ", " +
@@ -21843,11 +21908,15 @@
 
     function SettingsColor_ColorsReset(obj, currpos) {
         if (obj.property === SettingsColor_ColorsObjStyles) {
-            var i, array = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[obj.pos]);
+            var i,
+                array = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[obj.pos]),
+                len;
 
             if (obj.pos === 1) {
                 if (SettingsColor_RBG_temp) {
-                    for (i = 0; i < array.length; i++) {
+                    i = 0;
+                    len = array.length;
+                    for (i; i < len; i++) {
                         array[i] = SettingsColor_RBG_temp[i];
                     }
                     SettingsColor_RBG_temp = null;
@@ -21855,13 +21924,17 @@
             } else if (currpos === 1) {
 
                 SettingsColor_RBG_temp = [];
-                for (i = 0; i < array.length; i++) {
+                i = 0;
+                len = array.length;
+                for (i; i < len; i++) {
                     SettingsColor_RBG_temp.push(SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos);
                 }
 
             }
 
-            for (i = 0; i < array.length; i++) {
+            i = 0;
+            len = array.length;
+            for (i; i < len; i++) {
                 SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos = array[i];
             }
 
@@ -22289,7 +22362,9 @@
 
         // Prepare the bitrates
         key = "bitrate_main";
-        for (var i = 1; i < Settings_value[key].values.length; i++) {
+        var i = 1,
+            len = Settings_value[key].values.length;
+        for (i; i < len; i++) {
             Settings_value[key].values[i] = Settings_value[key].values[i] + " Mbps";
         }
         Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
@@ -22557,7 +22632,7 @@
     }
 
     function Settings_SetAnimations() {
-        var i, array,
+        var i, array, len,
             classes = ['screen_holder',
                 'screen_holder_channel',
                 'screen_holder_switch',
@@ -22579,8 +22654,9 @@
         classes.forEach(
             function(classe) {
                 array = document.getElementsByClassName(classe);
-
-                for (i = 0; i < array.length; i++)
+                i = 0;
+                len = array.length;
+                for (i; i < len; i++)
                     array[i].style.transition = mtransition;
             }
         );
@@ -22849,7 +22925,9 @@
                 dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR +
                     STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
 
-                for (var i = 0; i < Settings_CodecsValue.length; i++) {
+                var i = 0,
+                    len = Settings_CodecsValue.length;
+                for (i; i < len; i++) {
 
                     Settings_value[Settings_CodecsValue[i].name] = {
                         "values": [STR_ENABLE, STR_DISABLE],
@@ -22948,18 +23026,23 @@
 
             //Make sure at least one is enable
             var oneEnable = false,
-                i = 0;
+                i = 0,
+                len = Settings_CodecsValue.length;
 
-            for (i; i < Settings_CodecsValue.length; i++) {
+            for (i; i < len; i++) {
                 if (!Settings_value[Settings_CodecsValue[i].name].defaultValue) {
                     oneEnable = true;
                     break;
                 }
             }
+
             if (!oneEnable) {
                 Main_showWarningDialog(STR_ONE_CODEC_ENA);
                 Main_setTimeout(Main_HideWarningDialog, 2000);
-                for (i = 0; i < Settings_CodecsValue.length; i++) {
+
+                i = 0;
+                len = Settings_CodecsValue.length;
+                for (i; i < len; i++) {
                     if (Settings_CodecsPos !== i) {
                         key = Settings_CodecsValue[i].name;
                         Settings_value[key].defaultValue += -1;
@@ -24016,7 +24099,9 @@
         }
         UserLiveFeed_PreloadImgs.splice(Sidepannel_PosFeed, 1);
 
-        for (var i = 0; i < UserLiveFeed_PreloadImgs.length; i++) {
+        var i = 0,
+            len = UserLiveFeed_PreloadImgs.length;
+        for (i; i < len; i++) {
             Main_ImageLoaderWorker.postMessage(
                 UserLiveFeed_PreloadImgs[i].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg
             );
@@ -27068,12 +27153,15 @@
                         if (temp_RemoveCursor) {
                             Main_values.Users_AddcodePosition = Users_showUserDialogPos;
                             Main_SaveValues();
-                            var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?';
-                            var type_code = 'code';
-                            var client_id = Main_clientId;
-                            var redirect_uri = AddCode_redirect_uri;
-                            var scope = '';
-                            for (i = 0; i < AddCode_Scopes.length; i++) {
+                            var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?',
+                                type_code = 'code',
+                                client_id = Main_clientId,
+                                redirect_uri = AddCode_redirect_uri,
+                                scope = '',
+                                len = AddCode_Scopes.length;
+
+                            i = 0;
+                            for (i; i < len; i++) {
                                 scope += AddCode_Scopes[i] + '+';
                             }
                             scope = scope.slice(0, -1);
@@ -27167,9 +27255,11 @@
             }
 
             // Tags are split by a semi colon.
-            var rawTags = data.slice(1, nextspace).split(';');
+            var rawTags = data.slice(1, nextspace).split(';'),
+                i = 0,
+                len = rawTags.length;
 
-            for (var i = 0; i < rawTags.length; i++) {
+            for (i; i < len; i++) {
                 // Tags delimited by an equals sign are key=value tags.
                 // If there's no equals, we assign the tag a value of true.
                 var tag = rawTags[i];
@@ -27291,9 +27381,11 @@
     function extraMessageTokenize(message, chat_number, bits) {
         var tokenizedString = message.split(' '),
             emote,
-            cheer;
+            cheer,
+            i = 0,
+            len = tokenizedString.length;
 
-        for (var i = 0; i < tokenizedString.length; i++) {
+        for (i; i < len; i++) {
             message = tokenizedString[i];
 
             cheer = bits ? findCheerInToken(message, chat_number) : 0;
@@ -27337,10 +27429,11 @@
     function findCheerInToken(message, chat_number) {
         var cheerPrefixes = Object.keys(cheers[ChatLive_selectedChannel_id[chat_number]]),
             tokenLower = message.toLowerCase(),
-            index = -1;
+            index = -1,
+            i = 0,
+            len = cheerPrefixes.length;
 
-
-        for (var i = 0; i < cheerPrefixes.length; i++) {
+        for (i; i < len; i++) {
             //Try  case sensitive first as some prefixes start the same, but some users type without carrying about case
             if (message.startsWith(cheerPrefixes[i]))
                 return getCheer(cheerPrefixes[i], parseInt(message.substr(cheerPrefixes[i].length), 10), chat_number);
