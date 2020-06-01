@@ -66,7 +66,6 @@ var Play_ChatDelayPosition = 0;
 var Play_TargetHost = '';
 var Play_isLive = true;
 var Play_RestoreFromResume = false;
-var Play_updateStreamInfoErrorTry = 0;
 var Play_chat_container;
 var Play_ProgresBarrElm;
 var Play_ProgresBarrBufferElm;
@@ -328,7 +327,6 @@ function Play_Start() {
         UserLiveFeed_SetFeedPicText();
     }
 
-    Play_updateStreamInfoErrorTry = 0;
     Play_loadingInfoDataTimeout = 10000;
     Play_isLive = true;
     Play_tokenResponse = 0;
@@ -573,33 +571,15 @@ function Play_updateStreamInfoStartError() {
             750
         );
         Play_loadingInfoDataTry++;
-    } else Play_loadingInfoDataTry = 0;
-}
+    } else {
+        Play_loadingInfoDataTry = 0;
 
-function Play_updateStreamInfoValues(response) {
-    response = JSON.parse(response);
-    if (response.stream !== null) {
+        if (Play_isOn && Play_data.data.length > 0) {
 
-        Play_updateStreamInfoEnd(response);
+            Main_Set_history('live', Play_data.data);
 
-        if (PlayExtra_PicturePicture) {
-            Play_updateStreamInfoErrorTry = 0;
-            PlayExtra_updateStreamInfo();
         }
     }
-}
-
-function Play_updateStreamInfoError() {
-    if (Play_updateStreamInfoErrorTry < DefaultHttpGetReTryMax) {
-        Main_setTimeout(
-            function() {
-                if (Play_isOn) Play_updateStreamInfo();
-                //give a second for it retry as the TV may be on coming from resume
-            },
-            750
-        );
-        Play_updateStreamInfoErrorTry++;
-    } else Play_updateStreamInfoErrorTry = 0;
 }
 
 function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
@@ -651,15 +631,90 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
     }
 }
 
-//When update this also update PlayExtra_updateStreamInfo
 function Play_updateStreamInfo() {
     if (Play_MultiEnable) {
         for (var i = 0; i < Play_MultiArray.length; i++) {
             Play_updateStreamInfoMulti(i);
         }
     } else {
-        var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-        BasexmlHttpGet(theUrl, 3000, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoError);
+        //When update this also update PlayExtra_updateStreamInfo
+        Play_updateStreamInfoGet(
+            Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I,
+            0,
+            true
+        );
+    }
+}
+
+function Play_updateStreamInfoGet(theUrl, tryes, Is_play) {
+    var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = (DefaultHttpGetTimeout + (DefaultHttpGetTimeoutPlus * tryes)) * 2;
+
+    for (var i = 0; i < 2; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                Play_updateStreamInfoValues(xmlHttp.responseText, Is_play);
+            } else {
+                Play_updateStreamInfoGetError(theUrl, tryes, Is_play);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function Play_updateStreamInfoValues(response, Is_play) {
+    response = JSON.parse(response);
+
+    if (response.stream !== null) {
+
+        if (Is_play) {
+            Play_updateStreamInfoEnd(response);
+
+            if (PlayExtra_PicturePicture) {
+                PlayExtra_updateStreamInfo();
+            }
+
+        } else {
+            var tempData = ScreensObj_LiveCellArray(response.stream);
+            Main_Set_history('live', tempData);
+
+            //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
+            if (PlayExtra_data.data.length > 0) {
+                PlayExtra_data.data = tempData;
+
+                PlayExtra_UpdatePanel();
+            }
+        }
+    }
+}
+
+function Play_updateStreamInfoGetError(theUrl, tryes, Is_play) {
+    if (tryes < DefaultHttpGetReTryMax) {
+        Main_setTimeout(
+            function() {
+                if (Play_isOn) Play_updateStreamInfoGet(theUrl, tryes + 1, Is_play);
+                //give a second for it retry as the TV may be on coming from resume
+            },
+            750
+        );
+    } else if (Play_isOn) {
+
+        //we fail but we still watching so update the time
+        if (Is_play && Play_data.data.length > 0) {
+
+            Main_Set_history('live', Play_data.data);
+
+        } else if (!Is_play && PlayExtra_data.data.length > 0) {
+
+            Main_Set_history('live', PlayExtra_data.data);
+        }
+
     }
 }
 

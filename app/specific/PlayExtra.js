@@ -441,35 +441,9 @@ function PlayExtra_loadDataFail(Reason) {
 }
 
 function PlayExtra_updateStreamInfo() {
-    var theUrl = Main_kraken_api + 'streams/' + PlayExtra_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, 3000, 2, null, PlayExtra_updateStreamInfoValues, PlayExtra_updateStreamInfoError);
-}
-
-function PlayExtra_updateStreamInfoValues(response) {
-    response = JSON.parse(response);
-    if (response.stream !== null) {
-
-        var tempData = ScreensObj_LiveCellArray(response.stream);
-        Main_Set_history('live', tempData);
-
-        //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
-        if (PlayExtra_data.data.length > 0) {
-            PlayExtra_data.data = tempData;
-
-            PlayExtra_UpdatePanel();
-        }
-    }
-}
-
-function PlayExtra_updateStreamInfoError() {
-    if (Play_updateStreamInfoErrorTry < DefaultHttpGetReTryMax) {
-        Main_setTimeout(
-            function() {
-                if (Play_isOn) PlayExtra_updateStreamInfo();
-                //give a second for it retry as the TV may be on coming from resume
-            },
-            2500
-        );
-        Play_updateStreamInfoErrorTry++;
-    } else Play_updateStreamInfoErrorTry = 0;
+    Play_updateStreamInfoGet(
+        Main_kraken_api + 'streams/' + PlayExtra_data.data[14] + Main_TwithcV5Flag_I,
+        0,
+        false
+    );
 }
