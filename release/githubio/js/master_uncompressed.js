@@ -9180,6 +9180,24 @@
         Main_clearInterval(PlayVod_SaveOffsetId);
 
         if (PlayClip_isOn) PlayClip_Resume();
+        else if (Play_isOn) {
+            if (Play_MultiEnable) {
+                var i = 0,
+                    len = Play_MultiArray.length;
+                for (i; i < len; i++) {
+                    if (Play_MultiArray[i].data.length > 0) {
+
+                        Main_Set_history('live', Play_MultiArray[i].data);
+
+                    }
+                }
+            } else if (PlayExtra_PicturePicture) {
+
+                if (PlayExtra_data.data.length > 0) Main_Set_history('live', PlayExtra_data.data);
+                if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
+
+            } else if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
+        }
 
         //General related
         Screens_ClearAnimation(Screens_Current_Key);
@@ -13718,7 +13736,9 @@
                 ChatLive_Init(0);
                 Play_data.watching_time = new Date().getTime();
 
-                for (var i = 0; i < Play_MultiArray.length; i++) {
+                var i = 0,
+                    len = Play_MultiArray.length;
+                for (i; i < len; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
 
                         Play_MultiStart(i);
