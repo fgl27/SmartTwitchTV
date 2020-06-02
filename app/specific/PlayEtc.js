@@ -475,7 +475,11 @@ function Play_KeyReturn(is_vod) {
             if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
             else if (PlayExtra_PicturePicture) Play_CloseSmall();
             else {
-                if (Play_isOn && Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
+
+                if (Play_isOn && !Play_isEndDialogVisible() && Play_data.data.length > 0) {
+                    Main_Set_history('live', Play_data.data);
+                }
+
                 Play_CleanHideExit();
                 Play_hideChat();
                 if (is_vod) PlayVod_shutdownStream();
