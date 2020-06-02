@@ -874,7 +874,8 @@ function Play_OlddataSet() {
 
 function Play_ForbiddenLive() {
     Play_HideBufferDialog();
-    Play_showWarningMidleDialog(STR_FORBIDDEN);
+    Play_showWarningMidleDialog(STR_FORBIDDEN, 3000);
+
     Main_setTimeout(
         function() {
             if (Play_isOn) Play_CheckHostStart();
