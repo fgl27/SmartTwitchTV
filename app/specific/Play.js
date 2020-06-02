@@ -42,7 +42,6 @@ var Play_exitID = null;
 
 var Play_created = '';
 
-var Play_loadingDataTry = 0;
 var Play_loadingInfoDataTry = 0;
 
 var Play_ResumeAfterOnlineCounter = 0;
@@ -52,8 +51,6 @@ var Play_ChatBackgroundID = null;
 var Play_Playing = false;
 var Play_IsWarning = false;
 var Play_LoadLogoSucess = false;
-var Play_loadingInfoDataTimeout = 10000;
-var Play_loadingDataTimeout = 2000;
 var Play_Endcounter = 0;
 var Play_EndTextCounter = 3;
 var Play_EndSettingsCounter = 3;
@@ -327,7 +324,6 @@ function Play_Start() {
         UserLiveFeed_SetFeedPicText();
     }
 
-    Play_loadingInfoDataTimeout = 10000;
     Play_isLive = true;
     Play_tokenResponse = 0;
     Play_playingTry = 0;
@@ -373,20 +369,16 @@ function Play_CheckIfIsLiveStart(callback) {
         var selectedChannelDisplayname = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
         Play_CheckIfIsLiveId = (new Date().getTime());
-        //TODO remove the try after some app updates
-        try {
-            OSInterface_getStreamDataAsync(
-                Play_live_token.replace('%x', selectedChannelDisplayname[6]),
-                Play_live_links.replace('%x', selectedChannelDisplayname[6]),
-                callback,
-                Play_CheckIfIsLiveId,
-                2,//Main player runs on 0 extra player on 1 the check on 2
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
-            );
-        } catch (e) {
-            Play_HideBufferDialog();
-        }
+
+        OSInterface_getStreamDataAsync(
+            Play_live_token.replace('%x', selectedChannelDisplayname[6]),
+            Play_live_links.replace('%x', selectedChannelDisplayname[6]),
+            callback,
+            Play_CheckIfIsLiveId,
+            2,//Main player runs on 0 extra player on 1 the check on 2
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
+        );
     }
 
 }
@@ -430,7 +422,6 @@ function Play_Resume() {
     ChatLive_Playing = true;
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
     Play_showBufferDialog();
-    Play_loadingInfoDataTimeout = 10000;
     Play_RestoreFromResume = true;
     Play_ResumeAfterOnlineCounter = 0;
 
@@ -479,24 +470,19 @@ function Play_ResumeAfterOnline() {
 }
 
 function Play_getStreamData(channel_name) {
-    var result = null;
 
-    //TODO remove the try after some app updates
-    try {
-        result = OSInterface_getStreamData(
-            Play_live_token.replace('%x', channel_name),
-            Play_live_links.replace('%x', channel_name),
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
-        );
-    } catch (e) {}
+    return OSInterface_getStreamData(
+        Play_live_token.replace('%x', channel_name),
+        Play_live_links.replace('%x', channel_name),
+        DefaultHttpGetReTryMax,
+        DefaultHttpGetTimeout
+    );
 
-    return result;
 }
 
 function Play_updateStreamInfoStart() {
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, Play_loadingInfoDataTimeout, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError);
+    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (Play_loadingInfoDataTry * DefaultHttpGetTimeoutPlus), 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError);
 }
 
 function Play_UpdateMainStreamDiv() {
@@ -564,7 +550,6 @@ function Play_updateStreamInfoEnd(response) {
 
 function Play_updateStreamInfoStartError() {
     if (Play_loadingInfoDataTry < DefaultHttpGetReTryMax) {
-        Play_loadingInfoDataTimeout += DefaultHttpGetTimeoutPlus;
         Main_setTimeout(
             function() {
                 if (Play_isOn) Play_updateStreamInfoStart();
@@ -752,29 +737,25 @@ function Play_loadData(synchronous) {
     if (Main_IsOn_OSInterface) {
 
         Play_loadDataId = (new Date().getTime());
-        //TODO remove the try after some app updates
-        try {
-            //On resume to avoid out of sync resumes we run PP synchronous
-            if (synchronous) {
 
-                var StreamData = Play_getStreamData(Play_data.data[6]);
+        //On resume to avoid out of sync resumes we run PP synchronous
+        if (synchronous) {
 
-                if (StreamData) Play_loadDataResultEnd(JSON.parse(StreamData));
-                else Play_loadDataErrorFinish();
+            var StreamData = Play_getStreamData(Play_data.data[6]);
 
-            } else {
-                OSInterface_getStreamDataAsync(
-                    Play_live_token.replace('%x', Play_data.data[6]),
-                    Play_live_links.replace('%x', Play_data.data[6]),
-                    'Play_loadDataResult',
-                    Play_loadDataId,
-                    0,
-                    DefaultHttpGetReTryMax,
-                    DefaultHttpGetTimeout
-                );
-            }
-        } catch (e) {
-            Play_loadDataErrorFinish();
+            if (StreamData) Play_loadDataResultEnd(JSON.parse(StreamData));
+            else Play_loadDataErrorFinish();
+
+        } else {
+            OSInterface_getStreamDataAsync(
+                Play_live_token.replace('%x', Play_data.data[6]),
+                Play_live_links.replace('%x', Play_data.data[6]),
+                'Play_loadDataResult',
+                Play_loadDataId,
+                0,
+                DefaultHttpGetReTryMax,
+                DefaultHttpGetTimeout
+            );
         }
 
     } else Play_loadDataSuccessFake();
@@ -1633,8 +1614,6 @@ function Play_CheckHostStart(error_410) {
 
     Play_showBufferDialog();
     Play_state = -1;
-    Play_loadingDataTry = 0;
-    Play_loadingDataTimeout = DefaultHttpGetTimeout;
     ChatLive_Clear(0);
     ChatLive_Clear(1);
     Main_clearInterval(Play_streamInfoTimerId);
@@ -1649,7 +1628,7 @@ function Play_loadDataCheckHost() {
 
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,//urlString
-                Play_loadingDataTimeout,//timeout
+                DefaultHttpGetTimeout,//timeout
                 null,//postMessage, null for get
                 null,//Method, null for get
                 JSON.stringify(
@@ -1674,18 +1653,10 @@ function Play_CheckHostResult(result) {
         if (resultObj.status === 200) {
             Play_CheckHost(resultObj.responseText);
         } else {
-            Play_loadDataCheckHostError();
+            Play_EndStart(false, 1);
         }
     }
-    else Play_loadDataCheckHostError();
-}
-
-function Play_loadDataCheckHostError() {
-    Play_loadingDataTry++;
-    if (Play_loadingDataTry < DefaultHttpGetReTryMax) {
-        Play_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
-        Play_loadDataCheckHost();
-    } else Play_EndStart(false, 1);
+    else Play_EndStart(false, 1);
 }
 
 function Play_CheckHost(responseText) {

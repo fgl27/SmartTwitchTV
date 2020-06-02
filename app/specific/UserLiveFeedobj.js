@@ -78,7 +78,6 @@ function UserLiveFeedobj_CheckToken() {
 function UserLiveFeedobj_loadDataPrepare(pos) {
     UserLiveFeed_loadingData[pos] = true;
     UserLiveFeed_loadingDataTry[pos] = 0;
-    UserLiveFeed_loadingDataTimeout[pos] = DefaultHttpGetTimeout;
 }
 
 function UserLiveFeedobj_loadChannels() {
@@ -86,7 +85,12 @@ function UserLiveFeedobj_loadChannels() {
     var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserLivePos], 2, null, UserLiveFeedobj_loadChannelLive,
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        UserLiveFeedobj_loadChannelLive,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
         }
@@ -97,7 +101,6 @@ function UserLiveFeedobj_loadDataError(pos) {
     //Main_Log('UserLiveFeedobj_loadChannels');
     UserLiveFeed_loadingDataTry[pos]++;
     if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
-        UserLiveFeed_loadingDataTimeout[pos] += 500;
         UserLiveFeed_obj[pos].load();
     } else {
         if (!UserLiveFeed_obj[pos].loadingMore) {
@@ -168,7 +171,7 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
     //Main_Log('UserLiveFeedobj_loadChannelUserLiveGet');
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserLivePos];
+    xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
     xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
@@ -431,7 +434,12 @@ function UserLiveFeedobj_loadLive() {
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_LivePos);
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_LivePos], 2, null, UserLiveFeedobj_loadDataLiveSuccess,
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_LivePos] * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        UserLiveFeedobj_loadDataLiveSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_LivePos);
         }
@@ -469,7 +477,12 @@ function UserLiveFeedobj_loadFeatured() {
     var theUrl = Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
         AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_FeaturedPos], 2, null, UserLiveFeedobj_loadDataFeaturedSuccess,
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_FeaturedPos] * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        UserLiveFeedobj_loadDataFeaturedSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_FeaturedPos);
         }
@@ -509,7 +522,13 @@ function UserLiveFeedobj_loadCurrentGame() {
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_CurrentGamePos);
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_CurrentGamePos], 2, null, UserLiveFeedobj_loadDataCurrentGameSuccess,
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_CurrentGamePos] * DefaultHttpGetTimeoutPlus),
+
+        2,
+        null,
+        UserLiveFeedobj_loadDataCurrentGameSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_CurrentGamePos);
         }
@@ -548,7 +567,12 @@ function UserLiveFeedobj_loadUserHost() {
     var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) +
         '/followed/hosting?limit=100';
 
-    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserHostPos], 2, null, UserLiveFeedobj_loadDataUserHostSuccess,
+    BasexmlHttpHlsGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserHostPos] * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        UserLiveFeedobj_loadDataUserHostSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserHostPos);
         }
@@ -583,7 +607,13 @@ function UserLiveFeedobj_UserGames() {
 function UserLiveFeedobj_loadUserGames() {
     var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=250';//follows
 
-    BasexmlHttpHlsGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserGamesPos], 1, null, UserLiveFeedobj_loadDataUserGamesSuccess,
+    BasexmlHttpHlsGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserGamesPos] * DefaultHttpGetTimeoutPlus),
+
+        1,
+        null,
+        UserLiveFeedobj_loadDataUserGamesSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserGamesPos);
         }
@@ -623,7 +653,12 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_UserAGamesPos);
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_UserAGamesPos], 2, null, UserLiveFeedobj_loadDataCurrentUserGameSuccess,
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserAGamesPos] * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        UserLiveFeedobj_loadDataCurrentUserGameSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserAGamesPos);
         }
@@ -668,7 +703,12 @@ function UserLiveFeedobj_loadGames() {
         (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset)
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].dataEnded = true;
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_GamesPos], 2, null, UserLiveFeedobj_loadDataGamesSuccess,
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_GamesPos] * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        UserLiveFeedobj_loadDataGamesSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_GamesPos);
         }
@@ -704,7 +744,13 @@ function UserLiveFeedobj_loadCurrentAGame() {
 
     UserLiveFeedobj_CheckOffset(UserLiveFeedobj_AGamesPos);
 
-    BasexmlHttpGet(theUrl, UserLiveFeed_loadingDataTimeout[UserLiveFeedobj_AGamesPos], 2, null, UserLiveFeedobj_loadDataCurrentAGameSuccess,
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_AGamesPos] * DefaultHttpGetTimeoutPlus),
+
+        2,
+        null,
+        UserLiveFeedobj_loadDataCurrentAGameSuccess,
         function() {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_AGamesPos);
         }

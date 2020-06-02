@@ -3,7 +3,6 @@ var PlayClip_IsJumping = false;
 var PlayClip_jumpCount = 0;
 var PlayClip_TimeToJump = 0;
 var PlayClip_isOn = false;
-var PlayClip_loadingDataTimeout = 5000;
 var PlayClip_quality = 'source';
 var PlayClip_qualityPlaying = PlayClip_quality;
 var PlayClip_qualityIndex = 0;
@@ -114,9 +113,10 @@ function PlayClip_Start() {
 
     PlayClip_loadingtreamerInfoTry = 0;
     PlayClip_GetStreamerInfo();
-    PlayVod_loadingInfoDataTry = 0;
-    if (PlayClip_HasVOD) PlayClip_updateVodInfo();
-    else {
+    if (PlayClip_HasVOD) {
+        PlayVod_loadingInfoDataTry = 0;
+        PlayClip_updateVodInfo();
+    } else {
         Main_textContent("end_vod_name_text", '');
         Main_innerHTML("end_vod_title_text", '');
         Play_controls[Play_controlsOpenVod].setLable('');
@@ -127,7 +127,7 @@ function PlayClip_Start() {
 
 function PlayClip_updateVodInfo() {
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError);
+    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (PlayVod_loadingInfoDataTry * DefaultHttpGetTimeoutPlus), 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError);
 }
 
 function PlayClip_updateVodInfoSucess(response) {
@@ -138,14 +138,16 @@ function PlayClip_updateVodInfoSucess(response) {
 
 function PlayClip_updateVodInfoError() {
     PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < DefaultHttpGetReTryMax) PlayClip_updateVodInfo();
+    if (PlayVod_loadingInfoDataTry < DefaultHttpGetReTryMax) {
+        PlayClip_updateVodInfo();
+    }
 }
 
 function PlayClip_GetStreamerInfo() {
     //Main_Log('PlayClip_GetStreamerInfo');
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(theUrl, 10000, 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
+    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (PlayClip_loadingtreamerInfoTry * DefaultHttpGetTimeoutPlus), 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
 }
 
 function PlayClip_GetStreamerInfoSuccessError() {
@@ -174,7 +176,6 @@ function PlayClip_loadData() {
         PlayClip_loadDataSuccess410();
         return;
     }
-    PlayClip_loadingDataTimeout = DefaultHttpGetTimeout;
     PlayClip_loadDataRequest();
 }
 
@@ -187,26 +188,21 @@ function PlayClip_loadDataRequest() {
 
     PlayClip_loadDataRequestId = (new Date().getTime());
 
-    //TODO remove the try after some app updates
-    try {
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,//urlString
-            PlayClip_loadingDataTimeout,//timeout
-            postMessage,//postMessage, null for get
-            'POST',//Method, null for get
-            JSON.stringify(
-                [
-                    [Main_clientIdHeader, Main_Headers_Back[0][1]]
-                ]
-            ),//JsonString
-            'PlayClip_loadDataResult',//callback
-            PlayClip_loadDataRequestId,//checkResult
-            0,//key
-            0//thread
-        );
-    } catch (e) {
-        PlayClip_loadDataError();
-    }
+    OSInterface_GetMethodUrlHeadersAsync(
+        theUrl,//urlString
+        DefaultHttpGetTimeout,//timeout
+        postMessage,//postMessage, null for get
+        'POST',//Method, null for get
+        JSON.stringify(
+            [
+                [Main_clientIdHeader, Main_Headers_Back[0][1]]
+            ]
+        ),//JsonString
+        'PlayClip_loadDataResult',//callback
+        PlayClip_loadDataRequestId,//checkResult
+        0,//key
+        0//thread
+    );
 }
 
 function PlayClip_loadDataResult(response) {

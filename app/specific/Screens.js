@@ -193,7 +193,6 @@ function Screens_loadDataRequestStart(key) {
 function Screens_loadDataPrepare(key) {
     ScreenObj[key].loadingData = true;
     ScreenObj[key].loadingDataTry = 0;
-    ScreenObj[key].loadingDataTimeout = DefaultHttpGetTimeout;
 }
 
 function Screens_loadDataRequest(key) {
@@ -208,7 +207,6 @@ function Screens_loadDataRequest(key) {
 
         Screens_BasexmlHttpGet(
             (ScreenObj[key].url + Main_TwithcV5Flag),
-            ScreenObj[key].loadingDataTimeout,
             ScreenObj[key].HeaderQuatity,
             ScreenObj[key].token,
             ScreenObj[key].Headers,
@@ -240,7 +238,7 @@ function Screens_loadDataRequest(key) {
 // );
 
 //     } catch (e) {
-//         Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
+//         Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key);
 //     }
 // }
 
@@ -249,11 +247,11 @@ function Screens_loadDataRequest(key) {
 //     else Screens_loadDataError(key);
 // }
 
-function Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
+function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Timeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
+    xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
 
     Main_Headers[2][1] = access_token;
 
@@ -285,7 +283,6 @@ function Screens_loadDataError(key) {
     //Main_Log('Screens_loadDataError ' + ScreenObj[key].screen);
     ScreenObj[key].loadingDataTry++;
     if (ScreenObj[key].loadingDataTry < ScreenObj[key].loadingDataTryMax) {
-        ScreenObj[key].loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         Screens_loadDataRequest(key);
     } else Screens_loadDatafail(key);
 }

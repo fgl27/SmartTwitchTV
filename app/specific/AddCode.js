@@ -1,6 +1,5 @@
 
 //Variable initialization
-var AddCode_loadingDataTimeout = 15000;
 var AddCode_Code = 0;
 var AddCode_IsFollowing = false;
 var AddCode_IsSub = false;
@@ -43,7 +42,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
 
         xmlHttp = OSInterface_mMethodUrlHeaders(
             url,
-            AddCode_loadingDataTimeout + (DefaultHttpGetTimeoutPlus * tryes),
+            (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes),
             'POST',
             null,
             0,
@@ -65,7 +64,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
         xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("POST", url, true);
-        xmlHttp.timeout = AddCode_loadingDataTimeout + (DefaultHttpGetTimeoutPlus * tryes);
+        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -261,7 +260,7 @@ function AddCode_CheckTokenSync(position, tryes) {
     if (Main_IsOn_OSInterface) {
         var xmlHttp = OSInterface_mMethodUrlHeaders(
             AddCode_ValidateUrl,
-            AddCode_loadingDataTimeout + (DefaultHttpGetTimeoutPlus * tryes),
+            (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes),
             null,
             null,
             0,
@@ -632,7 +631,7 @@ function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, cal
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open(Method, theUrl, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout + (DefaultHttpGetTimeoutPlus * tryes);
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
     Main_Headers[2][1] = access_token;
 
@@ -652,7 +651,7 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
     xmlHttp.open("GET", AddCode_ValidateUrl, true);
     xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
 
-    xmlHttp.timeout = AddCode_loadingDataTimeout + (DefaultHttpGetTimeoutPlus * tryes);
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
     xmlHttp.onreadystatechange = function() {
         callbackready(xmlHttp, position, tryes);
@@ -665,7 +664,7 @@ function AddCode_BasexmlHttpGetBack(theUrl, type, HeaderQuatity, access_token, c
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open(type, theUrl, true);
-    xmlHttp.timeout = AddCode_loadingDataTimeout + (DefaultHttpGetTimeoutPlus * tryes);
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
     Main_Headers_Back[2][1] = access_token;
 

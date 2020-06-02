@@ -1,7 +1,6 @@
 //Spacing for reease maker not trow erros frm jshint
 var UserLiveFeed_loadingData = [];
 var UserLiveFeed_loadingDataTry = [];
-var UserLiveFeed_loadingDataTimeout = [];
 var UserLiveFeed_loadChannelOffsset = 0;
 var UserLiveFeed_followerChannels = '';
 var UserLiveFeed_idObject = [];
@@ -82,7 +81,6 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_lastRefresh[i] = 0;
         UserLiveFeed_loadingData[i] = false;
         UserLiveFeed_loadingDataTry[i] = 0;
-        UserLiveFeed_loadingDataTimeout[i] = DefaultHttpGetTimeout;
     }
 
     //User live

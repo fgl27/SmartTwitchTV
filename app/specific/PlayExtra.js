@@ -213,8 +213,6 @@ function PlayExtra_HideChat() {
 function PlayExtra_End(doSwitch) { // Called only by JAVA
     if (Settings_value.open_host.defaultValue) {
         Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2500);
-        Play_loadingDataTry = 0;
-        Play_loadingDataTimeout = DefaultHttpGetTimeout;
         PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
     } else PlayExtra_End_success(doSwitch);
 }
@@ -236,29 +234,22 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
     Main_setTimeout(
         function() {
-            //TODO remove the try after some app updates
             //TODO make a simple fun for this
-            try {
-
-                OSInterface_GetMethodUrlHeadersAsync(
-                    theUrl,//urlString
-                    Play_loadingDataTimeout,//timeout
-                    null,//postMessage, null for get
-                    null,//Method, null for get
-                    JSON.stringify(
-                        [
-                            [Main_clientIdHeader, Main_clientId]
-                        ]
-                    ),//JsonString
-                    'PlayExtra_CheckHostResult',//callback
-                    0,//checkResult
-                    doSwitch,//key
-                    3//thread
-                );
-
-            } catch (e) {
-                PlayExtra_End_success(doSwitch);
-            }
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,//urlString
+                DefaultHttpGetTimeout,//timeout
+                null,//postMessage, null for get
+                null,//Method, null for get
+                JSON.stringify(
+                    [
+                        [Main_clientIdHeader, Main_clientId]
+                    ]
+                ),//JsonString
+                'PlayExtra_CheckHostResult',//callback
+                0,//checkResult
+                doSwitch,//key
+                3//thread
+            );
         },
         100//Delay as the stream just ended and may not show as host yet
     );
@@ -272,17 +263,9 @@ function PlayExtra_CheckHostResult(result, doSwitch) {
         if (resultObj.status === 200) {
             PlayExtra_CheckHost(resultObj.responseText, doSwitch);
         } else {
-            PlayExtra_loadDataCheckHostError(doSwitch);
+            PlayExtra_End_success(doSwitch);
         }
 
-    } else PlayExtra_loadDataCheckHostError(doSwitch);
-}
-
-function PlayExtra_loadDataCheckHostError(doSwitch) {
-    Play_loadingDataTry++;
-    if (Play_loadingDataTry < DefaultHttpGetReTryMax) {
-        Play_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
-        PlayExtra_loadDataCheckHost(doSwitch);
     } else PlayExtra_End_success(doSwitch);
 }
 

@@ -4,7 +4,6 @@ var ChannelContent_cursorX = 0;
 var ChannelContent_dataEnded = false;
 var ChannelContent_itemsCount = 0;
 var ChannelContent_loadingDataTry = 0;
-var ChannelContent_loadingDataTimeout = 5000;
 var ChannelContent_itemsCountOffset = 0;
 var ChannelContent_isoffline = false;
 var ChannelContent_UserChannels = false;
@@ -86,7 +85,6 @@ function ChannelContent_StartLoad() {
 function ChannelContent_loadDataPrepare() {
     Main_FirstLoad = true;
     ChannelContent_loadingDataTry = 0;
-    ChannelContent_loadingDataTimeout = DefaultHttpGetTimeout;
 }
 
 function ChannelContent_loadDataRequest() {
@@ -94,7 +92,7 @@ function ChannelContent_loadDataRequest() {
         encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
         Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(theUrl, ChannelContent_loadingDataTimeout, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
+    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
 }
 
 function ChannelContent_loadDataRequestSuccess(response) {
@@ -115,7 +113,6 @@ function ChannelContent_loadDataRequestSuccess(response) {
 function ChannelContent_loadDataError() {
     ChannelContent_loadingDataTry++;
     if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         ChannelContent_loadDataRequest();
     } else {
         ChannelContent_responseText = null;
@@ -129,7 +126,7 @@ function ChannelContent_loadDataCheckHost() {
 
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
-        ChannelContent_loadingDataTimeout,//timeout
+        DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         JSON.stringify(
@@ -160,7 +157,6 @@ function ChannelContent_CheckHostResult(result) {
 function ChannelContent_loadDataCheckHostError() {
     ChannelContent_loadingDataTry++;
     if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         ChannelContent_loadDataCheckHost();
     } else {
         ChannelContent_responseText = null;
@@ -186,7 +182,7 @@ function ChannelContent_CheckHost(responseText) {
 function ChannelContent_GetStreamerInfo() {
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
+    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
 }
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
@@ -206,7 +202,6 @@ function ChannelContent_GetStreamerInfoSuccess(responseText) {
 function ChannelContent_GetStreamerInfoError() {
     ChannelContent_loadingDataTry++;
     if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         ChannelContent_GetStreamerInfo();
     } else {
         ChannelContent_offline_image = null;

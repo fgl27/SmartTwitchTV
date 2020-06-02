@@ -12,7 +12,6 @@ var PlayVod_isOn = false;
 var PlayVod_Buffer = 2000;
 
 var PlayVod_loadingInfoDataTry = 0;
-var PlayVod_loadingInfoDataTimeout = 10000;
 
 var Play_jumping = false;
 var PlayVod_SizeClearID;
@@ -148,18 +147,16 @@ function PlayVod_PosStart() {
 
 function PlayVod_PrepareLoad() {
     PlayVod_loadingInfoDataTry = 0;
-    PlayVod_loadingInfoDataTimeout = 10000;
 }
 
 function PlayVod_updateVodInfo() {
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, PlayVod_loadingInfoDataTimeout, 2, null, PlayVod_updateVodInfoPannel, PlayVod_updateVodInfoError);
+    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (PlayVod_loadingInfoDataTry * DefaultHttpGetTimeoutPlus), 2, null, PlayVod_updateVodInfoPannel, PlayVod_updateVodInfoError);
 }
 
 function PlayVod_updateVodInfoError() {
     PlayVod_loadingInfoDataTry++;
     if (PlayVod_loadingInfoDataTry < DefaultHttpGetReTryMax) {
-        PlayVod_loadingInfoDataTimeout += DefaultHttpGetTimeoutPlus;
         PlayVod_updateVodInfo();
     }
 }
@@ -313,20 +310,16 @@ function PlayVod_loadData() {
     if (Main_IsOn_OSInterface) {
 
         PlayVod_loadDataId = (new Date().getTime());
-        //TODO remove the try after some app updates
-        try {
-            OSInterface_getStreamDataAsync(
-                Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
-                Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
-                'PlayVod_loadDataResult',
-                PlayVod_loadDataId,
-                0,
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
-            );
-        } catch (e) {
-            PlayVod_loadDataErrorFinish();
-        }
+
+        OSInterface_getStreamDataAsync(
+            Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
+            Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
+            'PlayVod_loadDataResult',
+            PlayVod_loadDataId,
+            0,
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
+        );
 
     } else PlayVod_loadDataSuccessFake();
 }

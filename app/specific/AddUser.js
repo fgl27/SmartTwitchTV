@@ -1,6 +1,5 @@
 //Variable initialization
 var AddUser_loadingDataTry = 0;
-var AddUser_loadingDataTimeout = 5000;
 var AddUser_UsernameArray = [];
 var AddUser_Username = null;
 var AddUser_loadingData = false;
@@ -121,7 +120,6 @@ function AddUser_KeyboardDismiss() {
 
         if (!AddUser_UserCodeExist(AddUser_Username)) {
             AddUser_loadingDataTry = 0;
-            AddUser_loadingDataTimeout = DefaultHttpGetTimeout;
             AddUser_loadingData = true;
             Main_HideElement('add_user_scroll');
             Main_showLoadDialog();
@@ -143,7 +141,13 @@ function AddUser_KeyboardDismiss() {
 function AddUser_loadDataRequest() {
     var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_Username) + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(theUrl, AddUser_loadingDataTimeout, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataError);
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (AddUser_loadingDataTry * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        AddUser_loadDataRequestSuccess, AddUser_loadDataError
+    );
 }
 
 function AddUser_loadDataRequestSuccess(response) {
@@ -157,7 +161,6 @@ function AddUser_loadDataRequestSuccess(response) {
 function AddUser_loadDataError() {
     AddUser_loadingDataTry++;
     if (AddUser_loadingDataTry < DefaultHttpGetReTryMax) {
-        AddUser_loadingDataTimeout += DefaultHttpGetTimeoutPlus;
         AddUser_loadDataRequest();
     } else AddUser_loadDataNoUser();
 }

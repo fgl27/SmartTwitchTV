@@ -39,7 +39,6 @@ var Base_obj = {
     loadingData: false,
     itemsCount: 0,
     loadingDataTryMax: DefaultHttpGetReTryMax,
-    loadingDataTimeout: DefaultHttpGetTimeout,
     MaxOffset: 0,
     offset: 0,
     visiblerows: 3,
