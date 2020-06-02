@@ -8990,16 +8990,16 @@
 
     function Main_setHistoryItem() {
         Main_setHistoryItemId = Main_setTimeout(
-            function() {
-
-                var string = JSON.stringify(Main_values_History_data);
-                Main_setItem('Main_values_History_data', string);
-                if (Main_CanBackup) OSInterface_BackupFile(Main_HistoryBackupFile, string);
-
-            },
+            Main_SaveHistoryItem,
             5000,
             Main_setHistoryItemId
         );
+    }
+
+    function Main_SaveHistoryItem() {
+        var string = JSON.stringify(Main_values_History_data);
+        Main_setItem('Main_values_History_data', string);
+        if (Main_CanBackup) OSInterface_BackupFile(Main_HistoryBackupFile, string);
     }
 
     //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
@@ -9224,6 +9224,7 @@
             } else if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
         }
 
+        Main_SaveHistoryItem();
         //General related
         Screens_ClearAnimation(Screens_Current_Key);
 
