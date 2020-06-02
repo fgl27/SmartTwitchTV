@@ -363,7 +363,7 @@ function Play_OpenGame(PlayVodClip) {
 }
 
 function Play_ClearPP() {
-    Play_CloseSmall();
+    if (PlayExtra_PicturePicture) Play_CloseSmall();
 
     Play_hideChat();
 }
