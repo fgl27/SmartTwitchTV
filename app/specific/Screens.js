@@ -253,7 +253,7 @@ function Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, He
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Timeout;
+    xmlHttp.timeout = Timeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
 
     Main_Headers[2][1] = access_token;
 
@@ -1794,25 +1794,25 @@ function Screens_ThumbOption_CheckFollow(data, key) {
     else Screens_ThumbOption_RequestCheckFollow(data[2], 0, Screens_ThumbOption_CheckFollow_ID);
 }
 
-function Screens_ThumbOption_RequestCheckFollow(channel_id, trye, ID) {
+function Screens_ThumbOption_RequestCheckFollow(channel_id, tryes, ID) {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open('GET', theUrl, true);
-    xmlHttp.timeout = 5000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
-        if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, trye, ID);
+        if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, tryes, ID);
     };
 
     xmlHttp.send(null);
 }
 
-function Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, trye, ID) {
+function Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, tryes, ID) {
     if (xmlHttp.readyState === 4) {
         if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
@@ -1827,7 +1827,7 @@ function Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, trye, 
             Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
             Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
         } else { // internet error
-            if (trye < 5) Screens_ThumbOption_RequestCheckFollow(channel_id, trye++, ID);
+            if (tryes < 5) Screens_ThumbOption_RequestCheckFollow(channel_id, tryes + 1, ID);
         }
     }
 }

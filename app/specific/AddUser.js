@@ -259,7 +259,7 @@ function AddUser_UpdateUser(position, tryes) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);

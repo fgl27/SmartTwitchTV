@@ -1721,7 +1721,7 @@ function Main_Setworker() {
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.responseType = 'blob';
                     xmlHttp.open('GET', event.data, true);
-                    xmlHttp.timeout = 3000;
+                    xmlHttp.timeout = 30000;
                     xmlHttp.send();
                 }
             );

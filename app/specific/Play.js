@@ -588,7 +588,7 @@ function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
         xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
@@ -653,7 +653,7 @@ function Play_updateStreamInfoGet(theUrl, tryes, Is_play) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = (DefaultHttpGetTimeout + (DefaultHttpGetTimeoutPlus * tryes)) * 2;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);

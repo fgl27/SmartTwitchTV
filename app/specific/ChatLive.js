@@ -147,7 +147,7 @@ function ChatLive_checkFallow(tryes, chat_number, id) {
     for (var i = 0; i < 2; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -209,7 +209,7 @@ function ChatLive_checkSub(tryes, chat_number, id) {
     for (var i = 0; i < 3; i++)
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -1518,7 +1518,7 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
             xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
     }
 
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {

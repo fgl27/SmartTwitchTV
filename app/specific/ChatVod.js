@@ -1,5 +1,4 @@
 //Variable initialization
-var Chat_loadingDataTry = 0;
 var Chat_Messages = [];
 var Chat_MessagesNext = [];
 var Chat_addlinesId;
@@ -63,7 +62,7 @@ function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -206,25 +205,24 @@ function Chat_loadEmotesSuccessffz(data) {
 }
 
 function Chat_loadChat(id) {
-    Chat_loadingDataTry = 0;
-    if (Chat_Id[0] === id) Chat_loadChatRequest(id);
+    if (Chat_Id[0] === id) Chat_loadChatRequest(id, 0);
 }
 
-function Chat_loadChatRequest(id) {
+function Chat_loadChatRequest(id, tryes) {
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
         '/comments?client_id=' + Main_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
 
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 if (Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
             } else {
-                if (Chat_Id[0] === id) Chat_loadChatError(id);
+                if (Chat_Id[0] === id) Chat_loadChatError(id, tryes);
             }
         }
     };
@@ -232,14 +230,13 @@ function Chat_loadChatRequest(id) {
     xmlHttp.send(null);
 }
 
-function Chat_loadChatError(id) {
-    Chat_loadingDataTry++;
+function Chat_loadChatError(id, tryes) {
     if (Chat_Id[0] === id) {
-        if (Chat_loadingDataTry < DefaultHttpGetReTryMax) Chat_loadChatRequest(id);
+        if (tryes < DefaultHttpGetReTryMax) Chat_loadChatRequest(id, tryes + 1);
         else {
             Chat_loadChatId = Main_setTimeout(
                 function() {
-                    Chat_loadChatRequest(id);
+                    Chat_loadChatRequest(id, 0);
                 },
                 2500,
                 Chat_loadChatId
@@ -496,25 +493,24 @@ function Main_Addline(id) {
 }
 
 function Chat_loadChatNext(id) {
-    Chat_loadingDataTry = 0;
-    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id);
+    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id, 0);
 }
 
-function Chat_loadChatNextRequest(id) {
+function Chat_loadChatNextRequest(id, tryes) {
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
         '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
 
-    xmlHttp.timeout = 10000;
+    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) {
                 if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
             } else {
-                if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextError(id);
+                if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextError(id, tryes);
             }
         }
     };
@@ -522,14 +518,13 @@ function Chat_loadChatNextRequest(id) {
     xmlHttp.send(null);
 }
 
-function Chat_loadChatNextError(id) {
-    Chat_loadingDataTry++;
+function Chat_loadChatNextError(id, tryes) {
     if (Chat_Id[0] === id) {
-        if (Chat_loadingDataTry < DefaultHttpGetReTryMax) Chat_loadChatNextRequest(id);
+        if (tryes < DefaultHttpGetReTryMax) Chat_loadChatNextRequest(id, tryes + 1);
         else {
             Chat_loadChatNextId = Main_setTimeout(
                 function() {
-                    Chat_loadChatNextRequest(id);
+                    Chat_loadChatNextRequest(id, 0);
                 },
                 2500,
                 Chat_loadChatNextId
