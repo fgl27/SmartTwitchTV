@@ -1611,8 +1611,9 @@ function Main_Set_history(type, Data, skipUpdateDate) {
             );
         }
 
-        Main_setHistoryItem();
     }
+
+    Main_setHistoryItem();
 
 }
 
