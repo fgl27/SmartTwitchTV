@@ -8918,8 +8918,9 @@
                 );
             }
 
-            Main_setHistoryItem();
         }
+
+        Main_setHistoryItem();
 
     }
 
