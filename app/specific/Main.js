@@ -458,7 +458,7 @@ function Main_initWindows() {
         Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId);//it 5 min refresh
     }
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId);//Check it 5min
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 5min
     Main_SetHistoryworker();
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
 
@@ -1070,7 +1070,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
                 Main_CheckBroadcastID(index, idsArray[2] + id);
                 return;
 
-            } else {//is live check is is really
+            } else {//is live check if is the same BroadcastID
 
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[2] + id);
                 else Main_openStream();
@@ -1981,7 +1981,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_updateclock();
 
-    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 5), Main_StartHistoryworkerId);//Check it 5min
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 5min
 
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 

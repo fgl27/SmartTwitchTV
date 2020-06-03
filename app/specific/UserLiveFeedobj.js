@@ -845,20 +845,14 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
     var image = (force_VOD ? Extra_vodimg : (data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
-        UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + image +
-        (Extra_vodimg ?
-            ('" onerror="this.onerror=function(){this.onerror=null;this.src=\'' + IMG_404_VOD +
-                '\';};this.src=\'' + Extra_vodimg + '\';' +
-                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[0].classList.add(\'hideimp\');' +
-                'this.parentNode.parentNode.childNodes[1].childNodes[0].childNodes[0].childNodes[0].childNodes[2].classList.remove(\'hideimp\');" crossorigin="anonymous"></div><div ') :
-            ('" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD + '\';"></div><div')) +
-        ' class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
+        UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
+        '\';" ></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
         UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:' +
         (ishosting ? '99%; max-height: 2.4em; white-space: normal;' : '63.5%; white-space: nowrap; text-overflow: ellipsis;') + ' display: inline-block; overflow: hidden;">' +
         '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
         (data[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
         (Extra_vodimg || force_VOD ? ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
-            '<span style="display: none;"></span>') + //empty span to prevent error when childNodes[2].classList.remove
+            '<div style="display: none;"></div>') + //empty div to prevent error when childNodes[2].classList.remove
         data[1] + '</div><div class="stream_info_live" style="width:' + (ishosting ? 0 : 36) +
         '%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
         data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
@@ -1183,24 +1177,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
                 UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]] =
                     UserLiveFeedobj_CreatFeed(
                         UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos],
-                        [
-                            stream.target.preview_urls.template,//0
-                            stream.display_name + STR_USER_HOSTING + stream.target.channel.display_name,//1
-                            stream.target.title, //2
-                            stream.target.meta_game,//3
-                            STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
-                            Main_addCommas(stream.target.viewers) + STR_SPACE + STR_VIEWER,//4
-                            '',//5 quality
-                            stream.target.channel.name,//6
-                            '',//7 broadcast id
-                            false,//8
-                            stream.target.channel.logo,//9
-                            '',//10 partner
-                            '',//11 stream creat at string
-                            '',//12 stream creat at
-                            stream.target.viewers,//13
-                            stream.target._id//14
-                        ],
+                        ScreensObj_HostCellArray(stream),
                         true
                     );
 

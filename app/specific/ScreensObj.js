@@ -732,24 +732,7 @@ function ScreensObj_InitUserHost() {
                 Screens_createCellLive(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
-                    [
-                        cell.target.preview_urls.template,//0
-                        cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,//1
-                        cell.target.title, //2
-                        cell.target.meta_game,//3
-                        STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
-                        Main_addCommas(cell.target.viewers) + STR_SPACE + STR_VIEWER,//4
-                        '',//5 quality
-                        cell.target.channel.name,//6
-                        '',//7 broadcast id
-                        false,//8
-                        cell.target.channel.logo,//9
-                        '',//10 partner
-                        '',//11 stream creat at string
-                        '',//12 stream creat at
-                        cell.target.viewers,//13
-                        cell.target._id//14
-                    ],
+                    ScreensObj_HostCellArray(cell),
                     this.screen
                 )
             );
@@ -1797,6 +1780,27 @@ function ScreensObj_LiveCellArray(cell) {
         cell.created_at,//12
         cell.viewers,//13
         cell.channel._id//14
+    ];
+}
+
+function ScreensObj_HostCellArray(cell) {
+    return [
+        cell.target.preview_urls.template,//0
+        cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,//1
+        cell.target.title, //2
+        cell.target.meta_game,//3
+        STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
+        Main_addCommas(cell.target.viewers) + STR_SPACE + STR_VIEWER,//4
+        '',//5 quality
+        cell.target.channel.name,//6
+        '',//7 broadcast id
+        false,//8
+        cell.target.channel.logo,//9
+        '',//10 partner
+        '',//11 stream creat at string
+        '',//12 stream creat at
+        cell.target.viewers,//13
+        cell.target._id//14
     ];
 }
 

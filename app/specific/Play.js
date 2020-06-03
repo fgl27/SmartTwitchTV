@@ -347,7 +347,7 @@ function Play_Start() {
 
     if (!Main_IsOn_OSInterface) Play_UpdateMainStream(true, true);
 
-    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 300000, Play_streamInfoTimerId);
+    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -430,7 +430,7 @@ function Play_Resume() {
 
     if (!Play_MultiEnable) Play_data.watching_time = new Date().getTime();
 
-    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 300000, Play_streamInfoTimerId);
+    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
     Play_ShowPanelStatus(1);
 
 }
