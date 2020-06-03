@@ -1246,37 +1246,6 @@ public class PlayerActivity extends Activity {
             mWebViewContext = context;
         }
 
-        //TODO remove this function after some app update
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetSmallPlayerBandwidth(int Bitrate) {
-            SetSmallPlayerBitrate(Bitrate);
-        }
-
-        //TODO remove this function after some app update
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetMainPlayerBandwidth(int Bitrate) {
-            SetMainPlayerBitrate(Bitrate);
-        }
-
-        //TODO remove this function after some app update
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public int getAndroid() {
-            return 1;
-        }
-
-        //TODO remove this function after some app update
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void startVideoOffset(String videoAddress, int who_called, long ResumePosition) {
-            MainThreadHandler.post(() -> {
-                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(videoAddress), mWebViewContext, who_called, mLowLatency, "", userAgent);
-                PreInitializePlayer(who_called, ResumePosition, mainPlayer);
-            });
-        }
-
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mPageUrl() {

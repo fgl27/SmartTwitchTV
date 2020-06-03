@@ -479,9 +479,7 @@ function OSInterface_SetSmallPlayerBandwidth(Bitrate) {
     //TODO remove the try after some app updates fun change name
     try {
         Android.SetSmallPlayerBitrate(Bitrate);
-    } catch (e) {
-        Android.SetSmallPlayerBandwidth(Bitrate);
-    }
+    } catch (e) {}
 }
 
 //public void SetSmallPlayerBandwidth(int Bitrate)
@@ -492,9 +490,7 @@ function OSInterface_SetMainPlayerBitrate(Bitrate) {
     //TODO remove the try after some app updates fun change name
     try {
         Android.SetMainPlayerBitrate(Bitrate);
-    } catch (e) {
-        Android.SetMainPlayerBandwidth(Bitrate);
-    }
+    } catch (e) {}
 }
 
 //public String getcodecCapabilities(String CodecType)
