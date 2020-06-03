@@ -132,8 +132,8 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data-array';
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.201';
-var Main_minversion = 'June 02, 2020';
+var Main_stringVersion_Min = '.202';
+var Main_minversion = 'June 03, 2020';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsOn_OSInterfaceVersion = '';
 var Main_AndroidSDK = 1000;
@@ -458,7 +458,7 @@ function Main_initWindows() {
         Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId);//it 5 min refresh
     }
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 5min
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
     Main_SetHistoryworker();
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
 
@@ -1981,7 +1981,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_updateclock();
 
-    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 5min
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
 
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
