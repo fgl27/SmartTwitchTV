@@ -412,7 +412,7 @@ function Play_CheckResume() {
     else if (PlayClip_isOn) PlayClip_Resume();
     else if (Sidepannel_isShowing()) {
         Sidepannel_UpdateThumbDiv();
-        Sidepannel_CheckIfIsLiveStart();
+        if (Settings_Obj_default('show_side_player')) Sidepannel_CheckIfIsLiveStart();
     }
 }
 
