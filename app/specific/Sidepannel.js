@@ -185,7 +185,7 @@ function Sidepannel_CheckIfIsLiveStart() {
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
     if (!Main_IsOn_OSInterface) return;
 
-    OSInterface_ClearFeedPlayer();
+    OSInterface_ClearSidePanelPlayer(!PreventcleanQuailities);
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
 }
 

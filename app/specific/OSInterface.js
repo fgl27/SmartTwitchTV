@@ -740,6 +740,16 @@ function OSInterface_ClearFeedPlayer() {
     Android.ClearFeedPlayer();
 }
 
+//public void ClearFeedPlayer()
+//Android specific: true
+//Clear the side panel or small player over the live feed play removes it from the screen
+function OSInterface_ClearSidePanelPlayer(CleanPlayer) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.ClearSidePanelPlayer(CleanPlayer);
+    } catch (e) {}
+}
+
 //public void SetFeedPosition(int position)
 //position the position on the screen
 //Android specific: true

@@ -279,8 +279,6 @@ function Play_SetChatFont() {
 function Play_Start() {
     //Main_Log('Play_Start');
 
-    Play_showBufferDialog();
-
     Play_LoadLogoSucess = false;
     PlayClip_HasVOD = true;
     //reset channel logo to prevent another channel logo
@@ -331,8 +329,10 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    if (!Play_CheckIfIsLiveResponseText) Play_loadData();
-    else {
+    if (!Play_CheckIfIsLiveResponseText) {
+        Play_showBufferDialog();
+        Play_loadData();
+    } else {
 
         Main_setTimeout(
             function() {
