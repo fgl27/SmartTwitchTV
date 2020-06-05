@@ -104,11 +104,9 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Play_CheckIfIsLiveResponseText = StreamData.responseText;
                 Play_CheckIfIsLiveChannel = StreamInfo[6];
 
-                OSInterface_StartFeedPlayer(
+                OSInterface_StartSidePanelPlayer(
                     Play_CheckIfIsLiveURL,
-                    Play_CheckIfIsLiveResponseText,
-                    5,
-                    true
+                    Play_CheckIfIsLiveResponseText
                 );
 
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;

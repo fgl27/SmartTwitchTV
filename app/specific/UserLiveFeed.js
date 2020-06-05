@@ -475,8 +475,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 OSInterface_StartFeedPlayer(
                     Play_CheckIfIsLiveURL,
                     Play_CheckIfIsLiveResponseText,
-                    UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
-                    false
+                    UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX])
                 );
 
             } else if (StreamData.status === 1 || StreamData.status === 403) {

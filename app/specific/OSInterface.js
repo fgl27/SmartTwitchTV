@@ -626,11 +626,23 @@ function OSInterface_OpenExternal(url) {
     Android.OpenExternal(url);
 }
 
+//public void SetPreviewSize(int mPreviewSize)
+//mPreviewSize = the Preview Size
+//Android specific: true
+//Allows to change the player preview size
+function OSInterface_SetPreviewSize(mPreviewSize) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPreviewSize(mPreviewSize);
+    } catch (e) {}
+}
+
 //public void SetPreviewAudio(int volume)
 //volume = the volume of others player
 //Android specific: true
 //Allows to lower others player volume when preview player is showing
 function OSInterface_SetPreviewAudio(volume) {
+    //TODO remove the try after some apps updates
     try {
         Android.SetPreviewAudio(volume);
     } catch (e) {}
@@ -667,8 +679,27 @@ function OSInterface_PrepareForMulti(uri, masterPlaylistString) {
 //fullBitrate = if is side panel the player can use max Bitrate if not no
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, fullBitrate) {
-    Android.StartFeedPlayer(uri, masterPlaylistString, position, fullBitrate);
+function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.StartFeedPlayer(uri, masterPlaylistString, position);
+    } catch (e) {
+        Android.StartFeedPlayer(uri, masterPlaylistString, position, false);
+    }
+}
+
+//public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate)
+//uri =  the url of the playlist or the clip
+//masterPlaylistString = the stringify version of the url playlist content
+//position = position of the player on the screen
+//fullBitrate = if is side panel the player can use max Bitrate if not no
+//Android specific: true
+//Start MultiStream at position
+function OSInterface_StartSidePanelPlayer(uri, masterPlaylistString) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.StartSidePanelPlayer(uri, masterPlaylistString);
+    } catch (e) {}
 }
 
 //public void ClearFeedPlayer()

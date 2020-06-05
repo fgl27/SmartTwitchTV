@@ -45,6 +45,10 @@ var Settings_value = {
         "values": Settings_GetVolumes(),
         "defaultValue": 26
     },
+    "preview_sizes": {//Migrated to dialog
+        "values": ['small', 'medium', 'big'],
+        "defaultValue": 2
+    },
     "show_side_player": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -521,6 +525,7 @@ function Settings_SetDefautls() {
     Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     Settings_CodecsSet();
     OSInterface_SetPreviewAudio(Settings_Obj_default("preview_others_volume"));
+    OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
 }
@@ -606,6 +611,7 @@ function Settings_SetDefault(position) {
     else if (position === "default_quality") Play_SetQuality();
     else if (position === "thumb_quality") Main_SetThumb();
     else if (position === "preview_others_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_others_volume"));
+    else if (position === "preview_sizes") OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
     else if (position === "global_font_offset") {
         calculateFontSize();
         AddUser_UpdateSidepanelAfterShow();
@@ -1129,6 +1135,7 @@ function Settings_DialogShowSmallPayer() {
     Settings_value.show_feed_player.values = array_no_yes;
     Settings_value.disable_feed_player_multi.values = array_no_yes;
     Settings_value.show_side_player.values = array_no_yes;
+    Settings_value.preview_sizes.values = STR_PREVIEW_SIZE_ARRAY;
 
     var obj = {
         show_side_player: {
@@ -1142,6 +1149,12 @@ function Settings_DialogShowSmallPayer() {
             values: Settings_value.show_feed_player.values,
             title: STR_SHOW_FEED_PLAYER,
             summary: STR_SHOW_FEED_PLAYER_SUMMARY
+        },
+        preview_sizes: {
+            defaultValue: Settings_value.preview_sizes.defaultValue,
+            values: Settings_value.preview_sizes.values,
+            title: STR_PREVIEW_SIZE,
+            summary: STR_PREVIEW_SIZE_SUMMARY
         },
         disable_feed_player_multi: {
             defaultValue: Settings_value.disable_feed_player_multi.defaultValue,

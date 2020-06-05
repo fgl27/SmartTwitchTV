@@ -127,6 +127,7 @@ public class PlayerActivity extends Activity {
     public int MultiMainPlayer = 0;
     public int PicturePicturePosition = 0;
     public int PicturePictureSize = 1;//sizes are 0 , 1 , 2
+    public int PreviewSize = 1;//sizes are 0 , 1 , 2
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
     public float PreviewAudio = 0.3f;//window 0
@@ -179,11 +180,12 @@ public class PlayerActivity extends Activity {
     //the default size for the main player when on side by side plus chat 75% width x height
     private FrameLayout.LayoutParams PlayerViewSideBySideSize;
     //the default size for the other player when on PP mode, some positions are also used when on side by side for both players
-    private FrameLayout.LayoutParams[][] PlayerViewSmallSize = new FrameLayout.LayoutParams[8][3];
+    private FrameLayout.LayoutParams[][] PlayerViewSmallSize;
     //the default size for the extra player used by side panel and live player feed
-    private FrameLayout.LayoutParams[] PlayerViewExtraLayout = new FrameLayout.LayoutParams[6];
+    private FrameLayout.LayoutParams[][] PlayerViewExtraLayout;
+    private FrameLayout.LayoutParams PlayerViewSidePanel;
     //the default size for the players of multistream 4 player two modes
-    private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout = new FrameLayout.LayoutParams[8];
+    private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout;
     private FrameLayout VideoHolder;
     private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
@@ -652,54 +654,62 @@ public class PlayerActivity extends Activity {
                 Gravity.CENTER | Gravity.BOTTOM//7
         };
 
-        //Make it visible for calculation
-        boolean isNvisible = PlayerView[0].getVisibility() != View.VISIBLE;
-        if (isNvisible) PlayerView[0].setVisibility(View.VISIBLE);
+        Point ScreenSize = Tools.ScreenSize(getWindowManager().getDefaultDisplay());
+        float Density = this.getResources().getDisplayMetrics().density;
 
-        int heightDefault = PlayerView[0].getHeight();
-        int mwidthDefault = PlayerView[0].getWidth();
+        float ScaleDensity = Density / 2.0f;
+
+        int heightDefault = ScreenSize.y;
+        int mwidthDefault = ScreenSize.x;
 
         int heightChat = (int) (heightDefault * 0.75);
         int mwidthChat = (int) (mwidthDefault * 0.75);
-
-        if (isNvisible) PlayerView[0].setVisibility(View.GONE);
 
         //Default players sizes
         PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
         PlayerViewSideBySideSize = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
 
         //Player extra positions
-        Point ScreenSize = Tools.ScreenSize(getWindowManager().getDefaultDisplay());
-        float Density = this.getResources().getDisplayMetrics().density;
+        int ExtraWidth[] = {
+                (mwidthDefault / 5),
+                (int) (mwidthDefault / 3.77),
+                (int) (mwidthDefault / 2.75)
+        };
+        int ExtraHeight[] = {
+                (heightDefault / 5),
+                (int) (heightDefault / 3.77),
+                (int) (heightDefault / 2.75)
+        };
+        PlayerViewExtraLayout = new FrameLayout.LayoutParams[3][5];
 
-        float ScaleDensity = Density / 2.0f;
-        int margin = (int) (ScreenSize.y / 6.7 * Density / ScaleDensity);
-        int ExtraWidth = (int) (mwidthDefault / 3.77);
-        int ExtraHeight = (int) (heightDefault / 3.77);
+        for (int i = 0; i < ExtraWidth.length; i++) {
+            //Small player for live feed
+            PlayerViewExtraLayout[i][0] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.LEFT | Gravity.BOTTOM);
+            PlayerViewExtraLayout[i][1] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.LEFT | Gravity.BOTTOM);
+            PlayerViewExtraLayout[i][2] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.CENTER | Gravity.BOTTOM);
+            PlayerViewExtraLayout[i][3] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.RIGHT | Gravity.BOTTOM);
+            PlayerViewExtraLayout[i][4] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.RIGHT | Gravity.BOTTOM);
 
-        //Small player for live feed
-        PlayerViewExtraLayout[0] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.LEFT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[1] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.LEFT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[2] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.CENTER | Gravity.BOTTOM);
-        PlayerViewExtraLayout[3] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.RIGHT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[4] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.RIGHT | Gravity.BOTTOM);
+            int len = PlayerViewExtraLayout[i].length;
+            for (int j = 0; j < len; j++) {
+                PlayerViewExtraLayout[i][j].bottomMargin = (int) (ScreenSize.x / 22 * Density / ScaleDensity);
+            }
 
-        //Big player for side panel
-        PlayerViewExtraLayout[5] = new FrameLayout.LayoutParams((int) (mwidthDefault / 1.68),(int) (heightDefault / 1.68), Gravity.RIGHT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[5].bottomMargin = (int) (ScreenSize.x / 15.7 * Density / ScaleDensity);
-        PlayerViewExtraLayout[5].rightMargin = (int) (ScreenSize.y / 13.55 * Density / ScaleDensity);
+            //int margin = (int) (ScreenSize.y / 6.7 * Density / ScaleDensity);
+            int margin = mwidthDefault / 5;//The screen has 5 thumbnails
+            margin = (margin + (margin / 2)) - (ExtraWidth[i] / 2);
 
-        for (int i = 0; i < (PlayerViewExtraLayout.length - 1); i++) {
-            PlayerViewExtraLayout[i].bottomMargin = (int) (ScreenSize.x / 22 * Density / ScaleDensity);
+            PlayerViewExtraLayout[i][1].leftMargin = margin;//Center on the middle of seconds thumb
+            PlayerViewExtraLayout[i][3].rightMargin = margin;//Center on the middle of fourth thumb
         }
 
-        PlayerViewExtraLayout[1].leftMargin = margin;
-        PlayerViewExtraLayout[3].rightMargin = margin;
-
-        //The side panel player
-        PlayerView[4].setLayoutParams(PlayerViewExtraLayout[0]);
+        //Side panel
+        PlayerViewSidePanel = new FrameLayout.LayoutParams((int) (mwidthDefault / 1.68),(int) (heightDefault / 1.68), Gravity.RIGHT | Gravity.BOTTOM);
+        PlayerViewSidePanel.bottomMargin = (int) (ScreenSize.x / 15.7 * Density / ScaleDensity);
+        PlayerViewSidePanel.rightMargin = (int) (ScreenSize.y / 13.55 * Density / ScaleDensity);
 
         //Small player sizes and positions
+        PlayerViewSmallSize = new FrameLayout.LayoutParams[8][3];
         for (int i = 0; i < PlayerViewSmallSize.length; i++) {
             for (int j = 0; j < PlayerViewSmallSize[i].length; j++) {
                 PlayerViewSmallSize[i][j] = new FrameLayout.LayoutParams((mwidthDefault / (j + 2)), (heightDefault / (j + 2)), positions[i]);
@@ -709,6 +719,7 @@ public class PlayerActivity extends Activity {
         PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
 
         //MultiStream
+        MultiStreamPlayerViewLayout = new FrameLayout.LayoutParams[8];
         //4 way same size
         MultiStreamPlayerViewLayout[0] = new FrameLayout.LayoutParams(
                 (mwidthDefault / 2),
@@ -1453,17 +1464,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate) {
-            MainThreadHandler.post(() -> {
-                UseFullBitrate = fullBitrate;
-                mediaSources[4] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, (mLowLatency && UseFullBitrate), masterPlaylistString, userAgent);
-                PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
-                initializeSmallPlayer(mediaSources[4]);
-            });
-        }
-
 //        @SuppressWarnings("unused")//called by JS
 //        @JavascriptInterface
 //        public void PlayerEventListenerClearTest() {
@@ -1586,8 +1586,50 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate) {
+            StartFeedPlayer(uri, masterPlaylistString, position);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartFeedPlayer(String uri, String masterPlaylistString, int position) {
+            MainThreadHandler.post(() -> {
+                UseFullBitrate = false;
+                mediaSources[4] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        1,
+                        (mLowLatency && UseFullBitrate),
+                        masterPlaylistString,
+                        userAgent
+                );
+                PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]);
+                initializeSmallPlayer(mediaSources[4]);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartSidePanelPlayer(String uri, String masterPlaylistString) {
+            MainThreadHandler.post(() -> {
+                UseFullBitrate = true;
+                mediaSources[4] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        1,
+                        (mLowLatency && UseFullBitrate),
+                        masterPlaylistString,
+                        userAgent
+                );
+                PlayerView[4].setLayoutParams(PlayerViewSidePanel);
+                initializeSmallPlayer(mediaSources[4]);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void SetFeedPosition(int position) {
-            MainThreadHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]));
+            MainThreadHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1680,7 +1722,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetPreviewAudio(int volume) {
             PreviewAudio = volume / 100f;
-            Log.d("VOLUME", "VOLUME " + PreviewAudio);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetPreviewSize(int mPreviewSize) {
+            PreviewSize = mPreviewSize;
         }
 
         @SuppressWarnings("unused")//called by JS
