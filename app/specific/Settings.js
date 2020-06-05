@@ -41,6 +41,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "show_side_player": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "disable_feed_player_multi": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -498,9 +502,6 @@ function Settings_SetDefautls() {
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
-    UserLiveFeed_ShowSmallPlayer = Settings_Obj_default("show_feed_player");
-    UserLiveFeed_CheckIfIsLiveDelay = Settings_Obj_values("show_feed_player_delay");
-    UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     Settings_CodecsSet();
@@ -594,9 +595,6 @@ function Settings_SetDefault(position) {
         UserLiveFeed_ResetAddCellsize();
     }
     else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
-    else if (position === "show_feed_player") UserLiveFeed_ShowSmallPlayer = Settings_Obj_default("show_feed_player");
-    else if (position === "disable_feed_player_multi") UserLiveFeed_DisableSmallPlayerMulti = Settings_Obj_default("disable_feed_player_multi");
-    else if (position === "show_feed_player_delay") UserLiveFeed_CheckIfIsLiveDelay = Settings_Obj_values("show_feed_player_delay");
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
@@ -1110,10 +1108,18 @@ function Settings_DialogShowBitrate() {
 }
 
 function Settings_DialogShowSmallPayer() {
-    Settings_value.show_feed_player.values = [STR_NO, STR_YES];
-    Settings_value.disable_feed_player_multi.values = [STR_NO, STR_YES];
+    var array_no_yes = [STR_NO, STR_YES];
+    Settings_value.show_feed_player.values = array_no_yes;
+    Settings_value.disable_feed_player_multi.values = array_no_yes;
+    Settings_value.show_side_player.values = array_no_yes;
 
     var obj = {
+        show_side_player: {
+            defaultValue: Settings_value.show_side_player.defaultValue,
+            values: Settings_value.show_side_player.values,
+            title: STR_SHOW_SIDE_PLAYER,
+            summary: null
+        },
         show_feed_player: {
             defaultValue: Settings_value.show_feed_player.defaultValue,
             values: Settings_value.show_feed_player.values,

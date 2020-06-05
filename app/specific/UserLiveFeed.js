@@ -11,8 +11,6 @@ var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
 var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
 var UserLiveFeed_PreventHide = false;
-var UserLiveFeed_ShowSmallPlayer = true;
-var UserLiveFeed_DisableSmallPlayerMulti = false;
 var UserLiveFeed_Notify_Background = false;
 
 var UserLiveFeed_CheckNotifycation = false;
@@ -295,7 +293,7 @@ function UserLiveFeed_Hide(PreventcleanQuailities) {
 
 function UserLiveFeed_ResetFeedId() {
     UserLiveFeed_clearHideFeed();
-    if (!UserLiveFeed_PreventHide && !UserLiveFeed_ShowSmallPlayer) UserLiveFeed_setHideFeed();
+    if (!UserLiveFeed_PreventHide && !Settings_Obj_default('show_feed_player')) UserLiveFeed_setHideFeed();
 }
 
 function UserLiveFeed_clearHideFeed() {
@@ -394,8 +392,8 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (add_focus && UserLiveFeed_ShowSmallPlayer && UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
-        if (!Play_MultiEnable || !UserLiveFeed_DisableSmallPlayerMulti) {
+    if (add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
+        if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
 
             var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
@@ -511,7 +509,6 @@ function UserLiveFeed_CheckIfIsLiveWarn(text) {
     Play_showWarningMidleDialog(text, 2000);
 }
 
-var UserLiveFeed_CheckIfIsLiveDelay = 0;
 function UserLiveFeed_CheckIfIsLiveStart() {
 
     Play_CheckIfIsLiveCleanEnd();
@@ -525,7 +522,7 @@ function UserLiveFeed_CheckIfIsLiveStart() {
         OSInterface_CheckIfIsLiveFeed(
             Play_live_token.replace('%x', doc[6]),
             Play_live_links.replace('%x', doc[6]),
-            UserLiveFeed_CheckIfIsLiveDelay,
+            Settings_Obj_values("show_feed_player_delay"),
             "UserLiveFeed_CheckIfIsLiveResult",
             UserLiveFeed_FeedPosX,
             (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),

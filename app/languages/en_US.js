@@ -288,8 +288,8 @@ function en_USLang() {
     STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
     STR_AUDIO_SOURCE = "Audio source";
     STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";
-    STR_PICTURE_CONTROLS1 = "Enable Picture in Picture mode: Playing a video press up to show live feed choose a stream then hold key enter or press key 1 to start";
-    STR_PICTURE_CONTROLS2 = "Change a window content: From player live feed, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top window, hold key enter or press key 1 updates the small or bottom window";
+    STR_PICTURE_CONTROLS1 = "Enable Picture in Picture mode: Playing a video press up to show preview feed choose a stream then hold key enter or press key 1 to start";
+    STR_PICTURE_CONTROLS2 = "Change a window content: From player preview feed, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top window, hold key enter or press key 1 updates the small or bottom window";
     STR_PICTURE_CONTROLS4 = "Change content between windows (Picture in Picture only): D-pad down big becomes small and vice versa";
     STR_PICTURE_CONTROLS5 = "Change small window position (Picture in Picture only): D-pad left";
     STR_PICTURE_CONTROLS6 = "Change small window size (Picture in Picture only): D-pad right";
@@ -299,7 +299,7 @@ function en_USLang() {
     STR_PICTURE_CONTROLS9 = "Manually Sync players: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa only works on PP mode";
     STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
     STR_PICTURE_CONTROLS11 = "Close small or bottom window (Picture in Picture only): return key twice will exit PP or 50/50 mode";
-    STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from live feed";
+    STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from preview feed";
     STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
     STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
     STR_SINGLE_EXIT = "Single return key press";
@@ -326,8 +326,8 @@ function en_USLang() {
     STR_LOW_LATENCY = "Low Latency";
     STR_LOW_LATENCY_SUMMARY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
         "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
-    STR_LIVE_FEED_SORT = "Live feed sort";
-    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player live feed (not all option apply to all feeds types)";
+    STR_LIVE_FEED_SORT = "Live/Preview feed sort";
+    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview feed (not all option apply to all feeds types)";
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
@@ -411,8 +411,8 @@ function en_USLang() {
     STR_4_WAY_MULTI = "4 way multistream";
     STR_CONTROLS_MULTI_0 = "Multistream help:";
     STR_CONTROLS_MULTI_1 = 'If you are having lag issues after enable multistream, try to lower the value of "Small player bitrate" in settings, accumulation of skipped frames or constant buffering is a indication of too high bitrate or slow internet';
-    STR_CONTROLS_MULTI_2 = "Add streams: open live feed key up and click on a live stream";
-    STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from live feed and chose one to replace from the dialog";
+    STR_CONTROLS_MULTI_2 = "Add streams: open preview feed key up and click on a live stream";
+    STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full choose one from preview feed and chose one to replace from the dialog";
     STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left or media keys next previews track, hold down to audio source all windows";
     STR_CONTROLS_MULTI_5 = "Exit multistream: from player bottom control or return key twice";
     STR_CONTROLS_MULTI_6 = "To close this open 4 live streams";
@@ -421,13 +421,14 @@ function en_USLang() {
     STR_FEED_END_DIALOG = ', Press return to go back to top menu';
     STR_BACK_USER_GAMES = ' Press return key to go back to ';
     STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
-    STR_SHOW_FEED_PLAYER = 'Show small player over the player live feed';
+    STR_SHOW_SIDE_PLAYER = 'Show side panel preview player';
+    STR_SHOW_FEED_PLAYER = 'Show preview player on preview feed';
     STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";
-    STR_DISABLE_FEED_PLAYER_MULTI = 'Disable small player when multistream is enabled';
-    STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'Because performance reasons some devices may lag when multi players are enable, if your is OK for multistream but when the small player is active on that mode the device lags set this to NO';
-    STR_SIDE_PANEL_PLAYER_DELAY = "Side panel player or small player delay";
-    STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the player to start loading after a thumbnail is selected";
-    STR_SIDE_PANEL_PLAYER = "Side panel player and small player over the player live feed settings";
+    STR_DISABLE_FEED_PLAYER_MULTI = 'Disable preview player when multistream is enabled';
+    STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
+    STR_SIDE_PANEL_PLAYER_DELAY = "Preview player delay";
+    STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the preview start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
+    STR_SIDE_PANEL_PLAYER = "Preview thumbnail player settings";
     STR_START_AT_USER = "Always start the app in the user screen";
     STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";
     STR_LAST_REFRESH = "(last refresh: ";
@@ -438,7 +439,7 @@ function en_USLang() {
     STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
     STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
     STR_AUTO_REFRESH = "Auto refresh content timeout (time in minutes)";
-    STR_AUTO_REFRESH_SUMMARY = "When enable this will refresh a screen after the time amount (the refresh happens only when the screen is selected), this also applies to the player live feed";
+    STR_AUTO_REFRESH_SUMMARY = "When enable this will refresh a screen after the time amount (the refresh happens only when the screen is selected), this also applies to the player preview feed";
     STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
     STR_MAIN_WINDOW = "Main window";
     STR_MULTI_MAIN_WINDOW = "MultiStream main window";
@@ -446,7 +447,7 @@ function en_USLang() {
     STR_PLAYER_LAG = 'Player is lagging, quality changed to "Auto mode"';
     STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
     STR_TOO_ERRORS = " or too many errors";
-    STR_STREAM_ERROR_SMALL = "Small player, stream ended" + STR_TOO_ERRORS;
+    STR_STREAM_ERROR_SMALL = "Preview player, stream ended" + STR_TOO_ERRORS;
     STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
     STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
     STR_GIFT_SUB = " has gift you a sub!";

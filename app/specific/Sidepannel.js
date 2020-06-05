@@ -71,14 +71,16 @@ function Sidepannel_UpdateThumb() {
     if (Sidepannel_isShowing()) {
         Main_ShowElement('side_panel_feed_thumb');
 
-        var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+        if (Settings_Obj_default('show_side_player')) {
+            var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
-        if (doc) {
-            var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
-            if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                Sidepannel_CheckIfIsLiveStart();
-            } else if (Play_CheckIfIsLiveResponseText) {
-                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+            if (doc) {
+                var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+                if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                    Sidepannel_CheckIfIsLiveStart();
+                } else if (Play_CheckIfIsLiveResponseText) {
+                    Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+                }
             }
         }
 
@@ -152,7 +154,7 @@ function Sidepannel_CheckIfIsLiveStart() {
             OSInterface_CheckIfIsLiveFeed(
                 Play_live_token.replace('%x', channel),
                 Play_live_links.replace('%x', channel),
-                UserLiveFeed_CheckIfIsLiveDelay,
+                Settings_Obj_values("show_feed_player_delay"),
                 "Sidepannel_CheckIfIsLiveResult",
                 1,
                 (Sidepannel_PosFeed % 100),

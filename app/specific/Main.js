@@ -379,7 +379,6 @@ function Main_initWindows() {
                 //enable small player over feed on multi
                 Settings_value.disable_feed_player_multi.defaultValue = 0;
                 Main_setItem('disable_feed_player_multi', 1);
-                UserLiveFeed_DisableSmallPlayerMulti = 0;
 
                 //Enable app animations
                 Settings_ForceEnableAimations();
