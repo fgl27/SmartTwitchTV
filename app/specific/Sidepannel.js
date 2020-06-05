@@ -88,6 +88,8 @@ function Sidepannel_UpdateThumb() {
 
 }
 
+var Sidepannel_PlayerViewSidePanelSet;
+
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
@@ -103,6 +105,18 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Play_CheckIfIsLiveURL = StreamData.url;
                 Play_CheckIfIsLiveResponseText = StreamData.responseText;
                 Play_CheckIfIsLiveChannel = StreamInfo[6];
+
+                if (!Sidepannel_PlayerViewSidePanelSet) {
+                    var Rect = document.getElementById('side_panel_feed_thumb').getBoundingClientRect();
+                    OSInterface_SetPlayerViewSidePanel(
+                        Rect.top,
+                        Rect.right,
+                        Rect.bottom,
+                        Rect.left,
+                        window.innerHeight
+                    );
+                    Sidepannel_PlayerViewSidePanelSet = true;
+                }
 
                 OSInterface_StartSidePanelPlayer(
                     Play_CheckIfIsLiveURL,
@@ -142,7 +156,10 @@ function Sidepannel_HideWarningDialog() {
 function Sidepannel_CheckIfIsLiveStart() {
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsOn_OSInterface) return;
+    if (!Main_IsOn_OSInterface) {
+        return;
+    }
+
     var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
     if (doc) {

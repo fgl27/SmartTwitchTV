@@ -688,17 +688,37 @@ function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position) {
     }
 }
 
-//public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate)
+//public void StartFeedPlayer(String uri, String masterPlaylistString, , int top, int right, int bottom, int left)
 //uri =  the url of the playlist or the clip
 //masterPlaylistString = the stringify version of the url playlist content
-//position = position of the player on the screen
-//fullBitrate = if is side panel the player can use max Bitrate if not no
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartSidePanelPlayer(uri, masterPlaylistString) {
     //TODO remove the try after some apps updates
     try {
-        Android.StartSidePanelPlayer(uri, masterPlaylistString);
+        Android.StartSidePanelPlayer(
+            uri,
+            masterPlaylistString
+        );
+    } catch (e) {}
+}
+
+//public void SetPlayerViewSidePanel(int top, int right, int bottom, int left, int web_height)
+//uri =  the url of the playlist or the clip
+//masterPlaylistString = the stringify version of the url playlist content
+//top, right, bottom, left = 'side_panel_feed_thumb'.getBoundingClientRect()
+//Android specific: true
+//Start MultiStream at position
+function OSInterface_SetPlayerViewSidePanel(top, right, bottom, left, web_height) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPlayerViewSidePanel(
+            parseInt(top),
+            parseInt(right),
+            parseInt(bottom),
+            parseInt(left),
+            parseInt(web_height)
+        );
     } catch (e) {}
 }
 
