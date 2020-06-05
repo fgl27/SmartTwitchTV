@@ -58,8 +58,8 @@ import static android.content.res.Configuration.KEYBOARD_QWERTY;
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
 
-    //public static final String PageUrl = "file:///android_asset/app/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public static final String PageUrl = "file:///android_asset/app/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
@@ -129,6 +129,7 @@ public class PlayerActivity extends Activity {
     public int PicturePictureSize = 1;//sizes are 0 , 1 , 2
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
+    public float PreviewAudio = 0.3f;//window 0
     public Handler MainThreadHandler;
     public Handler CurrentPositionHandler;
     public Handler ExtraPlayerHandler;
@@ -379,7 +380,7 @@ public class PlayerActivity extends Activity {
         player[position].prepare();
 
         hideLoading(5);
-        SwitchPlayerAudio(AudioSource);
+        SwitchPlayerAudio(AudioSource, 1f);
 
         if (!isSmall) {
             //Reset small player view so it shows after big one has started
@@ -393,7 +394,7 @@ public class PlayerActivity extends Activity {
         KeepScreenOn(true);
         droppedFrames = 0;
 
-        //Player can only be acceed from main thread so start a "position listener" to pass the value to webview
+        //Player can only be accessed from main thread so start a "position listener" to pass the value to webview
         if (mWho_Called > 1) GetCurrentPosition();
     }
 
@@ -466,6 +467,8 @@ public class PlayerActivity extends Activity {
             player[4].setPlayWhenReady(false);
             releasePlayer(4);
         }
+
+        mSetPreviewAudio(false);
 
         PlayerCheckCounter[4] = 0;
         UseFullBitrate = false;
@@ -554,7 +557,7 @@ public class PlayerActivity extends Activity {
         PlayerCheckCounter[position] = 0;
 
         //Multi audio is deal on js side when a player closes
-        if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1);
+        if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1, 1f);
 
         //All players are close enable screen saver
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
@@ -797,23 +800,23 @@ public class PlayerActivity extends Activity {
         mainPlayer = WillBeMain;
 
         //Set proper video volume, muted to small
-        SwitchPlayerAudio(AudioSource);
+        SwitchPlayerAudio(AudioSource, 1f);
     }
 
-    public void SwitchPlayerAudio(int pos) {
+    public void SwitchPlayerAudio(int pos, float volume) {
         AudioSource = pos;
         if (pos >= 2) {//both
             AudioMulti = 4;
-            SetAudio(0, 1f);
-            SetAudio(1, 1f);
+            SetAudio(0, volume);
+            SetAudio(1, volume);
         } else if (pos == 1) {//Main
             AudioMulti = 0;
-            SetAudio(mainPlayer, 1f);
+            SetAudio(mainPlayer, volume);
             SetAudio(mainPlayer ^ 1, 0f);
         } else {//Small
             AudioMulti = 1;
             SetAudio(mainPlayer, 0f);
-            SetAudio(mainPlayer ^ 1, 1f);
+            SetAudio(mainPlayer ^ 1, volume);
         }
     }
 
@@ -825,10 +828,15 @@ public class PlayerActivity extends Activity {
         PlayerView[pos].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
     }
 
-    public void SetPlayerAudioMulti() {
+    public void mSetPreviewAudio(boolean set) {
+        if (MultiStreamEnable) SetPlayerAudioMulti(set ? PreviewAudio : 1f);
+        else SwitchPlayerAudio(AudioSource, set ? PreviewAudio : 1f);
+    }
+
+    public void SetPlayerAudioMulti(float volume) {
         for (int i = 0; i < PlayerAccount; i++) {
             if (player[i] != null) {
-                if (AudioMulti == 4 || AudioMulti == i) player[i].setVolume(1f);
+                if (AudioMulti == 4 || AudioMulti == i) player[i].setVolume(volume);
                 else player[i].setVolume(0f);
             }
         }
@@ -842,7 +850,7 @@ public class PlayerActivity extends Activity {
 
         AudioMulti = (mainPlayer + offset) % 4;
         MultiMainPlayer = AudioMulti;
-        SetPlayerAudioMulti();
+        SetPlayerAudioMulti(1f);
 
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
@@ -873,8 +881,8 @@ public class PlayerActivity extends Activity {
         if (!PicturePicture || player[mainPlayer ^ 1] == null || player[mainPlayer] == null) {
             PicturePicture = false;
             ClearPlayer(mainPlayer ^ 1);
-            SwitchPlayerAudio(1);
-        } else SwitchPlayerAudio(AudioSource);
+            SwitchPlayerAudio(1, 1f);
+        } else SwitchPlayerAudio(AudioSource, 1f);
 
         PlayerView[2].setVisibility(View.GONE);
         PlayerView[3].setVisibility(View.GONE);
@@ -1646,7 +1654,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerAudio(int position) {
-            MainThreadHandler.post(() -> SwitchPlayerAudio(position));
+            MainThreadHandler.post(() -> SwitchPlayerAudio(position, 1f));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1664,8 +1672,15 @@ public class PlayerActivity extends Activity {
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
                 AudioMulti = mposition;
-                SetPlayerAudioMulti();
+                SetPlayerAudioMulti(1f);
             });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetPreviewAudio(int volume) {
+            PreviewAudio = volume / 100f;
+            Log.d("VOLUME", "VOLUME " + PreviewAudio);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2312,6 +2327,7 @@ public class PlayerActivity extends Activity {
                 ClearSmallPlayer();
 
                 LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
+                mSetPreviewAudio(false);
 
             } else if (playbackState == Player.STATE_BUFFERING) {
                 //Use the player buffer as a player check state to prevent be buffering for ever
@@ -2330,6 +2346,7 @@ public class PlayerActivity extends Activity {
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckCounter[4] = 0;
+                mSetPreviewAudio(true);
             }
 
         }

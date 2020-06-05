@@ -428,6 +428,8 @@ function en_USLang() {
     STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
     STR_SIDE_PANEL_PLAYER_DELAY = "Preview player delay";
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the preview start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
+    STR_SIDE_PANEL_PLAYER_OTHERS_VOLUME = "Main player volume";
+    STR_SIDE_PANEL_PLAYER_OTHERS_VOLUME_SUMMARY = "The main player (All players picture in picture, multistream players) volume can be lower when the preview player is showing";
     STR_SIDE_PANEL_PLAYER = "Preview thumbnail player settings";
     STR_START_AT_USER = "Always start the app in the user screen";
     STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";

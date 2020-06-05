@@ -626,6 +626,16 @@ function OSInterface_OpenExternal(url) {
     Android.OpenExternal(url);
 }
 
+//public void SetPreviewAudio(int volume)
+//volume = the volume of others player
+//Android specific: true
+//Allows to lower others player volume when preview player is showing
+function OSInterface_SetPreviewAudio(volume) {
+    try {
+        Android.SetPreviewAudio(volume);
+    } catch (e) {}
+}
+
 //public void mSetPlayerAudioMulti(int position)
 //position = the player position to enable the audio 0 to 3, 4 all player enable
 //Android specific: true

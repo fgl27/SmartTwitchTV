@@ -41,6 +41,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "preview_others_volume": {//Migrated to dialog
+        "values": Settings_GetVolumes(),
+        "defaultValue": 26
+    },
     "show_side_player": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -309,6 +313,17 @@ function Settings_GenerateClock() {
     return clock;
 }
 
+function Settings_GetVolumes() {
+    var array = [],
+        i = 0;
+
+    for (i = 0; i < 101; i++) {
+        array.push(i + '%');
+    }
+
+    return array;
+}
+
 var Settings_value_keys = [];
 var Settings_positions_length = 0;
 //Variable initialization end
@@ -505,6 +520,7 @@ function Settings_SetDefautls() {
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     Settings_CodecsSet();
+    OSInterface_SetPreviewAudio(Settings_Obj_default("preview_others_volume"));
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
 }
@@ -589,6 +605,7 @@ function Settings_SetDefault(position) {
     else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     else if (position === "default_quality") Play_SetQuality();
     else if (position === "thumb_quality") Main_SetThumb();
+    else if (position === "preview_others_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_others_volume"));
     else if (position === "global_font_offset") {
         calculateFontSize();
         AddUser_UpdateSidepanelAfterShow();
@@ -1131,6 +1148,12 @@ function Settings_DialogShowSmallPayer() {
             values: Settings_value.disable_feed_player_multi.values,
             title: STR_DISABLE_FEED_PLAYER_MULTI,
             summary: STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY
+        },
+        preview_others_volume: {
+            defaultValue: Settings_value.preview_others_volume.defaultValue,
+            values: Settings_value.preview_others_volume.values,
+            title: STR_SIDE_PANEL_PLAYER_OTHERS_VOLUME,
+            summary: STR_SIDE_PANEL_PLAYER_OTHERS_VOLUME_SUMMARY
         },
         show_feed_player_delay: {
             defaultValue: Settings_value.show_feed_player_delay.defaultValue,
