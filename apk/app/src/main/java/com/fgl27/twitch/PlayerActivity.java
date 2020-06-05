@@ -385,7 +385,7 @@ public class PlayerActivity extends Activity {
         player[position].prepare();
 
         hideLoading(5);
-        SwitchPlayerAudio(AudioSource, 1f);
+        SwitchPlayerAudio(AudioSource);
 
         if (!isSmall) {
             //Reset small player view so it shows after big one has started
@@ -473,7 +473,7 @@ public class PlayerActivity extends Activity {
             releasePlayer(4);
         }
 
-        mSetPreviewAudio(false);
+        mSetPreviewAudio();
 
         PlayerCheckCounter[4] = 0;
         UseFullBitrate = false;
@@ -536,7 +536,7 @@ public class PlayerActivity extends Activity {
         mediaSources[position] = NewMediaSource;
         hideLoading(5);
 
-        if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(1f);
+        if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(player[4] == null ? 1f : PreviewAudio);
         else player[position].setVolume(0f);
 
         KeepScreenOn(true);
@@ -562,7 +562,7 @@ public class PlayerActivity extends Activity {
         PlayerCheckCounter[position] = 0;
 
         //Multi audio is deal on js side when a player closes
-        if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1, 1f);
+        if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1);
 
         //All players are close enable screen saver
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
@@ -699,7 +699,7 @@ public class PlayerActivity extends Activity {
             for (j = 0; j < len; j++) {
                 PlayerViewExtraLayout[i][j].bottomMargin = (int) (ScreenSize.x / 22 * Density / ScaleDensity);
             }
-            
+
             margin = WidthDefault / 5;//The screen has 5 thumbnails
             margin = (margin + (margin / 2)) - (ExtraWidth[i] / 2);
 
@@ -815,10 +815,11 @@ public class PlayerActivity extends Activity {
         mainPlayer = WillBeMain;
 
         //Set proper video volume, muted to small
-        SwitchPlayerAudio(AudioSource, 1f);
+        SwitchPlayerAudio(AudioSource);
     }
 
-    public void SwitchPlayerAudio(int pos, float volume) {
+    public void SwitchPlayerAudio(int pos) {
+        float volume = player[4] == null ? 1f : PreviewAudio;
         AudioSource = pos;
         if (pos >= 2) {//both
             AudioMulti = 4;
@@ -843,12 +844,13 @@ public class PlayerActivity extends Activity {
         PlayerView[pos].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
     }
 
-    public void mSetPreviewAudio(boolean set) {
-        if (MultiStreamEnable) SetPlayerAudioMulti(set ? PreviewAudio : 1f);
-        else SwitchPlayerAudio(AudioSource, set ? PreviewAudio : 1f);
+    public void mSetPreviewAudio() {
+        if (MultiStreamEnable) SetPlayerAudioMulti();
+        else SwitchPlayerAudio(AudioSource);
     }
 
-    public void SetPlayerAudioMulti(float volume) {
+    public void SetPlayerAudioMulti() {
+        float volume = player[4] == null ? 1f : PreviewAudio;
         for (int i = 0; i < PlayerAccount; i++) {
             if (player[i] != null) {
                 if (AudioMulti == 4 || AudioMulti == i) player[i].setVolume(volume);
@@ -865,7 +867,7 @@ public class PlayerActivity extends Activity {
 
         AudioMulti = (mainPlayer + offset) % 4;
         MultiMainPlayer = AudioMulti;
-        SetPlayerAudioMulti(1f);
+        SetPlayerAudioMulti();
 
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
@@ -896,8 +898,8 @@ public class PlayerActivity extends Activity {
         if (!PicturePicture || player[mainPlayer ^ 1] == null || player[mainPlayer] == null) {
             PicturePicture = false;
             ClearPlayer(mainPlayer ^ 1);
-            SwitchPlayerAudio(1, 1f);
-        } else SwitchPlayerAudio(AudioSource, 1f);
+            SwitchPlayerAudio(1);
+        } else SwitchPlayerAudio(AudioSource);
 
         PlayerView[2].setVisibility(View.GONE);
         PlayerView[3].setVisibility(View.GONE);
@@ -1717,7 +1719,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerAudio(int position) {
-            MainThreadHandler.post(() -> SwitchPlayerAudio(position, 1f));
+            MainThreadHandler.post(() -> SwitchPlayerAudio(position));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1735,7 +1737,7 @@ public class PlayerActivity extends Activity {
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
                 AudioMulti = mposition;
-                SetPlayerAudioMulti(1f);
+                SetPlayerAudioMulti();
             });
         }
 
@@ -2395,7 +2397,7 @@ public class PlayerActivity extends Activity {
                 ClearSmallPlayer();
 
                 LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
-                mSetPreviewAudio(false);
+                mSetPreviewAudio();
 
             } else if (playbackState == Player.STATE_BUFFERING) {
                 //Use the player buffer as a player check state to prevent be buffering for ever
@@ -2414,7 +2416,7 @@ public class PlayerActivity extends Activity {
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckCounter[4] = 0;
-                mSetPreviewAudio(true);
+                mSetPreviewAudio();
             }
 
         }
