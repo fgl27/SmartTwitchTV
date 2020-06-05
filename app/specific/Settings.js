@@ -45,6 +45,10 @@ var Settings_value = {
         "values": Settings_GetVolumes(),
         "defaultValue": 26
     },
+    "preview_volume": {//Migrated to dialog
+        "values": Settings_GetVolumes(),
+        "defaultValue": 101
+    },
     "preview_sizes": {//Migrated to dialog
         "values": ['small', 'medium', 'big'],
         "defaultValue": 2
@@ -524,7 +528,8 @@ function Settings_SetDefautls() {
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     Settings_CodecsSet();
-    OSInterface_SetPreviewAudio(Settings_Obj_default("preview_others_volume"));
+    OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
+    OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
     OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
@@ -610,7 +615,8 @@ function Settings_SetDefault(position) {
     else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     else if (position === "default_quality") Play_SetQuality();
     else if (position === "thumb_quality") Main_SetThumb();
-    else if (position === "preview_others_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_others_volume"));
+    else if (position === "preview_others_volume") OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
+    else if (position === "preview_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
     else if (position === "preview_sizes") OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
     else if (position === "global_font_offset") {
         calculateFontSize();
@@ -1162,11 +1168,17 @@ function Settings_DialogShowSmallPayer() {
             title: STR_DISABLE_FEED_PLAYER_MULTI,
             summary: STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY
         },
+        preview_volume: {
+            defaultValue: Settings_value.preview_volume.defaultValue,
+            values: Settings_value.preview_volume.values,
+            title: STR_PREVIEW_VOLUME,
+            summary: STR_PREVIEW_VOLUME_SUMMARY
+        },
         preview_others_volume: {
             defaultValue: Settings_value.preview_others_volume.defaultValue,
             values: Settings_value.preview_others_volume.values,
-            title: STR_SIDE_PANEL_PLAYER_OTHERS_VOLUME,
-            summary: STR_SIDE_PANEL_PLAYER_OTHERS_VOLUME_SUMMARY
+            title: STR_PREVIEW_OTHERS_VOLUME,
+            summary: STR_PREVIEW_OTHERS_VOLUME_SUMMARY
         },
         show_feed_player_delay: {
             defaultValue: Settings_value.show_feed_player_delay.defaultValue,

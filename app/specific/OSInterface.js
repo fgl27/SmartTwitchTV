@@ -640,11 +640,22 @@ function OSInterface_SetPreviewSize(mPreviewSize) {
 //public void SetPreviewAudio(int volume)
 //volume = the volume of others player
 //Android specific: true
-//Allows to lower others player volume when preview player is showing
+//Allows the preview player volume
 function OSInterface_SetPreviewAudio(volume) {
     //TODO remove the try after some apps updates
     try {
         Android.SetPreviewAudio(volume);
+    } catch (e) {}
+}
+
+//public void SetPreviewAudio(int volume)
+//volume = the volume of others player
+//Android specific: true
+//Allows to lower others player volume when preview player is showing
+function OSInterface_SetPreviewOthersAudio(volume) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPreviewOthersAudio(volume);
     } catch (e) {}
 }
 

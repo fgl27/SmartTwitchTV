@@ -431,8 +431,10 @@ function en_USLang() {
     STR_PREVIEW_SIZE_ARRAY = ["Small", "Medium", "Large"];
     STR_SIDE_PANEL_PLAYER_DELAY = "Preview player delay";
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the preview start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
-    STR_SIDE_PANEL_PLAYER_OTHERS_VOLUME = "Main player volume";
-    STR_SIDE_PANEL_PLAYER_OTHERS_VOLUME_SUMMARY = "The main player (All players picture in picture, multistream players) volume can be lower when the preview player is showing";
+    STR_PREVIEW_VOLUME = "Preview player volume";
+    STR_PREVIEW_VOLUME_SUMMARY = "Allow to set what will be the feed preview player volume";
+    STR_PREVIEW_OTHERS_VOLUME = "Main players volume";
+    STR_PREVIEW_OTHERS_VOLUME_SUMMARY = "The main player (All players picture in picture, multistream players) volume can be lower when the preview player is showing";
     STR_SIDE_PANEL_PLAYER = "Preview thumbnail player settings";
     STR_START_AT_USER = "Always start the app in the user screen";
     STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";
