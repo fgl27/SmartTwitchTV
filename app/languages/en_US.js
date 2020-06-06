@@ -421,6 +421,7 @@ function en_USLang() {
     STR_FEED_END_DIALOG = ', Press return to go back to top menu';
     STR_BACK_USER_GAMES = ' Press return key to go back to ';
     STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
+    STR_SHOW_LIVE_PLAYER = 'Show Live streams preview player';
     STR_SHOW_SIDE_PLAYER = 'Show side panel preview player';
     STR_SHOW_FEED_PLAYER = 'Show preview player on preview feed';
     STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";

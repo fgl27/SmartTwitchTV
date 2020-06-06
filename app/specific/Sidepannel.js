@@ -90,9 +90,7 @@ function Sidepannel_UpdateThumb() {
 
 }
 
-function Sidepannel_RestoreThumb(play_data) {
-    var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
-
+function Sidepannel_RestoreThumb(doc, play_data) {
     if (doc) {
         var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
 
@@ -128,7 +126,6 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                     OSInterface_SetPlayerViewSidePanel(
                         Rect.top,
                         Rect.right,
-                        Rect.bottom,
                         Rect.left,
                         window.innerHeight
                     );
@@ -157,13 +154,14 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 function Sidepannel_CheckIfIsLiveWarn(ErroText, Streamer) {
     Sidepannel_CheckIfIsLiveSTop();
     Sidepannel_UpdateThumbDiv();
-    Sidepannel_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText);
-    Main_setTimeout(Sidepannel_HideWarningDialog, 2000);
+    Sidepannel_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText, 2000);
+
 }
 
-function Sidepannel_showWarningDialog(text) {
+function Sidepannel_showWarningDialog(text, timeout) {
     Main_innerHTML('sidepannel_dialog_warning_text', text);
     Main_ShowElement('sidepannel_dialog_warning');
+    Main_setTimeout(Sidepannel_HideWarningDialog, timeout ? timeout : 0);
 }
 
 function Sidepannel_HideWarningDialog() {

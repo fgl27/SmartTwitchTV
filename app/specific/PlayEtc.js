@@ -482,8 +482,20 @@ function Play_KeyReturn(is_vod) {
                 else {
                     if (Play_isOn && !Play_isEndDialogVisible() && Play_data.data.length > 0) {
                         Main_Set_history('live', Play_data.data);
-                        if (Settings_Obj_default('show_side_player') && !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide'))
-                            Sidepannel_RestoreThumb(Play_data);
+                        if (Settings_Obj_default('show_side_player') &&
+                            !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide')) {
+                            Sidepannel_RestoreThumb(
+                                document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
+                                Play_data
+                            );
+                        } else if (Settings_Obj_default('show_live_player') && ScreenObj[Screens_Current_Key].screenType === 0 &&
+                            !Sidepannel_isShowing() &&
+                            !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+                            Sidepannel_RestoreThumb(
+                                document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX),
+                                Play_data
+                            );
+                        }
                     }
                     Play_shutdownStream();
                 }

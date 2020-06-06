@@ -699,6 +699,119 @@ function Screens_addFocus(forceScroll, key) {
     }
 
     ScreenObj[key].addrow(forceScroll, ScreenObj[key].posY, key);
+
+
+    if (Settings_Obj_default('show_live_player') && ScreenObj[key].screenType === 0 &&
+        Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+        !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+
+        var Channel = JSON.parse(document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute))[6];
+
+        if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+
+            Screens_CheckIfIsLiveStart(key);
+
+        } else if (Play_CheckIfIsLiveResponseText) {
+
+            var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+            var Rect = img.getBoundingClientRect();
+
+            OSInterface_ScreenPlayerRestore(
+                Rect.top,
+                Rect.right,
+                Rect.left,
+                window.innerHeight,
+                ScreenObj[key].screenType + 1
+            );
+
+            Main_AddClassWitEle(img, 'opacity_zero');
+            Main_SaveValues();
+        }
+
+    }
+}
+
+function Screens_CheckIfIsLiveStart(key) {
+    Play_CheckIfIsLiveCleanEnd();
+
+    if (!Main_IsOn_OSInterface) {
+        return;
+    }
+
+    var doc = document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+
+    if (doc) {
+        try {
+            var channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+
+            OSInterface_CheckIfIsLiveFeed(
+                Play_live_token.replace('%x', channel),
+                Play_live_links.replace('%x', channel),
+                Settings_Obj_values("show_feed_player_delay"),
+                "Screens_CheckIfIsLiveResult",
+                key,
+                (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
+                DefaultHttpGetReTryMax,
+                DefaultHttpGetTimeout
+            );
+
+        } catch (e) {
+            Play_CheckIfIsLiveCleanEnd();
+        }
+    } else Play_CheckIfIsLiveCleanEnd();
+}
+
+function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
+
+    if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+        x === Screens_Current_Key && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100)) {
+
+        var doc = document.getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+
+        if (StreamData && doc) {
+            StreamData = JSON.parse(StreamData);
+
+            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+            if (StreamData.status === 200) {
+
+                Play_CheckIfIsLiveURL = StreamData.url;
+                Play_CheckIfIsLiveResponseText = StreamData.responseText;
+                Play_CheckIfIsLiveChannel = StreamInfo[6];
+
+                var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+                var Rect = img.getBoundingClientRect();
+
+                OSInterface_StartScreensPlayer(
+                    Play_CheckIfIsLiveURL,
+                    Play_CheckIfIsLiveResponseText,
+                    Rect.top,
+                    Rect.right,
+                    Rect.left,
+                    window.innerHeight,
+                    ScreenObj[x].screenType + 1
+                );
+
+                Main_AddClassWitEle(img, 'opacity_zero');
+
+            } else {
+                Screens_CheckIfIsLiveWarn(
+                    ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                    StreamInfo[1],
+                    x
+                );
+            }
+
+        }
+    }
+
+}
+
+function Screens_CheckIfIsLiveWarn(ErroText, Streamer, x) {
+    Sidepannel_CheckIfIsLiveSTop();
+    Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'opacity_zero');
+    Main_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText);
+    Main_setTimeout(Main_HideWarningDialog, 2000);
 }
 
 function Screens_ThumbNotNull(thumbnail) {

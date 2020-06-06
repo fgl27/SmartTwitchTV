@@ -199,7 +199,8 @@ function Main_loadTranslations(language) {
                     'Play_MultiResult': Play_MultiResult,
                     'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
                     'Play_CheckHostResult': Play_CheckHostResult,
-                    'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult
+                    'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
+                    'Screens_CheckIfIsLiveResult': Screens_CheckIfIsLiveResult
                 };
             }
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -1326,6 +1327,8 @@ function Main_openVod() {
 }
 
 function Main_removeFocus(id, idArray) {
+    Sidepannel_CheckIfIsLiveSTop();
+    Main_RemoveClass(idArray[1] + id, 'opacity_zero');
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 
@@ -1946,6 +1949,10 @@ function Main_CheckStop() { // Called only by JAVA
         Settings_exit();
         Main_SwitchScreen();
     }
+
+    //Reset Screen img if hiden
+    var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+    if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
 }
 
 var Main_CheckResumeFeedId;
@@ -1970,6 +1977,7 @@ function Main_CheckResume() { // Called only by JAVA
     }
 
     if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
+    else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
         //Restore UserLiveFeed_WasLiveidObject array from java if it exist

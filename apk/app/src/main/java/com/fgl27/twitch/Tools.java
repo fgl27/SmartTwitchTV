@@ -18,8 +18,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -882,5 +884,21 @@ public final class Tools {
             );
         }
 
+    }
+
+    public static FrameLayout.LayoutParams BasePreviewLayout(int top, int right, int left, int web_height, Point ScreenSize) {
+        float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
+
+        int width = (int)((right - left) * scale);
+        int offset = width / 110; //Minor offset to make it feet inside the box without overflowing
+        width -= offset;
+        int height = width * 9 / 16;//16 by 9 box
+        FrameLayout.LayoutParams PlayerViewSidePanel = new FrameLayout.LayoutParams(width, height, Gravity.LEFT | Gravity.TOP);
+
+        //Center on top of the box in relation to the offset
+        PlayerViewSidePanel.topMargin = (int)(top * scale + (offset / 1.8));
+        PlayerViewSidePanel.leftMargin = (int)(left * scale + (offset / 1.6));
+
+        return PlayerViewSidePanel;
     }
 }

@@ -505,6 +505,10 @@ var Base_Live_obj = {
             this.coloumn_id++;
         }
     },
+    key_play: function() {
+        Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+        Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+    }
 };
 
 function ScreensObj_InitLive() {
@@ -531,9 +535,6 @@ function ScreensObj_InitLive() {
 
             ScreensObj_SetTopLable(STR_LIVE);
         },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_Live] = Screens_assign(ScreenObj[Main_Live], Base_Live_obj);
@@ -567,9 +568,6 @@ function ScreensObj_InitSearchLive() {
             Main_values.Search_isSearching = false;
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
         },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_SearchLive] = Screens_assign(ScreenObj[Main_SearchLive], Base_Live_obj);
@@ -626,9 +624,6 @@ function ScreensObj_InitUserLive() {
             ScreensObj_TopLableUserInit(this.screen);
             ScreensObj_SetTopLable(STR_USER, STR_LIVE_CHANNELS);
         },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_UserLive] = Screens_assign(ScreenObj[Main_UserLive], Base_Live_obj);
@@ -715,9 +710,6 @@ function ScreensObj_InitUserHost() {
 
             ScreensObj_SetTopLable(STR_USER, STR_LIVE_HOSTS);
         },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_UserHost] = Screens_assign(ScreenObj[Main_UserHost], Base_Live_obj);
@@ -786,15 +778,16 @@ function ScreensObj_InitAGame() {
                 this.screen
             );
         },
-        key_play: function() {
-            if (this.posY !== -1) {
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-            } else AGame_headerOptions(this.screen);
-        },
     }, Base_obj);
 
     ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
     ScreenObj[Main_aGame].Set_Scroll();
+    ScreenObj[Main_aGame].key_play = function() {
+        if (this.posY !== -1) {
+            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+        } else AGame_headerOptions(this.screen);
+    };
 }
 
 function ScreensObj_InitFeatured() {
@@ -822,9 +815,6 @@ function ScreensObj_InitFeatured() {
             ScreensObj_SetTopLable(STR_FEATURED);
         },
         object: 'featured',
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_Featured] = Screens_assign(ScreenObj[Main_Featured], Base_Live_obj);
@@ -1475,21 +1465,6 @@ function ScreensObj_HistoryLive() {
         history_Type: function() {
             return STR_LIVE;
         },
-        key_play: function() {
-
-            if (this.posY === -1) {
-                if (this.posX === 0) {
-                    Main_values.Main_Go = Main_HistoryVod;
-                    this.history_exit();
-                    Main_SwitchScreen();
-                } else if (this.posX === 1) {
-                    Main_values.Main_Go = Main_HistoryClip;
-                    this.history_exit();
-                    Main_SwitchScreen();
-                } else Screens_histStart(this.screen);
-            } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true);
-
-        },
         addCell: function(cell) {
             //cell.data[14] check here to a bug that introduce emtpy values todo maybe can be removed ins some months
             if (!this.idObject[cell.data[7]] && cell.data[14] !== '') {
@@ -1530,6 +1505,22 @@ function ScreensObj_HistoryLive() {
     ScreenObj[Main_HistoryLive] = Screens_assign(ScreenObj[Main_HistoryLive], Base_History_obj);
     ScreenObj[Main_HistoryLive].Upsorting();
     ScreenObj[Main_HistoryLive].Set_Scroll();
+    ScreenObj[Main_HistoryLive].key_play = function() {
+        if (this.posY === -1) {
+            if (this.posX === 0) {
+                Main_values.Main_Go = Main_HistoryVod;
+                this.history_exit();
+                Main_SwitchScreen();
+            } else if (this.posX === 1) {
+                Main_values.Main_Go = Main_HistoryClip;
+                this.history_exit();
+                Main_SwitchScreen();
+            } else Screens_histStart(this.screen);
+        } else {
+            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true);
+        }
+    };
 }
 
 function ScreensObj_HistoryVod() {

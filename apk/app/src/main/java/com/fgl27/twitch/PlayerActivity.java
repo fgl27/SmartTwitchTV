@@ -136,7 +136,7 @@ public class PlayerActivity extends Activity {
     public Handler MainThreadHandler;
     public Handler CurrentPositionHandler;
     public Handler ExtraPlayerHandler;
-    public String[][] ExtraPlayerHandlerResult = new String[10][100];
+    public String[][] ExtraPlayerHandlerResult = new String[25][100];
     public HandlerThread ExtraPlayerHandlerThread;
     public HandlerThread SaveBackupJsonThread;
     public HandlerThread PreviewsThread;
@@ -188,6 +188,7 @@ public class PlayerActivity extends Activity {
     private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout;
     //the default size for the side panel players
     public FrameLayout.LayoutParams PlayerViewSidePanel;
+    public FrameLayout.LayoutParams PlayerViewScreensPanel;
     private FrameLayout VideoHolder;
     private FrameLayout VideoWebHolder;
     private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
@@ -1653,18 +1654,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetPlayerViewSidePanel(int top, int right, int bottom, int left, int web_height) {
-            float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
-
-            int width = (int)((right - left) * scale);
-            int offset = width / 110; //Minor offset to make it feet inside the box without overflowing
-            width -= offset;
-            int height = width * 9 / 16;//16 by 9 box
-            PlayerViewSidePanel = new FrameLayout.LayoutParams(width, height, Gravity.LEFT | Gravity.TOP);
-
-            //Center on top of the box in relation to the offset
-            PlayerViewSidePanel.topMargin = (int)(top * scale + (offset / 1.8));
-            PlayerViewSidePanel.leftMargin = (int)(left * scale + (offset / 1.8));
+        public void SetPlayerViewSidePanel(int top, int right, int left, int web_height) {
+            PlayerViewSidePanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1690,11 +1681,47 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void StartScreensPlayer(String uri, String masterPlaylistString, int top, int right, int left, int web_height, int who_called) {
+            MainThreadHandler.post(() -> {
+
+                mediaSources[mainPlayer] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        who_called,
+                        mLowLatency,
+                        masterPlaylistString,
+                        userAgent
+                );
+
+                PlayerViewScreensPanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
+
+                VideoWebHolder.bringChildToFront(VideoHolder);
+                PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
+                PreInitializePlayer(3 + who_called, 0, mainPlayer);
+
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void SidePanelPlayerRestore() {
             MainThreadHandler.post(() -> {
                 mWho_Called = 4;
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
+
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void ScreenPlayerRestore(int top, int right, int left, int web_height, int who_called) {
+            MainThreadHandler.post(() -> {
+                mWho_Called = 3 + who_called;
+                VideoWebHolder.bringChildToFront(VideoHolder);
+
+                PlayerViewScreensPanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
+                PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
 
             });
         }
