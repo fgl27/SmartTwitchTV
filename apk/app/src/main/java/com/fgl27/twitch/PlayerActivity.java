@@ -61,6 +61,7 @@ public class PlayerActivity extends Activity {
     public static final String PageUrl = "file:///android_asset/app/index.html";
     //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
+    public final int DefaultDelayPlayerCheck = 8000;
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
 
@@ -2266,7 +2267,7 @@ public class PlayerActivity extends Activity {
         private PlayerEventListener(int position, int mWho_Called) {
             this.Who_Called = mWho_Called;// > 3 ? (mWho_Called - 3) : mWho_Called;
             this.position = position;
-            this.Delay_ms = (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0);
+            this.Delay_ms = BUFFER_SIZE[mWho_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0);
         }
 
         @Override
@@ -2306,7 +2307,7 @@ public class PlayerActivity extends Activity {
             } else if (playbackState == Player.STATE_BUFFERING) {
 
                 //Use the player buffer as a player check state to prevent be buffering for ever
-                //If buffer for as long as (BUFFER_SIZE * 2 + etc) do something because player is frozen
+                //If buffer for too long check because the player may have froze
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 PlayerCheckHandler[position].postDelayed(() -> {
 
@@ -2462,7 +2463,7 @@ public class PlayerActivity extends Activity {
 
             } else if (playbackState == Player.STATE_BUFFERING) {
                 //Use the player buffer as a player check state to prevent be buffering for ever
-                //If buffer for as long as BUFFER_SIZE * 2 + etc do something because player is frozen
+                //If buffer for too long check because the player may have froze
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckHandler[4].postDelayed(() -> {
 
@@ -2472,7 +2473,7 @@ public class PlayerActivity extends Activity {
 
                     PlayerEventListenerCheckCounterSmall();
 
-                }, (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0));
+                }, BUFFER_SIZE[mWho_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
 
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
