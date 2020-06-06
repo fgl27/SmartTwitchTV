@@ -1156,17 +1156,17 @@ function Settings_DialogShowSmallPayer() {
             title: STR_SHOW_FEED_PLAYER,
             summary: STR_SHOW_FEED_PLAYER_SUMMARY
         },
-        preview_sizes: {
-            defaultValue: Settings_value.preview_sizes.defaultValue,
-            values: Settings_value.preview_sizes.values,
-            title: STR_PREVIEW_SIZE,
-            summary: STR_PREVIEW_SIZE_SUMMARY
-        },
         disable_feed_player_multi: {
             defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
             values: Settings_value.disable_feed_player_multi.values,
             title: STR_DISABLE_FEED_PLAYER_MULTI,
             summary: STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY
+        },
+        preview_sizes: {
+            defaultValue: Settings_value.preview_sizes.defaultValue,
+            values: Settings_value.preview_sizes.values,
+            title: STR_PREVIEW_SIZE,
+            summary: STR_PREVIEW_SIZE_SUMMARY
         },
         preview_volume: {
             defaultValue: Settings_value.preview_volume.defaultValue,
