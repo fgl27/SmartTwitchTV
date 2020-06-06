@@ -750,6 +750,16 @@ function OSInterface_ClearSidePanelPlayer(CleanPlayer) {
     } catch (e) {}
 }
 
+//public void SidePanelPlayerRestore()
+//Android specific: true
+//restores the main player as side panel player
+function OSInterface_SidePanelPlayerRestore() {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SidePanelPlayerRestore();
+    } catch (e) {}
+}
+
 //public void SetFeedPosition(int position)
 //position the position on the screen
 //Android specific: true

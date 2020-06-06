@@ -1146,7 +1146,7 @@ function Play_PreshutdownStream(closePlayer) {
         if (closePlayer) {
             //We are closing the player on error or on end
             OSInterface_mClearSmallPlayer();
-            OSInterface_stopVideo(1);
+            if (!Play_CheckIfIsLiveResponseText) OSInterface_stopVideo(1);
         }
     }
 
@@ -1155,7 +1155,10 @@ function Play_PreshutdownStream(closePlayer) {
         if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey(false);
     }
 
-    if (!Play_isEndDialogVisible() || closePlayer) UserLiveFeed_Hide();
+    if ((!Play_isEndDialogVisible() || closePlayer) &&
+        !Play_CheckIfIsLiveResponseText) {
+        UserLiveFeed_Hide();
+    }
 
     Play_ClearPlay(closePlayer);
     Play_ClearPlayer();

@@ -476,14 +476,17 @@ function Play_KeyReturn(is_vod) {
             else if (PlayExtra_PicturePicture) Play_CloseSmall();
             else {
 
-                if (Play_isOn && !Play_isEndDialogVisible() && Play_data.data.length > 0) {
-                    Main_Set_history('live', Play_data.data);
-                }
-
                 Play_CleanHideExit();
                 Play_hideChat();
                 if (is_vod) PlayVod_shutdownStream();
-                else Play_shutdownStream();
+                else {
+                    if (Play_isOn && !Play_isEndDialogVisible() && Play_data.data.length > 0) {
+                        Main_Set_history('live', Play_data.data);
+                        if (Settings_Obj_default('show_side_player') && !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide'))
+                            Sidepannel_RestoreThumb(Play_data);
+                    }
+                    Play_shutdownStream();
+                }
             }
         } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
             Main_clearTimeout(Play_showWarningMidleDialogId);

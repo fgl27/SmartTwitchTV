@@ -42,7 +42,7 @@ function Sidepannel_RemoveFocusFeed() {
 }
 
 function Sidepannel_isShowing() {
-    return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
+    return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide') && Main_isScene1DocShown();
 }
 
 function Sidepannel_UpdateThumbDiv() {
@@ -75,7 +75,9 @@ function Sidepannel_UpdateThumb() {
             var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
             if (doc) {
+
                 var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+
                 if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
                     Sidepannel_CheckIfIsLiveStart();
                 } else if (Play_CheckIfIsLiveResponseText) {
@@ -84,6 +86,21 @@ function Sidepannel_UpdateThumb() {
             }
         }
 
+    }
+
+}
+
+function Sidepannel_RestoreThumb(play_data) {
+    var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+
+    if (doc) {
+        var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+
+        if (Main_A_equals_B(Channel, play_data.data[6])) {
+            Play_CheckIfIsLiveURL = play_data.AutoUrl;
+            Play_CheckIfIsLiveResponseText = play_data.playlist;
+            Play_CheckIfIsLiveChannel = play_data.data[6];
+        }
     }
 
 }
@@ -338,12 +355,19 @@ function Sidepannel_StartFeed() {
 
 function Sidepannel_ShowFeed() {
     Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-    if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+
+    if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name) {
+        UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+    }
     UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
 
-    if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+    if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) {
+        UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+    }
 
-    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
+    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+        UserLiveFeed_RefreshLive();
+    }
 
     if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_PreloadImgs();
@@ -373,12 +397,15 @@ function Sidepannel_HideMain(hideAll) {
 }
 
 function Sidepannel_Hide(PreventcleanQuailities) {
-    Sidepannel_HideMain();
-    Sidepannel_RemoveFocusMain();
-    Sidepannel_FixDiv.style.marginLeft = '';
+
+    if (!PreventcleanQuailities) {
+        Sidepannel_HideMain();
+        Sidepannel_RemoveFocusMain();
+        Sidepannel_FixDiv.style.marginLeft = '';
+        Main_HideElement('side_panel_feed_thumb');
+        Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+    }
     Sidepannel_HideEle(PreventcleanQuailities);
-    Main_HideElement('side_panel_feed_thumb');
-    Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
     Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
     Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
@@ -386,7 +413,7 @@ function Sidepannel_Hide(PreventcleanQuailities) {
 
 function Sidepannel_HideEle(PreventcleanQuailities) {
     Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
-    Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+    if (!PreventcleanQuailities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {

@@ -909,7 +909,12 @@ function Main_ThumbNull(y, x, thumbnail) {
 
 function Main_ReStartScreens() {
     Main_updateclock();
-    Main_SwitchScreen();
+    if (Sidepannel_isShowing()) {
+        Main_addEventListener("keydown", Sidepannel_handleKeyDown);
+        if (Play_CheckIfIsLiveResponseText) OSInterface_SidePanelPlayerRestore();
+        Sidepannel_AddFocusFeed(true);
+        Main_SaveValues();
+    } else Main_SwitchScreen();
 }
 
 function Main_SwitchScreen(removekey) {

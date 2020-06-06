@@ -691,6 +691,7 @@ public class PlayerActivity extends Activity {
                 (int) (HeightDefault / 2.7)
         };
         PlayerViewExtraLayout = new FrameLayout.LayoutParams[ExtraWidth.length][5];
+
         int margin, i, j, len;
         for (i = 0; i < PlayerViewExtraLayout.length; i++) {
             PlayerViewExtraLayout[i][0] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.LEFT | Gravity.BOTTOM);
@@ -1682,6 +1683,17 @@ public class PlayerActivity extends Activity {
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
                 PreInitializePlayer(4, 0, mainPlayer);
+
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SidePanelPlayerRestore() {
+            MainThreadHandler.post(() -> {
+                mWho_Called = 4;
+                VideoWebHolder.bringChildToFront(VideoHolder);
+                PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
 
             });
         }
