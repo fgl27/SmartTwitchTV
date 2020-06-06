@@ -50,7 +50,7 @@ var Settings_value = {
         "defaultValue": 101
     },
     "preview_sizes": {//Migrated to dialog
-        "values": ['small', 'medium', 'big'],
+        "values": ['s', 'm', 'l', 'xl'],
         "defaultValue": 2
     },
     "show_side_player": {//Migrated to dialog
