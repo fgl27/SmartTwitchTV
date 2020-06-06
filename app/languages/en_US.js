@@ -428,7 +428,7 @@ function en_USLang() {
     STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
     STR_PREVIEW_SIZE = "Preview player size";
     STR_PREVIEW_SIZE_SUMMARY = "Set the size of the preview player of the preview feed (the one that shows above live/vod/clip)";
-    STR_PREVIEW_SIZE_ARRAY = ["Small", "Medium", "Large"];
+    STR_PREVIEW_SIZE_ARRAY = ["Small", "Medium", "Large", "Extra large"];
     STR_SIDE_PANEL_PLAYER_DELAY = "Preview player delay";
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the preview start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
     STR_PREVIEW_VOLUME = "Preview player volume";

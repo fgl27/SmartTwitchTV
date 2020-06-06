@@ -681,14 +681,16 @@ public class PlayerActivity extends Activity {
         int[] ExtraWidth = {
                 (WidthDefault / 5),
                 (int) (WidthDefault / 3.77),
-                (int) (WidthDefault / 2.75)
+                (int) (WidthDefault / 3.25),
+                (int) (WidthDefault / 2.7)
         };
         int[] ExtraHeight = {
                 (HeightDefault / 5),
                 (int) (HeightDefault / 3.77),
-                (int) (HeightDefault / 2.75)
+                (int) (HeightDefault / 3.25),
+                (int) (HeightDefault / 2.7)
         };
-        PlayerViewExtraLayout = new FrameLayout.LayoutParams[3][5];
+        PlayerViewExtraLayout = new FrameLayout.LayoutParams[ExtraWidth.length][5];
         int margin, i, j, len;
         for (i = 0; i < PlayerViewExtraLayout.length; i++) {
             PlayerViewExtraLayout[i][0] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.LEFT | Gravity.BOTTOM);
