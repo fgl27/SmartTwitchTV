@@ -541,7 +541,7 @@ function PlayClip_SetOpenVod() {
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
         Play_DurationSeconds = 0;
-        Main_values.vodOffset = ChannelVod_vodOffset;
+        Main_vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream(true);
         Main_addEventListener("keydown", PlayVod_handleKeyDown);
         Play_IconsResetFocus();

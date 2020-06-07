@@ -732,19 +732,21 @@ function OSInterface_SetPlayerViewSidePanel(top, right, left, web_height) {
     } catch (e) {}
 }
 
-//public void StartScreensPlayer(String uri, String masterPlaylistString, int top, int right, int left, int web_height, int who_called)
+//public void StartScreensPlayer(String uri, String masterPlaylistString, ResumePosition, float top, float right, float left, int web_height, int who_called)
 //uri =  the url of the playlist or the clip
 //masterPlaylistString = the stringify version of the url playlist content
+//ResumePosition position to start the vod
 //top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
 //who_called 1 live 2 vod 3 clip
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartScreensPlayer(uri, masterPlaylistString, top, right, left, web_height, who_called) {
+function OSInterface_StartScreensPlayer(uri, masterPlaylistString, ResumePosition, top, right, left, web_height, who_called) {
     //TODO remove the try after some apps updates
     try {
         Android.StartScreensPlayer(
             uri,
             masterPlaylistString,
+            ResumePosition,
             top,
             right,
             left,

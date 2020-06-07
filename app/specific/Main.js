@@ -51,7 +51,6 @@ var Main_values = {
     "Users_AddcodePosition": 0,
     "Play_WasPlaying": 0,
     "ChannelVod_vodId": '',
-    "vodOffset": 0,
     "Search_data": '',
     "gameSelectedOld": null,
     "Games_return": false,
@@ -148,6 +147,7 @@ var Main_UserBackupFile = 'user.json';
 var Main_HistoryBackupFile = 'history.json';
 var Main_Scene1Doc;
 var Main_Scene2Doc;
+var Main_vodOffset = 0;
 var Main_body = document.body;
 //Variable initialization end
 
@@ -812,14 +812,14 @@ function Main_CounterDialog(x, y, coloumns, total) {
 //     );
 // }
 
-function Main_showWarningDialog(text, timeout, up) {
+var Main_showWarningDialogId;
+function Main_showWarningDialog(text, timeout) {
     var doc = document.getElementById('dialog_warning');
-    doc.style.top = up ? "27%" : "31%";
 
     Main_innerHTML('dialog_warning_text', text);
     Main_ShowElementWithEle(doc);
 
-    if (timeout) Main_setTimeout(Main_HideWarningDialog, timeout);
+    if (timeout) Main_showWarningDialogId = Main_setTimeout(Main_HideWarningDialog, timeout, Main_showWarningDialogId);
 }
 
 function Main_HideWarningDialog() {
@@ -1188,10 +1188,10 @@ function Main_OPenAsVod(index) {
     Play_DurationSeconds = 0;
 
     Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-    Main_values.vodOffset =
+    Main_vodOffset =
         ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
 
-    if (Main_values.vodOffset < 0) Main_values.vodOffset = 1;
+    if (Main_vodOffset < 0) Main_vodOffset = 1;
 
     if (Play_isOn) {
         Main_OPenAsVod_shutdownStream();
@@ -1246,10 +1246,7 @@ function Main_openStream() {
     Main_showScene2Doc();
     Play_hidePanel();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
-    Main_setTimeout(
-        Play_Start,
-        20
-    );
+    Play_Start();
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
@@ -1284,10 +1281,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_hideChat();
     Play_HideWarningDialog();
     Play_CleanHideExit();
-    Main_setTimeout(
-        PlayClip_Start,
-        25
-    );
+    PlayClip_Start();
 }
 
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
@@ -1325,10 +1319,7 @@ function Main_openVod() {
     PlayVod_hidePanel();
     Play_hideChat();
     Play_CleanHideExit();
-    Main_setTimeout(
-        PlayVod_Start,
-        25
-    );
+    PlayVod_Start();
 }
 
 function Main_removeFocus(id, idArray) {

@@ -300,9 +300,6 @@ function Play_Start() {
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
 
-    Main_values.Play_WasPlaying = 1;
-    Main_SaveValues();
-
     Play_data.isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
     Play_RestoreFromResume = false;
@@ -340,6 +337,7 @@ function Play_Start() {
                 Play_loadDataSuccessend(Play_PreviewResponseText);
 
                 Play_CheckIfIsLiveCleanEnd();
+                Play_getQualities(1, true);
             },
             20
         );
@@ -348,6 +346,9 @@ function Play_Start() {
     if (!Main_IsOn_OSInterface) Play_UpdateMainStream(true, true);
 
     Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
+
+    Main_values.Play_WasPlaying = 1;
+    Main_SaveValues();
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -949,11 +950,11 @@ function Play_getQualities(position, skipchange) {
         if (position === 1) {
             Play_data.qualities = result;
             if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
-            Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+            if (Play_data.playlist) Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
         } else {
             PlayVod_qualities = result;
             if (!skipchange && !Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
-            Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
+            if (PlayVod_playlist) Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
         }
     } else Play_getQualitiesFail = true;
 }
@@ -1141,9 +1142,9 @@ function Play_shutdownStream() {
     //Main_Log('Play_shutdownStream ' + Play_isOn);
     if (Play_isOn) {
         Play_PreshutdownStream(true);
-        Play_data.qualities = [];
         Main_values.Play_WasPlaying = 0;
         Play_exitMain();
+        Play_data = JSON.parse(JSON.stringify(Play_data_base));
     }
 }
 

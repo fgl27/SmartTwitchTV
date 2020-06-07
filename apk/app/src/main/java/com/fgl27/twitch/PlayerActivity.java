@@ -1681,7 +1681,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StartScreensPlayer(String uri, String masterPlaylistString, float top, float right, float left, int web_height, int who_called) {
+        public void StartScreensPlayer(String uri, String masterPlaylistString, int ResumePosition,
+                                       float top, float right, float left, int web_height, int who_called) {
             MainThreadHandler.post(() -> {
 
                 mediaSources[mainPlayer] = Tools.buildMediaSource(
@@ -1697,7 +1698,7 @@ public class PlayerActivity extends Activity {
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
-                PreInitializePlayer(3 + who_called, 0, mainPlayer);
+                PreInitializePlayer(3 + who_called, ResumePosition, mainPlayer);
 
             });
         }

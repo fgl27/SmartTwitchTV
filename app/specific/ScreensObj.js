@@ -887,25 +887,7 @@ var Base_Clip_obj = {
                 Screens_createCellClip(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
-                    [
-                        cell.slug,//0
-                        cell.duration,//1
-                        cell.broadcaster.id,//2
-                        cell.game,//3
-                        cell.broadcaster.display_name,//4
-                        cell.broadcaster.logo.replace("150x150", "300x300"),//5
-                        cell.broadcaster.name,//6
-                        cell.tracking_id,//7
-                        (cell.vod !== null ? cell.vod.id : null),//8
-                        (cell.vod !== null ? cell.vod.offset : null),//9
-                        twemoji.parse(cell.title),//10
-                        '[' + cell.language.toUpperCase() + ']',//11
-                        cell.created_at,//12
-                        cell.views,//13
-                        Main_addCommas(cell.views) + STR_VIEWS,//14
-                        cell.thumbnails.medium,//15
-                        STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//16
-                    ],
+                    ScreensObj_ClipCellArray(cell),
                     this.screen
                 )
             );
@@ -1817,6 +1799,28 @@ function ScreensObj_VodCellArray(cell) {
     ];
 }
 
+function ScreensObj_ClipCellArray(cell) {
+    return [
+        cell.slug,//0
+        cell.duration,//1
+        cell.broadcaster.id,//2
+        cell.game,//3
+        cell.broadcaster.display_name,//4
+        cell.broadcaster.logo.replace("150x150", "300x300"),//5
+        cell.broadcaster.name,//6
+        cell.tracking_id,//7
+        (cell.vod !== null ? cell.vod.id : null),//8
+        (cell.vod !== null ? cell.vod.offset : null),//9
+        twemoji.parse(cell.title),//10
+        '[' + cell.language.toUpperCase() + ']',//11
+        cell.created_at,//12
+        cell.views,//13
+        Main_addCommas(cell.views) + STR_VIEWS,//14
+        cell.thumbnails.medium,//15
+        STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//16
+    ];
+}
+
 function ScreensObj_AnimateThumbId(screen) {
     Main_clearInterval(screen.AnimateThumbId);
     if (!Settings_Obj_default("videos_animation")) return;
@@ -1826,7 +1830,7 @@ function ScreensObj_AnimateThumbId(screen) {
     // This prevent starting animating before it has loaded or animated a empty image
     screen.Vod_newImg.onload = function() {
         this.onload = null;
-        Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
+        Main_AddClass(screen.ids[1] + screen.posY + '_' + screen.posX, 'opacity_zero');
         div.style.backgroundSize = div.offsetWidth + "px";
         var frame = 0;
         screen.AnimateThumbId = Main_setInterval(

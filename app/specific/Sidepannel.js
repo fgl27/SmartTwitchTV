@@ -92,15 +92,14 @@ function Sidepannel_UpdateThumb() {
 
 function Sidepannel_RestoreThumb(doc, play_data) {
     if (doc) {
-        var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
+        var ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
 
-        if (Main_A_equals_B(ChannelId, play_data.data[14])) {
+        if (Main_A_equals_B(ThumbId, play_data.data[14])) {
             Play_PreviewURL = play_data.AutoUrl;
             Play_PreviewResponseText = play_data.playlist;
             Play_PreviewId = play_data.data[14];
         }
     }
-
 }
 
 var Sidepannel_PlayerViewSidePanelSet;

@@ -534,6 +534,8 @@ function Screens_loadDataSuccessFinish(key) {
             //if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
             Main_values.warning_extra = false;
 
+            if (Main_values.Play_WasPlaying !== 1) Play_data = JSON.parse(JSON.stringify(Play_data_base));
+
             if (Settings_value.start_user_screen.defaultValue) {
 
                 Main_ExitCurrent(Main_values.Main_Go);
@@ -562,7 +564,9 @@ function Screens_loadDataSuccessFinish(key) {
 
                     } else Main_SwitchScreen(false);
                 } else {
-                    if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                    Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
+                    if (!Main_vodOffset) Main_vodOffset = 1;
+
                     Play_DurationSeconds = 0;
                     Main_openVod();
                     Main_SwitchScreen(true);
@@ -708,13 +712,14 @@ function Screens_CheckIfIsLive(key) {
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
         var doc, ThumbId;
 
-        //Live
-        if (Settings_Obj_default('show_live_player') && ScreenObj[key].screenType === 0) {
+        //Live || VOD
+        if (ScreenObj[key].screenType === 0 && Settings_Obj_default('show_live_player') ||
+            ScreenObj[key].screenType === 1 && Settings_Obj_default('show_vod_player')) {
 
             doc = document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
 
             if (doc) {
-                ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
+                ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[ScreenObj[key].screenType ? 7 : 14];//streamer id
 
                 if (!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) {
 
@@ -728,6 +733,7 @@ function Screens_CheckIfIsLive(key) {
             }
 
         }
+
     }
 }
 
@@ -758,11 +764,21 @@ function Screens_CheckIfIsLiveStart(key) {
 
     if (doc) {
         try {
-            var channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+            var obj = JSON.parse(doc.getAttribute(Main_DataAttribute)), id, token, link;
+
+            if (ScreenObj[key].screenType) {//vod
+                id = obj[7];
+                token = Play_vod_token;
+                link = Play_vod_links;
+            } else {//live
+                id = obj[6];
+                token = Play_live_token;
+                link = Play_live_links;
+            }
 
             OSInterface_CheckIfIsLiveFeed(
-                Play_live_token.replace('%x', channel),
-                Play_live_links.replace('%x', channel),
+                token.replace('%x', id),
+                link.replace('%x', id),
                 Settings_Obj_values("show_feed_player_delay"),
                 "Screens_CheckIfIsLiveResult",
                 key,
@@ -793,14 +809,26 @@ function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                 Play_PreviewURL = StreamData.url;
                 Play_PreviewResponseText = StreamData.responseText;
-                Play_PreviewId = StreamInfo[14];
+                var offset = 0;
+
+                if (ScreenObj[x].screenType) {
+                    Play_PreviewId = StreamInfo[7];
+
+                    var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Play_PreviewId) : -1;
+                    offset = (VodIdex > -1) ?
+                        Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
+                } else {
+                    Play_PreviewId = StreamInfo[14];
+                }
 
                 var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
                 var Rect = img.getBoundingClientRect();
 
+
                 OSInterface_StartScreensPlayer(
                     Play_PreviewURL,
                     Play_PreviewResponseText,
+                    offset * 1000,
                     Rect.top,
                     Rect.right,
                     Rect.left,
@@ -808,7 +836,15 @@ function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                     ScreenObj[x].screenType + 1
                 );
 
+                Screens_ClearAnimation(x);
                 Main_AddClassWitEle(img, 'opacity_zero');
+
+                if (offset) {
+                    Main_showWarningDialog(
+                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(offset * 1000),
+                        2000
+                    );
+                }
 
             } else {
                 Screens_CheckIfIsLiveWarn(
@@ -828,8 +864,7 @@ function Screens_CheckIfIsLiveWarn(ErroText, Streamer, x) {
     Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'opacity_zero');
     Main_showWarningDialog(
         Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText,
-        2000,
-        !ScreenObj[x].Cells[ScreenObj[x].posY + 1]//Display the warning above the player
+        2000
     );
 }
 
@@ -1187,7 +1222,10 @@ function Screens_KeyUpDown(y, key) {
 function Screens_ClearAnimation(key) {
     if (ScreenObj[key].HasAnimateThumb) {
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
-        if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) Main_ShowElement(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+        if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) {
+            document.getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
+            Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+        }
     }
 }
 

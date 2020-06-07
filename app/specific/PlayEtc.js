@@ -478,16 +478,36 @@ function Play_KeyReturn(is_vod) {
 
                 Play_CleanHideExit();
                 Play_hideChat();
-                if (is_vod) PlayVod_shutdownStream();
-                else {
+                if (is_vod) {
+                    if (Settings_Obj_default('show_vod_player') && ScreenObj[Screens_Current_Key].screenType === 1 &&
+                        !Sidepannel_isShowing() &&
+                        !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+
+                        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+                        if (doc) {
+                            var ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[7];
+
+                            if (Main_A_equals_B(ThumbId, Main_values.ChannelVod_vodId)) {
+                                Play_PreviewURL = PlayVod_autoUrl;
+                                Play_PreviewResponseText = PlayVod_playlist;
+                                Play_PreviewId = Main_values.ChannelVod_vodId;
+                            }
+                        }
+                    }
+
+                    PlayVod_shutdownStream();
+                } else {
                     if (Play_isOn && !Play_isEndDialogVisible() && Play_data.data.length > 0) {
                         Main_Set_history('live', Play_data.data);
+
+                        //Side panel
                         if (Settings_Obj_default('show_side_player') &&
                             !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide')) {
                             Sidepannel_RestoreThumb(
                                 document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
                                 Play_data
                             );
+                            //live
                         } else if (Settings_Obj_default('show_live_player') && ScreenObj[Screens_Current_Key].screenType === 0 &&
                             !Sidepannel_isShowing() &&
                             !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
@@ -497,6 +517,7 @@ function Play_KeyReturn(is_vod) {
                             );
                         }
                     }
+
                     Play_shutdownStream();
                 }
             }
