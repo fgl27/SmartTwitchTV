@@ -685,6 +685,7 @@ function Screens_addFocus(forceScroll, key) {
             return;
         }
     }
+
     if (ScreenObj[key].posY < 0) {
         Screens_addFocusFollow(key);
 
@@ -796,10 +797,13 @@ function Screens_CheckIfIsLiveStart(key) {
 
 function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
-        x === Screens_Current_Key && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100)) {
+    var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
-        var doc = document.getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+    if (Main_isScene1DocShown() && !Sidepannel_isShowing() && x === Screens_Current_Key &&
+        y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
+        doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
+
+        doc = document.getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
         if (StreamData && doc) {
             StreamData = JSON.parse(StreamData);
@@ -1740,6 +1744,7 @@ function Screens_HideRemoveDialog(key) {
     Users_RemoveCursor = 0;
     Users_UserCursorSet();
     Users_RemoveCursorSet();
+    Screens_CheckIfIsLive(key);
 }
 
 function Screens_histDeleteKeyDown(key, event) {
@@ -1887,6 +1892,9 @@ function Screens_histhandleKeyDown(key, event) {
 var Screens_ThumbOptionPosY = 0;
 
 function Screens_ThumbOptionStart(key) {
+    Sidepannel_CheckIfIsLiveSTop();
+    Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+
     Screens_clear = true;
 
     Screens_ThumbOptionSetArrowArray(key);
@@ -2115,6 +2123,7 @@ function Screens_ThumbOptionDialogHide(Update, key) {
         } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel(key);
         else if (Screens_ThumbOptionPosY === 1) Screens_OpenGame();
         else if (Screens_ThumbOptionPosY === 3) {
+
             if (!ScreenObj[key].screenType) {
                 if (ScreenObj[key].screen === Main_HistoryLive &&
                     Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
@@ -2132,9 +2141,12 @@ function Screens_ThumbOptionDialogHide(Update, key) {
                 Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryClip].histPosX));
             }
 
+            Screens_CheckIfIsLive(key);
         } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang();
         else if (Screens_ThumbOptionPosY === 5) Screens_OpenScreen();
-    }
+
+    } else Screens_CheckIfIsLive(key);
+
     Screens_ThumbOptionPosY = 0;
     Screens_ThumbOptionAddFocus(0);
 }
