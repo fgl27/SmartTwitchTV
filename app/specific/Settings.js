@@ -1029,8 +1029,7 @@ function Settings_CodecsUpDown(offset) {
 function Settings_CodecsRigthLeft(offset) {
 
     if (Settings_CodecsValue.length < 2) {
-        Main_showWarningDialog(STR_ONE_CODEC_ENA);
-        Main_setTimeout(Main_HideWarningDialog, 2000);
+        Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
         return;
     }
 
@@ -1059,8 +1058,7 @@ function Settings_CodecsRigthLeft(offset) {
         }
 
         if (!oneEnable) {
-            Main_showWarningDialog(STR_ONE_CODEC_ENA);
-            Main_setTimeout(Main_HideWarningDialog, 2000);
+            Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
 
             i = 0;
             len = Settings_CodecsValue.length;

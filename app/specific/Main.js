@@ -812,9 +812,14 @@ function Main_CounterDialog(x, y, coloumns, total) {
 //     );
 // }
 
-function Main_showWarningDialog(text) {
+function Main_showWarningDialog(text, timeout, up) {
+    var doc = document.getElementById('dialog_warning');
+    doc.style.top = up ? "27%" : "31%";
+
     Main_innerHTML('dialog_warning_text', text);
-    Main_ShowElement('dialog_warning');
+    Main_ShowElementWithEle(doc);
+
+    if (timeout) Main_setTimeout(Main_HideWarningDialog, timeout);
 }
 
 function Main_HideWarningDialog() {

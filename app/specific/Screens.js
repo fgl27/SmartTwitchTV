@@ -699,6 +699,7 @@ function Screens_addFocus(forceScroll, key) {
     }
 
     ScreenObj[key].addrow(forceScroll, ScreenObj[key].posY, key);
+
     Screens_CheckIfIsLive(key);
 }
 
@@ -825,8 +826,11 @@ function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 function Screens_CheckIfIsLiveWarn(ErroText, Streamer, x) {
     Sidepannel_CheckIfIsLiveSTop();
     Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'opacity_zero');
-    Main_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText);
-    Main_setTimeout(Main_HideWarningDialog, 2000);
+    Main_showWarningDialog(
+        Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText,
+        2000,
+        !ScreenObj[x].Cells[ScreenObj[x].posY + 1]//Display the warning above the player
+    );
 }
 
 function Screens_ThumbNotNull(thumbnail) {
@@ -1375,8 +1379,7 @@ function Screens_handleKeyDown(key, event) {
         case KEY_CHAT:
             Screens_OpenSidePanel(AddUser_UserIsSet(), key);
             if (!AddUser_UserIsSet()) {
-                Main_showWarningDialog(STR_NOKUSER_WARN);
-                Main_setTimeout(Main_HideWarningDialog, 2000);
+                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             break;
         default:
@@ -2110,8 +2113,7 @@ function Screens_FollowUnfollow(key) {
             AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_FollowRequestReady, 3);
         }
     } else {
-        Main_showWarningDialog(STR_NOKEY_WARN);
-        Main_setTimeout(Main_HideWarningDialog, 2000);
+        Main_showWarningDialog(STR_NOKEY_WARN, 2000);
     }
 }
 
@@ -2143,8 +2145,7 @@ function Screens_FollowRequestReady(xmlHttp) {
 function Screens_OpenScreen() {
 
     if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] === 8 && !AddUser_UsernameArray[0].access_token) {
-        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
-        Main_setTimeout(Main_HideWarningDialog, 3000);
+        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
         return;
     }
 
@@ -2163,8 +2164,7 @@ function Screens_OpenGame() {
     Play_data.data[3] = (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : '');
     if (Play_data.data[3] === '') {
 
-        Main_showWarningDialog(STR_NO_GAME);
-        Main_setTimeout(Main_HideWarningDialog, 2000);
+        Main_showWarningDialog(STR_NO_GAME, 2000);
         return;
     }
 

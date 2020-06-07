@@ -236,8 +236,7 @@ function Sidepannel_GetSize() {
 
 function Sidepannel_KeyEnterUser() {
     if (Main_values.Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
-        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
-        Main_setTimeout(Main_HideWarningDialog, 5000);
+        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
         return;
     }
 
@@ -307,8 +306,7 @@ function Sidepannel_KeyEnter() {
             Sidepannel_UnSetTopOpacity();
 
         } else {
-            Main_showWarningDialog(STR_NOKUSER_WARN);
-            Main_setTimeout(Main_HideWarningDialog, 2000);
+            Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
         }
     } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
     else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
@@ -336,8 +334,7 @@ function Sidepannel_Start(callback, forceFeed) {
     if (!Sidepannel_IsMain || forceFeed) {
         if (AddUser_UserIsSet()) Sidepannel_StartFeed();
         else {
-            Main_showWarningDialog(STR_NOKUSER_WARN);
-            Main_setTimeout(Main_HideWarningDialog, 2000);
+            Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             Sidepannel_StartMain();
         }
     } else Sidepannel_StartMain();
@@ -652,8 +649,7 @@ function Sidepannel_handleKeyDownMain(event) {
                 Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
                 Sidepannel_StartFeed();
             } else {
-                Main_showWarningDialog(STR_NOKUSER_WARN);
-                Main_setTimeout(Main_HideWarningDialog, 2000);
+                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             break;
         case KEY_PG_UP:

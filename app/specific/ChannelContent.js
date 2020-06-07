@@ -365,8 +365,7 @@ function ChannelContent_keyEnter() {
                 if (AddCode_IsFollowing) AddCode_UnFollow();
                 else AddCode_Follow();
             } else {
-                Main_showWarningDialog(STR_NOKEY_WARN);
-                Main_setTimeout(Main_HideWarningDialog, 2000);
+                Main_showWarningDialog(STR_NOKEY_WARN, 2000);
             }
         }
     } else {
@@ -509,12 +508,7 @@ function ChannelContent_handleKeyDown(event) {
             ChannelContent_removeFocus();
             Sidepannel_Start(ChannelContent_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {
-                Main_showWarningDialog(STR_NOKUSER_WARN);
-                Main_setTimeout(
-                    Main_HideWarningDialog,
-                    2000,
-                    ChannelContent_KeyEnterID
-                );
+                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             break;
         default:
