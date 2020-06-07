@@ -769,7 +769,7 @@ function Play_handleKeyDown(e) {
                     if (Play_EndFocus) Play_EndDialogPressed(1);
                     else {
                         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else if (Play_CheckIfIsLiveResponseText || Play_CheckLiveThumb(true)) {
+                        else if (Play_PreviewId || Play_CheckLiveThumb(true)) {
                             Play_EndDialogEnter = 1;
                             Play_EndUpclearCalback = Play_handleKeyDown;
                             Play_OpenLiveFeed();

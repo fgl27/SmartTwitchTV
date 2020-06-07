@@ -329,15 +329,15 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    if (!Play_CheckIfIsLiveResponseText) {
+    if (!Play_PreviewId) {
         Play_showBufferDialog();
         Play_loadData();
     } else {
 
         Main_setTimeout(
             function() {
-                Play_data.AutoUrl = Play_CheckIfIsLiveURL;
-                Play_loadDataSuccessend(Play_CheckIfIsLiveResponseText);
+                Play_data.AutoUrl = Play_PreviewURL;
+                Play_loadDataSuccessend(Play_PreviewResponseText);
 
                 Play_CheckIfIsLiveCleanEnd();
             },
@@ -355,10 +355,10 @@ function Play_Start() {
 //    Play_showWarningMidleDialog(text);
 //}
 
-var Play_CheckIfIsLiveURL = '';
-var Play_CheckIfIsLiveChannel = '';
-var Play_CheckIfIsLiveResponseText = null;
-var Play_CheckIfIsLiveId = 0;
+var Play_PreviewURL = '';
+var Play_PreviewId = 0;
+var Play_PreviewResponseText = '';
+var Play_PreviewCheckId = 0;
 
 function Play_CheckIfIsLiveStart(callback) {
     var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
@@ -368,13 +368,13 @@ function Play_CheckIfIsLiveStart(callback) {
 
         var selectedChannelDisplayname = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-        Play_CheckIfIsLiveId = (new Date().getTime());
+        Play_PreviewCheckId = (new Date().getTime());
 
         OSInterface_getStreamDataAsync(
             Play_live_token.replace('%x', selectedChannelDisplayname[6]),
             Play_live_links.replace('%x', selectedChannelDisplayname[6]),
             callback,
-            Play_CheckIfIsLiveId,
+            Play_PreviewCheckId,
             2,//Main player runs on 0 extra player on 1 the check on 2
             DefaultHttpGetReTryMax,
             DefaultHttpGetTimeout
@@ -401,9 +401,9 @@ function Play_CheckIfIsLiveClean() {//called from java
 }
 
 function Play_CheckIfIsLiveCleanEnd() {
-    Play_CheckIfIsLiveURL = '';
-    Play_CheckIfIsLiveChannel = '';
-    Play_CheckIfIsLiveResponseText = null;
+    Play_PreviewURL = '';
+    Play_PreviewId = 0;
+    Play_PreviewResponseText = '';
 }
 
 function Play_CheckResume() {
@@ -482,7 +482,14 @@ function Play_getStreamData(channel_name) {
 
 function Play_updateStreamInfoStart() {
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (Play_loadingInfoDataTry * DefaultHttpGetTimeoutPlus), 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError);
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (Play_loadingInfoDataTry * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        Play_updateStreamInfoStartValues,
+        Play_updateStreamInfoStartError
+    );
 }
 
 function Play_UpdateMainStreamDiv() {
@@ -1146,7 +1153,7 @@ function Play_PreshutdownStream(closePlayer) {
         if (closePlayer) {
             //We are closing the player on error or on end
             OSInterface_mClearSmallPlayer();
-            if (!Play_CheckIfIsLiveResponseText) OSInterface_stopVideo(1);
+            if (!Play_PreviewId) OSInterface_stopVideo(1);
         }
     }
 
@@ -1156,7 +1163,7 @@ function Play_PreshutdownStream(closePlayer) {
     }
 
     if ((!Play_isEndDialogVisible() || closePlayer) &&
-        !Play_CheckIfIsLiveResponseText) {
+        !Play_PreviewId) {
         UserLiveFeed_Hide();
     }
 
@@ -1748,7 +1755,7 @@ function Play_EndDialogUpDown(adder) {
 }
 
 function Play_OpenLiveFeedCheck() {
-    if (Play_CheckIfIsLiveResponseText || Play_CheckLiveThumb()) Play_OpenLiveFeed();
+    if (Play_PreviewId || Play_CheckLiveThumb()) Play_OpenLiveFeed();
 }
 
 function Play_OpenLiveFeed() {

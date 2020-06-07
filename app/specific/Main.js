@@ -912,7 +912,7 @@ function Main_ReStartScreens() {
     Main_updateclock();
     if (Sidepannel_isShowing()) {
         Main_addEventListener("keydown", Sidepannel_handleKeyDown);
-        if (Play_CheckIfIsLiveResponseText) OSInterface_SidePanelPlayerRestore();
+        if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
         Sidepannel_AddFocusFeed(true);
         Main_SaveValues();
     } else Main_SwitchScreen();

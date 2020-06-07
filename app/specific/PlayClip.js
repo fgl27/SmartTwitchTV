@@ -560,13 +560,13 @@ function PlayClip_CheckIfIsLiveResult(response) {
 
         var responseObj = JSON.parse(response);
 
-        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_CheckIfIsLiveId) {
+        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
             var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (responseObj.status === 200) {
 
-                Play_CheckIfIsLiveURL = responseObj.url;
-                Play_CheckIfIsLiveResponseText = responseObj.responseText;
+                Play_PreviewURL = responseObj.url;
+                Play_PreviewResponseText = responseObj.responseText;
                 PlayClip_OpenLiveStream();
                 return;
 
@@ -591,7 +591,7 @@ function PlayClip_CheckIfIsLiveResult(response) {
 
 function PlayClip_CheckIfIsLiveStart() {
 
-    if (!Main_IsOn_OSInterface || Play_CheckIfIsLiveResponseText) PlayClip_OpenLiveStream();
+    if (!Main_IsOn_OSInterface || Play_PreviewId) PlayClip_OpenLiveStream();
     else Play_CheckIfIsLiveStart('PlayClip_CheckIfIsLiveResult');
 
 }

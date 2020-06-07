@@ -57,11 +57,11 @@ function PlayExtra_KeyEnter() {
             PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
         }
 
-        if (!Play_CheckIfIsLiveResponseText) PlayExtra_Resume();
+        if (!Play_PreviewId) PlayExtra_Resume();
         else {
 
-            PlayExtra_data.AutoUrl = Play_CheckIfIsLiveURL;
-            PlayExtra_loadDataSuccessEnd(Play_CheckIfIsLiveResponseText);
+            PlayExtra_data.AutoUrl = Play_PreviewURL;
+            PlayExtra_loadDataSuccessEnd(Play_PreviewResponseText);
 
             Play_CheckIfIsLiveCleanEnd();
         }

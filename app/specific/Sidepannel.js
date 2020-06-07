@@ -76,11 +76,11 @@ function Sidepannel_UpdateThumb() {
 
             if (doc) {
 
-                var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+                var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
 
-                if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                if (!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) {
                     Sidepannel_CheckIfIsLiveStart();
-                } else if (Play_CheckIfIsLiveResponseText) {
+                } else if (Play_PreviewId) {
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
                 }
             }
@@ -92,12 +92,12 @@ function Sidepannel_UpdateThumb() {
 
 function Sidepannel_RestoreThumb(doc, play_data) {
     if (doc) {
-        var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+        var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
 
-        if (Main_A_equals_B(Channel, play_data.data[6])) {
-            Play_CheckIfIsLiveURL = play_data.AutoUrl;
-            Play_CheckIfIsLiveResponseText = play_data.playlist;
-            Play_CheckIfIsLiveChannel = play_data.data[6];
+        if (Main_A_equals_B(ChannelId, play_data.data[14])) {
+            Play_PreviewURL = play_data.AutoUrl;
+            Play_PreviewResponseText = play_data.playlist;
+            Play_PreviewId = play_data.data[14];
         }
     }
 
@@ -117,9 +117,9 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             if (StreamData.status === 200) {
 
-                Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveResponseText = StreamData.responseText;
-                Play_CheckIfIsLiveChannel = StreamInfo[6];
+                Play_PreviewURL = StreamData.url;
+                Play_PreviewResponseText = StreamData.responseText;
+                Play_PreviewId = StreamInfo[14];
 
                 if (!Sidepannel_PlayerViewSidePanelSet) {
                     var Rect = document.getElementById('side_panel_feed_thumb').getBoundingClientRect();
@@ -133,8 +133,8 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 }
 
                 OSInterface_StartSidePanelPlayer(
-                    Play_CheckIfIsLiveURL,
-                    Play_CheckIfIsLiveResponseText
+                    Play_PreviewURL,
+                    Play_PreviewResponseText
                 );
 
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;

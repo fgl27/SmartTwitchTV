@@ -1763,7 +1763,7 @@ function ScreensObj_LiveCellArray(cell) {
         STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,//4
         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
         cell.channel.name,//6
-        cell._id,//7
+        cell._id,//7 broadcast id
         Main_is_rerun(cell.broadcast_platform),//8
         cell.channel.logo,//9
         cell.channel.partner,//10

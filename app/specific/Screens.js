@@ -705,13 +705,13 @@ function Screens_addFocus(forceScroll, key) {
         Main_isScene1DocShown() && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
-        var Channel = JSON.parse(document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute))[6];
+        var ChannelId = JSON.parse(document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute))[14];
 
-        if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+        if (!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) {
 
             Screens_CheckIfIsLiveStart(key);
 
-        } else if (Play_CheckIfIsLiveResponseText) {
+        } else if (Play_PreviewId) {
 
             var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
             var Rect = img.getBoundingClientRect();
@@ -775,16 +775,16 @@ function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             if (StreamData.status === 200) {
 
-                Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveResponseText = StreamData.responseText;
-                Play_CheckIfIsLiveChannel = StreamInfo[6];
+                Play_PreviewURL = StreamData.url;
+                Play_PreviewResponseText = StreamData.responseText;
+                Play_PreviewId = StreamInfo[14];
 
                 var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
                 var Rect = img.getBoundingClientRect();
 
                 OSInterface_StartScreensPlayer(
-                    Play_CheckIfIsLiveURL,
-                    Play_CheckIfIsLiveResponseText,
+                    Play_PreviewURL,
+                    Play_PreviewResponseText,
                     Rect.top,
                     Rect.right,
                     Rect.left,

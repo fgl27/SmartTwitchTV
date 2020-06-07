@@ -398,11 +398,11 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
             var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (doc) {
-                var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+                var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
 
-                if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
+                if (!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) {
                     UserLiveFeed_CheckIfIsLiveStart();
-                } else if (Play_CheckIfIsLiveResponseText) {
+                } else if (Play_PreviewId) {
                     OSInterface_SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
                 }
             }
@@ -468,13 +468,13 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             if (StreamData.status === 200) {
 
-                Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveResponseText = StreamData.responseText;
-                Play_CheckIfIsLiveChannel = StreamInfo[6];
+                Play_PreviewURL = StreamData.url;
+                Play_PreviewResponseText = StreamData.responseText;
+                Play_PreviewId = StreamInfo[14];
 
                 OSInterface_StartFeedPlayer(
-                    Play_CheckIfIsLiveURL,
-                    Play_CheckIfIsLiveResponseText,
+                    Play_PreviewURL,
+                    Play_PreviewResponseText,
                     UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX])
                 );
 
@@ -490,18 +490,6 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
     }
 
 }
-
-// var qualitiPos = UserLiveFeed_CheckIfIsLiveFind720();
-// qualitiPos ? Play_CheckIfIsLiveResponseText[qualitiPos].url : Play_CheckIfIsLiveURL,
-// function UserLiveFeed_CheckIfIsLiveFind720() {
-//     for (var i = 0; i < Play_CheckIfIsLiveResponseText; i++) {
-//         if (Main_A_includes_B(Play_CheckIfIsLiveResponseText[i].id, '720')) {
-//             //Main_Log(Play_CheckIfIsLiveResponseText[i].id);
-//             return i;
-//         }
-//     }
-//     return false;
-// }
 
 function UserLiveFeed_CheckIfIsLiveWarn(text) {
     UserLiveFeed_CheckIfIsLiveSTop();

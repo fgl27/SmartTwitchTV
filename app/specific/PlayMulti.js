@@ -241,11 +241,11 @@ function Play_MultiStartPrestart(position) {
 }
 
 function Play_MultiStart(pos) {
-    if (Play_CheckIfIsLiveResponseText) {
+    if (Play_PreviewId) {
         Play_MultiStartQualitySucess(
             pos,
-            Play_CheckIfIsLiveURL,
-            Play_CheckIfIsLiveResponseText
+            Play_PreviewURL,
+            Play_PreviewResponseText
         );
         UserLiveFeed_CheckIfIsLiveSTop();
         return;
@@ -366,8 +366,8 @@ function Play_MultiUpdateMain() {
 function Play_MultiCheckLiveFeed(pos) {
     Main_setTimeout(
         function() {
-            if (Play_CheckIfIsLiveResponseText &&
-                Main_A_equals_B(Play_MultiArray[pos].data[6], Play_CheckIfIsLiveChannel))
+            if (Play_PreviewId &&
+                Main_A_equals_B(Play_MultiArray[pos].data[6], Play_PreviewId))
                 UserLiveFeed_CheckIfIsLiveSTop();
         },
         1000
