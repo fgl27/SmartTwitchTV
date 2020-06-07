@@ -422,7 +422,7 @@ function en_USLang() {
     STR_BACK_USER_GAMES = ' Press return key to go back to ';
     STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
     STR_SHOW_LIVE_PLAYER = 'Show Live streams preview player';
-    STR_SHOW_VOD_PLAYER_WARNING = 'Starting playback from:';
+    STR_SHOW_VOD_PLAYER_WARNING = 'Starting playback from when you last stop:';
     STR_SHOW_VOD_PLAYER = 'Show VOD preview player';
     STR_SHOW_SIDE_PLAYER = 'Show side panel preview player';
     STR_SHOW_FEED_PLAYER = 'Show preview player on preview feed';

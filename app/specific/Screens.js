@@ -156,6 +156,7 @@ function Screens_StartLoad(key) {
     Main_showLoadDialog();
     ScreenObj[key].lastRefresh = new Date().getTime();
     Main_updateclock();
+    Screens_RemoveFocus(key);
     Main_empty(ScreenObj[key].table);
     Main_HideWarningDialog();
 
@@ -1163,14 +1164,20 @@ function Screens_addFocusVideo(forceScroll, key) {
 }
 
 function Screens_ChangeFocus(y, x, key) {
-    if (ScreenObj[key].posY > -1) Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
-    else Screens_removeFocusFollow(key);
+    Screens_RemoveFocus(key);
 
     Screens_ClearAnimation(key);
     ScreenObj[key].posY += y;
     ScreenObj[key].posX = x;
 
     Screens_addFocus(false, key);
+}
+
+function Screens_RemoveFocus(key) {
+    if (!ScreenObj[key].itemsCount) return;
+
+    if (ScreenObj[key].posY > -1) Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+    else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
 }
 
 function Screens_addFocusFollow(key) {
@@ -1399,18 +1406,22 @@ function Screens_handleKeyDown(key, event) {
             break;
         case KEY_PAUSE://key s
         case KEY_6:
+            Screens_RemoveFocus(key);
             Main_showSettings();
             break;
         case KEY_A:
         case KEY_7:
+            Screens_RemoveFocus(key);
             Main_showAboutDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
             break;
         case KEY_C:
         case KEY_8:
+            Screens_RemoveFocus(key);
             Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
             break;
         case KEY_E:
         case KEY_9:
+            Screens_RemoveFocus(key);
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_showExitDialog();
             break;

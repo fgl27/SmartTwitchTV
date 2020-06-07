@@ -28,7 +28,7 @@ var empty_fun = function() {};
 
 var Base_obj = {
     posX: 0,
-    posY: 0,
+    posY: -1,
     currY: 0,
     row_id: 0,
     offsettopFontsize: 0,
