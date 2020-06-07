@@ -724,9 +724,9 @@ function OSInterface_SetPlayerViewSidePanel(top, right, left, web_height) {
     //TODO remove the try after some apps updates
     try {
         Android.SetPlayerViewSidePanel(
-            parseInt(top),
-            parseInt(right),
-            parseInt(left),
+            top,
+            right,
+            left,
             parseInt(web_height)
         );
     } catch (e) {}
@@ -745,9 +745,9 @@ function OSInterface_StartScreensPlayer(uri, masterPlaylistString, top, right, l
         Android.StartScreensPlayer(
             uri,
             masterPlaylistString,
-            parseInt(top),
-            parseInt(right),
-            parseInt(left),
+            top,
+            right,
+            left,
             parseInt(web_height),
             who_called
         );

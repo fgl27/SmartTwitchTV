@@ -886,7 +886,7 @@ public final class Tools {
 
     }
 
-    public static FrameLayout.LayoutParams BasePreviewLayout(int top, int right, int left, int web_height, Point ScreenSize) {
+    public static FrameLayout.LayoutParams BasePreviewLayout(float top, float right, float left, int web_height, Point ScreenSize) {
         float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
 
         int width = (int)((right - left) * scale);

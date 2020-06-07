@@ -1654,7 +1654,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetPlayerViewSidePanel(int top, int right, int left, int web_height) {
+        public void SetPlayerViewSidePanel(float top, float right, float left, int web_height) {
             PlayerViewSidePanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
         }
 
@@ -1681,7 +1681,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StartScreensPlayer(String uri, String masterPlaylistString, int top, int right, int left, int web_height, int who_called) {
+        public void StartScreensPlayer(String uri, String masterPlaylistString, float top, float right, float left, int web_height, int who_called) {
             MainThreadHandler.post(() -> {
 
                 mediaSources[mainPlayer] = Tools.buildMediaSource(
