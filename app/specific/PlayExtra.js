@@ -42,7 +42,6 @@ function PlayExtra_KeyEnter() {
         }
 
         PlayExtra_PicturePicture = true;
-        Play_UserLiveFeedPressed = true;
 
         Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
 

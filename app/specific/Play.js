@@ -34,8 +34,6 @@ var Play_seek_previews;
 var Play_seek_previews_img;
 
 var Play_streamInfoTimerId = null;
-var Play_tokenResponse = 0;
-var Play_playingTry = 0;
 
 var Play_ChatEnable = false;
 var Play_exitID = null;
@@ -57,17 +55,13 @@ var Play_EndSettingsCounter = 3;
 var Play_EndTextID = null;
 var Play_EndFocus = false;
 var Play_DialogEndText = '';
-var Play_currentTime = 0;
 var Play_ChatDelayPosition = 0;
 //var Play_4K_ModeEnable = false;
 var Play_TargetHost = '';
-var Play_isLive = true;
-var Play_RestoreFromResume = false;
 var Play_chat_container;
 var Play_ProgresBarrElm;
 var Play_ProgresBarrBufferElm;
 var Play_DefaultjumpTimers = [];
-var Play_UserLiveFeedPressed = false;
 
 //To pass to Java
 var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token?platform=_";
@@ -280,7 +274,6 @@ function Play_Start() {
     //Main_Log('Play_Start');
 
     Play_LoadLogoSucess = false;
-    PlayClip_HasVOD = true;
     //reset channel logo to prevent another channel logo
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
 
@@ -291,37 +284,21 @@ function Play_Start() {
     document.getElementById('controls_' + Play_controlsChatSend).style.display = '';
 
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
-    Play_CurrentSpeed = 3;
-
-    Play_ShowPanelStatus(1);
-
-    Play_IconsResetFocus();
 
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
+    Main_HideElement('progress_bar_div');
+    Main_ShowElement('controls_holder');
 
     Play_data.isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
-    Play_RestoreFromResume = false;
-    Main_ShowElement('controls_holder');
 
-    Play_currentTime = 0;
     Play_data.watching_time = new Date().getTime();
     Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_WATCHING + Play_timeS(0));
     Play_created = Play_timeMs(0);
 
     Main_textContent("stream_live_time", Play_created);
-    Main_HideElement('progress_bar_div');
 
-    Play_UserLiveFeedPressed = false;
-    if (!Play_EndDialogEnter) {
-        Play_EndSet(1);
-        UserLiveFeed_SetFeedPicText();
-    }
-
-    Play_isLive = true;
-    Play_tokenResponse = 0;
-    Play_playingTry = 0;
     Play_isOn = true;
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
@@ -331,17 +308,17 @@ function Play_Start() {
         Play_loadData();
     } else {
 
-        Main_setTimeout(
-            function() {
-                Play_data.AutoUrl = Play_PreviewURL;
-                Play_loadDataSuccessend(Play_PreviewResponseText);
+        Play_data.AutoUrl = Play_PreviewURL;
+        Play_loadDataSuccessend(Play_PreviewResponseText);
 
-                Play_CheckIfIsLiveCleanEnd();
-                Play_getQualities(1, true);
-            },
-            20
-        );
+        Play_CheckIfIsLiveCleanEnd();
+        Play_getQualities(1, true);
     }
+
+    Play_CurrentSpeed = 3;
+
+    Play_ShowPanelStatus(1);
+    Play_IconsResetFocus();
 
     if (!Main_IsOn_OSInterface) Play_UpdateMainStream(true, true);
 
@@ -436,7 +413,6 @@ function Play_Resume() {
     ChatLive_Playing = true;
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
     Play_showBufferDialog();
-    Play_RestoreFromResume = true;
     Play_ResumeAfterOnlineCounter = 0;
 
     if (navigator.onLine) Play_ResumeAfterOnline();
@@ -1777,7 +1753,6 @@ function Play_OpenLiveFeed() {
     UserLiveFeed_Hide(true);
 
     Main_values.Play_isHost = false;
-    Play_UserLiveFeedPressed = true;
     Main_OpenLiveStream(
         UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
         UserLiveFeed_ids,

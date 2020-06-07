@@ -1,7 +1,4 @@
 //Variable initialization
-var PlayClip_IsJumping = false;
-var PlayClip_jumpCount = 0;
-var PlayClip_TimeToJump = 0;
 var PlayClip_isOn = false;
 var PlayClip_quality = 'source';
 var PlayClip_qualityPlaying = PlayClip_quality;
@@ -83,7 +80,6 @@ function PlayClip_Start() {
     PlayVod_previews_clear();
     Play_IconsResetFocus();
     Main_empty('inner_progress_bar_muted');
-    Play_ShowPanelStatus(3);
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
 
@@ -100,11 +96,6 @@ function PlayClip_Start() {
     UserLiveFeed_Unset();
     Play_IsWarning = false;
 
-    PlayVod_CheckFollow();
-
-    PlayClip_IsJumping = false;
-    PlayClip_jumpCount = 0;
-    PlayClip_TimeToJump = 0;
     PlayClip_isOn = true;
 
     if (!PlayClip_replay) PlayClip_loadData();//Play_PlayEndStart(3);
@@ -121,6 +112,9 @@ function PlayClip_Start() {
         Main_innerHTML("end_vod_title_text", '');
         Play_controls[Play_controlsOpenVod].setLable('');
     }
+
+    PlayVod_CheckFollow();
+    Play_ShowPanelStatus(3);
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 }
