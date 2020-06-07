@@ -699,36 +699,51 @@ function Screens_addFocus(forceScroll, key) {
     }
 
     ScreenObj[key].addrow(forceScroll, ScreenObj[key].posY, key);
+    Screens_CheckIfIsLive(key);
+}
 
-
-    if (Settings_Obj_default('show_live_player') && ScreenObj[key].screenType === 0 &&
-        Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+function Screens_CheckIfIsLive(key) {
+    if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+        var doc, ThumbId;
 
-        var ChannelId = JSON.parse(document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute))[14];
+        //Live
+        if (Settings_Obj_default('show_live_player') && ScreenObj[key].screenType === 0) {
 
-        if (!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) {
+            doc = document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
 
-            Screens_CheckIfIsLiveStart(key);
+            if (doc) {
+                ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
 
-        } else if (Play_PreviewId) {
+                if (!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) {
 
-            var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
-            var Rect = img.getBoundingClientRect();
+                    Screens_CheckIfIsLiveStart(key);
 
-            OSInterface_ScreenPlayerRestore(
-                Rect.top,
-                Rect.right,
-                Rect.left,
-                window.innerHeight,
-                ScreenObj[key].screenType + 1
-            );
+                } else if (Play_PreviewId) {
 
-            Main_AddClassWitEle(img, 'opacity_zero');
-            Main_SaveValues();
+                    Screens_CheckIfIsLiveRestore(key);
+
+                }
+            }
+
         }
-
     }
+}
+
+function Screens_CheckIfIsLiveRestore(key) {
+
+    var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+    var Rect = img.getBoundingClientRect();
+
+    OSInterface_ScreenPlayerRestore(
+        Rect.top,
+        Rect.right,
+        Rect.left,
+        window.innerHeight,
+        ScreenObj[key].screenType + 1
+    );
+
+    Main_AddClassWitEle(img, 'opacity_zero');
 }
 
 function Screens_CheckIfIsLiveStart(key) {
