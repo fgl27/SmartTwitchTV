@@ -394,11 +394,24 @@ function Play_CheckIfIsLiveStartFail(text) {
 function Play_CheckIfIsLiveClean() {//called from java
     Play_CheckIfIsLiveCleanEnd();
     if (Sidepannel_isShowing()) {
+
         Sidepannel_CheckIfIsLiveWarn(
             STR_IS_OFFLINE + STR_TOO_ERRORS,
             JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[1]
         );
-    } else Play_showWarningMidleDialog(STR_STREAM_ERROR_SMALL, 2000);
+
+    } else if (Main_isScene1DocShown()) {
+
+        Main_showWarningDialog(
+            STR_PREVIEW_END,
+            2000
+        );
+
+    } else {
+
+        Play_showWarningMidleDialog(STR_STREAM_ERROR_SMALL, 2000);
+
+    }
 }
 
 function Play_CheckIfIsLiveCleanEnd() {
