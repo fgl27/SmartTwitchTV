@@ -845,12 +845,12 @@ function Play_handleKeyDown(e) {
             case KEY_PG_UP:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatPosChage();
-                else Play_showPanel();
+                else UserLiveFeed_ShowFeed();
                 break;
             case KEY_PG_DOWN:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
-                else Play_showPanel();
+                else UserLiveFeed_ShowFeed();
                 break;
             case KEY_REFRESH:
             case KEY_MEDIA_FAST_FORWARD:

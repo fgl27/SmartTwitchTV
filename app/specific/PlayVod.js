@@ -1030,12 +1030,12 @@ function PlayVod_handleKeyDown(e) {
             case KEY_PG_UP:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatPosChage();
-                else PlayVod_showPanel(true);
+                else UserLiveFeed_ShowFeed();
                 break;
             case KEY_PG_DOWN:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
-                else PlayVod_showPanel(true);
+                else UserLiveFeed_ShowFeed();
                 break;
             case KEY_MEDIA_FAST_FORWARD:
                 if (Play_isEndDialogVisible()) break;
