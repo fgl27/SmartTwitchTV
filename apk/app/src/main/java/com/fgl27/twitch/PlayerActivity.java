@@ -1467,6 +1467,9 @@ public class PlayerActivity extends Activity {
                     mWho_Called = who_called;
                     PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
 
+                    if (mWho_Called > 1) {
+                        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
+                    }
                 }
             });
         }
@@ -1601,7 +1604,7 @@ public class PlayerActivity extends Activity {
 
                             if (response != null)  {
                                 DataResult[thread] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key +")");
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
                                 return;
                             }
 
@@ -1609,7 +1612,7 @@ public class PlayerActivity extends Activity {
 
                         //MethodUrl is null inform JS callback
                         DataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key +")");
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
                     }
             );
         }
@@ -1710,7 +1713,6 @@ public class PlayerActivity extends Activity {
                 mWho_Called = 4;
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
-
             });
         }
 
@@ -1718,11 +1720,14 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void ScreenPlayerRestore(int top, int right, int left, int web_height, int who_called) {
             MainThreadHandler.post(() -> {
-                mWho_Called = 3 + who_called;
-                VideoWebHolder.bringChildToFront(VideoHolder);
 
-                PlayerViewScreensPanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
-                PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
+                if (player[mainPlayer] != null) {
+                    mWho_Called = 3 + who_called;
+                    VideoWebHolder.bringChildToFront(VideoHolder);
+
+                    PlayerViewScreensPanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
+                    PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
+                }
 
             });
         }
@@ -2369,9 +2374,8 @@ public class PlayerActivity extends Activity {
                     }
                 }
 
-                if (Who_Called > 1) {
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" +
-                            player[position].getDuration() + ")");
+                if (mWho_Called > 1) {
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
                 }
 
             }

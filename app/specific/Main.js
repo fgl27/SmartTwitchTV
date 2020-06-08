@@ -200,7 +200,7 @@ function Main_loadTranslations(language) {
                     'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
                     'Play_CheckHostResult': Play_CheckHostResult,
                     'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
-                    'Screens_CheckIfIsLiveResult': Screens_CheckIfIsLiveResult
+                    'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
                 };
             }
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -917,6 +917,7 @@ function Main_ReStartScreens() {
     Main_updateclock();
     if (Sidepannel_isShowing()) {
         Main_addEventListener("keydown", Sidepannel_handleKeyDown);
+        if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
         if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
         Sidepannel_AddFocusFeed(true);
         Main_SaveValues();

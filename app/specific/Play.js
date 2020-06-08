@@ -369,7 +369,7 @@ function Play_CheckIfIsLiveStartFail(text) {
 }
 
 function Play_CheckIfIsLiveClean() {//called from java
-    Play_CheckIfIsLiveCleanEnd();
+
     if (Sidepannel_isShowing()) {
 
         Sidepannel_CheckIfIsLiveWarn(
@@ -379,14 +379,15 @@ function Play_CheckIfIsLiveClean() {//called from java
 
     } else if (Main_isScene1DocShown()) {
 
-        Main_showWarningDialog(
+        Screens_LoadPreviewWarn(
             STR_PREVIEW_END,
-            2000
+            '',
+            Screens_Current_Key
         );
 
     } else {
 
-        Play_showWarningMidleDialog(STR_STREAM_ERROR_SMALL, 2000);
+        Play_CheckIfIsLiveStartFail(STR_STREAM_ERROR_SMALL);
 
     }
 }
@@ -1152,9 +1153,9 @@ function Play_PreshutdownStream(closePlayer) {
         if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey(false);
     }
 
-    if ((!Play_isEndDialogVisible() || closePlayer) &&
-        !Play_PreviewId) {
-        UserLiveFeed_Hide();
+    if ((!Play_isEndDialogVisible() || closePlayer)) {
+        if (!Play_PreviewId) UserLiveFeed_Hide();
+        else UserLiveFeed_HideAfter();
     }
 
     Play_ClearPlay(closePlayer);
@@ -1685,7 +1686,9 @@ function Play_CheckHost(responseText) {
 }
 
 function Play_UpdateDuration(duration) { // Called only by JAVA
-    if (duration > 0) {
+    if (Main_isScene1DocShown()) {
+        if (!Sidepannel_isShowing()) Screens_LoadPreviewRestore(Screens_Current_Key);//fix position after animation has endede after Player.STATE_READY
+    } else if (duration > 0) {
         Play_DurationSeconds = duration / 1000;
         Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
         PlayVod_RefreshProgressBarr();
@@ -1793,6 +1796,7 @@ function Play_handleKeyUpClear() {
 }
 
 function Play_Exit() {
+    Play_CheckPreview();
     Play_CleanHideExit();
     Play_hideChat();
     PlayExtra_ClearExtra();

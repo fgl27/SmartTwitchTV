@@ -100,7 +100,7 @@ function ChannelContent_loadDataRequestSuccess(response) {
         ChannelContent_responseText = response;
         ChannelContent_loadDataPrepare();
         ChannelContent_GetStreamerInfo();
-    } else if (!ChannelContent_TargetId) {
+    } else if (Main_IsOn_OSInterface && !ChannelContent_TargetId) {
         ChannelContent_loadDataPrepare();
         ChannelContent_loadDataCheckHost();
     } else {
@@ -155,14 +155,9 @@ function ChannelContent_CheckHostResult(result) {
 }
 
 function ChannelContent_loadDataCheckHostError() {
-    ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_loadDataCheckHost();
-    } else {
-        ChannelContent_responseText = null;
-        ChannelContent_loadDataPrepare();
-        ChannelContent_GetStreamerInfo();
-    }
+    ChannelContent_responseText = null;
+    ChannelContent_loadDataPrepare();
+    ChannelContent_GetStreamerInfo();
 }
 
 function ChannelContent_CheckHost(responseText) {

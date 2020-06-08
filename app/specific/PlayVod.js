@@ -494,7 +494,10 @@ function PlayVod_PreshutdownStream(saveOffset) {
     Main_clearTimeout(PlayVod_WarnEndId);
     Main_values.Play_WasPlaying = 0;
     Chat_Clear();
+
     if (!Play_PreviewId) UserLiveFeed_Hide();
+    else UserLiveFeed_HideAfter();
+
     Play_ClearPlayer();
     PlayVod_ClearVod();
 }
@@ -844,6 +847,24 @@ function PlayVod_OpenLiveStream() {
     );
 }
 
+function PlayVod_CheckPreview() {
+    if (Settings_Obj_default('show_vod_player') && ScreenObj[Screens_Current_Key].screenType === 1 &&
+        !Sidepannel_isShowing() &&
+        !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+
+        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+        if (doc) {
+            var ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[7];
+
+            if (Main_A_equals_B(ThumbId, Main_values.ChannelVod_vodId)) {
+                Play_PreviewURL = PlayVod_autoUrl;
+                Play_PreviewResponseText = PlayVod_playlist;
+                Play_PreviewId = Main_values.ChannelVod_vodId;
+            }
+        }
+    }
+}
+
 function PlayVod_handleKeyDown(e) {
     if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogVisible()) {
         switch (e.keyCode) {
@@ -978,6 +999,7 @@ function PlayVod_handleKeyDown(e) {
                 else PlayVod_showPanel(true);
                 break;
             case KEY_STOP:
+                PlayVod_CheckPreview();
                 Play_CleanHideExit();
                 PlayVod_shutdownStream();
                 break;

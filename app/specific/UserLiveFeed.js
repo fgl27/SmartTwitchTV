@@ -287,6 +287,11 @@ function UserLiveFeed_Show() {
 function UserLiveFeed_Hide(PreventcleanQuailities) {
     //return;//return;
     UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities);
+    UserLiveFeed_HideAfter();
+}
+
+function UserLiveFeed_HideAfter() {
+    //return;//return;
     UserLiveFeed_Showloading(false);
     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
 }

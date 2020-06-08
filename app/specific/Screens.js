@@ -154,10 +154,11 @@ function Screens_exit(key) {
 
 function Screens_StartLoad(key) {
     Main_showLoadDialog();
-    ScreenObj[key].lastRefresh = new Date().getTime();
-    Main_updateclock();
     Screens_RemoveFocus(key);
     Main_empty(ScreenObj[key].table);
+    ScreenObj[key].ScrollDoc.style.transform = '';
+    ScreenObj[key].lastRefresh = new Date().getTime();
+    Main_updateclock();
     Main_HideWarningDialog();
 
     ScreenObj[key].cursor = null;
@@ -619,7 +620,6 @@ function Screens_loadDataSuccessFinish(key) {
         }
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
         Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
-        Screens_addFocus(true, key);
     }
 }
 
@@ -706,32 +706,40 @@ function Screens_addFocus(forceScroll, key) {
 
     ScreenObj[key].addrow(forceScroll, ScreenObj[key].posY, key);
 
-    Screens_CheckIfIsLive(key);
 }
 
-function Screens_CheckIfIsLive(key) {
+//Clips load too fast, so only call this function after animations have ended
+//Also help to prevent lag on animation
+function Screens_LoadPreview(key) {
     if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
         var doc, ThumbId;
 
         //Live || VOD
-        if (ScreenObj[key].screenType === 0 && Settings_Obj_default('show_live_player') ||
-            ScreenObj[key].screenType === 1 && Settings_Obj_default('show_vod_player')) {
+        if ((ScreenObj[key].screenType === 0 && Settings_Obj_default('show_live_player')) ||
+            (ScreenObj[key].screenType === 1 && Settings_Obj_default('show_vod_player')) ||
+            (ScreenObj[key].screenType === 2 && Settings_Obj_default('show_clip_player'))) {
 
             doc = document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
 
             if (doc) {
-                ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[ScreenObj[key].screenType ? 7 : 14];//streamer id
+                var id = 0;//Clip
+
+                if (ScreenObj[key].screenType === 0) id = 14;//live
+                else if (ScreenObj[key].screenType === 1) id = 7;//vod
+
+                ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[id];//streamer id
 
                 if (!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) {
 
-                    Screens_CheckIfIsLiveStart(key);
+                    Screens_LoadPreviewStart(key);
 
                 } else if (Play_PreviewId) {
 
-                    Screens_CheckIfIsLiveRestore(key);
+                    Screens_LoadPreviewRestore(key);
 
                 }
+
             }
 
         }
@@ -739,7 +747,7 @@ function Screens_CheckIfIsLive(key) {
     }
 }
 
-function Screens_CheckIfIsLiveRestore(key) {
+function Screens_LoadPreviewRestore(key) {
 
     var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
     var Rect = img.getBoundingClientRect();
@@ -752,10 +760,11 @@ function Screens_CheckIfIsLiveRestore(key) {
         ScreenObj[key].screenType + 1
     );
 
+    Screens_ClearAnimation(key);
     Main_AddClassWitEle(img, 'opacity_zero');
 }
 
-function Screens_CheckIfIsLiveStart(key) {
+function Screens_LoadPreviewStart(key) {
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsOn_OSInterface) {
@@ -768,7 +777,26 @@ function Screens_CheckIfIsLiveStart(key) {
         try {
             var obj = JSON.parse(doc.getAttribute(Main_DataAttribute)), id, token, link;
 
-            if (ScreenObj[key].screenType) {//vod
+            if (ScreenObj[key].screenType === 2) {//clip
+
+                OSInterface_GetMethodUrlHeadersAsync(
+                    PlayClip_BaseUrl,//urlString
+                    DefaultHttpGetTimeout,//timeout
+                    PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
+                    'POST',//Method, null for get
+                    JSON.stringify(
+                        [
+                            [Main_clientIdHeader, Main_Headers_Back[0][1]]
+                        ]
+                    ),//JsonString
+                    'Screens_LoadPreviewResult',//callback
+                    (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),//checkResult
+                    key,//key
+                    0//thread
+                );
+
+                return;
+            } else if (ScreenObj[key].screenType === 1) {//vod
                 id = obj[7];
                 token = Play_vod_token;
                 link = Play_vod_links;
@@ -782,7 +810,7 @@ function Screens_CheckIfIsLiveStart(key) {
                 token.replace('%x', id),
                 link.replace('%x', id),
                 Settings_Obj_values("show_feed_player_delay"),
-                "Screens_CheckIfIsLiveResult",
+                "Screens_LoadPreviewResult",
                 key,
                 (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
                 DefaultHttpGetReTryMax,
@@ -795,7 +823,7 @@ function Screens_CheckIfIsLiveStart(key) {
     } else Play_CheckIfIsLiveCleanEnd();
 }
 
-function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
+function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
     var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
@@ -814,25 +842,34 @@ function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                 Play_PreviewURL = StreamData.url;
                 Play_PreviewResponseText = StreamData.responseText;
-                var offset = 0;
 
-                if (ScreenObj[x].screenType) {
+                var offset = 0, PreviewResponseText = Play_PreviewResponseText;
+
+                if (ScreenObj[x].screenType === 2) {//clip
+
+                    Play_PreviewId = StreamInfo[0];
+                    Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
+                    Play_PreviewURL = Play_PreviewResponseText[0].url;
+
+                } else if (ScreenObj[x].screenType === 1) {//vod
                     Play_PreviewId = StreamInfo[7];
 
                     var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Play_PreviewId) : -1;
                     offset = (VodIdex > -1) ?
                         Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
-                } else {
+
+                } else {//live
+
                     Play_PreviewId = StreamInfo[14];
+
                 }
 
                 var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
                 var Rect = img.getBoundingClientRect();
 
-
                 OSInterface_StartScreensPlayer(
                     Play_PreviewURL,
-                    Play_PreviewResponseText,
+                    PreviewResponseText,
                     offset * 1000,
                     Rect.top,
                     Rect.right,
@@ -852,7 +889,7 @@ function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 }
 
             } else {
-                Screens_CheckIfIsLiveWarn(
+                Screens_LoadPreviewWarn(
                     ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
                     StreamInfo[1],
                     x
@@ -864,7 +901,7 @@ function Screens_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
 }
 
-function Screens_CheckIfIsLiveWarn(ErroText, Streamer, x) {
+function Screens_LoadPreviewWarn(ErroText, Streamer, x) {
     Sidepannel_CheckIfIsLiveSTop();
     Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'opacity_zero');
     Main_showWarningDialog(
@@ -893,8 +930,19 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
 
         Main_setTimeout(
             function() {
+
                 UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
                 Screens_ChangeFocusAnimationFinished = true;
+
+                //Delay to make sure it happen after animation has ended
+                Main_setTimeout(
+                    function() {
+                        Screens_LoadPreview(key);
+
+                    },
+                    25
+                );
+
             },
             Screens_ScrollAnimationTimeout
         );
@@ -917,6 +965,8 @@ function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRe
         Screens_addrowtransition(y + i, (for_offset + i) * ScreenObj[key].offsettop, 'none', key);
 
     UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
+
+    Screens_LoadPreview(key);
 }
 
 function Screens_addrowChannel(forceScroll, y, key) {
@@ -1047,8 +1097,17 @@ function Screens_addrow(forceScroll, y, key) {
                 );
             }
 
+        } else {
+
+            Main_setTimeout(
+                function() {
+                    Screens_LoadPreview(key);
+                },
+                y ? 0 : Screens_ScrollAnimationTimeout
+            );
         }
-    }
+
+    } else Screens_LoadPreview(key);
 
     ScreenObj[key].currY = ScreenObj[key].posY;
     Screens_addrowEnd(forceScroll, key);
@@ -1097,6 +1156,13 @@ function Screens_addrowDown(y, key) {
                 Screens_addrowDown(y, key);
             },
             10
+        );
+    } else {
+        Main_setTimeout(
+            function() {
+                Screens_LoadPreview(key);
+            },
+            y ? Screens_ScrollAnimationTimeout : 0
         );
     }
 }
@@ -1744,7 +1810,7 @@ function Screens_HideRemoveDialog(key) {
     Users_RemoveCursor = 0;
     Users_UserCursorSet();
     Users_RemoveCursorSet();
-    Screens_CheckIfIsLive(key);
+    Screens_LoadPreview(key);
 }
 
 function Screens_histDeleteKeyDown(key, event) {
@@ -2141,11 +2207,11 @@ function Screens_ThumbOptionDialogHide(Update, key) {
                 Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryClip].histPosX));
             }
 
-            Screens_CheckIfIsLive(key);
+            Screens_LoadPreview(key);
         } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang();
         else if (Screens_ThumbOptionPosY === 5) Screens_OpenScreen();
 
-    } else Screens_CheckIfIsLive(key);
+    } else Screens_LoadPreview(key);
 
     Screens_ThumbOptionPosY = 0;
     Screens_ThumbOptionAddFocus(0);

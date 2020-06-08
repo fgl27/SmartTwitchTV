@@ -121,14 +121,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Play_PreviewId = StreamInfo[14];
 
                 if (!Sidepannel_PlayerViewSidePanelSet) {
-                    var Rect = document.getElementById('side_panel_feed_thumb').getBoundingClientRect();
-                    OSInterface_SetPlayerViewSidePanel(
-                        Rect.top,
-                        Rect.right,
-                        Rect.left,
-                        window.innerHeight
-                    );
-                    Sidepannel_PlayerViewSidePanelSet = true;
+                    Sidepannel_SetPlayerViewSidePanel();
                 }
 
                 OSInterface_StartSidePanelPlayer(
@@ -148,6 +141,17 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
         }
     }
 
+}
+
+function Sidepannel_SetPlayerViewSidePanel() {
+    var Rect = document.getElementById('side_panel_feed_thumb').getBoundingClientRect();
+    OSInterface_SetPlayerViewSidePanel(
+        Rect.top,
+        Rect.right,
+        Rect.left,
+        window.innerHeight
+    );
+    Sidepannel_PlayerViewSidePanelSet = true;
 }
 
 function Sidepannel_CheckIfIsLiveWarn(ErroText, Streamer) {

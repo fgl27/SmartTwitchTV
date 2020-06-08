@@ -7,7 +7,6 @@ var PlayClip_qualities = [];
 var PlayClip_playingUrl = '';
 var PlayClip_replayOrNext = false;
 var PlayClip_replay = false;
-var PlayClip_currentTime = 0;
 var PlayClip_state = 0;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 2000;
@@ -24,6 +23,9 @@ var PlayClip_All_Forced = true;
 var PlayClip_loadingtreamerInfoTry = 0;
 //Variable initialization end
 
+var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
+var PlayClip_postMessage = '{"query":"\\n {\\n clip(slug: \\"%x\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
+
 function PlayClip_Start() {
     //Main_Log('PlayClip_Start');
 
@@ -32,10 +34,6 @@ function PlayClip_Start() {
 
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP;
-    if (PlayClip_HasVOD) {
-        Chat_offset = ChannelVod_vodOffset;
-        Chat_Init();
-    } else Chat_NoVod();
 
     document.getElementById('next_button_img').src = IMG_404_BANNER;
     document.getElementById('back_button_img').src = IMG_404_BANNER;
@@ -87,9 +85,7 @@ function PlayClip_Start() {
     Main_ShowElement('progress_bar_div');
     Main_ShowElement('controls_holder');
 
-    PlayClip_state = 0;
-    PlayClip_currentTime = 0;
-    PlayClip_qualityIndex = 2;
+    PlayClip_state = Play_STATE_LOADING_TOKEN;
     UserLiveFeed_PreventHide = false;
     PlayClip_UpdateNext();
     Play_EndSet(3);
@@ -98,8 +94,23 @@ function PlayClip_Start() {
 
     PlayClip_isOn = true;
 
-    if (!PlayClip_replay) PlayClip_loadData();//Play_PlayEndStart(3);
-    else PlayClip_qualityChanged();
+    if (!Play_PreviewId) {
+
+        if (!PlayClip_replay) PlayClip_loadData();//Play_PlayEndStart(3);
+        else PlayClip_qualityChanged();
+
+    } else {
+
+        PlayClip_QualityStart(Play_PreviewResponseText);
+        Play_CheckIfIsLiveCleanEnd();
+
+    }
+
+    if (PlayClip_HasVOD) {
+        Chat_offset = ChannelVod_vodOffset;
+        Chat_Init();
+    } else Chat_NoVod();
+
     PlayClip_replay = false;
 
     PlayClip_loadingtreamerInfoTry = 0;
@@ -176,16 +187,13 @@ function PlayClip_loadData() {
 var PlayClip_loadDataRequestId = 0;
 
 function PlayClip_loadDataRequest() {
-    var theUrl = 'https://gql.twitch.tv/gql',
-        postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
-            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
 
     PlayClip_loadDataRequestId = (new Date().getTime());
 
     OSInterface_GetMethodUrlHeadersAsync(
-        theUrl,//urlString
+        PlayClip_BaseUrl,//urlString
         DefaultHttpGetTimeout,//timeout
-        postMessage,//postMessage, null for get
+        PlayClip_postMessage.replace('%x', ChannelClip_playUrl),//postMessage, null for get
         'POST',//Method, null for get
         JSON.stringify(
             [
@@ -208,7 +216,7 @@ function PlayClip_loadDataResult(response) {
         if (responseObj.checkResult > 0 && responseObj.checkResult === PlayClip_loadDataRequestId) {
 
             if (responseObj.status === 200) {
-                PlayClip_QualityGenerate(responseObj.responseText);
+                PlayClip_QualityStart(PlayClip_QualityGenerate(responseObj.responseText));
                 return;
             } else if (responseObj.status === 410) { //Workaround for future 410 issue
                 PlayClip_loadData410 = true;
@@ -270,10 +278,9 @@ function PlayClip_loadDataSuccess410() {
     Main_Set_history('clip', Main_values_Play_data);
 }
 
-function PlayClip_QualityGenerate(response) {
-    PlayClip_qualities = [];
-
-    response = JSON.parse(response);
+function PlayClip_QualityGenerate(mresponse) {
+    var Array = [],
+        response = JSON.parse(mresponse);
 
     if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip')) {
         response = response.data.clip.videoQualities;
@@ -281,19 +288,25 @@ function PlayClip_QualityGenerate(response) {
         var i = 0, len = response.length;
         for (i; i < len; i++) {
 
-            if (!PlayClip_qualities.length) {
-                PlayClip_qualities.push({
+            if (!Array.length) {
+                Array.push({
                     'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | source | mp4',
                     'url': response[i].sourceURL
                 });
             } else {
-                PlayClip_qualities.push({
+                Array.push({
                     'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | mp4',
                     'url': response[i].sourceURL
                 });
             }
         }
     }
+
+    return Array;
+}
+
+function PlayClip_QualityStart(qualities) {
+    PlayClip_qualities = qualities;
 
     Play_SetExternalQualities(PlayClip_qualities, 0);
     PlayClip_state = Play_STATE_PLAYING;
@@ -371,14 +384,17 @@ function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
 
     Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
     PlayClip_hidePanel();
-    if (Main_IsOn_OSInterface) {
+    if (Main_IsOn_OSInterface && !Play_PreviewId) {
         if (closePlayer) OSInterface_stopVideo(3);
         else OSInterface_PlayPause(false);
     }
     if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
-    UserLiveFeed_Hide(PreventcleanQuailities);
+
+    if (!Play_PreviewId) UserLiveFeed_Hide(PreventcleanQuailities);
+    else UserLiveFeed_HideAfter();
+
     PlayClip_qualities = [];
     Main_removeEventListener("keydown", PlayClip_handleKeyDown);
     ChannelVod_vodOffset = 0;
@@ -600,6 +616,24 @@ function PlayClip_OpenLiveStream() {
     );
 }
 
+function PlayClip_CheckPreview() {
+    if (Settings_Obj_default('show_clip_player') && ScreenObj[Screens_Current_Key].screenType === 2 &&
+        !Sidepannel_isShowing() &&
+        !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+
+        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+        if (doc) {
+            var ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
+
+            if (Main_A_equals_B(ThumbId, ChannelClip_playUrl)) {
+                Play_PreviewURL = PlayClip_qualities[0].url;
+                Play_PreviewResponseText = PlayClip_qualities;
+                Play_PreviewId = ChannelClip_playUrl;
+            }
+        }
+    }
+}
+
 function PlayClip_handleKeyDown(e) {
     if (PlayClip_state !== Play_STATE_PLAYING) {
         switch (e.keyCode) {
@@ -732,6 +766,7 @@ function PlayClip_handleKeyDown(e) {
                 else PlayClip_showPanel();
                 break;
             case KEY_STOP:
+                PlayClip_CheckPreview();
                 Play_CleanHideExit();
                 PlayClip_shutdownStream();
                 break;
@@ -761,6 +796,7 @@ function PlayClip_handleKeyDown(e) {
                     else UserLiveFeed_Hide();
                 } else {
                     if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                        PlayClip_CheckPreview();
                         Play_CleanHideExit();
                         PlayClip_shutdownStream();
                     } else {
