@@ -76,7 +76,7 @@ function PlayVod_Start() {
             Play_partnerIcon(
                 Main_values.Main_selectedChannelDisplayname,
                 Main_values.Main_selectedChannelPartner,
-                false,
+                1,
                 ' [' + (ChannelVod_language).toUpperCase() + ']'
             )
         );
@@ -208,7 +208,7 @@ function PlayVod_updateVodInfoPannel(response) {
         Play_partnerIcon(
             Main_values.Main_selectedChannelDisplayname,
             Main_values.Main_selectedChannelPartner,
-            false,
+            1,
             '[' + (response.channel.broadcaster_language).toUpperCase() + ']'
         )
     );

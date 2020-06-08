@@ -491,7 +491,7 @@ function Play_UpdateMainStreamDiv() {
         Play_partnerIcon(
             Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
             Play_data.data[10],
-            true,
+            0,
             Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''
         )
     );

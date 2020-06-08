@@ -435,7 +435,7 @@ function Play_MultiUpdateinfoMainBig(extraText) {
                 Play_partnerIcon(
                     Play_MultiArray[i].data[1],
                     Play_MultiArray[i].data[10],
-                    true,
+                    1,
                     Play_MultiArray[i].data[5] ? Play_MultiArray[i].data[5].split(' ')[1] : '',
                     Play_MultiArray[i].data[8]
                 )
@@ -490,7 +490,7 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
             Play_partnerIcon(
                 displayname,
                 partner,
-                true,
+                1,
                 lang,
                 is_rerun
             )

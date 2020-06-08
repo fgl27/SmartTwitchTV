@@ -48,7 +48,7 @@ function PlayClip_Start() {
         Play_partnerIcon(
             Main_values.Main_selectedChannelDisplayname,
             false,
-            false,
+            2,
             ChannelClip_language
         )
     );
@@ -167,7 +167,7 @@ function PlayClip_GetStreamerInfoSuccess(response) {
         Play_partnerIcon(
             Main_values.Main_selectedChannelDisplayname,
             Main_values.Main_selectedChannelPartner,
-            false,
+            2,
             ChannelClip_language
         )
     );

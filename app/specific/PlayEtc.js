@@ -1,15 +1,17 @@
 //Etc player fun and controls
 
-function Play_partnerIcon(name, partner, islive, lang, rerun) {
+function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
     var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
         (partner ? ('<img class="partnericon_img" alt="" src="' +
             IMG_PARTNER + '">') : "");
 
-    if (islive) {
+    if (!live_vod_clip) {
         div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #' +
             (rerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
             STR_SPACE + STR_SPACE + (rerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
-    }
+    } else if (live_vod_clip === 1) {
+        div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #00a94b">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>';
+    } else div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
 
     return div + '<div class="lang_text">' + STR_SPACE + STR_SPACE + lang + '</div>';
 }
