@@ -1254,6 +1254,8 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_hideScene1Doc();
     Main_removeEventListener("keydown", handleKeyDownFunction);
+    Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
+
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
     ChannelClip_playUrl = Main_values_Play_data[0];
@@ -1288,6 +1290,8 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_removeEventListener("keydown", handleKeyDownFunction);
+    Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
+
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];

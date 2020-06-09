@@ -730,7 +730,7 @@ function Screens_LoadPreview(key) {
 
                 ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[id];//streamer id
 
-                if (!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) {
+                if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
 
                     Screens_LoadPreviewStart(key);
 
@@ -740,6 +740,7 @@ function Screens_LoadPreview(key) {
 
                 }
 
+                Play_PreviewVideoEnded = false;
             }
 
         }

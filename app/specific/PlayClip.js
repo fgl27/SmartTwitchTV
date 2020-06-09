@@ -626,8 +626,9 @@ function PlayClip_OpenLiveStream() {
 }
 
 function PlayClip_CheckPreview() {
-    if (Settings_Obj_default('show_clip_player') && ScreenObj[Screens_Current_Key].screenType === 2 &&
-        !Sidepannel_isShowing() &&
+
+    if (PlayClip_isOn && !Play_isEndDialogVisible() && Settings_Obj_default('show_clip_player') &&
+        ScreenObj[Screens_Current_Key].screenType === 2 && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
 
         var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
@@ -641,6 +642,7 @@ function PlayClip_CheckPreview() {
             }
         }
     }
+
 }
 
 function PlayClip_handleKeyDown(e) {

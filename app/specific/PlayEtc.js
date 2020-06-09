@@ -79,6 +79,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
 }
 
 function Play_showEndDialog() {
+    Play_PreviewVideoEnded = true;
     Main_ShowElement('dialog_end_stream');
     UserLiveFeed_SetHoldUp();
     Play_EndFocus = true;
@@ -480,6 +481,7 @@ function Play_KeyReturn(is_vod) {
 
                 Play_CleanHideExit();
                 Play_hideChat();
+
                 if (is_vod) {
                     PlayVod_CheckPreview();
                     PlayVod_shutdownStream();

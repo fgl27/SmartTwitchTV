@@ -78,11 +78,13 @@ function Sidepannel_UpdateThumb() {
 
                 var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
 
-                if (!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) {
+                if ((!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
                     Sidepannel_CheckIfIsLiveStart();
                 } else if (Play_PreviewId) {
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
                 }
+
+                Play_PreviewVideoEnded = false;
             }
         }
 

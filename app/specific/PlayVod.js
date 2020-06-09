@@ -857,8 +857,8 @@ function PlayVod_OpenLiveStream() {
 }
 
 function PlayVod_CheckPreview() {
-    if (Settings_Obj_default('show_vod_player') && ScreenObj[Screens_Current_Key].screenType === 1 &&
-        !Sidepannel_isShowing() &&
+    if (PlayVod_isOn && Settings_Obj_default('show_vod_player') && ScreenObj[Screens_Current_Key].screenType === 1 &&
+        !Play_isEndDialogVisible() && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
 
         var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);

@@ -337,6 +337,7 @@ var Play_PreviewURL = '';
 var Play_PreviewId = 0;
 var Play_PreviewResponseText = '';
 var Play_PreviewCheckId = 0;
+var Play_PreviewVideoEnded = false;
 
 function Play_CheckIfIsLiveStart(callback) {
     var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
