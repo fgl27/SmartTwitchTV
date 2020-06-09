@@ -1449,20 +1449,22 @@ public class PlayerActivity extends Activity {
                 boolean startPlayer = true;
 
                 if (mWho_Called > 3) {
-                    startPlayer = player[mainPlayer] == null || !player[mainPlayer].isPlaying();
+                    startPlayer = player[mainPlayer] == null;
                 }
+
+                VideoWebHolder.bringChildToFront(mWebView);
 
                 if (startPlayer) {
 
                     mediaSources[mainPlayer ^ mplayer] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, who_called, mLowLatency, masterPlaylistString, userAgent);
                     PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ mplayer);
+
                     if (mplayer == 1) {
                         PicturePicture = true;
                     }
 
                 } else {
 
-                    VideoWebHolder.bringChildToFront(mWebView);
                     hideLoading(5);
                     mWho_Called = who_called;
                     PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
