@@ -209,48 +209,52 @@ function PlayExtra_HideChat() {
     Main_HideElement('chat_container2_name');
 }
 
-function PlayExtra_End(doSwitch) { // Called only by JAVA
-    if (Settings_value.open_host.defaultValue) {
-        Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2500);
-        PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
-    } else PlayExtra_End_success(doSwitch);
+function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
+    if (!fail_type && Settings_value.open_host.defaultValue) {
+        Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
+
+        Main_setTimeout(
+            function() {
+                PlayExtra_loadDataCheckHost(doSwitch ? 1 : 0);
+            },
+            2000//Delay as the stream just ended and may not show as host yet
+        );
+    } else PlayExtra_End_success(doSwitch, fail_type);
 }
 
-function PlayExtra_End_success(doSwitch) {
+function PlayExtra_End_success(doSwitch, fail_type) {
+
+    var reason = PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE;
+    if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
+    if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
+
     //Some player ended switch and warn
     if (doSwitch) {//Main player has end switch and close
         OSInterface_mSwitchPlayer();
         PlayExtra_SwitchPlayer();
     }
 
-    Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
+    Play_showWarningMidleDialog(reason, 2500 + (fail_type ? 2500 : 0));
 
     Play_CloseSmall();
 }
 
 function PlayExtra_loadDataCheckHost(doSwitch) {
-    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]);
 
-    Main_setTimeout(
-        function() {
-            //TODO make a simple fun for this
-            OSInterface_GetMethodUrlHeadersAsync(
-                theUrl,//urlString
-                DefaultHttpGetTimeout,//timeout
-                null,//postMessage, null for get
-                null,//Method, null for get
-                JSON.stringify(
-                    [
-                        [Main_clientIdHeader, Main_clientId]
-                    ]
-                ),//JsonString
-                'PlayExtra_CheckHostResult',//callback
-                0,//checkResult
-                doSwitch,//key
-                3//thread
-            );
-        },
-        100//Delay as the stream just ended and may not show as host yet
+    OSInterface_GetMethodUrlHeadersAsync(
+        'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
+        DefaultHttpGetTimeout,//timeout
+        null,//postMessage, null for get
+        null,//Method, null for get
+        JSON.stringify(
+            [
+                [Main_clientIdHeader, Main_clientId]
+            ]
+        ),//JsonString
+        'PlayExtra_CheckHostResult',//callback
+        0,//checkResult
+        doSwitch,//key
+        3//thread
     );
 }
 

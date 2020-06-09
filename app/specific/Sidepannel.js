@@ -132,10 +132,12 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
             } else {
+
                 Sidepannel_CheckIfIsLiveWarn(
-                    ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
-                    StreamInfo[1]
+                    StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                    2000
                 );
+
             }
 
         }
@@ -154,11 +156,10 @@ function Sidepannel_SetPlayerViewSidePanel() {
     Sidepannel_PlayerViewSidePanelSet = true;
 }
 
-function Sidepannel_CheckIfIsLiveWarn(ErroText, Streamer) {
+function Sidepannel_CheckIfIsLiveWarn(ErroText, time) {
     Sidepannel_CheckIfIsLiveSTop();
     Sidepannel_UpdateThumbDiv();
-    Sidepannel_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText, 2000);
-
+    Sidepannel_showWarningDialog(ErroText, time);
 }
 
 function Sidepannel_showWarningDialog(text, timeout) {

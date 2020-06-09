@@ -167,8 +167,12 @@ function Play_MultiFirstAvailable() {
     return null;
 }
 
-function Play_MultiEnd(position) {
-    Play_showWarningMidleDialog(Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+function Play_MultiEnd(position, fail_type) {
+    var reason = Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE;
+    if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
+    if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
+
+    Play_showWarningMidleDialog(reason, 5000);
 
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiInfoReset(position);
@@ -301,6 +305,7 @@ function Play_MultiResult(response, pos) {
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
+
     Play_showWarningMidleDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE), 2000);
     Play_HideBufferDialog();
 

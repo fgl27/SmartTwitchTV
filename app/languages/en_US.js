@@ -430,7 +430,12 @@ function en_USLang() {
     STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";
     STR_DISABLE_FEED_PLAYER_MULTI = 'Disable preview player when multistream is enabled';
     STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
-    STR_PREVIEW_END = "Preview video has ended or too many connection error";
+    STR_PREVIEW_ERROR_LOAD = "Preview fail to load:";
+    STR_PREVIEW_ERROR_LINK = " link unavailable";
+    STR_PREVIEW_END = "Preview video has ended";
+    STR_PLAYER_LAG_ERRO = "Player unable to play do to lag";
+    STR_PLAYER_ERROR = "Player unable to play do to player error";
+    STR_PLAYER_ERROR_MULTI = ", try to lower small player bitrate value in settings";
     STR_PREVIEW_SIZE = "Preview player size";
     STR_PREVIEW_SIZE_SUMMARY = "Set the size of the preview player of the preview feed (the one that shows above live/vod/clip)";
     STR_PREVIEW_SIZE_ARRAY = ["Small", "Medium", "Large", "Extra large"];

@@ -889,10 +889,16 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 }
 
             } else {
+                var error = STR_PREVIEW_ERROR_LOAD + STR_SPACE;
+
+                if (!ScreenObj[x].screenType) error += STR_LIVE + STR_IS_OFFLINE;
+                else if (ScreenObj[x].screenType === 1) error += 'VOD' + STR_PREVIEW_ERROR_LINK;
+                else if (ScreenObj[x].screenType === 2) error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
+
                 Screens_LoadPreviewWarn(
-                    ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
-                    StreamInfo[1],
-                    x
+                    ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : error),
+                    x,
+                    5000
                 );
             }
 
@@ -901,12 +907,12 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
 }
 
-function Screens_LoadPreviewWarn(ErroText, Streamer, x) {
+function Screens_LoadPreviewWarn(ErrorText, x, time) {
     Sidepannel_CheckIfIsLiveSTop();
     Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'opacity_zero');
     Main_showWarningDialog(
-        Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText,
-        2000
+        ErrorText,
+        time
     );
 }
 

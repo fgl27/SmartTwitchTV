@@ -361,33 +361,40 @@ function Play_CheckIfIsLiveStart(callback) {
 
 }
 
-function Play_CheckIfIsLiveStartFail(text) {
+function Play_CheckIfIsLiveStartFail(text, time) {
     Play_HideBufferDialog();
     Play_CheckIfIsLiveCleanEnd();
 
-    Play_showWarningMidleDialog(text, 2000);
+    Play_showWarningMidleDialog(text, time);
 }
 
-function Play_CheckIfIsLiveClean() {//called from java
+function Play_CheckIfIsLiveClean(fail_type) {//called from java
+
+    var reason = STR_PREVIEW_END;
+    if (fail_type === 1) reason = STR_PLAYER_ERROR;
+    if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO;
 
     if (Sidepannel_isShowing()) {
 
         Sidepannel_CheckIfIsLiveWarn(
-            STR_IS_OFFLINE + STR_TOO_ERRORS,
-            JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[1]
+            reason,
+            fail_type ? 5000 : 2000
         );
 
     } else if (Main_isScene1DocShown()) {
 
         Screens_LoadPreviewWarn(
-            STR_PREVIEW_END,
-            '',
-            Screens_Current_Key
+            reason,
+            Screens_Current_Key,
+            fail_type ? 5000 : 2000
         );
 
     } else {
 
-        Play_CheckIfIsLiveStartFail(STR_STREAM_ERROR_SMALL);
+        Play_CheckIfIsLiveStartFail(
+            reason,
+            fail_type ? 5000 : 2000
+        );
 
     }
 }
@@ -1593,13 +1600,25 @@ function Play_qualityIndexReset() {
 }
 
 //called by android PlayerActivity
-function Play_PannelEndStart(PlayVodClip) { // Called only by JAVA
-    if (PlayVodClip === 1) { //live
-        PlayExtra_ClearExtra();
-        Play_CheckHostStart();
-    } else {
-        Play_PlayEndStart(PlayVodClip);
-    }
+function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
+
+    var reason;
+    if (fail_type === 1) reason = STR_PLAYER_ERROR;
+    if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO;
+
+    if (fail_type) Play_showWarningDialog(reason, 3000);
+
+    Main_setTimeout(
+        function() {
+            if (PlayVodClip === 1) { //live
+                PlayExtra_ClearExtra();
+                Play_CheckHostStart();
+            } else {
+                Play_PlayEndStart(PlayVodClip);
+            }
+        },
+        fail_type ? 3000 : 0
+    );
 }
 
 function Play_PlayEndStart(PlayVodClip) {

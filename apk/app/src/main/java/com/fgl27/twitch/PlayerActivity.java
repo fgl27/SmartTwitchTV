@@ -97,6 +97,9 @@ public class PlayerActivity extends Activity {
             R.id.player_view4_texture_view,//3
             R.id.player_view_e_texture_view//4
     };
+    public final int Player_Ended = 0;
+    public final int Player_Erro = 1;
+    public final int Player_Lag = 2;
 
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     public String[] BLACKLISTEDCODECS = null;
@@ -2337,7 +2340,7 @@ public class PlayerActivity extends Activity {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 player[position].setPlayWhenReady(false);
 
-                PlayerEventListenerClear(position);
+                PlayerEventListenerClear(position, Player_Ended);
 
             } else if (playbackState == Player.STATE_BUFFERING) {
 
@@ -2350,7 +2353,7 @@ public class PlayerActivity extends Activity {
                     if (player[position] == null || !player[position].isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounter(position, false, Who_Called);
+                    PlayerEventListenerCheckCounter(position, false, Who_Called, Player_Lag);
                 }, Delay_ms);
 
             } else if (playbackState == Player.STATE_READY) {
@@ -2388,16 +2391,18 @@ public class PlayerActivity extends Activity {
             boolean isBehindLiveWindow = Tools.isBehindLiveWindow(e);
 
             PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounter(position, isBehindLiveWindow, Who_Called);
+            PlayerEventListenerCheckCounter(position, isBehindLiveWindow, Who_Called, Player_Erro);
 
             if (BuildConfig.DEBUG) {
                 Log.i(TAG, "onPlaybackStateChanged onPlayerError position " + position + " isBehindLiveWindow " + isBehindLiveWindow);
+                Log.i(TAG, "onPlaybackStateChanged onPlayerError e " + e);
+                Log.i(TAG, "onPlaybackStateChanged onPlayerError e " + e.type);
             }
         }
 
     }
 
-    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition, int Who_Called) {
+    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition, int Who_Called, int fail_type) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         //Pause to things run smother and prevent odd behavior during the checks
@@ -2421,7 +2426,7 @@ public class PlayerActivity extends Activity {
         } else if (PlayerCheckCounter[position] > 3) {
 
             // try == 3 Give up internet is probably down or something related
-            PlayerEventListenerClear(position);
+            PlayerEventListenerClear(position, fail_type);
 
         } else if (PlayerCheckCounter[position] > 1) {//only for clips
 
@@ -2434,7 +2439,8 @@ public class PlayerActivity extends Activity {
     //First check only reset the player as it may be stuck
     public void PlayerEventListenerCheckCounterEnd(int position, boolean ClearResumePosition, int Who_Called) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " ClearResumePosition " + ClearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position +
+                    " ClearResumePosition " + ClearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
         }
 
         if (ClearResumePosition || Who_Called == 1) clearResumePosition();
@@ -2448,9 +2454,9 @@ public class PlayerActivity extends Activity {
         } else initializePlayer(position);
     }
 
-    public void PlayerEventListenerClear(int position) {
+    public void PlayerEventListenerClear(int position, int fail_type) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerClear position " + position);
+            Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type);
         }
 
         hideLoading(5);
@@ -2461,15 +2467,15 @@ public class PlayerActivity extends Activity {
         if (MultiStreamEnable) {
 
             ClearPlayer(position);
-            WebViewLoad = "Play_MultiEnd(" + position + ")";
+            WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type  +")";
 
         } else if (PicturePicture) {
 
             ClearPlayer(position);
-            WebViewLoad = "PlayExtra_End(" + (mainPlayer == position) + ")";
+            WebViewLoad = "PlayExtra_End(" + (mainPlayer == position) + "," + fail_type  +")";
 
-        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean()";
-        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + ")";
+        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type  +")";
+        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type  +")";
 
         LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
     }
@@ -2492,7 +2498,7 @@ public class PlayerActivity extends Activity {
 
                 ClearSmallPlayer();
 
-                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
+                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + Player_Ended + ")");
                 mSetPreviewOthersAudio();
 
             } else if (playbackState == Player.STATE_BUFFERING) {
@@ -2505,7 +2511,7 @@ public class PlayerActivity extends Activity {
                     if (player[4] == null || !player[4].isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounterSmall();
+                    PlayerEventListenerCheckCounterSmall(Player_Lag);
 
                 }, BUFFER_SIZE[mWho_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
 
@@ -2520,16 +2526,18 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
             PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounterSmall();
+            PlayerEventListenerCheckCounterSmall(Player_Erro);
 
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, "onPlayerError");
+                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e);
+                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e);
+                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e.type);
             }
         }
 
     }
 
-    public void PlayerEventListenerCheckCounterSmall() {
+    public void PlayerEventListenerCheckCounterSmall(int fail_type) {
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
         //Pause so things run smother and prevent odd behavior during the checks
         if (player[4] != null) {
@@ -2541,7 +2549,7 @@ public class PlayerActivity extends Activity {
             initializeSmallPlayer(mediaSources[4]);
         else {
             ClearSmallPlayer();
-            LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
+            LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
         }
     }
 
