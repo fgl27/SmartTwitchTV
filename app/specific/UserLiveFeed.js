@@ -223,8 +223,17 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
         }
 
         if (!UserLiveFeed_obj[pos].AddCellsize) {
-            var temp = Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
-            if (!temp) UserLiveFeed_obj[pos].div.classList.remove('hide');
+            var feedtypeshow = Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div),
+                feedShow = UserLiveFeed_isFeedShow();
+
+            if (!feedShow) {
+                Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+                UserLiveFeed_Show();
+            }
+            if (!feedtypeshow) {
+                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
+                Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
+            }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
             if (!Main_isScene2DocShown()) {
@@ -239,7 +248,14 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
             } else UserLiveFeed_obj[pos].AddCellsize =
                 UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
 
-            if (!temp) UserLiveFeed_obj[pos].div.classList.add('hide');
+            if (!feedShow) {
+                UserLiveFeed_HideAfter();
+                Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+            }
+            if (!feedtypeshow) {
+                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
+                Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
+            }
         }
 
         for (i = min; i < max; i++, j++) {
@@ -273,7 +289,7 @@ function UserLiveFeed_GetSize(pos) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'opacity_zero');
+    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'hide');
 }
 
 function UserLiveFeed_ShowFeed() {
@@ -281,7 +297,7 @@ function UserLiveFeed_ShowFeed() {
 }
 
 function UserLiveFeed_Show() {
-    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'hide');
 }
 
 function UserLiveFeed_Hide(PreventcleanQuailities) {
@@ -293,7 +309,7 @@ function UserLiveFeed_Hide(PreventcleanQuailities) {
 function UserLiveFeed_HideAfter() {
     //return;//return;
     UserLiveFeed_Showloading(false);
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'hide');
 }
 
 function UserLiveFeed_ResetFeedId() {

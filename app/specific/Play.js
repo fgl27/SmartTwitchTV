@@ -1303,7 +1303,8 @@ function Play_ExitDialogVisible() {
 }
 
 function Play_isPanelShown() {
-    return Play_PanneInfoDoclId.style.opacity === '1';
+    //return Play_PanneInfoDoclId.style.opacity === '1';
+    return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'hide');
 }
 
 function Play_hidePanel() {
@@ -1315,13 +1316,15 @@ function Play_hidePanel() {
 }
 
 function Play_ForceShowPannel() {
-    Play_PanneInfoDoclId.style.opacity = "1";
+    //Play_PanneInfoDoclId.style.opacity = "1";
+    Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'hide');
     if (!Play_Status_Always_On) Main_ShowElement('playsideinfo');
     else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
 }
 
 function Play_ForceHidePannel() {
-    Play_PanneInfoDoclId.style.opacity = "0";
+    //Play_PanneInfoDoclId.style.opacity = "0";
+    Main_AddClassWitEle(Play_PanneInfoDoclId, 'hide');
     if (!Play_Status_Always_On) Main_HideElement('playsideinfo');
     else Main_AddClass('playsideinfo', 'playsideinfofocus');
 }
@@ -1481,18 +1484,18 @@ function Play_setHidePanel() {
 function Play_showChat() {
     Play_ChatPosition();
     Play_ChatBackgroundChange(false);
-    Play_chat_container.classList.remove('opacity_zero');
+    Play_chat_container.classList.remove('hide');
 
     Play_controls[Play_controlsChat].setLable();
 }
 
 function Play_hideChat() {
-    Play_chat_container.classList.add('opacity_zero');
+    Play_chat_container.classList.add('hide');
     Play_controls[Play_controlsChat].setLable();
 }
 
 function Play_isChatShown() {
-    return !Main_A_includes_B(Play_chat_container.className, 'opacity_zero');
+    return !Main_A_includes_B(Play_chat_container.className, 'hide');
 }
 
 function Play_getQualitiesCount() {
