@@ -715,10 +715,10 @@ function ScreensObj_InitUserHost() {
     ScreenObj[Main_UserHost] = Screens_assign(ScreenObj[Main_UserHost], Base_Live_obj);
 
     ScreenObj[Main_UserHost].addCell = function(cell) {
-        if (!this.idObject[cell.target._id + '' + cell._id]) { //combined id host and hosted
+        if (!this.idObject[cell.target._id]) { //combined id host and hosted
 
             this.itemsCount++;
-            this.idObject[cell.target._id + '' + cell._id] = 1;
+            this.idObject[cell.target._id] = 1;
 
             this.row.appendChild(
                 Screens_createCellLive(
