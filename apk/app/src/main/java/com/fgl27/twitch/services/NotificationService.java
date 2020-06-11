@@ -194,7 +194,7 @@ public class NotificationService extends Service {
             NotificationHandler.postDelayed(() -> {
                 if (screenOn && isRunning) DoNotifications();
 
-                InitHandler(1000 * 60 * 5);//it 5 min refresh
+                InitHandler(1000 * 60 * 3);//it 3 min refresh
             }, timeout + (delay > 0 ? delay : 0));
         }
     }
@@ -358,7 +358,7 @@ public class NotificationService extends Service {
         }
 
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.RIGHT | Gravity.TOP, 0, 20);
+        toast.setGravity(Gravity.RIGHT | Gravity.TOP, 0, 18);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
@@ -515,11 +515,11 @@ public class NotificationService extends Service {
             float width = ScreenSize.y / 100.0f;
             int widthInt = ScreenSize.y / 100;
 
-            if (LayoutWidth != (widthInt * 75)) {
-                LayoutWidth = widthInt * 75;
-                ImageSize = widthInt * 18;
-                textSizeSmall = 1.1f * width;
-                textSizeBig = 1.22f * width;
+            if (LayoutWidth != (widthInt * 70)) {
+                LayoutWidth = widthInt * 70;
+                ImageSize = widthInt * 16;
+                textSizeSmall = 1f * width;
+                textSizeBig = 1.2f * width;
             }
         }
     }
