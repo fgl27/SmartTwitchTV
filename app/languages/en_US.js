@@ -236,6 +236,7 @@ function en_USLang() {
     STR_CONTENT_LANG_SUMMARY = "Press enter to change";
     STR_LANG_ALL = "All";
     STR_NO_GAME = "No game from this";
+    STR_EMPTY = "Empty";
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
     STR_CHAT_DISABLE = "Chat is force disabled, enable it in player bottom controls Chat force disable";
     STR_CLIP_FAIL = "This clip/video failed to load. Can't replay";
