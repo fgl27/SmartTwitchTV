@@ -857,21 +857,48 @@ function PlayVod_OpenLiveStream() {
 }
 
 function PlayVod_CheckPreview() {
-    if (PlayVod_isOn && Settings_Obj_default('show_vod_player') && ScreenObj[Screens_Current_Key].screenType === 1 &&
+    if (PlayVod_isOn && Settings_Obj_default('show_vod_player') &&
+        (ScreenObj[Screens_Current_Key].screenType === 1 || ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) &&
         !Play_isEndDialogVisible() && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
 
-        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-        if (doc) {
-            var ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[7];
+        var doc =
+            document.getElementById(
+                ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX
+            );
 
-            if (Main_A_equals_B(ThumbId, Main_values.ChannelVod_vodId)) {
-                Play_PreviewURL = PlayVod_autoUrl;
-                Play_PreviewResponseText = PlayVod_playlist;
-                Play_PreviewId = Main_values.ChannelVod_vodId;
+        if (doc) {
+            var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+            if (ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) {
+
+                var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
+
+                if (index > -1) {
+
+                    if ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                        Main_A_includes_B(document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) &&
+                        Main_A_equals_B(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid, Main_values.ChannelVod_vodId)) {
+
+                        PlayVod_SetPreview();
+
+                    }
+
+                }
+
+            } else if (Main_A_equals_B(obj[7], Main_values.ChannelVod_vodId)) {
+
+                PlayVod_SetPreview();
             }
+
         }
     }
+}
+
+function PlayVod_SetPreview() {
+    Play_PreviewURL = PlayVod_autoUrl;
+    Play_PreviewResponseText = PlayVod_playlist;
+    Play_PreviewId = Main_values.ChannelVod_vodId;
 }
 
 function PlayVod_handleKeyDown(e) {

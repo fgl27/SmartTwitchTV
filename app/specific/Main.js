@@ -1071,19 +1071,15 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
 
         if (index > -1) {
 
-            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
 
                 Main_OPenAsVod(index);
                 return;
 
-            } else if (Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
-
-                Main_CheckBroadcastID(index, idsArray[2] + id);
-                return;
-
             } else {//is live check if is the same BroadcastID
 
-                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[2] + id);
+                if (!Play_PreviewId && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[2] + id);
                 else Main_openStream();
 
                 return;
