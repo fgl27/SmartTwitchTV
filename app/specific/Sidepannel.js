@@ -357,7 +357,8 @@ function Sidepannel_StartFeed() {
 function Sidepannel_ShowFeed() {
     Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
-    if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name) {
+    if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name ||
+        (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
         UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
     }
     UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
@@ -368,9 +369,7 @@ function Sidepannel_ShowFeed() {
 
     if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         UserLiveFeed_RefreshLive();
-    }
-
-    if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
+    } else if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed(true);
     }
