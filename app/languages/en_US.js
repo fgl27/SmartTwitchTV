@@ -406,7 +406,7 @@ function en_USLang() {
     STR_REPLACE_MULTI = "Choose with to replace by the above?";
     STR_REPLACE_MULTI_ENTER = "Press enter to replace or return to exit without.";
     STR_ALREDY_PLAYING = "Already playing this";
-    STR_STREAM_ERROR = "Stream error";
+    STR_STREAM_ERROR = "Unable to open preview";
     STR_MULTI_EMPTY = "Ended and/or empty";
     STR_4_WAY_MULTI = "4 way multistream";
     STR_CONTROLS_MULTI_0 = "Multistream help:";
@@ -431,7 +431,7 @@ function en_USLang() {
     STR_DISABLE_FEED_PLAYER_MULTI = 'Disable preview player when multistream is enabled';
     STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
     STR_PREVIEW_ERROR_LOAD = "Preview fail to load:";
-    STR_PREVIEW_ERROR_LINK = " link unavailable";
+    STR_PREVIEW_ERROR_LINK = " link unreachable";
     STR_PREVIEW_END = "Preview video has ended";
     STR_PLAYER_LAG_ERRO = "Player unable to play do to lag";
     STR_PLAYER_ERROR = "Player unable to play do to player error";
