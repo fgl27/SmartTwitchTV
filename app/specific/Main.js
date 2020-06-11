@@ -1329,6 +1329,7 @@ function Main_openVod() {
 
 function Main_removeFocus(id, idArray) {
     Sidepannel_CheckIfIsLiveSTop();
+    Main_HideWarningDialog();
     Main_RemoveClass(idArray[1] + id, 'opacity_zero');
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
