@@ -130,8 +130,8 @@ public class PlayerActivity extends Activity {
     public int mainPlayer = 0;
     public int MultiMainPlayer = 0;
     public int PicturePicturePosition = 0;
-    public int PicturePictureSize = 1;//sizes are 0 , 1 , 2
-    public int PreviewSize = 1;//sizes are 0 , 1 , 2
+    public int PicturePictureSize = 1;//sizes are 0 , 1 , 2, 3, 4
+    public int PreviewSize = 1;//sizes are 0 , 1 , 2, 3
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
     public float PreviewOthersAudio = 0.3f;//window 0
@@ -718,13 +718,27 @@ public class PlayerActivity extends Activity {
         }
 
         //Small player sizes and positions
-        PlayerViewSmallSize = new FrameLayout.LayoutParams[8][3];
+        int[] SmallPlayerSizesHeight = {
+                (HeightDefault / 2),
+                (int) (HeightDefault / 2.5),
+                (HeightDefault / 3),
+                (int) (HeightDefault / 3.5),
+                (HeightDefault / 4)
+        };
+        int[] SmallPlayerSizesWidth = {
+                (WidthDefault / 2),
+                (int) (WidthDefault / 2.5),
+                (WidthDefault / 3),
+                (int) (WidthDefault / 3.5),
+                (WidthDefault / 4)
+        };
+        PlayerViewSmallSize = new FrameLayout.LayoutParams[8][SmallPlayerSizesHeight.length];
         len = PlayerViewSmallSize.length;
         for (i = 0; i < len; i++) {
             for (j = 0; j < PlayerViewSmallSize[i].length; j++) {
                 PlayerViewSmallSize[i][j] = new FrameLayout.LayoutParams(
-                        (WidthDefault / (j + 2)),
-                        (HeightDefault / (j + 2)),
+                        SmallPlayerSizesWidth[j],
+                        SmallPlayerSizesHeight[j],
                         positions[i]
                 );
             }
