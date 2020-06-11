@@ -518,7 +518,7 @@ public class NotificationService extends Service {
             if (LayoutWidth != (widthInt * 70)) {
                 LayoutWidth = widthInt * 70;
                 ImageSize = widthInt * 16;
-                textSizeSmall = 1f * width;
+                textSizeSmall = 1.05f * width;
                 textSizeBig = 1.2f * width;
             }
         }
