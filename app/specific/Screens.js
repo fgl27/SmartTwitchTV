@@ -508,13 +508,14 @@ function Screens_loadDataSuccessFinish(key) {
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-            if (!Main_isScene1DocShown()) {
-                Main_Scene1Doc.style.transform = 'translateY(-1000%)';
-                Main_ShowElementWithEle(Main_Scene1Doc);
-                Screens_setOffset(1, 0, key);
-                Main_HideElementWithEle(Main_Scene1Doc);
-                Main_Scene1Doc.style.transform = 'translateY(0px)';
-            } else Screens_setOffset(1, 0, key);
+            // if (!Main_isScene1DocShown()) {
+            //     Main_Scene1Doc.style.transform = 'translateY(-1000%)';
+            //     Main_ShowElementWithEle(Main_Scene1Doc);
+            //     Screens_setOffset(1, 0, key);
+            //     Main_HideElementWithEle(Main_Scene1Doc);
+            //     Main_Scene1Doc.style.transform = 'translateY(0px)';
+            // } else 
+            Screens_setOffset(1, 0, key);
 
             for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
                 if (ScreenObj[key].Cells[i]) {

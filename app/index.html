@@ -71,7 +71,7 @@
         }
 
         div.screen_size,
-        div.feed_screen,
+        div.scene_notify,
         div.screens {
             position: relative;
             background-color: rgba(0, 0, 0, 0);
@@ -91,8 +91,8 @@
             z-index: 3;
         }
 
-        div.feed_screen {
-            transform: translateY(-100%);
+        div.scene_notify {
+            transform: translateY(-200%);
             z-index: 100;
         }
 
@@ -122,11 +122,6 @@
 
         .icon_key {
             font-size: 9vh !important;
-        }
-
-        div.feed_screen {
-            transform: translateY(-100%);
-            z-index: 100;
         }
 
         .feed_screen_input {
@@ -2978,7 +2973,7 @@
             <p>Test Text</p>
         </div>-->
     </div>
-    <div id="scene2" class="screen_size hide">
+    <div id="scene2" class="screen_size opacity_zero" style="transform: translateY(-100%);">
         <div id="chat_container" class="chat_container hide avoidclicks">
             <div id="chat_inner_container" class="chat_size">
                 <div class="chat_box_holder">
@@ -3767,7 +3762,7 @@
                 style="position: absolute; bottom: 0; text-align: right; margin-left: 0;"></div>
         </div>
     </div>
-    <div id="scene_notify" class="feed_screen">
+    <div id="scene_notify" class="scene_notify">
         <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide hide"
             style="transform: translateY(-120%);">
             <div id="user_feed_notify_content" class="side_panel_not">
