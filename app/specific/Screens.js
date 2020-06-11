@@ -872,8 +872,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
     var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
-    if (Main_isScene1DocShown() && !Sidepannel_isShowing() && x === Screens_Current_Key &&
-        y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
+    if (Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+        x === Screens_Current_Key && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 
         doc = document.getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
@@ -2072,6 +2072,9 @@ function Screens_ThumbOptionStart(key) {
     Main_addEventListener("keydown", ScreenObj[key].key_thumb);
 
     Main_ShowElement('dialog_thumb_opt');
+}
+
+function Screens_ThumbOptionShowSpecial() {
 }
 
 function Screens_ThumbOptionShowSpecial() {
