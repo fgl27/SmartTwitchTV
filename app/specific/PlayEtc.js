@@ -512,10 +512,19 @@ function Play_CheckPreview() {
         //Side panel
         if (Settings_Obj_default('show_side_player') &&
             !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide')) {
+
+            //if side panel is showing, try to find if current stream is on side anel to keep player open
+            if (Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
+                Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
+                Sidepannel_PosFeed = Sidepannel_Positions[Play_data.data[14]];
+                Sidepannel_AddFocusFeed(true);
+            }
+
             Sidepannel_RestoreThumb(
                 document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
                 Play_data
             );
+
             //live
         } else if (Settings_Obj_default('show_live_player') && ScreenObj[Screens_Current_Key].screenType === 0 &&
             !Sidepannel_isShowing() &&

@@ -13,6 +13,7 @@ var Sidepannel_MovelDiv;
 var Sidepannel_ScroolDoc;
 var Sidepannel_SidepannelDoc;
 var Sidepannel_Notify_img;
+var Sidepannel_Positions = {};
 
 var Sidepannel_AnimationTimeout = 200;//Same value as side_panel_holder_ani
 

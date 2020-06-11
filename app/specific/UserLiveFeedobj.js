@@ -53,6 +53,7 @@ function UserLiveFeedobj_CheckToken() {
             UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
     }
     UserLiveFeed_PreloadImgs = [];
+    Sidepannel_Positions = {};
     Sidepannel_PosFeed = 0;
     Main_empty('side_panel_holder');
     document.getElementById('side_panel_warn').style.display = 'none';
@@ -970,6 +971,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
                     Sidepannel_PosFeed = itemsCount;
 
+                Sidepannel_Positions[id] = itemsCount;
                 Sidepannel_ScroolDoc.appendChild(
                     UserLiveFeedobj_CreatSideFeed(
                         itemsCount,
