@@ -185,14 +185,11 @@ function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
 
-        //TODO remove this try after some app updates
-        try {
-            if (Main_IsOn_OSInterface) {
-                OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
-                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
-                Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
-            }
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) {
+            OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
+            Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
+        }
 
         AddUser_UpdateSidepanel();
 
