@@ -425,8 +425,9 @@ function en_USLang() {
     STR_SHOW_VOD_PLAYER_WARNING = 'Starting playback from where it last stop:';
     STR_SHOW_VOD_PLAYER = 'Show VOD preview player';
     STR_SHOW_CLIP_PLAYER = 'Show CLIP preview player';
+    STR_PREVIEW_CLIP_NEXT = 'When a preview end automatic switch next available clip';
     STR_SHOW_SIDE_PLAYER = 'Show side panel preview player';
-    STR_SHOW_FEED_PLAYER = 'Show preview player on preview feed';
+    STR_SHOW_FEED_PLAYER = 'Show preview player on player preview feed';
     STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";
     STR_DISABLE_FEED_PLAYER_MULTI = 'Disable preview player when multistream is enabled';
     STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';

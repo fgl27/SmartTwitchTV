@@ -65,6 +65,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "auto_clip_preview": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "show_side_player": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -1154,6 +1158,7 @@ function Settings_DialogShowSmallPayer() {
     Settings_value.show_live_player.values = array_no_yes;
     Settings_value.show_vod_player.values = array_no_yes;
     Settings_value.show_clip_player.values = array_no_yes;
+    Settings_value.auto_clip_preview.values = array_no_yes;
 
     Settings_value.preview_sizes.values = STR_PREVIEW_SIZE_ARRAY;
 
@@ -1175,6 +1180,12 @@ function Settings_DialogShowSmallPayer() {
             values: Settings_value.show_clip_player.values,
             title: STR_SHOW_CLIP_PLAYER,
             summary: null
+        },
+        auto_clip_preview: {
+            defaultValue: Settings_value.auto_clip_preview.defaultValue,
+            values: Settings_value.auto_clip_preview.values,
+            title: STR_AUTO_PLAY_NEXT,
+            summary: STR_PREVIEW_CLIP_NEXT
         },
         show_side_player: {
             defaultValue: Settings_value.show_side_player.defaultValue,

@@ -384,11 +384,18 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
     } else if (Main_isScene1DocShown()) {
 
-        Screens_LoadPreviewWarn(
-            reason,
-            Screens_Current_Key,
-            fail_type ? 5000 : 2000
-        );
+        if (ScreenObj[Screens_Current_Key].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
+
+            //Use OSInterface_keyEvent to prevent odd screen scroll visual behavier
+            OSInterface_keyEvent(3, 0);
+
+        } else {
+            Screens_LoadPreviewWarn(
+                reason,
+                Screens_Current_Key,
+                fail_type ? 5000 : 2000
+            );
+        }
 
     } else {
 
