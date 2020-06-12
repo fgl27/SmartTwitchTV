@@ -3,6 +3,7 @@ var Play_MultiChatBeffore;
 var Play_isFullScreenold = true;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
+var Play_FullScreenChatWasEnable = false;
 
 function Play_SetFullScreen(isfull) {
     var changed = Play_isFullScreenold !== Play_isFullScreen;
@@ -87,7 +88,7 @@ var Play_ChatFullScreenSizes = [
 ];
 
 function Play_SetChatSideBySide() {
-    console.log('Play_SetChatSideBySide ' + PlayExtra_PicturePicture);
+
     if (PlayExtra_PicturePicture) {
 
         Play_chat_container.style.width = Play_ChatFullScreenSizes[1][3].width;
@@ -125,6 +126,7 @@ var Play_ChatFullScreenObj = {
 };
 
 function Play_StoreChatFullScreen() {
+    Play_FullScreenChatWasEnable = Play_ChatEnable;
     Play_ChatFullScreenObj.height = Play_chat_container.style.height;
     Play_ChatFullScreenObj.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
     Play_ChatFullScreenObj.top = Play_chat_container.style.top;
@@ -132,6 +134,7 @@ function Play_StoreChatFullScreen() {
 }
 
 function Play_ResStoreChatFullScreen() {
+    Play_ChatEnable = Play_FullScreenChatWasEnable;
     Play_chat_container.style.width = '';
     if (!Play_ChatEnable) Play_hideChat();
     else Play_showChat();
