@@ -92,20 +92,43 @@ function PlayVod_Start() {
     if (!Play_PreviewId) {
         PlayVod_SetStart();
         Play_showBufferDialog();
+        var isFromVod = true;
 
-        if (!PlayVod_replay) {
+        if (!PlayVod_replay && !Main_vodOffset) {
+            PlayVod_VodOffset = 0;
+
             var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Main_values.ChannelVod_vodId) : -1;
-            PlayVod_VodOffset = (VodIdex > -1) ?
-                Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
+
+            if (VodIdex > -1) {
+
+                PlayVod_VodOffset = Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched;
+
+            }
+
+            if (!PlayVod_VodOffset) {
+
+                VodIdex = AddUser_UserIsSet() ? Main_history_Find_Vod_In_Live(Main_values.ChannelVod_vodId) : -1;
+
+                if (VodIdex > -1) {
+                    isFromVod = false;
+
+                    PlayVod_VodOffset =
+                        ((Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
+                }
+
+            }
         }
 
         if (PlayVod_VodOffset && !Main_vodOffset) {
             Play_HideBufferDialog();
-            Play_showVodDialog();
+            Play_showVodDialog(isFromVod);
         } else {
             PlayVod_PosStart();
-            Chat_offset = 0;
-            Chat_Init();
+
+            if (!Main_vodOffset) {
+                Chat_offset = 0;
+                Chat_Init();
+            }
         }
 
     } else {
@@ -282,7 +305,7 @@ function PlayVod_SaveOffset() {
         var vodOffset = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0;
         if (vodOffset > 0) {
             Main_setItem('Main_vodOffset', vodOffset);
-            PlayVod_SaveVodIds();
+            PlayVod_SaveVodIds(vodOffset);
         }
     }
 }
@@ -491,8 +514,10 @@ function PlayVod_PreshutdownStream(saveOffset) {
     //Main_Log('PlayVod_PreshutdownStream');
 
     if (saveOffset && Main_IsOn_OSInterface) {
-        if ((Play_DurationSeconds - 300) > parseInt(OSInterface_gettime() / 1000))
-            PlayVod_SaveVodIds();
+        var time = parseInt(OSInterface_gettime() / 1000);
+        if (time > 0 && (Play_DurationSeconds - 300) > time) {
+            PlayVod_SaveVodIds(time);
+        }
     }
     if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo(2);
     Main_ShowElement('controls_holder');
@@ -735,17 +760,8 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
     PlayVod_SizeClearID = Main_setTimeout(PlayVod_SizeClear, 1000, PlayVod_SizeClearID);
 }
 
-function PlayVod_SaveVodIds() {
-    Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'vod');
-}
-
-function Play_showVodDialog() {
-    Main_clearTimeout(Play_HideVodDialogId);
-    Main_HideElement('controls_holder');
-    PlayVod_showPanel(false);
-    Main_textContent('stream_quality', '');
-    Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodOffset * 1000));
-    Main_ShowElement('dialog_vod_start');
+function PlayVod_SaveVodIds(time) {
+    if (time > 0) Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, time, 'vod');
 }
 
 var Play_HideVodDialogId;

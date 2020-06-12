@@ -529,7 +529,6 @@ function Main_SetStringsSecondary() {
     Main_innerHTML("dialog_OffSet_text", STR_SWITCH_POS + STR_BR);
     Main_textContent("dialog_OffSet_text_summary", STR_SWITCH_POS_SUMMARY);
 
-    Main_textContent("dialog_vod_text", STR_VOD_HISTORY);
     Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 
     Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
@@ -1630,8 +1629,23 @@ function Main_Set_history(type, Data, skipUpdateDate) {
 
 function Main_history_Exist(type, id) {
 
-    for (var index = 0; index < Main_values_History_data[AddUser_UsernameArray[0].id][type].length; index++)
+    var index = 0, len = Main_values_History_data[AddUser_UsernameArray[0].id][type].length;
+
+    for (index; index < len; index++)
         if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id === id) return index;
+
+    return -1;
+}
+
+function Main_history_Find_Vod_In_Live(id) {
+    var index = 0, len = Main_values_History_data[AddUser_UsernameArray[0].id].live.length;
+
+    for (index; index < len; index++) {
+        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod &&
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid === id) {
+            return index;
+        }
+    }
 
     return -1;
 }

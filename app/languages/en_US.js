@@ -204,7 +204,9 @@ function en_USLang() {
     STR_LOADING_FAIL = "Connecting timeout, Fail to logging...";
     STR_CHAT_CONNECTED = "Chat: Connected";
     STR_CHAT_DELAY = "Chat: delay";
-    STR_VOD_HISTORY = "Play from the start or from where you stopped watching last time?";
+    STR_VOD_HISTORY_BASE = "Play from the start or from where you stopped watching the";
+    STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + " VOD?";
+    STR_VOD_HISTORY_FORM_LIVE = STR_VOD_HISTORY_BASE + " LIVE?";
     STR_FROM = "From:" + STR_BR;
     STR_FROM_START = STR_FROM + "Start";
     STR_CHAT_END = "Chat: The Chat has ended!";

@@ -357,7 +357,6 @@ function Play_EndDialogPressed(PlayVodClip) {
                 Play_showWarningDialog(STR_CLIP_FAIL, 2000);
             } else {
                 PlayVod_replay = true;
-                PlayVod_VodOffset = 0;
                 PlayVod_Start();
                 PlayVod_currentTime = 0;
                 Chat_offset = 0;
@@ -2042,4 +2041,14 @@ function Play_SetControlsArrows(key) {
         key + '" class="up"></div><div id="control_arrow_down' + key +
         '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key +
         '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
+}
+
+function Play_showVodDialog(isFromVod) {
+    Main_clearTimeout(Play_HideVodDialogId);
+    Main_textContent("dialog_vod_text", isFromVod ? STR_VOD_HISTORY : STR_VOD_HISTORY_FORM_LIVE);
+    Main_HideElement('controls_holder');
+    PlayVod_showPanel(false);
+    Main_textContent('stream_quality', '');
+    Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodOffset * 1000));
+    Main_ShowElement('dialog_vod_start');
 }
