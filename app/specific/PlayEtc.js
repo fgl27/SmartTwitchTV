@@ -3,7 +3,6 @@ var Play_MultiChatBeffore;
 var Play_isFullScreenold = true;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
-var Play_FullScreenChatWasEnable = false;
 
 function Play_SetFullScreen(isfull) {
     var changed = Play_isFullScreenold !== Play_isFullScreen;
@@ -27,23 +26,7 @@ function Play_SetFullScreen(isfull) {
 var Play_ChatFullScreenSizes = [
     [//video on the left
         {
-            width: '39.7%',
-            left: '0.2%'
-        },
-        {
-            width: '34.7%',
-            left: '0.2%'
-        },
-        {
-            width: '29.7%',
-            left: '0.2%'
-        },
-        {
-            width: '24.7%',
-            left: '0.2%'
-        },
-        {
-            width: '19.7%',
+            width: '9.7%',
             left: '0.2%'
         },
         {
@@ -51,38 +34,54 @@ var Play_ChatFullScreenSizes = [
             left: '0.2%'
         },
         {
-            width: '9.7%',
+            width: '19.7%',
+            left: '0.2%'
+        },
+        {
+            width: '24.7%',
+            left: '0.2%'
+        },
+        {
+            width: '29.7%',
+            left: '0.2%'
+        },
+        {
+            width: '34.7%',
+            left: '0.2%'
+        },
+        {
+            width: '39.7%',
             left: '0.2%'
         },
     ],
     [//video on the right
         {
-            width: '39.7%',
-            left: '60.1%'
-        },
-        {
-            width: '34.7%',
-            left: '65.1%'
-        },
-        {
-            width: '29.7%',
-            left: '70.1%'
-        },
-        {
-            width: '24.7%',
-            left: '75.1%'
-        },
-        {
-            width: '19.7%',
-            left: '80.1%'
+            width: '9.7%',
+            left: '90.1%'
         },
         {
             width: '14.7%',
             left: '85.1%'
         },
         {
-            width: '9.7%',
-            left: '90.1%'
+            width: '19.7%',
+            left: '80.1%'
+        },
+        {
+            width: '24.7%',
+            left: '75.1%'
+        },
+        {
+            width: '29.7%',
+            left: '70.1%'
+        },
+        {
+            width: '34.7%',
+            left: '65.1%'
+        },
+        {
+            width: '39.7%',
+            left: '60.1%'
         },
     ]
 ];
@@ -114,6 +113,15 @@ function Play_SetChatSideBySide() {
         Play_chat_container.classList.remove('hide');
         if (Main_IsOn_OSInterface) OSInterface_mupdatesize(Play_isFullScreen);
 
+        Play_controls[Play_controlsChatPos].values = [0, 1];
+        Play_controls[Play_controlsChatSize].values = ["10%", "15%", "20%", "25%", "30%", "35%", "40%"];
+        Play_controls[Play_controlsChatPos].defaultValue = Play_FullScreenPosition;
+        Play_controls[Play_controlsChatSize].defaultValue = Play_FullScreenSize;
+
+        Play_controls[Play_controlsChatPos].setLable();
+        Play_controls[Play_controlsChatSize].setLable();
+        Play_BottomArrows(Play_controlsChatPos);
+        Play_BottomArrows(Play_controlsChatSize);
     }
 
 }
@@ -122,11 +130,21 @@ var Play_ChatFullScreenObj = {
     height: '',
     marginTop: '',
     top: '',
-    left: ''
+    left: '',
+    WasEnable: false,
+    controlsPos: [],
+    controlsPosDefault: 0,
+    controlsSize: [],
+    controlsSizeDefault: 0,
 };
 
 function Play_StoreChatFullScreen() {
-    Play_FullScreenChatWasEnable = Play_ChatEnable;
+    Play_ChatFullScreenObj.controlsPos = Play_controls[Play_controlsChatSize].values;
+    Play_ChatFullScreenObj.controlsPosDefault = Play_controls[Play_controlsChatSize].defaultValue;
+    Play_ChatFullScreenObj.controlsSize = Play_controls[Play_controlsChatPos].values;
+    Play_ChatFullScreenObj.controlsSizeDefault = Play_controls[Play_controlsChatPos].defaultValue;
+
+    Play_ChatFullScreenObj.WasEnable = Play_ChatEnable;
     Play_ChatFullScreenObj.height = Play_chat_container.style.height;
     Play_ChatFullScreenObj.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
     Play_ChatFullScreenObj.top = Play_chat_container.style.top;
@@ -134,7 +152,16 @@ function Play_StoreChatFullScreen() {
 }
 
 function Play_ResStoreChatFullScreen() {
-    Play_ChatEnable = Play_FullScreenChatWasEnable;
+    Play_controls[Play_controlsChatSize].values = Play_ChatFullScreenObj.controlsPos;
+    Play_controls[Play_controlsChatSize].defaultValue = Play_ChatFullScreenObj.controlsPosDefault;
+    Play_controls[Play_controlsChatPos].values = Play_ChatFullScreenObj.controlsSize;
+    Play_controls[Play_controlsChatPos].defaultValue = Play_ChatFullScreenObj.controlsSizeDefault;
+    Play_controls[Play_controlsChatPos].setLable();
+    Play_controls[Play_controlsChatSize].setLable();
+    Play_BottomArrows(Play_controlsChatPos);
+    Play_BottomArrows(Play_controlsChatSize);
+
+    Play_ChatEnable = Play_ChatFullScreenObj.WasEnable;
     Play_chat_container.style.width = '';
     if (!Play_ChatEnable) Play_hideChat();
     else Play_showChat();
@@ -148,6 +175,10 @@ function Play_ChatFullScreenKeyLeft() {
     Play_FullScreenSize++;
     if (Play_FullScreenSize > 6) Play_FullScreenSize = 0;
 
+    Play_SetChatFullScreenKeyLeft();
+}
+
+function Play_SetChatFullScreenKeyLeft() {
     if (Main_IsOn_OSInterface) OSInterface_SetFullScreenSize(Play_FullScreenSize);
 
     Play_SetChatSideBySide();
@@ -158,6 +189,10 @@ function Play_ChatFullScreenKeyLeft() {
 function Play_ChatFullScreenKeyRight() {
     Play_FullScreenPosition = Play_FullScreenPosition ^ 1;
 
+    Play_SetChatFullScreenKeyRight();
+}
+
+function Play_SetChatFullScreenKeyRight() {
     if (Main_IsOn_OSInterface) OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
     Play_SetChatSideBySide();
 
@@ -1706,7 +1741,7 @@ function Play_MakeControls() {
         opacity: 0,
         isChat: true,
         updown: function(adder) {
-            if (!Play_isChatShown() || (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
+            if (!Play_isChatShown() || Play_Multi_MainBig || (!Play_isFullScreen && PlayExtra_PicturePicture)) return;
 
             this.defaultValue += adder;
             if (this.defaultValue < 0)
@@ -1714,11 +1749,18 @@ function Play_MakeControls() {
             else if (this.defaultValue > (this.values.length - 1))
                 this.defaultValue = 0;
 
-            Play_ChatPositions += adder;
+            if (Play_isFullScreen || Play_MultiEnable) {
 
-            Play_ChatPosition();
+                Play_ChatPositions += adder;
+                Play_ChatPosition();
+                this.defaultValue = Play_ChatPositions;
 
-            this.defaultValue = Play_ChatPositions;
+            } else {
+
+                Play_FullScreenPosition = this.defaultValue;
+                Play_SetChatFullScreenKeyRight();
+
+            }
 
             this.setLable();
         },
@@ -1735,7 +1777,7 @@ function Play_MakeControls() {
         opacity: 0,
         isChat: true,
         updown: function(adder) {
-            if (!Play_isChatShown() || (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
+            if (!Play_isChatShown() || Play_Multi_MainBig || (!Play_isFullScreen && PlayExtra_PicturePicture)) return;
 
             this.defaultValue += adder;
 
@@ -1747,20 +1789,33 @@ function Play_MakeControls() {
             }
 
             this.bottomArrows();
-            Play_ChatSizeValue = this.defaultValue;
 
-            if (Play_ChatSizeValue === (Play_MaxChatSizeValue - 1) && adder === -1) {
-                Play_ChatPositionConvert(false);
-            } else if (Play_ChatSizeValue === Play_MaxChatSizeValue) Play_ChatPositionConvert(true);
+            if (Play_isFullScreen || Play_MultiEnable) {
 
-            Play_ChatSize(true);
+                Play_ChatSizeValue = this.defaultValue;
 
-            Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
+                if (Play_ChatSizeValue === (Play_MaxChatSizeValue - 1) && adder === -1) {
+                    Play_ChatPositionConvert(false);
+                } else if (Play_ChatSizeValue === Play_MaxChatSizeValue) Play_ChatPositionConvert(true);
+
+                Play_ChatSize(true);
+
+                Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
+
+            } else {
+
+                Play_FullScreenSize = this.defaultValue;
+                Play_SetChatFullScreenKeyLeft();
+
+            }
+
             this.setLable();
         },
         setLable: function() {
             Main_textContent('controls_name_' + Play_controlsChatPos,
                 Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]);
+            Main_textContent('controls_name_' + this.position,
+                this.values[this.defaultValue]);
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);

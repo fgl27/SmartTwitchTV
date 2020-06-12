@@ -715,22 +715,22 @@ public class PlayerActivity extends Activity {
         }
 
         int[] PlayerViewSideBySideHeight = {
-                (int) (HeightDefault * 0.60),
-                (int) (HeightDefault * 0.65),
-                (int) (HeightDefault * 0.70),
-                (int) (HeightDefault * 0.75),
-                (int) (HeightDefault * 0.80),
-                (int) (HeightDefault * 0.85),
                 (int) (HeightDefault * 0.90),
+                (int) (HeightDefault * 0.85),
+                (int) (HeightDefault * 0.80),
+                (int) (HeightDefault * 0.75),
+                (int) (HeightDefault * 0.70),
+                (int) (HeightDefault * 0.65),
+                (int) (HeightDefault * 0.60),
         };
         int[] PlayerViewSideBySideWidth = {
-                (int) (WidthDefault * 0.60),
-                (int) (WidthDefault * 0.65),
-                (int) (WidthDefault * 0.70),
-                (int) (WidthDefault * 0.75),
-                (int) (WidthDefault * 0.80),
-                (int) (WidthDefault * 0.85),
                 (int) (WidthDefault * 0.90),
+                (int) (WidthDefault * 0.85),
+                (int) (WidthDefault * 0.80),
+                (int) (WidthDefault * 0.75),
+                (int) (WidthDefault * 0.70),
+                (int) (WidthDefault * 0.65),
+                (int) (WidthDefault * 0.60),
         };
 
         len = PlayerViewSideBySideWidth.length;

@@ -74,6 +74,7 @@ function Play_Multi_SetPanel() {
     Main_HideElement('stream_info');
     Main_ShowElement('dialog_multi_help');
     Main_ShowElement('stream_info_multi');
+    if (!Play_isFullScreen) Play_ResStoreChatFullScreen();
 }
 
 function Play_Multi_UnSetPanelDivs(checkChat) {
