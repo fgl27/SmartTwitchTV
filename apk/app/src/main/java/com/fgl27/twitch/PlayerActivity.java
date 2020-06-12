@@ -2362,10 +2362,10 @@ public class PlayerActivity extends Activity {
         private final int Delay_ms;
         private final int Who_Called;
 
-        private PlayerEventListener(int position, int mWho_Called) {
-            this.Who_Called = mWho_Called;// > 3 ? (mWho_Called - 3) : mWho_Called;
+        private PlayerEventListener(int position, int m_Who_Called) {
+            this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
             this.position = position;
-            this.Delay_ms = BUFFER_SIZE[mWho_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0);
+            this.Delay_ms = BUFFER_SIZE[m_Who_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0);
         }
 
         @Override
@@ -2573,7 +2573,7 @@ public class PlayerActivity extends Activity {
 
                     PlayerEventListenerCheckCounterSmall(Player_Lag);
 
-                }, BUFFER_SIZE[mWho_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
+                }, BUFFER_SIZE[mWho_Called > 3 ? mWho_Called - 3 : mWho_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
 
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
