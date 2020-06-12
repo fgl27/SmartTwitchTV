@@ -584,10 +584,7 @@ function Main_initClick() {
         Main_isTV = OSInterface_deviceIsTV();
         //Only show virtual d-pad on none TV devices
         if (Main_isTV) return;
-    } else {
-        Main_HideElement('scene_notify');//Hide so is easier to select a item to inspect
-        return;
-    }
+    } else return;
 
     Main_ShowElement('scenekeys');
     Main_scenekeysDoc = document.getElementById('scenekeys');
