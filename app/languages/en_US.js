@@ -384,7 +384,7 @@ function en_USLang() {
     STR_OLDEST = "Watched Oldest";
     STR_PRESS_ENTER_D = "Press enter to delete";
     STR_PRESS_ENTER_APPLY = "Press enter to apply the changes, return to exit without applying";
-    STR_LIVE_VOD = "This Live stream is now a VOD<br>opening the VOD from where you last stop watching the Live";
+    STR_LIVE_VOD = "This Live stream is now a VOD<br>opening the VOD from where you last stop watching the Live:<br>";
     STR_BACKUP = "Allow the app to make and restore backups?<br>(Users and they history will be backup)" + "<br><br>" +
         "Click Yes the app will save backups for future use, and restore a saved backup if app data is empty." +
         "Is necessary to give the app storage permission for this, so give before click yes." + "<br><br>" +

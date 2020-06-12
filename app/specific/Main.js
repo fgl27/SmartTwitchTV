@@ -1200,7 +1200,7 @@ function Main_OPenAsVod(index) {
         Main_OPenAsVod_shutdownStream();
 
     }
-    Play_showWarningDialog(STR_LIVE_VOD);
+    if (!Play_PreviewId) Play_showWarningDialog(STR_LIVE_VOD + Play_timeMs(Main_vodOffset * 1000));
     Main_openVod();
 
     Main_setTimeout(
