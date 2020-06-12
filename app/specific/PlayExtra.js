@@ -148,6 +148,7 @@ function PlayExtra_loadDataSuccessEnd(playlist) {
         OSInterface_mupdatesizePP(Play_isFullScreen);
         ChatLive_Init(1);
         PlayExtra_ShowChat();
+        Play_SetChatSideBySide();
     } else OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
 
     if (Play_isOn) PlayExtra_qualityChanged();

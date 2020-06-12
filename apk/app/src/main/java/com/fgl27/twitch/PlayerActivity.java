@@ -132,6 +132,8 @@ public class PlayerActivity extends Activity {
     public int PicturePicturePosition = 0;
     public int PicturePictureSize = 1;//sizes are 0 , 1 , 2, 3, 4
     public int PreviewSize = 1;//sizes are 0 , 1 , 2, 3
+    public int FullScreenSize = 3;//sizes are 0 , 1 , 2, 3, 4 ... 2 default 75%
+    public int FullScreenPosition = 1;//0 right 1 left
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
     public float PreviewOthersAudio = 0.3f;//window 0
@@ -182,7 +184,7 @@ public class PlayerActivity extends Activity {
     //the default size for the main player 100% width x height
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
     //the default size for the main player when on side by side plus chat 75% width x height
-    private FrameLayout.LayoutParams PlayerViewSideBySideSize;
+    private FrameLayout.LayoutParams[][] PlayerViewSideBySideSize;
     //the default size for the other player when on PP mode, some positions are also used when on side by side for both players
     private FrameLayout.LayoutParams[][] PlayerViewSmallSize;
     //the default size for the extra player used by side panel and live player feed
@@ -676,11 +678,6 @@ public class PlayerActivity extends Activity {
                 LayoutParams.MATCH_PARENT,
                 Gravity.TOP
         );
-        PlayerViewSideBySideSize = new FrameLayout.LayoutParams(
-                (int)(WidthDefault * 0.75),
-                (int) (HeightDefault * 0.75),
-                Gravity.CENTER_VERTICAL
-        );
 
         //PlayerView player used on preview feed positions and sizes
         int[] ExtraWidth = {
@@ -697,16 +694,16 @@ public class PlayerActivity extends Activity {
         };
         PlayerViewExtraLayout = new FrameLayout.LayoutParams[ExtraWidth.length][5];
 
-        int margin, i, j, len;
-        for (i = 0; i < PlayerViewExtraLayout.length; i++) {
+        int margin, i, j, len = PlayerViewExtraLayout.length, lenEx;
+        for (i = 0; i < len; i++) {
             PlayerViewExtraLayout[i][0] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.LEFT | Gravity.BOTTOM);
             PlayerViewExtraLayout[i][1] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.LEFT | Gravity.BOTTOM);
             PlayerViewExtraLayout[i][2] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.CENTER | Gravity.BOTTOM);
             PlayerViewExtraLayout[i][3] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.RIGHT | Gravity.BOTTOM);
             PlayerViewExtraLayout[i][4] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.RIGHT | Gravity.BOTTOM);
 
-            len = PlayerViewExtraLayout[i].length;
-            for (j = 0; j < len; j++) {
+            lenEx = PlayerViewExtraLayout[i].length;
+            for (j = 0; j < lenEx; j++) {
                 PlayerViewExtraLayout[i][j].bottomMargin = (int) (ScreenSize.x / 22 * Density / ScaleDensity);
             }
 
@@ -715,6 +712,43 @@ public class PlayerActivity extends Activity {
 
             PlayerViewExtraLayout[i][1].leftMargin = margin;//Center on the middle of seconds thumb
             PlayerViewExtraLayout[i][3].rightMargin = margin;//Center on the middle of fourth thumb
+        }
+
+        int[] PlayerViewSideBySideHeight = {
+                (int) (HeightDefault * 0.60),
+                (int) (HeightDefault * 0.65),
+                (int) (HeightDefault * 0.70),
+                (int) (HeightDefault * 0.75),
+                (int) (HeightDefault * 0.80),
+                (int) (HeightDefault * 0.85),
+                (int) (HeightDefault * 0.90),
+        };
+        int[] PlayerViewSideBySideWidth = {
+                (int) (WidthDefault * 0.60),
+                (int) (WidthDefault * 0.65),
+                (int) (WidthDefault * 0.70),
+                (int) (WidthDefault * 0.75),
+                (int) (WidthDefault * 0.80),
+                (int) (WidthDefault * 0.85),
+                (int) (WidthDefault * 0.90),
+        };
+
+        len = PlayerViewSideBySideWidth.length;
+        PlayerViewSideBySideSize = new FrameLayout.LayoutParams[2][len];
+        for (i = 0; i < len; i++) {
+
+            PlayerViewSideBySideSize[0][i] = new FrameLayout.LayoutParams(
+                    PlayerViewSideBySideWidth[i],
+                    PlayerViewSideBySideHeight[i],
+                    Gravity.RIGHT | Gravity.CENTER
+            );
+
+            PlayerViewSideBySideSize[1][i] = new FrameLayout.LayoutParams(
+                    PlayerViewSideBySideWidth[i],
+                    PlayerViewSideBySideHeight[i],
+                    Gravity.LEFT | Gravity.CENTER
+            );
+
         }
 
         //Small player sizes and positions
@@ -802,7 +836,7 @@ public class PlayerActivity extends Activity {
     private void updateVideSize(boolean FullScreen) {
         isFullScreen = FullScreen;
         if (FullScreen) PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);//100% width x height
-        else PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize);//CENTER_VERTICAL 75% width x height
+        else PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize[FullScreenPosition][FullScreenSize]);//CENTER_VERTICAL 75% width x height
     }
 
     //Used in 50/50 mode two videos on the center plus two chat one on it side
@@ -1427,6 +1461,18 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void Settings_SetPingWarning(boolean warning) {
             PingWarning = warning;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetFullScreenSize(int mFullScreenSize) {
+            FullScreenSize = mFullScreenSize;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetFullScreenPosition(int mFullScreenPosition) {
+            FullScreenPosition = mFullScreenPosition;
         }
 
         @SuppressWarnings("unused")//called by JS

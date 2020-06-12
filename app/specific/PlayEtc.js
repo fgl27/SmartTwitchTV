@@ -1,4 +1,171 @@
 //Etc player fun and controls
+var Play_MultiChatBeffore;
+var Play_isFullScreenold = true;
+var Play_FullScreenSize = 3;
+var Play_FullScreenPosition = 1;
+
+function Play_SetFullScreen(isfull) {
+    var changed = Play_isFullScreenold !== Play_isFullScreen;
+    Play_isFullScreenold = Play_isFullScreen;
+
+    if (isfull) {
+        if (changed) Play_ResStoreChatFullScreen();
+    } else {
+        if (changed) Play_StoreChatFullScreen();
+        Play_SetChatSideBySide();
+    }
+
+    if (Main_IsOn_OSInterface) {
+        if (PlayExtra_PicturePicture) OSInterface_mupdatesizePP(Play_isFullScreen);
+        else OSInterface_mupdatesize(Play_isFullScreen);
+    }
+
+    Main_setItem('Play_isFullScreen', Play_isFullScreen);
+}
+
+var Play_ChatFullScreenSizes = [
+    [//video on the left
+        {
+            width: '39.7%',
+            left: '0.2%'
+        },
+        {
+            width: '34.7%',
+            left: '0.2%'
+        },
+        {
+            width: '29.7%',
+            left: '0.2%'
+        },
+        {
+            width: '24.7%',
+            left: '0.2%'
+        },
+        {
+            width: '19.7%',
+            left: '0.2%'
+        },
+        {
+            width: '14.7%',
+            left: '0.2%'
+        },
+        {
+            width: '9.7%',
+            left: '0.2%'
+        },
+    ],
+    [//video on the right
+        {
+            width: '39.7%',
+            left: '60.1%'
+        },
+        {
+            width: '34.7%',
+            left: '65.1%'
+        },
+        {
+            width: '29.7%',
+            left: '70.1%'
+        },
+        {
+            width: '24.7%',
+            left: '75.1%'
+        },
+        {
+            width: '19.7%',
+            left: '80.1%'
+        },
+        {
+            width: '14.7%',
+            left: '85.1%'
+        },
+        {
+            width: '9.7%',
+            left: '90.1%'
+        },
+    ]
+];
+
+function Play_SetChatSideBySide() {
+    console.log('Play_SetChatSideBySide ' + PlayExtra_PicturePicture);
+    if (PlayExtra_PicturePicture) {
+
+        Play_chat_container.style.width = Play_ChatFullScreenSizes[1][3].width;
+        Play_chat_container.style.left = Play_ChatFullScreenSizes[1][3].left;
+
+        //Default values
+        Play_chat_container.style.height = '99.6%';
+        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Play_chat_container.style.top = '0.2%';
+        Play_ChatEnable = true;
+        Play_chat_container.classList.remove('hide');
+
+    } else {
+
+        Play_chat_container.style.width = Play_ChatFullScreenSizes[Play_FullScreenPosition][Play_FullScreenSize].width;
+        Play_chat_container.style.left = Play_ChatFullScreenSizes[Play_FullScreenPosition][Play_FullScreenSize].left;
+
+        //Default values
+        Play_chat_container.style.height = '99.6%';
+        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Play_chat_container.style.top = '0.2%';
+        Play_ChatEnable = true;
+        Play_chat_container.classList.remove('hide');
+        if (Main_IsOn_OSInterface) OSInterface_mupdatesize(Play_isFullScreen);
+
+    }
+
+}
+
+var Play_ChatFullScreenObj = {
+    height: '',
+    marginTop: '',
+    top: '',
+    left: ''
+};
+
+function Play_StoreChatFullScreen() {
+    Play_ChatFullScreenObj.height = Play_chat_container.style.height;
+    Play_ChatFullScreenObj.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
+    Play_ChatFullScreenObj.top = Play_chat_container.style.top;
+    Play_ChatFullScreenObj.left = Play_chat_container.style.left;
+}
+
+function Play_ResStoreChatFullScreen() {
+    Play_chat_container.style.width = '';
+    if (!Play_ChatEnable) Play_hideChat();
+    else Play_showChat();
+    Play_chat_container.style.height = Play_ChatFullScreenObj.height;
+    document.getElementById("play_chat_dialog").style.marginTop = Play_ChatFullScreenObj.marginTop;
+    Play_chat_container.style.top = Play_ChatFullScreenObj.top;
+    Play_chat_container.style.left = Play_ChatFullScreenObj.left;
+}
+
+function Play_ChatFullScreenKeyLeft() {
+    Play_FullScreenSize++;
+    if (Play_FullScreenSize > 6) Play_FullScreenSize = 0;
+
+    if (Main_IsOn_OSInterface) OSInterface_SetFullScreenSize(Play_FullScreenSize);
+
+    Play_SetChatSideBySide();
+
+    Main_setItem('Play_FullScreenSize', Play_FullScreenSize);
+}
+
+function Play_ChatFullScreenKeyRight() {
+    Play_FullScreenPosition = Play_FullScreenPosition ^ 1;
+
+    if (Main_IsOn_OSInterface) OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
+    Play_SetChatSideBySide();
+
+    Main_setItem('Play_FullScreenPosition', Play_FullScreenPosition);
+}
+
+function Play_SetChatFont() {
+    document.getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
+    document.getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
+}
+
 
 function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
     var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
@@ -687,6 +854,7 @@ function Play_handleKeyDown(e) {
                     OSInterface_mSwitchPlayerPosition(Play_PicturePicturePos);
                     Main_setItem('Play_PicturePicturePos', Play_PicturePicturePos);
                 } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeLeft();
+                else if (!PlayExtra_PicturePicture && !Play_isFullScreen) Play_ChatFullScreenKeyLeft();
                 else Play_showPanel();
                 break;
             case KEY_RIGHT:
@@ -716,6 +884,7 @@ function Play_handleKeyDown(e) {
                     OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
                     Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
                 } else if (PlayExtra_PicturePicture && !Play_isFullScreen) Play_AudioChangeRight();
+                else if (!PlayExtra_PicturePicture && !Play_isFullScreen) Play_ChatFullScreenKeyRight();
                 else Play_showPanel();
                 break;
             case KEY_UP:
@@ -1403,7 +1572,8 @@ function Play_MakeControls() {
                     Play_MultiInfoReset(i);
                 }
 
-                if (Play_isChatShown()) Play_controls[Play_controlsChat].enterKey();
+                Play_MultiChatBeffore = Play_isChatShown();
+                if (Play_MultiChatBeffore) Play_controls[Play_controlsChat].enterKey();
                 Play_SetAudioMultiIcon();
 
             } else {

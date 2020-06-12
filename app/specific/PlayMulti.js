@@ -102,7 +102,10 @@ function Play_Multi_UnSetPanelDivs(checkChat) {
 function Play_Multi_UnSetPanelDivsCheckChat() {
     if (!Play_isFullScreen) {
         Play_controls[Play_controlsChat].enterKey();
-        Play_SetChatSide();
+        Play_SetChatSideBySide();
+    } else {
+        if (!Play_MultiChatBeffore) Play_hideChat();
+        else Play_showChat();
     }
 }
 

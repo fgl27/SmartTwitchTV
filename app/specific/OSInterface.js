@@ -197,6 +197,26 @@ function OSInterface_mupdatesize(isFullScreen) {
     Android.mupdatesize(isFullScreen);
 }
 
+//public void SetFullScreenPosition(int mFullScreenPosition)
+//mFullScreenPosition = 0 right 1 left
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Allows to change the position of side by side player plus chat
+function OSInterface_SetFullScreenPosition(mFullScreenPosition) {
+    try {
+        Android.SetFullScreenPosition(mFullScreenPosition);
+    } catch (e) {}
+}
+
+//public void SetFullScreenSize(int mFullScreenSize)
+//mFullScreenSize = 0, 1, 2, 3, 4
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Allows to change the size of side by side player plus chat
+function OSInterface_SetFullScreenSize(mFullScreenPosition) {
+    try {
+        Android.SetFullScreenSize(mFullScreenPosition);
+    } catch (e) {}
+}
+
 //public void mSetPlayerPosition(int PicturePicturePos)
 //PicturePicturePos = The position of the small player
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have

@@ -2075,9 +2075,6 @@ function Screens_ThumbOptionStart(key) {
 }
 
 function Screens_ThumbOptionShowSpecial() {
-}
-
-function Screens_ThumbOptionShowSpecial() {
     for (var i = 0; i < 5; i++)
         Main_RemoveClass('dialog_thumb_opt_setting_' + i, 'hideimp');
 }
