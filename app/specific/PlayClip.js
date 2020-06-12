@@ -245,7 +245,15 @@ function PlayClip_loadData410Recheck() {
 function PlayClip_loadDataError() {
     if (Main_IsOn_OSInterface) {
         Play_HideBufferDialog();
-        Play_PlayEndStart(3);
+
+        Play_showWarningDialog(STR_410_ERROR, 2000);
+
+        Main_setTimeout(
+            function() {
+                Play_PlayEndStart(3);
+            },
+            2000
+        );
     } else PlayClip_loadDataSuccessFake();
 }
 

@@ -795,6 +795,7 @@ function Play_loadDataSuccessend(playlist) {
 
 function Play_loadDataErrorFinish(error_410, Isforbiden) {
     if (Play_EndDialogEnter) {
+
         Play_EndDialogEnter = 0;
         Play_HideBufferDialog();
 
@@ -809,13 +810,21 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
         Play_RestorePlayDataValues();
         Main_values.Play_WasPlaying = 0;
         Main_SaveValues();
-    } else if (Play_OlddataSet()) Play_RestorePlayData(error_410, Isforbiden);
-    else if (!PlayExtra_PicturePicture) {
+
+    } else if (Play_OlddataSet()) {
+
+        Play_RestorePlayData(error_410, Isforbiden);
+
+    } else if (!PlayExtra_PicturePicture) {
 
         if (Isforbiden) Play_ForbiddenLive();
         else Play_CheckHostStart(error_410);
 
-    } else Play_CloseBigAndSwich(error_410);
+    } else {
+
+        Play_CloseBigAndSwich(error_410);
+
+    }
 }
 
 function Play_OlddataSet() {
@@ -1566,7 +1575,7 @@ function Play_qualityIndexReset() {
 //called by android PlayerActivity
 function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
 
-    var reason;
+    var reason = Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST;
     if (fail_type === 1) reason = STR_PLAYER_ERROR;
     if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO;
 
@@ -1581,7 +1590,7 @@ function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
                 Play_PlayEndStart(PlayVodClip);
             }
         },
-        fail_type ? 3000 : 0
+        2000
     );
 }
 

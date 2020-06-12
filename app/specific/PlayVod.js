@@ -379,7 +379,15 @@ function PlayVod_loadDataResult(response) {
 function PlayVod_loadDataErrorFinish() {
     if (Main_IsOn_OSInterface) {
         Play_HideBufferDialog();
-        Play_PlayEndStart(2);
+
+        Play_showWarningDialog(STR_410_ERROR, 2000);
+
+        Main_setTimeout(
+            function() {
+                Play_PlayEndStart(2);
+            },
+            2000
+        );
     } else PlayVod_loadDataSuccessFake();
 }
 
