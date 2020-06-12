@@ -1579,7 +1579,7 @@ function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
     if (fail_type === 1) reason = STR_PLAYER_ERROR;
     if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO;
 
-    if (fail_type) Play_showWarningDialog(reason, 3000);
+    if (fail_type) Play_showWarningDialog(reason, 2000);
 
     Main_setTimeout(
         function() {
@@ -1590,7 +1590,7 @@ function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
                 Play_PlayEndStart(PlayVodClip);
             }
         },
-        2000
+        PlayVodClip === 1 ? 2000 : 0
     );
 }
 
