@@ -1568,10 +1568,14 @@ function Main_ReplaceLargeFont(text) {
 
 function Main_Set_history(type, Data, skipUpdateDate) {
 
-    if (!AddUser_IsUserSet() || !Data ||//Check is user is set, and data is valid
+    if (!AddUser_IsUserSet() || !Data || !Data[0] ||//Check is user is set, and data is valid
         (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) || //Check if the history for this type is enable
         (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
-        (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
+        (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) {
+
+        return;
+
+    }
 
     var index = Main_history_Exist(type, Data[7]);
 
@@ -1875,10 +1879,12 @@ function Main_StartHistoryworker() {
     var i = 0, len = array.length;
     for (i; i < len; i++) {
         if (!array[i].forceVod) {
-            if (array[i].data[14] !== '') {
+            if (array[i].data[14] && array[i].data[14] !== '') {
                 BradcastCheckerWorker.postMessage(
                     array[i]
                 );
+            } else {
+                array.splice(i, 1);
             }
         }
     }

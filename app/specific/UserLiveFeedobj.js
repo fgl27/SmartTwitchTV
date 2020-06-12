@@ -378,6 +378,7 @@ function UserLiveFeedobj_ShowHistory() {
 
 function UserLiveFeedobj_History() {
     UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
+
     var pos = UserLiveFeedobj_UserHistoryPos,
         response = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live)),
         response_items,
@@ -402,7 +403,7 @@ function UserLiveFeedobj_History() {
             id = cell.data[7];
             if (!cell.forceVod) {
 
-                if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && cell.data[14] !== '') {
+                if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && cell.data[14] && cell.data[14] !== '') {
 
                     UserLiveFeed_idObject[pos][id] = itemsCount;
 
