@@ -436,6 +436,7 @@ function en_USLang() {
     STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
     STR_PREVIEW_ERROR_LOAD = "Preview fail to load:";
     STR_PREVIEW_ERROR_LINK = " unreachable";
+    STR_PREVIEW_VOD_DELETED = " , this VOD may have been deleted";
     STR_PREVIEW_END = "Preview video has ended";
     STR_PLAYER_LAG_ERRO = "Player unable to play do to lag";
     STR_PLAYER_ERROR = "Player unable to play do to player error";

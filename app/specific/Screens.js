@@ -971,7 +971,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                         if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
                             Main_A_includes_B(document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
 
-                            error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK;
+                            error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
 
                         }
 

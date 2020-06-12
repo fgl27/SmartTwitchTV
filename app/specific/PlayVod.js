@@ -405,7 +405,7 @@ function PlayVod_loadDataErrorFinish() {
     if (Main_IsOn_OSInterface) {
         Play_HideBufferDialog();
 
-        Play_showWarningDialog(STR_410_ERROR, 2000);
+        Play_showWarningDialog(STR_410_ERROR + ((ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) ? STR_PREVIEW_VOD_DELETED : ''), 2000);
 
         Main_setTimeout(
             function() {
