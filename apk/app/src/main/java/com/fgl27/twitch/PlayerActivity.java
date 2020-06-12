@@ -2573,7 +2573,7 @@ public class PlayerActivity extends Activity {
 
                     PlayerEventListenerCheckCounterSmall(Player_Lag);
 
-                }, BUFFER_SIZE[mWho_Called > 3 ? mWho_Called - 3 : mWho_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
+                }, BUFFER_SIZE[1] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
 
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
