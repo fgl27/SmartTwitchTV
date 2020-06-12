@@ -79,6 +79,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_lastRefresh[i] = 0;
         UserLiveFeed_loadingData[i] = false;
         UserLiveFeed_loadingDataTry[i] = 0;
+        UserLiveFeed_obj[i].checkPreview = true;
     }
 
     //User live
@@ -127,6 +128,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].before = 5;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].IsGame = true;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].checkPreview = false;
 
     //Games
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].load = UserLiveFeedobj_Games;
@@ -138,6 +140,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].IsGame = true;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].checkPreview = false;
 
     //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
@@ -414,7 +417,8 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
+    if (add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() &&
+        UserLiveFeed_CheckVod() && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview) {
         if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
 
             var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
