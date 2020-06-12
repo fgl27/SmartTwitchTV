@@ -882,7 +882,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
             StreamData = JSON.parse(StreamData);
 
             var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
-                index;
+                index,
+                UserIsSet = AddUser_UserIsSet();
 
             if (StreamData.status === 200) {
 
@@ -900,14 +901,28 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 } else if (ScreenObj[x].screenType === 1) {//vod
                     Play_PreviewId = StreamInfo[7];
 
-                    var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Play_PreviewId) : -1;
+                    //Check if the vod exist in the history
+                    var VodIdex = UserIsSet ? Main_history_Exist('vod', Play_PreviewId) : -1;
                     offset = (VodIdex > -1) ?
                         Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
+
+                    //Check if the vod saved position is bigger then 0 means thisvod was already watched
+                    if (!offset) {
+
+                        VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
+
+                        if (VodIdex > -1) {
+
+                            offset =
+                                ((Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - (new Date(StreamInfo[12]).getTime())) / 1000);
+                        }
+
+                    }
 
                 } else {//live
 
                     if (ScreenObj[x].screen === Main_HistoryLive) {
-                        index = AddUser_UserIsSet() ? Main_history_Exist('live', StreamInfo[7]) : -1;
+                        index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
                         if (index > -1) {
 
@@ -964,7 +979,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
                 if (ScreenObj[x].screen === Main_HistoryLive) {
 
-                    index = AddUser_UserIsSet() ? Main_history_Exist('live', StreamInfo[7]) : -1;
+                    index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
                     if (index > -1) {
 
@@ -1586,8 +1601,9 @@ function Screens_handleKeyDown(key, event) {
             Main_showExitDialog();
             break;
         case KEY_CHAT:
-            Screens_OpenSidePanel(AddUser_UserIsSet(), key);
-            if (!AddUser_UserIsSet()) {
+            var UserIsSet = AddUser_UserIsSet();
+            Screens_OpenSidePanel(UserIsSet, key);
+            if (!UserIsSet) {
                 Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             break;
