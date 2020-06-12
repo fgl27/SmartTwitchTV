@@ -99,12 +99,14 @@ function PlayVod_Start() {
 
             var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Main_values.ChannelVod_vodId) : -1;
 
+            //Check if the vod exist in the history
             if (VodIdex > -1) {
 
                 PlayVod_VodOffset = Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched;
 
             }
 
+            //Check if the vod saved position is bigger then 0 means thisvod was already watched
             if (!PlayVod_VodOffset) {
 
                 VodIdex = AddUser_UserIsSet() ? Main_history_Find_Vod_In_Live(Main_values.ChannelVod_vodId) : -1;
@@ -803,7 +805,7 @@ function PlayVod_DialogPressed(fromStart) {
         if (!fromStart) PlayVod_DialogPressedClick(PlayVod_VodOffset);
         else {
             if (!ScreenObj[Main_HistoryVod].histPosX[1]) {
-                Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, 0, 'vod');
+                Main_history_UpdateVodClip(Main_values.ChannelVod_vodId, 0.001, 'vod');
                 Main_vodOffset = 0;
                 PlayVod_Start();
             } else PlayVod_DialogPressedClick(0);
