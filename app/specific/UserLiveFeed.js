@@ -60,7 +60,7 @@ function UserLiveFeed_StartLoadPos(pos) {
 
 function UserLiveFeed_Prepare() {
 
-    for (var i = 0; i < (UserLiveFeedobj_UserAGamesPos + 1); i++) {
+    for (var i = 0; i < (UserLiveFeedobj_MAX + 1); i++) {
         UserLiveFeed_obj[i] = {};
         UserLiveFeed_idObject[i] = {};
         UserLiveFeed_itemsCount[i] = 0;
@@ -81,6 +81,14 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_loadingDataTry[i] = 0;
         UserLiveFeed_obj[i].checkPreview = true;
     }
+
+    //User vod
+    UserLiveFeed_obj[UserLiveFeedobj_UserVod].load = UserLiveFeedobj_UserVodLoad;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVod].show = UserLiveFeedobj_ShowUserVod;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVod].hide = UserLiveFeedobj_HideUserVod;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVod].div = document.getElementById('user_vod_scroll');
+    UserLiveFeed_obj[UserLiveFeedobj_UserVod].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVod].checkPreview = false;
 
     //User live
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].load = UserLiveFeedobj_CheckToken;
@@ -175,6 +183,7 @@ function UserLiveFeed_Prepare() {
     Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
     Main_innerHTML('feed_end_5', STR_USER + STR_SPACE + STR_HISTORY);
     Main_innerHTML('feed_end_6', STR_USER + STR_SPACE + STR_LIVE_HOSTS);
+    Main_innerHTML('feed_end_8', STR_USER + STR_SPACE + 'VOD');
 
     Sidepannel_ScroolDoc = document.getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = document.getElementById('side_panel');
@@ -364,7 +373,7 @@ function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
 }
 
 function UserLiveFeed_ResetAddCellsize() {
-    for (var i = 0; i < (UserLiveFeedobj_UserAGamesPos + 1); i++) {
+    for (var i = 0; i < (UserLiveFeedobj_MAX + 1); i++) {
         UserLiveFeed_obj[i].AddCellsize = 0;
     }
 }
@@ -781,33 +790,53 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 
 function UserLiveFeed_KeyUpDown(Adder) {
     UserLiveFeed_ResetFeedId();
+
     if (Screens_ChangeFocusAnimationFinished) {
 
         var NextPos = UserLiveFeed_FeedPosX + Adder,
             userSet = AddUser_UserIsSet();
 
-        if (NextPos > (userSet ? (UserLiveFeedobj_CurrentUserAGameEnable ? (UserLiveFeedobj_MAX + 1) : UserLiveFeedobj_MAX) : UserLiveFeedobj_MAX_No_user)) {
+        if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
             NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
             if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARN, 1000);
         } else if (NextPos < (UserLiveFeedobj_CurrentAGameEnable ? 0 : 1)) {
-            NextPos = userSet ? (UserLiveFeedobj_CurrentUserAGameEnable ? (UserLiveFeedobj_MAX + 1) : UserLiveFeedobj_MAX) : UserLiveFeedobj_MAX_No_user;
+            NextPos = userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user;
             if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARN, 1000);
         }
 
-        if (NextPos === UserLiveFeedobj_CurrentGamePos && Play_data.data[3] === '') {
+        //If current game is empty, skip current game screen
+        if (NextPos === UserLiveFeedobj_CurrentGamePos && !Play_data.data[3] && Play_data.data[3] === '') {
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = NextPos;
             UserLiveFeed_KeyUpDown(Adder);
             return;
         }
 
-        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos && Adder === -1) {
+        //If in user games skip one as next is user a game
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos && Adder === 1) {
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = NextPos;
             UserLiveFeed_KeyUpDown(Adder);
             return;
         }
 
+        //If in user vod and user a game is not enable skip one as next is user a game
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserVod && !UserLiveFeedobj_CurrentUserAGameEnable && Adder === -1) {
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+            UserLiveFeed_FeedPosX = NextPos;
+            UserLiveFeed_KeyUpDown(Adder);
+            return;
+        }
+
+        //If in user a game and user a game is enable skip one as next is user games
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos && UserLiveFeedobj_CurrentUserAGameEnable && Adder === -1) {
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+            UserLiveFeed_FeedPosX = NextPos;
+            UserLiveFeed_KeyUpDown(Adder);
+            return;
+        }
+
+        //If in a game skip one as next is featured
         if (UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos && Adder === 1) {
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = NextPos;

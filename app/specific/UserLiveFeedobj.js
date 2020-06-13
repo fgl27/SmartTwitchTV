@@ -10,12 +10,13 @@ var UserLiveFeedobj_UserHistoryPos = 6;
 var UserLiveFeedobj_UserHostPos = 7;
 var UserLiveFeedobj_UserGamesPos = 8;
 var UserLiveFeedobj_UserAGamesPos = 9;
+var UserLiveFeedobj_UserVod = 10;
 
-//Check bellow java before define more current max is 0 to 9, 1 is used by the side panel
-//public String[][] ExtraPlayerHandlerResult = new String[10][100];
+//Check bellow java before define more current max is 0 to 24, 1 is used by the side panel
+//public String[][] ExtraPlayerHandlerResult = new String[25][100];
 
 var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos;//Default pos
-var UserLiveFeedobj_MAX = UserLiveFeedobj_UserGamesPos;
+var UserLiveFeedobj_MAX = UserLiveFeedobj_UserVod;
 var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 
 function UserLiveFeedobj_StartDefault(pos) {
@@ -574,8 +575,6 @@ function UserLiveFeedobj_loadUserHost() {
     );
 }
 
-
-
 var UserLiveFeedobj_HostFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserHost() {
     UserLiveFeedobj_SetBottomText(6);
@@ -591,7 +590,6 @@ function UserLiveFeedobj_HideUserHost() {
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.classList.add('hide');
 }
 //User Host end
-
 
 //User Games Start
 function UserLiveFeedobj_UserGames() {
@@ -759,12 +757,12 @@ function UserLiveFeedobj_HideCurrentAGame() {
 
 function UserLiveFeedobj_SetBottomText(pos) {
     var i = 0;
-    for (i; i < 8; i++)
+    for (i; i < 9; i++)
         Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
 
     Main_AddClass('feed_end_' + pos, 'feed_end_name_focus');
 
-    for (i = 0; i < 7; i++) {
+    for (i = 0; i < 8; i++) {
         if (i < pos) {
             Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_up');
             Main_AddClass('feed_end_icon_' + i, 'feed_end_icon_down');
@@ -837,6 +835,35 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
         '</div></div></div>';
+
+    return div;
+}
+
+function UserLiveFeedobj_CreatVodFeed(id, data, Extra_when, Extra_until) {
+    var div = document.createElement('div');
+
+    div.setAttribute('id', UserLiveFeed_ids[3] + id);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
+    div.className = 'user_feed_thumb';
+
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div id="' + UserLiveFeed_ids[5] + id +
+        '" class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + data[0] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
+        '\';"></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
+        UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:63.5%; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;">' +
+        data[1] + '</div><div class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
+        data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
+        '">' + data[10] + '</div>' + '<div class="stream_info_live">' +
+        (data[3] !== "" && data[3] !== null ? STR_STARTED + STR_PLAYING + data[3] : "") + '</div>' +
+        '<div style="line-height: 2vh;"><div class="stream_info_live" >' + data[2] +
+        '</div><div style="line-height: 2vh;"><div class="stream_info_live" style="width: 69%; display: inline-block;">' +
+        data[4] +
+        '</div><div class="stream_info_live" style="width: 30%; display: inline-block; float: right; text-align: right;">' +
+        Play_timeS(data[11]) + '</div></div>' +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
+        '</div></div></div>'
 
     return div;
 }
@@ -1003,6 +1030,137 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     );
 }
 
+//User VOD Start
+var UserLiveFeedobj_VodFeedOldUserName = '';
+function UserLiveFeedobj_ShowUserVod() {
+    UserLiveFeedobj_SetBottomText(8);
+
+    if (AddUser_UserIsSet()) {
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserVod, (UserLiveFeedobj_VodFeedOldUserName !== AddUser_UsernameArray[0].name));
+        UserLiveFeedobj_VodFeedOldUserName = AddUser_UsernameArray[0].name;
+    }
+}
+
+function UserLiveFeedobj_HideUserVod() {
+    UserLiveFeed_CheckIfIsLiveSTop();
+    UserLiveFeed_obj[UserLiveFeedobj_UserVod].div.classList.add('hide');
+}
+
+function UserLiveFeedobj_UserVodLoad() {
+    if (!UserLiveFeed_obj[UserLiveFeedobj_UserVod].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserVod);
+    UserLiveFeedobj_loadUserVod();
+}
+
+function UserLiveFeedobj_loadUserVod() {
+    UserLiveFeedobj_loadUserVodGet(
+        Main_kraken_api + 'videos/followed?limit=100&broadcast_type=archive&sort=time&offset=' +
+        UserLiveFeed_obj[UserLiveFeedobj_UserVod].offset + Main_TwithcV5Flag
+    );
+}
+
+function UserLiveFeedobj_loadUserVodGet(theUrl) {
+    //Main_Log('UserLiveFeedobj_loadUserVodGet');
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVod] * DefaultHttpGetTimeoutPlus);
+
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[0].access_token);
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(xmlHttp);
+    };
+
+    xmlHttp.send(null);
+}
+
+function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
+    Main_Log('UserLiveFeedobj_loadUserVodGetEnd ' + xmlHttp.status);
+    if (xmlHttp.status === 200) {
+        UserLiveFeedobj_loadDataBaseVodSuccess(xmlHttp.responseText, UserLiveFeedobj_UserVod);
+    } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+        //Token has change or because is new or because it is invalid because user delete in twitch settings
+        // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
+        AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadUserVodGetError);
+    } else {
+        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVod);
+    }
+}
+
+function UserLiveFeedobj_loadUserVodGetError() {
+    //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
+    UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVod);
+}
+
+function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
+
+    var response = JSON.parse(responseText),
+        response_items,
+        id, mArray,
+        i = 0,
+        itemsCount = UserLiveFeed_itemsCount[pos];
+
+    //return;
+
+    response = response.videos;
+    response_items = response.length;
+
+    if (response_items) {
+
+        for (i; i < response_items; i++) {
+            id = response[i]._id;
+
+            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
+
+                UserLiveFeed_idObject[pos][id] = itemsCount;
+                mArray = ScreensObj_VodCellArray(response[i]);
+
+                // if (Main_A_includes_B(mArray[0] + '', '404_processing')) {
+                //     mArray[0] = 'https://static-cdn.jtvnw.net/s3_vods/' + mArray[8].split('/')[3] +
+                //         '/thumb/thumb0-' + Main_VideoSize + '.jpg'
+                // }
+
+                UserLiveFeed_cell[pos][itemsCount] =
+                    UserLiveFeedobj_CreatVodFeed(
+                        pos + '_' + itemsCount,
+                        mArray
+                    );
+
+                itemsCount++;
+            }
+        }
+
+    } else UserLiveFeedobj_Empty(pos);
+
+    UserLiveFeed_itemsCount[pos] = itemsCount;
+
+    if (UserLiveFeed_obj[pos].HasMore) {
+
+        UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
+
+        if (!response_items || response_items < (Main_ItemsLimitMax - 5)) UserLiveFeed_obj[pos].dataEnded = true;
+
+    }
+
+    if (UserLiveFeed_obj[pos].loadingMore) {
+        UserLiveFeed_obj[pos].loadingMore = false;
+        if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+    } else {
+        Main_setTimeout(
+            function() {
+
+                if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
+                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
+
+                UserLiveFeed_loadDataSuccessFinish(false, pos);
+            },
+            25
+        );
+    }
+}
+
+//User VOD end
 
 function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
     var response = JSON.parse(responseText),

@@ -102,7 +102,7 @@ var Base_obj = {
         } else Screens_OpenSidePanel(false, this.screen);
     },
     concatenate: function(responseText) {
-        //Main_Log(responseText);
+        //console.log(responseText);
         if (this.data) {
             responseText = JSON.parse(responseText);
 
@@ -157,7 +157,7 @@ var Base_Vod_obj = {
     Vod_newImg: new Image(),
     AnimateThumb: ScreensObj_AnimateThumbId,
     addCellBase: function(cell, thubnail) {
-        if (!this.idObject[cell._id] && !Main_A_includes_B(thubnail + '', '404_processing')) {
+        if (!this.idObject[cell._id]) {
 
             cell.preview.template = thubnail;
 
@@ -314,18 +314,6 @@ function ScreensObj_InitChannelVod() {
     }, Base_obj);
 
     ScreenObj[Main_ChannelVod] = Screens_assign(ScreenObj[Main_ChannelVod], Base_Vod_obj);
-
-    ScreenObj[Main_ChannelVod].addCell = function(cell) {
-
-        var thumbnail = cell.preview.template;
-
-        // video content can be null sometimes, in that case the preview will be 404_processing
-        // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
-        if (!this.row_id && Main_A_includes_B(thumbnail + '', '404_processing'))
-            thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
-
-        this.addCellBase(cell, thumbnail);
-    };
     ScreenObj[Main_ChannelVod].Set_Scroll();
 }
 
@@ -410,6 +398,7 @@ function ScreensObj_InitUserVod() {
 
             this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                 '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
+            console.log(this.url)
         },
         key_play: function() {
             if (this.posY === -1) {
@@ -1779,7 +1768,8 @@ function ScreensObj_HostCellArray(cell) {
 
 function ScreensObj_VodCellArray(cell) {
     return [
-        cell.preview.template.replace("{width}x{height}", Main_VideoSize),//0
+        Main_A_includes_B(cell.preview.template + '', '404_processing') ? 'https://static-cdn.jtvnw.net/s3_vods/' + cell.animated_preview_url.split('/')[3] +
+            '/thumb/thumb0-' + Main_VideoSize + '.jpg' : cell.preview.template.replace("{width}x{height}", Main_VideoSize),//0
         cell.channel.display_name,//1
         STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),//2
         cell.game,//3
