@@ -193,6 +193,7 @@ function UserLiveFeed_Prepare() {
     Main_innerHTML('feed_end_6', STR_USER + STR_SPACE + STR_LIVE_HOSTS);
     Main_innerHTML('feed_end_8', STR_USER + STR_SPACE + 'VOD');
     Main_innerHTML('feed_end_9', 'VOD ' + STR_HISTORY);
+    Main_innerHTML('icon_feed_back', STR_SPACE);
 
     Sidepannel_ScroolDoc = document.getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = document.getElementById('side_panel');
@@ -877,7 +878,7 @@ function UserLiveFeed_KeyUpDown(Adder) {
             return;
         }
 
-        Main_HideElement('icon_feed_back');
+        Main_AddClass('icon_feed_back', 'opacity_zero');
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
     }
 }
@@ -899,7 +900,7 @@ function UserLiveFeed_KeyEnter(pos) {
 
     } else if (pos === UserLiveFeedobj_UserAGamesPos) {
 
-        Main_HideElement('icon_feed_back');
+        Main_AddClass('icon_feed_back', 'opacity_zero');
         UserLiveFeedobj_CurrentUserAGameEnable = false;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;
@@ -921,7 +922,7 @@ function UserLiveFeed_KeyEnter(pos) {
 
     } else if (pos === UserLiveFeedobj_AGamesPos) {
 
-        Main_HideElement('icon_feed_back');
+        Main_AddClass('icon_feed_back', 'opacity_zero');
         UserLiveFeedobj_CurrentAGameEnable = false;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = UserLiveFeedobj_GamesPos;

@@ -1728,7 +1728,6 @@ public class PlayerActivity extends Activity {
             float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
             float bottomMargin = bottom * scale;
             bottomMargin = (float) ScreenSize.y - bottomMargin;
-            bottomMargin -=  ScreenSize.y / 125.0f;//Minor offset to place it perfectly over the image
 
             for (i = 0; i < len; i++) {
                 lenEx = PlayerViewExtraLayout[i].length;

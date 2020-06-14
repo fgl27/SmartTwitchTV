@@ -668,7 +668,7 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, (UserLiveFeedobj_CurrentUserAGameName !== UserLiveFeedobj_CurrentUserAGameNameEnter));
     UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
-    Main_ShowElement('icon_feed_back');
+    Main_RemoveClass('icon_feed_back', 'opacity_zero');
 }
 
 function UserLiveFeedobj_HideCurrentUserAGame() {
@@ -747,7 +747,7 @@ function UserLiveFeedobj_ShowCurrentAGame() {
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, (UserLiveFeedobj_CurrentAGameName !== UserLiveFeedobj_CurrentAGameNameEnter));
     UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
-    Main_ShowElement('icon_feed_back');
+    Main_RemoveClass('icon_feed_back', 'opacity_zero');
 }
 
 function UserLiveFeedobj_HideCurrentAGame() {
@@ -757,13 +757,13 @@ function UserLiveFeedobj_HideCurrentAGame() {
 //Current a game end
 
 function UserLiveFeedobj_SetBottomText(pos) {
-    var i = 0, len = (UserLiveFeedobj_MAX - 2);
+    var i = 0, len = (UserLiveFeedobj_MAX - 1);
     for (i; i < len; i++)
         Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
 
     Main_AddClass('feed_end_' + pos, 'feed_end_name_focus');
 
-    len = (UserLiveFeedobj_MAX - 3);
+    len = (UserLiveFeedobj_MAX - 2);
     for (i = 0; i < len; i++) {
         if (i < pos) {
             Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_up');
@@ -849,23 +849,20 @@ function UserLiveFeedobj_CreatVodFeed(id, data, Extra_when, Extra_until) {
 
     div.className = 'user_feed_thumb';
 
-    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div id="' + UserLiveFeed_ids[5] + id +
-        '" class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + data[0] +
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
+        '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + data[0] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
         '\';"></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
         UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:63.5%; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;">' +
-        data[1] + '</div><div class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
+        '<i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i> ' + data[1] +
+        '</div><div class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
         data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
-        '">' + data[10] + '</div>' + '<div class="stream_info_live">' +
-        (data[3] !== "" && data[3] !== null ? STR_STARTED + STR_PLAYING + data[3] : "") + '</div>' +
-        '<div style="line-height: 2vh;"><div class="stream_info_live" >' + data[2] +
-        '</div><div style="line-height: 2vh;"><div class="stream_info_live" style="width: 69%; display: inline-block;">' +
-        data[4] +
-        '</div><div class="stream_info_live" style="width: 30%; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(data[11]) + '</div></div>' +
-        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
-            STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
-        '</div></div></div>';
+        '">' + data[10] + '</div>' + '<div class="stream_info_live">' + (data[3] !== "" && data[3] !== null ? STR_STARTED + STR_PLAYING + data[3] : "") + '</div>' +
+        '<div style="line-height: 2vh;"><div class="stream_info_live" style="width: 74%; display: inline-block;">' + data[2] +
+        '</div><div class="stream_info_live" style="width: 26%; display: inline-block; float: right; text-align: right;">' +
+        Play_timeS(data[11]) + '</div></div><div class="stream_info_live_title" style="font-family: \'Roboto\';">' +
+        data[4] + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            STR_UNTIL + Play_timeS(Extra_until)) : '') + '</div></div></div>';
 
     return div;
 }
