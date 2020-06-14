@@ -354,6 +354,14 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
         UserLiveFeed_FeedAddFocus(true, pos);
     }
+
+    UserLiveFeedobj_SetLastRefresh(pos);
+}
+
+function UserLiveFeedobj_SetLastRefresh(pos) {
+    if (!UserLiveFeed_lastRefresh[pos]) return;
+
+    Main_innerHTML("feed_last_refresh", STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - UserLiveFeed_lastRefresh[pos]));
 }
 
 function UserLiveFeedobj_HideFeed() {

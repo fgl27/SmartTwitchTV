@@ -2528,7 +2528,7 @@ function Screens_SetLastRefresh(key) {
     if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
         Main_values.Main_Go === Main_addUser || !ScreenObj[key]) return;
 
-    Main_innerHTML("label_last_refresh", STR_SPACE + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
+    Main_innerHTML("label_last_refresh", STR_SPACE + "(" + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
 }
 
 function Screens_RefreshTimeout(key) {

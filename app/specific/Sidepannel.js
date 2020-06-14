@@ -374,6 +374,18 @@ function Sidepannel_ShowFeed() {
         Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed(true);
     }
+
+    Sidepannel_SetLastRefresh();
+}
+
+function Sidepannel_SetLastRefresh() {
+    if (!UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) return;
+
+    Main_innerHTML(
+        "side_panel_feed_refresh",
+        STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
+        Play_timeDay((new Date().getTime()) - UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) + ')'
+    );
 }
 
 function Sidepannel_StartMain() {

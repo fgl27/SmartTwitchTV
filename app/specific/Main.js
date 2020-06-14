@@ -499,7 +499,6 @@ function Main_SetStringsSecondary() {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
 
     Main_textContent('side_panel_feed_settings', STR_SIDE_PANEL_SETTINGS);
-    Main_textContent('side_panel_feed_refresh', STR_REFRESH);
     Main_textContent('user_feed_notify_main', STR_NOW_LIVE);
 
     Main_textContent('chanel_button', STR_CHANNELS);
@@ -1389,6 +1388,8 @@ function Main_updateclock() {
         if (Main_RunningTime) Main_AboutDialogUpdateTime();
         Main_randomimg = '?' + parseInt(Math.random() * 100000);
         Screens_SetLastRefresh(Screens_Current_Key);
+        UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
+        Sidepannel_SetLastRefresh();
     }
 }
 
