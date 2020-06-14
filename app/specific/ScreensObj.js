@@ -102,7 +102,7 @@ var Base_obj = {
         } else Screens_OpenSidePanel(false, this.screen);
     },
     concatenate: function(responseText) {
-        //console.log(responseText);
+        //Main_Log(responseText);
         if (this.data) {
             responseText = JSON.parse(responseText);
 
@@ -156,10 +156,8 @@ var Base_Vod_obj = {
     HasAnimateThumb: true,
     Vod_newImg: new Image(),
     AnimateThumb: ScreensObj_AnimateThumbId,
-    addCellBase: function(cell, thubnail) {
+    addCell: function(cell) {
         if (!this.idObject[cell._id]) {
-
-            cell.preview.template = thubnail;
 
             this.itemsCount++;
             this.idObject[cell._id] = 1;
@@ -175,9 +173,6 @@ var Base_Vod_obj = {
 
             this.coloumn_id++;
         }
-    },
-    addCell: function(cell) {
-        this.addCellBase(cell, cell.preview.template);
     }
 };
 
@@ -398,7 +393,6 @@ function ScreensObj_InitUserVod() {
 
             this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                 '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
-            console.log(this.url)
         },
         key_play: function() {
             if (this.posY === -1) {
@@ -829,7 +823,7 @@ var Base_Clip_obj = {
     cursor: null,
     object: 'clips',
     period: ['day', 'week', 'month', 'all'],
-    img_404: IMG_404_VIDEO,
+    img_404: IMG_404_VOD,
     empty_str: function() {
         return STR_NO + STR_SPACE + STR_CLIPS;
     },
@@ -1312,7 +1306,6 @@ var Base_History_obj = {
     addFocus: Screens_addFocusVideo,
     rowClass: 'animate_height_transition',
     thumbclass: 'stream_thumbnail_live_holder',
-    img_404: IMG_404_VIDEO,
     isHistory: true,
     streamerID: {},
     HasSwitches: true,
@@ -1409,6 +1402,7 @@ function ScreensObj_HistoryLive() {
         ids: Screens_ScreenIds('HistoryLive'),
         table: 'stream_table_historylive',
         screen: Main_HistoryLive,
+        img_404: IMG_404_VIDEO,
         histPosXName: 'HistoryLive_histPosX',
         screenType: 0,
         histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0]),
@@ -1501,6 +1495,7 @@ function ScreensObj_HistoryVod() {
         table: 'stream_table_historyvod',
         screen: Main_HistoryVod,
         screenType: 1,
+        img_404: IMG_404_VOD,
         Vod_newImg: new Image(),
         HasAnimateThumb: true,
         AnimateThumb: ScreensObj_AnimateThumbId,
@@ -1592,6 +1587,7 @@ function ScreensObj_HistoryClip() {
         ids: Screens_ScreenIds('HistoryClip'),
         table: 'stream_table_historyclip',
         screen: Main_HistoryClip,
+        img_404: IMG_404_VOD,
         screenType: 2,
         histPosXName: 'HistoryClip_histPosX',
         histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0]),
@@ -1768,6 +1764,7 @@ function ScreensObj_HostCellArray(cell) {
 
 function ScreensObj_VodCellArray(cell) {
     return [
+        //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
         Main_A_includes_B(cell.preview.template + '', '404_processing') ? 'https://static-cdn.jtvnw.net/s3_vods/' + cell.animated_preview_url.split('/')[3] +
             '/thumb/thumb0-' + Main_VideoSize + '.jpg' : cell.preview.template.replace("{width}x{height}", Main_VideoSize),//0
         cell.channel.display_name,//1

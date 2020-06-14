@@ -83,12 +83,20 @@ function UserLiveFeed_Prepare() {
     }
 
     //User vod
-    UserLiveFeed_obj[UserLiveFeedobj_UserVod].load = UserLiveFeedobj_UserVodLoad;
-    UserLiveFeed_obj[UserLiveFeedobj_UserVod].show = UserLiveFeedobj_ShowUserVod;
-    UserLiveFeed_obj[UserLiveFeedobj_UserVod].hide = UserLiveFeedobj_HideUserVod;
-    UserLiveFeed_obj[UserLiveFeedobj_UserVod].div = document.getElementById('user_vod_scroll');
-    UserLiveFeed_obj[UserLiveFeedobj_UserVod].HasMore = true;
-    UserLiveFeed_obj[UserLiveFeedobj_UserVod].checkPreview = false;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].load = UserLiveFeedobj_UserVod;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].show = UserLiveFeedobj_ShowUserVod;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].hide = UserLiveFeedobj_HideUserVod;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].div = document.getElementById('user_vod_scroll');
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].checkPreview = false;
+
+    //User vod history
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].load = UserLiveFeedobj_UserVodHistory;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].show = UserLiveFeedobj_ShowUserVodHistory;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].hide = UserLiveFeedobj_HideUserVodHistory;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].div = document.getElementById('user_vod_history_scroll');
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].checkPreview = false;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].checkHistory = true;
 
     //User live
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].load = UserLiveFeedobj_CheckToken;
@@ -96,12 +104,12 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = document.getElementById('user_feed_scroll');
 
-    //User history
+    //User live history
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].load = UserLiveFeedobj_History;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].show = UserLiveFeedobj_ShowHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].hide = UserLiveFeedobj_HideHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].checkHistory = true;
-    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = document.getElementById('user_history_scroll');
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = document.getElementById('user_live_history_scroll');
 
     //User Host
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
@@ -181,9 +189,10 @@ function UserLiveFeed_Prepare() {
     Main_innerHTML('feed_end_1', STR_FEATURED);
     Main_innerHTML('feed_end_3', STR_LIVE);
     Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
-    Main_innerHTML('feed_end_5', STR_USER + STR_SPACE + STR_HISTORY);
+    Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE + STR_HISTORY);
     Main_innerHTML('feed_end_6', STR_USER + STR_SPACE + STR_LIVE_HOSTS);
     Main_innerHTML('feed_end_8', STR_USER + STR_SPACE + 'VOD');
+    Main_innerHTML('feed_end_9', 'VOD ' + STR_HISTORY);
 
     Sidepannel_ScroolDoc = document.getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = document.getElementById('side_panel');
@@ -821,7 +830,7 @@ function UserLiveFeed_KeyUpDown(Adder) {
         }
 
         //If in user vod and user a game is not enable skip one as next is user a game
-        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserVod && !UserLiveFeedobj_CurrentUserAGameEnable && Adder === -1) {
+        if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserVodPos && !UserLiveFeedobj_CurrentUserAGameEnable && Adder === -1) {
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = NextPos;
             UserLiveFeed_KeyUpDown(Adder);
