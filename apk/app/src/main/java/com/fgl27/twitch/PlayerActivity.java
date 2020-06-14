@@ -1722,6 +1722,24 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetPlayerViewFeedBottom(float bottom, int web_height) {
+            int i, j, len = PlayerViewExtraLayout.length, lenEx;
+
+            float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
+            float bottomMargin = bottom * scale;
+            bottomMargin = (float) ScreenSize.y - bottomMargin;
+            bottomMargin -=  ScreenSize.y / 125.0f;//Minor offset to place it perfectly over the image
+
+            for (i = 0; i < len; i++) {
+                lenEx = PlayerViewExtraLayout[i].length;
+                for (j = 0; j < lenEx; j++) {
+                    PlayerViewExtraLayout[i][j].bottomMargin = (int) bottomMargin;
+                }
+            }
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void SetPlayerViewSidePanel(float top, float right, float left, int web_height) {
             PlayerViewSidePanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
         }

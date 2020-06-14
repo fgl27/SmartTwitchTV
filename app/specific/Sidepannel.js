@@ -149,7 +149,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 }
 
 function Sidepannel_SetPlayerViewSidePanel() {
-    var Rect = document.getElementById('side_panel_feed_thumb').getBoundingClientRect();
+    var Rect = document.getElementById('feed_thumb_img').parentElement.getBoundingClientRect();
     OSInterface_SetPlayerViewSidePanel(
         Rect.top,
         Rect.right,

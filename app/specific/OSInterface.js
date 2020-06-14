@@ -734,6 +734,22 @@ function OSInterface_StartSidePanelPlayer(uri, masterPlaylistString) {
     } catch (e) {}
 }
 
+//public void SetPlayerViewSidePanel(int bottom, int web_height)
+//uri =  the url of the playlist or the clip
+//masterPlaylistString = the stringify version of the url playlist content
+//top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
+//Android specific: true
+//Start MultiStream at position
+function OSInterface_SetPlayerViewFeedBottom(bottom, web_height) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPlayerViewFeedBottom(
+            bottom,
+            parseInt(web_height)
+        );
+    } catch (e) {}
+}
+
 //public void SetPlayerViewSidePanel(int top, int right, int left, int web_height)
 //uri =  the url of the playlist or the clip
 //masterPlaylistString = the stringify version of the url playlist content

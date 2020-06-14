@@ -500,6 +500,8 @@ function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
 }
 
+var UserLiveFeed_CheckIfIsLiveResultThumb;
+
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
@@ -515,6 +517,15 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Play_PreviewURL = StreamData.url;
                 Play_PreviewResponseText = StreamData.responseText;
                 Play_PreviewId = StreamInfo[14];
+
+                if (!UserLiveFeed_CheckIfIsLiveResultThumb) {
+                    var Rect = document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
+                    OSInterface_SetPlayerViewFeedBottom(
+                        Rect.bottom,
+                        window.innerHeight
+                    );
+                    UserLiveFeed_CheckIfIsLiveResultThumb = true;
+                }
 
                 OSInterface_StartFeedPlayer(
                     Play_PreviewURL,

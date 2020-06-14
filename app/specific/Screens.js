@@ -764,7 +764,7 @@ function Screens_LoadPreview(key) {
 function Screens_LoadPreviewRestore(key) {
 
     var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
-    var Rect = img.getBoundingClientRect();
+    var Rect = img.parentElement.getBoundingClientRect();
 
     OSInterface_ScreenPlayerRestore(
         Rect.top,
@@ -947,7 +947,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 }
 
                 var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
-                var Rect = img.getBoundingClientRect();
+                var Rect = img.parentElement.getBoundingClientRect();
 
                 OSInterface_StartScreensPlayer(
                     Play_PreviewURL,

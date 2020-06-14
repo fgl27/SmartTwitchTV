@@ -890,14 +890,14 @@ public final class Tools {
         float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
 
         int width = (int)((right - left) * scale);
-        int offset = width / 120; //Minor offset to make it feet inside the box without overflowing
+        int offset = width / 135; //Minor offset to make it feet inside the box without overflowing
         width -= offset;
         int height = width * 9 / 16;//16 by 9 box
         FrameLayout.LayoutParams PlayerViewSidePanel = new FrameLayout.LayoutParams(width, height, Gravity.LEFT | Gravity.TOP);
 
         //Center on top of the box in relation to the offset
-        PlayerViewSidePanel.topMargin = (int)(top * scale + (offset / 1.25));
-        PlayerViewSidePanel.leftMargin = (int)(left * scale + (offset / 1.3));
+        PlayerViewSidePanel.topMargin = (int)(top * scale + (offset / 1.8));
+        PlayerViewSidePanel.leftMargin = (int)(left * scale + (offset / 1.8));
 
         return PlayerViewSidePanel;
     }

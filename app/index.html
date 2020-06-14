@@ -238,7 +238,7 @@
 
         div.stream_thumbnail_game_feed,
         div.stream_thumbnail_game,
-        div.stream_thumbnail_clip,
+        div.stream_thumbnail_side,
         div.stream_thumbnail_live,
         div.stream_thumbnail_player_feed,
         div.stream_thumbnail_user,
@@ -249,9 +249,10 @@
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
-        div.stream_thumbnail_clip {
-            /* height / width * 100% of Main.VideoSize*/
-            padding-bottom: 56.25%;
+        div.stream_thumbnail_side {
+            width: 99.75%;
+            /*16 by 9 in relatetion to the width % size*/
+            padding-bottom: 56.109375%;
             background-repeat: no-repeat;
         }
 
@@ -575,12 +576,6 @@
             max-width: 100%;
             max-height: 100%;
             overflow: hidden;
-        }
-
-        img.stream_img_side {
-            width: 99.2%;
-            margin-left: 0.2%;
-            margin-top: 0.2%;
         }
 
         img.stream_img_follow {
@@ -2909,7 +2904,7 @@
         </div>
         <div id="scenefeed" class="feed_screen_new">
             <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">
-                <div class="stream_thumbnail_clip"><img id="feed_thumb_img" class="stream_img_side" alt=""
+                <div class="stream_thumbnail_side"><img id="feed_thumb_img" class="stream_img_side" alt=""
                         src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></div>
                 <div class="side_panel_feed_thumb_text_holder">
                     <div class="stream_text_holder">
