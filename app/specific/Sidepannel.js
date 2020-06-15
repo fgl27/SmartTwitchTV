@@ -82,8 +82,11 @@ function Sidepannel_UpdateThumb() {
             if (doc) {
 
                 var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
+                //Reset the flag if the stream that ended is not the one focused
+                var NotSameStream = !Main_A_equals_B(ChannelId, Play_PreviewId);
+                if (NotSameStream) Play_PreviewVideoEnded = false;
 
-                if ((!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
+                if ((!Play_PreviewId || NotSameStream) && !Play_PreviewVideoEnded) {
                     Sidepannel_CheckIfIsLiveStart();
                 } else if (Play_PreviewId) {
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
