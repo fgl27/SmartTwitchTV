@@ -47,6 +47,7 @@
         'Play_CheckHostResult': Play_CheckHostResult, // Play_CheckHostResult() func from app/specific/Play.js
         'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult, // PlayExtra_CheckHostResult() func from app/specific/PlayExtra.js
         'Screens_LoadPreviewResult': Screens_LoadPreviewResult, // Screens_LoadPreviewResult() func from app/specific/Screens.js
+        'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,// ChannelContent_LoadPreviewResult() func from app/specific/ChannelContent.js
     };
 
     /** Expose `smartTwitchTV` */

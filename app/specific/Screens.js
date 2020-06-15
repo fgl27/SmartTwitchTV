@@ -762,6 +762,10 @@ function Screens_LoadPreview(key) {
 }
 
 function Screens_LoadPreviewRestore(key) {
+    if (Main_values.Main_Go === Main_ChannelContent) {
+        ChannelContent_LoadPreviewRestore();
+        return;
+    }
 
     var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
     var Rect = img.parentElement.getBoundingClientRect();
@@ -999,7 +1003,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 Screens_LoadPreviewWarn(
                     ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : error),
                     x,
-                    5000
+                    4000
                 );
             }
 

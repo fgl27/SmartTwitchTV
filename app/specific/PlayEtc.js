@@ -728,13 +728,17 @@ function Play_CheckPreview() {
             );
 
             //live
-        } else if (Settings_Obj_default('show_live_player') && ScreenObj[Screens_Current_Key].screenType === 0 &&
-            !Sidepannel_isShowing() &&
-            !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
-            Sidepannel_RestoreThumb(
-                document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX),
-                Play_data
-            );
+        } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowing()) {
+
+            if (Main_values.Main_Go === Main_ChannelContent) {
+                ChannelContent_RestoreThumb(Play_data);
+            } else if (ScreenObj[Screens_Current_Key].screenType === 0 && ScreenObj[Screens_Current_Key].posY > -1 &&
+                !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+                Sidepannel_RestoreThumb(
+                    document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX),
+                    Play_data
+                );
+            }
         }
     }
 }
