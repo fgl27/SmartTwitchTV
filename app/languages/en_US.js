@@ -559,4 +559,7 @@ function en_USLang() {
     STR_ENTER_RGB = STR_ENTER + " to accept RGB change";
     STR_THUMB_STYLE = "Selected thumbnail style";
     STR_OPEN_EXTERNAL_PLAYER = "Open in a external player";
+    STR_CHAT_SIDE_ARRAY = ['Left', 'Right'];
+    STR_CHAT_BASE_ARRAY = ['Bottom right', 'Center right', 'Top right', 'Center top', 'Top left', 'Center left', 'Bottom left', 'Center bottom'];
+    STR_CHAT_100_ARRAY = ['Right', 'Center', 'Left'];
 }

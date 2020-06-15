@@ -202,10 +202,6 @@ function Play_PreStart() {
     }
     if (Main_values.Chat_font_size_new > (Play_ChatFontObj.length - 1)) Main_values.Chat_font_size_new = Play_ChatFontObj.length - 1;
 
-    Play_ChatSize(false);
-    Play_ChatBackgroundChange(false);
-    Play_SetChatFont();
-
     Main_innerHTML(
         'user_feed_notify_img_holder',
         '<img id="user_feed_notify_img" alt="" class="notify_img" src="' + IMG_404_LOGO +
@@ -216,6 +212,10 @@ function Play_PreStart() {
     Play_MakeControls();
     Play_SetControls();
     Play_SetFullScreen(Play_isFullScreen);
+
+    Play_ChatSize(false);
+    Play_ChatBackgroundChange(false);
+    Play_SetChatFont();
 }
 
 function Play_SetQuality() {
@@ -1491,6 +1491,23 @@ function Play_ChatSize(showDialog) {
     if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue].percentage);
 
     Main_setItem('ChatSizeValue', Play_ChatSizeValue);
+
+    Play_SetChatPosString();
+}
+
+function Play_SetChatPosString() {
+
+    if (Play_ChatSizeValue === Play_MaxChatSizeValue) {
+
+        Play_controls[Play_controlsChatPos].values = STR_CHAT_100_ARRAY;
+
+    } else {
+
+        Play_controls[Play_controlsChatPos].values = STR_CHAT_BASE_ARRAY;
+
+    }
+    Play_controls[Play_controlsChatPos].setLable();
+
 }
 
 function Play_ChatBackgroundChange(showDialog) {

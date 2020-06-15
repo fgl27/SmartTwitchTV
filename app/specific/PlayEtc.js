@@ -113,7 +113,7 @@ function Play_SetChatSideBySide() {
         Play_chat_container.classList.remove('hide');
         if (Main_IsOn_OSInterface) OSInterface_mupdatesize(Play_isFullScreen);
 
-        Play_controls[Play_controlsChatPos].values = [0, 1];
+        Play_controls[Play_controlsChatPos].values = STR_CHAT_SIDE_ARRAY;
         Play_controls[Play_controlsChatSize].values = ["10%", "15%", "20%", "25%", "30%", "35%", "40%"];
         Play_controls[Play_controlsChatPos].defaultValue = Play_FullScreenPosition;
         Play_controls[Play_controlsChatSize].defaultValue = Play_FullScreenSize;
@@ -134,14 +134,12 @@ var Play_ChatFullScreenObj = {
     WasEnable: false,
     controlsPos: [],
     controlsPosDefault: 0,
-    controlsSize: [],
     controlsSizeDefault: 0,
 };
 
 function Play_StoreChatFullScreen() {
     Play_ChatFullScreenObj.controlsPos = Play_controls[Play_controlsChatSize].values;
     Play_ChatFullScreenObj.controlsPosDefault = Play_controls[Play_controlsChatSize].defaultValue;
-    Play_ChatFullScreenObj.controlsSize = Play_controls[Play_controlsChatPos].values;
     Play_ChatFullScreenObj.controlsSizeDefault = Play_controls[Play_controlsChatPos].defaultValue;
 
     Play_ChatFullScreenObj.WasEnable = Play_ChatEnable;
@@ -154,7 +152,7 @@ function Play_StoreChatFullScreen() {
 function Play_ResStoreChatFullScreen() {
     Play_controls[Play_controlsChatSize].values = Play_ChatFullScreenObj.controlsPos;
     Play_controls[Play_controlsChatSize].defaultValue = Play_ChatFullScreenObj.controlsPosDefault;
-    Play_controls[Play_controlsChatPos].values = Play_ChatFullScreenObj.controlsSize;
+    Play_SetChatPosString();
     Play_controls[Play_controlsChatPos].defaultValue = Play_ChatFullScreenObj.controlsSizeDefault;
     Play_controls[Play_controlsChatPos].setLable();
     Play_controls[Play_controlsChatSize].setLable();
@@ -1736,7 +1734,7 @@ function Play_MakeControls() {
     Play_controls[Play_controlsChatPos] = { //chat position
         icons: "chat-pos",
         string: STR_CHAT_POS,
-        values: [1, 2, 3, 4, 5, 6, 7, 8],
+        values: STR_CHAT_BASE_ARRAY,
         defaultValue: Play_ChatPositions,
         opacity: 0,
         isChat: true,
@@ -1801,7 +1799,6 @@ function Play_MakeControls() {
                 Play_ChatSize(true);
 
                 Play_controls[Play_controlsChatPos].defaultValue = Play_ChatPositions;
-
             } else {
 
                 Play_FullScreenSize = this.defaultValue;
