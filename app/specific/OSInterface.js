@@ -361,7 +361,7 @@ function OSInterface_getsavedtime() {
 //Android specific: false
 //returns PlayerCurrentPosition valued used to show vod/clip position and sync vod/clip chat and video
 function OSInterface_gettime() {
-    return Android.gettime();
+    return Main_IsOn_OSInterface ? Android.gettime() : 0;
 }
 
 //public void stopVideo(int who_called)

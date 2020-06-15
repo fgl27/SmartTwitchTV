@@ -901,22 +901,24 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 } else if (ScreenObj[x].screenType === 1) {//vod
                     Play_PreviewId = StreamInfo[7];
 
-                    //Check if the vod exist in the history
-                    var VodIdex = UserIsSet ? Main_history_Exist('vod', Play_PreviewId) : -1;
-                    offset = (VodIdex > -1) ?
-                        Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
+                    if (Settings_Obj_default('vod_dialog') < 2) {
+                        //Check if the vod exist in the history
+                        var VodIdex = UserIsSet ? Main_history_Exist('vod', Play_PreviewId) : -1;
+                        offset = (VodIdex > -1) ?
+                            Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
 
-                    //Check if the vod saved position is bigger then 0 means thisvod was already watched
-                    if (!offset) {
+                        //Check if the vod saved position is bigger then 0 means thisvod was already watched
+                        if (!offset) {
 
-                        VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
+                            VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
 
-                        if (VodIdex > -1) {
+                            if (VodIdex > -1) {
 
-                            offset =
-                                ((Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - (new Date(StreamInfo[12]).getTime())) / 1000);
+                                offset =
+                                    ((Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - (new Date(StreamInfo[12]).getTime())) / 1000);
+                            }
+
                         }
-
                     }
 
                 } else {//live

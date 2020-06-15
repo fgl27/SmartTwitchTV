@@ -251,6 +251,11 @@ function en_USLang() {
     STR_UP = " Press up";
     STR_HOLD_UP = " Hold up or key 2";
     STR_LIVE_FEED = "Live Feed";
+    STR_VOD_DIALOG = "VOD Start dialog";
+    STR_VOD_DIALOG_SUMMARY = 'Choose the default behavior, when playing a VOD if it\'s info is present on user history it can be played from where you last stop watching, if set this to "always from start" this behavior will also be applied to VOD preview';
+    STR_VOD_DIALOG_START = "Always from start";
+    STR_VOD_DIALOG_LAST = "Always from last stop";
+    STR_VOD_DIALOG_SHOW = "Always ask";
     STR_END_DIALOG_OPT = "Player end dialog options";
     STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
     STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";

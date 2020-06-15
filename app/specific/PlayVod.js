@@ -93,9 +93,10 @@ function PlayVod_Start() {
         PlayVod_SetStart();
         Play_showBufferDialog();
         var isFromVod = true;
+        var ShowDialog = Settings_Obj_default('vod_dialog');
+        PlayVod_VodOffset = 0;
 
-        if (!PlayVod_replay && !Main_vodOffset) {
-            PlayVod_VodOffset = 0;
+        if (!PlayVod_replay && !Main_vodOffset && ShowDialog < 2) {
 
             var VodIdex = AddUser_UserIsSet() ? Main_history_Exist('vod', Main_values.ChannelVod_vodId) : -1;
 
@@ -118,6 +119,14 @@ function PlayVod_Start() {
                         ((Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
                 }
 
+            }
+
+            if (!ShowDialog && PlayVod_VodOffset) {
+                Main_vodOffset = PlayVod_VodOffset;
+                Play_showWarningDialog(
+                    STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000),
+                    2000
+                );
             }
         }
 
@@ -304,7 +313,7 @@ function PlayVod_ResumeAfterOnline(forced) {
 function PlayVod_SaveOffset() {
     //Prevent setting it to 0 before it was used
     if (!Main_vodOffset) {
-        var vodOffset = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0;
+        var vodOffset = parseInt(OSInterface_gettime() / 1000);
         if (vodOffset > 0) {
             Main_setItem('Main_vodOffset', vodOffset);
             PlayVod_SaveVodIds(vodOffset);
@@ -552,7 +561,7 @@ function PlayVod_hidePanel() {
     PlayVod_addToJump = 0;
     Play_clearHidePanel();
     Play_ForceHidePannel();
-    if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
+    PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
     document.getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_previews_hide();
@@ -729,7 +738,7 @@ function PlayVod_jumpTime() {
 }
 
 function PlayVod_jumpStart(multiplier, duration_seconds) {
-    var currentTime = Main_IsOn_OSInterface ? (OSInterface_gettime() / 1000) : 0;
+    var currentTime = OSInterface_gettime() / 1000;
 
     Main_clearTimeout(PlayVod_SizeClearID);
     PlayVod_IsJumping = true;

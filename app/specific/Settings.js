@@ -81,6 +81,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "vod_dialog": {
+        "values": ["last", "ask", "start"],
+        "defaultValue": 1
+    },
     "auto_refresh_screen": {//Migrated to dialog
         "values": [
             'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
@@ -413,6 +417,7 @@ function Settings_SetSettings() {
     div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
     //Dialog settings
+    div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
     div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
     div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
@@ -485,6 +490,10 @@ function Settings_SetStrings() {
     // Player buffer title/summary
     Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
     Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
+
+    key = "vod_dialog";
+    Settings_DivOptionChangeLang(key, STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
+    Settings_value[key].values = [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START];
 
     key = "start_user_screen";
     Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
