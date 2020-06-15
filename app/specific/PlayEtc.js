@@ -1657,8 +1657,10 @@ function Play_MakeControls() {
         },
         setLable: function() {
             var string = (Play_isChatShown() ? STR_YES : STR_NO);
-            if (!Play_isFullScreen && !Play_MultiEnable) string = Play_isFullScreen ? STR_CHAT_SIDE : STR_CHAT_5050;
-            else if (Play_MultiEnable && Play_Multi_MainBig) string = STR_MULTI_MAIN_WINDOW;
+
+            if (!Play_isFullScreen && !Play_MultiEnable) {
+                string = PlayExtra_PicturePicture ? STR_CHAT_5050 : STR_CHAT_SIDE;
+            } else if (Play_MultiEnable && Play_Multi_MainBig) string = STR_MULTI_MAIN_WINDOW;
 
             Main_textContent('extra_button_' + this.position, '(' + string + ')');
         },

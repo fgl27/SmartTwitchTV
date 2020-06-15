@@ -265,7 +265,7 @@ function en_USLang() {
     STR_CHAT_VIDEO_MODE = "Video mode";
     STR_CHAT_SIDE_FULL = "Full screen";
     STR_CHAT_PP_SIDE_FULL = "Big plus small screen";
-    STR_CHAT_SIDE = "Smaller screen and chat";
+    STR_CHAT_SIDE = "Side by side, video and chat";
     STR_CHAT_5050 = "50/50 and chats";
     STR_SPEED = "Speed";
     STR_QUALITY = "Quality";
