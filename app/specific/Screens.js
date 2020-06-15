@@ -121,7 +121,7 @@ function Screens_init(key) {
     Main_values.Main_Go = key;
     ScreenObj[key].label_init();
 
-    Main_addEventListener("keydown", ScreenObj[key].key_fun);
+    if (Main_isScene1DocShown()) Main_addEventListener("keydown", ScreenObj[key].key_fun);
 
     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
