@@ -43,7 +43,11 @@ function Sidepannel_RemoveFocusFeed() {
 }
 
 function Sidepannel_isShowing() {
-    return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide') && Main_isScene1DocShown();
+    return Sidepannel_isShowingSide() && Main_isScene1DocShown();
+}
+
+function Sidepannel_isShowingSide() {
+    return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
 }
 
 function Sidepannel_UpdateThumbDiv() {

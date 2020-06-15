@@ -506,6 +506,10 @@ function Play_OpenChannel(PlayVodClip) {
         Main_values.Main_BeforeChannelisSet = true;
     }
 
+    if (Sidepannel_isShowingSide()) {
+        Sidepannel_Hide(false);
+    }
+
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_ChannelContent;
 
@@ -524,6 +528,10 @@ function Play_OpenChannel(PlayVodClip) {
 }
 
 function Play_OpenSearch(PlayVodClip) {
+    if (Sidepannel_isShowingSide()) {
+        Sidepannel_Hide(false);
+    }
+
     if (PlayVodClip === 1) {
         Play_ClearPP();
         Play_PreshutdownStream(true);
@@ -538,6 +546,10 @@ function Play_OpenSearch(PlayVodClip) {
 }
 
 function Play_OpenGame(PlayVodClip) {
+    if (Sidepannel_isShowingSide()) {
+        Sidepannel_Hide(false);
+    }
+
     if (Play_data.data[3] === '') {
         Play_clearHidePanel();
         Play_IsWarning = true;
