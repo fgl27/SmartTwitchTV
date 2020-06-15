@@ -29,7 +29,7 @@ function ChannelContent_init() {
     if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
     Main_innerHTML("label_last_refresh", '');
-    Main_addEventListener("keydown", ChannelContent_handleKeyDown);
+    if (Main_isScene1DocShown()) Main_addEventListener("keydown", ChannelContent_handleKeyDown);
     AddCode_PlayRequest = false;
 
     Main_innerHTML('top_lable', Main_values.Main_selectedChannelDisplayname);
