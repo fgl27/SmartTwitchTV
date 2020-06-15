@@ -2546,5 +2546,7 @@ function Screens_RefreshTimeout(key) {
 
 function Screens_Isfocused() {
     var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-    return doc ? Main_A_includes_B(doc.className, 'stream_thumbnail_focused') && Main_isScene1DocShown() : false;
+    return doc &&
+        Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
+        Main_isScene1DocShown();
 }

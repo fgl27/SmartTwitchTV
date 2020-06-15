@@ -655,3 +655,10 @@ function ChannelContent_RestoreThumb(play_data) {
         }
     }
 }
+
+function ChannelContent_Isfocused() {
+    return document.getElementById('channel_content_cell0_1') &&
+        Main_values.Main_Go === Main_ChannelContent &&
+        ChannelContent_cursorY &&
+        Main_isScene1DocShown();
+}

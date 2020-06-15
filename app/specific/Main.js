@@ -1976,7 +1976,7 @@ function Main_CheckStop() { // Called only by JAVA
     //Reset Screen img if hiden
     var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
     if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
-    else if (Main_values.Main_Go === Main_ChannelContent && ChannelContent_cursorY) {
+    else if (ChannelContent_Isfocused()) {
         Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
     }
 }
@@ -2075,7 +2075,7 @@ function Main_CheckAccessibility(skipRefresCheck) {
         else {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
-            if (Screens_Isfocused() || (Main_values.Main_Go === Main_ChannelContent && ChannelContent_cursorY) && !skipRefresCheck) {
+            if ((Screens_Isfocused() || ChannelContent_Isfocused()) && !skipRefresCheck) {
                 Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
                 Main_SwitchScreen();
             }
