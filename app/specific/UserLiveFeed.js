@@ -296,6 +296,9 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     UserLiveFeed_FeedAddFocus(true, pos, 1);
     UserLiveFeed_Showloading(false);
 
+    UserLiveFeedobj_SetLastRefresh(pos);
+    if (pos === UserLiveFeedobj_UserLivePos) Sidepannel_SetLastRefresh();
+
     if (ShowNotifications) {
         //The app just started or user change don't or background service was running nottify
         if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();

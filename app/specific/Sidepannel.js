@@ -357,6 +357,7 @@ function Sidepannel_StartFeed() {
     Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     Sidepannel_ShowFeed();
     Sidepannel_HideMain(true);
+    Sidepannel_SetLastRefresh();
 }
 
 function Sidepannel_ShowFeed() {
