@@ -116,6 +116,10 @@ function UserLiveFeedobj_loadDataError(pos) {
             if (UserLiveFeed_isFeedShow()) {
                 UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
             }
+
+            if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowing()) {
+                Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 2000);
+            }
         } else {
             UserLiveFeed_obj[pos].loadingMore = false;
             UserLiveFeed_obj[pos].dataEnded = true;
