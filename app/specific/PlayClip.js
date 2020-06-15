@@ -131,6 +131,8 @@ function PlayClip_Start() {
 }
 
 function PlayClip_updateVodInfo() {
+    if (!Main_values.ChannelVod_vodId) return;
+
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
     BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (PlayVod_loadingInfoDataTry * DefaultHttpGetTimeoutPlus), 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError);
 }
