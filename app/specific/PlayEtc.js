@@ -724,8 +724,7 @@ function Play_CheckPreview() {
         Main_Set_history('live', Play_data.data);
 
         //Side panel
-        if (Settings_Obj_default('show_side_player') &&
-            !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide')) {
+        if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingSide()) {
 
             //if side panel is showing, try to find if current stream is on side panel to keep player open
             if (Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
