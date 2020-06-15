@@ -443,6 +443,8 @@ function Play_getStreamData(channel_name) {
 }
 
 function Play_updateStreamInfoStart() {
+    if (!Play_data.data[14]) return;
+
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
     BasexmlHttpGet(
         theUrl,
@@ -502,7 +504,7 @@ function Play_updateStreamInfoStartValues(response) {
 }
 
 function Play_CheckFollow() {
-    if (AddUser_UserIsSet()) {
+    if (AddUser_UserIsSet() && Play_data.data[14]) {
         AddCode_PlayRequest = true;
         AddCode_Channel_id = Play_data.data[14];
         AddCode_CheckFollow();
