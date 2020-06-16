@@ -54,7 +54,7 @@ function UserLiveFeedobj_StartDefault(pos) {
 function UserLiveFeedobj_CheckToken() {
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) {
         if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
-            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
     }
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
