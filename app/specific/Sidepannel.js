@@ -99,14 +99,13 @@ function Sidepannel_UpdateThumb() {
 
 function Sidepannel_RestoreThumb(doc, play_data) {
     if (doc) {
-        var ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
-
-        if (Main_A_equals_B(ThumbId, play_data.data[14])) {
-            Play_PreviewURL = play_data.AutoUrl;
-            Play_PreviewResponseText = play_data.playlist;
-            Play_PreviewId = play_data.data[14];
-        }
+        return Main_A_equals_B(
+            JSON.parse(doc.getAttribute(Main_DataAttribute))[14],
+            play_data.data[14]
+        );
     }
+
+    return false;
 }
 
 var Sidepannel_PlayerViewSidePanelSet;

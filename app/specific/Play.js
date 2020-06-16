@@ -1618,7 +1618,7 @@ function Play_PlayEndStart(PlayVodClip) {
     Play_EndTextCounter = (!Play_EndSettingsCounter ? -2 : Play_EndSettingsCounter);
 
     Play_EndText(PlayVodClip);
-    Play_showEndDialog();
+    Play_showEndDialog(PlayVodClip);
 }
 
 function Play_CheckHostStart(error_410) {
@@ -1810,7 +1810,6 @@ function Play_handleKeyUpClear() {
 }
 
 function Play_Exit() {
-    Play_CheckPreview();
     Play_CleanHideExit();
     Play_hideChat();
     PlayExtra_ClearExtra();

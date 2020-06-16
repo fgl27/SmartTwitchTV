@@ -637,22 +637,29 @@ function PlayClip_OpenLiveStream() {
 
 function PlayClip_CheckPreview() {
 
-    if (PlayClip_isOn && !Play_isEndDialogVisible() && Settings_Obj_default('show_clip_player') &&
-        ScreenObj[Screens_Current_Key].screenType === 2 && !Sidepannel_isShowing() &&
+    if (PlayClip_isOn && !Play_isEndDialogVisible() && Main_values.Main_Go !== Main_ChannelContent &&
+        Settings_Obj_default('show_clip_player') && ScreenObj[Screens_Current_Key].screenType === 2 && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
 
-        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-        if (doc) {
-            var ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
-
-            if (Main_A_equals_B(ThumbId, ChannelClip_playUrl)) {
-                Play_PreviewURL = PlayClip_qualities[0].url;
-                Play_PreviewResponseText = PlayClip_qualities;
-                Play_PreviewId = ChannelClip_playUrl;
-            }
+        if (PlayClip_CheckPreviewClip()) {
+            Play_PreviewURL = PlayClip_qualities[0].url;
+            Play_PreviewResponseText = PlayClip_qualities;
+            Play_PreviewId = ChannelClip_playUrl;
         }
     }
 
+}
+
+function PlayClip_CheckPreviewClip() {
+
+    var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+    if (doc) {
+
+        return Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
+
+    }
+
+    return false;
 }
 
 function PlayClip_handleKeyDown(e) {

@@ -646,14 +646,14 @@ function ChannelContent_RestoreThumb(play_data) {
     var doc = document.getElementById('channel_content_cell0_1');
 
     if (doc && ChannelContent_cursorY) {
-        var ThumbId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
 
-        if (Main_A_equals_B(ThumbId, play_data.data[14])) {
-            Play_PreviewURL = play_data.AutoUrl;
-            Play_PreviewResponseText = play_data.playlist;
-            Play_PreviewId = play_data.data[14];
-        }
+        return Main_A_equals_B(
+            JSON.parse(doc.getAttribute(Main_DataAttribute))[14],
+            play_data.data[14]
+        );
     }
+
+    return false;
 }
 
 function ChannelContent_Isfocused() {

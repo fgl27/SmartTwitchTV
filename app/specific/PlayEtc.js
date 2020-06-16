@@ -281,8 +281,22 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_EndIconsAddFocus();
 }
 
-function Play_showEndDialog() {
-    Play_PreviewVideoEnded = true;
+function Play_showEndDialog(PlayVodClip) {
+    //Check if the video that ends is the same focused
+    if (PlayVodClip === 1) {//live
+
+        Play_PreviewVideoEnded = Play_CheckPreviewLive(true);
+
+    } else if (PlayVodClip === 2) {//vod
+
+        Play_PreviewVideoEnded = PlayVod_CheckPreviewVod();
+
+    } else if (PlayVodClip === 3) {
+
+        Play_PreviewVideoEnded = PlayClip_CheckPreviewClip();
+
+    }
+
     Main_ShowElement('dialog_end_stream');
     UserLiveFeed_SetHoldUp();
     Play_EndFocus = true;
@@ -723,35 +737,49 @@ function Play_CheckPreview() {
     if (Play_isOn && !Play_isEndDialogVisible() && Play_data.data.length > 0) {
         Main_Set_history('live', Play_data.data);
 
-        //Side panel
-        if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingSide()) {
+        if (Play_CheckPreviewLive()) {
+            Play_PreviewURL = Play_data.AutoUrl;
+            Play_PreviewResponseText = Play_data.playlist;
+            Play_PreviewId = Play_data.data[14];
+        }
+    }
+}
 
-            //if side panel is showing, try to find if current stream is on side panel to keep player open
-            if (Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
-                Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
-                Sidepannel_PosFeed = Sidepannel_Positions[Play_data.data[14]];
-                Sidepannel_AddFocusFeed(true);
-            }
+function Play_CheckPreviewLive(SkipSidepanelFocus) {
+    var restorePreview = false;
 
-            Sidepannel_RestoreThumb(
-                document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
+    //Side panel
+    if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingSide()) {
+
+        //if side panel is showing, try to find if current stream is on side panel to keep player open
+        if (!SkipSidepanelFocus && Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
+            Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
+            Sidepannel_PosFeed = Sidepannel_Positions[Play_data.data[14]];
+            Sidepannel_AddFocusFeed(true);
+        }
+
+        restorePreview = Sidepannel_RestoreThumb(
+            document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
+            Play_data
+        );
+
+        //live
+    } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowing()) {
+
+        if (Main_values.Main_Go === Main_ChannelContent) {
+            restorePreview = ChannelContent_RestoreThumb(Play_data);
+        } else if (ScreenObj[Screens_Current_Key].screenType === 0 && ScreenObj[Screens_Current_Key].posY > -1 &&
+            !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+
+            restorePreview = Sidepannel_RestoreThumb(
+                document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX),
                 Play_data
             );
 
-            //live
-        } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowing()) {
-
-            if (Main_values.Main_Go === Main_ChannelContent) {
-                ChannelContent_RestoreThumb(Play_data);
-            } else if (ScreenObj[Screens_Current_Key].screenType === 0 && ScreenObj[Screens_Current_Key].posY > -1 &&
-                !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
-                Sidepannel_RestoreThumb(
-                    document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX),
-                    Play_data
-                );
-            }
         }
     }
+
+    return restorePreview;
 }
 
 var Play_Oldaudio = 0;
@@ -1049,6 +1077,7 @@ function Play_handleKeyDown(e) {
                 Play_KeyReturn(false);
                 break;
             case KEY_STOP:
+                Play_CheckPreview();
                 Play_Exit();
                 break;
             case KEY_PLAY:
