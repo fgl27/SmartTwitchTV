@@ -186,15 +186,22 @@ function PlayVod_PosStart() {
         PlayVod_playlist = Play_PreviewResponseText;
 
         PlayVod_state = Play_STATE_PLAYING;
+
+        if (Play_PreviewOffset) Main_vodOffset = Play_PreviewOffset;
         PlayVod_onPlayer();
 
-        Chat_offset = parseInt(OSInterface_gettime() / 1000);
-        Chat_Init();
+        if (!Play_PreviewOffset) {
+
+            Chat_offset = parseInt(OSInterface_gettime() / 1000);
+            Chat_Init();
+            Play_getQualities(2, true);
+
+        }
+
         PlayVod_SetStart();
         Play_CheckIfIsLiveCleanEnd();
 
         PlayVod_SaveOffset();
-        Play_getQualities(2, true);
     }
 
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
@@ -877,18 +884,13 @@ function PlayVod_CheckIfIsLiveResult(response) {
 function PlayVod_CheckIfIsLiveStart() {
 
     if (!Main_IsOn_OSInterface || Play_PreviewId) PlayVod_OpenLiveStream();
-    else Play_CheckIfIsLiveStart('PlayVod_CheckIfIsLiveResult');
+    else if (Play_CheckLiveThumb()) Play_CheckIfIsLiveStart('PlayVod_CheckIfIsLiveResult');
 
 }
 
 function PlayVod_OpenLiveStream() {
     PlayVod_PreshutdownStream(true);
-    Main_OpenLiveStream(
-        UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-        UserLiveFeed_ids,
-        PlayVod_handleKeyDown,
-        !UserLiveFeed_CheckVod()
-    );
+    Play_OpenFeed(PlayVod_handleKeyDown);
 }
 
 function PlayVod_CheckPreview() {
@@ -1072,7 +1074,6 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (!UserLiveFeed_CheckVod()) PlayVod_OpenLiveStream();
                     else PlayVod_CheckIfIsLiveStart();
                 }
                 else PlayVod_showPanel(true);

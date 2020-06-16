@@ -88,15 +88,12 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].hide = UserLiveFeedobj_HideUserVod;
     UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].div = document.getElementById('user_vod_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].HasMore = true;
-    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].checkPreview = false;
 
     //User vod history
     UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].load = UserLiveFeedobj_UserVodHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].show = UserLiveFeedobj_ShowUserVodHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].hide = UserLiveFeedobj_HideUserVodHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].div = document.getElementById('user_vod_history_scroll');
-    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].checkPreview = false;
-    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].checkHistory = true;
 
     //User live
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].load = UserLiveFeedobj_CheckToken;
@@ -441,18 +438,29 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     if (add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() &&
         UserLiveFeed_CheckVod() && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview) {
+
         if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
 
             var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (doc) {
-                var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
 
-                if (!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) {
+                var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                var id;
+
+                if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) id = obj[7];
+                else id = obj[14];
+
+                if (!Play_PreviewId || !Main_A_equals_B(id, Play_PreviewId)) {
+
                     UserLiveFeed_CheckIfIsLiveStart();
+
                 } else if (Play_PreviewId) {
+
                     OSInterface_SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+
                 }
+
             }
 
         }
@@ -505,7 +513,7 @@ function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
 }
 
 var UserLiveFeed_CheckIfIsLiveResultThumb;
-
+var UserLiveFeed_PreviewOffset = 0;
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
@@ -521,21 +529,62 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Play_PreviewURL = StreamData.url;
                 Play_PreviewResponseText = StreamData.responseText;
                 Play_PreviewId = StreamInfo[14];
+                UserLiveFeed_PreviewOffset = 0;
+                var isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos;
 
                 if (!UserLiveFeed_CheckIfIsLiveResultThumb) {
+
                     var Rect = document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
                     OSInterface_SetPlayerViewFeedBottom(
                         Rect.bottom,
                         window.innerHeight
                     );
                     UserLiveFeed_CheckIfIsLiveResultThumb = true;
+
                 }
+
+                if (isVod) {//vod
+
+                    Play_PreviewId = StreamInfo[7];
+                    var UserIsSet = AddUser_UserIsSet();
+
+                    if (Settings_Obj_default('vod_dialog') < 2) {
+
+                        //Check if the vod exist in the history
+                        var VodIdex = UserIsSet ? Main_history_Exist('vod', Play_PreviewId) : -1;
+                        UserLiveFeed_PreviewOffset = (VodIdex > -1) ?
+                            Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
+
+                        //Check if the vod saved position is bigger then 0 means thisvod was already watched
+                        if (!UserLiveFeed_PreviewOffset) {
+
+                            VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
+
+                            if (VodIdex > -1) {
+
+                                UserLiveFeed_PreviewOffset =
+                                    ((Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - (new Date(StreamInfo[12]).getTime())) / 1000);
+                            }
+
+                        }
+                    }
+
+                } else Play_PreviewId = StreamInfo[14];
 
                 OSInterface_StartFeedPlayer(
                     Play_PreviewURL,
                     Play_PreviewResponseText,
-                    UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX])
+                    UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
+                    UserLiveFeed_PreviewOffset * 1000,
+                    isVod
                 );
+
+                if (UserLiveFeed_PreviewOffset) {
+                    Play_showWarningMidleDialog(
+                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(UserLiveFeed_PreviewOffset * 1000),
+                        2000
+                    );
+                }
 
             } else if (StreamData.status === 1 || StreamData.status === 403) {
 
@@ -561,13 +610,28 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 
     if (!Main_IsOn_OSInterface) return;
 
-    var doc = Play_CheckLiveThumb(false, true);
+    var obj = Play_CheckLiveThumb(false, true);
 
-    if (doc) {
+    if (obj) {
+
+        var id, token, link;
+
+        if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
+
+            id = obj[7];
+            token = Play_vod_token;
+            link = Play_vod_links;
+
+        } else {//live
+
+            id = obj[6];
+            token = Play_live_token;
+            link = Play_live_links;
+        }
 
         OSInterface_CheckIfIsLiveFeed(
-            Play_live_token.replace('%x', doc[6]),
-            Play_live_links.replace('%x', doc[6]),
+            token.replace('%x', id),
+            link.replace('%x', id),
             Settings_Obj_values("show_feed_player_delay"),
             "UserLiveFeed_CheckIfIsLiveResult",
             UserLiveFeed_FeedPosX,

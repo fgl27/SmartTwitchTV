@@ -115,6 +115,7 @@ public class PlayerActivity extends Activity {
     public int PP_PlayerBitrate = 3000000;
     public final int ExtraSmallPlayerBitrate = 4000000;
     public long mResumePosition;
+    public long mResumePositionSmallPlayer;
     public int mWho_Called = 1;
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
@@ -139,7 +140,7 @@ public class PlayerActivity extends Activity {
     public float PreviewOthersAudio = 0.3f;//window 0
     public float PreviewAudio = 1f;//window 0
     public Handler MainThreadHandler;
-    public Handler CurrentPositionHandler;
+    public Handler[] CurrentPositionHandler = new Handler[2];
     public Handler ExtraPlayerHandler;
     public String[][] ExtraPlayerHandlerResult = new String[25][100];
     public HandlerThread ExtraPlayerHandlerThread;
@@ -157,6 +158,7 @@ public class PlayerActivity extends Activity {
     public boolean warningShowing = false;
     public boolean WebviewLoaded = false;
     public long PlayerCurrentPosition = 0L;
+    public long SmallPlayerCurrentPosition = 0L;
     public boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
     public Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAccountPlus];
@@ -214,7 +216,8 @@ public class PlayerActivity extends Activity {
             onCreateReady = true;
 
             MainThreadHandler = new Handler(Looper.getMainLooper());
-            CurrentPositionHandler = new Handler(Looper.getMainLooper());
+            CurrentPositionHandler[0] = new Handler(Looper.getMainLooper());
+            CurrentPositionHandler[1] = new Handler(Looper.getMainLooper());
 
             ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
             ExtraPlayerHandlerThread.start();
@@ -336,7 +339,7 @@ public class PlayerActivity extends Activity {
     private void PreInitializePlayer(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
-        CurrentPositionHandler.removeCallbacksAndMessages(null);
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
         PlayerCurrentPosition = mResumePosition;
         lastSeenTrackGroupArray = null;
         initializePlayer(position);
@@ -413,7 +416,7 @@ public class PlayerActivity extends Activity {
         if (Who_Called > 1) GetCurrentPosition();
     }
 
-    private void initializeSmallPlayer(MediaSource NewMediaSource) {
+    private void initializeSmallPlayer(MediaSource NewMediaSource, Long resumePosition, boolean IsVod) {
         if (IsStopped) {
             monStop();
             return;
@@ -444,7 +447,7 @@ public class PlayerActivity extends Activity {
                         .build();
             }
 
-            player[4].addListener(new PlayerEventListenerSmall());
+            player[4].addListener(new PlayerEventListenerSmall(IsVod));
             player[4].addAnalyticsListener(new AnalyticsEventListenerSmall());
 
             PlayerView[4].setPlayer(player[4]);
@@ -455,18 +458,22 @@ public class PlayerActivity extends Activity {
 
         player[4].setMediaSource(
                 NewMediaSource,
-                C.TIME_UNSET);
+                IsVod && resumePosition > 0 ? resumePosition : C.TIME_UNSET);
 
         player[4].prepare();
 
         mediaSources[4] = NewMediaSource;
         player[4].setVolume(PreviewAudio);
+        SmallPlayerCurrentPosition = resumePosition;
 
         KeepScreenOn(true);
 
         if (PlayerView[4].getVisibility() != View.VISIBLE) {
             PlayerView[4].setVisibility(View.VISIBLE);
         }
+
+        //Player can only be accessed from main thread so start a "position listener" to pass the value to webview
+        if (IsVod) GetCurrentPositionSmall();
     }
 
     private void ClearSmallPlayer() {
@@ -474,8 +481,10 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "ClearSmallPlayer");
         }
 
+        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
         PlayerView[4].setVisibility(View.GONE);
+        SmallPlayerCurrentPosition = 0L;
 
         if (player[4] != null) {
             player[4].setPlayWhenReady(false);
@@ -557,7 +566,7 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "ClearPlayer position " + position);
         }
 
-        CurrentPositionHandler.removeCallbacksAndMessages(null);
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
         PlayerView[position].setVisibility(View.GONE);
         PlayerIsPlaying[position] = false;
@@ -966,15 +975,29 @@ public class PlayerActivity extends Activity {
     }
 
     private void GetCurrentPosition() {
-        CurrentPositionHandler.removeCallbacksAndMessages(null);
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
 
-        CurrentPositionHandler.postDelayed(() -> {
+        CurrentPositionHandler[0].postDelayed(() -> {
             if (player[mainPlayer] == null) {
-                CurrentPositionHandler.removeCallbacksAndMessages(null);
+                CurrentPositionHandler[0].removeCallbacksAndMessages(null);
                 PlayerCurrentPosition = 0L;
             } else {
                 PlayerCurrentPosition = player[mainPlayer].getCurrentPosition();
                 GetCurrentPosition();
+            }
+        }, 500);
+    }
+
+    private void GetCurrentPositionSmall() {
+        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
+
+        CurrentPositionHandler[1].postDelayed(() -> {
+            if (player[4] == null) {
+                CurrentPositionHandler[1].removeCallbacksAndMessages(null);
+                SmallPlayerCurrentPosition = 0L;
+            } else {
+                SmallPlayerCurrentPosition = player[4].getCurrentPosition();
+                GetCurrentPositionSmall();
             }
         }, 500);
     }
@@ -1684,12 +1707,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate) {
-            StartFeedPlayer(uri, masterPlaylistString, position);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public void SetFeedPosition(int position) {
             MainThreadHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]));
         }
@@ -1704,18 +1721,25 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartFeedPlayer(String uri, String masterPlaylistString, int position) {
+            StartFeedPlayer(uri, masterPlaylistString,  position, 0L, false);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod) {
             MainThreadHandler.post(() -> {
 
                 mediaSources[4] = Tools.buildMediaSource(
                         Uri.parse(uri),
                         mWebViewContext,
-                        1,
+                        isVod ? 2 : 1,
                         false,
                         masterPlaylistString,
                         userAgent
                 );
+
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]);
-                initializeSmallPlayer(mediaSources[4]);
+                initializeSmallPlayer(mediaSources[4], resumePosition, isVod);
 
             });
         }
@@ -1964,6 +1988,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public long gettime() {
             return PlayerCurrentPosition;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public long gettimepreview() {
+            return SmallPlayerCurrentPosition;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2538,7 +2568,7 @@ public class PlayerActivity extends Activity {
 
         hideLoading(5);
         hideLoading(position);
-        CurrentPositionHandler.removeCallbacksAndMessages(null);
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
         String WebViewLoad;
 
         if (MultiStreamEnable) {
@@ -2558,6 +2588,12 @@ public class PlayerActivity extends Activity {
     }
 
     private class PlayerEventListenerSmall implements Player.EventListener {
+
+        private final boolean IsVod;
+
+        private PlayerEventListenerSmall(boolean mIsVod) {
+            this.IsVod = mIsVod;
+        }
 
         @Override
         public void onPlaybackStateChanged(@Player.State int playbackState) {
@@ -2588,7 +2624,7 @@ public class PlayerActivity extends Activity {
                     if (player[4] == null || !player[4].isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounterSmall(Player_Lag);
+                    PlayerEventListenerCheckCounterSmall(Player_Lag, IsVod);
 
                 }, BUFFER_SIZE[1] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
 
@@ -2603,7 +2639,7 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
             PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounterSmall(Player_Erro);
+            PlayerEventListenerCheckCounterSmall(Player_Erro, IsVod);
 
             if (BuildConfig.DEBUG) {
                 Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e);
@@ -2614,17 +2650,32 @@ public class PlayerActivity extends Activity {
 
     }
 
-    public void PlayerEventListenerCheckCounterSmall(int fail_type) {
+    public void PlayerEventListenerCheckCounterSmall(int fail_type, boolean IsVod) {
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+
         //Pause so things run smother and prevent odd behavior during the checks
         if (player[4] != null) {
             player[4].setPlayWhenReady(false);
         }
 
+        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         PlayerCheckCounter[4]++;
-        if (PlayerCheckCounter[4] < 4)
-            initializeSmallPlayer(mediaSources[4]);
-        else {
+        mResumePositionSmallPlayer = 0L;
+
+        if (IsVod) {
+            // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
+            // is already gone and we already saved the correct mResumePositionSmallPlayer
+            if (PlayerCheckCounter[4] < 2 && player[4] != null) {
+
+                mResumePositionSmallPlayer = player[4].isCurrentWindowSeekable() ?
+                        Math.max(0, player[4].getCurrentPosition()) : C.TIME_UNSET;
+
+            }
+        }
+
+        if (PlayerCheckCounter[4] < 4) {
+            initializeSmallPlayer(mediaSources[4], mResumePositionSmallPlayer, IsVod);
+        } else {
             ClearSmallPlayer();
             LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
         }

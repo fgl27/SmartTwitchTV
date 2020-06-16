@@ -364,6 +364,13 @@ function OSInterface_gettime() {
     return Main_IsOn_OSInterface ? Android.gettime() : 0;
 }
 
+//public long gettimepreview()
+//Android specific: false
+//returns PlayerCurrentPosition valued used to show vod/clip position and sync vod/clip chat and video
+function OSInterface_gettimepreview() {
+    return Main_IsOn_OSInterface ? Android.gettimepreview() : 0;
+}
+
 //public void stopVideo(int who_called)
 //who_called = 0 live, 1 vod, 2 clip
 //Android specific: false
@@ -703,19 +710,19 @@ function OSInterface_PrepareForMulti(uri, masterPlaylistString) {
     Android.PrepareForMulti(uri, masterPlaylistString);
 }
 
-//public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate)
+//public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod)
 //uri =  the url of the playlist or the clip
 //masterPlaylistString = the stringify version of the url playlist content
 //position = position of the player on the screen
-//fullBitrate = if is side panel the player can use max Bitrate if not no
+//resumePosition = the postion to start the vod
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position) {
+function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod) {
     //TODO remove the try after some apps updates
     try {
-        Android.StartFeedPlayer(uri, masterPlaylistString, position);
+        Android.StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod);
     } catch (e) {
-        Android.StartFeedPlayer(uri, masterPlaylistString, position, false);
+        Android.StartFeedPlayer(uri, masterPlaylistString, position);
     }
 }
 

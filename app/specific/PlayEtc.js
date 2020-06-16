@@ -618,11 +618,28 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
         var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
         //prevent bad saved obj
-        if (!obj[14]) return null;
+        if (!obj[14]) {
 
-        if (!Play_isOn) return obj;
+            return null;
 
-        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
+        }
+
+        var isVodScreen = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos;
+
+        if ((!Play_isOn && !isVodScreen) || (!PlayVod_isOn && isVodScreen)) {
+
+            return obj;
+
+        }
+
+        if (isVodScreen) {
+
+            if (!PlayVod_isOn) return obj;
+            else if (Main_values.ChannelVod_vodId !== obj[7]) return obj;
+
+            error = STR_ALREDY_PLAYING;
+
+        } else if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
             error = STR_ALREDY_PLAYING;
 
@@ -630,17 +647,23 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
                 if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD;
                 else return obj;
+
             } else if (Play_MultiEnable) {
+
                 if (!Play_MultiIsAlredyOPen(obj[14])) return obj;
+
             } else if (Play_data.data[14] !== obj[14] && PlayExtra_data.data[14] !== obj[14]) return obj;
 
         } else {
 
             if (Play_MultiEnable) {
+
                 if (!Play_MultiIsAlredyOPen(obj[14])) return obj;
+
             } else if (Play_data.data[14] !== obj[14] && PlayExtra_data.data[14] !== obj[14]) return obj;
 
             error = STR_ALREDY_PLAYING;
+
         }
     }
 

@@ -291,6 +291,7 @@ function Play_Start() {
 
 var Play_PreviewURL = '';
 var Play_PreviewId = 0;
+var Play_PreviewOffset = 0;
 var Play_PreviewResponseText = '';
 var Play_PreviewCheckId = 0;
 var Play_PreviewVideoEnded = false;
@@ -301,13 +302,13 @@ function Play_CheckIfIsLiveStart(callback) {
     if (doc) {
         Play_showBufferDialog();
 
-        var selectedChannelDisplayname = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
         Play_PreviewCheckId = (new Date().getTime());
 
         OSInterface_getStreamDataAsync(
-            Play_live_token.replace('%x', selectedChannelDisplayname[6]),
-            Play_live_links.replace('%x', selectedChannelDisplayname[6]),
+            Play_live_token.replace('%x', obj[6]),
+            Play_live_links.replace('%x', obj[6]),
             callback,
             Play_PreviewCheckId,
             2,//Main player runs on 0 extra player on 1 the check on 2
@@ -367,6 +368,7 @@ function Play_CheckIfIsLiveCleanEnd() {
     Play_PreviewURL = '';
     Play_PreviewId = 0;
     Play_PreviewResponseText = '';
+    Play_PreviewOffset = 0;
 }
 
 function Play_CheckResume() {
@@ -1769,15 +1771,43 @@ function Play_OpenLiveFeedCheck() {
 
 function Play_OpenLiveFeed() {
     Play_SavePlayData();
-    UserLiveFeed_Hide(true);
-
     Main_values.Play_isHost = false;
-    Main_OpenLiveStream(
-        UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-        UserLiveFeed_ids,
-        Play_handleKeyDown,
-        !UserLiveFeed_CheckVod()
-    );
+
+    Play_OpenFeed(Play_handleKeyDown);
+}
+
+function Play_OpenFeed(keyfun) {
+
+    if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
+
+        if (Play_MultiEnable || PlayExtra_PicturePicture) {
+            Play_showWarningMidleDialog(STR_PP_VOD, 2500);
+            return;
+        }
+
+        UserLiveFeed_Hide(true);
+
+        Play_data = JSON.parse(JSON.stringify(Play_data_base));
+        Play_PreviewOffset = OSInterface_gettimepreview() / 1000;
+
+        if (!Play_PreviewOffset) Play_PreviewOffset = UserLiveFeed_PreviewOffset;
+
+        Main_OpenVodStart(
+            UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
+            UserLiveFeed_ids,
+            keyfun
+        );
+
+    } else {
+        UserLiveFeed_Hide(true);
+
+        Main_OpenLiveStream(
+            UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
+            UserLiveFeed_ids,
+            keyfun,
+            !UserLiveFeed_CheckVod()
+        );
+    }
 }
 
 function Play_RestorePlayData(error_410, Isforbiden) {

@@ -627,12 +627,7 @@ function PlayClip_CheckIfIsLiveStart() {
 
 function PlayClip_OpenLiveStream() {
     PlayClip_PreshutdownStream(true, true);
-    Main_OpenLiveStream(
-        UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-        UserLiveFeed_ids,
-        PlayClip_handleKeyDown,
-        !UserLiveFeed_CheckVod()
-    );
+    Play_OpenFeed(PlayClip_handleKeyDown);
 }
 
 function PlayClip_CheckPreview() {
@@ -788,7 +783,6 @@ function PlayClip_handleKeyDown(e) {
                     PlayClip_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (!UserLiveFeed_CheckVod()) PlayClip_OpenLiveStream();
                     else PlayClip_CheckIfIsLiveStart();
                 }
                 else PlayClip_showPanel();
