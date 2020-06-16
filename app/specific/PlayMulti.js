@@ -54,6 +54,11 @@ function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
             },
             2500
         );
+    } else if (Play_isOn && Play_MultiEnable && Play_MultiArray[pos].data.length > 0) {
+
+        //we fail but we still watching so update the time
+        Main_Set_history('live', Play_MultiArray[pos].data);
+
     }
 }
 
@@ -113,8 +118,12 @@ function Play_Multi_UnSetPanelDivsCheckChat() {
 function Play_Multi_UnSetPanel(shutdown) {
     Play_Multi_UnSetPanelDivs();
     for (var i = 0; i < 4; i++) {
-        if (Play_MultiArray[i].data.length > 0)
+
+        if (Play_MultiArray[i].data.length > 0) {
+
             Main_Set_history('live', Play_MultiArray[i].data);
+
+        }
 
         Play_MultiInfoReset(i);
     }
@@ -231,17 +240,25 @@ function Play_MultiHasOne() {
 }
 
 function Play_MultiStartPrestart(position) {
-    var doc = Play_CheckLiveThumb();
-    if (doc) {
+    var obj = Play_CheckLiveThumb();
+
+    if (obj) {
+
         position = ((position || position === 0) ? position : Play_MultiFirstClear());
+
         if (!Play_MultiIsFull()) {
+
             if (position > 2) Main_HideElement('dialog_multi_help');
+
         } else {
+
             Main_HideElement('dialog_multi_help');
             Play_data_old = JSON.parse(JSON.stringify(Play_MultiArray[position]));
+
         }
+
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
-        Play_MultiArray[position].data = doc;
+        Play_MultiArray[position].data = obj;
 
         Play_MultiStart(position);
 
@@ -249,14 +266,19 @@ function Play_MultiStartPrestart(position) {
 }
 
 function Play_MultiStart(pos) {
+
     if (Play_PreviewId) {
+
         Play_MultiStartQualitySucess(
             pos,
             Play_PreviewURL,
             Play_PreviewResponseText
         );
+
         UserLiveFeed_CheckIfIsLiveSTop();
+
         return;
+
     }
 
     Play_MultiArray[pos].resultId = (new Date().getTime());
@@ -331,7 +353,9 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
 }
 
 function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
+
     Play_MultiArray[pos].AutoUrl = theUrl;
+
     if (Play_MultiIsFull()) UserLiveFeed_Hide();
 
     OSInterface_StartMultiStream(pos, theUrl, playlist);
@@ -552,7 +576,7 @@ function Play_MultiSetpannelInfo() {
 }
 
 var Play_MultiDialogPos = 0;
-function Play_MultiSetUpdateDialog(doc) {
+function Play_MultiSetUpdateDialog(obj) {
     var pos;
     var extraText = Play_Multi_MainBig ? '_big' : '';
 
@@ -564,10 +588,10 @@ function Play_MultiSetUpdateDialog(doc) {
         Main_innerHTML('stream_dialog_multi_title' + extraText + pos, twemoji.parse(Play_MultiArray[i].data[2]));
     }
 
-    Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(doc[1], STR_USER_HOSTING) ? doc[1].split(STR_USER_HOSTING)[1] : doc[1]));
-    document.getElementById('stream_dialog_multiimg-1').src = doc[9];
-    Main_innerHTML('stream_dialog_multi_game-1', doc[3] === '' ? STR_SPACE : doc[3]);
-    Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(doc[2]));
+    Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]));
+    document.getElementById('stream_dialog_multiimg-1').src = obj[9];
+    Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE : obj[3]);
+    Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
     UserLiveFeed_Hide(true);
     Play_MultiDialogPos = 0;

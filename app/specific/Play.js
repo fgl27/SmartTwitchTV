@@ -442,20 +442,6 @@ function Play_getStreamData(channel_name) {
 
 }
 
-function Play_updateStreamInfoStart() {
-    if (!Play_data.data[14]) return;
-
-    var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(
-        theUrl,
-        (DefaultHttpGetTimeout * 2) + (Play_loadingInfoDataTry * DefaultHttpGetTimeoutPlus),
-        2,
-        null,
-        Play_updateStreamInfoStartValues,
-        Play_updateStreamInfoStartError
-    );
-}
-
 function Play_UpdateMainStreamDiv() {
     //Restore or set info panel
     Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[2], false, true));
@@ -492,6 +478,22 @@ function Play_UpdateMainStream(startChat, refreshInfo) {
     if (refreshInfo) Play_updateStreamInfoStart();
 }
 
+
+function Play_updateStreamInfoStart() {
+    if (!Play_data.data[14]) return;
+
+    var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
+
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (Play_loadingInfoDataTry * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        Play_updateStreamInfoStartValues,
+        Play_updateStreamInfoStartError
+    );
+}
+
 function Play_updateStreamInfoStartValues(response) {
     Play_CheckFollow();
 
@@ -501,14 +503,6 @@ function Play_updateStreamInfoStartValues(response) {
         Play_loadingInfoDataTry = 0;
         Play_updateVodInfo(response.stream.channel._id, response.stream._id, 0);
     }
-}
-
-function Play_CheckFollow() {
-    if (AddUser_UserIsSet() && Play_data.data[14]) {
-        AddCode_PlayRequest = true;
-        AddCode_Channel_id = Play_data.data[14];
-        AddCode_CheckFollow();
-    } else Play_hideFollow();
 }
 
 function Play_updateStreamInfoEnd(response) {
@@ -537,6 +531,14 @@ function Play_updateStreamInfoStartError() {
 
         }
     }
+}
+
+function Play_CheckFollow() {
+    if (AddUser_UserIsSet() && Play_data.data[14]) {
+        AddCode_PlayRequest = true;
+        AddCode_Channel_id = Play_data.data[14];
+        AddCode_CheckFollow();
+    } else Play_hideFollow();
 }
 
 function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
@@ -1792,8 +1794,10 @@ function Play_RestorePlayData(error_410, Isforbiden) {
 }
 
 function Play_SavePlayData() {
-    Play_data_old = JSON.parse(JSON.stringify(Play_data));
-    Main_Set_history('live', Play_data.data);
+    if (Play_data.data && Play_data.data.length > 0) {
+        Play_data_old = JSON.parse(JSON.stringify(Play_data));
+        Main_Set_history('live', Play_data.data);
+    }
 }
 
 function Play_RestorePlayDataValues() {

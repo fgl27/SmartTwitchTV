@@ -615,9 +615,12 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
         error = STR_STREAM_ERROR;
 
     if (doc) {
-        doc = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-        if (!Play_isOn) return doc;
+        //prevent bad saved obj
+        if (!obj[14]) return null;
+
+        if (!Play_isOn) return obj;
 
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
@@ -626,16 +629,16 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
             if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
 
                 if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD;
-                else return doc;
+                else return obj;
             } else if (Play_MultiEnable) {
-                if (!Play_MultiIsAlredyOPen(doc[14])) return doc;
-            } else if (Play_data.data[14] !== doc[14] && PlayExtra_data.data[14] !== doc[14]) return doc;
+                if (!Play_MultiIsAlredyOPen(obj[14])) return obj;
+            } else if (Play_data.data[14] !== obj[14] && PlayExtra_data.data[14] !== obj[14]) return obj;
 
         } else {
 
             if (Play_MultiEnable) {
-                if (!Play_MultiIsAlredyOPen(doc[14])) return doc;
-            } else if (Play_data.data[14] !== doc[14] && PlayExtra_data.data[14] !== doc[14]) return doc;
+                if (!Play_MultiIsAlredyOPen(obj[14])) return obj;
+            } else if (Play_data.data[14] !== obj[14] && PlayExtra_data.data[14] !== obj[14]) return obj;
 
             error = STR_ALREDY_PLAYING;
         }
@@ -1059,8 +1062,8 @@ function Play_handleKeyDown(e) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_MultiEnable) {
                         if (Play_MultiIsFull()) {
-                            var mdoc = Play_CheckLiveThumb();
-                            if (mdoc) Play_MultiSetUpdateDialog(mdoc);
+                            var obj1 = Play_CheckLiveThumb();
+                            if (obj1) Play_MultiSetUpdateDialog(obj1);
                         } else Play_MultiStartPrestart();
                     }
                     else {
@@ -1090,8 +1093,8 @@ function Play_handleKeyDown(e) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_MultiEnable) {
                         if (Play_MultiIsFull()) {
-                            var mdoc2 = Play_CheckLiveThumb();
-                            if (mdoc2) Play_MultiSetUpdateDialog(mdoc2);
+                            var obj2 = Play_CheckLiveThumb();
+                            if (obj2) Play_MultiSetUpdateDialog(obj2);
                         } else Play_MultiStartPrestart();
                     } else {
                         PlayExtra_KeyEnter();
