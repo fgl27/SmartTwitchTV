@@ -909,6 +909,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         sorting = Settings_Obj_default('live_feed_sort'),
         stream, id, mArray,
         i = 0,
+        liveObj = {},
         itemsCount = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
     response = response.streams;
@@ -962,8 +963,9 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 mArray = ScreensObj_LiveCellArray(stream);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
-                //Check if was live if not notificate
-                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id].hasOwnProperty(id)) {
+                //Check if the same bradcast was live if not notificati!
+                liveObj[mArray[7]] = 1;
+                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id].hasOwnProperty(mArray[7])) {
                     UserLiveFeed_NotifyLiveidObject.push({
                         name: mArray[1],
                         logo: mArray[9],
@@ -994,8 +996,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         //Check if the android service notification has end notifying before update things and show notifications on js side
         if (!OSInterface_Notification_end_time || ((new Date().getTime()) > OSInterface_Notification_end_time)) {
 
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] =
-                JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = liveObj;
 
             Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
 

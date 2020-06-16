@@ -257,11 +257,11 @@ public class NotificationService extends Service {
 
                                 game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
                                 isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
+                                id = obj.get("_id").getAsString();//Broadcast id
                                 obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
 
-                                if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
+                                if (obj.isJsonObject()) {
 
-                                    id = obj.get("_id").getAsString();
                                     currentLive.add(id);
 
                                     if (Notify && !oldLive.contains(id)) {
