@@ -295,10 +295,10 @@ function ChannelContent_loadDataSuccessFinish() {
     if (!ChannelContent_status) {
         ChannelContent_status = true;
         if (!ChannelContent_isoffline) ChannelContent_cursorY = 1;
-        ChannelContent_addFocus();
-        Main_SaveValues();
         Main_ShowElement('channel_content_scroll');
+        ChannelContent_addFocus();
         Main_HideLoadDialog();
+        Main_SaveValues();
     }
     ChannelContent_checkUser();
     Main_FirstLoad = false;
@@ -546,6 +546,7 @@ function ChannelContent_LoadPreview() {
 }
 
 function ChannelContent_LoadPreviewRestore() {
+
     var img = document.getElementById('channel_content_cell0_1_img');
     var Rect = img.parentElement.getBoundingClientRect();
 
