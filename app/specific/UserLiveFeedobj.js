@@ -118,6 +118,7 @@ function UserLiveFeedobj_loadDataError(pos) {
             }
 
             if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowing()) {
+                Main_HideWarningDialog();
                 Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
             }
         } else {
