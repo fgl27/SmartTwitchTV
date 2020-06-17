@@ -551,7 +551,7 @@ function ChannelContent_LoadPreviewRestore() {
     var Rect = img.parentElement.getBoundingClientRect();
 
     OSInterface_ScreenPlayerRestore(
-        Rect.top,
+        Rect.bottom,
         Rect.right,
         Rect.left,
         window.innerHeight,
@@ -612,7 +612,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
                     Play_PreviewURL,
                     Play_PreviewResponseText,
                     0,
-                    Rect.top,
+                    Rect.bottom,
                     Rect.right,
                     Rect.left,
                     window.innerHeight,

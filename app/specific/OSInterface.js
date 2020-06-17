@@ -742,9 +742,8 @@ function OSInterface_StartSidePanelPlayer(uri, masterPlaylistString) {
 }
 
 //public void SetPlayerViewSidePanel(int bottom, int web_height)
-//uri =  the url of the playlist or the clip
-//masterPlaylistString = the stringify version of the url playlist content
-//top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
+//bottom = the position from the bottom
+//web_height = the screen width size
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_SetPlayerViewFeedBottom(bottom, web_height) {
@@ -760,14 +759,14 @@ function OSInterface_SetPlayerViewFeedBottom(bottom, web_height) {
 //public void SetPlayerViewSidePanel(int top, int right, int left, int web_height)
 //uri =  the url of the playlist or the clip
 //masterPlaylistString = the stringify version of the url playlist content
-//top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
+//bottom, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_SetPlayerViewSidePanel(top, right, left, web_height) {
+function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
     //TODO remove the try after some apps updates
     try {
         Android.SetPlayerViewSidePanel(
-            top,
+            bottom,
             right,
             left,
             parseInt(web_height)
@@ -775,7 +774,7 @@ function OSInterface_SetPlayerViewSidePanel(top, right, left, web_height) {
     } catch (e) {}
 }
 
-//public void StartScreensPlayer(String uri, String masterPlaylistString, ResumePosition, float top, float right, float left, int web_height, int who_called)
+//public void StartScreensPlayer(String uri, String masterPlaylistString, ResumePosition, float bottom, float right, float left, int web_height, int who_called)
 //uri =  the url of the playlist or the clip
 //masterPlaylistString = the stringify version of the url playlist content
 //ResumePosition position to start the vod
@@ -783,38 +782,40 @@ function OSInterface_SetPlayerViewSidePanel(top, right, left, web_height) {
 //who_called 1 live 2 vod 3 clip
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartScreensPlayer(uri, masterPlaylistString, ResumePosition, top, right, left, web_height, who_called) {
+function OSInterface_StartScreensPlayer(uri, masterPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
     //TODO remove the try after some apps updates
     try {
         Android.StartScreensPlayer(
             uri,
             masterPlaylistString,
             ResumePosition,
-            top,
+            bottom,
             right,
             left,
             parseInt(web_height),
-            who_called
+            who_called,
+            Settings_Obj_default('preview_screen_sizes') === 1
         );
     } catch (e) {}
 }
 
-//public void StartScreensPlayer(String uri, String masterPlaylistString, int top, int right, int left, int web_height, int who_called)
+//public void StartScreensPlayer(float bottom, float right, float left, int web_height, int who_called, boolean bigger)
 //uri =  the url of the playlist or the clip
 //masterPlaylistString = the stringify version of the url playlist content
 //top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
 //who_called 1 live 2 vod 3 clip
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_ScreenPlayerRestore(top, right, left, web_height, who_called) {
+function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_called) {
     //TODO remove the try after some apps updates
     try {
         Android.ScreenPlayerRestore(
-            parseInt(top),
-            parseInt(right),
-            parseInt(left),
+            bottom,
+            right,
+            left,
             parseInt(web_height),
-            who_called
+            who_called,
+            Settings_Obj_default('preview_screen_sizes') === 1
         );
     } catch (e) {}
 }

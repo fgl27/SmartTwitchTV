@@ -53,6 +53,10 @@ var Settings_value = {
         "values": ['s', 'm', 'l', 'xl'],
         "defaultValue": 2
     },
+    "preview_screen_sizes": {//Migrated to dialog
+        "values": ['n', 'l'],
+        "defaultValue": 1
+    },
     "show_live_player": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -1169,6 +1173,7 @@ function Settings_DialogShowSmallPayer() {
     Settings_value.show_clip_player.values = array_no_yes;
     Settings_value.auto_clip_preview.values = array_no_yes;
 
+    Settings_value.preview_screen_sizes.values = STR_PREVIEW_SIZE_SCREEN_ARRAY;
     Settings_value.preview_sizes.values = STR_PREVIEW_SIZE_ARRAY;
 
     var obj = {
@@ -1213,6 +1218,12 @@ function Settings_DialogShowSmallPayer() {
             values: Settings_value.disable_feed_player_multi.values,
             title: STR_DISABLE_FEED_PLAYER_MULTI,
             summary: STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY
+        },
+        preview_screen_sizes: {
+            defaultValue: Settings_value.preview_screen_sizes.defaultValue,
+            values: Settings_value.preview_screen_sizes.values,
+            title: STR_PREVIEW_SIZE_SCREEN,
+            summary: STR_PREVIEW_SIZE_SCREEN_SUMMARY
         },
         preview_sizes: {
             defaultValue: Settings_value.preview_sizes.defaultValue,

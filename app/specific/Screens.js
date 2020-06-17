@@ -771,7 +771,7 @@ function Screens_LoadPreviewRestore(key) {
     var Rect = img.parentElement.getBoundingClientRect();
 
     OSInterface_ScreenPlayerRestore(
-        Rect.top,
+        Rect.bottom,
         Rect.right,
         Rect.left,
         window.innerHeight,
@@ -959,7 +959,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     Play_PreviewURL,
                     PreviewResponseText,
                     offset * 1000,
-                    Rect.top,
+                    Rect.bottom,
                     Rect.right,
                     Rect.left,
                     window.innerHeight,

@@ -1763,8 +1763,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void SetPlayerViewSidePanel(float top, float right, float left, int web_height) {
-            PlayerViewSidePanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
+        public void SetPlayerViewSidePanel(float bottom, float right, float left, int web_height) {
+            PlayerViewSidePanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, false);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1791,7 +1791,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartScreensPlayer(String uri, String masterPlaylistString, int ResumePosition,
-                                       float top, float right, float left, int web_height, int who_called) {
+                                       float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
             MainThreadHandler.post(() -> {
 
                 mediaSources[mainPlayer] = Tools.buildMediaSource(
@@ -1803,7 +1803,7 @@ public class PlayerActivity extends Activity {
                         userAgent
                 );
 
-                PlayerViewScreensPanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
+                PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
@@ -1824,14 +1824,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void ScreenPlayerRestore(int top, int right, int left, int web_height, int who_called) {
+        public void ScreenPlayerRestore(float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
             MainThreadHandler.post(() -> {
 
                 if (player[mainPlayer] != null) {
                     mWho_Called = 3 + who_called;
                     VideoWebHolder.bringChildToFront(VideoHolder);
 
-                    PlayerViewScreensPanel = Tools.BasePreviewLayout(top, right, left, web_height, ScreenSize);
+                    PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
                     PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
                 }
 

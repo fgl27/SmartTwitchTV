@@ -446,9 +446,12 @@ function en_USLang() {
     STR_PLAYER_LAG_ERRO = "Player unable to play do to lag";
     STR_PLAYER_ERROR = "Player unable to play do to player error";
     STR_PLAYER_ERROR_MULTI = ", try to lower small player bitrate value in settings";
-    STR_PREVIEW_SIZE = "Preview player size";
-    STR_PREVIEW_SIZE_SUMMARY = "Set the size of the preview player of the preview feed (the one that shows above live/vod/clip)";
+    STR_PREVIEW_SIZE = "Player preview player size";
+    STR_PREVIEW_SIZE_SUMMARY = "Set the size of the preview player of the preview feed (the one that shows only when playing a video)";
     STR_PREVIEW_SIZE_ARRAY = ["Small", "Medium", "Large", "Extra large"];
+    STR_PREVIEW_SIZE_SCREEN = "Screens preview player size";
+    STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Set the size of the preview player of the screens (the one that shows above live/vod/clip)";
+    STR_PREVIEW_SIZE_SCREEN_ARRAY = ["Thumbnail size", "Larger"];
     STR_SIDE_PANEL_PLAYER_DELAY = "Preview player delay";
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the preview start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
     STR_PREVIEW_VOLUME = "Preview player volume";
