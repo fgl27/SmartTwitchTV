@@ -1341,7 +1341,11 @@ public class PlayerActivity extends Activity {
         if (Tools.isConnectedOrConnecting(this)) {
 
             //Run on screen key and notification on a separated WebView
-            initializeWebViewKey();
+            if(!deviceIsTV) initializeWebViewKey();
+            else {
+                mWebViewKey = findViewById(R.id.WebViewKey);
+                mWebViewKey.setVisibility(View.GONE);
+            }
 
             mWebView.loadUrl(PageUrl);
             WebviewLoaded = true;
@@ -1526,12 +1530,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetKeysOpacity(int Opacity) {
+            if(deviceIsTV) return;
             MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_opacity(" + Opacity + ")"));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetKeysPosition(int Position) {
+            if(deviceIsTV) return;
             MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_position(" + Position + ")"));
         }
 

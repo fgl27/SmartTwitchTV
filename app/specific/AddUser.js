@@ -51,7 +51,7 @@ function AddUser_handleKeyDown(event) {
 var AddUser_inputFocusId;
 function AddUser_inputFocus() {
     Main_AddClass('scenefeed', 'avoidclicks');
-    Main_AddClass('scene_notify', 'avoidclicks');
+    Main_AddClass('scene_keys', 'avoidclicks');
     OSInterface_AvoidClicks(true);
     Main_removeEventListener("keydown", AddUser_handleKeyDown);
     Main_addEventListener("keydown", AddUser_KeyboardEvent);
@@ -71,7 +71,7 @@ function AddUser_removeEventListener() {
     if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
-    Main_RemoveClass('scene_notify', 'avoidclicks');
+    Main_RemoveClass('scene_keys', 'avoidclicks');
     OSInterface_AvoidClicks(false);
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);
