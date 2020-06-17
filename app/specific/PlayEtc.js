@@ -524,6 +524,7 @@ function Play_OpenChannel(PlayVodClip) {
         Sidepannel_Hide(false);
     }
 
+    Play_PreviewVideoEnded = false;
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_ChannelContent;
 
@@ -552,6 +553,7 @@ function Play_OpenSearch(PlayVodClip) {
     } else if (PlayVodClip === 2) PlayVod_PreshutdownStream(true);
     else if (PlayVodClip === 3) PlayClip_PreshutdownStream(true);
 
+    Play_PreviewVideoEnded = false;
     Main_values.Play_WasPlaying = 0;
     PlayVod_ProgresBarrUpdate(0, 0);
     Main_showScene1Doc();
@@ -571,6 +573,7 @@ function Play_OpenGame(PlayVodClip) {
         return;
     }
 
+    Play_PreviewVideoEnded = false;
     if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
         Main_values.Main_BeforeAgame = (Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) ? Main_values.Main_BeforeChannel : Main_values.Main_Go;
         Main_values.Main_BeforeAgameisSet = true;
