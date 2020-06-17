@@ -119,8 +119,8 @@ function Play_SetChatSideBySide() {
         Play_controls[Play_controlsChatSize].defaultValue = Play_FullScreenSize;
 
         Play_controls[Play_controlsChatPos].setLable();
+        Play_controls[Play_controlsChatPos].bottomArrows();
         Play_controls[Play_controlsChatSize].setLable();
-        Play_BottomArrows(Play_controlsChatPos);
         Play_BottomArrows(Play_controlsChatSize);
     }
 
@@ -155,8 +155,8 @@ function Play_ResStoreChatFullScreen() {
     Play_SetChatPosString();
     Play_controls[Play_controlsChatPos].defaultValue = Play_ChatFullScreenObj.controlsSizeDefault;
     Play_controls[Play_controlsChatPos].setLable();
+    Play_controls[Play_controlsChatPos].bottomArrows();
     Play_controls[Play_controlsChatSize].setLable();
-    Play_BottomArrows(Play_controlsChatPos);
     Play_BottomArrows(Play_controlsChatSize);
 
     Play_ChatEnable = Play_ChatFullScreenObj.WasEnable;
@@ -1836,9 +1836,20 @@ function Play_MakeControls() {
             }
 
             this.setLable();
+            this.bottomArrows();
         },
         setLable: function() {
             Main_textContent('controls_name_' + this.position, this.values[this.defaultValue]);
+        },
+        bottomArrows: function() {
+            var doc_up = document.getElementById("control_arrow_up_" + Play_controlsChatPos),
+                doc_down = document.getElementById("control_arrow_down" + Play_controlsChatPos);
+
+            doc_up.classList.remove('hide');
+            doc_down.classList.remove('hide');
+
+            doc_up.style.opacity = "1";
+            doc_down.style.opacity = "1";
         },
     };
 

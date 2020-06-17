@@ -1513,6 +1513,7 @@ function Play_SetChatPosString() {
 
     }
     Play_controls[Play_controlsChatPos].setLable();
+    Play_controls[Play_controlsChatPos].bottomArrows();
 
 }
 
