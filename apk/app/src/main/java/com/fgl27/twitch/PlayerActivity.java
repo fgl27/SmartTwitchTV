@@ -58,8 +58,11 @@ import java.util.ArrayList;
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
 
-    public static final String PageUrl = "file:///android_asset/app/index.html";
+    public final String PageUrl = "file:///android_asset/app/index.html";
     //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+
+    public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
+    //public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
 
     public final int DefaultDelayPlayerCheck = 8000;
     public final int PlayerAccount = 4;
@@ -124,6 +127,7 @@ public class PlayerActivity extends Activity {
     public Handler[] DataResultHandler = new Handler[PlayerAccount];
     public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccount];
     public WebView mWebView;
+    public WebView mWebViewKey;
     public boolean PicturePicture;
     public boolean deviceIsTV;
     public boolean MultiStreamEnable;
@@ -157,6 +161,7 @@ public class PlayerActivity extends Activity {
     public long PingErrorCounter = 0L;
     public boolean warningShowing = false;
     public boolean WebviewLoaded = false;
+    public boolean mWebViewKeyIsShowing = false;
     public long PlayerCurrentPosition = 0L;
     public long SmallPlayerCurrentPosition = 0L;
     public boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
@@ -1011,9 +1016,8 @@ public class PlayerActivity extends Activity {
     }
 
     private boolean CheckService() {
-        if (!deviceIsTV || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
-            //the service only start on TV devices
-            if (deviceIsTV) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
             return false;
         }
 
@@ -1335,11 +1339,61 @@ public class PlayerActivity extends Activity {
         });
 
         if (Tools.isConnectedOrConnecting(this)) {
+
+            //Run on screen key and notification on a separated WebView
+            initializeWebViewKey();
+
             mWebView.loadUrl(PageUrl);
             WebviewLoaded = true;
         } else ShowNoNetworkWarning();
 
         mWebView.requestFocus();
+    }
+
+    private void initializeWebViewKey() {
+        mWebViewKey = findViewById(R.id.WebViewKey);
+        mWebViewKey.setBackgroundColor(Color.TRANSPARENT);
+
+        if (BuildConfig.DEBUG) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+
+        WebSettings websettings = mWebViewKey.getSettings();
+
+        websettings.setJavaScriptEnabled(true);
+        websettings.setDomStorageEnabled(true);
+        websettings.setAllowFileAccess(true);
+        websettings.setAllowContentAccess(true);
+        websettings.setAllowFileAccessFromFileURLs(true);
+        websettings.setAllowUniversalAccessFromFileURLs(true);
+        websettings.setUseWideViewPort(true);
+        websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
+        mWebViewKey.clearCache(true);
+        mWebViewKey.clearHistory();
+
+        mWebViewKey.addJavascriptInterface(new WebAppInterface(this), "Android");
+
+        //When we request a full url change on autentication key request
+        //prevent open it on a external browser
+        mWebViewKey.setWebViewClient(new WebViewClient(){
+
+            @SuppressWarnings({"deprecation", "RedundantSuppression"})
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
+            @TargetApi(Build.VERSION_CODES.N)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return false;
+            }
+
+        });
+
+        mWebViewKeyIsShowing = true;
+        mWebViewKey.loadUrl(KeyPageUrl);
     }
 
     //TO understand better the use of it WebAppInterface functon is used check the file app/specific/Android.js
@@ -1440,6 +1494,55 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void AvoidClicks(boolean Avoid) {
+            if(deviceIsTV) return;
+
+            MainThreadHandler.post(() -> {
+                if (Avoid) {
+                    mWebViewKeyIsShowing = false;
+                    mWebViewKey.setVisibility(View.GONE);
+                    mWebView.requestFocus();
+                } else {
+                    mWebViewKeyIsShowing = true;
+                    mWebViewKey.setVisibility(View.VISIBLE);
+                    mWebViewKey.requestFocus();
+                }
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void initbodyClickSet() {
+            if(deviceIsTV) return;
+
+            MainThreadHandler.post(() -> {
+                mWebViewKeyIsShowing = true;
+                mWebViewKey.setVisibility(View.VISIBLE);
+                mWebViewKey.requestFocus();
+                mWebViewKey.loadUrl("javascript:Extrapage.initbodyClickSet()");
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetKeysOpacity(int Opacity) {
+            MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_opacity(" + Opacity + ")"));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetKeysPosition(int Position) {
+            MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_position(" + Position + ")"));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean WebViewKeyIsShowing() {
+            return deviceIsTV || mWebViewKeyIsShowing;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void showKeyboardFrom() {
             MainThreadHandler.post(() -> Tools.showKeyboardFrom(mWebViewContext, mWebView));
         }
@@ -1452,20 +1555,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public long GetNotificationTime() {
-            return Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String GetNotificationOld() {
-            return Tools.getString(Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetNotificationOld(String list) {
-            appPreferences.put(Constants.PREF_NOTIFY_OLD_LIST, list);
+        public void RunNotificationService() {
+            MainThreadHandler.post(() -> Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, mWebViewContext));
         }
 
         @SuppressWarnings("unused")//called by JS

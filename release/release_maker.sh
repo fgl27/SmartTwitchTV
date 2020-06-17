@@ -154,6 +154,18 @@ js_jshint() {
 		cp -rf "$mainfolder"/release/master.js "$mainfolder"/release/githubio/js/master_uncompressed.js;
 		js-beautify -q "$mainfolder"/release/githubio/js/master_uncompressed.js -o "$mainfolder"/release/githubio/js/master_uncompressed.js
 	fi;
+
+	jsh_check="$(jshint "$mainfolder"/app/Extrapage/Extrapage.js)";
+	if [ ! -z "$jsh_check" ]; then
+		echo -e "${bldred}	JSHint erros or warnings found on Extrapage:\\n"
+		echo -e "${bldred}	$jsh_check"
+		echo -e "\\n${bldred}	Fix the problems and try the release maker again\\n"
+		exit;
+	else
+		echo -e "${bldblu}JSHint Test finished no errors or warnings found on Extrapage\\n"
+		cp -rf "$mainfolder"/release/master.js "$mainfolder"/release/githubio/js/master_uncompressed.js;
+		js-beautify -q "$mainfolder"/release/githubio/js/master_uncompressed.js -o "$mainfolder"/release/githubio/js/master_uncompressed.js
+	fi;
 }
 
 master_start=$(echo "$a" | sed '/APISTART/,/APIMID/!d;/APIMID/d;/APISTART/d' release/api.js);
@@ -183,12 +195,21 @@ old='<!-- httpmin-->'
 new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/master.js" defer></script>'
 sed --in-place "s%$old%$new%g" release/index.min.html
 
+cp -rf app/Extrapage/index.html release/extrapageindex.min.html
+sed -i ':a;N;$!ba;s/jsstart.*jsend/httpmin/g' release/extrapageindex.min.html
+old='<!-- httpmin-->'
+new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/Extrapage.js" defer></script>'
+sed --in-place "s%$old%$new%g" release/extrapageindex.min.html
+cp -rf app/Extrapage/Extrapage.js release/githubio/js/Extrapage.js;
+
 echo -e "\\n${bldgrn}Compressing Start\\n";
 
 # run the cleans/compress tools
 
 if [ "$canhtmlminifier" == 1 ]; then
 	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true release/index.min.html -o release/index.min.html
+
+	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true release/extrapageindex.min.html -o release/extrapageindex.min.html
 fi;
 
 echo "" > release/master.js;
@@ -210,6 +231,7 @@ if [ "$canuglifyjs" == 1 ]; then
 	echo "$master_end" >> master.js;
 	echo -e "${bldblu}	uglifyjs  master.js";
 	uglifyjs master.js -c -m toplevel -o master.js;
+	uglifyjs githubio/js/Extrapage.js -c -m toplevel -o githubio/js/Extrapage.js;
 fi;
 
 echo -e "\\n${bldgrn}Compression done\\n";

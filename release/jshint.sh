@@ -64,6 +64,16 @@ js_jshint() {
 	else
 		echo -e "${bldblu}	JSHint Test finished no errors or warnings found"
 	fi;
+
+	jsh_check="$(jshint "$mainfolder"/app/Extrapage/Extrapage.js)";
+	if [ ! -z "$jsh_check" ]; then
+		echo -e "${bldred}	JSHint erros or warnings found on Extrapage:\\n"
+		echo -e "${bldred}	$jsh_check"
+		echo -e "\\n${bldred}	Fix the problems and try the release maker again\\n"
+		exit;
+	else
+		echo -e "${bldblu}	JSHint Test finished no errors or warnings found on Extrapage"
+	fi;
 }
 
 if which 'jshint' >/dev/null ; then

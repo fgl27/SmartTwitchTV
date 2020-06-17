@@ -110,6 +110,7 @@ function ChatLiveControls_inputFocus() {
                 Main_addEventListener("keydown", ChatLiveControls_KeyboardEvent);
                 //Set the avoidclicks only after focus
                 Main_AddClass('scene_notify', 'avoidclicks');
+                OSInterface_AvoidClicks(true);
                 Main_AddClass('scenefeed', 'avoidclicks');
             },
             200,
@@ -135,6 +136,7 @@ function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
     Main_RemoveClass('scene_notify', 'avoidclicks');
+    OSInterface_AvoidClicks(false);
     Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
     Main_ChatLiveInput.blur();
     ChatLiveControls_removeEventListener();

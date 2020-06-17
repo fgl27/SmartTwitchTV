@@ -137,10 +137,6 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "live_notification_time": {//Migrated to dialog
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        "defaultValue": 4
-    },
     "global_font_offset": {//Migrated to dialog
         "values": [-3, -2, -1, 0, 1, 2, 3],
         "defaultValue": 4
@@ -547,8 +543,6 @@ function Settings_SetDefautls() {
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-    UserLiveFeed_Notify = Settings_Obj_default("live_notification");
-    Settings_NotifyTimeout();
     Settings_notification_background();
     Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
@@ -628,11 +622,8 @@ function Settings_SetarrowsKey(key) {
 function Settings_SetDefault(position) {
 
     if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-    else if (position === "live_notification") {
-        UserLiveFeed_Notify = Settings_Obj_default("live_notification");
-        Settings_notification_background();
-    } else if (position === "live_notification_background") Settings_notification_background();
-    else if (position === "live_notification_time") Settings_NotifyTimeout();
+    else if (position === "live_notification") Settings_notification();
+    else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "ping_warn") Settings_SetPingWarning();
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
@@ -664,16 +655,16 @@ function Settings_SetDefault(position) {
 }
 
 function Settings_notification_background() {
-    UserLiveFeed_Notify_Background = Settings_Obj_default("live_notification_background");
-    OSInterface_upNotificationState(UserLiveFeed_Notify_Background === 1 && UserLiveFeed_Notify === 1);
+    OSInterface_upNotificationState(Settings_Obj_default("live_notification_background") === 1 && Settings_Obj_default("live_notification") === 1);
+}
+
+function Settings_notification() {
+    if (!Settings_Obj_default("live_notification")) OSInterface_StopNotificationService();
+    Settings_notification_background();
 }
 
 function Settings_SetPingWarning() {
     OSInterface_Settings_SetPingWarning(Settings_value.ping_warn.defaultValue === 1);
-}
-
-function Settings_NotifyTimeout() {
-    UserLiveFeed_NotifyTimeout = Settings_Obj_values("live_notification_time") * 1000;
 }
 
 function Settings_PP_Workaround() {
@@ -681,26 +672,11 @@ function Settings_PP_Workaround() {
 }
 
 function Settings_DpadOpacity() {
-    if (!Main_IsOn_OSInterface) return;
-    Main_clearHideButtons();
-    Main_setHideButtons();
-    Main_scenekeysDoc.style.opacity = Settings_Obj_default("dpad_opacity") * 0.05;
+    OSInterface_SetKeysOpacity(Settings_Obj_default("dpad_opacity"));
 }
 
-var Settings_DpadPOsitions = [
-    [6, 0],
-    [6, 44],
-    [63, 44],
-    [63, 0]
-];
-
 function Settings_DpadPOsition() {
-    if (!Main_IsOn_OSInterface) return;
-    Settings_DpadOpacity();
-    Main_clearHideButtons();
-    Main_setHideButtons();
-    Main_scenekeysPositionDoc.style.right = Settings_DpadPOsitions[Settings_Obj_default("dpad_position")][0] + "%";
-    Main_scenekeysPositionDoc.style.bottom = Settings_DpadPOsitions[Settings_Obj_default("dpad_position")][1] + "%";
+    OSInterface_SetKeysPosition(Settings_Obj_default("dpad_position"));
 }
 
 function Settings_SetAnimations() {
@@ -715,7 +691,6 @@ function Settings_SetAnimations() {
             'animate_height_transition',
             'side_panel_holder_ani',
             'scenefeed_background',
-            'user_feed_notify',
             'side_panel_fix',
             'side_panel_movel',
             'side_panel'
@@ -1258,31 +1233,21 @@ function Settings_DialogShowNotification() {
     Settings_value.live_notification.values = [STR_NO, STR_YES];
     Settings_value.live_notification_background.values = [STR_NO, STR_YES];
 
-    var obj = {};
-
-    obj.live_notification = {
-        defaultValue: Settings_value.live_notification.defaultValue,
-        values: Settings_value.live_notification.values,
-        title: STR_NOW_LIVE_SHOW,
-        summary: null
-    };
-
-    if (Main_isTV || !Main_IsOn_OSInterface) {
-
-        obj.live_notification_background = {
+    var obj = {
+        live_notification: {
+            defaultValue: Settings_value.live_notification.defaultValue,
+            values: Settings_value.live_notification.values,
+            title: STR_NOW_LIVE_SHOW,
+            summary: null
+        },
+        live_notification_background: {
             defaultValue: Settings_value.live_notification_background.defaultValue,
             values: Settings_value.live_notification_background.values,
             title: STR_NOW_BACKGROUND,
             summary: null
-        };
-    }
-
-    obj.live_notification_time = {
-        defaultValue: Settings_value.live_notification_time.defaultValue,
-        values: Settings_value.live_notification_time.values,
-        title: STR_NOW_DURATION,
-        summary: STR_NOW_DURATION_SUMMARY
+        }
     };
+
 
     Settings_DialogShow(obj, STR_NOTIFICATION_OPT);
 }

@@ -52,6 +52,7 @@ var AddUser_inputFocusId;
 function AddUser_inputFocus() {
     Main_AddClass('scenefeed', 'avoidclicks');
     Main_AddClass('scene_notify', 'avoidclicks');
+    OSInterface_AvoidClicks(true);
     Main_removeEventListener("keydown", AddUser_handleKeyDown);
     Main_addEventListener("keydown", AddUser_KeyboardEvent);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
@@ -71,6 +72,7 @@ function AddUser_removeEventListener() {
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
     Main_RemoveClass('scene_notify', 'avoidclicks');
+    OSInterface_AvoidClicks(false);
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);
         Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
@@ -187,8 +189,6 @@ function AddUser_RestoreUsers() {
 
         if (Main_IsOn_OSInterface) {
             OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
-            Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
         }
 
         AddUser_UpdateSidepanel();
@@ -379,11 +379,7 @@ function AddUser_UserMakeOne(position) {
     Users_init();
 
     if (Main_IsOn_OSInterface) {
-        //TODO remove the try after some app updates
-        try {
-            OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
-        } catch (e) {}
-        Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
+        OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
     }
 
     //Reset user emotes on chage

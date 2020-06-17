@@ -153,6 +153,8 @@ public class NotificationService extends Service {
         // !isRunning resume/stop scenario change the value
         // During !isRunning user may change
         if (isRunning || UserId == null) {
+            //After a refresh of user live feed js will call the service to refresh notifications
+            if (UserId != null) InitHandler(0);
             return;
         }
 
@@ -181,7 +183,7 @@ public class NotificationService extends Service {
 
         mRegisterReceiver();
 
-        InitHandler(10 * 1000);
+        InitHandler(5 * 1000);
     }
 
     private void InitHandler(int timeout) {
@@ -351,8 +353,10 @@ public class NotificationService extends Service {
 
         if (LayoutWidth > 0) {
             TextView now_live = layout.findViewById(R.id.now_live);
+
             now_live.setTextSize(textSizeBig);
             name.setTextSize(textSizeBig);
+
             title.setTextSize(textSizeSmall);
             game.setTextSize(textSizeSmall);
         }
@@ -512,14 +516,15 @@ public class NotificationService extends Service {
         WindowManager window = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         if (window != null) {
             Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
-            float width = ScreenSize.y / 100.0f;
-            int widthInt = ScreenSize.y / 100;
+            float width = ScreenSize.x / 100.0f;
+            int NewLayoutWidth = (int) (width * 45.0f);
 
-            if (LayoutWidth != (widthInt * 70)) {
-                LayoutWidth = widthInt * 70;
-                ImageSize = widthInt * 16;
-                textSizeSmall = 1.05f * width;
-                textSizeBig = 1.2f * width;
+            if (LayoutWidth != NewLayoutWidth) {
+                LayoutWidth = NewLayoutWidth;
+                ImageSize = (int) (width * 8.0f);
+
+                textSizeSmall = 0.6f * width;
+                textSizeBig = 0.65f * width;
             }
         }
     }

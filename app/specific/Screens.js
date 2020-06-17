@@ -673,7 +673,6 @@ function Screens_loadDataSuccessFinishEnd() {
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_CheckAccessibility(true);
     //Make sure the service is stop
-    OSInterface_StopNotificationService();
     //Main_Log('Screens_loadDataSuccessFinishEnd');
 }
 

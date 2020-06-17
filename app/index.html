@@ -18,10 +18,6 @@
     <link rel="preconnect" href="https://api.betterttv.net">
     <link rel="dns-prefetch" href="https://api.betterttv.net">
     <link rel="preconnect" href="https://badges.twitch.tv">
-    <link rel="dns-prefetch" href="https://clips.twitch.tv">
-    <link rel="preconnect" href="https://clips.twitch.tv">
-    <link rel="dns-prefetch" href="https://usher.ttvnw.net">
-    <link rel="preconnect" href="https://usher.ttvnw.net">
     <link rel="stylesheet" href="https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css">
     <title>SmartTV Twitch</title>
     <link rel="shortcut icon" type="image/png"
@@ -71,7 +67,7 @@
         }
 
         div.screen_size,
-        div.scene_notify,
+        div.scene_keys,
         div.screens {
             position: relative;
             background-color: rgba(0, 0, 0, 0);
@@ -91,25 +87,9 @@
             z-index: 3;
         }
 
-        div.scene_notify {
+        div.scene_keys {
             transform: translateY(-200%);
             z-index: 100;
-        }
-
-        div.scenekeys {
-            width: 57vh;
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            padding-bottom: 6.5vh;
-            padding-right: 0.5vh;
-            z-index: 101;
-        }
-
-        div.scenekeysholder {
-            display: block;
-            text-align: center;
-            width: 100%;
         }
 
         .avoidclicks {
@@ -118,10 +98,6 @@
 
         .dontavoidclicks {
             pointer-events: all;
-        }
-
-        .icon_key {
-            font-size: 9vh !important;
         }
 
         .feed_screen_input {
@@ -678,26 +654,6 @@
         div.scenefeed_background {
             transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             background: rgba(0, 0, 0, 0.75);
-        }
-
-        div.user_feed_notify {
-            z-index: 3;
-            position: absolute;
-            top: 2%;
-            right: 0.1%;
-            width: 43%;
-            height: 15%;
-            background: #000000;
-            border: 0.06em solid;
-            border-color: #ebebeb !important;
-            transform: translateY(0);
-            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
-            will-change: transform;
-            font-size: 105%;
-        }
-
-        div.user_feed_notify_hide {
-            transform: translateY(-120%);
         }
 
         div.user_feed {
@@ -1529,7 +1485,6 @@
         }
 
         div.dialog_end_icons_start,
-        div.dialog_click,
         div.dialog_end_icons {
             font-size: 3.25vh;
             vertical-align: top;
@@ -2045,13 +2000,6 @@
             height: 100%;
         }
 
-        div.side_panel_not {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            color: #FFFFFF;
-        }
-
         div.multi_dialog_div,
         div.div_panel_pp,
         div.side_panel_div {
@@ -2191,8 +2139,6 @@
             font-size: 100%;
         }
 
-        div.notification_name,
-        div.notification_game,
         div.side_panel_new_title,
         div.side_panel_new_game {
             width: 100%;
@@ -2206,27 +2152,6 @@
         }
 
         div.side_panel_new_game {
-            font-family: 'Roboto';
-            font-size: 68%;
-        }
-
-        div.notification_name {
-            font-size: 92%;
-        }
-
-        div.notification_title {
-            width: 100%;
-            text-align: left;
-            font-family: 'Roboto-Bold';
-            overflow: hidden;
-            font-size: 65%;
-            word-wrap: break-word;
-            max-height: 2.35em;
-            white-space: normal;
-            padding-left: 1%;
-        }
-
-        div.notification_game {
             font-family: 'Roboto';
             font-size: 68%;
         }
@@ -3775,63 +3700,8 @@
             </div>
         </div>
     </div>
-    <div id="scene_notify" class="scene_notify">
-        <div id="user_feed_notify" class="user_feed_notify user_feed_notify_hide hide"
-            style="transform: translateY(-120%);">
-            <div id="user_feed_notify_content" class="side_panel_not">
-                <div id="user_feed_notify_main" class="class_bold" style="text-align: center;"></div>
-                <div>
-                    <div id="user_feed_notify_img_holder" class="side_panel_iner_div1"></div>
-                    <div class="notification_holder">
-                        <div id="user_feed_notify_name" class="notification_name"></div>
-                        <div id="user_feed_notify_title" class="notification_title"></div>
-                        <div id="user_feed_notify_game" class="notification_game"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="dialog_warning_extra" class="screens hide" style="z-index: 99; background: rgba(0, 0, 0, 0.75);">
-            <div class="about_dialogs" style="width: 96%; margin-left: 2%;">
-                <div id="dialog_warning_extra_text" class="about_text class_bold" style="font-size: 3vh;"></div>
-            </div>
-        </div>
-        <div id="scenekeys" class="hide dontavoidclicks">
-            <div id="scenekeys_position" class="scenekeys">
-                <div class="scenekeysholder">
-                    <div class="dialog_click" style="padding-bottom: 3vh;">
-                        <i id="clickpgup" class="icon-pg-up strokicon icon_key"></i>
-                    </div>
-                    <div class="dialog_click" style="padding-bottom: 3vh; padding-left: 10vh; padding-right: 10vh;">
-                        <i id="clickup" class="icon-key-up strokicon icon_key"></i>
-                    </div>
-                    <div class="dialog_click" style="padding-bottom: 3vh;">
-                        <i id="clickfeed" class="icon-feed strokicon icon_key"></i>
-                    </div>
-                </div>
-                <div class="scenekeysholder">
-                    <div class="dialog_click">
-                        <i id="clickleft" class="icon-key-left strokicon icon_key"></i>
-                    </div>
-                    <div class="dialog_click" style="padding-left: 10vh; padding-right: 10vh;">
-                        <i id="clickenter" class="icon-circle strokicon icon_key"></i>
-                    </div>
-                    <div class="dialog_click">
-                        <i id="clickright" class="icon-key-right strokicon icon_key"></i>
-                    </div>
-                </div>
-                <div class="scenekeysholder">
-                    <div class="dialog_click" style="padding-top: 3vh;">
-                        <i id="clickpgdown" class="icon-pg-down strokicon icon_key"></i>
-                    </div>
-                    <div class="dialog_click" style="padding-top: 3vh; padding-left: 10vh; padding-right: 10vh;">
-                        <i id="clickdown" class="icon-key-down strokicon icon_key"></i>
-                    </div>
-                    <div class="dialog_click" style="padding-top: 5vh;">
-                        <i id="clickback" class="icon-return strokicon icon_key"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Empty div over the app that prevents text imputs from malfunctioning-->
+    <div id="scene_keys" class="scene_keys">
     </div>
 </body>
 

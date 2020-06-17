@@ -225,105 +225,6 @@ function UserLiveFeedobj_loadDataRefreshTokenError() {
     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
 }
 
-var UserLiveFeedobj_LiveNotificationClearId;
-function UserLiveFeedobj_LiveNotification() {
-    if (UserLiveFeed_NotifyRunning || !UserLiveFeed_NotifyLiveidObject.length) {
-        if (!UserLiveFeed_Notify) UserLiveFeed_NotifyLiveidObject = [];
-
-        return;
-    }
-
-    //Reset notifications after 2 times the time it takes just in case imf load and error fail some how
-    UserLiveFeedobj_LiveNotificationClearId = Main_setTimeout(
-        UserLiveFeedobj_LiveNotificationClear,
-        ((UserLiveFeed_NotifyTimeout + 1500) * 2 * UserLiveFeed_NotifyLiveidObject.length),
-        UserLiveFeedobj_LiveNotificationClearId
-    );
-
-    Main_ShowElement('user_feed_notify');
-
-    UserLiveFeed_NotifyRunning = true;
-
-    Main_setTimeout(
-        function() {
-            UserLiveFeedobj_LiveNotificationShow(0);
-        },
-        1000
-    );
-}
-
-function UserLiveFeedobj_LiveNotificationShow(position) {
-    Sidepannel_Notify_img.onload = function() {
-        this.onload = null;
-        this.onerror = null;
-        UserLiveFeedobj_LiveNotificationOnload(position);
-    };
-
-    Sidepannel_Notify_img.onerror = function() {
-        this.onerror = null;
-        this.onload = null;
-        this.src = IMG_404_LOGO;
-        UserLiveFeedobj_LiveNotificationOnload(position);
-    };
-
-    //If the user refresh too fast and a new live channel is there all the time this may fail
-    if (UserLiveFeed_NotifyLiveidObject[position] && UserLiveFeed_NotifyLiveidObject[position].hasOwnProperty('logo'))
-        Sidepannel_Notify_img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
-    else UserLiveFeedobj_LiveNotificationHide(position);
-}
-
-var UserLiveFeedobj_LiveNotificationHideId;
-function UserLiveFeedobj_LiveNotificationOnload(position) {
-    if (!UserLiveFeed_NotifyLiveidObject[position]) {
-        UserLiveFeedobj_LiveNotificationHide(position);
-        return;
-    }
-
-    Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
-
-    Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
-    Main_innerHTML('user_feed_notify_title', UserLiveFeed_NotifyLiveidObject[position].title);
-
-    Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
-
-    UserLiveFeedobj_LiveNotificationHideId = Main_setTimeout(
-        function() {
-            UserLiveFeedobj_LiveNotificationHide(position);
-        },
-        UserLiveFeed_NotifyTimeout,
-        UserLiveFeedobj_LiveNotificationHideId
-    );
-}
-
-var UserLiveFeedobj_LiveNotificationShowId;
-function UserLiveFeedobj_LiveNotificationHide(position) {
-    Main_AddClass('user_feed_notify', 'user_feed_notify_hide');
-
-    if (position < (UserLiveFeed_NotifyLiveidObject.length - 1)) {
-        UserLiveFeedobj_LiveNotificationShowId = Main_setTimeout(
-            function() {
-                UserLiveFeedobj_LiveNotificationShow(position + 1);
-            },
-            800,
-            UserLiveFeedobj_LiveNotificationShowId
-        );
-    } else UserLiveFeedobj_LiveNotificationClear();
-}
-
-function UserLiveFeedobj_LiveNotificationClear() {
-    Main_clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
-    UserLiveFeed_NotifyRunning = false;
-    UserLiveFeed_NotifyLiveidObject = [];
-
-    UserLiveFeedobj_LiveNotificationClearId = Main_setTimeout(
-        function() {
-            Main_HideElement('user_feed_notify');
-        },
-        10000,
-        UserLiveFeedobj_LiveNotificationClearId
-    );
-}
-
 var UserLiveFeedobj_LiveFeedOldUserName = '';
 function UserLiveFeedobj_ShowFeed() {
     UserLiveFeedobj_SetBottomText(4);
@@ -446,7 +347,7 @@ function UserLiveFeedobj_History() {
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
 
-    UserLiveFeed_loadDataSuccessFinish(false, pos);
+    UserLiveFeed_loadDataSuccessFinish(pos);
 }
 
 //Live history end
@@ -909,17 +810,12 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         sorting = Settings_Obj_default('live_feed_sort'),
         stream, id, mArray,
         i = 0,
-        liveObj = {},
         itemsCount = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
     response = response.streams;
     response_items = response.length;
 
     if (response_items) {
-        if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id]) {
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
-            UserLiveFeed_CheckNotifycation = false;
-        }
 
         var sorting_type1 = Settings_FeedSort[sorting][0],
             sorting_type2 = Settings_FeedSort[sorting][1],
@@ -963,18 +859,6 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 mArray = ScreensObj_LiveCellArray(stream);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
-                //Check if the same bradcast was live if not notificati!
-                liveObj[mArray[7]] = 1;
-                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id].hasOwnProperty(mArray[7])) {
-                    UserLiveFeed_NotifyLiveidObject.push({
-                        name: mArray[1],
-                        logo: mArray[9],
-                        title: Main_ReplaceLargeFont(twemoji.parse(mArray[2])),
-                        game: mArray[3],
-                        rerun: mArray[8],
-                    });
-                }
-
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
                         UserLiveFeedobj_UserLivePos + '_' + itemsCount,
@@ -991,16 +875,6 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 itemsCount++;
             }
         }
-
-        var OSInterface_Notification_end_time = OSInterface_GetNotificationTime();
-        //Check if the android service notification has end notifying before update things and show notifications on js side
-        if (!OSInterface_Notification_end_time || ((new Date().getTime()) > OSInterface_Notification_end_time)) {
-
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = liveObj;
-
-            Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
-
-        } else UserLiveFeed_NotifyLiveidObject = [];
 
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
@@ -1037,7 +911,9 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 Sidepannel_PosFeed = Sidepannel_Positions[UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos]];
 
             Sidepannel_PreloadImgs();
-            UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
+            UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserLivePos);
+
+            if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
         },
         25
     );
@@ -1166,7 +1042,7 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
                 if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
                     UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
 
-                UserLiveFeed_loadDataSuccessFinish(false, pos);
+                UserLiveFeed_loadDataSuccessFinish(pos);
             },
             25
         );
@@ -1239,7 +1115,7 @@ function UserLiveFeedobj_UserVodHistory() {
     if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
         UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
 
-    UserLiveFeed_loadDataSuccessFinish(false, pos);
+    UserLiveFeed_loadDataSuccessFinish(pos);
 }
 //User VOD history end
 
@@ -1336,7 +1212,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
                 if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
                     UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
 
-                UserLiveFeed_loadDataSuccessFinish(false, pos);
+                UserLiveFeed_loadDataSuccessFinish(pos);
             },
             25
         );
@@ -1414,7 +1290,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
             if (UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos].hasOwnProperty(UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos]))
                 UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos]];
 
-            UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
+            UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserHostPos);
         },
         25
     );
@@ -1514,7 +1390,7 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
                 if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
                     UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
 
-                UserLiveFeed_loadDataSuccessFinish(false, pos);
+                UserLiveFeed_loadDataSuccessFinish(pos);
             },
             25
         );

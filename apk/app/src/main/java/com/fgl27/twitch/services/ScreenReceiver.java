@@ -13,8 +13,6 @@ public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!Tools.deviceIsTV(context) ||
-                !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, new AppPreferences(context))) return;
 
         String action = intent.getAction();
         boolean screenOff = Intent.ACTION_SCREEN_OFF.equals(action);

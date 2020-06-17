@@ -4,33 +4,18 @@
 //If a function is Android specific, the feature that it provides may only be needed on a Android device
 //Check what the function does and if the new OS provides the function make a new one or find a way to adapt
 
-//public long GetNotificationTime()
-//Android specific: true
-//with time im ms of when notifications will end
-//To prevent show in app notification when background notification have ended showing
-function OSInterface_GetNotificationTime() {
-    return Main_IsOn_OSInterface ? Android.GetNotificationTime() : 0;
-}
-
-//public String GetNotificationOld()
-//Android specific: true
-//returns the last know list of live channels
-function OSInterface_GetNotificationOld() {
-    return Main_IsOn_OSInterface ? Android.GetNotificationOld() : null;
-}
-
-//public void SetNotificationOld(String list)
-//Android specific: true
-//returns the last know list of live channels
-function OSInterface_SetNotificationOld(list) {
-    if (Main_IsOn_OSInterface) Android.SetNotificationOld(list);
-}
-
 //public void StopNotificationService()
 //Android specific: true
 //Allows to stop the notification service from js side
 function OSInterface_StopNotificationService() {
     if (Main_IsOn_OSInterface) Android.StopNotificationService();
+}
+
+//public void RunNotificationService()
+//Android specific: true
+//Allows to run the notification service once
+function OSInterface_RunNotificationService() {
+    if (Main_IsOn_OSInterface) Android.RunNotificationService();
 }
 
 //public void upNotificationState(boolean Notify)
@@ -875,6 +860,36 @@ function OSInterface_KeyboardCheckAndHIde() {
 //Hides the on screen keyboard
 function OSInterface_hideKeyboardFrom() {
     Android.hideKeyboardFrom();
+}
+
+function OSInterface_AvoidClicks(Avoid) {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.AvoidClicks(Avoid);
+    } catch (e) {}
+}
+
+function OSInterface_initbodyClickSet() {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.initbodyClickSet();
+    } catch (e) {}
+}
+
+//public void SetKeysOpacity(float Opacity)
+//The keys Opacity
+//Android specific: true
+//Allows to run the notification service once
+function OSInterface_SetKeysOpacity(Opacity) {
+    if (Main_IsOn_OSInterface) Android.SetKeysOpacity(Opacity);
+}
+
+//public void SetKeysPosition(float Opacity)
+//The keys Opacity
+//Android specific: true
+//Allows to run the notification service once
+function OSInterface_SetKeysPosition(Position) {
+    if (Main_IsOn_OSInterface) Android.SetKeysPosition(Position);
 }
 
 //public boolean isKeyboardConnected()

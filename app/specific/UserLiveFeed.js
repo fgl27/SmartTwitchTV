@@ -11,15 +11,8 @@ var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
 var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
 var UserLiveFeed_PreventHide = false;
-var UserLiveFeed_Notify_Background = false;
 
-var UserLiveFeed_CheckNotifycation = false;
-var UserLiveFeed_WasLiveidObject = {};
-var UserLiveFeed_NotifyLiveidObject = [];
 var UserLiveFeed_PreloadImgs = [];
-var UserLiveFeed_Notify = true;
-var UserLiveFeed_NotifyRunning = false;
-var UserLiveFeed_NotifyTimeout = 3000;
 var UserLiveFeed_FeedHolderDocId;
 var UserLiveFeed_AnimationTimeout = 200;//Same value as user_feed_scroll
 
@@ -194,7 +187,6 @@ function UserLiveFeed_Prepare() {
 
     Sidepannel_ScroolDoc = document.getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = document.getElementById('side_panel');
-    Sidepannel_Notify_img = document.getElementById('user_feed_notify_img');
     UserLiveFeed_FeedHolderDocId = document.getElementById('user_feed');
     Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
 }
@@ -216,7 +208,7 @@ function UserLiveFeed_CounterDialog(pos, total) {
     else UserLiveFeed_CounterDialogRst();
 }
 
-function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
+function UserLiveFeed_loadDataSuccessFinish(pos) {
     UserLiveFeed_loadingData[pos] = false;
     UserLiveFeed_status[pos] = true;
 
@@ -296,14 +288,6 @@ function UserLiveFeed_loadDataSuccessFinish(ShowNotifications, pos) {
     UserLiveFeedobj_SetLastRefresh(pos);
     if (pos === UserLiveFeedobj_UserLivePos) Sidepannel_SetLastRefresh();
 
-    if (ShowNotifications) {
-        //The app just started or user change don't or background service was running nottify
-        if (UserLiveFeed_CheckNotifycation) UserLiveFeedobj_LiveNotification();
-        else {
-            UserLiveFeed_NotifyLiveidObject = [];
-            UserLiveFeed_CheckNotifycation = true;
-        }
-    }
     //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
 }
 

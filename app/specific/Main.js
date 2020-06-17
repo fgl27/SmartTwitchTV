@@ -1,5 +1,6 @@
 //Variable initialization
 var smartTwitchTV;
+var Main_isTV;
 var Main_isReleased = false;
 var Main_isDebug = false;
 
@@ -279,6 +280,19 @@ function Main_loadTranslations(language) {
 
 }
 
+function Main_initClick() {
+    if (Main_IsOn_OSInterface) {
+        Main_isTV = OSInterface_deviceIsTV();
+        //Only show virtual d-pad on none TV devices
+        if (Main_isTV) return;
+    } else return;
+
+    Main_body.onpointerup = function() {
+        OSInterface_initbodyClickSet();
+    };
+    OSInterface_initbodyClickSet();
+}
+
 function Main_BackupDialodKeyDown(event) {
     switch (event.keyCode) {
         case KEY_LEFT:
@@ -450,7 +464,6 @@ function Main_initWindows() {
     Screens_InitScreens();
 
     document.getElementById("side_panel").style.transform = '';
-    document.getElementById("user_feed_notify").style.transform = '';
 
     Screens_init(Main_Live);
 
@@ -500,7 +513,6 @@ function Main_SetStringsSecondary() {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
 
     Main_textContent('side_panel_feed_settings', STR_SIDE_PANEL_SETTINGS);
-    Main_textContent('user_feed_notify_main', STR_NOW_LIVE);
 
     Main_textContent('chanel_button', STR_CHANNELS);
     Main_textContent('game_button', STR_GAMES);
@@ -569,104 +581,6 @@ function Main_SetStringsSecondary() {
     Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
     Main_textContent("chat_result", STR_CHAT_RESULT);
     ChatLiveControls_OptionsUpdate_defautls();
-}
-
-var Main_initClickDoc = [
-    "clickup", "clickdown", "clickleft", "clickright", "clickenter", "clickback",
-    "clickpgup", "clickpgdown", "clickfeed"];
-var Main_setHideButtonsId;
-var Main_scenekeysDoc;
-var Main_scenekeysPositionDoc;
-var Main_isTV;
-
-function Main_initClick() {
-    if (Main_IsOn_OSInterface) {
-        Main_isTV = OSInterface_deviceIsTV();
-        //Only show virtual d-pad on none TV devices
-        if (Main_isTV) return;
-    } else return;
-
-    Main_ShowElement('scenekeys');
-    Main_scenekeysDoc = document.getElementById('scenekeys');
-    Main_scenekeysPositionDoc = document.getElementById('scenekeys_position');
-
-    var i = 0, len = Main_initClickDoc.length;
-    for (i; i < len; i++) {
-        Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
-    }
-
-    Main_body.onpointerup = function() {
-        Main_initbodyClickSet();
-    };
-    Main_initbodyClickSet();
-}
-
-function Main_initbodyClickSet() {
-    Settings_DpadOpacity();
-    Main_clearHideButtons();
-    Main_setHideButtons();
-}
-
-function Main_buttonsVisible() {
-    return parseInt(Main_scenekeysDoc.style.opacity * 100) ===
-        parseInt(Settings_Obj_default("dpad_opacity") * 5);
-}
-
-function Main_clearHideButtons() {
-    Main_clearTimeout(Main_setHideButtonsId);
-}
-
-function Main_setHideButtons() {
-    Main_setHideButtonsId = Main_setTimeout(Main_HideButtons, 4000, Main_setHideButtonsId);
-}
-
-function Main_HideButtons() {
-    Main_scenekeysDoc.style.opacity = "0";
-}
-
-var Main_initClickSetId;
-var Main_initClickTimeoutId;
-
-function Main_initClickSet(doc, pos) {
-    doc.onpointerdown = function() {
-        Main_ClickonpointerdownClear();
-        if (!Main_buttonsVisible()) return;
-
-        Main_Clickonpointerdown(pos);
-
-        Main_initClickTimeoutId = Main_setTimeout(
-            function() {
-                Main_ClickonpointerdownClear();
-                Main_initClickSetId = Main_setInterval(
-                    function() {
-                        Main_Clickonpointerdown(pos);
-                    },
-                    50,
-                    Main_initClickSetId
-                );
-            },
-            600,
-            Main_initClickTimeoutId
-        );
-    };
-
-    doc.onpointerup = function() {
-        Main_ClickonpointerdownClear();
-        if (!Main_buttonsVisible()) return;
-
-        if (Main_IsOn_OSInterface) OSInterface_keyEvent(pos, 1);
-        else Main_Log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
-    };
-}
-
-function Main_ClickonpointerdownClear() {
-    Main_clearTimeout(Main_initClickTimeoutId);
-    Main_clearInterval(Main_initClickSetId);
-}
-
-function Main_Clickonpointerdown(pos) {
-    if (Main_IsOn_OSInterface) OSInterface_keyEvent(pos, 0);
-    else Main_Log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -796,17 +710,6 @@ function Main_CounterDialog(x, y, coloumns, total) {
     if (total > 0) Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
     else Main_CounterDialogRst();
 }
-
-// function Main_showWarningExtra(text) {
-//     Main_innerHTML('dialog_warning_extra_text', text);
-//     Main_ShowElement('dialog_warning_extra');
-//     Main_setTimeout(
-//         function() {
-//             Main_HideElement('dialog_warning_extra');
-//         },
-//         60000
-//     );
-// }
 
 var Main_showWarningDialogId;
 function Main_showWarningDialog(text, timeout) {
@@ -2006,13 +1909,7 @@ function Main_CheckResume() { // Called only by JAVA
     else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
-        //Restore UserLiveFeed_WasLiveidObject array from java if it exist
-        if (UserLiveFeed_Notify_Background && UserLiveFeed_Notify) {
-            Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
-        }
-
         Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, (1000 * 60 * 5), Main_updateUserFeedId);//it 5 min refresh
-
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
     }
 
@@ -2024,47 +1921,6 @@ function Main_CheckResume() { // Called only by JAVA
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
     Main_CheckAccessibility();
-}
-
-function Main_RestoreLiveObjt(position) {
-    var oldLive = OSInterface_GetNotificationOld();
-
-    if (oldLive) {
-
-        oldLive = JSON.parse(oldLive);
-
-        if (oldLive.length > 0) {
-
-            UserLiveFeed_WasLiveidObject[position] = {};
-
-            var i = 0, len = oldLive.length;
-            for (i; i < len; i++) {
-                UserLiveFeed_WasLiveidObject[position][oldLive[i]] = 1;
-            }
-
-        } else {
-            UserLiveFeed_WasLiveidObject[position] = null;
-            UserLiveFeed_CheckNotifycation = false;
-        }
-    }
-}
-
-function Main_SaveLiveObjt(position) {
-    var array = [];
-
-    if (!UserLiveFeed_WasLiveidObject[position]) {
-
-        UserLiveFeed_CheckNotifycation = false;
-
-    } else {
-
-        for (var property in UserLiveFeed_WasLiveidObject[position]) {
-            array.push(property);
-        }
-
-    }
-
-    OSInterface_SetNotificationOld(JSON.stringify(array));
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {

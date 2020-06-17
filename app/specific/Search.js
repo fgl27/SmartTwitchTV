@@ -127,6 +127,7 @@ function Search_handleKeyDown(event) {
 var Search_inputFocusId;
 function Search_inputFocus() {
     Main_AddClass('scene_notify', 'avoidclicks');
+    OSInterface_AvoidClicks(true);
     Main_AddClass('scenefeed', 'avoidclicks');
     Main_removeEventListener("keydown", Search_handleKeyDown);
     Main_addEventListener("keydown", Search_KeyboardEvent);
@@ -148,6 +149,7 @@ function Search_RemoveinputFocus(EnaKeydown) {
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
     Main_RemoveClass('scene_notify', 'avoidclicks');
+    OSInterface_AvoidClicks(false);
     Main_SearchInput.blur();
     Search_removeEventListener();
     Main_removeEventListener("keydown", Search_KeyboardEvent);
