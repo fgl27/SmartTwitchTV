@@ -949,7 +949,7 @@ function Play_KeyReturn(is_vod) {
 
 function Play_CheckPreview() {
     if (Play_isOn && !Play_isEndDialogVisible() && Play_data.data.length > 0) {
-        Main_Set_history('live', Play_data.data);
+        if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
 
         if (Play_CheckPreviewLive()) {
             Play_PreviewURL = Play_data.AutoUrl;
@@ -1267,7 +1267,7 @@ function Play_handleKeyDown(e) {
                 } else if (Play_MultiDialogVisible()) {
                     Play_HideMultiDialog(true);
                     var pos = (Play_MultiDialogPos + Play_Multi_Offset) % 4;
-                    Main_Set_history('live', Play_MultiArray[pos].data);
+                    Main_Set_history('live', Play_MultiArray[pos].data);//save before we change
                     Play_MultiStartPrestart(pos);
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);

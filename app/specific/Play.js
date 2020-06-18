@@ -507,7 +507,7 @@ function Play_updateStreamInfoEnd(response) {
 
     Play_UpdateMainStreamDiv();
 
-    Main_Set_history('live', Play_data.data);
+    if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
 }
 
 function Play_updateStreamInfoStartError() {
@@ -522,7 +522,7 @@ function Play_updateStreamInfoStartError() {
     } else {
         Play_loadingInfoDataTry = 0;
 
-        if (Play_isOn && Play_data.data.length > 0) {
+        if (Play_isOn && Play_data.data.length > 0 && !Play_StayDialogVisible()) {
 
             Main_Set_history('live', Play_data.data);
 
@@ -640,7 +640,7 @@ function Play_updateStreamInfoValues(response, Is_play) {
 
         } else {
             var tempData = ScreensObj_LiveCellArray(response.stream);
-            Main_Set_history('live', tempData);
+            if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
 
             //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
             if (PlayExtra_data.data.length > 0) {
@@ -662,6 +662,7 @@ function Play_updateStreamInfoGetError(theUrl, tryes, Is_play) {
             750
         );
     } else if (Play_isOn) {
+        if (Play_StayDialogVisible()) return;
 
         //we fail but we still watching so update the time
         if (Is_play && Play_data.data.length > 0) {
@@ -1835,7 +1836,7 @@ function Play_RestorePlayData(error_410, Isforbiden) {
 function Play_SavePlayData() {
     if (Play_data.data && Play_data.data.length > 0) {
         Play_data_old = JSON.parse(JSON.stringify(Play_data));
-        Main_Set_history('live', Play_data.data);
+        if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
     }
 }
 
