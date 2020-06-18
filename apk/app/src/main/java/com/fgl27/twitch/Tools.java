@@ -893,11 +893,10 @@ public final class Tools {
         width -= offset;
 
         float bottomMargin = bottom * scale;
-        bottomMargin =  (ScreenSize.y - bottomMargin) + (offset / 1.8f);
-
         float leftMargin = (left * scale) + (offset / 1.8f);
 
         if (bigger) {
+            bottomMargin =  (ScreenSize.y - bottomMargin) - (offset / 2.2f);
             float OldWidth = width;
 
             width = width * 1.26f;
@@ -909,7 +908,7 @@ public final class Tools {
             else if ((leftMargin + width) > ScreenSize.x) leftMargin = ScreenSize.x - width;
 
             //Log.i(TAG, "leftMargin after " + leftMargin);
-        }
+        } else bottomMargin =  (ScreenSize.y - bottomMargin) + (offset / 1.8f);
 
         float height = width * 9 / 16;//16 by 9 box
         FrameLayout.LayoutParams PlayerViewSidePanel = new FrameLayout.LayoutParams((int) width, (int) height, Gravity.LEFT | Gravity.BOTTOM);
