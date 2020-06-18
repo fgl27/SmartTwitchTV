@@ -1035,8 +1035,7 @@ public class PlayerActivity extends Activity {
         MainThreadHandler.postDelayed(() -> {
             if (Tools.isConnectedOrConnecting(this)){
                 HideWarningText();
-                mWebView.loadUrl(PageUrl);
-                WebviewLoaded = true;
+                initializeWebviewEnd();
             } else NetworkCheck();
         }, 250);
     }
@@ -1340,20 +1339,25 @@ public class PlayerActivity extends Activity {
 
         });
 
-        if (Tools.isConnectedOrConnecting(this)) {
-
-            //Run on screen key and notification on a separated WebView
-            if(!deviceIsTV) initializeWebViewKey();
-            else {
-                mWebViewKey = findViewById(R.id.WebViewKey);
-                mWebViewKey.setVisibility(View.GONE);
-            }
-
-            mWebView.loadUrl(PageUrl);
-            WebviewLoaded = true;
-        } else ShowNoNetworkWarning();
+        if (Tools.isConnectedOrConnecting(this)) initializeWebviewEnd();
+        else ShowNoNetworkWarning();
 
         mWebView.requestFocus();
+    }
+
+    private void initializeWebviewEnd() {
+
+        //Run on screen key and notification on a separated WebView
+        if(!deviceIsTV) initializeWebViewKey();
+        else {
+            mWebViewKey = findViewById(R.id.WebViewKey);
+            mWebViewKey.setVisibility(View.GONE);
+        }
+
+        mWebView.loadUrl(PageUrl);
+        WebviewLoaded = true;
+        mWebView.requestFocus();
+
     }
 
     private void initializeWebViewKey() {
