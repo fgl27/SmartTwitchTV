@@ -569,4 +569,6 @@ function en_USLang() {
     STR_CHAT_SIDE_ARRAY = ['Left', 'Right'];
     STR_CHAT_BASE_ARRAY = ['Bottom right', 'Center right', 'Top right', 'Center top', 'Top left', 'Center left', 'Bottom left', 'Center bottom'];
     STR_CHAT_100_ARRAY = ['Right', 'Center', 'Left'];
+    STR_NOTIFICATION_POS = "Notification position on the screen";
+    STR_NOTIFICATION_POS_ARRAY = ['Top right', 'Top center', 'Top left', 'Bottom left', 'Bottom center', 'Bottom right'];
 }

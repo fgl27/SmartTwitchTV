@@ -51,7 +51,18 @@ import static com.google.gson.JsonParser.parseString;
 
 public class NotificationService extends Service {
 
-    private static final String TAG = "STTV_Notification";
+    private final String TAG = "STTV_Notification";
+
+    private final int[] ToastPositions = {
+            Gravity.RIGHT | Gravity.TOP,//0
+            Gravity.CENTER | Gravity.TOP,//1
+            Gravity.LEFT | Gravity.TOP,//2
+            Gravity.LEFT | Gravity.BOTTOM,//3
+            Gravity.CENTER | Gravity.BOTTOM,//4
+            Gravity.RIGHT | Gravity.BOTTOM//5
+    };
+
+    private int ToastPosition = 1;
 
     private HandlerThread NotificationThread;
     private Handler NotificationHandler;
@@ -204,7 +215,7 @@ public class NotificationService extends Service {
         }
     }
 
-    private boolean CheckUserChaged() {
+    private boolean CheckUserChanged() {
         //If user changed don't Notify this run only next
         String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
         if (tempUserId == null) {
@@ -218,12 +229,13 @@ public class NotificationService extends Service {
     }
 
     private void DoNotifications() {
+        if (CheckUserChanged() || !Tools.isConnectedOrConnecting(context)) return;
+
+        ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
         Channels = "";
         ChannelsOffset = 0;
         String url;
         boolean hasChannels = true;
-
-        if (CheckUserChaged()) return;
 
         while (hasChannels) {//Get all user fallowed channels
             url = String.format(
@@ -331,7 +343,7 @@ public class NotificationService extends Service {
             if (StreamsSize == 0) break;//break out of the while
         }
 
-        if (CheckUserChaged()) return;
+        if (CheckUserChanged()) return;
 
         if (Notify && result.size() > 0) {
 
@@ -403,7 +415,7 @@ public class NotificationService extends Service {
         }
 
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.RIGHT | Gravity.TOP, 0, 0);
+        toast.setGravity(ToastPositions[ToastPosition], 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
@@ -577,7 +589,7 @@ public class NotificationService extends Service {
                 ImageSize = (int) (NewLayoutWidth / 5.0f);
 
                 //Scale the text to screen size and density
-                float ScaleDensity = width / (this.getResources().getDisplayMetrics().density / 2.0f);
+                float ScaleDensity = width / (context.getResources().getDisplayMetrics().density / 2.0f);
                 textSizeSmall = 0.6f * ScaleDensity;
                 textSizeBig = 0.65f * ScaleDensity;
 

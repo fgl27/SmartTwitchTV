@@ -137,6 +137,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "live_notification_position": {//Migrated to dialog
+        "values": [0, 1, 2, 3, 4, 5],
+        "defaultValue": 2
+    },
     "global_font_offset": {//Migrated to dialog
         "values": [-3, -2, -1, 0, 1, 2, 3],
         "defaultValue": 4
@@ -544,6 +548,7 @@ function Settings_SetDefautls() {
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     Settings_notification_background();
+    Settings_notification_position();
     Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -624,6 +629,7 @@ function Settings_SetDefault(position) {
     if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     else if (position === "live_notification") Settings_notification();
     else if (position === "live_notification_background") Settings_notification_background();
+    else if (position === "live_notification_position") Settings_notification_position();
     else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "ping_warn") Settings_SetPingWarning();
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
@@ -656,6 +662,10 @@ function Settings_SetDefault(position) {
 
 function Settings_notification_background() {
     OSInterface_upNotificationState(Settings_Obj_default("live_notification_background") === 1 && Settings_Obj_default("live_notification") === 1);
+}
+
+function Settings_notification_position() {
+    OSInterface_SetNotificationPosition(Settings_Obj_default("live_notification_position"));
 }
 
 function Settings_notification() {
@@ -1232,6 +1242,7 @@ function Settings_DialogShowSmallPayer() {
 function Settings_DialogShowNotification() {
     Settings_value.live_notification.values = [STR_NO, STR_YES];
     Settings_value.live_notification_background.values = [STR_NO, STR_YES];
+    Settings_value.live_notification_position.values = STR_NOTIFICATION_POS_ARRAY;
 
     var obj = {
         live_notification: {
@@ -1245,6 +1256,12 @@ function Settings_DialogShowNotification() {
             values: Settings_value.live_notification_background.values,
             title: STR_NOW_BACKGROUND,
             summary: STR_NOW_BACKGROUND_SUMMARY
+        },
+        live_notification_position: {
+            defaultValue: Settings_value.live_notification_position.defaultValue,
+            values: Settings_value.live_notification_position.values,
+            title: STR_NOTIFICATION_POS,
+            summary: null
         }
     };
 

@@ -11,6 +11,14 @@ function OSInterface_StopNotificationService() {
     if (Main_IsOn_OSInterface) Android.StopNotificationService();
 }
 
+//public void SetNotificationPosition(int position)
+//position the position on the screen
+//Android specific: true
+//Allows to Set Notification Position
+function OSInterface_SetNotificationPosition(position) {
+    if (Main_IsOn_OSInterface) Android.SetNotificationPosition(position);
+}
+
 //public void RunNotificationService()
 //Android specific: true
 //Allows to run the notification service once

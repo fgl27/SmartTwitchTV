@@ -838,6 +838,10 @@ public final class Tools {
         return appPreferences.getLong(name, defaults);
     }
 
+    public static int getInt(String name, int defaults, AppPreferences appPreferences) {
+        return appPreferences.getInt(name, defaults);
+    }
+
     public static void SendNotificationIntent(String action, Context context) {
         Intent intent = new Intent(context, NotificationService.class);
         intent.setAction(action);

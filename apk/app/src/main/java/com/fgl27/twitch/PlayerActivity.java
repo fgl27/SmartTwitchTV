@@ -54,6 +54,7 @@ import com.google.gson.Gson;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
@@ -1567,8 +1568,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetNotificationPosition(int position) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_POSITION, position);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void RunNotificationService() {
-            MainThreadHandler.post(() -> Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, mWebViewContext));
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1580,7 +1587,12 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upNotificationId(String id) {
+            //Reset old list to prevent showing a long list of notifications
+            if (id != null && !Objects.equals(Tools.getString(Constants.PREF_USER_ID, null, appPreferences), id))
+                appPreferences.put(id + Constants.PREF_NOTIFY_OLD_LIST, null);
+
             appPreferences.put(Constants.PREF_USER_ID, id);
+
         }
 
         @SuppressWarnings("unused")//called by JS
