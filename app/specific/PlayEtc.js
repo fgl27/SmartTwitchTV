@@ -524,7 +524,14 @@ function Play_StayDialogVisible() {
     return Main_isElementShowing('play_dialog_retry');
 }
 
+function Play_StopStay() {
+    Main_clearTimeout(Play_StartStayTryId);
+    Main_HideElement('play_dialog_retry');
+}
+
 function Play_StartStay() {
+    if (!ChatLive_loaded[0]) ChatLive_Init(0);
+    Play_UpdateMainStreamDiv();
     Play_state = Play_STATE_PLAYING;
 
     Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 10);
@@ -854,6 +861,8 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 }
 
 function Play_PlayPauseChange(State, PlayVodClip) {//called by java
+    if (Play_StayDialogVisible()) return;
+
     if (State) {
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
 

@@ -1141,7 +1141,7 @@ function Play_PreshutdownStream(closePlayer) {
 
     Play_ClearPlay(closePlayer);
     Play_ClearPlayer();
-    Main_HideElement('play_dialog_retry');
+    Play_StopStay();
 }
 
 function Play_exitMain() {
@@ -1816,7 +1816,7 @@ function Play_OpenFeed(keyfun) {
         );
     }
 
-    Main_HideElement('play_dialog_retry');
+    Play_StopStay();
 }
 
 function Play_RestorePlayData(error_410, Isforbiden) {
