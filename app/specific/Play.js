@@ -706,7 +706,7 @@ function Play_loadData(synchronous) {
 
     if (Main_IsOn_OSInterface) {
 
-        Play_loadDataId = (new Date().getTime());
+        Play_loadDataId = new Date().getTime();
 
         //On resume to avoid out of sync resumes we run PP synchronous
         if (synchronous) {
@@ -1141,6 +1141,7 @@ function Play_PreshutdownStream(closePlayer) {
 
     Play_ClearPlay(closePlayer);
     Play_ClearPlayer();
+    Main_HideElement('play_dialog_retry');
 }
 
 function Play_exitMain() {
@@ -1620,6 +1621,10 @@ function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
 }
 
 function Play_PlayEndStart(PlayVodClip) {
+    if (PlayVodClip === 1 && Settings_value.play_stay.defaultValue) {
+        Play_StartStay();
+        return;
+    }
     Play_PrepareshowEndDialog(PlayVodClip);
     Play_EndTextCounter = (!Play_EndSettingsCounter ? -2 : Play_EndSettingsCounter);
 
@@ -1810,6 +1815,8 @@ function Play_OpenFeed(keyfun) {
             !UserLiveFeed_CheckVod()
         );
     }
+
+    Main_HideElement('play_dialog_retry');
 }
 
 function Play_RestorePlayData(error_410, Isforbiden) {

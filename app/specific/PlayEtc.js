@@ -424,7 +424,8 @@ function Play_EndDialogPressed(PlayVodClip) {
         }
     } else if (Play_Endcounter === 1) {
         if (Main_values.Play_isHost) Play_OpenHost();
-        else {
+        else if (PlayVodClip === 1) Play_StartStay();
+        else if (PlayVodClip === 2) {
             PlayClip_OpenVod();
             if (!PlayClip_HasVOD) canhide = false;
         }
@@ -457,14 +458,16 @@ function Play_EndSet(PlayVodClip) {
         Main_innerHTML("end_vod_title_text", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name));
     } else if (PlayVodClip === 1) { // play
         Play_EndIconsRemoveFocus();
-        Play_Endcounter = 2;
+        Play_Endcounter = 1;
         Play_EndIconsAddFocus();
         document.getElementById('dialog_end_-1').style.display = 'none';
         document.getElementById('dialog_end_0').style.display = 'none';
-        document.getElementById('dialog_end_1').style.display = 'none';
+        document.getElementById('dialog_end_1').style.display = 'inline-block';
 
         Play_EndTextsReset();
         Main_innerHTML("end_channel_name_text", Play_data.data[1]);
+        Main_textContent("dialog_end_vod_text", STR_STAY_OPEN);
+        Main_innerHTML("end_vod_title_text", STR_STAY_OPEN_SUMMARY);
     } else if (PlayVodClip === 2) { // vod
         Play_EndIconsResetFocus();
         document.getElementById('dialog_end_-1').style.display = 'none';
@@ -512,6 +515,179 @@ function Play_OpenHost() {
 
     Play_data.data[14] = Play_TargetHost.target_id;
     Play_Start();
+}
+
+var Play_StartStayTryedResult = '';
+var Play_StartStayTryId;
+
+function Play_StayDialogVisible() {
+    return Main_isElementShowing('play_dialog_retry');
+}
+
+function Play_StartStay() {
+    Play_state = Play_STATE_PLAYING;
+
+    Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 10);
+    Main_ShowElement('play_dialog_retry');
+
+    Play_StartStayTryId = Main_setTimeout(
+        function() {
+            Play_StartStayCheck(10);
+        },
+        1000,
+        Play_StartStayTryId
+    );
+}
+
+function Play_StartStayCheck(time) {
+    time--;
+    Main_innerHTML(
+        "play_dialog_retry_text",
+        (Play_StartStayTryedResult !== '' ? (STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR) : '') + STR_STAY_CHECK + STR_BR + time
+    );
+
+    Play_StartStayTryId = Main_setTimeout(
+        function() {
+            if (!time) Play_StartStayStartCheck();
+            else Play_StartStayCheck(time);
+        },
+        1000,
+        Play_StartStayTryId
+    );
+}
+
+function Play_StartStayStartCheck() {
+    Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECKING);
+    if (Main_IsOn_OSInterface) Play_StayCheckHost();
+    else Play_StayCheckLiveErrorFinish();
+}
+
+function Play_StayCheckHost() {
+    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+
+    OSInterface_GetMethodUrlHeadersAsync(
+        theUrl,//urlString
+        DefaultHttpGetTimeout,//timeout
+        null,//postMessage, null for get
+        null,//Method, null for get
+        JSON.stringify(
+            [
+                [Main_clientIdHeader, Main_clientId]
+            ]
+        ),//JsonString
+        'Play_StayCheckHostResult',//callback
+        0,//checkResult
+        0,//key
+        3//thread
+    );
+}
+
+function Play_StayCheckHostResult(result) {
+    if (result) {
+        var resultObj = JSON.parse(result);
+        if (resultObj.status === 200) {
+            Play_StayCheckHostEnd(resultObj.responseText);
+        } else {
+            Play_StayCheckLive();
+        }
+    }
+    else Play_StayCheckLive();
+}
+
+function Play_StayCheckHostEnd(responseText) {
+    Play_TargetHost = JSON.parse(responseText).hosts[0];
+    Play_state = Play_STATE_PLAYING;
+
+    if (Play_TargetHost.target_login !== undefined) {
+        Play_IsWarning = true;
+        var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+
+        Main_values.Play_isHost = true;
+
+        if (Settings_value.open_host.defaultValue) {
+            Play_OpenHost();
+            Play_showWarningDialog(warning_text, 4000);
+            return;
+        } else Play_EndSet(0);
+
+        Play_showWarningDialog(warning_text, 4000);
+        Play_PlayEndStart(1);
+
+    } else {
+        Play_StayCheckLive();
+    }
+}
+
+function Play_StayCheckLive() {
+
+    Play_loadDataId = new Date().getTime();
+
+    OSInterface_getStreamDataAsync(
+        Play_live_token.replace('%x', Play_data.data[6]),
+        Play_live_links.replace('%x', Play_data.data[6]),
+        'Play_StayCheckLiveResult',
+        Play_loadDataId,
+        0,
+        DefaultHttpGetReTryMax,
+        DefaultHttpGetTimeout
+    );
+
+}
+
+function Play_StayCheckLiveResult(response) {
+
+    if (Play_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_loadDataId) {
+
+            Play_StayCheckLiveResultEnd(JSON.parse(response));
+
+        }
+
+    }
+}
+
+function Play_StayCheckLiveResultEnd(responseObj) {
+
+    if (responseObj.status === 200) {
+        Main_HideElement('play_dialog_retry');
+
+        Play_data.AutoUrl = responseObj.url;
+        Play_loadDataSuccessend(responseObj.responseText);
+        return;
+
+    } else if (responseObj.status === 1 || responseObj.status === 403 ||
+        responseObj.status === 404 || responseObj.status === 410) {
+
+        //404 = off line
+        //403 = forbidden access
+        //410 = api v3 is gone use v5 bug
+        Play_StayCheckLiveErrorFinish((responseObj.status === 403 || responseObj.status === 1));
+        return;
+
+    }
+
+    Play_StayCheckLiveErrorFinish();
+}
+
+function Play_StayCheckLiveErrorFinish(Isforbiden) {
+
+    Play_StartStayTryedResult = Isforbiden ? STR_FORBIDDEN : STR_410_ERROR;
+
+    Main_innerHTML(
+        "play_dialog_retry_text",
+        STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR + STR_STAY_CHECK + STR_BR + 10
+    );
+
+    Play_StartStayTryId = Main_setTimeout(
+        function() {
+            Play_StartStayCheck(10);
+        },
+        1000,
+        Play_StartStayTryId
+    );
 }
 
 function Play_OpenChannel(PlayVodClip) {
@@ -952,7 +1128,7 @@ function Play_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
-                    if (Play_Endcounter < (Main_values.Play_isHost ? 1 : 2)) Play_Endcounter = 3;
+                    if (Play_Endcounter < 1) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
                 } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePicturePos++;
@@ -983,7 +1159,7 @@ function Play_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
-                    if (Play_Endcounter > 3) Play_Endcounter = (Main_values.Play_isHost ? 1 : 2);
+                    if (Play_Endcounter > 3) Play_Endcounter = 1;
                     Play_EndIconsAddFocus();
                 } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                     Play_PicturePictureSize++;
@@ -1091,8 +1267,9 @@ function Play_handleKeyDown(e) {
                             var obj1 = Play_CheckLiveThumb();
                             if (obj1) Play_MultiSetUpdateDialog(obj1);
                         } else Play_MultiStartPrestart();
-                    }
-                    else {
+                    } else if (Play_StayDialogVisible()) {
+                        Play_OpenLiveFeedCheck();
+                    } else {
                         Main_removeEventListener("keydown", Play_handleKeyDown);
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         PlayExtra_clear = false;
@@ -1305,6 +1482,8 @@ function Play_MakeControls() {
         defaultValue: 3,
         opacity: 0,
         enterKey: function() {
+            if (Play_StayDialogVisible()) return;
+
             Play_CurrentSpeed = this.defaultValue;
             OSInterface_setPlaybackSpeed(this.values[this.defaultValue]);
         },
@@ -1333,6 +1512,8 @@ function Play_MakeControls() {
         defaultValue: 0,
         opacity: 0,
         enterKey: function(PlayVodClip) {
+            if (Play_StayDialogVisible()) return;
+
             if (PlayVodClip === 1) {
                 Play_hidePanel();
             } else if (PlayVodClip === 2) {
@@ -1369,6 +1550,8 @@ function Play_MakeControls() {
         defaultValue: 0,
         opacity: 0,
         enterKey: function(PlayVodClip) {
+            if (Play_StayDialogVisible()) return;
+
             var oldQuality;
             if (PlayVodClip === 1) {
                 Play_hidePanel();
@@ -1411,6 +1594,7 @@ function Play_MakeControls() {
         defaultValue: 2,
         opacity: 0,
         enterKey: function() {
+            if (Play_StayDialogVisible()) return;
 
             if (this.defaultValue === 2) {//both
                 OSInterface_RestartPlayer(1, 0, 0);
@@ -1449,6 +1633,7 @@ function Play_MakeControls() {
         defaultValue: 0,
         opacity: 0,
         enterKey: function() {
+            if (Play_StayDialogVisible()) return;
 
             if (!this.defaultValue) {
 
@@ -1491,6 +1676,8 @@ function Play_MakeControls() {
         defaultValue: 0,
         opacity: 0,
         enterKey: function() {
+            if (Play_StayDialogVisible()) return;
+
             Play_hidePanel();
 
             Play_LowLatency = !Play_LowLatency;
@@ -1533,6 +1720,7 @@ function Play_MakeControls() {
         defaultValue: Play_controlsAudioPos,
         opacity: 0,
         enterKey: function() {
+            if (Play_StayDialogVisible()) return;
 
             OSInterface_mSwitchPlayerAudio(this.defaultValue);
 
@@ -1576,6 +1764,7 @@ function Play_MakeControls() {
         defaultValue: 0,
         opacity: 0,
         enterKey: function(preventShowWarning) {
+            if (Play_StayDialogVisible()) return;
 
             OSInterface_mSetPlayerAudioMulti(this.defaultValue);
             Play_AudioAll = this.defaultValue === 4;
@@ -1615,7 +1804,7 @@ function Play_MakeControls() {
         values: null,
         opacity: 0,
         enterKey: function(shutdown) {
-            if (!Main_IsOn_OSInterface) return;
+            if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
 
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {

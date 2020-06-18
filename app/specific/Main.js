@@ -202,7 +202,9 @@ function Main_loadTranslations(language) {
                     'Play_CheckHostResult': Play_CheckHostResult,
                     'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
                     'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
-                    'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult
+                    'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
+                    'Play_StayCheckHostResult': Play_StayCheckHostResult,
+                    'Play_StayCheckLiveResult': Play_StayCheckLiveResult
                 };
             }
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();

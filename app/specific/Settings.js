@@ -129,6 +129,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "play_stay": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "live_notification": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -1399,6 +1403,7 @@ function Settings_DialogShowWarnings() {
 function Settings_PlayerEnd() {
     var yes_no = [STR_NO, STR_YES];
     Settings_value.open_host.values = yes_no;
+    Settings_value.play_stay.values = yes_no;
     Settings_value.clip_auto_play_next.values = yes_no;
     Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
@@ -1407,6 +1412,12 @@ function Settings_PlayerEnd() {
             defaultValue: Settings_value.open_host.defaultValue,
             values: Settings_value.open_host.values,
             title: STR_OPEN_HOST_SETTINGS,
+            summary: null
+        },
+        play_stay: {
+            defaultValue: Settings_value.play_stay.defaultValue,
+            values: Settings_value.play_stay.values,
+            title: STR_ALWAYS_STAY,
             summary: null
         },
         clip_auto_play_next: {

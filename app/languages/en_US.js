@@ -188,6 +188,11 @@ function en_USLang() {
     STR_FEATURED = 'Featured';
     STR_CREATED_AT = "Created ";
     STR_OPEN_BROADCAST = "Open the Broadcast";
+    STR_STAY_OPEN = "Stay on the stream";
+    STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back online";
+    STR_STAY_CHECK = "Check if stream is back online in:";
+    STR_STAY_CHECKING = "Checking if is online...";
+    STR_STAY_CHECK_LAST = "Last result:";
     STR_NO_BROADCAST = "No Broadcast";
     STR_NO_BROADCAST_WARNING = "There are no Past Broadcasts for this clip";
     STR_NO_CHAT = "And because of that no chat";
@@ -543,6 +548,7 @@ function en_USLang() {
     STR_CHAT_CLEAR_MSG = "Clear chat, purge a user’s message";
     STR_CHAT_CLEAR_MSG_SUMMARY = "Purges chat messages from a specific user (typically after a timeout or ban)";
     STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
+    STR_ALWAYS_STAY = "Always stay with the player open after a Live end";
     STR_PING_WARNING = 'Show "Ping to Twitch fail warning"';
     STR_PING_WARNING_SUMMARY = "The app is constantly checking the connection with Twitch via a ping, if that fails too much a warning will show, if that warning is showing unintentionaly set this to NO";
     STR_KEY_UP_TIMEOUT = "Key hold timeout (in milliseconds)";

@@ -48,6 +48,8 @@
         'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult, // PlayExtra_CheckHostResult() func from app/specific/PlayExtra.js
         'Screens_LoadPreviewResult': Screens_LoadPreviewResult, // Screens_LoadPreviewResult() func from app/specific/Screens.js
         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,// ChannelContent_LoadPreviewResult() func from app/specific/ChannelContent.js
+        'Play_StayCheckHostResult': Play_StayCheckHostResult,// Play_StayCheckHostResult() func from app/specific/PlayEtc.js
+        'Play_StayCheckLiveResult': Play_StayCheckLiveResult,// Play_StayCheckLiveResult() func from app/specific/PlayEtc.js
     };
 
     /** Expose `smartTwitchTV` */
