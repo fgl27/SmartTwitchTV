@@ -316,6 +316,7 @@ function en_USLang() {
     STR_NOTIFICATION_OPT = "Notification options";
     STR_NOW_LIVE_SHOW = "Show Now Live notification";
     STR_NOW_BACKGROUND = "Now Live notification over other apps, when the app is on background";
+    STR_NOW_BACKGROUND_SUMMARY = "If you prevent notification for this app in system settings this featuring will not work, if the app notifications are already running and you exit the app the notification will show over other apps even if this is disable";
     STR_GLOBAL_FONT = "Global app font size offset";
     STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
     STR_MAIN_MENU = "Main Menu";
@@ -332,7 +333,7 @@ function en_USLang() {
     STR_LOW_LATENCY = "Low Latency";
     STR_LOW_LATENCY_SUMMARY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
         "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
-    STR_LIVE_FEED_SORT = "Live/Preview feed sort";
+    STR_LIVE_FEED_SORT = "Side panel or player Preview feed sorting";
     STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview feed (not all option apply to all feeds types)";
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";

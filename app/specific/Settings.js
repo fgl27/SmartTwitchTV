@@ -1244,7 +1244,7 @@ function Settings_DialogShowNotification() {
             defaultValue: Settings_value.live_notification_background.defaultValue,
             values: Settings_value.live_notification_background.values,
             title: STR_NOW_BACKGROUND,
-            summary: null
+            summary: STR_NOW_BACKGROUND_SUMMARY
         }
     };
 
