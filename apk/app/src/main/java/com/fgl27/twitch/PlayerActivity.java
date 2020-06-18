@@ -1016,7 +1016,9 @@ public class PlayerActivity extends Activity {
     }
 
     private boolean CheckService() {
-        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
+        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
+                Tools.getString(Constants.PREF_USER_ID, null, appPreferences) == null) {
+
             Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
             return false;
         }

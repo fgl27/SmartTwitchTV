@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,14 +148,16 @@ public class NotificationService extends Service {
         super.onCreate();
         appPreferences = new AppPreferences(context);
 
-        UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+        String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
-        //UserId == null user not set
+        //tempUserId == null user not set
         // !isRunning resume/stop scenario change the value
         // During !isRunning user may change
-        if (isRunning || UserId == null) {
+        if (isRunning || tempUserId == null) {
             //After a refresh of user live feed js will call the service to refresh notifications
-            if (UserId != null) InitHandler(0);
+            if (tempUserId != null) InitHandler(0);
+            else StopService();
+
             return;
         }
 
@@ -207,6 +210,17 @@ public class NotificationService extends Service {
         String url;
         boolean hasChannels = true;
 
+        //If user changed don't Notify this run only next
+        String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+        if (tempUserId == null) {
+            StopService();
+            return;
+        } else if (!Objects.equals(tempUserId, UserId)) {
+            Notify = false;
+        }
+
+        UserId = tempUserId;
+
         while (hasChannels) {//Get all user fallowed channels
             url = String.format(
                     Locale.US,
@@ -224,73 +238,93 @@ public class NotificationService extends Service {
         Tools.ResponseObj response;
         JsonObject obj;
         JsonArray streams;
+        int StreamsSize;
         String id;
         String game;
         boolean isLive;
         ArrayList<NotifyList> result = new ArrayList<>();
         ArrayList<String> currentLive = new ArrayList<>();
 
-        url = String.format(
-                Locale.US,
-                "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=0&stream_type=all&api_version=5",
-                Channels
-        );
+        boolean hasLiveChannels = true;
+        ChannelsOffset = 0;
+        while (hasLiveChannels) {
 
-        for (int i = 0; i < 3; i++) {
+            url = String.format(
+                    Locale.US,
+                    "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=%d&stream_type=all&api_version=5",
+                    Channels,
+                    ChannelsOffset
+            );
 
-            response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, DEFAULT_HEADERS);
+            StreamsSize = 0;
+            for (int i = 0; i < 3; i++) {
 
-            if (response != null) {
+                response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, DEFAULT_HEADERS);
 
-                if (response.getStatus() == 200) {
-                    obj = parseString(response.getResponseText()).getAsJsonObject();
+                if (response != null) {
 
-                    if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
+                    if (response.getStatus() == 200) {
+                        obj = parseString(response.getResponseText()).getAsJsonObject();
 
-                        streams = obj.get("streams").getAsJsonArray();//Get the follows array
+                        if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
 
-                        if (streams.size() < 1) return;
+                            streams = obj.get("streams").getAsJsonArray();//Get the follows array
+                            StreamsSize = streams.size();
 
-                        for (int j = 0; j < streams.size(); j++) {
+                            if (StreamsSize > 0) {
 
-                            obj = streams.get(j).getAsJsonObject();//Get the position in the follows array
+                                ChannelsOffset += StreamsSize;
 
-                            if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+                            } else {
 
-                                game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
-                                isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
-                                id = obj.get("_id").getAsString();//Broadcast id
-                                obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+                                hasLiveChannels = false;
+                                break;
 
-                                if (obj.isJsonObject()) {
+                            }
 
-                                    currentLive.add(id);
+                            for (int j = 0; j < StreamsSize; j++) {
 
-                                    if (Notify && !oldLive.contains(id)) {
+                                obj = streams.get(j).getAsJsonObject();//Get the position in the follows array
 
-                                        Bitmap bmp = null;
-                                        if (!obj.get("logo").isJsonNull())
-                                            bmp = GetBitmap(obj.get("logo").getAsString());
+                                if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
 
-                                        result.add(
-                                                new NotifyList(
-                                                        game,
-                                                        !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
-                                                        bmp,
-                                                        !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
-                                                        isLive
-                                                )
-                                        );
+                                    game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
+                                    isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
+                                    id = obj.get("_id").getAsString();//Broadcast id
+                                    obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+
+                                    if (obj.isJsonObject()) {
+
+                                        currentLive.add(id);
+
+                                        if (Notify && !oldLive.contains(id)) {
+
+                                            Bitmap bmp = null;
+                                            if (!obj.get("logo").isJsonNull())
+                                                bmp = GetBitmap(obj.get("logo").getAsString());
+
+                                            result.add(
+                                                    new NotifyList(
+                                                            game,
+                                                            !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
+                                                            bmp,
+                                                            !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
+                                                            isLive
+                                                    )
+                                            );
+                                        }
                                     }
                                 }
                             }
+
                         }
-
+                        break;
                     }
-                    break;
-                }
 
+                }
             }
+
+            if (StreamsSize == 0) hasLiveChannels = false;
         }
 
         if (Notify && result.size() > 0) {
@@ -354,15 +388,15 @@ public class NotificationService extends Service {
         if (LayoutWidth > 0) {
             TextView now_live = layout.findViewById(R.id.now_live);
 
-            now_live.setTextSize(textSizeBig);
-            name.setTextSize(textSizeBig);
+            now_live.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
+            name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
 
-            title.setTextSize(textSizeSmall);
-            game.setTextSize(textSizeSmall);
+            title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
+            game.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
         }
 
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.RIGHT | Gravity.TOP, 0, 18);
+        toast.setGravity(Gravity.RIGHT | Gravity.TOP, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
@@ -517,14 +551,17 @@ public class NotificationService extends Service {
         if (window != null) {
             Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
             float width = ScreenSize.x / 100.0f;
-            int NewLayoutWidth = (int) (width * 45.0f);
+            int NewLayoutWidth = (int) (width * 40.0f);
 
             if (LayoutWidth != NewLayoutWidth) {
+                float Density = this.getResources().getDisplayMetrics().density;
+                float ScaleDensity = Density / 2.0f;
+
                 LayoutWidth = NewLayoutWidth;
                 ImageSize = (int) (width * 8.0f);
 
-                textSizeSmall = 0.6f * width;
-                textSizeBig = 0.65f * width;
+                textSizeSmall = 0.6f * width / ScaleDensity;
+                textSizeBig = 0.65f * width / ScaleDensity;
             }
         }
     }

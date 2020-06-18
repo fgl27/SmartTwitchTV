@@ -337,12 +337,20 @@ function AddUser_removeUser(position) {
     // restart users and smarthub
     if (AddUser_UsernameArray.length > 0) {
         //Reset main user if user is 0
-        if (!position) AddUser_UpdateSidepanel();
+        if (!position) {
+            AddUser_UpdateSidepanel();
+            OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+        }
         Users_status = false;
         Users_init();
     } else {
         AddUser_UpdateSidepanelDefault();
         AddUser_init();
+
+        if (Main_IsOn_OSInterface) {
+            OSInterface_upNotificationId(null);
+            OSInterface_StopNotificationService();
+        }
     }
 }
 
