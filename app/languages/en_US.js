@@ -195,7 +195,7 @@ function en_USLang() {
     STR_OPEN_HOST = "Open the Hosting";
     STR_SETTINGS_PLAYER = "Player related";
     STR_SETTINGS_BUFFER_SIZE = "Start Buffer size:";
-    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "How much is needed to buffer before starting the playback, this is not related to maximum size the buffer can be, a lower value here will cause the playback to start sooner, but it may cause re-buffering which will cause the player to pause to buffer. Change this if you have constant buffering issues";
+    STR_SETTINGS_BUFFER_SIZE_SUMMARY = "How much is needed to buffer before starting the playback, this is not related to the maximum size that the buffer can reach (the maximum buffer size is base on the device RAM size), a lower value here will cause the playback to start sooner and that is always recommended. Change this value to a bigger value will in most cases not cause any improve but setbacks";
     STR_SETTINGS_BUFFER_LIVE = "Live streams Start buffer";
     STR_SETTINGS_BUFFER_VOD = "Videos (Past Broadcast and Highlight) Start buffer";
     STR_SETTINGS_BUFFER_CLIP = "Clips Start buffer";
