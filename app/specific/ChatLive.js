@@ -1023,7 +1023,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
     if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
 
         var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
-        ChatLive_Warn(text, 5000);
+        ChatLive_Warn(text, 3500);
 
         ChatLive_Banned[chat_number] = true;
 
@@ -1042,7 +1042,7 @@ function ChatLive_UserNoticeWarn(message) {
     if (message.params[1] && !Main_A_includes_B(message.params[1], "NICK already set")) {
 
         //Main_Log(message.params[1]);
-        ChatLive_Warn(message.params[1], 5000);
+        ChatLive_Warn(message.params[1], 3500);
 
     }
 }

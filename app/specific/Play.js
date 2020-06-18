@@ -1244,7 +1244,13 @@ function Play_WarningDialogVisible() {
 var Play_showWarningMidleDialogId;
 function Play_showWarningMidleDialog(text, timeout) {
     Main_innerHTML("dialog_warning_play_middle_text", text);
-    Main_ShowElement('dialog_warning_play_middle');
+
+    var doc = document.getElementById('dialog_warning_play_middle');
+
+    if (UserLiveFeed_isFeedShow()) doc.style.marginTop = '90vh';
+    else doc.style.marginTop = '50vh';
+
+    Main_ShowElementWithEle(doc);
 
     if (timeout) {
         Play_showWarningMidleDialogId = Main_setTimeout(
