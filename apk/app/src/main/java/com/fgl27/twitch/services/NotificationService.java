@@ -174,9 +174,9 @@ public class NotificationService extends Service {
         }
 
         isRunning = true;
-
+        UserId = tempUserId;
         oldLive = new ArrayList<>();
-        String tempOldLive = Tools.getString(Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
+        String tempOldLive = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
 
         if (tempOldLive != null) {
             oldLive = new Gson().fromJson(tempOldLive, new TypeToken<List<String>>() {}.getType());
@@ -204,22 +204,26 @@ public class NotificationService extends Service {
         }
     }
 
+    private boolean CheckUserChaged() {
+        //If user changed don't Notify this run only next
+        String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+        if (tempUserId == null) {
+            StopService();
+            return true;
+        } else if (!Objects.equals(tempUserId, UserId)) {
+            Notify = false;
+        }
+        UserId = tempUserId;
+        return false;
+    }
+
     private void DoNotifications() {
         Channels = "";
         ChannelsOffset = 0;
         String url;
         boolean hasChannels = true;
 
-        //If user changed don't Notify this run only next
-        String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
-        if (tempUserId == null) {
-            StopService();
-            return;
-        } else if (!Objects.equals(tempUserId, UserId)) {
-            Notify = false;
-        }
-
-        UserId = tempUserId;
+        if (CheckUserChaged()) return;
 
         while (hasChannels) {//Get all user fallowed channels
             url = String.format(
@@ -324,10 +328,13 @@ public class NotificationService extends Service {
                 }
             }
 
-            if (StreamsSize == 0) hasLiveChannels = false;
+            if (StreamsSize == 0) break;//break out of the while
         }
 
+        if (CheckUserChaged()) return;
+
         if (Notify && result.size() > 0) {
+
             for (int i = 0; i < result.size(); i++) {
                 DoNotification(result.get(i), i);
             }
@@ -341,7 +348,7 @@ public class NotificationService extends Service {
         oldLive = new ArrayList<>();
         oldLive.addAll(currentLive);
 
-        appPreferences.put(Constants.PREF_NOTIFY_OLD_LIST, new Gson().toJson(oldLive));
+        appPreferences.put(UserId + Constants.PREF_NOTIFY_OLD_LIST, new Gson().toJson(oldLive));
     }
 
     private void DoNotification(NotifyList result, int delay) {
