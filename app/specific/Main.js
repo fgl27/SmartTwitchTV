@@ -712,8 +712,11 @@ function Main_CounterDialog(x, y, coloumns, total) {
 }
 
 var Main_showWarningDialogId;
-function Main_showWarningDialog(text, timeout) {
+function Main_showWarningDialog(text, timeout, changePos) {
     var doc = document.getElementById('dialog_warning');
+
+    if (changePos) doc.style.marginTop = '86vh';
+    else doc.style.marginTop = '50vh';
 
     Main_innerHTML('dialog_warning_text', text);
     Main_ShowElementWithEle(doc);

@@ -971,7 +971,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 if (offset) {
                     Main_showWarningDialog(
                         STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(offset * 1000),
-                        2000
+                        2000,
+                        !ScreenObj[x].Cells[ScreenObj[x].posY + 1]
                     );
                 }
 
