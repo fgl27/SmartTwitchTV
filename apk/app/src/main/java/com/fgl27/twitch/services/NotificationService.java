@@ -328,7 +328,6 @@ public class NotificationService extends Service {
         }
 
         if (Notify && result.size() > 0) {
-            setWidth();
             for (int i = 0; i < result.size(); i++) {
                 DoNotification(result.get(i), i);
             }
@@ -351,6 +350,7 @@ public class NotificationService extends Service {
 
     @SuppressLint("InflateParams")
     private void DoToast(NotifyList result) {
+        setWidth();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View layout;
@@ -548,21 +548,34 @@ public class NotificationService extends Service {
 
     private void setWidth() {
         WindowManager window = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+
         if (window != null) {
+
             Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
-            float width = ScreenSize.x / 100.0f;
+
+            //The device may be a phone that changes from landscape to portrait
+            //Get the bigger value at the time ou the notification
+            int max = Math.max(ScreenSize.x, ScreenSize.y);
+            int min = Math.min(ScreenSize.x, ScreenSize.y);
+
+            float width = max / 100.0f;
             int NewLayoutWidth = (int) (width * 40.0f);
 
-            if (LayoutWidth != NewLayoutWidth) {
-                float Density = this.getResources().getDisplayMetrics().density;
-                float ScaleDensity = Density / 2.0f;
+            //Prevent notification bigger then the screen
+            NewLayoutWidth = Math.min(NewLayoutWidth, (min - (min / 100)));
+
+            if (LayoutWidth != NewLayoutWidth) {//if changed change the other values
 
                 LayoutWidth = NewLayoutWidth;
-                ImageSize = (int) (width * 8.0f);
+                ImageSize = (int) (NewLayoutWidth / 5.0f);
 
-                textSizeSmall = 0.6f * width / ScaleDensity;
-                textSizeBig = 0.65f * width / ScaleDensity;
+                //Scale the text to screen size and density
+                float ScaleDensity = width / (this.getResources().getDisplayMetrics().density / 2.0f);
+                textSizeSmall = 0.6f * ScaleDensity;
+                textSizeBig = 0.65f * ScaleDensity;
+
             }
+
         }
     }
 
