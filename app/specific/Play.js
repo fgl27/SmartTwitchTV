@@ -340,7 +340,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
             //Use OSInterface_keyEvent to prevent odd screen scroll visual behavior
             OSInterface_keyEvent(3, 0);
-            //sedn a key up with a minor delay
+            //send a key up with a minor delay to simulate a click
             Main_setTimeout(
                 function() {
                     OSInterface_keyEvent(3, 1);
