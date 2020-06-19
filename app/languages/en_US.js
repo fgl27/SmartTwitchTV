@@ -290,8 +290,8 @@ function en_USLang() {
     STR_PLAYER_RESYNC = "Player Restart";
     STR_PLAYER_AUTO_BIG = "Main or big window";
     STR_PLAYER_AUTO_SMALLS = "Small or bottom window";
-    STR_PLAYER_AUTO_ALL = "Both windows";
-    STR_PLAYER_MULTI_ALL = "All windows";
+    STR_PLAYER_AUTO_ALL = "Both videos";
+    STR_PLAYER_MULTI_ALL = "All videos";
     STR_PLAYER_WINDOW = "Window ";
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
     STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
