@@ -158,6 +158,7 @@ function Screens_StartLoad(key) {
     Main_empty(ScreenObj[key].table);
     ScreenObj[key].ScrollDoc.style.transform = '';
     ScreenObj[key].lastRefresh = new Date().getTime();
+    Play_PreviewVideoEnded = false;
     Main_updateclock();
     Main_HideWarningDialog();
 
