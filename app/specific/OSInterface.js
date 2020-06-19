@@ -16,14 +16,20 @@ function OSInterface_StopNotificationService() {
 //Android specific: true
 //Allows to Set Notification Position
 function OSInterface_SetNotificationPosition(position) {
-    if (Main_IsOn_OSInterface) Android.SetNotificationPosition(position);
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SetNotificationPosition(position);
+    } catch (e) {}
 }
 
 //public void RunNotificationService()
 //Android specific: true
 //Allows to run the notification service once
 function OSInterface_RunNotificationService() {
-    if (Main_IsOn_OSInterface) Android.RunNotificationService();
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.RunNotificationService();
+    } catch (e) {}
 }
 
 //public void upNotificationState(boolean Notify)
@@ -83,16 +89,19 @@ function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResul
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, Delay_ms, callback, x, y, ReTryMax, Timeout) {
-    Android.CheckIfIsLiveFeed(
-        token_url,
-        hls_url,
-        Delay_ms,
-        callback,
-        x,
-        y,
-        ReTryMax,
-        Timeout
-    );
+    //TODO remove the try after some apps updates
+    try {
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            hls_url,
+            Delay_ms,
+            callback,
+            x,
+            y,
+            ReTryMax,
+            Timeout
+        );
+    } catch (e) {}
 }
 
 //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -715,7 +724,6 @@ function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, resume
     try {
         Android.StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod);
     } catch (e) {
-        Android.StartFeedPlayer(uri, masterPlaylistString, position);
     }
 }
 
@@ -889,7 +897,10 @@ function OSInterface_initbodyClickSet() {
 //Android specific: true
 //Allows to run the notification service once
 function OSInterface_SetKeysOpacity(Opacity) {
-    if (Main_IsOn_OSInterface) Android.SetKeysOpacity(Opacity);
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SetKeysOpacity(Opacity);
+    } catch (e) {}
 }
 
 //public void SetKeysPosition(float Opacity)
@@ -897,7 +908,10 @@ function OSInterface_SetKeysOpacity(Opacity) {
 //Android specific: true
 //Allows to run the notification service once
 function OSInterface_SetKeysPosition(Position) {
-    if (Main_IsOn_OSInterface) Android.SetKeysPosition(Position);
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SetKeysPosition(Position);
+    } catch (e) {}
 }
 
 //public boolean isKeyboardConnected()
