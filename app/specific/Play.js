@@ -338,15 +338,23 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
         if (ScreenObj[Screens_Current_Key].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
 
-            //Use OSInterface_keyEvent to prevent odd screen scroll visual behavior
-            OSInterface_keyEvent(3, 0);
-            //send a key up with a minor delay to simulate a click
-            Main_setTimeout(
-                function() {
-                    OSInterface_keyEvent(3, 1);
-                },
-                25
-            );
+            if (PlayClip_getIdNext(1, 0)) {
+                //Use OSInterface_keyEvent to prevent odd screen scroll visual behavior
+                OSInterface_keyEvent(3, 0);
+                //send a key up with a minor delay to simulate a click
+                Main_setTimeout(
+                    function() {
+                        OSInterface_keyEvent(3, 1);
+                    },
+                    25
+                );
+            } else {
+                Sidepannel_CheckIfIsLiveSTop();
+                Main_RemoveClass(
+                    ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
+                    'opacity_zero'
+                );
+            }
 
         } else {
             Screens_LoadPreviewWarn(
