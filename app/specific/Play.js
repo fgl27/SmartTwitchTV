@@ -338,8 +338,15 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
         if (ScreenObj[Screens_Current_Key].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
 
-            //Use OSInterface_keyEvent to prevent odd screen scroll visual behavier
+            //Use OSInterface_keyEvent to prevent odd screen scroll visual behavior
             OSInterface_keyEvent(3, 0);
+            //sedn a key up with a minor delay
+            Main_setTimeout(
+                function() {
+                    OSInterface_keyEvent(3, 1);
+                },
+                25
+            );
 
         } else {
             Screens_LoadPreviewWarn(
