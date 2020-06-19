@@ -207,9 +207,9 @@ echo -e "\\n${bldgrn}Compressing Start\\n";
 # run the cleans/compress tools
 
 if [ "$canhtmlminifier" == 1 ]; then
-	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true release/index.min.html -o release/index.min.html
+	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true release/index.min.html -o release/index.min.html
 
-	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true release/extrapageindex.min.html -o release/extrapageindex.min.html
+	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true release/extrapageindex.min.html -o release/extrapageindex.min.html
 fi;
 
 echo "" > release/master.js;
