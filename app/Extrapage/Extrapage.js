@@ -39,9 +39,8 @@
         Main_body.insertBefore(span, Main_body.firstChild);
 
         if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
-            Main_Log('Main_Checktylesheet reloading');
             Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
-        } else Main_Log('Main_Checktylesheet loaded OK');
+        }
 
         Main_body.removeChild(span);
     }
@@ -52,17 +51,6 @@
         link.href = path;
 
         document.getElementsByTagName("head")[0].appendChild(link);
-    }
-
-    function Main_Log(text) {
-        if (Main_isDebug) {
-            text = text + ' ' + Main_LogDate(new Date());
-            OSInterface_LongLog(text);
-        }
-    }
-
-    function Main_LogDate(date) {
-        return date.toLocaleTimeString([], {hour12: false}) + '.' + date.getMilliseconds();
     }
 
     function Main_load() {
@@ -94,7 +82,7 @@
             if (Main_isTV) return;
         } else return;
 
-        Main_ShowElement('scenekeys');
+        document.getElementById('scenekeys').classList.remove('hide');
         Main_scenekeysDoc = document.getElementById('scenekeys');
         Main_scenekeysPositionDoc = document.getElementById('scenekeys_position');
 
@@ -181,8 +169,7 @@
             Main_ClickonpointerdownClear();
             if (!Main_buttonsVisible()) return;
 
-            if (Main_IsOn_OSInterface) OSInterface_keyEvent(pos, 1);
-            else Main_Log("pointerup key " + Main_initClickDoc[pos] + " even " + 1);
+            OSInterface_keyEvent(pos, 1);
         };
     }
 
@@ -192,12 +179,7 @@
     }
 
     function Main_Clickonpointerdown(pos) {
-        if (Main_IsOn_OSInterface) OSInterface_keyEvent(pos, 0);
-        else Main_Log("pointerdown key " + Main_initClickDoc[pos] + " even " + 0);
-    }
-
-    function Main_ShowElement(element) {
-        document.getElementById(element).classList.remove('hide');
+        OSInterface_keyEvent(pos, 0);
     }
 
     function Set_DpadOpacity() {
@@ -273,10 +255,6 @@
         if (!Main_IsOn_OSInterface) calculateFontSize();
     }
 
-    function OSInterface_LongLog(log) {
-        if (Main_IsOn_OSInterface) Android.LongLog(log);
-    }
-
     function OSInterface_getdebug() {
         return Android.getdebug();
     }
@@ -290,7 +268,7 @@
     }
 
     function OSInterface_keyEvent(key, keyaction) {
-        Android.keyEvent(key, keyaction);
+        if (Main_IsOn_OSInterface) Android.keyEvent(key, keyaction);
     }
 
     /**
