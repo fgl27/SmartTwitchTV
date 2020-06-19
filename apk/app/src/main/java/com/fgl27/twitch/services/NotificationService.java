@@ -590,8 +590,8 @@ public class NotificationService extends Service {
 
                 //Scale the text to screen size and density
                 float ScaleDensity = width / (context.getResources().getDisplayMetrics().density / 2.0f);
-                textSizeSmall = 0.6f * ScaleDensity;
-                textSizeBig = 0.65f * ScaleDensity;
+                textSizeSmall = 0.62f * ScaleDensity;
+                textSizeBig = 0.68f * ScaleDensity;
 
             }
 
