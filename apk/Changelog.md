@@ -1,7 +1,7 @@
 SmartTV Twitch AndroidTV APP latest changes
 ==============
 
-Version 3.0.203
+Version 3.0.203 and up
 ==============
 
 I took sometime from making small updates to make a bigger update.
