@@ -260,7 +260,7 @@ function Play_Start() {
     } else {
 
         Play_data.AutoUrl = Play_PreviewURL;
-        Play_loadDataSuccessend(Play_PreviewResponseText);
+        Play_loadDataSuccessend(Play_PreviewResponseText, true);
 
         Play_CheckIfIsLiveCleanEnd();
         Play_getQualities(1, true);
@@ -766,7 +766,7 @@ function Play_loadDataResultEnd(responseObj) {
     if (responseObj.status === 200) {
 
         Play_data.AutoUrl = responseObj.url;
-        Play_loadDataSuccessend(responseObj.responseText);
+        Play_loadDataSuccessend(responseObj.responseText, true);
         return;
 
     } else if (responseObj.status === 1 || responseObj.status === 403 ||
@@ -783,7 +783,7 @@ function Play_loadDataResultEnd(responseObj) {
     Play_loadDataErrorFinish();
 }
 
-function Play_loadDataSuccessend(playlist) {
+function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory) {
     UserLiveFeed_Hide();
 
     if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
@@ -797,7 +797,7 @@ function Play_loadDataSuccessend(playlist) {
     Play_EndSet(1);
     UserLiveFeed_SetFeedPicText();
     Play_HideEndDialog();
-    Play_UpdateMainStream(true, true);
+    Play_UpdateMainStream(startChat, true);
 
     Play_data.playlist = playlist;
     Play_state = Play_STATE_PLAYING;
@@ -806,7 +806,7 @@ function Play_loadDataSuccessend(playlist) {
     UserLiveFeed_PreventHide = false;
     ChatLive_Playing = true;
 
-    if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
+    if (!Play_data.isHost && !SkipSaveHistory) Main_Set_history('live', Play_data.data);
 }
 
 

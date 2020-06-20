@@ -662,7 +662,7 @@ function Play_StayCheckLiveResultEnd(responseObj) {
         Main_HideElement('play_dialog_retry');
 
         Play_data.AutoUrl = responseObj.url;
-        Play_loadDataSuccessend(responseObj.responseText);
+        Play_loadDataSuccessend(responseObj.responseText, false, true);
         return;
 
     } else if (responseObj.status === 1 || responseObj.status === 403 ||
