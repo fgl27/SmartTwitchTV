@@ -14,6 +14,8 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, new AppPreferences(context))) return;
+
         String action = intent.getAction();
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
