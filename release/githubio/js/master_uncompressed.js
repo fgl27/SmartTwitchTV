@@ -11809,7 +11809,7 @@
         } else if (Play_Endcounter === 1) {
             if (Main_values.Play_isHost) Play_OpenHost();
             else if (PlayVodClip === 1) Play_StartStay();
-            else if (PlayVodClip === 2) {
+            else if (PlayVodClip === 3) {
                 PlayClip_OpenVod();
                 if (!PlayClip_HasVOD) canhide = false;
             }
