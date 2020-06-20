@@ -15,7 +15,6 @@
     }
 
     var Main_body = document.body;
-    var Main_isDebug = false;
     var Main_IsOn_OSInterface = 0;
 
     function Main_Start() {
@@ -58,9 +57,7 @@
 
         try {
             Main_IsOn_OSInterface = OSInterface_getversion() !== '';
-            Main_isDebug = OSInterface_getdebug();
         } catch (e) {
-            Main_isDebug = true;
             Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
         }
         calculateFontSize();
@@ -82,7 +79,6 @@
             if (Main_isTV) return;
         } else return;
 
-        document.getElementById('scenekeys').classList.remove('hide');
         Main_scenekeysDoc = document.getElementById('scenekeys');
         Main_scenekeysPositionDoc = document.getElementById('scenekeys_position');
 
@@ -243,9 +239,9 @@
         scaledWidth = initialWidth * scaleFactor;
 
         //Set new body width/height recalculated to 16 by 9 and scaled fontSize 
-        document.body.style.width = scaledWidth + 'px';
-        document.body.style.height = currentHeight + 'px';
-        document.body.style.fontSize = BodyfontSize + 'px';
+        Main_body.style.width = scaledWidth + 'px';
+        Main_body.style.height = currentHeight + 'px';
+        Main_body.style.fontSize = BodyfontSize + 'px';
     }
 
     //Do the calculation and changes on proper events call
