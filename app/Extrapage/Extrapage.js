@@ -251,10 +251,6 @@
         if (!Main_IsOn_OSInterface) calculateFontSize();
     }
 
-    function OSInterface_getdebug() {
-        return Android.getdebug();
-    }
-
     function OSInterface_getversion() {
         return Android.getversion();
     }
