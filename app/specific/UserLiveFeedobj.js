@@ -10,18 +10,21 @@ var UserLiveFeedobj_UserHistoryPos = 6;
 var UserLiveFeedobj_UserHostPos = 7;
 var UserLiveFeedobj_UserGamesPos = 8;
 var UserLiveFeedobj_UserAGamesPos = 9;
+var UserLiveFeedobj_UserVodPos = 10;
+var UserLiveFeedobj_UserVodHistoryPos = 11;
 
-//Check bellow java before define more current max is 0 to 9, 1 is used by the side panel
-//public String[][] ExtraPlayerHandlerResult = new String[10][100];
+//Check bellow java before define more current max is 0 to 24, 1 is used by the side panel
+//public String[][] ExtraPlayerHandlerResult = new String[25][100];
 
 var UserLiveFeed_FeedPosX = UserLiveFeedobj_UserLivePos;//Default pos
-var UserLiveFeedobj_MAX = UserLiveFeedobj_UserGamesPos;
+var UserLiveFeedobj_MAX = UserLiveFeedobj_UserVodHistoryPos;
 var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 
 function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {
         if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
-            UserLiveFeed_LastPos[pos] = JSON.parse(document.getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[6];
+            UserLiveFeed_LastPos[pos] =
+                JSON.parse(document.getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
     } else {
         UserSidePannel_LastPos[pos] = null;
         UserLiveFeed_LastPos[pos] = null;
@@ -31,6 +34,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].offsettopFontsize = Settings_Obj_default('global_font_offset');
     UserLiveFeed_cell[pos] = [];
     UserLiveFeed_idObject[pos] = {};
+
     UserLiveFeed_itemsCount[pos] = 0;
     Main_emptyWithEle(UserLiveFeed_obj[pos].div);
     UserLiveFeed_status[pos] = false;
@@ -50,7 +54,7 @@ function UserLiveFeedobj_StartDefault(pos) {
 function UserLiveFeedobj_CheckToken() {
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) {
         if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
-            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[6];
+            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
     }
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
@@ -80,19 +84,19 @@ function UserLiveFeedobj_loadDataPrepare(pos) {
     UserLiveFeed_loadingDataTry[pos] = 0;
 }
 
-function UserLiveFeedobj_loadChannels() {
-    //Main_Log('UserLiveFeedobj_loadChannels');
-    var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
-        '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag;
+function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
+    //Main_Log('UserLiveFeedobj_BaseLoad');
+
+    if (CheckOffset) UserLiveFeedobj_CheckOffset(pos);
 
     BasexmlHttpGet(
-        theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus),
-        2,
+        url,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),
+        headers,
         null,
-        UserLiveFeedobj_loadChannelLive,
+        callback,
         function() {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+            UserLiveFeedobj_loadDataError(pos);
         }
     );
 }
@@ -110,7 +114,12 @@ function UserLiveFeedobj_loadDataError(pos) {
             Main_HideElement('dialog_loading_side_feed');
 
             if (UserLiveFeed_isFeedShow()) {
-                UserLiveFeedobj_HooderDiv(pos, STR_REFRESH_PROBLEM);
+                UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
+            }
+
+            if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowing()) {
+                Main_HideWarningDialog();
+                Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
             }
         } else {
             UserLiveFeed_obj[pos].loadingMore = false;
@@ -120,12 +129,24 @@ function UserLiveFeedobj_loadDataError(pos) {
 }
 
 function UserLiveFeedobj_Empty(pos) {
-    UserLiveFeedobj_HooderDiv(pos, STR_NO_LIVE_CONTENT);
+    UserLiveFeedobj_HolderDiv(pos, STR_NO_LIVE_CONTENT);
 }
 
-function UserLiveFeedobj_HooderDiv(pos, text) {
+function UserLiveFeedobj_HolderDiv(pos, text) {
     Main_innerHTMLWithEle(UserLiveFeed_obj[pos].div,
         '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + text + '</div>');
+}
+
+function UserLiveFeedobj_loadChannels() {
+    //Main_Log('UserLiveFeedobj_loadChannels');
+    UserLiveFeedobj_BaseLoad(
+        Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+        '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag,
+        2,
+        UserLiveFeedobj_loadChannelLive,
+        false,
+        UserLiveFeedobj_UserLivePos
+    );
 }
 
 function UserLiveFeedobj_loadChannelLive(responseText) {
@@ -204,105 +225,6 @@ function UserLiveFeedobj_loadDataRefreshTokenError() {
     else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
 }
 
-var UserLiveFeedobj_LiveNotificationClearId;
-function UserLiveFeedobj_LiveNotification() {
-    if (UserLiveFeed_NotifyRunning || !UserLiveFeed_NotifyLiveidObject.length) {
-        if (!UserLiveFeed_Notify) UserLiveFeed_NotifyLiveidObject = [];
-
-        return;
-    }
-
-    //Reset notifications after 2 times the time it takes just in case imf load and error fail some how
-    UserLiveFeedobj_LiveNotificationClearId = Main_setTimeout(
-        UserLiveFeedobj_LiveNotificationClear,
-        ((UserLiveFeed_NotifyTimeout + 1500) * 2 * UserLiveFeed_NotifyLiveidObject.length),
-        UserLiveFeedobj_LiveNotificationClearId
-    );
-
-    Main_ShowElement('user_feed_notify');
-
-    UserLiveFeed_NotifyRunning = true;
-
-    Main_setTimeout(
-        function() {
-            UserLiveFeedobj_LiveNotificationShow(0);
-        },
-        1000
-    );
-}
-
-function UserLiveFeedobj_LiveNotificationShow(position) {
-    Sidepannel_Notify_img.onload = function() {
-        this.onload = null;
-        this.onerror = null;
-        UserLiveFeedobj_LiveNotificationOnload(position);
-    };
-
-    Sidepannel_Notify_img.onerror = function() {
-        this.onerror = null;
-        this.onload = null;
-        this.src = IMG_404_LOGO;
-        UserLiveFeedobj_LiveNotificationOnload(position);
-    };
-
-    //If the user refresh too fast and a new live channel is there all the time this may fail
-    if (UserLiveFeed_NotifyLiveidObject[position] && UserLiveFeed_NotifyLiveidObject[position].hasOwnProperty('logo'))
-        Sidepannel_Notify_img.src = UserLiveFeed_NotifyLiveidObject[position].logo;
-    else UserLiveFeedobj_LiveNotificationHide(position);
-}
-
-var UserLiveFeedobj_LiveNotificationHideId;
-function UserLiveFeedobj_LiveNotificationOnload(position) {
-    if (!UserLiveFeed_NotifyLiveidObject[position]) {
-        UserLiveFeedobj_LiveNotificationHide(position);
-        return;
-    }
-
-    Main_innerHTML('user_feed_notify_name', '<i class="icon-' + (!UserLiveFeed_NotifyLiveidObject[position].rerun ? 'circle" style="color: red;' : 'refresh" style="') + ' font-size: 75%; "></i>' + STR_SPACE + UserLiveFeed_NotifyLiveidObject[position].name);
-
-    Main_textContent('user_feed_notify_game', UserLiveFeed_NotifyLiveidObject[position].game);
-    Main_innerHTML('user_feed_notify_title', UserLiveFeed_NotifyLiveidObject[position].title);
-
-    Main_RemoveClass('user_feed_notify', 'user_feed_notify_hide');
-
-    UserLiveFeedobj_LiveNotificationHideId = Main_setTimeout(
-        function() {
-            UserLiveFeedobj_LiveNotificationHide(position);
-        },
-        UserLiveFeed_NotifyTimeout,
-        UserLiveFeedobj_LiveNotificationHideId
-    );
-}
-
-var UserLiveFeedobj_LiveNotificationShowId;
-function UserLiveFeedobj_LiveNotificationHide(position) {
-    Main_AddClass('user_feed_notify', 'user_feed_notify_hide');
-
-    if (position < (UserLiveFeed_NotifyLiveidObject.length - 1)) {
-        UserLiveFeedobj_LiveNotificationShowId = Main_setTimeout(
-            function() {
-                UserLiveFeedobj_LiveNotificationShow(position + 1);
-            },
-            800,
-            UserLiveFeedobj_LiveNotificationShowId
-        );
-    } else UserLiveFeedobj_LiveNotificationClear();
-}
-
-function UserLiveFeedobj_LiveNotificationClear() {
-    Main_clearTimeout(UserLiveFeedobj_LiveNotificationClearId);
-    UserLiveFeed_NotifyRunning = false;
-    UserLiveFeed_NotifyLiveidObject = [];
-
-    UserLiveFeedobj_LiveNotificationClearId = Main_setTimeout(
-        function() {
-            Main_HideElement('user_feed_notify');
-        },
-        10000,
-        UserLiveFeedobj_LiveNotificationClearId
-    );
-}
-
 var UserLiveFeedobj_LiveFeedOldUserName = '';
 function UserLiveFeedobj_ShowFeed() {
     UserLiveFeedobj_SetBottomText(4);
@@ -338,6 +260,14 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
         UserLiveFeed_FeedAddFocus(true, pos);
     }
+
+    UserLiveFeedobj_SetLastRefresh(pos);
+}
+
+function UserLiveFeedobj_SetLastRefresh(pos) {
+    if (!UserLiveFeed_lastRefresh[pos]) return;
+
+    Main_innerHTML("feed_last_refresh", STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - UserLiveFeed_lastRefresh[pos]));
 }
 
 function UserLiveFeedobj_HideFeed() {
@@ -364,6 +294,7 @@ function UserLiveFeedobj_ShowHistory() {
 
 function UserLiveFeedobj_History() {
     UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
+
     var pos = UserLiveFeedobj_UserHistoryPos,
         response = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live)),
         response_items,
@@ -388,9 +319,9 @@ function UserLiveFeedobj_History() {
             id = cell.data[7];
             if (!cell.forceVod) {
 
-                if (!UserLiveFeed_idObject[pos][id] && cell.data[14] !== '') {
+                if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && cell.data[14] && cell.data[14] !== '') {
 
-                    UserLiveFeed_idObject[pos][id] = 1;
+                    UserLiveFeed_idObject[pos][id] = itemsCount;
 
                     UserLiveFeed_cell[pos][itemsCount] =
                         UserLiveFeedobj_CreatFeed(
@@ -416,7 +347,7 @@ function UserLiveFeedobj_History() {
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
 
-    UserLiveFeed_loadDataSuccessFinish(false, pos);
+    UserLiveFeed_loadDataSuccessFinish(pos);
 }
 
 //Live history end
@@ -428,21 +359,14 @@ function UserLiveFeedobj_Live() {
 }
 
 function UserLiveFeedobj_loadLive() {
-    var theUrl = Main_kraken_api + 'streams?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset +
+    UserLiveFeedobj_BaseLoad(
+        Main_kraken_api + 'streams?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset +
         (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
-        Main_TwithcV5Flag;
-
-    UserLiveFeedobj_CheckOffset(UserLiveFeedobj_LivePos);
-
-    BasexmlHttpGet(
-        theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_LivePos] * DefaultHttpGetTimeoutPlus),
+        Main_TwithcV5Flag,
         2,
-        null,
         UserLiveFeedobj_loadDataLiveSuccess,
-        function() {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_LivePos);
-        }
+        true,
+        UserLiveFeedobj_LivePos
     );
 }
 
@@ -474,18 +398,13 @@ function UserLiveFeedobj_Featured() {
 }
 
 function UserLiveFeedobj_loadFeatured() {
-    var theUrl = Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
-        AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag;
-
-    BasexmlHttpGet(
-        theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_FeaturedPos] * DefaultHttpGetTimeoutPlus),
+    UserLiveFeedobj_BaseLoad(
+        Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+            AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag,
         2,
-        null,
         UserLiveFeedobj_loadDataFeaturedSuccess,
-        function() {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_FeaturedPos);
-        }
+        false,
+        UserLiveFeedobj_FeaturedPos
     );
 }
 
@@ -516,22 +435,14 @@ function UserLiveFeedobj_CurrentGame() {
 }
 
 function UserLiveFeedobj_loadCurrentGame() {
-    var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
+    UserLiveFeedobj_BaseLoad(
+        Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
-
-    UserLiveFeedobj_CheckOffset(UserLiveFeedobj_CurrentGamePos);
-
-    BasexmlHttpGet(
-        theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_CurrentGamePos] * DefaultHttpGetTimeoutPlus),
-
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
         2,
-        null,
         UserLiveFeedobj_loadDataCurrentGameSuccess,
-        function() {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_CurrentGamePos);
-        }
+        true,
+        UserLiveFeedobj_CurrentGamePos
     );
 }
 
@@ -579,8 +490,6 @@ function UserLiveFeedobj_loadUserHost() {
     );
 }
 
-
-
 var UserLiveFeedobj_HostFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserHost() {
     UserLiveFeedobj_SetBottomText(6);
@@ -596,7 +505,6 @@ function UserLiveFeedobj_HideUserHost() {
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div.classList.add('hide');
 }
 //User Host end
-
 
 //User Games Start
 function UserLiveFeedobj_UserGames() {
@@ -647,21 +555,14 @@ function UserLiveFeedobj_CurrentUserAGame() {
 }
 
 function UserLiveFeedobj_loadCurrentUserAGame() {
-    var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
+    UserLiveFeedobj_BaseLoad(
+        Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
-
-    UserLiveFeedobj_CheckOffset(UserLiveFeedobj_UserAGamesPos);
-
-    BasexmlHttpGet(
-        theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserAGamesPos] * DefaultHttpGetTimeoutPlus),
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
         2,
-        null,
         UserLiveFeedobj_loadDataCurrentUserGameSuccess,
-        function() {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserAGamesPos);
-        }
+        true,
+        UserLiveFeedobj_UserAGamesPos
     );
 }
 
@@ -681,7 +582,7 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, (UserLiveFeedobj_CurrentUserAGameName !== UserLiveFeedobj_CurrentUserAGameNameEnter));
     UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
-    Main_ShowElement('icon_feed_back');
+    Main_RemoveClass('icon_feed_back', 'opacity_zero');
 }
 
 function UserLiveFeedobj_HideCurrentUserAGame() {
@@ -697,22 +598,17 @@ function UserLiveFeedobj_Games() {
 }
 
 function UserLiveFeedobj_loadGames() {
-    var theUrl = Main_kraken_api + 'games/top?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset;//top
+    UserLiveFeedobj_BaseLoad(
+        Main_kraken_api + 'games/top?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset,
+        2,
+        UserLiveFeedobj_loadDataGamesSuccess,
+        false,
+        UserLiveFeedobj_GamesPos
+    );
 
     if (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset &&
         (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset)
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].dataEnded = true;
-
-    BasexmlHttpGet(
-        theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_GamesPos] * DefaultHttpGetTimeoutPlus),
-        2,
-        null,
-        UserLiveFeedobj_loadDataGamesSuccess,
-        function() {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_GamesPos);
-        }
-    );
 }
 
 function UserLiveFeedobj_loadDataGamesSuccess(responseText) {
@@ -738,22 +634,14 @@ function UserLiveFeedobj_CurrentAGame() {
 }
 
 function UserLiveFeedobj_loadCurrentAGame() {
-    var theUrl = Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
+    UserLiveFeedobj_BaseLoad(
+        Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag;
-
-    UserLiveFeedobj_CheckOffset(UserLiveFeedobj_AGamesPos);
-
-    BasexmlHttpGet(
-        theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_AGamesPos] * DefaultHttpGetTimeoutPlus),
-
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
         2,
-        null,
         UserLiveFeedobj_loadDataCurrentAGameSuccess,
-        function() {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_AGamesPos);
-        }
+        true,
+        UserLiveFeedobj_AGamesPos
     );
 }
 
@@ -773,7 +661,7 @@ function UserLiveFeedobj_ShowCurrentAGame() {
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, (UserLiveFeedobj_CurrentAGameName !== UserLiveFeedobj_CurrentAGameNameEnter));
     UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
-    Main_ShowElement('icon_feed_back');
+    Main_RemoveClass('icon_feed_back', 'opacity_zero');
 }
 
 function UserLiveFeedobj_HideCurrentAGame() {
@@ -783,13 +671,14 @@ function UserLiveFeedobj_HideCurrentAGame() {
 //Current a game end
 
 function UserLiveFeedobj_SetBottomText(pos) {
-    var i = 0;
-    for (i; i < 8; i++)
+    var i = 0, len = (UserLiveFeedobj_MAX - 1);
+    for (i; i < len; i++)
         Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
 
     Main_AddClass('feed_end_' + pos, 'feed_end_name_focus');
 
-    for (i = 0; i < 7; i++) {
+    len = (UserLiveFeedobj_MAX - 2);
+    for (i = 0; i < len; i++) {
         if (i < pos) {
             Main_RemoveClass('feed_end_icon_' + i, 'feed_end_icon_up');
             Main_AddClass('feed_end_icon_' + i, 'feed_end_icon_down');
@@ -866,9 +755,35 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
     return div;
 }
 
+function UserLiveFeedobj_CreatVodFeed(id, data, Extra_when, Extra_until) {
+    var div = document.createElement('div');
+
+    div.setAttribute('id', UserLiveFeed_ids[3] + id);
+    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+
+    div.className = 'user_feed_thumb';
+
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
+        '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + data[0] +
+        '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
+        '\';"></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
+        UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:63.5%; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;">' +
+        '<i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i> ' + data[1] +
+        '</div><div class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
+        data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
+        '">' + data[10] + '</div>' + '<div class="stream_info_live">' + (data[3] !== "" && data[3] !== null ? STR_STARTED + STR_PLAYING + data[3] : "") + '</div>' +
+        '<div style="line-height: 2vh;"><div class="stream_info_live" style="width: 74%; display: inline-block;">' + data[2] +
+        '</div><div class="stream_info_live" style="width: 26%; display: inline-block; float: right; text-align: right;">' +
+        Play_timeS(data[11]) + '</div></div><div class="stream_info_live_title" style="font-family: \'Roboto\';">' +
+        data[4] + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            STR_UNTIL + Play_timeS(Extra_until)) : '') + '</div></div></div>';
+
+    return div;
+}
+
 function UserLiveFeedobj_CreatGameFeed(id, data) {
     var div = document.createElement('div');
-    data[6] = data[0];//To make UserLiveFeed_LastPos work
+    data[14] = data[2];//To make UserLiveFeed_LastPos work
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
     div.setAttribute(Main_DataAttribute, JSON.stringify(data));
@@ -901,10 +816,6 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
     response_items = response.length;
 
     if (response_items) {
-        if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id]) {
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
-            UserLiveFeed_CheckNotifycation = false;
-        }
 
         var sorting_type1 = Settings_FeedSort[sorting][0],
             sorting_type2 = Settings_FeedSort[sorting][1],
@@ -941,34 +852,18 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         for (i; i < response_items; i++) {
             stream = response[i];
             id = stream.channel._id;
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id]) {
 
-                UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = 1;
+            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
+
+                UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
                 mArray = ScreensObj_LiveCellArray(stream);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
-
-                //Check if was live if not notificate
-                if (!UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id][id]) {
-                    UserLiveFeed_NotifyLiveidObject.push({
-                        name: mArray[1],
-                        logo: mArray[9],
-                        title: Main_ReplaceLargeFont(twemoji.parse(mArray[2])),
-                        game: mArray[3],
-                        rerun: mArray[8],
-                    });
-                }
-
-                if (!UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].loadingMore && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
-                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = itemsCount;
 
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
                         UserLiveFeedobj_UserLivePos + '_' + itemsCount,
                         mArray
                     );
-
-                if (UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] !== null && UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] === stream.channel.name)
-                    Sidepannel_PosFeed = itemsCount;
 
                 Sidepannel_ScroolDoc.appendChild(
                     UserLiveFeedobj_CreatSideFeed(
@@ -980,13 +875,6 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 itemsCount++;
             }
         }
-
-        var OSInterface_Notification_end_time = OSInterface_GetNotificationTime();
-        //Check if the android service notification has end notifying before update things and show notifications on js side
-        if (!OSInterface_Notification_end_time || ((new Date().getTime()) > OSInterface_Notification_end_time)) {
-            UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
-            Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
-        } else UserLiveFeed_NotifyLiveidObject = [];
 
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
@@ -1015,13 +903,221 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
     Main_setTimeout(
         function() {
+            if (UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos]))
+                UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos]];
+
+            Sidepannel_Positions = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
+            if (Sidepannel_Positions.hasOwnProperty(UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos]))
+                Sidepannel_PosFeed = Sidepannel_Positions[UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos]];
+
             Sidepannel_PreloadImgs();
-            UserLiveFeed_loadDataSuccessFinish(true, UserLiveFeedobj_UserLivePos);
+            UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserLivePos);
+
+            if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
         },
         25
     );
 }
 
+//User VOD Start
+var UserLiveFeedobj_VodFeedOldUserName = '';
+function UserLiveFeedobj_ShowUserVod() {
+    UserLiveFeedobj_SetBottomText(8);
+
+    if (AddUser_UserIsSet()) {
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserVodPos, (UserLiveFeedobj_VodFeedOldUserName !== AddUser_UsernameArray[0].name));
+        UserLiveFeedobj_VodFeedOldUserName = AddUser_UsernameArray[0].name;
+    }
+}
+
+function UserLiveFeedobj_HideUserVod() {
+    UserLiveFeed_CheckIfIsLiveSTop();
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].div.classList.add('hide');
+}
+
+function UserLiveFeedobj_UserVod() {
+    if (!UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserVodPos);
+    UserLiveFeedobj_loadUserVod();
+}
+
+function UserLiveFeedobj_loadUserVod() {
+    UserLiveFeedobj_loadUserVodGet(
+        Main_kraken_api + 'videos/followed?limit=100&broadcast_type=archive&sort=time&offset=' +
+        UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].offset + Main_TwithcV5Flag
+    );
+}
+
+function UserLiveFeedobj_loadUserVodGet(theUrl) {
+    //Main_Log('UserLiveFeedobj_loadUserVodGet');
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus);
+
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[0].access_token);
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(xmlHttp);
+    };
+
+    xmlHttp.send(null);
+}
+
+function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
+    Main_Log('UserLiveFeedobj_loadUserVodGetEnd ' + xmlHttp.status);
+    if (xmlHttp.status === 200) {
+        UserLiveFeedobj_loadDataBaseVodSuccess(xmlHttp.responseText, UserLiveFeedobj_UserVodPos);
+    } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+        //Token has change or because is new or because it is invalid because user delete in twitch settings
+        // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
+        AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadUserVodGetError);
+    } else {
+        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
+    }
+}
+
+function UserLiveFeedobj_loadUserVodGetError() {
+    //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
+    UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
+}
+
+function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
+
+    var response = JSON.parse(responseText),
+        response_items,
+        id, mArray,
+        i = 0,
+        itemsCount = UserLiveFeed_itemsCount[pos];
+
+    //return;
+
+    response = response.videos;
+    response_items = response.length;
+
+    if (response_items) {
+
+        for (i; i < response_items; i++) {
+            id = response[i]._id;
+
+            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
+
+                UserLiveFeed_idObject[pos][id] = itemsCount;
+                mArray = ScreensObj_VodCellArray(response[i]);
+
+                // if (Main_A_includes_B(mArray[0] + '', '404_processing')) {
+                //     mArray[0] = 'https://static-cdn.jtvnw.net/s3_vods/' + mArray[8].split('/')[3] +
+                //         '/thumb/thumb0-' + Main_VideoSize + '.jpg'
+                // }
+
+                UserLiveFeed_cell[pos][itemsCount] =
+                    UserLiveFeedobj_CreatVodFeed(
+                        pos + '_' + itemsCount,
+                        mArray
+                    );
+
+                itemsCount++;
+            }
+        }
+
+    } else UserLiveFeedobj_Empty(pos);
+
+    UserLiveFeed_itemsCount[pos] = itemsCount;
+
+    if (UserLiveFeed_obj[pos].HasMore) {
+
+        UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
+
+        if (!response_items || response_items < (Main_ItemsLimitMax - 5)) UserLiveFeed_obj[pos].dataEnded = true;
+
+    }
+
+    if (UserLiveFeed_obj[pos].loadingMore) {
+        UserLiveFeed_obj[pos].loadingMore = false;
+        if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+    } else {
+        Main_setTimeout(
+            function() {
+
+                if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
+                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
+
+                UserLiveFeed_loadDataSuccessFinish(pos);
+            },
+            25
+        );
+    }
+}
+//User VOD end
+
+//User VOD history
+var UserLiveFeedobj_VodHistoryFeedOldUserName = '';
+function UserLiveFeedobj_ShowUserVodHistory() {
+    UserLiveFeedobj_SetBottomText(9);
+
+    if (AddUser_UserIsSet()) {
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserVodHistoryPos, (UserLiveFeedobj_VodHistoryFeedOldUserName !== AddUser_UsernameArray[0].name));
+        UserLiveFeedobj_VodHistoryFeedOldUserName = AddUser_UsernameArray[0].name;
+    }
+}
+
+function UserLiveFeedobj_HideUserVodHistory() {
+    UserLiveFeed_CheckIfIsLiveSTop();
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].div.classList.add('hide');
+}
+
+function UserLiveFeedobj_UserVodHistory() {
+    UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserVodHistoryPos);
+
+    var pos = UserLiveFeedobj_UserVodHistoryPos,
+        response = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].vod)),
+        response_items,
+        len = response.length,
+        cell, id,
+        i = 0,
+        itemsCount = UserLiveFeed_itemsCount[pos];
+
+    response.sort(
+        function(a, b) {
+            return (a.date > b.date ? -1 : (a.date < b.date ? 1 : 0));
+        }
+    );
+
+    response_items = Math.min(len, 100);
+
+    if (response_items) {
+
+        for (i; i < response_items; i++) {
+            cell = response[i];
+            id = cell.data[14];
+
+            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
+
+                UserLiveFeed_idObject[pos][id] = itemsCount;
+
+                UserLiveFeed_cell[pos][itemsCount] =
+                    UserLiveFeedobj_CreatVodFeed(
+                        pos + '_' + itemsCount,
+                        cell.data,
+                        cell.date,
+                        cell.watched
+                    );
+
+                itemsCount++;
+            }
+        }
+
+        if (!itemsCount) UserLiveFeedobj_Empty(pos);
+    } else UserLiveFeedobj_Empty(pos);
+
+    UserLiveFeed_itemsCount[pos] = itemsCount;
+
+    if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
+        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
+
+    UserLiveFeed_loadDataSuccessFinish(pos);
+}
+//User VOD history end
 
 function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
     var response = JSON.parse(responseText),
@@ -1074,13 +1170,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
         for (i; i < response_items; i++) {
             stream = UserLiveFeed_obj[pos].cell(response[i]);
             id = stream.channel._id;
-            if (!UserLiveFeed_idObject[pos][id]) {
+            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
 
-                UserLiveFeed_idObject[pos][id] = 1;
+                UserLiveFeed_idObject[pos][id] = itemsCount;
                 mArray = ScreensObj_LiveCellArray(stream);
-
-                if (!UserLiveFeed_obj[pos].loadingMore && UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === stream.channel.name)
-                    UserLiveFeed_FeedPosY[pos] = itemsCount;
 
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
@@ -1115,7 +1208,11 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
     } else {
         Main_setTimeout(
             function() {
-                UserLiveFeed_loadDataSuccessFinish(false, pos);
+
+                if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
+                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
+
+                UserLiveFeed_loadDataSuccessFinish(pos);
             },
             25
         );
@@ -1127,7 +1224,8 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
         response_items = response.length,
         stream, id,
         sorting = Settings_Obj_default('live_feed_sort'),
-        i = 0;
+        i = 0,
+        itemsCount = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
 
     if (response.length) {
 
@@ -1165,30 +1263,34 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
 
         for (i; i < response_items; i++) {
             stream = response[i];
-            id = stream.target._id + '' + stream._id;
+            id = stream.target._id;
 
-            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id]) {
+            if (!UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos].hasOwnProperty(id)) {
 
-                UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id] = 1;
+                UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][id] = itemsCount;
 
-                if (!UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].loadingMore && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] !== null && UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos] === stream.target.channel.name)
-                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos];
-
-                UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]] =
+                UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
-                        UserLiveFeedobj_UserHostPos + '_' + UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos],
+                        UserLiveFeedobj_UserHostPos + '_' + itemsCount,
                         ScreensObj_HostCellArray(stream),
                         true
                     );
 
-                UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos]++;
+                itemsCount++;
             }
         }
+
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserHostPos);
+
+    UserLiveFeed_itemsCount[UserLiveFeedobj_UserHostPos] = itemsCount;
 
     Main_setTimeout(
         function() {
-            UserLiveFeed_loadDataSuccessFinish(false, UserLiveFeedobj_UserHostPos);
+
+            if (UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos].hasOwnProperty(UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos]))
+                UserLiveFeed_FeedPosY[UserLiveFeedobj_UserHostPos] = UserLiveFeed_idObject[UserLiveFeedobj_UserHostPos][UserLiveFeed_LastPos[UserLiveFeedobj_UserHostPos]];
+
+            UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserHostPos);
         },
         25
     );
@@ -1249,22 +1351,19 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
             cell = response[i];
             game = cell.game;
 
-            if (!UserLiveFeed_idObject[pos][game._id]) {
+            if (!UserLiveFeed_idObject[pos].hasOwnProperty(game._id)) {
 
-                UserLiveFeed_idObject[pos][game._id] = 1;
-
-                if (!UserLiveFeed_obj[pos].loadingMore && UserLiveFeed_LastPos[pos] !== null && UserLiveFeed_LastPos[pos] === game.name)
-                    UserLiveFeed_FeedPosY[pos] = itemsCount;
+                UserLiveFeed_idObject[pos][game._id] = itemsCount;
 
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatGameFeed(
                         pos + '_' + itemsCount,
                         [
-                            game.name,
+                            game.name,//0
                             Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,
-                            game._id,
-                            game.box.template
+                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,//1
+                            game._id,//2
+                            game.box.template//3
                         ]
                     );
 
@@ -1287,7 +1386,11 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
     } else {
         Main_setTimeout(
             function() {
-                UserLiveFeed_loadDataSuccessFinish(false, pos);
+
+                if (UserLiveFeed_idObject[pos].hasOwnProperty(UserLiveFeed_LastPos[pos]))
+                    UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][UserLiveFeed_LastPos[pos]];
+
+                UserLiveFeed_loadDataSuccessFinish(pos);
             },
             25
         );

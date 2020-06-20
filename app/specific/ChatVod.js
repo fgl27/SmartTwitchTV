@@ -236,6 +236,9 @@ function Chat_loadChatError(id, tryes) {
         else {
             Chat_loadChatId = Main_setTimeout(
                 function() {
+                    var time = (OSInterface_gettime() / 1000);
+                    if (time && time < Chat_offset) Chat_offset = time;
+
                     Chat_loadChatRequest(id, 0);
                 },
                 2500,

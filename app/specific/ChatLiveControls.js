@@ -98,6 +98,7 @@ function ChatLiveControls_inputFocus() {
 
         ChatLiveControls_inputFocusId = Main_setTimeout(
             function() {
+                OSInterface_AvoidClicks(true);
                 Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
                 Main_ChatLiveInput.focus();
                 try {
@@ -109,7 +110,7 @@ function ChatLiveControls_inputFocus() {
                 ChatLiveControls_keyBoardOn = true;
                 Main_addEventListener("keydown", ChatLiveControls_KeyboardEvent);
                 //Set the avoidclicks only after focus
-                Main_AddClass('scene_notify', 'avoidclicks');
+                Main_AddClass('scene_keys', 'avoidclicks');
                 Main_AddClass('scenefeed', 'avoidclicks');
             },
             200,
@@ -134,7 +135,8 @@ function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
     if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
-    Main_RemoveClass('scene_notify', 'avoidclicks');
+    Main_RemoveClass('scene_keys', 'avoidclicks');
+    OSInterface_AvoidClicks(false);
     Main_RemoveClassWithEle(Main_ChatLiveInput, 'chat_input_class_focus');
     Main_ChatLiveInput.blur();
     ChatLiveControls_removeEventListener();

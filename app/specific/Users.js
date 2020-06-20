@@ -421,6 +421,7 @@ function Users_handleKeyDown(event) {
                         var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
                             encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +
                             '&force_verify=' + force_verify;
+                        OSInterface_AvoidClicks(true);
                         Main_LoadUrl(url);
                     }
                 }
@@ -430,8 +431,7 @@ function Users_handleKeyDown(event) {
                     AddUser_UserMakeOne(Users_showUserDialogPos);
                 } else if (temp_RemoveCursor === 1) {
                     if (AddUser_UsernameArray[Users_showUserDialogPos].access_token) {
-                        Main_showWarningDialog(STR_USER_CODE_OK);
-                        Main_setTimeout(Main_HideWarningDialog, 1500);
+                        Main_showWarningDialog(STR_USER_CODE_OK, 2000);
                     } else {
                         Users_Isautentication = true;
                         Users_showRemoveDialog();
@@ -449,8 +449,7 @@ function Users_handleKeyDown(event) {
             Users_removeFocus();
             Sidepannel_Start(Users_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {
-                Main_showWarningDialog(STR_NOKUSER_WARN);
-                Main_setTimeout(Main_HideWarningDialog, 2000);
+                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             break;
         default:

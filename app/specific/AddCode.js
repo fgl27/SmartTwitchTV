@@ -586,8 +586,7 @@ function AddCode_UnFollowGameEnd(xmlHttp, tryes) {
 function AddCode_UnFollowGameRequestError(tryes) {
     if (tryes < DefaultHttpGetReTryMax) AddCode_RequestUnFollowGame(tryes + 1);
     else {
-        Main_showWarningDialog(STR_410_FEATURING);
-        Main_setTimeout(Main_HideWarningDialog, 2000);
+        Main_showWarningDialog(STR_410_FEATURING, 2000);
     }
 }
 

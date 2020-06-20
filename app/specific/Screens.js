@@ -121,7 +121,7 @@ function Screens_init(key) {
     Main_values.Main_Go = key;
     ScreenObj[key].label_init();
 
-    Main_addEventListener("keydown", ScreenObj[key].key_fun);
+    if (Main_isScene1DocShown()) Main_addEventListener("keydown", ScreenObj[key].key_fun);
 
     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
@@ -154,9 +154,12 @@ function Screens_exit(key) {
 
 function Screens_StartLoad(key) {
     Main_showLoadDialog();
-    ScreenObj[key].lastRefresh = new Date().getTime();
-    Main_updateclock();
+    Screens_RemoveFocus(key);
     Main_empty(ScreenObj[key].table);
+    ScreenObj[key].ScrollDoc.style.transform = '';
+    ScreenObj[key].lastRefresh = new Date().getTime();
+    Play_PreviewVideoEnded = false;
+    Main_updateclock();
     Main_HideWarningDialog();
 
     ScreenObj[key].cursor = null;
@@ -506,13 +509,14 @@ function Screens_loadDataSuccessFinish(key) {
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-            if (!Main_isScene1DocShown()) {
-                Main_Scene1Doc.style.transform = 'translateY(-1000%)';
-                Main_ShowElementWithEle(Main_Scene1Doc);
-                Screens_setOffset(1, 0, key);
-                Main_HideElementWithEle(Main_Scene1Doc);
-                Main_Scene1Doc.style.transform = 'translateY(0px)';
-            } else Screens_setOffset(1, 0, key);
+            // if (!Main_isScene1DocShown()) {
+            //     Main_Scene1Doc.style.transform = 'translateY(-1000%)';
+            //     Main_ShowElementWithEle(Main_Scene1Doc);
+            //     Screens_setOffset(1, 0, key);
+            //     Main_HideElementWithEle(Main_Scene1Doc);
+            //     Main_Scene1Doc.style.transform = 'translateY(0px)';
+            // } else 
+            Screens_setOffset(1, 0, key);
 
             for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
                 if (ScreenObj[key].Cells[i]) {
@@ -533,6 +537,8 @@ function Screens_loadDataSuccessFinish(key) {
 
             //if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
             Main_values.warning_extra = false;
+
+            if (Main_values.Play_WasPlaying !== 1) Play_data = JSON.parse(JSON.stringify(Play_data_base));
 
             if (Settings_value.start_user_screen.defaultValue) {
 
@@ -562,7 +568,9 @@ function Screens_loadDataSuccessFinish(key) {
 
                     } else Main_SwitchScreen(false);
                 } else {
-                    if (!Main_values.vodOffset) Main_values.vodOffset = 1;
+                    Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
+                    if (!Main_vodOffset) Main_vodOffset = 1;
+
                     Play_DurationSeconds = 0;
                     Main_openVod();
                     Main_SwitchScreen(true);
@@ -614,7 +622,6 @@ function Screens_loadDataSuccessFinish(key) {
         }
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
         Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
-        Screens_addFocus(true, key);
     }
 }
 
@@ -667,7 +674,6 @@ function Screens_loadDataSuccessFinishEnd() {
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_CheckAccessibility(true);
     //Make sure the service is stop
-    OSInterface_StopNotificationService();
     //Main_Log('Screens_loadDataSuccessFinishEnd');
 }
 
@@ -680,6 +686,7 @@ function Screens_addFocus(forceScroll, key) {
             return;
         }
     }
+
     if (ScreenObj[key].posY < 0) {
         Screens_addFocusFollow(key);
 
@@ -699,6 +706,320 @@ function Screens_addFocus(forceScroll, key) {
     }
 
     ScreenObj[key].addrow(forceScroll, ScreenObj[key].posY, key);
+
+}
+
+//Clips load too fast, so only call this function after animations have ended
+//Also help to prevent lag on animation
+function Screens_LoadPreview(key) {
+    if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+        !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+        var doc, ThumbId;
+
+        //Live || VOD
+        if ((ScreenObj[key].screenType === 0 && Settings_Obj_default('show_live_player')) ||
+            (ScreenObj[key].screenType === 1 && Settings_Obj_default('show_vod_player')) ||
+            (ScreenObj[key].screenType === 2 && Settings_Obj_default('show_clip_player'))) {
+
+            doc = document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+
+            if (doc) {
+                var id = 0,//Clip
+                    obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+                if (ScreenObj[key].screenType === 0) id = 14;//live
+                else if (ScreenObj[key].screenType === 1) id = 7;//vod
+
+                ThumbId = obj[id];//streamer id
+
+                if (ScreenObj[key].screen === Main_HistoryLive) {
+
+                    var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
+
+                    if (index > -1 &&
+                        (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                            Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
+                        ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+                    }
+                }
+
+                if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
+
+                    Screens_LoadPreviewStart(key, obj);
+
+                } else if (Play_PreviewId) {
+
+                    Screens_LoadPreviewRestore(key);
+
+                }
+
+                Play_PreviewVideoEnded = false;
+            }
+
+        }
+
+    }
+}
+
+function Screens_LoadPreviewRestore(key) {
+    if (Main_values.Main_Go === Main_ChannelContent) {
+        ChannelContent_LoadPreviewRestore();
+        return;
+    }
+
+    var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+    var Rect = img.parentElement.getBoundingClientRect();
+
+    OSInterface_ScreenPlayerRestore(
+        Rect.bottom,
+        Rect.right,
+        Rect.left,
+        window.innerHeight,
+        ScreenObj[key].screenType + 1
+    );
+
+    Screens_ClearAnimation(key);
+    Main_AddClassWitEle(img, 'opacity_zero');
+}
+
+function Screens_LoadPreviewStart(key, obj) {
+    Play_CheckIfIsLiveCleanEnd();
+
+    if (!Main_IsOn_OSInterface) {
+        return;
+    }
+
+    try {
+        var id, token, link;
+
+        if (ScreenObj[key].screenType === 2) {//clip
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                PlayClip_BaseUrl,//urlString
+                DefaultHttpGetTimeout,//timeout
+                PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
+                'POST',//Method, null for get
+                JSON.stringify(
+                    [
+                        [Main_clientIdHeader, Main_Headers_Back[0][1]]
+                    ]
+                ),//JsonString
+                'Screens_LoadPreviewResult',//callback
+                (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),//checkResult
+                key,//key
+                0//thread
+            );
+
+            return;
+        } else if (ScreenObj[key].screenType === 1) {//vod
+
+            id = obj[7];
+            token = Play_vod_token;
+            link = Play_vod_links;
+
+        } else {//live
+
+            if (ScreenObj[key].screen === Main_HistoryLive) {
+
+                var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
+
+                if (index > -1) {
+
+                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                        Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+
+                        id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+                        token = Play_vod_token;
+                        link = Play_vod_links;
+
+                    } else {
+
+                        id = obj[6];
+                        token = Play_live_token;
+                        link = Play_live_links;
+                    }
+
+                } else {
+
+                    id = obj[6];
+                    token = Play_live_token;
+                    link = Play_live_links;
+                }
+
+
+            } else {
+
+                id = obj[6];
+                token = Play_live_token;
+                link = Play_live_links;
+
+            }
+        }
+
+        OSInterface_CheckIfIsLiveFeed(
+            token.replace('%x', id),
+            link.replace('%x', id),
+            Settings_Obj_values("show_feed_player_delay"),
+            "Screens_LoadPreviewResult",
+            key,
+            (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
+        );
+
+    } catch (e) {
+        Play_CheckIfIsLiveCleanEnd();
+    }
+}
+
+function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
+
+    var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+
+    if (Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+        x === Screens_Current_Key && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
+        doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
+
+        doc = document.getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+
+        if (StreamData && doc) {
+            StreamData = JSON.parse(StreamData);
+
+            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+                index,
+                UserIsSet = AddUser_UserIsSet();
+
+            if (StreamData.status === 200) {
+
+                Play_PreviewURL = StreamData.url;
+                Play_PreviewResponseText = StreamData.responseText;
+
+                var offset = 0, PreviewResponseText = Play_PreviewResponseText;
+
+                if (ScreenObj[x].screenType === 2) {//clip
+
+                    Play_PreviewId = StreamInfo[0];
+                    Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
+                    Play_PreviewURL = Play_PreviewResponseText[0].url;
+
+                } else if (ScreenObj[x].screenType === 1) {//vod
+                    Play_PreviewId = StreamInfo[7];
+
+                    if (Settings_Obj_default('vod_dialog') < 2) {
+                        //Check if the vod exist in the history
+                        var VodIdex = UserIsSet ? Main_history_Exist('vod', Play_PreviewId) : -1;
+                        offset = (VodIdex > -1) ?
+                            Main_values_History_data[AddUser_UsernameArray[0].id].vod[VodIdex].watched : 0;
+
+                        //Check if the vod saved position is bigger then 0 means thisvod was already watched
+                        if (!offset) {
+
+                            VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
+
+                            if (VodIdex > -1) {
+
+                                offset =
+                                    ((Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - (new Date(StreamInfo[12]).getTime())) / 1000);
+                            }
+
+                        }
+                    }
+
+                } else {//live
+
+                    if (ScreenObj[x].screen === Main_HistoryLive) {
+                        index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
+
+                        if (index > -1) {
+
+                            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                                Main_A_includes_B(document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
+
+                                Play_PreviewId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+
+                                offset =
+                                    ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(StreamInfo[12]).getTime())) / 1000);
+
+                            } else {
+
+                                Play_PreviewId = StreamInfo[14];
+
+                            }
+
+                        }
+
+                    } else Play_PreviewId = StreamInfo[14];
+
+                }
+
+                var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+                var Rect = img.parentElement.getBoundingClientRect();
+
+                OSInterface_StartScreensPlayer(
+                    Play_PreviewURL,
+                    PreviewResponseText,
+                    offset * 1000,
+                    Rect.bottom,
+                    Rect.right,
+                    Rect.left,
+                    window.innerHeight,
+                    ScreenObj[x].screenType + 1
+                );
+
+                Screens_ClearAnimation(x);
+                Main_AddClassWitEle(img, 'opacity_zero');
+
+                if (offset) {
+                    Main_showWarningDialog(
+                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(offset * 1000),
+                        2000,
+                        !ScreenObj[x].Cells[ScreenObj[x].posY + 1]
+                    );
+                }
+
+            } else {
+                var error = STR_PREVIEW_ERROR_LOAD + STR_SPACE;
+
+                if (!ScreenObj[x].screenType) error = STR_LIVE + STR_IS_OFFLINE;
+                else if (ScreenObj[x].screenType === 1) error += 'VOD' + STR_PREVIEW_ERROR_LINK;
+                else if (ScreenObj[x].screenType === 2) error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
+
+                if (ScreenObj[x].screen === Main_HistoryLive) {
+
+                    index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
+
+                    if (index > -1) {
+
+                        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                            Main_A_includes_B(document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
+
+                            error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+
+                        }
+
+                    }
+
+                }
+
+                Screens_LoadPreviewWarn(
+                    ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : error),
+                    x,
+                    4000
+                );
+            }
+
+        }
+    }
+
+}
+
+function Screens_LoadPreviewWarn(ErrorText, x, time) {
+    Sidepannel_CheckIfIsLiveSTop();
+    Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'opacity_zero');
+    Main_showWarningDialog(
+        ErrorText,
+        time
+    );
 }
 
 function Screens_ThumbNotNull(thumbnail) {
@@ -721,8 +1042,19 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
 
         Main_setTimeout(
             function() {
+
                 UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
                 Screens_ChangeFocusAnimationFinished = true;
+
+                //Delay to make sure it happen after animation has ended
+                Main_setTimeout(
+                    function() {
+                        Screens_LoadPreview(key);
+
+                    },
+                    25
+                );
+
             },
             Screens_ScrollAnimationTimeout
         );
@@ -745,6 +1077,8 @@ function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRe
         Screens_addrowtransition(y + i, (for_offset + i) * ScreenObj[key].offsettop, 'none', key);
 
     UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
+
+    Screens_LoadPreview(key);
 }
 
 function Screens_addrowChannel(forceScroll, y, key) {
@@ -875,8 +1209,17 @@ function Screens_addrow(forceScroll, y, key) {
                 );
             }
 
+        } else {
+
+            Main_setTimeout(
+                function() {
+                    Screens_LoadPreview(key);
+                },
+                y ? 0 : Screens_ScrollAnimationTimeout
+            );
         }
-    }
+
+    } else Screens_LoadPreview(key);
 
     ScreenObj[key].currY = ScreenObj[key].posY;
     Screens_addrowEnd(forceScroll, key);
@@ -925,6 +1268,13 @@ function Screens_addrowDown(y, key) {
                 Screens_addrowDown(y, key);
             },
             10
+        );
+    } else {
+        Main_setTimeout(
+            function() {
+                Screens_LoadPreview(key);
+            },
+            y ? Screens_ScrollAnimationTimeout : 0
         );
     }
 }
@@ -996,14 +1346,20 @@ function Screens_addFocusVideo(forceScroll, key) {
 }
 
 function Screens_ChangeFocus(y, x, key) {
-    if (ScreenObj[key].posY > -1) Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
-    else Screens_removeFocusFollow(key);
+    Screens_RemoveFocus(key);
 
     Screens_ClearAnimation(key);
     ScreenObj[key].posY += y;
     ScreenObj[key].posX = x;
 
     Screens_addFocus(false, key);
+}
+
+function Screens_RemoveFocus(key) {
+    if (!ScreenObj[key].itemsCount) return;
+
+    if (ScreenObj[key].posY > -1) Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+    else if (ScreenObj[key].HasSwitches) Screens_removeFocusFollow(key);
 }
 
 function Screens_addFocusFollow(key) {
@@ -1055,7 +1411,10 @@ function Screens_KeyUpDown(y, key) {
 function Screens_ClearAnimation(key) {
     if (ScreenObj[key].HasAnimateThumb) {
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
-        if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) Main_ShowElement(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+        if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) {
+            document.getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
+            Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+        }
     }
 }
 
@@ -1229,26 +1588,30 @@ function Screens_handleKeyDown(key, event) {
             break;
         case KEY_PAUSE://key s
         case KEY_6:
+            Screens_RemoveFocus(key);
             Main_showSettings();
             break;
         case KEY_A:
         case KEY_7:
+            Screens_RemoveFocus(key);
             Main_showAboutDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
             break;
         case KEY_C:
         case KEY_8:
+            Screens_RemoveFocus(key);
             Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
             break;
         case KEY_E:
         case KEY_9:
+            Screens_RemoveFocus(key);
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_showExitDialog();
             break;
         case KEY_CHAT:
-            Screens_OpenSidePanel(AddUser_UserIsSet(), key);
-            if (!AddUser_UserIsSet()) {
-                Main_showWarningDialog(STR_NOKUSER_WARN);
-                Main_setTimeout(Main_HideWarningDialog, 2000);
+            var UserIsSet = AddUser_UserIsSet();
+            Screens_OpenSidePanel(UserIsSet, key);
+            if (!UserIsSet) {
+                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             break;
         default:
@@ -1560,6 +1923,7 @@ function Screens_HideRemoveDialog(key) {
     Users_RemoveCursor = 0;
     Users_UserCursorSet();
     Users_RemoveCursorSet();
+    Screens_LoadPreview(key);
 }
 
 function Screens_histDeleteKeyDown(key, event) {
@@ -1707,6 +2071,9 @@ function Screens_histhandleKeyDown(key, event) {
 var Screens_ThumbOptionPosY = 0;
 
 function Screens_ThumbOptionStart(key) {
+    Sidepannel_CheckIfIsLiveSTop();
+    Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+
     Screens_clear = true;
 
     Screens_ThumbOptionSetArrowArray(key);
@@ -1766,7 +2133,7 @@ function Screens_ThumbOptionStringSet(key) {
         Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[4]);
     }
 
-    Main_textContent('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : ''));
+    Main_innerHTML('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : STR_EMPTY));
 
     if (ScreenObj[key].screen === Main_HistoryLive &&
         Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
@@ -1935,6 +2302,7 @@ function Screens_ThumbOptionDialogHide(Update, key) {
         } else if (!Screens_ThumbOptionPosY) Screens_OpenChannel(key);
         else if (Screens_ThumbOptionPosY === 1) Screens_OpenGame();
         else if (Screens_ThumbOptionPosY === 3) {
+
             if (!ScreenObj[key].screenType) {
                 if (ScreenObj[key].screen === Main_HistoryLive &&
                     Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
@@ -1952,9 +2320,12 @@ function Screens_ThumbOptionDialogHide(Update, key) {
                 Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryClip].histPosX));
             }
 
+            Screens_LoadPreview(key);
         } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang();
         else if (Screens_ThumbOptionPosY === 5) Screens_OpenScreen();
-    }
+
+    } else Screens_LoadPreview(key);
+
     Screens_ThumbOptionPosY = 0;
     Screens_ThumbOptionAddFocus(0);
 }
@@ -1982,8 +2353,7 @@ function Screens_FollowUnfollow(key) {
             AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_FollowRequestReady, 3);
         }
     } else {
-        Main_showWarningDialog(STR_NOKEY_WARN);
-        Main_setTimeout(Main_HideWarningDialog, 2000);
+        Main_showWarningDialog(STR_NOKEY_WARN, 2000);
     }
 }
 
@@ -2015,8 +2385,7 @@ function Screens_FollowRequestReady(xmlHttp) {
 function Screens_OpenScreen() {
 
     if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] === 8 && !AddUser_UsernameArray[0].access_token) {
-        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
-        Main_setTimeout(Main_HideWarningDialog, 3000);
+        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
         return;
     }
 
@@ -2035,8 +2404,7 @@ function Screens_OpenGame() {
     Play_data.data[3] = (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : '');
     if (Play_data.data[3] === '') {
 
-        Main_showWarningDialog(STR_NO_GAME);
-        Main_setTimeout(Main_HideWarningDialog, 2000);
+        Main_showWarningDialog(STR_NO_GAME, 2000);
         return;
     }
 
@@ -2167,7 +2535,7 @@ function Screens_SetLastRefresh(key) {
     if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
         Main_values.Main_Go === Main_addUser || !ScreenObj[key]) return;
 
-    Main_innerHTML("label_last_refresh", STR_SPACE + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
+    Main_innerHTML("label_last_refresh", STR_SPACE + "(" + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
 }
 
 function Screens_RefreshTimeout(key) {
@@ -2179,5 +2547,7 @@ function Screens_RefreshTimeout(key) {
 
 function Screens_Isfocused() {
     var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-    return doc ? Main_A_includes_B(doc.className, 'stream_thumbnail_focused') && Main_isScene1DocShown() : false;
+    return doc &&
+        Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
+        Main_isScene1DocShown();
 }

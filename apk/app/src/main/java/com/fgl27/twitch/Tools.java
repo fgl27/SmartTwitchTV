@@ -18,8 +18,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -824,7 +826,6 @@ public final class Tools {
         );
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean getBoolean(String name, boolean defaults, AppPreferences appPreferences) {
         return appPreferences.getBoolean(name, defaults);
     }
@@ -835,6 +836,10 @@ public final class Tools {
 
     public static long getLong(String name, long defaults, AppPreferences appPreferences) {
         return appPreferences.getLong(name, defaults);
+    }
+
+    public static int getInt(String name, int defaults, AppPreferences appPreferences) {
+        return appPreferences.getInt(name, defaults);
     }
 
     public static void SendNotificationIntent(String action, Context context) {
@@ -882,5 +887,42 @@ public final class Tools {
             );
         }
 
+    }
+
+    public static FrameLayout.LayoutParams BasePreviewLayout(float bottom, float right, float left, int web_height, Point ScreenSize, boolean bigger) {
+        float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
+
+        float width = (int)((right - left) * scale);
+        float offset = width / 135; //Minor offset to make it feet inside the box without overflowing
+        width -= offset;
+
+        float bottomMargin = bottom * scale;
+        float leftMargin = (left * scale) + (offset / 1.8f);
+
+        if (bigger) {
+            bottomMargin =  (ScreenSize.y - bottomMargin) - (offset / 2.2f);
+            float OldWidth = width;
+
+            width = width * 1.26f;
+            leftMargin = leftMargin - ((width - OldWidth) / 2);//center on the thumbnail
+
+            //Log.i(TAG, "leftMargin before " + leftMargin + " (leftMargin + width) " + (leftMargin + width));
+
+            if (leftMargin < 0) leftMargin = 0;
+            else if ((leftMargin + width) > ScreenSize.x) leftMargin = ScreenSize.x - width;
+
+            //Log.i(TAG, "leftMargin after " + leftMargin);
+        } else bottomMargin =  (ScreenSize.y - bottomMargin) + (offset / 1.8f);
+
+        float height = width * 9 / 16;//16 by 9 box
+        FrameLayout.LayoutParams PlayerViewSidePanel = new FrameLayout.LayoutParams((int) width, (int) height, Gravity.LEFT | Gravity.BOTTOM);
+
+        //Center on top of the box in relation to the offset
+        PlayerViewSidePanel.bottomMargin = (int) bottomMargin;
+        PlayerViewSidePanel.leftMargin = (int) leftMargin;
+
+        //Log.i(TAG, "height " + height + " bottomMargin " + bottomMargin + " bottomMargin + height " + (height + bottomMargin) + " ScreenSize.y " + ScreenSize.y);
+
+        return PlayerViewSidePanel;
     }
 }

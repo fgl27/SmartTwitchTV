@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
@@ -52,15 +54,18 @@ import com.google.gson.Gson;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
-
-import static android.content.res.Configuration.KEYBOARD_QWERTY;
+import java.util.Objects;
 
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
 
-    //public static final String PageUrl = "file:///android_asset/app/index.html";
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public final String PageUrl = "file:///android_asset/app/index.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
 
+    public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
+    //public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
+
+    public final int DefaultDelayPlayerCheck = 8000;
     public final int PlayerAccount = 4;
     public final int PlayerAccountPlus = PlayerAccount + 1;
 
@@ -96,6 +101,9 @@ public class PlayerActivity extends Activity {
             R.id.player_view4_texture_view,//3
             R.id.player_view_e_texture_view//4
     };
+    public final int Player_Ended = 0;
+    public final int Player_Erro = 1;
+    public final int Player_Lag = 2;
 
     public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     public String[] BLACKLISTEDCODECS = null;
@@ -111,6 +119,7 @@ public class PlayerActivity extends Activity {
     public int PP_PlayerBitrate = 3000000;
     public final int ExtraSmallPlayerBitrate = 4000000;
     public long mResumePosition;
+    public long mResumePositionSmallPlayer;
     public int mWho_Called = 1;
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
@@ -119,6 +128,7 @@ public class PlayerActivity extends Activity {
     public Handler[] DataResultHandler = new Handler[PlayerAccount];
     public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccount];
     public WebView mWebView;
+    public WebView mWebViewKey;
     public boolean PicturePicture;
     public boolean deviceIsTV;
     public boolean MultiStreamEnable;
@@ -126,13 +136,18 @@ public class PlayerActivity extends Activity {
     public int mainPlayer = 0;
     public int MultiMainPlayer = 0;
     public int PicturePicturePosition = 0;
-    public int PicturePictureSize = 1;//sizes are 0 , 1 , 2
+    public int PicturePictureSize = 1;//sizes are 0 , 1 , 2, 3, 4
+    public int PreviewSize = 1;//sizes are 0 , 1 , 2, 3
+    public int FullScreenSize = 3;//sizes are 0 , 1 , 2, 3, 4 ... 2 default 75%
+    public int FullScreenPosition = 1;//0 right 1 left
     public int AudioSource = 1;
     public int AudioMulti = 0;//window 0
+    public float PreviewOthersAudio = 0.3f;//window 0
+    public float PreviewAudio = 1f;//window 0
     public Handler MainThreadHandler;
-    public Handler CurrentPositionHandler;
+    public Handler[] CurrentPositionHandler = new Handler[2];
     public Handler ExtraPlayerHandler;
-    public String[][] ExtraPlayerHandlerResult = new String[10][100];
+    public String[][] ExtraPlayerHandlerResult = new String[25][100];
     public HandlerThread ExtraPlayerHandlerThread;
     public HandlerThread SaveBackupJsonThread;
     public HandlerThread PreviewsThread;
@@ -147,7 +162,9 @@ public class PlayerActivity extends Activity {
     public long PingErrorCounter = 0L;
     public boolean warningShowing = false;
     public boolean WebviewLoaded = false;
+    public boolean mWebViewKeyIsShowing = false;
     public long PlayerCurrentPosition = 0L;
+    public long SmallPlayerCurrentPosition = 0L;
     public boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
     public Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
     public int[] PlayerCheckCounter = new int[PlayerAccountPlus];
@@ -163,7 +180,6 @@ public class PlayerActivity extends Activity {
     public long NetCounter = 0L;
     public long SpeedCounter = 0L;
     public boolean mLowLatency = false;
-    public boolean UseFullBitrate = false;
     public boolean AlreadyStarted;
     public boolean onCreateReady;
     public boolean IsStopped;
@@ -176,15 +192,21 @@ public class PlayerActivity extends Activity {
     //the default size for the main player 100% width x height
     private FrameLayout.LayoutParams PlayerViewDefaultSize;
     //the default size for the main player when on side by side plus chat 75% width x height
-    private FrameLayout.LayoutParams PlayerViewSideBySideSize;
+    private FrameLayout.LayoutParams[][] PlayerViewSideBySideSize;
     //the default size for the other player when on PP mode, some positions are also used when on side by side for both players
-    private FrameLayout.LayoutParams[][] PlayerViewSmallSize = new FrameLayout.LayoutParams[8][3];
+    private FrameLayout.LayoutParams[][] PlayerViewSmallSize;
     //the default size for the extra player used by side panel and live player feed
-    private FrameLayout.LayoutParams[] PlayerViewExtraLayout = new FrameLayout.LayoutParams[6];
+    private FrameLayout.LayoutParams[][] PlayerViewExtraLayout;
     //the default size for the players of multistream 4 player two modes
-    private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout = new FrameLayout.LayoutParams[8];
+    private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout;
+    //the default size for the side panel players
+    public FrameLayout.LayoutParams PlayerViewSidePanel;
+    public FrameLayout.LayoutParams PlayerViewScreensPanel;
     private FrameLayout VideoHolder;
+    private FrameLayout VideoWebHolder;
     private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
+
+    public Point ScreenSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +222,8 @@ public class PlayerActivity extends Activity {
             onCreateReady = true;
 
             MainThreadHandler = new Handler(Looper.getMainLooper());
-            CurrentPositionHandler = new Handler(Looper.getMainLooper());
+            CurrentPositionHandler[0] = new Handler(Looper.getMainLooper());
+            CurrentPositionHandler[1] = new Handler(Looper.getMainLooper());
 
             ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
             ExtraPlayerHandlerThread.start();
@@ -257,6 +280,7 @@ public class PlayerActivity extends Activity {
                     .build();
 
             VideoHolder = findViewById(R.id.videoholder);
+            VideoWebHolder = findViewById(R.id.videowebholder);
             setPlayerSurface(true);
 
             DeviceRam = Tools.DeviceRam(this);
@@ -268,7 +292,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void SetDefaultLoadingLayout() {
-        Point ScreenSize = Tools.ScreenSize(getWindowManager().getDefaultDisplay());
+        ScreenSize = Tools.ScreenSize(getWindowManager().getDefaultDisplay());
         float Density = this.getResources().getDisplayMetrics().density;
 
         float Scale = (float) ScreenSize.y / 1080.0f;
@@ -321,7 +345,7 @@ public class PlayerActivity extends Activity {
     private void PreInitializePlayer(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
-        CurrentPositionHandler.removeCallbacksAndMessages(null);
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
         PlayerCurrentPosition = mResumePosition;
         lastSeenTrackGroupArray = null;
         initializePlayer(position);
@@ -341,6 +365,7 @@ public class PlayerActivity extends Activity {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         boolean isSmall = (mainPlayer != position);
+        int Who_Called = mWho_Called > 3 ? (mWho_Called - 3) : mWho_Called;
 
         if (PlayerView[position].getVisibility() != View.VISIBLE)
             PlayerView[position].setVisibility(View.VISIBLE);
@@ -355,16 +380,16 @@ public class PlayerActivity extends Activity {
 
                 player[position] = new SimpleExoPlayer.Builder(this, renderersFactory)
                         .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[mWho_Called])
+                        .setLoadControl(loadControl[Who_Called])
                         .build();
             } else {
                 player[position] = new SimpleExoPlayer.Builder(this)
                         .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[mWho_Called])
+                        .setLoadControl(loadControl[Who_Called])
                         .build();
             }
 
-            player[position].addListener(new PlayerEventListener(position));
+            player[position].addListener(new PlayerEventListener(position, Who_Called));
             player[position].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[position].setPlayer(player[position]);
@@ -374,7 +399,7 @@ public class PlayerActivity extends Activity {
         player[position].setPlayWhenReady(true);
         player[position].setMediaSource(
                 mediaSources[position],
-                ((mResumePosition > 0) && (mWho_Called > 1)) ? mResumePosition : C.TIME_UNSET);
+                ((mResumePosition > 0) && (Who_Called > 1)) ? mResumePosition : C.TIME_UNSET);
 
         player[position].prepare();
 
@@ -393,11 +418,11 @@ public class PlayerActivity extends Activity {
         KeepScreenOn(true);
         droppedFrames = 0;
 
-        //Player can only be acceed from main thread so start a "position listener" to pass the value to webview
-        if (mWho_Called > 1) GetCurrentPosition();
+        //Player can only be accessed from main thread so start a "position listener" to pass the value to webview
+        if (Who_Called > 1) GetCurrentPosition();
     }
 
-    private void initializeSmallPlayer(MediaSource NewMediaSource) {
+    private void initializeSmallPlayer(MediaSource NewMediaSource, Long resumePosition, boolean IsVod) {
         if (IsStopped) {
             monStop();
             return;
@@ -411,9 +436,7 @@ public class PlayerActivity extends Activity {
 
         if (player[4] == null) {
             trackSelector[4] = new DefaultTrackSelector(this);
-            trackSelector[4].setParameters(
-                    UseFullBitrate ? trackSelectorParameters : trackSelectorParametersExtraSmall
-            );
+            trackSelector[4].setParameters(trackSelectorParametersExtraSmall);
 
             if (BLACKLISTEDCODECS != null) {
                 renderersFactory = new DefaultRenderersFactory(this);
@@ -430,7 +453,7 @@ public class PlayerActivity extends Activity {
                         .build();
             }
 
-            player[4].addListener(new PlayerEventListenerSmall());
+            player[4].addListener(new PlayerEventListenerSmall(IsVod));
             player[4].addAnalyticsListener(new AnalyticsEventListenerSmall());
 
             PlayerView[4].setPlayer(player[4]);
@@ -441,17 +464,22 @@ public class PlayerActivity extends Activity {
 
         player[4].setMediaSource(
                 NewMediaSource,
-                C.TIME_UNSET);
+                IsVod && resumePosition > 0 ? resumePosition : C.TIME_UNSET);
 
         player[4].prepare();
 
         mediaSources[4] = NewMediaSource;
+        player[4].setVolume(PreviewAudio);
+        SmallPlayerCurrentPosition = resumePosition;
 
         KeepScreenOn(true);
 
         if (PlayerView[4].getVisibility() != View.VISIBLE) {
             PlayerView[4].setVisibility(View.VISIBLE);
         }
+
+        //Player can only be accessed from main thread so start a "position listener" to pass the value to webview
+        if (IsVod) GetCurrentPositionSmall();
     }
 
     private void ClearSmallPlayer() {
@@ -459,16 +487,20 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "ClearSmallPlayer");
         }
 
+        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
         PlayerView[4].setVisibility(View.GONE);
+        SmallPlayerCurrentPosition = 0L;
 
         if (player[4] != null) {
             player[4].setPlayWhenReady(false);
             releasePlayer(4);
         }
 
+        mSetPreviewOthersAudio();
+
         PlayerCheckCounter[4] = 0;
-        UseFullBitrate = false;
+
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
             KeepScreenOn(false);
         }
@@ -509,7 +541,7 @@ public class PlayerActivity extends Activity {
                         .build();
             }
 
-            player[position].addListener(new PlayerEventListener(position));
+            player[position].addListener(new PlayerEventListener(position, mWho_Called));
             player[position].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[position].setPlayer(player[position]);
@@ -528,7 +560,7 @@ public class PlayerActivity extends Activity {
         mediaSources[position] = NewMediaSource;
         hideLoading(5);
 
-        if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(1f);
+        if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(player[4] == null ? 1f : PreviewOthersAudio);
         else player[position].setVolume(0f);
 
         KeepScreenOn(true);
@@ -540,7 +572,7 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "ClearPlayer position " + position);
         }
 
-        CurrentPositionHandler.removeCallbacksAndMessages(null);
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
         PlayerView[position].setVisibility(View.GONE);
         PlayerIsPlaying[position] = false;
@@ -649,109 +681,168 @@ public class PlayerActivity extends Activity {
                 Gravity.CENTER | Gravity.BOTTOM//7
         };
 
-        //Make it visible for calculation
-        boolean isNvisible = PlayerView[0].getVisibility() != View.VISIBLE;
-        if (isNvisible) PlayerView[0].setVisibility(View.VISIBLE);
+        float Density = this.getResources().getDisplayMetrics().density;
+        float ScaleDensity = Density / 2.0f;
 
-        int heightDefault = PlayerView[0].getHeight();
-        int mwidthDefault = PlayerView[0].getWidth();
-
-        int heightChat = (int) (heightDefault * 0.75);
-        int mwidthChat = (int) (mwidthDefault * 0.75);
-
-        if (isNvisible) PlayerView[0].setVisibility(View.GONE);
+        int HeightDefault = ScreenSize.y;
+        int WidthDefault = ScreenSize.x;
 
         //Default players sizes
-        PlayerViewDefaultSize = new FrameLayout.LayoutParams(mwidthDefault, heightDefault, Gravity.TOP);
-        PlayerViewSideBySideSize = new FrameLayout.LayoutParams(mwidthChat, heightChat, Gravity.CENTER_VERTICAL);
+        PlayerViewDefaultSize = new FrameLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT,
+                Gravity.TOP
+        );
 
-        //Player extra positions
-        Point ScreenSize = Tools.ScreenSize(getWindowManager().getDefaultDisplay());
-        float Density = this.getResources().getDisplayMetrics().density;
+        //PlayerView player used on preview feed positions and sizes
+        int[] ExtraWidth = {
+                (WidthDefault / 5),
+                (int) (WidthDefault / 3.77),
+                (int) (WidthDefault / 3.25),
+                (int) (WidthDefault / 2.7)
+        };
+        int[] ExtraHeight = {
+                (HeightDefault / 5),
+                (int) (HeightDefault / 3.77),
+                (int) (HeightDefault / 3.25),
+                (int) (HeightDefault / 2.7)
+        };
+        PlayerViewExtraLayout = new FrameLayout.LayoutParams[ExtraWidth.length][5];
 
-        float ScaleDensity = Density / 2.0f;
-        int margin = (int) (ScreenSize.y / 6.7 * Density / ScaleDensity);
-        int ExtraWidth = (int) (mwidthDefault / 3.77);
-        int ExtraHeight = (int) (heightDefault / 3.77);
+        int margin, i, j, len = PlayerViewExtraLayout.length, lenEx;
+        for (i = 0; i < len; i++) {
+            PlayerViewExtraLayout[i][0] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.LEFT | Gravity.BOTTOM);
+            PlayerViewExtraLayout[i][1] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.LEFT | Gravity.BOTTOM);
+            PlayerViewExtraLayout[i][2] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.CENTER | Gravity.BOTTOM);
+            PlayerViewExtraLayout[i][3] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.RIGHT | Gravity.BOTTOM);
+            PlayerViewExtraLayout[i][4] = new FrameLayout.LayoutParams(ExtraWidth[i], ExtraHeight[i], Gravity.RIGHT | Gravity.BOTTOM);
 
-        //Small player for live feed
-        PlayerViewExtraLayout[0] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.LEFT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[1] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.LEFT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[2] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.CENTER | Gravity.BOTTOM);
-        PlayerViewExtraLayout[3] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.RIGHT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[4] = new FrameLayout.LayoutParams(ExtraWidth, ExtraHeight, Gravity.RIGHT | Gravity.BOTTOM);
+            lenEx = PlayerViewExtraLayout[i].length;
+            for (j = 0; j < lenEx; j++) {
+                PlayerViewExtraLayout[i][j].bottomMargin = (int) (ScreenSize.x / 22 * Density / ScaleDensity);
+            }
 
-        //Big player for side panel
-        PlayerViewExtraLayout[5] = new FrameLayout.LayoutParams((int) (mwidthDefault / 1.68),(int) (heightDefault / 1.68), Gravity.RIGHT | Gravity.BOTTOM);
-        PlayerViewExtraLayout[5].bottomMargin = (int) (ScreenSize.x / 15.7 * Density / ScaleDensity);
-        PlayerViewExtraLayout[5].rightMargin = (int) (ScreenSize.y / 13.55 * Density / ScaleDensity);
+            margin = WidthDefault / 5;//The screen has 5 thumbnails
+            margin = (margin + (margin / 2)) - (ExtraWidth[i] / 2);
 
-        for (int i = 0; i < (PlayerViewExtraLayout.length - 1); i++) {
-            PlayerViewExtraLayout[i].bottomMargin = (int) (ScreenSize.x / 22 * Density / ScaleDensity);
+            PlayerViewExtraLayout[i][1].leftMargin = margin;//Center on the middle of seconds thumb
+            PlayerViewExtraLayout[i][3].rightMargin = margin;//Center on the middle of fourth thumb
         }
 
-        PlayerViewExtraLayout[1].leftMargin = margin;
-        PlayerViewExtraLayout[3].rightMargin = margin;
+        int[] PlayerViewSideBySideHeight = {
+                (int) (HeightDefault * 0.90),
+                (int) (HeightDefault * 0.85),
+                (int) (HeightDefault * 0.80),
+                (int) (HeightDefault * 0.75),
+                (int) (HeightDefault * 0.70),
+                (int) (HeightDefault * 0.65),
+                (int) (HeightDefault * 0.60),
+        };
+        int[] PlayerViewSideBySideWidth = {
+                (int) (WidthDefault * 0.90),
+                (int) (WidthDefault * 0.85),
+                (int) (WidthDefault * 0.80),
+                (int) (WidthDefault * 0.75),
+                (int) (WidthDefault * 0.70),
+                (int) (WidthDefault * 0.65),
+                (int) (WidthDefault * 0.60),
+        };
 
-        //The side panel player
-        PlayerView[4].setLayoutParams(PlayerViewExtraLayout[0]);
+        len = PlayerViewSideBySideWidth.length;
+        PlayerViewSideBySideSize = new FrameLayout.LayoutParams[2][len];
+        for (i = 0; i < len; i++) {
+
+            PlayerViewSideBySideSize[0][i] = new FrameLayout.LayoutParams(
+                    PlayerViewSideBySideWidth[i],
+                    PlayerViewSideBySideHeight[i],
+                    Gravity.RIGHT | Gravity.CENTER
+            );
+
+            PlayerViewSideBySideSize[1][i] = new FrameLayout.LayoutParams(
+                    PlayerViewSideBySideWidth[i],
+                    PlayerViewSideBySideHeight[i],
+                    Gravity.LEFT | Gravity.CENTER
+            );
+
+        }
 
         //Small player sizes and positions
-        for (int i = 0; i < PlayerViewSmallSize.length; i++) {
-            for (int j = 0; j < PlayerViewSmallSize[i].length; j++) {
-                PlayerViewSmallSize[i][j] = new FrameLayout.LayoutParams((mwidthDefault / (j + 2)), (heightDefault / (j + 2)), positions[i]);
+        int[] SmallPlayerSizesHeight = {
+                (HeightDefault / 2),
+                (int) (HeightDefault / 2.5),
+                (HeightDefault / 3),
+                (int) (HeightDefault / 3.5),
+                (HeightDefault / 4)
+        };
+        int[] SmallPlayerSizesWidth = {
+                (WidthDefault / 2),
+                (int) (WidthDefault / 2.5),
+                (WidthDefault / 3),
+                (int) (WidthDefault / 3.5),
+                (WidthDefault / 4)
+        };
+        PlayerViewSmallSize = new FrameLayout.LayoutParams[8][SmallPlayerSizesHeight.length];
+        len = PlayerViewSmallSize.length;
+        for (i = 0; i < len; i++) {
+            for (j = 0; j < PlayerViewSmallSize[i].length; j++) {
+                PlayerViewSmallSize[i][j] = new FrameLayout.LayoutParams(
+                        SmallPlayerSizesWidth[j],
+                        SmallPlayerSizesHeight[j],
+                        positions[i]
+                );
             }
         }
         //The side PP player
         PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
 
         //MultiStream
+        MultiStreamPlayerViewLayout = new FrameLayout.LayoutParams[8];
         //4 way same size
         MultiStreamPlayerViewLayout[0] = new FrameLayout.LayoutParams(
-                (mwidthDefault / 2),
-                (heightDefault / 2),
+                (WidthDefault / 2),
+                (HeightDefault / 2),
                 positions[4]
         );
         MultiStreamPlayerViewLayout[1] = new FrameLayout.LayoutParams(
-                (mwidthDefault / 2),
-                (heightDefault / 2),
+                (WidthDefault / 2),
+                (HeightDefault / 2),
                 positions[2]
         );
 
         MultiStreamPlayerViewLayout[2] = new FrameLayout.LayoutParams(
-                (mwidthDefault / 2),
-                (heightDefault / 2),
+                (WidthDefault / 2),
+                (HeightDefault / 2),
                 positions[6]
         );
 
         MultiStreamPlayerViewLayout[3] = new FrameLayout.LayoutParams(
-                (mwidthDefault / 2),
-                (heightDefault / 2),
+                (WidthDefault / 2),
+                (HeightDefault / 2),
                 positions[0]
         );
 
         //4 way main big
         MultiStreamPlayerViewLayout[4] = new FrameLayout.LayoutParams(
-                (mwidthDefault * 2 / 3),
-                (heightDefault * 2 / 3),
+                (WidthDefault * 2 / 3),
+                (HeightDefault * 2 / 3),
                 positions[4]
         );
 
         MultiStreamPlayerViewLayout[5] = new FrameLayout.LayoutParams(
-                (mwidthDefault / 3),
-                (heightDefault / 3),
+                (WidthDefault / 3),
+                (HeightDefault / 3),
                 positions[6]
         );
 
         MultiStreamPlayerViewLayout[6] = new FrameLayout.LayoutParams(
-                (mwidthDefault / 3),
-                (heightDefault / 3),
+                (WidthDefault / 3),
+                (HeightDefault / 3),
                 positions[7]
         );
 
         MultiStreamPlayerViewLayout[7] = new FrameLayout.LayoutParams(
-                (mwidthDefault / 3),
-                (heightDefault / 3),
+                (WidthDefault / 3),
+                (HeightDefault / 3),
                 positions[0]
         );
     }
@@ -760,7 +851,7 @@ public class PlayerActivity extends Activity {
     private void updateVideSize(boolean FullScreen) {
         isFullScreen = FullScreen;
         if (FullScreen) PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);//100% width x height
-        else PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize);//CENTER_VERTICAL 75% width x height
+        else PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize[FullScreenPosition][FullScreenSize]);//CENTER_VERTICAL 75% width x height
     }
 
     //Used in 50/50 mode two videos on the center plus two chat one on it side
@@ -801,19 +892,20 @@ public class PlayerActivity extends Activity {
     }
 
     public void SwitchPlayerAudio(int pos) {
+        float volume = player[4] == null ? 1f : PreviewOthersAudio;
         AudioSource = pos;
         if (pos >= 2) {//both
             AudioMulti = 4;
-            SetAudio(0, 1f);
-            SetAudio(1, 1f);
+            SetAudio(0, volume);
+            SetAudio(1, volume);
         } else if (pos == 1) {//Main
             AudioMulti = 0;
-            SetAudio(mainPlayer, 1f);
+            SetAudio(mainPlayer, volume);
             SetAudio(mainPlayer ^ 1, 0f);
         } else {//Small
             AudioMulti = 1;
             SetAudio(mainPlayer, 0f);
-            SetAudio(mainPlayer ^ 1, 1f);
+            SetAudio(mainPlayer ^ 1, volume);
         }
     }
 
@@ -825,10 +917,16 @@ public class PlayerActivity extends Activity {
         PlayerView[pos].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
     }
 
+    public void mSetPreviewOthersAudio() {
+        if (MultiStreamEnable) SetPlayerAudioMulti();
+        else SwitchPlayerAudio(AudioSource);
+    }
+
     public void SetPlayerAudioMulti() {
+        float volume = player[4] == null ? 1f : PreviewOthersAudio;
         for (int i = 0; i < PlayerAccount; i++) {
             if (player[i] != null) {
-                if (AudioMulti == 4 || AudioMulti == i) player[i].setVolume(1f);
+                if (AudioMulti == 4 || AudioMulti == i) player[i].setVolume(volume);
                 else player[i].setVolume(0f);
             }
         }
@@ -883,15 +981,29 @@ public class PlayerActivity extends Activity {
     }
 
     private void GetCurrentPosition() {
-        CurrentPositionHandler.removeCallbacksAndMessages(null);
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
 
-        CurrentPositionHandler.postDelayed(() -> {
+        CurrentPositionHandler[0].postDelayed(() -> {
             if (player[mainPlayer] == null) {
-                CurrentPositionHandler.removeCallbacksAndMessages(null);
+                CurrentPositionHandler[0].removeCallbacksAndMessages(null);
                 PlayerCurrentPosition = 0L;
             } else {
                 PlayerCurrentPosition = player[mainPlayer].getCurrentPosition();
                 GetCurrentPosition();
+            }
+        }, 500);
+    }
+
+    private void GetCurrentPositionSmall() {
+        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
+
+        CurrentPositionHandler[1].postDelayed(() -> {
+            if (player[4] == null) {
+                CurrentPositionHandler[1].removeCallbacksAndMessages(null);
+                SmallPlayerCurrentPosition = 0L;
+            } else {
+                SmallPlayerCurrentPosition = player[4].getCurrentPosition();
+                GetCurrentPositionSmall();
             }
         }, 500);
     }
@@ -905,9 +1017,10 @@ public class PlayerActivity extends Activity {
     }
 
     private boolean CheckService() {
-        if (!deviceIsTV || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
-            //the service only start on TV devices
-            if (deviceIsTV) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
+                Tools.getString(Constants.PREF_USER_ID, null, appPreferences) == null) {
+
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
             return false;
         }
 
@@ -923,8 +1036,7 @@ public class PlayerActivity extends Activity {
         MainThreadHandler.postDelayed(() -> {
             if (Tools.isConnectedOrConnecting(this)){
                 HideWarningText();
-                mWebView.loadUrl(PageUrl);
-                WebviewLoaded = true;
+                initializeWebviewEnd();
             } else NetworkCheck();
         }, 250);
     }
@@ -1228,12 +1340,71 @@ public class PlayerActivity extends Activity {
 
         });
 
-        if (Tools.isConnectedOrConnecting(this)) {
-            mWebView.loadUrl(PageUrl);
-            WebviewLoaded = true;
-        } else ShowNoNetworkWarning();
+        if (Tools.isConnectedOrConnecting(this)) initializeWebviewEnd();
+        else ShowNoNetworkWarning();
 
         mWebView.requestFocus();
+    }
+
+    private void initializeWebviewEnd() {
+
+        //Run on screen key and notification on a separated WebView
+        if(!deviceIsTV) initializeWebViewKey();
+        else {
+            mWebViewKey = findViewById(R.id.WebViewKey);
+            mWebViewKey.setVisibility(View.GONE);
+        }
+
+        mWebView.loadUrl(PageUrl);
+        WebviewLoaded = true;
+        mWebView.requestFocus();
+
+    }
+
+    private void initializeWebViewKey() {
+        mWebViewKey = findViewById(R.id.WebViewKey);
+        mWebViewKey.setBackgroundColor(Color.TRANSPARENT);
+
+        if (BuildConfig.DEBUG) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+
+        WebSettings websettings = mWebViewKey.getSettings();
+
+        websettings.setJavaScriptEnabled(true);
+        websettings.setDomStorageEnabled(true);
+        websettings.setAllowFileAccess(true);
+        websettings.setAllowContentAccess(true);
+        websettings.setAllowFileAccessFromFileURLs(true);
+        websettings.setAllowUniversalAccessFromFileURLs(true);
+        websettings.setUseWideViewPort(true);
+        websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
+        mWebViewKey.clearCache(true);
+        mWebViewKey.clearHistory();
+
+        mWebViewKey.addJavascriptInterface(new WebAppInterface(this), "Android");
+
+        //When we request a full url change on autentication key request
+        //prevent open it on a external browser
+        mWebViewKey.setWebViewClient(new WebViewClient(){
+
+            @SuppressWarnings({"deprecation", "RedundantSuppression"})
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
+            @TargetApi(Build.VERSION_CODES.N)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return false;
+            }
+
+        });
+
+        mWebViewKeyIsShowing = true;
+        mWebViewKey.loadUrl(KeyPageUrl);
     }
 
     //TO understand better the use of it WebAppInterface functon is used check the file app/specific/Android.js
@@ -1313,14 +1484,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean isKeyboardConnected() {
-            return getResources().getConfiguration().keyboard == KEYBOARD_QWERTY;
+            return getResources().getConfiguration().keyboard == Configuration.KEYBOARD_QWERTY;
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void KeyboardCheckAndHIde() {
             MainThreadHandler.post(() -> {
-                if (getResources().getConfiguration().keyboard == KEYBOARD_QWERTY) {
+                if (getResources().getConfiguration().keyboard == Configuration.KEYBOARD_QWERTY) {
                     Tools.hideKeyboardFrom(mWebViewContext, mWebView);
                 }
             });
@@ -1330,6 +1501,57 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void hideKeyboardFrom() {
             MainThreadHandler.post(() -> Tools.hideKeyboardFrom(mWebViewContext, mWebView));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void AvoidClicks(boolean Avoid) {
+            if(deviceIsTV) return;
+
+            MainThreadHandler.post(() -> {
+                if (Avoid) {
+                    mWebViewKeyIsShowing = false;
+                    mWebViewKey.setVisibility(View.GONE);
+                    mWebView.requestFocus();
+                } else {
+                    mWebViewKeyIsShowing = true;
+                    mWebViewKey.setVisibility(View.VISIBLE);
+                    mWebViewKey.requestFocus();
+                }
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void initbodyClickSet() {
+            if(deviceIsTV) return;
+
+            MainThreadHandler.post(() -> {
+                mWebViewKeyIsShowing = true;
+                mWebViewKey.setVisibility(View.VISIBLE);
+                mWebViewKey.requestFocus();
+                mWebViewKey.loadUrl("javascript:Extrapage.initbodyClickSet()");
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetKeysOpacity(int Opacity) {
+            if(deviceIsTV) return;
+            MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_opacity(" + Opacity + ")"));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetKeysPosition(int Position) {
+            if(deviceIsTV) return;
+            MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_position(" + Position + ")"));
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public boolean WebViewKeyIsShowing() {
+            return deviceIsTV || mWebViewKeyIsShowing;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1346,20 +1568,14 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public long GetNotificationTime() {
-            return Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+        public void SetNotificationPosition(int position) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_POSITION, position);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public String GetNotificationOld() {
-            return Tools.getString(Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void SetNotificationOld(String list) {
-            appPreferences.put(Constants.PREF_NOTIFY_OLD_LIST, list);
+        public void RunNotificationService() {
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1371,13 +1587,30 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upNotificationId(String id) {
+            //Reset old list to prevent showing a long list of notifications
+            if (id != null && !Objects.equals(Tools.getString(Constants.PREF_USER_ID, null, appPreferences), id))
+                appPreferences.put(id + Constants.PREF_NOTIFY_OLD_LIST, null);
+
             appPreferences.put(Constants.PREF_USER_ID, id);
+
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void Settings_SetPingWarning(boolean warning) {
             PingWarning = warning;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetFullScreenSize(int mFullScreenSize) {
+            FullScreenSize = mFullScreenSize;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetFullScreenPosition(int mFullScreenPosition) {
+            FullScreenPosition = mFullScreenPosition;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1412,12 +1645,34 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player) {
+        public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int mplayer) {
             MainThreadHandler.post(() -> {
-                mediaSources[mainPlayer ^ player] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, who_called, mLowLatency, masterPlaylistString, userAgent);
-                PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
-                if (player == 1) {
-                    PicturePicture = true;
+                boolean startPlayer = true;
+
+                if (mWho_Called > 3) {
+                    startPlayer = player[mainPlayer] == null;
+                }
+
+                VideoWebHolder.bringChildToFront(mWebView);
+
+                if (startPlayer) {
+
+                    mediaSources[mainPlayer ^ mplayer] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, who_called, mLowLatency, masterPlaylistString, userAgent);
+                    PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ mplayer);
+
+                    if (mplayer == 1) {
+                        PicturePicture = true;
+                    }
+
+                } else {
+
+                    hideLoading(5);
+                    mWho_Called = who_called;
+                    PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
+
+                    if (mWho_Called > 1) {
+                        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
+                    }
                 }
             });
         }
@@ -1442,17 +1697,6 @@ public class PlayerActivity extends Activity {
                 if (player == 1) {
                     PicturePicture = true;
                 }
-            });
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate) {
-            MainThreadHandler.post(() -> {
-                UseFullBitrate = fullBitrate;
-                mediaSources[4] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, (mLowLatency && UseFullBitrate), masterPlaylistString, userAgent);
-                PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]);
-                initializeSmallPlayer(mediaSources[4]);
             });
         }
 
@@ -1563,7 +1807,7 @@ public class PlayerActivity extends Activity {
 
                             if (response != null)  {
                                 DataResult[thread] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key +")");
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
                                 return;
                             }
 
@@ -1571,7 +1815,7 @@ public class PlayerActivity extends Activity {
 
                         //MethodUrl is null inform JS callback
                         DataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key +")");
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
                     }
             );
         }
@@ -1579,7 +1823,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetFeedPosition(int position) {
-            MainThreadHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[position]));
+            MainThreadHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1587,6 +1831,142 @@ public class PlayerActivity extends Activity {
         public void ClearFeedPlayer() {
             ExtraPlayerHandler.removeCallbacksAndMessages(null);
             MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartFeedPlayer(String uri, String masterPlaylistString, int position) {
+            StartFeedPlayer(uri, masterPlaylistString,  position, 0L, false);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod) {
+            MainThreadHandler.post(() -> {
+
+                mediaSources[4] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        isVod ? 2 : 1,
+                        false,
+                        masterPlaylistString,
+                        userAgent
+                );
+
+                PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]);
+                initializeSmallPlayer(mediaSources[4], resumePosition, isVod);
+
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetPlayerViewFeedBottom(float bottom, int web_height) {
+            int i, j, len = PlayerViewExtraLayout.length, lenEx;
+
+            float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
+            float bottomMargin = bottom * scale;
+            bottomMargin = (float) ScreenSize.y - bottomMargin;
+
+            for (i = 0; i < len; i++) {
+                lenEx = PlayerViewExtraLayout[i].length;
+                for (j = 0; j < lenEx; j++) {
+                    PlayerViewExtraLayout[i][j].bottomMargin = (int) bottomMargin;
+                }
+            }
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetPlayerViewSidePanel(float bottom, float right, float left, int web_height) {
+            PlayerViewSidePanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, false);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartSidePanelPlayer(String uri, String masterPlaylistString) {
+            MainThreadHandler.post(() -> {
+
+                mediaSources[mainPlayer] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        1,
+                        mLowLatency,
+                        masterPlaylistString,
+                        userAgent
+                );
+
+                VideoWebHolder.bringChildToFront(VideoHolder);
+                PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
+                PreInitializePlayer(4, 0, mainPlayer);
+
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StartScreensPlayer(String uri, String masterPlaylistString, int ResumePosition,
+                                       float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
+            MainThreadHandler.post(() -> {
+
+                mediaSources[mainPlayer] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        who_called,
+                        mLowLatency,
+                        masterPlaylistString,
+                        userAgent
+                );
+
+                PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
+
+                VideoWebHolder.bringChildToFront(VideoHolder);
+                PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
+                PreInitializePlayer(3 + who_called, ResumePosition, mainPlayer);
+
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SidePanelPlayerRestore() {
+            MainThreadHandler.post(() -> {
+                mWho_Called = 4;
+                VideoWebHolder.bringChildToFront(VideoHolder);
+                PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void ScreenPlayerRestore(float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
+            MainThreadHandler.post(() -> {
+
+                if (player[mainPlayer] != null) {
+                    mWho_Called = 3 + who_called;
+                    VideoWebHolder.bringChildToFront(VideoHolder);
+
+                    PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
+                    PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
+                }
+
+            });
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void ClearSidePanelPlayer(boolean CleanPlayer) {
+            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            if (CleanPlayer) {
+
+                MainThreadHandler.post(() -> {
+
+                    VideoWebHolder.bringChildToFront(mWebView);
+                    PreResetPlayer(4, mainPlayer);
+
+                });
+
+            }
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1670,6 +2050,24 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetPreviewOthersAudio(int volume) {
+            PreviewOthersAudio = volume / 100f;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetPreviewAudio(int volume) {
+            PreviewAudio = volume / 100f;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetPreviewSize(int mPreviewSize) {
+            PreviewSize = mPreviewSize;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void SetMainPlayerBitrate(int Bitrate) {
             mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
             trackSelectorParameters = trackSelectorParameters
@@ -1705,6 +2103,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public long gettime() {
             return PlayerCurrentPosition;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public long gettimepreview() {
+            return SmallPlayerCurrentPosition;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1788,7 +2192,7 @@ public class PlayerActivity extends Activity {
             BUFFER_SIZE[who_called] = Math.min(buffer_size, 15000);
             loadControl[who_called] = Tools.getLoadControl(BUFFER_SIZE[who_called], DeviceRam);
 
-            //MUltiStream and small feed player
+            //MUltiStream and preview feed player
             loadControl[0] = Tools.getLoadControl(BUFFER_SIZE[1], DeviceRam / 2);
         }
 
@@ -2106,9 +2510,10 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void RequestGetQualities() {
-        if (!PicturePicture && !MultiStreamEnable && mWho_Called < 3) {
-            mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + mWho_Called +  ")");
+    public void RequestGetQualities(int Who_Called) {
+
+        if (!PicturePicture && !MultiStreamEnable && Who_Called < 3) {
+            mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + Who_Called +  ")");
         }
     }
 
@@ -2117,10 +2522,12 @@ public class PlayerActivity extends Activity {
 
         private final int position;
         private final int Delay_ms;
+        private final int Who_Called;
 
-        private PlayerEventListener(int position) {
+        private PlayerEventListener(int position, int m_Who_Called) {
+            this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
             this.position = position;
-            this.Delay_ms = (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0);
+            this.Delay_ms = BUFFER_SIZE[m_Who_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0);
         }
 
         @Override
@@ -2130,7 +2537,7 @@ public class PlayerActivity extends Activity {
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
             //So trackGroups.length will be 0 and getQualities = null, after 100ms or so this will be called again and all will be fine
             if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0) {
-                RequestGetQualities();
+                RequestGetQualities(Who_Called);
                 lastSeenTrackGroupArray = trackGroups;
             }
         }
@@ -2155,13 +2562,12 @@ public class PlayerActivity extends Activity {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 player[position].setPlayWhenReady(false);
 
-                PlayerEventListenerClear(position);
-
+                PlayerEventListenerClear(position, Player_Ended);
 
             } else if (playbackState == Player.STATE_BUFFERING) {
 
                 //Use the player buffer as a player check state to prevent be buffering for ever
-                //If buffer for as long as (BUFFER_SIZE * 2 + etc) do something because player is frozen
+                //If buffer for too long check because the player may have froze
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 PlayerCheckHandler[position].postDelayed(() -> {
 
@@ -2169,7 +2575,7 @@ public class PlayerActivity extends Activity {
                     if (player[position] == null || !player[position].isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounter(position, false);
+                    PlayerEventListenerCheckCounter(position, false, Who_Called, Player_Lag);
                 }, Delay_ms);
 
             } else if (playbackState == Player.STATE_READY) {
@@ -2177,7 +2583,7 @@ public class PlayerActivity extends Activity {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
                 //Delay the counter reset to make sure the connection is fine now when not on a auto mode
-                if (!IsInAutoMode || mWho_Called == 3)
+                if (!IsInAutoMode || Who_Called == 3)
                     PlayerCheckHandler[position].postDelayed(() -> PlayerCheckCounter[position] = 0, 10000);
                 else
                     PlayerCheckCounter[position] = 0;
@@ -2196,8 +2602,7 @@ public class PlayerActivity extends Activity {
                 }
 
                 if (mWho_Called > 1) {
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" +
-                            player[position].getDuration() + ")");
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
                 }
 
             }
@@ -2208,16 +2613,18 @@ public class PlayerActivity extends Activity {
             boolean isBehindLiveWindow = Tools.isBehindLiveWindow(e);
 
             PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounter(position, isBehindLiveWindow);
+            PlayerEventListenerCheckCounter(position, isBehindLiveWindow, Who_Called, Player_Erro);
 
             if (BuildConfig.DEBUG) {
                 Log.i(TAG, "onPlaybackStateChanged onPlayerError position " + position + " isBehindLiveWindow " + isBehindLiveWindow);
+                Log.i(TAG, "onPlaybackStateChanged onPlayerError e " + e);
+                Log.i(TAG, "onPlaybackStateChanged onPlayerError e " + e.type);
             }
         }
 
     }
 
-    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition) {
+    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition, int Who_Called, int fail_type) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         //Pause to things run smother and prevent odd behavior during the checks
@@ -2231,36 +2638,37 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " mclearResumePosition " + mclearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
         }
 
-        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && mWho_Called < 3) {
+        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && Who_Called < 3) {
 
             if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
-                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
+                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
             else//already on auto just restart the player
-                PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);
+                PlayerEventListenerCheckCounterEnd(position, mclearResumePosition, Who_Called);
 
         } else if (PlayerCheckCounter[position] > 3) {
 
             // try == 3 Give up internet is probably down or something related
-            PlayerEventListenerClear(position);
+            PlayerEventListenerClear(position, fail_type);
 
         } else if (PlayerCheckCounter[position] > 1) {//only for clips
 
             // Second check drop quality as it freezes too much
-            LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + mWho_Called + ")");
+            LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
 
-        } else PlayerEventListenerCheckCounterEnd(position, mclearResumePosition);//first check just reset
+        } else PlayerEventListenerCheckCounterEnd(position, mclearResumePosition, Who_Called);//first check just reset
     }
 
     //First check only reset the player as it may be stuck
-    public void PlayerEventListenerCheckCounterEnd(int position, boolean ClearResumePosition) {
+    public void PlayerEventListenerCheckCounterEnd(int position, boolean ClearResumePosition, int Who_Called) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " ClearResumePosition " + ClearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position +
+                    " ClearResumePosition " + ClearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
         }
 
-        if (ClearResumePosition || mWho_Called == 1) clearResumePosition();
+        if (ClearResumePosition || Who_Called == 1) clearResumePosition();
         else updateResumePosition(position);
 
-        if (mWho_Called == 1) {
+        if (Who_Called == 1) {
 
             if (MultiStreamEnable) initializePlayerMulti(position, mediaSources[position]);
             else initializePlayer(position);
@@ -2268,32 +2676,39 @@ public class PlayerActivity extends Activity {
         } else initializePlayer(position);
     }
 
-    public void PlayerEventListenerClear(int position) {
+    public void PlayerEventListenerClear(int position, int fail_type) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerClear position " + position);
+            Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type);
         }
 
         hideLoading(5);
         hideLoading(position);
-        CurrentPositionHandler.removeCallbacksAndMessages(null);
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
         String WebViewLoad;
 
         if (MultiStreamEnable) {
 
             ClearPlayer(position);
-            WebViewLoad = "javascript:smartTwitchTV.Play_MultiEnd(" + position + ")";
+            WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type  +")";
 
         } else if (PicturePicture) {
 
             ClearPlayer(position);
-            WebViewLoad = "javascript:smartTwitchTV.PlayExtra_End(" + (mainPlayer == position) + ")";
+            WebViewLoad = "PlayExtra_End(" + (mainPlayer == position) + "," + fail_type  +")";
 
-        } else WebViewLoad =  "javascript:smartTwitchTV.Play_PannelEndStart(" + mWho_Called + ")";
+        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type  +")";
+        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type  +")";
 
-        LoadUrlWebview(WebViewLoad);
+        LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
     }
 
     private class PlayerEventListenerSmall implements Player.EventListener {
+
+        private final boolean IsVod;
+
+        private PlayerEventListenerSmall(boolean mIsVod) {
+            this.IsVod = mIsVod;
+        }
 
         @Override
         public void onPlaybackStateChanged(@Player.State int playbackState) {
@@ -2311,11 +2726,12 @@ public class PlayerActivity extends Activity {
 
                 ClearSmallPlayer();
 
-                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
+                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + Player_Ended + ")");
+                mSetPreviewOthersAudio();
 
             } else if (playbackState == Player.STATE_BUFFERING) {
                 //Use the player buffer as a player check state to prevent be buffering for ever
-                //If buffer for as long as BUFFER_SIZE * 2 + etc do something because player is frozen
+                //If buffer for too long check because the player may have froze
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckHandler[4].postDelayed(() -> {
 
@@ -2323,13 +2739,14 @@ public class PlayerActivity extends Activity {
                     if (player[4] == null || !player[4].isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounterSmall();
+                    PlayerEventListenerCheckCounterSmall(Player_Lag, IsVod);
 
-                }, (BUFFER_SIZE[mWho_Called] * 2) + 5000 + (MultiStreamEnable ? 2000 : 0));
+                }, BUFFER_SIZE[1] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
 
             } else if (playbackState == Player.STATE_READY) {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckCounter[4] = 0;
+                mSetPreviewOthersAudio();
             }
 
         }
@@ -2337,28 +2754,45 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
             PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounterSmall();
+            PlayerEventListenerCheckCounterSmall(Player_Erro, IsVod);
 
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, "onPlayerError");
+                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e);
+                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e);
+                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e.type);
             }
         }
 
     }
 
-    public void PlayerEventListenerCheckCounterSmall() {
+    public void PlayerEventListenerCheckCounterSmall(int fail_type, boolean IsVod) {
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+
         //Pause so things run smother and prevent odd behavior during the checks
         if (player[4] != null) {
             player[4].setPlayWhenReady(false);
         }
 
+        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         PlayerCheckCounter[4]++;
-        if (PlayerCheckCounter[4] < 4)
-            initializeSmallPlayer(mediaSources[4]);
-        else {
+        mResumePositionSmallPlayer = 0L;
+
+        if (IsVod) {
+            // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
+            // is already gone and we already saved the correct mResumePositionSmallPlayer
+            if (PlayerCheckCounter[4] < 2 && player[4] != null) {
+
+                mResumePositionSmallPlayer = player[4].isCurrentWindowSeekable() ?
+                        Math.max(0, player[4].getCurrentPosition()) : C.TIME_UNSET;
+
+            }
+        }
+
+        if (PlayerCheckCounter[4] < 4) {
+            initializeSmallPlayer(mediaSources[4], mResumePositionSmallPlayer, IsVod);
+        } else {
             ClearSmallPlayer();
-            LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean()");
+            LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
         }
     }
 

@@ -1,7 +1,4 @@
 //Variable initialization
-var PlayClip_IsJumping = false;
-var PlayClip_jumpCount = 0;
-var PlayClip_TimeToJump = 0;
 var PlayClip_isOn = false;
 var PlayClip_quality = 'source';
 var PlayClip_qualityPlaying = PlayClip_quality;
@@ -10,7 +7,6 @@ var PlayClip_qualities = [];
 var PlayClip_playingUrl = '';
 var PlayClip_replayOrNext = false;
 var PlayClip_replay = false;
-var PlayClip_currentTime = 0;
 var PlayClip_state = 0;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 2000;
@@ -27,6 +23,9 @@ var PlayClip_All_Forced = true;
 var PlayClip_loadingtreamerInfoTry = 0;
 //Variable initialization end
 
+var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
+var PlayClip_postMessage = '{"query":"\\n {\\n clip(slug: \\"%x\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
+
 function PlayClip_Start() {
     //Main_Log('PlayClip_Start');
 
@@ -35,10 +34,6 @@ function PlayClip_Start() {
 
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP;
-    if (PlayClip_HasVOD) {
-        Chat_offset = ChannelVod_vodOffset;
-        Chat_Init();
-    } else Chat_NoVod();
 
     document.getElementById('next_button_img').src = IMG_404_BANNER;
     document.getElementById('back_button_img').src = IMG_404_BANNER;
@@ -53,7 +48,7 @@ function PlayClip_Start() {
         Play_partnerIcon(
             Main_values.Main_selectedChannelDisplayname,
             false,
-            false,
+            2,
             ChannelClip_language
         )
     );
@@ -83,7 +78,6 @@ function PlayClip_Start() {
     PlayVod_previews_clear();
     Play_IconsResetFocus();
     Main_empty('inner_progress_bar_muted');
-    Play_ShowPanelStatus(3);
 
     Main_textContent('progress_bar_current_time', Play_timeS(0));
 
@@ -91,24 +85,32 @@ function PlayClip_Start() {
     Main_ShowElement('progress_bar_div');
     Main_ShowElement('controls_holder');
 
-    PlayClip_state = 0;
-    PlayClip_currentTime = 0;
-    PlayClip_qualityIndex = 2;
+    PlayClip_state = Play_STATE_LOADING_TOKEN;
     UserLiveFeed_PreventHide = false;
     PlayClip_UpdateNext();
     Play_EndSet(3);
     UserLiveFeed_Unset();
     Play_IsWarning = false;
 
-    PlayVod_CheckFollow();
-
-    PlayClip_IsJumping = false;
-    PlayClip_jumpCount = 0;
-    PlayClip_TimeToJump = 0;
     PlayClip_isOn = true;
 
-    if (!PlayClip_replay) PlayClip_loadData();//Play_PlayEndStart(3);
-    else PlayClip_qualityChanged();
+    if (!Play_PreviewId) {
+
+        if (!PlayClip_replay) PlayClip_loadData();//Play_PlayEndStart(3);
+        else PlayClip_qualityChanged();
+
+    } else {
+
+        PlayClip_QualityStart(Play_PreviewResponseText);
+        Play_CheckIfIsLiveCleanEnd();
+
+    }
+
+    if (PlayClip_HasVOD) {
+        Chat_offset = ChannelVod_vodOffset;
+        Chat_Init();
+    } else Chat_NoVod();
+
     PlayClip_replay = false;
 
     PlayClip_loadingtreamerInfoTry = 0;
@@ -121,11 +123,16 @@ function PlayClip_Start() {
         Main_innerHTML("end_vod_title_text", '');
         Play_controls[Play_controlsOpenVod].setLable('');
     }
+
+    PlayVod_CheckFollow();
+    Play_ShowPanelStatus(3);
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 }
 
 function PlayClip_updateVodInfo() {
+    if (!Main_values.ChannelVod_vodId) return;
+
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
     BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (PlayVod_loadingInfoDataTry * DefaultHttpGetTimeoutPlus), 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError);
 }
@@ -162,7 +169,7 @@ function PlayClip_GetStreamerInfoSuccess(response) {
         Play_partnerIcon(
             Main_values.Main_selectedChannelDisplayname,
             Main_values.Main_selectedChannelPartner,
-            false,
+            2,
             ChannelClip_language
         )
     );
@@ -182,16 +189,13 @@ function PlayClip_loadData() {
 var PlayClip_loadDataRequestId = 0;
 
 function PlayClip_loadDataRequest() {
-    var theUrl = 'https://gql.twitch.tv/gql',
-        postMessage = '{"query":"\\n {\\n clip(slug: \\"' + ChannelClip_playUrl +
-            '\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
 
     PlayClip_loadDataRequestId = (new Date().getTime());
 
     OSInterface_GetMethodUrlHeadersAsync(
-        theUrl,//urlString
+        PlayClip_BaseUrl,//urlString
         DefaultHttpGetTimeout,//timeout
-        postMessage,//postMessage, null for get
+        PlayClip_postMessage.replace('%x', ChannelClip_playUrl),//postMessage, null for get
         'POST',//Method, null for get
         JSON.stringify(
             [
@@ -214,7 +218,7 @@ function PlayClip_loadDataResult(response) {
         if (responseObj.checkResult > 0 && responseObj.checkResult === PlayClip_loadDataRequestId) {
 
             if (responseObj.status === 200) {
-                PlayClip_QualityGenerate(responseObj.responseText);
+                PlayClip_QualityStart(PlayClip_QualityGenerate(responseObj.responseText));
                 return;
             } else if (responseObj.status === 410) { //Workaround for future 410 issue
                 PlayClip_loadData410 = true;
@@ -243,7 +247,15 @@ function PlayClip_loadData410Recheck() {
 function PlayClip_loadDataError() {
     if (Main_IsOn_OSInterface) {
         Play_HideBufferDialog();
-        Play_PlayEndStart(3);
+
+        Play_showWarningDialog(STR_410_ERROR, 2000);
+
+        Main_setTimeout(
+            function() {
+                Play_PlayEndStart(3);
+            },
+            2000
+        );
     } else PlayClip_loadDataSuccessFake();
 }
 
@@ -276,10 +288,9 @@ function PlayClip_loadDataSuccess410() {
     Main_Set_history('clip', Main_values_Play_data);
 }
 
-function PlayClip_QualityGenerate(response) {
-    PlayClip_qualities = [];
-
-    response = JSON.parse(response);
+function PlayClip_QualityGenerate(mresponse) {
+    var Array = [],
+        response = JSON.parse(mresponse);
 
     if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip')) {
         response = response.data.clip.videoQualities;
@@ -287,19 +298,25 @@ function PlayClip_QualityGenerate(response) {
         var i = 0, len = response.length;
         for (i; i < len; i++) {
 
-            if (!PlayClip_qualities.length) {
-                PlayClip_qualities.push({
+            if (!Array.length) {
+                Array.push({
                     'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | source | mp4',
                     'url': response[i].sourceURL
                 });
             } else {
-                PlayClip_qualities.push({
+                Array.push({
                     'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | mp4',
                     'url': response[i].sourceURL
                 });
             }
         }
     }
+
+    return Array;
+}
+
+function PlayClip_QualityStart(qualities) {
+    PlayClip_qualities = qualities;
 
     Play_SetExternalQualities(PlayClip_qualities, 0);
     PlayClip_state = Play_STATE_PLAYING;
@@ -377,14 +394,17 @@ function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
 
     Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
     PlayClip_hidePanel();
-    if (Main_IsOn_OSInterface) {
+    if (Main_IsOn_OSInterface && !Play_PreviewId) {
         if (closePlayer) OSInterface_stopVideo(3);
         else OSInterface_PlayPause(false);
     }
     if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
-    UserLiveFeed_Hide(PreventcleanQuailities);
+
+    if (!Play_PreviewId) UserLiveFeed_Hide(PreventcleanQuailities);
+    else UserLiveFeed_HideAfter();
+
     PlayClip_qualities = [];
     Main_removeEventListener("keydown", PlayClip_handleKeyDown);
     ChannelVod_vodOffset = 0;
@@ -541,7 +561,7 @@ function PlayClip_SetOpenVod() {
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
         Play_DurationSeconds = 0;
-        Main_values.vodOffset = ChannelVod_vodOffset;
+        Main_vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream(true);
         Main_addEventListener("keydown", PlayVod_handleKeyDown);
         Play_IconsResetFocus();
@@ -560,29 +580,38 @@ function PlayClip_CheckIfIsLiveResult(response) {
 
         var responseObj = JSON.parse(response);
 
-        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_CheckIfIsLiveId) {
+        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
             var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (responseObj.status === 200) {
 
-                Play_CheckIfIsLiveURL = responseObj.url;
-                Play_CheckIfIsLiveResponseText = responseObj.responseText;
+                Play_PreviewURL = responseObj.url;
+                Play_PreviewResponseText = responseObj.responseText;
                 PlayClip_OpenLiveStream();
                 return;
 
             } else if (doc && (responseObj.status === 1 || responseObj.status === 403)) {
 
-                Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                Play_CheckIfIsLiveStartFail(
+                    JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN,
+                    2000
+                );
                 return;
 
             } else if (doc && responseObj.status === 404) {
 
-                Play_CheckIfIsLiveStartFail(JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_IS_OFFLINE);
+                Play_CheckIfIsLiveStartFail(
+                    JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
+                    2000
+                );
                 return;
 
             }
 
-            Play_CheckIfIsLiveStartFail(STR_PLAYER_PROBLEM_2);
+            Play_CheckIfIsLiveStartFail(
+                STR_PLAYER_PROBLEM_2,
+                2000
+            );
         }
 
     }
@@ -591,19 +620,41 @@ function PlayClip_CheckIfIsLiveResult(response) {
 
 function PlayClip_CheckIfIsLiveStart() {
 
-    if (!Main_IsOn_OSInterface || Play_CheckIfIsLiveResponseText) PlayClip_OpenLiveStream();
+    if (!Main_IsOn_OSInterface || Play_PreviewId) PlayClip_OpenLiveStream();
     else Play_CheckIfIsLiveStart('PlayClip_CheckIfIsLiveResult');
 
 }
 
 function PlayClip_OpenLiveStream() {
     PlayClip_PreshutdownStream(true, true);
-    Main_OpenLiveStream(
-        UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-        UserLiveFeed_ids,
-        PlayClip_handleKeyDown,
-        !UserLiveFeed_CheckVod()
-    );
+    Play_OpenFeed(PlayClip_handleKeyDown);
+}
+
+function PlayClip_CheckPreview() {
+
+    if (PlayClip_isOn && !Play_isEndDialogVisible() && Main_values.Main_Go !== Main_ChannelContent &&
+        Settings_Obj_default('show_clip_player') && ScreenObj[Screens_Current_Key].screenType === 2 && !Sidepannel_isShowing() &&
+        !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+
+        if (PlayClip_CheckPreviewClip()) {
+            Play_PreviewURL = PlayClip_qualities[0].url;
+            Play_PreviewResponseText = PlayClip_qualities;
+            Play_PreviewId = ChannelClip_playUrl;
+        }
+    }
+
+}
+
+function PlayClip_CheckPreviewClip() {
+
+    var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+    if (doc) {
+
+        return Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
+
+    }
+
+    return false;
 }
 
 function PlayClip_handleKeyDown(e) {
@@ -732,12 +783,12 @@ function PlayClip_handleKeyDown(e) {
                     PlayClip_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (!UserLiveFeed_CheckVod()) PlayClip_OpenLiveStream();
                     else PlayClip_CheckIfIsLiveStart();
                 }
                 else PlayClip_showPanel();
                 break;
             case KEY_STOP:
+                PlayClip_CheckPreview();
                 Play_CleanHideExit();
                 PlayClip_shutdownStream();
                 break;
@@ -767,6 +818,7 @@ function PlayClip_handleKeyDown(e) {
                     else UserLiveFeed_Hide();
                 } else {
                     if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                        PlayClip_CheckPreview();
                         Play_CleanHideExit();
                         PlayClip_shutdownStream();
                     } else {
@@ -797,12 +849,12 @@ function PlayClip_handleKeyDown(e) {
             case KEY_PG_UP:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatPosChage();
-                else PlayClip_showPanel();
+                else UserLiveFeed_ShowFeed();
                 break;
             case KEY_PG_DOWN:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
-                else PlayClip_showPanel();
+                else UserLiveFeed_ShowFeed();
                 break;
             case KEY_MEDIA_FAST_FORWARD:
                 if (Play_isEndDialogVisible()) break;

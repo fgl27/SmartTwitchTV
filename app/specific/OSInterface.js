@@ -4,33 +4,32 @@
 //If a function is Android specific, the feature that it provides may only be needed on a Android device
 //Check what the function does and if the new OS provides the function make a new one or find a way to adapt
 
-//public long GetNotificationTime()
-//Android specific: true
-//with time im ms of when notifications will end
-//To prevent show in app notification when background notification have ended showing
-function OSInterface_GetNotificationTime() {
-    return Main_IsOn_OSInterface ? Android.GetNotificationTime() : 0;
-}
-
-//public String GetNotificationOld()
-//Android specific: true
-//returns the last know list of live channels
-function OSInterface_GetNotificationOld() {
-    return Main_IsOn_OSInterface ? Android.GetNotificationOld() : null;
-}
-
-//public void SetNotificationOld(String list)
-//Android specific: true
-//returns the last know list of live channels
-function OSInterface_SetNotificationOld(list) {
-    if (Main_IsOn_OSInterface) Android.SetNotificationOld(list);
-}
-
 //public void StopNotificationService()
 //Android specific: true
 //Allows to stop the notification service from js side
 function OSInterface_StopNotificationService() {
     if (Main_IsOn_OSInterface) Android.StopNotificationService();
+}
+
+//public void SetNotificationPosition(int position)
+//position the position on the screen
+//Android specific: true
+//Allows to Set Notification Position
+function OSInterface_SetNotificationPosition(position) {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SetNotificationPosition(position);
+    } catch (e) {}
+}
+
+//public void RunNotificationService()
+//Android specific: true
+//Allows to run the notification service once
+function OSInterface_RunNotificationService() {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.RunNotificationService();
+    } catch (e) {}
 }
 
 //public void upNotificationState(boolean Notify)
@@ -90,16 +89,19 @@ function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResul
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, Delay_ms, callback, x, y, ReTryMax, Timeout) {
-    Android.CheckIfIsLiveFeed(
-        token_url,
-        hls_url,
-        Delay_ms,
-        callback,
-        x,
-        y,
-        ReTryMax,
-        Timeout
-    );
+    //TODO remove the try after some apps updates
+    try {
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            hls_url,
+            Delay_ms,
+            callback,
+            x,
+            y,
+            ReTryMax,
+            Timeout
+        );
+    } catch (e) {}
 }
 
 //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -195,6 +197,26 @@ function OSInterface_mupdatesizePP(isFullScreen) {
 //Allows to change player size on PP mode
 function OSInterface_mupdatesize(isFullScreen) {
     Android.mupdatesize(isFullScreen);
+}
+
+//public void SetFullScreenPosition(int mFullScreenPosition)
+//mFullScreenPosition = 0 right 1 left
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Allows to change the position of side by side player plus chat
+function OSInterface_SetFullScreenPosition(mFullScreenPosition) {
+    try {
+        Android.SetFullScreenPosition(mFullScreenPosition);
+    } catch (e) {}
+}
+
+//public void SetFullScreenSize(int mFullScreenSize)
+//mFullScreenSize = 0, 1, 2, 3, 4
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Allows to change the size of side by side player plus chat
+function OSInterface_SetFullScreenSize(mFullScreenPosition) {
+    try {
+        Android.SetFullScreenSize(mFullScreenPosition);
+    } catch (e) {}
 }
 
 //public void mSetPlayerPosition(int PicturePicturePos)
@@ -341,7 +363,14 @@ function OSInterface_getsavedtime() {
 //Android specific: false
 //returns PlayerCurrentPosition valued used to show vod/clip position and sync vod/clip chat and video
 function OSInterface_gettime() {
-    return Android.gettime();
+    return Main_IsOn_OSInterface ? Android.gettime() : 0;
+}
+
+//public long gettimepreview()
+//Android specific: false
+//returns PlayerCurrentPosition valued used to show vod/clip position and sync vod/clip chat and video
+function OSInterface_gettimepreview() {
+    return Main_IsOn_OSInterface ? Android.gettimepreview() : 0;
 }
 
 //public void stopVideo(int who_called)
@@ -626,6 +655,39 @@ function OSInterface_OpenExternal(url) {
     Android.OpenExternal(url);
 }
 
+//public void SetPreviewSize(int mPreviewSize)
+//mPreviewSize = the Preview Size
+//Android specific: true
+//Allows to change the player preview size
+function OSInterface_SetPreviewSize(mPreviewSize) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPreviewSize(mPreviewSize);
+    } catch (e) {}
+}
+
+//public void SetPreviewAudio(int volume)
+//volume = the volume of others player
+//Android specific: true
+//Allows the preview player volume
+function OSInterface_SetPreviewAudio(volume) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPreviewAudio(volume);
+    } catch (e) {}
+}
+
+//public void SetPreviewAudio(int volume)
+//volume = the volume of others player
+//Android specific: true
+//Allows to lower others player volume when preview player is showing
+function OSInterface_SetPreviewOthersAudio(volume) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPreviewOthersAudio(volume);
+    } catch (e) {}
+}
+
 //public void mSetPlayerAudioMulti(int position)
 //position = the player position to enable the audio 0 to 3, 4 all player enable
 //Android specific: true
@@ -650,15 +712,113 @@ function OSInterface_PrepareForMulti(uri, masterPlaylistString) {
     Android.PrepareForMulti(uri, masterPlaylistString);
 }
 
-//public void StartFeedPlayer(String uri, String masterPlaylistString, int position, boolean fullBitrate)
+//public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod)
 //uri =  the url of the playlist or the clip
 //masterPlaylistString = the stringify version of the url playlist content
 //position = position of the player on the screen
-//fullBitrate = if is side panel the player can use max Bitrate if not no
+//resumePosition = the postion to start the vod
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, fullBitrate) {
-    Android.StartFeedPlayer(uri, masterPlaylistString, position, fullBitrate);
+function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod);
+    } catch (e) {
+    }
+}
+
+//public void StartFeedPlayer(String uri, String masterPlaylistString, , int top, int right, int bottom, int left)
+//uri =  the url of the playlist or the clip
+//masterPlaylistString = the stringify version of the url playlist content
+//Android specific: true
+//Start MultiStream at position
+function OSInterface_StartSidePanelPlayer(uri, masterPlaylistString) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.StartSidePanelPlayer(
+            uri,
+            masterPlaylistString
+        );
+    } catch (e) {}
+}
+
+//public void SetPlayerViewSidePanel(int bottom, int web_height)
+//bottom = the position from the bottom
+//web_height = the screen width size
+//Android specific: true
+//Start MultiStream at position
+function OSInterface_SetPlayerViewFeedBottom(bottom, web_height) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPlayerViewFeedBottom(
+            bottom,
+            parseInt(web_height)
+        );
+    } catch (e) {}
+}
+
+//public void SetPlayerViewSidePanel(int top, int right, int left, int web_height)
+//uri =  the url of the playlist or the clip
+//masterPlaylistString = the stringify version of the url playlist content
+//bottom, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
+//Android specific: true
+//Start MultiStream at position
+function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.SetPlayerViewSidePanel(
+            bottom,
+            right,
+            left,
+            parseInt(web_height)
+        );
+    } catch (e) {}
+}
+
+//public void StartScreensPlayer(String uri, String masterPlaylistString, ResumePosition, float bottom, float right, float left, int web_height, int who_called)
+//uri =  the url of the playlist or the clip
+//masterPlaylistString = the stringify version of the url playlist content
+//ResumePosition position to start the vod
+//top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
+//who_called 1 live 2 vod 3 clip
+//Android specific: true
+//Start MultiStream at position
+function OSInterface_StartScreensPlayer(uri, masterPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.StartScreensPlayer(
+            uri,
+            masterPlaylistString,
+            ResumePosition,
+            bottom,
+            right,
+            left,
+            parseInt(web_height),
+            who_called,
+            Settings_Obj_default('preview_screen_sizes') === 1
+        );
+    } catch (e) {}
+}
+
+//public void StartScreensPlayer(float bottom, float right, float left, int web_height, int who_called, boolean bigger)
+//uri =  the url of the playlist or the clip
+//masterPlaylistString = the stringify version of the url playlist content
+//top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
+//who_called 1 live 2 vod 3 clip
+//Android specific: true
+//Start MultiStream at position
+function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_called) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.ScreenPlayerRestore(
+            bottom,
+            right,
+            left,
+            parseInt(web_height),
+            who_called,
+            Settings_Obj_default('preview_screen_sizes') === 1
+        );
+    } catch (e) {}
 }
 
 //public void ClearFeedPlayer()
@@ -666,6 +826,26 @@ function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, fullBi
 //Clear the side panel or small player over the live feed play removes it from the screen
 function OSInterface_ClearFeedPlayer() {
     Android.ClearFeedPlayer();
+}
+
+//public void ClearFeedPlayer()
+//Android specific: true
+//Clear the side panel or small player over the live feed play removes it from the screen
+function OSInterface_ClearSidePanelPlayer(CleanPlayer) {
+    //TODO remove the try after some apps updates
+    try {
+        Android.ClearSidePanelPlayer(CleanPlayer);
+    } catch (e) {}
+}
+
+//public void SidePanelPlayerRestore()
+//Android specific: true
+//restores the main player as side panel player
+function OSInterface_SidePanelPlayerRestore() {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SidePanelPlayerRestore();
+    } catch (e) {}
 }
 
 //public void SetFeedPosition(int position)
@@ -696,6 +876,42 @@ function OSInterface_KeyboardCheckAndHIde() {
 //Hides the on screen keyboard
 function OSInterface_hideKeyboardFrom() {
     Android.hideKeyboardFrom();
+}
+
+function OSInterface_AvoidClicks(Avoid) {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.AvoidClicks(Avoid);
+    } catch (e) {}
+}
+
+function OSInterface_initbodyClickSet() {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.initbodyClickSet();
+    } catch (e) {}
+}
+
+//public void SetKeysOpacity(float Opacity)
+//The keys Opacity
+//Android specific: true
+//Allows to run the notification service once
+function OSInterface_SetKeysOpacity(Opacity) {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SetKeysOpacity(Opacity);
+    } catch (e) {}
+}
+
+//public void SetKeysPosition(float Opacity)
+//The keys Opacity
+//Android specific: true
+//Allows to run the notification service once
+function OSInterface_SetKeysPosition(Position) {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SetKeysPosition(Position);
+    } catch (e) {}
 }
 
 //public boolean isKeyboardConnected()

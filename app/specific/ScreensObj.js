@@ -28,7 +28,7 @@ var empty_fun = function() {};
 
 var Base_obj = {
     posX: 0,
-    posY: 0,
+    posY: -1,
     currY: 0,
     row_id: 0,
     offsettopFontsize: 0,
@@ -156,10 +156,8 @@ var Base_Vod_obj = {
     HasAnimateThumb: true,
     Vod_newImg: new Image(),
     AnimateThumb: ScreensObj_AnimateThumbId,
-    addCellBase: function(cell, thubnail) {
-        if (!this.idObject[cell._id] && !Main_A_includes_B(thubnail + '', '404_processing')) {
-
-            cell.preview.template = thubnail;
+    addCell: function(cell) {
+        if (!this.idObject[cell._id]) {
 
             this.itemsCount++;
             this.idObject[cell._id] = 1;
@@ -175,9 +173,6 @@ var Base_Vod_obj = {
 
             this.coloumn_id++;
         }
-    },
-    addCell: function(cell) {
-        this.addCellBase(cell, cell.preview.template);
     }
 };
 
@@ -314,18 +309,6 @@ function ScreensObj_InitChannelVod() {
     }, Base_obj);
 
     ScreenObj[Main_ChannelVod] = Screens_assign(ScreenObj[Main_ChannelVod], Base_Vod_obj);
-
-    ScreenObj[Main_ChannelVod].addCell = function(cell) {
-
-        var thumbnail = cell.preview.template;
-
-        // video content can be null sometimes, in that case the preview will be 404_processing
-        // but if the video is from the stream that has not yet ended it can also be 404_processing and not be a null video
-        if (!this.row_id && Main_A_includes_B(thumbnail + '', '404_processing'))
-            thumbnail = (ChannelContent_offline_image !== null ? ChannelContent_offline_image : this.img_404);
-
-        this.addCellBase(cell, thumbnail);
-    };
     ScreenObj[Main_ChannelVod].Set_Scroll();
 }
 
@@ -505,6 +488,10 @@ var Base_Live_obj = {
             this.coloumn_id++;
         }
     },
+    key_play: function() {
+        Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+        Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+    }
 };
 
 function ScreensObj_InitLive() {
@@ -531,9 +518,6 @@ function ScreensObj_InitLive() {
 
             ScreensObj_SetTopLable(STR_LIVE);
         },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_Live] = Screens_assign(ScreenObj[Main_Live], Base_Live_obj);
@@ -567,9 +551,6 @@ function ScreensObj_InitSearchLive() {
             Main_values.Search_isSearching = false;
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
         },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_SearchLive] = Screens_assign(ScreenObj[Main_SearchLive], Base_Live_obj);
@@ -626,9 +607,6 @@ function ScreensObj_InitUserLive() {
             ScreensObj_TopLableUserInit(this.screen);
             ScreensObj_SetTopLable(STR_USER, STR_LIVE_CHANNELS);
         },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_UserLive] = Screens_assign(ScreenObj[Main_UserLive], Base_Live_obj);
@@ -715,18 +693,15 @@ function ScreensObj_InitUserHost() {
 
             ScreensObj_SetTopLable(STR_USER, STR_LIVE_HOSTS);
         },
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_UserHost] = Screens_assign(ScreenObj[Main_UserHost], Base_Live_obj);
 
     ScreenObj[Main_UserHost].addCell = function(cell) {
-        if (!this.idObject[cell.target._id + '' + cell._id]) { //combined id host and hosted
+        if (!this.idObject[cell.target._id]) { //combined id host and hosted
 
             this.itemsCount++;
-            this.idObject[cell.target._id + '' + cell._id] = 1;
+            this.idObject[cell.target._id] = 1;
 
             this.row.appendChild(
                 Screens_createCellLive(
@@ -786,15 +761,16 @@ function ScreensObj_InitAGame() {
                 this.screen
             );
         },
-        key_play: function() {
-            if (this.posY !== -1) {
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-            } else AGame_headerOptions(this.screen);
-        },
     }, Base_obj);
 
     ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
     ScreenObj[Main_aGame].Set_Scroll();
+    ScreenObj[Main_aGame].key_play = function() {
+        if (this.posY !== -1) {
+            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+        } else AGame_headerOptions(this.screen);
+    };
 }
 
 function ScreensObj_InitFeatured() {
@@ -822,9 +798,6 @@ function ScreensObj_InitFeatured() {
             ScreensObj_SetTopLable(STR_FEATURED);
         },
         object: 'featured',
-        key_play: function() {
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
-        }
     }, Base_obj);
 
     ScreenObj[Main_Featured] = Screens_assign(ScreenObj[Main_Featured], Base_Live_obj);
@@ -850,7 +823,7 @@ var Base_Clip_obj = {
     cursor: null,
     object: 'clips',
     period: ['day', 'week', 'month', 'all'],
-    img_404: IMG_404_VIDEO,
+    img_404: IMG_404_VOD,
     empty_str: function() {
         return STR_NO + STR_SPACE + STR_CLIPS;
     },
@@ -897,25 +870,7 @@ var Base_Clip_obj = {
                 Screens_createCellClip(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
-                    [
-                        cell.slug,//0
-                        cell.duration,//1
-                        cell.broadcaster.id,//2
-                        cell.game,//3
-                        cell.broadcaster.display_name,//4
-                        cell.broadcaster.logo.replace("150x150", "300x300"),//5
-                        cell.broadcaster.name,//6
-                        cell.tracking_id,//7
-                        (cell.vod !== null ? cell.vod.id : null),//8
-                        (cell.vod !== null ? cell.vod.offset : null),//9
-                        twemoji.parse(cell.title),//10
-                        '[' + cell.language.toUpperCase() + ']',//11
-                        cell.created_at,//12
-                        cell.views,//13
-                        Main_addCommas(cell.views) + STR_VIEWS,//14
-                        cell.thumbnails.medium,//15
-                        STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//16
-                    ],
+                    ScreensObj_ClipCellArray(cell),
                     this.screen
                 )
             );
@@ -1351,7 +1306,6 @@ var Base_History_obj = {
     addFocus: Screens_addFocusVideo,
     rowClass: 'animate_height_transition',
     thumbclass: 'stream_thumbnail_live_holder',
-    img_404: IMG_404_VIDEO,
     isHistory: true,
     streamerID: {},
     HasSwitches: true,
@@ -1448,6 +1402,7 @@ function ScreensObj_HistoryLive() {
         ids: Screens_ScreenIds('HistoryLive'),
         table: 'stream_table_historylive',
         screen: Main_HistoryLive,
+        img_404: IMG_404_VIDEO,
         histPosXName: 'HistoryLive_histPosX',
         screenType: 0,
         histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0]),
@@ -1475,24 +1430,9 @@ function ScreensObj_HistoryLive() {
         history_Type: function() {
             return STR_LIVE;
         },
-        key_play: function() {
-
-            if (this.posY === -1) {
-                if (this.posX === 0) {
-                    Main_values.Main_Go = Main_HistoryVod;
-                    this.history_exit();
-                    Main_SwitchScreen();
-                } else if (this.posX === 1) {
-                    Main_values.Main_Go = Main_HistoryClip;
-                    this.history_exit();
-                    Main_SwitchScreen();
-                } else Screens_histStart(this.screen);
-            } else Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true);
-
-        },
         addCell: function(cell) {
             //cell.data[14] check here to a bug that introduce emtpy values todo maybe can be removed ins some months
-            if (!this.idObject[cell.data[7]] && cell.data[14] !== '') {
+            if (!this.idObject[cell.data[7]] && cell.data[14] && cell.data[14] !== '') {
 
                 this.itemsCount++;
                 this.idObject[cell.data[7]] = 1;
@@ -1530,6 +1470,22 @@ function ScreensObj_HistoryLive() {
     ScreenObj[Main_HistoryLive] = Screens_assign(ScreenObj[Main_HistoryLive], Base_History_obj);
     ScreenObj[Main_HistoryLive].Upsorting();
     ScreenObj[Main_HistoryLive].Set_Scroll();
+    ScreenObj[Main_HistoryLive].key_play = function() {
+        if (this.posY === -1) {
+            if (this.posX === 0) {
+                Main_values.Main_Go = Main_HistoryVod;
+                this.history_exit();
+                Main_SwitchScreen();
+            } else if (this.posX === 1) {
+                Main_values.Main_Go = Main_HistoryClip;
+                this.history_exit();
+                Main_SwitchScreen();
+            } else Screens_histStart(this.screen);
+        } else {
+            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true);
+        }
+    };
 }
 
 function ScreensObj_HistoryVod() {
@@ -1539,6 +1495,7 @@ function ScreensObj_HistoryVod() {
         table: 'stream_table_historyvod',
         screen: Main_HistoryVod,
         screenType: 1,
+        img_404: IMG_404_VOD,
         Vod_newImg: new Image(),
         HasAnimateThumb: true,
         AnimateThumb: ScreensObj_AnimateThumbId,
@@ -1630,6 +1587,7 @@ function ScreensObj_HistoryClip() {
         ids: Screens_ScreenIds('HistoryClip'),
         table: 'stream_table_historyclip',
         screen: Main_HistoryClip,
+        img_404: IMG_404_VOD,
         screenType: 2,
         histPosXName: 'HistoryClip_histPosX',
         histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0]),
@@ -1772,7 +1730,7 @@ function ScreensObj_LiveCellArray(cell) {
         STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,//4
         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
         cell.channel.name,//6
-        cell._id,//7
+        cell._id,//7 broadcast id
         Main_is_rerun(cell.broadcast_platform),//8
         cell.channel.logo,//9
         cell.channel.partner,//10
@@ -1806,7 +1764,9 @@ function ScreensObj_HostCellArray(cell) {
 
 function ScreensObj_VodCellArray(cell) {
     return [
-        cell.preview.template.replace("{width}x{height}", Main_VideoSize),//0
+        //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
+        Main_A_includes_B(cell.preview.template + '', '404_processing') ? 'https://static-cdn.jtvnw.net/s3_vods/' + cell.animated_preview_url.split('/')[3] +
+            '/thumb/thumb0-' + Main_VideoSize + '.jpg' : cell.preview.template.replace("{width}x{height}", Main_VideoSize),//0
         cell.channel.display_name,//1
         STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),//2
         cell.game,//3
@@ -1826,6 +1786,28 @@ function ScreensObj_VodCellArray(cell) {
     ];
 }
 
+function ScreensObj_ClipCellArray(cell) {
+    return [
+        cell.slug,//0
+        cell.duration,//1
+        cell.broadcaster.id,//2
+        cell.game,//3
+        cell.broadcaster.display_name,//4
+        cell.broadcaster.logo.replace("150x150", "300x300"),//5
+        cell.broadcaster.name,//6
+        cell.tracking_id,//7
+        (cell.vod !== null ? cell.vod.id : null),//8
+        (cell.vod !== null ? cell.vod.offset : null),//9
+        twemoji.parse(cell.title),//10
+        '[' + cell.language.toUpperCase() + ']',//11
+        cell.created_at,//12
+        cell.views,//13
+        Main_addCommas(cell.views) + STR_VIEWS,//14
+        cell.thumbnails.medium,//15
+        STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//16
+    ];
+}
+
 function ScreensObj_AnimateThumbId(screen) {
     Main_clearInterval(screen.AnimateThumbId);
     if (!Settings_Obj_default("videos_animation")) return;
@@ -1835,7 +1817,7 @@ function ScreensObj_AnimateThumbId(screen) {
     // This prevent starting animating before it has loaded or animated a empty image
     screen.Vod_newImg.onload = function() {
         this.onload = null;
-        Main_HideElement(screen.ids[1] + screen.posY + '_' + screen.posX);
+        Main_AddClass(screen.ids[1] + screen.posY + '_' + screen.posX, 'opacity_zero');
         div.style.backgroundSize = div.offsetWidth + "px";
         var frame = 0;
         screen.AnimateThumbId = Main_setInterval(

@@ -51,7 +51,8 @@ function AddUser_handleKeyDown(event) {
 var AddUser_inputFocusId;
 function AddUser_inputFocus() {
     Main_AddClass('scenefeed', 'avoidclicks');
-    Main_AddClass('scene_notify', 'avoidclicks');
+    Main_AddClass('scene_keys', 'avoidclicks');
+    OSInterface_AvoidClicks(true);
     Main_removeEventListener("keydown", AddUser_handleKeyDown);
     Main_addEventListener("keydown", AddUser_KeyboardEvent);
     Main_AddUserInput.placeholder = STR_PLACEHOLDER_USER;
@@ -70,7 +71,8 @@ function AddUser_removeEventListener() {
     if (!Main_isTV && Main_IsOn_OSInterface) OSInterface_mhideSystemUI();
 
     Main_RemoveClass('scenefeed', 'avoidclicks');
-    Main_RemoveClass('scene_notify', 'avoidclicks');
+    Main_RemoveClass('scene_keys', 'avoidclicks');
+    OSInterface_AvoidClicks(false);
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);
         Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
@@ -185,14 +187,9 @@ function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
 
-        //TODO remove this try after some app updates
-        try {
-            if (Main_IsOn_OSInterface) {
-                OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
-                UserLiveFeed_WasLiveidObject[AddUser_UsernameArray[0].id] = {};
-                Main_RestoreLiveObjt(AddUser_UsernameArray[0].id);
-            }
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) {
+            OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+        }
 
         AddUser_UpdateSidepanel();
 
@@ -340,12 +337,20 @@ function AddUser_removeUser(position) {
     // restart users and smarthub
     if (AddUser_UsernameArray.length > 0) {
         //Reset main user if user is 0
-        if (!position) AddUser_UpdateSidepanel();
+        if (!position) {
+            AddUser_UpdateSidepanel();
+            OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+        }
         Users_status = false;
         Users_init();
     } else {
         AddUser_UpdateSidepanelDefault();
         AddUser_init();
+
+        if (Main_IsOn_OSInterface) {
+            OSInterface_upNotificationId(null);
+            OSInterface_StopNotificationService();
+        }
     }
 }
 
@@ -382,11 +387,7 @@ function AddUser_UserMakeOne(position) {
     Users_init();
 
     if (Main_IsOn_OSInterface) {
-        //TODO remove the try after some app updates
-        try {
-            OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
-        } catch (e) {}
-        Main_SaveLiveObjt(AddUser_UsernameArray[0].id);
+        OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
     }
 
     //Reset user emotes on chage

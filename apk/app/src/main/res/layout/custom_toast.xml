@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:gravity="center_horizontal|center_vertical"
-              android:padding="4dp"
-              android:background="@drawable/border"
-              >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal|center_vertical"
+    android:padding="4dp"
+    android:background="@drawable/border"
+    >
     <ImageView android:id="@+id/image"
-               android:contentDescription="@string/app_name"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               />
+        android:contentDescription="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
     <LinearLayout
         android:id="@+id/text_holder"
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
-            android:drawablePadding="6dp"
+            android:drawablePadding="5dp"
             android:textStyle="bold" />
 
         <TextView

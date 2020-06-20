@@ -12,7 +12,7 @@ var Sidepannel_FixDiv;
 var Sidepannel_MovelDiv;
 var Sidepannel_ScroolDoc;
 var Sidepannel_SidepannelDoc;
-var Sidepannel_Notify_img;
+var Sidepannel_Positions = {};
 
 var Sidepannel_AnimationTimeout = 200;//Same value as side_panel_holder_ani
 
@@ -42,6 +42,10 @@ function Sidepannel_RemoveFocusFeed() {
 }
 
 function Sidepannel_isShowing() {
+    return Sidepannel_isShowingSide() && Main_isScene1DocShown();
+}
+
+function Sidepannel_isShowingSide() {
     return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
 }
 
@@ -71,20 +75,39 @@ function Sidepannel_UpdateThumb() {
     if (Sidepannel_isShowing()) {
         Main_ShowElement('side_panel_feed_thumb');
 
-        var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+        if (Settings_Obj_default('show_side_player')) {
+            var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
-        if (doc) {
-            var Channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
-            if (!Play_CheckIfIsLiveResponseText || !Main_A_equals_B(Channel, Play_CheckIfIsLiveChannel)) {
-                Sidepannel_CheckIfIsLiveStart();
-            } else if (Play_CheckIfIsLiveResponseText) {
-                Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+            if (doc) {
+
+                var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
+
+                if ((!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
+                    Sidepannel_CheckIfIsLiveStart();
+                } else if (Play_PreviewId) {
+                    Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
+                }
+
+                Play_PreviewVideoEnded = false;
             }
         }
 
     }
 
 }
+
+function Sidepannel_RestoreThumb(doc, play_data) {
+    if (doc) {
+        return Main_A_equals_B(
+            JSON.parse(doc.getAttribute(Main_DataAttribute))[14],
+            play_data.data[14]
+        );
+    }
+
+    return false;
+}
+
+var Sidepannel_PlayerViewSidePanelSet;
 
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
@@ -98,24 +121,28 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             if (StreamData.status === 200) {
 
-                Play_CheckIfIsLiveURL = StreamData.url;
-                Play_CheckIfIsLiveResponseText = StreamData.responseText;
-                Play_CheckIfIsLiveChannel = StreamInfo[6];
+                Play_PreviewURL = StreamData.url;
+                Play_PreviewResponseText = StreamData.responseText;
+                Play_PreviewId = StreamInfo[14];
 
-                OSInterface_StartFeedPlayer(
-                    Play_CheckIfIsLiveURL,
-                    Play_CheckIfIsLiveResponseText,
-                    5,
-                    true
+                if (!Sidepannel_PlayerViewSidePanelSet) {
+                    Sidepannel_SetPlayerViewSidePanel();
+                }
+
+                OSInterface_StartSidePanelPlayer(
+                    Play_PreviewURL,
+                    Play_PreviewResponseText
                 );
 
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
             } else {
+
                 Sidepannel_CheckIfIsLiveWarn(
-                    ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
-                    StreamInfo[1]
+                    StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                    2000
                 );
+
             }
 
         }
@@ -123,16 +150,27 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
 }
 
-function Sidepannel_CheckIfIsLiveWarn(ErroText, Streamer) {
-    Sidepannel_CheckIfIsLiveSTop();
-    Sidepannel_UpdateThumbDiv();
-    Sidepannel_showWarningDialog(Streamer + STR_SPACE + STR_LIVE + STR_BR + ErroText);
-    Main_setTimeout(Sidepannel_HideWarningDialog, 2000);
+function Sidepannel_SetPlayerViewSidePanel() {
+    var Rect = document.getElementById('feed_thumb_img').parentElement.getBoundingClientRect();
+    OSInterface_SetPlayerViewSidePanel(
+        Rect.bottom,
+        Rect.right,
+        Rect.left,
+        window.innerHeight
+    );
+    Sidepannel_PlayerViewSidePanelSet = true;
 }
 
-function Sidepannel_showWarningDialog(text) {
+function Sidepannel_CheckIfIsLiveWarn(ErroText, time) {
+    Sidepannel_CheckIfIsLiveSTop();
+    Sidepannel_UpdateThumbDiv();
+    Sidepannel_showWarningDialog(ErroText, time);
+}
+
+function Sidepannel_showWarningDialog(text, timeout) {
     Main_innerHTML('sidepannel_dialog_warning_text', text);
     Main_ShowElement('sidepannel_dialog_warning');
+    Main_setTimeout(Sidepannel_HideWarningDialog, timeout ? timeout : 0);
 }
 
 function Sidepannel_HideWarningDialog() {
@@ -142,7 +180,10 @@ function Sidepannel_HideWarningDialog() {
 function Sidepannel_CheckIfIsLiveStart() {
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsOn_OSInterface) return;
+    if (!Main_IsOn_OSInterface) {
+        return;
+    }
+
     var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
     if (doc) {
@@ -152,7 +193,7 @@ function Sidepannel_CheckIfIsLiveStart() {
             OSInterface_CheckIfIsLiveFeed(
                 Play_live_token.replace('%x', channel),
                 Play_live_links.replace('%x', channel),
-                UserLiveFeed_CheckIfIsLiveDelay,
+                Settings_Obj_values("show_feed_player_delay"),
                 "Sidepannel_CheckIfIsLiveResult",
                 1,
                 (Sidepannel_PosFeed % 100),
@@ -168,7 +209,7 @@ function Sidepannel_CheckIfIsLiveStart() {
 function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
     if (!Main_IsOn_OSInterface) return;
 
-    OSInterface_ClearFeedPlayer();
+    OSInterface_ClearSidePanelPlayer(!PreventcleanQuailities);
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
 }
 
@@ -204,8 +245,7 @@ function Sidepannel_GetSize() {
 
 function Sidepannel_KeyEnterUser() {
     if (Main_values.Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
-        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN);
-        Main_setTimeout(Main_HideWarningDialog, 5000);
+        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
         return;
     }
 
@@ -275,8 +315,7 @@ function Sidepannel_KeyEnter() {
             Sidepannel_UnSetTopOpacity();
 
         } else {
-            Main_showWarningDialog(STR_NOKUSER_WARN);
-            Main_setTimeout(Main_HideWarningDialog, 2000);
+            Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
         }
     } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
     else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
@@ -304,8 +343,7 @@ function Sidepannel_Start(callback, forceFeed) {
     if (!Sidepannel_IsMain || forceFeed) {
         if (AddUser_UserIsSet()) Sidepannel_StartFeed();
         else {
-            Main_showWarningDialog(STR_NOKUSER_WARN);
-            Main_setTimeout(Main_HideWarningDialog, 2000);
+            Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             Sidepannel_StartMain();
         }
     } else Sidepannel_StartMain();
@@ -317,21 +355,40 @@ function Sidepannel_StartFeed() {
     Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     Sidepannel_ShowFeed();
     Sidepannel_HideMain(true);
+    Sidepannel_SetLastRefresh();
 }
 
 function Sidepannel_ShowFeed() {
     Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-    if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+
+    if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name ||
+        (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
+        UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+    }
     UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
 
-    if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+    if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) {
+        UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+    }
 
-    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
-
-    if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
+    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+        UserLiveFeed_RefreshLive();
+    } else if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed(true);
     }
+
+    Sidepannel_SetLastRefresh();
+}
+
+function Sidepannel_SetLastRefresh() {
+    if (!UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) return;
+
+    Main_innerHTML(
+        "side_panel_feed_refresh",
+        STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
+        Play_timeDay((new Date().getTime()) - UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) + ')'
+    );
 }
 
 function Sidepannel_StartMain() {
@@ -356,12 +413,15 @@ function Sidepannel_HideMain(hideAll) {
 }
 
 function Sidepannel_Hide(PreventcleanQuailities) {
-    Sidepannel_HideMain();
-    Sidepannel_RemoveFocusMain();
-    Sidepannel_FixDiv.style.marginLeft = '';
+
+    if (!PreventcleanQuailities) {
+        Sidepannel_HideMain();
+        Sidepannel_RemoveFocusMain();
+        Sidepannel_FixDiv.style.marginLeft = '';
+        Main_HideElement('side_panel_feed_thumb');
+        Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+    }
     Sidepannel_HideEle(PreventcleanQuailities);
-    Main_HideElement('side_panel_feed_thumb');
-    Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
     Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
     Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
@@ -369,7 +429,7 @@ function Sidepannel_Hide(PreventcleanQuailities) {
 
 function Sidepannel_HideEle(PreventcleanQuailities) {
     Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
-    Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+    if (!PreventcleanQuailities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {
@@ -562,7 +622,6 @@ function Sidepannel_handleKeyDown(event) {
                 Sidepannel_SidepannelDoc.style.transition = 'none';
                 Sidepannel_Hide(true);
                 Main_values.Play_isHost = false;
-                Play_UserLiveFeedPressed = true;
                 Main_ready(
                     function() {
                         Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
@@ -610,8 +669,7 @@ function Sidepannel_handleKeyDownMain(event) {
                 Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
                 Sidepannel_StartFeed();
             } else {
-                Main_showWarningDialog(STR_NOKUSER_WARN);
-                Main_setTimeout(Main_HideWarningDialog, 2000);
+                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             break;
         case KEY_PG_UP:
