@@ -132,7 +132,7 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data-array';
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.206';
+var Main_stringVersion_Min = '.207';
 var Main_minversion = 'June 21, 2020';
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsOn_OSInterfaceVersion = '';

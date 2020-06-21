@@ -1,6 +1,11 @@
 SmartTV Twitch AndroidTV APP latest changes
 ==============
 
+Version 3.0.207 - June 21 2020
+==============
+
+* Allow to repeat the same notification, the individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show
+
 Version 3.0.206 - June 21 2020
 ==============
 
