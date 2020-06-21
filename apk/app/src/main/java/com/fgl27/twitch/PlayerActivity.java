@@ -1401,6 +1401,15 @@ public class PlayerActivity extends Activity {
                 return false;
             }
 
+            @Override
+            public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
+                //because this WebView in on top key will be dispatched here
+                //Main WebView must handle all the keys
+                MainThreadHandler.post(() -> mWebView.dispatchKeyEvent(event));
+                //If return true, WebView will not handle the key event
+                return true;
+            }
+
         });
 
         mWebViewKeyIsShowing = true;
