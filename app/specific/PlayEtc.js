@@ -97,8 +97,6 @@ function Play_SetChatSideBySide() {
         Play_chat_container.style.height = '99.6%';
         document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
         Play_chat_container.style.top = '0.2%';
-        Play_ChatEnable = true;
-        Play_chat_container.classList.remove('hide');
 
     } else {
 
@@ -109,8 +107,7 @@ function Play_SetChatSideBySide() {
         Play_chat_container.style.height = '99.6%';
         document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
         Play_chat_container.style.top = '0.2%';
-        Play_ChatEnable = true;
-        Play_chat_container.classList.remove('hide');
+
         if (Main_IsOn_OSInterface) OSInterface_mupdatesize(Play_isFullScreen);
 
         Play_controls[Play_controlsChatPos].values = STR_CHAT_SIDE_ARRAY;
@@ -123,6 +120,9 @@ function Play_SetChatSideBySide() {
         Play_controls[Play_controlsChatSize].setLable();
         Play_BottomArrows(Play_controlsChatSize);
     }
+
+    Play_ChatEnable = true;
+    Play_chat_container.classList.remove('hide');
 
 }
 

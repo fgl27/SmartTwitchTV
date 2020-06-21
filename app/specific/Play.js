@@ -105,7 +105,7 @@ var Play_ChatPositionVal = [{
 
 //Conversion between chat at 100% and bellow 50%
 var Play_ChatPositionsBefore = [0, 0, 0, 1, 2, 2, 2, 1]; //Chat positions size 50 to 100%
-var Play_ChatPositionsAfter = [ //Chat positions size 100 to 50%
+var Play_ChatPositionsAfter = [ //Chat positions size 100 to 75%
     [0, 1, 2, 2, 2, 1, 0, 0],
     [7, 3, 3, 3, 3, 3, 7, 7],
     [6, 5, 4, 4, 4, 5, 6, 6]
@@ -206,9 +206,9 @@ function Play_PreStart() {
 
     Play_MakeControls();
     Play_SetControls();
+    Play_ChatSize(false);
     Play_SetFullScreen(Play_isFullScreen);
 
-    Play_ChatSize(false);
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
 }
