@@ -255,6 +255,8 @@ public class NotificationService extends Service {
         JsonObject obj;
         JsonArray streams;
         int StreamsSize;
+        int Repeat = Tools.getInt(Constants.PREF_NOTIFICATION_REPEAT, 1, appPreferences);
+        NotifyList tempNotifyList;
         String id;
         String game;
         boolean isLive;
@@ -319,15 +321,17 @@ public class NotificationService extends Service {
                                             if (!obj.get("logo").isJsonNull())
                                                 bmp = GetBitmap(obj.get("logo").getAsString());
 
-                                            result.add(
-                                                    new NotifyList(
-                                                            game,
-                                                            !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
-                                                            bmp,
-                                                            !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
-                                                            isLive
-                                                    )
+                                            tempNotifyList = new NotifyList(
+                                                    game,
+                                                    !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
+                                                    bmp,
+                                                    !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
+                                                    isLive
                                             );
+                                            //Toast can only run for about 3s allow the user to repeat same notification
+                                            for (int x = 0; x < Repeat; x++) {
+                                                result.add(tempNotifyList);
+                                            }
                                         }
                                     }
                                 }

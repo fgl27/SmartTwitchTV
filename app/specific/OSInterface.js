@@ -22,6 +22,18 @@ function OSInterface_SetNotificationPosition(position) {
     } catch (e) {}
 }
 
+//public void SetNotificationRepeat(int times)
+//times number of time ot repeat
+//Android specific: true
+//Allows to Set Notification Position
+function OSInterface_SetNotificationRepeat(times) {
+    console.log(times);
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.SetNotificationRepeat(times);
+    } catch (e) {}
+}
+
 //public void RunNotificationService()
 //Android specific: true
 //Allows to run the notification service once

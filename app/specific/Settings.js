@@ -145,6 +145,10 @@ var Settings_value = {
         "values": [0, 1, 2, 3, 4, 5],
         "defaultValue": 2
     },
+    "repeat_notification": {//Migrated to dialog
+        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "defaultValue": 1
+    },
     "global_font_offset": {//Migrated to dialog
         "values": [-3, -2, -1, 0, 1, 2, 3],
         "defaultValue": 4
@@ -553,6 +557,7 @@ function Settings_SetDefautls() {
     PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     Settings_notification_background();
     Settings_notification_position();
+    Settings_notification_repeat();
     Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -634,6 +639,7 @@ function Settings_SetDefault(position) {
     else if (position === "live_notification") Settings_notification();
     else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "live_notification_position") Settings_notification_position();
+    else if (position === "repeat_notification") Settings_notification_repeat();
     else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "ping_warn") Settings_SetPingWarning();
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
@@ -670,6 +676,10 @@ function Settings_notification_background() {
 
 function Settings_notification_position() {
     OSInterface_SetNotificationPosition(Settings_Obj_default("live_notification_position"));
+}
+
+function Settings_notification_repeat() {
+    OSInterface_SetNotificationRepeat(Settings_Obj_values("repeat_notification"));
 }
 
 function Settings_notification() {
@@ -1266,6 +1276,12 @@ function Settings_DialogShowNotification() {
             values: Settings_value.live_notification_position.values,
             title: STR_NOTIFICATION_POS,
             summary: null
+        },
+        repeat_notification: {
+            defaultValue: Settings_value.repeat_notification.defaultValue,
+            values: Settings_value.repeat_notification.values,
+            title: STR_NOTIFICATION_REPEAT,
+            summary: STR_NOTIFICATION_REPEAT_SUMMARY
         }
     };
 

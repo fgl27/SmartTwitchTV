@@ -1583,6 +1583,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetNotificationRepeat(int times) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_REPEAT, times);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void RunNotificationService() {
             Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, mWebViewContext);
         }
