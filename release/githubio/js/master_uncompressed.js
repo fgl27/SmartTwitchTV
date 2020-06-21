@@ -11481,8 +11481,6 @@
             Play_chat_container.style.height = '99.6%';
             document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
             Play_chat_container.style.top = '0.2%';
-            Play_ChatEnable = true;
-            Play_chat_container.classList.remove('hide');
 
         } else {
 
@@ -11493,8 +11491,7 @@
             Play_chat_container.style.height = '99.6%';
             document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
             Play_chat_container.style.top = '0.2%';
-            Play_ChatEnable = true;
-            Play_chat_container.classList.remove('hide');
+
             if (Main_IsOn_OSInterface) OSInterface_mupdatesize(Play_isFullScreen);
 
             Play_controls[Play_controlsChatPos].values = STR_CHAT_SIDE_ARRAY;
@@ -11507,6 +11504,9 @@
             Play_controls[Play_controlsChatSize].setLable();
             Play_BottomArrows(Play_controlsChatSize);
         }
+
+        Play_ChatEnable = true;
+        Play_chat_container.classList.remove('hide');
 
     }
 
@@ -14320,7 +14320,7 @@
 
     //Conversion between chat at 100% and bellow 50%
     var Play_ChatPositionsBefore = [0, 0, 0, 1, 2, 2, 2, 1]; //Chat positions size 50 to 100%
-    var Play_ChatPositionsAfter = [ //Chat positions size 100 to 50%
+    var Play_ChatPositionsAfter = [ //Chat positions size 100 to 75%
         [0, 1, 2, 2, 2, 1, 0, 0],
         [7, 3, 3, 3, 3, 3, 7, 7],
         [6, 5, 4, 4, 4, 5, 6, 6]
@@ -14422,9 +14422,9 @@
 
         Play_MakeControls();
         Play_SetControls();
+        Play_ChatSize(false);
         Play_SetFullScreen(Play_isFullScreen);
 
-        Play_ChatSize(false);
         Play_ChatBackgroundChange(false);
         Play_SetChatFont();
     }
