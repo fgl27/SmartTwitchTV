@@ -573,7 +573,9 @@
     var STR_STAY_CHECK;
     var STR_STAY_CHECKING;
     var STR_STAY_CHECK_LAST;
-    var STR_ALWAYS_STAY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_ALWAYS_STAY;
+    var STR_NOTIFICATION_REPEAT;
+    var STR_NOTIFICATION_REPEAT_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_BR = "<br>";
     var STR_SPACE = '&nbsp;';
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
@@ -1040,6 +1042,8 @@
         STR_NOW_LIVE_SHOW = "Show Now Live notification";
         STR_NOW_BACKGROUND = "Now Live notification over other apps, when the app is on background";
         STR_NOW_BACKGROUND_SUMMARY = "If you prevent notification for this app in system settings this featuring will not work, if the app notifications are already running and you exit the app the notification will show over other apps even if this is disable";
+        STR_NOTIFICATION_REPEAT = "How many times to show it individual notification";
+        STR_NOTIFICATION_REPEAT_SUMMARY = "The individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show";
         STR_GLOBAL_FONT = "Global app font size offset";
         STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
         STR_MAIN_MENU = "Main Menu";
@@ -7633,7 +7637,7 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.206';
+    var Main_stringVersion_Min = '.207';
     var Main_minversion = 'June 21, 2020';
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9559,6 +9563,18 @@
         //TODO remove the try after some apps updates
         try {
             if (Main_IsOn_OSInterface) Android.SetNotificationPosition(position);
+        } catch (e) {}
+    }
+
+    //public void SetNotificationRepeat(int times)
+    //times number of time ot repeat
+    //Android specific: true
+    //Allows to Set Notification Position
+    function OSInterface_SetNotificationRepeat(times) {
+        console.log(times);
+        //TODO remove the try after some apps updates
+        try {
+            if (Main_IsOn_OSInterface) Android.SetNotificationRepeat(times);
         } catch (e) {}
     }
 
@@ -23580,6 +23596,10 @@
             "values": [0, 1, 2, 3, 4, 5],
             "defaultValue": 2
         },
+        "repeat_notification": { //Migrated to dialog
+            "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "defaultValue": 1
+        },
         "global_font_offset": { //Migrated to dialog
             "values": [-3, -2, -1, 0, 1, 2, 3],
             "defaultValue": 4
@@ -23990,6 +24010,7 @@
         PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
         Settings_notification_background();
         Settings_notification_position();
+        Settings_notification_repeat();
         Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
         Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
@@ -24071,6 +24092,7 @@
         else if (position === "live_notification") Settings_notification();
         else if (position === "live_notification_background") Settings_notification_background();
         else if (position === "live_notification_position") Settings_notification_position();
+        else if (position === "repeat_notification") Settings_notification_repeat();
         else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
         else if (position === "ping_warn") Settings_SetPingWarning();
         else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
@@ -24106,6 +24128,10 @@
 
     function Settings_notification_position() {
         OSInterface_SetNotificationPosition(Settings_Obj_default("live_notification_position"));
+    }
+
+    function Settings_notification_repeat() {
+        OSInterface_SetNotificationRepeat(Settings_Obj_values("repeat_notification"));
     }
 
     function Settings_notification() {
@@ -24727,6 +24753,12 @@
                 values: Settings_value.live_notification_position.values,
                 title: STR_NOTIFICATION_POS,
                 summary: null
+            },
+            repeat_notification: {
+                defaultValue: Settings_value.repeat_notification.defaultValue,
+                values: Settings_value.repeat_notification.values,
+                title: STR_NOTIFICATION_REPEAT,
+                summary: STR_NOTIFICATION_REPEAT_SUMMARY
             }
         };
 
