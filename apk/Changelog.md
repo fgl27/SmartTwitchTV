@@ -1,7 +1,12 @@
 SmartTV Twitch AndroidTV APP latest changes
 ==============
 
-Version 3.0.203 and up
+Version 3.0.205 - June 21 2020
+==============
+
+* Fix keyboard and remote input from none TV devices or TV devices that don't use Android TV (use a modified phone version of the OS)
+
+Version 3.0.203 and up - June 20 2020
 ==============
 
 I took sometime from making small updates to make a bigger update.
