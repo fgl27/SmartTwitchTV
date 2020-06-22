@@ -1,17 +1,28 @@
 SmartTV Twitch AndroidTV APP latest changes
 ==============
 
-Version 3.0.207 - June 21 2020
+The App is divided in two part, **Apk** and **Web** you can check they version in the about of the app:
+* The **Apk** is updated via play store it contains the app player and the basic function that don't work on the web part of the app.
+* The **Web** is update every time that the app is closed and you open it (of course if a update is available in the web server), it contains the user interface and related functions. If the app is open and you change apps that process doesn't closes the app only minimizes it, to close it's needed to select close on the exit dialog or simply holding the return key to force close it.
+
+Web Version June 22 2020
+==============
+
+* Fix live chat messages showing on the VOD chat when playing a LIVE and opening a VOD from preview feed
+* Fix checking and open a VOD from preview feed on all situation, before the check wasn't working when playing a VOD or a clip
+* Fix Preview feed Current game after the app was open using the feature restore playback restoring a VOD
+
+Apk Version 3.0.207 - June 21 2020
 ==============
 
 * Allow to repeat the same notification, the individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show
 
-Version 3.0.206 - June 21 2020
+Apk Version 3.0.206 - June 21 2020
 ==============
 
 * Fix keyboard and remote input from none TV devices or TV devices that don't use Android TV (use a modified phone version of the OS)
 
-Version 3.0.203 and up - June 20 2020
+Apk Version 3.0.203 and up - June 20 2020
 ==============
 
 I took sometime from making small updates to make a bigger update.
