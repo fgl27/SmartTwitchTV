@@ -8800,14 +8800,12 @@
     }
 
     function Main_updateclock() {
-        if (!document.hidden) {
-            Main_textContent('label_clock', Main_getclock());
-            if (Main_RunningTime) Main_AboutDialogUpdateTime();
-            Main_randomimg = '?' + parseInt(Math.random() * 100000);
-            Screens_SetLastRefresh(Screens_Current_Key);
-            UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
-            Sidepannel_SetLastRefresh();
-        }
+        Main_textContent('label_clock', Main_getclock());
+        if (Main_RunningTime) Main_AboutDialogUpdateTime();
+        Main_randomimg = '?' + parseInt(Math.random() * 100000);
+        Screens_SetLastRefresh(Screens_Current_Key);
+        UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
+        Sidepannel_SetLastRefresh();
     }
 
     function Main_updateUserFeed() {
@@ -9571,7 +9569,6 @@
     //Android specific: true
     //Allows to Set Notification Position
     function OSInterface_SetNotificationRepeat(times) {
-        console.log(times);
         //TODO remove the try after some apps updates
         try {
             if (Main_IsOn_OSInterface) Android.SetNotificationRepeat(times);
