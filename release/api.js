@@ -50,6 +50,7 @@
         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,// ChannelContent_LoadPreviewResult() func from app/specific/ChannelContent.js
         'Play_StayCheckHostResult': Play_StayCheckHostResult,// Play_StayCheckHostResult() func from app/specific/PlayEtc.js
         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,// Play_StayCheckLiveResult() func from app/specific/PlayEtc.js
+        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult, // Play_CheckIfIsLiveResult() func from app/specific/Play.js
     };
 
     /** Expose `smartTwitchTV` */

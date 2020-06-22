@@ -839,45 +839,7 @@ function PlayVod_DialogPressedClick(time) {
 //When update this check PlayClip_CheckIfIsLiveResult
 function PlayVod_CheckIfIsLiveResult(response) {
 
-    if (PlayVod_isOn && response) {
-
-        var responseObj = JSON.parse(response);
-
-        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
-            var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
-
-            if (responseObj.status === 200) {
-
-                Play_PreviewURL = responseObj.url;
-                Play_PreviewResponseText = responseObj.responseText;
-                PlayVod_OpenLiveStream();
-                return;
-
-            } else if (doc && (responseObj.status === 1 || responseObj.status === 403)) {
-
-                Play_CheckIfIsLiveStartFail(
-                    JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_BR + STR_FORBIDDEN,
-                    2000
-                );
-                return;
-
-            } else if (doc && responseObj.status === 404) {
-
-                Play_CheckIfIsLiveStartFail(
-                    JSON.parse(doc.getAttribute(Main_DataAttribute))[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
-                    2000
-                );
-                return;
-
-            }
-
-            Play_CheckIfIsLiveStartFail(
-                STR_PLAYER_PROBLEM_2,
-                2000
-            );
-        }
-
-    }
+    Play_CheckIfIsLiveResultEnd(response, PlayVod_isOn, PlayVod_OpenLiveStream);
 
 }
 

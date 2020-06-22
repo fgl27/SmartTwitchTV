@@ -506,7 +506,9 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
         if (StreamData && doc) {
             StreamData = JSON.parse(StreamData);
 
-            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+                isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
+                error = StreamInfo[1] + STR_SPACE;
 
             if (StreamData.status === 200) {
 
@@ -514,7 +516,6 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                 Play_PreviewResponseText = StreamData.responseText;
                 Play_PreviewId = StreamInfo[14];
                 UserLiveFeed_PreviewOffset = 0;
-                var isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos;
 
                 if (!UserLiveFeed_CheckIfIsLiveResultThumb) {
 
@@ -570,13 +571,20 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                     );
                 }
 
+                return;
+
             } else if (StreamData.status === 1 || StreamData.status === 403) {
 
-                UserLiveFeed_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + STR_FORBIDDEN);
+                error += (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
 
             } else {
-                UserLiveFeed_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + STR_IS_OFFLINE);
+
+                if (isVod) error += STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+                else error += STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+
             }
+
+            UserLiveFeed_CheckIfIsLiveWarn(error);
         }
 
     }

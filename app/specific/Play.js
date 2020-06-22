@@ -284,6 +284,54 @@ function Play_Start() {
 //    Play_showWarningMidleDialog(text);
 //}
 
+//When update this check PlayClip_CheckIfIsLiveResult
+function Play_CheckIfIsLiveResult(response) {
+
+    Play_CheckIfIsLiveResultEnd(response, Play_isOn, Play_OpenLiveFeed);
+
+}
+
+function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
+
+    if (isOn && response) {
+
+        var responseObj = JSON.parse(response),
+            doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+
+        if (doc && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
+
+            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+                isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
+                error = StreamInfo[1] + STR_SPACE;
+
+            if (responseObj.status === 200) {
+
+                Play_PreviewURL = responseObj.url;
+                Play_PreviewResponseText = responseObj.responseText;
+                callback();
+                return;
+
+            } else if (responseObj.status === 1 || responseObj.status === 403) {
+
+                error += (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
+
+            } else {
+
+                if (isVod) error += STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+                else error += STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+
+            }
+
+            Play_CheckIfIsLiveStartFail(
+                error,
+                2000
+            );
+        }
+
+    }
+
+}
+
 var Play_PreviewURL = '';
 var Play_PreviewId = 0;
 var Play_PreviewOffset = 0;
@@ -297,13 +345,27 @@ function Play_CheckIfIsLiveStart(callback) {
     if (doc) {
         Play_showBufferDialog();
 
-        var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        var obj = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+            id, token, link;
+
+        if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
+
+            id = obj[7];
+            token = Play_vod_token;
+            link = Play_vod_links;
+
+        } else {//live
+
+            id = obj[6];
+            token = Play_live_token;
+            link = Play_live_links;
+        }
 
         Play_PreviewCheckId = (new Date().getTime());
 
         OSInterface_getStreamDataAsync(
-            Play_live_token.replace('%x', obj[6]),
-            Play_live_links.replace('%x', obj[6]),
+            token.replace('%x', id),
+            link.replace('%x', id),
             callback,
             Play_PreviewCheckId,
             2,//Main player runs on 0 extra player on 1 the check on 2
@@ -1796,7 +1858,8 @@ function Play_OpenLiveFeed() {
     Play_SavePlayData();
     Main_values.Play_isHost = false;
 
-    Play_OpenFeed(Play_handleKeyDown);
+    if (!Main_IsOn_OSInterface || Play_PreviewId || (UserLiveFeed_FeedPosX < UserLiveFeedobj_UserVodPos)) Play_OpenFeed(Play_handleKeyDown);
+    else Play_CheckIfIsLiveStart('Play_CheckIfIsLiveResult');
 }
 
 function Play_OpenFeed(keyfun) {
