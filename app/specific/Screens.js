@@ -537,8 +537,12 @@ function Screens_loadDataSuccessFinish(key) {
 
             //if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
             Main_values.warning_extra = false;
+            var tempGame;
 
-            if (Main_values.Play_WasPlaying !== 1) Play_data = JSON.parse(JSON.stringify(Play_data_base));
+            if (Main_values.Play_WasPlaying !== 1) {
+                tempGame = Play_data.data[3];
+                Play_data = JSON.parse(JSON.stringify(Play_data_base));
+            }
 
             if (Settings_value.start_user_screen.defaultValue) {
 
@@ -568,6 +572,7 @@ function Screens_loadDataSuccessFinish(key) {
 
                     } else Main_SwitchScreen(false);
                 } else {
+                    Play_data.data[3] = tempGame;
                     Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
                     if (!Main_vodOffset) Main_vodOffset = 1;
 
