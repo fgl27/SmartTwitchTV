@@ -8811,7 +8811,7 @@
     function Main_updateUserFeed() {
         //Main_Log('Main_updateUserFeed');
 
-        if (!document.hidden && AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
+        if (AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
             !Sidepannel_isShowing() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
             UserLiveFeed_RefreshLive();
             UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
