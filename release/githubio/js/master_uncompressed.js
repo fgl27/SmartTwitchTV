@@ -575,7 +575,8 @@
     var STR_STAY_CHECK_LAST;
     var STR_ALWAYS_STAY;
     var STR_NOTIFICATION_REPEAT;
-    var STR_NOTIFICATION_REPEAT_SUMMARY; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+    var STR_NOTIFICATION_REPEAT_SUMMARY;
+    var STR_WEB_UPDATE_AVAILABLE; // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_BR = "<br>";
     var STR_SPACE = '&nbsp;';
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
@@ -867,6 +868,7 @@
         STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
         STR_F_DISABLE_CHAT = "Chat force disable";
         STR_UPDATE_AVAILABLE = "Update available, check google play store";
+        STR_WEB_UPDATE_AVAILABLE = "Web Update available, close and reopen the app to update";
         STR_OAUTH_IN = 'Adding a key allows the app to access chat using yours user to send messages and get yours emote list (enables you to get gifted sub give to chat), follow/unfollow channels/games and access some user content faster<br><br>Adding a key is not demanding and can be done at any point later<br><br>In doubt read this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices is necessary a mouse to complete the authorization action as you may need to manually click on a button to confirm.<br><br>add key for';
         STR_USER_CODE = "Add authorization key";
         STR_USER_CODE_OK = "Key added OK";
@@ -7639,6 +7641,7 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.207';
     var Main_minversion = 'June 22, 2020';
+    var Main_minversion_int = 1; //Always update (+1 to current value) Main_minversion_int after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_IsOn_OSInterfaceVersion = '';
     var Main_AndroidSDK = 1000;
@@ -7710,7 +7713,8 @@
                         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
                         'Play_StayCheckHostResult': Play_StayCheckHostResult,
                         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
-                        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult
+                        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
+                        'Main_checkWebVersion': Main_checkWebVersion
                     };
                 }
                 Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -7984,6 +7988,8 @@
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
         Main_SetHistoryworker();
         Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
+
+        Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 60), Main_checkWebVersionId); //Check it 60 min
 
         Main_SetStringsSecondary();
         Main_checkVersion();
@@ -8399,9 +8405,6 @@
         return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
     }
 
-    //TODO remove this check after some app updates
-    var Main_oldReturnCheck;
-
     function Main_checkVersion() {
         if (Main_IsOn_OSInterface) {
             var device = OSInterface_getDevice();
@@ -8411,11 +8414,8 @@
             Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +
                 (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
 
-            if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) {
-                //Temp to support old app version that used number 1 key as back key
-                if (Main_oldReturnCheck) KEY_RETURN = 49;
-                Main_ShowElement('label_update');
-            }
+            if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_ShowElement('label_update');
+            else Main_checkWebVersionRun();
         }
 
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag +
@@ -8424,9 +8424,45 @@
         Main_RunningTime = new Date().getTime();
     }
 
+    var Main_checkWebVersionId;
+    var Main_checkWebVersionResumeId;
+
+    function Main_checkWebVersionRun() {
+
+        OSInterface_GetMethodUrlHeadersAsync(
+            'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/webversion', //urlString
+            DefaultHttpGetTimeout, //timeout
+            null, //postMessage, null for get
+            null, //Method, null for get
+            JSON.stringify([]), //JsonString
+            'Main_checkWebVersion', //callback
+            0, //checkResult
+            0, //key
+            3 //thread
+        );
+
+    }
+
+    function Main_checkWebVersion(result) {
+        if (result) {
+
+            var resultObj = JSON.parse(result);
+
+            if (resultObj.status === 200) {
+                if (parseInt(resultObj.responseText) > Main_minversion_int) {
+                    Main_innerHTML(
+                        'label_update',
+                        '<div style="vertical-align: middle; display: inline-block;"><i class="icon-update" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_WEB_UPDATE_AVAILABLE + '</div>'
+                    );
+                    Main_ShowElement('label_update');
+                }
+            }
+
+        }
+    }
+
     function Main_needUpdate(version) {
         version = version.split(".");
-        Main_oldReturnCheck = parseInt(version[2]) < 118;
         return (parseFloat(version[0] + '.' + version[1]) < parseFloat(Main_stringVersion)) ||
             (parseInt(version[2]) < parseInt(Main_stringVersion_Min.split(".")[1]));
     }
@@ -9369,6 +9405,9 @@
         Main_clearInterval(Main_updateUserFeedId);
         Main_clearInterval(Main_updateclockId);
         Main_clearInterval(Main_StartHistoryworkerId);
+        Main_clearInterval(Main_checkWebVersionId);
+        Main_clearTimeout(Main_checkWebVersionResumeId);
+
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 
@@ -9438,6 +9477,9 @@
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
 
         Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
+
+        Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 60), Main_checkWebVersionId); //Check it 60 min
+        Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 30000, Main_CheckResumeFeedId);
 
         Main_CheckAccessibility();
     }
@@ -30138,6 +30180,7 @@
         'Play_StayCheckHostResult': Play_StayCheckHostResult, // Play_StayCheckHostResult() func from app/specific/PlayEtc.js
         'Play_StayCheckLiveResult': Play_StayCheckLiveResult, // Play_StayCheckLiveResult() func from app/specific/PlayEtc.js
         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult, // Play_CheckIfIsLiveResult() func from app/specific/Play.js
+        'Main_checkWebVersion': Main_checkWebVersion, // Main_checkWebVersion() func from app/specific/Main.js
     };
 
     /** Expose `smartTwitchTV` */
