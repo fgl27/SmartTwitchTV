@@ -11,7 +11,6 @@ Web Version June 23 2020
 ==============
 
 * Add a separated update check function for the **Web** and **Apk** part of the app, with a proper warning of what need to be updated
-* Improve the auto refresh function to allow auto refresh on background without any user interaction
 
 Web Version June 22 2020
 ==============
