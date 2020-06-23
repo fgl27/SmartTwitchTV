@@ -304,8 +304,8 @@ function UserLiveFeed_SetRefresh(pos) {
             function() {
 
                 if (!UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
-                    ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
-                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
+                    ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow() || Main_isResuming) &&
+                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing() || Main_isResuming))) {//the screen is not selected
 
                     UserLiveFeed_CounterDialogRst();
                     UserLiveFeedobj_loadDataPrepare(pos);

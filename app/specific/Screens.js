@@ -647,7 +647,7 @@ function Screens_SetAutoRefresh(key) {
                 if (!ScreenObj[key].FirstLoad) {//the screen is not refreshing
 
                     if ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing
-                        key !== Main_values.Main_Go) {//the screen is not selected
+                        (key !== Main_values.Main_Go || Main_isResuming)) {//the screen is not selected
 
                         Screens_StartLoad(key);
 
