@@ -5,6 +5,8 @@ This is an web application designed to watch Twitch broadcasts on SmartTV's , A 
 
 The intention of this is to make a web app that runs on all modern browser and can be easily ported to any OS that can run a web app's.
 
+[Project resumed Changelog](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md)
+
 This project is a port of this repo [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) using separated repo to make easier use of github pages and commit history
 
 Are phones and tablets supported?

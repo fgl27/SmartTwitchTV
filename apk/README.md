@@ -3,6 +3,8 @@ SmartTV Twitch AndroidTV APK
 
 This is the apk to run the web app on android TV
 
+[Project resumed Changelog](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md)
+
 Are phones and tablets supported?
 ==============
 
