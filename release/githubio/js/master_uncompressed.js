@@ -7641,9 +7641,10 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.207';
     var Main_version_java = 1; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'June 22, 2020';
+    var Main_minversion = 'June 23, 2020';
     var Main_version_web = 1; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
+    var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
     var Main_AndroidSDK = 1000;
     var Main_ClockOffset = 0;
@@ -8476,7 +8477,15 @@
             '" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE +
             (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + '</div>'
         );
+
         Main_ShowElement('label_update');
+
+        if (Main_update_show_toast) {
+
+            OSInterface_showToast(web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE);
+            Main_update_show_toast = true;
+
+        }
     }
 
     function Main_needUpdate(version) {
@@ -10527,6 +10536,15 @@
         } catch (e) {}
     }
 
+    //public void showToast(String toast)
+    //position player position
+    //volume the player volume
+    //Android specific: true
+    //Allows to control individual player volume
+    function OSInterface_showToast(toast) { //Not be used
+        Android.showToast(toast);
+    }
+
     //public boolean isKeyboardConnected()
     //Android specific: true
     //informs if a hw Keyboard is connected to the devices
@@ -10562,15 +10580,6 @@
     //Allows to control individual player volume
     // function OSInterface_mSetAudio(position, volume) {//Not be used
     //     Android.mSetAudio(position, volume);
-    // }
-
-    //public void showToast(String toast)
-    //position player position
-    //volume the player volume
-    //Android specific: true
-    //Allows to control individual player volume
-    // function OSInterface_showToast(toast) {//Not be used
-    //     Android.showToast(toast);
     // }//Variable initialization
     var PlayClip_isOn = false;
     var PlayClip_quality = 'source';
