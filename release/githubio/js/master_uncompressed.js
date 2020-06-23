@@ -9391,10 +9391,10 @@
         e.stopPropagation();
     }
 
-    var Main_isResuming = false;
+    var Main_isStoped = false;
 
     function Main_CheckStop() { // Called only by JAVA
-        Main_isResuming = true;
+        Main_isStoped = true;
         Main_PreventClick(true);
 
         //Player related
@@ -9476,7 +9476,7 @@
 
     function Main_CheckResume() { // Called only by JAVA
         Main_PreventClick(false);
-        Main_isResuming = false;
+        Main_isStoped = false;
 
         //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
         //but the aap is not ready for the rest of the check on this fun
@@ -18845,8 +18845,8 @@
                 function() {
                     if (!ScreenObj[key].FirstLoad) { //the screen is not refreshing
 
-                        if ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing
-                            (key !== Main_values.Main_Go || Main_isResuming)) { //the screen is not selected
+                        if (!Main_isStoped && (!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing
+                            key !== Main_values.Main_Go) { //the screen is not selected
 
                             Screens_StartLoad(key);
 
@@ -26646,9 +26646,9 @@
             UserLiveFeed_RefreshId[pos] = Main_setTimeout(
                 function() {
 
-                    if (!UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
-                        ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow() || Main_isResuming) &&
-                            (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing() || Main_isResuming))) { //the screen is not selected
+                    if (!Main_isStoped && !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
+                        ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
+                            (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) { //the screen is not selected
 
                         UserLiveFeed_CounterDialogRst();
                         UserLiveFeedobj_loadDataPrepare(pos);
