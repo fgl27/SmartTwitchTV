@@ -18927,7 +18927,7 @@
         if (ScreenObj[key].posY < 0) {
             Screens_addFocusFollow(key);
 
-            if (!ScreenObj[key].emptyContent)
+            if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible())
                 Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
             return;
