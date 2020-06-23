@@ -5,7 +5,7 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 * The **Apk** is updated via play store it contains the app video player and the basic function that don't work on the web part of the app.
 * The **Web** is update every time that the app is closed and you re-open it (of course if a update is available in the web server), it contains the user interface and related functions. If the app is open and you change apps that process doesn't closes the app only minimizes it unless the system run out of memory and close the app, to manually close it's needed to select close on the exit dialog or simply holding the return key to force close it.
 
-The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a small warning will pop on the screen
+The app has a building update check function, so whenever there is a update a red text will show up below the main pages clock, also a small warning will pop on the screen
 
 Web Version June 23 2020
 ==============
