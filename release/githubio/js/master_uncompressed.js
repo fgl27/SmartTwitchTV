@@ -8481,7 +8481,7 @@
 
         Main_ShowElement('label_update');
 
-        if (Main_update_show_toast) {
+        if (!Main_update_show_toast) {
 
             OSInterface_showToast(web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE);
             Main_update_show_toast = true;
