@@ -964,7 +964,7 @@ function Main_checkWebVersionUpdate(web) {
         'label_update',
         '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
         (web ? 'globe' : 'play-1') +
-        '" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE +
+        '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE +
         (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + '</div>'
     );
 
