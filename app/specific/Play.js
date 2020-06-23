@@ -1344,6 +1344,7 @@ function Play_showWarningMidleDialog(text, timeout) {
 
 function Play_HideWarningMidleDialog() {
     Main_HideElement('dialog_warning_play_middle');
+    Main_clearTimeout(Play_showWarningMidleDialogId);
 }
 
 function Play_WarningMidleDialogVisible() {

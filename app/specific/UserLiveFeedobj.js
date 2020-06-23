@@ -671,6 +671,8 @@ function UserLiveFeedobj_HideCurrentAGame() {
 //Current a game end
 
 function UserLiveFeedobj_SetBottomText(pos) {
+    Play_HideWarningMidleDialog();
+
     var i = 0, len = (UserLiveFeedobj_MAX - 1);
     for (i; i < len; i++)
         Main_RemoveClass('feed_end_' + i, 'feed_end_name_focus');
