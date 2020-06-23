@@ -1876,10 +1876,10 @@ function Main_PreventClickfun(e) {
     e.stopPropagation();
 }
 
-var Main_isResuming = false;
+var Main_isStoped = false;
 
 function Main_CheckStop() { // Called only by JAVA
-    Main_isResuming = true;
+    Main_isStoped = true;
     Main_PreventClick(true);
 
     //Player related
@@ -1959,7 +1959,7 @@ var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume() { // Called only by JAVA
     Main_PreventClick(false);
-    Main_isResuming = false;
+    Main_isStoped = false;
 
     //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
     //but the aap is not ready for the rest of the check on this fun
