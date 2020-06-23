@@ -229,10 +229,6 @@
   content: "\42";
 }
 
-.icon-update:before {
-  content: "\74";
-}
-
 .icon-pg-down:before {
   content: "\72";
 }
@@ -271,4 +267,8 @@
 
 .icon-external:before {
   content: "\4d";
+}
+
+.icon-globe:before {
+  content: "\4e";
 }
