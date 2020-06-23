@@ -114,6 +114,7 @@ fi;
 
 # this .sh folder used for cd back and for
 mainfolder="$(dirname ""$(dirname "$0")"")";
+mainfolder="$(dirname "$mainfolder")";
 
 cd "$mainfolder" || exit
 
@@ -202,9 +203,12 @@ new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/Extr
 sed --in-place "s%$old%$new%g" release/extrapageindex.min.html
 cp -rf app/Extrapage/Extrapage.js release/githubio/js/Extrapage.js;
 
-# update webversion
-webversion=`echo $(grep 'Main_minversion_int ' app/specific/Main.js | cut -d'=' -f2 | cut -d';' -f1)`
-echo "$webversion" > release/webversion
+# update webversion & javaversion
+version=`echo $(grep 'Main_version_web ' app/specific/Main.js | cut -d'=' -f2 | cut -d';' -f1)`
+echo "$version" > release/githubio/version/webversion
+
+version=`echo $(grep 'Main_version_java ' app/specific/Main.js | cut -d'=' -f2 | cut -d';' -f1)`
+echo "$version" > release/githubio/version/javaversion
 
 echo -e "\\n${bldgrn}Compressing Start\\n";
 

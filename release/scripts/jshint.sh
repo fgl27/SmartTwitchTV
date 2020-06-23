@@ -36,6 +36,7 @@ fi;
 
 # no changes needed to be done bellow this line
 mainfolder="$(dirname ""$(dirname "$0")"")";
+mainfolder="$(dirname "$mainfolder")";
 
 cd "$mainfolder" || exit
 

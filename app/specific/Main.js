@@ -133,8 +133,9 @@ var Main_DataAttribute = 'data-array';
 
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.207';
+var Main_version_java = 1;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'June 22, 2020';
-var Main_minversion_int = 1;//Always update (+1 to current value) Main_minversion_int after update Main_minversion or a major update of the web part of the app
+var Main_version_web = 1;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_IsOn_OSInterfaceVersion = '';
 var Main_AndroidSDK = 1000;
@@ -481,7 +482,7 @@ function Main_initWindows() {
     Main_SetHistoryworker();
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
 
-    Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 60), Main_checkWebVersionId);//Check it 60 min
+    Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
 
     Main_SetStringsSecondary();
     Main_checkVersion();
@@ -493,7 +494,6 @@ function Main_SetStringsMain(isStarting) {
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
-    Main_innerHTML('label_update', '<div style="vertical-align: middle; display: inline-block;"><i class="icon-update" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_UPDATE_AVAILABLE + '</div>');
 
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     UserLiveFeed_SetFeedPicText();
@@ -904,7 +904,7 @@ function Main_checkVersion() {
         Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +
             (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
 
-        if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_ShowElement('label_update');
+        if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_checkWebVersionUpdate(false);
         else Main_checkWebVersionRun();
     }
 
@@ -916,38 +916,56 @@ function Main_checkVersion() {
 
 var Main_checkWebVersionId;
 var Main_checkWebVersionResumeId;
-function Main_checkWebVersionRun() {
+function Main_checkWebVersionRun(web) {
+
+    var baseUrl = 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/version/';
 
     OSInterface_GetMethodUrlHeadersAsync(
-        'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/webversion',//urlString
+        baseUrl + (web ? 'webversion' : 'javaversion'),//urlString
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         JSON.stringify([]),//JsonString
         'Main_checkWebVersion',//callback
         0,//checkResult
-        0,//key
+        web ? 1 : 0,//key
         3//thread
     );
 
 }
 
-function Main_checkWebVersion(result) {
+function Main_checkWebVersion(result, web) {
     if (result) {
 
         var resultObj = JSON.parse(result);
 
         if (resultObj.status === 200) {
-            if (parseInt(resultObj.responseText) > Main_minversion_int) {
-                Main_innerHTML(
-                    'label_update',
-                    '<div style="vertical-align: middle; display: inline-block;"><i class="icon-update" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE + STR_WEB_UPDATE_AVAILABLE + '</div>'
-                );
-                Main_ShowElement('label_update');
+            var responseInt = parseInt(resultObj.responseText);
+
+            if (web) {
+
+                if (responseInt > Main_version_web) Main_checkWebVersionUpdate(true);
+
+            } else {
+
+                if (responseInt > Main_version_java) Main_checkWebVersionUpdate(false);
+                else Main_checkWebVersionRun(true);
+
             }
         }
 
     }
+}
+
+function Main_checkWebVersionUpdate(web) {
+    Main_innerHTML(
+        'label_update',
+        '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
+        (web ? 'globe' : 'play-1') +
+        '" style="color: #FF0000;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF0000">' + STR_SPACE +
+        (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + '</div>'
+    );
+    Main_ShowElement('label_update');
 }
 
 function Main_needUpdate(version) {
@@ -1961,7 +1979,7 @@ function Main_CheckResume() { // Called only by JAVA
 
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
-    Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 60), Main_checkWebVersionId);//Check it 60 min
+    Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
     Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 30000, Main_CheckResumeFeedId);
 
     Main_CheckAccessibility();
