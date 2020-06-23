@@ -907,8 +907,10 @@ function Main_checkVersion() {
         else Main_checkWebVersionRun();
     }
 
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag +
-        STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
+    var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
+
+    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
+        STR_DIV_LINK + '<span style="color: #FFFFFF;">Changelog:</span><span></span>' + STR_SPACE + STR_ABOUT_CHANGELOG + '</div>' + STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
     Main_RunningTime = new Date().getTime();
 }
