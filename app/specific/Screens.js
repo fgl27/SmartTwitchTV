@@ -153,8 +153,13 @@ function Screens_exit(key) {
 }
 
 function Screens_StartLoad(key) {
-    if (key === Main_values.Main_Go) Main_showLoadDialog();
-    Screens_RemoveFocus(key);
+    if (key === Main_values.Main_Go && Main_isScene1DocShown()) {
+
+        Screens_RemoveFocus(key);
+        Main_showLoadDialog();
+
+    }
+
     Main_empty(ScreenObj[key].table);
     ScreenObj[key].ScrollDoc.style.transform = '';
     ScreenObj[key].lastRefresh = new Date().getTime();
@@ -745,6 +750,7 @@ function Screens_addFocus(forceScroll, key) {
 //Clips load too fast, so only call this function after animations have ended
 //Also help to prevent lag on animation
 function Screens_LoadPreview(key) {
+
     if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
         var doc, ThumbId;
