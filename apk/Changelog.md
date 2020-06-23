@@ -3,7 +3,14 @@ SmartTV Twitch AndroidTV APP latest changes
 
 The App is divided in two part, **Apk** and **Web** you can check it version in the about of the app:
 * The **Apk** is updated via play store it contains the app video player and the basic function that don't work on the web part of the app.
-* The **Web** is update every time that the app is closed and you open it (of course if a update is available in the web server), it contains the user interface and related functions. If the app is open and you change apps that process doesn't closes the app only minimizes it, to close it's needed to select close on the exit dialog or simply holding the return key to force close it.
+* The **Web** is update every time that the app is closed and you re-open it (of course if a update is available in the web server), it contains the user interface and related functions. If the app is open and you change apps that process doesn't closes the app only minimizes it unless the system run out of memory and close the app, to manually close it's needed to select close on the exit dialog or simply holding the return key to force close it.
+
+The app has building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a small warning will pop on the screen
+
+Web Version June 23 2020
+==============
+
+* Add a separated update check for the Web and Apk with a proper warning what needed to be updated
 
 Web Version June 22 2020
 ==============
@@ -13,7 +20,7 @@ Web Version June 22 2020
 * Fix Preview feed Current game after the app was open using the feature restore playback restoring a VOD
 * Fix accessibility warning check
 
-Apk Version 3.0.207 - June 21 2020
+Apk Version 3.0.207 & Web Version June 21 2020
 ==============
 
 * Allow to repeat the same notification, the individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show
@@ -23,7 +30,7 @@ Apk Version 3.0.206 - June 21 2020
 
 * Fix keyboard and remote input from none TV devices or TV devices that don't use Android TV (use a modified phone version of the OS)
 
-Apk Version 3.0.203 and up - June 20 2020
+Apk Version 3.0.203 and up & Web Version June 20 2020
 ==============
 
 I took sometime from making small updates to make a bigger update.
