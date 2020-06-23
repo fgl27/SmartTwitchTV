@@ -368,7 +368,7 @@ function Play_EndText(PlayVodClip) {
                 Play_shutdownStream();
             } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
-                if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced) && !document.hidden) PlayClip_PlayNext();
+                if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
             }
 

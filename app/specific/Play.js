@@ -1121,7 +1121,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 3) {
-        if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
+        if (!navigator.onLine) Play_EndStart(false, mwhocall);
         else if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
             PlayClip_qualityIndex++;
             Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);

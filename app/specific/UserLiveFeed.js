@@ -303,7 +303,7 @@ function UserLiveFeed_SetRefresh(pos) {
         UserLiveFeed_RefreshId[pos] = Main_setTimeout(
             function() {
 
-                if (!document.hidden && !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
+                if (!UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
                     ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
                         (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
 
