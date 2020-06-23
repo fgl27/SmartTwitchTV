@@ -1989,7 +1989,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
     Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
-    Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 30000, Main_CheckResumeFeedId);
+    Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 30000, Main_checkWebVersionResumeId);
 
     Main_CheckAccessibility();
 }
