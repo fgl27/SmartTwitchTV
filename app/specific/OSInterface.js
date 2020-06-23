@@ -584,7 +584,7 @@ function OSInterface_mloadUrl(url) {
 //Android specific: true
 //Checks is a Accessibility service is enable
 function OSInterface_isAccessibilitySettingsOn() {
-    Android.isAccessibilitySettingsOn();
+    return Android.isAccessibilitySettingsOn();
 }
 
 //public void LongLog(String log)
