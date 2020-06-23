@@ -71,7 +71,7 @@ var Main_values = {
     "Codec_is_Check": false,
     "check_pp_workaround": true,
     "OS_is_Check": false,
-    "Restore_Backup_Check": false,
+    "Restore_Backup_Check": false
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -143,7 +143,6 @@ var Main_AndroidSDK = 1000;
 var Main_ClockOffset = 0;
 var Main_IsOn_OSInterface = 0;
 var Main_randomimg = '?' + Math.random();
-var Main_updateUserFeedId;
 var Main_Fix = "kimne78kx3";
 var Main_DoRestore = true;
 var Main_CanBackup = false;
@@ -476,7 +475,6 @@ function Main_initWindows() {
 
     if (AddUser_UserIsSet()) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
-        Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId);//it 5 min refresh
     }
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
@@ -919,20 +917,21 @@ var Main_checkWebVersionId;
 var Main_checkWebVersionResumeId;
 function Main_checkWebVersionRun(web) {
 
-    var baseUrl = 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/version/';
+    if (Main_IsOn_OSInterface) {
+        var baseUrl = 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/version/';
 
-    OSInterface_GetMethodUrlHeadersAsync(
-        baseUrl + (web ? 'webversion' : 'javaversion'),//urlString
-        DefaultHttpGetTimeout,//timeout
-        null,//postMessage, null for get
-        null,//Method, null for get
-        JSON.stringify([]),//JsonString
-        'Main_checkWebVersion',//callback
-        0,//checkResult
-        web ? 1 : 0,//key
-        3//thread
-    );
-
+        OSInterface_GetMethodUrlHeadersAsync(
+            baseUrl + (web ? 'webversion' : 'javaversion'),//urlString
+            DefaultHttpGetTimeout,//timeout
+            null,//postMessage, null for get
+            null,//Method, null for get
+            JSON.stringify([]),//JsonString
+            'Main_checkWebVersion',//callback
+            0,//checkResult
+            web ? 1 : 0,//key
+            3//thread
+        );
+    }
 }
 
 function Main_checkWebVersion(result, web) {
@@ -1913,7 +1912,6 @@ function Main_CheckStop() { // Called only by JAVA
     //General related
     Screens_ClearAnimation(Screens_Current_Key);
 
-    Main_clearInterval(Main_updateUserFeedId);
     Main_clearInterval(Main_updateclockId);
     Main_clearInterval(Main_StartHistoryworkerId);
     Main_clearInterval(Main_checkWebVersionId);
@@ -1977,8 +1975,7 @@ function Main_CheckResume() { // Called only by JAVA
     else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
-        Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, (1000 * 60 * 5), Main_updateUserFeedId);//it 5 min refresh
-        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
+        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 5000, Main_CheckResumeFeedId);
     }
 
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
@@ -1989,7 +1986,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
     Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
-    Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 30000, Main_checkWebVersionResumeId);
+    Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 10000, Main_checkWebVersionResumeId);
 
     Main_CheckAccessibility();
 }

@@ -91,7 +91,7 @@ var Settings_value = {
     },
     "auto_refresh_screen": {//Migrated to dialog
         "values": [
-            'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
+            'disable', 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
         ],
         "defaultValue": 1
     },
@@ -540,12 +540,30 @@ function Settings_SetStrings() {
     Languages_SetLang();
 }
 
+var Settings_check_refresh_change = 0;
+
 function Settings_SetDefautls() {
+
+    //Workaround to fix Settings_check_refresh_change remove after some app updates
+    Settings_check_refresh_change = Main_getItemInt('Settings_check_refresh_change', 0);
+    if (!Settings_check_refresh_change) {
+
+        var tempRefresh = Main_getItemInt('auto_refresh_screen', 0);
+
+        if (tempRefresh) {
+            Main_setItem('auto_refresh_screen', (tempRefresh > 5) ? (tempRefresh - 4) : 2);
+        }
+
+        Main_setItem('Settings_check_refresh_change', 1);
+        Settings_check_refresh_change = 1;
+    }
+
     for (var key in Settings_value) {
         Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
         Settings_value[key].defaultValue -= 1;
         if (Settings_value[key].defaultValue > Settings_Obj_length(key)) Settings_value[key].defaultValue = 0;
     }
+
     Settings_SetBuffers(0);
     Settings_SetClock();
     if (!Main_isTV) {

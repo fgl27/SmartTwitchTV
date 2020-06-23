@@ -23,6 +23,7 @@ var UserLiveFeed_cell = [];
 var UserLiveFeed_cellVisible = [];
 var UserLiveFeed_FeedSetPosLast = [];
 var UserLiveFeed_lastRefresh = [];
+var UserLiveFeed_RefreshId = [];
 
 var UserLiveFeed_ids = [
     'ulf_thumbdiv',//0
@@ -73,6 +74,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_loadingData[i] = false;
         UserLiveFeed_loadingDataTry[i] = 0;
         UserLiveFeed_obj[i].checkPreview = true;
+        UserLiveFeed_RefreshId[i] = null;
     }
 
     //User vod
@@ -280,6 +282,8 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
     //Async tasks the show may come after the hide, so re check the hide here
     if (pos !== UserLiveFeed_FeedPosX) UserLiveFeed_obj[pos].div.classList.add('hide');
 
+    UserLiveFeed_SetRefresh(pos);
+
     Main_HideElement('dialog_loading_side_feed');
     Sidepannel_AddFocusFeed(true);
     UserLiveFeed_FeedAddFocus(true, pos, 1);
@@ -289,6 +293,33 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
     if (pos === UserLiveFeedobj_UserLivePos) Sidepannel_SetLastRefresh();
 
     //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
+}
+
+function UserLiveFeed_SetRefresh(pos) {
+
+    if (Settings_Obj_default("auto_refresh_screen") &&
+        pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
+
+        UserLiveFeed_RefreshId[pos] = Main_setTimeout(
+            function() {
+
+                if (!document.hidden && !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
+                    ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
+                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
+
+                    UserLiveFeed_CounterDialogRst();
+                    UserLiveFeedobj_loadDataPrepare(pos);
+                    UserLiveFeed_obj[pos].load();
+
+                } else UserLiveFeed_SetRefresh(pos);
+
+            },
+            (Settings_Obj_values("auto_refresh_screen") * 60000),
+            UserLiveFeed_RefreshId[pos]
+        );
+
+    } else Main_clearTimeout(UserLiveFeed_RefreshId[pos]);
+
 }
 
 function UserLiveFeed_GetSize(pos) {

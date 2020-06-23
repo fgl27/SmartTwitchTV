@@ -52,6 +52,7 @@ var Base_obj = {
     token: null,
     data_cursor: 0,
     lastRefresh: 0,
+    AutoRefreshId: null,
     key_fun_start: function() {
         return Screens_handleKeyDown.bind(null, this.screen);
     },

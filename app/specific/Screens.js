@@ -153,7 +153,7 @@ function Screens_exit(key) {
 }
 
 function Screens_StartLoad(key) {
-    Main_showLoadDialog();
+    if (key === Main_values.Main_Go) Main_showLoadDialog();
     Screens_RemoveFocus(key);
     Main_empty(ScreenObj[key].table);
     ScreenObj[key].ScrollDoc.style.transform = '';
@@ -497,6 +497,7 @@ function Screens_loadDataSuccessFinish(key) {
 
         if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
         else {
+
             ScreenObj[key].status = true;
             var i, Cells_length = ScreenObj[key].Cells.length;
 
@@ -509,14 +510,15 @@ function Screens_loadDataSuccessFinish(key) {
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-            // if (!Main_isScene1DocShown()) {
-            //     Main_Scene1Doc.style.transform = 'translateY(-1000%)';
-            //     Main_ShowElementWithEle(Main_Scene1Doc);
-            //     Screens_setOffset(1, 0, key);
-            //     Main_HideElementWithEle(Main_Scene1Doc);
-            //     Main_Scene1Doc.style.transform = 'translateY(0px)';
-            // } else 
-            Screens_setOffset(1, 0, key);
+            if (!Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
+                Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
+
+                Screens_setOffset(1, 0, key);
+
+                Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
+                Main_RemoveClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+            } else Screens_setOffset(1, 0, key);
 
             for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
                 if (ScreenObj[key].Cells[i]) {
@@ -526,6 +528,7 @@ function Screens_loadDataSuccessFinish(key) {
 
         }
         ScreenObj[key].FirstLoad = false;
+        Screens_SetAutoRefresh(key);
 
         if (Main_FirstRun) {
             //Main_Log('Main_FirstRun ' + Main_FirstRun);
@@ -628,6 +631,31 @@ function Screens_loadDataSuccessFinish(key) {
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
         Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
     }
+}
+
+function Screens_SetAutoRefresh(key) {
+
+    if (Settings_Obj_default("auto_refresh_screen")) {
+
+        ScreenObj[key].AutoRefreshId = Main_setTimeout(
+            function() {
+                if (!ScreenObj[key].FirstLoad) {//the screen is not refreshing
+
+                    if (!document.hidden && (!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing
+                        key !== Main_values.Main_Go) {//the screen is not selected
+
+                        Screens_StartLoad(key);
+
+                    } else Screens_SetAutoRefresh(key);
+
+                }
+            },
+            (Settings_Obj_values("auto_refresh_screen") * 60000),
+            ScreenObj[key].AutoRefreshId
+        );
+
+    } else Main_clearTimeout(ScreenObj[key].AutoRefreshId);
+
 }
 
 var CheckAccessibilityWasVisible = false;
