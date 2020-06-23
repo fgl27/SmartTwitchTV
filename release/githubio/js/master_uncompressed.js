@@ -1196,8 +1196,8 @@
         STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
         STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
         STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
-        STR_AUTO_REFRESH = "Auto refresh content timeout (time in minutes)";
-        STR_AUTO_REFRESH_SUMMARY = "When enable this will refresh a screen after the time amount (the refresh happens only when the screen is selected), this also applies to the player preview feed";
+        STR_AUTO_REFRESH = "Auto refresh timeout (time in minutes)";
+        STR_AUTO_REFRESH_SUMMARY = "When enable this will refresh any screen or preview feed, the refresh happens on the background when the screen is not visible (to prevent a refresh when you are scrolling trow the content) or when you go again to a screen  that the refresh didn't run because the screen was visible before";
         STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
         STR_MAIN_WINDOW = "Main window";
         STR_MULTI_MAIN_WINDOW = "MultiStream main window";
@@ -7578,7 +7578,7 @@
         "Codec_is_Check": false,
         "check_pp_workaround": true,
         "OS_is_Check": false,
-        "Restore_Backup_Check": false,
+        "Restore_Backup_Check": false
     };
 
     var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -7642,7 +7642,7 @@
     var Main_stringVersion_Min = '.207';
     var Main_version_java = 1; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'June 23, 2020';
-    var Main_version_web = 1; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 2; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -7650,7 +7650,6 @@
     var Main_ClockOffset = 0;
     var Main_IsOn_OSInterface = 0;
     var Main_randomimg = '?' + Math.random();
-    var Main_updateUserFeedId;
     var Main_Fix = "kimne78kx3";
     var Main_DoRestore = true;
     var Main_CanBackup = false;
@@ -7984,7 +7983,6 @@
 
         if (AddUser_UserIsSet()) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
-            Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, 1000 * 60 * 5, Main_updateUserFeedId); //it 5 min refresh
         }
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
@@ -8419,8 +8417,10 @@
             else Main_checkWebVersionRun();
         }
 
-        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag +
-            STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
+        var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
+
+        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
+            STR_DIV_LINK + '<span style="color: #FFFFFF;">Changelog:</span><span></span>' + STR_SPACE + STR_ABOUT_CHANGELOG + '</div>' + STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
         Main_RunningTime = new Date().getTime();
     }
@@ -8430,20 +8430,21 @@
 
     function Main_checkWebVersionRun(web) {
 
-        var baseUrl = 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/version/';
+        if (Main_IsOn_OSInterface) {
+            var baseUrl = 'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/';
 
-        OSInterface_GetMethodUrlHeadersAsync(
-            baseUrl + (web ? 'webversion' : 'javaversion'), //urlString
-            DefaultHttpGetTimeout, //timeout
-            null, //postMessage, null for get
-            null, //Method, null for get
-            JSON.stringify([]), //JsonString
-            'Main_checkWebVersion', //callback
-            0, //checkResult
-            web ? 1 : 0, //key
-            3 //thread
-        );
-
+            OSInterface_GetMethodUrlHeadersAsync(
+                baseUrl + (web ? 'webversion' : 'javaversion'), //urlString
+                DefaultHttpGetTimeout, //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                JSON.stringify([]), //JsonString
+                'Main_checkWebVersion', //callback
+                0, //checkResult
+                web ? 1 : 0, //key
+                3 //thread
+            );
+        }
     }
 
     function Main_checkWebVersion(result, web) {
@@ -9429,7 +9430,6 @@
         //General related
         Screens_ClearAnimation(Screens_Current_Key);
 
-        Main_clearInterval(Main_updateUserFeedId);
         Main_clearInterval(Main_updateclockId);
         Main_clearInterval(Main_StartHistoryworkerId);
         Main_clearInterval(Main_checkWebVersionId);
@@ -9494,8 +9494,7 @@
         else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
 
         if (UserIsSet) {
-            Main_updateUserFeedId = Main_setInterval(Main_updateUserFeed, (1000 * 60 * 5), Main_updateUserFeedId); //it 5 min refresh
-            Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
+            Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 5000, Main_CheckResumeFeedId);
         }
 
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
@@ -9506,7 +9505,7 @@
         Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
         Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
-        Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 30000, Main_checkWebVersionResumeId);
+        Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 10000, Main_checkWebVersionResumeId);
 
         Main_CheckAccessibility();
     }
@@ -11797,7 +11796,7 @@
                     Play_shutdownStream();
                 } else if (PlayVodClip === 2) PlayVod_shutdownStream();
                 else if (PlayVodClip === 3) {
-                    if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced) && !document.hidden) PlayClip_PlayNext();
+                    if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) PlayClip_PlayNext();
                     else PlayClip_shutdownStream();
                 }
 
@@ -15387,7 +15386,7 @@
             Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
         } else if (mwhocall === 3) {
-            if (document.hidden || !navigator.onLine) Play_EndStart(false, mwhocall);
+            if (!navigator.onLine) Play_EndStart(false, mwhocall);
             else if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
                 PlayClip_qualityIndex++;
                 Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);
@@ -18348,8 +18347,13 @@
     }
 
     function Screens_StartLoad(key) {
-        Main_showLoadDialog();
-        Screens_RemoveFocus(key);
+        if (key === Main_values.Main_Go && Main_isScene1DocShown()) {
+
+            Screens_RemoveFocus(key);
+            Main_showLoadDialog();
+
+        }
+
         Main_empty(ScreenObj[key].table);
         ScreenObj[key].ScrollDoc.style.transform = '';
         ScreenObj[key].lastRefresh = new Date().getTime();
@@ -18692,6 +18696,7 @@
 
             if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
             else {
+
                 ScreenObj[key].status = true;
                 var i, Cells_length = ScreenObj[key].Cells.length;
 
@@ -18704,14 +18709,15 @@
                 }
 
                 //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-                // if (!Main_isScene1DocShown()) {
-                //     Main_Scene1Doc.style.transform = 'translateY(-1000%)';
-                //     Main_ShowElementWithEle(Main_Scene1Doc);
-                //     Screens_setOffset(1, 0, key);
-                //     Main_HideElementWithEle(Main_Scene1Doc);
-                //     Main_Scene1Doc.style.transform = 'translateY(0px)';
-                // } else 
-                Screens_setOffset(1, 0, key);
+                if (!Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
+                    Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                    Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
+
+                    Screens_setOffset(1, 0, key);
+
+                    Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
+                    Main_RemoveClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                } else Screens_setOffset(1, 0, key);
 
                 for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
                     if (ScreenObj[key].Cells[i]) {
@@ -18721,6 +18727,7 @@
 
             }
             ScreenObj[key].FirstLoad = false;
+            Screens_SetAutoRefresh(key);
 
             if (Main_FirstRun) {
                 //Main_Log('Main_FirstRun ' + Main_FirstRun);
@@ -18825,6 +18832,31 @@
         }
     }
 
+    function Screens_SetAutoRefresh(key) {
+
+        if (Settings_Obj_default("auto_refresh_screen")) {
+
+            ScreenObj[key].AutoRefreshId = Main_setTimeout(
+                function() {
+                    if (!ScreenObj[key].FirstLoad) { //the screen is not refreshing
+
+                        if ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing
+                            key !== Main_values.Main_Go) { //the screen is not selected
+
+                            Screens_StartLoad(key);
+
+                        } else Screens_SetAutoRefresh(key);
+
+                    }
+                },
+                (Settings_Obj_values("auto_refresh_screen") * 60000),
+                ScreenObj[key].AutoRefreshId
+            );
+
+        } else Main_clearTimeout(ScreenObj[key].AutoRefreshId);
+
+    }
+
     var CheckAccessibilityWasVisible = false;
 
     function Screens_handleKeyControls(key, event) {
@@ -18912,6 +18944,7 @@
     //Clips load too fast, so only call this function after animations have ended
     //Also help to prevent lag on animation
     function Screens_LoadPreview(key) {
+
         if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
             !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
             var doc, ThumbId;
@@ -20807,6 +20840,7 @@
         token: null,
         data_cursor: 0,
         lastRefresh: 0,
+        AutoRefreshId: null,
         key_fun_start: function() {
             return Screens_handleKeyDown.bind(null, this.screen);
         },
@@ -23600,7 +23634,7 @@
         },
         "auto_refresh_screen": { //Migrated to dialog
             "values": [
-                'disable', 1, 2, 3, 4, 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
+                'disable', 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
             ],
             "defaultValue": 1
         },
@@ -24052,12 +24086,30 @@
         Languages_SetLang();
     }
 
+    var Settings_check_refresh_change = 0;
+
     function Settings_SetDefautls() {
+
+        //Workaround to fix Settings_check_refresh_change remove after some app updates
+        Settings_check_refresh_change = Main_getItemInt('Settings_check_refresh_change', 0);
+        if (!Settings_check_refresh_change) {
+
+            var tempRefresh = Main_getItemInt('auto_refresh_screen', 0);
+
+            if (tempRefresh) {
+                Main_setItem('auto_refresh_screen', (tempRefresh > 5) ? (tempRefresh - 4) : 2);
+            }
+
+            Main_setItem('Settings_check_refresh_change', 1);
+            Settings_check_refresh_change = 1;
+        }
+
         for (var key in Settings_value) {
             Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
             Settings_value[key].defaultValue -= 1;
             if (Settings_value[key].defaultValue > Settings_Obj_length(key)) Settings_value[key].defaultValue = 0;
         }
+
         Settings_SetBuffers(0);
         Settings_SetClock();
         if (!Main_isTV) {
@@ -26309,6 +26361,7 @@
     var UserLiveFeed_cellVisible = [];
     var UserLiveFeed_FeedSetPosLast = [];
     var UserLiveFeed_lastRefresh = [];
+    var UserLiveFeed_RefreshId = [];
 
     var UserLiveFeed_ids = [
         'ulf_thumbdiv', //0
@@ -26359,6 +26412,7 @@
             UserLiveFeed_loadingData[i] = false;
             UserLiveFeed_loadingDataTry[i] = 0;
             UserLiveFeed_obj[i].checkPreview = true;
+            UserLiveFeed_RefreshId[i] = null;
         }
 
         //User vod
@@ -26566,6 +26620,8 @@
         //Async tasks the show may come after the hide, so re check the hide here
         if (pos !== UserLiveFeed_FeedPosX) UserLiveFeed_obj[pos].div.classList.add('hide');
 
+        UserLiveFeed_SetRefresh(pos);
+
         Main_HideElement('dialog_loading_side_feed');
         Sidepannel_AddFocusFeed(true);
         UserLiveFeed_FeedAddFocus(true, pos, 1);
@@ -26575,6 +26631,33 @@
         if (pos === UserLiveFeedobj_UserLivePos) Sidepannel_SetLastRefresh();
 
         //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
+    }
+
+    function UserLiveFeed_SetRefresh(pos) {
+
+        if (Settings_Obj_default("auto_refresh_screen") &&
+            pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
+
+            UserLiveFeed_RefreshId[pos] = Main_setTimeout(
+                function() {
+
+                    if (!UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
+                        ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
+                            (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) { //the screen is not selected
+
+                        UserLiveFeed_CounterDialogRst();
+                        UserLiveFeedobj_loadDataPrepare(pos);
+                        UserLiveFeed_obj[pos].load();
+
+                    } else UserLiveFeed_SetRefresh(pos);
+
+                },
+                (Settings_Obj_values("auto_refresh_screen") * 60000),
+                UserLiveFeed_RefreshId[pos]
+            );
+
+        } else Main_clearTimeout(UserLiveFeed_RefreshId[pos]);
+
     }
 
     function UserLiveFeed_GetSize(pos) {
