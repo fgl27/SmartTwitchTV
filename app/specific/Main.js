@@ -918,7 +918,7 @@ var Main_checkWebVersionResumeId;
 function Main_checkWebVersionRun(web) {
 
     if (Main_IsOn_OSInterface) {
-        var baseUrl = 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/version/';
+        var baseUrl = 'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/';
 
         OSInterface_GetMethodUrlHeadersAsync(
             baseUrl + (web ? 'webversion' : 'javaversion'),//urlString
