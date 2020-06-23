@@ -202,6 +202,10 @@ new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/Extr
 sed --in-place "s%$old%$new%g" release/extrapageindex.min.html
 cp -rf app/Extrapage/Extrapage.js release/githubio/js/Extrapage.js;
 
+# update webversion
+webversion=`echo $(grep 'Main_minversion_int ' app/specific/Main.js | cut -d'=' -f2 | cut -d';' -f1)`
+echo "$webversion" > release/webversion
+
 echo -e "\\n${bldgrn}Compressing Start\\n";
 
 # run the cleans/compress tools
