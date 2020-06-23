@@ -925,6 +925,15 @@ function OSInterface_SetKeysPosition(Position) {
     } catch (e) {}
 }
 
+//public void showToast(String toast)
+//position player position
+//volume the player volume
+//Android specific: true
+//Allows to control individual player volume
+function OSInterface_showToast(toast) {//Not be used
+    Android.showToast(toast);
+}
+
 //public boolean isKeyboardConnected()
 //Android specific: true
 //informs if a hw Keyboard is connected to the devices
@@ -960,13 +969,4 @@ function OSInterface_SetKeysPosition(Position) {
 //Allows to control individual player volume
 // function OSInterface_mSetAudio(position, volume) {//Not be used
 //     Android.mSetAudio(position, volume);
-// }
-
-//public void showToast(String toast)
-//position player position
-//volume the player volume
-//Android specific: true
-//Allows to control individual player volume
-// function OSInterface_showToast(toast) {//Not be used
-//     Android.showToast(toast);
 // }
