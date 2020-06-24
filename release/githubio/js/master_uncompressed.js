@@ -7641,8 +7641,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.207';
     var Main_version_java = 1; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'June 23, 2020';
-    var Main_version_web = 2; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'June 24, 2020';
+    var Main_version_web = 3; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -14712,8 +14712,8 @@
         else if (PlayVod_isOn) PlayVod_Resume();
         else if (PlayClip_isOn) PlayClip_Resume();
         else if (Sidepannel_isShowing()) {
-            Sidepannel_UpdateThumbDiv();
-            if (Settings_Obj_default('show_side_player')) Sidepannel_CheckIfIsLiveStart();
+            Play_CheckIfIsLiveCleanEnd();
+            Sidepannel_ShowFeed();
         }
     }
 
@@ -25669,6 +25669,7 @@
     }
 
     function Sidepannel_UpdateThumbDiv() {
+
         var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
         if (doc) {
@@ -25979,19 +25980,18 @@
     }
 
     function Sidepannel_ShowFeed() {
+        var ForceRefresh = false;
         Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
         if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name ||
+            !UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0]) ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
-            UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+            ForceRefresh = true;
         }
+
         UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
 
-        if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) {
-            UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
-        }
-
-        if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+        if (ForceRefresh && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
             UserLiveFeed_RefreshLive();
         } else if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
             Sidepannel_PreloadImgs();
@@ -26349,7 +26349,6 @@
     var UserLiveFeed_idObject = [];
     var UserLiveFeed_status = [];
     var UserLiveFeed_LastPos = [];
-    var UserSidePannel_LastPos = [];
     var UserLiveFeed_token = null;
     var UserLiveFeed_Feedid;
     var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
@@ -26627,19 +26626,20 @@
 
         UserLiveFeed_SetRefresh(pos);
 
-        Main_HideElement('dialog_loading_side_feed');
-        Sidepannel_AddFocusFeed(true);
         UserLiveFeed_FeedAddFocus(true, pos, 1);
         UserLiveFeed_Showloading(false);
 
         UserLiveFeedobj_SetLastRefresh(pos);
-        if (pos === UserLiveFeedobj_UserLivePos) Sidepannel_SetLastRefresh();
+        if (pos === UserLiveFeedobj_UserLivePos) {
+            Main_HideElement('dialog_loading_side_feed');
+            Sidepannel_AddFocusFeed(true);
+            Sidepannel_SetLastRefresh();
+        }
 
         //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
     }
 
     function UserLiveFeed_SetRefresh(pos) {
-
         if (Settings_Obj_default("auto_refresh_screen") &&
             pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
 
@@ -27402,7 +27402,6 @@
                 UserLiveFeed_LastPos[pos] =
                 JSON.parse(document.getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
         } else {
-            UserSidePannel_LastPos[pos] = null;
             UserLiveFeed_LastPos[pos] = null;
         }
 
@@ -27421,17 +27420,20 @@
         UserLiveFeed_obj[pos].dataEnded = false;
         UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
-        Main_ShowElement('dialog_loading_side_feed');
         if (UserLiveFeed_isFeedShow()) {
             UserLiveFeed_obj[pos].div.classList.remove('hide');
         }
     }
 
+    var UserSidePannel_LastPos;
+
     function UserLiveFeedobj_CheckToken() {
-        if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) {
-            if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
-                UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
-        }
+
+        if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
+            UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
+        } else UserSidePannel_LastPos = null;
+
+        Main_ShowElement('dialog_loading_side_feed');
         UserLiveFeed_PreloadImgs = [];
         Sidepannel_PosFeed = 0;
         Main_empty('side_panel_holder');
@@ -28295,8 +28297,8 @@
                     UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos]];
 
                 Sidepannel_Positions = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
-                if (Sidepannel_Positions.hasOwnProperty(UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos]))
-                    Sidepannel_PosFeed = Sidepannel_Positions[UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos]];
+                if (Sidepannel_Positions.hasOwnProperty(UserSidePannel_LastPos))
+                    Sidepannel_PosFeed = Sidepannel_Positions[UserSidePannel_LastPos];
 
                 Sidepannel_PreloadImgs();
                 UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserLivePos);
