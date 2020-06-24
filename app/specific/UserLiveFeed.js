@@ -6,7 +6,6 @@ var UserLiveFeed_followerChannels = '';
 var UserLiveFeed_idObject = [];
 var UserLiveFeed_status = [];
 var UserLiveFeed_LastPos = [];
-var UserSidePannel_LastPos = [];
 var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
 var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
@@ -296,7 +295,6 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 }
 
 function UserLiveFeed_SetRefresh(pos) {
-
     if (Settings_Obj_default("auto_refresh_screen") &&
         pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
 

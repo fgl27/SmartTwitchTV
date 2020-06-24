@@ -448,8 +448,8 @@ function Play_CheckResume() {
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
     else if (Sidepannel_isShowing()) {
-        Sidepannel_UpdateThumbDiv();
-        if (Settings_Obj_default('show_side_player')) Sidepannel_CheckIfIsLiveStart();
+        Play_CheckIfIsLiveCleanEnd();
+        Sidepannel_ShowFeed();
     }
 }
 

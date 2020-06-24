@@ -26,7 +26,6 @@ function UserLiveFeedobj_StartDefault(pos) {
             UserLiveFeed_LastPos[pos] =
                 JSON.parse(document.getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
     } else {
-        UserSidePannel_LastPos[pos] = null;
         UserLiveFeed_LastPos[pos] = null;
     }
 
@@ -51,11 +50,15 @@ function UserLiveFeedobj_StartDefault(pos) {
     }
 }
 
+var UserSidePannel_LastPos;
+
 function UserLiveFeedobj_CheckToken() {
-    if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) {
-        if (UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0]))
-            UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos] = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
-    }
+
+    if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
+        UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
+    } else UserSidePannel_LastPos = null;
+
+
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
     Main_empty('side_panel_holder');
@@ -909,8 +912,8 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos]];
 
             Sidepannel_Positions = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
-            if (Sidepannel_Positions.hasOwnProperty(UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos]))
-                Sidepannel_PosFeed = Sidepannel_Positions[UserSidePannel_LastPos[UserLiveFeedobj_UserLivePos]];
+            if (Sidepannel_Positions.hasOwnProperty(UserSidePannel_LastPos))
+                Sidepannel_PosFeed = Sidepannel_Positions[UserSidePannel_LastPos];
 
             Sidepannel_PreloadImgs();
             UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserLivePos);

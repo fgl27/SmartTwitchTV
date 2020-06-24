@@ -50,6 +50,7 @@ function Sidepannel_isShowingSide() {
 }
 
 function Sidepannel_UpdateThumbDiv() {
+
     var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
     if (doc) {
@@ -359,19 +360,18 @@ function Sidepannel_StartFeed() {
 }
 
 function Sidepannel_ShowFeed() {
+    var ForceRefresh = false;
     Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
     if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name ||
+        !UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0]) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
-        UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
+        ForceRefresh = true;
     }
+
     UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
 
-    if (!UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0])) {
-        UserLiveFeed_status[UserLiveFeedobj_UserLivePos] = false;
-    }
-
-    if (!UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+    if (ForceRefresh && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         UserLiveFeed_RefreshLive();
     } else if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_PreloadImgs();
