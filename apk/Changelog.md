@@ -61,11 +61,12 @@ On this version I addressed all minor problems that I have on the app TODO list 
 * Allow to change Notification position
 * End stream dialog option, to stay on the stream after it has ended
 
+## Better described changelog started on the version from June 20 2020, before this version a changelog didn't exist and the bellow changes are ported from play store changelog that because has a limit of 500 character is very limited on changes tecnicly there is way more changes to be on the bellow list so for Full list of changes check [Project commits](https://github.com/fgl27/SmartTwitchTV/commits/master)
+
 Version 3.0.200 and up & Web Version June 3 2020
 ==============
 
 * General performance improves and bug fixes
-
 
 Version 3.0.195 and up & Web Version May 18 2020
 ==============
