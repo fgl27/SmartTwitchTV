@@ -26,7 +26,7 @@ Apk Version 3.0.207 & Web Version June 21 2020
 
 * Allow to repeat the same notification, the individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show
 
-Apk Version 3.0.206 - June 21 2020
+Apk Version 3.0.206 * June 21 2020
 ==============
 
 * Fix keyboard and remote input from none TV devices or TV devices that don't use Android TV (use a modified phone version of the OS)
@@ -61,3 +61,163 @@ On this version I addressed all minor problems that I have on the app TODO list 
 * Allow to change Notification position
 * End stream dialog option, to stay on the stream after it has ended
 
+Version 3.0.200 and up & Web Version June 3 2020
+==============
+
+* General performance improves and bug fixes
+
+
+Version 3.0.195 and up & Web Version May 18 2020
+==============
+
+* Add a player control to open the Main player on a external player, this is very useful with a popup external player.
+* General performance improves and bug fixes
+
+
+Version 3.0.194 & Web Version May 18 2020
+==============
+
+* Add a option to open Main player on a external player, this is very useful with a popup external player.
+* General performance improves and bug fixes
+
+Version 3.0.177 and up & Web Version April 28 2020
+==============
+
+* General performance improves and bug fixes
+
+
+Version 3.0.172 and up & Web Version April 20 2020
+==============
+
+* Add a write to chat option, plus fully customizable emoticons and emojis in app keyboards
+* General performance improves and bug fixes
+
+Version 3.0.168 and up & Web Version April 11 2020
+==============
+
+* Add a setting option to allow background notification over other apps, this is disabled by default.
+* General performance improves and bug fixes
+
+Version 3.0.164 and up & Web Version April 1 2020
+==============
+
+* General performance improves and bug fixes
+
+Version 3.0.163 & Web Version March 30 2020
+==============
+
+* Add preview thumbnail to VODs SeekBar (only available for VODs that have this featuring working on twitch website)
+
+Version 3.0.155 and up & Web Version March 25 2020
+==============
+
+* General performance improves and bug fixes
+
+Version 3.0.153 an up & Web Version March 24 2020
+==============
+
+* Add new player status, Ping to Twitch, allows to know what is the latency to Twitch servers, high latency means slow to load content, this included all app content streams, refreshes, images etc...
+* General performance improves and bug fixes
+
+Version 3.0.148 and up & Web Version March 22 2020
+==============
+
+* Update all the players process to improve performance and reliability
+* General performance improves and bug fixes
+
+Version 3.0.146 and up & Web Version March 17 2020
+==============
+
+* General performance improves and bug fixes
+
+Version 3.0.145 & Web Version March 16 2020
+==============
+
+* Click left/right on Multistream main window bigger mode to change with is the main window and it's chat
+* Update controls related to audio changes on PP and Multistream, check controls
+* General performance improves and bug fixes
+
+
+Version 3.0.144 and up & Web Version March 14 2020
+==============
+
+* General performance improves and bug fixes
+
+Version 3.0.143 & Web Version March 13 2020
+==============
+
+* Add a new mode for Multistream that makes the main window bigger and show it's chat, press key down to enable/disable
+
+Version 3.0.122 and up & Web Version February 27 2020
+==============
+
+* General performance improves and bug fixes
+
+Version 3.0.119 and up & Web Version February 25 2020
+==============
+
+* Add a side panel player and a small player to the player live feed (auto-plays when select a tile, similar to netflix autoplay when hover, small player can be disable in settings)
+
+
+Version 3.0.110 and up & Web Version February 4 2020
+==============
+
+* General performance improves and bug fixes
+
+Version 3.0.109 and up & Web Version January 31 2020
+==============
+
+* Major version update from 2.0.X to 3.0.X
+* Add 4 way multistream for user live content
+
+Version 2.0.107 and up & Web Version January 6 2020
+==============
+
+* New User history screen for Live, VOD and clips history
+
+Version 2.0.105 and up & Web Version December 29 2020
+==============
+
+* General performance improves  and bug fixes
+
+Version 2.0.67 and up & Web Version September 10 2020
+==============
+
+* General performance improves  and bug fixes
+
+Version 2.0.66 & Web Version September 9 2020
+==============
+
+* Add Low latency controls to Live player 
+* General improves for performance
+
+Version 2.0.52 and up & Web Version August 15 2020
+==============
+
+* General improves for performance and minor bug fixes
+
+Version 2.0.51 & Web Version August 13 2020
+==============
+
+* MultiStream Mode two live stream and two chats at the same time
+
+Version 2.0.46 & Web Version August 11 2020
+==============
+
+* Major version update from 1.0.X to 2.0.X
+* Rework the player interface to add new features and general improves.
+* Add Picture in Picture mode (Check setting and controls to understand how to setup and use it)
+* Add full player status in player top right corner, can be set to be visible all the time in settings
+
+Version 1.0.10 and up & Web Version April 24 2020
+==============
+
+* General improves for performance, bug fixes and new features.
+
+
+Version 1.0.0 to Version 1.0.9 & Web Version April 20 2020
+==============
+
+* Initial app release, that was a port from the Samsung version of the app https://github.com/fgl27/smarttv-twitch
+
+## Full list of changes check [Project commits](https://github.com/fgl27/SmartTwitchTV/commits/master)
