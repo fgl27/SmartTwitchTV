@@ -283,13 +283,15 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 
     UserLiveFeed_SetRefresh(pos);
 
-    Main_HideElement('dialog_loading_side_feed');
-    Sidepannel_AddFocusFeed(true);
     UserLiveFeed_FeedAddFocus(true, pos, 1);
     UserLiveFeed_Showloading(false);
 
     UserLiveFeedobj_SetLastRefresh(pos);
-    if (pos === UserLiveFeedobj_UserLivePos) Sidepannel_SetLastRefresh();
+    if (pos === UserLiveFeedobj_UserLivePos) {
+        Main_HideElement('dialog_loading_side_feed');
+        Sidepannel_AddFocusFeed(true);
+        Sidepannel_SetLastRefresh();
+    }
 
     //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
 }

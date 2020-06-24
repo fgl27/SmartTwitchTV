@@ -44,7 +44,6 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].dataEnded = false;
     UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
-    Main_ShowElement('dialog_loading_side_feed');
     if (UserLiveFeed_isFeedShow()) {
         UserLiveFeed_obj[pos].div.classList.remove('hide');
     }
@@ -58,7 +57,7 @@ function UserLiveFeedobj_CheckToken() {
         UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
     } else UserSidePannel_LastPos = null;
 
-
+    Main_ShowElement('dialog_loading_side_feed');
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
     Main_empty('side_panel_holder');
