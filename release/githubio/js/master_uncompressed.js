@@ -7925,7 +7925,7 @@
     var Main_stringVersion_Min = '.207';
     var Main_version_java = 1; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'June 24, 2020';
-    var Main_version_web = 3; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 4; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9794,8 +9794,9 @@
         Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
         Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 10000, Main_checkWebVersionResumeId);
 
+        //Tecnicly this are only neede if the app fail to refresh when is on background
         UserLiveFeed_CheckRefreshAfterResume();
-        Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 5000, Screens_CheckRefreshAfterResumeId);
+        Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
         Main_CheckAccessibility();
     }
@@ -19306,8 +19307,8 @@
             function() {
                 if (!ScreenObj[key].FirstLoad) { //the screen is not refreshing
 
-                    if (!Main_isStoped && !Main_isScene1DocShown() && ((ScreenObj[key].screenType !== 2 || !PlayClip_isOn) || //The screen is not showing and is not a clip screen and clip is not playing
-                            key !== Main_values.Main_Go)) { //the screen is not selected
+                    if (!Main_isScene1DocShown() && ((ScreenObj[key].screenType !== 2 || !PlayClip_isOn) || //The screen is not showing and is not a clip screen and clip is not playing
+                            (key !== Main_values.Main_Go || Main_isStoped))) { //the screen is not selected
 
                         Screens_StartLoad(key);
 
@@ -19337,7 +19338,7 @@
                 if (ScreenObj[i] && ScreenObj[i].lastRefresh &&
                     date > (ScreenObj[i].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
-                    Screens_CheckAutoRefresh(i, run * 10000);
+                    Screens_CheckAutoRefresh(i, run * 5000);
                     run++;
 
                 }
@@ -19436,7 +19437,7 @@
     //Also help to prevent lag on animation
     function Screens_LoadPreview(key) {
 
-        if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+        if (!Main_isStoped && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
             !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
             var doc, ThumbId;
 
@@ -19513,55 +19514,47 @@
             return;
         }
 
-        try {
-            var id, token, link;
+        var id, token, link;
 
-            if (ScreenObj[key].screenType === 2) { //clip
+        if (ScreenObj[key].screenType === 2) { //clip
 
-                OSInterface_GetMethodUrlHeadersAsync(
-                    PlayClip_BaseUrl, //urlString
-                    DefaultHttpGetTimeout, //timeout
-                    PlayClip_postMessage.replace('%x', obj[0]), //postMessage, null for get
-                    'POST', //Method, null for get
-                    JSON.stringify(
-                        [
-                            [Main_clientIdHeader, Main_Headers_Back[0][1]]
-                        ]
-                    ), //JsonString
-                    'Screens_LoadPreviewResult', //callback
-                    (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100), //checkResult
-                    key, //key
-                    0 //thread
-                );
+            OSInterface_GetMethodUrlHeadersAsync(
+                PlayClip_BaseUrl, //urlString
+                DefaultHttpGetTimeout, //timeout
+                PlayClip_postMessage.replace('%x', obj[0]), //postMessage, null for get
+                'POST', //Method, null for get
+                JSON.stringify(
+                    [
+                        [Main_clientIdHeader, Main_Headers_Back[0][1]]
+                    ]
+                ), //JsonString
+                'Screens_LoadPreviewResult', //callback
+                (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100), //checkResult
+                key, //key
+                0 //thread
+            );
 
-                return;
-            } else if (ScreenObj[key].screenType === 1) { //vod
+            return;
+        } else if (ScreenObj[key].screenType === 1) { //vod
 
-                id = obj[7];
-                token = Play_vod_token;
-                link = Play_vod_links;
+            id = obj[7];
+            token = Play_vod_token;
+            link = Play_vod_links;
 
-            } else { //live
+        } else { //live
 
-                if (ScreenObj[key].screen === Main_HistoryLive) {
+            if (ScreenObj[key].screen === Main_HistoryLive) {
 
-                    var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
+                var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
-                    if (index > -1) {
+                if (index > -1) {
 
-                        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                            Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                        Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
 
-                            id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-                            token = Play_vod_token;
-                            link = Play_vod_links;
-
-                        } else {
-
-                            id = obj[6];
-                            token = Play_live_token;
-                            link = Play_live_links;
-                        }
+                        id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+                        token = Play_vod_token;
+                        link = Play_vod_links;
 
                     } else {
 
@@ -19570,37 +19563,41 @@
                         link = Play_live_links;
                     }
 
-
                 } else {
 
                     id = obj[6];
                     token = Play_live_token;
                     link = Play_live_links;
-
                 }
+
+
+            } else {
+
+                id = obj[6];
+                token = Play_live_token;
+                link = Play_live_links;
+
             }
-
-            OSInterface_CheckIfIsLiveFeed(
-                token.replace('%x', id),
-                link.replace('%x', id),
-                Settings_Obj_values("show_feed_player_delay"),
-                "Screens_LoadPreviewResult",
-                key,
-                (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
-            );
-
-        } catch (e) {
-            Play_CheckIfIsLiveCleanEnd();
         }
+
+        OSInterface_CheckIfIsLiveFeed(
+            token.replace('%x', id),
+            link.replace('%x', id),
+            Settings_Obj_values("show_feed_player_delay"),
+            "Screens_LoadPreviewResult",
+            key,
+            (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
+        );
+
     }
 
     function Screens_LoadPreviewResult(StreamData, x, y) { //Called by Java
 
         var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
-        if (Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+        if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
             x === Screens_Current_Key && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
             doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 
@@ -26305,7 +26302,7 @@
         if (Sidepannel_isShowing()) {
             Main_ShowElement('side_panel_feed_thumb');
 
-            if (Settings_Obj_default('show_side_player')) {
+            if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
                 var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
                 if (doc) {
@@ -26341,7 +26338,7 @@
 
     function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
-        if (Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
+        if (!Main_isStoped && Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
             var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
             if (StreamData && doc) {
@@ -27287,9 +27284,9 @@
         UserLiveFeed_RefreshId[pos] = Main_setTimeout(
             function() {
 
-                if (!Main_isStoped && !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
-                    ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
-                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) { //the screen is not selected
+                if (!UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
+                    ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow() || Main_isStoped) &&
+                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing() || Main_isStoped))) { //the screen is not selected
 
                     UserLiveFeed_CounterDialogRst();
                     UserLiveFeedobj_loadDataPrepare(pos);
@@ -27319,7 +27316,7 @@
                     i !== UserLiveFeedobj_UserVodHistoryPos && i !== UserLiveFeedobj_UserHistoryPos &&
                     date > (UserLiveFeed_lastRefresh[i] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
-                    UserLiveFeed_CheckRefresh(i, run * 10000);
+                    UserLiveFeed_CheckRefresh(i, run * 5000);
                     run++;
 
                 }
@@ -27462,7 +27459,7 @@
             }
         }
 
-        if (add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() &&
+        if (!Main_isStoped && add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() &&
             UserLiveFeed_CheckVod() && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview) {
 
             if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
@@ -27543,7 +27540,7 @@
 
     function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
-        if (UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
+        if (!Main_isStoped && UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
             var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (StreamData && doc) {
@@ -30114,7 +30111,7 @@
         }
         return message;
     }; // The bellow are some function or adaptations of function from
-    // https://www.nightdev.com/kapchat/
+    // © NightDev 2016 https://www.nightdev.com/kapchat/
     function extraEmoticonize(message, emote) {
         return message.replace(emote.code, extraEmoteTemplate(emote));
     }
