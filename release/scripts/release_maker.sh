@@ -1,4 +1,22 @@
 #!/bin/bash
+
+# Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+#
+# This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+#
+# SmartTwitchTV is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# SmartTwitchTV is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+
 #code compressor using uglifyjs, jshint, js-beautify, sed and cleancss, this .sh runs on linux shell base system
 
 #installation of uglifyjs jshint, js-beautify and html-minifier has more then one step
@@ -273,5 +291,5 @@ if [ ! -z "$git_check" ]; then
 fi;
 
 END=$(date +%s.%N);
-echo -e "${bldgrn}Total elapsed time of the script: ${bldred}$(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) ${bldyel}(minutes:seconds).\n";
+echo -e "${bldgrn}Total elapsed time of the script: ${bldred}$(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60)# 60)"|bc ) ${bldyel}(minutes:seconds).\n";
 exit;
