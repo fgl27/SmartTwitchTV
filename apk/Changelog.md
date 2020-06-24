@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version June 24 2020
 ==============
 
-* Improve side panel auto refresh and refresh after resume (resume when you go back to the app after it be on background)
+* Improve side panel auto refresh and refresh after resume (resume when you go back to the app after it be on background, when you use another app for example)
 
 Web Version June 23 2020
 ==============
