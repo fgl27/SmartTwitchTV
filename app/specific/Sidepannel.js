@@ -96,7 +96,7 @@ function Sidepannel_UpdateThumb() {
     if (Sidepannel_isShowing()) {
         Main_ShowElement('side_panel_feed_thumb');
 
-        if (Settings_Obj_default('show_side_player')) {
+        if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
             var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
             if (doc) {
@@ -132,7 +132,7 @@ var Sidepannel_PlayerViewSidePanelSet;
 
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
+    if (!Main_isStoped && Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
         var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
         if (StreamData && doc) {

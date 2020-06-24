@@ -675,8 +675,8 @@ function Screens_CheckAutoRefresh(key, timeout) {
         function() {
             if (!ScreenObj[key].FirstLoad) {//the screen is not refreshing
 
-                if (!Main_isStoped && !Main_isScene1DocShown() && ((ScreenObj[key].screenType !== 2 || !PlayClip_isOn) || //The screen is not showing and is not a clip screen and clip is not playing
-                    key !== Main_values.Main_Go)) {//the screen is not selected
+                if (!Main_isScene1DocShown() && ((ScreenObj[key].screenType !== 2 || !PlayClip_isOn) || //The screen is not showing and is not a clip screen and clip is not playing
+                    (key !== Main_values.Main_Go || Main_isStoped))) {//the screen is not selected
 
                     Screens_StartLoad(key);
 
@@ -702,7 +702,7 @@ function Screens_CheckRefreshAfterResume() {
             if (ScreenObj[i] && ScreenObj[i].lastRefresh &&
                 date > (ScreenObj[i].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
-                Screens_CheckAutoRefresh(i, run * 10000);
+                Screens_CheckAutoRefresh(i, run * 5000);
                 run++;
 
             }
@@ -801,7 +801,7 @@ function Screens_addFocus(forceScroll, key) {
 //Also help to prevent lag on animation
 function Screens_LoadPreview(key) {
 
-    if (Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+    if (!Main_isStoped && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
         var doc, ThumbId;
 
@@ -878,55 +878,47 @@ function Screens_LoadPreviewStart(key, obj) {
         return;
     }
 
-    try {
-        var id, token, link;
+    var id, token, link;
 
-        if (ScreenObj[key].screenType === 2) {//clip
+    if (ScreenObj[key].screenType === 2) {//clip
 
-            OSInterface_GetMethodUrlHeadersAsync(
-                PlayClip_BaseUrl,//urlString
-                DefaultHttpGetTimeout,//timeout
-                PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
-                'POST',//Method, null for get
-                JSON.stringify(
-                    [
-                        [Main_clientIdHeader, Main_Headers_Back[0][1]]
-                    ]
-                ),//JsonString
-                'Screens_LoadPreviewResult',//callback
-                (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),//checkResult
-                key,//key
-                0//thread
-            );
+        OSInterface_GetMethodUrlHeadersAsync(
+            PlayClip_BaseUrl,//urlString
+            DefaultHttpGetTimeout,//timeout
+            PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
+            'POST',//Method, null for get
+            JSON.stringify(
+                [
+                    [Main_clientIdHeader, Main_Headers_Back[0][1]]
+                ]
+            ),//JsonString
+            'Screens_LoadPreviewResult',//callback
+            (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),//checkResult
+            key,//key
+            0//thread
+        );
 
-            return;
-        } else if (ScreenObj[key].screenType === 1) {//vod
+        return;
+    } else if (ScreenObj[key].screenType === 1) {//vod
 
-            id = obj[7];
-            token = Play_vod_token;
-            link = Play_vod_links;
+        id = obj[7];
+        token = Play_vod_token;
+        link = Play_vod_links;
 
-        } else {//live
+    } else {//live
 
-            if (ScreenObj[key].screen === Main_HistoryLive) {
+        if (ScreenObj[key].screen === Main_HistoryLive) {
 
-                var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
+            var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
-                if (index > -1) {
+            if (index > -1) {
 
-                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                        Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                    Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
 
-                        id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-                        token = Play_vod_token;
-                        link = Play_vod_links;
-
-                    } else {
-
-                        id = obj[6];
-                        token = Play_live_token;
-                        link = Play_live_links;
-                    }
+                    id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+                    token = Play_vod_token;
+                    link = Play_vod_links;
 
                 } else {
 
@@ -935,37 +927,41 @@ function Screens_LoadPreviewStart(key, obj) {
                     link = Play_live_links;
                 }
 
-
             } else {
 
                 id = obj[6];
                 token = Play_live_token;
                 link = Play_live_links;
-
             }
+
+
+        } else {
+
+            id = obj[6];
+            token = Play_live_token;
+            link = Play_live_links;
+
         }
-
-        OSInterface_CheckIfIsLiveFeed(
-            token.replace('%x', id),
-            link.replace('%x', id),
-            Settings_Obj_values("show_feed_player_delay"),
-            "Screens_LoadPreviewResult",
-            key,
-            (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
-        );
-
-    } catch (e) {
-        Play_CheckIfIsLiveCleanEnd();
     }
+
+    OSInterface_CheckIfIsLiveFeed(
+        token.replace('%x', id),
+        link.replace('%x', id),
+        Settings_Obj_values("show_feed_player_delay"),
+        "Screens_LoadPreviewResult",
+        key,
+        (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
+        DefaultHttpGetReTryMax,
+        DefaultHttpGetTimeout
+    );
+
 }
 
 function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
     var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
-    if (Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+    if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
         x === Screens_Current_Key && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 

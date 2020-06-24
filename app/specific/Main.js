@@ -2014,8 +2014,9 @@ function Main_CheckResume() { // Called only by JAVA
     Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
     Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 10000, Main_checkWebVersionResumeId);
 
+    //Tecnicly this are only neede if the app fail to refresh when is on background
     UserLiveFeed_CheckRefreshAfterResume();
-    Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 5000, Screens_CheckRefreshAfterResumeId);
+    Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
     Main_CheckAccessibility();
 }

@@ -333,9 +333,9 @@ function UserLiveFeed_CheckRefresh(pos, timeout) {
     UserLiveFeed_RefreshId[pos] = Main_setTimeout(
         function() {
 
-            if (!Main_isStoped && !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
-                ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
-                    (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
+            if (!UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
+                ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow() || Main_isStoped) &&
+                    (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing() || Main_isStoped))) {//the screen is not selected
 
                 UserLiveFeed_CounterDialogRst();
                 UserLiveFeedobj_loadDataPrepare(pos);
@@ -362,7 +362,7 @@ function UserLiveFeed_CheckRefreshAfterResume() {
                 i !== UserLiveFeedobj_UserVodHistoryPos && i !== UserLiveFeedobj_UserHistoryPos &&
                 date > (UserLiveFeed_lastRefresh[i] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
-                UserLiveFeed_CheckRefresh(i, run * 10000);
+                UserLiveFeed_CheckRefresh(i, run * 5000);
                 run++;
 
             }
@@ -504,7 +504,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() &&
+    if (!Main_isStoped && add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() &&
         UserLiveFeed_CheckVod() && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview) {
 
         if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
@@ -584,7 +584,7 @@ var UserLiveFeed_CheckIfIsLiveResultThumb;
 var UserLiveFeed_PreviewOffset = 0;
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
+    if (!Main_isStoped && UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
         var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
         if (StreamData && doc) {
