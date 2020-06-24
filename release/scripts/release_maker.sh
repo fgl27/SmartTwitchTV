@@ -291,5 +291,5 @@ if [ ! -z "$git_check" ]; then
 fi;
 
 END=$(date +%s.%N);
-echo -e "${bldgrn}Total elapsed time of the script: ${bldred}$(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60)# 60)"|bc ) ${bldyel}(minutes:seconds).\n";
+echo -e "${bldgrn}Total elapsed time of the script: ${bldred}$(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) ${bldyel}(minutes:seconds).\n";
 exit;
