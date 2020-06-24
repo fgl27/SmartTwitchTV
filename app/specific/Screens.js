@@ -662,24 +662,54 @@ function Screens_SetAutoRefresh(key) {
 
     if (Settings_Obj_default("auto_refresh_screen")) {
 
-        ScreenObj[key].AutoRefreshId = Main_setTimeout(
-            function() {
-                if (!ScreenObj[key].FirstLoad) {//the screen is not refreshing
-
-                    if (!Main_isStoped && (!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing
-                        key !== Main_values.Main_Go) {//the screen is not selected
-
-                        Screens_StartLoad(key);
-
-                    } else Screens_SetAutoRefresh(key);
-
-                }
-            },
-            (Settings_Obj_values("auto_refresh_screen") * 60000),
-            ScreenObj[key].AutoRefreshId
-        );
+        Screens_CheckAutoRefresh(key, (Settings_Obj_values("auto_refresh_screen") * 60000));
 
     } else Main_clearTimeout(ScreenObj[key].AutoRefreshId);
+
+}
+
+
+function Screens_CheckAutoRefresh(key, timeout) {
+
+    ScreenObj[key].AutoRefreshId = Main_setTimeout(
+        function() {
+            if (!ScreenObj[key].FirstLoad) {//the screen is not refreshing
+
+                if (!Main_isStoped && !Main_isScene1DocShown() && ((ScreenObj[key].screenType !== 2 || !PlayClip_isOn) || //The screen is not showing and is not a clip screen and clip is not playing
+                    key !== Main_values.Main_Go)) {//the screen is not selected
+
+                    Screens_StartLoad(key);
+
+                } else Screens_SetAutoRefresh(key);
+
+            }
+        },
+        timeout,
+        ScreenObj[key].AutoRefreshId
+    );
+
+}
+
+var Screens_CheckRefreshAfterResumeId;
+function Screens_CheckRefreshAfterResume() {
+
+    if (Settings_Obj_default("auto_refresh_screen")) {
+
+        var i = 0, run = 1, len = Main_HistoryClip + 1, date = new Date().getTime();
+
+        for (i; i < len; i++) {
+
+            if (ScreenObj[i] && ScreenObj[i].lastRefresh &&
+                date > (ScreenObj[i].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
+
+                Screens_CheckAutoRefresh(i, run * 10000);
+                run++;
+
+            }
+
+        }
+
+    }
 
 }
 

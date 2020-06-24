@@ -391,7 +391,7 @@ function Sidepannel_ShowFeed() {
 
     UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
 
-    if (ForceRefresh && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+    if ((ForceRefresh || !UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         UserLiveFeed_RefreshLive();
     } else if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_PreloadImgs();

@@ -989,7 +989,7 @@ function UserLiveFeedobj_loadUserVodGet(theUrl) {
 }
 
 function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
-    Main_Log('UserLiveFeedobj_loadUserVodGetEnd ' + xmlHttp.status);
+    //Main_Log('UserLiveFeedobj_loadUserVodGetEnd ' + xmlHttp.status);
     if (xmlHttp.status === 200) {
         UserLiveFeedobj_loadDataBaseVodSuccess(xmlHttp.responseText, UserLiveFeedobj_UserVodPos);
     } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired

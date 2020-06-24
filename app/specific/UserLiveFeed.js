@@ -73,7 +73,9 @@ function UserLiveFeed_StartLoadPos(pos) {
 
 function UserLiveFeed_Prepare() {
 
-    for (var i = 0; i < (UserLiveFeedobj_MAX + 1); i++) {
+    var i = 0, len = UserLiveFeedobj_MAX + 1;
+
+    for (i; i < len; i++) {
         UserLiveFeed_obj[i] = {};
         UserLiveFeed_idObject[i] = {};
         UserLiveFeed_itemsCount[i] = 0;
@@ -320,25 +322,54 @@ function UserLiveFeed_SetRefresh(pos) {
     if (Settings_Obj_default("auto_refresh_screen") &&
         pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
 
-        UserLiveFeed_RefreshId[pos] = Main_setTimeout(
-            function() {
-
-                if (!Main_isStoped && !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
-                    ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
-                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
-
-                    UserLiveFeed_CounterDialogRst();
-                    UserLiveFeedobj_loadDataPrepare(pos);
-                    UserLiveFeed_obj[pos].load();
-
-                } else UserLiveFeed_SetRefresh(pos);
-
-            },
-            (Settings_Obj_values("auto_refresh_screen") * 60000),
-            UserLiveFeed_RefreshId[pos]
-        );
+        UserLiveFeed_CheckRefresh(pos, (Settings_Obj_values("auto_refresh_screen") * 60000));
 
     } else Main_clearTimeout(UserLiveFeed_RefreshId[pos]);
+
+}
+
+function UserLiveFeed_CheckRefresh(pos, timeout) {
+
+    UserLiveFeed_RefreshId[pos] = Main_setTimeout(
+        function() {
+
+            if (!Main_isStoped && !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
+                ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
+                    (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
+
+                UserLiveFeed_CounterDialogRst();
+                UserLiveFeedobj_loadDataPrepare(pos);
+                UserLiveFeed_obj[pos].load();
+
+            } else UserLiveFeed_SetRefresh(pos);
+
+        },
+        timeout,
+        UserLiveFeed_RefreshId[pos]
+    );
+
+}
+
+function UserLiveFeed_CheckRefreshAfterResume() {
+
+    if (Settings_Obj_default("auto_refresh_screen")) {
+
+        var i = 0, run = 1, len = UserLiveFeedobj_MAX + 1, date = new Date().getTime();
+
+        for (i; i < len; i++) {
+
+            if (UserLiveFeed_lastRefresh[i] &&
+                i !== UserLiveFeedobj_UserVodHistoryPos && i !== UserLiveFeedobj_UserHistoryPos &&
+                date > (UserLiveFeed_lastRefresh[i] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
+
+                UserLiveFeed_CheckRefresh(i, run * 10000);
+                run++;
+
+            }
+
+        }
+
+    }
 
 }
 
@@ -418,7 +449,9 @@ function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
 }
 
 function UserLiveFeed_ResetAddCellsize() {
-    for (var i = 0; i < (UserLiveFeedobj_MAX + 1); i++) {
+    var i = 0, len = UserLiveFeedobj_MAX + 1;
+
+    for (i; i < len; i++) {
         UserLiveFeed_obj[i].AddCellsize = 0;
     }
 }
