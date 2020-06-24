@@ -1,5 +1,5 @@
 // The bellow are some function or adaptations of function from
-// https://www.nightdev.com/kapchat/
+// © NightDev 2016 https://www.nightdev.com/kapchat/
 function extraEmoticonize(message, emote) {
     return message.replace(emote.code, extraEmoteTemplate(emote));
 }
