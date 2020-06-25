@@ -19307,8 +19307,9 @@
             function() {
                 if (!ScreenObj[key].FirstLoad) { //the screen is not refreshing
 
-                    if (!Main_isScene1DocShown() && ((ScreenObj[key].screenType !== 2 || !PlayClip_isOn) || //The screen is not showing and is not a clip screen and clip is not playing
-                            (key !== Main_values.Main_Go || Main_isStoped))) { //the screen is not selected
+                    if (Main_isStoped ||
+                        ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
+                            (key !== Main_values.Main_Go))) { //the screen is not selected
 
                         Screens_StartLoad(key);
 
@@ -27284,9 +27285,10 @@
         UserLiveFeed_RefreshId[pos] = Main_setTimeout(
             function() {
 
-                if (!UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
-                    ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow() || Main_isStoped) &&
-                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing() || Main_isStoped))) { //the screen is not selected
+                if (Main_isStoped ||
+                    !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
+                    ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
+                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) { //the screen is not selected
 
                     UserLiveFeed_CounterDialogRst();
                     UserLiveFeedobj_loadDataPrepare(pos);
