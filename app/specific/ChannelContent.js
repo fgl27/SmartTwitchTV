@@ -610,7 +610,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 
     var doc = document.getElementById('channel_content_cell0_1');
 
-    if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+    if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
         x === Main_values.Main_Go && doc &&
         Main_A_includes_B(document.getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
 

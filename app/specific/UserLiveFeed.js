@@ -44,6 +44,9 @@ var UserLiveFeed_FeedSetPosLast = [];
 var UserLiveFeed_lastRefresh = [];
 var UserLiveFeed_RefreshId = [];
 
+var UserLiveFeed_ChangeFocusAnimationFast = false;
+var UserLiveFeed_ChangeFocusAnimationFinished = [];
+
 var UserLiveFeed_ids = [
     'ulf_thumbdiv',//0
     'ulf_img',//1
@@ -96,6 +99,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_loadingDataTry[i] = 0;
         UserLiveFeed_obj[i].checkPreview = true;
         UserLiveFeed_RefreshId[i] = null;
+        UserLiveFeed_ChangeFocusAnimationFinished[i] = true;
     }
 
     //User vod
@@ -302,13 +306,12 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 
     //Async tasks the show may come after the hide, so re check the hide here
     if (pos !== UserLiveFeed_FeedPosX) UserLiveFeed_obj[pos].div.classList.add('hide');
-
-    UserLiveFeed_SetRefresh(pos);
+    else UserLiveFeedobj_SetLastRefresh(pos);
 
     UserLiveFeed_FeedAddFocus(true, pos, 1);
+    UserLiveFeed_SetRefresh(pos);
     UserLiveFeed_Showloading(false);
 
-    UserLiveFeedobj_SetLastRefresh(pos);
     if (pos === UserLiveFeedobj_UserLivePos) {
         Main_HideElement('dialog_loading_side_feed');
         Sidepannel_AddFocusFeed(true);
@@ -428,16 +431,15 @@ function UserLiveFeed_FeedSetPos(skipAnimation, pos, position) {
     if (UserLiveFeed_FeedSetPosLast[pos] === position) return;
 
     if (!skipAnimation &&
-        Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-        !Screens_ChangeFocusAnimationFast) {
-        Screens_ChangeFocusAnimationFinished = false;
-        Screens_ChangeFocusAnimationFast = true;
+        UserLiveFeed_ChangeFocusAnimationFinished[pos] && Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) {
+        UserLiveFeed_ChangeFocusAnimationFinished[pos] = false;
+        UserLiveFeed_ChangeFocusAnimationFast = pos === UserLiveFeed_FeedPosX;
 
         UserLiveFeed_obj[pos].div.style.transition = '';
 
         Main_setTimeout(
             function() {
-                Screens_ChangeFocusAnimationFinished = true;
+                UserLiveFeed_ChangeFocusAnimationFinished[pos] = true;
             },
             UserLiveFeed_AnimationTimeout
         );
@@ -467,8 +469,9 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     }
 
     var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus;
-    if (add_focus)
+    if (add_focus) {
         Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
+    }
 
     if (!UserLiveFeed_obj[pos].AddCellsize) {
         UserLiveFeed_obj[pos].AddCellsize =
@@ -505,8 +508,8 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (!Main_isStoped && add_focus && Settings_Obj_default('show_feed_player') && UserLiveFeed_isFeedShow() &&
-        UserLiveFeed_CheckVod() && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview) {
+    if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && add_focus && Settings_Obj_default('show_feed_player') &&
+        UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod() && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview) {
 
         if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
 
@@ -535,7 +538,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+    if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
 }
 
@@ -721,8 +724,8 @@ function UserLiveFeed_CheckIfIsLiveStart() {
 }
 
 function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos, right) {
-    Screens_ChangeFocusAnimationFinished = false;
-    Screens_ChangeFocusAnimationFast = true;
+    UserLiveFeed_ChangeFocusAnimationFinished[pos] = false;
+    UserLiveFeed_ChangeFocusAnimationFast = true;
 
     if (right) UserLiveFeed_obj[pos].div.appendChild(UserLiveFeed_cell[pos][x + x_plus]);
     else UserLiveFeed_obj[pos].div.insertBefore(UserLiveFeed_cell[pos][x + x_plus], UserLiveFeed_obj[pos].div.childNodes[0]);
@@ -740,7 +743,7 @@ function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in,
         Main_setTimeout(
             function() {
                 UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
-                Screens_ChangeFocusAnimationFinished = true;
+                UserLiveFeed_ChangeFocusAnimationFinished[pos] = true;
             },
             Screens_ScrollAnimationTimeout
         );
@@ -770,8 +773,8 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
     if (Adder > 0) { // right
         if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
 
-            if (Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (UserLiveFeed_ChangeFocusAnimationFinished[pos] && pos === UserLiveFeed_FeedPosX &&
+                Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) { //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
                     pos,
@@ -804,8 +807,8 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
     } else { // Left
         if (x > 2 && UserLiveFeed_cell[pos].length > (x + 3)) {
 
-            if (Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (UserLiveFeed_ChangeFocusAnimationFinished[pos] && pos === UserLiveFeed_FeedPosX &&
+                Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) { //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
                     pos,
@@ -842,8 +845,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
     if (Adder > 0) { // right
         if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
 
-            if (Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (UserLiveFeed_ChangeFocusAnimationFinished[pos] && pos === UserLiveFeed_FeedPosX &&
+                Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) { //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
                     pos,
@@ -875,8 +878,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
     } else { // Left
         if (x > 4 && UserLiveFeed_cell[pos].length > (x + 4)) {
 
-            if (Screens_ChangeFocusAnimationFinished &&
-                Screens_SettingDoAnimations && !Screens_ChangeFocusAnimationFast) { //If with animation
+            if (UserLiveFeed_ChangeFocusAnimationFinished[pos] && pos === UserLiveFeed_FeedPosX &&
+                Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) { //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
                     pos,
@@ -941,7 +944,7 @@ function UserLiveFeed_SetHoldUp() {
 
 function UserLiveFeed_KeyRightLeft(Adder) {
     UserLiveFeed_ResetFeedId();
-    if (Screens_ChangeFocusAnimationFinished && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
+    if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX] && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
         var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
         if (NextPos > (UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1) || NextPos < 0) return;
 
@@ -956,7 +959,7 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 function UserLiveFeed_KeyUpDown(Adder) {
     UserLiveFeed_ResetFeedId();
 
-    if (Screens_ChangeFocusAnimationFinished) {
+    if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX]) {
 
         var NextPos = UserLiveFeed_FeedPosX + Adder,
             userSet = AddUser_UserIsSet();

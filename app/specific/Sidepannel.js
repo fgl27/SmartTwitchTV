@@ -32,6 +32,8 @@ var Sidepannel_FixDiv;
 var Sidepannel_MovelDiv;
 var Sidepannel_ScroolDoc;
 var Sidepannel_SidepannelDoc;
+var Sidepannel_ChangeFocusAnimationFinished = true;
+var Sidepannel_ChangeFocusAnimationFast = false;
 var Sidepannel_Positions = {};
 
 var Sidepannel_AnimationTimeout = 200;//Same value as side_panel_holder_ani
@@ -576,22 +578,22 @@ function Sidepannel_Scroll(skipAnimation) {
             value = document.getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
     }
 
-    if (!skipAnimation && Screens_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
-        !Screens_ChangeFocusAnimationFast) {
-        Screens_ChangeFocusAnimationFinished = false;
-        Screens_ChangeFocusAnimationFast = true;
+    if (!skipAnimation && Sidepannel_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
+        !Sidepannel_ChangeFocusAnimationFast) {
+        Sidepannel_ChangeFocusAnimationFinished = false;
+        Sidepannel_ChangeFocusAnimationFast = true;
 
         Sidepannel_ScroolDoc.style.transition = '';
 
         Main_setTimeout(
             function() {
-                Screens_ChangeFocusAnimationFinished = true;
+                Sidepannel_ChangeFocusAnimationFinished = true;
             },
             Sidepannel_AnimationTimeout //Same value as side_panel_holder_ani
         );
 
     } else {
-        if (skipAnimation) Screens_ChangeFocusAnimationFast = false;
+        if (skipAnimation) Sidepannel_ChangeFocusAnimationFast = false;
         Sidepannel_ScroolDoc.style.transition = 'none';
     }
 
@@ -619,7 +621,7 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_PG_UP:
         case KEY_UP:
-            if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+            if (Sidepannel_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed--;
                 Sidepannel_AddFocusFeed();
@@ -627,7 +629,7 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_PG_DOWN:
         case KEY_DOWN:
-            if (Screens_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+            if (Sidepannel_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed++;
                 Sidepannel_AddFocusFeed();

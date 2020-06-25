@@ -802,7 +802,7 @@ function Screens_addFocus(forceScroll, key) {
 //Also help to prevent lag on animation
 function Screens_LoadPreview(key) {
 
-    if (!Main_isStoped && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+    if (!Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
         var doc, ThumbId;
 
@@ -963,7 +963,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
     var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
     if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
-        x === Screens_Current_Key && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
+        x === Main_values.Main_Go && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 
         doc = document.getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
@@ -1564,6 +1564,8 @@ function Screens_handleKeyUpClear(key) {
 
 function Screens_handleKeyUpAnimationFast() {
     Screens_ChangeFocusAnimationFast = false;
+    Sidepannel_ChangeFocusAnimationFast = false;
+    UserLiveFeed_ChangeFocusAnimationFast = false;
 }
 
 function Screens_keyRight(key) {
