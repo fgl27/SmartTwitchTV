@@ -4524,7 +4524,7 @@
     function ChannelContent_LoadPreview() {
         if (Main_isScene1DocShown() && !Sidepannel_isShowing()) {
 
-            if (Settings_Obj_default('show_live_player')) {
+            if (!Main_isStoped && Settings_Obj_default('show_live_player')) {
 
                 var doc = document.getElementById('channel_content_cell0_1');
 
@@ -4595,7 +4595,7 @@
 
         var doc = document.getElementById('channel_content_cell0_1');
 
-        if (Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+        if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
             x === Main_values.Main_Go && doc &&
             Main_A_includes_B(document.getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
 
