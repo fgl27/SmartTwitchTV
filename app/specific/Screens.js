@@ -675,8 +675,9 @@ function Screens_CheckAutoRefresh(key, timeout) {
         function() {
             if (!ScreenObj[key].FirstLoad) {//the screen is not refreshing
 
-                if (!Main_isScene1DocShown() && ((ScreenObj[key].screenType !== 2 || !PlayClip_isOn) || //The screen is not showing and is not a clip screen and clip is not playing
-                    (key !== Main_values.Main_Go || Main_isStoped))) {//the screen is not selected
+                if (Main_isStoped ||
+                    ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
+                        (key !== Main_values.Main_Go))) {//the screen is not selected
 
                     Screens_StartLoad(key);
 
