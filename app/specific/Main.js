@@ -841,7 +841,7 @@ function Main_ThumbNull(y, x, thumbnail) {
     return document.getElementById(thumbnail + y + '_' + x) !== null;
 }
 
-function Main_ReStartScreens() {
+function Main_ReStartScreens(preventRefresh) {
     Main_updateclock();
     if (Sidepannel_isShowing()) {
         Main_addEventListener("keydown", Sidepannel_handleKeyDown);
@@ -849,10 +849,10 @@ function Main_ReStartScreens() {
         if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
         Sidepannel_AddFocusFeed(true);
         Main_SaveValues();
-    } else Main_SwitchScreen();
+    } else Main_SwitchScreen(false, preventRefresh);
 }
 
-function Main_SwitchScreen(removekey) {
+function Main_SwitchScreen(removekey, preventRefresh) {
     //Main_Log('Main_SwitchScreen removekey ' + removekey + ' Main_Go ' + Main_values.Main_Go);
 
     Main_HideWarningDialog();
@@ -861,7 +861,7 @@ function Main_SwitchScreen(removekey) {
 
     Main_CounterDialogRst();
 
-    if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun();
+    if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun(preventRefresh);
     else ScreenObj[1].init_fun();
 
     if (removekey) Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);

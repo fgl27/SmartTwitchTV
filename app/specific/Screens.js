@@ -134,7 +134,7 @@ function Screens_assign() {
 
 //Variable initialization end
 
-function Screens_init(key) {
+function Screens_init(key, preventRefresh) {
     //Main_Log('Screens_init ' + ScreenObj[key].screen);
     Main_addFocusVideoOffset = -1;
     Screens_Current_Key = key;//Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
@@ -146,7 +146,7 @@ function Screens_init(key) {
     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (!ScreenObj[key].status || Screens_RefreshTimeout(key) || !ScreenObj[key].offsettop ||
+    else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
         ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
         if (!ScreenObj[key].FirstLoad) Screens_StartLoad(key);

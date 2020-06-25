@@ -79,8 +79,8 @@ var Base_obj = {
     exit_fun: function() {
         Screens_exit(this.screen);
     },
-    init_fun: function() {
-        Screens_init(this.screen);
+    init_fun: function(preventRefresh) {
+        Screens_init(this.screen, preventRefresh);
     },
     start_fun: function() {
         Screens_StartLoad(this.screen);

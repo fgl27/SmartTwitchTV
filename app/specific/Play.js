@@ -1255,7 +1255,7 @@ function Play_exitMain() {
     Play_HideBufferDialog();
     Main_showScene1Doc();
     Main_hideScene2Doc();
-    Main_ReStartScreens();
+    Main_ReStartScreens(true);
 }
 
 function Play_ClearPlayer() {

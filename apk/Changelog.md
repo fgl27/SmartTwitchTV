@@ -7,6 +7,17 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen
 
+Web Version June 25 2020
+==============
+
+* Improve auto refresh featuring
+
+Apk Version 3.0.208 - June 25 2020
+==============
+
+* Update ExoPlayer to latest version
+* General performance improves and bug fixes
+
 Web Version June 24 2020
 ==============
 
@@ -31,7 +42,7 @@ Apk Version 3.0.207 & Web Version June 21 2020
 
 * Allow to repeat the same notification, the individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show
 
-Apk Version 3.0.206 * June 21 2020
+Apk Version 3.0.206 - June 21 2020
 ==============
 
 * Fix keyboard and remote input from none TV devices or TV devices that don't use Android TV (use a modified phone version of the OS)
