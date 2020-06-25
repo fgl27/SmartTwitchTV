@@ -1241,6 +1241,7 @@ public class PlayerActivity extends Activity {
 
     //Close the app
     private void closeThis() {
+        CheckService();
         finishAndRemoveTask();
     }
 
