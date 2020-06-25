@@ -1877,12 +1877,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StartFeedPlayer(String uri, String masterPlaylistString, int position) {
-            StartFeedPlayer(uri, masterPlaylistString,  position, 0L, false);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod) {
             MainThreadHandler.post(() -> {
 
