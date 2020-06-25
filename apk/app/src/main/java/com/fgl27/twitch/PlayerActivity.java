@@ -1513,6 +1513,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public boolean isConnectedOrConnecting() {
+            return Tools.isConnectedOrConnecting(mWebViewContext);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public boolean isKeyboardConnected() {
             return getResources().getConfiguration().keyboard == Configuration.KEYBOARD_QWERTY;
         }
