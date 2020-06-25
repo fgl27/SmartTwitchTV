@@ -7922,10 +7922,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.207';
-    var Main_version_java = 1; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'June 24, 2020';
-    var Main_version_web = 4; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.208';
+    var Main_version_java = 2; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'June 25, 2020';
+    var Main_version_web = 5; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -8614,7 +8614,7 @@
         return document.getElementById(thumbnail + y + '_' + x) !== null;
     }
 
-    function Main_ReStartScreens() {
+    function Main_ReStartScreens(preventRefresh) {
         Main_updateclock();
         if (Sidepannel_isShowing()) {
             Main_addEventListener("keydown", Sidepannel_handleKeyDown);
@@ -8622,10 +8622,10 @@
             if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
             Sidepannel_AddFocusFeed(true);
             Main_SaveValues();
-        } else Main_SwitchScreen();
+        } else Main_SwitchScreen(false, preventRefresh);
     }
 
-    function Main_SwitchScreen(removekey) {
+    function Main_SwitchScreen(removekey, preventRefresh) {
         //Main_Log('Main_SwitchScreen removekey ' + removekey + ' Main_Go ' + Main_values.Main_Go);
 
         Main_HideWarningDialog();
@@ -8634,7 +8634,7 @@
 
         Main_CounterDialogRst();
 
-        if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun();
+        if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun(preventRefresh);
         else ScreenObj[1].init_fun();
 
         if (removekey) Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
@@ -15895,7 +15895,7 @@
         Play_HideBufferDialog();
         Main_showScene1Doc();
         Main_hideScene2Doc();
-        Main_ReStartScreens();
+        Main_ReStartScreens(true);
     }
 
     function Play_ClearPlayer() {
@@ -18766,7 +18766,7 @@
 
     //Variable initialization end
 
-    function Screens_init(key) {
+    function Screens_init(key, preventRefresh) {
         //Main_Log('Screens_init ' + ScreenObj[key].screen);
         Main_addFocusVideoOffset = -1;
         Screens_Current_Key = key; //Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
@@ -18778,7 +18778,7 @@
         Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-        else if (!ScreenObj[key].status || Screens_RefreshTimeout(key) || !ScreenObj[key].offsettop ||
+        else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
             ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
             if (!ScreenObj[key].FirstLoad) Screens_StartLoad(key);
@@ -21356,8 +21356,8 @@
         exit_fun: function() {
             Screens_exit(this.screen);
         },
-        init_fun: function() {
-            Screens_init(this.screen);
+        init_fun: function(preventRefresh) {
+            Screens_init(this.screen, preventRefresh);
         },
         start_fun: function() {
             Screens_StartLoad(this.screen);
