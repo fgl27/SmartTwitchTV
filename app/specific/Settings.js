@@ -331,6 +331,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "chat_timestamp": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    }
 };
 
 var Settings_FeedSort = [
@@ -1503,6 +1507,7 @@ function Settings_DialogShowChat() {
     Settings_value.chat_logging.values = yes_no;
     Settings_value.individual_lines.values = yes_no;
     Settings_value.chat_nickcolor.values = yes_no;
+    Settings_value.chat_timestamp.values = yes_no;
     Settings_value.clear_chat.values = yes_no;
 
     var obj = {
@@ -1523,6 +1528,12 @@ function Settings_DialogShowChat() {
             values: Settings_value.chat_individual_background.values,
             title: STR_CHAT_INDIVIDUAL_BACKGROUND,
             summary: STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY
+        },
+        chat_timestamp: {
+            defaultValue: Settings_value.chat_timestamp.defaultValue,
+            values: Settings_value.chat_timestamp.values,
+            title: STR_CHAT_TIMESTAMP,
+            summary: null
         },
         chat_nickcolor: {
             defaultValue: Settings_value.chat_nickcolor.defaultValue,

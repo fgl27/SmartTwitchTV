@@ -303,6 +303,10 @@ function Chat_loadChatSuccess(responseText, id) {
 
         if (!ChatLive_Highlight_Actions && mmessage.is_action) continue;
 
+        if (ChatLive_Show_TimeStamp) {
+            div += Play_timeS(comments[i].content_offset_seconds) + ' ';
+        }
+
         //Add badges
         if (mmessage.hasOwnProperty('user_badges')) {
 

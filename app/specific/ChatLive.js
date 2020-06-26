@@ -122,6 +122,7 @@ var ChatLive_User_Regex_Replace;
 var ChatLive_Channel_Regex_Search = [];
 var ChatLive_Channel_Regex_Replace = [];
 var ChatLive_Custom_Nick_Color;
+var ChatLive_Show_TimeStamp;
 var ChatLive_ClearChat;
 
 function ChatLive_SetOptions(chat_number, id) {
@@ -138,6 +139,7 @@ function ChatLive_SetOptions(chat_number, id) {
     ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
     chat_lineChatLive_Individual_Lines = Settings_value.individual_lines.defaultValue;
     ChatLive_Custom_Nick_Color = Settings_value.chat_nickcolor.defaultValue;
+    ChatLive_Show_TimeStamp = Settings_value.chat_timestamp.defaultValue;
     ChatLive_ClearChat = Settings_value.clear_chat.defaultValue;
 
     ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
@@ -1262,6 +1264,10 @@ function ChatLive_loadChatSuccess(message, chat_number) {
                 }
             );
         }
+    }
+
+    if (ChatLive_Show_TimeStamp) {
+        div += Main_clock_H_M + ' ';
     }
 
     //Add badges

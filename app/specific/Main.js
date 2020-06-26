@@ -1362,6 +1362,7 @@ function Main_ready(func) {
     } else document.addEventListener("DOMContentLoaded", func);
 }
 
+var Main_clock_H_M = '';
 function Main_getclock() {
     var date = new Date().getTime() + Main_ClockOffset,
         dayMonth;
@@ -1371,11 +1372,15 @@ function Main_getclock() {
     if (Main_IsDayFirst) dayMonth = STR_DAYS[date.getDay()] + ' ' + date.getDate() + ' ' + STR_MONTHS[date.getMonth()];
     else dayMonth = STR_DAYS[date.getDay()] + ' ' + STR_MONTHS[date.getMonth()] + ' ' + date.getDate();
 
-    return dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+    Main_clock_H_M = Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+
+    return dayMonth + ' ' + Main_clock_H_M;
 }
 
 function Main_updateclock() {
-    Main_textContent('label_clock', Main_getclock());
+    var clock = Main_getclock();
+    Main_textContent("stream_clock", clock);
+    Main_textContent('label_clock', clock);
     if (Main_RunningTime) Main_AboutDialogUpdateTime();
     Main_randomimg = '?' + parseInt(Math.random() * 100000);
     Screens_SetLastRefresh(Screens_Current_Key);
