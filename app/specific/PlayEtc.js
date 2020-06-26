@@ -319,7 +319,8 @@ function Play_EndCheckPreview(PlayVodClip) {
 }
 
 function Play_showEndDialog(PlayVodClip) {
-    Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
+    Play_EndCheckPreview(PlayVodClip);
+
     Main_ShowElement('dialog_end_stream');
     UserLiveFeed_SetHoldUp();
     Play_EndFocus = true;
@@ -385,7 +386,7 @@ function Play_EndText(PlayVodClip) {
             Play_CleanHideExit();
             Play_hideChat();
             //The content may have refreshed so re-check
-            if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
+            if (Play_PreviewVideoEnded) Play_EndCheckPreview(PlayVodClip);
 
             if (PlayVodClip === 1) {
                 PlayExtra_PicturePicture = false;
