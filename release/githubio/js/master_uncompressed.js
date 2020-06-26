@@ -11550,6 +11550,7 @@
 
         }
 
+        //The content may have refreshed so re-check
         if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
 
         return restorePreview;
@@ -12102,7 +12103,8 @@
     }
 
     function Play_showEndDialog(PlayVodClip) {
-        Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
+        Play_EndCheckPreview(PlayVodClip);
+
         Main_ShowElement('dialog_end_stream');
         UserLiveFeed_SetHoldUp();
         Play_EndFocus = true;
@@ -12167,7 +12169,8 @@
                     '0...');
                 Play_CleanHideExit();
                 Play_hideChat();
-                if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
+                //The content may have refreshed so re-check
+                if (Play_PreviewVideoEnded) Play_EndCheckPreview(PlayVodClip);
 
                 if (PlayVodClip === 1) {
                     PlayExtra_PicturePicture = false;
@@ -12800,6 +12803,7 @@
             }
         }
 
+        //The content may have refreshed so re-check
         if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
 
         return restorePreview;
@@ -18260,6 +18264,7 @@
 
         }
 
+        //The content may have refreshed so re-check
         if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
 
         return restorePreview;
