@@ -349,7 +349,7 @@ function Chat_loadChatSuccess(responseText, id) {
         } else {
 
             if (!ChatLive_Custom_Nick_Color && mmessage.hasOwnProperty('user_color')) {
-                nickColor = 'style="color: ' + calculateColorReplacement(mmessage.user_color) + ';"';
+                nickColor = 'style="color: ' + mmessage.user_color + ';"';
             } else {
                 nickColor = 'style="color: ' + (defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength]) + ';"';
             }

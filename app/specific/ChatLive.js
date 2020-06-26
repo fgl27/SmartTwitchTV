@@ -1310,7 +1310,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     } else {
 
         if (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) {
-            nickColor = 'style="color: ' + calculateColorReplacement(tags.color) + ';"';
+            nickColor = 'style="color: ' + tags.color + ';"';
         } else {
             nickColor = 'style="color: ' + (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]) + ';"';
         }

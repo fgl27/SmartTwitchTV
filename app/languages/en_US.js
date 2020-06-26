@@ -566,8 +566,8 @@ function en_USLang() {
     STR_GIFT_SUB_SENDER = " has gift a Tier";
     STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";
     STR_GIFT_SUB_MYSTERY = " has gift the channel ";
-    STR_CHAT_NICK_COLOR = "Better contrasted nick colors";
-    STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be visible on a dark background, use a custom easy to see color";
+    STR_CHAT_NICK_COLOR = "Readable nick colors";
+    STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
     STR_CHAT_CLEAR_MSG = "Clear chat, purge a user’s message";
     STR_CHAT_CLEAR_MSG_SUMMARY = "Purges chat messages from a specific user (typically after a timeout or ban)";
     STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";

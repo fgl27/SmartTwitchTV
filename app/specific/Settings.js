@@ -329,7 +329,7 @@ var Settings_value = {
     },
     "chat_nickcolor": {//Migrated to dialog
         "values": ["no", "yes"],
-        "defaultValue": 1
+        "defaultValue": 2
     },
 };
 
