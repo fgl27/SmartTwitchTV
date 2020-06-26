@@ -1328,8 +1328,8 @@
         STR_GIFT_SUB_SENDER = " has gift a Tier";
         STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";
         STR_GIFT_SUB_MYSTERY = " has gift the channel ";
-        STR_CHAT_NICK_COLOR = "Better contrasted nick colors";
-        STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be visible on a dark background, use a custom easy to see color";
+        STR_CHAT_NICK_COLOR = "Readable nick colors";
+        STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
         STR_CHAT_CLEAR_MSG = "Clear chat, purge a user’s message";
         STR_CHAT_CLEAR_MSG_SUMMARY = "Purges chat messages from a specific user (typically after a timeout or ban)";
         STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
@@ -6903,7 +6903,7 @@
         } else {
 
             if (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) {
-                nickColor = 'style="color: ' + calculateColorReplacement(tags.color) + ';"';
+                nickColor = 'style="color: ' + tags.color + ';"';
             } else {
                 nickColor = 'style="color: ' + (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]) + ';"';
             }
@@ -7528,7 +7528,7 @@
             } else {
 
                 if (!ChatLive_Custom_Nick_Color && mmessage.hasOwnProperty('user_color')) {
-                    nickColor = 'style="color: ' + calculateColorReplacement(mmessage.user_color) + ';"';
+                    nickColor = 'style="color: ' + mmessage.user_color + ';"';
                 } else {
                     nickColor = 'style="color: ' + (defaultColors[(comments[i].commenter.display_name).charCodeAt(0) % defaultColorsLength]) + ';"';
                 }
@@ -24427,7 +24427,7 @@
         },
         "chat_nickcolor": { //Migrated to dialog
             "values": ["no", "yes"],
-            "defaultValue": 1
+            "defaultValue": 2
         },
     };
 
@@ -30166,28 +30166,27 @@
         return tokenizedString.join(' ') + (bits ? (' ' + bits + ' bits') : '');
     }
 
-    function calculateColorReplacement(color) {
-        // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
-        var rgb = "#",
-            brightness = "0.5",
-            c, i;
+    // function calculateColorReplacement(color) {
+    //     // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+    //     var rgb = "#",
+    //         brightness = "0.5", c, i;
 
-        if (color === '#000000') return "#2cffa2"; //Black can't be see on a black background
+    //     if (color === '#000000') return "#2cffa2";//Black can't be see on a black background
 
-        color = String(color).replace(/[^0-9a-f]/gi, '');
-        if (color.length < 6) {
-            color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
-        }
+    //     color = String(color).replace(/[^0-9a-f]/gi, '');
+    //     if (color.length < 6) {
+    //         color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
+    //     }
 
-        for (i = 0; i < 3; i++) {
-            c = parseInt(color.substr(i * 2, 2), 16);
-            if (c < 10) c = 10;
-            c = Math.round(Math.min(Math.max(0, c + (c * brightness)), 255)).toString(16);
-            rgb += ("00" + c).substr(c.length);
-        }
+    //     for (i = 0; i < 3; i++) {
+    //         c = parseInt(color.substr(i * 2, 2), 16);
+    //         if (c < 10) c = 10;
+    //         c = Math.round(Math.min(Math.max(0, c + (c * brightness)), 255)).toString(16);
+    //         rgb += ("00" + c).substr(c.length);
+    //     }
 
-        return rgb;
-    }
+    //     return rgb;
+    // }
 
     function findCheerInToken(message, chat_number) {
         var cheerPrefixes = Object.keys(cheers[ChatLive_selectedChannel_id[chat_number]]),
