@@ -1381,8 +1381,10 @@ function Main_updateclock() {
     var clock = Main_getclock();
     Main_textContent("stream_clock", clock);
     Main_textContent('label_clock', clock);
+
     if (Main_RunningTime) Main_AboutDialogUpdateTime();
     Main_randomimg = '?' + parseInt(Math.random() * 100000);
+
     Screens_SetLastRefresh(Screens_Current_Key);
     UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
     Sidepannel_SetLastRefresh();
@@ -2002,15 +2004,15 @@ function Main_CheckResume() { // Called only by JAVA
         AddCode_refreshTokens(0, 0, null, null, null, true);
     }
 
+    Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+    Main_updateclock();
+
     if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
     else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 5000, Main_CheckResumeFeedId);
     }
-
-    Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-    Main_updateclock();
 
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
 

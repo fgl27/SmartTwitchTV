@@ -1158,12 +1158,6 @@ function Play_EndStart(hosting, PlayVodClip) {
     Play_PlayEndStart(PlayVodClip);
 }
 
-function Play_clock() {
-    var clock = Main_getclock();
-    Main_textContent("stream_clock", clock);
-    Main_textContent('label_clock', clock);
-}
-
 function Play_lessthanten(time) {
     return (time < 10) ? "0" + time : time;
 }
@@ -1456,7 +1450,6 @@ function Play_showPanel() {
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
     PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
-    Play_clock();
     Play_CleanHideExit();
     Play_ForceShowPannel();
     Play_clearHidePanel();

@@ -531,7 +531,6 @@ function PlayClip_hidePanel() {
 
 function PlayClip_showPanel() {
     PlayVod_RefreshProgressBarr();
-    Play_clock();
     PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();
