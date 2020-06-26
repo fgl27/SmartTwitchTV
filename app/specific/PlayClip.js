@@ -627,15 +627,18 @@ function PlayClip_CheckPreview() {
 }
 
 function PlayClip_CheckPreviewClip() {
+    var restorePreview = false;
 
     var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
     if (doc) {
 
-        return Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
+        restorePreview = Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
 
     }
 
-    return false;
+    if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
+
+    return restorePreview;
 }
 
 function PlayClip_handleKeyDown(e) {

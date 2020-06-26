@@ -301,7 +301,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_EndIconsAddFocus();
 }
 
-function Play_showEndDialog(PlayVodClip) {
+function Play_EndCheckPreview(PlayVodClip) {
     //Check if the video that ends is the same focused
     if (PlayVodClip === 1) {//live
 
@@ -316,7 +316,10 @@ function Play_showEndDialog(PlayVodClip) {
         Play_PreviewVideoEnded = PlayClip_CheckPreviewClip();
 
     }
+}
 
+function Play_showEndDialog(PlayVodClip) {
+    Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
     Main_ShowElement('dialog_end_stream');
     UserLiveFeed_SetHoldUp();
     Play_EndFocus = true;
@@ -381,6 +384,7 @@ function Play_EndText(PlayVodClip) {
                 '0...');
             Play_CleanHideExit();
             Play_hideChat();
+            if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
 
             if (PlayVodClip === 1) {
                 PlayExtra_PicturePicture = false;
@@ -402,6 +406,7 @@ function Play_EndText(PlayVodClip) {
             );
         }
     } else {
+        //wait to show to start the counter
         Play_EndTextID = Main_setTimeout(
             function() {
                 Play_EndText(PlayVodClip);
@@ -1012,6 +1017,8 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
 
         }
     }
+
+    if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
 
     return restorePreview;
 }

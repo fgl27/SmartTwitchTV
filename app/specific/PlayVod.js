@@ -918,6 +918,8 @@ function PlayVod_CheckPreviewVod() {
 
     }
 
+    if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
+
     return restorePreview;
 }
 
