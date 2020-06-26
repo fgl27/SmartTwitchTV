@@ -11541,15 +11541,18 @@
     }
 
     function PlayClip_CheckPreviewClip() {
+        var restorePreview = false;
 
         var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
         if (doc) {
 
-            return Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
+            restorePreview = Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
 
         }
 
-        return false;
+        if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
+
+        return restorePreview;
     }
 
     function PlayClip_handleKeyDown(e) {
@@ -12081,7 +12084,7 @@
         Play_EndIconsAddFocus();
     }
 
-    function Play_showEndDialog(PlayVodClip) {
+    function Play_EndCheckPreview(PlayVodClip) {
         //Check if the video that ends is the same focused
         if (PlayVodClip === 1) { //live
 
@@ -12096,7 +12099,10 @@
             Play_PreviewVideoEnded = PlayClip_CheckPreviewClip();
 
         }
+    }
 
+    function Play_showEndDialog(PlayVodClip) {
+        Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
         Main_ShowElement('dialog_end_stream');
         UserLiveFeed_SetHoldUp();
         Play_EndFocus = true;
@@ -12161,6 +12167,7 @@
                     '0...');
                 Play_CleanHideExit();
                 Play_hideChat();
+                if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
 
                 if (PlayVodClip === 1) {
                     PlayExtra_PicturePicture = false;
@@ -12182,6 +12189,7 @@
                 );
             }
         } else {
+            //wait to show to start the counter
             Play_EndTextID = Main_setTimeout(
                 function() {
                     Play_EndText(PlayVodClip);
@@ -12791,6 +12799,8 @@
 
             }
         }
+
+        if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
 
         return restorePreview;
     }
@@ -18249,6 +18259,8 @@
             }
 
         }
+
+        if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
 
         return restorePreview;
     }

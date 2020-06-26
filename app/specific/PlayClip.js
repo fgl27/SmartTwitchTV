@@ -636,6 +636,7 @@ function PlayClip_CheckPreviewClip() {
 
     }
 
+    //The content may have refreshed so re-check
     if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
 
     return restorePreview;

@@ -384,6 +384,7 @@ function Play_EndText(PlayVodClip) {
                 '0...');
             Play_CleanHideExit();
             Play_hideChat();
+            //The content may have refreshed so re-check
             if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = Play_EndCheckPreview(PlayVodClip);
 
             if (PlayVodClip === 1) {
@@ -1018,6 +1019,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
         }
     }
 
+    //The content may have refreshed so re-check
     if (Play_PreviewVideoEnded) Play_PreviewVideoEnded = restorePreview;
 
     return restorePreview;
