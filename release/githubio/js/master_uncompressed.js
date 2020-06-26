@@ -597,6 +597,7 @@
     var STR_NOTIFICATION_REPEAT;
     var STR_NOTIFICATION_REPEAT_SUMMARY;
     var STR_WEB_UPDATE_AVAILABLE;
+    var STR_CHAT_TIMESTAMP;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1328,6 +1329,7 @@
         STR_GIFT_SUB_SENDER = " has gift a Tier";
         STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";
         STR_GIFT_SUB_MYSTERY = " has gift the channel ";
+        STR_CHAT_TIMESTAMP = "Show message timestamp";
         STR_CHAT_NICK_COLOR = "Readable nick colors";
         STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
         STR_CHAT_CLEAR_MSG = "Clear chat, purge a user’s message";
@@ -5728,6 +5730,7 @@
     var ChatLive_Channel_Regex_Search = [];
     var ChatLive_Channel_Regex_Replace = [];
     var ChatLive_Custom_Nick_Color;
+    var ChatLive_Show_TimeStamp;
     var ChatLive_ClearChat;
 
     function ChatLive_SetOptions(chat_number, id) {
@@ -5744,6 +5747,7 @@
         ChatLive_Show_SUB = Settings_value.show_sub.defaultValue;
         chat_lineChatLive_Individual_Lines = Settings_value.individual_lines.defaultValue;
         ChatLive_Custom_Nick_Color = Settings_value.chat_nickcolor.defaultValue;
+        ChatLive_Show_TimeStamp = Settings_value.chat_timestamp.defaultValue;
         ChatLive_ClearChat = Settings_value.clear_chat.defaultValue;
 
         ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
@@ -6857,6 +6861,10 @@
             }
         }
 
+        if (ChatLive_Show_TimeStamp) {
+            div += Main_clock_H_M + ' ';
+        }
+
         //Add badges
         if (tags.hasOwnProperty('badges')) {
             if (typeof tags.badges === 'string') {
@@ -7482,6 +7490,10 @@
 
             if (!ChatLive_Highlight_Actions && mmessage.is_action) continue;
 
+            if (ChatLive_Show_TimeStamp) {
+                div += Play_timeS(comments[i].content_offset_seconds) + ' ';
+            }
+
             //Add badges
             if (mmessage.hasOwnProperty('user_badges')) {
 
@@ -7924,8 +7936,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.208';
     var Main_version_java = 2; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'June 25, 2020';
-    var Main_version_web = 6; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'June 26, 2020';
+    var Main_version_web = 7; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9135,6 +9147,8 @@
         } else document.addEventListener("DOMContentLoaded", func);
     }
 
+    var Main_clock_H_M = '';
+
     function Main_getclock() {
         var date = new Date().getTime() + Main_ClockOffset,
             dayMonth;
@@ -9144,13 +9158,19 @@
         if (Main_IsDayFirst) dayMonth = STR_DAYS[date.getDay()] + ' ' + date.getDate() + ' ' + STR_MONTHS[date.getMonth()];
         else dayMonth = STR_DAYS[date.getDay()] + ' ' + STR_MONTHS[date.getMonth()] + ' ' + date.getDate();
 
-        return dayMonth + ' ' + Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+        Main_clock_H_M = Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+
+        return dayMonth + ' ' + Main_clock_H_M;
     }
 
     function Main_updateclock() {
-        Main_textContent('label_clock', Main_getclock());
+        var clock = Main_getclock();
+        Main_textContent("stream_clock", clock);
+        Main_textContent('label_clock', clock);
+
         if (Main_RunningTime) Main_AboutDialogUpdateTime();
         Main_randomimg = '?' + parseInt(Math.random() * 100000);
+
         Screens_SetLastRefresh(Screens_Current_Key);
         UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
         Sidepannel_SetLastRefresh();
@@ -9777,15 +9797,15 @@
             AddCode_refreshTokens(0, 0, null, null, null, true);
         }
 
+        Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+        Main_updateclock();
+
         if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
         else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
 
         if (UserIsSet) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 5000, Main_CheckResumeFeedId);
         }
-
-        Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-        Main_updateclock();
 
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
 
@@ -11425,7 +11445,6 @@
 
     function PlayClip_showPanel() {
         PlayVod_RefreshProgressBarr();
-        Play_clock();
         PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
         Play_CleanHideExit();
         PlayVod_IconsBottonResetFocus();
@@ -15798,12 +15817,6 @@
         Play_PlayEndStart(PlayVodClip);
     }
 
-    function Play_clock() {
-        var clock = Main_getclock();
-        Main_textContent("stream_clock", clock);
-        Main_textContent('label_clock', clock);
-    }
-
     function Play_lessthanten(time) {
         return (time < 10) ? "0" + time : time;
     }
@@ -16099,7 +16112,6 @@
         if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
         Play_RefreshWatchingtime();
         PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
-        Play_clock();
         Play_CleanHideExit();
         Play_ForceShowPannel();
         Play_clearHidePanel();
@@ -17918,7 +17930,6 @@
     function PlayVod_showPanel(autoHide) {
         if (Play_getQualitiesFail) Play_getQualities(2, true);
         PlayVod_RefreshProgressBarr(autoHide);
-        Play_clock();
         Play_CleanHideExit();
         PlayVod_RefreshProgressBarrID = Main_setInterval(
             function() {
@@ -24429,6 +24440,10 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
+        "chat_timestamp": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        }
     };
 
     var Settings_FeedSort = [
@@ -25626,6 +25641,7 @@
         Settings_value.chat_logging.values = yes_no;
         Settings_value.individual_lines.values = yes_no;
         Settings_value.chat_nickcolor.values = yes_no;
+        Settings_value.chat_timestamp.values = yes_no;
         Settings_value.clear_chat.values = yes_no;
 
         var obj = {
@@ -25646,6 +25662,12 @@
                 values: Settings_value.chat_individual_background.values,
                 title: STR_CHAT_INDIVIDUAL_BACKGROUND,
                 summary: STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY
+            },
+            chat_timestamp: {
+                defaultValue: Settings_value.chat_timestamp.defaultValue,
+                values: Settings_value.chat_timestamp.values,
+                title: STR_CHAT_TIMESTAMP,
+                summary: null
             },
             chat_nickcolor: {
                 defaultValue: Settings_value.chat_nickcolor.defaultValue,

@@ -7,6 +7,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen
 
+Web Version June 26 2020
+==============
+
+* Add a setting options to enable chat message timestamp  (Settings > Chat options > Show message timestamp) disable by default
+
 Web Version June 25 2020
 ==============
 
