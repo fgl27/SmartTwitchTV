@@ -844,9 +844,6 @@ var emojis = [
 		"unicode": "✒️",
 		"tags": "pen"
 	}, {
-		"unicode": "🖋️",
-		"tags": "pen2"
-	}, {
 		"unicode": "📝",
 		"tags": "note-pencil"
 	}, {
