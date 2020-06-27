@@ -1,6 +1,5 @@
 include ':app'
-gradle.ext.exoplayerRoot = '../../ExoPlayer'
+gradle.ext.exoplayerRoot = "$rootDir/../../ExoPlayer"
 gradle.ext.exoplayerModulePrefix = 'exoplayer-'
-apply from: new File(
-    gradle.ext.exoplayerRoot, 'core_settings.gradle')
+apply from: new File(gradle.ext.exoplayerRoot, 'core_settings.gradle')
 
