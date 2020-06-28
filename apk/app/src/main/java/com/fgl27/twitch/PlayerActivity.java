@@ -1205,6 +1205,7 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        CheckService();
         for (int i = 0; i < PlayerAccountPlus; i++) {
             ClearPlayer(i);
         }
