@@ -2011,7 +2011,7 @@ function Main_CheckResume() { // Called only by JAVA
     else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
-        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 5000, Main_CheckResumeFeedId);
+        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 2000, Main_CheckResumeFeedId);
     }
 
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min

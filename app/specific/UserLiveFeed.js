@@ -358,12 +358,13 @@ function UserLiveFeed_CheckRefreshAfterResume() {
 
     if (Settings_Obj_default("auto_refresh_screen")) {
 
-        var i = 0, run = 1, len = UserLiveFeedobj_MAX + 1, date = new Date().getTime();
+        var i = 0, run = 1, len = (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1, date = new Date().getTime();
 
         for (i; i < len; i++) {
 
             if (UserLiveFeed_lastRefresh[i] &&
-                i !== UserLiveFeedobj_UserVodHistoryPos && i !== UserLiveFeedobj_UserHistoryPos &&
+                i !== UserLiveFeedobj_UserLivePos && //User live already refresh on resume
+                i !== UserLiveFeedobj_UserVodHistoryPos && i !== UserLiveFeedobj_UserHistoryPos && //History screen don' need refresh
                 date > (UserLiveFeed_lastRefresh[i] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
                 UserLiveFeed_CheckRefresh(i, run * 5000);
