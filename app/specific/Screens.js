@@ -696,11 +696,12 @@ function Screens_CheckRefreshAfterResume() {
 
     if (Settings_Obj_default("auto_refresh_screen")) {
 
-        var i = 0, run = 1, len = Main_HistoryClip + 1, date = new Date().getTime();
+        var i = 0, run = 1, len = Main_HistoryClip + 1, date = new Date().getTime(), UserIsSet = AddUser_UserIsSet();
 
         for (i; i < len; i++) {
 
             if (ScreenObj[i] && ScreenObj[i].lastRefresh &&
+                (UserIsSet || !ScreenObj[i].IsUser) && //prevent check a user screen in case all users have be deleted
                 date > (ScreenObj[i].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
                 Screens_CheckAutoRefresh(i, run * 5000);
