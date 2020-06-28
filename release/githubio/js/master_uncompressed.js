@@ -1,4 +1,4 @@
-/* jshint undef: true, unused: true, node: true, browser: true */
+/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */
 /*globals Android, punycode, smartTwitchTV */
 /* exported Play_CheckResume */
 (function(root) {
@@ -7933,8 +7933,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.209';
     var Main_version_java = 3; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'June 26, 2020';
-    var Main_version_web = 7; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'June 28, 2020';
+    var Main_version_web = 8; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9801,7 +9801,7 @@
         else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
 
         if (UserIsSet) {
-            Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 5000, Main_CheckResumeFeedId);
+            Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 2000, Main_CheckResumeFeedId);
         }
 
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
@@ -19357,11 +19357,13 @@
             var i = 0,
                 run = 1,
                 len = Main_HistoryClip + 1,
-                date = new Date().getTime();
+                date = new Date().getTime(),
+                UserIsSet = AddUser_UserIsSet();
 
             for (i; i < len; i++) {
 
                 if (ScreenObj[i] && ScreenObj[i].lastRefresh &&
+                    (UserIsSet || !ScreenObj[i].IsUser) && //prevent check a user screen in case all users have be deleted
                     date > (ScreenObj[i].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
                     Screens_CheckAutoRefresh(i, run * 5000);
@@ -21512,7 +21514,6 @@
             ids: Screens_ScreenIds('Vod'),
             table: 'stream_table_vod',
             screen: Main_Vod,
-            thread: 3,
             highlightSTR: 'Vod_highlight',
             highlight: Main_getItemBool('Vod_highlight', false),
             periodPos: Main_getItemInt('vod_periodPos', 2),
@@ -21571,7 +21572,6 @@
             time: ['time', 'views'],
             extraoffset: 0,
             OffSetPos: 0,
-            thread: 1,
             highlightSTR: 'ChannelVod_highlight',
             highlight: Main_getItemBool('ChannelVod_highlight', false),
             periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
@@ -21648,7 +21648,6 @@
             ids: Screens_ScreenIds('AGameVod'),
             table: 'stream_table_a_game_vod',
             screen: Main_AGameVod,
-            thread: 1,
             highlightSTR: 'AGameVod_highlight',
             highlight: Main_getItemBool('AGameVod_highlight', false),
             periodPos: Main_getItemInt('AGameVod_periodPos', 2),
@@ -21708,7 +21707,7 @@
             ids: Screens_ScreenIds('UserVod'),
             table: 'stream_table_user_vod',
             screen: Main_UserVod,
-            thread: 4,
+            IsUser: true,
             time: ['time', 'views'],
             highlightSTR: 'UserVod_highlight',
             highlight: Main_getItemBool('UserVod_highlight', false),
@@ -21826,7 +21825,6 @@
             ids: Screens_ScreenIds('Live'),
             table: 'stream_table_live',
             screen: Main_Live,
-            thread: 0,
             object: 'streams',
             key_pgDown: Main_Featured,
             key_pgUp: Main_Clip,
@@ -21856,7 +21854,6 @@
             ids: Screens_ScreenIds('SearchLive'),
             table: 'stream_table_search_live',
             screen: Main_SearchLive,
-            thread: 1,
             object: 'streams',
             base_url: Main_kraken_api + 'search/streams?limit=' + Main_ItemsLimitMax + '&query=',
             set_url: function() {
@@ -21895,8 +21892,8 @@
             ids: Screens_ScreenIds('UserLive'),
             table: 'stream_table_user_live',
             screen: Main_UserLive,
-            thread: 0,
             object: 'streams',
+            IsUser: true,
             key_pgDown: Main_UserHost,
             key_pgUp: Main_HistoryLive,
             base_url: Main_kraken_api + 'streams/',
@@ -22002,7 +21999,7 @@
             table: 'stream_table_user_host',
             screen: Main_UserHost,
             object: 'hosts',
-            thread: 1,
+            IsUser: true,
             key_pgDown: Main_usergames,
             key_pgUp: Main_UserLive,
             base_url: 'https://api.twitch.tv/api/users/',
@@ -22052,7 +22049,6 @@
             table: 'stream_table_a_game',
             screen: Main_aGame,
             object: 'streams',
-            thread: 1,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             base_url: Main_kraken_api + 'streams?game=',
@@ -22105,7 +22101,6 @@
             ids: Screens_ScreenIds('Featured'),
             table: 'stream_table_featured',
             screen: Main_Featured,
-            thread: 1,
             key_pgDown: Main_games,
             key_pgUp: Main_Live,
             base_url: Main_kraken_api + 'streams/featured?limit=' + Main_ItemsLimitMax,
@@ -22213,7 +22208,6 @@
             screen: Main_Clip,
             key_pgDown: Main_Live,
             key_pgUp: Main_Vod,
-            thread: 4,
             periodPos: Main_getItemInt('Clip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
             set_url: function() {
@@ -22246,7 +22240,6 @@
             ids: Screens_ScreenIds('ChannelClip'),
             table: 'stream_table_channel_clip',
             screen: Main_ChannelClip,
-            thread: 2,
             key_pgUp: Main_ChannelVod,
             periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?channel=',
@@ -22282,7 +22275,6 @@
             ids: Screens_ScreenIds('AGameClip'),
             table: 'stream_table_a_game_clip',
             screen: Main_AGameClip,
-            thread: 2,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             periodPos: Main_getItemInt('AGameClip_periodPos', 2),
@@ -22381,7 +22373,6 @@
             ids: Screens_ScreenIds('Game'),
             table: 'stream_table_games',
             screen: Main_games,
-            thread: 2,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             object: 'top',
@@ -22408,12 +22399,12 @@
             ids: Screens_ScreenIds('UserGames'),
             table: 'stream_table_user_games',
             screen: Main_usergames,
-            thread: 2,
             key_pgDownNext: Main_UserChannels,
             key_pgDown: Main_UserVod,
             key_pgUp: Main_UserHost,
             isLive: Main_getItemBool('user_Games_live', true),
             OldUserName: '',
+            IsUser: true,
             object: 'follows',
             base_url: 'https://api.twitch.tv/api/users/',
             set_url: function() {
@@ -22458,7 +22449,6 @@
             ids: Screens_ScreenIds('SearchGames'),
             table: 'stream_table_search_game',
             screen: Main_SearchGames,
-            thread: 1,
             isLive: false,
             OldUserName: '',
             object: 'games',
@@ -22554,8 +22544,8 @@
             ids: Screens_ScreenIds('UserChannels'),
             table: 'stream_table_user_channels',
             screen: Main_UserChannels,
-            thread: 4,
             object: 'follows',
+            IsUser: true,
             key_pgDown: Main_History[Main_HistoryPos],
             key_pgUp: Main_UserVod,
             key_pgUpNext: Main_usergames,
@@ -22591,7 +22581,6 @@
             ids: Screens_ScreenIds('SearchChannels'),
             table: 'stream_table_search_channel',
             screen: Main_SearchChannels,
-            thread: 1,
             object: 'channels',
             base_url: Main_kraken_api + 'search/channels?limit=' + Main_ItemsLimitMax + '&query=',
             set_url: function() {
@@ -27352,13 +27341,14 @@
 
             var i = 0,
                 run = 1,
-                len = UserLiveFeedobj_MAX + 1,
+                len = (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1,
                 date = new Date().getTime();
 
             for (i; i < len; i++) {
 
                 if (UserLiveFeed_lastRefresh[i] &&
-                    i !== UserLiveFeedobj_UserVodHistoryPos && i !== UserLiveFeedobj_UserHistoryPos &&
+                    i !== UserLiveFeedobj_UserLivePos && //User live already refresh on resume
+                    i !== UserLiveFeedobj_UserVodHistoryPos && i !== UserLiveFeedobj_UserHistoryPos && //History screen don' need refresh
                     date > (UserLiveFeed_lastRefresh[i] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
                     UserLiveFeed_CheckRefresh(i, run * 5000);
