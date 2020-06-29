@@ -2036,7 +2036,9 @@ function Main_CheckAccessibility(skipRefresCheck) {
         else {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
-            if ((Screens_Isfocused() || ChannelContent_Isfocused()) && !skipRefresCheck) {
+            if ((Screens_Isfocused() || ChannelContent_Isfocused()) &&
+                (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
+                !skipRefresCheck) {
                 Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
                 Main_SwitchScreen();
             }

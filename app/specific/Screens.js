@@ -141,7 +141,11 @@ function Screens_init(key, preventRefresh) {
     Main_values.Main_Go = key;
     ScreenObj[key].label_init();
 
-    if (Main_isScene1DocShown()) Main_addEventListener("keydown", ScreenObj[key].key_fun);
+    if (Main_isScene1DocShown() &&
+        !Sidepannel_isShowing() &&
+        !Sidepannel_MainisShowing()) {
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
+    }
 
     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
@@ -803,7 +807,8 @@ function Screens_addFocus(forceScroll, key) {
 //Also help to prevent lag on animation
 function Screens_LoadPreview(key) {
 
-    if (!Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+    if (!Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() &&
+        (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
         var doc, ThumbId;
 
@@ -963,7 +968,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
     var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
-    if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+    if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') &&
+        (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
         x === Main_values.Main_Go && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 

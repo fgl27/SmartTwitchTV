@@ -422,6 +422,10 @@ function Sidepannel_StartMain() {
     Sidepannel_AddFocusMain();
 }
 
+function Sidepannel_MainisShowing() {
+    return Sidepannel_FixDiv.style.marginLeft !== '';
+}
+
 function Sidepannel_HideMain(hideAll) {
     var size = AddUser_UsernameArray[0] ? AddUser_UsernameArray[0].display_name.length : STR_USER_ADD;
     size = (size > 11 ? size - 11 : 0);
