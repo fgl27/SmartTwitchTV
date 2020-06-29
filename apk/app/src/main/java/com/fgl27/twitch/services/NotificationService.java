@@ -249,7 +249,7 @@ public class NotificationService extends Service {
     }
 
     private void DoNotifications() {
-        if (CheckUserChanged() || !Tools.isConnectedOrConnecting(context)) return;
+        if (CheckUserChanged() || !Tools.isConnected(context)) return;
 
         ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
         Channels = "";

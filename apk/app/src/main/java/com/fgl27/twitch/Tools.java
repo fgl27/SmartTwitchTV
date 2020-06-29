@@ -869,15 +869,12 @@ public final class Tools {
         ContextCompat.startForegroundService(context, intent);
     }
 
-    public static boolean isConnectedOrConnecting(Context context) {
+    public static boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) return true;
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-        NetworkInfo activeNetwork = null;
-        if (cm != null) {
-            activeNetwork = cm.getActiveNetworkInfo();
-        }
-
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        return activeNetwork != null && activeNetwork.isConnected();
     }
 
     public static void hideKeyboardFrom(Context context, View view) {

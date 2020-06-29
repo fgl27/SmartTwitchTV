@@ -1054,7 +1054,7 @@ public class PlayerActivity extends Activity {
 
     private void NetworkCheck() {
         MainThreadHandler.postDelayed(() -> {
-            if (Tools.isConnectedOrConnecting(this)){
+            if (Tools.isConnected(this)){
                 HideWarningText();
                 initializeWebviewEnd();
             } else NetworkCheck();
@@ -1109,7 +1109,7 @@ public class PlayerActivity extends Activity {
         IsStopped = false;
         if (!WebviewLoaded) return;
 
-        if (Tools.isConnectedOrConnecting(this)) DoResume();
+        if (Tools.isConnected(this)) DoResume();
         else if (AlreadyStarted) {
             ShowNoNetworkResumeWarning();
         }
@@ -1134,7 +1134,7 @@ public class PlayerActivity extends Activity {
 
     private void NetworkResumeCheck() {
         MainThreadHandler.postDelayed(() -> {
-            if (Tools.isConnectedOrConnecting(this)){
+            if (Tools.isConnected(this)){
                 HideWarningText();
                 DoResume();
             } else {
@@ -1362,7 +1362,7 @@ public class PlayerActivity extends Activity {
 
         });
 
-        if (Tools.isConnectedOrConnecting(this)) initializeWebviewEnd();
+        if (Tools.isConnected(this)) initializeWebviewEnd();
         else ShowNoNetworkWarning();
 
         mWebView.requestFocus();
@@ -1514,8 +1514,8 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public boolean isConnectedOrConnecting() {
-            return Tools.isConnectedOrConnecting(mWebViewContext);
+        public boolean isConnected() {
+            return Tools.isConnected(mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
