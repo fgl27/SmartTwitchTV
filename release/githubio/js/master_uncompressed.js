@@ -9826,7 +9826,9 @@
             else {
                 Main_CheckAccessibilityHide(false);
                 //if focused and showing force a refresh check
-                if ((Screens_Isfocused() || ChannelContent_Isfocused()) && !skipRefresCheck) {
+                if ((Screens_Isfocused() || ChannelContent_Isfocused()) &&
+                    (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
+                    !skipRefresCheck) {
                     Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
                     Main_SwitchScreen();
                 }
@@ -18798,7 +18800,11 @@
         Main_values.Main_Go = key;
         ScreenObj[key].label_init();
 
-        if (Main_isScene1DocShown()) Main_addEventListener("keydown", ScreenObj[key].key_fun);
+        if (Main_isScene1DocShown() &&
+            !Sidepannel_isShowing() &&
+            !Sidepannel_MainisShowing()) {
+            Main_addEventListener("keydown", ScreenObj[key].key_fun);
+        }
 
         Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
@@ -19465,7 +19471,8 @@
     //Also help to prevent lag on animation
     function Screens_LoadPreview(key) {
 
-        if (!Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+        if (!Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() &&
+            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
             !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
             var doc, ThumbId;
 
@@ -19625,7 +19632,8 @@
 
         var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
-        if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+        if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') &&
+            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
             x === Main_values.Main_Go && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
             doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 
@@ -26655,6 +26663,10 @@
         Sidepannel_FixDiv.style.marginLeft = '';
         Main_addEventListener("keydown", Sidepannel_handleKeyDownMain);
         Sidepannel_AddFocusMain();
+    }
+
+    function Sidepannel_MainisShowing() {
+        return Sidepannel_FixDiv.style.marginLeft !== '';
     }
 
     function Sidepannel_HideMain(hideAll) {
