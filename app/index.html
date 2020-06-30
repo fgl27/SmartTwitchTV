@@ -2056,7 +2056,7 @@
         div.side_panel_iner_div2_pp,
         div.side_panel_iner_div2,
         div.side_panel_iner_div3 {
-            width: 16%;
+            width: 15.4%;
             display: inline-block;
             overflow: hidden;
         }
@@ -2069,18 +2069,18 @@
             width: 8%;
         }
 
-        div.side_panel_iner_div2_pp,
-        div.side_panel_iner_div2_multi,
         div.side_panel_iner_div2_multi_dialog,
         div.side_panel_iner_div2 {
             width: 60%;
             padding-left: 0.2em;
-            padding-top: 0.25em;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
         div.side_panel_iner_div2_pp,
-        div.side_panel_iner_div2_multi_dialog,
         div.side_panel_iner_div2_multi {
+            padding-left: 0.2em;
             padding-top: 0;
             width: 75%;
         }
@@ -2096,7 +2096,11 @@
         }
 
         div.side_panel_iner_div3 {
-            width: 17%;
+            width: 20%;
+            position: absolute;
+            right: 2%;
+            top: 50%;
+            transform: translateY(-60%);
         }
 
         img.notify_img {
@@ -2105,16 +2109,19 @@
             top: 4%;
         }
 
-        img.panel_pp_img,
+        img.side_panel_channel_img,
+        img.panel_pp_img {
+            position: relative;
+        }
+
         img.multi_info_img,
-        img.multi_info_img_big,
-        img.side_panel_channel_img {
+        img.multi_info_img_big {
             position: absolute;
             top: 0;
         }
 
         img.side_panel_channel_img {
-            width: 15%;
+            width: 100%;
         }
 
         img.panel_pp_img {
@@ -3455,7 +3462,7 @@
                             <div id="stream_dialog_multi_div_big0" class="multi_dialog_div">
                                 <div style="width: 100%; text-align: left;">
                                     <div id="stream_dialog_multiimgholder_big0" class="side_panel_iner_div1"></div>
-                                    <div class="side_panel_iner_div2_multi_dialog" style="margin-top: 2%;">
+                                    <div class="side_panel_iner_div2_multi_dialog">
                                         <div id="stream_dialog_multi_name_big0" class="side_panel_new_title"></div>
                                         <div id="stream_dialog_multi_title_big0" class="side_panel_new_game"></div>
                                         <div id="stream_dialog_multi_game_big0" class="side_panel_new_game"></div>
