@@ -1399,14 +1399,14 @@ function Play_ForceShowPannel() {
     //Play_PanneInfoDoclId.style.opacity = "1";
     Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'hide');
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElement('playsideinfo');
-    else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClass('playsideinfo', 'playsideinfofocus');
 }
 
 function Play_ForceHidePannel() {
     //Play_PanneInfoDoclId.style.opacity = "0";
     Main_AddClassWitEle(Play_PanneInfoDoclId, 'hide');
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
-    else Main_AddClass('playsideinfo', 'playsideinfofocus');
+    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
 }
 
 var Play_ShowPanelStatusId;
