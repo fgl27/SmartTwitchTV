@@ -1101,7 +1101,7 @@
         STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from preview feed";
         STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
         STR_PLAYER_INFO_VISIBILITY = "Player status visibility";
-        STR_PLAYER_INFO_VISIBILITY_SUMMARY = "The player status show the current video status, as quality, network activity, skipped frame etc.";
+        STR_PLAYER_INFO_VISIBILITY_SUMMARY = "The player status show the current video status as quality, network activity, skipped frame etc.";
         STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always", "Never"];
         STR_SINGLE_EXIT = "Single return key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture or 50/50 mode with a single key return click";
@@ -16077,14 +16077,14 @@
         //Play_PanneInfoDoclId.style.opacity = "1";
         Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'hide');
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElement('playsideinfo');
-        else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClass('playsideinfo', 'playsideinfofocus');
     }
 
     function Play_ForceHidePannel() {
         //Play_PanneInfoDoclId.style.opacity = "0";
         Main_AddClassWitEle(Play_PanneInfoDoclId, 'hide');
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
-        else Main_AddClass('playsideinfo', 'playsideinfofocus');
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
     }
 
     var Play_ShowPanelStatusId;
