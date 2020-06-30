@@ -11,7 +11,7 @@ Apk Version 3.0.210 & Web Version June 30 2020
 ==============
 
 * General performance improves and bug fixes
-* Allow to disable the player status information the one that shows quality, network activity, skipped frame etc.
+* Allow to disable the player status the one that shows quality, network activity, skipped frame etc.
 
 Web Version June 28 2020
 ==============
