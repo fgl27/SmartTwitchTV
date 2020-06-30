@@ -298,7 +298,7 @@
     var STR_PICTURE_CONTROLS8;
     var STR_PICTURE_CONTROLS9;
     var STR_PICTURE_CONTROLS10;
-    var STR_KEEP_INFO_VISIBLE;
+    var STR_PLAYER_INFO_VISIBILITY;
     var STR_PICTURE_CONTROLS11;
     var STR_CHAT_5050;
     var STR_CHAT_PP_SIDE_FULL;
@@ -598,6 +598,8 @@
     var STR_NOTIFICATION_REPEAT_SUMMARY;
     var STR_WEB_UPDATE_AVAILABLE;
     var STR_CHAT_TIMESTAMP;
+    var STR_PLAYER_INFO_VISIBILITY_SUMMARY;
+    var STR_PLAYER_INFO_VISIBILITY_ARRAY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1098,7 +1100,9 @@
         STR_PICTURE_CONTROLS11 = "Close small or bottom window (Picture in Picture only): return key twice will exit PP or 50/50 mode";
         STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from preview feed";
         STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
-        STR_KEEP_INFO_VISIBLE = "Keep player status always visible";
+        STR_PLAYER_INFO_VISIBILITY = "Player status visibility";
+        STR_PLAYER_INFO_VISIBILITY_SUMMARY = "The player status show the current video status, as quality, network activity, skipped frame etc.";
+        STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always", "Never"];
         STR_SINGLE_EXIT = "Single return key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture or 50/50 mode with a single key return click";
         STR_NOW_LIVE = "Now Live";
@@ -14700,7 +14704,6 @@
     var Play_STATE_LOADING_TOKEN = 0;
     var Play_STATE_PLAYING = 1;
     var Play_state = 0;
-    var Play_Status_Always_On = false;
     var Play_SingleClickExit = 0;
     var Play_MultiEnable = false;
     var Play_MultiArray = [];
@@ -16073,21 +16076,21 @@
     function Play_ForceShowPannel() {
         //Play_PanneInfoDoclId.style.opacity = "1";
         Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'hide');
-        if (!Play_Status_Always_On) Main_ShowElement('playsideinfo');
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElement('playsideinfo');
         else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
     }
 
     function Play_ForceHidePannel() {
         //Play_PanneInfoDoclId.style.opacity = "0";
         Main_AddClassWitEle(Play_PanneInfoDoclId, 'hide');
-        if (!Play_Status_Always_On) Main_HideElement('playsideinfo');
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
         else Main_AddClass('playsideinfo', 'playsideinfofocus');
     }
 
     var Play_ShowPanelStatusId;
 
     function Play_ShowPanelStatus(mwhocall) {
-        if (Play_Status_Always_On) {
+        if (Settings_Obj_default("keep_panel_info_visible") === 1) {
 
             if (Main_IsOn_OSInterface) {
                 Play_ShowPanelStatusId = Main_setInterval(
@@ -16166,7 +16169,7 @@
                 (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_created)));
         }
 
-        if (!Play_Status_Always_On) {
+        if (!Settings_Obj_default("keep_panel_info_visible")) {
             if (Main_IsOn_OSInterface) {
                 if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
                 OSInterface_getVideoStatus(true);
@@ -16485,7 +16488,7 @@
             Play_DurationSeconds = duration / 1000;
             Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
             PlayVod_RefreshProgressBarr();
-            if (!Play_Status_Always_On) OSInterface_getVideoStatus(false);
+            if (!Settings_Obj_default("keep_panel_info_visible")) OSInterface_getVideoStatus(false);
             if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true); //duration may have changed update the positions
         }
     }
@@ -17966,7 +17969,7 @@
     }
 
     function PlayVod_RefreshProgressBarr(show) {
-        if (!Play_Status_Always_On) {
+        if (!Settings_Obj_default("keep_panel_info_visible")) {
             if (Main_IsOn_OSInterface && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
                 OSInterface_getVideoQuality(1);
 
@@ -24152,7 +24155,7 @@
             "defaultValue": 1
         },
         "keep_panel_info_visible": {
-            "values": ["no", "yes"],
+            "values": ["with panel", "yes", "never"],
             "defaultValue": 1
         },
         "single_click_exit": {
@@ -24564,7 +24567,7 @@
         // Player settings title
         div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-        div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
+        div += Settings_Content('keep_panel_info_visible', STR_PLAYER_INFO_VISIBILITY_ARRAY, STR_PLAYER_INFO_VISIBILITY, STR_PLAYER_INFO_VISIBILITY_SUMMARY);
 
         div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
@@ -24671,8 +24674,8 @@
         Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
 
         key = "keep_panel_info_visible";
-        Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
-        Settings_value[key].values = [STR_NO, STR_YES];
+        Settings_DivOptionChangeLang(key, STR_PLAYER_INFO_VISIBILITY, STR_PLAYER_INFO_VISIBILITY_SUMMARY);
+        Settings_value[key].values = STR_PLAYER_INFO_VISIBILITY_ARRAY;
 
         key = "single_click_exit";
         Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
@@ -24721,7 +24724,6 @@
         Settings_notification_background();
         Settings_notification_position();
         Settings_notification_repeat();
-        Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
         Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
         Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
@@ -24803,7 +24805,6 @@
         else if (position === "live_notification_background") Settings_notification_background();
         else if (position === "live_notification_position") Settings_notification_position();
         else if (position === "repeat_notification") Settings_notification_repeat();
-        else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
         else if (position === "ping_warn") Settings_SetPingWarning();
         else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         else if (position === "app_animations") Settings_SetAnimations();
@@ -25000,7 +25001,7 @@
         var doc,
             offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
-        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (13 + offset)) {
+        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (14 + offset)) {
             doc = document.getElementById('settings_scroll');
             doc.scrollTop = doc.scrollHeight;
             if (Settings_Obj_default("app_animations")) {
@@ -25008,7 +25009,7 @@
                 doc.scrollTop = 0;
                 scrollTo(doc, position, 200);
             }
-        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (12 + offset)) {
+        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (13 + offset)) {
             doc = document.getElementById('settings_scroll');
             if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
             else doc.scrollTop = 0;
