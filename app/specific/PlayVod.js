@@ -622,7 +622,7 @@ function PlayVod_showPanel(autoHide) {
 }
 
 function PlayVod_RefreshProgressBarr(show) {
-    if (!Play_Status_Always_On) {
+    if (!Settings_Obj_default("keep_panel_info_visible")) {
         if (Main_IsOn_OSInterface && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
             OSInterface_getVideoQuality(1);
 

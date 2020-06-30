@@ -34,7 +34,6 @@ var Play_controlsAudioPos = 1;
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_PLAYING = 1;
 var Play_state = 0;
-var Play_Status_Always_On = false;
 var Play_SingleClickExit = 0;
 var Play_MultiEnable = false;
 var Play_MultiArray = [];
@@ -1399,20 +1398,20 @@ function Play_hidePanel() {
 function Play_ForceShowPannel() {
     //Play_PanneInfoDoclId.style.opacity = "1";
     Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'hide');
-    if (!Play_Status_Always_On) Main_ShowElement('playsideinfo');
+    if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElement('playsideinfo');
     else Main_RemoveClass('playsideinfo', 'playsideinfofocus');
 }
 
 function Play_ForceHidePannel() {
     //Play_PanneInfoDoclId.style.opacity = "0";
     Main_AddClassWitEle(Play_PanneInfoDoclId, 'hide');
-    if (!Play_Status_Always_On) Main_HideElement('playsideinfo');
+    if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
     else Main_AddClass('playsideinfo', 'playsideinfofocus');
 }
 
 var Play_ShowPanelStatusId;
 function Play_ShowPanelStatus(mwhocall) {
-    if (Play_Status_Always_On) {
+    if (Settings_Obj_default("keep_panel_info_visible") === 1) {
 
         if (Main_IsOn_OSInterface) {
             Play_ShowPanelStatusId = Main_setInterval(
@@ -1490,7 +1489,7 @@ function Play_RefreshWatchingtime() {
             (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_created)));
     }
 
-    if (!Play_Status_Always_On) {
+    if (!Settings_Obj_default("keep_panel_info_visible")) {
         if (Main_IsOn_OSInterface) {
             if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
             OSInterface_getVideoStatus(true);
@@ -1809,7 +1808,7 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
         Play_DurationSeconds = duration / 1000;
         Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
         PlayVod_RefreshProgressBarr();
-        if (!Play_Status_Always_On) OSInterface_getVideoStatus(false);
+        if (!Settings_Obj_default("keep_panel_info_visible")) OSInterface_getVideoStatus(false);
         if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true);//duration may have changed update the positions
     }
 }

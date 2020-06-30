@@ -34,7 +34,7 @@ var Settings_value = {
         "defaultValue": 1
     },
     "keep_panel_info_visible": {
-        "values": ["no", "yes"],
+        "values": ["with panel", "yes", "never"],
         "defaultValue": 1
     },
     "single_click_exit": {
@@ -444,7 +444,7 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    div += Settings_Content('keep_panel_info_visible', array_no_yes, STR_KEEP_INFO_VISIBLE, null);
+    div += Settings_Content('keep_panel_info_visible', STR_PLAYER_INFO_VISIBILITY_ARRAY, STR_PLAYER_INFO_VISIBILITY, STR_PLAYER_INFO_VISIBILITY_SUMMARY);
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
@@ -550,8 +550,8 @@ function Settings_SetStrings() {
     Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
 
     key = "keep_panel_info_visible";
-    Main_textContent(key + '_name', STR_KEEP_INFO_VISIBLE);
-    Settings_value[key].values = [STR_NO, STR_YES];
+    Settings_DivOptionChangeLang(key, STR_PLAYER_INFO_VISIBILITY, STR_PLAYER_INFO_VISIBILITY_SUMMARY);
+    Settings_value[key].values = STR_PLAYER_INFO_VISIBILITY_ARRAY;
 
     key = "single_click_exit";
     Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
@@ -600,7 +600,6 @@ function Settings_SetDefautls() {
     Settings_notification_background();
     Settings_notification_position();
     Settings_notification_repeat();
-    Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
@@ -682,7 +681,6 @@ function Settings_SetDefault(position) {
     else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "live_notification_position") Settings_notification_position();
     else if (position === "repeat_notification") Settings_notification_repeat();
-    else if (position === "keep_panel_info_visible") Play_Status_Always_On = Settings_Obj_default("keep_panel_info_visible");
     else if (position === "ping_warn") Settings_SetPingWarning();
     else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     else if (position === "app_animations") Settings_SetAnimations();
