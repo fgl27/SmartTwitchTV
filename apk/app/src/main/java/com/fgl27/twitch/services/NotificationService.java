@@ -271,7 +271,7 @@ public class NotificationService extends Service {
 
         Channels = Channels.substring(0, Channels.length() - 1);
 
-        Tools.ResponseObj response;
+        Tools.ResponseObj response = null;
         JsonObject obj;
         JsonArray streams;
         int StreamsSize;
@@ -367,7 +367,8 @@ public class NotificationService extends Service {
             if (StreamsSize == 0) break;//break out of the while
         }
 
-        if (CheckUserChanged()) return;
+        //Prevent run service if last response is not successful or user has changed durring check
+        if (CheckUserChanged() || response == null || response.getStatus() != 200) return;
 
         if (Notify && result.size() > 0) {
 
