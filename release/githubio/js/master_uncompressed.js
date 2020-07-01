@@ -9742,6 +9742,8 @@
         Main_clearInterval(Main_checkWebVersionId);
         Main_clearTimeout(Main_checkWebVersionResumeId);
         Main_clearTimeout(Screens_CheckRefreshAfterResumeId);
+        Main_clearTimeout(Main_CheckResumeFeedId);
+        Main_clearTimeout(Main_CheckResumeVodsId);
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 
@@ -28161,6 +28163,7 @@
     var UserSidePannel_LastPos;
 
     function UserLiveFeedobj_CheckToken() {
+        Main_clearTimeout(Main_CheckResumeFeedId);
 
         if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
             UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
