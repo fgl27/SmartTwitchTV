@@ -14959,16 +14959,13 @@
         }
 
         Play_CurrentSpeed = 3;
-
         Play_ShowPanelStatus(1);
         Play_IconsResetFocus();
 
-        if (!Main_IsOn_OSInterface) Play_UpdateMainStream(true, true);
-
-        Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
-
         Main_values.Play_WasPlaying = 1;
         Main_SaveValues();
+        //Check the Play_UpdateMainStream fun when on a browser
+        if (!Main_IsOn_OSInterface) Play_UpdateMainStream(true, true);
     }
 
     // To Force a warn, not used regularly so keep commented out
@@ -15156,11 +15153,7 @@
         if (navigator.onLine) Play_ResumeAfterOnline();
         else Play_ResumeAfterOnlineId = Main_setInterval(Play_ResumeAfterOnline, 100, Play_ResumeAfterOnlineId);
 
-        if (!Play_MultiEnable) Play_data.watching_time = new Date().getTime();
-
-        Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
         Play_ShowPanelStatus(1);
-
     }
 
     function Play_ResumeAfterOnline() {
@@ -15168,6 +15161,7 @@
             Main_clearInterval(Play_ResumeAfterOnlineId);
             Play_CheckIfIsLiveCleanEnd();
             if (Play_MultiEnable) {
+                Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
                 Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
                 ChatLive_Init(0);
@@ -15184,6 +15178,7 @@
                 }
 
             } else {
+                Play_data.watching_time = new Date().getTime();
                 Play_state = Play_STATE_LOADING_TOKEN;
                 // TO test a if a stream has ended during a resume process force change this
                 //PlayExtra_data.data[6] = 'testtt';
@@ -15449,21 +15444,6 @@
         }
     }
 
-    function Play_updateStreamInfoMulti(pos) {
-        Main_setTimeout(
-            function() {
-                if (Play_MultiArray[pos].data.length > 0) {
-                    Play_RefreshMultiGet(
-                        Main_kraken_api + 'streams/' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag_I,
-                        0,
-                        pos
-                    );
-                }
-            },
-            (pos * 2000)
-        );
-    }
-
     function Play_LoadLogo(ImgObjet, link) {
         ImgObjet.onerror = function() {
             this.onerror = null;
@@ -15549,21 +15529,21 @@
             PlayClip_PreshutdownStream(false);
             PlayClip_isOn = false;
         }
-
         Play_EndDialogEnter = 0;
 
-        Play_EndSet(1);
-        UserLiveFeed_SetFeedPicText();
         Play_HideEndDialog();
+        ChatLive_Playing = true;
         Play_UpdateMainStream(startChat, true);
 
         Play_data.playlist = playlist;
         Play_state = Play_STATE_PLAYING;
         if (Play_isOn) Play_onPlayer();
+
         Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
         UserLiveFeed_PreventHide = false;
-        ChatLive_Playing = true;
 
+        UserLiveFeed_SetFeedPicText();
+        Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
         if (!Play_data.isHost && !SkipSaveHistory) Main_Set_history('live', Play_data.data);
     }
 
@@ -16692,6 +16672,21 @@
      */
 
     //All multistream related fun are placed here
+
+    function Play_updateStreamInfoMulti(pos) {
+        Main_setTimeout(
+            function() {
+                if (Play_MultiArray[pos].data.length > 0) {
+                    Play_RefreshMultiGet(
+                        Main_kraken_api + 'streams/' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag_I,
+                        0,
+                        pos
+                    );
+                }
+            },
+            (pos * 1000)
+        );
+    }
 
     function Play_RefreshMultiGet(theUrl, tryes, pos) {
         var xmlHttp = new XMLHttpRequest();
