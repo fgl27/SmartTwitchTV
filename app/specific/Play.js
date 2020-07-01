@@ -852,22 +852,21 @@ function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory) {
         PlayClip_PreshutdownStream(false);
         PlayClip_isOn = false;
     }
-
     Play_EndDialogEnter = 0;
 
-    Play_EndSet(1);
-    UserLiveFeed_SetFeedPicText();
     Play_HideEndDialog();
+    ChatLive_Playing = true;
     Play_UpdateMainStream(startChat, true);
-    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
 
     Play_data.playlist = playlist;
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_onPlayer();
+
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     UserLiveFeed_PreventHide = false;
-    ChatLive_Playing = true;
 
+    UserLiveFeed_SetFeedPicText();
+    Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
     if (!Play_data.isHost && !SkipSaveHistory) Main_Set_history('live', Play_data.data);
 }
 
