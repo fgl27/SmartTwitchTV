@@ -72,6 +72,7 @@ function UserLiveFeedobj_StartDefault(pos) {
 var UserSidePannel_LastPos;
 
 function UserLiveFeedobj_CheckToken() {
+    Main_clearTimeout(Main_CheckResumeFeedId);
 
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
         UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];

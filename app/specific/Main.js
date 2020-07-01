@@ -1949,6 +1949,8 @@ function Main_CheckStop() { // Called only by JAVA
     Main_clearInterval(Main_checkWebVersionId);
     Main_clearTimeout(Main_checkWebVersionResumeId);
     Main_clearTimeout(Screens_CheckRefreshAfterResumeId);
+    Main_clearTimeout(Main_CheckResumeFeedId);
+    Main_clearTimeout(Main_CheckResumeVodsId);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 
