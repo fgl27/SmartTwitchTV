@@ -20,6 +20,21 @@
 
 //All multistream related fun are placed here
 
+function Play_updateStreamInfoMulti(pos) {
+    Main_setTimeout(
+        function() {
+            if (Play_MultiArray[pos].data.length > 0) {
+                Play_RefreshMultiGet(
+                    Main_kraken_api + 'streams/' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag_I,
+                    0,
+                    pos
+                );
+            }
+        },
+        (pos * 1000)
+    );
+}
+
 function Play_RefreshMultiGet(theUrl, tryes, pos) {
     var xmlHttp = new XMLHttpRequest();
 
