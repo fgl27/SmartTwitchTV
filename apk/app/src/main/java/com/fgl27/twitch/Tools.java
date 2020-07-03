@@ -563,7 +563,7 @@ public final class Tools {
                         buffer + 1000 //DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
                 )
                 .setTargetBufferBytes(DeviceRam)
-                .createDefaultLoadControl();
+                .build();
     }
 
     public static boolean isBehindLiveWindow(ExoPlaybackException e) {
