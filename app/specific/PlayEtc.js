@@ -558,7 +558,9 @@ function Play_StopStay() {
 
 function Play_StartStay() {
     if (!ChatLive_loaded[0]) ChatLive_Init(0);
+    Play_showChat();
     Play_UpdateMainStreamDiv();
+    Play_data.watching_time = new Date().getTime();
     Play_state = Play_STATE_PLAYING;
 
     Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 10);
@@ -690,6 +692,7 @@ function Play_StayCheckLiveResultEnd(responseObj) {
 
         Play_data.AutoUrl = responseObj.url;
         Play_loadDataSuccessend(responseObj.responseText, false, true);
+        Play_ShowPanelStatus(1);
         return;
 
     } else if (responseObj.status === 1 || responseObj.status === 403 ||

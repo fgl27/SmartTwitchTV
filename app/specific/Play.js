@@ -240,7 +240,7 @@ function Play_SetQuality() {
     PlayVod_qualityPlaying = Play_data.quality;
 }
 
-function Play_Start() {
+function Play_Start(offline_chat) {
     //Main_Log('Play_Start');
 
     Play_LoadLogoSucess = false;
@@ -273,7 +273,9 @@ function Play_Start() {
     Play_Playing = false;
     Play_state = Play_STATE_LOADING_TOKEN;
 
-    if (!Play_PreviewId) {
+    if (offline_chat) {
+        Play_StartStay();
+    } else if (!Play_PreviewId) {
         Play_showBufferDialog();
         Play_loadData();
     } else {
@@ -1378,6 +1380,9 @@ function Play_hidePanel() {
 function Play_ForceShowPannel() {
     //Play_PanneInfoDoclId.style.opacity = "1";
     Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'hide');
+
+    if (Play_StayDialogVisible()) return;
+
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElement('playsideinfo');
     else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClass('playsideinfo', 'playsideinfofocus');
 }
@@ -1391,7 +1396,7 @@ function Play_ForceHidePannel() {
 
 var Play_ShowPanelStatusId;
 function Play_ShowPanelStatus(mwhocall) {
-    if (Settings_Obj_default("keep_panel_info_visible") === 1) {
+    if (Settings_Obj_default("keep_panel_info_visible") === 1 && Play_StayDialogVisible()) {
 
         if (Main_IsOn_OSInterface) {
             Play_ShowPanelStatusId = Main_setInterval(
@@ -1461,6 +1466,13 @@ function Play_RefreshWatchingtime() {
 
         Main_innerHTML("stream_info_pp_livetime1", STR_SINCE +
             (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(PlayExtra_data.data[12])));
+    } else if (Play_StayDialogVisible()) {
+
+        Main_innerHTML("stream_live_time",
+            STR_WAITING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+        Main_textContent("stream_watching_time", '');
+        Main_innerHTML("stream_live_viewers", '');
+
     } else {
         Main_innerHTML("stream_watching_time", "," +
             STR_SPACE + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));

@@ -1231,7 +1231,6 @@ function Main_OPenAsVod_PreshutdownStream() {
 function Main_openStream() {
     //Main_Log('Main_openStream');
     Main_hideScene1Doc();
-    Main_removeEventListener("keydown", Play_handleKeyDown);
     Main_addEventListener("keydown", Play_handleKeyDown);
     Main_showScene2Doc();
     Play_hidePanel();

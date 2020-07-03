@@ -51,6 +51,7 @@ function en_USLang() {
     STR_PLAYING = "Playing ";
     STR_FOR = "for ";
     STR_WATCHING = "Watch time ";
+    STR_WAITING = "Waiting time ";
     STR_SINCE = "Since ";
     STR_AGAME = "A Game";
     STR_PLACEHOLDER_SEARCH = "Type your search...";
@@ -209,6 +210,7 @@ function en_USLang() {
     STR_FEATURED = 'Featured';
     STR_CREATED_AT = "Created ";
     STR_OPEN_BROADCAST = "Open the Broadcast";
+    STR_OPEN_CHAT = "Click to open chat and/or wait to be back online";
     STR_STAY_OPEN = "Stay on the stream";
     STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back online";
     STR_STAY_CHECK = "Check if stream is back online in:";
