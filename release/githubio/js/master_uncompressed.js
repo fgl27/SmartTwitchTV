@@ -11496,6 +11496,8 @@
         document.getElementById('controls_' + Play_controlsOpenVod).style.display = PlayClip_HasVOD ? 'inline-block' : 'none';
     }
 
+    var PlayClip_OpenAVod = false;
+
     function PlayClip_OpenVod() {
         if (PlayClip_HasVOD) {
             Play_DurationSeconds = 0;
@@ -11503,7 +11505,8 @@
             PlayClip_PreshutdownStream(true);
             Main_addEventListener("keydown", PlayVod_handleKeyDown);
             Play_IconsResetFocus();
-            Main_ready(PlayVod_Start);
+            PlayClip_OpenAVod = true;
+            PlayVod_Start();
         } else {
             Play_clearHidePanel();
             Play_IsWarning = true;
@@ -17905,6 +17908,7 @@
         Main_ShowElement('controls_holder');
         Main_ShowElement('progress_pause_holder');
         PlayVod_isOn = false;
+        PlayClip_OpenAVod = true;
         Main_clearInterval(PlayVod_SaveOffsetId);
         Main_clearTimeout(PlayVod_WarnEndId);
         Main_values.Play_WasPlaying = 0;
@@ -19339,7 +19343,7 @@
                 if (!ScreenObj[key].FirstLoad) { //the screen is not refreshing
 
                     if (Main_isStoped ||
-                        ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || !PlayClip_isOn)) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
+                        ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
                             (key !== Main_values.Main_Go))) { //the screen is not selected
 
                         Screens_StartLoad(key);
@@ -20046,7 +20050,8 @@
 
             ScreenObj[key].addFocus(forceScroll, key);
 
-            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+            if (key === Main_values.Main_Go && !Settings_isVisible())
+                Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
         });
     }
