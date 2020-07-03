@@ -1381,7 +1381,8 @@ function Screens_addrowEnd(forceScroll, key) {
 
         ScreenObj[key].addFocus(forceScroll, key);
 
-        Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+        if (key === Main_values.Main_Go && !Settings_isVisible())
+            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
     });
 }
