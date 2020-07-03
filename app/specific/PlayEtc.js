@@ -229,9 +229,15 @@ function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
             IMG_PARTNER + '">') : "");
 
     if (!live_vod_clip) {
+        var isStay = Play_StayDialogVisible();
+        var text = STR_LIVE;
+
+        if (rerun) text = STR_NOT_LIVE;
+        else if (isStay) text = STR_CH_IS_OFFLINE;
+
         div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #' +
-            (rerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
-            STR_SPACE + STR_SPACE + (rerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
+            (rerun || isStay ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
+            STR_SPACE + STR_SPACE + text + STR_SPACE + STR_SPACE + '</div>';
     } else if (live_vod_clip === 1) {
         div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #00a94b">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>';
     } else div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
@@ -559,7 +565,6 @@ function Play_StopStay() {
 function Play_StartStay() {
     if (!ChatLive_loaded[0]) ChatLive_Init(0);
     Play_showChat();
-    Play_UpdateMainStreamDiv();
     Play_data.watching_time = new Date().getTime();
     Play_state = Play_STATE_PLAYING;
 
@@ -573,6 +578,8 @@ function Play_StartStay() {
         1000,
         Play_StartStayTryId
     );
+
+    Play_UpdateMainStreamDiv();
 }
 
 function Play_StartStayCheck(time) {

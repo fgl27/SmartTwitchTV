@@ -541,7 +541,8 @@ function Play_UpdateMainStreamDiv() {
             Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
             Play_data.data[10],
             0,
-            Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''
+            Play_data.data[5] ? Play_data.data[5].split(' ')[1] : '',
+            Play_data.data[8]
         )
     );
     Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));

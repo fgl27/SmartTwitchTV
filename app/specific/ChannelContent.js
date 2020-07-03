@@ -396,7 +396,7 @@ function ChannelContent_keyEnter() {
             Play_data.data = [
                 null,//0
                 Main_values.Main_selectedChannelDisplayname,//1
-                STR_CH_IS_OFFLINE,//2
+                STR_SPACE,//2
                 '',//3
                 '',//4
                 '',//5
@@ -474,7 +474,6 @@ function ChannelContent_handleKeyUpClear() {
 }
 
 function ChannelContent_handleKeyDown(event) {
-    console.log(event.keyCode)
     if (Main_FirstLoad || Main_CantClick()) return;
 
     Main_keyClickDelayStart();
