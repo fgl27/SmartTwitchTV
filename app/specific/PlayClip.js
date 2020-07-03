@@ -577,6 +577,7 @@ function PlayClip_SetOpenVod() {
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = PlayClip_HasVOD ? 'inline-block' : 'none';
 }
 
+var PlayClip_OpenAVod = false;
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
         Play_DurationSeconds = 0;
@@ -584,7 +585,8 @@ function PlayClip_OpenVod() {
         PlayClip_PreshutdownStream(true);
         Main_addEventListener("keydown", PlayVod_handleKeyDown);
         Play_IconsResetFocus();
-        Main_ready(PlayVod_Start);
+        PlayClip_OpenAVod = true;
+        PlayVod_Start();
     } else {
         Play_clearHidePanel();
         Play_IsWarning = true;
