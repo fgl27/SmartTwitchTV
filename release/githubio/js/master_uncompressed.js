@@ -600,6 +600,8 @@
     var STR_CHAT_TIMESTAMP;
     var STR_PLAYER_INFO_VISIBILITY_SUMMARY;
     var STR_PLAYER_INFO_VISIBILITY_ARRAY;
+    var STR_OPEN_CHAT;
+    var STR_WAITING;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -816,6 +818,7 @@
         STR_PLAYING = "Playing ";
         STR_FOR = "for ";
         STR_WATCHING = "Watch time ";
+        STR_WAITING = "Waiting time ";
         STR_SINCE = "Since ";
         STR_AGAME = "A Game";
         STR_PLACEHOLDER_SEARCH = "Type your search...";
@@ -974,6 +977,7 @@
         STR_FEATURED = 'Featured';
         STR_CREATED_AT = "Created ";
         STR_OPEN_BROADCAST = "Open the Broadcast";
+        STR_OPEN_CHAT = "Click to open chat and/or wait to be back online";
         STR_STAY_OPEN = "Stay on the stream";
         STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back online";
         STR_STAY_CHECK = "Check if stream is back online in:";
@@ -4072,7 +4076,6 @@
         ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname);
         Main_updateclock();
         Main_innerHTML("label_last_refresh", '');
-        ChannelContent_isoffline = false;
         Main_HideElement('channel_content_scroll');
         ChannelContent_offline_image = null;
         Main_showLoadDialog();
@@ -4290,20 +4293,21 @@
 
     function ChannelContent_createCellOffline() {
         ChannelContent_isoffline = true;
-        Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img class="stream_img" alt="" src="' +
+        Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img id="channel_content_cell0_1_img" class="stream_img" alt="" src="' +
             (ChannelContent_offline_image ? (ChannelContent_offline_image + Main_randomimg) : IMG_404_VIDEO) +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
             '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder" style="font-size: 150%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
             Main_values.Main_selectedChannelDisplayname + '</div><div class="stream_info_live" style="width:0%; float: right; text-align: right; display: inline-block;"></div></div>' +
-            '<div class="stream_info_live">' + STR_CH_IS_OFFLINE + '</div></div>' +
+            '<div class="stream_info_live">' + STR_CH_IS_OFFLINE +
+            '</div><div class="stream_info_live_title">' + STR_OPEN_CHAT + '</div></div>' +
             '</div>');
     }
 
     function ChannelContent_loadDataSuccessFinish() {
         if (!ChannelContent_status) {
             ChannelContent_status = true;
-            if (!ChannelContent_isoffline) ChannelContent_cursorY = 1;
             Main_ShowElement('channel_content_scroll');
+            ChannelContent_cursorY = 1;
             ChannelContent_addFocus();
             Main_HideLoadDialog();
             Main_SaveValues();
@@ -4379,19 +4383,50 @@
             Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
             Main_HideElement('channel_content_scroll');
 
-            Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
-                .getAttribute(Main_DataAttribute));
+            if (ChannelContent_isoffline) {
 
-            Play_data.data = Main_values_Play_data;
-            Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+                Play_data.data = [
+                    null, //0
+                    Main_values.Main_selectedChannelDisplayname, //1
+                    STR_SPACE, //2
+                    '', //3
+                    '', //4
+                    '', //5
+                    Main_values.Main_selectedChannel, //6
+                    '', //7 broadcast id
+                    false, //8
+                    Main_values.Main_selectedChannelLogo, //9
+                    Main_values.Main_selectedChannelPartner, //10
+                    '', //11
+                    0, //12
+                    0, //13
+                    null //14
+                ];
+                Play_data.isHost = false;
+                Main_values.Play_isHost = false;
 
-            if (Main_values.Play_isHost) {
-                Play_data.DisplaynameHost = Play_data.data[1];
-                Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
-                Play_data.data[14] = ChannelContent_TargetId;
-            } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
+                Main_hideScene1Doc();
+                Main_addEventListener("keydown", Play_handleKeyDown);
+                Main_showScene2Doc();
+                Play_hidePanel();
+                Play_Start(true);
 
-            Main_ready(Main_openStream);
+            } else {
+
+                Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
+                    .getAttribute(Main_DataAttribute));
+
+                Play_data.data = Main_values_Play_data;
+                Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+
+                if (Main_values.Play_isHost) {
+                    Play_data.DisplaynameHost = Play_data.data[1];
+                    Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+                    Play_data.data[14] = ChannelContent_TargetId;
+                } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
+
+                Main_openStream();
+            }
         }
     }
 
@@ -4471,7 +4506,7 @@
                 }
                 break;
             case KEY_UP:
-                if (!ChannelContent_cursorY && !ChannelContent_isoffline) {
+                if (!ChannelContent_cursorY) {
                     ChannelContent_removeFocus();
                     ChannelContent_cursorY = 1;
                     ChannelContent_addFocus();
@@ -4482,7 +4517,7 @@
                 }
                 break;
             case KEY_DOWN:
-                if (!ChannelContent_cursorY && !ChannelContent_isoffline) {
+                if (!ChannelContent_cursorY) {
                     ChannelContent_removeFocus();
                     ChannelContent_cursorY = 1;
                     ChannelContent_addFocus();
@@ -4492,8 +4527,12 @@
                     ChannelContent_addFocus();
                 }
                 break;
+            case KEY_PAUSE: //key s
+            case KEY_6:
+                ChannelContent_removeFocus();
+                Main_showSettings();
+                break;
             case KEY_PLAY:
-            case KEY_PAUSE:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
                 ChannelContent_keyEnter();
@@ -4525,7 +4564,8 @@
 
 
     function ChannelContent_LoadPreview() {
-        if (Main_isScene1DocShown() && !Sidepannel_isShowing()) {
+        if (!ChannelContent_isoffline && Main_isScene1DocShown() &&
+            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
 
             if (!Main_isStoped && Settings_Obj_default('show_live_player')) {
 
@@ -4598,7 +4638,9 @@
 
         var doc = document.getElementById('channel_content_cell0_1');
 
-        if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') && !Sidepannel_isShowing() &&
+        if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocShown() &&
+            !Main_isElementShowing('dialog_thumb_opt') &&
+            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
             x === Main_values.Main_Go && doc &&
             Main_A_includes_B(document.getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
 
@@ -4652,6 +4694,8 @@
     }
 
     function ChannelContent_RestoreThumb(play_data) {
+        if (ChannelContent_isoffline) return false;
+
         var doc = document.getElementById('channel_content_cell0_1');
 
         if (doc && ChannelContent_cursorY) {
@@ -7937,8 +7981,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.211';
     var Main_version_java = 5; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 01, 2020';
-    var Main_version_web = 8; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 03, 2020';
+    var Main_version_web = 9; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9017,7 +9061,6 @@
     function Main_openStream() {
         //Main_Log('Main_openStream');
         Main_hideScene1Doc();
-        Main_removeEventListener("keydown", Play_handleKeyDown);
         Main_addEventListener("keydown", Play_handleKeyDown);
         Main_showScene2Doc();
         Play_hidePanel();
@@ -12021,9 +12064,15 @@
                 IMG_PARTNER + '">') : "");
 
         if (!live_vod_clip) {
+            var isStay = Play_StayDialogVisible();
+            var text = STR_LIVE;
+
+            if (rerun) text = STR_NOT_LIVE;
+            else if (isStay) text = STR_CH_IS_OFFLINE;
+
             div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #' +
-                (rerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
-                STR_SPACE + STR_SPACE + (rerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
+                (rerun || isStay ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
+                STR_SPACE + STR_SPACE + text + STR_SPACE + STR_SPACE + '</div>';
         } else if (live_vod_clip === 1) {
             div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #00a94b">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>';
         } else div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
@@ -12350,7 +12399,8 @@
 
     function Play_StartStay() {
         if (!ChatLive_loaded[0]) ChatLive_Init(0);
-        Play_UpdateMainStreamDiv();
+        Play_showChat();
+        Play_data.watching_time = new Date().getTime();
         Play_state = Play_STATE_PLAYING;
 
         Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 10);
@@ -12363,6 +12413,8 @@
             1000,
             Play_StartStayTryId
         );
+
+        Play_UpdateMainStreamDiv();
     }
 
     function Play_StartStayCheck(time) {
@@ -12481,6 +12533,7 @@
 
             Play_data.AutoUrl = responseObj.url;
             Play_loadDataSuccessend(responseObj.responseText, false, true);
+            Play_ShowPanelStatus(1);
             return;
 
         } else if (responseObj.status === 1 || responseObj.status === 403 ||
@@ -14916,7 +14969,7 @@
         PlayVod_qualityPlaying = Play_data.quality;
     }
 
-    function Play_Start() {
+    function Play_Start(offline_chat) {
         //Main_Log('Play_Start');
 
         Play_LoadLogoSucess = false;
@@ -14949,7 +15002,9 @@
         Play_Playing = false;
         Play_state = Play_STATE_LOADING_TOKEN;
 
-        if (!Play_PreviewId) {
+        if (offline_chat) {
+            Play_StartStay();
+        } else if (!Play_PreviewId) {
             Play_showBufferDialog();
             Play_loadData();
         } else {
@@ -15216,7 +15271,8 @@
                 Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
                 Play_data.data[10],
                 0,
-                Play_data.data[5] ? Play_data.data[5].split(' ')[1] : ''
+                Play_data.data[5] ? Play_data.data[5].split(' ')[1] : '',
+                Play_data.data[8]
             )
         );
         Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
@@ -16061,6 +16117,9 @@
     function Play_ForceShowPannel() {
         //Play_PanneInfoDoclId.style.opacity = "1";
         Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'hide');
+
+        if (Play_StayDialogVisible()) return;
+
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElement('playsideinfo');
         else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClass('playsideinfo', 'playsideinfofocus');
     }
@@ -16075,7 +16134,7 @@
     var Play_ShowPanelStatusId;
 
     function Play_ShowPanelStatus(mwhocall) {
-        if (Settings_Obj_default("keep_panel_info_visible") === 1) {
+        if (Settings_Obj_default("keep_panel_info_visible") === 1 && Play_StayDialogVisible()) {
 
             if (Main_IsOn_OSInterface) {
                 Play_ShowPanelStatusId = Main_setInterval(
@@ -16146,6 +16205,13 @@
 
             Main_innerHTML("stream_info_pp_livetime1", STR_SINCE +
                 (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(PlayExtra_data.data[12])));
+        } else if (Play_StayDialogVisible()) {
+
+            Main_innerHTML("stream_live_time",
+                STR_WAITING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+            Main_textContent("stream_watching_time", '');
+            Main_innerHTML("stream_live_viewers", '');
+
         } else {
             Main_innerHTML("stream_watching_time", "," +
                 STR_SPACE + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
@@ -19476,7 +19542,7 @@
     function Screens_LoadPreview(key) {
 
         if (!Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() &&
-            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
+            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
             !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
             var doc, ThumbId;
 
@@ -19637,7 +19703,7 @@
         var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
         if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') &&
-            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
+            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
             x === Main_values.Main_Go && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
             doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 

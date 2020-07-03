@@ -7,6 +7,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen
 
+Web Version July 03 2020
+==============
+
+* Allow to use channel screen to open chat if the channel is offline and not hosting (chat doesn't work when hosting)
+
 Apk Version 3.0.211 & Web Version July 01 2020
 ==============
 
