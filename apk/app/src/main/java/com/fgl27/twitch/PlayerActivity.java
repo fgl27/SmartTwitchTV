@@ -982,8 +982,13 @@ public class PlayerActivity extends Activity {
         ClearPlayer(2);
         ClearPlayer(3);
 
-        if (PicturePicture) updateVideSizePP(isFullScreen);
-        else {
+        if (PicturePicture) {
+            updateVideSizePP(isFullScreen);
+
+            //Reset small player position over big player, as after a resume all player restart and position is reset on that case
+            PlayerView[mainPlayer ^ 1].setVisibility(View.GONE);
+            PlayerView[mainPlayer ^ 1].setVisibility(View.VISIBLE);
+        } else {
             updateVideSize(isFullScreen);
             PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
         }
