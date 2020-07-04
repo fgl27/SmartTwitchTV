@@ -500,7 +500,9 @@ function en_USLang() {
     STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
     STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
     STR_AUTO_REFRESH = "Auto refresh timeout (time in minutes)";
-    STR_AUTO_REFRESH_SUMMARY = "When enable this will refresh any screen or preview feed, the refresh happens on the background when the screen is not visible (to prevent a refresh when you are scrolling trow the content) or when you go again to a screen  that the refresh didn't run because the screen was visible before";
+    STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview player screen the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
+    STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in background";
+    STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this option is enable, the auto refresh will happen on background when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
     STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
     STR_MAIN_WINDOW = "Main window";
     STR_MULTI_MAIN_WINDOW = "MultiStream main window";

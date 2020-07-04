@@ -115,6 +115,10 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
+    "auto_refresh_background": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "show_feed_player_delay": {//Migrated to dialog
         "values": [
             0, 100, 200, 300, 400, 500, 600,
@@ -1360,6 +1364,7 @@ function Settings_DialogShowAnimation() {
     Settings_value.app_animations.values = [STR_NO, STR_YES];
     Settings_value.videos_animation.values = [STR_NO, STR_YES];
     Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
+    Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
     Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
 
@@ -1423,6 +1428,12 @@ function Settings_DialogShowAnimation() {
             values: Settings_value.auto_refresh_screen.values,
             title: STR_AUTO_REFRESH,
             summary: STR_AUTO_REFRESH_SUMMARY
+        },
+        auto_refresh_background: {
+            defaultValue: Settings_value.auto_refresh_background.defaultValue,
+            values: Settings_value.auto_refresh_background.values,
+            title: STR_AUTO_REFRESH_BACKGROUND,
+            summary: STR_AUTO_REFRESH_BACKGROUND_SUMMARY
         },
         key_up_timeout: {
             defaultValue: Settings_value.key_up_timeout.defaultValue,

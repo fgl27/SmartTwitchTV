@@ -664,7 +664,7 @@ function Screens_loadDataSuccessFinish(key) {
 
 function Screens_SetAutoRefresh(key) {
 
-    if (Settings_Obj_default("auto_refresh_screen")) {
+    if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background")) {
 
         Screens_CheckAutoRefresh(key, (Settings_Obj_values("auto_refresh_screen") * 60000));
 
@@ -698,7 +698,7 @@ function Screens_CheckAutoRefresh(key, timeout) {
 var Screens_CheckRefreshAfterResumeId;
 function Screens_CheckRefreshAfterResume() {
 
-    if (Settings_Obj_default("auto_refresh_screen")) {
+    if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background")) {
 
         var i = 0, run = 1, len = Main_HistoryClip + 1, date = new Date().getTime(), UserIsSet = AddUser_UserIsSet();
 

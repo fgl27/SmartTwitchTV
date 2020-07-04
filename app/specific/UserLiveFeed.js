@@ -322,7 +322,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 }
 
 function UserLiveFeed_SetRefresh(pos) {
-    if (Settings_Obj_default("auto_refresh_screen") &&
+    if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background") &&
         pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
 
         UserLiveFeed_CheckRefresh(pos, (Settings_Obj_values("auto_refresh_screen") * 60000));
@@ -356,7 +356,7 @@ function UserLiveFeed_CheckRefresh(pos, timeout) {
 
 function UserLiveFeed_CheckRefreshAfterResume() {
 
-    if (Settings_Obj_default("auto_refresh_screen")) {
+    if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background")) {
 
         var i = 0, run = 1, len = (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1, date = new Date().getTime();
 
