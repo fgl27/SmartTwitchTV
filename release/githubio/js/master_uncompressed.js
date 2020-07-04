@@ -4099,16 +4099,24 @@
     }
 
     function ChannelContent_loadDataRequest() {
-        var theUrl = Main_kraken_api + 'streams/' +
+        var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' +
             encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
-            Main_TwithcV5Flag_I;
+            Main_TwithcV5Flag;
 
-        BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
+        BasexmlHttpGet(
+            theUrl,
+            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+            2,
+            null,
+            ChannelContent_loadDataRequestSuccess,
+            ChannelContent_loadDataError
+        );
     }
 
     function ChannelContent_loadDataRequestSuccess(response) {
-        if (JSON.parse(response).stream !== null) {
-            ChannelContent_responseText = response;
+        var obj = JSON.parse(response);
+        if (obj.streams && obj.streams.length) {
+            ChannelContent_responseText = obj.streams;
             ChannelContent_loadDataPrepare();
             ChannelContent_GetStreamerInfo();
         } else if (Main_IsOn_OSInterface && !ChannelContent_TargetId) {
@@ -4250,21 +4258,18 @@
 
         Main_innerHTML("channel_content_infodiv0_1", streamer_bio);
 
-        if (ChannelContent_responseText !== null) {
-            var response = JSON.parse(ChannelContent_responseText);
-            if (response.stream !== null) {
+        if (ChannelContent_responseText) {
 
-                var stream = response.stream;
+            var stream = ChannelContent_responseText[0];
 
-                if (ChannelContent_TargetId !== undefined) {
-                    stream.channel.display_name = Main_values.Main_selectedChannelDisplayname +
-                        STR_USER_HOSTING + stream.channel.display_name;
-                }
+            if (ChannelContent_TargetId !== undefined) {
+                stream.channel.display_name = Main_values.Main_selectedChannelDisplayname +
+                    STR_USER_HOSTING + stream.channel.display_name;
+            }
 
-                ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
+            ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
 
-                ChannelContent_cursorX = 1;
-            } else ChannelContent_createCellOffline();
+            ChannelContent_cursorX = 1;
         } else ChannelContent_createCellOffline();
 
         ChannelContent_loadDataSuccessFinish();
@@ -7982,7 +7987,7 @@
     var Main_stringVersion_Min = '.211';
     var Main_version_java = 5; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 03, 2020';
-    var Main_version_web = 9; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 10; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -14721,7 +14726,7 @@
 
     function PlayExtra_updateStreamInfo() {
         Play_updateStreamInfoGet(
-            Main_kraken_api + 'streams/' + PlayExtra_data.data[14] + Main_TwithcV5Flag_I,
+            Main_kraken_api + 'streams/?stream_type=all&channel=' + PlayExtra_data.data[14] + Main_TwithcV5Flag,
             0,
             false
         );
@@ -15234,7 +15239,6 @@
 
                     }
                 }
-
             } else {
                 Play_data.watching_time = new Date().getTime();
                 Play_state = Play_STATE_LOADING_TOKEN;
@@ -15246,7 +15250,6 @@
                 if (PlayExtra_PicturePicture) PlayExtra_Resume(true);
                 Play_loadData();
             }
-            Play_updateStreamInfo();
         }
         Play_ResumeAfterOnlineCounter++;
     }
@@ -15303,7 +15306,7 @@
     function Play_updateStreamInfoStart() {
         if (!Play_data.data[14]) return;
 
-        var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
+        var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag;
 
         BasexmlHttpGet(
             theUrl,
@@ -15318,16 +15321,18 @@
     function Play_updateStreamInfoStartValues(response) {
         Play_CheckFollow();
 
-        response = JSON.parse(response);
-        if (response.stream !== null) {
-            Play_updateStreamInfoEnd(response);
+        var obj = JSON.parse(response);
+
+        if (obj.streams && obj.streams.length) {
+
+            Play_updateStreamInfoEnd(obj.streams[0]);
             Play_loadingInfoDataTry = 0;
-            Play_updateVodInfo(response.stream.channel._id, response.stream._id, 0);
+            Play_updateVodInfo(obj.streams[0].channel._id, obj.streams[0]._id, 0);
         }
     }
 
     function Play_updateStreamInfoEnd(response) {
-        Play_data.data = ScreensObj_LiveCellArray(response.stream);
+        Play_data.data = ScreensObj_LiveCellArray(response);
 
         Play_UpdateMainStreamDiv();
 
@@ -15423,7 +15428,7 @@
         } else {
             //When update this also update PlayExtra_updateStreamInfo
             Play_updateStreamInfoGet(
-                Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I,
+                Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag,
                 0,
                 true
             );
@@ -15453,19 +15458,19 @@
     }
 
     function Play_updateStreamInfoValues(response, Is_play) {
-        response = JSON.parse(response);
+        var obj = JSON.parse(response);
 
-        if (response.stream !== null) {
+        if (obj.streams && obj.streams.length) {
 
             if (Is_play) {
-                Play_updateStreamInfoEnd(response);
+                Play_updateStreamInfoEnd(obj.streams[0]);
 
                 if (PlayExtra_PicturePicture) {
                     PlayExtra_updateStreamInfo();
                 }
 
             } else {
-                var tempData = ScreensObj_LiveCellArray(response.stream);
+                var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
                 if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
 
                 //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
@@ -16747,7 +16752,7 @@
             function() {
                 if (Play_MultiArray[pos].data.length > 0) {
                     Play_RefreshMultiGet(
-                        Main_kraken_api + 'streams/' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag_I,
+                        Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
                         0,
                         pos
                     );
@@ -16780,9 +16785,11 @@
     }
 
     function Play_updateStreamInfoMultiValues(response, pos) {
-        response = JSON.parse(response);
-        if (response.stream !== null) {
-            Play_MultiArray[pos].data = ScreensObj_LiveCellArray(response.stream);
+        var obj = JSON.parse(response);
+
+        if (obj.streams && obj.streams.length) {
+
+            Play_MultiArray[pos].data = ScreensObj_LiveCellArray(obj.streams[0]);
 
             if (!pos) {
                 Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
@@ -16791,9 +16798,9 @@
 
             Play_MultiUpdateinfo(
                 (pos + (4 - Play_Multi_Offset)) % 4,
-                response.stream.game,
-                response.stream.viewers,
-                twemoji.parse(response.stream.channel.status, false, true),
+                obj.streams[0].game,
+                obj.streams[0].viewers,
+                twemoji.parse(obj.streams[0].channel.status, false, true),
                 (Play_Multi_MainBig ? '_big' : '')
             );
 
@@ -17146,6 +17153,7 @@
         Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
         Play_MultiCheckLiveFeed(pos);
+        Play_updateStreamInfoMulti(pos);
     }
 
     function Play_MultiUpdateMain() {

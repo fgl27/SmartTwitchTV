@@ -11,6 +11,7 @@ Web Version July 03 2020
 ==============
 
 * Allow to use channel screen to open chat if the channel is offline and not hosting (chat doesn't work when hosting)
+* Fix viewers counter on player top information and channel contennt for rerun, plus general information refresh improves
 
 Apk Version 3.0.211 & Web Version July 01 2020
 ==============
