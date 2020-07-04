@@ -602,6 +602,10 @@
     var STR_PLAYER_INFO_VISIBILITY_ARRAY;
     var STR_OPEN_CHAT;
     var STR_WAITING;
+    var STR_SOURCE_CHECK;
+    var STR_SOURCE_CHECK_SUMMARY;
+    var STR_AUTO_REFRESH_BACKGROUND;
+    var STR_AUTO_REFRESH_BACKGROUND_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1066,8 +1070,8 @@
         STR_QUALITY = "Quality";
         STR_NORMAL = "Normal";
         STR_AUTO = "Auto";
-        STR_DEF_QUALITY = "Default player start quality";
-        STR_DEF_QUALITY_SUMMARY = "Used when the app is first opened, after the user change the quality that becomes default for that section, a section ends when the apps is closed";
+        STR_DEF_QUALITY = "Default player quality";
+        STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to be in auto mode, for the reason why is that, check the settings option "Auto quality Bitrate limit"';
         STR_VERY_LOW = "Very low";
         STR_LOW = "Low";
         STR_HIGH = "High";
@@ -1085,7 +1089,7 @@
         STR_PLAYER_WINDOW = "Window ";
         STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
         STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-        STR_PLAYER_BITRATE_SUMMARY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3 Mbps for small and unlimited for main for most low end devices.";
+        STR_PLAYER_BITRATE_SUMMARY = 'The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing multiple videos at the same time (as most devices will lag on that situation), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended bitrate for small players (small player also applyes to all Multistream players and 50/50 mode) is 3 Mbps and unlimited for main or big player for most low end devices.';
         STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
         STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
         STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
@@ -1171,8 +1175,8 @@
         STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
         STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
         STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
-        STR_PP_WORKAROUND_SUMMARY = "For devices running android N or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need as it will result is a lower image quality";
-        STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
+        STR_PP_WORKAROUND_SUMMARY = "For devices running android 7 (Nougat) or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need as it will result is a lower image quality";
+        STR_PP_WARNIG = 'For some devices most running android 7 (Nougat) or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
             STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
         STR_HISTORY = "History";
         STR_WATCHED = "Watched on ";
@@ -1267,11 +1271,15 @@
         STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
         STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
         STR_AUTO_REFRESH = "Auto refresh timeout (time in minutes)";
-        STR_AUTO_REFRESH_SUMMARY = "When enable this will refresh any screen or preview feed, the refresh happens on the background when the screen is not visible (to prevent a refresh when you are scrolling trow the content) or when you go again to a screen  that the refresh didn't run because the screen was visible before";
+        STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview player screen the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
+        STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in background";
+        STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this option is enable, the auto refresh will happen on background when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
         STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
         STR_MAIN_WINDOW = "Main window";
         STR_MULTI_MAIN_WINDOW = "MultiStream main window";
         STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: press key down, after use left/right to change with is the big window";
+        STR_SOURCE_CHECK = "Auto change player quality from Source to Auto when the player lags";
+        STR_SOURCE_CHECK_SUMMARY = 'When this option is enable and you are not using Auto quality if the player is lagging it will switch to Auto quality and warn about it, a player lag is when the player if buffering for over 15 seconds, after this change the player will automatic go back to source when a you start a new stream of vod';
         STR_PLAYER_LAG = 'Player is lagging, quality changed to "Auto mode"';
         STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
         STR_TOO_ERRORS = " or too many errors";
@@ -7984,9 +7992,9 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.212';
-    var Main_version_java = 6; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 03, 2020';
+    var Main_stringVersion_Min = '.213';
+    var Main_version_java = 7; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'July 04, 2020';
     var Main_version_web = 10; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
@@ -10012,10 +10020,7 @@
     //Android specific: true
     //Allows to Set Notification Position
     function OSInterface_SetNotificationPosition(position) {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.SetNotificationPosition(position);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetNotificationPosition(position);
     }
 
     //public void SetNotificationRepeat(int times)
@@ -10023,20 +10028,14 @@
     //Android specific: true
     //Allows to Set Notification Position
     function OSInterface_SetNotificationRepeat(times) {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.SetNotificationRepeat(times);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetNotificationRepeat(times);
     }
 
     //public void RunNotificationService()
     //Android specific: true
     //Allows to run the notification service once
     function OSInterface_RunNotificationService() {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.RunNotificationService();
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.RunNotificationService();
     }
 
     //public void upNotificationState(boolean Notify)
@@ -10096,19 +10095,16 @@
     //Android specific: false
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, Delay_ms, callback, x, y, ReTryMax, Timeout) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.CheckIfIsLiveFeed(
-                token_url,
-                hls_url,
-                Delay_ms,
-                callback,
-                x,
-                y,
-                ReTryMax,
-                Timeout
-            );
-        } catch (e) {}
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            hls_url,
+            Delay_ms,
+            callback,
+            x,
+            y,
+            ReTryMax,
+            Timeout
+        );
     }
 
     //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -10211,9 +10207,7 @@
     //Android specific: false in the OS has multi player supports Samsung TV for example don't have
     //Allows to change the position of side by side player plus chat
     function OSInterface_SetFullScreenPosition(mFullScreenPosition) {
-        try {
-            Android.SetFullScreenPosition(mFullScreenPosition);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetFullScreenPosition(mFullScreenPosition);
     }
 
     //public void SetFullScreenSize(int mFullScreenSize)
@@ -10221,9 +10215,7 @@
     //Android specific: false in the OS has multi player supports Samsung TV for example don't have
     //Allows to change the size of side by side player plus chat
     function OSInterface_SetFullScreenSize(mFullScreenPosition) {
-        try {
-            Android.SetFullScreenSize(mFullScreenPosition);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetFullScreenSize(mFullScreenPosition);
     }
 
     //public void mSetPlayerPosition(int PicturePicturePos)
@@ -10512,10 +10504,7 @@
     //Android specific: true
     //Sets small player max Bitrate
     function OSInterface_SetSmallPlayerBandwidth(Bitrate) {
-        //TODO remove the try after some app updates fun change name
-        try {
-            Android.SetSmallPlayerBitrate(Bitrate);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate);
     }
 
     //public void SetSmallPlayerBandwidth(int Bitrate)
@@ -10523,10 +10512,7 @@
     //Android specific: true
     //Sets Big player max Bitrate
     function OSInterface_SetMainPlayerBitrate(Bitrate) {
-        //TODO remove the try after some app updates fun change name
-        try {
-            Android.SetMainPlayerBitrate(Bitrate);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate);
     }
 
     //public String getcodecCapabilities(String CodecType)
@@ -10667,10 +10653,7 @@
     //Android specific: true
     //Allows to change the player preview size
     function OSInterface_SetPreviewSize(mPreviewSize) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.SetPreviewSize(mPreviewSize);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetPreviewSize(mPreviewSize);
     }
 
     //public void SetPreviewAudio(int volume)
@@ -10678,10 +10661,7 @@
     //Android specific: true
     //Allows the preview player volume
     function OSInterface_SetPreviewAudio(volume) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.SetPreviewAudio(volume);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume);
     }
 
     //public void SetPreviewAudio(int volume)
@@ -10689,10 +10669,7 @@
     //Android specific: true
     //Allows to lower others player volume when preview player is showing
     function OSInterface_SetPreviewOthersAudio(volume) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.SetPreviewOthersAudio(volume);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume);
     }
 
     //public void mSetPlayerAudioMulti(int position)
@@ -10727,10 +10704,7 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod);
-        } catch (e) {}
+        Android.StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod);
     }
 
     //public void StartFeedPlayer(String uri, String masterPlaylistString, , int top, int right, int bottom, int left)
@@ -10739,13 +10713,10 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_StartSidePanelPlayer(uri, masterPlaylistString) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.StartSidePanelPlayer(
-                uri,
-                masterPlaylistString
-            );
-        } catch (e) {}
+        Android.StartSidePanelPlayer(
+            uri,
+            masterPlaylistString
+        );
     }
 
     //public void SetPlayerViewSidePanel(int bottom, int web_height)
@@ -10754,13 +10725,10 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_SetPlayerViewFeedBottom(bottom, web_height) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.SetPlayerViewFeedBottom(
-                bottom,
-                parseInt(web_height)
-            );
-        } catch (e) {}
+        Android.SetPlayerViewFeedBottom(
+            bottom,
+            parseInt(web_height)
+        );
     }
 
     //public void SetPlayerViewSidePanel(int top, int right, int left, int web_height)
@@ -10770,15 +10738,14 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.SetPlayerViewSidePanel(
-                bottom,
-                right,
-                left,
-                parseInt(web_height)
-            );
-        } catch (e) {}
+
+        if (Main_IsOn_OSInterface) Android.SetPlayerViewSidePanel(
+            bottom,
+            right,
+            left,
+            parseInt(web_height)
+        );
+
     }
 
     //public void StartScreensPlayer(String uri, String masterPlaylistString, ResumePosition, float bottom, float right, float left, int web_height, int who_called)
@@ -10790,20 +10757,19 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_StartScreensPlayer(uri, masterPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.StartScreensPlayer(
-                uri,
-                masterPlaylistString,
-                ResumePosition,
-                bottom,
-                right,
-                left,
-                parseInt(web_height),
-                who_called,
-                Settings_Obj_default('preview_screen_sizes') === 1
-            );
-        } catch (e) {}
+
+        Android.StartScreensPlayer(
+            uri,
+            masterPlaylistString,
+            ResumePosition,
+            bottom,
+            right,
+            left,
+            parseInt(web_height),
+            who_called,
+            Settings_Obj_default('preview_screen_sizes') === 1
+        );
+
     }
 
     //public void StartScreensPlayer(float bottom, float right, float left, int web_height, int who_called, boolean bigger)
@@ -10814,17 +10780,16 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_called) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.ScreenPlayerRestore(
-                bottom,
-                right,
-                left,
-                parseInt(web_height),
-                who_called,
-                Settings_Obj_default('preview_screen_sizes') === 1
-            );
-        } catch (e) {}
+
+        if (Main_IsOn_OSInterface) Android.ScreenPlayerRestore(
+            bottom,
+            right,
+            left,
+            parseInt(web_height),
+            who_called,
+            Settings_Obj_default('preview_screen_sizes') === 1
+        );
+
     }
 
     //public void ClearFeedPlayer()
@@ -10838,20 +10803,14 @@
     //Android specific: true
     //Clear the side panel or small player over the live feed play removes it from the screen
     function OSInterface_ClearSidePanelPlayer(CleanPlayer) {
-        //TODO remove the try after some apps updates
-        try {
-            Android.ClearSidePanelPlayer(CleanPlayer);
-        } catch (e) {}
+        Android.ClearSidePanelPlayer(CleanPlayer);
     }
 
     //public void SidePanelPlayerRestore()
     //Android specific: true
     //restores the main player as side panel player
     function OSInterface_SidePanelPlayerRestore() {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.SidePanelPlayerRestore();
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SidePanelPlayerRestore();
     }
 
     //public void SetFeedPosition(int position)
@@ -10885,17 +10844,11 @@
     }
 
     function OSInterface_AvoidClicks(Avoid) {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.AvoidClicks(Avoid);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.AvoidClicks(Avoid);
     }
 
     function OSInterface_initbodyClickSet() {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.initbodyClickSet();
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.initbodyClickSet();
     }
 
     //public void SetKeysOpacity(float Opacity)
@@ -10903,10 +10856,7 @@
     //Android specific: true
     //Allows to run the notification service once
     function OSInterface_SetKeysOpacity(Opacity) {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.SetKeysOpacity(Opacity);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetKeysOpacity(Opacity);
     }
 
     //public void SetKeysPosition(float Opacity)
@@ -10914,9 +10864,17 @@
     //Android specific: true
     //Allows to run the notification service once
     function OSInterface_SetKeysPosition(Position) {
+        if (Main_IsOn_OSInterface) Android.SetKeysPosition(Position);
+    }
+
+    //public void SetCheckSource(float Opacity)
+    //mCheckSource cenable disable
+    //Android specific: true
+    //Allows to reset back to auto playback if is with source enable and lagging
+    function OSInterface_SetCheckSource(mCheckSource) {
         //TODO remove the try after some apps updates
         try {
-            if (Main_IsOn_OSInterface) Android.SetKeysPosition(Position);
+            if (Main_IsOn_OSInterface) Android.SetCheckSource(mCheckSource);
         } catch (e) {}
     }
 
@@ -11006,7 +10964,6 @@
     var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
     var PlayClip_EnterPos = 0;
     var PlayClip_All = false;
-    var PlayClip_All_Forced = true;
     var PlayClip_loadingtreamerInfoTry = 0;
     //Variable initialization end
 
@@ -11621,7 +11578,7 @@
                     break;
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
-                    if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                    if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                         Play_CleanHideExit();
                         PlayClip_shutdownStream();
                     } else {
@@ -11771,7 +11728,7 @@
                             UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                         else UserLiveFeed_Hide();
                     } else {
-                        if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                        if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                             PlayClip_CheckPreview();
                             Play_CleanHideExit();
                             PlayClip_shutdownStream();
@@ -12037,7 +11994,7 @@
     }
 
     function Play_SetChatFullScreenKeyLeft() {
-        if (Main_IsOn_OSInterface) OSInterface_SetFullScreenSize(Play_FullScreenSize);
+        OSInterface_SetFullScreenSize(Play_FullScreenSize);
 
         Play_SetChatSideBySide();
 
@@ -12051,7 +12008,7 @@
     }
 
     function Play_SetChatFullScreenKeyRight() {
-        if (Main_IsOn_OSInterface) OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
+        OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
         Play_SetChatSideBySide();
 
         Main_setItem('Play_FullScreenPosition', Play_FullScreenPosition);
@@ -12140,7 +12097,7 @@
         if (!Play_IsWarning) Play_HideWarningDialog();
         Play_HideBufferDialog();
         Play_CleanHideExit();
-        if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) {
+        if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) {
             Play_EndIconsRemoveFocus();
             Play_Endcounter = -1;
         }
@@ -12218,7 +12175,7 @@
         }
 
         Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR +
-            ((PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
+            ((PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
 
         if (Play_isEndDialogVisible()) {
             Play_EndTextCounter--;
@@ -12240,7 +12197,7 @@
                     Play_shutdownStream();
                 } else if (PlayVodClip === 2) PlayVod_shutdownStream();
                 else if (PlayVodClip === 3) {
-                    if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) PlayClip_PlayNext();
+                    if (PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) PlayClip_PlayNext();
                     else PlayClip_shutdownStream();
                 }
 
@@ -12788,11 +12745,11 @@
             if (is_vod) PlayVod_hidePanel();
             else Play_hidePanel();
         } else {
-            if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Play_SingleClickExit)) {
+            if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit"))) {
                 Play_HideVodDialog();
                 PlayVod_PreshutdownStream(false);
                 Play_exitMain();
-            } else if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+            } else if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                 if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
                 else if (PlayExtra_PicturePicture) Play_CloseSmall();
                 else {
@@ -12987,7 +12944,7 @@
                     break;
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
-                    if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                    if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                         Play_Exit();
                     } else {
                         Play_showExitDialog();
@@ -13445,8 +13402,7 @@
                 if (PlayVodClip === 1) {
                     Play_hidePanel();
                     oldQuality = Play_data.quality;
-                    Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
-                    Play_data.qualityPlaying = Play_data.quality;
+                    Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
                     Play_SetHtmlQuality('stream_quality');
 
                     if (oldQuality !== Play_data.quality) OSInterface_SetQuality(Play_data.qualityIndex - 1); //just quality change
@@ -13711,8 +13667,7 @@
                     Play_hidePanel();
                     Play_Multi_SetPanel();
                     if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
-                        Play_data.quality = "Auto";
-                        Play_data.qualityPlaying = Play_data.quality;
+                        Play_SetPlayQuality("Auto");
                         OSInterface_SetQuality(-1);
                         Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
                     }
@@ -13768,7 +13723,7 @@
                     OSInterface_DisableMultiStream();
                     Play_Multi_UnSetPanel(shutdown);
                     Play_CleanHideExit();
-                    Play_getQualities(1, true);
+                    Play_getQualities(1, PlayExtra_PicturePicture);
                 }
             }
         };
@@ -14343,9 +14298,7 @@
             if (Main_IsOn_OSInterface) {
                 //Not on auto mode for change to auto before start picture in picture
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) OSInterface_SetQuality(-1);
-
-                Play_data.quality = "Auto";
-                Play_data.qualityPlaying = Play_data.quality;
+                Play_SetPlayQuality("Auto");
                 Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
                 PlayExtra_data.quality = "Auto";
                 PlayExtra_data.qualityPlaying = PlayExtra_data.quality;
@@ -14767,7 +14720,6 @@
     var Play_STATE_LOADING_TOKEN = 0;
     var Play_STATE_PLAYING = 1;
     var Play_state = 0;
-    var Play_SingleClickExit = 0;
     var Play_MultiEnable = false;
     var Play_MultiArray = [];
     var Play_LowLatency = false;
@@ -14966,12 +14918,26 @@
         Play_SetChatFont();
     }
 
+    function Play_ResetDefaultQuality() {
+        if ((Main_A_includes_B(Play_data.quality, 'Auto') || Main_A_includes_B(PlayVod_quality, 'Auto')) &&
+            !Main_A_includes_B(Settings_Obj_values('default_quality'), 'Auto')) {
+            Play_SetQuality();
+        }
+    }
+
     function Play_SetQuality() {
-        Play_data.quality = Settings_Obj_values('default_quality').replace(STR_SOURCE, "source");
-        Play_data.qualityPlaying = Play_data.quality;
+        Play_SetPlayQuality(Settings_Obj_values('default_quality').replace(STR_SOURCE, "source"));
 
         PlayVod_quality = Play_data.quality;
         PlayVod_qualityPlaying = Play_data.quality;
+    }
+
+    function Play_SetPlayQuality(quality) {
+        Play_data.quality = quality;
+        Play_data.qualityPlaying = Play_data.quality;
+
+        Play_data_base.quality = Play_data.quality;
+        Play_data_base.qualityPlaying = Play_data.qualityPlaying;
     }
 
     function Play_Start(offline_chat) {
@@ -15018,7 +14984,7 @@
             Play_loadDataSuccessend(Play_PreviewResponseText, true);
 
             Play_CheckIfIsLiveCleanEnd();
-            Play_getQualities(1, true);
+            Play_getQualities(1, false);
         }
 
         Play_CurrentSpeed = 3;
@@ -15713,8 +15679,7 @@
             }
         }
 
-        Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
-        Play_data.qualityPlaying = Play_data.quality;
+        Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
 
         Play_SetHtmlQuality('stream_quality');
         if (Main_IsOn_OSInterface) OSInterface_SetQuality(Play_data.qualityIndex - 1);
@@ -15737,13 +15702,36 @@
             if (result.length > 1) result[1].id += " | source";
 
             if (position === 1) {
+
                 Play_data.qualities = result;
-                if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
-                if (Play_data.playlist) Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+
+                if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable) {
+
+                    Play_ResetDefaultQuality();
+
+                    if (!Main_A_includes_B(Play_data.quality, 'Auto'))
+                        Play_qualityChanged();
+                }
+
+                if (Play_data.playlist) {
+                    Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+                }
+
             } else {
+
                 PlayVod_qualities = result;
-                if (!skipchange && !Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
-                if (PlayVod_playlist) Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
+
+                if (!skipchange) {
+
+                    Play_ResetDefaultQuality();
+                    if (!Main_A_includes_B(PlayVod_quality, 'Auto'))
+                        PlayVod_qualityChanged();
+
+                }
+
+                if (PlayVod_playlist) {
+                    Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
+                }
             }
         } else Play_getQualitiesFail = true;
     }
@@ -15831,6 +15819,7 @@
         if (!Play_data.qualities[Play_data.qualityIndex] || !Play_data.qualities[Play_data.qualityIndex].hasOwnProperty('id')) return;
 
         Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
+        Play_data_base.quality = Play_data.quality;
 
         var quality_string = '';
 
@@ -15845,8 +15834,8 @@
     function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         if (mwhocall === 1) {
 
-            Play_data.quality = "Auto";
-            Play_data.qualityPlaying = Play_data.quality;
+            Play_SetPlayQuality("Auto");
+
             OSInterface_SetQuality(-1);
             OSInterface_RestartPlayer(1, 0, 0);
             Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
@@ -15984,8 +15973,7 @@
 
         if (Play_data.qualities[1] && Play_data.qualityIndex === (Play_getQualitiesCount() - 1)) {
             if (Play_data.qualities[1].hasOwnProperty('id')) {
-                Play_data.quality = Play_data.qualities[1].id;
-                Play_data.qualityPlaying = Play_data.quality;
+                Play_SetPlayQuality(Play_data.qualities[1].id);
             }
         }
 
@@ -16116,6 +16104,7 @@
         Play_clearHidePanel();
         Play_ForceHidePannel();
         Play_data.quality = Play_data.qualityPlaying;
+        Play_data_base.quality = Play_data.quality;
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
     }
 
@@ -16583,7 +16572,7 @@
         }
         PlayExtra_UnSetPanel();
         Play_CleanHideExit();
-        Play_getQualities(1, true);
+        Play_getQualities(1, false);
     }
 
     function Play_EndDialogUpDown(adder) {
@@ -17634,7 +17623,7 @@
 
                 Chat_offset = parseInt(OSInterface_gettime() / 1000);
                 Chat_Init();
-                Play_getQualities(2, true);
+                Play_getQualities(2, false);
 
             }
 
@@ -18362,7 +18351,7 @@
                     break;
                 case KEY_KEYBOARD_BACKSPACE:
                 case KEY_RETURN:
-                    if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                    if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                         Play_CleanHideExit();
                         PlayVod_shutdownStream();
                     } else {
@@ -18766,6 +18755,7 @@
     var Screens_ChangeFocusAnimationFinished = true;
     var Screens_ChangeFocusAnimationFast = false;
     var Screens_SettingDoAnimations = true;
+    var Screens_Some_Screen_Is_Refreshing = false;
     //Start the app in async mode by default
 
     //Initiate all Secondary screens obj and they properties
@@ -18938,6 +18928,7 @@
         ScreenObj[key].idObject = {};
         ScreenObj[key].Cells = [];
         ScreenObj[key].FirstLoad = true;
+        Screens_Some_Screen_Is_Refreshing = true;
         ScreenObj[key].itemsCount = 0;
         ScreenObj[key].posX = 0;
         ScreenObj[key].posY = 0;
@@ -19061,6 +19052,7 @@
         ScreenObj[key].loadingDataTry = 0;
         if (!ScreenObj[key].itemsCount) {
             ScreenObj[key].FirstLoad = false;
+            Screens_Some_Screen_Is_Refreshing = false;
             if (key === Screens_Current_Key) {
                 Main_showWarningDialog(STR_REFRESH_PROBLEM);
                 ScreenObj[key].key_exit();
@@ -19294,6 +19286,7 @@
 
             }
             ScreenObj[key].FirstLoad = false;
+            Screens_Some_Screen_Is_Refreshing = false;
             Screens_SetAutoRefresh(key);
 
             if (Main_FirstRun) {
@@ -19401,14 +19394,13 @@
 
     function Screens_SetAutoRefresh(key) {
 
-        if (Settings_Obj_default("auto_refresh_screen")) {
+        if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background")) {
 
             Screens_CheckAutoRefresh(key, (Settings_Obj_values("auto_refresh_screen") * 60000));
 
         } else Main_clearTimeout(ScreenObj[key].AutoRefreshId);
 
     }
-
 
     function Screens_CheckAutoRefresh(key, timeout) {
 
@@ -19420,7 +19412,9 @@
                         ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
                             (key !== Main_values.Main_Go))) { //the screen is not selected
 
-                        Screens_StartLoad(key);
+                        if (!Screens_Some_Screen_Is_Refreshing) {
+                            Screens_StartLoad(key);
+                        } else Screens_CheckAutoRefresh(key, 5000);
 
                     } else Screens_SetAutoRefresh(key);
 
@@ -19436,7 +19430,7 @@
 
     function Screens_CheckRefreshAfterResume() {
 
-        if (Settings_Obj_default("auto_refresh_screen")) {
+        if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background")) {
 
             var i = 0,
                 run = 1,
@@ -24312,6 +24306,10 @@
             ],
             "defaultValue": 1
         },
+        "auto_refresh_background": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "show_feed_player_delay": { //Migrated to dialog
             "values": [
                 0, 100, 200, 300, 400, 500, 600,
@@ -24406,6 +24404,10 @@
         "default_quality": {
             "values": ["Auto", "source"],
             "defaultValue": 1
+        },
+        "check_source": {
+            "values": ["no", "yes"],
+            "defaultValue": 2
         },
         "clock_offset": { //Migrated to dialog
             "values": Settings_GenerateClock(),
@@ -24647,16 +24649,19 @@
 
         div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-        div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
-
         div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
-        //Dialog settings
         div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
+
+        div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
+
+        div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
+
+        //Dialog settings
+        div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
         div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
         div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
         div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
-        div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
         div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
         // Prepare the bitrates
@@ -24735,15 +24740,17 @@
         Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
         Settings_value[key].values = [STR_YES, STR_NO];
 
-        //Player restore
         key = "restor_playback";
         Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
         Settings_value[key].values = [STR_YES, STR_NO];
 
-        //Player restore
         key = "default_quality";
         Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
         Settings_value[key].values = [STR_AUTO, STR_SOURCE];
+
+        key = "check_source";
+        Settings_DivOptionChangeLang(key, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
+        Settings_value[key].values = [STR_YES, STR_NO];
 
         key = "pp_workaround";
         Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
@@ -24796,11 +24803,9 @@
         }
         Main_SetThumb();
         if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
-        PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
         Settings_notification_background();
         Settings_notification_position();
         Settings_notification_repeat();
-        Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
         Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
         Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
@@ -24809,6 +24814,7 @@
         OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
         OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
         OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
+        OSInterface_SetCheckSource(Settings_Obj_default("check_source") === 1);
         Settings_SetPingWarning();
         SettingsColor_SetAnimationStyleRestore();
     }
@@ -24876,13 +24882,11 @@
 
     function Settings_SetDefault(position) {
 
-        if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-        else if (position === "live_notification") Settings_notification();
+        if (position === "live_notification") Settings_notification();
         else if (position === "live_notification_background") Settings_notification_background();
         else if (position === "live_notification_position") Settings_notification_position();
         else if (position === "repeat_notification") Settings_notification_repeat();
         else if (position === "ping_warn") Settings_SetPingWarning();
-        else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
         else if (position === "app_animations") Settings_SetAnimations();
         else if (position === "buffer_live") Settings_SetBuffers(1);
         else if (position === "key_up_timeout") Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
@@ -24890,6 +24894,7 @@
         else if (position === "buffer_clip") Settings_SetBuffers(3);
         else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
         else if (position === "default_quality") Play_SetQuality();
+        else if (position === "check_source") OSInterface_SetCheckSource(Settings_Obj_default("check_source") === 1);
         else if (position === "thumb_quality") Main_SetThumb();
         else if (position === "preview_others_volume") OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
         else if (position === "preview_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
@@ -25077,7 +25082,7 @@
         var doc,
             offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
-        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (14 + offset)) {
+        if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
             doc = document.getElementById('settings_scroll');
             doc.scrollTop = doc.scrollHeight;
             if (Settings_Obj_default("app_animations")) {
@@ -25085,7 +25090,7 @@
                 doc.scrollTop = 0;
                 scrollTo(doc, position, 200);
             }
-        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (13 + offset)) {
+        } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
             doc = document.getElementById('settings_scroll');
             if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
             else doc.scrollTop = 0;
@@ -25577,6 +25582,7 @@
         Settings_value.app_animations.values = [STR_NO, STR_YES];
         Settings_value.videos_animation.values = [STR_NO, STR_YES];
         Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
+        Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
         Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
         Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
 
@@ -25640,6 +25646,12 @@
                 values: Settings_value.auto_refresh_screen.values,
                 title: STR_AUTO_REFRESH,
                 summary: STR_AUTO_REFRESH_SUMMARY
+            },
+            auto_refresh_background: {
+                defaultValue: Settings_value.auto_refresh_background.defaultValue,
+                values: Settings_value.auto_refresh_background.values,
+                title: STR_AUTO_REFRESH_BACKGROUND,
+                summary: STR_AUTO_REFRESH_BACKGROUND_SUMMARY
             },
             key_up_timeout: {
                 defaultValue: Settings_value.key_up_timeout.defaultValue,
@@ -27307,6 +27319,7 @@
 
     function UserLiveFeed_loadDataSuccessFinish(pos) {
         UserLiveFeed_loadingData[pos] = false;
+        Screens_Some_Screen_Is_Refreshing = false;
         UserLiveFeed_status[pos] = true;
 
         var len = UserLiveFeed_cell[pos].length;
@@ -27392,7 +27405,7 @@
     }
 
     function UserLiveFeed_SetRefresh(pos) {
-        if (Settings_Obj_default("auto_refresh_screen") &&
+        if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background") &&
             pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
 
             UserLiveFeed_CheckRefresh(pos, (Settings_Obj_values("auto_refresh_screen") * 60000));
@@ -27411,9 +27424,11 @@
                     ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
                         (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) { //the screen is not selected
 
-                    UserLiveFeed_CounterDialogRst();
-                    UserLiveFeedobj_loadDataPrepare(pos);
-                    UserLiveFeed_obj[pos].load();
+                    if (!Screens_Some_Screen_Is_Refreshing) {
+                        UserLiveFeed_CounterDialogRst();
+                        UserLiveFeedobj_loadDataPrepare(pos);
+                        UserLiveFeed_obj[pos].load();
+                    } else UserLiveFeed_CheckRefresh(pos, 5000);
 
                 } else UserLiveFeed_SetRefresh(pos);
 
@@ -27426,7 +27441,7 @@
 
     function UserLiveFeed_CheckRefreshAfterResume() {
 
-        if (Settings_Obj_default("auto_refresh_screen")) {
+        if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background")) {
 
             var i = 0,
                 run = 1,
@@ -28269,6 +28284,7 @@
 
     function UserLiveFeedobj_loadDataPrepare(pos) {
         UserLiveFeed_loadingData[pos] = true;
+        Screens_Some_Screen_Is_Refreshing = true;
         UserLiveFeed_loadingDataTry[pos] = 0;
     }
 
@@ -28298,6 +28314,7 @@
             if (!UserLiveFeed_obj[pos].loadingMore) {
                 UserLiveFeed_loadingDataTry[pos] = 0;
                 UserLiveFeed_loadingData[pos] = false;
+                Screens_Some_Screen_Is_Refreshing = false;
                 UserLiveFeed_Showloading(false);
                 Main_HideElement('dialog_loading_side_feed');
 
