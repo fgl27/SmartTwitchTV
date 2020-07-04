@@ -19394,7 +19394,8 @@
 
     function Screens_SetAutoRefresh(key) {
 
-        if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background")) {
+        if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background") &&
+            (key !== Main_SearchGames && key !== Main_SearchLive && ScreenObj[key].screenType !== 4)) {
 
             Screens_CheckAutoRefresh(key, (Settings_Obj_values("auto_refresh_screen") * 60000));
 
@@ -19441,6 +19442,7 @@
             for (i; i < len; i++) {
 
                 if (ScreenObj[i] && ScreenObj[i].lastRefresh &&
+                    (i !== Main_SearchGames && i !== Main_SearchLive && ScreenObj[i].screenType !== 4) &&
                     (UserIsSet || !ScreenObj[i].IsUser) && //prevent check a user screen in case all users have be deleted
                     date > (ScreenObj[i].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
 
@@ -21374,7 +21376,8 @@
     }
 
     function Screens_RefreshTimeout(key) {
-        if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
+        if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent ||
+            Main_values.Main_Go === Main_Search || ScreenObj[key].screenType === 4 ||
             Main_values.Main_Go === Main_addUser || !ScreenObj || !Settings_Obj_default("auto_refresh_screen")) return false;
 
         return (new Date().getTime()) > (ScreenObj[key].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000));
