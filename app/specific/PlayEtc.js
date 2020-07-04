@@ -1605,8 +1605,7 @@ function Play_MakeControls() {
             if (PlayVodClip === 1) {
                 Play_hidePanel();
                 oldQuality = Play_data.quality;
-                Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
-                Play_data.qualityPlaying = Play_data.quality;
+                Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
                 Play_SetHtmlQuality('stream_quality');
 
                 if (oldQuality !== Play_data.quality) OSInterface_SetQuality(Play_data.qualityIndex - 1);//just quality change
@@ -1869,8 +1868,7 @@ function Play_MakeControls() {
                 Play_hidePanel();
                 Play_Multi_SetPanel();
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
-                    Play_data.quality = "Auto";
-                    Play_data.qualityPlaying = Play_data.quality;
+                    Play_SetPlayQuality("Auto");
                     OSInterface_SetQuality(-1);
                     Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
                 }

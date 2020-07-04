@@ -240,14 +240,18 @@ function Play_ResetDefaultQuality() {
 }
 
 function Play_SetQuality() {
-    Play_data.quality = Settings_Obj_values('default_quality').replace(STR_SOURCE, "source");
+    Play_SetPlayQuality(Settings_Obj_values('default_quality').replace(STR_SOURCE, "source"));
+
+    PlayVod_quality = Play_data.quality;
+    PlayVod_qualityPlaying = Play_data.quality;
+}
+
+function Play_SetPlayQuality(quality) {
+    Play_data.quality = quality;
     Play_data.qualityPlaying = Play_data.quality;
 
     Play_data_base.quality = Play_data.quality;
     Play_data_base.qualityPlaying = Play_data.qualityPlaying;
-
-    PlayVod_quality = Play_data.quality;
-    PlayVod_qualityPlaying = Play_data.quality;
 }
 
 function Play_Start(offline_chat) {
@@ -986,11 +990,7 @@ function Play_qualityChanged() {
         }
     }
 
-    Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
-    Play_data.qualityPlaying = Play_data.quality;
-
-    Play_data_base.quality = Play_data.quality;
-    Play_data_base.qualityPlaying = Play_data.qualityPlaying;
+    Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
 
     Play_SetHtmlQuality('stream_quality');
     if (Main_IsOn_OSInterface) OSInterface_SetQuality(Play_data.qualityIndex - 1);
@@ -1143,11 +1143,7 @@ function Play_SetHtmlQuality(element) {
 function Play_PlayerCheck(mwhocall) { // Called only by JAVA
     if (mwhocall === 1) {
 
-        Play_data.quality = "Auto";
-        Play_data.qualityPlaying = Play_data.quality;
-
-        Play_data_base.quality = Play_data.quality;
-        Play_data_base.qualityPlaying = Play_data.qualityPlaying;
+        Play_SetPlayQuality("Auto");
 
         OSInterface_SetQuality(-1);
         OSInterface_RestartPlayer(1, 0, 0);
@@ -1286,11 +1282,7 @@ function Play_ClearPlayer() {
 
     if (Play_data.qualities[1] && Play_data.qualityIndex === (Play_getQualitiesCount() - 1)) {
         if (Play_data.qualities[1].hasOwnProperty('id')) {
-            Play_data.quality = Play_data.qualities[1].id;
-            Play_data.qualityPlaying = Play_data.quality;
-
-            Play_data_base.quality = Play_data.quality;
-            Play_data_base.qualityPlaying = Play_data.qualityPlaying;
+            Play_SetPlayQuality(Play_data.qualities[1].id);
         }
     }
 
