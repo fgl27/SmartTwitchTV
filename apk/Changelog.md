@@ -7,7 +7,15 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen
 
-Apk Version 3.0.212 & Web Version July 01 2020
+Apk Version 3.0.213 & Web Version July 04 2020
+==============
+
+* Improve auto refresh option adding a new option to separate the auto refresh and the refresh in background option, with is disable by default, auto refresh on background may causes lag to some devices
+* Add a option on settings to disable the player check that automatic changes from Source to Auto when the player lag is detected, the player buffering for over 15 seconds is a lag situation
+* Change back to Source quality on next video start, if previously the player automatic check changed from Source to Auto do to lag
+* Change back to Source quality if that is enable after exiting Picture and Picture, 50/50 or Multistream mode, those mode exclusively only work on auto mode, without auto mode most devices will lag when more then one playback at same time
+
+Apk Version 3.0.212 - July 04 2020
 ==============
 
 * Fix small player not showing sometimes when exiting Multistream mode and Picture and picture mode was enable
