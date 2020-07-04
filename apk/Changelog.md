@@ -7,6 +7,13 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen
 
+Apk Version 3.0.212 & Web Version July 01 2020
+==============
+
+* Fix small player not showing sometimes when exiting Multistream mode and Picture and picture mode was enable
+* Update ExoPlayer to latest version
+* General performance improves and bug fixes
+
 Web Version July 03 2020
 ==============
 
