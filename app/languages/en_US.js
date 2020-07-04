@@ -505,6 +505,8 @@ function en_USLang() {
     STR_MAIN_WINDOW = "Main window";
     STR_MULTI_MAIN_WINDOW = "MultiStream main window";
     STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: press key down, after use left/right to change with is the big window";
+    STR_SOURCE_CHECK = "Auto change player quality from Source to Auto when the player lags";
+    STR_SOURCE_CHECK_SUMMARY = 'When this option is enable and you are not using Auto quality if the player is lagging it will switch to Auto quality and warn about it, a player lag is when the player if buffering for over 15 seconds, after this change the player will automatic go back to source when a you start a new stream of vod';
     STR_PLAYER_LAG = 'Player is lagging, quality changed to "Auto mode"';
     STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
     STR_TOO_ERRORS = " or too many errors";

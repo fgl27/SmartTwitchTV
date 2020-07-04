@@ -209,6 +209,10 @@ var Settings_value = {
         "values": ["Auto", "source"],
         "defaultValue": 1
     },
+    "check_source": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "clock_offset": {//Migrated to dialog
         "values": Settings_GenerateClock(),
         "defaultValue": 49
@@ -452,6 +456,8 @@ function Settings_SetSettings() {
 
     div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
 
+    div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
+
     div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
     //Dialog settings
@@ -536,15 +542,17 @@ function Settings_SetStrings() {
     Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
     Settings_value[key].values = [STR_YES, STR_NO];
 
-    //Player restore
     key = "restor_playback";
     Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
     Settings_value[key].values = [STR_YES, STR_NO];
 
-    //Player restore
     key = "default_quality";
     Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
     Settings_value[key].values = [STR_AUTO, STR_SOURCE];
+
+    key = "check_source";
+    Settings_DivOptionChangeLang(key, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
+    Settings_value[key].values = [STR_YES, STR_NO];
 
     key = "pp_workaround";
     Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
@@ -608,6 +616,7 @@ function Settings_SetDefautls() {
     OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
     OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
     OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
+    OSInterface_SetCheckSource(Settings_Obj_default("check_source") === 1);
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
 }
@@ -687,6 +696,7 @@ function Settings_SetDefault(position) {
     else if (position === "buffer_clip") Settings_SetBuffers(3);
     else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     else if (position === "default_quality") Play_SetQuality();
+    else if (position === "check_source") OSInterface_SetCheckSource(Settings_Obj_default("check_source") === 1);
     else if (position === "thumb_quality") Main_SetThumb();
     else if (position === "preview_others_volume") OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
     else if (position === "preview_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));

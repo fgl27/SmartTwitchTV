@@ -197,7 +197,7 @@ function Play_ChatFullScreenKeyLeft() {
 }
 
 function Play_SetChatFullScreenKeyLeft() {
-    if (Main_IsOn_OSInterface) OSInterface_SetFullScreenSize(Play_FullScreenSize);
+    OSInterface_SetFullScreenSize(Play_FullScreenSize);
 
     Play_SetChatSideBySide();
 
@@ -211,7 +211,7 @@ function Play_ChatFullScreenKeyRight() {
 }
 
 function Play_SetChatFullScreenKeyRight() {
-    if (Main_IsOn_OSInterface) OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
+    OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
     Play_SetChatSideBySide();
 
     Main_setItem('Play_FullScreenPosition', Play_FullScreenPosition);

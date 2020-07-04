@@ -153,6 +153,7 @@ public class PlayerActivity extends Activity {
     public boolean deviceIsTV;
     public boolean MultiStreamEnable;
     public boolean isFullScreen = true;
+    public boolean CheckSource = true;
     public int mainPlayer = 0;
     public int MultiMainPlayer = 0;
     public int PicturePicturePosition = 0;
@@ -1604,6 +1605,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetCheckSource(boolean mCheckSource) {
+            CheckSource = mCheckSource;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void StopNotificationService() {
             MainThreadHandler.post(PlayerActivity.this::StopService);
         }
@@ -2682,7 +2689,7 @@ public class PlayerActivity extends Activity {
 
         if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && Who_Called < 3) {
 
-            if (!IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
+            if (CheckSource && !IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
                 LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
             else//already on auto just restart the player
                 PlayerEventListenerCheckCounterEnd(position, mclearResumePosition, Who_Called);
